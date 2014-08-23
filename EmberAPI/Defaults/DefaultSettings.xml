@@ -1,26 +1,7 @@
-﻿<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <movieactorthumbsnmj>false</movieactorthumbsnmj>
-  <movieactorthumbsyamj>false</movieactorthumbsyamj>
-  <movieclearartnmj>false</movieclearartnmj>
-  <movieclearartyamj>false</movieclearartyamj>
-  <movieclearlogonmj>false</movieclearlogonmj>
-  <movieclearlogoyamj>false</movieclearlogoyamj>
-  <moviediscartnmj>false</moviediscartnmj>
-  <moviediscartyamj>false</moviediscartyamj>
-  <movieextrafanartsnmj>false</movieextrafanartsnmj>
-  <movieextrafanartsyamj>false</movieextrafanartsyamj>
-  <movieextrathumbsnmj>false</movieextrathumbsnmj>
-  <movieextrathumbsyamj>false</movieextrathumbsyamj>
-  <movielandscapenmj>false</movielandscapenmj>
-  <movielandscapeyamj>false</movielandscapeyamj>
-  <proxycredentials>
-    <UserName />
-    <Password />
-    <SecurePassword />
-    <Domain />
-  </proxycredentials>
   <MovieScraperCastLimit>0</MovieScraperCastLimit>
+  <RestartScraper>false</RestartScraper>
   <MovieActorThumbsOverwrite>true</MovieActorThumbsOverwrite>
   <TVASPosterHeight>0</TVASPosterHeight>
   <MovieActorThumbsQual>0</MovieActorThumbsQual>
@@ -156,10 +137,9 @@
   <MovieBackdropsPath />
   <MovieMoviesetsPath />
   <MovieScraperCastWithImgOnly>false</MovieScraperCastWithImgOnly>
-  <MovieScraperCertLang>usa</MovieScraperCertLang> 
+  <MovieScraperCertLang>us</MovieScraperCertLang>
   <GeneralCheckUpdates>true</GeneralCheckUpdates>
-  <GeneralDoubleClickScrape>false</GeneralDoubleClickScrape>
-  <MovieCleanDB>true</MovieCleanDB>
+  <MovieCleanDB>false</MovieCleanDB>
   <CleanDotFanartJPG>false</CleanDotFanartJPG>
   <CleanExtrathumbs>false</CleanExtrathumbs>
   <CleanFanartJPG>false</CleanFanartJPG>
@@ -175,18 +155,314 @@
   <CleanPosterTBN>false</CleanPosterTBN>
   <FileSystemCleanerWhitelistExts />
   <FileSystemCleanerWhitelist>false</FileSystemCleanerWhitelist>
-  <MovieTrailerDefaultSearch>trailer</MovieTrailerDefaultSearch>
   <MovieTrailerDeleteExisting>true</MovieTrailerDeleteExisting>
   <TVGeneralDisplayASPoster>true</TVGeneralDisplayASPoster>
   <TVDisplayMissingEpisodes>true</TVDisplayMissingEpisodes>
   <MovieDisplayYear>false</MovieDisplayYear>
   <TVScraperOptionsOrdering>Standard</TVScraperOptionsOrdering>
-  <EmberModules />
+  <EmberModules>
+    <Module>
+      <AssemblyFileName>generic.EmberCore.BulkRename.dll</AssemblyFileName>
+      <AssemblyName>generic.EmberCore.BulkRename.generic.EmberCore.BulkRename.BulkRenamerModule</AssemblyName>
+      <ContentType>Generic</ContentType>
+      <GenericEnabled>true</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>generic.EmberCore.Extractor.dll</AssemblyFileName>
+      <AssemblyName>generic.EmberCore.Extractor.generic.EmberCore.Extractor.FrameExtrator</AssemblyName>
+      <ContentType>Generic</ContentType>
+      <GenericEnabled>true</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>generic.EmberCore.GenresEditor.dll</AssemblyFileName>
+      <AssemblyName>generic.EmberCore.GenresEditor.generic.EmberCore.GenresEditor.genericGenresEditor</AssemblyName>
+      <ContentType>Generic</ContentType>
+      <GenericEnabled>true</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>generic.EmberCore.MediaFileManager.dll</AssemblyFileName>
+      <AssemblyName>generic.EmberCore.MediaFileManager.generic.EmberCore.MediaFileManager.FileManagerExternalModule</AssemblyName>
+      <ContentType>Generic</ContentType>
+      <GenericEnabled>true</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>generic.EmberCore.MediaSources.dll</AssemblyFileName>
+      <AssemblyName>generic.EmberCore.MediaSources.generic.EmberCore.MediaSources.genericMediaSources</AssemblyName>
+      <ContentType>Generic</ContentType>
+      <GenericEnabled>true</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>generic.EmberCore.MetadataEditor.dll</AssemblyFileName>
+      <AssemblyName>generic.EmberCore.MetadataEditor.generic.EmberCore.MetadataEditor.genericMetadataEditor</AssemblyName>
+      <ContentType>Generic</ContentType>
+      <GenericEnabled>true</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>generic.EmberCore.MovieExporter.dll</AssemblyFileName>
+      <AssemblyName>generic.EmberCore.MovieExporter.generic.EmberCore.MovieExporter.MovieExporterModule</AssemblyName>
+      <ContentType>Generic</ContentType>
+      <GenericEnabled>true</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>generic.EmberCore.Notifications.dll</AssemblyFileName>
+      <AssemblyName>generic.EmberCore.Notifications.generic.EmberCore.Notifications.NotificationsModule</AssemblyName>
+      <ContentType>Generic</ContentType>
+      <GenericEnabled>true</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>generic.EmberCore.Trakt.dll</AssemblyFileName>
+      <AssemblyName>generic.EmberCore.Trakt.generic.EmberCore.Trakt.genericTrakt</AssemblyName>
+      <ContentType>Generic</ContentType>
+      <GenericEnabled>true</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Data.IMDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.Data.IMDB.ScraperModule.IMDB_Data</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Data.MoviepilotDE.dll</AssemblyFileName>
+      <AssemblyName>scraper.Data.MoviepilotDE.ScraperModule.MoviepilotDE_Data</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>1</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Data.OFDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.Data.OFDB.ScraperModule.OFDB_Data</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>2</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Data.TMDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.Data.TMDB.ScraperModule.TMDB_Data</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>true</ModuleEnabled>
+      <ModuleOrder>3</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Data.TMDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.Data.TMDB.ScraperModule.TMDB_Data</AssemblyName>
+      <ContentType>MovieSet</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>true</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Image.FanartTV.dll</AssemblyFileName>
+      <AssemblyName>scraper.Image.FanartTV.ScraperModule.FanartTV_Image</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>true</ModuleEnabled>
+      <ModuleOrder>1</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Image.IMDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.Image.IMDB.ScraperModule.IMDB_Image</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>2</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Image.IMPA.dll</AssemblyFileName>
+      <AssemblyName>scraper.Image.IMPA.ScraperModule.IMPA_Image</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>3</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Image.MPDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.Image.MPDB.ScraperModule.MPDB_Image</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>4</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Image.TMDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.Image.TMDB.ScraperModule.TMDB_Image</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>true</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Image.FanartTV.dll</AssemblyFileName>
+      <AssemblyName>scraper.Image.FanartTV.ScraperModule.FanartTV_Image</AssemblyName>
+      <ContentType>MovieSet</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>true</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Image.TMDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.Image.TMDB.ScraperModule.TMDB_Image</AssemblyName>
+      <ContentType>MovieSet</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>true</ModuleEnabled>
+      <ModuleOrder>1</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Theme.GoEar.dll</AssemblyFileName>
+      <AssemblyName>scraper.Theme.GoEar.ScraperModule.GoEar_Theme</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>true</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Trailer.Apple.dll</AssemblyFileName>
+      <AssemblyName>scraper.Trailer.Apple.ScraperModule.Apple_Trailer</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Trailer.IMDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.Trailer.IMDB.ScraperModule.IMDB_Trailer</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>1</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Trailer.TMDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.Trailer.TMDB.ScraperModule.TMDB_Trailer</AssemblyName>
+      <ContentType>Movie</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>true</ModuleEnabled>
+      <ModuleOrder>2</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.TVDB.dll</AssemblyFileName>
+      <AssemblyName>scraper.TVDB.EmberTVScraperModule.TVDB_Data_Poster</AssemblyName>
+      <ContentType>None</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>true</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>true</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+    <Module>
+      <AssemblyFileName>scraper.Theme.TelevisionTunes.dll</AssemblyFileName>
+      <AssemblyName>scraper.Theme.TelevisionTunes.ScraperModule.TelevisionTunes_Theme</AssemblyName>
+      <ContentType>TV</ContentType>
+      <GenericEnabled>false</GenericEnabled>
+      <PostScraperEnabled>false</PostScraperEnabled>
+      <PostScraperOrder>0</PostScraperOrder>
+      <ModuleEnabled>false</ModuleEnabled>
+      <ModuleOrder>0</ModuleOrder>
+    </Module>
+  </EmberModules>
   <MovieScraperMetaDataIFOScan>true</MovieScraperMetaDataIFOScan>
   <TVEpisodeFanartHeight>0</TVEpisodeFanartHeight>
   <TVEpisodeFanartQual>0</TVEpisodeFanartQual>
   <TVEpisodeFanartWidth>0</TVEpisodeFanartWidth>
-  <TVEpisodeFilterCustom />
+  <TVEpisodeFilterCustom>
+    <string>[\W_]\(?\d{4}\)?.*</string>
+    <string>(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*</string>
+    <string>(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*</string>
+    <string>(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*</string>
+    <string>(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*</string>
+    <string>(?i)[\W_]blu[\W_]?ray.*</string>
+    <string>(?i)[\W_]bd[\W_]?rip.*</string>
+    <string>(?i)[\W_]dvd.*</string>
+    <string>(?i)[\W_]720.*</string>
+    <string>(?i)[\W_]1080.*</string>
+    <string>(?i)[\W_]ac3.*</string>
+    <string>(?i)[\W_]dts.*</string>
+    <string>(?i)[\W_]divx.*</string>
+    <string>(?i)[\W_]xvid.*</string>
+    <string>(?i)[\W_]dc[\W_]?.*</string>
+    <string>(?i)[\W_]dir(ector'?s?)?\s?cut.*</string>
+    <string>(?i)[\W_]extended.*</string>
+    <string>(?i)[\W_]hd(tv)?.*</string>
+    <string>(?i)[\W_]unrated.*</string>
+    <string>(?i)[\W_]uncut.*</string>
+    <string>(?i)[\W_]([a-z]{3}|multi)[sd]ub.*</string>
+    <string>(?i)[\W_]\[offline\].*</string>
+    <string>(?i)[\W_]ntsc.*</string>
+    <string>[\W_]PAL[\W_]?.*</string>
+    <string>\.[-&gt;] </string>
+  </TVEpisodeFilterCustom>
   <TVEpisodeFanartCol>false</TVEpisodeFanartCol>
   <TVEpisodeNfoCol>false</TVEpisodeNfoCol>
   <TVEpisodePosterCol>false</TVEpisodePosterCol>
@@ -204,34 +480,29 @@
   <MovieEThumbsLimit>4</MovieEThumbsLimit>
   <MovieEFanartsLimit>4</MovieEFanartsLimit>
   <MovieFanartHeight>0</MovieFanartHeight>
+  <MovieSetFanartHeight>0</MovieSetFanartHeight>
   <MovieEFanartsPrefOnly>false</MovieEFanartsPrefOnly>
   <MovieEThumbsPrefOnly>false</MovieEThumbsPrefOnly>
   <MovieFanartPrefOnly>false</MovieFanartPrefOnly>
   <MovieFanartQual>0</MovieFanartQual>
+  <MovieSetFanartQual>0</MovieSetFanartQual>
   <MovieEFanartsWidth>0</MovieEFanartsWidth>
   <MovieEThumbsWidth>0</MovieEThumbsWidth>
   <MovieFanartWidth>0</MovieFanartWidth>
-  <MovieGeneralCustomMarker1Color>-32704</MovieGeneralCustomMarker1Color>
-  <MovieGeneralCustomMarker2Color>-16776961</MovieGeneralCustomMarker2Color>
-  <MovieGeneralCustomMarker3Color>-12582784</MovieGeneralCustomMarker3Color>
-  <MovieGeneralCustomMarker4Color>-16711681</MovieGeneralCustomMarker4Color>
-  <MovieGeneralCustomMarker1Name></MovieGeneralCustomMarker1Name>
-  <MovieGeneralCustomMarker2Name></MovieGeneralCustomMarker2Name>
-  <MovieGeneralCustomMarker3Name></MovieGeneralCustomMarker3Name>
-  <MovieGeneralCustomMarker4Name></MovieGeneralCustomMarker4Name>
+  <MovieSetFanartWidth>0</MovieSetFanartWidth>
   <MovieScraperTop250>true</MovieScraperTop250>
   <MovieScraperCollection>true</MovieScraperCollection>
   <MovieScraperCountry>true</MovieScraperCountry>
   <MovieScraperCast>true</MovieScraperCast>
   <MovieScraperCertification>true</MovieScraperCertification>
-  <MovieScraperCrew>true</MovieScraperCrew>
+  <MovieScraperCrew>false</MovieScraperCrew>
   <MovieScraperDirector>true</MovieScraperDirector>
   <MovieScraperGenre>true</MovieScraperGenre>
   <MovieScraperMPAA>true</MovieScraperMPAA>
-  <MovieScraperMusicBy>true</MovieScraperMusicBy>
+  <MovieScraperMusicBy>false</MovieScraperMusicBy>
   <MovieScraperOutline>true</MovieScraperOutline>
   <MovieScraperPlot>true</MovieScraperPlot>
-  <MovieScraperProducers>true</MovieScraperProducers>
+  <MovieScraperProducers>false</MovieScraperProducers>
   <MovieScraperRating>true</MovieScraperRating>
   <MovieScraperRelease>true</MovieScraperRelease>
   <MovieScraperRuntime>true</MovieScraperRuntime>
@@ -242,8 +513,30 @@
   <MovieScraperVotes>true</MovieScraperVotes>
   <MovieScraperWriters>true</MovieScraperWriters>
   <MovieScraperYear>true</MovieScraperYear>
-  <MovieFilterCustom />
-  <GeneralFilterPanelState>false</GeneralFilterPanelState>
+  <MovieFilterCustom>
+    <string>[\W_]\(?\d{4}\)?.*</string>
+    <string>(?i)[\W_]blu[\W_]?ray.*</string>
+    <string>(?i)[\W_]bd[\W_]?rip.*</string>
+    <string>(?i)[\W_]dvd.*</string>
+    <string>(?i)[\W_]720.*</string>
+    <string>(?i)[\W_]1080.*</string>
+    <string>(?i)[\W_]ac3.*</string>
+    <string>(?i)[\W_]dts.*</string>
+    <string>(?i)[\W_]divx.*</string>
+    <string>(?i)[\W_]xvid.*</string>
+    <string>(?i)[\W_]dc[\W_]?.*</string>
+    <string>(?i)[\W_]dir(ector'?s?)?\s?cut.*</string>
+    <string>(?i)[\W_]extended.*</string>
+    <string>(?i)[\W_]hd(tv)?.*</string>
+    <string>(?i)[\W_]unrated.*</string>
+    <string>(?i)[\W_]uncut.*</string>
+    <string>(?i)[\W_]([a-z]{3}|multi)[sd]ub.*</string>
+    <string>(?i)[\W_]\[offline\].*</string>
+    <string>(?i)[\W_]ntsc.*</string>
+    <string>[\W_]PAL[\W_]?.*</string>
+    <string>\.[-&gt;] </string>
+  </MovieFilterCustom>
+  <GeneralFilterPanelState>true</GeneralFilterPanelState>
   <MovieGeneralFlagLang />
   <MovieScraperForceTitle />
   <MovieScraperFullCast>true</MovieScraperFullCast>
@@ -252,8 +545,8 @@
   <MovieScraperGenreLimit>0</MovieScraperGenreLimit>
   <MovieGeneralIgnoreLastScan>true</MovieGeneralIgnoreLastScan>
   <GeneralInfoPanelAnim>false</GeneralInfoPanelAnim>
-  <GeneralMovieInfoPanelState>0</GeneralMovieInfoPanelState>
-  <GeneralMovieSetInfoPanelState>0</GeneralMovieSetInfoPanelState>
+  <GeneralMovieInfoPanelState>2</GeneralMovieInfoPanelState>
+  <GeneralMovieSetInfoPanelState>2</GeneralMovieSetInfoPanelState>
   <GeneralLanguage>English_(en_US)</GeneralLanguage>
   <MovieLevTolerance>0</MovieLevTolerance>
   <MovieLockGenre>false</MovieLockGenre>
@@ -268,6 +561,14 @@
   <MovieLockTagline>false</MovieLockTagline>
   <MovieLockTitle>false</MovieLockTitle>
   <MovieLockTrailer>false</MovieLockTrailer>
+  <MovieGeneralCustomMarker1Color>-32704</MovieGeneralCustomMarker1Color>
+  <MovieGeneralCustomMarker2Color>-16776961</MovieGeneralCustomMarker2Color>
+  <MovieGeneralCustomMarker3Color>-12582784</MovieGeneralCustomMarker3Color>
+  <MovieGeneralCustomMarker4Color>-16711681</MovieGeneralCustomMarker4Color>
+  <MovieGeneralCustomMarker1Name />
+  <MovieGeneralCustomMarker2Name />
+  <MovieGeneralCustomMarker3Name />
+  <MovieGeneralCustomMarker4Name />
   <MovieGeneralMarkNew>false</MovieGeneralMarkNew>
   <TVGeneralMarkNewEpisodes>false</TVGeneralMarkNewEpisodes>
   <TVGeneralMarkNewShows>false</TVGeneralMarkNewShows>
@@ -297,19 +598,41 @@
   <MoviePosterCol>false</MoviePosterCol>
   <MovieSubCol>false</MovieSubCol>
   <MovieSetBannerCol>false</MovieSetBannerCol>
+  <MovieSetBannerPrefOnly>false</MovieSetBannerPrefOnly>
+  <MovieSetBannerResize>false</MovieSetBannerResize>
   <MovieSetClearArtCol>false</MovieSetClearArtCol>
   <MovieSetClearLogoCol>false</MovieSetClearLogoCol>
+  <MovieSetClickScrape>false</MovieSetClickScrape>
+  <MovieSetClickScrapeAsk>false</MovieSetClickScrapeAsk>
   <MovieSetDiscArtCol>false</MovieSetDiscArtCol>
   <MovieSetFanartCol>false</MovieSetFanartCol>
+  <MovieSetFanartPrefOnly>false</MovieSetFanartPrefOnly>
+  <MovieSetFanartResize>false</MovieSetFanartResize>
   <MovieSetLandscapeCol>false</MovieSetLandscapeCol>
-  <MovieSetNfoCol>false</MovieSetNfoCol>
+  <MovieSetLockPlot>false</MovieSetLockPlot>
+  <MovieSetLockTitle>false</MovieSetLockTitle>
+  <MovieSetNfoCol>true</MovieSetNfoCol>
   <MovieSetPosterCol>false</MovieSetPosterCol>
+  <MovieSetPosterPrefOnly>false</MovieSetPosterPrefOnly>
+  <MovieSetPosterResize>false</MovieSetPosterResize>
+  <MovieSetMissingBanner>false</MovieSetMissingBanner>
+  <MovieSetMissingClearArt>false</MovieSetMissingClearArt>
+  <MovieSetMissingClearLogo>false</MovieSetMissingClearLogo>
+  <MovieSetMissingDiscArt>false</MovieSetMissingDiscArt>
+  <MovieSetMissingFanart>false</MovieSetMissingFanart>
+  <MovieSetMissingLandscape>false</MovieSetMissingLandscape>
+  <MovieSetMissingNFO>false</MovieSetMissingNFO>
+  <MovieSetMissingPoster>false</MovieSetMissingPoster>
+  <MovieSetScraperPlot>true</MovieSetScraperPlot>
+  <MovieSetScraperTitle>true</MovieSetScraperTitle>
   <GeneralMovieTheme>Default</GeneralMovieTheme>
   <GeneralMovieSetTheme>Default</GeneralMovieSetTheme>
   <GeneralDaemonPath />
   <GeneralDaemonDrive />
+  <GeneralDoubleClickScrape>false</GeneralDoubleClickScrape>
   <MovieThemeCol>false</MovieThemeCol>
   <MovieTrailerCol>false</MovieTrailerCol>
+  <MovieTrailerDefaultSearch>trailer</MovieTrailerDefaultSearch>
   <MovieWatchedCol>false</MovieWatchedCol>
   <GeneralHideBanner>false</GeneralHideBanner>
   <GeneralHideCharacterArt>false</GeneralHideCharacterArt>
@@ -327,6 +650,7 @@
   <TVShowFilterCustomIsEmpty>false</TVShowFilterCustomIsEmpty>
   <FileSystemNoStackExts />
   <MovieSortTokensIsEmpty>false</MovieSortTokensIsEmpty>
+  <MovieSetSortTokensIsEmpty>false</MovieSetSortTokensIsEmpty>
   <OMMDummyFormat>0</OMMDummyFormat>
   <OMMDummyTagline />
   <OMMDummyTop>0</OMMDummyTop>
@@ -380,26 +704,33 @@
   <MovieScraperOutlineLimit>350</MovieScraperOutlineLimit>
   <GeneralImagesGlassOverlay>false</GeneralImagesGlassOverlay>
   <MoviePosterHeight>0</MoviePosterHeight>
+  <MovieSetPosterHeight>0</MovieSetPosterHeight>
   <MoviePosterPrefOnly>false</MoviePosterPrefOnly>
   <MovieBannerQual>0</MovieBannerQual>
+  <MovieSetBannerQual>0</MovieSetBannerQual>
   <MovieEThumbsQual>0</MovieEThumbsQual>
   <MovieEFanartsQual>0</MovieEFanartsQual>
   <MoviePosterQual>0</MoviePosterQual>
+  <MovieSetPosterQual>0</MovieSetPosterQual>
   <MoviePosterWidth>0</MoviePosterWidth>
+  <MovieSetPosterWidth>0</MovieSetPosterWidth>
   <TVASPosterPrefSize>HD1000</TVASPosterPrefSize>
   <TVEpisodeFanartPrefSize>HD1080</TVEpisodeFanartPrefSize>
   <MovieFanartPrefSize>Xlrg</MovieFanartPrefSize>
+  <MovieSetFanartPrefSize>Xlrg</MovieSetFanartPrefSize>
   <MovieEFanartsPrefSize>Xlrg</MovieEFanartsPrefSize>
   <MovieEThumbsPrefSize>Xlrg</MovieEThumbsPrefSize>
   <MoviePosterPrefSize>Xlrg</MoviePosterPrefSize>
+  <MovieSetPosterPrefSize>Xlrg</MovieSetPosterPrefSize>
   <TVSeasonFanartPrefSize>HD1080</TVSeasonFanartPrefSize>
   <TVASFanartPrefSize>HD1080</TVASFanartPrefSize>
-  <TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>
   <TVEpisodePosterPrefSize>SD225</TVEpisodePosterPrefSize>
+  <TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>
   <TVShowBannerPrefType>Graphical</TVShowBannerPrefType>
   <MovieBannerPrefType>Graphical</MovieBannerPrefType>
+  <MovieSetBannerPrefType>Text</MovieSetBannerPrefType>
   <TVASBannerPrefType>Graphical</TVASBannerPrefType>
-  <TVSeasonBannerPrefType>Graphical</TVSeasonBannerPrefType>
+  <TVSeasonBannerPrefType>Text</TVSeasonBannerPrefType>
   <TVShowFanartPrefSize>HD1080</TVShowFanartPrefSize>
   <TVShowPosterPrefSize>HD1000</TVShowPosterPrefSize>
   <MovieTrailerMinQual>All</MovieTrailerMinQual>
@@ -462,11 +793,13 @@
   <TVASFanartWidth>0</TVASFanartWidth>
   <TVShowBannerWidth>0</TVShowBannerWidth>
   <MovieBannerWidth>0</MovieBannerWidth>
+  <MovieSetBannerWidth>0</MovieSetBannerWidth>
   <TVASBannerHeight>0</TVASBannerHeight>
   <TVSeasonBannerHeight>0</TVSeasonBannerHeight>
   <TVASFanartHeight>0</TVASFanartHeight>
   <TVShowBannerHeight>0</TVShowBannerHeight>
   <MovieBannerHeight>0</MovieBannerHeight>
+  <MovieSetBannerHeight>0</MovieSetBannerHeight>
   <TVSeasonPosterCol>false</TVSeasonPosterCol>
   <TVSeasonPosterHeight>0</TVSeasonPosterHeight>
   <TVSeasonPosterQual>0</TVSeasonPosterQual>
@@ -477,7 +810,29 @@
   <TVShowFanartHeight>0</TVShowFanartHeight>
   <TVShowFanartQual>0</TVShowFanartQual>
   <TVShowFanartWidth>0</TVShowFanartWidth>
-  <TVShowFilterCustom />
+  <TVShowFilterCustom>
+    <string>[\W_]\(?\d{4}\)?.*</string>
+    <string>(?i)[\W_]blu[\W_]?ray.*</string>
+    <string>(?i)[\W_]bd[\W_]?rip.*</string>
+    <string>(?i)[\W_]dvd.*</string>
+    <string>(?i)[\W_]720.*</string>
+    <string>(?i)[\W_]1080.*</string>
+    <string>(?i)[\W_]ac3.*</string>
+    <string>(?i)[\W_]dts.*</string>
+    <string>(?i)[\W_]divx.*</string>
+    <string>(?i)[\W_]xvid.*</string>
+    <string>(?i)[\W_]dc[\W_]?.*</string>
+    <string>(?i)[\W_]dir(ector'?s?)?\s?cut.*</string>
+    <string>(?i)[\W_]extended.*</string>
+    <string>(?i)[\W_]hd(tv)?.*</string>
+    <string>(?i)[\W_]unrated.*</string>
+    <string>(?i)[\W_]uncut.*</string>
+    <string>(?i)[\W_]([a-z]{3}|multi)[sd]ub.*</string>
+    <string>(?i)[\W_]\[offline\].*</string>
+    <string>(?i)[\W_]ntsc.*</string>
+    <string>[\W_]PAL[\W_]?.*</string>
+    <string>\.[-&gt;] </string>
+  </TVShowFilterCustom>
   <GeneralTVShowInfoPanelState>0</GeneralTVShowInfoPanelState>
   <TVLockShowGenre>false</TVLockShowGenre>
   <TVLockShowPlot>false</TVLockShowPlot>
@@ -504,18 +859,70 @@
   <TVSkipLessThan>0</TVSkipLessThan>
   <MovieSortBeforeScan>false</MovieSortBeforeScan>
   <SortPath />
-  <MovieSortTokens />
+  <MovieSortTokens>
+    <string>a[\W_]</string>
+    <string>an[\W_]</string>
+    <string>the[\W_]</string>
+  </MovieSortTokens>
+  <MovieSetSortTokens>
+    <string>a[\W_]</string>
+    <string>an[\W_]</string>
+    <string>the[\W_]</string>
+  </MovieSetSortTokens>
   <GeneralSourceFromFolder>true</GeneralSourceFromFolder>
   <GeneralMainSplitterPanelState>564</GeneralMainSplitterPanelState>
-  <GeneralShowSplitterPanelState>200</GeneralShowSplitterPanelState>
-  <GeneralSeasonSplitterPanelState>200</GeneralSeasonSplitterPanelState>
-  <TVCleanDB>true</TVCleanDB>
+  <GeneralShowSplitterPanelState>276</GeneralShowSplitterPanelState>
+  <GeneralSeasonSplitterPanelState>217</GeneralSeasonSplitterPanelState>
+  <TVCleanDB>false</TVCleanDB>
   <GeneralTVEpisodeTheme>Default</GeneralTVEpisodeTheme>
   <TVGeneralFlagLang />
   <TVGeneralIgnoreLastScan>true</TVGeneralIgnoreLastScan>
   <TVMetadataPerFileType />
   <TVScanOrderModify>false</TVScanOrderModify>
-  <TVShowRegexes />
+  <TVShowRegexes>
+    <TVShowRegEx>
+      <EpisodeRegex>(-|(e(pisode[\W_]*)?))(?&lt;episode&gt;[0-9]+)</EpisodeRegex>
+      <EpisodeRetrieve>FromSeasonResult</EpisodeRetrieve>
+      <ID>0</ID>
+      <SeasonFromDirectory>false</SeasonFromDirectory>
+      <SeasonRegex>(s(eason[\W_]*)?(?&lt;season&gt;[0-9]+))([\W_]*(\.?(-|(e(pisode[\W_]*)?))[0-9]+)+)?</SeasonRegex>
+    </TVShowRegEx>
+    <TVShowRegEx>
+      <EpisodeRegex>[x-](?&lt;episode&gt;[0-9]+)</EpisodeRegex>
+      <EpisodeRetrieve>FromSeasonResult</EpisodeRetrieve>
+      <ID>1</ID>
+      <SeasonFromDirectory>false</SeasonFromDirectory>
+      <SeasonRegex>(([0-9]{4}-[0-9]{2}(-[0-9]{2})?)|([0-9]{2}-[0-9]{2}-[0-9]{4})|((?&lt;season&gt;[0-9]+)([x-][0-9]+)+))</SeasonRegex>
+    </TVShowRegEx>
+    <TVShowRegEx>
+      <EpisodeRegex>(\([0-9]{4}\))|((([0-9]+|-)(?&lt;episode&gt;[0-9]{2,})))</EpisodeRegex>
+      <EpisodeRetrieve>FromSeasonResult</EpisodeRetrieve>
+      <ID>2</ID>
+      <SeasonFromDirectory>false</SeasonFromDirectory>
+      <SeasonRegex>(([0-9]{4}-[0-9]{2}(-[0-9]{2})?)|([0-9]{2}-[0-9]{2}-[0-9]{4})|((?&lt;season&gt;[0-9]+)(-?[0-9]{2,})+(?![0-9])))</SeasonRegex>
+    </TVShowRegEx>
+    <TVShowRegEx>
+      <EpisodeRegex>[^a-zA-Z]e(pisode[\W_]*)?(?&lt;episode&gt;[0-9]+)</EpisodeRegex>
+      <EpisodeRetrieve>FromFilename</EpisodeRetrieve>
+      <ID>3</ID>
+      <SeasonFromDirectory>true</SeasonFromDirectory>
+      <SeasonRegex>^(?&lt;season&gt;specials?)$</SeasonRegex>
+    </TVShowRegEx>
+    <TVShowRegEx>
+      <EpisodeRegex>[^a-zA-Z]e(pisode[\W_]*)?(?&lt;episode&gt;[0-9]+)</EpisodeRegex>
+      <EpisodeRetrieve>FromFilename</EpisodeRetrieve>
+      <ID>4</ID>
+      <SeasonFromDirectory>true</SeasonFromDirectory>
+      <SeasonRegex>^(s(eason)?)?[\W_]*(?&lt;season&gt;[0-9]+)$</SeasonRegex>
+    </TVShowRegEx>
+    <TVShowRegEx>
+      <EpisodeRegex>[^a-zA-Z]e(pisode[\W_]*)?(?&lt;episode&gt;[0-9]+)</EpisodeRegex>
+      <EpisodeRetrieve>FromFilename</EpisodeRetrieve>
+      <ID>5</ID>
+      <SeasonFromDirectory>true</SeasonFromDirectory>
+      <SeasonRegex>[^\w]s(eason)?[\W_]*(?&lt;season&gt;[0-9]+)</SeasonRegex>
+    </TVShowRegEx>
+  </TVShowRegexes>
   <GeneralTVShowTheme>Default</GeneralTVShowTheme>
   <TVScraperUpdateTime>Always</TVScraperUpdateTime>
   <MovieTrailerEnable>true</MovieTrailerEnable>
@@ -523,16 +930,64 @@
   <MovieScraperCertForMPAA>false</MovieScraperCertForMPAA>
   <MovieScraperUseMDDuration>true</MovieScraperUseMDDuration>
   <TVScraperUseMDDuration>true</TVScraperUseMDDuration>
-  <FileSystemValidExts />
-  <FileSystemValidThemeExts />
-  <Version />
+  <FileSystemValidExts>
+    <string>.3gpp</string>
+    <string>.asf</string>
+    <string>.asx</string>
+    <string>.avi</string>
+    <string>.avs</string>
+    <string>.bin</string>
+    <string>.cue</string>
+    <string>.dat</string>
+    <string>.disc</string>
+    <string>.divx</string>
+    <string>.dvb</string>
+    <string>.dvr-ms</string>
+    <string>.evo</string>
+    <string>.flv</string>
+    <string>.ifo</string>
+    <string>.img</string>
+    <string>.iso</string>
+    <string>.m2t</string>
+    <string>.m2ts</string>
+    <string>.m4v</string>
+    <string>.mkv</string>
+    <string>.mov</string>
+    <string>.mp4</string>
+    <string>.mpeg</string>
+    <string>.mpg</string>
+    <string>.mts</string>
+    <string>.nsv</string>
+    <string>.nut</string>
+    <string>.ogg</string>
+    <string>.ogm</string>
+    <string>.ogv</string>
+    <string>.ram</string>
+    <string>.rar</string>
+    <string>.rmvb</string>
+    <string>.swf</string>
+    <string>.ts</string>
+    <string>.viv</string>
+    <string>.vob</string>
+    <string>.webm</string>
+    <string>.wma</string>
+    <string>.wmv</string>
+  </FileSystemValidExts>
+  <FileSystemValidThemeExts>
+    <string>.flac</string>
+    <string>.m4a</string>
+    <string>.mp3</string>
+    <string>.wav</string>
+    <string>.wma</string>
+  </FileSystemValidThemeExts>
+  <Version>r0</Version>
   <GeneralWindowLoc>
-    <X>208</X>
-    <Y>46</Y>
+    <X>-8</X>
+    <Y>-8</Y>
   </GeneralWindowLoc>
   <GeneralWindowSize>
-    <Width>1024</Width>
-    <Height>768</Height>
+    <Width>1936</Width>
+    <Height>1056</Height>
   </GeneralWindowSize>
   <GeneralWindowState>Maximized</GeneralWindowState>
   <Username />
@@ -540,20 +995,21 @@
   <TraktUsername />
   <TraktPassword />
   <UseTrakt>false</UseTrakt>
-  <GeneralCreationDate>false</GeneralCreationDate>
-  <MovieUseFrodo>false</MovieUseFrodo>
-  <MovieActorThumbsFrodo>false</MovieActorThumbsFrodo>
-  <MovieBannerFrodo>false</MovieBannerFrodo>
-  <MovieClearArtFrodo>false</MovieClearArtFrodo>
-  <MovieClearLogoFrodo>false</MovieClearLogoFrodo>
-  <MovieDiscArtFrodo>false</MovieDiscArtFrodo>
-  <MovieExtrafanartsFrodo>false</MovieExtrafanartsFrodo>
-  <MovieExtrathumbsFrodo>false</MovieExtrathumbsFrodo>
-  <MovieFanartFrodo>false</MovieFanartFrodo>
-  <MovieLandscapeFrodo>false</MovieLandscapeFrodo>
-  <MovieNFOFrodo>false</MovieNFOFrodo>
-  <MoviePosterFrodo>false</MoviePosterFrodo>
-  <MovieTrailerFrodo>false</MovieTrailerFrodo>
+  <GeneralDateTime>Now</GeneralDateTime>
+  <GeneralDateAddedIgnoreNFO>false</GeneralDateAddedIgnoreNFO>
+  <MovieUseFrodo>true</MovieUseFrodo>
+  <MovieActorThumbsFrodo>true</MovieActorThumbsFrodo>
+  <MovieBannerFrodo>true</MovieBannerFrodo>
+  <MovieClearArtFrodo>true</MovieClearArtFrodo>
+  <MovieClearLogoFrodo>true</MovieClearLogoFrodo>
+  <MovieDiscArtFrodo>true</MovieDiscArtFrodo>
+  <MovieExtrafanartsFrodo>true</MovieExtrafanartsFrodo>
+  <MovieExtrathumbsFrodo>true</MovieExtrathumbsFrodo>
+  <MovieFanartFrodo>true</MovieFanartFrodo>
+  <MovieLandscapeFrodo>true</MovieLandscapeFrodo>
+  <MovieNFOFrodo>true</MovieNFOFrodo>
+  <MoviePosterFrodo>true</MoviePosterFrodo>
+  <MovieTrailerFrodo>true</MovieTrailerFrodo>
   <MovieUseEden>false</MovieUseEden>
   <MovieActorThumbsEden>false</MovieActorThumbsEden>
   <MovieBannerEden>false</MovieBannerEden>
@@ -567,13 +1023,13 @@
   <MovieNFOEden>false</MovieNFOEden>
   <MoviePosterEden>false</MoviePosterEden>
   <MovieTrailerEden>false</MovieTrailerEden>
-  <MovieXBMCThemeEnable>false</MovieXBMCThemeEnable>
+  <MovieXBMCThemeEnable>true</MovieXBMCThemeEnable>
   <MovieXBMCThemeCustom>false</MovieXBMCThemeCustom>
-  <MovieXBMCThemeMovie>false</MovieXBMCThemeMovie>
+  <MovieXBMCThemeMovie>true</MovieXBMCThemeMovie>
   <MovieXBMCThemeSub>false</MovieXBMCThemeSub>
   <MovieXBMCThemeCustomPath />
   <MovieXBMCThemeSubDir>Themes</MovieXBMCThemeSubDir>
-  <MovieXBMCTrailerFormat>false</MovieXBMCTrailerFormat>
+  <MovieXBMCTrailerFormat>true</MovieXBMCTrailerFormat>
   <MovieXBMCProtectVTSBDMV>false</MovieXBMCProtectVTSBDMV>
   <MovieUseYAMJ>false</MovieUseYAMJ>
   <MovieBannerYAMJ>false</MovieBannerYAMJ>
@@ -652,39 +1108,47 @@
   <MoviePosterExpertBDMV />
   <MovieTrailerExpertBDMV />
   <MovieUseBaseDirectoryExpertBDMV>false</MovieUseBaseDirectoryExpertBDMV>
+  <MovieSetUseMSAA>true</MovieSetUseMSAA>
+  <MovieSetBannerMSAA>true</MovieSetBannerMSAA>
+  <MovieSetClearArtMSAA>true</MovieSetClearArtMSAA>
+  <MovieSetClearLogoMSAA>true</MovieSetClearLogoMSAA>
+  <MovieSetDiscArtMSAA>true</MovieSetDiscArtMSAA>
+  <MovieSetFanartMSAA>true</MovieSetFanartMSAA>
+  <MovieSetLandscapeMSAA>true</MovieSetLandscapeMSAA>
+  <MovieSetNFOMSAA>false</MovieSetNFOMSAA>
+  <MovieSetPosterMSAA>true</MovieSetPosterMSAA>
   <TVUseBoxee>false</TVUseBoxee>
   <TVUseEden>false</TVUseEden>
-  <TVUseFrodo>false</TVUseFrodo>
+  <TVUseFrodo>true</TVUseFrodo>
   <TVUseYAMJ>false</TVUseYAMJ>
   <TVShowBannerBoxee>false</TVShowBannerBoxee>
-  <TVShowBannerFrodo>false</TVShowBannerFrodo>
+  <TVShowBannerFrodo>true</TVShowBannerFrodo>
   <TVShowBannerYAMJ>false</TVShowBannerYAMJ>
-  <TVShowExtrafanartsXBMC>false</TVShowExtrafanartsXBMC>
+  <TVShowExtrafanartsXBMC>true</TVShowExtrafanartsXBMC>
   <TVShowFanartBoxee>false</TVShowFanartBoxee>
-  <TVShowFanartFrodo>false</TVShowFanartFrodo>
+  <TVShowFanartFrodo>true</TVShowFanartFrodo>
   <TVShowFanartYAMJ>false</TVShowFanartYAMJ>
   <TVShowPosterBoxee>false</TVShowPosterBoxee>
-  <TVShowPosterFrodo>false</TVShowPosterFrodo>
+  <TVShowPosterFrodo>true</TVShowPosterFrodo>
   <TVShowPosterYAMJ>false</TVShowPosterYAMJ>
-  <TVShowActorThumbsFrodo>false</TVShowActorThumbsFrodo>
+  <TVShowActorThumbsFrodo>true</TVShowActorThumbsFrodo>
   <TVSeasonPosterBoxee>false</TVSeasonPosterBoxee>
-  <TVSeasonPosterFrodo>false</TVSeasonPosterFrodo>
+  <TVSeasonPosterFrodo>true</TVSeasonPosterFrodo>
   <TVSeasonPosterYAMJ>false</TVSeasonPosterYAMJ>
-  <TVSeasonFanartFrodo>false</TVSeasonFanartFrodo>
+  <TVSeasonFanartFrodo>true</TVSeasonFanartFrodo>
   <TVSeasonFanartYAMJ>false</TVSeasonFanartYAMJ>
-  <TVSeasonBannerFrodo>false</TVSeasonBannerFrodo>
+  <TVSeasonBannerFrodo>true</TVSeasonBannerFrodo>
   <TVSeasonBannerYAMJ>false</TVSeasonBannerYAMJ>
   <TVEpisodePosterBoxee>false</TVEpisodePosterBoxee>
-  <TVEpisodePosterFrodo>false</TVEpisodePosterFrodo>
+  <TVEpisodePosterFrodo>true</TVEpisodePosterFrodo>
   <TVEpisodePosterYAMJ>false</TVEpisodePosterYAMJ>
-  <TVEpisodeActorThumbsFrodo>false</TVEpisodeActorThumbsFrodo>
-  <TVShowClearLogoXBMC>false</TVShowClearLogoXBMC>
-  <TVShowClearArtXBMC>false</TVShowClearArtXBMC>
-  <TVShowCharacterArtXBMC>false</TVShowCharacterArtXBMC>
+  <TVEpisodeActorThumbsFrodo>true</TVEpisodeActorThumbsFrodo>
+  <TVShowClearLogoXBMC>true</TVShowClearLogoXBMC>
+  <TVShowClearArtXBMC>true</TVShowClearArtXBMC>
+  <TVShowCharacterArtXBMC>true</TVShowCharacterArtXBMC>
   <TVShowTVThemeXBMC>false</TVShowTVThemeXBMC>
   <TVShowTVThemeFolderXBMC />
-  <TVShowLandscapeXBMC>false</TVShowLandscapeXBMC>
-  <TVSeasonLandscapeXBMC>false</TVSeasonLandscapeXBMC>
+  <TVShowLandscapeXBMC>true</TVShowLandscapeXBMC>
+  <TVSeasonLandscapeXBMC>true</TVSeasonLandscapeXBMC>
   <MovieScraperTitleFallback>true</MovieScraperTitleFallback>
-  <RestartScraper>False</RestartScraper>
 </Settings>
