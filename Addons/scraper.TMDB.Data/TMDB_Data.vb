@@ -443,7 +443,14 @@ Public Class TMDB_Data
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
                 logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
-                Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                'try to create a new one
+                logger.Trace("Create new TMDB API")
+                _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, _MySettings_Movie.PrefLanguage)
+                _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey)
+                _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, "")
+                If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
+                    Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                End If
             End If
         End If
 
@@ -596,7 +603,15 @@ Public Class TMDB_Data
         Else
             If Not IsNothing(_TMDBApi_MovieSet.Error) AndAlso _TMDBApi_MovieSet.Error.status_message.Length > 0 Then
                 logger.Error(_TMDBApi_MovieSet.Error.status_message, _TMDBApi_MovieSet.Error.status_code.ToString())
-                Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                'try to create a new one
+                logger.Trace("Create new TMDB API")
+                _TMDBApi_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, _MySettings_MovieSet.PrefLanguage)
+                _TMDBApiE_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey)
+                _TMDBApiA_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, "")
+                If Not IsNothing(_TMDBApi_MovieSet.Error) AndAlso _TMDBApi_MovieSet.Error.status_message.Length > 0 Then
+                    logger.Error(_TMDBApi_MovieSet.Error.status_message, _TMDBApi_MovieSet.Error.status_code.ToString())
+                    Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                End If
             End If
         End If
 
