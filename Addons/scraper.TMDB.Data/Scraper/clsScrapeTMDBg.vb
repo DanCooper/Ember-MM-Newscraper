@@ -201,10 +201,14 @@ Namespace TMDBg
 
                 Movie = _TMDBApiE.GetMovieByIMDB(IMDBID)
                 If IsNothing(Movie) Then
-                    Return ""
+                    Return String.Empty
                 End If
 
-                Return CStr(Movie.belongs_to_collection.id)
+                If Not IsNothing(Movie.belongs_to_collection.id) Then
+                    Return CStr(Movie.belongs_to_collection.id)
+                Else
+                    Return String.Empty
+                End If
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)

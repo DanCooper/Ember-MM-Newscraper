@@ -336,36 +336,27 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lvMoviesInSet.Items.Count > 0 Then
-                Dim sPath As String = Path.Combine(Master.TempPath, "Banner.jpg")
-
-                'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-                'If Not ModulesManager.Instance.MovieScrapeImages(currSet.Movies.Item(0).DBMovie, Enums.ScraperCapabilities.Banner, aList) Then
-                If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Banner, aList) Then
-                    If aList.Count > 0 Then
-                        dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                            pResults = dlgImgS.Results
-                            If Not String.IsNullOrEmpty(pResults.URL) Then
-                                Cursor = Cursors.WaitCursor
-                                pResults.WebImage.FromWeb(pResults.URL)
-                                If Not IsNothing(pResults.WebImage.Image) Then
-                                    pbMovieBanner.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                    Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
-                                    Me.lblMovieBannerSize.Visible = True
-                                End If
-                                Cursor = Cursors.Default
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Banner, aList) Then
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            If Not IsNothing(pResults.WebImage.Image) Then
+                                pbMovieBanner.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
+                                Me.lblMovieBannerSize.Visible = True
                             End If
-                            MovieBanner = pResults.WebImage
+                            Cursor = Cursors.Default
                         End If
-                    Else
-                        MsgBox(Master.eLang.GetString(1057, "No banner images could be found. Please check to see if any banner scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Banners Found"))
+                        MovieBanner = pResults.WebImage
                     End If
+                Else
+                    MsgBox(Master.eLang.GetString(1057, "No banner images could be found. Please check to see if any banner scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Banners Found"))
                 End If
-            Else
-                MsgBox("No Movie in MovieSet List", MsgBoxStyle.OkOnly)
             End If
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -421,33 +412,26 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lvMoviesInSet.Items.Count > 0 Then
-                Dim sPath As String = Path.Combine(Master.TempPath, "ClearArt.png")
-
-                'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-                If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearArt, aList) Then
-                    If aList.Count > 0 Then
-                        dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                            pResults = dlgImgS.Results
-                            If Not String.IsNullOrEmpty(pResults.URL) Then
-                                Cursor = Cursors.WaitCursor
-                                pResults.WebImage.FromWeb(pResults.URL)
-                                If Not IsNothing(pResults.WebImage.Image) Then
-                                    pbMovieClearArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                    Me.lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearArt.Image.Width, Me.pbMovieClearArt.Image.Height)
-                                    Me.lblMovieClearArtSize.Visible = True
-                                End If
-                                Cursor = Cursors.Default
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearArt, aList) Then
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            If Not IsNothing(pResults.WebImage.Image) Then
+                                pbMovieClearArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Me.lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearArt.Image.Width, Me.pbMovieClearArt.Image.Height)
+                                Me.lblMovieClearArtSize.Visible = True
                             End If
-                            MovieClearArt = pResults.WebImage
+                            Cursor = Cursors.Default
                         End If
-                    Else
-                        MsgBox(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1102, "No ClearArts Found"))
+                        MovieClearArt = pResults.WebImage
                     End If
+                Else
+                    MsgBox(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1102, "No ClearArts Found"))
                 End If
-            Else
-                MsgBox("No Movie in MovieSet List", MsgBoxStyle.OkOnly)
             End If
 
         Catch ex As Exception
@@ -505,33 +489,26 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lvMoviesInSet.Items.Count > 0 Then
-                Dim sPath As String = Path.Combine(Master.TempPath, "ClearLogo.png")
-
-                'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-                If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearLogo, aList) Then
-                    If aList.Count > 0 Then
-                        dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                            pResults = dlgImgS.Results
-                            If Not String.IsNullOrEmpty(pResults.URL) Then
-                                Cursor = Cursors.WaitCursor
-                                pResults.WebImage.FromWeb(pResults.URL)
-                                If Not IsNothing(pResults.WebImage.Image) Then
-                                    pbMovieClearLogo.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                    Me.lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearLogo.Image.Width, Me.pbMovieClearLogo.Image.Height)
-                                    Me.lblMovieClearLogoSize.Visible = True
-                                End If
-                                Cursor = Cursors.Default
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearLogo, aList) Then
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            If Not IsNothing(pResults.WebImage.Image) Then
+                                pbMovieClearLogo.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Me.lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearLogo.Image.Width, Me.pbMovieClearLogo.Image.Height)
+                                Me.lblMovieClearLogoSize.Visible = True
                             End If
-                            MovieClearLogo = pResults.WebImage
+                            Cursor = Cursors.Default
                         End If
-                    Else
-                        MsgBox(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1103, "No ClearLogos Found"))
+                        MovieClearLogo = pResults.WebImage
                     End If
+                Else
+                    MsgBox(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1103, "No ClearLogos Found"))
                 End If
-            Else
-                MsgBox("No Movie in MovieSet List", MsgBoxStyle.OkOnly)
             End If
 
         Catch ex As Exception
@@ -589,33 +566,26 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lvMoviesInSet.Items.Count > 0 Then
-                Dim sPath As String = Path.Combine(Master.TempPath, "DiscArt.png")
-
-                'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-                If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.DiscArt, aList) Then
-                    If aList.Count > 0 Then
-                        dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                            pResults = dlgImgS.Results
-                            If Not String.IsNullOrEmpty(pResults.URL) Then
-                                Cursor = Cursors.WaitCursor
-                                pResults.WebImage.FromWeb(pResults.URL)
-                                If Not IsNothing(pResults.WebImage.Image) Then
-                                    pbMovieDiscArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                    Me.lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieDiscArt.Image.Width, Me.pbMovieDiscArt.Image.Height)
-                                    Me.lblMovieDiscArtSize.Visible = True
-                                End If
-                                Cursor = Cursors.Default
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.DiscArt, aList) Then
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            If Not IsNothing(pResults.WebImage.Image) Then
+                                pbMovieDiscArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Me.lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieDiscArt.Image.Width, Me.pbMovieDiscArt.Image.Height)
+                                Me.lblMovieDiscArtSize.Visible = True
                             End If
-                            MovieDiscArt = pResults.WebImage
+                            Cursor = Cursors.Default
                         End If
-                    Else
-                        MsgBox(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1104, "No DiscArts Found"))
+                        MovieDiscArt = pResults.WebImage
                     End If
+                Else
+                    MsgBox(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1104, "No DiscArts Found"))
                 End If
-            Else
-                MsgBox("No Movie in MovieSet List", MsgBoxStyle.OkOnly)
             End If
 
         Catch ex As Exception
@@ -673,32 +643,26 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lvMoviesInSet.Items.Count > 0 Then
-                'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-                If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Fanart, aList) Then
-                    If aList.Count > 0 Then
-                        dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
-                            pResults = dlgImgS.Results
-                            If Not String.IsNullOrEmpty(pResults.URL) Then
-                                Cursor = Cursors.WaitCursor
-                                pResults.WebImage.FromWeb(pResults.URL)
-                                pbMovieFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                Cursor = Cursors.Default
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Fanart, aList) Then
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            pbMovieFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                            Cursor = Cursors.Default
 
-                                Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
-                                Me.lblMovieFanartSize.Visible = True
-                            End If
-                            MovieFanart = pResults.WebImage
+                            Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
+                            Me.lblMovieFanartSize.Visible = True
                         End If
-                    Else
-                        MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
+                        MovieFanart = pResults.WebImage
                     End If
+                Else
+                    MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
                 End If
-            Else
-                MsgBox("No Movie in MovieSet List", MsgBoxStyle.OkOnly)
             End If
-
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -755,33 +719,26 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lvMoviesInSet.Items.Count > 0 Then
-                Dim sPath As String = Path.Combine(Master.TempPath, "Landscape.jpg")
-
-                'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-                If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Landscape, aList) Then
-                    If aList.Count > 0 Then
-                        dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                            pResults = dlgImgS.Results
-                            If Not String.IsNullOrEmpty(pResults.URL) Then
-                                Cursor = Cursors.WaitCursor
-                                pResults.WebImage.FromWeb(pResults.URL)
-                                If Not IsNothing(pResults.WebImage.Image) Then
-                                    pbMovieLandscape.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                    Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
-                                    Me.lblMovieLandscapeSize.Visible = True
-                                End If
-                                Cursor = Cursors.Default
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Landscape, aList) Then
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            If Not IsNothing(pResults.WebImage.Image) Then
+                                pbMovieLandscape.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
+                                Me.lblMovieLandscapeSize.Visible = True
                             End If
-                            MovieLandscape = pResults.WebImage
+                            Cursor = Cursors.Default
                         End If
-                    Else
-                        MsgBox(Master.eLang.GetString(1058, "No landscape images could be found. Please check to see if any landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Landscapes Found"))
+                        MovieLandscape = pResults.WebImage
                     End If
+                Else
+                    MsgBox(Master.eLang.GetString(1058, "No landscape images could be found. Please check to see if any landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Landscapes Found"))
                 End If
-            Else
-                MsgBox("No Movie in MovieSet List", MsgBoxStyle.OkOnly)
             End If
 
         Catch ex As Exception
@@ -839,33 +796,26 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lvMoviesInSet.Items.Count > 0 Then
-                Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
-
-                'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-                If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Poster, aList) Then
-                    If aList.Count > 0 Then
-                        dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                            pResults = dlgImgS.Results
-                            If Not String.IsNullOrEmpty(pResults.URL) Then
-                                Cursor = Cursors.WaitCursor
-                                pResults.WebImage.FromWeb(pResults.URL)
-                                If Not IsNothing(pResults.WebImage.Image) Then
-                                    pbMoviePoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                    Me.lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMoviePoster.Image.Width, Me.pbMoviePoster.Image.Height)
-                                    Me.lblMoviePosterSize.Visible = True
-                                End If
-                                Cursor = Cursors.Default
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Poster, aList) Then
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            If Not IsNothing(pResults.WebImage.Image) Then
+                                pbMoviePoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Me.lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMoviePoster.Image.Width, Me.pbMoviePoster.Image.Height)
+                                Me.lblMoviePosterSize.Visible = True
                             End If
-                            MoviePoster = pResults.WebImage
+                            Cursor = Cursors.Default
                         End If
-                    Else
-                        MsgBox(Master.eLang.GetString(971, "No poster images could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Posters Found"))
+                        MoviePoster = pResults.WebImage
                     End If
+                Else
+                    MsgBox(Master.eLang.GetString(971, "No poster images could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Posters Found"))
                 End If
-            Else
-                MsgBox("No Movie in MovieSet List", MsgBoxStyle.OkOnly)
             End If
 
         Catch ex As Exception
@@ -1532,7 +1482,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
-        Me.pnlSaving.Visible = Not isEnabled
+        'Me.pnlSaving.Visible = Not isEnabled
         Me.OK_Button.Enabled = isEnabled
         Me.btnLoadMoviesFromDB.Enabled = isEnabled
         Me.btnMovieAdd.Enabled = isEnabled

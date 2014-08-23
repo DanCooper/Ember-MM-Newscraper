@@ -1042,7 +1042,6 @@ Partial Class dlgEditMovieSet
         '
         'btnMovieUp
         '
-        Me.btnMovieUp.Enabled = False
         Me.btnMovieUp.Image = CType(resources.GetObject("btnMovieUp.Image"), System.Drawing.Image)
         Me.btnMovieUp.Location = New System.Drawing.Point(115, 268)
         Me.btnMovieUp.Name = "btnMovieUp"

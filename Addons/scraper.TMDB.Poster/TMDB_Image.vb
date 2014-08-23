@@ -329,14 +329,22 @@ Public Class TMDB_Image
 
         LoadSettings_MovieSet()
 
-        Dim Settings As TMDB.Scraper.sMySettings_ForScraper
-        Settings.GetBlankImages = _MySettings_MovieSet.GetBlankImages
-        Settings.GetEnglishImages = _MySettings_MovieSet.GetEnglishImages
-        Settings.APIKey = _MySettings_MovieSet.APIKey
-        Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
-        Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
+        If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
+            If Not IsNothing(DBMovieSet.Movies) AndAlso DBMovieSet.Movies.Count > 0 Then
+                DBMovieSet.MovieSet.ID = _TMDBg.GetMovieCollectionID(DBMovieSet.Movies.Item(0).Movie.ID)
+            End If
+        End If
 
-        ImageList = TMDB.GetTMDBImages(DBMovieSet.MovieSet.ID, Type, Settings)
+        If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
+            Dim Settings As TMDB.Scraper.sMySettings_ForScraper
+            Settings.GetBlankImages = _MySettings_MovieSet.GetBlankImages
+            Settings.GetEnglishImages = _MySettings_MovieSet.GetEnglishImages
+            Settings.APIKey = _MySettings_MovieSet.APIKey
+            Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
+            Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
+
+            ImageList = TMDB.GetTMDBImages(DBMovieSet.MovieSet.ID, Type, Settings)
+        End If
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
