@@ -207,6 +207,7 @@
       <Item Name="hd[-\s]?tv">hdtv</Item>
       <Item Name="sd[-\s]?tv">sdtv</Item>
       <Item Name="hd[-\s]?dvd">hddvd</Item>
+      <Item Name="vhs">vhs</Item>
     </Table>
   </ComplexSettings>
 </AdvancedSettings>
