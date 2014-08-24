@@ -189,4 +189,31 @@
       <Item Name="hd[-\s]?dvd">hddvd</Item>
     </Table>
   </ComplexSettings>
+  <ComplexSettings>
+    <Table Section="*EmberAPP" Name="VideoFormatConvert">
+      <Item Name="VideoFormatConvert:divx 5">dx50</Item>
+      <Item Name="VideoFormatConvert:mpeg-4 video">mpeg4</Item>
+      <Item Name="VideoFormatConvert:divx 3">div3</Item>
+      <Item Name="VideoFormatConvert:lmp4">h264</Item>
+      <Item Name="VideoFormatConvert:svq3">h264</Item>
+      <Item Name="VideoFormatConvert:v_mpeg4/iso/avc">h264</Item>
+      <Item Name="VideoFormatConvert:x264">h264</Item>
+      <Item Name="VideoFormatConvert:avc">h264</Item>
+      <Item Name="VideoFormatConvert:swf">flv</Item>
+      <Item Name="VideoFormatConvert:3iv0">3ivx</Item>
+      <Item Name="VideoFormatConvert:3iv2">3ivx</Item>
+      <Item Name="VideoFormatConvert:3ivd">3ivx</Item>
+    </Table>
+  </ComplexSettings>
+  <ComplexSettings>
+    <Table Section="*EmberAPP" Name="AudioFormatConvert">
+      <Item Name="AudioFormatConvert:ac-3">ac3</Item>
+      <Item Name="AudioFormatConvert:a_ac3">ac3</Item>
+      <Item Name="AudioFormatConvert:a_aac">aac</Item>
+      <Item Name="AudioFormatConvert:wma2">wmav2</Item>
+      <Item Name="AudioFormatConvert:a_dts">dca</Item>
+      <Item Name="AudioFormatConvert:dts">dca</Item>
+      <Item Name="AudioFormatConvert:a_truehd">truehd</Item>
+    </Table>
+  </ComplexSettings>
 </AdvancedSettings>
