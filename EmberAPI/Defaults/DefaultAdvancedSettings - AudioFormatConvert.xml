@@ -7,5 +7,4 @@
   <Setting Section="*EmberAPP" Name="AudioFormatConvert:a_dts">dca</Setting>
   <Setting Section="*EmberAPP" Name="AudioFormatConvert:dts">dca</Setting>
   <Setting Section="*EmberAPP" Name="AudioFormatConvert:a_truehd">truehd</Setting>
-
 </AdvancedSettings>

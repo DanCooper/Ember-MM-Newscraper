@@ -85,7 +85,7 @@ Public Class APIXML
                 objStreamReader.Close()
 
                 Try
-                    File.Move(gPathD, gPath)
+                    File.Copy(gPathD, gPath)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
@@ -135,7 +135,7 @@ Public Class APIXML
                 objStreamReader.Close()
 
                 Try
-                    File.Move(rPathD, rPath)
+                    File.Copy(rPathD, rPath)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
@@ -157,7 +157,7 @@ Public Class APIXML
                 objStreamReader.Close()
 
                 Try
-                    File.Move(cPathD, cPath)
+                    File.Copy(cPathD, cPath)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
