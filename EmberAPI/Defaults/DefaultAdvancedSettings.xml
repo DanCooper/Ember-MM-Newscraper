@@ -177,9 +177,9 @@
   <Setting Section="generic.EmberCore.MovieExporter" Content="None" Name="ExportFilter3" DefaultValue="">-</Setting>
   <Setting Section="generic.EmberCore.MovieExporter" Content="None" Name="ExportImageQuality" DefaultValue="">70</Setting>
   <Setting Section="generic.EmberCore.Notifications" Content="None" Name="NotifyOnError" DefaultValue="">True</Setting>
-  <Setting Section="generic.EmberCore.Notifications" Content="None" Name="NotifyOnNewMovie" DefaultValue="">True</Setting>
+  <Setting Section="generic.EmberCore.Notifications" Content="None" Name="NotifyOnNewMovie" DefaultValue="">False</Setting>
   <Setting Section="generic.EmberCore.Notifications" Content="None" Name="NotifyOnMovieScraped" DefaultValue="">True</Setting>
-  <Setting Section="generic.EmberCore.Notifications" Content="None" Name="NotifyOnNewEp" DefaultValue="">True</Setting>
+  <Setting Section="generic.EmberCore.Notifications" Content="None" Name="NotifyOnNewEp" DefaultValue="">False</Setting>
   <ComplexSettings>
     <Table Section="*EmberAPP" Name="MovieSources">
       <Item Name="(b[dr][-\s]?rip|blu[-\s]?ray)">bluray</Item>
