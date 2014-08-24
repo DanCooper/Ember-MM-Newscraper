@@ -9,7 +9,6 @@ Public Class frmMediaSources
 
 #End Region 'Events
 
-
 #Region "Methods"
 
     Sub New()

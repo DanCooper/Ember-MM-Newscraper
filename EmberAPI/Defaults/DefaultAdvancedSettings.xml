@@ -180,6 +180,26 @@
   <Setting Section="generic.EmberCore.Notifications" Content="None" Name="NotifyOnNewMovie" DefaultValue="">False</Setting>
   <Setting Section="generic.EmberCore.Notifications" Content="None" Name="NotifyOnMovieScraped" DefaultValue="">True</Setting>
   <Setting Section="generic.EmberCore.Notifications" Content="None" Name="NotifyOnNewEp" DefaultValue="">False</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="AudioFormatConvert:ac-3" DefaultValue="">ac3</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="AudioFormatConvert:a_ac3" DefaultValue="">ac3</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="AudioFormatConvert:a_aac" DefaultValue="">aac</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="AudioFormatConvert:wma2" DefaultValue="">wmav2</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="AudioFormatConvert:a_dts" DefaultValue="">dca</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="AudioFormatConvert:dts" DefaultValue="">dca</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="AudioFormatConvert:a_truehd" DefaultValue="">truehd</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:divx 5" DefaultValue="">dx50</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:mpeg-4 video" DefaultValue="">mpeg4</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:divx 3" DefaultValue="">div3</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:lmp4" DefaultValue="">h264</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:svq3" DefaultValue="">h264</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:v_mpeg4/iso/avc" DefaultValue="">h264</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:x264" DefaultValue="">h264</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:avc" DefaultValue="">h264</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:swf" DefaultValue="">flv</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:3iv0" DefaultValue="">3ivx</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:3iv1" DefaultValue="">3ivx</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:3iv2" DefaultValue="">3ivx</Setting>
+  <Setting Section="*EmberAPP" Content="None" Name="VideoFormatConvert:3ivd" DefaultValue="">3ivx</Setting>
   <ComplexSettings>
     <Table Section="*EmberAPP" Name="MovieSources">
       <Item Name="(b[dr][-\s]?rip|blu[-\s]?ray)">bluray</Item>

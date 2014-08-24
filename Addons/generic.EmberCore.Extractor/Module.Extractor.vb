@@ -127,6 +127,7 @@ Public Class FrameExtrator
                 _params(3) = ThumbGenerator.CreateRandomThumbs(dbm, auto, edit)
         End Select
     End Function
+
     Sub Handle_GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
         RaiseEvent GenericEvent(mType, _params)
     End Sub
@@ -134,6 +135,11 @@ Public Class FrameExtrator
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.GenericModule.SaveSetup
         'Master.eSettings.XBMCComs.AddRange(_MySettings.XComs)
         Me.Enabled = _setup.cbEnabled.Checked
+        If DoDispose Then
+            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
+            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
+        End If
     End Sub
 
     Sub Disable()
@@ -142,8 +148,6 @@ Public Class FrameExtrator
         Catch ex As Exception
         End Try
     End Sub
-
-
 
     Sub Enable()
         Try
@@ -159,7 +163,6 @@ Public Class FrameExtrator
         RaiseEvent ModuleEnabledChanged(Me._name, state, difforder)
     End Sub
 
-
     Public Shared Function GetFFMpeg() As String
         If Master.isWindows Then
             Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
@@ -169,4 +172,5 @@ Public Class FrameExtrator
     End Function
 
 #End Region 'Methods
+
 End Class

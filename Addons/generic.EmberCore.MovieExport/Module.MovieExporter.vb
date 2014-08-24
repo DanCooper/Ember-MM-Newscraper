@@ -210,6 +210,11 @@ Public Class MovieExporterModule
         MySettings.ExportFilter3 = _setup.lbl_exportmoviefilter3saved.Text
         MySettings.ExportImageQuality = CInt(_setup.cbo_exportmoviequality.Text)
         SaveSettings()
+        If DoDispose Then
+            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
+        End If
     End Sub
 
     Sub SaveSettings()

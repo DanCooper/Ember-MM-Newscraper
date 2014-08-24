@@ -58,12 +58,62 @@ Public Class frmAVCodecEditor
             RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
+
     Private Sub btnRemoveVideo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveVideo.Click
         If dgvVideo.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvVideo.Rows(dgvVideo.SelectedCells(0).RowIndex).Tag) Then
             dgvVideo.Rows.RemoveAt(dgvVideo.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
+
+    Private Sub btnSetDefaultsAudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaultsAudio.Click
+        Using settings = New clsAdvancedSettings()
+            settings.SetDefaults(True, "AudioFormatConvert")
+        End Using
+        LoadAudio()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub btnSetDefaultsVideo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaultsVideo.Click
+        Using settings = New clsAdvancedSettings()
+            settings.SetDefaults(True, "VideoFormatConvert")
+        End Using
+        LoadVideo()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub LoadAudio()
+        dgvAudio.Rows.Clear()
+        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("AudioFormatConvert:"))
+            Dim i As Integer = dgvAudio.Rows.Add(New Object() {sett.Name.Substring(19), sett.Value})
+            If Not sett.DefaultValue = String.Empty Then
+                dgvAudio.Rows(i).Tag = True
+                dgvAudio.Rows(i).Cells(0).ReadOnly = True
+                'dgvAudio.Rows(i).Cells(0).Style.SelectionBackColor = Drawing.Color.White
+                dgvAudio.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
+            Else
+                dgvAudio.Rows(i).Tag = False
+            End If
+        Next
+        dgvAudio.ClearSelection()
+    End Sub
+
+    Private Sub LoadVideo()
+        dgvVideo.Rows.Clear()
+        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("VideoFormatConvert:"))
+            Dim i As Integer = dgvVideo.Rows.Add(New Object() {sett.Name.Substring(19), sett.Value})
+            If Not sett.DefaultValue = String.Empty Then
+                dgvVideo.Rows(i).Tag = True
+                dgvVideo.Rows(i).Cells(0).ReadOnly = True
+                'dgvVideo.Rows(i).Cells(0).Style.SelectionBackColor = Drawing.Color.White
+                dgvVideo.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
+            Else
+                dgvVideo.Rows(i).Tag = False
+            End If
+        Next
+        dgvVideo.ClearSelection()
+    End Sub
+
     Private Sub dgvAudio_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvAudio.CurrentCellDirtyStateChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub

@@ -5,7 +5,7 @@ Public Class genericMetadataEditor
 
 #Region "Fields"
 
-    Private fMetadata As frmAVCodecEditor
+    Private _setup As frmAVCodecEditor
     Private _AssemblyName As String = String.Empty
 
 #End Region 'Fields
@@ -59,7 +59,7 @@ Public Class genericMetadataEditor
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me.fMetadata = New frmAVCodecEditor
+        Me._setup = New frmAVCodecEditor
         SPanel.Name = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
         SPanel.Text = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
         SPanel.Prefix = "AVCodecEditor_"
@@ -67,8 +67,8 @@ Public Class genericMetadataEditor
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.MetadataEditor
         SPanel.Order = 100
-        SPanel.Panel = Me.fMetadata.pnlGenres
-        AddHandler Me.fMetadata.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.Panel = Me._setup.pnlGenres
+        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
@@ -81,7 +81,11 @@ Public Class genericMetadataEditor
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.GenericModule.SaveSetup
-        fMetadata.SaveChanges()
+        _setup.SaveChanges()
+        If DoDispose Then
+            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
+        End If
     End Sub
 #End Region 'Methods
 

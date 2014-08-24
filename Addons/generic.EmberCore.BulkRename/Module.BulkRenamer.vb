@@ -278,6 +278,11 @@ Public Class BulkRenamerModule
         MySettings.GenericModule = _setup.chkGenericModule.Checked
         MySettings.BulkRenamer = _setup.chkBulkRenamer.Checked
         SaveSettings()
+        If DoDispose Then
+            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
+            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
+        End If
     End Sub
 
     Sub SaveSettings()

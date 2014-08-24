@@ -25,7 +25,7 @@ Public Class genericMediaSources
 
 #Region "Fields"
 
-    Private fMediaSources As frmMediaSources
+    Private _setup As frmMediaSources
     Private _AssemblyName As String = String.Empty
 
 #End Region 'Fields
@@ -79,7 +79,7 @@ Public Class genericMediaSources
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me.fMediaSources = New frmMediaSources
+        Me._setup = New frmMediaSources
         SPanel.Name = Master.eLang.GetString(784, "Media Sources Editor")
         SPanel.Text = Master.eLang.GetString(784, "Media Sources Editor")
         SPanel.Prefix = "MediaSourcesEditor_"
@@ -87,8 +87,8 @@ Public Class genericMediaSources
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.MediaSourcesEditor
         SPanel.Order = 100
-        SPanel.Panel = Me.fMediaSources.pnlGenres
-        AddHandler Me.fMediaSources.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.Panel = Me._setup.pnlGenres
+        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
@@ -101,9 +101,10 @@ Public Class genericMediaSources
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.GenericModule.SaveSetup
-        If Not fMediaSources Is Nothing Then fMediaSources.SaveChanges()
+        If Not _setup Is Nothing Then _setup.SaveChanges()
         If DoDispose Then
-            RemoveHandler Me.fMediaSources.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
         End If
     End Sub
 

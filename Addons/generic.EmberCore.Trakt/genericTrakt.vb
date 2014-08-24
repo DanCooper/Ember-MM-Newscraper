@@ -5,7 +5,7 @@ Public Class genericTrakt
 
 #Region "Fields"
 
-    Private fTrakt As frmTrakt
+    Private _setup As frmTrakt
     Private _AssemblyName As String = String.Empty
 
 #End Region 'Fields
@@ -60,7 +60,7 @@ Public Class genericTrakt
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me.fTrakt = New frmTrakt
+        Me._setup = New frmTrakt
         SPanel.Name = Master.eLang.GetString(871, "Trakt Settings")
         SPanel.Text = Master.eLang.GetString(871, "Trakt Settings")
         SPanel.Prefix = "TraktSettings_"
@@ -68,8 +68,8 @@ Public Class genericTrakt
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.trakt
         SPanel.Order = 100
-        SPanel.Panel = Me.fTrakt.pnlTrakt
-        AddHandler Me.fTrakt.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.Panel = Me._setup.pnlTrakt
+        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
@@ -82,7 +82,11 @@ Public Class genericTrakt
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.GenericModule.SaveSetup
-        fTrakt.SaveChanges()
+        _setup.SaveChanges()
+        If DoDispose Then
+            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
+        End If
     End Sub
 #End Region 'Methods
 

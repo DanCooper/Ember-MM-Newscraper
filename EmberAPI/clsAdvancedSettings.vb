@@ -54,10 +54,8 @@ Public Class clsAdvancedSettings
 
     Public Shared Sub Start()
         Try
-            Using settings = New clsAdvancedSettings()
-                settings.SetDefaults()
-            End Using
-            clsAdvancedSettings.LoadBase()
+            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "AdvancedSettings.xml")
+            Load(configpath)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -66,12 +64,6 @@ Public Class clsAdvancedSettings
     Public Shared Function GetAllSettings() As List(Of AdvancedSettingsSetting)
         Return _AdvancedSettings.Setting
     End Function
-
-    Private Shared Sub LoadBase()
-        'Cocotus, Load from central "Settings" folder if it exists!
-        Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "AdvancedSettings.xml")
-        Load(configpath)
-    End Sub
 
 #End Region 'Constructors
 
@@ -227,6 +219,10 @@ Public Class clsAdvancedSettings
                 Dim xAdvancedSettings As New XmlSerializer(_AdvancedSettings.GetType)
                 _AdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
                 objStreamReader.Close()
+            Else
+                Using settings = New clsAdvancedSettings()
+                    settings.SetDefaults()
+                End Using
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -372,6 +368,8 @@ Public Class clsAdvancedSettings
 
             objStreamReader.Close()
         End If
+
+        _DoNotSave = False
     End Sub
 
 #End Region 'Methods

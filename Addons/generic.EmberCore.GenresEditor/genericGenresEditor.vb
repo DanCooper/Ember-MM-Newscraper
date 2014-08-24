@@ -25,7 +25,7 @@ Public Class genericGenresEditor
 
 #Region "Fields"
 
-    Private fGenres As frmGenresEditor
+    Private _setup As frmGenresEditor
     Private _AssemblyName As String = String.Empty
 
 #End Region 'Fields
@@ -79,7 +79,7 @@ Public Class genericGenresEditor
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me.fGenres = New frmGenresEditor
+        Me._setup = New frmGenresEditor
         SPanel.Name = Master.eLang.GetString(782, "Genres Editor")
         SPanel.Text = Master.eLang.GetString(782, "Genres Editor")
         SPanel.Prefix = "GenresEditor_"
@@ -87,8 +87,8 @@ Public Class genericGenresEditor
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.GenresEditor
         SPanel.Order = 100
-        SPanel.Panel = Me.fGenres.pnlGenres
-        AddHandler Me.fGenres.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.Panel = Me._setup.pnlGenres
+        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
@@ -101,7 +101,11 @@ Public Class genericGenresEditor
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.GenericModule.SaveSetup
-        If Not fGenres Is Nothing Then fGenres.SaveChanges()
+        If Not _setup Is Nothing Then _setup.SaveChanges()
+        If DoDispose Then
+            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
+        End If
     End Sub
 
 #End Region 'Methods
