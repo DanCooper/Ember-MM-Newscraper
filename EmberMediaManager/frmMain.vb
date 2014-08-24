@@ -15612,7 +15612,7 @@ doCancel:
                 .mnuMainToolsClearCache.Text = Master.eLang.GetString(17, "Clear &All Caches")
                 .mnuMainToolsOfflineHolder.Text = Master.eLang.GetString(524, "&Offline Media Manager")
                 .mnuMainToolsReloadMovies.Text = Master.eLang.GetString(18, "Re&load All Movies")
-                .mnuMainToolsReloadMovieSets.Text = Master.eLang.GetString(12088, "Reload All MovieSets")
+                .mnuMainToolsReloadMovieSets.Text = Master.eLang.GetString(1208, "Reload All MovieSets")
                 .mnuMainToolsSetsManager.Text = Master.eLang.GetString(14, "Sets &Manager")
                 .mnuMainToolsSortFiles.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
                 .mnuUpdate.Text = Master.eLang.GetString(82, "Update Library")

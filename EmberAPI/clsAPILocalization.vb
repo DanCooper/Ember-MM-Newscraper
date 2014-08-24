@@ -209,7 +209,7 @@ Public Class Localization
         Else
             x1 = From x As LanguageString In htStrings.string Where (x.id = ID)
             If x1.Count = 0 Then
-                logger.Error(New StackFrame().GetMethod().Name, "Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault)
+                logger.Error(New StackFrame().GetMethod().Name, String.Format("Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault))
                 tStr = strDefault
             Else
                 tStr = x1(0).Value
