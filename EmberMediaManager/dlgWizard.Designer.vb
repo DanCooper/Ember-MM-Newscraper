@@ -274,6 +274,25 @@ Partial Class dlgWizard
         Me.tpTVFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
+        Me.pnlMovieSetSettings = New System.Windows.Forms.Panel()
+        Me.Label48 = New System.Windows.Forms.Label()
+        Me.gbMovieSetFileNaming = New System.Windows.Forms.GroupBox()
+        Me.tcMovieSetFileNaming = New System.Windows.Forms.TabControl()
+        Me.tpMovieSetFileNamingXBMC = New System.Windows.Forms.TabPage()
+        Me.pbMSAAInfo = New System.Windows.Forms.PictureBox()
+        Me.gbMovieSetMSAAPath = New System.Windows.Forms.GroupBox()
+        Me.btnMovieSetMSAAPathBrowse = New System.Windows.Forms.Button()
+        Me.txtMovieSetMSAAPath = New System.Windows.Forms.TextBox()
+        Me.gbMovieSetMSAA = New System.Windows.Forms.GroupBox()
+        Me.chkMovieSetDiscArtMSAA = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetUseMSAA = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetLandscapeMSAA = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetBannerMSAA = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetClearArtMSAA = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetClearLogoMSAA = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetFanartMSAA = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetPosterMSAA = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetNFOMSAA = New System.Windows.Forms.CheckBox()
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.gbMovieFileNaming.SuspendLayout()
@@ -316,6 +335,13 @@ Partial Class dlgWizard
         Me.gbTVFrodo.SuspendLayout()
         Me.tpTVFileNamingBoxee.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.pnlMovieSetSettings.SuspendLayout()
+        Me.gbMovieSetFileNaming.SuspendLayout()
+        Me.tcMovieSetFileNaming.SuspendLayout()
+        Me.tpMovieSetFileNamingXBMC.SuspendLayout()
+        CType(Me.pbMSAAInfo, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbMovieSetMSAAPath.SuspendLayout()
+        Me.gbMovieSetMSAA.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -2948,6 +2974,217 @@ Partial Class dlgWizard
         Me.Label11.Text = resources.GetString("Label11.Text")
         Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'pnlMovieSetSettings
+        '
+        Me.pnlMovieSetSettings.BackColor = System.Drawing.Color.White
+        Me.pnlMovieSetSettings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovieSetSettings.Controls.Add(Me.gbMovieSetFileNaming)
+        Me.pnlMovieSetSettings.Controls.Add(Me.Label48)
+        Me.pnlMovieSetSettings.Location = New System.Drawing.Point(1799, 7)
+        Me.pnlMovieSetSettings.Name = "pnlMovieSetSettings"
+        Me.pnlMovieSetSettings.Size = New System.Drawing.Size(530, 490)
+        Me.pnlMovieSetSettings.TabIndex = 10
+        Me.pnlMovieSetSettings.Visible = False
+        '
+        'Label48
+        '
+        Me.Label48.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label48.Location = New System.Drawing.Point(9, 1)
+        Me.Label48.Name = "Label48"
+        Me.Label48.Size = New System.Drawing.Size(509, 93)
+        Me.Label48.TabIndex = 0
+        Me.Label48.Text = resources.GetString("Label48.Text")
+        Me.Label48.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'gbMovieSetFileNaming
+        '
+        Me.gbMovieSetFileNaming.Controls.Add(Me.tcMovieSetFileNaming)
+        Me.gbMovieSetFileNaming.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbMovieSetFileNaming.Location = New System.Drawing.Point(3, 97)
+        Me.gbMovieSetFileNaming.Name = "gbMovieSetFileNaming"
+        Me.gbMovieSetFileNaming.Size = New System.Drawing.Size(521, 384)
+        Me.gbMovieSetFileNaming.TabIndex = 9
+        Me.gbMovieSetFileNaming.TabStop = False
+        Me.gbMovieSetFileNaming.Text = "File Naming"
+        '
+        'tcMovieSetFileNaming
+        '
+        Me.tcMovieSetFileNaming.Controls.Add(Me.tpMovieSetFileNamingXBMC)
+        Me.tcMovieSetFileNaming.Location = New System.Drawing.Point(6, 18)
+        Me.tcMovieSetFileNaming.Name = "tcMovieSetFileNaming"
+        Me.tcMovieSetFileNaming.SelectedIndex = 0
+        Me.tcMovieSetFileNaming.Size = New System.Drawing.Size(513, 362)
+        Me.tcMovieSetFileNaming.TabIndex = 7
+        '
+        'tpMovieSetFileNamingXBMC
+        '
+        Me.tpMovieSetFileNamingXBMC.Controls.Add(Me.pbMSAAInfo)
+        Me.tpMovieSetFileNamingXBMC.Controls.Add(Me.gbMovieSetMSAAPath)
+        Me.tpMovieSetFileNamingXBMC.Controls.Add(Me.gbMovieSetMSAA)
+        Me.tpMovieSetFileNamingXBMC.Location = New System.Drawing.Point(4, 22)
+        Me.tpMovieSetFileNamingXBMC.Name = "tpMovieSetFileNamingXBMC"
+        Me.tpMovieSetFileNamingXBMC.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpMovieSetFileNamingXBMC.Size = New System.Drawing.Size(505, 336)
+        Me.tpMovieSetFileNamingXBMC.TabIndex = 1
+        Me.tpMovieSetFileNamingXBMC.Text = "XBMC"
+        Me.tpMovieSetFileNamingXBMC.UseVisualStyleBackColor = True
+        '
+        'pbMSAAInfo
+        '
+        Me.pbMSAAInfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.msaa
+        Me.pbMSAAInfo.Location = New System.Drawing.Point(217, 74)
+        Me.pbMSAAInfo.Name = "pbMSAAInfo"
+        Me.pbMSAAInfo.Size = New System.Drawing.Size(250, 250)
+        Me.pbMSAAInfo.TabIndex = 8
+        Me.pbMSAAInfo.TabStop = False
+        '
+        'gbMovieSetMSAAPath
+        '
+        Me.gbMovieSetMSAAPath.Controls.Add(Me.btnMovieSetMSAAPathBrowse)
+        Me.gbMovieSetMSAAPath.Controls.Add(Me.txtMovieSetMSAAPath)
+        Me.gbMovieSetMSAAPath.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.gbMovieSetMSAAPath.Location = New System.Drawing.Point(190, 6)
+        Me.gbMovieSetMSAAPath.Name = "gbMovieSetMSAAPath"
+        Me.gbMovieSetMSAAPath.Size = New System.Drawing.Size(307, 58)
+        Me.gbMovieSetMSAAPath.TabIndex = 7
+        Me.gbMovieSetMSAAPath.TabStop = False
+        Me.gbMovieSetMSAAPath.Text = "MovieSet Artwork Folder"
+        '
+        'btnMovieSetMSAAPathBrowse
+        '
+        Me.btnMovieSetMSAAPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnMovieSetMSAAPathBrowse.Location = New System.Drawing.Point(276, 21)
+        Me.btnMovieSetMSAAPathBrowse.Name = "btnMovieSetMSAAPathBrowse"
+        Me.btnMovieSetMSAAPathBrowse.Size = New System.Drawing.Size(25, 22)
+        Me.btnMovieSetMSAAPathBrowse.TabIndex = 1
+        Me.btnMovieSetMSAAPathBrowse.Text = "..."
+        Me.btnMovieSetMSAAPathBrowse.UseVisualStyleBackColor = True
+        '
+        'txtMovieSetMSAAPath
+        '
+        Me.txtMovieSetMSAAPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieSetMSAAPath.Location = New System.Drawing.Point(6, 21)
+        Me.txtMovieSetMSAAPath.Name = "txtMovieSetMSAAPath"
+        Me.txtMovieSetMSAAPath.Size = New System.Drawing.Size(264, 22)
+        Me.txtMovieSetMSAAPath.TabIndex = 0
+        '
+        'gbMovieSetMSAA
+        '
+        Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetDiscArtMSAA)
+        Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetUseMSAA)
+        Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetLandscapeMSAA)
+        Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetBannerMSAA)
+        Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetClearArtMSAA)
+        Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetClearLogoMSAA)
+        Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetFanartMSAA)
+        Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetPosterMSAA)
+        Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetNFOMSAA)
+        Me.gbMovieSetMSAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbMovieSetMSAA.Location = New System.Drawing.Point(6, 6)
+        Me.gbMovieSetMSAA.Name = "gbMovieSetMSAA"
+        Me.gbMovieSetMSAA.Size = New System.Drawing.Size(178, 324)
+        Me.gbMovieSetMSAA.TabIndex = 0
+        Me.gbMovieSetMSAA.TabStop = False
+        Me.gbMovieSetMSAA.Text = "Movie Set Artwork Automator"
+        '
+        'chkMovieSetDiscArtMSAA
+        '
+        Me.chkMovieSetDiscArtMSAA.AutoSize = True
+        Me.chkMovieSetDiscArtMSAA.Enabled = False
+        Me.chkMovieSetDiscArtMSAA.Location = New System.Drawing.Point(6, 274)
+        Me.chkMovieSetDiscArtMSAA.Name = "chkMovieSetDiscArtMSAA"
+        Me.chkMovieSetDiscArtMSAA.Size = New System.Drawing.Size(62, 17)
+        Me.chkMovieSetDiscArtMSAA.TabIndex = 11
+        Me.chkMovieSetDiscArtMSAA.Text = "DiscArt"
+        Me.chkMovieSetDiscArtMSAA.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetUseMSAA
+        '
+        Me.chkMovieSetUseMSAA.AutoSize = True
+        Me.chkMovieSetUseMSAA.Location = New System.Drawing.Point(6, 21)
+        Me.chkMovieSetUseMSAA.Name = "chkMovieSetUseMSAA"
+        Me.chkMovieSetUseMSAA.Size = New System.Drawing.Size(45, 17)
+        Me.chkMovieSetUseMSAA.TabIndex = 10
+        Me.chkMovieSetUseMSAA.Text = "Use"
+        Me.chkMovieSetUseMSAA.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetLandscapeMSAA
+        '
+        Me.chkMovieSetLandscapeMSAA.AutoSize = True
+        Me.chkMovieSetLandscapeMSAA.Enabled = False
+        Me.chkMovieSetLandscapeMSAA.Location = New System.Drawing.Point(6, 297)
+        Me.chkMovieSetLandscapeMSAA.Name = "chkMovieSetLandscapeMSAA"
+        Me.chkMovieSetLandscapeMSAA.Size = New System.Drawing.Size(80, 17)
+        Me.chkMovieSetLandscapeMSAA.TabIndex = 9
+        Me.chkMovieSetLandscapeMSAA.Text = "Landscape"
+        Me.chkMovieSetLandscapeMSAA.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetBannerMSAA
+        '
+        Me.chkMovieSetBannerMSAA.AutoSize = True
+        Me.chkMovieSetBannerMSAA.Enabled = False
+        Me.chkMovieSetBannerMSAA.Location = New System.Drawing.Point(6, 205)
+        Me.chkMovieSetBannerMSAA.Name = "chkMovieSetBannerMSAA"
+        Me.chkMovieSetBannerMSAA.Size = New System.Drawing.Size(63, 17)
+        Me.chkMovieSetBannerMSAA.TabIndex = 8
+        Me.chkMovieSetBannerMSAA.Text = "Banner"
+        Me.chkMovieSetBannerMSAA.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetClearArtMSAA
+        '
+        Me.chkMovieSetClearArtMSAA.AutoSize = True
+        Me.chkMovieSetClearArtMSAA.Enabled = False
+        Me.chkMovieSetClearArtMSAA.Location = New System.Drawing.Point(6, 251)
+        Me.chkMovieSetClearArtMSAA.Name = "chkMovieSetClearArtMSAA"
+        Me.chkMovieSetClearArtMSAA.Size = New System.Drawing.Size(67, 17)
+        Me.chkMovieSetClearArtMSAA.TabIndex = 6
+        Me.chkMovieSetClearArtMSAA.Text = "ClearArt"
+        Me.chkMovieSetClearArtMSAA.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetClearLogoMSAA
+        '
+        Me.chkMovieSetClearLogoMSAA.AutoSize = True
+        Me.chkMovieSetClearLogoMSAA.Enabled = False
+        Me.chkMovieSetClearLogoMSAA.Location = New System.Drawing.Point(6, 228)
+        Me.chkMovieSetClearLogoMSAA.Name = "chkMovieSetClearLogoMSAA"
+        Me.chkMovieSetClearLogoMSAA.Size = New System.Drawing.Size(78, 17)
+        Me.chkMovieSetClearLogoMSAA.TabIndex = 5
+        Me.chkMovieSetClearLogoMSAA.Text = "ClearLogo"
+        Me.chkMovieSetClearLogoMSAA.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetFanartMSAA
+        '
+        Me.chkMovieSetFanartMSAA.AutoSize = True
+        Me.chkMovieSetFanartMSAA.Enabled = False
+        Me.chkMovieSetFanartMSAA.Location = New System.Drawing.Point(6, 90)
+        Me.chkMovieSetFanartMSAA.Name = "chkMovieSetFanartMSAA"
+        Me.chkMovieSetFanartMSAA.Size = New System.Drawing.Size(59, 17)
+        Me.chkMovieSetFanartMSAA.TabIndex = 2
+        Me.chkMovieSetFanartMSAA.Text = "Fanart"
+        Me.chkMovieSetFanartMSAA.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetPosterMSAA
+        '
+        Me.chkMovieSetPosterMSAA.AutoSize = True
+        Me.chkMovieSetPosterMSAA.Enabled = False
+        Me.chkMovieSetPosterMSAA.Location = New System.Drawing.Point(6, 67)
+        Me.chkMovieSetPosterMSAA.Name = "chkMovieSetPosterMSAA"
+        Me.chkMovieSetPosterMSAA.Size = New System.Drawing.Size(58, 17)
+        Me.chkMovieSetPosterMSAA.TabIndex = 1
+        Me.chkMovieSetPosterMSAA.Text = "Poster"
+        Me.chkMovieSetPosterMSAA.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetNFOMSAA
+        '
+        Me.chkMovieSetNFOMSAA.AutoSize = True
+        Me.chkMovieSetNFOMSAA.Enabled = False
+        Me.chkMovieSetNFOMSAA.Location = New System.Drawing.Point(6, 44)
+        Me.chkMovieSetNFOMSAA.Name = "chkMovieSetNFOMSAA"
+        Me.chkMovieSetNFOMSAA.Size = New System.Drawing.Size(49, 17)
+        Me.chkMovieSetNFOMSAA.TabIndex = 0
+        Me.chkMovieSetNFOMSAA.Text = "NFO"
+        Me.chkMovieSetNFOMSAA.UseVisualStyleBackColor = True
+        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
@@ -2955,6 +3192,7 @@ Partial Class dlgWizard
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(704, 531)
+        Me.Controls.Add(Me.pnlMovieSetSettings)
         Me.Controls.Add(Me.pnlMovieSettings)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.btnBack)
@@ -3043,6 +3281,15 @@ Partial Class dlgWizard
         Me.tpTVFileNamingBoxee.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.pnlMovieSetSettings.ResumeLayout(False)
+        Me.gbMovieSetFileNaming.ResumeLayout(False)
+        Me.tcMovieSetFileNaming.ResumeLayout(False)
+        Me.tpMovieSetFileNamingXBMC.ResumeLayout(False)
+        CType(Me.pbMSAAInfo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gbMovieSetMSAAPath.ResumeLayout(False)
+        Me.gbMovieSetMSAAPath.PerformLayout()
+        Me.gbMovieSetMSAA.ResumeLayout(False)
+        Me.gbMovieSetMSAA.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -3297,4 +3544,23 @@ Partial Class dlgWizard
     Friend WithEvents chkTVUseBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents pnlMovieSetSettings As System.Windows.Forms.Panel
+    Friend WithEvents Label48 As System.Windows.Forms.Label
+    Friend WithEvents gbMovieSetFileNaming As System.Windows.Forms.GroupBox
+    Friend WithEvents tcMovieSetFileNaming As System.Windows.Forms.TabControl
+    Friend WithEvents tpMovieSetFileNamingXBMC As System.Windows.Forms.TabPage
+    Friend WithEvents pbMSAAInfo As System.Windows.Forms.PictureBox
+    Friend WithEvents gbMovieSetMSAAPath As System.Windows.Forms.GroupBox
+    Friend WithEvents btnMovieSetMSAAPathBrowse As System.Windows.Forms.Button
+    Friend WithEvents txtMovieSetMSAAPath As System.Windows.Forms.TextBox
+    Friend WithEvents gbMovieSetMSAA As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMovieSetDiscArtMSAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetUseMSAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetLandscapeMSAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetBannerMSAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetClearArtMSAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetClearLogoMSAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetFanartMSAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetPosterMSAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetNFOMSAA As System.Windows.Forms.CheckBox
 End Class

@@ -3324,7 +3324,6 @@ Public Class dlgSettings
                 Me.txtMovieGeneralCustomMarker3.Text = .MovieGeneralCustomMarker3Name.ToString
                 Me.txtMovieGeneralCustomMarker4.Text = .MovieGeneralCustomMarker4Name.ToString
                 Me.txtMovieIMDBURL.Text = .MovieIMDBURL.ToString
-                Me.txtMovieSetMSAAPath.Text = .MovieMoviesetsPath.ToString
                 Me.txtMovieScraperCastLimit.Text = .MovieScraperCastLimit.ToString
                 Me.txtMovieScraperDurationRuntimeFormat.Text = .MovieScraperDurationRuntimeFormat
                 Me.txtMovieScraperGenreLimit.Text = .MovieScraperGenreLimit.ToString
@@ -3598,6 +3597,7 @@ Public Class dlgSettings
                 Me.chkMovieSetLandscapeMSAA.Checked = .MovieSetLandscapeMSAA
                 Me.chkMovieSetNFOMSAA.Checked = .MovieSetNFOMSAA
                 Me.chkMovieSetPosterMSAA.Checked = .MovieSetPosterMSAA
+                Me.txtMovieSetMSAAPath.Text = .MovieMoviesetsPath.ToString
 
 
                 '***************************************************
@@ -4600,7 +4600,6 @@ Public Class dlgSettings
                 .MovieMissingSubs = Me.chkMovieMissingSubs.Checked
                 .MovieMissingTheme = Me.chkMovieMissingTheme.Checked
                 .MovieMissingTrailer = Me.chkMovieMissingTrailer.Checked
-                .MovieMoviesetsPath = Me.txtMovieSetMSAAPath.Text
                 .MovieNoSaveImagesToNfo = Me.chkMovieNoSaveImagesToNfo.Checked
                 .MoviePosterCol = Me.chkMoviePosterCol.Checked
                 .MoviePosterHeight = If(Not String.IsNullOrEmpty(Me.txtMoviePosterHeight.Text), Convert.ToInt32(Me.txtMoviePosterHeight.Text), 0)
@@ -5146,6 +5145,7 @@ Public Class dlgSettings
                 .MovieSetLandscapeMSAA = Me.chkMovieSetLandscapeMSAA.Checked
                 .MovieSetNFOMSAA = Me.chkMovieSetNFOMSAA.Checked
                 .MovieSetPosterMSAA = Me.chkMovieSetPosterMSAA.Checked
+                .MovieMoviesetsPath = Me.txtMovieSetMSAAPath.Text
 
 
                 '***************************************************

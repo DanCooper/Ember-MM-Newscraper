@@ -46,9 +46,12 @@ Public Class dlgWizard
             Case Me.pnlMovieSettings.Visible
                 Me.pnlMovieSettings.Visible = False
                 Me.pnlMovieSource.Visible = True
+            Case Me.pnlMovieSetSettings.Visible
+                Me.pnlMovieSetSettings.Visible = False
+                Me.pnlMovieSettings.Visible = True
             Case Me.pnlTVShowSource.Visible
                 Me.pnlTVShowSource.Visible = False
-                Me.pnlMovieSettings.Visible = True
+                Me.pnlMovieSetSettings.Visible = True
             Case Me.pnlTVShowSettings.Visible
                 Me.pnlTVShowSettings.Visible = False
                 Me.pnlTVShowSource.Visible = True
@@ -93,6 +96,9 @@ Public Class dlgWizard
                 Me.pnlMovieSettings.Visible = True
             Case Me.pnlMovieSettings.Visible
                 Me.pnlMovieSettings.Visible = False
+                Me.pnlMovieSetSettings.Visible = True
+            Case Me.pnlMovieSetSettings.Visible
+                Me.pnlMovieSetSettings.Visible = False
                 Me.pnlTVShowSource.Visible = True
             Case Me.pnlTVShowSource.Visible
                 Me.pnlTVShowSource.Visible = False
@@ -115,6 +121,21 @@ Public Class dlgWizard
 
     Private Sub btnTVRemoveSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVRemoveSource.Click
         Me.RemoveTVSource()
+    End Sub
+
+    Private Sub btnMovieMoviesetsBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieSetMSAAPathBrowse.Click
+        Try
+            With Me.fbdBrowse
+                fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
+                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                    If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                        Me.txtMovieSetMSAAPath.Text = .SelectedPath.ToString
+                    End If
+                End If
+            End With
+        Catch ex As Exception
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     Private Sub btnMovieYAMJWatchedFilesBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieYAMJWatchedFilesBrowse.Click
@@ -512,6 +533,38 @@ Public Class dlgWizard
         Me.txtMovieTrailerExpertVTS.Enabled = Me.chkMovieUseExpert.Checked
     End Sub
 
+    Private Sub chkMovieSetUseMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetUseMSAA.CheckedChanged
+
+        Me.chkMovieSetBannerMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetClearArtMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetClearLogoMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetDiscArtMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetFanartMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetLandscapeMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetNFOMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetPosterMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+
+        If Not Me.chkMovieSetUseMSAA.Checked Then
+            Me.chkMovieSetBannerMSAA.Checked = False
+            Me.chkMovieSetClearArtMSAA.Checked = False
+            Me.chkMovieSetClearLogoMSAA.Checked = False
+            Me.chkMovieSetDiscArtMSAA.Checked = False
+            Me.chkMovieSetFanartMSAA.Checked = False
+            Me.chkMovieSetLandscapeMSAA.Checked = False
+            Me.chkMovieSetNFOMSAA.Checked = False
+            Me.chkMovieSetPosterMSAA.Checked = False
+        Else
+            Me.chkMovieSetBannerMSAA.Checked = True
+            Me.chkMovieSetClearArtMSAA.Checked = True
+            Me.chkMovieSetClearLogoMSAA.Checked = True
+            Me.chkMovieSetDiscArtMSAA.Checked = True
+            Me.chkMovieSetFanartMSAA.Checked = True
+            Me.chkMovieSetLandscapeMSAA.Checked = True
+            Me.chkMovieSetNFOMSAA.Checked = True
+            Me.chkMovieSetPosterMSAA.Checked = True
+        End If
+    End Sub
+
     Private Sub chkTVShowTVThemeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowTVThemeXBMC.CheckedChanged
         Me.btnTVShowTVThemeBrowse.Enabled = Me.chkTVShowTVThemeXBMC.Checked
         Me.txtTVShowTVThemeFolderXBMC.Enabled = Me.chkTVShowTVThemeXBMC.Checked
@@ -802,6 +855,23 @@ Public Class dlgWizard
             Me.txtMoviePosterExpertBDMV.Text = .MoviePosterExpertBDMV
             Me.txtMovieTrailerExpertBDMV.Text = .MovieTrailerExpertBDMV
             Me.chkMovieUseBaseDirectoryExpertBDMV.Checked = .MovieUseBaseDirectoryExpertBDMV
+
+
+            '***************************************************
+            '****************** MovieSet Part ******************
+            '***************************************************
+
+            '**************** XBMC MSAA settings ***************
+            Me.chkMovieSetUseMSAA.Checked = .MovieSetUseMSAA
+            Me.chkMovieSetBannerMSAA.Checked = .MovieSetBannerMSAA
+            Me.chkMovieSetClearArtMSAA.Checked = .MovieSetClearArtMSAA
+            Me.chkMovieSetClearLogoMSAA.Checked = .MovieSetClearLogoMSAA
+            Me.chkMovieSetDiscArtMSAA.Checked = .MovieSetDiscArtMSAA
+            Me.chkMovieSetFanartMSAA.Checked = .MovieSetFanartMSAA
+            Me.chkMovieSetLandscapeMSAA.Checked = .MovieSetLandscapeMSAA
+            Me.chkMovieSetNFOMSAA.Checked = .MovieSetNFOMSAA
+            Me.chkMovieSetPosterMSAA.Checked = .MovieSetPosterMSAA
+            Me.txtMovieSetMSAAPath.Text = .MovieMoviesetsPath.ToString
 
 
             '***************************************************
@@ -1186,6 +1256,24 @@ Public Class dlgWizard
             .MovieTrailerExpertBDMV = Me.txtMovieTrailerExpertBDMV.Text
             .MovieUseBaseDirectoryExpertBDMV = Me.chkMovieUseBaseDirectoryExpertBDMV.Checked
 
+
+            '***************************************************
+            '****************** MovieSet Part ******************
+            '***************************************************
+
+            '**************** XBMC MSAA settings ***************
+            .MovieSetUseMSAA = Me.chkMovieSetUseMSAA.Checked
+            .MovieSetBannerMSAA = Me.chkMovieSetBannerMSAA.Checked
+            .MovieSetClearArtMSAA = Me.chkMovieSetClearArtMSAA.Checked
+            .MovieSetClearLogoMSAA = Me.chkMovieSetClearLogoMSAA.Checked
+            .MovieSetDiscArtMSAA = Me.chkMovieSetDiscArtMSAA.Checked
+            .MovieSetFanartMSAA = Me.chkMovieSetFanartMSAA.Checked
+            .MovieSetLandscapeMSAA = Me.chkMovieSetLandscapeMSAA.Checked
+            .MovieSetNFOMSAA = Me.chkMovieSetNFOMSAA.Checked
+            .MovieSetPosterMSAA = Me.chkMovieSetPosterMSAA.Checked
+            .MovieMoviesetsPath = Me.txtMovieSetMSAAPath.Text
+
+
             '***************************************************
             '****************** TV Show Part *******************
             '***************************************************
@@ -1242,6 +1330,7 @@ Public Class dlgWizard
         Me.Label3.Text = Master.eLang.GetString(414, "First, let's tell Ember Media Manager where to locate all your movies. You can add as many sources as you wish.")
         Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
         Me.Label4.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
+        Me.Label48.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
         Me.Label6.Text = Master.eLang.GetString(408, "That wasn't so hard was it?  As mentioned earlier, you can change these or any other options in the Settings dialog.")
         Me.Label7.Text = String.Format(Master.eLang.GetString(409, "That's it!{0}Ember Media Manager is Ready!"), vbNewLine)
         Me.Label8.Text = String.Format(Master.eLang.GetString(417, "Some options you may be interested in:{0}{0}Custom Filters - If your movie files have things like ""DVDRip"", ""BluRay"", ""x264"", etc in their folder or file name and you wish to filter the names when loading into the media list, you can utilize the Custom Filter option.  The custom filter is RegEx compatible for maximum usability.{0}{0}Images - This section allows you to select which websites to ""scrape"" images from as well as select a preferred size for the images Ember Media Manager selects.{0}{0}Locks - This section allows you to ""lock"" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes."), vbNewLine)
@@ -1268,11 +1357,13 @@ Public Class dlgWizard
         Me.pnlWelcome.Visible = True
         Me.pnlMovieSource.Visible = False
         Me.pnlMovieSettings.Visible = False
+        Me.pnlMovieSetSettings.Visible = False
         Me.pnlTVShowSource.Visible = False
         Me.pnlTVShowSettings.Visible = False
         Me.pnlDone.Visible = False
         Me.pnlMovieSource.Location = New Point(166, 7)
         Me.pnlMovieSettings.Location = New Point(166, 7)
+        Me.pnlMovieSetSettings.Location = New Point(166, 7)
         Me.pnlTVShowSource.Location = New Point(166, 7)
         Me.pnlTVShowSettings.Location = New Point(166, 7)
         Me.pnlDone.Location = New Point(166, 7)
