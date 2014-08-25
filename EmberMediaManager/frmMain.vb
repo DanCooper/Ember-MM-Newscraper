@@ -5736,7 +5736,7 @@ doCancel:
 
     Private Sub dgvMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovies.KeyPress
         Try
-            If StringUtils.AlphaNumericOnly(e.KeyChar) Then
+            If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvMovies.Rows
@@ -6133,7 +6133,7 @@ doCancel:
 
     Private Sub dgvMovieSets_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovieSets.KeyPress
         Try
-            If StringUtils.AlphaNumericOnly(e.KeyChar) Then
+            If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvMovieSets.Rows
@@ -6349,7 +6349,7 @@ doCancel:
 
     Private Sub dgvTVEpisodes_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVEpisodes.KeyPress
         Try
-            If StringUtils.AlphaNumericOnly(e.KeyChar) Then
+            If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
@@ -6692,7 +6692,7 @@ doCancel:
 
     Private Sub dgvTVSeasons_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVSeasons.KeyPress
         Try
-            If StringUtils.AlphaNumericOnly(e.KeyChar) Then
+            If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvTVSeasons.Rows
@@ -6978,7 +6978,7 @@ doCancel:
 
     Private Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
         Try
-            If StringUtils.AlphaNumericOnly(e.KeyChar) Then
+            If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvTVShows.Rows
@@ -13599,6 +13599,11 @@ doCancel:
 
     Private Sub SelectEpisodeRow(ByVal iRow As Integer)
         Try
+            While tmrKeyBuffer.Enabled
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+
             If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(6, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) Then
                 Me.ClearInfo(False)
                 Me.ShowNoInfo(True, 2)
@@ -13882,6 +13887,11 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub SelectMovieRow(ByVal iRow As Integer)
         Try
+            While tmrKeyBuffer.Enabled
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+
             If Not Convert.ToBoolean(Me.dgvMovies.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovies.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovies.Item(6, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 0)
@@ -13906,6 +13916,11 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub SelectMovieSetRow(ByVal iRow As Integer)
         Try
+            While tmrKeyBuffer.Enabled
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+
             If Not Convert.ToBoolean(Me.dgvMovieSets.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovieSets.Item(6, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovieSets.Item(2, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 3)
@@ -13930,6 +13945,11 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub SelectSeasonRow(ByVal iRow As Integer)
         Try
+            While tmrKeyBuffer.Enabled
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+
             Me.ClearInfo(False)
             If String.IsNullOrEmpty(Master.currShow.ShowPosterPath) AndAlso String.IsNullOrEmpty(Master.currShow.ShowFanartPath) AndAlso _
                String.IsNullOrEmpty(Master.currShow.ShowNfoPath) AndAlso Not Convert.ToBoolean(Me.dgvTVSeasons.Item(3, iRow).Value) AndAlso _
@@ -13958,6 +13978,11 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub SelectShowRow(ByVal iRow As Integer)
         Try
+            While tmrKeyBuffer.Enabled
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+
             Me.tmpTitle = Me.dgvTVShows.Item(1, iRow).Value.ToString
             Me.tmpTVDB = Me.dgvTVShows.Item(9, iRow).Value.ToString
             Me.tmpLang = Me.dgvTVShows.Item(22, iRow).Value.ToString
