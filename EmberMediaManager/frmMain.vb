@@ -12762,7 +12762,7 @@ doCancel:
 
     Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False, Optional ByVal delWatched As Boolean = False) As Boolean
         Dim tmpMovie As New MediaContainers.Movie
-        Dim tmpMovieDb As New Structures.DBMovie
+        Dim tmpMovieDB As New Structures.DBMovie
         Dim OldTitle As String = String.Empty
         Dim selRow As DataRow = Nothing
 
@@ -12785,79 +12785,84 @@ doCancel:
 
         Try
 
-            tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
+            tmpMovieDB = Master.DB.LoadMovieFromDB(ID)
 
-            OldTitle = tmpMovieDb.Movie.Title
+            OldTitle = tmpMovieDB.Movie.Title
 
-            If Directory.Exists(Directory.GetParent(tmpMovieDb.Filename).FullName) Then
+            If Directory.Exists(Directory.GetParent(tmpMovieDB.Filename).FullName) Then
 
                 If FromNfo Then
-                    If String.IsNullOrEmpty(tmpMovieDb.NfoPath) Then
-                        Dim sNFO As String = NFO.GetNfoPath(tmpMovieDb.Filename, tmpMovieDb.IsSingle)
-                        tmpMovieDb.NfoPath = sNFO
-                        tmpMovie = NFO.LoadMovieFromNFO(sNFO, tmpMovieDb.IsSingle)
+                    If String.IsNullOrEmpty(tmpMovieDB.NfoPath) Then
+                        Dim sNFO As String = NFO.GetNfoPath(tmpMovieDB.Filename, tmpMovieDB.IsSingle)
+                        tmpMovieDB.NfoPath = sNFO
+                        tmpMovie = NFO.LoadMovieFromNFO(sNFO, tmpMovieDB.IsSingle)
                     Else
-                        tmpMovie = NFO.LoadMovieFromNFO(tmpMovieDb.NfoPath, tmpMovieDb.IsSingle)
+                        tmpMovie = NFO.LoadMovieFromNFO(tmpMovieDB.NfoPath, tmpMovieDB.IsSingle)
                     End If
                     'subsType and subsPath not in NFO , try to load it from DB
                     For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1
-                        If tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 AndAlso Not tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x) Is Nothing AndAlso tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).Language = tmpMovie.FileInfo.StreamDetails.Subtitle(x).Language Then
-                            tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsType = tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).SubsType
-                            tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsPath = tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).SubsPath
+                        If tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 AndAlso Not tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x) Is Nothing AndAlso tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).Language = tmpMovie.FileInfo.StreamDetails.Subtitle(x).Language Then
+                            tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsType = tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).SubsType
+                            tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsPath = tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).SubsPath
                         End If
                     Next
-                    tmpMovieDb.Movie = tmpMovie
+                    tmpMovieDB.Movie = tmpMovie
                 End If
 
-                If String.IsNullOrEmpty(tmpMovieDb.Movie.Title) Then
-                    If FileUtils.Common.isVideoTS(tmpMovieDb.Filename) Then
-                        tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name)
-                        tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name, False)
-                    ElseIf FileUtils.Common.isBDRip(tmpMovieDb.Filename) Then
-                        tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name)
-                        tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name, False)
+                If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                    If FileUtils.Common.isVideoTS(tmpMovieDB.Filename) Then
+                        tmpMovieDB.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).Name)
+                        tmpMovieDB.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).Name, False)
+                    ElseIf FileUtils.Common.isBDRip(tmpMovieDB.Filename) Then
+                        tmpMovieDB.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).FullName).Name)
+                        tmpMovieDB.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).FullName).Name, False)
                     Else
-                        If tmpMovieDb.UseFolder AndAlso tmpMovieDb.IsSingle Then
-                            tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name)
-                            tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name, False)
+                        If tmpMovieDB.UseFolder AndAlso tmpMovieDB.IsSingle Then
+                            tmpMovieDB.ListTitle = StringUtils.FilterName(Directory.GetParent(tmpMovieDB.Filename).Name)
+                            tmpMovieDB.Movie.Title = StringUtils.FilterName(Directory.GetParent(tmpMovieDB.Filename).Name, False)
                         Else
-                            tmpMovieDb.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename))
-                            tmpMovieDb.Movie.Title = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename), False)
+                            tmpMovieDB.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDB.Filename))
+                            tmpMovieDB.Movie.Title = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDB.Filename), False)
                         End If
                     End If
-                    If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tmpMovieDb.ListTitle
+                    If Not OldTitle = tmpMovieDB.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
                 Else
-                    Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDb.Movie.Title)
-                    If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tTitle
-                    If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDb.Movie.Year) Then
-                        tmpMovieDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDb.Movie.Year)
+                    Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
+                    If Not OldTitle = tmpMovieDB.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
+                    If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
+                        tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
                     Else
-                        tmpMovieDb.ListTitle = tTitle
+                        tmpMovieDB.ListTitle = tTitle
                     End If
                 End If
-                Dim fromFile As String = APIXML.GetFileSource(tmpMovieDb.Filename)
+
+                Dim fromFile As String = APIXML.GetFileSource(tmpMovieDB.Filename)
                 If Not String.IsNullOrEmpty(fromFile) Then
-                    tmpMovieDb.FileSource = fromFile
-                ElseIf String.IsNullOrEmpty(tmpMovieDb.FileSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                    tmpMovieDb.FileSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDb.Filename)), String.Empty, "*EmberAPP")
+                    tmpMovieDB.FileSource = fromFile
+                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.FileSource
+                ElseIf String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                    tmpMovieDB.FileSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
+                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.FileSource
+                ElseIf Not String.IsNullOrEmpty(tmpMovieDB.Movie.VideoSource) Then
+                    tmpMovieDB.FileSource = tmpMovieDB.Movie.VideoSource
                 End If
 
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                    For Each a In FileUtils.GetFilenameList.Movie(tmpMovieDb.Filename, tmpMovieDb.IsSingle, Enums.ModType_Movie.WatchedFile)
+                    For Each a In FileUtils.GetFilenameList.Movie(tmpMovieDB.Filename, tmpMovieDB.IsSingle, Enums.ModType_Movie.WatchedFile)
                         If delWatched Then
                             If File.Exists(a) Then
                                 File.Delete(a)
                             End If
                         End If
-                        If Not String.IsNullOrEmpty(tmpMovieDb.Movie.PlayCount) AndAlso Not tmpMovieDb.Movie.PlayCount = "0" Then
+                        If Not String.IsNullOrEmpty(tmpMovieDB.Movie.PlayCount) AndAlso Not tmpMovieDB.Movie.PlayCount = "0" Then
                             If Not File.Exists(a) Then
                                 Dim fs As FileStream = File.Create(a)
                                 fs.Close()
                             End If
                         Else
                             If File.Exists(a) Then
-                                tmpMovieDb.Movie.PlayCount = "1"
-                                If Not tmpMovieDb.NfoPath = tmpMovieDb.Filename AndAlso Not String.IsNullOrEmpty(tmpMovieDb.NfoPath) Then
+                                tmpMovieDB.Movie.PlayCount = "1"
+                                If Not tmpMovieDB.NfoPath = tmpMovieDB.Filename AndAlso Not String.IsNullOrEmpty(tmpMovieDB.NfoPath) Then
                                     ToNfo = True
                                 End If
                             End If
@@ -12865,21 +12870,21 @@ doCancel:
                     Next
                 End If
 
-                Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.IsSingle}
+                Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDB.Filename, .isSingle = tmpMovieDB.IsSingle}
                 fScanner.GetMovieFolderContents(mContainer)
-                tmpMovieDb.BannerPath = mContainer.Banner
-                tmpMovieDb.ClearArtPath = mContainer.ClearArt
-                tmpMovieDb.ClearLogoPath = mContainer.ClearLogo
-                tmpMovieDb.DiscArtPath = mContainer.DiscArt
-                tmpMovieDb.EFanartsPath = mContainer.EFanarts
-                tmpMovieDb.EThumbsPath = mContainer.EThumbs
-                tmpMovieDb.FanartPath = mContainer.Fanart
-                tmpMovieDb.LandscapePath = mContainer.Landscape
-                tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, mContainer.Nfo) 'assume invalid nfo if no title
-                tmpMovieDb.PosterPath = mContainer.Poster
-                tmpMovieDb.SubPath = mContainer.Subs
-                tmpMovieDb.ThemePath = mContainer.Theme
-                tmpMovieDb.TrailerPath = mContainer.Trailer
+                tmpMovieDB.BannerPath = mContainer.Banner
+                tmpMovieDB.ClearArtPath = mContainer.ClearArt
+                tmpMovieDB.ClearLogoPath = mContainer.ClearLogo
+                tmpMovieDB.DiscArtPath = mContainer.DiscArt
+                tmpMovieDB.EFanartsPath = mContainer.EFanarts
+                tmpMovieDB.EThumbsPath = mContainer.EThumbs
+                tmpMovieDB.FanartPath = mContainer.Fanart
+                tmpMovieDB.LandscapePath = mContainer.Landscape
+                tmpMovieDB.NfoPath = If(String.IsNullOrEmpty(tmpMovieDB.Movie.Title), String.Empty, mContainer.Nfo) 'assume invalid nfo if no title
+                tmpMovieDB.PosterPath = mContainer.Poster
+                tmpMovieDB.SubPath = mContainer.Subs
+                tmpMovieDB.ThemePath = mContainer.Theme
+                tmpMovieDB.TrailerPath = mContainer.Trailer
 
                 hasBanner = Not String.IsNullOrEmpty(mContainer.Banner)
                 hasClearArt = Not String.IsNullOrEmpty(mContainer.ClearArt)
@@ -12889,23 +12894,23 @@ doCancel:
                 hasEThumbs = Not String.IsNullOrEmpty(mContainer.EThumbs)
                 hasFanart = Not String.IsNullOrEmpty(mContainer.Fanart)
                 hasLandscape = Not String.IsNullOrEmpty(mContainer.Landscape)
-                hasNfo = Not String.IsNullOrEmpty(tmpMovieDb.NfoPath)
+                hasNfo = Not String.IsNullOrEmpty(tmpMovieDB.NfoPath)
                 hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
                 hasSub = Not String.IsNullOrEmpty(mContainer.Subs)
                 hasTheme = Not String.IsNullOrEmpty(mContainer.Theme)
                 hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
-                hasWatched = Not String.IsNullOrEmpty(tmpMovieDb.Movie.PlayCount) AndAlso Not tmpMovieDb.Movie.PlayCount = "0"
+                hasWatched = Not String.IsNullOrEmpty(tmpMovieDB.Movie.PlayCount) AndAlso Not tmpMovieDB.Movie.PlayCount = "0"
 
                 Dim dRow = From drvRow In dtMovies.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
 
                 If Not IsNothing(dRow(0)) Then
                     selRow = DirectCast(dRow(0), DataRow)
-                    tmpMovieDb.IsMark = Convert.ToBoolean(selRow.Item(11))
-                    tmpMovieDb.IsLock = Convert.ToBoolean(selRow.Item(14))
+                    tmpMovieDB.IsMark = Convert.ToBoolean(selRow.Item(11))
+                    tmpMovieDB.IsLock = Convert.ToBoolean(selRow.Item(14))
 
                     If Me.InvokeRequired Then
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDB.Filename})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDB.ListTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 4, hasPoster})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 5, hasFanart})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 6, hasNfo})
@@ -12913,9 +12918,9 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 8, hasSub})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 9, hasEThumbs})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 10, False})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDb.Movie.SortTitle})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 27, tmpMovieDb.Movie.Genre})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDB.Movie.Title})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDB.Movie.SortTitle})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 27, tmpMovieDB.Movie.Genre})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 34, hasWatched})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 49, hasEFanarts})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 51, hasBanner})
@@ -12925,8 +12930,8 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 59, hasClearLogo})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 61, hasClearArt})
                     Else
-                        selRow.Item(1) = tmpMovieDb.Filename
-                        selRow.Item(3) = tmpMovieDb.ListTitle
+                        selRow.Item(1) = tmpMovieDB.Filename
+                        selRow.Item(3) = tmpMovieDB.ListTitle
                         selRow.Item(4) = hasPoster
                         selRow.Item(5) = hasFanart
                         selRow.Item(6) = hasNfo
@@ -12934,9 +12939,9 @@ doCancel:
                         selRow.Item(8) = hasSub
                         selRow.Item(9) = hasEThumbs
                         selRow.Item(10) = False
-                        selRow.Item(15) = tmpMovieDb.Movie.Title
-                        selRow.Item(47) = tmpMovieDb.Movie.SortTitle
-                        selRow.Item(27) = tmpMovieDb.Movie.Genre
+                        selRow.Item(15) = tmpMovieDB.Movie.Title
+                        selRow.Item(47) = tmpMovieDB.Movie.SortTitle
+                        selRow.Item(27) = tmpMovieDB.Movie.Genre
                         selRow.Item(34) = hasWatched
                         selRow.Item(49) = hasEFanarts
                         selRow.Item(51) = hasBanner
@@ -12948,7 +12953,7 @@ doCancel:
                     End If
                 End If
 
-                Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode, ToNfo)
+                Master.DB.SaveMovieToDB(tmpMovieDB, False, BatchMode, ToNfo)
 
             Else
                 Master.DB.DeleteMovieFromDB(ID, BatchMode)

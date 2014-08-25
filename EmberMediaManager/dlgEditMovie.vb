@@ -1719,6 +1719,8 @@ Public Class dlgEditMovie
 
                 If Not String.IsNullOrEmpty(Master.currMovie.FileSource) Then
                     .txtFileSource.Text = Master.currMovie.FileSource
+                ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.VideoSource) Then
+                    .txtFileSource.Text = Master.currMovie.Movie.VideoSource
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Certification) Then
@@ -2904,6 +2906,7 @@ Public Class dlgEditMovie
                 Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
 
                 Master.currMovie.FileSource = .txtFileSource.Text.Trim
+                Master.currMovie.Movie.VideoSource = .txtFileSource.Text.Trim
 
                 If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
                     Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.MovieScraperCertForMPAA AndAlso Master.eSettings.MovieScraperOnlyValueForMPAA AndAlso .lbMPAA.SelectedItem.ToString.Contains(":"), .lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), .lbMPAA.SelectedItem.ToString), " ", .txtMPAADesc.Text).Trim
