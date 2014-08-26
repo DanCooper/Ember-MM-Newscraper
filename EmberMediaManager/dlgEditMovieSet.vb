@@ -1615,7 +1615,7 @@ Public Class dlgEditMovieSet
 
     Private Sub SetUp()
         Dim mTitle As String = Master.currMovieSet.MovieSet.Title
-        Dim sTitle As String = String.Concat(Master.eLang.GetString(1131, "Edit Movieset"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
+        Dim sTitle As String = String.Concat(Master.eLang.GetString(1131, "Edit MovieSet"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Me.Text = sTitle
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")

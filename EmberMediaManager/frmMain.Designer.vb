@@ -2133,7 +2133,7 @@ Partial Class frmMain
         Me.cmnuMovieSetNew.Name = "cmnuMovieSetNew"
         Me.cmnuMovieSetNew.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
         Me.cmnuMovieSetNew.Size = New System.Drawing.Size(221, 22)
-        Me.cmnuMovieSetNew.Text = "Create New Set"
+        Me.cmnuMovieSetNew.Text = "Add New Set"
         '
         'cmnuMovieSetEdit
         '

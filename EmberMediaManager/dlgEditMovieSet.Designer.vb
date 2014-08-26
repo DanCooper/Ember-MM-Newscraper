@@ -198,9 +198,9 @@ Partial Class dlgEditMovieSet
         Me.lblTopTitle.ForeColor = System.Drawing.Color.White
         Me.lblTopTitle.Location = New System.Drawing.Point(58, 3)
         Me.lblTopTitle.Name = "lblTopTitle"
-        Me.lblTopTitle.Size = New System.Drawing.Size(170, 32)
+        Me.lblTopTitle.Size = New System.Drawing.Size(172, 32)
         Me.lblTopTitle.TabIndex = 0
-        Me.lblTopTitle.Text = "Edit Movieset"
+        Me.lblTopTitle.Text = "Edit MovieSet"
         '
         'pbTopLogo
         '
