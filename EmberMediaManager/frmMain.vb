@@ -4780,6 +4780,8 @@ doCancel:
     End Sub
 
     Private Sub cmnuMovieSetNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetNew.Click
+        Me.dgvMovieSets.ClearSelection()
+
         Master.currMovieSet = New Structures.DBMovieSet
         Master.currMovieSet.MovieSet = New MediaContainers.MovieSet
         Master.currMovieSet.ID = -1

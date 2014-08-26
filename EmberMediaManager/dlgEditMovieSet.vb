@@ -1103,6 +1103,12 @@ Public Class dlgEditMovieSet
 
             Me.FillInfo()
 
+            If String.IsNullOrEmpty(txtTitle.Text) Then
+                Me.OK_Button.Enabled = False
+            Else
+                Me.OK_Button.Enabled = True
+            End If
+
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -1293,7 +1299,7 @@ Public Class dlgEditMovieSet
         Try
             Me.SetInfo()
 
-            Master.DB.SaveMovieSetToDB(Master.currMovieSet, False, False, True)
+            Master.currMovieSet = Master.DB.SaveMovieSetToDB(Master.currMovieSet, False, False, True)
 
             If needsMovieUpdate Then
                 SaveSetToMovies()
@@ -1656,6 +1662,11 @@ Public Class dlgEditMovieSet
 
     Private Sub txtTitle_TextChanged(sender As Object, e As EventArgs) Handles txtTitle.TextChanged
         Me.needsMovieUpdate = True
+        If String.IsNullOrEmpty(txtTitle.Text) Then
+            Me.OK_Button.Enabled = False
+        Else
+            Me.OK_Button.Enabled = True
+        End If
     End Sub
 
 
