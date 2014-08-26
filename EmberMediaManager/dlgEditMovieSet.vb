@@ -1109,6 +1109,10 @@ Public Class dlgEditMovieSet
                 Me.OK_Button.Enabled = True
             End If
 
+            If Master.currMovieSet.ID = -1 Then
+                Me.btnRescrape.Enabled = False
+            End If
+
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
