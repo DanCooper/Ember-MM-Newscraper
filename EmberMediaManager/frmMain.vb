@@ -5932,7 +5932,9 @@ doCancel:
 
                     Me.cmnuMovieSet.Enabled = True
                     Me.cmnuMovieSetReload.Visible = True
+                    Me.cmnuMovieSetSep3.Visible = True
                     Me.cmnuMovieSetEdit.Visible = False
+                    Me.cmnuMovieSetRemove.Visible = True
                     Me.cmnuMovieSetSep3.Visible = False
                     Me.cmnuMovieSetRescrape.Visible = False
 
@@ -5969,7 +5971,12 @@ doCancel:
 
                     Else
                         Me.cmnuMovieSetReload.Visible = True
+                        Me.cmnuMovieSetMark.Visible = True
+                        Me.cmnuMovieSetLock.Visible = True
+                        Me.cmnuMovieSetSep2.Visible = True
+                        Me.cmnuMovieSetNew.Visible = True
                         Me.cmnuMovieSetEdit.Visible = True
+                        Me.cmnuMovieSetRemove.Visible = True
                         Me.cmnuMovieSetSep3.Visible = True
                         Me.cmnuMovieSetRescrape.Visible = True
 
@@ -5990,7 +5997,16 @@ doCancel:
 
                     End If
                 Else
-                    Me.cmnuMovieSet.Enabled = False
+                    Me.cmnuMovieSet.Enabled = True
+                    Me.cmnuMovieSetReload.Visible = False
+                    Me.cmnuMovieSetMark.Visible = False
+                    Me.cmnuMovieSetLock.Visible = False
+                    Me.cmnuMovieSetSep2.Visible = False
+                    Me.cmnuMovieSetNew.Visible = True
+                    Me.cmnuMovieSetEdit.Visible = False
+                    Me.cmnuMovieSetRemove.Visible = False
+                    Me.cmnuMovieSetSep3.Visible = False
+                    Me.cmnuMovieSetRescrape.Visible = False
                     Me.cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                 End If
             End If
@@ -6005,7 +6021,7 @@ doCancel:
         'So don't set status for it, but leave the option open for the future.
         If Master.eSettings.MovieClickScrape AndAlso e.RowIndex > 0 AndAlso e.ColumnIndex > 3 AndAlso e.ColumnIndex < 11 AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
             oldStatus = GetStatus()
-            Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells(15).Value.ToString
+            Dim movieSetName As String = Me.dgvMovies.Rows(e.RowIndex).Cells(15).Value.ToString
             Dim scrapeFor As String = ""
             Dim scrapeType As String = ""
             Select Case e.ColumnIndex
@@ -6029,7 +6045,7 @@ doCancel:
             Else
                 scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
             End If
-            Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
+            Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieSetName, scrapeFor, scrapeType))
         Else
             oldStatus = String.Empty
         End If
@@ -15554,6 +15570,9 @@ doCancel:
                 .cmnuMovieRemoveFromDisc.Text = Master.eLang.GetString(34, "Delete Movie")
                 .cmnuMovieRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
                 .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
+                .cmnuMovieSetEdit.Text = Master.eLang.GetString(1131, "Edit MovieSet")
+                .cmnuMovieSetNew.Text = Master.eLang.GetString(208, "Add New Set")
+                .cmnuMovieSetRescrape.Text = Master.eLang.GetString(1233, "(Re)Scrape MovieSet")
                 .cmnuMovieUpSelCert.Text = Master.eLang.GetString(722, "Certification")
                 .cmnuMovieUpSelCountry.Text = Master.eLang.GetString(301, "Country")
                 .cmnuMovieUpSelDirector.Text = Master.eLang.GetString(62, "Director")
@@ -15663,7 +15682,10 @@ doCancel:
                 .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
 
                 .cmnuEpisodeOpenFolder.Text = .cmnuMovieOpenFolder.Text
-                .cmnuMovieSetReload.Text = cmnuMovieReload.Text
+                .cmnuMovieSetLock.Text = .cmnuMovieLock.Text
+                .cmnuMovieSetMark.Text = .cmnuMovieMark.Text
+                .cmnuMovieSetReload.Text = .cmnuMovieReload.Text
+                .cmnuMovieSetRemove.Text = .cmnuMovieRemove.Text
                 .cmnuSeasonOpenFolder.Text = .cmnuMovieOpenFolder.Text
                 .cmnuShowLanguageSet.Text = cmnuMovieGenresSet.Text
                 .cmnuShowOpenFolder.Text = .cmnuMovieOpenFolder.Text
