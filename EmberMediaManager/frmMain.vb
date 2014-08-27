@@ -3183,6 +3183,54 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub chkFilterMarkCustom1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMarkCustom1.Click
+        Try
+            If Me.chkFilterMarkCustom1.Checked Then
+                Me.FilterArray.Add("markcustom1 = 1")
+            Else
+                Me.FilterArray.Remove("markcustom1 = 1")
+            End If
+            Me.RunFilter()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub chkFilterMarkCustom2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMarkCustom2.Click
+        Try
+            If Me.chkFilterMarkCustom2.Checked Then
+                Me.FilterArray.Add("markcustom2 = 1")
+            Else
+                Me.FilterArray.Remove("markcustom2 = 1")
+            End If
+            Me.RunFilter()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub chkFilterMarkCustom3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMarkCustom3.Click
+        Try
+            If Me.chkFilterMarkCustom3.Checked Then
+                Me.FilterArray.Add("markcustom3 = 1")
+            Else
+                Me.FilterArray.Remove("markcustom3 = 1")
+            End If
+            Me.RunFilter()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub chkFilterMarkCustom4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMarkCustom4.Click
+        Try
+            If Me.chkFilterMarkCustom4.Checked Then
+                Me.FilterArray.Add("markcustom4 = 1")
+            Else
+                Me.FilterArray.Remove("markcustom4 = 1")
+            End If
+            Me.RunFilter()
+        Catch
+        End Try
+    End Sub
+
     Private Sub chkFilterMissing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterMissing.Click
         Try
             Dim MissingFilter As New List(Of String)
@@ -15531,6 +15579,10 @@ doCancel:
                 .chkFilterDupe.Text = Master.eLang.GetString(41, "Duplicates")
                 .chkFilterLock.Text = Master.eLang.GetString(43, "Locked")
                 .chkFilterMark.Text = Master.eLang.GetString(48, "Marked")
+                .chkFilterMarkCustom1.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker1Name), Master.eSettings.MovieGeneralCustomMarker1Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #1"))
+                .chkFilterMarkCustom2.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker2Name), Master.eSettings.MovieGeneralCustomMarker2Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #2"))
+                .chkFilterMarkCustom3.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker3Name), Master.eSettings.MovieGeneralCustomMarker3Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #3"))
+                .chkFilterMarkCustom4.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker4Name), Master.eSettings.MovieGeneralCustomMarker4Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #4"))
                 .chkFilterMissing.Text = Master.eLang.GetString(40, "Missing Items")
                 .chkFilterNew.Text = Master.eLang.GetString(47, "New")
                 .chkFilterTolerance.Text = Master.eLang.GetString(39, "Out of Tolerance")
