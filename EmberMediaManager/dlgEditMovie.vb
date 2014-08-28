@@ -2691,114 +2691,34 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SaveEThumbsList()
-        Dim tPath As String = String.Empty
         Try
-            '*************** XBMC Frodo & Eden settings ***************
-            If Master.eSettings.MovieUseFrodo OrElse Master.eSettings.MovieUseEden Then
-                If Master.eSettings.MovieExtrathumbsFrodo OrElse Master.eSettings.MovieExtrathumbsEden Then
-                    If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-                        tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
-                    ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-                        tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-                    Else
-                        tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
-                    End If
+            For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EThumbs)
+                If Directory.Exists(a) Then
+                    FileUtils.Delete.DeleteDirectory(a)
                 End If
-            End If
+            Next
 
-            If Not String.IsNullOrEmpty(tPath) Then
-                If Master.currMovie.RemoveEThumbs AndAlso Not hasClearedET Then
-                    FileUtils.Delete.DeleteDirectory(tPath)
-                    hasClearedET = True
-                Else
-                    'first delete the ones from the delete list
-                    For Each del As String In etDeleteList
-                        File.Delete(Path.Combine(tPath, del))
-                    Next
+            For Each eThumb As ExtraImages In EThumbsList
+                Master.currMovie.EThumbsPath = eThumb.Image.SaveAsMovieExtrathumb(Master.currMovie)
+            Next
 
-                    'now name the rest something arbitrary so we don't get any conflicts
-                    For Each lItem As ExtraImages In EThumbsList
-                        If Not lItem.Path.Substring(0, 1) = ":" Then
-                            FileSystem.Rename(lItem.Path, Path.Combine(Directory.GetParent(lItem.Path).FullName, String.Concat("temp", lItem.Name)))
-                        End If
-                    Next
-
-                    'now rename them properly
-                    For Each lItem As ExtraImages In EThumbsList
-                        Dim etPath As String = lItem.Image.SaveAsMovieExtrathumb(Master.currMovie)
-                        If lItem.Index = 0 Then
-                            Master.currMovie.EThumbsPath = etPath
-                        End If
-                    Next
-
-                    'now remove the temp images
-                    Dim tList As New List(Of String)
-
-                    If Directory.Exists(tPath) Then
-                        tList.AddRange(Directory.GetFiles(tPath, "tempthumb*.jpg"))
-                        For Each tFile As String In tList
-                            File.Delete(Path.Combine(tPath, tFile))
-                        Next
-                    End If
-                End If
-            End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
     Private Sub SaveEFanartsList()
-        Dim tPath As String = String.Empty
         Try
-            '*************** XBMC Frodo & Eden settings ***************
-            If Master.eSettings.MovieUseFrodo OrElse Master.eSettings.MovieUseEden Then
-                If Master.eSettings.MovieExtrafanartsFrodo OrElse Master.eSettings.MovieExtrafanartsEden Then
-                    If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-                        tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
-                    ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-                        tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrafanart")
-                    Else
-                        tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
-                    End If
+            For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EFanarts)
+                If Directory.Exists(a) Then
+                    FileUtils.Delete.DeleteDirectory(a)
                 End If
-            End If
+            Next
 
-            If Not String.IsNullOrEmpty(tPath) Then
-                If Master.currMovie.RemoveEFanarts AndAlso Not hasClearedEF Then
-                    FileUtils.Delete.DeleteDirectory(tPath)
-                    hasClearedEF = True
-                Else
-                    'first delete the ones from the delete list
-                    For Each del As String In efDeleteList
-                        File.Delete(Path.Combine(tPath, del))
-                    Next
+            For Each eFanart As ExtraImages In EFanartsList
+                Master.currMovie.EFanartsPath = eFanart.Image.SaveAsMovieExtrafanart(Master.currMovie, eFanart.Name)
+            Next
 
-                    'now name the rest something arbitrary so we don't get any conflicts
-                    For Each lItem As ExtraImages In EFanartsList
-                        If Not lItem.Path.Substring(0, 1) = ":" Then
-                            FileSystem.Rename(lItem.Path, Path.Combine(Directory.GetParent(lItem.Path).FullName, String.Concat("temp", lItem.Name)))
-                        End If
-                    Next
-
-                    'now rename them properly
-                    For Each lItem As ExtraImages In EFanartsList
-                        Dim efPath As String = lItem.Image.SaveAsMovieExtrafanart(Master.currMovie, lItem.Name)
-                        If lItem.Index = 0 Then
-                            Master.currMovie.EFanartsPath = efPath
-                        End If
-                    Next
-
-                    'now remove the temp images
-                    Dim tList As New List(Of String)
-
-                    If Directory.Exists(tPath) Then
-                        tList.AddRange(Directory.GetFiles(tPath, "temp*.jpg"))
-                        For Each tFile As String In tList
-                            File.Delete(Path.Combine(tPath, tFile))
-                        Next
-                    End If
-                End If
-            End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
