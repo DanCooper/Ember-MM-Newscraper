@@ -55,7 +55,6 @@ Public Class IMDB_Data
 
     Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_Data_Movie.ModuleSettingsChanged
 
-    'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.MovieScraperEvent
     Public Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_Movie.ScraperEvent
 
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Data_Movie.ScraperSetupChanged
@@ -419,6 +418,12 @@ Public Class IMDB_Data
         End If
 
         logger.Trace("Finished scrape")
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.ScraperNew
+        logger.Trace("Started scrapeNEW")
+        logger.Trace("Finished scrapeNEW")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

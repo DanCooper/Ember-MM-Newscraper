@@ -35,8 +35,10 @@ Namespace TMDBg
     Public Class SearchResults_Movie
 
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private _Matches As New List(Of MediaContainers.Movie)
+
 #End Region 'Fields
 
 #Region "Properties"

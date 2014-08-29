@@ -32,6 +32,7 @@ Public Class TMDB_Data
 
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Shared ConfigOptions_Movie As New Structures.ScrapeOptions_Movie
     Public Shared ConfigOptions_MovieSet As New Structures.ScrapeOptions_MovieSet
@@ -704,6 +705,12 @@ Public Class TMDB_Data
             DBMovieSet.ListTitle = tTitle
         End If
 
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.ScraperNew
+        logger.Trace("Started scrapeNEW")
+        logger.Trace("Finished scrapeNEW")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
