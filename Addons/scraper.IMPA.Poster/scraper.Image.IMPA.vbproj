@@ -213,10 +213,6 @@
       <Name>EmberAPI</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\FanartTVAPI\FanartTVAPI.csproj">
-      <Project>{70F651C6-6BB4-4E4D-AD6C-25C36CA1E9E6}</Project>
-      <Name>FanartTVAPI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\WatTmdb\WatTmdb.csproj">
       <Project>{EFC11645-FAB4-4C30-A498-29F5ECDF77E8}</Project>
       <Name>WatTmdb</Name>

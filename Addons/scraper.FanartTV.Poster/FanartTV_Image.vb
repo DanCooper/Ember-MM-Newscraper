@@ -22,7 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports RestSharp
 Imports WatTmdb
-Imports ScraperModule.FANARTTVs
+Imports ScraperModule.FanartTVs
 Imports NLog
 Imports System.Diagnostics
 
@@ -51,7 +51,7 @@ Public Class FanartTV_Image
     Private _ScraperEnabled_MovieSet As Boolean = False
     Private _setup_Movie As frmFanartTVMediaSettingsHolder_Movie
     Private _setup_MovieSet As frmFanartTVMediaSettingsHolder_MovieSet
-    Private _fanartTV As FANARTTVs.Scraper
+    Private _fanartTV As FanartTVs.Scraper
 
 #End Region 'Fields
 
@@ -193,14 +193,14 @@ Public Class FanartTV_Image
         _AssemblyName = sAssemblyName
         LoadSettings_Movie()
         'Must be after Load settings to retrieve the correct API key
-        _fanartTV = New FANARTTVs.Scraper(_MySettings_Movie)
+        _fanartTV = New FanartTVs.Scraper(_MySettings_Movie)
     End Sub
 
     Sub Init_MovieSet(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_MovieSet.Init
         _AssemblyName = sAssemblyName
         LoadSettings_MovieSet()
         'Must be after Load settings to retrieve the correct API key
-        _fanartTV = New FANARTTVs.Scraper(_MySettings_MovieSet)
+        _fanartTV = New FanartTVs.Scraper(_MySettings_MovieSet)
     End Sub
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
@@ -419,7 +419,7 @@ Public Class FanartTV_Image
 
         LoadSettings_Movie()
 
-        Dim Settings As FANARTTVs.Scraper.sMySettings_ForScraper
+        Dim Settings As FanartTVs.Scraper.sMySettings_ForScraper
         Settings.ApiKey = _MySettings_Movie.ApiKey
         Settings.ClearArtOnlyHD = _MySettings_Movie.ClearArtOnlyHD
         Settings.ClearLogoOnlyHD = _MySettings_Movie.ClearLogoOnlyHD
@@ -428,7 +428,13 @@ Public Class FanartTV_Image
         Settings.PrefLanguage = _MySettings_Movie.PrefLanguage
         Settings.PrefLanguageOnly = _MySettings_Movie.PrefLanguageOnly
 
-        ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID, Type, Settings)
+        If Not String.IsNullOrEmpty(DBMovie.Movie.ID) Then
+            ImageList = _fanartTV.GetImages_Movie_MovieSet(DBMovie.Movie.ID, Type, Settings)
+        ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
+            ImageList = _fanartTV.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, Type, Settings)
+        Else
+            logger.Trace(String.Concat("No IMDB and TMDB ID exist to search: ", DBMovie.ListTitle))
+        End If
 
         logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -439,7 +445,7 @@ Public Class FanartTV_Image
 
         LoadSettings_MovieSet()
 
-        Dim Settings As FANARTTVs.Scraper.sMySettings_ForScraper
+        Dim Settings As FanartTVs.Scraper.sMySettings_ForScraper
         Settings.ApiKey = _MySettings_MovieSet.ApiKey
         Settings.ClearArtOnlyHD = _MySettings_MovieSet.ClearArtOnlyHD
         Settings.ClearLogoOnlyHD = _MySettings_MovieSet.ClearLogoOnlyHD
@@ -448,7 +454,7 @@ Public Class FanartTV_Image
         Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
         Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
 
-        ImageList = _fanartTV.GetFANARTTVImages(DBMovieset.MovieSet.ID, Type, Settings)
+        ImageList = _fanartTV.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, Type, Settings)
 
         logger.Trace("Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}

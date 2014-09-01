@@ -106,6 +106,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FanartTv, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FanartTv.1.0.0\lib\FanartTv.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -222,14 +226,6 @@
       <Project>{208AA35E-C6AE-4D2D-A9DD-B6EFD19A4279}</Project>
       <Name>EmberAPI</Name>
       <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\FanartTVAPI\FanartTVAPI.csproj">
-      <Project>{70F651C6-6BB4-4E4D-AD6C-25C36CA1E9E6}</Project>
-      <Name>FanartTVAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WatTmdb\WatTmdb.csproj">
-      <Project>{EFC11645-FAB4-4C30-A498-29F5ECDF77E8}</Project>
-      <Name>WatTmdb</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

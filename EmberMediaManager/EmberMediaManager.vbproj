@@ -116,6 +116,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FanartTv">
+      <HintPath>..\packages\FanartTv.1.0.0\lib\FanartTv.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -5203,10 +5206,6 @@
     <ProjectReference Include="..\EmberAPI\EmberAPI.vbproj">
       <Project>{208AA35E-C6AE-4D2D-A9DD-B6EFD19A4279}</Project>
       <Name>EmberAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FanartTVAPI\FanartTVAPI.csproj">
-      <Project>{70F651C6-6BB4-4E4D-AD6C-25C36CA1E9E6}</Project>
-      <Name>FanartTVAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trakttv\Trakttv.csproj">
       <Project>{857e14f3-060a-467e-9195-6165996d7ba3}</Project>
