@@ -75,7 +75,7 @@ Public Class FileFolderRenamer
         End If
     End Function
 
-    Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String) As String
+    Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String, ByVal isPath As Boolean) As String
         Try
             Dim pattern As String = opattern
             Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
@@ -228,11 +228,12 @@ Public Class FileFolderRenamer
                 pattern = String.Concat(pattern, strmore)
                 nextC = pattern.IndexOf("$?")
             End While
-            pattern = StringUtils.CleanFileName(pattern)
 
-            For Each Invalid As Char In Path.GetInvalidPathChars
-                pattern = pattern.Replace(Invalid, String.Empty)
-            Next
+            If isPath Then
+                pattern = StringUtils.CleanPath(pattern)
+            Else
+                pattern = StringUtils.CleanFileName(pattern)
+            End If
 
             ' removes all dots at the end of the name (dots are not allowed)
             While pattern.Last = "."
@@ -241,7 +242,7 @@ Public Class FileFolderRenamer
 
             Return pattern.Trim
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return String.Empty
         End Try
     End Function
@@ -370,7 +371,7 @@ Public Class FileFolderRenamer
                 If Not stackMark = String.Empty AndAlso _tmpMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
                     MovieFile.FileName = Path.GetFileNameWithoutExtension(_tmpMovie.Filename)
                 End If
-                MovieFile.NewFileName = ProccessPattern(MovieFile, filePattern).Trim
+                MovieFile.NewFileName = ProccessPattern(MovieFile, filePattern, False).Trim
 
             End If
         ElseIf MovieFile.IsBDMV Then
@@ -382,9 +383,9 @@ Public Class FileFolderRenamer
         End If
 
         If HaveBase(folderPattern) Then
-            MovieFile.NewPath = ProccessPattern(MovieFile, If(_tmpMovie.IsSingle, folderPattern, "$D")).Trim
+            MovieFile.NewPath = ProccessPattern(MovieFile, If(_tmpMovie.IsSingle, folderPattern, "$D"), True).Trim
         Else
-            MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProccessPattern(MovieFile, If(_tmpMovie.IsSingle, folderPattern, "$D")).Trim)
+            MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProccessPattern(MovieFile, If(_tmpMovie.IsSingle, folderPattern, "$D"), True).Trim)
         End If
         MovieFile.NewPath = If(MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar), MovieFile.NewPath.Substring(1), MovieFile.NewPath)
 
@@ -653,14 +654,14 @@ Public Class FileFolderRenamer
                     If Path.GetFileName(f.FileName.ToLower) = "video_ts" Then
                         f.NewFileName = "VIDEO_TS"
                     Else
-                        f.NewFileName = ProccessPattern(f, filePattern).Trim
+                        f.NewFileName = ProccessPattern(f, filePattern, False).Trim
                     End If
                 End If
 
                 If HaveBase(localFolderPattern) Then
-                    f.NewPath = ProccessPattern(f, localFolderPattern).Trim
+                    f.NewPath = ProccessPattern(f, localFolderPattern, True).Trim
                 Else
-                    f.NewPath = Path.Combine(f.OldPath, ProccessPattern(f, localFolderPattern).Trim)
+                    f.NewPath = Path.Combine(f.OldPath, ProccessPattern(f, localFolderPattern, True).Trim)
                 End If
                 f.NewPath = If(f.NewPath.StartsWith(Path.DirectorySeparatorChar), f.NewPath.Substring(1), f.NewPath)
 

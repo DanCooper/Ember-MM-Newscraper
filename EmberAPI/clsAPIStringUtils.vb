@@ -851,9 +851,7 @@ Public Class StringUtils
     ''' </summary>
     ''' <param name="fName"><c>String</c> filename to clean</param>
     ''' <returns>Cleaned <c>String</c></returns>
-    ''' <remarks>Removes all invalid filename characters such as (:/|<>?*)
-    ''' 
-    ''' 2013/11/21 Dekker500 - Re-factored to remove the full set of invalid characters. Why was "\" considered acceptable before?
+    ''' <remarks>Removes all invalid filename characters)
     ''' </remarks>
     Public Shared Function CleanFileName(ByVal fName As String) As String
         If String.IsNullOrEmpty(fName) Then Return String.Empty
@@ -867,14 +865,27 @@ Public Class StringUtils
             fName = fName.Replace(someChar, " "c)
         Next
 
-        'fName = fName.Replace("/", String.Empty)
-        ''pattern = pattern.Replace("\", String.Empty)
-        'fName = fName.Replace("|", String.Empty)
-        'fName = fName.Replace("<", String.Empty)
-        'fName = fName.Replace(">", String.Empty)
-        'fName = fName.Replace("?", String.Empty)
-        'fName = fName.Replace("*", String.Empty)
-        'fName = fName.Replace(" ", " ")
+        Return fName
+    End Function
+    ''' <summary>
+    ''' Removes invalid token from the given path string
+    ''' </summary>
+    ''' <param name="fName"><c>String</c> path to clean</param>
+    ''' <returns>Cleaned <c>String</c></returns>
+    ''' <remarks>Removes all invalid path characters)
+    ''' </remarks>
+    Public Shared Function CleanPath(ByVal fName As String) As String
+        If String.IsNullOrEmpty(fName) Then Return String.Empty
+
+        'Do specific replaces first
+        fName = fName.Replace(":", " -")
+
+        'Everthing else gets removed
+        Dim invalidPathChars() As Char = Path.GetInvalidPathChars()
+        For Each someChar In invalidPathChars
+            fName = fName.Replace(someChar, " "c)
+        Next
+
         Return fName
     End Function
     ''' <summary>
