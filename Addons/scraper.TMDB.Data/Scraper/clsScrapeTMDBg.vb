@@ -201,7 +201,7 @@ Namespace TMDBg
                 Dim Movie As WatTmdb.V3.TmdbMovie
                 If bwTMDBg.CancellationPending Then Return ""
 
-                Movie = _TMDBApiE.GetMovieByIMDB(IMDBID)
+                Movie = _TMDBApiE_MovieSet.GetMovieByIMDB(IMDBID)
                 If IsNothing(Movie) Then
                     Return String.Empty
                 End If
