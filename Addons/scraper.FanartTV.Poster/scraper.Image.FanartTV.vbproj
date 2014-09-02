@@ -106,9 +106,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FanartTv, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FanartTv, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FanartTv.1.0.0\lib\FanartTv.dll</HintPath>
+      <HintPath>..\..\packages\FanartTv.2.0.4\lib\FanartTv.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
