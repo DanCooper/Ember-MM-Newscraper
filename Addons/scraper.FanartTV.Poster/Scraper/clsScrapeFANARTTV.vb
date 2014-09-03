@@ -112,7 +112,7 @@ Namespace FanartTVs
 
             Try
                 Dim Results = New FanartTv.Movies.Movie(imdbID_tmdbID, Settings.ApiKey)
-                If IsNothing(Results) Then Return alPosters
+                If IsNothing(Results) OrElse FanartTv.API.ErrorOccurred Then Return alPosters
                 If bwFANARTTV.CancellationPending Then Return Nothing
 
                 'Poster
