@@ -3431,6 +3431,10 @@ doCancel:
             Me.chkFilterTolerance.Checked = False
             Me.chkFilterMissing.Checked = False
             Me.chkFilterMark.Checked = False
+            Me.chkFilterMarkCustom1.Checked = False
+            Me.chkFilterMarkCustom2.Checked = False
+            Me.chkFilterMarkCustom3.Checked = False
+            Me.chkFilterMarkCustom4.Checked = False
             Me.chkFilterNew.Checked = False
             Me.chkFilterLock.Checked = False
             Me.rbFilterOr.Checked = False
@@ -7254,6 +7258,10 @@ doCancel:
         Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
         Me.chkFilterMissing.Enabled = isEnabled
         Me.chkFilterMark.Enabled = isEnabled
+        Me.chkFilterMarkCustom1.Enabled = isEnabled
+        Me.chkFilterMarkCustom2.Enabled = isEnabled
+        Me.chkFilterMarkCustom3.Enabled = isEnabled
+        Me.chkFilterMarkCustom4.Enabled = isEnabled
         Me.chkFilterNew.Enabled = isEnabled
         Me.chkFilterLock.Enabled = isEnabled
         Me.rbFilterOr.Enabled = isEnabled
@@ -12644,7 +12652,8 @@ doCancel:
         End If
 
         If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
-        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.clbFilterSource.CheckedItems.Count > 0 OrElse _
+        Me.chkFilterMark.Checked OrElse Me.chkFilterMarkCustom1.Checked OrElse Me.chkFilterMarkCustom2.Checked OrElse Me.chkFilterMarkCustom3.Checked OrElse _
+        Me.chkFilterMarkCustom4.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.clbFilterSource.CheckedItems.Count > 0 OrElse _
         Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter()
     End Sub
 
@@ -12668,7 +12677,8 @@ doCancel:
         End If
 
         If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
-        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.clbFilterSource.CheckedItems.Count > 0 OrElse _
+        Me.chkFilterMark.Checked OrElse Me.chkFilterMarkCustom1.Checked OrElse Me.chkFilterMarkCustom2.Checked OrElse Me.chkFilterMarkCustom3.Checked OrElse _
+        Me.chkFilterMarkCustom4.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.clbFilterSource.CheckedItems.Count > 0 OrElse _
         Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter()
     End Sub
 
