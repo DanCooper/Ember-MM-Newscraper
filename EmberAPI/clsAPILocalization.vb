@@ -187,7 +187,7 @@ Public Class Localization
 
         x1 = From x As HelpString In htHelpStrings.string Where (x.control = ctrlName)
         If x1.Count = 0 Then
-            logger.Trace(New StackFrame().GetMethod().Name, "Missing language_help_string: {0}", ctrlName)
+            logger.Info(New StackFrame().GetMethod().Name, String.Format("Missing language_help_string: {0}", ctrlName))
             aStr = String.Empty
         Else
             aStr = x1(0).Value
