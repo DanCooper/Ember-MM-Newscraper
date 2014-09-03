@@ -178,8 +178,22 @@ Public Class frmIMDBInfoSettingsHolder
     Private Sub chkYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYear.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
-
-    Private Sub chkIMDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkIMDBCleanPlotOutline.CheckedChanged
+    Private Sub chkFallBackworldwide_CheckedChanged(sender As Object, e As EventArgs) Handles chkFallBackworldwide.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+    Private Sub cbForceTitleLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbForceTitleLanguage.SelectedIndexChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+    Private Sub chkForceTitleLanguage_CheckedChanged(sender As Object, e As EventArgs) Handles chkForceTitleLanguage.CheckedChanged
+        Me.cbForceTitleLanguage.SelectedIndex = -1
+        Me.cbForceTitleLanguage.Enabled = Me.chkForceTitleLanguage.Checked
+        Me.chkFallBackworldwide.Enabled = Me.chkForceTitleLanguage.Checked
+        If Me.chkForceTitleLanguage.Checked = False Then
+            Me.chkFallBackworldwide.Checked = False
+            Me.chkFallBackworldwide.Enabled = False
+        Else
+            Me.chkFallBackworldwide.Enabled = True
+        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -226,13 +240,17 @@ Public Class frmIMDBInfoSettingsHolder
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
+        Me.chkFallBackworldwide.Text = Master.eLang.GetString(984, "Worldwide title as fallback")
+        Me.chkForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")
         Me.chkFullCast.Text = Master.eLang.GetString(512, "Scrape Full Cast")
         Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top250")
-        Me.chkIMDBCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
+
     End Sub
 
 #End Region 'Methods
+
+
 
 
 End Class

@@ -30,7 +30,6 @@ Public Class OFDB
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private imdbID As String
-    Private OFDBMovie As MediaContainers.Movie
     Private _genre As String
     Private _outline As String
     Private _plot As String
@@ -40,11 +39,9 @@ Public Class OFDB
 
 #Region "Constructors"
 
-    Public Sub New(ByVal sID As String, ByRef mMovie As MediaContainers.Movie)
+    Public Sub New(ByVal sID As String)
         Clear()
         imdbID = sID
-        OFDBMovie = mMovie
-
         GetOFDBDetails()
     End Sub
 
@@ -170,117 +167,109 @@ Public Class OFDB
 
                 If Not String.IsNullOrEmpty(HTML) Then
                     'title
-                    If String.IsNullOrEmpty(OFDBMovie.Title) OrElse Not Master.eSettings.MovieLockTitle Then
-                        Dim OFDBTitle As String = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<td width=""99\%""><h1 itemprop=""name""><font face=""Arial,Helvetica,sans-serif"" size=""3""><b>([^<]+)</b></font></h1></td>").Groups(1).Value.ToString))
-                        If OFDBTitle.EndsWith(", Der") Then
-                            _title = String.Concat("Der ", OFDBTitle.Replace(", Der", " ")).Trim
-                        ElseIf OFDBTitle.EndsWith(", Die") Then
-                            _title = String.Concat("Die ", OFDBTitle.Replace(", Die", " ")).Trim
-                        ElseIf OFDBTitle.EndsWith(", Das") Then
-                            _title = String.Concat("Das ", OFDBTitle.Replace(", Das", " ")).Trim
-                        ElseIf OFDBTitle.EndsWith(", The") Then
-                            _title = String.Concat("The ", OFDBTitle.Replace(", The", " ")).Trim
-                        ElseIf OFDBTitle.EndsWith(", Ein") Then
-                            _title = String.Concat("Ein ", OFDBTitle.Replace(", Ein", " ")).Trim
-                        ElseIf OFDBTitle.EndsWith(", Eine") Then
-                            _title = String.Concat("Eine ", OFDBTitle.Replace(", Eine", " ")).Trim
-                        Else
-                            _title = OFDBTitle
-                        End If
+                    Dim OFDBTitle As String = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<td width=""99\%""><h1 itemprop=""name""><font face=""Arial,Helvetica,sans-serif"" size=""3""><b>([^<]+)</b></font></h1></td>").Groups(1).Value.ToString))
+                    If OFDBTitle.EndsWith(", Der") Then
+                        _title = String.Concat("Der ", OFDBTitle.Replace(", Der", " ")).Trim
+                    ElseIf OFDBTitle.EndsWith(", Die") Then
+                        _title = String.Concat("Die ", OFDBTitle.Replace(", Die", " ")).Trim
+                    ElseIf OFDBTitle.EndsWith(", Das") Then
+                        _title = String.Concat("Das ", OFDBTitle.Replace(", Das", " ")).Trim
+                    ElseIf OFDBTitle.EndsWith(", The") Then
+                        _title = String.Concat("The ", OFDBTitle.Replace(", The", " ")).Trim
+                    ElseIf OFDBTitle.EndsWith(", Ein") Then
+                        _title = String.Concat("Ein ", OFDBTitle.Replace(", Ein", " ")).Trim
+                    ElseIf OFDBTitle.EndsWith(", Eine") Then
+                        _title = String.Concat("Eine ", OFDBTitle.Replace(", Eine", " ")).Trim
+                    Else
+                        _title = OFDBTitle
                     End If
+
 
                     Dim D, Dq, W, Wq, B As Integer
                     Dim tmpHTML As String
 
                     'outline
-                    If String.IsNullOrEmpty(OFDBMovie.Outline) OrElse Not Master.eSettings.MovieLockOutline Then
-                        D = HTML.IndexOf("<b>Inhalt:</b>")
-                        Dq = HTML.IndexOf("<b>Inhalt:</b> <font style=")
 
-                        If Dq > 0 Then
-                            Wq = HTML.IndexOf("<span itemprop=""description"">", Dq)
-                            W = HTML.IndexOf("<a href=""plot", Wq + 29)
-                            _outline = Web.HttpUtility.HtmlDecode(HTML.Substring(Wq + 29, W - (Wq + 29)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
-                        ElseIf D > 0 Then
-                            W = HTML.IndexOf("<a href=""", D + 44)
-                            _outline = Web.HttpUtility.HtmlDecode(HTML.Substring(D + 44, W - (D + 44)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
-                        End If
+                    D = HTML.IndexOf("<b>Inhalt:</b>")
+                    Dq = HTML.IndexOf("<b>Inhalt:</b> <font style=")
+
+                    If Dq > 0 Then
+                        Wq = HTML.IndexOf("<span itemprop=""description"">", Dq)
+                        W = HTML.IndexOf("<a href=""plot", Wq + 29)
+                        _outline = Web.HttpUtility.HtmlDecode(HTML.Substring(Wq + 29, W - (Wq + 29)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
+                    ElseIf D > 0 Then
+                        W = HTML.IndexOf("<a href=""", D + 44)
+                        _outline = Web.HttpUtility.HtmlDecode(HTML.Substring(D + 44, W - (D + 44)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
                     End If
+
 
                     'full plot
                     D = 0 : Dq = 0 : W = 0
-                    If String.IsNullOrEmpty(OFDBMovie.Plot) OrElse Not Master.eSettings.MovieLockPlot Then
-                        D = HTML.IndexOf("<b>Inhalt:</b>")
-                        Dq = HTML.IndexOf("<b>Inhalt:</b> <font style=")
 
-                        If Dq > 0 Then
-                            Dim L As Integer = HTML.Length
-                            tmpHTML = HTML.Substring(D + 197, L - (D + 197)).Trim
-                            W = tmpHTML.IndexOf("<a href=""")
-                            If W > 0 Then
-                                B = tmpHTML.IndexOf("""><b>[mehr]</b>", W + 9)
-                                If B > 0 Then
-                                    Dim FullPlot = GetFullPlot(String.Concat("http://www.ofdb.de/", tmpHTML.Substring(W + 9, B - (W + 9))))
-                                    If Not String.IsNullOrEmpty(FullPlot) Then
-                                        _plot = FullPlot
-                                    End If
+                    D = HTML.IndexOf("<b>Inhalt:</b>")
+                    Dq = HTML.IndexOf("<b>Inhalt:</b> <font style=")
+
+                    If Dq > 0 Then
+                        Dim L As Integer = HTML.Length
+                        tmpHTML = HTML.Substring(D + 197, L - (D + 197)).Trim
+                        W = tmpHTML.IndexOf("<a href=""")
+                        If W > 0 Then
+                            B = tmpHTML.IndexOf("""><b>[mehr]</b>", W + 9)
+                            If B > 0 Then
+                                Dim FullPlot = GetFullPlot(String.Concat("http://www.ofdb.de/", tmpHTML.Substring(W + 9, B - (W + 9))))
+                                If Not String.IsNullOrEmpty(FullPlot) Then
+                                    _plot = FullPlot
                                 End If
                             End If
-                        ElseIf D > 0 Then
-                            Dim L As Integer = HTML.Length
-                            tmpHTML = HTML.Substring(D + 44, L - (D + 44)).Trim
-                            W = tmpHTML.IndexOf("<a href=""")
-                            If W > 0 Then
-                                B = tmpHTML.IndexOf("""><b>[mehr]</b>", W + 9)
-                                If B > 0 Then
-                                    Dim FullPlot = GetFullPlot(String.Concat("http://www.ofdb.de/", tmpHTML.Substring(W + 9, B - (W + 9))))
-                                    If Not String.IsNullOrEmpty(FullPlot) Then
-                                        _plot = FullPlot
-                                    End If
+                        End If
+                    ElseIf D > 0 Then
+                        Dim L As Integer = HTML.Length
+                        tmpHTML = HTML.Substring(D + 44, L - (D + 44)).Trim
+                        W = tmpHTML.IndexOf("<a href=""")
+                        If W > 0 Then
+                            B = tmpHTML.IndexOf("""><b>[mehr]</b>", W + 9)
+                            If B > 0 Then
+                                Dim FullPlot = GetFullPlot(String.Concat("http://www.ofdb.de/", tmpHTML.Substring(W + 9, B - (W + 9))))
+                                If Not String.IsNullOrEmpty(FullPlot) Then
+                                    _plot = FullPlot
                                 End If
                             End If
                         End If
                     End If
 
+
                     'genre
                     D = 0 : W = 0
-                    If String.IsNullOrEmpty(OFDBMovie.Genre) OrElse Not Master.eSettings.MovieLockGenre Then
-                        D = HTML.IndexOf("class=""Normal"">Genre(s):</font></td>")
-                        If D > 0 Then
-                            W = HTML.IndexOf("</table>", D)
-                            If W > 0 Then
-                                Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), "<a.*?href=[""'](?<url>.*?)[""'].*?><span itemprop=""genre"">(?<name>.*?)</span></a>")
 
-                                'cocotus 201406028 Use Max Genre settings like IMDB scraper does, http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/122
-                                'Dim Gen = From M In rGenres _
-                                '      Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
-                                Dim Gen = From M In rGenres _
-                                      Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString) Take If(Master.eSettings.MovieScraperGenreLimit > 0, Master.eSettings.MovieScraperGenreLimit, 999999)
+                    D = HTML.IndexOf("class=""Normal"">Genre(s):</font></td>")
+                    If D > 0 Then
+                        W = HTML.IndexOf("</table>", D)
+                        If W > 0 Then
+                            Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), "<a.*?href=[""'](?<url>.*?)[""'].*?><span itemprop=""genre"">(?<name>.*?)</span></a>")
 
-                                If Gen.Count > 0 Then
-                                    Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
-                                    tGenre = StringUtils.GenreFilter(tGenre)
-                                    If Not String.IsNullOrEmpty(tGenre) Then
-                                        _genre = Strings.Join(tGenre.Split(Convert.ToChar("/")), " / ").Trim
-                                    End If
+                            'cocotus 201406028 Use Max Genre settings like IMDB scraper does, http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/122
+                            'Dim Gen = From M In rGenres _
+                            '      Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
+                            Dim Gen = From M In rGenres _
+                                  Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString) Take If(Master.eSettings.MovieScraperGenreLimit > 0, Master.eSettings.MovieScraperGenreLimit, 999999)
+
+                            If Gen.Count > 0 Then
+                                Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
+                                tGenre = StringUtils.GenreFilter(tGenre)
+                                If Not String.IsNullOrEmpty(tGenre) Then
+                                    _genre = Strings.Join(tGenre.Split(Convert.ToChar("/")), " / ").Trim
                                 End If
                             End If
                         End If
                     End If
 
                     'fsk
-                    If String.IsNullOrEmpty(OFDBMovie.Certification) OrElse Not Master.eSettings.MovieLockMPAA Then
-                        _fsk = GetFSK(HTML)
-                    End If
-
-
-
-
+                    _fsk = GetFSK(HTML)
 
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

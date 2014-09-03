@@ -29,7 +29,6 @@ Public Class MoviepilotDE
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private originaltitle As String
-    Private MoviepilotDEMovie As MediaContainers.Movie
     Private _fsk As String
     Private _outline As String
     Private _plot As String
@@ -38,10 +37,9 @@ Public Class MoviepilotDE
 
 #Region "Constructors"
 
-    Public Sub New(ByVal soriginaltitle As String, ByRef mMovie As MediaContainers.Movie)
+    Public Sub New(ByVal soriginaltitle As String)
         Clear()
         originaltitle = soriginaltitle
-        MoviepilotDEMovie = mMovie
         'Main method in this class to retrieve Moviepilot information...
         GetMoviepilotDEDetails()
     End Sub
@@ -111,24 +109,21 @@ Public Class MoviepilotDE
                 If Not String.IsNullOrEmpty(HTML) Then
 
                     'outline
-                    If String.IsNullOrEmpty(MoviepilotDEMovie.Outline) OrElse Not Master.eSettings.MovieLockOutline Then
-                        _outline = GetPlotAndOutline(HTML, 1)
-                    End If
+                    _outline = GetPlotAndOutline(HTML, 1)
 
-                    'full plot
-                    If String.IsNullOrEmpty(MoviepilotDEMovie.Plot) OrElse Not Master.eSettings.MovieLockPlot Then
-                        _plot = GetPlotAndOutline(HTML, 0)
-                    End If
 
-                    'fsk
-                    If String.IsNullOrEmpty(MoviepilotDEMovie.Certification) OrElse Not Master.eSettings.MovieLockMPAA Then
-                        _fsk = GetFSK(HTML)
-                    End If
+                    'full plot         
+                    _plot = GetPlotAndOutline(HTML, 0)
+
+
+                    'fsk       
+                    _fsk = GetFSK(HTML)
+
 
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

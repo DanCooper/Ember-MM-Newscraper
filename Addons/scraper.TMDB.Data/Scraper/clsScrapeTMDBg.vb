@@ -263,6 +263,8 @@ Namespace TMDBg
                 '' <tag>Name of the tag</tag>
                 '' ...
                 '' </movie>
+
+                'Use TMDB title/originaltitle?
                 If Options.bTitle Then
                     If String.IsNullOrEmpty(Movie.original_title) Then
                         If _MySettings.FallBackEng Then
@@ -274,23 +276,23 @@ Namespace TMDBg
                         DBMovie.OriginalTitle = Movie.original_title
                     End If
 
-                    If String.IsNullOrEmpty(DBMovie.Title) OrElse Not Master.eSettings.MovieLockTitle Then
-                        If String.IsNullOrEmpty(Movie.title) Then
-                            If _MySettings.FallBackEng Then
-                                If String.IsNullOrEmpty(MovieE.title) = False Then
-                                    DBMovie.Title = MovieE.title
-                                End If
+                    If String.IsNullOrEmpty(Movie.title) Then
+                        If _MySettings.FallBackEng Then
+                            If String.IsNullOrEmpty(MovieE.title) = False Then
+                                DBMovie.Title = MovieE.title
                             End If
-                        Else
-                            DBMovie.Title = Movie.title
                         End If
+                    Else
+                        DBMovie.Title = Movie.title
                     End If
                 End If
 
+
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Get collection information
+                'Use TMDB collection data?
                 If Options.bCollection Then
+                    'Get collection information
                     If IsNothing(Movie.belongs_to_collection) Then
                         If _MySettings.FallBackEng Then
                             If Not IsNothing(MovieE.belongs_to_collection) Then
@@ -306,6 +308,7 @@ Namespace TMDBg
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
+                'Use TMDB posters?
                 If GetPoster Then
                     ' I will add original always. to be updated if size, TMDBConf.images.poster_sizes(0) & 
                     Dim Images As WatTmdb.V3.TmdbMovieImages
@@ -330,6 +333,7 @@ Namespace TMDBg
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
+                'Use TMDB year?
                 If Options.bYear Then
                     scrapedresult = Left(CStr(IIf(String.IsNullOrEmpty(Movie.release_date) AndAlso _MySettings.FallBackEng, MovieE.release_date, Movie.release_date)), 4)
                     'only update DBMovie if scraped result is not empty/nothing!
@@ -340,7 +344,9 @@ Namespace TMDBg
 
 
                 Dim Releases As WatTmdb.V3.TmdbMovieReleases = Nothing
-                If Options.bMPAA AndAlso (String.IsNullOrEmpty(DBMovie.MPAA) OrElse Not Master.eSettings.MovieLockMPAA) Then
+
+                'Use TMDB MPAA?
+                If Options.bMPAA Then
                     Releases = _TMDBApi.GetMovieReleases(Movie.id)
                     If Not IsNothing(Releases) AndAlso Not IsNothing(Releases.countries) Then
                         If (Releases.countries.Count = 0) AndAlso _MySettings.FallBackEng Then
@@ -360,7 +366,9 @@ Namespace TMDBg
                                     If Not String.IsNullOrEmpty(Country.certification) Then
                                         DBMovie.MPAA = String.Concat(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Country.iso_3166_1.ToLower).name, ":", Country.certification)
                                     End If
-                                    If Options.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) Then
+
+                                    'Use TMDB certification?
+                                    If Options.bCert Then
                                         DBMovie.Certification = DBMovie.MPAA
                                     End If
                                     Exit For
@@ -372,6 +380,7 @@ Namespace TMDBg
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
+                'Use TMDB release date?
                 If Options.bRelease Then
                     scrapedresult = CStr(IIf(String.IsNullOrEmpty(Movie.release_date) AndAlso _MySettings.FallBackEng, MovieE.release_date, Movie.release_date))
                     'only update DBMovie if scraped result is not empty/nothing!
@@ -380,7 +389,8 @@ Namespace TMDBg
                     End If
                 End If
 
-                If Options.bRating AndAlso (String.IsNullOrEmpty(DBMovie.Rating) OrElse Not Master.eSettings.MovieLockRating) Then
+                'Use TMDB rating?
+                If Options.bRating Then
                     scrapedresult = CStr(IIf(IsNothing(Movie.vote_average) AndAlso Movie.vote_average = 0 AndAlso _MySettings.FallBackEng, MovieE.vote_average, Movie.vote_average))
                     'only update DBMovie if scraped result is not empty/nothing!
                     If Not String.IsNullOrEmpty(scrapedresult) Then
@@ -390,8 +400,8 @@ Namespace TMDBg
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'trailer
-                If Options.bTrailer AndAlso (String.IsNullOrEmpty(DBMovie.Trailer) OrElse Not Master.eSettings.MovieLockTrailer) Then
+                'Use TMDB trailer?
+                If Options.bTrailer Then
                     Dim Trailers As WatTmdb.V3.TmdbMovieTrailers
                     Trailers = _TMDBApi.GetMovieTrailers(Movie.id)
                     If Not IsNothing(Trailers) AndAlso Not IsNothing(Trailers.youtube) Then
@@ -409,14 +419,11 @@ Namespace TMDBg
                             DBMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & Trailers.youtube(0).source
                         End If
                     End If
-                    If Master.eSettings.MovieXBMCTrailerFormat AndAlso Not String.IsNullOrEmpty(DBMovie.Trailer) Then
-                        DBMovie.Trailer = Replace(DBMovie.Trailer.Trim, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                        DBMovie.Trailer = Replace(DBMovie.Trailer.Trim, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                    End If
                 End If
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
+                'Use TMDB votes?
                 If Options.bVotes Then
                     scrapedresult = CStr(IIf(IsNothing(Movie.vote_count) AndAlso Movie.vote_count = 0 AndAlso _MySettings.FallBackEng, MovieE.vote_count.ToString(), Movie.vote_count.ToString()))
                     'only update DBMovie if scraped result is not empty/nothing!
@@ -427,6 +434,7 @@ Namespace TMDBg
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
+                'Use TMDB actors?
                 Dim aCast As WatTmdb.V3.TmdbMovieCast = Nothing
                 If Options.bCast Then
                     aCast = _TMDBApi.GetMovieCast(Movie.id)
@@ -459,8 +467,8 @@ Namespace TMDBg
                     End If
                 End If
 
-                'Get tagline of the movie
-                If Options.bTagline AndAlso (String.IsNullOrEmpty(DBMovie.Tagline) OrElse Not Master.eSettings.MovieLockTagline) Then
+                'Use TMDB tagline?
+                If Options.bTagline Then
                     If String.IsNullOrEmpty(Movie.tagline) Then
                         If _MySettings.FallBackEng Then
                             If String.IsNullOrEmpty(MovieE.tagline) = False Then
@@ -474,7 +482,7 @@ Namespace TMDBg
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Get countries of the movie
+                'Use TMDB countries?
                 If Options.bCountry Then
                     DBMovie.Countries.Clear()
                     If Not IsNothing(Movie.production_countries) AndAlso Movie.production_countries.Count > 0 Then
@@ -486,8 +494,8 @@ Namespace TMDBg
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Get genres of the movie
-                If Options.bGenre AndAlso (String.IsNullOrEmpty(DBMovie.Genre) OrElse Not Master.eSettings.MovieLockGenre) Then
+                'Use TMDB genres?
+                If Options.bGenre Then
                     DBMovie.Genres.Clear()
                     Dim tGen As System.Collections.Generic.List(Of WatTmdb.V3.MovieGenre)
                     If Not IsNothing(Movie) AndAlso Not IsNothing(Movie.genres) Then
@@ -497,74 +505,30 @@ Namespace TMDBg
                     End If
 
                     If Not IsNothing(tGen) AndAlso tGen.Count > 0 Then
-                        'cocotus 201406028 Use Max Genre settings like IMDB scraper does, http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/122
-                        If Master.eSettings.MovieScraperGenreLimit > 0 Then
-                            Dim counter As Integer = 0
-                            For Each aGen As WatTmdb.V3.MovieGenre In tGen
-                                counter = counter + 1
-                                If counter <= Master.eSettings.MovieScraperGenreLimit Then
-                                    DBMovie.Genres.Add(aGen.name)
-                                End If
-                            Next
-                        Else
-                            For Each aGen As WatTmdb.V3.MovieGenre In tGen
-                                DBMovie.Genres.Add(aGen.name)
-                            Next
-                        End If
+                        For Each aGen As WatTmdb.V3.MovieGenre In tGen
+                            DBMovie.Genres.Add(aGen.name)
+                        Next
                     End If
                 End If
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Get plot of the movie
-                If Options.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Plot) OrElse Not Master.eSettings.MovieLockPlot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Plot))) Then
+                'Use TMDB plot?
+                If Options.bPlot Then
                     If String.IsNullOrEmpty(Movie.overview) Then
                         If _MySettings.FallBackEng Then
                             If String.IsNullOrEmpty(MovieE.overview) = False Then
-                                'check if brackets should be removed...
-                                If Options.bCleanPlotOutline Then
-                                    DBMovie.Plot = StringUtils.RemoveBrackets(MovieE.overview)
-                                Else
-                                    DBMovie.Plot = MovieE.overview
-                                End If
+                                DBMovie.Plot = MovieE.overview
                             End If
                         End If
                     Else
-                        'check if brackets should be removed...
-                        If Options.bCleanPlotOutline Then
-                            DBMovie.Plot = StringUtils.RemoveBrackets(Movie.overview)
-                        Else
-                            DBMovie.Plot = Movie.overview
-                        End If
+                        DBMovie.Plot = Movie.overview
                     End If
                 End If
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Get outline of the movie
-                If Master.eSettings.MovieScraperOutline AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso (String.IsNullOrEmpty(DBMovie.Outline) OrElse Not Master.eSettings.MovieLockOutline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Outline))) Then
-                    If String.IsNullOrEmpty(DBMovie.Plot) = False Then
-                        If Master.eSettings.MovieScraperOutlineLimit > 0 Then
-                            'check if brackets should be removed...
-                            If Options.bCleanPlotOutline Then
-                                DBMovie.Outline = StringUtils.RemoveBrackets(StringUtils.ShortenOutline(DBMovie.Plot, Master.eSettings.MovieScraperOutlineLimit))
-                            Else
-                                DBMovie.Outline = StringUtils.ShortenOutline(DBMovie.Plot, Master.eSettings.MovieScraperOutlineLimit)
-                            End If
-                        Else
-                            'check if brackets should be removed...
-                            If Options.bCleanPlotOutline Then
-                                DBMovie.Outline = StringUtils.RemoveBrackets(DBMovie.Plot)
-                            Else
-                                DBMovie.Outline = DBMovie.Plot
-                            End If
-                        End If
-                    End If
-                End If
-
-                If bwTMDBg.CancellationPending Then Return Nothing
-
-                'Get the movie duration
+                'Use TMDB runtime?
                 If Options.bRuntime Then
                     scrapedresult = CStr(IIf(IsNothing(Movie.runtime) AndAlso Movie.runtime = 0 AndAlso _MySettings.FallBackEng, MovieE.runtime.ToString(), Movie.runtime.ToString()))
                     'only update DBMovie if scraped result is not empty/nothing!
@@ -573,8 +537,9 @@ Namespace TMDBg
                     End If
                 End If
 
-                'Get Production Studio
-                If Options.bStudio AndAlso (String.IsNullOrEmpty(DBMovie.Studio) OrElse Not Master.eSettings.MovieLockStudio) Then
+                'Use TMDB studios?
+                If Options.bStudio Then
+                    'Get Production Studio
                     tStr = ""
                     Dim tPC As System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany)
                     If Not IsNothing(Movie) AndAlso Not IsNothing(Movie.genres) Then
@@ -599,8 +564,9 @@ Namespace TMDBg
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Get All Other Info
+                'Use TMDB other infos?
                 If FullCrew Or Options.bWriters Or Options.bDirector Then
+                    'Get All Other Info
                     If IsNothing(aCast) Then
                         aCast = _TMDBApi.GetMovieCast(Movie.id)
                         If Not IsNothing(aCast) AndAlso Not IsNothing(aCast.cast) Then
@@ -750,7 +716,7 @@ Namespace TMDBg
                     Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk
 
                         If r.Matches.Count = 1 Then
-                            b = GetMovieInfo(r.Matches.Item(0).TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
+                            b = GetMovieInfo(r.Matches.Item(0).TMDBID, imdbMovie, True, True, False, Options, True)
                         Else
                             Master.tmpMovie.Clear()
                             Using dTMDB As New dlgTMDBSearchResults_Movie(_MySettings, Me)
@@ -759,7 +725,7 @@ Namespace TMDBg
                                     If String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
                                         b = False
                                     Else
-                                        b = GetMovieInfo(Master.tmpMovie.TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
+                                        b = GetMovieInfo(Master.tmpMovie.TMDBID, imdbMovie, True, True, False, Options, True)
                                     End If
                                 Else
                                     b = False
@@ -768,14 +734,14 @@ Namespace TMDBg
                         End If
                     Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.FullSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.UpdateSkip
                         If r.Matches.Count = 1 Then
-                            b = GetMovieInfo(r.Matches.Item(0).TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
+                            b = GetMovieInfo(r.Matches.Item(0).TMDBID, imdbMovie, True, True, False, Options, True)
                         End If
                     Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
                         Dim exactHaveYear As Integer = FindYear(dbMovie.Filename, r.Matches)
                         If r.Matches.Count = 1 Then
-                            b = GetMovieInfo(r.Matches.Item(0).TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
+                            b = GetMovieInfo(r.Matches.Item(0).TMDBID, imdbMovie, True, True, False, Options, True)
                         ElseIf r.Matches.Count > 1 Then
-                            b = GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
+                            b = GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).TMDBID, imdbMovie, True, True, False, Options, True)
                         End If
                 End Select
 

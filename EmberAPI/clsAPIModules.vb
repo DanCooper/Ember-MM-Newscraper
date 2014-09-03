@@ -664,6 +664,10 @@ Public Class ModulesManager
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
+        Dim ScrapedList As New List(Of Structures.DBMovie)
+        Dim aMovie As MediaContainers.Movie
+        Dim ScrapedList2 As New List(Of MediaContainers.Movie)
+
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
             Application.DoEvents()
         End While
@@ -675,7 +679,14 @@ Public Class ModulesManager
                 logger.Trace("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 Try
-                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
+                    '  ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
+                    aMovie = New MediaContainers.Movie
+                    'Dim tmpMovie As New MediaContainers.Movie
+                    'aMovie.Movie = tmpMovie
+                    ret = _externalScraperModule.ProcessorModule.ScraperNew(DBMovie, aMovie, ScrapeType, Options)
+                    If Not IsNothing(aMovie) Then
+                        ScrapedList2.Add(aMovie)
+                    End If
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
@@ -686,18 +697,20 @@ Public Class ModulesManager
 
         Return ret.Cancelled
     End Function
+
     ''' <summary>
     ''' Request that enabled movie scrapers perform their functions on the supplied movie
     ''' </summary>
-    ''' <param name="DBMovie">Movie to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="DBMovie">Movie to be scraped</param>
+    ''' <param name="ScrapedList ">List of Structures.DBMovie objects which contains result of each data scraper</param>
     ''' <param name="ScrapeType">What kind of scrape is being requested, such as whether user-validation is desired</param>
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_MovieNew(ByVal DBMovie As Structures.DBMovie, ByRef ScrapedList As List(Of Structures.DBMovie), ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Boolean
+    Public Function ScrapeData_MovieNew(ByVal DBMovie As Structures.DBMovie, ByRef ScrapedList As List(Of MediaContainers.Movie), ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
-        Dim aMovie As Structures.DBMovie
+        Dim aMovie As MediaContainers.Movie
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
             Application.DoEvents()
@@ -706,15 +719,21 @@ Public Class ModulesManager
         If (modules.Count() <= 0) Then
             logger.Warn("No movie scrapers are defined")
         Else
+
+
             For Each _externalScraperModule As _externalScraperModuleClass_Data_Movie In modules
                 logger.Trace("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 Try
-                    aMovie = New Structures.DBMovie
+                    aMovie = New MediaContainers.Movie
+                    'Dim tmpMovie As New MediaContainers.Movie
+                    'aMovie.Movie = tmpMovie
                     ret = _externalScraperModule.ProcessorModule.ScraperNew(DBMovie, aMovie, ScrapeType, Options)
+
                     If Not IsNothing(aMovie) Then
                         ScrapedList.Add(aMovie)
                     End If
+
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
@@ -722,7 +741,6 @@ Public Class ModulesManager
                 If ret.breakChain Then Exit For
             Next
         End If
-
         Return ret.Cancelled
     End Function
 

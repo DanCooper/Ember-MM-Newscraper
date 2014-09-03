@@ -106,7 +106,6 @@ Public Class MoviepilotDE_Data
         _setup.chkMoviepilotRating.Checked = ConfigOptions.bCert
         _setup.chkMoviepilotOutline.Checked = ConfigOptions.bOutline
         _setup.chkMoviepilotPlot.Checked = ConfigOptions.bPlot
-        _setup.chkMoviepilotCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
@@ -127,7 +126,6 @@ Public Class MoviepilotDE_Data
         ConfigOptions.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", False)
         ConfigOptions.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", False)
         ConfigOptions.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", False)
-        ConfigOptions.bCleanPlotOutline = clsAdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
     End Sub
 
     Sub SaveSettings()
@@ -135,7 +133,6 @@ Public Class MoviepilotDE_Data
             settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
             settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
-            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
         End Using
     End Sub
 
@@ -147,7 +144,6 @@ Public Class MoviepilotDE_Data
         ConfigOptions.bCert = _setup.chkMoviepilotRating.Checked
         ConfigOptions.bOutline = _setup.chkMoviepilotOutline.Checked
         ConfigOptions.bPlot = _setup.chkMoviepilotPlot.Checked
-        ConfigOptions.bCleanPlotOutline = _setup.chkMoviepilotCleanPlotOutline.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -157,109 +153,173 @@ Public Class MoviepilotDE_Data
         End If
     End Sub
 
+    ' ''' <summary>
+    ' ''' Scrape MovieDetails from Moviepilot.de (German site)
+    ' ''' </summary> 
+    ' ''' <remarks>Main method to retrieve Moviepilot information - from here all other class methods gets called
+    ' ''' 
+    ' ''' 2013/12/21 Cocotus - First implementation
+    'Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    '    ' as we do not have a OFDB search / show dialog we use IMDB
+    '    If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
+    '        Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
+    '        Dim IMDB As New IMDB_Data
+    '        Dim aRet As Interfaces.ModuleResult = IMDB.Scraper(DBMovie, ScrapeType, tOpt)
+    '        If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
+    '            Return aRet
+    '        End If
+    '    End If
+
+    '    ' we have the originaltitle -> now we can use scraper methods!
+    '    Dim tMoviepilotDE As New MoviepilotDE(DBMovie.Movie.OriginalTitle)
+
+    '    'Now check what information we want to take over...
+    '    Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
+
+    '    'Use Moviepilot FSK?
+    '    If filterOptions.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) Then
+
+
+    '        If Not String.IsNullOrEmpty(tMoviepilotDE.FSK) Then
+    '            Select Case CInt(tMoviepilotDE.FSK)
+    '                Case 0
+    '                    DBMovie.Movie.Certification = "Germany:0"
+    '                    If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+    '                        DBMovie.Movie.MPAA = "Germany:0"
+    '                    Else
+    '                        DBMovie.Movie.MPAA = "0"
+    '                    End If
+    '                Case 6
+    '                    DBMovie.Movie.Certification = "Germany:6"
+    '                    If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+    '                        DBMovie.Movie.MPAA = "Germany:6"
+    '                    Else
+    '                        DBMovie.Movie.MPAA = "6"
+    '                    End If
+    '                Case 16
+    '                    DBMovie.Movie.Certification = "Germany:16"
+    '                    If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+    '                        DBMovie.Movie.MPAA = "Germany:16"
+    '                    Else
+    '                        DBMovie.Movie.MPAA = "16"
+    '                    End If
+    '                Case 12
+    '                    DBMovie.Movie.Certification = "Germany:12"
+    '                    If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+    '                        DBMovie.Movie.MPAA = "Germany:12"
+    '                    Else
+    '                        DBMovie.Movie.MPAA = "12"
+    '                    End If
+    '                Case 18
+    '                    DBMovie.Movie.Certification = "Germany:18"
+    '                    If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+    '                        DBMovie.Movie.MPAA = "Germany:18"
+    '                    Else
+    '                        DBMovie.Movie.MPAA = "18"
+    '                    End If
+    '            End Select
+    '        End If
+
+    '    End If
+
+    '    'Use Moviepilot Outline?
+    '    If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
+
+    '        If Not String.IsNullOrEmpty(tMoviepilotDE.Outline) Then
+    '            DBMovie.Movie.Outline = tMoviepilotDE.Outline
+    '        End If
+    '    End If
+
+    '    'Use Moviepilot Plot?
+    '    If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
+
+    '        If Not String.IsNullOrEmpty(tMoviepilotDE.Plot) Then
+    '            DBMovie.Movie.Plot = tMoviepilotDE.Plot
+    '        End If
+    '    End If
+
+    '    Return New Interfaces.ModuleResult With {.breakChain = False}
+    'End Function
+
+
     ''' <summary>
-    ''' Scrape MovieDetails from Moviepilot.de (German site)
-    ''' </summary> 
-    ''' <remarks>Main method to retrieve Moviepilot information - from here all other class methods gets called
-    ''' 
-    ''' 2013/12/21 Cocotus - First implementation
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
-        ' as we do not have a OFDB search / show dialog we use IMDB
-        If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
-            Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
-            Dim IMDB As New IMDB_Data
-            Dim aRet As Interfaces.ModuleResult = IMDB.Scraper(DBMovie, ScrapeType, tOpt)
-            If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
-                Return aRet
-            End If
+    '''  Scrape MovieDetails from Moviepilot.de (German site)
+    ''' </summary>
+    ''' <param name="DBMovie">Movie to be scraped. DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper</param>
+    ''' <param name="nMovie">New scraped movie data</param>
+    ''' <param name="Options">(NOT used at moment!)What kind of data is being requested from the scrape(global scraper settings)</param>
+    ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
+    ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper should NOT consider global scraper settings/locks in Ember, just scraper options of module</remarks>
+    Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.ScraperNew
+        logger.Trace("Started MoviepilotDE ScraperNew")
+
+        'Moviepilot-datascraper needs originaltitle of movie!
+        If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
+            logger.Trace("Originaltitle of movie is needed, but not availaible! Leave MoviepilotDE scraper...")
+            Return New Interfaces.ModuleResult With {.breakChain = False}
         End If
 
-        ' we have the originaltitle -> now we can use scraper methods!
-        Dim tMoviepilotDE As New MoviepilotDE(DBMovie.Movie.OriginalTitle, DBMovie.Movie)
-
-        'Now check what information we want to take over...
-        Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
+        'we have the originaltitle -> now we can use scraper methods!
+        Dim tmpMoviepilotDE As New MoviepilotDE(DBMovie.Movie.OriginalTitle)
 
         'Use Moviepilot FSK?
-        If filterOptions.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) Then
-
-
-            If Not String.IsNullOrEmpty(tMoviepilotDE.FSK) Then
-                Select Case CInt(tMoviepilotDE.FSK)
+        If ConfigOptions.bCert Then
+            If Not String.IsNullOrEmpty(tmpMoviepilotDE.FSK) Then
+                Select Case CInt(tmpMoviepilotDE.FSK)
                     Case 0
-                        DBMovie.Movie.Certification = "Germany:0"
+                        nMovie.Certification = "Germany:0"
                         If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
-                            DBMovie.Movie.MPAA = "Germany:0"
+                            nMovie.MPAA = "Germany:0"
                         Else
-                            DBMovie.Movie.MPAA = "0"
+                            nMovie.MPAA = "0"
                         End If
                     Case 6
-                        DBMovie.Movie.Certification = "Germany:6"
+                        nMovie.Certification = "Germany:6"
                         If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
-                            DBMovie.Movie.MPAA = "Germany:6"
+                            nMovie.MPAA = "Germany:6"
                         Else
-                            DBMovie.Movie.MPAA = "6"
+                            nMovie.MPAA = "6"
                         End If
                     Case 16
-                        DBMovie.Movie.Certification = "Germany:16"
+                        nMovie.Certification = "Germany:16"
                         If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
-                            DBMovie.Movie.MPAA = "Germany:16"
+                            nMovie.MPAA = "Germany:16"
                         Else
-                            DBMovie.Movie.MPAA = "16"
+                            nMovie.MPAA = "16"
                         End If
                     Case 12
-                        DBMovie.Movie.Certification = "Germany:12"
+                        nMovie.Certification = "Germany:12"
                         If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
-                            DBMovie.Movie.MPAA = "Germany:12"
+                            nMovie.MPAA = "Germany:12"
                         Else
-                            DBMovie.Movie.MPAA = "12"
+                            nMovie.MPAA = "12"
                         End If
                     Case 18
-                        DBMovie.Movie.Certification = "Germany:18"
+                        nMovie.Certification = "Germany:18"
                         If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
-                            DBMovie.Movie.MPAA = "Germany:18"
+                            nMovie.MPAA = "Germany:18"
                         Else
-                            DBMovie.Movie.MPAA = "18"
+                            nMovie.MPAA = "18"
                         End If
                 End Select
             End If
-
         End If
 
         'Use Moviepilot Outline?
-        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
-
-            If Not String.IsNullOrEmpty(tMoviepilotDE.Outline) Then
-                'check if brackets should be removed...
-                If ConfigOptions.bCleanPlotOutline Then
-                    DBMovie.Movie.Outline = StringUtils.RemoveBrackets(tMoviepilotDE.Outline)
-                Else
-                    DBMovie.Movie.Outline = tMoviepilotDE.Outline
-                End If
+        If ConfigOptions.bOutline Then
+            If Not String.IsNullOrEmpty(tmpMoviepilotDE.Outline) Then
+                nMovie.Outline = tmpMoviepilotDE.Outline
             End If
         End If
 
         'Use Moviepilot Plot?
-        If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
-
-            If Not String.IsNullOrEmpty(tMoviepilotDE.Plot) Then
-                'check if brackets should be removed...
-                If ConfigOptions.bCleanPlotOutline Then
-                    DBMovie.Movie.Plot = StringUtils.RemoveBrackets(tMoviepilotDE.Plot)
-                Else
-                    DBMovie.Movie.Plot = tMoviepilotDE.Plot
-                End If
+        If ConfigOptions.bPlot Then
+            If Not String.IsNullOrEmpty(tmpMoviepilotDE.Plot) Then
+                nMovie.Plot = tmpMoviepilotDE.Plot
             End If
-
-
         End If
 
-        Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
-
-    Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.ScraperNew
-        logger.Trace("Started scrapeNEW")
-        logger.Trace("Finished scrapeNEW")
+        logger.Trace("Finished MoviepilotDE ScraperNew")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

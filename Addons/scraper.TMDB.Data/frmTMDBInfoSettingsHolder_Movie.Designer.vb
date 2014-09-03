@@ -44,7 +44,6 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.chkCollection = New System.Windows.Forms.CheckBox()
-        Me.chkCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.chkCrew = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
         Me.chkStudio = New System.Windows.Forms.CheckBox()
@@ -280,7 +279,6 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         'gbScraperOpts
         '
         Me.gbScraperOpts.Controls.Add(Me.chkCollection)
-        Me.gbScraperOpts.Controls.Add(Me.chkCleanPlotOutline)
         Me.gbScraperOpts.Controls.Add(Me.chkCrew)
         Me.gbScraperOpts.Controls.Add(Me.chkCountry)
         Me.gbScraperOpts.Controls.Add(Me.chkStudio)
@@ -308,22 +306,12 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         '
         Me.chkCollection.AutoSize = True
         Me.chkCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCollection.Location = New System.Drawing.Point(315, 53)
+        Me.chkCollection.Location = New System.Drawing.Point(315, 36)
         Me.chkCollection.Name = "chkCollection"
         Me.chkCollection.Size = New System.Drawing.Size(78, 17)
         Me.chkCollection.TabIndex = 76
         Me.chkCollection.Text = "Collection"
         Me.chkCollection.UseVisualStyleBackColor = True
-        '
-        'chkCleanPlotOutline
-        '
-        Me.chkCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanPlotOutline.Location = New System.Drawing.Point(315, 36)
-        Me.chkCleanPlotOutline.Name = "chkCleanPlotOutline"
-        Me.chkCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
-        Me.chkCleanPlotOutline.TabIndex = 75
-        Me.chkCleanPlotOutline.Text = "Clean Plot/Outline"
-        Me.chkCleanPlotOutline.UseVisualStyleBackColor = True
         '
         'chkCrew
         '
@@ -550,7 +538,6 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
     Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label
     Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
     Friend WithEvents pbTMDBApiKeyInfo As System.Windows.Forms.PictureBox
-    Friend WithEvents chkCleanPlotOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkGetAdultItems As System.Windows.Forms.CheckBox
     Friend WithEvents chkCollection As System.Windows.Forms.CheckBox
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label

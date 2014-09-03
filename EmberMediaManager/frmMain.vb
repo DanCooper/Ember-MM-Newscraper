@@ -1740,9 +1740,14 @@ Public Class frmMain
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
 
                 If Master.GlobalScrapeMod.NFO Then
-                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options) Then
+
+                    'Cocotus 2014/08/31 First implementation of NewScraper logic: ScrapeData_MovieNew -> scrape results will be saved in list
+                    Dim ScrapedList As New List(Of MediaContainers.Movie)
+                    If ModulesManager.Instance.ScrapeData_MovieNew(DBScrapeMovie, ScrapedList, Args.scrapeType, Args.Options) Then
                         Exit Try
                     End If
+                    'Merge with global scraper settings
+                    DBScrapeMovie = NFO.MergeDataScraperResults(DBScrapeMovie, ScrapedList)
                 Else
                     ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
                     If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (Master.GlobalScrapeMod.ActorThumbs Or Master.GlobalScrapeMod.Banner Or Master.GlobalScrapeMod.ClearArt Or _
