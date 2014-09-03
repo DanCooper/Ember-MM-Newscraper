@@ -109,6 +109,10 @@ Section "Ember Media Manager" SecEmberMediaManager
   ;Cleanup old modules folder
   RMDir /r "$INSTDIR\Modules"
   
+  ;Cleanup old FanartTV API
+  Delete "$INSTDIR\FanartTVAPI.dll"
+  Delete "$INSTDIR\FanartTVAPI.XML"
+  
   ;ADD YOUR OWN FILES HERE...
   SetOutPath "$INSTDIR"
   File "${emm_root}\${emm_folder}\${emm_filename}"
