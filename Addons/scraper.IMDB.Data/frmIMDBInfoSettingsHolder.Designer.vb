@@ -31,8 +31,8 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.btnUp = New System.Windows.Forms.Button()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.gbScraperOptions = New System.Windows.Forms.GroupBox()
+        Me.lblForceTitleLanguage = New System.Windows.Forms.Label()
         Me.chkFallBackworldwide = New System.Windows.Forms.CheckBox()
-        Me.chkForceTitleLanguage = New System.Windows.Forms.CheckBox()
         Me.cbForceTitleLanguage = New System.Windows.Forms.ComboBox()
         Me.chkVideoTitles = New System.Windows.Forms.CheckBox()
         Me.chkTvTitles = New System.Windows.Forms.CheckBox()
@@ -149,8 +149,8 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         'gbScraperOptions
         '
+        Me.gbScraperOptions.Controls.Add(Me.lblForceTitleLanguage)
         Me.gbScraperOptions.Controls.Add(Me.chkFallBackworldwide)
-        Me.gbScraperOptions.Controls.Add(Me.chkForceTitleLanguage)
         Me.gbScraperOptions.Controls.Add(Me.cbForceTitleLanguage)
         Me.gbScraperOptions.Controls.Add(Me.chkVideoTitles)
         Me.gbScraperOptions.Controls.Add(Me.chkTvTitles)
@@ -164,6 +164,16 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperOptions.TabStop = False
         Me.gbScraperOptions.Text = "Scraper Options"
         '
+        'lblForceTitleLanguage
+        '
+        Me.lblForceTitleLanguage.AutoSize = True
+        Me.lblForceTitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblForceTitleLanguage.Location = New System.Drawing.Point(129, 22)
+        Me.lblForceTitleLanguage.Name = "lblForceTitleLanguage"
+        Me.lblForceTitleLanguage.Size = New System.Drawing.Size(116, 13)
+        Me.lblForceTitleLanguage.TabIndex = 4
+        Me.lblForceTitleLanguage.Text = "Force Title Language:"
+        '
         'chkFallBackworldwide
         '
         Me.chkFallBackworldwide.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -174,27 +184,15 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkFallBackworldwide.Text = "Fall back on worldwide title"
         Me.chkFallBackworldwide.UseVisualStyleBackColor = True
         '
-        'chkForceTitleLanguage
-        '
-        Me.chkForceTitleLanguage.AutoSize = True
-        Me.chkForceTitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkForceTitleLanguage.Location = New System.Drawing.Point(132, 22)
-        Me.chkForceTitleLanguage.Name = "chkForceTitleLanguage"
-        Me.chkForceTitleLanguage.Size = New System.Drawing.Size(135, 17)
-        Me.chkForceTitleLanguage.TabIndex = 76
-        Me.chkForceTitleLanguage.Text = "Force Title Language:"
-        Me.chkForceTitleLanguage.UseVisualStyleBackColor = True
-        '
         'cbForceTitleLanguage
         '
         Me.cbForceTitleLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbForceTitleLanguage.Enabled = False
         Me.cbForceTitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbForceTitleLanguage.FormattingEnabled = True
-        Me.cbForceTitleLanguage.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada: English title", "Canada: French title", "Denmark", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Italy", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
+        Me.cbForceTitleLanguage.Items.AddRange(New Object() {"", "Argentina", "Australia", "Belgium", "Brazil", "Canada: English title", "Canada: French title", "Denmark", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Italy", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
         Me.cbForceTitleLanguage.Location = New System.Drawing.Point(294, 18)
         Me.cbForceTitleLanguage.Name = "cbForceTitleLanguage"
-        Me.cbForceTitleLanguage.Size = New System.Drawing.Size(115, 21)
+        Me.cbForceTitleLanguage.Size = New System.Drawing.Size(131, 21)
         Me.cbForceTitleLanguage.Sorted = True
         Me.cbForceTitleLanguage.TabIndex = 77
         '
@@ -634,7 +632,7 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents chkPopularTitles As System.Windows.Forms.CheckBox
     Friend WithEvents chkVideoTitles As System.Windows.Forms.CheckBox
     Friend WithEvents chkFallBackworldwide As System.Windows.Forms.CheckBox
-    Friend WithEvents chkForceTitleLanguage As System.Windows.Forms.CheckBox
     Friend WithEvents cbForceTitleLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents lblForceTitleLanguage As System.Windows.Forms.Label
 
 End Class
