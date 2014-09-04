@@ -31,13 +31,16 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.btnUp = New System.Windows.Forms.Button()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.gbScraperOptions = New System.Windows.Forms.GroupBox()
+        Me.lblForceTitleLanguage = New System.Windows.Forms.Label()
+        Me.chkFallBackworldwide = New System.Windows.Forms.CheckBox()
+        Me.cbForceTitleLanguage = New System.Windows.Forms.ComboBox()
+        Me.chkVideoTitles = New System.Windows.Forms.CheckBox()
         Me.chkTvTitles = New System.Windows.Forms.CheckBox()
         Me.chkPartialTitles = New System.Windows.Forms.CheckBox()
         Me.chkPopularTitles = New System.Windows.Forms.CheckBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.gbScraperFields = New System.Windows.Forms.GroupBox()
-        Me.chkIMDBCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.chkCertification = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
         Me.chkTop250 = New System.Windows.Forms.CheckBox()
@@ -62,7 +65,6 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
-        Me.chkVideoTitles = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraperOptions.SuspendLayout()
@@ -147,6 +149,9 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         'gbScraperOptions
         '
+        Me.gbScraperOptions.Controls.Add(Me.lblForceTitleLanguage)
+        Me.gbScraperOptions.Controls.Add(Me.chkFallBackworldwide)
+        Me.gbScraperOptions.Controls.Add(Me.cbForceTitleLanguage)
         Me.gbScraperOptions.Controls.Add(Me.chkVideoTitles)
         Me.gbScraperOptions.Controls.Add(Me.chkTvTitles)
         Me.gbScraperOptions.Controls.Add(Me.chkPartialTitles)
@@ -158,6 +163,49 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperOptions.TabIndex = 97
         Me.gbScraperOptions.TabStop = False
         Me.gbScraperOptions.Text = "Scraper Options"
+        '
+        'lblForceTitleLanguage
+        '
+        Me.lblForceTitleLanguage.AutoSize = True
+        Me.lblForceTitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblForceTitleLanguage.Location = New System.Drawing.Point(129, 22)
+        Me.lblForceTitleLanguage.Name = "lblForceTitleLanguage"
+        Me.lblForceTitleLanguage.Size = New System.Drawing.Size(116, 13)
+        Me.lblForceTitleLanguage.TabIndex = 4
+        Me.lblForceTitleLanguage.Text = "Force Title Language:"
+        '
+        'chkFallBackworldwide
+        '
+        Me.chkFallBackworldwide.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFallBackworldwide.Location = New System.Drawing.Point(132, 45)
+        Me.chkFallBackworldwide.Name = "chkFallBackworldwide"
+        Me.chkFallBackworldwide.Size = New System.Drawing.Size(293, 17)
+        Me.chkFallBackworldwide.TabIndex = 78
+        Me.chkFallBackworldwide.Text = "Fall back on worldwide title"
+        Me.chkFallBackworldwide.UseVisualStyleBackColor = True
+        '
+        'cbForceTitleLanguage
+        '
+        Me.cbForceTitleLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbForceTitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbForceTitleLanguage.FormattingEnabled = True
+        Me.cbForceTitleLanguage.Items.AddRange(New Object() {"", "Argentina", "Australia", "Belgium", "Brazil", "Canada: English title", "Canada: French title", "Denmark", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Italy", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
+        Me.cbForceTitleLanguage.Location = New System.Drawing.Point(294, 18)
+        Me.cbForceTitleLanguage.Name = "cbForceTitleLanguage"
+        Me.cbForceTitleLanguage.Size = New System.Drawing.Size(131, 21)
+        Me.cbForceTitleLanguage.Sorted = True
+        Me.cbForceTitleLanguage.TabIndex = 77
+        '
+        'chkVideoTitles
+        '
+        Me.chkVideoTitles.AutoSize = True
+        Me.chkVideoTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkVideoTitles.Location = New System.Drawing.Point(6, 92)
+        Me.chkVideoTitles.Name = "chkVideoTitles"
+        Me.chkVideoTitles.Size = New System.Drawing.Size(85, 17)
+        Me.chkVideoTitles.TabIndex = 3
+        Me.chkVideoTitles.Text = "Video Titles"
+        Me.chkVideoTitles.UseVisualStyleBackColor = True
         '
         'chkTvTitles
         '
@@ -218,7 +266,6 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         'gbScraperFields
         '
-        Me.gbScraperFields.Controls.Add(Me.chkIMDBCleanPlotOutline)
         Me.gbScraperFields.Controls.Add(Me.chkCertification)
         Me.gbScraperFields.Controls.Add(Me.chkCountry)
         Me.gbScraperFields.Controls.Add(Me.chkTop250)
@@ -250,16 +297,6 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperFields.TabIndex = 3
         Me.gbScraperFields.TabStop = False
         Me.gbScraperFields.Text = "Scraper Fields"
-        '
-        'chkIMDBCleanPlotOutline
-        '
-        Me.chkIMDBCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkIMDBCleanPlotOutline.Location = New System.Drawing.Point(363, 19)
-        Me.chkIMDBCleanPlotOutline.Name = "chkIMDBCleanPlotOutline"
-        Me.chkIMDBCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
-        Me.chkIMDBCleanPlotOutline.TabIndex = 75
-        Me.chkIMDBCleanPlotOutline.Text = "Clean Plot/Outline"
-        Me.chkIMDBCleanPlotOutline.UseVisualStyleBackColor = True
         '
         'chkCertification
         '
@@ -528,17 +565,6 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
-        'chkVideoTitles
-        '
-        Me.chkVideoTitles.AutoSize = True
-        Me.chkVideoTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkVideoTitles.Location = New System.Drawing.Point(6, 92)
-        Me.chkVideoTitles.Name = "chkVideoTitles"
-        Me.chkVideoTitles.Size = New System.Drawing.Size(85, 17)
-        Me.chkVideoTitles.TabIndex = 3
-        Me.chkVideoTitles.Text = "Video Titles"
-        Me.chkVideoTitles.UseVisualStyleBackColor = True
-        '
         'frmIMDBInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -600,11 +626,13 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
-    Friend WithEvents chkIMDBCleanPlotOutline As System.Windows.Forms.CheckBox
     Friend WithEvents gbScraperOptions As System.Windows.Forms.GroupBox
     Friend WithEvents chkTvTitles As System.Windows.Forms.CheckBox
     Friend WithEvents chkPartialTitles As System.Windows.Forms.CheckBox
     Friend WithEvents chkPopularTitles As System.Windows.Forms.CheckBox
     Friend WithEvents chkVideoTitles As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFallBackworldwide As System.Windows.Forms.CheckBox
+    Friend WithEvents cbForceTitleLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents lblForceTitleLanguage As System.Windows.Forms.Label
 
 End Class

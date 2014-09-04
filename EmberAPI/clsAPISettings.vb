@@ -986,32 +986,15 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperForceTitle() As String
+    Public Property MovieScraperCleanPlotOutline() As Boolean
         Get
-            Return Settings._XMLSettings.moviescraperforcetitle
+            Return Settings._XMLSettings.MovieScraperCleanPlotOutline
         End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.moviescraperforcetitle = value
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperCleanPlotOutline = value
         End Set
     End Property
 
-    Public Property MovieScraperFullCast() As Boolean
-        Get
-            Return Settings._XMLSettings.moviescraperfullcast
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescraperfullcast = value
-        End Set
-    End Property
-
-    Public Property MovieScraperFullCrew() As Boolean
-        Get
-            Return Settings._XMLSettings.moviescraperfullcrew
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescraperfullcrew = value
-        End Set
-    End Property
 
     Public Property GenreFilter() As String
         Get
@@ -1084,6 +1067,41 @@ Public Class Settings
             Settings._XMLSettings.movielevtolerance = value
         End Set
     End Property
+    Public Property MovieLockActors() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockActors
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockActors = value
+        End Set
+    End Property
+
+    Public Property MovieLockCollection() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockCollection
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockCollection = value
+        End Set
+    End Property
+
+    Public Property MovieLockCountry() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockCountry
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockCountry = value
+        End Set
+    End Property
+
+    Public Property MovieLockDirector() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockDirector
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockDirector = value
+        End Set
+    End Property
 
     Public Property MovieLockGenre() As Boolean
         Get
@@ -1091,6 +1109,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.movielockgenre = value
+        End Set
+    End Property
+
+    Public Property MovieLockMusicBy() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockMusicBy
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockMusicBy = value
+        End Set
+    End Property
+
+    Public Property MovieLockOtherCrew() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockOtherCrew
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockOtherCrew = value
         End Set
     End Property
 
@@ -1112,12 +1148,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieLockProducers() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockProducers
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockProducers = value
+        End Set
+    End Property
+
     Public Property MovieLockRating() As Boolean
         Get
             Return Settings._XMLSettings.movielockrating
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.movielockrating = value
+        End Set
+    End Property
+
+    Public Property MovieLockReleaseDate() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockReleaseDate
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockReleaseDate = value
         End Set
     End Property
 
@@ -1145,6 +1199,62 @@ Public Class Settings
             Settings._XMLSettings.movielockmpaa = value
         End Set
     End Property
+
+
+    Public Property MovieLockRuntime() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockRuntime
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockRuntime = value
+        End Set
+    End Property
+
+    Public Property MovieLockTags() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockTags
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockTags = value
+        End Set
+    End Property
+
+    Public Property MovieLockTop250() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockTop250
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockTop250 = value
+        End Set
+    End Property
+
+    Public Property MovieLockVotes() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockVotes
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockVotes = value
+        End Set
+    End Property
+
+    Public Property MovieLockWriters() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockWriters
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockWriters = value
+        End Set
+    End Property
+
+    Public Property MovieLockYear() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockYear
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockYear = value
+        End Set
+    End Property
+
     Public Property MovieScraperUseMPAAFSK() As Boolean
         Get
             Return Settings._XMLSettings.moviescraperusempaafsk
@@ -5298,15 +5408,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.tvseasonlandscapexbmc = value
-        End Set
-    End Property
-
-    Public Property MovieScraperTitleFallback() As Boolean
-        Get
-            Return Settings._XMLSettings.moviescrapertitlefallback
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescrapertitlefallback = value
         End Set
     End Property
 

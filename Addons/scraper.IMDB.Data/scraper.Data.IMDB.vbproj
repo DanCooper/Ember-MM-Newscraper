@@ -131,7 +131,9 @@
     <Compile Include="Scraper\dlgIMDBSearchResults.Designer.vb">
       <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
     </Compile>
-    <Compile Include="Scraper\dlgIMDBSearchResults.vb" />
+    <Compile Include="Scraper\dlgIMDBSearchResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -150,7 +152,9 @@
     <Compile Include="frmIMDBInfoSettingsHolder.Designer.vb">
       <DependentUpon>frmIMDBInfoSettingsHolder.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmIMDBInfoSettingsHolder.vb" />
+    <Compile Include="frmIMDBInfoSettingsHolder.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="IMDB_Data.vb" />
   </ItemGroup>
   <ItemGroup>

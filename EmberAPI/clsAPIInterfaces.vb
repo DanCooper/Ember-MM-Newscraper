@@ -185,12 +185,13 @@ Public Class Interfaces
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
+
         'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
         'Options is byref to allow field blocking in scraper chain
-        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As ModuleResult
+        'Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As ModuleResult
 
-        'New scraper handling: DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper; aMovie as ByRef to fill with new scraped data
-        Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As ModuleResult
+        'Cocotus 2014/08/31 New scraper handling: DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper; aMovie as ByRef to fill with new scraped data!
+        Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As ModuleResult
 
 #End Region 'Methods
 

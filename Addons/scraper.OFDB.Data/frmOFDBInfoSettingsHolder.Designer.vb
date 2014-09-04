@@ -26,7 +26,6 @@ Partial Class frmOFDBInfoSettingsHolder
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.gbOptions = New System.Windows.Forms.GroupBox()
         Me.chkRating = New System.Windows.Forms.CheckBox()
-        Me.chkCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.chkGenre = New System.Windows.Forms.CheckBox()
         Me.chkPlot = New System.Windows.Forms.CheckBox()
         Me.chkOutline = New System.Windows.Forms.CheckBox()
@@ -56,7 +55,6 @@ Partial Class frmOFDBInfoSettingsHolder
         'gbOptions
         '
         Me.gbOptions.Controls.Add(Me.chkRating)
-        Me.gbOptions.Controls.Add(Me.chkCleanPlotOutline)
         Me.gbOptions.Controls.Add(Me.chkGenre)
         Me.gbOptions.Controls.Add(Me.chkPlot)
         Me.gbOptions.Controls.Add(Me.chkOutline)
@@ -72,22 +70,12 @@ Partial Class frmOFDBInfoSettingsHolder
         'chkRating
         '
         Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRating.Location = New System.Drawing.Point(6, 105)
+        Me.chkRating.Location = New System.Drawing.Point(6, 87)
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(194, 17)
         Me.chkRating.TabIndex = 5
         Me.chkRating.Text = "Rating"
         Me.chkRating.UseVisualStyleBackColor = True
-        '
-        'chkCleanPlotOutline
-        '
-        Me.chkCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanPlotOutline.Location = New System.Drawing.Point(6, 88)
-        Me.chkCleanPlotOutline.Name = "chkCleanPlotOutline"
-        Me.chkCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
-        Me.chkCleanPlotOutline.TabIndex = 4
-        Me.chkCleanPlotOutline.Text = "Clean Plot/Outline"
-        Me.chkCleanPlotOutline.UseVisualStyleBackColor = True
         '
         'chkGenre
         '
@@ -257,7 +245,6 @@ Partial Class frmOFDBInfoSettingsHolder
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents chkCleanPlotOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkRating As System.Windows.Forms.CheckBox
 
 End Class

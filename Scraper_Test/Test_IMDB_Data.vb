@@ -1,4 +1,4 @@
-﻿' ################################################################################
+' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -68,9 +68,6 @@ Namespace EmberTests
                                             .bPlot = True,
                                             .bProducers = True,
                                             .bRating = True,
-                                            .bLanguageV = True,
-                                            .bLanguageA = True,
-                                            .buseMPAAForFSK = True,
                                             .bRelease = True,
                                             .bRuntime = True,
                                             .bStudio = True,
@@ -364,7 +361,9 @@ Namespace EmberTests
             Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
-            Dim result As Interfaces.ModuleResult = provider.Scraper(movie, scrapeType, options)
+            '   Dim mmovie As Structures.DBMovie = Nothing
+            Dim mmovie As MediaContainers.Movie = Nothing
+            Dim result As Interfaces.ModuleResult = provider.ScraperNew(movie, mmovie, scrapeType, options)
 
             Dim methodName = GetMethodName()
 

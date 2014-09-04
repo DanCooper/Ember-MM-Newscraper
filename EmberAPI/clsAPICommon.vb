@@ -1096,15 +1096,12 @@ Public Class Functions
         With options
             .bCast = True
             .bCert = True
-            .bCleanPlotOutline = True
             .bCollection = True
             .bCountry = True
             .bDirector = True
             .bFullCast = True
             .bFullCrew = True
             .bGenre = Not Master.eSettings.MovieLockGenre    'Dekker500 This used to just be =True
-            .bLanguageA = Not Master.eSettings.MovieLockLanguageA
-            .bLanguageV = Not Master.eSettings.MovieLockLanguageV
             .bMPAA = True
             .bMusicBy = True
             .bOtherCrew = True
@@ -1122,7 +1119,6 @@ Public Class Functions
             .bVotes = True
             .bWriters = True
             .bYear = True
-            .buseMPAAForFSK = Not Master.eSettings.MovieScraperUseMPAAFSK
         End With
         Return options
     End Function
@@ -1144,8 +1140,6 @@ Public Class Functions
             .bCollection = Master.eSettings.MovieScraperCollection
             .bCountry = Master.eSettings.MovieScraperCountry
             .bDirector = Master.eSettings.MovieScraperDirector
-            .bFullCast = Master.eSettings.MovieScraperFullCast
-            .bFullCrew = Master.eSettings.MovieScraperFullCrew
             .bGenre = Master.eSettings.MovieScraperGenre
             .bMPAA = Master.eSettings.MovieScraperMPAA
             .bMusicBy = Master.eSettings.MovieScraperMusicBy
@@ -1435,15 +1429,12 @@ Public Class Functions
         Dim filterOptions As New Structures.ScrapeOptions_Movie
         filterOptions.bCast = Options.bCast AndAlso Options2.bCast
         filterOptions.bCert = Options.bCert AndAlso Options2.bCert
-        filterOptions.bCleanPlotOutline = Options.bCleanPlotOutline AndAlso Options2.bCleanPlotOutline
         filterOptions.bCollection = Options.bCollection AndAlso Options2.bCollection
         filterOptions.bCountry = Options.bCountry AndAlso Options2.bCountry
         filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
         filterOptions.bFullCast = Options.bFullCast AndAlso Options2.bFullCast
         filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
         filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
-        filterOptions.bLanguageA = Options.bLanguageA AndAlso Options2.bLanguageA
-        filterOptions.bLanguageV = Options.bLanguageV AndAlso Options2.bLanguageV
         filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
         filterOptions.bMusicBy = Options.bMusicBy AndAlso Options2.bMusicBy
         filterOptions.bOtherCrew = Options.bOtherCrew AndAlso Options2.bOtherCrew
@@ -1461,7 +1452,6 @@ Public Class Functions
         filterOptions.bVotes = Options.bVotes AndAlso Options2.bVotes
         filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
         filterOptions.bYear = Options.bYear AndAlso Options2.bYear
-        filterOptions.buseMPAAForFSK = Options.buseMPAAForFSK AndAlso Options2.buseMPAAForFSK
         Return filterOptions
     End Function
     ''' <summary>
@@ -1822,6 +1812,9 @@ Public Class Structures
         Dim ThemePath As String
         Dim TrailerPath As String
         Dim UseFolder As Boolean
+
+      
+
     End Structure
     ''' <summary>
     ''' Structure representing a movieset in the database
@@ -1954,10 +1947,6 @@ Public Class Structures
         Dim bPlot As Boolean
         Dim bProducers As Boolean
         Dim bRating As Boolean
-        Dim bLanguageV As Boolean
-        Dim bLanguageA As Boolean
-        Dim buseMPAAForFSK As Boolean
-        Dim bCleanPlotOutline As Boolean
         Dim bRelease As Boolean
         Dim bRuntime As Boolean
         Dim bStatus As Boolean

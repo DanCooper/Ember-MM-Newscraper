@@ -131,17 +131,31 @@ Partial Public Class clsXMLSettings
     Private _movielandscapecol As Boolean
     Private _movielandscapeoverwrite As Boolean
     Private _movielevtolerance As Integer
+    Private _movielockactors As Boolean
+    Private _movielockcollection As Boolean
+    Private _movielockcountry As Boolean
+    Private _movielockdirector As Boolean
     Private _movielockgenre As Boolean
     Private _movielocklanguagea As Boolean
     Private _movielocklanguagev As Boolean
     Private _movielockmpaa As Boolean
+    Private _movielockmusicby As Boolean
+    Private _movielockothercrew As Boolean
     Private _movielockoutline As Boolean
     Private _movielockplot As Boolean
+    Private _movielockproducers As Boolean
     Private _movielockrating As Boolean
+    Private _movielockreleasedate As Boolean
+    Private _movielockruntime As Boolean
     Private _movielockstudio As Boolean
+    Private _movielocktags As Boolean
     Private _movielocktagline As Boolean
     Private _movielocktitle As Boolean
+    Private _movielocktop250 As Boolean
     Private _movielocktrailer As Boolean
+    Private _movielockvotes As Boolean
+    Private _movielockwriters As Boolean
+    Private _movielockyear As Boolean
     Private _moviemetadataperfiletype As List(Of MetadataPerType)
     Private _moviemissingbanner As Boolean
     Private _moviemissingclearart As Boolean
@@ -175,14 +189,12 @@ Partial Public Class clsXMLSettings
     Private _moviescrapercertformpaa As Boolean
     Private _moviescrapercertification As Boolean
     Private _moviescrapercertlang As String
+    Private _moviescrapercleanplotoutline As Boolean
     Private _moviescrapercollection As Boolean
     Private _moviescrapercountry As Boolean
     Private _moviescrapercrew As Boolean
     Private _moviescraperdirector As Boolean
     Private _moviescraperdurationruntimeformat As String
-    Private _moviescraperforcetitle As String
-    Private _moviescraperfullcast As Boolean
-    Private _moviescraperfullcrew As Boolean
     Private _moviescrapergenre As Boolean
     Private _moviescrapergenrelimit As Integer
     Private _moviescrapermetadataifoscan As Boolean
@@ -203,7 +215,6 @@ Partial Public Class clsXMLSettings
     Private _moviescraperstudio As Boolean
     Private _moviescrapertagline As Boolean
     Private _moviescrapertitle As Boolean
-    Private _moviescrapertitlefallback As Boolean
     Private _moviescrapertop250 As Boolean
     Private _moviescrapertrailer As Boolean
     Private _moviescraperusemdduration As Boolean
@@ -1732,32 +1743,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieScraperForceTitle() As String
+    Public Property MovieScraperCleanPlotOutline() As Boolean
         Get
-            Return Me._moviescraperforcetitle
+            Return Me._moviescrapercleanplotoutline
         End Get
-        Set(ByVal value As String)
-            Me._moviescraperforcetitle = value
+        Set(ByVal value As Boolean)
+            Me._moviescrapercleanplotoutline = value
         End Set
     End Property
 
-    Public Property MovieScraperFullCast() As Boolean
-        Get
-            Return Me._moviescraperfullcast
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviescraperfullcast = value
-        End Set
-    End Property
-
-    Public Property MovieScraperFullCrew() As Boolean
-        Get
-            Return Me._moviescraperfullcrew
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviescraperfullcrew = value
-        End Set
-    End Property
 
     Public Property GenreFilter() As String
         Get
@@ -1831,6 +1825,41 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieLockActors() As Boolean
+        Get
+            Return Me._MovieLockActors
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockActors = value
+        End Set
+    End Property
+    Public Property MovieLockCollection() As Boolean
+        Get
+            Return Me._MovieLockCollection
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockCollection = value
+        End Set
+    End Property
+
+    Public Property MovieLockCountry() As Boolean
+        Get
+            Return Me._MovieLockCountry
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockCountry = value
+        End Set
+    End Property
+
+    Public Property MovieLockDirector() As Boolean
+        Get
+            Return Me._MovieLockDirector
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockDirector = value
+        End Set
+    End Property
+
     Public Property MovieLockGenre() As Boolean
         Get
             Return Me._movielockgenre
@@ -1883,6 +1912,7 @@ Partial Public Class clsXMLSettings
             Me._movielocklanguagea = value
         End Set
     End Property
+
     Public Property MovieLockMPAA() As Boolean
         Get
             Return Me._movielockmpaa
@@ -1891,6 +1921,96 @@ Partial Public Class clsXMLSettings
             Me._movielockmpaa = value
         End Set
     End Property
+
+    Public Property MovieLockMusicBy() As Boolean
+        Get
+            Return Me._MovieLockMusicBy
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockMusicBy = value
+        End Set
+    End Property
+
+    Public Property MovieLockOtherCrew() As Boolean
+        Get
+            Return Me._MovieLockOtherCrew
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockOtherCrew = value
+        End Set
+    End Property
+
+    Public Property MovieLockProducers() As Boolean
+        Get
+            Return Me._MovieLockProducers
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockProducers = value
+        End Set
+    End Property
+
+    Public Property MovieLockReleaseDate() As Boolean
+        Get
+            Return Me._MovieLockReleaseDate
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockReleaseDate = value
+        End Set
+    End Property
+
+    Public Property MovieLockRuntime() As Boolean
+        Get
+            Return Me._movielockruntime
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movielockruntime = value
+        End Set
+    End Property
+    Public Property MovieLockTags() As Boolean
+        Get
+            Return Me._movielocktags
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movielocktags = value
+        End Set
+    End Property
+ 
+    Public Property MovieLockTop250() As Boolean
+        Get
+            Return Me._MovieLockTop250
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockTop250 = value
+        End Set
+    End Property
+
+    Public Property MovieLockVotes() As Boolean
+        Get
+            Return Me._MovieLockVotes
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockVotes = value
+        End Set
+    End Property
+
+    Public Property MovieLockWriters() As Boolean
+        Get
+            Return Me._MovieLockWriters
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockWriters = value
+        End Set
+    End Property
+
+    Public Property MovieLockYear() As Boolean
+        Get
+            Return Me._MovieLockYear
+        End Get
+        Set(ByVal value As Boolean)
+            Me._MovieLockYear = value
+        End Set
+    End Property
+
     Public Property MovieScraperUseMPAAFSK() As Boolean
         Get
             Return Me._moviescraperusempaafsk
@@ -6045,15 +6165,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvseasonlandscapexbmc = value
-        End Set
-    End Property
-
-    Public Property MovieScraperTitleFallback() As Boolean
-        Get
-            Return Me._moviescrapertitlefallback
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviescrapertitlefallback = value
         End Set
     End Property
 

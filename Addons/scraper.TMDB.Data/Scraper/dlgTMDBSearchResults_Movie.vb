@@ -343,8 +343,6 @@ Public Class dlgTMDBSearchResults_Movie
         aOpt.bFullCast = False
         aOpt.bFullCrew = False
         aOpt.bGenre = True
-        aOpt.bLanguageA = False
-        aOpt.bLanguageV = False
         aOpt.bMPAA = False
         aOpt.bMusicBy = False
         aOpt.bOtherCrew = False
@@ -358,7 +356,6 @@ Public Class dlgTMDBSearchResults_Movie
         aOpt.bTitle = True
         aOpt.bTop250 = False
         aOpt.bTrailer = False
-        aOpt.buseMPAAForFSK = False
         aOpt.bVotes = False
         aOpt.bWriters = False
         aOpt.bYear = True
