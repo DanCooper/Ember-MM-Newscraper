@@ -3184,8 +3184,9 @@ Partial Class dlgSettings
         '
         'btnOK
         '
+        Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnOK.Location = New System.Drawing.Point(929, 703)
+        Me.btnOK.Location = New System.Drawing.Point(921, 694)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 0
@@ -3194,9 +3195,10 @@ Partial Class dlgSettings
         '
         'btnApply
         '
+        Me.btnApply.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnApply.Enabled = false
         Me.btnApply.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnApply.Location = New System.Drawing.Point(766, 703)
+        Me.btnApply.Location = New System.Drawing.Point(758, 694)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(75, 23)
         Me.btnApply.TabIndex = 2
@@ -3205,9 +3207,10 @@ Partial Class dlgSettings
         '
         'btnCancel
         '
+        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(848, 703)
+        Me.btnCancel.Location = New System.Drawing.Point(840, 694)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 1
@@ -11272,7 +11275,7 @@ Partial Class dlgSettings
         Me.gbSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbSettingsHelp.Location = New System.Drawing.Point(3, 3)
         Me.gbSettingsHelp.Name = "gbSettingsHelp"
-        Me.gbSettingsHelp.Size = New System.Drawing.Size(628, 62)
+        Me.gbSettingsHelp.Size = New System.Drawing.Size(692, 62)
         Me.gbSettingsHelp.TabIndex = 0
         Me.gbSettingsHelp.TabStop = false
         Me.gbSettingsHelp.Text = "     Help"
@@ -11296,13 +11299,14 @@ Partial Class dlgSettings
         '
         'pnlSettingsHelp
         '
+        Me.pnlSettingsHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.pnlSettingsHelp.BackColor = System.Drawing.Color.White
         Me.pnlSettingsHelp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlSettingsHelp.Controls.Add(Me.gbSettingsHelp)
         Me.pnlSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.pnlSettingsHelp.Location = New System.Drawing.Point(5, 657)
         Me.pnlSettingsHelp.Name = "pnlSettingsHelp"
-        Me.pnlSettingsHelp.Size = New System.Drawing.Size(752, 69)
+        Me.pnlSettingsHelp.Size = New System.Drawing.Size(700, 69)
         Me.pnlSettingsHelp.TabIndex = 8
         '
         'pnlMovieTrailers
@@ -12591,6 +12595,10 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(1008, 729)
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.btnApply)
+        Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlSettingsHelp)
         Me.Controls.Add(Me.pnlMovieSetImages)
         Me.Controls.Add(Me.pnlMovieSetScraper)
         Me.Controls.Add(Me.pnlMovieSetSources)
@@ -12609,21 +12617,17 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlTVGeneral)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlSettingsMain)
-        Me.Controls.Add(Me.pnlSettingsHelp)
         Me.Controls.Add(Me.tsSettingsTopMenu)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.pnlSettingsCurrentBGGradient)
         Me.Controls.Add(Me.tvSettingsList)
         Me.Controls.Add(Me.pnlSettingsTop)
-        Me.Controls.Add(Me.btnCancel)
-        Me.Controls.Add(Me.btnApply)
-        Me.Controls.Add(Me.btnOK)
-        Me.DoubleBuffered = true
-        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
-        Me.MaximizeBox = false
-        Me.MinimizeBox = false
+        Me.DoubleBuffered = True
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(1024, 768)
+        Me.MinimizeBox = False
         Me.Name = "dlgSettings"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Settings"

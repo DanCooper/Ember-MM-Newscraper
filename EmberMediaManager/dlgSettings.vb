@@ -55,6 +55,12 @@ Public Class dlgSettings
         Return Me.sResult
     End Function
 
+    Private Sub dlgSettings_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
+        tvSettingsList.Height = Convert.ToInt32(pnlSettingsHelp.Location.Y - (tvSettingsList.Location.Y + 5))
+        pnlSettingsMain.Height = Convert.ToInt32(pnlSettingsHelp.Location.Y - (pnlSettingsMain.Location.Y + 5))
+        pnlSettingsMain.Width = Convert.ToInt32(Me.Width - (pnlSettingsMain.Location.X + 20))
+    End Sub
+
     Private Sub AddButtons()
         Dim TSBs As New List(Of ToolStripButton)
         Dim TSB As ToolStripButton
