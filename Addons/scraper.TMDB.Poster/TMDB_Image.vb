@@ -21,7 +21,6 @@
 Imports System.IO
 Imports EmberAPI
 Imports WatTmdb
-Imports ScraperModule.TMDBdata
 Imports NLog
 Imports System.Diagnostics
 
@@ -39,8 +38,7 @@ Public Class TMDB_Image
     Public Shared _AssemblyName As String
 
     Private TMDBId As String
-    Private _TMDBg As TMDBdata.Scraper
-    Private TMDB As TMDB.Scraper
+    Private _scraper As TMDB.Scraper
 
     ''' <summary>
     ''' Scraping Here
@@ -189,8 +187,7 @@ Public Class TMDB_Image
         _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
         _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, "")
-        _TMDBg = New TMDBdata.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
-        TMDB = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings_Movie)
+        _scraper = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings_Movie)
     End Sub
 
     Sub Init_MovieSet(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_MovieSet.Init
@@ -209,8 +206,7 @@ Public Class TMDB_Image
         _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
         _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, "")
-        _TMDBg = New TMDBdata.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
-        TMDB = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings_Movie) 'todo: _MySettings_MovieSet
+        _scraper = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings_Movie) 'todo: _MySettings_MovieSet
     End Sub
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
@@ -310,17 +306,19 @@ Public Class TMDB_Image
         LoadSettings_Movie()
 
         If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-            _TMDBg.GetMovieID(DBMovie)
+            DBMovie.Movie.TMDBID = ModulesManager.Instance.GetMovieTMDBID(DBMovie.Movie.ID)
         End If
 
-        Dim Settings As TMDB.Scraper.sMySettings_ForScraper
-        Settings.GetBlankImages = _MySettings_Movie.GetBlankImages
-        Settings.GetEnglishImages = _MySettings_Movie.GetEnglishImages
-        Settings.APIKey = _MySettings_Movie.APIKey
-        Settings.PrefLanguage = _MySettings_Movie.PrefLanguage
-        Settings.PrefLanguageOnly = _MySettings_Movie.PrefLanguageOnly
+        If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
+            Dim Settings As TMDB.Scraper.sMySettings_ForScraper
+            Settings.GetBlankImages = _MySettings_Movie.GetBlankImages
+            Settings.GetEnglishImages = _MySettings_Movie.GetEnglishImages
+            Settings.APIKey = _MySettings_Movie.APIKey
+            Settings.PrefLanguage = _MySettings_Movie.PrefLanguage
+            Settings.PrefLanguageOnly = _MySettings_Movie.PrefLanguageOnly
 
-        ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type, Settings)
+            ImageList = _scraper.GetTMDBImages(DBMovie.Movie.TMDBID, Type, Settings)
+        End If
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
@@ -331,7 +329,7 @@ Public Class TMDB_Image
 
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
             If Not IsNothing(DBMovieSet.Movies) AndAlso DBMovieSet.Movies.Count > 0 Then
-                DBMovieSet.MovieSet.ID = _TMDBg.GetMovieCollectionID(DBMovieSet.Movies.Item(0).Movie.ID)
+                DBMovieSet.MovieSet.ID = ModulesManager.Instance.GetMovieCollectionID(DBMovieSet.Movies.Item(0).Movie.ID)
             End If
         End If
 
@@ -343,7 +341,7 @@ Public Class TMDB_Image
             Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
             Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
 
-            ImageList = TMDB.GetTMDBImages(DBMovieSet.MovieSet.ID, Type, Settings)
+            ImageList = _scraper.GetTMDBImages(DBMovieSet.MovieSet.ID, Type, Settings)
         End If
 
         Return New Interfaces.ModuleResult With {.breakChain = False}

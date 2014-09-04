@@ -220,10 +220,6 @@
       <Project>{EFC11645-FAB4-4C30-A498-29F5ECDF77E8}</Project>
       <Name>WatTmdb</Name>
     </ProjectReference>
-    <ProjectReference Include="..\scraper.TMDB.Data\scraper.Data.TMDB.vbproj">
-      <Project>{A9188CF1-BD07-4D24-BC4A-906A43012F37}</Project>
-      <Name>scraper.Data.TMDB</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
