@@ -21,7 +21,6 @@
 Imports System.IO
 Imports EmberAPI
 Imports RestSharp
-Imports WatTmdb
 Imports ScraperModule.FanartTVs
 Imports NLog
 Imports System.Diagnostics
@@ -43,7 +42,6 @@ Public Class FanartTV_Image
     ''' Scraping Here
     ''' </summary>
     ''' <remarks></remarks>
-    Private strPrivateAPIKey As String = String.Empty
     Private _MySettings_Movie As New sMySettings
     Private _MySettings_MovieSet As New sMySettings
     Private _Name As String = "FanartTV_Poster"
@@ -51,7 +49,7 @@ Public Class FanartTV_Image
     Private _ScraperEnabled_MovieSet As Boolean = False
     Private _setup_Movie As frmFanartTVMediaSettingsHolder_Movie
     Private _setup_MovieSet As frmFanartTVMediaSettingsHolder_MovieSet
-    Private _fanartTV As FanartTVs.Scraper
+    Private _scraper As New Scraper
 
 #End Region 'Fields
 
@@ -192,15 +190,11 @@ Public Class FanartTV_Image
     Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_Movie.Init
         _AssemblyName = sAssemblyName
         LoadSettings_Movie()
-        'Must be after Load settings to retrieve the correct API key
-        _fanartTV = New FanartTVs.Scraper(_MySettings_Movie)
     End Sub
 
     Sub Init_MovieSet(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_MovieSet.Init
         _AssemblyName = sAssemblyName
         LoadSettings_MovieSet()
-        'Must be after Load settings to retrieve the correct API key
-        _fanartTV = New FanartTVs.Scraper(_MySettings_MovieSet)
     End Sub
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
@@ -221,7 +215,7 @@ Public Class FanartTV_Image
         _setup_Movie.chkScrapeClearLogoOnlyHD.Checked = _MySettings_Movie.ClearLogoOnlyHD
         _setup_Movie.chkScrapeDiscArt.Checked = ConfigScrapeModifier_Movie.DiscArt
         _setup_Movie.chkScrapeLandscape.Checked = ConfigScrapeModifier_Movie.Landscape
-        _setup_Movie.txtApiKey.Text = strPrivateAPIKey
+        _setup_Movie.txtApiKey.Text = _MySettings_Movie.ApiKey
         _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.PrefLanguage
 
         _setup_Movie.orderChanged()
@@ -258,7 +252,7 @@ Public Class FanartTV_Image
         _setup_MovieSet.chkScrapeClearLogoOnlyHD.Checked = _MySettings_MovieSet.ClearLogoOnlyHD
         _setup_MovieSet.chkScrapeDiscArt.Checked = ConfigScrapeModifier_MovieSet.DiscArt
         _setup_MovieSet.chkScrapeLandscape.Checked = ConfigScrapeModifier_MovieSet.Landscape
-        _setup_MovieSet.txtApiKey.Text = strPrivateAPIKey
+        _setup_MovieSet.txtApiKey.Text = _MySettings_MovieSet.ApiKey
         _setup_MovieSet.cbPrefLanguage.Text = _MySettings_MovieSet.PrefLanguage
 
         _setup_MovieSet.orderChanged()
@@ -279,8 +273,7 @@ Public Class FanartTV_Image
     End Function
 
     Sub LoadSettings_Movie()
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.Movie)
-        _MySettings_Movie.ApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "ea68f9d0847c1b7643813c70cbfc0196", strPrivateAPIKey)
+        _MySettings_Movie.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.Movie)
         _MySettings_Movie.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
         _MySettings_Movie.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False, , Enums.Content_Type.Movie)
         _MySettings_Movie.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False, , Enums.Content_Type.Movie)
@@ -301,8 +294,7 @@ Public Class FanartTV_Image
     End Sub
 
     Sub LoadSettings_MovieSet()
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.ApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "ea68f9d0847c1b7643813c70cbfc0196", strPrivateAPIKey)
+        _MySettings_MovieSet.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.MovieSet)
         _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.MovieSet)
         _MySettings_MovieSet.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False, , Enums.Content_Type.MovieSet)
         _MySettings_MovieSet.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False, , Enums.Content_Type.MovieSet)
@@ -429,9 +421,9 @@ Public Class FanartTV_Image
         Settings.PrefLanguageOnly = _MySettings_Movie.PrefLanguageOnly
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.ID) Then
-            ImageList = _fanartTV.GetImages_Movie_MovieSet(DBMovie.Movie.ID, Type, Settings)
+            ImageList = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.ID, Type, Settings)
         ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-            ImageList = _fanartTV.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, Type, Settings)
+            ImageList = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, Type, Settings)
         Else
             logger.Trace(String.Concat("No IMDB and TMDB ID exist to search: ", DBMovie.ListTitle))
         End If
@@ -454,7 +446,7 @@ Public Class FanartTV_Image
         Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
         Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
 
-        ImageList = _fanartTV.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, Type, Settings)
+        ImageList = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, Type, Settings)
 
         logger.Trace("Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}

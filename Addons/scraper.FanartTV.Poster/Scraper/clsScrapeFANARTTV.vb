@@ -46,9 +46,6 @@ Namespace FanartTVs
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-        Private _MySettings As FanartTV_Image.sMySettings
-        Private _FanartTV As FanartTv.API
-        Private _APIInvalid As Boolean = False
 
         Friend WithEvents bwFANARTTV As New System.ComponentModel.BackgroundWorker
 
@@ -64,17 +61,16 @@ Namespace FanartTVs
 
 #Region "Methods"
 
-        Public Sub New(ByRef tMySettings As FanartTV_Image.sMySettings)
-            _MySettings = tMySettings
-            _FanartTV = New FanartTv.API
-            'Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVMovieRequest("1", "JSON", "all", 1, 1))
-            'If IsNothing(Result) Then
-            '    If Not IsNothing(_FanartTV.Error) Then
-            '        logger.Error(_FanartTV.Error)
-            _APIInvalid = False
-            '    End If
-            'End If
-        End Sub
+        'Public Sub New(ByRef sMySettings As FanartTV_Image.sMySettings)
+        '    FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
+        '    FanartTv.API.cKey = sMySettings.ApiKey
+        '    Dim Test = New FanartTv.Movies.Latest()
+        '    If FanartTv.API.ErrorOccurred Then
+        '        If Not IsNothing(FanartTv.API.ErrorMessage) Then
+        '            logger.Error(FanartTv.API.ErrorMessage)
+        '        End If
+        '    End If
+        'End Sub
 
         'Public Sub Cancel()
         '	If Me.bwFANARTTV.IsBusy Then Me.bwFANARTTV.CancelAsync()
@@ -106,13 +102,17 @@ Namespace FanartTVs
             Dim alPostersN As New List(Of MediaContainers.Image) 'neutral/none language poster list (lang="00")
             Dim ParentID As String
 
-            If _APIInvalid Then
-                Return Nothing
-            End If
-
             Try
-                Dim Results = New FanartTv.Movies.Movie(imdbID_tmdbID, Settings.ApiKey)
-                If IsNothing(Results) OrElse FanartTv.API.ErrorOccurred Then Return alPosters
+                FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
+                FanartTv.API.cKey = Settings.ApiKey
+
+                Dim Results = New FanartTv.Movies.Movie(imdbID_tmdbID)
+                If IsNothing(Results) OrElse FanartTv.API.ErrorOccurred Then
+                    If Not IsNothing(FanartTv.API.ErrorMessage) Then
+                        logger.Error(FanartTv.API.ErrorMessage)
+                    End If
+                    Return Nothing
+                End If
                 If bwFANARTTV.CancellationPending Then Return Nothing
 
                 'Poster
