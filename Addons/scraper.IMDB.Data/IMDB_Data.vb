@@ -42,7 +42,7 @@ Public Class IMDB_Data
     ''' </summary>
     ''' <remarks></remarks>
     Private _MySettings As New sMySettings
-    Private IMDB As New IMDB.Scraper
+    Private _scraper As New IMDB.Scraper
     Private _Name As String = "IMDB_Data"
     Private _PostScraperEnabled As Boolean = False
     Private _ScraperEnabled As Boolean = False
@@ -94,8 +94,7 @@ Public Class IMDB_Data
             logger.Error("Attempting to get studio for undefined movie")
             Return New Interfaces.ModuleResult With {.Cancelled = True}    'DEKKER500 VERIFY PLEASE
         End If
-        Dim IMDB As New IMDB.Scraper
-        studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
+        studio = _scraper.GetMovieStudios(DBMovie.Movie.IMDBID)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -452,10 +451,10 @@ Public Class IMDB_Data
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
                 'IMDB-ID already available -> scrape movie data from IMDB
-                IMDB.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
+                _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first!
-                DBMovie.Movie = IMDB.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, ScrapeType, filterOptions, filterOptions.bFullCrew, filterOptions.bFullCast, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
+                DBMovie.Movie = _scraper.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, ScrapeType, filterOptions, filterOptions.bFullCrew, filterOptions.bFullCast, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
@@ -545,7 +544,7 @@ Public Class IMDB_Data
                             DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
                         End If
                         If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
-                            IMDB.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
+                            _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
                         End If
                     Else
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
