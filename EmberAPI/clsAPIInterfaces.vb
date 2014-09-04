@@ -179,6 +179,8 @@ Public Class Interfaces
 
         Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As ModuleResult
 
+        Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As ModuleResult
+
         Sub Init(ByVal sAssemblyName As String)
 
         Function InjectSetupScraper() As Containers.SettingsPanel
@@ -190,7 +192,7 @@ Public Class Interfaces
         'Options is byref to allow field blocking in scraper chain
         'Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As ModuleResult
 
-        'Cocotus 2014/08/31 New scraper handling: DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper; aMovie as ByRef to fill with new scraped data!
+        'Cocotus 2014/08/31 New scraper handling: DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper; nMovie as ByRef to fill with new scraped data!
         Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As ModuleResult
 
 #End Region 'Methods

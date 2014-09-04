@@ -30,7 +30,7 @@ Imports WatTmdb
 Imports NLog
 Imports System.Diagnostics
 
-Namespace TMDBg
+Namespace TMDBdata
 
     Public Class SearchResults_Movie
 
@@ -130,9 +130,9 @@ Namespace TMDBg
 
         Public Event SearchInfoDownloaded_MovieSet(ByVal sPoster As String, ByVal bSuccess As Boolean)
 
-        Public Event SearchResultsDownloaded_Movie(ByVal mResults As TMDBg.SearchResults_Movie)
+        Public Event SearchResultsDownloaded_Movie(ByVal mResults As TMDBdata.SearchResults_Movie)
 
-        Public Event SearchResultsDownloaded_MovieSet(ByVal mResults As TMDBg.SearchResults_MovieSet)
+        Public Event SearchResultsDownloaded_MovieSet(ByVal mResults As TMDBdata.SearchResults_MovieSet)
 
 #End Region 'Events
 
@@ -193,8 +193,28 @@ Namespace TMDBg
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-
         End Sub
+
+        Public Function GetMovieID(ByRef IMDBID As String) As String
+            Try
+                Dim Movie As WatTmdb.V3.TmdbMovie
+                Dim MovieE As WatTmdb.V3.TmdbMovie
+
+                If bwTMDBg.CancellationPending Then Return String.Empty
+
+                Movie = _TMDBApi.GetMovieByIMDB(IMDBID, _MySettings.PrefLanguage)
+                MovieE = _TMDBApiE.GetMovieByIMDB(IMDBID)
+                If IsNothing(Movie) AndAlso Not _MySettings.FallBackEng Then
+                    Return String.Empty
+                End If
+
+                Return CStr(IIf(String.IsNullOrEmpty(Movie.id.ToString) AndAlso _MySettings.FallBackEng, MovieE.id.ToString, Movie.id.ToString))
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return String.Empty
+            End Try
+        End Function
 
         Public Function GetMovieCollectionID(ByVal IMDBID As String) As String
             Try
@@ -214,9 +234,8 @@ Namespace TMDBg
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return ""
+                Return String.Empty
             End Try
-
         End Function
 
         Public Function GetMovieInfo(ByVal strID As String, ByRef DBMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean) As Boolean

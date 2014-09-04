@@ -21,7 +21,7 @@
 Imports System.IO
 Imports EmberAPI
 Imports WatTmdb
-Imports ScraperModule.TMDBg
+Imports ScraperModule.TMDBdata
 Imports NLog
 Imports System.Diagnostics
 
@@ -39,7 +39,7 @@ Public Class TMDB_Image
     Public Shared _AssemblyName As String
 
     Private TMDBId As String
-    Private _TMDBg As TMDBg.Scraper
+    Private _TMDBg As TMDBdata.Scraper
     Private TMDB As TMDB.Scraper
 
     ''' <summary>
@@ -189,7 +189,7 @@ Public Class TMDB_Image
         _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
         _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, "")
-        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
+        _TMDBg = New TMDBdata.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
         TMDB = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings_Movie)
     End Sub
 
@@ -209,7 +209,7 @@ Public Class TMDB_Image
         _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
         _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, "")
-        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
+        _TMDBg = New TMDBdata.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
         TMDB = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings_Movie) 'todo: _MySettings_MovieSet
     End Sub
 

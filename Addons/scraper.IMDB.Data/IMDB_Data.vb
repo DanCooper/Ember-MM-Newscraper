@@ -99,6 +99,10 @@ Public Class IMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
+    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -580,6 +584,7 @@ Public Class IMDB_Data
         logger.Trace("Finished IMDB ScraperNew")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
+
     Public Function CloneFromStruct(ByVal DBMovie As MediaContainers.Movie, TheClone As MediaContainers.Movie) As MediaContainers.Movie
         TheClone.Title = DBMovie.Title
         TheClone.OriginalTitle = DBMovie.OriginalTitle

@@ -328,14 +328,11 @@ Public Class MoviepilotDE_Data
     End Sub
 
     Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
-        'Dim IMDB As New IMDB.Scraper
-        'IMDB.UseOFDBTitle = MySettings.UseOFDBTitle
-        'IMDB.UseOFDBOutline = MySettings.UseOFDBOutline
-        'IMDB.UseOFDBPlot = MySettings.UseOFDBPlot
-        'IMDB.UseOFDBGenre = MySettings.UseOFDBGenre
-        'IMDB.IMDBURL = MySettings.IMDBURL
-        'studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
-        'Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
 #End Region 'Methods

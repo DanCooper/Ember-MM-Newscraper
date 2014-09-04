@@ -22,7 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports RestSharp
 Imports WatTmdb
-Imports ScraperModule.TMDBg
+Imports ScraperModule.TMDBdata
 Imports NLog
 Imports System.Diagnostics
 
@@ -49,7 +49,7 @@ Public Class TMDB_Data
     Private strPrivateAPIKey As String = String.Empty
     Private _MySettings_Movie As New sMySettings
     Private _MySettings_MovieSet As New sMySettings
-    Private _TMDBg As TMDBg.Scraper
+    Private _TMDBg As TMDBdata.Scraper
     Private _Name As String = "TMDB_Data"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_MovieSet As Boolean = False
@@ -167,7 +167,7 @@ Public Class TMDB_Data
         _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
         _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, "")
-        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
+        _TMDBg = New TMDBdata.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
     End Sub
 
     Sub Init_MovieSet(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Data_MovieSet.Init
@@ -186,7 +186,7 @@ Public Class TMDB_Data
         _TMDBApiE_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey)
         _TMDBConfE_MovieSet = _TMDBApiE_MovieSet.GetConfiguration()
         _TMDBApiA_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, "")
-        _TMDBg = New TMDBg.Scraper(_TMDBConf_MovieSet, _TMDBConfE_MovieSet, _TMDBApi_MovieSet, _TMDBApiE_MovieSet, _TMDBApiA_MovieSet, False)
+        _TMDBg = New TMDBdata.Scraper(_TMDBConf_MovieSet, _TMDBConfE_MovieSet, _TMDBApi_MovieSet, _TMDBApiE_MovieSet, _TMDBApiA_MovieSet, False)
     End Sub
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_Movie.InjectSetupScraper
@@ -418,7 +418,14 @@ Public Class TMDB_Data
     End Sub
 
     Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
-        Return Nothing
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
+        If Not String.IsNullOrEmpty(sIMDBID) Then
+            sTMDBID = _TMDBg.GetMovieID(sIMDBID)
+        End If
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.GetCollectionID
@@ -656,7 +663,7 @@ Public Class TMDB_Data
                 'This is a workaround to remove the "TreeView" error on search results window. The problem is that the last search results are still existing in _TMDBg. 
                 'I don't know another way to remove it. It works, It works so far without errors.
                 'TODO: maybe find another solution.
-                Me._TMDBg = New TMDBg.Scraper(_TMDBConf_MovieSet, _TMDBConfE_MovieSet, _TMDBApi_MovieSet, _TMDBApiE_MovieSet, _TMDBApiA_MovieSet, False)
+                Me._TMDBg = New TMDBdata.Scraper(_TMDBConf_MovieSet, _TMDBConfE_MovieSet, _TMDBApi_MovieSet, _TMDBApiE_MovieSet, _TMDBApiA_MovieSet, False)
 
                 Using dSearch As New dlgTMDBSearchResults_MovieSet(_MySettings_MovieSet, Me._TMDBg)
                     Dim tmpTitle As String = DBMovieSet.MovieSet.Title
@@ -795,7 +802,7 @@ Public Class TMDB_Data
                 'This is a workaround to remove the "TreeView" error on search results window. The problem is that the last search results are still existing in _TMDBg. 
                 'I don't know another way to remove it. It works, It works so far without errors.
                 'TODO: maybe find another solution.
-                Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
+                Me._TMDBg = New TMDBdata.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
 
                 Using dSearch As New dlgTMDBSearchResults_Movie(_MySettings_Movie, Me._TMDBg)
                     Dim tmpTitle As String = DBMovie.Movie.Title

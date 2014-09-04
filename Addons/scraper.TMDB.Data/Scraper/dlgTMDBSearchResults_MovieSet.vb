@@ -33,7 +33,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
     Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
-    Private TMDBg As TMDBg.Scraper
+    Private TMDBg As TMDBdata.Scraper
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
@@ -49,7 +49,7 @@ Public Class dlgTMDBSearchResults_MovieSet
 
 #Region "Methods"
 
-    Public Sub New(_MySettings As TMDB_Data.sMySettings, _TMDBg As TMDBg.Scraper)
+    Public Sub New(_MySettings As TMDB_Data.sMySettings, _TMDBg As TMDBdata.Scraper)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -76,7 +76,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal Res As TMDBg.SearchResults_MovieSet, ByVal sMovieSetTitle As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As TMDBdata.SearchResults_MovieSet, ByVal sMovieSetTitle As String) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -278,7 +278,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         End Try
     End Sub
 
-    Private Sub SearchResultsDownloaded_MovieSet(ByVal M As TMDBg.SearchResults_MovieSet)
+    Private Sub SearchResultsDownloaded_MovieSet(ByVal M As TMDBdata.SearchResults_MovieSet)
         '//
         ' Process the results that TMDB gave us
         '\\

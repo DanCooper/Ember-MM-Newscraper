@@ -37,6 +37,7 @@ Namespace TMDBtrailer
         Private _TMDBApiE As V3.Tmdb
         Private _TMDBApiA As V3.Tmdb
         Private _MySettings As TMDB_Trailer.sMySettings
+        Private strPrivateAPIKey As String = String.Empty
 
         'Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
 
@@ -44,14 +45,17 @@ Namespace TMDBtrailer
 
 #Region "Methods"
 
-        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb, ByRef tMySettings As TMDB_Trailer.sMySettings)
-            _TMDBConf = tTMDBConf
-            _TMDBConfE = tTMDBConfE
+        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb)
+            strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.Movie)
+            _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.Movie)
+            _MySettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+            _MySettings.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
+
             _TMDBApi = tTMDBApi
+            _TMDBConf = tTMDBConf
             _TMDBApiE = tTMDBApiE
             _TMDBApiA = tTMDBApiA
-            _MySettings = tMySettings
-            ' v3 does not have description anymore
+            _TMDBConfE = tTMDBConfE
         End Sub
 
         'Public Sub Cancel()
@@ -83,7 +87,7 @@ Namespace TMDBtrailer
 
             Try
                 If Not String.IsNullOrEmpty(TMDBID) Then
-                    trailers = _TMDBApi.GetMovieTrailers(CInt(TMDBID), _MySettings.TMDBLanguage)
+                    trailers = _TMDBApi.GetMovieTrailers(CInt(TMDBID), _MySettings.APIKey)
                     If IsNothing(trailers.youtube) OrElse trailers.youtube.Count = 0 Then
                         trailers = _TMDBApiE.GetMovieTrailers(CInt(TMDBID))
                         If IsNothing(trailers.youtube) OrElse trailers.youtube.Count = 0 Then
@@ -98,7 +102,7 @@ Namespace TMDBtrailer
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return alTrailers
