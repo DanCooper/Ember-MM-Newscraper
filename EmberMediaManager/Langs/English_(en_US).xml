@@ -787,7 +787,7 @@
   <string id="786"></string>
   <string id="787">Get your API Key from fanart.tv</string>
   <string id="788">Fanart.tv</string>
-  <string id="789">Fanart.tv API Key:</string>
+  <string id="789">Fanart.tv Personal API Key:</string>
   <string id="790">These settings are specific to this module.{0}Please refer to the global settings for more options.</string>
   <string id="791">Scraper Fields - Scraper specific</string>
   <string id="792"></string>
@@ -1335,4 +1335,5 @@
   <string id="1245">Lock Votes</string>
   <string id="1246">Lock Writers</string>
   <string id="1247">Lock Year</string>
+  <string id="1248">Using a Personal API Key reduces the time you have to wait for new images to show up from 7 days to 48 hours.</string>
 </strings>

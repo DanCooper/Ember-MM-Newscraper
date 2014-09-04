@@ -89,11 +89,6 @@ Public Class frmFanartTVMediaSettingsHolder_MovieSet
             orderChanged()
         End If
     End Sub
-    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
-        Me.lblEMMAPI.Visible = False
-        Me.txtApiKey.Enabled = True
-        Me.txtApiKey.Visible = True
-    End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
@@ -185,7 +180,6 @@ Public Class frmFanartTVMediaSettingsHolder_MovieSet
     Sub SetUp()
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkGetBlankImages.Text = Master.eLang.GetString(1207, "Also Get Blank Images")
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
@@ -202,8 +196,8 @@ Public Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Poster")
         Me.gbImages.Text = Master.eLang.GetString(497, "Images")
         Me.gbScraper.Text = Master.eLang.GetString(788, "Fanart.tv")
-        Me.lblAPIKey.Text = Master.eLang.GetString(789, "Fanart.tv API Key:")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
+        Me.lblAPIHint.Text = Master.eLang.GetString(1248, "Using a Personal API Key reduces the time you have to wait for new images to show up from 7 days to 48 hours.")
+        Me.lblAPIKey.Text = Master.eLang.GetString(789, "Fanart.tv Personal API Key:")
         Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
     End Sub
 
