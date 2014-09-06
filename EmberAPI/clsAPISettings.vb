@@ -3764,6 +3764,31 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralMainFilterSortDate() As String
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterSortDate
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.GeneralMainFilterSortDate = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortTitle() As String
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterSortTitle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.GeneralMainFilterSortTitle = value
+        End Set
+    End Property
+    Public Property GeneralMainFilterIMDBRating() As String
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterIMDBRating
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.GeneralMainFilterIMDBRating = value
+        End Set
+    End Property
     Public Property GeneralMainSplitterPanelState() As Integer
         Get
             Return Settings._XMLSettings.generalmainsplitterpanelstate
@@ -3772,7 +3797,6 @@ Public Class Settings
             Settings._XMLSettings.generalmainsplitterpanelstate = value
         End Set
     End Property
-
     Public Property GeneralShowSplitterPanelState() As Integer
         Get
             Return Settings._XMLSettings.generalshowsplitterpanelstate

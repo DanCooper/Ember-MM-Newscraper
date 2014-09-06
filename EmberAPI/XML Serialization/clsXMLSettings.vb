@@ -36,6 +36,9 @@ Partial Public Class clsXMLSettings
     Private _generaldaemonpath As String
     Private _generaldoubleclickscrape As Boolean
     Private _generalfilterpanelstate As Boolean
+    Private _generalmainfiltersortdate As String
+    Private _generalmainfiltersorttitle As String
+    Private _generalmainfilterIMDBrating As String
     Private _generalhidebanner As Boolean
     Private _generalhidecharacterart As Boolean
     Private _generalhideclearart As Boolean
@@ -4554,6 +4557,33 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvcleandb = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortDate() As String
+        Get
+            Return Me._generalmainfiltersortdate
+        End Get
+        Set(ByVal value As String)
+            Me._generalmainfiltersortdate = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortTitle() As String
+        Get
+            Return Me._generalmainfiltersorttitle
+        End Get
+        Set(ByVal value As String)
+            Me._generalmainfiltersorttitle = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterIMDBRating() As String
+        Get
+            Return Me._generalmainfilterIMDBrating
+        End Get
+        Set(ByVal value As String)
+            Me._generalmainfilterIMDBrating = value
         End Set
     End Property
 
