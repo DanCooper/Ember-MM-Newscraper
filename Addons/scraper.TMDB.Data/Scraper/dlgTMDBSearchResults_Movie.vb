@@ -340,7 +340,6 @@ Public Class dlgTMDBSearchResults_Movie
         aOpt.bCollection = False
         aOpt.bCountry = False
         aOpt.bDirector = True
-        aOpt.bFullCast = False
         aOpt.bFullCrew = False
         aOpt.bGenre = True
         aOpt.bMPAA = False

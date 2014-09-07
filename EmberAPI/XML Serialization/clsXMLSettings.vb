@@ -142,11 +142,10 @@ Partial Public Class clsXMLSettings
     Private _movielocklanguagea As Boolean
     Private _movielocklanguagev As Boolean
     Private _movielockmpaa As Boolean
-    Private _movielockmusicby As Boolean
-    Private _movielockothercrew As Boolean
+    Private _moviescraperusedetailview As Boolean
+    Private _movielockoriginaltitle As Boolean
     Private _movielockoutline As Boolean
     Private _movielockplot As Boolean
-    Private _movielockproducers As Boolean
     Private _movielockrating As Boolean
     Private _movielockreleasedate As Boolean
     Private _movielockruntime As Boolean
@@ -157,7 +156,7 @@ Partial Public Class clsXMLSettings
     Private _movielocktop250 As Boolean
     Private _movielocktrailer As Boolean
     Private _movielockvotes As Boolean
-    Private _movielockwriters As Boolean
+    Private _movielockcredits As Boolean
     Private _movielockyear As Boolean
     Private _moviemetadataperfiletype As List(Of MetadataPerType)
     Private _moviemissingbanner As Boolean
@@ -195,15 +194,13 @@ Partial Public Class clsXMLSettings
     Private _moviescrapercleanplotoutline As Boolean
     Private _moviescrapercollection As Boolean
     Private _moviescrapercountry As Boolean
-    Private _moviescrapercrew As Boolean
     Private _moviescraperdirector As Boolean
     Private _moviescraperdurationruntimeformat As String
     Private _moviescrapergenre As Boolean
     Private _moviescrapergenrelimit As Integer
     Private _moviescrapermetadataifoscan As Boolean
     Private _moviescrapermetadatascan As Boolean
-    Private _moviescrapermpaa As Boolean
-    Private _moviescrapermusicby As Boolean
+    Private _moviescraperoriginaltitle As Boolean
     Private _moviescraperonlyvalueformpaa As Boolean
     Private _moviescraperoutline As Boolean
     Private _moviescraperoutlineforplot As Boolean
@@ -211,7 +208,6 @@ Partial Public Class clsXMLSettings
     Private _moviescraperoutlineplotenglishoverwrite As Boolean
     Private _moviescraperplot As Boolean
     Private _moviescraperplotforoutline As Boolean
-    Private _moviescraperproducers As Boolean
     Private _moviescraperrating As Boolean
     Private _moviescraperrelease As Boolean
     Private _moviescraperruntime As Boolean
@@ -223,7 +219,7 @@ Partial Public Class clsXMLSettings
     Private _moviescraperusemdduration As Boolean
     Private _moviescraperusempaafsk As Boolean
     Private _moviescrapervotes As Boolean
-    Private _moviescraperwriters As Boolean
+    Private _moviescrapercredits As Boolean
     Private _moviescraperyear As Boolean
     Private _moviesetbannercol As Boolean
     Private _moviesetbannerheight As Integer
@@ -1557,15 +1553,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieScraperCrew() As Boolean
-        Get
-            Return Me._moviescrapercrew
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviescrapercrew = value
-        End Set
-    End Property
-
     Public Property MovieScraperDirector() As Boolean
         Get
             Return Me._moviescraperdirector
@@ -1584,21 +1571,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieScraperMPAA() As Boolean
+    Public Property MovieScraperOriginaltitle() As Boolean
         Get
-            Return Me._moviescrapermpaa
+            Return Me._moviescraperoriginaltitle
         End Get
         Set(ByVal value As Boolean)
-            Me._moviescrapermpaa = value
-        End Set
-    End Property
-
-    Public Property MovieScraperMusicBy() As Boolean
-        Get
-            Return Me._moviescrapermusicby
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviescrapermusicby = value
+            Me._moviescraperoriginaltitle = value
         End Set
     End Property
 
@@ -1617,15 +1595,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescraperplot = value
-        End Set
-    End Property
-
-    Public Property MovieScraperProducers() As Boolean
-        Get
-            Return Me._moviescraperproducers
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviescraperproducers = value
         End Set
     End Property
 
@@ -1701,12 +1670,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieScraperWriters() As Boolean
+    Public Property MovieScraperCredits() As Boolean
         Get
-            Return Me._moviescraperwriters
+            Return Me._moviescrapercredits
         End Get
         Set(ByVal value As Boolean)
-            Me._moviescraperwriters = value
+            Me._moviescrapercredits = value
         End Set
     End Property
 
@@ -1925,30 +1894,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieLockMusicBy() As Boolean
+    Public Property MovieScraperUseDetailView() As Boolean
         Get
-            Return Me._MovieLockMusicBy
+            Return Me._moviescraperusedetailview
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieLockMusicBy = value
-        End Set
-    End Property
-
-    Public Property MovieLockOtherCrew() As Boolean
-        Get
-            Return Me._MovieLockOtherCrew
-        End Get
-        Set(ByVal value As Boolean)
-            Me._MovieLockOtherCrew = value
-        End Set
-    End Property
-
-    Public Property MovieLockProducers() As Boolean
-        Get
-            Return Me._MovieLockProducers
-        End Get
-        Set(ByVal value As Boolean)
-            Me._MovieLockProducers = value
+            Me._moviescraperusedetailview = value
         End Set
     End Property
 
@@ -1996,12 +1947,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieLockWriters() As Boolean
+    Public Property MovieLockCredits() As Boolean
         Get
-            Return Me._MovieLockWriters
+            Return Me._movielockcredits
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieLockWriters = value
+            Me._movielockcredits = value
         End Set
     End Property
 
@@ -2048,7 +1999,14 @@ Partial Public Class clsXMLSettings
             Me._movielocktitle = value
         End Set
     End Property
-
+    Public Property MovieLockOriginalTitle() As Boolean
+        Get
+            Return Me._movielockoriginaltitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movielockoriginaltitle = value
+        End Set
+    End Property
     Public Property MovieLockTrailer() As Boolean
         Get
             Return Me._movielocktrailer

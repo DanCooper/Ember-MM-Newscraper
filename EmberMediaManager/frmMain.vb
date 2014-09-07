@@ -15669,7 +15669,7 @@ doCancel:
                 .cmnuMovieSetEdit.Text = Master.eLang.GetString(1131, "Edit MovieSet")
                 .cmnuMovieSetNew.Text = Master.eLang.GetString(208, "Add New Set")
                 .cmnuMovieSetRescrape.Text = Master.eLang.GetString(1233, "(Re)Scrape MovieSet")
-                .cmnuMovieUpSelCert.Text = Master.eLang.GetString(722, "Certification")
+                .cmnuMovieUpSelCert.Text = Master.eLang.GetString(56, "Certification")
                 .cmnuMovieUpSelCountry.Text = Master.eLang.GetString(301, "Country")
                 .cmnuMovieUpSelDirector.Text = Master.eLang.GetString(62, "Director")
                 .cmnuMovieUpSelMPAA.Text = Master.eLang.GetString(401, "MPAA")

@@ -616,7 +616,7 @@ Public Class dlgUpdateMedia
         Me.chkModTrailer.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkOptsAll.Text = Me.chkModAll.Text
         Me.chkOptsCast.Text = Master.eLang.GetString(63, "Cast")
-        Me.chkOptsCert.Text = Master.eLang.GetString(722, "Certification")
+        Me.chkOptsCert.Text = Master.eLang.GetString(56, "Certification")
         Me.chkOptsCollection.Text = Master.eLang.GetString(1135, "Collection")
         Me.chkOptsCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkOptsCrew.Text = Master.eLang.GetString(391, "Other Crew")

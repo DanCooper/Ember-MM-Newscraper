@@ -1099,7 +1099,6 @@ Public Class Functions
             .bCollection = True
             .bCountry = True
             .bDirector = True
-            .bFullCast = True
             .bFullCrew = True
             .bGenre = Not Master.eSettings.MovieLockGenre    'Dekker500 This used to just be =True
             .bMPAA = True
@@ -1141,12 +1140,8 @@ Public Class Functions
             .bCountry = Master.eSettings.MovieScraperCountry
             .bDirector = Master.eSettings.MovieScraperDirector
             .bGenre = Master.eSettings.MovieScraperGenre
-            .bMPAA = Master.eSettings.MovieScraperMPAA
-            .bMusicBy = Master.eSettings.MovieScraperMusicBy
-            .bOtherCrew = Master.eSettings.MovieScraperCrew
             .bOutline = Master.eSettings.MovieScraperOutline
             .bPlot = Master.eSettings.MovieScraperPlot
-            .bProducers = Master.eSettings.MovieScraperProducers
             .bRating = Master.eSettings.MovieScraperRating
             .bRelease = Master.eSettings.MovieScraperRelease
             .bRuntime = Master.eSettings.MovieScraperRuntime
@@ -1156,7 +1151,7 @@ Public Class Functions
             .bTop250 = Master.eSettings.MovieScraperTop250
             .bTrailer = Master.eSettings.MovieScraperTrailer
             .bVotes = Master.eSettings.MovieScraperVotes
-            .bWriters = Master.eSettings.MovieScraperWriters
+            .bWriters = Master.eSettings.MovieScraperCredits
             .bYear = Master.eSettings.MovieScraperYear
         End With
 
@@ -1432,7 +1427,6 @@ Public Class Functions
         filterOptions.bCollection = Options.bCollection AndAlso Options2.bCollection
         filterOptions.bCountry = Options.bCountry AndAlso Options2.bCountry
         filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
-        filterOptions.bFullCast = Options.bFullCast AndAlso Options2.bFullCast
         filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
         filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
         filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
@@ -1937,7 +1931,6 @@ Public Class Structures
         Dim bCert As Boolean
         Dim bCollection As Boolean
         Dim bDirector As Boolean
-        Dim bFullCast As Boolean
         Dim bFullCrew As Boolean
         Dim bGenre As Boolean
         Dim bMPAA As Boolean

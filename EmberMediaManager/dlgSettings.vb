@@ -1271,13 +1271,13 @@ Public Class dlgSettings
             Me.txtMovieScraperCastLimit.Text = "0"
         End If
     End Sub
-    Private Sub chkMovieScraperMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperMPAA.CheckedChanged
+    Private Sub chkMovieScraperMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
-    Private Sub chkMovieScraperCertification_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertification.CheckedChanged
+    Private Sub chkMovieScraperMPAACertification_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperMPAACertification.CheckedChanged
         Me.SetApplyButton(True)
 
-        If Not Me.chkMovieScraperCertification.Checked Then
+        If Not Me.chkMovieScraperMPAACertification.Checked Then
             Me.cbMovieScraperCertLang.Enabled = False
             Me.cbMovieScraperCertLang.SelectedIndex = -1
             Me.chkMovieScraperCertForMPAA.Enabled = False
@@ -1307,6 +1307,9 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkMovieScraperDetailView_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperDetailView.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 
     Private Sub chkMovieLevTolerance_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLevTolerance.CheckedChanged
         Me.SetApplyButton(True)
@@ -1367,10 +1370,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkCleanPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanPosterTBN.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCrew.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1549,6 +1548,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkMovieLockOriginaltitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockOriginaltitle.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieLockTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLockTrailer.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1577,7 +1580,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieLockMPAA_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockMPAA.CheckedChanged
+    Private Sub chkMovieLockMPAACertification_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockMPAACertification.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1589,23 +1592,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieLockProducers_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockProducers.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieLockDirector_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockDirector.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieLockWriters_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockWriters.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockOtherCrew_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockOtherCrew.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockMusicBy_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockMusicBy.CheckedChanged
+    Private Sub chkMovieLockCredits_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockCredits.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1739,10 +1730,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieWatchedCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieWatchedCol.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperMusicBy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperMusicBy.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1979,10 +1966,6 @@ Public Class dlgSettings
             Me.chkMovieScraperPlotForOutline.Checked = False
             Me.txtMovieScraperOutlineLimit.Enabled = False
         End If
-    End Sub
-
-    Private Sub chkMovieScraperProducers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperProducers.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkMovieProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieProperCase.CheckedChanged
@@ -2414,7 +2397,9 @@ Public Class dlgSettings
     Private Sub chkMovieScraperTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperTitle.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
-
+    Private Sub chkMovieScraperOriginaltitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperOriginaltitle.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
     Private Sub chkMovieScraperTop250_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperTop250.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2750,7 +2735,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieScraperWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperWriters.CheckedChanged
+    Private Sub chkMovieScraperCredits_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCredits.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3067,12 +3052,10 @@ Public Class dlgSettings
                 Me.chkMovieLockGenre.Checked = .MovieLockGenre
                 Me.chkMovieLockLanguageA.Checked = .MovieLockLanguageA
                 Me.chkMovieLockLanguageV.Checked = .MovieLockLanguageV
-                Me.chkMovieLockMPAA.Checked = .MovieLockMPAA
-                Me.chkMovieLockMusicBy.Checked = .MovieLockMusicBy
-                Me.chkMovieLockOtherCrew.Checked = .MovieLockOtherCrew
+                Me.chkMovieLockMPAACertification.Checked = .MovieLockMPAA
+                Me.chkMovieLockOriginaltitle.Checked = .MovieLockOriginaltitle
                 Me.chkMovieLockOutline.Checked = .MovieLockOutline
                 Me.chkMovieLockPlot.Checked = .MovieLockPlot
-                Me.chkMovieLockProducers.Checked = .MovieLockProducers
                 Me.chkMovieLockRating.Checked = .MovieLockRating
                 Me.chkMovieLockReleaseDate.Checked = .MovieLockReleaseDate
                 Me.chkMovieLockRuntime.Checked = .MovieLockRuntime
@@ -3083,7 +3066,7 @@ Public Class dlgSettings
                 Me.chkMovieLockTop250.Checked = .MovieLockTop250
                 Me.chkMovieLockTrailer.Checked = .MovieLockTrailer
                 Me.chkMovieLockVotes.Checked = .MovieLockVotes
-                Me.chkMovieLockWriters.Checked = .MovieLockWriters
+                Me.chkMovieLockCredits.Checked = .MovieLockCredits
                 Me.chkMovieLockYear.Checked = .MovieLockYear
                 Me.chkMovieMissingBanner.Checked = .MovieMissingBanner
                 Me.chkMovieMissingClearArt.Checked = .MovieMissingClearArt
@@ -3158,7 +3141,7 @@ Public Class dlgSettings
                 Me.chkMovieScanOrderModify.Checked = .MovieScanOrderModify
                 Me.chkMovieScraperCast.Checked = .MovieScraperCast
                 Me.chkMovieScraperCastWithImg.Checked = .MovieScraperCastWithImgOnly
-                Me.chkMovieScraperCertification.Checked = .MovieScraperCertification
+                Me.chkMovieScraperMPAACertification.Checked = .MovieScraperCertification
                 Me.chkMovieScraperCleanPlotOutline.Checked = .MovieScraperCleanPlotOutline
                 Me.chkMovieScraperCollection.Checked = .MovieScraperCollection
                 Me.chkMovieScraperCountry.Checked = .MovieScraperCountry
@@ -3166,7 +3149,8 @@ Public Class dlgSettings
                 Me.chkMovieScraperGenre.Checked = .MovieScraperGenre
                 Me.chkMovieScraperMetaDataIFOScan.Checked = .MovieScraperMetaDataIFOScan
                 Me.chkMovieScraperMetaDataScan.Checked = .MovieScraperMetaDataScan
-                Me.chkMovieScraperMPAA.Checked = .MovieScraperMPAA
+                Me.chkMovieScraperOriginaltitle.Checked = .MovieScraperOriginaltitle
+                Me.chkMovieScraperDetailView.Checked = .MovieScraperUseDetailView
                 Me.chkMovieScraperOnlyValueForMPAA.Checked = .MovieScraperOnlyValueForMPAA
                 Me.chkMovieScraperOutline.Checked = .MovieScraperOutline
                 Me.chkMovieScraperOutlineForPlot.Checked = .MovieScraperOutlineForPlot
@@ -3184,7 +3168,7 @@ Public Class dlgSettings
                 Me.chkMovieScraperUseMDDuration.Checked = .MovieScraperUseMDDuration
                 Me.chkMovieScraperUseMPAAFSK.Checked = .MovieScraperUseMPAAFSK
                 Me.chkMovieScraperVotes.Checked = .MovieScraperVotes
-                Me.chkMovieScraperWriters.Checked = .MovieScraperWriters
+                Me.chkMovieScraperCredits.Checked = .MovieScraperCredits
                 Me.chkMovieScraperYear.Checked = .MovieScraperYear
                 Me.chkMovieSkipStackedSizeCheck.Checked = .MovieSkipStackedSizeCheck
                 Me.chkMovieSortBeforeScan.Checked = .MovieSortBeforeScan
@@ -4604,23 +4588,21 @@ Public Class dlgSettings
                 .MovieLockGenre = Me.chkMovieLockGenre.Checked
                 .MovieLockLanguageA = Me.chkMovieLockLanguageA.Checked
                 .MovieLockLanguageV = Me.chkMovieLockLanguageV.Checked
-                .MovieLockMPAA = Me.chkMovieLockMPAA.Checked
-                .MovieLockMusicBy = Me.chkMovieLockMusicBy.Checked
-                .MovieLockOtherCrew = Me.chkMovieLockOtherCrew.Checked
+                .MovieLockMPAA = Me.chkMovieLockMPAACertification.Checked
                 .MovieLockOutline = Me.chkMovieLockOutline.Checked
                 .MovieLockPlot = Me.chkMovieLockPlot.Checked
-                .MovieLockProducers = Me.chkMovieLockProducers.Checked
                 .MovieLockRating = Me.chkMovieLockRating.Checked
                 .MovieLockReleaseDate = Me.chkMovieLockReleaseDate.Checked
                 .MovieLockRuntime = Me.chkMovieLockRuntime.Checked
                 .MovieLockStudio = Me.chkMovieLockStudio.Checked
                 .MovieLockTags = Me.chkMovieLockTags.Checked
                 .MovieLockTagline = Me.chkMovieLockTagline.Checked
+                .MovieLockOriginaltitle = Me.chkMovieLockOriginaltitle.Checked
                 .MovieLockTitle = Me.chkMovieLockTitle.Checked
                 .MovieLockTop250 = Me.chkMovieLockTop250.Checked
                 .MovieLockTrailer = Me.chkMovieLockTrailer.Checked
                 .MovieLockVotes = Me.chkMovieLockVotes.Checked
-                .MovieLockWriters = Me.chkMovieLockWriters.Checked
+                .MovieLockCredits = Me.chkMovieLockCredits.Checked
                 .MovieLockYear = Me.chkMovieLockYear.Checked
                 .MovieMetadataPerFileType.Clear()
                 .MovieMetadataPerFileType.AddRange(Me.MovieMeta)
@@ -4703,7 +4685,7 @@ Public Class dlgSettings
                 End If
                 .MovieScraperCastWithImgOnly = Me.chkMovieScraperCastWithImg.Checked
                 .MovieScraperCertForMPAA = Me.chkMovieScraperCertForMPAA.Checked        'TODO
-                .MovieScraperCertification = Me.chkMovieScraperCertification.Checked
+                .MovieScraperCertification = Me.chkMovieScraperMPAACertification.Checked
                 '.MovieScraperCertLang = Me.cbMovieScraperCertLang.Text                  'TODO
                 If cbMovieScraperCertLang.Text <> String.Empty Then
                     .MovieScraperCertLang = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbMovieScraperCertLang.Text).abbreviation
@@ -4716,7 +4698,6 @@ Public Class dlgSettings
                 .MovieScraperCleanPlotOutline = Me.chkMovieScraperCleanPlotOutline.Checked
                 .MovieScraperCollection = Me.chkMovieScraperCollection.Checked
                 .MovieScraperCountry = Me.chkMovieScraperCountry.Checked
-                .MovieScraperCrew = Me.chkMovieScraperCrew.Checked
                 .MovieScraperDirector = Me.chkMovieScraperDirector.Checked
                 .MovieScraperDurationRuntimeFormat = Me.txtMovieScraperDurationRuntimeFormat.Text
                 .MovieScraperGenre = Me.chkMovieScraperGenre.Checked
@@ -4727,8 +4708,7 @@ Public Class dlgSettings
                 End If
                 .MovieScraperMetaDataIFOScan = Me.chkMovieScraperMetaDataIFOScan.Checked
                 .MovieScraperMetaDataScan = Me.chkMovieScraperMetaDataScan.Checked
-                .MovieScraperMPAA = Me.chkMovieScraperMPAA.Checked
-                .MovieScraperMusicBy = Me.chkMovieScraperMusicBy.Checked
+                .MovieScraperOriginaltitle = Me.chkMovieScraperOriginaltitle.Checked
                 .MovieScraperOnlyValueForMPAA = Me.chkMovieScraperOnlyValueForMPAA.Checked
                 .MovieScraperOutline = Me.chkMovieScraperOutline.Checked
                 .MovieScraperOutlineForPlot = Me.chkMovieScraperOutlineForPlot.Checked
@@ -4740,7 +4720,6 @@ Public Class dlgSettings
                 .MovieScraperOutlinePlotEnglishOverwrite = Me.chkMovieScraperOutlinePlotEnglishOverwrite.Checked
                 .MovieScraperPlot = Me.chkMovieScraperPlot.Checked
                 .MovieScraperPlotForOutline = Me.chkMovieScraperPlotForOutline.Checked
-                .MovieScraperProducers = Me.chkMovieScraperProducers.Checked
                 .MovieScraperRating = Me.chkMovieScraperRating.Checked
                 .MovieScraperRelease = Me.chkMovieScraperRelease.Checked
                 .MovieScraperRuntime = Me.chkMovieScraperRuntime.Checked
@@ -4749,10 +4728,11 @@ Public Class dlgSettings
                 .MovieScraperTitle = Me.chkMovieScraperTitle.Checked
                 .MovieScraperTop250 = Me.chkMovieScraperTop250.Checked
                 .MovieScraperTrailer = Me.chkMovieScraperTrailer.Checked
+                .MovieScraperUseDetailView = Me.chkMovieScraperDetailView.Checked
                 .MovieScraperUseMDDuration = Me.chkMovieScraperUseMDDuration.Checked
                 .MovieScraperUseMPAAFSK = Me.chkMovieScraperUseMPAAFSK.Checked
                 .MovieScraperVotes = Me.chkMovieScraperVotes.Checked
-                .MovieScraperWriters = Me.chkMovieScraperWriters.Checked
+                .MovieScraperCredits = Me.chkMovieScraperCredits.Checked
                 .MovieScraperYear = Me.chkMovieScraperYear.Checked
                 .MovieSkipLessThan = Convert.ToInt32(Me.txtMovieSkipLessThan.Text)
                 .MovieSkipStackedSizeCheck = Me.chkMovieSkipStackedSizeCheck.Checked
@@ -5401,21 +5381,19 @@ Public Class dlgSettings
         Me.chkMovieLockCollection.Text = Master.eLang.GetString(1235, "Lock Collection")
         Me.chkMovieLockCountry.Text = Master.eLang.GetString(1236, "Lock Country")
         Me.chkMovieLockDirector.Text = Master.eLang.GetString(1237, "Lock Director")
-        Me.chkMovieLockMusicBy.Text = Master.eLang.GetString(1238, "Lock MusicBy")
-        Me.chkMovieLockOtherCrew.Text = Master.eLang.GetString(1239, "Lock Other Crew")
-        Me.chkMovieLockProducers.Text = Master.eLang.GetString(1240, "Lock Producers")
         Me.chkMovieLockReleaseDate.Text = Master.eLang.GetString(1241, "Lock ReleaseDate")
         Me.chkMovieLockRuntime.Text = Master.eLang.GetString(1242, "Lock Runtime")
         Me.chkMovieLockTags.Text = Master.eLang.GetString(1243, "Lock Tags")
         Me.chkMovieLockTop250.Text = Master.eLang.GetString(1244, "Lock TOP250")
         Me.chkMovieLockVotes.Text = Master.eLang.GetString(1245, "Lock Votes")
-        Me.chkMovieLockWriters.Text = Master.eLang.GetString(1246, "Lock Writers")
+        Me.chkMovieLockCredits.Text = Master.eLang.GetString(1246, "Lock Writers")
         Me.chkMovieLockYear.Text = Master.eLang.GetString(1247, "Lock Year")
         Me.chkMovieLockGenre.Text = Master.eLang.GetString(490, "Lock Genre")
         Me.chkMovieLockLanguageA.Text = Master.eLang.GetString(880, "Lock Language (audio)")
         Me.chkMovieLockLanguageV.Text = Master.eLang.GetString(879, "Lock Language (video)")
-        Me.chkMovieLockMPAA.Text = Master.eLang.GetString(881, "Lock MPAA/Certification")
+        Me.chkMovieLockMPAACertification.Text = Master.eLang.GetString(881, "Lock MPAA/Certification")
         Me.chkMovieLockOutline.Text = Master.eLang.GetString(495, "Lock Outline")
+        Me.chkMovieLockOriginaltitle.Text = Master.eLang.GetString(1240, "Lock Originaltitle")
         Me.chkMovieLockPlot.Text = Master.eLang.GetString(496, "Lock Plot")
         Me.chkMovieLockRating.Text = Master.eLang.GetString(492, "Lock Rating")
         Me.chkMovieLockStudio.Text = Master.eLang.GetString(491, "Lock Studio")
@@ -5447,24 +5425,22 @@ Public Class dlgSettings
         Me.chkMovieScraperCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         Me.chkMovieScraperCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
-        Me.chkMovieScraperCertification.Text = Master.eLang.GetString(722, "Certification")
+        Me.chkMovieScraperMPAACertification.Text = Master.eLang.GetString(722, "MPAA/Certification")
         Me.chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
         Me.chkMovieScraperCollection.Text = Master.eLang.GetString(1135, "Collection")
         Me.chkMovieScraperCountry.Text = Master.eLang.GetString(301, "Country")
-        Me.chkMovieScraperCrew.Text = Master.eLang.GetString(391, "Other Crew")
+        Me.chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
         Me.chkMovieScraperDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkMovieScraperGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkMovieScraperMPAA.Text = Master.eLang.GetString(401, "MPAA")
+        Me.chkMovieScraperOriginaltitle.Text = Master.eLang.GetString(1238, "Originaltitle")
         Me.chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
-        Me.chkMovieScraperMusicBy.Text = Master.eLang.GetString(392, "Music By")
         Me.chkMovieScraperOnlyValueForMPAA.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
         Me.chkMovieScraperOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkMovieScraperOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Text = Master.eLang.GetString(1005, "Only overwrite english Outline and Plot")
         Me.chkMovieScraperPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Outline if Outline is Empty")
-        Me.chkMovieScraperProducers.Text = Master.eLang.GetString(393, "Producers")
         Me.chkMovieScraperRating.Text = Master.eLang.GetString(400, "Rating")
         Me.chkMovieScraperRelease.Text = Master.eLang.GetString(57, "Release Date")
         Me.chkMovieScraperRuntime.Text = Master.eLang.GetString(396, "Runtime")
@@ -5476,7 +5452,7 @@ Public Class dlgSettings
         Me.chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkMovieScraperUseMPAAFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
         Me.chkMovieScraperVotes.Text = Master.eLang.GetString(399, "Votes")
-        Me.chkMovieScraperWriters.Text = Master.eLang.GetString(394, "Writers")
+        Me.chkMovieScraperCredits.Text = Master.eLang.GetString(394, "Writers")
         Me.chkMovieScraperYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         Me.chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
@@ -5557,7 +5533,7 @@ Public Class dlgSettings
         Me.gbMovieGeneralMissingItemsOpts.Text = Master.eLang.GetString(581, "Missing Items Filter")
         Me.gbMovieImagesOpts.Text = Master.eLang.GetString(497, "Images")
         Me.gbMovieMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
-        Me.gbMovieCertification.Text = Master.eLang.GetString(722, "Certification")
+        Me.gbMovieCertification.Text = Master.eLang.GetString(56, "Certification")
         Me.gbMovieActorThumbsOpts.Text = Master.eLang.GetString(991, "Actor Thumbs")
         Me.gbMovieBannerOpts.Text = Master.eLang.GetString(838, "Banner")
         Me.gbMovieClearArtOpts.Text = Master.eLang.GetString(1096, "ClearArt")

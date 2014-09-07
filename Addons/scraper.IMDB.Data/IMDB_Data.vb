@@ -127,7 +127,6 @@ Public Class IMDB_Data
         _setup.cbEnabled.Checked = _ScraperEnabled
         _setup.chkTitle.Checked = ConfigOptions.bTitle
         _setup.chkYear.Checked = ConfigOptions.bYear
-        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
         _setup.chkRelease.Checked = ConfigOptions.bRelease
         _setup.chkRuntime.Checked = ConfigOptions.bRuntime
         _setup.chkRating.Checked = ConfigOptions.bRating
@@ -147,9 +146,7 @@ Public Class IMDB_Data
         _setup.chkCountry.Checked = ConfigOptions.bCountry
         _setup.chkTop250.Checked = ConfigOptions.bTop250
         _setup.chkCertification.Checked = ConfigOptions.bCert
-        _setup.chkFullCast.Checked = ConfigOptions.bFullCast
         _setup.chkFullCrew.Checked = ConfigOptions.bFullCrew
-
         _setup.chkFallBackworldwide.Checked = _MySettings.FallBackWorldwide
         _setup.cbForceTitleLanguage.Text = _MySettings.ForceTitleLanguage
         _setup.chkPartialTitles.Checked = _MySettings.SearchPartialTitles
@@ -192,12 +189,10 @@ Public Class IMDB_Data
         ConfigOptions.bTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
         ConfigOptions.bMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True)
         ConfigOptions.bOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
-        ConfigOptions.bFullCast = clsAdvancedSettings.GetBooleanSetting("DoFullCast", True)
         ConfigOptions.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True)
         ConfigOptions.bTop250 = clsAdvancedSettings.GetBooleanSetting("DoTop250", True)
         ConfigOptions.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True)
         ConfigOptions.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
-        ConfigOptions.bFullCast = clsAdvancedSettings.GetBooleanSetting("FullCast", True)
         ConfigOptions.bFullCrew = clsAdvancedSettings.GetBooleanSetting("FullCrew", True)
 
         ConfigScrapeModifier.DoSearch = True
@@ -215,7 +210,6 @@ Public Class IMDB_Data
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoFullCast", ConfigOptions.bFullCast)
             settings.SetBooleanSetting("DoFullCrews", ConfigOptions.bFullCrew)
             settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
             settings.SetBooleanSetting("DoYear", ConfigOptions.bYear)
@@ -239,7 +233,6 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("DoCountry", ConfigOptions.bCountry)
             settings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
             settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
-            settings.SetBooleanSetting("FullCast", ConfigOptions.bFullCast)
             settings.SetBooleanSetting("FullCrew", ConfigOptions.bFullCrew)
 
             settings.SetBooleanSetting("FallBackWorldwide", _MySettings.FallBackWorldwide)
@@ -254,7 +247,7 @@ Public Class IMDB_Data
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
         ConfigOptions.bTitle = _setup.chkTitle.Checked
         ConfigOptions.bYear = _setup.chkYear.Checked
-        ConfigOptions.bMPAA = _setup.chkMPAA.Checked
+        ConfigOptions.bMPAA = _setup.chkCertification.Checked
         ConfigOptions.bRelease = _setup.chkRelease.Checked
         ConfigOptions.bRuntime = _setup.chkRuntime.Checked
         ConfigOptions.bRating = _setup.chkRating.Checked
@@ -275,7 +268,6 @@ Public Class IMDB_Data
         ConfigOptions.bTop250 = _setup.chkTop250.Checked
         ConfigOptions.bCert = _setup.chkCertification.Checked
         ConfigOptions.bFullCrew = _setup.chkFullCrew.Checked
-        ConfigOptions.bFullCast = _setup.chkFullCast.Checked
 
         _MySettings.FallBackWorldwide = _setup.chkFallBackworldwide.Checked
         _MySettings.ForceTitleLanguage = _setup.cbForceTitleLanguage.Text
@@ -431,13 +423,14 @@ Public Class IMDB_Data
 
 
     ''' <summary>
-    '''  Scrape MovieDetails from IMDB
+    '''  Scrape MovieDetails from TMDB
     ''' </summary>
     ''' <param name="DBMovie">Movie to be scraped. DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper</param>
     ''' <param name="nMovie">New scraped movie data</param>
     ''' <param name="Options">(NOT used at moment!)What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
-    ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper should NOT consider global scraper settings/locks in Ember, just scraper options of module</remarks>
+    ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper module should NOT use global scraper settings/locks in Ember, just scraper options of module
+    ''' Instead of directly saving scraped results into DBMovie we use empty nMovie movie container to store retrieved information of scraper</remarks>
     Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.ScraperNew
         logger.Trace("Started IMDB ScraperNew")
 
@@ -450,11 +443,11 @@ Public Class IMDB_Data
 
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
-                'IMDB-ID already available -> scrape movie data from IMDB
-                _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
+                'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
+                _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first!
-                DBMovie.Movie = _scraper.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, ScrapeType, filterOptions, filterOptions.bFullCrew, filterOptions.bFullCast, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
+                DBMovie.Movie = _scraper.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, nMovie, ScrapeType, filterOptions, filterOptions.bFullCrew, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
@@ -544,7 +537,8 @@ Public Class IMDB_Data
                             DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
                         End If
                         If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
-                            _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
+                            'IMDB-ID available -> scrape and save data into an empty movie container (nMovie)
+                            _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
                         End If
                     Else
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -576,47 +570,8 @@ Public Class IMDB_Data
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
         End If
 
-
-        'GetMovieInfo writes retrieved IMDB data into DBMovie - copy that into nmovie
-        nMovie = CloneFromStruct(DBMovie.Movie, nMovie)
-
         logger.Trace("Finished IMDB ScraperNew")
         Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
-
-    Public Function CloneFromStruct(ByVal DBMovie As MediaContainers.Movie, TheClone As MediaContainers.Movie) As MediaContainers.Movie
-        TheClone.Title = DBMovie.Title
-        TheClone.OriginalTitle = DBMovie.OriginalTitle
-        TheClone.SortTitle = DBMovie.SortTitle
-        TheClone.Year = DBMovie.Year
-        TheClone.Rating = DBMovie.Rating
-        TheClone.Votes = DBMovie.Votes
-        TheClone.MPAA = DBMovie.MPAA
-        TheClone.Top250 = DBMovie.Top250
-        TheClone.Countries = DBMovie.Countries
-        TheClone.Outline = DBMovie.Outline
-        TheClone.Plot = DBMovie.Plot
-        TheClone.Tagline = DBMovie.Tagline
-        TheClone.Trailer = DBMovie.Trailer
-        TheClone.Certification = DBMovie.Certification
-        TheClone.Genres = DBMovie.Genres
-        TheClone.Runtime = DBMovie.Runtime
-        TheClone.ReleaseDate = DBMovie.ReleaseDate
-        TheClone.Studio = DBMovie.Studio
-        TheClone.Directors = DBMovie.Directors
-        TheClone.Credits = DBMovie.Credits
-        TheClone.PlayCount = DBMovie.PlayCount
-        TheClone.Thumb = DBMovie.Thumb
-        TheClone.Fanart = DBMovie.Fanart
-        TheClone.Actors = DBMovie.Actors
-        TheClone.FileInfo = DBMovie.FileInfo
-        TheClone.YSets = DBMovie.YSets
-        TheClone.XSets = DBMovie.XSets
-        TheClone.Lev = DBMovie.Lev
-        TheClone.VideoSource = DBMovie.VideoSource
-        TheClone.DateAdded = DBMovie.DateAdded
-
-        Return TheClone
     End Function
 
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged

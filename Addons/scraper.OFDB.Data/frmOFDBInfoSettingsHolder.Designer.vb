@@ -74,7 +74,7 @@ Partial Class frmOFDBInfoSettingsHolder
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(194, 17)
         Me.chkRating.TabIndex = 5
-        Me.chkRating.Text = "Rating"
+        Me.chkRating.Text = "MPAA/Certification"
         Me.chkRating.UseVisualStyleBackColor = True
         '
         'chkGenre

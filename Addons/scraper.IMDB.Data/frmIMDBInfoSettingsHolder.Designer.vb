@@ -47,7 +47,6 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkCrew = New System.Windows.Forms.CheckBox()
         Me.chkMusicBy = New System.Windows.Forms.CheckBox()
         Me.chkProducers = New System.Windows.Forms.CheckBox()
-        Me.chkFullCast = New System.Windows.Forms.CheckBox()
         Me.chkWriters = New System.Windows.Forms.CheckBox()
         Me.chkStudio = New System.Windows.Forms.CheckBox()
         Me.chkRuntime = New System.Windows.Forms.CheckBox()
@@ -62,14 +61,15 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkTrailer = New System.Windows.Forms.CheckBox()
         Me.chkRating = New System.Windows.Forms.CheckBox()
         Me.chkRelease = New System.Windows.Forms.CheckBox()
-        Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
+        Me.gbScraperFieldsCredits = New System.Windows.Forms.GroupBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraperOptions.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbScraperFields.SuspendLayout()
+        Me.gbScraperFieldsCredits.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblVersion
@@ -266,17 +266,13 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         'gbScraperFields
         '
+        Me.gbScraperFields.Controls.Add(Me.gbScraperFieldsCredits)
         Me.gbScraperFields.Controls.Add(Me.chkCertification)
         Me.gbScraperFields.Controls.Add(Me.chkCountry)
         Me.gbScraperFields.Controls.Add(Me.chkTop250)
-        Me.gbScraperFields.Controls.Add(Me.chkCrew)
-        Me.gbScraperFields.Controls.Add(Me.chkMusicBy)
-        Me.gbScraperFields.Controls.Add(Me.chkProducers)
-        Me.gbScraperFields.Controls.Add(Me.chkFullCast)
         Me.gbScraperFields.Controls.Add(Me.chkWriters)
         Me.gbScraperFields.Controls.Add(Me.chkStudio)
         Me.gbScraperFields.Controls.Add(Me.chkRuntime)
-        Me.gbScraperFields.Controls.Add(Me.chkFullCrew)
         Me.gbScraperFields.Controls.Add(Me.chkPlot)
         Me.gbScraperFields.Controls.Add(Me.chkOutline)
         Me.gbScraperFields.Controls.Add(Me.chkGenre)
@@ -287,7 +283,6 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperFields.Controls.Add(Me.chkTrailer)
         Me.gbScraperFields.Controls.Add(Me.chkRating)
         Me.gbScraperFields.Controls.Add(Me.chkRelease)
-        Me.gbScraperFields.Controls.Add(Me.chkMPAA)
         Me.gbScraperFields.Controls.Add(Me.chkYear)
         Me.gbScraperFields.Controls.Add(Me.chkTitle)
         Me.gbScraperFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -302,18 +297,18 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         Me.chkCertification.AutoSize = True
         Me.chkCertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCertification.Location = New System.Drawing.Point(6, 70)
+        Me.chkCertification.Location = New System.Drawing.Point(6, 53)
         Me.chkCertification.Name = "chkCertification"
-        Me.chkCertification.Size = New System.Drawing.Size(89, 17)
+        Me.chkCertification.Size = New System.Drawing.Size(123, 17)
         Me.chkCertification.TabIndex = 3
-        Me.chkCertification.Text = "Certification"
+        Me.chkCertification.Text = "MPAA/Certification"
         Me.chkCertification.UseVisualStyleBackColor = True
         '
         'chkCountry
         '
         Me.chkCountry.AutoSize = True
         Me.chkCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCountry.Location = New System.Drawing.Point(237, 53)
+        Me.chkCountry.Location = New System.Drawing.Point(6, 70)
         Me.chkCountry.Name = "chkCountry"
         Me.chkCountry.Size = New System.Drawing.Size(67, 17)
         Me.chkCountry.TabIndex = 18
@@ -324,7 +319,7 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         Me.chkTop250.AutoSize = True
         Me.chkTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTop250.Location = New System.Drawing.Point(237, 19)
+        Me.chkTop250.Location = New System.Drawing.Point(131, 138)
         Me.chkTop250.Name = "chkTop250"
         Me.chkTop250.Size = New System.Drawing.Size(66, 17)
         Me.chkTop250.TabIndex = 16
@@ -336,7 +331,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkCrew.AutoSize = True
         Me.chkCrew.Enabled = False
         Me.chkCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCrew.Location = New System.Drawing.Point(246, 104)
+        Me.chkCrew.Location = New System.Drawing.Point(15, 38)
         Me.chkCrew.Name = "chkCrew"
         Me.chkCrew.Size = New System.Drawing.Size(85, 17)
         Me.chkCrew.TabIndex = 21
@@ -348,7 +343,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkMusicBy.AutoSize = True
         Me.chkMusicBy.Enabled = False
         Me.chkMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMusicBy.Location = New System.Drawing.Point(246, 121)
+        Me.chkMusicBy.Location = New System.Drawing.Point(15, 55)
         Me.chkMusicBy.Name = "chkMusicBy"
         Me.chkMusicBy.Size = New System.Drawing.Size(71, 17)
         Me.chkMusicBy.TabIndex = 22
@@ -360,33 +355,22 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkProducers.AutoSize = True
         Me.chkProducers.Enabled = False
         Me.chkProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkProducers.Location = New System.Drawing.Point(246, 138)
+        Me.chkProducers.Location = New System.Drawing.Point(15, 72)
         Me.chkProducers.Name = "chkProducers"
         Me.chkProducers.Size = New System.Drawing.Size(77, 17)
         Me.chkProducers.TabIndex = 23
         Me.chkProducers.Text = "Producers"
         Me.chkProducers.UseVisualStyleBackColor = True
         '
-        'chkFullCast
-        '
-        Me.chkFullCast.AutoSize = True
-        Me.chkFullCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFullCast.Location = New System.Drawing.Point(237, 70)
-        Me.chkFullCast.Name = "chkFullCast"
-        Me.chkFullCast.Size = New System.Drawing.Size(107, 17)
-        Me.chkFullCast.TabIndex = 19
-        Me.chkFullCast.Text = "Scrape Full Cast"
-        Me.chkFullCast.UseVisualStyleBackColor = True
-        '
         'chkWriters
         '
         Me.chkWriters.AutoSize = True
         Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWriters.Location = New System.Drawing.Point(131, 121)
+        Me.chkWriters.Location = New System.Drawing.Point(237, 36)
         Me.chkWriters.Name = "chkWriters"
-        Me.chkWriters.Size = New System.Drawing.Size(63, 17)
+        Me.chkWriters.Size = New System.Drawing.Size(105, 17)
         Me.chkWriters.TabIndex = 14
-        Me.chkWriters.Text = "Writers"
+        Me.chkWriters.Text = "Credits(Writers)"
         Me.chkWriters.UseVisualStyleBackColor = True
         '
         'chkStudio
@@ -415,7 +399,7 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         Me.chkFullCrew.AutoSize = True
         Me.chkFullCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFullCrew.Location = New System.Drawing.Point(237, 87)
+        Me.chkFullCrew.Location = New System.Drawing.Point(6, 21)
         Me.chkFullCrew.Name = "chkFullCrew"
         Me.chkFullCrew.Size = New System.Drawing.Size(111, 17)
         Me.chkFullCrew.TabIndex = 20
@@ -448,7 +432,7 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         Me.chkGenre.AutoSize = True
         Me.chkGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGenre.Location = New System.Drawing.Point(131, 138)
+        Me.chkGenre.Location = New System.Drawing.Point(131, 121)
         Me.chkGenre.Name = "chkGenre"
         Me.chkGenre.Size = New System.Drawing.Size(57, 17)
         Me.chkGenre.TabIndex = 15
@@ -494,16 +478,16 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkVotes.Location = New System.Drawing.Point(6, 138)
         Me.chkVotes.Name = "chkVotes"
-        Me.chkVotes.Size = New System.Drawing.Size(55, 17)
+        Me.chkVotes.Size = New System.Drawing.Size(86, 17)
         Me.chkVotes.TabIndex = 7
-        Me.chkVotes.Text = "Votes"
+        Me.chkVotes.Text = "IMDB Votes"
         Me.chkVotes.UseVisualStyleBackColor = True
         '
         'chkTrailer
         '
         Me.chkTrailer.AutoSize = True
         Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailer.Location = New System.Drawing.Point(237, 36)
+        Me.chkTrailer.Location = New System.Drawing.Point(237, 19)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
         Me.chkTrailer.TabIndex = 17
@@ -516,9 +500,9 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkRating.Location = New System.Drawing.Point(6, 121)
         Me.chkRating.Name = "chkRating"
-        Me.chkRating.Size = New System.Drawing.Size(60, 17)
+        Me.chkRating.Size = New System.Drawing.Size(91, 17)
         Me.chkRating.TabIndex = 6
-        Me.chkRating.Text = "Rating"
+        Me.chkRating.Text = "IMDB Rating"
         Me.chkRating.UseVisualStyleBackColor = True
         '
         'chkRelease
@@ -531,17 +515,6 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkRelease.TabIndex = 4
         Me.chkRelease.Text = "Release Date"
         Me.chkRelease.UseVisualStyleBackColor = True
-        '
-        'chkMPAA
-        '
-        Me.chkMPAA.AutoSize = True
-        Me.chkMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMPAA.Location = New System.Drawing.Point(6, 53)
-        Me.chkMPAA.Name = "chkMPAA"
-        Me.chkMPAA.Size = New System.Drawing.Size(56, 17)
-        Me.chkMPAA.TabIndex = 2
-        Me.chkMPAA.Text = "MPAA"
-        Me.chkMPAA.UseVisualStyleBackColor = True
         '
         'chkYear
         '
@@ -564,6 +537,19 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
+        '
+        'gbScraperFieldsCredits
+        '
+        Me.gbScraperFieldsCredits.Controls.Add(Me.chkFullCrew)
+        Me.gbScraperFieldsCredits.Controls.Add(Me.chkProducers)
+        Me.gbScraperFieldsCredits.Controls.Add(Me.chkMusicBy)
+        Me.gbScraperFieldsCredits.Controls.Add(Me.chkCrew)
+        Me.gbScraperFieldsCredits.Location = New System.Drawing.Point(255, 53)
+        Me.gbScraperFieldsCredits.Name = "gbScraperFieldsCredits"
+        Me.gbScraperFieldsCredits.Size = New System.Drawing.Size(145, 91)
+        Me.gbScraperFieldsCredits.TabIndex = 79
+        Me.gbScraperFieldsCredits.TabStop = False
+        Me.gbScraperFieldsCredits.Text = "Credits"
         '
         'frmIMDBInfoSettingsHolder
         '
@@ -589,6 +575,8 @@ Partial Class frmIMDBInfoSettingsHolder
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbScraperFields.ResumeLayout(False)
         Me.gbScraperFields.PerformLayout()
+        Me.gbScraperFieldsCredits.ResumeLayout(False)
+        Me.gbScraperFieldsCredits.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -608,7 +596,6 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
     Friend WithEvents chkMusicBy As System.Windows.Forms.CheckBox
     Friend WithEvents chkFullCrew As System.Windows.Forms.CheckBox
-    Friend WithEvents chkFullCast As System.Windows.Forms.CheckBox
     Friend WithEvents chkProducers As System.Windows.Forms.CheckBox
     Friend WithEvents chkWriters As System.Windows.Forms.CheckBox
     Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
@@ -623,7 +610,6 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents chkTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkRating As System.Windows.Forms.CheckBox
     Friend WithEvents chkRelease As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
     Friend WithEvents gbScraperOptions As System.Windows.Forms.GroupBox
@@ -634,5 +620,6 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents chkFallBackworldwide As System.Windows.Forms.CheckBox
     Friend WithEvents cbForceTitleLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblForceTitleLanguage As System.Windows.Forms.Label
+    Friend WithEvents gbScraperFieldsCredits As System.Windows.Forms.GroupBox
 
 End Class

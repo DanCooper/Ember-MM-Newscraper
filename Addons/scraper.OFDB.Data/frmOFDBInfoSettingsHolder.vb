@@ -73,6 +73,9 @@ Public Class frmOFDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkRating.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
 
     Public Sub New()
         InitializeComponent()
@@ -95,7 +98,7 @@ Public Class frmOFDBInfoSettingsHolder
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkOutline.Text = Master.eLang.GetString(64, "Outline")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.chkRating.Text = Master.eLang.GetString(722, "MPAA/Certification")
         Me.gbOptions.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
@@ -103,6 +106,7 @@ Public Class frmOFDBInfoSettingsHolder
     End Sub
 
 #End Region 'Methods
+
 
 
 End Class
