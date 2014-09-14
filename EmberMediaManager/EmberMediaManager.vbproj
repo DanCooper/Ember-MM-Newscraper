@@ -265,6 +265,12 @@
     <Compile Include="dlgManualEdit.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgMovieDataScraperPreview.Designer.vb">
+      <DependentUpon>dlgMovieDataScraperPreview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgMovieDataScraperPreview.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgMovieSource.Designer.vb">
       <DependentUpon>dlgMovieSource.vb</DependentUpon>
     </Compile>
@@ -439,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgManualEdit.resx">
       <DependentUpon>dlgManualEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgMovieDataScraperPreview.resx">
+      <DependentUpon>dlgMovieDataScraperPreview.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgMovieSource.resx">
       <DependentUpon>dlgMovieSource.vb</DependentUpon>

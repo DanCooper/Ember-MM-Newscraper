@@ -477,6 +477,7 @@ Namespace MediaContainers
         Private _videosource As String
         Private _tmdbcolid As String
         Private _dateadded As String
+        Private _scrapersource As String
 #End Region 'Fields
 
 #Region "Constructors"
@@ -892,6 +893,16 @@ Namespace MediaContainers
             End Get
             Set(ByVal value As String)
                 Me._tagline = value
+            End Set
+        End Property
+
+        <XmlElement("scrapersource")> _
+        Public Property Scrapersource() As String
+            Get
+                Return Me._scrapersource
+            End Get
+            Set(ByVal value As String)
+                Me._scrapersource = value
             End Set
         End Property
 
@@ -1376,6 +1387,7 @@ Namespace MediaContainers
             Me._lev = 0
             Me._videosource = String.Empty
             Me._dateadded = String.Empty
+            Me._scrapersource = String.Empty
             Me.MovieID.Clear()
         End Sub
 

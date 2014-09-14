@@ -1785,6 +1785,19 @@ Public Class dlgEditMovie
                     lvItem.SubItems.Add(imdbAct.Thumb)
                 Next
 
+                If Not Master.currMovie.Filename = String.Empty AndAlso Master.currMovie.Movie.VideoSource = "" Then
+                    Dim fSource As String = APIXML.GetFileSource(Master.currMovie.Filename)
+                    If Not String.IsNullOrEmpty(fSource) Then
+                        Master.currMovie.FileSource = fSource
+                        Master.currMovie.Movie.VideoSource = Master.currMovie.FileSource
+                    ElseIf String.IsNullOrEmpty(Master.currMovie.FileSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                        Master.currMovie.FileSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(Master.currMovie.Filename)), String.Empty, "*EmberAPP")
+                        Master.currMovie.Movie.VideoSource = Master.currMovie.FileSource
+                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.VideoSource) Then
+                        Master.currMovie.FileSource = Master.currMovie.Movie.VideoSource
+                    End If
+                End If
+
                 Dim tRating As Single = NumUtils.ConvertToSingle(Master.currMovie.Movie.Rating)
                 .tmpRating = tRating.ToString
                 .pbStar1.Tag = tRating

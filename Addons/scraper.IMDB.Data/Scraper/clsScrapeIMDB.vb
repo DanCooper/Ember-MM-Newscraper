@@ -182,6 +182,7 @@ Namespace IMDB
                 End Using
 
                 nMovie.IMDBID = strID
+                nMovie.Scrapersource = "IMDB"
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
@@ -316,6 +317,9 @@ Namespace IMDB
 
                 'IMDB Votes
                 If Options.bVotes Then nMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
+                'Votes should be rounded value
+                nMovie.Votes = nMovie.Votes.Replace(".", "").Replace(",", "")
+
 
                 'IMDB Top250
                 'ie: <a href="/chart/top?tt0167260">Top 250: #13</a>
@@ -540,7 +544,9 @@ mPlot:          'MOVIE PLOT
                     scrapedresult = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim)
                     'only update nMovie if scraped result is not empty/nothing!
                     If Not String.IsNullOrEmpty(scrapedresult) Then
-                        nMovie.Runtime = scrapedresult
+                        'use regex to get rid of all letters(if that ever happens just in case) and also remove spaces
+                        nMovie.Runtime = System.Text.RegularExpressions.Regex.Replace(scrapedresult, "[^.0-9]", "").Trim
+                        ' nMovie.Runtime = scrapedresult
                     End If
                 End If
 

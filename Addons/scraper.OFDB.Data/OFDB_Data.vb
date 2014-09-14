@@ -282,11 +282,13 @@ Public Class OFDB_Data
     Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.ScraperNew
         logger.Trace("Started OFDB ScraperNew")
 
-        'Moviepilot-datascraper needs originaltitle of movie!
+        'datascraper needs imdb of movie!
         If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
             logger.Trace("IMDB-ID of movie is needed, but not availaible! Leave OFDB scraper...")
             Return New Interfaces.ModuleResult With {.breakChain = False}
         End If
+
+        nMovie.Scrapersource = "OFDB"
 
         ' we have the IMDB-ID -> now we can use scraper methods!
         Dim tOFDB As New OFDB(DBMovie.Movie.ID)

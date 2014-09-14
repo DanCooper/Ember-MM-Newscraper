@@ -1340,4 +1340,6 @@
   <string id="1250">TMDB Rating</string>
   <string id="1251">TMDB Votes</string>
   <string id="1252">IMDB Votes</string>
+  <string id="1253">Scraperresults</string>
+  <string id="1254">Only data in selected tabs will be used!</string>
 </strings>

@@ -304,6 +304,7 @@ Public Class MoviepilotDE_Data
                 End Select
             End If
         End If
+        nMovie.Scrapersource = "MOVIEPILOT"
 
         'Use Moviepilot Outline?
         If ConfigOptions.bOutline Then

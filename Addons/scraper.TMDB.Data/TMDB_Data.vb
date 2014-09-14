@@ -849,6 +849,9 @@ Public Class TMDB_Data
                         End If
                         If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
                             _TMDBg.GetMovieInfo(DBMovie.Movie.TMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
+                            DBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
+                            DBMovie.Movie.Title = nMovie.Title
+                            DBMovie.Movie.ID = nMovie.ID
                         End If
                     Else
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}

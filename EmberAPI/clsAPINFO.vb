@@ -104,7 +104,12 @@ Public Class NFO
 
                 'Trailer
                 If (String.IsNullOrEmpty(DBMovie.Movie.Trailer) OrElse Not Master.eSettings.MovieLockTrailer) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Trailer) AndAlso Master.eSettings.MovieScraperTrailer Then
-                    DBMovie.Movie.Trailer = scrapedmovie.Trailer
+                    If Master.eSettings.MovieXBMCTrailerFormat Then
+                        DBMovie.Movie.Trailer = Replace(scrapedmovie.Trailer.Trim, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                        DBMovie.Movie.Trailer = Replace(DBMovie.Movie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                    Else
+                        DBMovie.Movie.Trailer = scrapedmovie.Trailer
+                    End If
                 End If
 
                 'Votes

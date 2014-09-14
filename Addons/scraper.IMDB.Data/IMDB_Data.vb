@@ -539,6 +539,9 @@ Public Class IMDB_Data
                         If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
                             'IMDB-ID available -> scrape and save data into an empty movie container (nMovie)
                             _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
+                            DBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
+                            DBMovie.Movie.Title = nMovie.Title
+                            DBMovie.Movie.ID = nMovie.ID
                         End If
                     Else
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}

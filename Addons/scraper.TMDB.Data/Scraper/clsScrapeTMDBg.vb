@@ -270,7 +270,7 @@ Namespace TMDBdata
                 If (Not Movie.id > 0 AndAlso Not _MySettings.FallBackEng) OrElse (Not Movie.id > 0 AndAlso Not MovieE.id > 0) Then
                     Return False
                 End If
-
+                nMovie.Scrapersource = "TMDB"
                 nMovie.ID = CStr(IIf(String.IsNullOrEmpty(Movie.imdb_id) AndAlso _MySettings.FallBackEng, MovieE.imdb_id, Movie.imdb_id))
                 nMovie.TMDBID = CStr(IIf(String.IsNullOrEmpty(Movie.id.ToString) AndAlso _MySettings.FallBackEng, MovieE.id.ToString, Movie.id.ToString))
 
@@ -412,7 +412,12 @@ Namespace TMDBdata
                     scrapedresult = CStr(IIf(String.IsNullOrEmpty(Movie.release_date) AndAlso _MySettings.FallBackEng, MovieE.release_date, Movie.release_date))
                     'only update nMovie if scraped result is not empty/nothing!
                     If Not String.IsNullOrEmpty(scrapedresult) Then
-                        nMovie.ReleaseDate = scrapedresult
+                        Dim RelDate As Date
+                        If Date.TryParse(scrapedresult, RelDate) Then
+                            nMovie.ReleaseDate = Strings.FormatDateTime(RelDate, Microsoft.VisualBasic.DateFormat.ShortDate).ToString
+                        Else
+                            nMovie.ReleaseDate = scrapedresult
+                        End If
                     End If
                 End If
 

@@ -212,7 +212,7 @@ Public Class MoviepilotDE
                             If Plot > 0 AndAlso Plot < 7 Then
                                 'check if plot contains any headers and strip them if found
                                 dirt = If(tmpHTML.IndexOf("<strong>") > 0, tmpHTML.IndexOf("<strong>"), 0)
-                                If dirt > 0 Then
+                                If dirt > 0 AndAlso dirt < 100 Then
                                     tmpHTML = tmpHTML.Substring(dirt + 8, tmpHTML.IndexOf("</strong>", dirt + 8) - (dirt + 8))
                                 End If
                                 Plot = tmpHTML.IndexOf("<p>")
@@ -222,8 +222,8 @@ Public Class MoviepilotDE
                             End If
 
                         End If
-                  
-                      
+
+
                         'no outline 
                     Else
                         Plot = tmpHTML.IndexOf("<p>")
@@ -247,7 +247,7 @@ Public Class MoviepilotDE
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strPlot
     End Function
