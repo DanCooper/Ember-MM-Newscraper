@@ -36,6 +36,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.chkScrapePoster = New System.Windows.Forms.CheckBox()
         Me.chkScrapeFanart = New System.Windows.Forms.CheckBox()
         Me.gbScraper = New System.Windows.Forms.GroupBox()
+        Me.lblAPIHint = New System.Windows.Forms.Label()
         Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
         Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
         Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
@@ -51,7 +52,6 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
-        Me.lblAPIHint = New System.Windows.Forms.Label()
         Me.pnlSettings.SuspendLayout()
         Me.gbImages.SuspendLayout()
         Me.gbScraper.SuspendLayout()
@@ -239,6 +239,17 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.gbScraper.TabStop = False
         Me.gbScraper.Text = "Fanart.tv"
         '
+        'lblAPIHint
+        '
+        Me.lblAPIHint.AutoSize = True
+        Me.lblAPIHint.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblAPIHint.Location = New System.Drawing.Point(6, 62)
+        Me.lblAPIHint.Name = "lblAPIHint"
+        Me.lblAPIHint.Size = New System.Drawing.Size(579, 13)
+        Me.lblAPIHint.TabIndex = 24
+        Me.lblAPIHint.Text = "Using a Personal API Key reduces the time you have to wait for new images to show" & _
+    " up from 7 days to 48 hours."
+        '
         'chkGetBlankImages
         '
         Me.chkGetBlankImages.AutoSize = True
@@ -316,13 +327,11 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         '
         'txtApiKey
         '
-        Me.txtApiKey.Enabled = False
         Me.txtApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtApiKey.Location = New System.Drawing.Point(9, 37)
         Me.txtApiKey.Name = "txtApiKey"
         Me.txtApiKey.Size = New System.Drawing.Size(554, 22)
         Me.txtApiKey.TabIndex = 1
-        Me.txtApiKey.Visible = False
         '
         'Label1
         '
@@ -401,17 +410,6 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.cbEnabled.TabIndex = 0
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
-        '
-        'lblAPIHint
-        '
-        Me.lblAPIHint.AutoSize = True
-        Me.lblAPIHint.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblAPIHint.Location = New System.Drawing.Point(6, 62)
-        Me.lblAPIHint.Name = "lblAPIHint"
-        Me.lblAPIHint.Size = New System.Drawing.Size(579, 13)
-        Me.lblAPIHint.TabIndex = 24
-        Me.lblAPIHint.Text = "Using a Personal API Key reduces the time you have to wait for new images to show" & _
-    " up from 7 days to 48 hours."
         '
         'frmFanartTVMediaSettingsHolder_Movie
         '
