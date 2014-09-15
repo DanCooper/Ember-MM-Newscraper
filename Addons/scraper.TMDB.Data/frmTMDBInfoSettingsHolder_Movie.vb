@@ -117,8 +117,10 @@ Public Class frmTMDBInfoSettingsHolder_Movie
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
-
-    Private Sub chkCrew_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkCrew.CheckedChanged
+    Private Sub chkWriters_CheckedChanged(sender As Object, e As EventArgs) Handles chkWriters.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+    Private Sub chkDirector_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkDirector.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -239,29 +241,32 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkCollection.Text = Master.eLang.GetString(1135, "Collection")
         Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
-        Me.chkCrew.Text = Master.eLang.GetString(909, "Crew")
+        Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
         Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
         Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
-        Me.chkMPAA.Text = Master.eLang.GetString(881, "MPAA & Certification")
+        Me.chkMPAA.Text = Master.eLang.GetString(722, "MPAA/Certification")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.chkRating.Text = Master.eLang.GetString(1250, "TMDB Rating")
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
         Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
-        Me.chkVotes.Text = Master.eLang.GetString(399, "Votes")
+        Me.chkVotes.Text = Master.eLang.GetString(1251, "TMDB Votes")
+        Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.gbGlobalOpts.Text = Master.eLang.GetString(937, "TMDB")
         Me.gbScraperOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.lblApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
         Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
+
     End Sub
 
 
 #End Region 'Methods
+
 
 End Class

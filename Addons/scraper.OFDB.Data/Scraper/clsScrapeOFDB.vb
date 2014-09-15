@@ -251,11 +251,12 @@ Public Class OFDB
                             'Dim Gen = From M In rGenres _
                             '      Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
                             Dim Gen = From M In rGenres _
-                                  Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString) Take If(Master.eSettings.MovieScraperGenreLimit > 0, Master.eSettings.MovieScraperGenreLimit, 999999)
+                                  Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString) 'Take If(Master.eSettings.MovieScraperGenreLimit > 0, Master.eSettings.MovieScraperGenreLimit, 999999)
 
                             If Gen.Count > 0 Then
                                 Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
-                                tGenre = StringUtils.GenreFilter(tGenre)
+                                'we don't use language filter here - instead do this in MergeScraperResult function
+                                '       tGenre = StringUtils.GenreFilter(tGenre)
                                 If Not String.IsNullOrEmpty(tGenre) Then
                                     _genre = Strings.Join(tGenre.Split(Convert.ToChar("/")), " / ").Trim
                                 End If

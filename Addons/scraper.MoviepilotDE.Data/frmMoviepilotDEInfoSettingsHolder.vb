@@ -93,7 +93,7 @@ Public Class frmMoviepilotDEInfoSettingsHolder
     Private Sub SetUp()
         Me.chkMoviepilotPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkMoviepilotOutline.Text = Master.eLang.GetString(64, "Outline")
-        Me.chkMoviepilotRating.Text = Master.eLang.GetString(722, "Rating")
+        Me.chkMoviepilotRating.Text = Master.eLang.GetString(722, "MPAA/Certification")
 
 
         Me.gbOptions.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")

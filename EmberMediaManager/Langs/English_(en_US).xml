@@ -392,7 +392,7 @@
   <string id="391">Other Crew</string>
   <string id="392">Music By</string>
   <string id="393">Producers</string>
-  <string id="394">Writers</string>
+  <string id="394">Credits(Writers)</string>
   <string id="395">Studio</string>
   <string id="396">Runtime</string>
   <string id="397">Tagline</string>
@@ -720,7 +720,7 @@
   <string id="719"></string>
   <string id="720">No</string>
   <string id="721">Upgrade</string>
-  <string id="722">Certification</string>
+  <string id="722">MPAA/Certification</string>
   <string id="723">Episode Guide URL</string>
   <string id="724">Premiered</string>
   <string id="725">Actors</string>
@@ -1325,15 +1325,21 @@
   <string id="1235">Lock Collection</string>
   <string id="1236">Lock Country</string>
   <string id="1237">Lock Director</string>
-  <string id="1238">Lock MusicBy</string>
-  <string id="1239">Lock Other Crew</string>
-  <string id="1240">Lock Producers</string>
+  <string id="1238">Originaltitle</string>
+  <string id="1239">IMDB Rating</string>
+  <string id="1240">Lock Originaltitle</string>
   <string id="1241">Lock ReleaseDate</string>
   <string id="1242">Lock Runtime</string>
   <string id="1243">Lock Tags</string>
   <string id="1244">Lock TOP250</string>
   <string id="1245">Lock Votes</string>
-  <string id="1246">Lock Writers</string>
+  <string id="1246">Lock Credits(Writers)</string>
   <string id="1247">Lock Year</string>
   <string id="1248">Using a Personal API Key reduces the time you have to wait for new images to show up from 7 days to 48 hours.</string>
+  <string id="1249">Show scraped results in detailed view</string>
+  <string id="1250">TMDB Rating</string>
+  <string id="1251">TMDB Votes</string>
+  <string id="1252">IMDB Votes</string>
+  <string id="1253">Scraperresults</string>
+  <string id="1254">Only data in selected tabs will be used!</string>
 </strings>

@@ -399,6 +399,10 @@ Public Class FileFolderRenamer
             MovieFile.NewPath = MovieFile.NewPath.Remove(MovieFile.NewPath.Length - 1)
         End While
 
+        'Cocotus 20140906 Fix: If movetitle contains invalid characters than there are problems when creating/moving subfolders! i.e title "Die Nackte Kanone 2 1/2 (1991)" --> folder with unwanted subfolder "2": \Die Nackte Kanone 2 1\ 2 (1991)
+        MovieFile.NewPath = StringUtils.CleanPath(MovieFile.NewPath)
+        MovieFile.NewPath = StringUtils.CleanFileName(MovieFile.NewPath)
+
         MovieFile.FileExist = File.Exists(Path.Combine(MovieFile.BasePath, Path.Combine(MovieFile.NewPath, MovieFile.NewFileName))) AndAlso Not (MovieFile.FileName = MovieFile.NewFileName)
         MovieFile.DirExist = File.Exists(Path.Combine(MovieFile.BasePath, MovieFile.NewPath)) AndAlso Not (MovieFile.Path = MovieFile.NewPath)
 
@@ -664,6 +668,9 @@ Public Class FileFolderRenamer
                     f.NewPath = Path.Combine(f.OldPath, ProccessPattern(f, localFolderPattern, True).Trim)
                 End If
                 f.NewPath = If(f.NewPath.StartsWith(Path.DirectorySeparatorChar), f.NewPath.Substring(1), f.NewPath)
+                'Cocotus 20140906 Fix:  If movetitle contains invalid characters than there are problems when creating/moving subfolders! i.e title "Die Nackte Kanone 2 1/2 (1991)" --> folder with unwanted subfolder "2": \Die Nackte Kanone 2 1\ 2 (1991)
+                f.NewPath = StringUtils.CleanPath(f.NewPath)
+                f.NewPath = StringUtils.CleanFileName(f.NewPath)
 
                 f.FileExist = File.Exists(Path.Combine(f.BasePath, Path.Combine(f.NewPath, f.NewFileName))) AndAlso Not (f.FileName = f.NewFileName)
                 f.DirExist = File.Exists(Path.Combine(f.BasePath, f.NewPath)) AndAlso Not (f.Path = f.NewPath)

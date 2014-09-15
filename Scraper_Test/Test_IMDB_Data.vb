@@ -58,7 +58,6 @@ Namespace EmberTests
                                             .bCast = True,
                                             .bCert = True,
                                             .bDirector = True,
-                                            .bFullCast = True,
                                             .bFullCrew = True,
                                             .bGenre = True,
                                             .bMPAA = True,

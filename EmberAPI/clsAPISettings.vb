@@ -797,15 +797,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperCrew() As Boolean
-        Get
-            Return Settings._XMLSettings.moviescrapercrew
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescrapercrew = value
-        End Set
-    End Property
-
     Public Property MovieScraperDirector() As Boolean
         Get
             Return Settings._XMLSettings.moviescraperdirector
@@ -824,23 +815,15 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperMPAA() As Boolean
+    Public Property MovieScraperOriginaltitle() As Boolean
         Get
-            Return Settings._XMLSettings.moviescrapermpaa
+            Return Settings._XMLSettings.MovieScraperOriginaltitle
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescrapermpaa = value
+            Settings._XMLSettings.MovieScraperOriginaltitle = value
         End Set
     End Property
 
-    Public Property MovieScraperMusicBy() As Boolean
-        Get
-            Return Settings._XMLSettings.moviescrapermusicby
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescrapermusicby = value
-        End Set
-    End Property
 
     Public Property MovieScraperOutline() As Boolean
         Get
@@ -860,14 +843,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperProducers() As Boolean
-        Get
-            Return Settings._XMLSettings.moviescraperproducers
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescraperproducers = value
-        End Set
-    End Property
 
     Public Property MovieScraperRating() As Boolean
         Get
@@ -941,12 +916,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperWriters() As Boolean
+    Public Property MovieScraperCredits() As Boolean
         Get
-            Return Settings._XMLSettings.moviescraperwriters
+            Return Settings._XMLSettings.MovieScraperCredits
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescraperwriters = value
+            Settings._XMLSettings.MovieScraperCredits = value
         End Set
     End Property
 
@@ -1112,21 +1087,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieLockMusicBy() As Boolean
+    Public Property MovieScraperUseDetailView() As Boolean
         Get
-            Return Settings._XMLSettings.MovieLockMusicBy
+            Return Settings._XMLSettings.MovieScraperUseDetailView
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLockMusicBy = value
-        End Set
-    End Property
-
-    Public Property MovieLockOtherCrew() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieLockOtherCrew
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLockOtherCrew = value
+            Settings._XMLSettings.MovieScraperUseDetailView = value
         End Set
     End Property
 
@@ -1148,14 +1114,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieLockProducers() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieLockProducers
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLockProducers = value
-        End Set
-    End Property
 
     Public Property MovieLockRating() As Boolean
         Get
@@ -1237,12 +1195,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieLockWriters() As Boolean
+    Public Property MovieLockCredits() As Boolean
         Get
-            Return Settings._XMLSettings.MovieLockWriters
+            Return Settings._XMLSettings.MovieLockCredits
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLockWriters = value
+            Settings._XMLSettings.MovieLockCredits = value
         End Set
     End Property
 
@@ -1289,7 +1247,14 @@ Public Class Settings
             Settings._XMLSettings.movielocktitle = value
         End Set
     End Property
-
+    Public Property MovieLockOriginaltitle() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockTitle
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockTitle = value
+        End Set
+    End Property
     Public Property MovieLockTrailer() As Boolean
         Get
             Return Settings._XMLSettings.movielocktrailer
@@ -3764,6 +3729,31 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralMainFilterSortDate() As String
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterSortDate
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.GeneralMainFilterSortDate = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortTitle() As String
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterSortTitle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.GeneralMainFilterSortTitle = value
+        End Set
+    End Property
+    Public Property GeneralMainFilterIMDBRating() As String
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterIMDBRating
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.GeneralMainFilterIMDBRating = value
+        End Set
+    End Property
     Public Property GeneralMainSplitterPanelState() As Integer
         Get
             Return Settings._XMLSettings.generalmainsplitterpanelstate
@@ -3772,7 +3762,6 @@ Public Class Settings
             Settings._XMLSettings.generalmainsplitterpanelstate = value
         End Set
     End Property
-
     Public Property GeneralShowSplitterPanelState() As Integer
         Get
             Return Settings._XMLSettings.generalshowsplitterpanelstate

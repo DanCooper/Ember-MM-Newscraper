@@ -90,7 +90,7 @@ Partial Class frmMoviepilotDEInfoSettingsHolder
         Me.chkMoviepilotRating.Name = "chkMoviepilotRating"
         Me.chkMoviepilotRating.Size = New System.Drawing.Size(194, 17)
         Me.chkMoviepilotRating.TabIndex = 0
-        Me.chkMoviepilotRating.Text = "Rating"
+        Me.chkMoviepilotRating.Text = "MPAA/Certification"
         Me.chkMoviepilotRating.UseVisualStyleBackColor = True
         '
         'cbEnabled

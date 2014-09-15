@@ -775,19 +775,7 @@ Public Class frmMain
         Me.tmrFilterAni.Start()
     End Sub
 
-    Private Sub btnIMDBRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIMDBRating.Click
-        If Me.dgvMovies.RowCount > 0 Then
-            If Me.btnIMDBRating.Tag.ToString = "DESC" Then
-                Me.btnIMDBRating.Tag = "ASC"
-                Me.btnIMDBRating.Image = My.Resources.desc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Descending)
-            Else
-                Me.btnIMDBRating.Tag = "DESC"
-                Me.btnIMDBRating.Image = My.Resources.asc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Ascending)
-            End If
-        End If
-    End Sub
+
 
     Private Sub btnMarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMarkAll.Click
         Try
@@ -888,12 +876,20 @@ Public Class frmMain
 
     Private Sub btnSortDate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortDate.Click
         If Me.dgvMovies.RowCount > 0 Then
+            Me.btnSortTitle.Tag = ""
+            Me.btnSortTitle.Image = Nothing
+            Me.btnIMDBRating.Tag = ""
+            Me.btnIMDBRating.Image = Nothing
+            Master.eSettings.GeneralMainFilterIMDBRating = ""
+            Master.eSettings.GeneralMainFilterSortTitle = ""
             If Me.btnSortDate.Tag.ToString = "DESC" Then
+                Master.eSettings.GeneralMainFilterSortDate = "DESC"
                 Me.btnSortDate.Tag = "ASC"
                 Me.btnSortDate.Image = My.Resources.desc
                 'cotocus 201303 Wrong Column! DateAdd column is 48 instead of 0 (ID)!
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Descending)
             Else
+                Master.eSettings.GeneralMainFilterSortDate = "ASC"
                 Me.btnSortDate.Tag = "DESC"
                 Me.btnSortDate.Image = My.Resources.asc
                 'cotocus 201303 Wrong Column! DateAdd column is 48 instead of 0 (ID)!
@@ -904,18 +900,46 @@ Public Class frmMain
 
     Private Sub btnSortTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortTitle.Click
         If Me.dgvMovies.RowCount > 0 Then
+            Me.btnSortDate.Tag = ""
+            Me.btnSortDate.Image = Nothing
+            Me.btnIMDBRating.Tag = ""
+            Me.btnIMDBRating.Image = Nothing
+            Master.eSettings.GeneralMainFilterIMDBRating = ""
+            Master.eSettings.GeneralMainFilterSortDate = ""
             If Me.btnSortTitle.Tag.ToString = "DESC" Then
+                Master.eSettings.GeneralMainFilterSortTitle = "DESC"
                 Me.btnSortTitle.Tag = "ASC"
                 Me.btnSortTitle.Image = My.Resources.desc
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Descending)
             Else
+                Master.eSettings.GeneralMainFilterSortTitle = "ASC"
                 Me.btnSortTitle.Tag = "DESC"
                 Me.btnSortTitle.Image = My.Resources.asc
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Ascending)
             End If
         End If
     End Sub
-
+    Private Sub btnIMDBRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIMDBRating.Click
+        If Me.dgvMovies.RowCount > 0 Then
+            Me.btnSortDate.Tag = ""
+            Me.btnSortDate.Image = Nothing
+            Me.btnSortTitle.Tag = ""
+            Me.btnSortTitle.Image = Nothing
+            Master.eSettings.GeneralMainFilterSortTitle = ""
+            Master.eSettings.GeneralMainFilterSortDate = ""
+            If Me.btnIMDBRating.Tag.ToString = "DESC" Then
+                Master.eSettings.GeneralMainFilterIMDBRating = "DESC"
+                Me.btnIMDBRating.Tag = "ASC"
+                Me.btnIMDBRating.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Descending)
+            Else
+                Master.eSettings.GeneralMainFilterIMDBRating = "ASC"
+                Me.btnIMDBRating.Tag = "DESC"
+                Me.btnIMDBRating.Image = My.Resources.asc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Ascending)
+            End If
+        End If
+    End Sub
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
         '//
         ' Begin animation to raise panel all the way up
@@ -1746,7 +1770,11 @@ Public Class frmMain
                     If ModulesManager.Instance.ScrapeData_MovieNew(DBScrapeMovie, ScrapedList, Args.scrapeType, Args.Options) Then
                         Exit Try
                     End If
-                    'Merge with global scraper settings
+                    'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
+                    If Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieScraperUseDetailView Then
+                        Me.PreviewDataScraperResults(ScrapedList)
+                    End If
+                    'Merge scraperresults considering global datascraper settings
                     DBScrapeMovie = NFO.MergeDataScraperResults(DBScrapeMovie, ScrapedList)
                 Else
                     ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
@@ -7860,6 +7888,7 @@ doCancel:
             Me.SetMovieCount()
             Me.SetMovieSetCount()
             Me.SetTVCount()
+            Me.SetDGVFilters()
         End If
     End Sub
 
@@ -9252,6 +9281,9 @@ doCancel:
                 Me.pnlFilter.Visible = False
                 Master.eSettings.GeneralSeasonSplitterPanelState = Me.scTVSeasonsEpisodes.SplitterDistance
                 Master.eSettings.GeneralShowSplitterPanelState = Me.scTV.SplitterDistance
+                Master.eSettings.GeneralMainFilterSortDate = Me.btnSortDate.Tag.ToString
+                Master.eSettings.GeneralMainFilterSortTitle = Me.btnSortTitle.Tag.ToString
+                Master.eSettings.GeneralMainFilterIMDBRating = Me.btnIMDBRating.Tag.ToString
             End If
             If Not Me.WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
 
@@ -9737,6 +9769,7 @@ doCancel:
                 Catch ex As Exception
                 End Try
                 Me.pnlFilter.Visible = True
+
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1165, "Initializing Main Form. Please wait..."))
                 Me.ClearInfo()
@@ -11478,6 +11511,30 @@ doCancel:
             Me.tspbLoading.Value = iPercent
             Me.Refresh()
         End If
+    End Sub
+
+
+
+    ''' <summary>
+    ''' Open MovieDataScraperPreview Window
+    ''' </summary>
+    ''' <param name="ScrapedList"><c>List(Of MediaContainers.Movie)</c> which contains unfiltered results of each data scraper</param>
+    ''' <remarks>
+    ''' 2014/09/13 Cocotus - First implementation: Display all scrapedresults in preview window, so that user can select the information which should be used
+    ''' </remarks>
+    Private Sub PreviewDataScraperResults(ByRef ScrapedList As List(Of MediaContainers.Movie))
+        Try
+            Application.DoEvents()
+            'Open/Show preview window
+            Using dlgMovieDataScraperPreview As New dlgMovieDataScraperPreview(ScrapedList)
+                Select Case dlgMovieDataScraperPreview.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        'For now nothing here
+                End Select
+            End Using
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     Private Sub MovieScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, Optional ByVal Restart As Boolean = False)
@@ -15640,7 +15697,7 @@ doCancel:
                 .cmnuMovieSetEdit.Text = Master.eLang.GetString(1131, "Edit MovieSet")
                 .cmnuMovieSetNew.Text = Master.eLang.GetString(208, "Add New Set")
                 .cmnuMovieSetRescrape.Text = Master.eLang.GetString(1233, "(Re)Scrape MovieSet")
-                .cmnuMovieUpSelCert.Text = Master.eLang.GetString(722, "Certification")
+                .cmnuMovieUpSelCert.Text = Master.eLang.GetString(56, "Certification")
                 .cmnuMovieUpSelCountry.Text = Master.eLang.GetString(301, "Country")
                 .cmnuMovieUpSelDirector.Text = Master.eLang.GetString(62, "Director")
                 .cmnuMovieUpSelMPAA.Text = Master.eLang.GetString(401, "MPAA")
@@ -16586,4 +16643,46 @@ doCancel:
 
 #End Region 'Nested Types
 
+    ''' <summary>
+    ''' Set Sort Filters of DatagridView
+    ''' </summary>
+    ''' <remarks>Cocotus 2014/09/06 Sort filters in main view are now saved and reloaded after database refreshes</remarks>
+    Private Sub SetDGVFilters()
+        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterSortDate) Then
+            Me.btnSortDate.Tag = Master.eSettings.GeneralMainFilterSortDate
+            If Me.btnSortDate.Tag.ToString = "DESC" Then
+                Me.btnSortDate.Tag = "ASC"
+                Me.btnSortDate.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Descending)
+            Else
+                Me.btnSortDate.Tag = "DESC"
+                Me.btnSortDate.Image = My.Resources.asc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Ascending)
+            End If
+        End If
+        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterSortTitle) Then
+            Me.btnSortTitle.Tag = Master.eSettings.GeneralMainFilterSortTitle
+            If Me.btnSortTitle.Tag.ToString = "DESC" Then
+                Me.btnSortTitle.Tag = "ASC"
+                Me.btnSortTitle.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Descending)
+            Else
+                Me.btnSortTitle.Tag = "DESC"
+                Me.btnSortTitle.Image = My.Resources.asc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Ascending)
+            End If
+        End If
+        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterIMDBRating) Then
+            Me.btnIMDBRating.Tag = Master.eSettings.GeneralMainFilterIMDBRating
+            If Me.btnIMDBRating.Tag.ToString = "DESC" Then
+                Me.btnIMDBRating.Tag = "ASC"
+                Me.btnIMDBRating.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Descending)
+            Else
+                Me.btnIMDBRating.Tag = "DESC"
+                Me.btnIMDBRating.Image = My.Resources.asc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Ascending)
+            End If
+        End If
+    End Sub
 End Class

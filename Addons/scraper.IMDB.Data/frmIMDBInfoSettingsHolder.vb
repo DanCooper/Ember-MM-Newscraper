@@ -65,41 +65,63 @@ Public Class frmIMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkWriters.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+        If Me.chkWriters.Checked = False Then
+            Me.chkFullCrew.Checked = False
+            Me.chkCrew.Checked = False
+            Me.chkMusicBy.Checked = False
+            Me.chkProducers.Checked = False
+            Me.gbScraperFieldsCredits.Enabled = False
+        Else
+            Me.chkFullCrew.Enabled = True
+            Me.chkCrew.Enabled = True
+            Me.chkMusicBy.Enabled = True
+            Me.chkProducers.Enabled = True
+            Me.gbScraperFieldsCredits.Enabled = True
+        End If
+    End Sub
     Private Sub chkCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCrew.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
+        If Me.chkFullCrew.Checked AndAlso Me.chkCrew.Checked Then
+            Me.chkFullCrew.Checked = False
+        End If
     End Sub
 
     Private Sub chkDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDirector.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
-
-    Private Sub chkFullCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFullCast.CheckedChanged
+    Private Sub chkMusicBy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMusicBy.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
+        If Me.chkFullCrew.Checked AndAlso Me.chkMusicBy.Checked Then
+            Me.chkFullCrew.Checked = False
+        End If
+    End Sub
+    Private Sub chkProducers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProducers.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+        If Me.chkFullCrew.Checked AndAlso Me.chkProducers.Checked Then
+            Me.chkFullCrew.Checked = False
+        End If
     End Sub
 
     Private Sub chkFullCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFullCrew.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
 
-        Me.chkProducers.Enabled = Me.chkFullCrew.Checked
-        Me.chkMusicBy.Enabled = Me.chkFullCrew.Checked
-        Me.chkCrew.Enabled = Me.chkFullCrew.Checked
-
-        If Not Me.chkFullCrew.Checked Then
+        If Me.chkFullCrew.Checked Then
             Me.chkProducers.Checked = False
             Me.chkMusicBy.Checked = False
             Me.chkCrew.Checked = False
+            Me.chkProducers.Enabled = False
+            Me.chkMusicBy.Enabled = False
+            Me.chkCrew.Enabled = False
+        Else
+            Me.chkProducers.Enabled = True
+            Me.chkMusicBy.Enabled = True
+            Me.chkCrew.Enabled = True
         End If
     End Sub
 
     Private Sub chkGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenre.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMPAA.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkMusicBy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMusicBy.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -119,9 +141,6 @@ Public Class frmIMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkProducers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProducers.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
 
     Private Sub chkRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
@@ -171,9 +190,6 @@ Public Class frmIMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkWriters.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
 
     Private Sub chkYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYear.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
@@ -223,21 +239,19 @@ Public Class frmIMDBInfoSettingsHolder
         Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
-        Me.chkVotes.Text = Master.eLang.GetString(399, "Votes")
+        Me.chkVotes.Text = Master.eLang.GetString(1252, "IMDB Votes")
         Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
-        Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.chkRating.Text = Master.eLang.GetString(1239, "IMDB Rating")
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
-        Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
+        Me.chkCertification.Text = Master.eLang.GetString(722, "MPAA/Certification")
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkFallBackworldwide.Text = Master.eLang.GetString(984, "Worldwide title as fallback")
         Me.lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")
-        Me.chkFullCast.Text = Master.eLang.GetString(512, "Scrape Full Cast")
         Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top250")
 

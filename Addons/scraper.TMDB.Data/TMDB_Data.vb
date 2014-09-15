@@ -197,10 +197,10 @@ Public Class TMDB_Data
         _setup_Movie.Lang = _setup_Movie.cbPrefLanguage.Text
         _setup_Movie.cbEnabled.Checked = _ScraperEnabled_Movie
         _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.PrefLanguage
-        _setup_Movie.chkCast.Checked = ConfigOptions_Movie.bFullCast
+        _setup_Movie.chkCast.Checked = ConfigOptions_Movie.bCast
         _setup_Movie.chkCollection.Checked = ConfigOptions_Movie.bCollection
         _setup_Movie.chkCountry.Checked = ConfigOptions_Movie.bCountry
-        _setup_Movie.chkCrew.Checked = ConfigOptions_Movie.bFullCrew
+        _setup_Movie.chkDirector.Checked = ConfigOptions_Movie.bDirector
         _setup_Movie.chkFallBackEng.Checked = _MySettings_Movie.FallBackEng
         _setup_Movie.chkGenre.Checked = ConfigOptions_Movie.bGenre
         _setup_Movie.chkGetAdultItems.Checked = _MySettings_Movie.GetAdultItems
@@ -214,6 +214,7 @@ Public Class TMDB_Data
         _setup_Movie.chkTitle.Checked = ConfigOptions_Movie.bTitle
         _setup_Movie.chkTrailer.Checked = ConfigOptions_Movie.bTrailer
         _setup_Movie.chkVotes.Checked = ConfigOptions_Movie.bVotes
+        _setup_Movie.chkWriters.Checked = ConfigOptions_Movie.bWriters
         _setup_Movie.chkYear.Checked = ConfigOptions_Movie.bYear
         _setup_Movie.txtApiKey.Text = strPrivateAPIKey
 
@@ -270,8 +271,6 @@ Public Class TMDB_Data
         ConfigOptions_Movie.bCollection = clsAdvancedSettings.GetBooleanSetting("DoCollection", True, , Enums.Content_Type.Movie)
         ConfigOptions_Movie.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.Content_Type.Movie)
         ConfigOptions_Movie.bDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bFullCast = clsAdvancedSettings.GetBooleanSetting("DoFullCast", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bFullCast = clsAdvancedSettings.GetBooleanSetting("FullCast", True, , Enums.Content_Type.Movie)
         ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True, , Enums.Content_Type.Movie)
         ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("FullCrew", True, , Enums.Content_Type.Movie)
         ConfigOptions_Movie.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True, , Enums.Content_Type.Movie)
@@ -325,7 +324,6 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoCountry", ConfigOptions_Movie.bCountry, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoDirector", ConfigOptions_Movie.bDirector, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.Fanart, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoFullCast", ConfigOptions_Movie.bFullCast, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoFullCrews", ConfigOptions_Movie.bFullCrew, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoGenres", ConfigOptions_Movie.bGenre, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoMPAA", ConfigOptions_Movie.bMPAA, , , Enums.Content_Type.Movie)
@@ -347,7 +345,6 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoWriters", ConfigOptions_Movie.bWriters, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoYear", ConfigOptions_Movie.bYear, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("FallBackEn", _MySettings_Movie.FallBackEng, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("FullCast", ConfigOptions_Movie.bFullCast, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("FullCrew", ConfigOptions_Movie.bFullCrew, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("GetAdultItems", _MySettings_Movie.GetAdultItems, , , Enums.Content_Type.Movie)
             settings.SetSetting("APIKey", _setup_Movie.txtApiKey.Text, , , Enums.Content_Type.Movie)
@@ -366,19 +363,18 @@ Public Class TMDB_Data
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
         ConfigOptions_Movie.bCast = _setup_Movie.chkCast.Checked
-        ConfigOptions_Movie.bCert = ConfigOptions_Movie.bMPAA
+        ConfigOptions_Movie.bCert = _setup_Movie.chkMPAA.Checked
         ConfigOptions_Movie.bCollection = _setup_Movie.chkCollection.Checked
         ConfigOptions_Movie.bCountry = _setup_Movie.chkCountry.Checked
-        ConfigOptions_Movie.bDirector = _setup_Movie.chkCrew.Checked
-        ConfigOptions_Movie.bFullCast = _setup_Movie.chkCast.Checked
-        ConfigOptions_Movie.bFullCrew = _setup_Movie.chkCrew.Checked
+        ConfigOptions_Movie.bDirector = _setup_Movie.chkDirector.Checked
+        ConfigOptions_Movie.bFullCrew = True
         ConfigOptions_Movie.bGenre = _setup_Movie.chkGenre.Checked
         ConfigOptions_Movie.bMPAA = _setup_Movie.chkMPAA.Checked
-        ConfigOptions_Movie.bMusicBy = _setup_Movie.chkCrew.Checked
-        ConfigOptions_Movie.bOtherCrew = _setup_Movie.chkCrew.Checked
+        ConfigOptions_Movie.bMusicBy = False
+        ConfigOptions_Movie.bOtherCrew = False
         ConfigOptions_Movie.bOutline = _setup_Movie.chkPlot.Checked
         ConfigOptions_Movie.bPlot = _setup_Movie.chkPlot.Checked
-        ConfigOptions_Movie.bProducers = _setup_Movie.chkCrew.Checked
+        ConfigOptions_Movie.bProducers = _setup_Movie.chkDirector.Checked
         ConfigOptions_Movie.bRating = _setup_Movie.chkRating.Checked
         ConfigOptions_Movie.bRelease = _setup_Movie.chkRelease.Checked
         ConfigOptions_Movie.bRuntime = _setup_Movie.chkRuntime.Checked
@@ -388,7 +384,7 @@ Public Class TMDB_Data
         ConfigOptions_Movie.bTop250 = False
         ConfigOptions_Movie.bTrailer = _setup_Movie.chkTrailer.Checked
         ConfigOptions_Movie.bVotes = _setup_Movie.chkVotes.Checked
-        ConfigOptions_Movie.bWriters = _setup_Movie.chkCrew.Checked
+        ConfigOptions_Movie.bWriters = _setup_Movie.chkWriters.Checked
         ConfigOptions_Movie.bYear = _setup_Movie.chkYear.Checked
         _MySettings_Movie.FallBackEng = _setup_Movie.chkFallBackEng.Checked
         _MySettings_Movie.GetAdultItems = _setup_Movie.chkGetAdultItems.Checked
@@ -719,7 +715,8 @@ Public Class TMDB_Data
     ''' <param name="nMovie">New scraped movie data</param>
     ''' <param name="Options">(NOT used at moment!)What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
-    ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper should NOT consider global scraper settings/locks in Ember, just scraper options of module</remarks>
+    ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper module should NOT use global scraper settings/locks in Ember, just scraper options of module
+    ''' Instead of directly saving scraped results into DBMovie we use empty nMovie movie container to store retrieved information of scraper</remarks>
     Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.ScraperNew
         logger.Trace("Started TMDB ScraperNew")
 
@@ -747,12 +744,12 @@ Public Class TMDB_Data
 
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
-                'IMDB-ID already available -> scrape movie data from IMDB
-                _TMDBg.GetMovieInfo(DBMovie.Movie.ID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
+                'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
+                _TMDBg.GetMovieInfo(DBMovie.Movie.ID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-                    DBMovie.Movie = _TMDBg.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, ScrapeType, filterOptions)
+                    DBMovie.Movie = _TMDBg.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, nMovie, ScrapeType, filterOptions)
                 End If
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -851,7 +848,10 @@ Public Class TMDB_Data
                             DBMovie.Movie.TMDBID = Master.tmpMovie.TMDBID
                         End If
                         If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
-                            _TMDBg.GetMovieInfo(DBMovie.Movie.TMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
+                            _TMDBg.GetMovieInfo(DBMovie.Movie.TMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
+                            DBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
+                            DBMovie.Movie.Title = nMovie.Title
+                            DBMovie.Movie.ID = nMovie.ID
                         End If
                     Else
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -884,44 +884,8 @@ Public Class TMDB_Data
         End If
 
 
-        'GetMovieInfo writes retrieved IMDB data into DBMovie - copy that into nmovie
-        nMovie = CloneFromStruct(DBMovie.Movie, nMovie)
-
         logger.Trace("Finished TMDB ScraperNew")
         Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
-    Public Function CloneFromStruct(ByVal DBMovie As MediaContainers.Movie, TheClone As MediaContainers.Movie) As MediaContainers.Movie
-        TheClone.Title = DBMovie.Title
-        TheClone.OriginalTitle = DBMovie.OriginalTitle
-        TheClone.SortTitle = DBMovie.SortTitle
-        TheClone.Year = DBMovie.Year
-        TheClone.Rating = DBMovie.Rating
-        TheClone.Votes = DBMovie.Votes
-        TheClone.MPAA = DBMovie.MPAA
-        TheClone.Top250 = DBMovie.Top250
-        TheClone.Countries = DBMovie.Countries
-        TheClone.Outline = DBMovie.Outline
-        TheClone.Plot = DBMovie.Plot
-        TheClone.Tagline = DBMovie.Tagline
-        TheClone.Trailer = DBMovie.Trailer
-        TheClone.Certification = DBMovie.Certification
-        TheClone.Genres = DBMovie.Genres
-        TheClone.Runtime = DBMovie.Runtime
-        TheClone.ReleaseDate = DBMovie.ReleaseDate
-        TheClone.Studio = DBMovie.Studio
-        TheClone.Directors = DBMovie.Directors
-        TheClone.Credits = DBMovie.Credits
-        TheClone.PlayCount = DBMovie.PlayCount
-        TheClone.Thumb = DBMovie.Thumb
-        TheClone.Fanart = DBMovie.Fanart
-        TheClone.Actors = DBMovie.Actors
-        TheClone.FileInfo = DBMovie.FileInfo
-        TheClone.YSets = DBMovie.YSets
-        TheClone.XSets = DBMovie.XSets
-        TheClone.Lev = DBMovie.Lev
-        TheClone.VideoSource = DBMovie.VideoSource
-        TheClone.DateAdded = DBMovie.DateAdded
-        Return TheClone
     End Function
 
     Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged

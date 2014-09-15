@@ -43,8 +43,9 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
+        Me.chkWriters = New System.Windows.Forms.CheckBox()
         Me.chkCollection = New System.Windows.Forms.CheckBox()
-        Me.chkCrew = New System.Windows.Forms.CheckBox()
+        Me.chkDirector = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
         Me.chkStudio = New System.Windows.Forms.CheckBox()
         Me.chkRuntime = New System.Windows.Forms.CheckBox()
@@ -278,8 +279,9 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         '
         'gbScraperOpts
         '
+        Me.gbScraperOpts.Controls.Add(Me.chkWriters)
         Me.gbScraperOpts.Controls.Add(Me.chkCollection)
-        Me.gbScraperOpts.Controls.Add(Me.chkCrew)
+        Me.gbScraperOpts.Controls.Add(Me.chkDirector)
         Me.gbScraperOpts.Controls.Add(Me.chkCountry)
         Me.gbScraperOpts.Controls.Add(Me.chkStudio)
         Me.gbScraperOpts.Controls.Add(Me.chkRuntime)
@@ -302,27 +304,38 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Fields - Scraper specific"
         '
+        'chkWriters
+        '
+        Me.chkWriters.AutoSize = True
+        Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkWriters.Location = New System.Drawing.Point(315, 36)
+        Me.chkWriters.Name = "chkWriters"
+        Me.chkWriters.Size = New System.Drawing.Size(63, 17)
+        Me.chkWriters.TabIndex = 77
+        Me.chkWriters.Text = "Writers"
+        Me.chkWriters.UseVisualStyleBackColor = True
+        '
         'chkCollection
         '
         Me.chkCollection.AutoSize = True
         Me.chkCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCollection.Location = New System.Drawing.Point(315, 36)
+        Me.chkCollection.Location = New System.Drawing.Point(315, 53)
         Me.chkCollection.Name = "chkCollection"
         Me.chkCollection.Size = New System.Drawing.Size(78, 17)
         Me.chkCollection.TabIndex = 76
         Me.chkCollection.Text = "Collection"
         Me.chkCollection.UseVisualStyleBackColor = True
         '
-        'chkCrew
+        'chkDirector
         '
-        Me.chkCrew.AutoSize = True
-        Me.chkCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCrew.Location = New System.Drawing.Point(315, 19)
-        Me.chkCrew.Name = "chkCrew"
-        Me.chkCrew.Size = New System.Drawing.Size(52, 17)
-        Me.chkCrew.TabIndex = 19
-        Me.chkCrew.Text = "Crew"
-        Me.chkCrew.UseVisualStyleBackColor = True
+        Me.chkDirector.AutoSize = True
+        Me.chkDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDirector.Location = New System.Drawing.Point(315, 19)
+        Me.chkDirector.Name = "chkDirector"
+        Me.chkDirector.Size = New System.Drawing.Size(67, 17)
+        Me.chkDirector.TabIndex = 19
+        Me.chkDirector.Text = "Director"
+        Me.chkDirector.UseVisualStyleBackColor = True
         '
         'chkCountry
         '
@@ -407,9 +420,9 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkVotes.Location = New System.Drawing.Point(6, 123)
         Me.chkVotes.Name = "chkVotes"
-        Me.chkVotes.Size = New System.Drawing.Size(55, 17)
+        Me.chkVotes.Size = New System.Drawing.Size(88, 17)
         Me.chkVotes.TabIndex = 7
-        Me.chkVotes.Text = "Votes"
+        Me.chkVotes.Text = "TMDB Votes"
         Me.chkVotes.UseVisualStyleBackColor = True
         '
         'chkTrailer
@@ -429,9 +442,9 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkRating.Location = New System.Drawing.Point(6, 106)
         Me.chkRating.Name = "chkRating"
-        Me.chkRating.Size = New System.Drawing.Size(60, 17)
+        Me.chkRating.Size = New System.Drawing.Size(93, 17)
         Me.chkRating.TabIndex = 6
-        Me.chkRating.Text = "Rating"
+        Me.chkRating.Text = "TMDB Rating"
         Me.chkRating.UseVisualStyleBackColor = True
         '
         'chkRelease
@@ -451,9 +464,9 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMPAA.Location = New System.Drawing.Point(6, 53)
         Me.chkMPAA.Name = "chkMPAA"
-        Me.chkMPAA.Size = New System.Drawing.Size(56, 17)
+        Me.chkMPAA.Size = New System.Drawing.Size(123, 17)
         Me.chkMPAA.TabIndex = 2
-        Me.chkMPAA.Text = "MPAA"
+        Me.chkMPAA.Text = "MPAA/Certification"
         Me.chkMPAA.UseVisualStyleBackColor = True
         '
         'chkYear
@@ -536,11 +549,12 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
     Friend WithEvents chkFallBackEng As System.Windows.Forms.CheckBox
     Friend WithEvents cbPrefLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label
-    Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
+    Friend WithEvents chkDirector As System.Windows.Forms.CheckBox
     Friend WithEvents pbTMDBApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkGetAdultItems As System.Windows.Forms.CheckBox
     Friend WithEvents chkCollection As System.Windows.Forms.CheckBox
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
     Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
+    Friend WithEvents chkWriters As System.Windows.Forms.CheckBox
 
 End Class

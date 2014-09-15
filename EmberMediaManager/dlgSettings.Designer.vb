@@ -854,21 +854,19 @@ Partial Class dlgSettings
         Me.lblTVScraperUpdateTime = New System.Windows.Forms.Label()
         Me.cbTVScraperUpdateTime = New System.Windows.Forms.ComboBox()
         Me.gbMovieScraperFieldsOpts = New System.Windows.Forms.GroupBox()
+        Me.chkMovieScraperOriginaltitle = New System.Windows.Forms.CheckBox()
         Me.lblMovieScraperCertLang = New System.Windows.Forms.Label()
         Me.chkMovieScraperTags = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCollection = New System.Windows.Forms.CheckBox()
-        Me.chkMovieScraperCertification = New System.Windows.Forms.CheckBox()
+        Me.chkMovieScraperMPAACertification = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperTop250 = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCountry = New System.Windows.Forms.CheckBox()
         Me.txtMovieScraperGenreLimit = New System.Windows.Forms.TextBox()
         Me.lblMovieScraperGenreLimit = New System.Windows.Forms.Label()
         Me.txtMovieScraperCastLimit = New System.Windows.Forms.TextBox()
         Me.lblMovieScraperCastLimit = New System.Windows.Forms.Label()
-        Me.chkMovieScraperCrew = New System.Windows.Forms.CheckBox()
         Me.cbMovieScraperCertLang = New System.Windows.Forms.ComboBox()
-        Me.chkMovieScraperMusicBy = New System.Windows.Forms.CheckBox()
-        Me.chkMovieScraperProducers = New System.Windows.Forms.CheckBox()
-        Me.chkMovieScraperWriters = New System.Windows.Forms.CheckBox()
+        Me.chkMovieScraperCredits = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperStudio = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperRuntime = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperPlot = New System.Windows.Forms.CheckBox()
@@ -881,7 +879,6 @@ Partial Class dlgSettings
         Me.chkMovieScraperTrailer = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperRating = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperRelease = New System.Windows.Forms.CheckBox()
-        Me.chkMovieScraperMPAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperYear = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperTitle = New System.Windows.Forms.CheckBox()
         Me.lblMovieScraperOutlineLimit = New System.Windows.Forms.Label()
@@ -903,14 +900,12 @@ Partial Class dlgSettings
         Me.chkMovieScraperUseMDDuration = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperMetaDataScan = New System.Windows.Forms.CheckBox()
         Me.gbMovieScraperGlobalLocksOpts = New System.Windows.Forms.GroupBox()
+        Me.chkMovieLockOriginaltitle = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockTags = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockCountry = New System.Windows.Forms.CheckBox()
-        Me.chkMovieLockOtherCrew = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockTop250 = New System.Windows.Forms.CheckBox()
-        Me.chkMovieLockMusicBy = New System.Windows.Forms.CheckBox()
-        Me.chkMovieLockProducers = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockLanguageA = New System.Windows.Forms.CheckBox()
-        Me.chkMovieLockWriters = New System.Windows.Forms.CheckBox()
+        Me.chkMovieLockCredits = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockDirector = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockReleaseDate = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockStudio = New System.Windows.Forms.CheckBox()
@@ -919,7 +914,7 @@ Partial Class dlgSettings
         Me.chkMovieLockRuntime = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockActors = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockLanguageV = New System.Windows.Forms.CheckBox()
-        Me.chkMovieLockMPAA = New System.Windows.Forms.CheckBox()
+        Me.chkMovieLockMPAACertification = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockOutline = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockPlot = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockTrailer = New System.Windows.Forms.CheckBox()
@@ -929,6 +924,7 @@ Partial Class dlgSettings
         Me.chkMovieLockTagline = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockTitle = New System.Windows.Forms.CheckBox()
         Me.gbMovieScraperMiscOpts = New System.Windows.Forms.GroupBox()
+        Me.chkMovieScraperDetailView = New System.Windows.Forms.CheckBox()
         Me.gbMovieCertification = New System.Windows.Forms.GroupBox()
         Me.chkMovieScraperCertForMPAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperUseMPAAFSK = New System.Windows.Forms.CheckBox()
@@ -10268,21 +10264,19 @@ Partial Class dlgSettings
         '
         'gbMovieScraperFieldsOpts
         '
+        Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperOriginaltitle)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.lblMovieScraperCertLang)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperTags)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperCollection)
-        Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperCertification)
+        Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperMPAACertification)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperTop250)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperCountry)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.txtMovieScraperGenreLimit)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.lblMovieScraperGenreLimit)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.txtMovieScraperCastLimit)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.lblMovieScraperCastLimit)
-        Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperCrew)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.cbMovieScraperCertLang)
-        Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperMusicBy)
-        Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperProducers)
-        Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperWriters)
+        Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperCredits)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperStudio)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperRuntime)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperPlot)
@@ -10295,7 +10289,6 @@ Partial Class dlgSettings
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperTrailer)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperRating)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperRelease)
-        Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperMPAA)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperYear)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperTitle)
         Me.gbMovieScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
@@ -10305,6 +10298,17 @@ Partial Class dlgSettings
         Me.gbMovieScraperFieldsOpts.TabIndex = 67
         Me.gbMovieScraperFieldsOpts.TabStop = false
         Me.gbMovieScraperFieldsOpts.Text = "Scraper Fields - Global"
+        '
+        'chkMovieScraperOriginaltitle
+        '
+        Me.chkMovieScraperOriginaltitle.AutoSize = true
+        Me.chkMovieScraperOriginaltitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperOriginaltitle.Location = New System.Drawing.Point(6, 38)
+        Me.chkMovieScraperOriginaltitle.Name = "chkMovieScraperOriginaltitle"
+        Me.chkMovieScraperOriginaltitle.Size = New System.Drawing.Size(88, 17)
+        Me.chkMovieScraperOriginaltitle.TabIndex = 29
+        Me.chkMovieScraperOriginaltitle.Text = "Originaltitle"
+        Me.chkMovieScraperOriginaltitle.UseVisualStyleBackColor = true
         '
         'lblMovieScraperCertLang
         '
@@ -10322,7 +10326,7 @@ Partial Class dlgSettings
         Me.chkMovieScraperTags.AutoSize = true
         Me.chkMovieScraperTags.Enabled = false
         Me.chkMovieScraperTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperTags.Location = New System.Drawing.Point(205, 114)
+        Me.chkMovieScraperTags.Location = New System.Drawing.Point(98, 152)
         Me.chkMovieScraperTags.Name = "chkMovieScraperTags"
         Me.chkMovieScraperTags.Size = New System.Drawing.Size(49, 17)
         Me.chkMovieScraperTags.TabIndex = 27
@@ -10333,29 +10337,29 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperCollection.AutoSize = true
         Me.chkMovieScraperCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperCollection.Location = New System.Drawing.Point(6, 152)
+        Me.chkMovieScraperCollection.Location = New System.Drawing.Point(98, 133)
         Me.chkMovieScraperCollection.Name = "chkMovieScraperCollection"
         Me.chkMovieScraperCollection.Size = New System.Drawing.Size(78, 17)
         Me.chkMovieScraperCollection.TabIndex = 26
         Me.chkMovieScraperCollection.Text = "Collection"
         Me.chkMovieScraperCollection.UseVisualStyleBackColor = true
         '
-        'chkMovieScraperCertification
+        'chkMovieScraperMPAACertification
         '
-        Me.chkMovieScraperCertification.AutoSize = true
-        Me.chkMovieScraperCertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperCertification.Location = New System.Drawing.Point(6, 171)
-        Me.chkMovieScraperCertification.Name = "chkMovieScraperCertification"
-        Me.chkMovieScraperCertification.Size = New System.Drawing.Size(89, 17)
-        Me.chkMovieScraperCertification.TabIndex = 24
-        Me.chkMovieScraperCertification.Text = "Certification"
-        Me.chkMovieScraperCertification.UseVisualStyleBackColor = true
+        Me.chkMovieScraperMPAACertification.AutoSize = true
+        Me.chkMovieScraperMPAACertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperMPAACertification.Location = New System.Drawing.Point(6, 171)
+        Me.chkMovieScraperMPAACertification.Name = "chkMovieScraperMPAACertification"
+        Me.chkMovieScraperMPAACertification.Size = New System.Drawing.Size(123, 17)
+        Me.chkMovieScraperMPAACertification.TabIndex = 24
+        Me.chkMovieScraperMPAACertification.Text = "MPAA/Certification"
+        Me.chkMovieScraperMPAACertification.UseVisualStyleBackColor = true
         '
         'chkMovieScraperTop250
         '
         Me.chkMovieScraperTop250.AutoSize = true
         Me.chkMovieScraperTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperTop250.Location = New System.Drawing.Point(98, 19)
+        Me.chkMovieScraperTop250.Location = New System.Drawing.Point(98, 94)
         Me.chkMovieScraperTop250.Name = "chkMovieScraperTop250"
         Me.chkMovieScraperTop250.Size = New System.Drawing.Size(66, 17)
         Me.chkMovieScraperTop250.TabIndex = 23
@@ -10366,7 +10370,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperCountry.AutoSize = true
         Me.chkMovieScraperCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperCountry.Location = New System.Drawing.Point(98, 95)
+        Me.chkMovieScraperCountry.Location = New System.Drawing.Point(98, 76)
         Me.chkMovieScraperCountry.Name = "chkMovieScraperCountry"
         Me.chkMovieScraperCountry.Size = New System.Drawing.Size(67, 17)
         Me.chkMovieScraperCountry.TabIndex = 25
@@ -10377,7 +10381,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieScraperGenreLimit.Enabled = false
         Me.txtMovieScraperGenreLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtMovieScraperGenreLimit.Location = New System.Drawing.Point(256, 188)
+        Me.txtMovieScraperGenreLimit.Location = New System.Drawing.Point(256, 117)
         Me.txtMovieScraperGenreLimit.Name = "txtMovieScraperGenreLimit"
         Me.txtMovieScraperGenreLimit.Size = New System.Drawing.Size(39, 22)
         Me.txtMovieScraperGenreLimit.TabIndex = 21
@@ -10386,7 +10390,7 @@ Partial Class dlgSettings
         '
         Me.lblMovieScraperGenreLimit.AutoSize = true
         Me.lblMovieScraperGenreLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieScraperGenreLimit.Location = New System.Drawing.Point(224, 196)
+        Me.lblMovieScraperGenreLimit.Location = New System.Drawing.Point(224, 125)
         Me.lblMovieScraperGenreLimit.Name = "lblMovieScraperGenreLimit"
         Me.lblMovieScraperGenreLimit.Size = New System.Drawing.Size(34, 13)
         Me.lblMovieScraperGenreLimit.TabIndex = 22
@@ -10397,7 +10401,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieScraperCastLimit.Enabled = false
         Me.txtMovieScraperCastLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtMovieScraperCastLimit.Location = New System.Drawing.Point(257, 149)
+        Me.txtMovieScraperCastLimit.Location = New System.Drawing.Point(257, 74)
         Me.txtMovieScraperCastLimit.Name = "txtMovieScraperCastLimit"
         Me.txtMovieScraperCastLimit.Size = New System.Drawing.Size(39, 22)
         Me.txtMovieScraperCastLimit.TabIndex = 19
@@ -10406,23 +10410,12 @@ Partial Class dlgSettings
         '
         Me.lblMovieScraperCastLimit.AutoSize = true
         Me.lblMovieScraperCastLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieScraperCastLimit.Location = New System.Drawing.Point(224, 155)
+        Me.lblMovieScraperCastLimit.Location = New System.Drawing.Point(224, 80)
         Me.lblMovieScraperCastLimit.Name = "lblMovieScraperCastLimit"
         Me.lblMovieScraperCastLimit.Size = New System.Drawing.Size(34, 13)
         Me.lblMovieScraperCastLimit.TabIndex = 20
         Me.lblMovieScraperCastLimit.Text = "Limit:"
         Me.lblMovieScraperCastLimit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'chkMovieScraperCrew
-        '
-        Me.chkMovieScraperCrew.AutoSize = true
-        Me.chkMovieScraperCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperCrew.Location = New System.Drawing.Point(205, 76)
-        Me.chkMovieScraperCrew.Name = "chkMovieScraperCrew"
-        Me.chkMovieScraperCrew.Size = New System.Drawing.Size(85, 17)
-        Me.chkMovieScraperCrew.TabIndex = 18
-        Me.chkMovieScraperCrew.Text = "Other Crew"
-        Me.chkMovieScraperCrew.UseVisualStyleBackColor = true
         '
         'cbMovieScraperCertLang
         '
@@ -10433,42 +10426,20 @@ Partial Class dlgSettings
         Me.cbMovieScraperCertLang.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Hungary", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Poland", "Portugal", "Serbia", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "Turkey", "UK", "USA"})
         Me.cbMovieScraperCertLang.Location = New System.Drawing.Point(98, 191)
         Me.cbMovieScraperCertLang.Name = "cbMovieScraperCertLang"
-        Me.cbMovieScraperCertLang.Size = New System.Drawing.Size(80, 21)
+        Me.cbMovieScraperCertLang.Size = New System.Drawing.Size(108, 21)
         Me.cbMovieScraperCertLang.Sorted = true
         Me.cbMovieScraperCertLang.TabIndex = 5
         '
-        'chkMovieScraperMusicBy
+        'chkMovieScraperCredits
         '
-        Me.chkMovieScraperMusicBy.AutoSize = true
-        Me.chkMovieScraperMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperMusicBy.Location = New System.Drawing.Point(205, 95)
-        Me.chkMovieScraperMusicBy.Name = "chkMovieScraperMusicBy"
-        Me.chkMovieScraperMusicBy.Size = New System.Drawing.Size(71, 17)
-        Me.chkMovieScraperMusicBy.TabIndex = 17
-        Me.chkMovieScraperMusicBy.Text = "Music By"
-        Me.chkMovieScraperMusicBy.UseVisualStyleBackColor = true
-        '
-        'chkMovieScraperProducers
-        '
-        Me.chkMovieScraperProducers.AutoSize = true
-        Me.chkMovieScraperProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperProducers.Location = New System.Drawing.Point(205, 19)
-        Me.chkMovieScraperProducers.Name = "chkMovieScraperProducers"
-        Me.chkMovieScraperProducers.Size = New System.Drawing.Size(77, 17)
-        Me.chkMovieScraperProducers.TabIndex = 16
-        Me.chkMovieScraperProducers.Text = "Producers"
-        Me.chkMovieScraperProducers.UseVisualStyleBackColor = true
-        '
-        'chkMovieScraperWriters
-        '
-        Me.chkMovieScraperWriters.AutoSize = true
-        Me.chkMovieScraperWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperWriters.Location = New System.Drawing.Point(205, 57)
-        Me.chkMovieScraperWriters.Name = "chkMovieScraperWriters"
-        Me.chkMovieScraperWriters.Size = New System.Drawing.Size(63, 17)
-        Me.chkMovieScraperWriters.TabIndex = 15
-        Me.chkMovieScraperWriters.Text = "Writers"
-        Me.chkMovieScraperWriters.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCredits.AutoSize = true
+        Me.chkMovieScraperCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCredits.Location = New System.Drawing.Point(205, 38)
+        Me.chkMovieScraperCredits.Name = "chkMovieScraperCredits"
+        Me.chkMovieScraperCredits.Size = New System.Drawing.Size(62, 17)
+        Me.chkMovieScraperCredits.TabIndex = 15
+        Me.chkMovieScraperCredits.Text = "Credits"
+        Me.chkMovieScraperCredits.UseVisualStyleBackColor = true
         '
         'chkMovieScraperStudio
         '
@@ -10485,7 +10456,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperRuntime.AutoSize = true
         Me.chkMovieScraperRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperRuntime.Location = New System.Drawing.Point(6, 133)
+        Me.chkMovieScraperRuntime.Location = New System.Drawing.Point(6, 152)
         Me.chkMovieScraperRuntime.Name = "chkMovieScraperRuntime"
         Me.chkMovieScraperRuntime.Size = New System.Drawing.Size(69, 17)
         Me.chkMovieScraperRuntime.TabIndex = 13
@@ -10496,7 +10467,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperPlot.AutoSize = true
         Me.chkMovieScraperPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperPlot.Location = New System.Drawing.Point(6, 38)
+        Me.chkMovieScraperPlot.Location = New System.Drawing.Point(6, 76)
         Me.chkMovieScraperPlot.Name = "chkMovieScraperPlot"
         Me.chkMovieScraperPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkMovieScraperPlot.TabIndex = 12
@@ -10518,7 +10489,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperGenre.AutoSize = true
         Me.chkMovieScraperGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperGenre.Location = New System.Drawing.Point(205, 171)
+        Me.chkMovieScraperGenre.Location = New System.Drawing.Point(205, 99)
         Me.chkMovieScraperGenre.Name = "chkMovieScraperGenre"
         Me.chkMovieScraperGenre.Size = New System.Drawing.Size(57, 17)
         Me.chkMovieScraperGenre.TabIndex = 10
@@ -10529,7 +10500,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperDirector.AutoSize = true
         Me.chkMovieScraperDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperDirector.Location = New System.Drawing.Point(205, 38)
+        Me.chkMovieScraperDirector.Location = New System.Drawing.Point(205, 19)
         Me.chkMovieScraperDirector.Name = "chkMovieScraperDirector"
         Me.chkMovieScraperDirector.Size = New System.Drawing.Size(67, 17)
         Me.chkMovieScraperDirector.TabIndex = 9
@@ -10540,7 +10511,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperTagline.AutoSize = true
         Me.chkMovieScraperTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperTagline.Location = New System.Drawing.Point(98, 133)
+        Me.chkMovieScraperTagline.Location = New System.Drawing.Point(6, 133)
         Me.chkMovieScraperTagline.Name = "chkMovieScraperTagline"
         Me.chkMovieScraperTagline.Size = New System.Drawing.Size(63, 17)
         Me.chkMovieScraperTagline.TabIndex = 8
@@ -10551,7 +10522,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperCast.AutoSize = true
         Me.chkMovieScraperCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperCast.Location = New System.Drawing.Point(205, 133)
+        Me.chkMovieScraperCast.Location = New System.Drawing.Point(205, 57)
         Me.chkMovieScraperCast.Name = "chkMovieScraperCast"
         Me.chkMovieScraperCast.Size = New System.Drawing.Size(58, 17)
         Me.chkMovieScraperCast.TabIndex = 7
@@ -10573,7 +10544,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperTrailer.AutoSize = true
         Me.chkMovieScraperTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperTrailer.Location = New System.Drawing.Point(98, 38)
+        Me.chkMovieScraperTrailer.Location = New System.Drawing.Point(98, 19)
         Me.chkMovieScraperTrailer.Name = "chkMovieScraperTrailer"
         Me.chkMovieScraperTrailer.Size = New System.Drawing.Size(57, 17)
         Me.chkMovieScraperTrailer.TabIndex = 5
@@ -10595,23 +10566,12 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperRelease.AutoSize = true
         Me.chkMovieScraperRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperRelease.Location = New System.Drawing.Point(98, 76)
+        Me.chkMovieScraperRelease.Location = New System.Drawing.Point(98, 38)
         Me.chkMovieScraperRelease.Name = "chkMovieScraperRelease"
         Me.chkMovieScraperRelease.Size = New System.Drawing.Size(92, 17)
         Me.chkMovieScraperRelease.TabIndex = 3
         Me.chkMovieScraperRelease.Text = "Release Date"
         Me.chkMovieScraperRelease.UseVisualStyleBackColor = true
-        '
-        'chkMovieScraperMPAA
-        '
-        Me.chkMovieScraperMPAA.AutoSize = true
-        Me.chkMovieScraperMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperMPAA.Location = New System.Drawing.Point(6, 76)
-        Me.chkMovieScraperMPAA.Name = "chkMovieScraperMPAA"
-        Me.chkMovieScraperMPAA.Size = New System.Drawing.Size(56, 17)
-        Me.chkMovieScraperMPAA.TabIndex = 2
-        Me.chkMovieScraperMPAA.Text = "MPAA"
-        Me.chkMovieScraperMPAA.UseVisualStyleBackColor = true
         '
         'chkMovieScraperYear
         '
@@ -10832,14 +10792,12 @@ Partial Class dlgSettings
         '
         'gbMovieScraperGlobalLocksOpts
         '
+        Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockOriginaltitle)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockTags)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockCountry)
-        Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockOtherCrew)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockTop250)
-        Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockMusicBy)
-        Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockProducers)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockLanguageA)
-        Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockWriters)
+        Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockCredits)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockDirector)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockReleaseDate)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockStudio)
@@ -10848,7 +10806,7 @@ Partial Class dlgSettings
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockRuntime)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockActors)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockLanguageV)
-        Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockMPAA)
+        Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockMPAACertification)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockOutline)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockPlot)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockTrailer)
@@ -10865,11 +10823,21 @@ Partial Class dlgSettings
         Me.gbMovieScraperGlobalLocksOpts.TabStop = false
         Me.gbMovieScraperGlobalLocksOpts.Text = "Global Locks"
         '
+        'chkMovieLockOriginaltitle
+        '
+        Me.chkMovieLockOriginaltitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockOriginaltitle.Location = New System.Drawing.Point(6, 33)
+        Me.chkMovieLockOriginaltitle.Name = "chkMovieLockOriginaltitle"
+        Me.chkMovieLockOriginaltitle.Size = New System.Drawing.Size(129, 17)
+        Me.chkMovieLockOriginaltitle.TabIndex = 65
+        Me.chkMovieLockOriginaltitle.Text = "Lock Originaltitle"
+        Me.chkMovieLockOriginaltitle.UseVisualStyleBackColor = true
+        '
         'chkMovieLockTags
         '
         Me.chkMovieLockTags.Enabled = false
         Me.chkMovieLockTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockTags.Location = New System.Drawing.Point(141, 152)
+        Me.chkMovieLockTags.Location = New System.Drawing.Point(141, 101)
         Me.chkMovieLockTags.Name = "chkMovieLockTags"
         Me.chkMovieLockTags.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockTags.TabIndex = 64
@@ -10886,16 +10854,6 @@ Partial Class dlgSettings
         Me.chkMovieLockCountry.Text = "Lock Country"
         Me.chkMovieLockCountry.UseVisualStyleBackColor = true
         '
-        'chkMovieLockOtherCrew
-        '
-        Me.chkMovieLockOtherCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockOtherCrew.Location = New System.Drawing.Point(141, 118)
-        Me.chkMovieLockOtherCrew.Name = "chkMovieLockOtherCrew"
-        Me.chkMovieLockOtherCrew.Size = New System.Drawing.Size(152, 17)
-        Me.chkMovieLockOtherCrew.TabIndex = 62
-        Me.chkMovieLockOtherCrew.Text = "Lock Other Crew"
-        Me.chkMovieLockOtherCrew.UseVisualStyleBackColor = true
-        '
         'chkMovieLockTop250
         '
         Me.chkMovieLockTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
@@ -10906,53 +10864,31 @@ Partial Class dlgSettings
         Me.chkMovieLockTop250.Text = "Lock Top 250"
         Me.chkMovieLockTop250.UseVisualStyleBackColor = true
         '
-        'chkMovieLockMusicBy
-        '
-        Me.chkMovieLockMusicBy.Enabled = false
-        Me.chkMovieLockMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockMusicBy.Location = New System.Drawing.Point(141, 135)
-        Me.chkMovieLockMusicBy.Name = "chkMovieLockMusicBy"
-        Me.chkMovieLockMusicBy.Size = New System.Drawing.Size(152, 17)
-        Me.chkMovieLockMusicBy.TabIndex = 60
-        Me.chkMovieLockMusicBy.Text = "Lock Music By"
-        Me.chkMovieLockMusicBy.UseVisualStyleBackColor = true
-        '
-        'chkMovieLockProducers
-        '
-        Me.chkMovieLockProducers.Enabled = false
-        Me.chkMovieLockProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockProducers.Location = New System.Drawing.Point(141, 67)
-        Me.chkMovieLockProducers.Name = "chkMovieLockProducers"
-        Me.chkMovieLockProducers.Size = New System.Drawing.Size(152, 17)
-        Me.chkMovieLockProducers.TabIndex = 59
-        Me.chkMovieLockProducers.Text = "Lock Producers"
-        Me.chkMovieLockProducers.UseVisualStyleBackColor = true
-        '
         'chkMovieLockLanguageA
         '
         Me.chkMovieLockLanguageA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockLanguageA.Location = New System.Drawing.Point(141, 169)
+        Me.chkMovieLockLanguageA.Location = New System.Drawing.Point(141, 135)
         Me.chkMovieLockLanguageA.Name = "chkMovieLockLanguageA"
         Me.chkMovieLockLanguageA.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockLanguageA.TabIndex = 48
         Me.chkMovieLockLanguageA.Text = "Lock Language (audio)"
         Me.chkMovieLockLanguageA.UseVisualStyleBackColor = true
         '
-        'chkMovieLockWriters
+        'chkMovieLockCredits
         '
-        Me.chkMovieLockWriters.Enabled = false
-        Me.chkMovieLockWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockWriters.Location = New System.Drawing.Point(141, 101)
-        Me.chkMovieLockWriters.Name = "chkMovieLockWriters"
-        Me.chkMovieLockWriters.Size = New System.Drawing.Size(152, 17)
-        Me.chkMovieLockWriters.TabIndex = 58
-        Me.chkMovieLockWriters.Text = "Lock Writers"
-        Me.chkMovieLockWriters.UseVisualStyleBackColor = true
+        Me.chkMovieLockCredits.Enabled = True
+        Me.chkMovieLockCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockCredits.Location = New System.Drawing.Point(141, 84)
+        Me.chkMovieLockCredits.Name = "chkMovieLockCredits"
+        Me.chkMovieLockCredits.Size = New System.Drawing.Size(152, 17)
+        Me.chkMovieLockCredits.TabIndex = 58
+        Me.chkMovieLockCredits.Text = "Lock Credits"
+        Me.chkMovieLockCredits.UseVisualStyleBackColor = true
         '
         'chkMovieLockDirector
         '
         Me.chkMovieLockDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockDirector.Location = New System.Drawing.Point(141, 84)
+        Me.chkMovieLockDirector.Location = New System.Drawing.Point(141, 67)
         Me.chkMovieLockDirector.Name = "chkMovieLockDirector"
         Me.chkMovieLockDirector.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockDirector.TabIndex = 57
@@ -11022,22 +10958,22 @@ Partial Class dlgSettings
         'chkMovieLockLanguageV
         '
         Me.chkMovieLockLanguageV.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockLanguageV.Location = New System.Drawing.Point(141, 186)
+        Me.chkMovieLockLanguageV.Location = New System.Drawing.Point(141, 152)
         Me.chkMovieLockLanguageV.Name = "chkMovieLockLanguageV"
         Me.chkMovieLockLanguageV.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockLanguageV.TabIndex = 47
         Me.chkMovieLockLanguageV.Text = "Lock Language (video)"
         Me.chkMovieLockLanguageV.UseVisualStyleBackColor = true
         '
-        'chkMovieLockMPAA
+        'chkMovieLockMPAACertification
         '
-        Me.chkMovieLockMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockMPAA.Location = New System.Drawing.Point(6, 237)
-        Me.chkMovieLockMPAA.Name = "chkMovieLockMPAA"
-        Me.chkMovieLockMPAA.Size = New System.Drawing.Size(239, 17)
-        Me.chkMovieLockMPAA.TabIndex = 49
-        Me.chkMovieLockMPAA.Text = "Lock MPAA/Certification"
-        Me.chkMovieLockMPAA.UseVisualStyleBackColor = true
+        Me.chkMovieLockMPAACertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockMPAACertification.Location = New System.Drawing.Point(6, 237)
+        Me.chkMovieLockMPAACertification.Name = "chkMovieLockMPAACertification"
+        Me.chkMovieLockMPAACertification.Size = New System.Drawing.Size(239, 17)
+        Me.chkMovieLockMPAACertification.TabIndex = 49
+        Me.chkMovieLockMPAACertification.Text = "Lock MPAA/Certification"
+        Me.chkMovieLockMPAACertification.UseVisualStyleBackColor = true
         '
         'chkMovieLockOutline
         '
@@ -11052,7 +10988,7 @@ Partial Class dlgSettings
         'chkMovieLockPlot
         '
         Me.chkMovieLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockPlot.Location = New System.Drawing.Point(6, 33)
+        Me.chkMovieLockPlot.Location = New System.Drawing.Point(6, 67)
         Me.chkMovieLockPlot.Name = "chkMovieLockPlot"
         Me.chkMovieLockPlot.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockPlot.TabIndex = 0
@@ -11062,7 +10998,7 @@ Partial Class dlgSettings
         'chkMovieLockTrailer
         '
         Me.chkMovieLockTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieLockTrailer.Location = New System.Drawing.Point(6, 67)
+        Me.chkMovieLockTrailer.Location = New System.Drawing.Point(141, 118)
         Me.chkMovieLockTrailer.Name = "chkMovieLockTrailer"
         Me.chkMovieLockTrailer.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockTrailer.TabIndex = 46
@@ -11121,6 +11057,7 @@ Partial Class dlgSettings
         '
         'gbMovieScraperMiscOpts
         '
+        Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperDetailView)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.gbMovieCertification)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperOnlyValueForMPAA)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCleanPlotOutline)
@@ -11138,11 +11075,21 @@ Partial Class dlgSettings
         Me.gbMovieScraperMiscOpts.TabStop = false
         Me.gbMovieScraperMiscOpts.Text = "Miscellaneous"
         '
+        'chkMovieScraperDetailView
+        '
+        Me.chkMovieScraperDetailView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperDetailView.Location = New System.Drawing.Point(6, 133)
+        Me.chkMovieScraperDetailView.Name = "chkMovieScraperDetailView"
+        Me.chkMovieScraperDetailView.Size = New System.Drawing.Size(256, 17)
+        Me.chkMovieScraperDetailView.TabIndex = 78
+        Me.chkMovieScraperDetailView.Text = "Show scraped results in detailed view"
+        Me.chkMovieScraperDetailView.UseVisualStyleBackColor = true
+        '
         'gbMovieCertification
         '
         Me.gbMovieCertification.Controls.Add(Me.chkMovieScraperCertForMPAA)
         Me.gbMovieCertification.Controls.Add(Me.chkMovieScraperUseMPAAFSK)
-        Me.gbMovieCertification.Location = New System.Drawing.Point(6, 140)
+        Me.gbMovieCertification.Location = New System.Drawing.Point(6, 159)
         Me.gbMovieCertification.Name = "gbMovieCertification"
         Me.gbMovieCertification.Size = New System.Drawing.Size(304, 59)
         Me.gbMovieCertification.TabIndex = 77
@@ -11238,7 +11185,7 @@ Partial Class dlgSettings
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperFieldsOpts)
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperMiscOpts)
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperMetaDataOpts)
-        Me.pnlMovieScraper.Location = New System.Drawing.Point(3, 3)
+        Me.pnlMovieScraper.Location = New System.Drawing.Point(4, 4)
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
         Me.pnlMovieScraper.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieScraper.TabIndex = 14
@@ -12622,12 +12569,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlSettingsCurrentBGGradient)
         Me.Controls.Add(Me.tvSettingsList)
         Me.Controls.Add(Me.pnlSettingsTop)
-        Me.DoubleBuffered = True
-        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximizeBox = False
+        Me.DoubleBuffered = true
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
+        Me.MaximizeBox = false
         Me.MaximumSize = New System.Drawing.Size(1024, 768)
-        Me.MinimizeBox = False
+        Me.MinimizeBox = false
+        Me.MinimumSize = New System.Drawing.Size(1024, 768)
         Me.Name = "dlgSettings"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Settings"
@@ -13252,10 +13200,7 @@ End Sub
     Friend WithEvents lblMovieScraperGenreLimit As System.Windows.Forms.Label
     Friend WithEvents txtMovieScraperCastLimit As System.Windows.Forms.TextBox
     Friend WithEvents lblMovieScraperCastLimit As System.Windows.Forms.Label
-    Friend WithEvents chkMovieScraperCrew As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieScraperMusicBy As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieScraperProducers As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieScraperWriters As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieScraperCredits As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperStudio As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperRuntime As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperPlot As System.Windows.Forms.CheckBox
@@ -13268,7 +13213,6 @@ End Sub
     Friend WithEvents chkMovieScraperTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperRating As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperRelease As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieScraperMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperTitle As System.Windows.Forms.CheckBox
     Friend WithEvents gbMovieScraperMiscOpts As System.Windows.Forms.GroupBox
@@ -13353,7 +13297,7 @@ End Sub
     Friend WithEvents chkTVScraperEpisodeAired As System.Windows.Forms.CheckBox
     Friend WithEvents lblMovieScraperDurationRuntimeFormat As System.Windows.Forms.Label
     Friend WithEvents txtMovieScraperDurationRuntimeFormat As System.Windows.Forms.TextBox
-    Friend WithEvents chkMovieScraperCertification As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieScraperMPAACertification As System.Windows.Forms.CheckBox
     Friend WithEvents tsSettingsTopMenu As System.Windows.Forms.ToolStrip
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents pbSettingsCurrent As System.Windows.Forms.PictureBox
@@ -13385,7 +13329,7 @@ End Sub
     Friend WithEvents chkGeneralDateAddedIgnoreNFO As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockLanguageV As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockLanguageA As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieLockMPAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieLockMPAACertification As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperUseMPAAFSK As System.Windows.Forms.CheckBox
     Friend WithEvents gbMovieGenrealIMDBMirrorOpts As System.Windows.Forms.GroupBox
     Friend WithEvents lblMovieIMDBMirror As System.Windows.Forms.Label
@@ -13955,16 +13899,16 @@ End Sub
     Friend WithEvents chkMovieLockYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockVotes As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockStudio As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieLockMusicBy As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieLockProducers As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieLockWriters As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieLockCredits As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockDirector As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockReleaseDate As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockTags As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockCountry As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieLockOtherCrew As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockTop250 As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperTags As System.Windows.Forms.CheckBox
     Friend WithEvents lblMovieScraperCertLang As System.Windows.Forms.Label
     Friend WithEvents gbMovieCertification As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMovieScraperDetailView As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieLockOriginaltitle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieScraperOriginaltitle As System.Windows.Forms.CheckBox
 End Class
