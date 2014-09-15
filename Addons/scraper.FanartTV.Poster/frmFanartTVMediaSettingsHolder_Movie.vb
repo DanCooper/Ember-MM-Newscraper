@@ -207,9 +207,6 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
     End Sub
 
     Private Sub cbPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
-        If Not (_language = cbPrefLanguage.Text) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
