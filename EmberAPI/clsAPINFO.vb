@@ -98,7 +98,7 @@ Public Class NFO
                 End If
 
                 'Rating
-                If (String.IsNullOrEmpty(DBMovie.Movie.Rating) OrElse Not Master.eSettings.MovieLockRating) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Rating) AndAlso Master.eSettings.MovieScraperRating Then
+                If (String.IsNullOrEmpty(DBMovie.Movie.Rating) OrElse DBMovie.Movie.Runtime = "0" OrElse Not Master.eSettings.MovieLockRating) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Rating) AndAlso Not scrapedmovie.Rating = "0" AndAlso Master.eSettings.MovieScraperRating Then
                     DBMovie.Movie.Rating = scrapedmovie.Rating
                 End If
 
@@ -113,7 +113,7 @@ Public Class NFO
                 End If
 
                 'Votes
-                If (String.IsNullOrEmpty(DBMovie.Movie.Votes) OrElse Not Master.eSettings.MovieLockVotes) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Votes) AndAlso Master.eSettings.MovieScraperVotes Then
+                If (String.IsNullOrEmpty(DBMovie.Movie.Votes) OrElse DBMovie.Movie.Runtime = "0" OrElse Not Master.eSettings.MovieLockVotes) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Votes) AndAlso Not scrapedmovie.Votes = "0" AndAlso Master.eSettings.MovieScraperVotes Then
                     DBMovie.Movie.Votes = scrapedmovie.Votes
                 End If
 
@@ -225,7 +225,7 @@ Public Class NFO
                 End If
 
                 'Runtime
-                If (String.IsNullOrEmpty(DBMovie.Movie.Runtime) OrElse Not Master.eSettings.MovieLockRuntime) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Runtime) AndAlso Master.eSettings.MovieScraperRuntime Then
+                If (String.IsNullOrEmpty(DBMovie.Movie.Runtime) OrElse DBMovie.Movie.Runtime = "0" OrElse Not Master.eSettings.MovieLockRuntime) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Runtime) AndAlso Not scrapedmovie.Runtime = "0" AndAlso Master.eSettings.MovieScraperRuntime Then
                     DBMovie.Movie.Runtime = scrapedmovie.Runtime
                 End If
 
