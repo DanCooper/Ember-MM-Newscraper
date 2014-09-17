@@ -178,10 +178,10 @@ Namespace FileUtils
             Dim configpath As String = String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar, Name)
 
             'AdvancedSettings.xml is still at old place (root) -> move to new place if there's no AdvancedSettings.xml !
-            If File.Exists(String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar, Name)) = False AndAlso File.Exists(Path.Combine(Functions.AppPath, Name)) AndAlso Directory.Exists(String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar)) Then
+            If Not File.Exists(configpath) AndAlso File.Exists(Path.Combine(Functions.AppPath, Name)) AndAlso Directory.Exists(String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar)) Then
                 File.Move(Path.Combine(Functions.AppPath, Name), String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar, Name))
                 'New Settings folder doesn't exist -> do it the old way...
-            ElseIf Directory.Exists(String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar)) = False Then
+            ElseIf Not Directory.Exists(String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar)) Then
                 configpath = Path.Combine(Functions.AppPath, Name)
             End If
 

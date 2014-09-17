@@ -252,7 +252,7 @@ Public Class Database
     ''' Close the databases
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub Close()
+    Public Sub CloseMyVideosDB()
         CloseDatabase(_myvideosDBConn)
         'CloseDatabase(_jobsDBConn)
 
@@ -288,16 +288,6 @@ Public Class Database
         End Try
     End Sub
     ''' <summary>
-    ''' Creates the connections to the required databases
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function Connect() As Boolean
-        Dim newDatabase = ConnectMyVideosDB()
-        'ConnectJobsDB()
-        Return newDatabase
-    End Function
-    ''' <summary>
     ''' Creates the connection to the MediaDB database
     ''' </summary>
     ''' <returns><c>True</c> if the database needed to be created (is new), <c>False</c> otherwise</returns>
@@ -305,7 +295,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 2
+        Dim MyVideosDBVersion As Integer = 3
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -316,13 +306,24 @@ Public Class Database
             'Throw New InvalidOperationException("A database connection is already open, can't open another.")
         End If
 
-        Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", MyVideosDB)
+        Dim MyVideosDBFile As String = FileUtils.Common.ReturnSettingsFile("Settings", MyVideosDB)
 
-        Dim myvideosDBFile As String = configpath
-        Dim isNew As Boolean = (Not File.Exists(myvideosDBFile))
+        'check if an older DB version still exist
+        If Not File.Exists(MyVideosDBFile) Then
+            For i As Integer = MyVideosDBVersion - 1 To 2 Step -1
+                Dim oldMyVideosDB As String = String.Format("MyVideos{0}.emm", i)
+                Dim oldMyVideosDBFile As String = FileUtils.Common.ReturnSettingsFile("Settings", oldMyVideosDB)
+                If File.Exists(oldMyVideosDBFile) Then
+                    PatchDatabase(oldMyVideosDBFile, MyVideosDBFile, i, MyVideosDBVersion)
+                    Exit For
+                End If
+            Next
+        End If
+
+        Dim isNew As Boolean = Not File.Exists(MyVideosDBFile)
 
         Try
-            _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, myvideosDBFile))
+            _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, MyVideosDBFile))
             _myvideosDBConn.Open()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
@@ -339,86 +340,12 @@ Public Class Database
                     End Using
                     transaction.Commit()
                 End Using
-
-                'cocotus, 2013/02 Added support for new MediaInfo-fields
-            Else
-                'Check if new columns exists and create them if not
-                Dim patchpath As String = FileUtils.Common.ReturnSettingsFile("DB", "PatchDB_v2.xml")
-                If File.Exists(patchpath) Then
-                    PatchDatabase(patchpath)
-                End If
-                'cocotus end
-
-                If Not CheckDatabaseCompatibility() Then
-                    _myvideosDBConn.Close()
-                    File.Move(myvideosDBFile, String.Concat(myvideosDBFile, "_old"))
-
-                    Try
-                        _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, myvideosDBFile))
-                        _myvideosDBConn.Open()
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
-                    End Try
-
-                    Dim sqlCommand As String = File.ReadAllText(FileUtils.Common.ReturnSettingsFile("DB", "MyVideosDBSQL_v2.txt"))
-                    Using transaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
-                        Using command As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            command.CommandText = sqlCommand
-                            command.ExecuteNonQuery()
-                        End Using
-                        transaction.Commit()
-                        isNew = True
-                    End Using
-                End If
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error creating database", ex)
-            File.Delete(myvideosDBFile)
+            File.Delete(MyVideosDBFile)
         End Try
         Return isNew
-    End Function
-
-    ''' <summary>
-    ''' Determines whether database structure is "current" by testing for a particular column. 
-    ''' The actual test will change with each database upgrade.
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks>
-    ''' DanCooper, 2013/04 Changed field "Watched TEXT" to "HasWatched BOOL"
-    ''' Checks if Ember database contains new "HasWatched BOOL" column
-    ''' </remarks>
-    Private Function CheckDatabaseCompatibility() As Boolean
-        'TODO This method should be replaced with a proper check for an embedded major/minor version number
-        'DanCooper: I think we need DB numbering like XBMC: MyVideos01.emm
-        Dim isCompatible As Boolean = False
-        Using SQLpathcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLpathcommand.CommandText = "pragma table_info(Movies);"
-            Try
-                isCompatible = False
-                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
-                    While SQLreader.Read
-                        If SQLreader("name").ToString.ToLower = "haswatched" Then
-                            'Column does exist in current database of Ember --> Database is compatible
-                            isCompatible = True
-                            Exit While
-                        End If
-                    End While
-                End Using
-            Catch ex As Exception
-                'TODO
-            End Try
-
-            If isCompatible = False Then
-                Using dCompatibility As New dlgCompatibility
-                    If dCompatibility.ShowDialog = Windows.Forms.DialogResult.OK Then
-                        Return isCompatible
-                    End If
-                End Using
-            Else
-                Return isCompatible
-            End If
-
-        End Using
     End Function
 
     ''' <summary>
@@ -1421,54 +1348,82 @@ Public Class Database
     ''' Execute arbitrary SQL commands against the database. Commands are retrieved from fname. 
     ''' Commands are serialized Containers.InstallCommands. Only commands marked as CommandType DB are executed.
     ''' </summary>
-    ''' <param name="fname">Filename, based off current assembly path. File contains serialized Containers.InstallCommand</param>
+    ''' <param name="cPath">path to current DB</param>
+    ''' <param name="nPath">path for new DB</param>
+    ''' <param name="cVersion">current version of DB to patch</param>
+    ''' <param name="nVersion">lastest version of DB</param>
     ''' <remarks></remarks>
-    Public Sub PatchDatabase(ByVal fname As String)
+    Public Sub PatchDatabase(ByVal cPath As String, ByVal nPath As String, ByVal cVersion As Integer, ByVal nVersion As Integer)
         Dim xmlSer As XmlSerializer
         Dim _cmds As New Containers.InstallCommands
         Dim TransOk As Boolean
-        xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
-        Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fname))
-            _cmds = DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
-        End Using
-        For Each Trans In _cmds.transaction
-            TransOk = True
-            Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
-                For Each _cmd As Containers.CommandsTransactionCommand In Trans.command
+        Dim tempName As String = String.Empty
+
+        tempName = String.Concat(nPath, "_tmp")
+        If File.Exists(tempName) Then
+            File.Delete(tempName)
+        End If
+        File.Copy(cPath, tempName)
+
+        Try
+            _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, tempName))
+            _myvideosDBConn.Open()
+
+            For i As Integer = cVersion To nVersion - 1
+
+                Dim patchpath As String = FileUtils.Common.ReturnSettingsFile("DB", String.Format("MyVideosDBSQL_v{0}_Patch.xml", i))
+
+                xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
+                Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, patchpath))
+                    _cmds = DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
+                End Using
+
+                For Each Trans In _cmds.transaction
+                    TransOk = True
+                    Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+                        For Each _cmd As Containers.CommandsTransactionCommand In Trans.command
+                            If _cmd.type = "DB" Then
+                                Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                    SQLcommand.CommandText = _cmd.execute
+                                    Try
+                                        SQLcommand.ExecuteNonQuery()
+                                    Catch ex As Exception
+                                        logger.Info(New StackFrame().GetMethod().Name, ex, Trans.name, _cmd.execute)
+                                        TransOk = False
+                                        Exit For
+                                    End Try
+                                End Using
+                            End If
+                        Next
+                        If TransOk Then
+                            logger.Trace(New StackFrame().GetMethod().Name, String.Format("Transaction {0} Commit", Trans.name))
+                            SQLtransaction.Commit()
+                        Else
+                            logger.Trace(New StackFrame().GetMethod().Name, String.Format("Transaction {0} RollBack", Trans.name))
+                            SQLtransaction.Rollback()
+                        End If
+                    End Using
+                Next
+                For Each _cmd As Containers.CommandsNoTransactionCommand In _cmds.noTransaction
                     If _cmd.type = "DB" Then
                         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                             SQLcommand.CommandText = _cmd.execute
                             Try
                                 SQLcommand.ExecuteNonQuery()
                             Catch ex As Exception
-                                logger.Info(New StackFrame().GetMethod().Name, ex, Trans.name, _cmd.execute)
-                                TransOk = False
-                                Exit For
+                                logger.Info(New StackFrame().GetMethod().Name, ex, SQLcommand, _cmd.description, _cmd.execute)
                             End Try
                         End Using
                     End If
                 Next
-                If TransOk Then
-                    logger.Trace(New StackFrame().GetMethod().Name, "Transaction {0} Commit", Trans.name)
-                    SQLtransaction.Commit()
-                Else
-                    logger.Trace(New StackFrame().GetMethod().Name, "Transaction {1} RollBack", Trans.name)
-                    SQLtransaction.Rollback()
-                End If
-            End Using
-        Next
-        For Each _cmd As Containers.CommandsNoTransactionCommand In _cmds.noTransaction
-            If _cmd.type = "DB" Then
-                Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = _cmd.execute
-                    Try
-                        SQLcommand.ExecuteNonQuery()
-                    Catch ex As Exception
-                        logger.Info(New StackFrame().GetMethod().Name, ex, SQLcommand, _cmd.description, _cmd.execute)
-                    End Try
-                End Using
-            End If
-        Next
+
+            Next
+            _myvideosDBConn.Close()
+            File.Move(tempName, nPath)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
+            _myvideosDBConn.Close()
+        End Try
     End Sub
 
     '  Public Function CheckEssentials() As Boolean

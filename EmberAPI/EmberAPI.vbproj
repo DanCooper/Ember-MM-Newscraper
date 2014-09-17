@@ -242,10 +242,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DB\PatchDB_v2.xml">
+    <None Include="DB\MyVideosDBSQL_v3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v2_Patch.xml">
       <SubType>Designer</SubType>
-    </Content>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Defaults\DefaultMovieCertLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

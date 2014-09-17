@@ -9266,7 +9266,7 @@ doCancel:
             If doSave Then Master.DB.ClearNew()
 
             If Not Master.isCL Then
-                Master.DB.Close()
+                Master.DB.CloseMyVideosDB()
             End If
 
             If Not Master.isCL Then
