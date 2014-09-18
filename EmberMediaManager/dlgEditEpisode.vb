@@ -484,13 +484,14 @@ Public Class dlgEditEpisode
 
     Private Sub FillInfo()
         With Me
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Title) Then .txtTitle.Text = Master.currShow.TVEp.Title
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Plot) Then .txtPlot.Text = Master.currShow.TVEp.Plot
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Aired) Then .txtAired.Text = Master.currShow.TVEp.Aired
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Director) Then .txtDirector.Text = Master.currShow.TVEp.Director
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Credits) Then .txtCredits.Text = Master.currShow.TVEp.Credits
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Season.ToString) Then .txtSeason.Text = Master.currShow.TVEp.Season.ToString
+            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Director) Then .txtDirector.Text = Master.currShow.TVEp.Director
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Episode.ToString) Then .txtEpisode.Text = Master.currShow.TVEp.Episode.ToString
+            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Plot) Then .txtPlot.Text = Master.currShow.TVEp.Plot
+            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Runtime) Then .txtRuntime.Text = Master.currShow.TVEp.Runtime
+            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Season.ToString) Then .txtSeason.Text = Master.currShow.TVEp.Season.ToString
+            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Title) Then .txtTitle.Text = Master.currShow.TVEp.Title
 
             Dim lvItem As ListViewItem
             .lvActors.Items.Clear()
@@ -911,14 +912,15 @@ Public Class dlgEditEpisode
         Try
             With Me
 
-                Master.currShow.TVEp.Title = .txtTitle.Text.Trim
-                Master.currShow.TVEp.Plot = .txtPlot.Text.Trim
                 Master.currShow.TVEp.Aired = .txtAired.Text.Trim
-                Master.currShow.TVEp.Director = .txtDirector.Text.Trim
                 Master.currShow.TVEp.Credits = .txtCredits.Text.Trim
-                Master.currShow.TVEp.Season = Convert.ToInt32(.txtSeason.Text.Trim)
+                Master.currShow.TVEp.Director = .txtDirector.Text.Trim
                 Master.currShow.TVEp.Episode = Convert.ToInt32(.txtEpisode.Text.Trim)
+                Master.currShow.TVEp.Plot = .txtPlot.Text.Trim
                 Master.currShow.TVEp.Rating = .tmpRating
+                Master.currShow.TVEp.Runtime = .txtRuntime.Text.Trim
+                Master.currShow.TVEp.Season = Convert.ToInt32(.txtSeason.Text.Trim)
+                Master.currShow.TVEp.Title = .txtTitle.Text.Trim
 
                 Master.currShow.TVEp.Actors.Clear()
 
@@ -1010,6 +1012,7 @@ Public Class dlgEditEpisode
         Me.lblEpisode.Text = Master.eLang.GetString(660, "Episode:")
         Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
+        Me.lblRuntime.Text = Master.eLang.GetString(238, "Runtime:")
         Me.lblSeason.Text = Master.eLang.GetString(659, "Season:")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
         Me.lblTopDetails.Text = Master.eLang.GetString(656, "Edit the details for the selected episode.")

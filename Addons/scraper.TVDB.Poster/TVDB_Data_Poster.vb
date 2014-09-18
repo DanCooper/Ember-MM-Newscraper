@@ -205,6 +205,7 @@ Public Class TVDB_Data_Poster
         _setup.chkScraperShowPlot.Checked = ConfigOptions.bShowPlot
         _setup.chkScraperShowPremiered.Checked = ConfigOptions.bShowPremiered
         _setup.chkScraperShowRating.Checked = ConfigOptions.bShowRating
+        _setup.chkScraperShowRuntime.Checked = ConfigOptions.bShowRuntime
         _setup.chkScraperShowStatus.Checked = ConfigOptions.bShowStatus
         _setup.chkScraperShowStudio.Checked = ConfigOptions.bShowStudio
         _setup.chkScraperShowActors.Checked = ConfigOptions.bShowActors
@@ -279,6 +280,7 @@ Public Class TVDB_Data_Poster
         ConfigOptions.bShowPlot = clsAdvancedSettings.GetBooleanSetting("ScraperShowPlot", True)
         ConfigOptions.bShowPremiered = clsAdvancedSettings.GetBooleanSetting("ScraperShowPremiered", True)
         ConfigOptions.bShowRating = clsAdvancedSettings.GetBooleanSetting("ScraperShowRating", True)
+        ConfigOptions.bShowRuntime = clsAdvancedSettings.GetBooleanSetting("ScraperShowRuntime", True)
         ConfigOptions.bShowStatus = clsAdvancedSettings.GetBooleanSetting("ScraperShowStatus", True)
         ConfigOptions.bShowStudio = clsAdvancedSettings.GetBooleanSetting("ScraperShowStudio", True)
         ConfigOptions.bShowTitle = clsAdvancedSettings.GetBooleanSetting("ScraperShowTitle", True)

@@ -1177,6 +1177,7 @@ Public Class Functions
             .bShowPlot = Master.eSettings.TVScraperShowPlot
             .bShowPremiered = Master.eSettings.TVScraperShowPremiered
             .bShowRating = Master.eSettings.TVScraperShowRating
+            .bShowRuntime = Master.eSettings.TVScraperShowRuntime
             .bShowStatus = Master.eSettings.TVScraperShowStatus
             .bShowStudio = Master.eSettings.TVScraperShowStudio
             .bShowTitle = Master.eSettings.TVScraperShowTitle
@@ -1487,6 +1488,7 @@ Public Class Functions
         filterOptions.bShowPlot = Options.bShowPlot AndAlso Options2.bShowPlot
         filterOptions.bShowPremiered = Options.bShowPremiered AndAlso Options2.bShowPremiered
         filterOptions.bShowRating = Options.bShowRating AndAlso Options2.bShowRating
+        filterOptions.bShowRuntime = Options.bShowRuntime AndAlso Options2.bShowRuntime
         filterOptions.bShowStatus = Options.bShowStatus AndAlso Options2.bShowStatus
         filterOptions.bShowStudio = Options.bShowStudio AndAlso Options2.bShowStudio
         filterOptions.bShowTitle = Options.bShowTitle AndAlso Options2.bShowTitle
@@ -1990,6 +1992,7 @@ Public Class Structures
         Dim bShowPlot As Boolean
         Dim bShowPremiered As Boolean
         Dim bShowRating As Boolean
+        Dim bShowRuntime As Boolean
         Dim bShowStatus As Boolean
         Dim bShowStudio As Boolean
         Dim bShowTitle As Boolean

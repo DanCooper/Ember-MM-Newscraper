@@ -2249,6 +2249,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkTVScraperShowRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowRuntime.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkTVScraperShowStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowStatus.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2350,6 +2354,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkTVLockShowRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowRating.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVLockShowRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowRuntime.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3230,6 +3238,7 @@ Public Class dlgSettings
                 Me.chkTVLockShowGenre.Checked = .TVLockShowGenre
                 Me.chkTVLockShowPlot.Checked = .TVLockShowPlot
                 Me.chkTVLockShowRating.Checked = .TVLockShowRating
+                Me.chkTVLockShowRuntime.Checked = .TVLockShowRuntime
                 Me.chkTVLockShowStatus.Checked = .TVLockShowStatus
                 Me.chkTVLockShowStudio.Checked = .TVLockShowStudio
                 Me.chkTVLockShowTitle.Checked = .TVLockShowTitle
@@ -3251,6 +3260,7 @@ Public Class dlgSettings
                 Me.chkTVScraperShowPlot.Checked = .TVScraperShowPlot
                 Me.chkTVScraperShowPremiered.Checked = .TVScraperShowPremiered
                 Me.chkTVScraperShowRating.Checked = .TVScraperShowRating
+                Me.chkTVScraperShowRuntime.Checked = .TVScraperShowRuntime
                 Me.chkTVScraperShowStatus.Checked = .TVScraperShowStatus
                 Me.chkTVScraperShowStudio.Checked = .TVScraperShowStudio
                 Me.chkTVScraperShowTitle.Checked = .TVScraperShowTitle
@@ -4812,6 +4822,7 @@ Public Class dlgSettings
                 .TVLockShowGenre = Me.chkTVLockShowGenre.Checked
                 .TVLockShowPlot = Me.chkTVLockShowPlot.Checked
                 .TVLockShowRating = Me.chkTVLockShowRating.Checked
+                .TVLockShowRuntime = Me.chkTVLockShowRuntime.Checked
                 .TVLockShowStatus = Me.chkTVLockShowStatus.Checked
                 .TVLockShowStudio = Me.chkTVLockShowStudio.Checked
                 .TVLockShowTitle = Me.chkTVLockShowTitle.Checked
@@ -4842,6 +4853,7 @@ Public Class dlgSettings
                 .TVScraperShowPlot = Me.chkTVScraperShowPlot.Checked
                 .TVScraperShowPremiered = Me.chkTVScraperShowPremiered.Checked
                 .TVScraperShowRating = Me.chkTVScraperShowRating.Checked
+                .TVScraperShowRuntime = Me.chkTVScraperShowRuntime.Checked
                 .TVScraperShowStatus = Me.chkTVScraperShowStatus.Checked
                 .TVScraperShowStudio = Me.chkTVScraperShowStudio.Checked
                 .TVScraperShowTitle = Me.chkTVScraperShowTitle.Checked
@@ -5683,8 +5695,10 @@ Public Class dlgSettings
         Me.chkTVEpisodeProperCase.Text = Me.chkMovieProperCase.Text
         Me.chkTVEpisodeWatchedCol.Text = Me.chkMovieWatchedCol.Text
         Me.chkTVGeneralIgnoreLastScan.Text = Me.chkMovieGeneralIgnoreLastScan.Text
+        Me.chkTVLockShowRuntime.Text = Me.chkMovieLockRuntime.Text
         Me.chkTVScanOrderModify.Text = Me.chkMovieScanOrderModify.Text
         Me.chkTVScraperMetaDataScan.Text = Me.chkMovieScraperMetaDataScan.Text
+        Me.chkTVScraperShowRuntime.Text = Me.chkMovieScraperRuntime.Text
         Me.chkTVSeasonBannerCol.Text = Me.chkMovieBannerCol.Text
         Me.chkTVSeasonBannerOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVSeasonBannerResize.Text = Me.chkMoviePosterResize.Text

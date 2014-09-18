@@ -1723,6 +1723,7 @@ Namespace MediaContainers
         Private _premiered As String
         Private _studio As String
         Private _plot As String
+        Private _runtime As String
         Private _actors As New List(Of Person)
         Private _boxeeTvDb As String
         Private _status As String
@@ -1954,6 +1955,23 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("runtime")> _
+        Public Property Runtime() As String
+            Get
+                Return Me._runtime
+            End Get
+            Set(ByVal value As String)
+                Me._runtime = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property RuntimeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._runtime)
+            End Get
+        End Property
+
         <XmlElement("actor")> _
         Public Property Actors() As List(Of Person)
             Get
@@ -2010,6 +2028,7 @@ Namespace MediaContainers
             _rating = String.Empty
             _episodeguideurl = String.Empty
             _plot = String.Empty
+            _runtime = String.Empty
             _mpaa = String.Empty
             _genres.Clear()
             _premiered = String.Empty

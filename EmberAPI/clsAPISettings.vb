@@ -3189,6 +3189,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperShowRuntime() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowRuntime
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowRuntime = value
+        End Set
+    End Property
+
     Public Property TVScraperShowStatus() As Boolean
         Get
             Return Settings._XMLSettings.tvscrapershowstatus
@@ -3501,6 +3510,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.tvlockshowrating = value
+        End Set
+    End Property
+
+    Public Property TVLockShowRuntime() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockShowRuntime
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockShowRuntime = value
         End Set
     End Property
 

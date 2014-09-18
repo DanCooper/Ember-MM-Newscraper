@@ -29,6 +29,11 @@ Partial Class dlgEditEpisode
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditEpisode = New System.Windows.Forms.TabControl()
         Me.tpEpsiodeDetails = New System.Windows.Forms.TabPage()
+        Me.pbStar10 = New System.Windows.Forms.PictureBox()
+        Me.pbStar9 = New System.Windows.Forms.PictureBox()
+        Me.pbStar8 = New System.Windows.Forms.PictureBox()
+        Me.pbStar7 = New System.Windows.Forms.PictureBox()
+        Me.pbStar6 = New System.Windows.Forms.PictureBox()
         Me.btnActorDown = New System.Windows.Forms.Button()
         Me.btnActorUp = New System.Windows.Forms.Button()
         Me.txtAired = New System.Windows.Forms.TextBox()
@@ -82,15 +87,17 @@ Partial Class dlgEditEpisode
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.chkWatched = New System.Windows.Forms.CheckBox()
-        Me.pbStar10 = New System.Windows.Forms.PictureBox()
-        Me.pbStar9 = New System.Windows.Forms.PictureBox()
-        Me.pbStar8 = New System.Windows.Forms.PictureBox()
-        Me.pbStar7 = New System.Windows.Forms.PictureBox()
-        Me.pbStar6 = New System.Windows.Forms.PictureBox()
+        Me.lblRuntime = New System.Windows.Forms.Label()
+        Me.txtRuntime = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditEpisode.SuspendLayout()
         Me.tpEpsiodeDetails.SuspendLayout()
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -102,11 +109,6 @@ Partial Class dlgEditEpisode
         CType(Me.pbEpisodeFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFrameExtraction.SuspendLayout()
         Me.tpEpisodeMetaData.SuspendLayout()
-        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -175,6 +177,8 @@ Partial Class dlgEditEpisode
         '
         'tpEpsiodeDetails
         '
+        Me.tpEpsiodeDetails.Controls.Add(Me.lblRuntime)
+        Me.tpEpsiodeDetails.Controls.Add(Me.txtRuntime)
         Me.tpEpsiodeDetails.Controls.Add(Me.pbStar10)
         Me.tpEpsiodeDetails.Controls.Add(Me.pbStar9)
         Me.tpEpsiodeDetails.Controls.Add(Me.pbStar8)
@@ -215,6 +219,46 @@ Partial Class dlgEditEpisode
         Me.tpEpsiodeDetails.TabIndex = 0
         Me.tpEpsiodeDetails.Text = "Details"
         Me.tpEpsiodeDetails.UseVisualStyleBackColor = True
+        '
+        'pbStar10
+        '
+        Me.pbStar10.Location = New System.Drawing.Point(224, 110)
+        Me.pbStar10.Name = "pbStar10"
+        Me.pbStar10.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar10.TabIndex = 82
+        Me.pbStar10.TabStop = False
+        '
+        'pbStar9
+        '
+        Me.pbStar9.Location = New System.Drawing.Point(200, 110)
+        Me.pbStar9.Name = "pbStar9"
+        Me.pbStar9.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar9.TabIndex = 81
+        Me.pbStar9.TabStop = False
+        '
+        'pbStar8
+        '
+        Me.pbStar8.Location = New System.Drawing.Point(176, 110)
+        Me.pbStar8.Name = "pbStar8"
+        Me.pbStar8.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar8.TabIndex = 80
+        Me.pbStar8.TabStop = False
+        '
+        'pbStar7
+        '
+        Me.pbStar7.Location = New System.Drawing.Point(152, 110)
+        Me.pbStar7.Name = "pbStar7"
+        Me.pbStar7.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar7.TabIndex = 79
+        Me.pbStar7.TabStop = False
+        '
+        'pbStar6
+        '
+        Me.pbStar6.Location = New System.Drawing.Point(128, 110)
+        Me.pbStar6.Name = "pbStar6"
+        Me.pbStar6.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar6.TabIndex = 78
+        Me.pbStar6.TabStop = False
         '
         'btnActorDown
         '
@@ -730,45 +774,24 @@ Partial Class dlgEditEpisode
         Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
         '
-        'pbStar10
+        'lblRuntime
         '
-        Me.pbStar10.Location = New System.Drawing.Point(224, 110)
-        Me.pbStar10.Name = "pbStar10"
-        Me.pbStar10.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar10.TabIndex = 82
-        Me.pbStar10.TabStop = False
+        Me.lblRuntime.AutoSize = True
+        Me.lblRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblRuntime.Location = New System.Drawing.Point(645, 139)
+        Me.lblRuntime.Name = "lblRuntime"
+        Me.lblRuntime.Size = New System.Drawing.Size(54, 13)
+        Me.lblRuntime.TabIndex = 83
+        Me.lblRuntime.Text = "Runtime:"
         '
-        'pbStar9
+        'txtRuntime
         '
-        Me.pbStar9.Location = New System.Drawing.Point(200, 110)
-        Me.pbStar9.Name = "pbStar9"
-        Me.pbStar9.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar9.TabIndex = 81
-        Me.pbStar9.TabStop = False
-        '
-        'pbStar8
-        '
-        Me.pbStar8.Location = New System.Drawing.Point(176, 110)
-        Me.pbStar8.Name = "pbStar8"
-        Me.pbStar8.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar8.TabIndex = 80
-        Me.pbStar8.TabStop = False
-        '
-        'pbStar7
-        '
-        Me.pbStar7.Location = New System.Drawing.Point(152, 110)
-        Me.pbStar7.Name = "pbStar7"
-        Me.pbStar7.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar7.TabIndex = 79
-        Me.pbStar7.TabStop = False
-        '
-        'pbStar6
-        '
-        Me.pbStar6.Location = New System.Drawing.Point(128, 110)
-        Me.pbStar6.Name = "pbStar6"
-        Me.pbStar6.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar6.TabIndex = 78
-        Me.pbStar6.TabStop = False
+        Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
+        Me.txtRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtRuntime.Location = New System.Drawing.Point(645, 155)
+        Me.txtRuntime.Name = "txtRuntime"
+        Me.txtRuntime.Size = New System.Drawing.Size(66, 22)
+        Me.txtRuntime.TabIndex = 84
         '
         'dlgEditEpisode
         '
@@ -797,6 +820,11 @@ Partial Class dlgEditEpisode
         Me.tcEditEpisode.ResumeLayout(False)
         Me.tpEpsiodeDetails.ResumeLayout(False)
         Me.tpEpsiodeDetails.PerformLayout()
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).EndInit()
@@ -808,11 +836,6 @@ Partial Class dlgEditEpisode
         CType(Me.pbEpisodeFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFrameExtraction.ResumeLayout(False)
         Me.tpEpisodeMetaData.ResumeLayout(False)
-        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -881,5 +904,7 @@ Partial Class dlgEditEpisode
     Friend WithEvents pbStar8 As System.Windows.Forms.PictureBox
     Friend WithEvents pbStar7 As System.Windows.Forms.PictureBox
     Friend WithEvents pbStar6 As System.Windows.Forms.PictureBox
+    Friend WithEvents lblRuntime As System.Windows.Forms.Label
+    Friend WithEvents txtRuntime As System.Windows.Forms.TextBox
 
 End Class

@@ -355,6 +355,7 @@ Partial Public Class clsXMLSettings
     Private _tvlockshowgenre As Boolean
     Private _tvlockshowplot As Boolean
     Private _tvlockshowrating As Boolean
+    Private _tvlockshowruntime As Boolean
     Private _tvlockshowstatus As Boolean
     Private _tvlockshowstudio As Boolean
     Private _tvlockshowtitle As Boolean
@@ -380,6 +381,7 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowplot As Boolean
     Private _tvscrapershowpremiered As Boolean
     Private _tvscrapershowrating As Boolean
+    Private _tvscrapershowruntime As Boolean
     Private _tvscrapershowstatus As Boolean
     Private _tvscrapershowstudio As Boolean
     Private _tvscrapershowtitle As Boolean
@@ -3942,6 +3944,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVScraperShowRuntime() As Boolean
+        Get
+            Return Me._tvscrapershowruntime
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscrapershowruntime = value
+        End Set
+    End Property
+
     Public Property TVScraperShowStatus() As Boolean
         Get
             Return Me._tvscrapershowstatus
@@ -4254,6 +4265,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvlockshowrating = value
+        End Set
+    End Property
+
+    Public Property TVLockShowRuntime() As Boolean
+        Get
+            Return Me._tvlockshowruntime
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockshowruntime = value
         End Set
     End Property
 

@@ -53,9 +53,11 @@ Partial Class frmTVInfoSettingsHolder
         Me.chkScraperEpEpisode = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpSeason = New System.Windows.Forms.CheckBox()
         Me.gbTMDB = New System.Windows.Forms.GroupBox()
+        Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.gbLanguage = New System.Windows.Forms.GroupBox()
         Me.lblTVLanguagePreferred = New System.Windows.Forms.Label()
         Me.cbTVScraperLanguage = New System.Windows.Forms.ComboBox()
+        Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.lblTVDBMirror = New System.Windows.Forms.Label()
         Me.txtTVDBMirror = New System.Windows.Forms.TextBox()
         Me.pbTVDB = New System.Windows.Forms.PictureBox()
@@ -63,8 +65,7 @@ Partial Class frmTVInfoSettingsHolder
         Me.txtTVDBApiKey = New System.Windows.Forms.TextBox()
         Me.lblModuleInfo = New System.Windows.Forms.Label()
         Me.pbModuleLogo = New System.Windows.Forms.PictureBox()
-        Me.lblEMMAPI = New System.Windows.Forms.Label()
-        Me.btnUnlockAPI = New System.Windows.Forms.Button()
+        Me.chkScraperShowRuntime = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraperFields.SuspendLayout()
@@ -157,13 +158,14 @@ Partial Class frmTVInfoSettingsHolder
         Me.gbScraperFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbScraperFields.Location = New System.Drawing.Point(10, 156)
         Me.gbScraperFields.Name = "gbScraperFields"
-        Me.gbScraperFields.Size = New System.Drawing.Size(403, 114)
+        Me.gbScraperFields.Size = New System.Drawing.Size(403, 139)
         Me.gbScraperFields.TabIndex = 8
         Me.gbScraperFields.TabStop = False
         Me.gbScraperFields.Text = "Scraper Fields"
         '
         'gbScraperFieldsShow
         '
+        Me.gbScraperFieldsShow.Controls.Add(Me.chkScraperShowRuntime)
         Me.gbScraperFieldsShow.Controls.Add(Me.chkScraperShowStatus)
         Me.gbScraperFieldsShow.Controls.Add(Me.chkScraperShowRating)
         Me.gbScraperFieldsShow.Controls.Add(Me.chkScraperShowActors)
@@ -177,7 +179,7 @@ Partial Class frmTVInfoSettingsHolder
         Me.gbScraperFieldsShow.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbScraperFieldsShow.Location = New System.Drawing.Point(3, 14)
         Me.gbScraperFieldsShow.Name = "gbScraperFieldsShow"
-        Me.gbScraperFieldsShow.Size = New System.Drawing.Size(213, 96)
+        Me.gbScraperFieldsShow.Size = New System.Drawing.Size(213, 115)
         Me.gbScraperFieldsShow.TabIndex = 0
         Me.gbScraperFieldsShow.TabStop = False
         Me.gbScraperFieldsShow.Text = "Show"
@@ -296,7 +298,7 @@ Partial Class frmTVInfoSettingsHolder
         Me.gbScraperFieldsEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbScraperFieldsEpisode.Location = New System.Drawing.Point(219, 14)
         Me.gbScraperFieldsEpisode.Name = "gbScraperFieldsEpisode"
-        Me.gbScraperFieldsEpisode.Size = New System.Drawing.Size(181, 96)
+        Me.gbScraperFieldsEpisode.Size = New System.Drawing.Size(181, 115)
         Me.gbScraperFieldsEpisode.TabIndex = 1
         Me.gbScraperFieldsEpisode.TabStop = False
         Me.gbScraperFieldsEpisode.Text = "Episode"
@@ -409,6 +411,16 @@ Partial Class frmTVInfoSettingsHolder
         Me.gbTMDB.TabStop = False
         Me.gbTMDB.Text = "TMDB"
         '
+        'lblEMMAPI
+        '
+        Me.lblEMMAPI.AutoSize = True
+        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblEMMAPI.Location = New System.Drawing.Point(142, 35)
+        Me.lblEMMAPI.Name = "lblEMMAPI"
+        Me.lblEMMAPI.Size = New System.Drawing.Size(162, 13)
+        Me.lblEMMAPI.TabIndex = 76
+        Me.lblEMMAPI.Text = "Ember Media Manager API key"
+        '
         'gbLanguage
         '
         Me.gbLanguage.Controls.Add(Me.lblTVLanguagePreferred)
@@ -439,6 +451,15 @@ Partial Class frmTVInfoSettingsHolder
         Me.cbTVScraperLanguage.Name = "cbTVScraperLanguage"
         Me.cbTVScraperLanguage.Size = New System.Drawing.Size(166, 21)
         Me.cbTVScraperLanguage.TabIndex = 1
+        '
+        'btnUnlockAPI
+        '
+        Me.btnUnlockAPI.Location = New System.Drawing.Point(9, 32)
+        Me.btnUnlockAPI.Name = "btnUnlockAPI"
+        Me.btnUnlockAPI.Size = New System.Drawing.Size(127, 23)
+        Me.btnUnlockAPI.TabIndex = 75
+        Me.btnUnlockAPI.Text = "Use my own API key"
+        Me.btnUnlockAPI.UseVisualStyleBackColor = True
         '
         'lblTVDBMirror
         '
@@ -511,24 +532,15 @@ Partial Class frmTVInfoSettingsHolder
         Me.pbModuleLogo.TabIndex = 96
         Me.pbModuleLogo.TabStop = False
         '
-        'lblEMMAPI
+        'chkScraperShowRuntime
         '
-        Me.lblEMMAPI.AutoSize = True
-        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblEMMAPI.Location = New System.Drawing.Point(142, 35)
-        Me.lblEMMAPI.Name = "lblEMMAPI"
-        Me.lblEMMAPI.Size = New System.Drawing.Size(142, 13)
-        Me.lblEMMAPI.TabIndex = 76
-        Me.lblEMMAPI.Text = "Ember Media Manager API key"
-        '
-        'btnUnlockAPI
-        '
-        Me.btnUnlockAPI.Location = New System.Drawing.Point(9, 32)
-        Me.btnUnlockAPI.Name = "btnUnlockAPI"
-        Me.btnUnlockAPI.Size = New System.Drawing.Size(127, 23)
-        Me.btnUnlockAPI.TabIndex = 75
-        Me.btnUnlockAPI.Text = "Use my own API key"
-        Me.btnUnlockAPI.UseVisualStyleBackColor = True
+        Me.chkScraperShowRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowRuntime.Location = New System.Drawing.Point(6, 94)
+        Me.chkScraperShowRuntime.Name = "chkScraperShowRuntime"
+        Me.chkScraperShowRuntime.Size = New System.Drawing.Size(78, 17)
+        Me.chkScraperShowRuntime.TabIndex = 10
+        Me.chkScraperShowRuntime.Text = "Runtime"
+        Me.chkScraperShowRuntime.UseVisualStyleBackColor = True
         '
         'frmTVInfoSettingsHolder
         '
@@ -603,5 +615,6 @@ Partial Class frmTVInfoSettingsHolder
     Friend WithEvents chkScraperShowStatus As System.Windows.Forms.CheckBox
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
     Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
+    Friend WithEvents chkScraperShowRuntime As System.Windows.Forms.CheckBox
 
 End Class

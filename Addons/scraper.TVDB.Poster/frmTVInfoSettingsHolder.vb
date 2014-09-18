@@ -220,6 +220,7 @@ Public Class frmTVInfoSettingsHolder
         Me.chkScraperShowPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkScraperShowPremiered.Text = Master.eLang.GetString(724, "Premiered")
         Me.chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.chkScraperShowRuntime.Text = Master.eLang.GetString(396, "Runtime")
         Me.chkScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
         Me.chkScraperShowStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkScraperShowTitle.Text = Master.eLang.GetString(21, "Title")

@@ -29,6 +29,11 @@ Partial Class dlgEditShow
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditShow = New System.Windows.Forms.TabControl()
         Me.tpShowDetails = New System.Windows.Forms.TabPage()
+        Me.pbStar10 = New System.Windows.Forms.PictureBox()
+        Me.pbStar9 = New System.Windows.Forms.PictureBox()
+        Me.pbStar8 = New System.Windows.Forms.PictureBox()
+        Me.pbStar7 = New System.Windows.Forms.PictureBox()
+        Me.pbStar6 = New System.Windows.Forms.PictureBox()
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.txtStatus = New System.Windows.Forms.TextBox()
         Me.btnActorDown = New System.Windows.Forms.Button()
@@ -150,15 +155,17 @@ Partial Class dlgEditShow
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.cbOrdering = New System.Windows.Forms.ComboBox()
         Me.lblOrdering = New System.Windows.Forms.Label()
-        Me.pbStar10 = New System.Windows.Forms.PictureBox()
-        Me.pbStar9 = New System.Windows.Forms.PictureBox()
-        Me.pbStar8 = New System.Windows.Forms.PictureBox()
-        Me.pbStar7 = New System.Windows.Forms.PictureBox()
-        Me.pbStar6 = New System.Windows.Forms.PictureBox()
+        Me.lblRuntime = New System.Windows.Forms.Label()
+        Me.txtRuntime = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditShow.SuspendLayout()
         Me.tpShowDetails.SuspendLayout()
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -189,11 +196,6 @@ Partial Class dlgEditShow
         CType(Me.pbASLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpASFanart.SuspendLayout()
         CType(Me.pbASFanart, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -268,6 +270,8 @@ Partial Class dlgEditShow
         '
         'tpShowDetails
         '
+        Me.tpShowDetails.Controls.Add(Me.lblRuntime)
+        Me.tpShowDetails.Controls.Add(Me.txtRuntime)
         Me.tpShowDetails.Controls.Add(Me.pbStar10)
         Me.tpShowDetails.Controls.Add(Me.pbStar9)
         Me.tpShowDetails.Controls.Add(Me.pbStar8)
@@ -308,6 +312,46 @@ Partial Class dlgEditShow
         Me.tpShowDetails.TabIndex = 0
         Me.tpShowDetails.Text = "Details"
         Me.tpShowDetails.UseVisualStyleBackColor = True
+        '
+        'pbStar10
+        '
+        Me.pbStar10.Location = New System.Drawing.Point(223, 112)
+        Me.pbStar10.Name = "pbStar10"
+        Me.pbStar10.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar10.TabIndex = 77
+        Me.pbStar10.TabStop = False
+        '
+        'pbStar9
+        '
+        Me.pbStar9.Location = New System.Drawing.Point(199, 112)
+        Me.pbStar9.Name = "pbStar9"
+        Me.pbStar9.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar9.TabIndex = 76
+        Me.pbStar9.TabStop = False
+        '
+        'pbStar8
+        '
+        Me.pbStar8.Location = New System.Drawing.Point(175, 112)
+        Me.pbStar8.Name = "pbStar8"
+        Me.pbStar8.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar8.TabIndex = 75
+        Me.pbStar8.TabStop = False
+        '
+        'pbStar7
+        '
+        Me.pbStar7.Location = New System.Drawing.Point(151, 112)
+        Me.pbStar7.Name = "pbStar7"
+        Me.pbStar7.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar7.TabIndex = 74
+        Me.pbStar7.TabStop = False
+        '
+        'pbStar6
+        '
+        Me.pbStar6.Location = New System.Drawing.Point(127, 112)
+        Me.pbStar6.Name = "pbStar6"
+        Me.pbStar6.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar6.TabIndex = 73
+        Me.pbStar6.TabStop = False
         '
         'lblStatus
         '
@@ -482,7 +526,7 @@ Partial Class dlgEditShow
         Me.lblMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMPAA.Location = New System.Drawing.Point(632, 139)
         Me.lblMPAA.Name = "lblMPAA"
-        Me.lblMPAA.Size = New System.Drawing.Size(81, 13)
+        Me.lblMPAA.Size = New System.Drawing.Size(80, 13)
         Me.lblMPAA.TabIndex = 16
         Me.lblMPAA.Text = "MPAA Rating:"
         '
@@ -1689,45 +1733,24 @@ Partial Class dlgEditShow
         Me.lblOrdering.TabIndex = 4
         Me.lblOrdering.Text = "Episode Ordering:"
         '
-        'pbStar10
+        'lblRuntime
         '
-        Me.pbStar10.Location = New System.Drawing.Point(223, 112)
-        Me.pbStar10.Name = "pbStar10"
-        Me.pbStar10.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar10.TabIndex = 77
-        Me.pbStar10.TabStop = False
+        Me.lblRuntime.AutoSize = True
+        Me.lblRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblRuntime.Location = New System.Drawing.Point(635, 376)
+        Me.lblRuntime.Name = "lblRuntime"
+        Me.lblRuntime.Size = New System.Drawing.Size(54, 13)
+        Me.lblRuntime.TabIndex = 78
+        Me.lblRuntime.Text = "Runtime:"
         '
-        'pbStar9
+        'txtRuntime
         '
-        Me.pbStar9.Location = New System.Drawing.Point(199, 112)
-        Me.pbStar9.Name = "pbStar9"
-        Me.pbStar9.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar9.TabIndex = 76
-        Me.pbStar9.TabStop = False
-        '
-        'pbStar8
-        '
-        Me.pbStar8.Location = New System.Drawing.Point(175, 112)
-        Me.pbStar8.Name = "pbStar8"
-        Me.pbStar8.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar8.TabIndex = 75
-        Me.pbStar8.TabStop = False
-        '
-        'pbStar7
-        '
-        Me.pbStar7.Location = New System.Drawing.Point(151, 112)
-        Me.pbStar7.Name = "pbStar7"
-        Me.pbStar7.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar7.TabIndex = 74
-        Me.pbStar7.TabStop = False
-        '
-        'pbStar6
-        '
-        Me.pbStar6.Location = New System.Drawing.Point(127, 112)
-        Me.pbStar6.Name = "pbStar6"
-        Me.pbStar6.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar6.TabIndex = 73
-        Me.pbStar6.TabStop = False
+        Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
+        Me.txtRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtRuntime.Location = New System.Drawing.Point(635, 392)
+        Me.txtRuntime.Name = "txtRuntime"
+        Me.txtRuntime.Size = New System.Drawing.Size(66, 22)
+        Me.txtRuntime.TabIndex = 79
         '
         'dlgEditShow
         '
@@ -1757,6 +1780,11 @@ Partial Class dlgEditShow
         Me.tcEditShow.ResumeLayout(False)
         Me.tpShowDetails.ResumeLayout(False)
         Me.tpShowDetails.PerformLayout()
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1787,11 +1815,6 @@ Partial Class dlgEditShow
         CType(Me.pbASLandscape, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpASFanart.ResumeLayout(False)
         CType(Me.pbASFanart, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1928,5 +1951,7 @@ Partial Class dlgEditShow
     Friend WithEvents pbStar8 As System.Windows.Forms.PictureBox
     Friend WithEvents pbStar7 As System.Windows.Forms.PictureBox
     Friend WithEvents pbStar6 As System.Windows.Forms.PictureBox
+    Friend WithEvents lblRuntime As System.Windows.Forms.Label
+    Friend WithEvents txtRuntime As System.Windows.Forms.TextBox
 
 End Class

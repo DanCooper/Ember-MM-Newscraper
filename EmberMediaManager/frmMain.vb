@@ -7340,7 +7340,7 @@ doCancel:
 
         Me.dgvTVEpisodes.Enabled = False
 
-        Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
+        Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
 
         If Me.dtEpisodes.Rows.Count > 0 Then
 
@@ -7485,7 +7485,7 @@ doCancel:
                 Me.bsEpisodes.DataSource = Nothing
                 Me.dgvTVEpisodes.DataSource = Nothing
                 Me.ClearInfo()
-                Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath FROM TVShows ORDER BY Title COLLATE NOCASE;")
+                Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime FROM TVShows ORDER BY Title COLLATE NOCASE;")
             End If
 
             If Master.isCL Then
