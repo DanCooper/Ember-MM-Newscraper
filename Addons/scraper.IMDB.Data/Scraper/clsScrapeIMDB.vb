@@ -544,9 +544,20 @@ mPlot:          'MOVIE PLOT
                     scrapedresult = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim)
                     'only update nMovie if scraped result is not empty/nothing!
                     If Not String.IsNullOrEmpty(scrapedresult) Then
-                        'use regex to get rid of all letters(if that ever happens just in case) and also remove spaces
-                        nMovie.Runtime = System.Text.RegularExpressions.Regex.Replace(scrapedresult, "[^.0-9]", "").Trim
-                        ' nMovie.Runtime = scrapedresult
+                        'examples:
+                        ' <h5>Runtime:</h5><div class="info-content">93 min </div> OR
+                        ' <h5>Runtime:</h5><div class="info-content">"94 min  | USA:102 min (unrated version)</div>
+                        ' <h5>Runtime:</h5><div class="info-content">Thailand: 89 min  | USA:93 min </div>
+                        '  scrapedresult = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim)
+                        Dim Match As Match = Regex.Match(HTML, "Runtime:(\s*<((?<!>).)+)+(?<length>\d+|((?!</div|<h).)+)", RegexOptions.IgnoreCase)
+                        If Match.Success Then
+                            If Regex.IsMatch(Match.Groups("length").Value, "^\d+$") Then
+                                scrapedresult = Match.Groups("length").Value
+                            ElseIf Regex.IsMatch(Match.Groups("length").Value, "\d+") Then
+                                scrapedresult = Regex.Match(Match.Groups("length").Value, "\d+").Value
+                            End If
+                            nMovie.Runtime = scrapedresult
+                        End If
                     End If
                 End If
 
