@@ -1529,12 +1529,6 @@ Public Class dlgEditMovie
         Me.MovieDiscArt.Dispose()
         Me.MovieDiscArt = Nothing
 
-        Me.EFanartsList.Clear()
-        Me.EFanartsList = Nothing
-
-        Me.EThumbsList.Clear()
-        Me.EThumbsList = Nothing
-
         Me.MovieFanart.Dispose()
         Me.MovieFanart = Nothing
 
@@ -1549,6 +1543,22 @@ Public Class dlgEditMovie
 
         Me.MovieTrailer.Dispose()
         Me.MovieTrailer = Nothing
+
+        If Not IsNothing(EFanartsList) Then
+            For Each Image In Me.EFanartsList
+                Image.Image.Dispose()
+                Image.Image = Nothing
+            Next
+            EFanartsList = Nothing
+        End If
+
+        If Not IsNothing(EThumbsList) Then
+            For Each Image In Me.EThumbsList
+                Image.Image.Dispose()
+                Image.Image = Nothing
+            Next
+            EThumbsList = Nothing
+        End If
     End Sub
 
     Private Sub dlgEditMovie_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
