@@ -7900,7 +7900,7 @@ doCancel:
 
         Try
             Me.SuspendLayout()
-            Me.lblTitle.Text = If(String.IsNullOrEmpty(Master.currShow.Filename), String.Concat(Master.currShow.TVEp.Title, Master.eLang.GetString(689, " [MISSING]")), Master.currShow.TVEp.Title)
+            Me.lblTitle.Text = If(String.IsNullOrEmpty(Master.currShow.Filename), String.Concat(Master.currShow.TVEp.Title, " ", Master.eLang.GetString(689, "[MISSING]")), Master.currShow.TVEp.Title)
             Me.txtPlot.Text = Master.currShow.TVEp.Plot
             Me.lblDirector.Text = Master.currShow.TVEp.Director
             Me.txtFilePath.Text = Master.currShow.Filename
