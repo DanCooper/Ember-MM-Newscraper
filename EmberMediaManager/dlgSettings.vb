@@ -1235,9 +1235,11 @@ Public Class dlgSettings
               chkGeneralHideDiscArt.Checked AndAlso chkGeneralHideFanart.Checked AndAlso chkGeneralHideFanartSmall.Checked AndAlso chkGeneralHideLandscape.Checked AndAlso chkGeneralHidePoster.Checked Then
             Me.chkGeneralImagesGlassOverlay.Enabled = False
             Me.chkGeneralShowImgDims.Enabled = False
+            Me.chkGeneralShowImgNames.Enabled = False
         Else
             Me.chkGeneralImagesGlassOverlay.Enabled = True
             Me.chkGeneralShowImgDims.Enabled = True
+            Me.chkGeneralShowImgNames.Enabled = True
         End If
     End Sub
 
@@ -2337,6 +2339,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkGeneralShowImgNames_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralShowImgNames.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkTVShowFanartCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowFanartCol.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3003,6 +3009,7 @@ Public Class dlgSettings
                 Me.chkGeneralOverwriteNfo.Checked = .GeneralOverwriteNfo
                 Me.chkGeneralShowGenresText.Checked = .GeneralShowGenresText
                 Me.chkGeneralShowImgDims.Checked = .GeneralShowImgDims
+                Me.chkGeneralShowImgNames.Checked = .GeneralShowImgNames
                 Me.chkGeneralSourceFromFolder.Checked = .GeneralSourceFromFolder
                 Me.chkMovieActorThumbsOverwrite.Checked = .MovieActorThumbsOverwrite
                 Me.chkMovieBackdropsAuto.Checked = .MovieBackdropsAuto
@@ -4513,6 +4520,7 @@ Public Class dlgSettings
                 .GeneralOverwriteNfo = Me.chkGeneralOverwriteNfo.Checked
                 .GeneralShowGenresText = Me.chkGeneralShowGenresText.Checked
                 .GeneralShowImgDims = Me.chkGeneralShowImgDims.Checked
+                .GeneralShowImgNames = Me.chkGeneralShowImgNames.Checked
                 .GeneralSourceFromFolder = Me.chkGeneralSourceFromFolder.Checked
                 .GeneralTVEpisodeTheme = Me.cbGeneralTVEpisodeTheme.Text
                 .GeneralTVShowTheme = Me.cbGeneralTVShowTheme.Text
@@ -5372,6 +5380,7 @@ Public Class dlgSettings
         Me.chkGeneralOverwriteNfo.Text = Master.eLang.GetString(433, "Overwrite Non-conforming nfos")
         Me.chkGeneralShowGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
         Me.chkGeneralShowImgDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
+        Me.chkGeneralShowImgNames.Text = Master.eLang.GetString(1255, "Display Image Names")
         Me.chkGeneralSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
         Me.chkMovieBackdropsAuto.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         Me.chkMovieBannerCol.Text = Master.eLang.GetString(1070, "Hide Banner Column")

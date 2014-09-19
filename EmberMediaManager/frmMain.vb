@@ -8257,6 +8257,16 @@ doCancel:
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
                 End If
 
+                If Master.eSettings.GeneralShowImgNames Then
+                    g = Graphics.FromImage(pbPoster.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = Master.eLang.GetString(148, "Poster")
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), 7)
+                End If
+
                 Me.pbPoster.Location = New Point(4, 4)
             Else
                 If Not IsNothing(Me.pbPoster.Image) Then
@@ -8280,6 +8290,16 @@ doCancel:
                     rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), Me.pbFanartSmall.Height - 25, lenSize + 30, 25)
                     ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), Me.pbFanartSmall.Height - 20)
+                End If
+
+                If Master.eSettings.GeneralShowImgNames Then
+                    g = Graphics.FromImage(pbFanartSmall.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = Master.eLang.GetString(149, "Fanart")
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), 7)
                 End If
 
                 Me.pbFanartSmall.Location = New Point(4, 4)
@@ -8307,6 +8327,16 @@ doCancel:
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2), Me.pbLandscape.Height - 20)
                 End If
 
+                If Master.eSettings.GeneralShowImgNames Then
+                    g = Graphics.FromImage(pbLandscape.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = Master.eLang.GetString(1035, "Landscape")
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2), 7)
+                End If
+
                 Me.pbLandscape.Location = New Point(4, 4)
             Else
                 If Not IsNothing(Me.pbLandscape.Image) Then
@@ -8330,6 +8360,16 @@ doCancel:
                     rect = New Rectangle(Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2 - 15), Me.pbClearArt.Height - 25, lenSize + 30, 25)
                     ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2), Me.pbClearArt.Height - 20)
+                End If
+
+                If Master.eSettings.GeneralShowImgNames Then
+                    g = Graphics.FromImage(pbClearArt.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = Master.eLang.GetString(1096, "ClearArt")
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2), 7)
                 End If
 
                 Me.pbClearArt.Location = New Point(4, 4)

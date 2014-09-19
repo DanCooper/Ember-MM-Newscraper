@@ -1059,6 +1059,7 @@ Partial Class dlgSettings
         Me.lblMovieSetPosterSize = New System.Windows.Forms.Label()
         Me.cbMovieSetPosterPrefSize = New System.Windows.Forms.ComboBox()
         Me.chkMovieSetPosterOverwrite = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralShowImgNames = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -1390,7 +1391,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralImagesGlassOverlay.AutoSize = true
         Me.chkGeneralImagesGlassOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralImagesGlassOverlay.Location = New System.Drawing.Point(6, 90)
+        Me.chkGeneralImagesGlassOverlay.Location = New System.Drawing.Point(256, 90)
         Me.chkGeneralImagesGlassOverlay.Name = "chkGeneralImagesGlassOverlay"
         Me.chkGeneralImagesGlassOverlay.Size = New System.Drawing.Size(171, 17)
         Me.chkGeneralImagesGlassOverlay.TabIndex = 12
@@ -3357,6 +3358,7 @@ Partial Class dlgSettings
         '
         'gbGeneralMainWindow
         '
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralShowImgNames)
         Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralDoubleClickScrape)
         Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideLandscape)
         Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideDiscArt)
@@ -12558,6 +12560,17 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterOverwrite.Text = "Overwrite Existing"
         Me.chkMovieSetPosterOverwrite.UseVisualStyleBackColor = true
         '
+        'chkGeneralShowImgNames
+        '
+        Me.chkGeneralShowImgNames.AutoSize = true
+        Me.chkGeneralShowImgNames.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralShowImgNames.Location = New System.Drawing.Point(6, 90)
+        Me.chkGeneralShowImgNames.Name = "chkGeneralShowImgNames"
+        Me.chkGeneralShowImgNames.Size = New System.Drawing.Size(134, 17)
+        Me.chkGeneralShowImgNames.TabIndex = 20
+        Me.chkGeneralShowImgNames.Text = "Display Image Names"
+        Me.chkGeneralShowImgNames.UseVisualStyleBackColor = true
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -13936,4 +13949,5 @@ End Sub
     Friend WithEvents chkMovieScraperOriginaltitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVScraperShowRuntime As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVLockShowRuntime As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGeneralShowImgNames As System.Windows.Forms.CheckBox
 End Class

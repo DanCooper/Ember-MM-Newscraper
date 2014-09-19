@@ -3432,6 +3432,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralShowImgNames() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralShowImgNames
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralShowImgNames = value
+        End Set
+    End Property
+
     Public Property TVShowFanartCol() As Boolean
         Get
             Return Settings._XMLSettings.tvshowfanartcol

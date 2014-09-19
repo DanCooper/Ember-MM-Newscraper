@@ -60,6 +60,7 @@ Partial Public Class clsXMLSettings
     Private _generalseasonsplitterpanelstate As Integer
     Private _generalshowgenrestext As Boolean
     Private _generalshowimgdims As Boolean
+    Private _generalshowimgnames As Boolean
     Private _generalshowsplitterpanelstate As Integer
     Private _generalsourcefromfolder As Boolean
     Private _generaltvepisodetheme As String
@@ -1930,7 +1931,7 @@ Partial Public Class clsXMLSettings
             Me._movielocktags = value
         End Set
     End Property
- 
+
     Public Property MovieLockTop250() As Boolean
         Get
             Return Me._MovieLockTop250
@@ -4184,6 +4185,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._generalshowimgdims = value
+        End Set
+    End Property
+
+    Public Property GeneralShowImgNames() As Boolean
+        Get
+            Return Me._generalshowimgnames
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalshowimgnames = value
         End Set
     End Property
 
