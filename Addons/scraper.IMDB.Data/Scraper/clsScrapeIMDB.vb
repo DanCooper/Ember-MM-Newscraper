@@ -213,9 +213,6 @@ Namespace IMDB
                             nMovie.Title = nMovie.OriginalTitle.Trim
                         End If
                     End If
-                    If String.IsNullOrEmpty(oldOTitle) OrElse Not oldOTitle = nMovie.OriginalTitle Then
-                        nMovie.SortTitle = String.Empty
-                    End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
