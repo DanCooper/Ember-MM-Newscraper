@@ -9779,10 +9779,8 @@ doCancel:
                                             Master.currMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
                                         End If
                                     End If
-                                    If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = Master.currMovie.ListTitle
                                 Else
                                     Dim tTitle As String = StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title)
-                                    If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = tTitle
                                     If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
                                         Master.currMovie.ListTitle = String.Format("{0} ({1})", tTitle, Master.currMovie.Movie.Year)
                                     Else
@@ -13117,10 +13115,8 @@ doCancel:
                             tmpMovieDB.Movie.Title = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDB.Filename), False)
                         End If
                     End If
-                    If Not OldTitle = tmpMovieDB.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
                 Else
                     Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
-                    If Not OldTitle = tmpMovieDB.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
                     If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
                         tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
                     Else

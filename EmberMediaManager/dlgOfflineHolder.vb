@@ -472,7 +472,7 @@ Public Class dlgOfflineHolder
 
         If Not String.IsNullOrEmpty(Args.dMovie.Movie.Title) Then
             Dim tTitle As String = StringUtils.FilterTokens_Movie(Args.dMovie.Movie.Title)
-            Args.dMovie.Movie.SortTitle = tTitle
+
             If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(Args.dMovie.Movie.Year) Then
                 Args.dMovie.ListTitle = String.Format("{0} ({1})", tTitle, Args.dMovie.Movie.Year)
             Else
@@ -482,7 +482,6 @@ Public Class dlgOfflineHolder
             Args.dMovie.ListTitle = MovieName.Replace("[Offline]", String.Empty).Trim
         End If
 
-        Args.dMovie.Movie.SortTitle = Args.dMovie.ListTitle
 
         If Me.bwCreateDummyFile.CancellationPending Then
             e.Cancel = True
