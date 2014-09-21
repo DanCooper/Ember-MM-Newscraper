@@ -406,6 +406,8 @@ Public Class MediaInfo
                 sFormat = "vorbis" 'Vorbis
             ElseIf sFormat.ToLower.Contains("eac3") Then
                 sFormat = "dolbydigital" 'EAC3
+            ElseIf sFormat.ToLower.Contains("flac") Then
+                sFormat = "flac" 'flac
             End If
             Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
             'Return sFormat
@@ -421,6 +423,8 @@ Public Class MediaInfo
                 sFormat = "vorbis" 'Vorbis
             ElseIf sFormat.ToLower.Contains("eac3") Then
                 sFormat = "dolbydigital" 'EAC3
+            ElseIf sFormat.ToLower.Contains("flac") Then
+                sFormat = "flac" 'flac
             End If
             Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
             'cocotus end
@@ -438,14 +442,14 @@ Public Class MediaInfo
                 Else
                     tFormat = "mpeg1video"
                 End If
-            ElseIf tFormat.Contains("mpeg-4 visual") Then
+            ElseIf tFormat.Contains("mpeg-4 visual") OrElse tFormat.Contains("mpeg4") Then
                 tFormat = "mpeg4"
             ElseIf tFormat.Contains("vp6") Then
                 tFormat = "flv"
             ElseIf tFormat.Contains("sorenson") Then
                 tFormat = "flv"
-            ElseIf tFormat.Contains("divx 3") Then
-                tFormat = "divx 3"
+            ElseIf tFormat.Contains("divx") Then
+                tFormat = "divx"
             End If
 
             Return clsAdvancedSettings.GetSetting(String.Concat("VideoFormatConvert:", tFormat.ToLower), tFormat.ToLower)
