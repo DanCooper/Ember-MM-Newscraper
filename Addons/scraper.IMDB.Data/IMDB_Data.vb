@@ -153,7 +153,7 @@ Public Class IMDB_Data
         _setup.chkPopularTitles.Checked = _MySettings.SearchPopularTitles
         _setup.chkTvTitles.Checked = _MySettings.SearchTvTitles
         _setup.chkVideoTitles.Checked = _MySettings.SearchVideoTitles
-
+        _setup.chkCountryAbbreviation.Checked = _MySettings.CountryAbbreviation
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
@@ -205,6 +205,7 @@ Public Class IMDB_Data
         _MySettings.SearchPopularTitles = clsAdvancedSettings.GetBooleanSetting("SearchPopularTitles", True)
         _MySettings.SearchTvTitles = clsAdvancedSettings.GetBooleanSetting("SearchTvTitles", False)
         _MySettings.SearchVideoTitles = clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False)
+        _MySettings.CountryAbbreviation = clsAdvancedSettings.GetBooleanSetting("CountryAbbreviation", False)
 
     End Sub
 
@@ -241,6 +242,7 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("SearchPopularTitles", _MySettings.SearchPopularTitles)
             settings.SetBooleanSetting("SearchTvTitles", _MySettings.SearchTvTitles)
             settings.SetBooleanSetting("SearchVideoTitles", _MySettings.SearchVideoTitles)
+            settings.SetBooleanSetting("CountryAbbreviation", _MySettings.CountryAbbreviation)
         End Using
     End Sub
 
@@ -275,6 +277,7 @@ Public Class IMDB_Data
         _MySettings.SearchPopularTitles = _setup.chkPopularTitles.Checked
         _MySettings.SearchTvTitles = _setup.chkTvTitles.Checked
         _MySettings.SearchVideoTitles = _setup.chkVideoTitles.Checked
+        _MySettings.CountryAbbreviation = _setup.chkCountryAbbreviation.Checked
 
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
@@ -444,10 +447,10 @@ Public Class IMDB_Data
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
+                _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage, _MySettings.CountryAbbreviation)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first!
-                DBMovie.Movie = _scraper.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, nMovie, ScrapeType, filterOptions, filterOptions.bFullCrew, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
+                DBMovie.Movie = _scraper.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, nMovie, ScrapeType, filterOptions, filterOptions.bFullCrew, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage, _MySettings.CountryAbbreviation)
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
@@ -538,7 +541,7 @@ Public Class IMDB_Data
                         End If
                         If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
                             'IMDB-ID available -> scrape and save data into an empty movie container (nMovie)
-                            _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage)
+                            _scraper.GetMovieInfo(DBMovie.Movie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage, _MySettings.CountryAbbreviation)
                             DBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
                             DBMovie.Movie.Title = nMovie.Title
                             DBMovie.Movie.ID = nMovie.ID
@@ -592,6 +595,7 @@ Public Class IMDB_Data
         Dim SearchPopularTitles As Boolean
         Dim SearchTvTitles As Boolean
         Dim SearchVideoTitles As Boolean
+        Dim CountryAbbreviation As Boolean
 #End Region 'Fields
 
     End Structure
