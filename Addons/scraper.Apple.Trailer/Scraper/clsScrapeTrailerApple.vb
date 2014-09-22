@@ -97,7 +97,7 @@ Public Class AppleTrailer
 
                 If rResult.Count > 0 Then
                     Dim TrailerBaseURL As String = rResult.Item(0).Groups(1).Value
-                    Dim TrailerSiteURL = String.Concat(TrailerBaseURL, urlHD)
+                    Dim TrailerSiteURL = String.Concat(TrailerBaseURL, urlHQ)
 
                     If Not String.IsNullOrEmpty(TrailerBaseURL) Then
                         sHTTP = New HTTP
@@ -122,7 +122,7 @@ Public Class AppleTrailer
 
                             If yResult.Count > 0 Then
                                 tDownloadURL = Web.HttpUtility.HtmlDecode(yResult.Item(0).Groups(1).Value)
-                                tDownloadURL = tDownloadURL.Replace("720p", prevQual)
+                                tDownloadURL = tDownloadURL.Replace("480p", prevQual)
                                 trailer.WebURL = tDownloadURL
                                 tDownloadURL = tDownloadURL.Replace("1080p", "h1080p")
                                 tDownloadURL = tDownloadURL.Replace("720p", "h720p")
