@@ -402,6 +402,12 @@ Public Class MediaInfo
             End Select
             If sFormat.ToLower.Contains("truehd") Then
                 sFormat = "truehd" 'Dolby TrueHD
+            ElseIf sFormat.ToLower.Contains("vorbis") Then
+                sFormat = "vorbis" 'Vorbis
+            ElseIf sFormat.ToLower.Contains("eac3") Then
+                sFormat = "dolbydigital" 'EAC3
+            ElseIf sFormat.ToLower.Contains("flac") Then
+                sFormat = "flac" 'flac
             End If
             Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
             'Return sFormat
@@ -413,6 +419,12 @@ Public Class MediaInfo
                 sFormat = "dtshd_hra" 'high resolution
             ElseIf sProfile.ToLower.Contains("truehd") Then
                 sFormat = "truehd" 'Dolby TrueHD
+            ElseIf sFormat.ToLower.Contains("vorbis") Then
+                sFormat = "vorbis" 'Vorbis
+            ElseIf sFormat.ToLower.Contains("eac3") Then
+                sFormat = "dolbydigital" 'EAC3
+            ElseIf sFormat.ToLower.Contains("flac") Then
+                sFormat = "flac" 'flac
             End If
             Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
             'cocotus end
@@ -428,13 +440,22 @@ Public Class MediaInfo
                 If sModifier.ToLower = "version 2" Then
                     tFormat = "mpeg2"
                 Else
-                    tFormat = "mpeg"
+                    tFormat = "mpeg1video"
                 End If
+            ElseIf tFormat.Contains("mpeg-4 visual") OrElse tFormat.Contains("mpeg4") Then
+                tFormat = "mpeg4"
+            ElseIf tFormat.Contains("vp6") Then
+                tFormat = "flv"
+            ElseIf tFormat.Contains("sorenson") Then
+                tFormat = "flv"
+            ElseIf tFormat.Contains("divx") Then
+                tFormat = "divx"
             End If
+
             Return clsAdvancedSettings.GetSetting(String.Concat("VideoFormatConvert:", tFormat.ToLower), tFormat.ToLower)
-        Else
-            Return String.Empty
-        End If
+            Else
+                Return String.Empty
+            End If
     End Function
 
     Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer

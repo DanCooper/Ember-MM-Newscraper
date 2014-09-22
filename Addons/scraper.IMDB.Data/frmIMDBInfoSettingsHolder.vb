@@ -208,6 +208,10 @@ Public Class frmIMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkCountryAbbreviation_CheckedChanged(sender As Object, e As EventArgs) Handles chkCountryAbbreviation.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Public Sub New()
         InitializeComponent()
         Me.SetUp()
@@ -254,10 +258,12 @@ Public Class frmIMDBInfoSettingsHolder
         Me.lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")
         Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top250")
+        Me.chkCountryAbbreviation.Text = Master.eLang.GetString(1255, "Country-Tag: Save country abbreviation(s) instead of full name(s)")
 
     End Sub
 
 #End Region 'Methods
+
 
 
 
