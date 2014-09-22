@@ -582,16 +582,19 @@ Namespace TMDBdata
 
                     If Not IsNothing(tPC) Then
                         For Each aPro As WatTmdb.V3.ProductionCompany In tPC
+                            If Not String.IsNullOrEmpty(aPro.name) Then
+                                nMovie.Studios.Add(aPro.name)
+                            End If
                             tStr = tStr & " / " & aPro.name
                         Next
                     End If
-                    If Len(tStr) > 3 Then
-                        tStr = Trim(Right(tStr, Len(tStr) - 3))
-                    End If
-                    'only update nMovie if scraped result is not empty/nothing!
-                    If Not String.IsNullOrEmpty(tStr) Then
-                        nMovie.Studio = tStr
-                    End If
+                    'If Len(tStr) > 3 Then
+                    '    tStr = Trim(Right(tStr, Len(tStr) - 3))
+                    'End If
+                    ''only update nMovie if scraped result is not empty/nothing!
+                    'If Not String.IsNullOrEmpty(tStr) Then
+                    '    nMovie.Studio = tStr
+                    'End If
                 End If
 
                 If bwTMDBg.CancellationPending Then Return Nothing

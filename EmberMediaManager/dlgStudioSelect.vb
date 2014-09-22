@@ -56,7 +56,8 @@ Public Class dlgStudioSelect
         'DBMovie.Movie = New MediaContainers.Movie
         'DBMovie.Movie.IMDBID = Me._MovieId
         Dim alStudio As List(Of String) = ModulesManager.Instance.GetMovieStudio(_CurrMovie)
-        If alStudio.Count = 0 Then alStudio.Add(_CurrMovie.Movie.Studio)
+        ' If alStudio.Count = 0 Then alStudio.Add(_CurrMovie.Movie.Studio)
+        If alStudio.Count = 0 Then alStudio.AddRange(_CurrMovie.Movie.Studios)
         For i As Integer = 0 To alStudio.Count - 1
             ilStudios.Images.Add(alStudio(i).ToString, APIXML.GetStudioImage(alStudio(i).ToString))
             lvStudios.Items.Add(alStudio(i).ToString, i)

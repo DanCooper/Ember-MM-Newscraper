@@ -230,8 +230,9 @@ Public Class NFO
                 End If
 
                 'Studio
-                If (String.IsNullOrEmpty(DBMovie.Movie.Studio) OrElse Not Master.eSettings.MovieLockCountry) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Studio) AndAlso Master.eSettings.MovieScraperStudio Then
-                    DBMovie.Movie.Studio = scrapedmovie.Studio
+                If (DBMovie.Movie.Studios.Count < 1 OrElse Not Master.eSettings.MovieLockStudio) AndAlso scrapedmovie.Studios.Count > 0 AndAlso Master.eSettings.MovieScraperStudio Then
+                    DBMovie.Movie.Studios.Clear()
+                    DBMovie.Movie.Studios.AddRange(scrapedmovie.Studios)
                 End If
 
                 'OldCredits: Writers/Producers/MusicBy/OtherCrew - its all in this field

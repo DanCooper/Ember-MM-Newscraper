@@ -567,14 +567,18 @@ mPlot:          'MOVIE PLOT
                             Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
                                      Where Not DirectCast(P1, Match).Groups("name").ToString = String.Empty _
                                      Select Studio = Web.HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString) Take 1
-                            nMovie.Studio = Ps(0).ToString.Trim
+                            '  nMovie.Studio = Ps(0).ToString.Trim
+                            'only update nMovie if scraped result is not empty/nothing!
+                            If Ps.Count > 0 Then
+                                nMovie.Studios.AddRange(Ps.ToList)
+                            End If
                         End If
                     Else
                         D = HTML.IndexOf("<h5>Company:</h5>")
                         If D > 0 Then W = HTML.IndexOf("</div>", D)
                         'only update nMovie if scraped result is not empty/nothing!
                         If D > 0 AndAlso W > 0 Then
-                            nMovie.Studio = Web.HttpUtility.HtmlDecode(Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim)
+                            nMovie.Studios.Add(Web.HttpUtility.HtmlDecode(Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim))
                         End If
                     End If
                 End If
