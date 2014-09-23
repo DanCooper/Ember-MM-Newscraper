@@ -214,8 +214,16 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Studio
-                        If scraperresult.Studio <> "" Then
-                            .txtStudioIMDB.Text = scraperresult.Studio
+                        'If scraperresult.Studio <> "" Then
+                        '    .txtStudioIMDB.Text = scraperresult.Studio
+                        '    tbStudio.SelectedTab = tbStudioIMDB
+                        'Else
+                        '    tbStudio.TabPages.Remove(tbStudioIMDB)
+                        'End If
+                        If scraperresult.Studios.Count > 0 Then
+                            For Each item In scraperresult.Studios
+                                .txtStudioIMDB.Text = item & ";" & .txtStudioIMDB.Text
+                            Next
                             tbStudio.SelectedTab = tbStudioIMDB
                         Else
                             tbStudio.TabPages.Remove(tbStudioIMDB)
@@ -390,8 +398,16 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Studio
-                        If scraperresult.Studio <> "" Then
-                            .txtStudioTMDB.Text = scraperresult.Studio
+                        'If scraperresult.Studio <> "" Then
+                        '    .txtStudioTMDB.Text = scraperresult.Studio
+                        '    tbStudio.SelectedTab = tbStudioTMDB
+                        'Else
+                        '    tbStudio.TabPages.Remove(tbStudioTMDB)
+                        'End If
+                        If scraperresult.Studios.Count > 0 Then
+                            For Each item In scraperresult.Studios
+                                .txtStudioTMDB.Text = item & ";" & .txtStudioTMDB.Text
+                            Next
                             tbStudio.SelectedTab = tbStudioTMDB
                         Else
                             tbStudio.TabPages.Remove(tbStudioTMDB)
@@ -565,8 +581,10 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Studio
-                        If scraperresult.Studio <> "" Then
-                            .txtStudioOFDB.Text = scraperresult.Studio
+                        If scraperresult.Studios.Count > 0 Then
+                            For Each item In scraperresult.Studios
+                                .txtStudioOFDB.Text = item & ";" & .txtStudioOFDB.Text
+                            Next
                             tbStudio.SelectedTab = tbStudioOFDB
                         Else
                             tbStudio.TabPages.Remove(tbStudioOFDB)
@@ -740,8 +758,10 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Studio
-                        If scraperresult.Studio <> "" Then
-                            .txtStudioMoviepilot.Text = scraperresult.Studio
+                        If scraperresult.Studios.Count > 0 Then
+                            For Each item In scraperresult.Studios
+                                .txtStudioMoviepilot.Text = item & ";" & .txtStudioMoviepilot.Text
+                            Next
                             tbStudio.SelectedTab = tbStudioMoviepilot
                         Else
                             tbStudio.TabPages.Remove(tbStudioMoviepilot)
@@ -953,7 +973,7 @@ Public Class dlgMovieDataScraperPreview
                     _nmovie.Runtime = scraperresult.Runtime
                 End If
                 If tbStudio.TabCount > 0 AndAlso tbStudio.SelectedTab.Name.ToUpper.Contains(scraperresult.Scrapersource.ToUpper) Then
-                    _nmovie.Studio = scraperresult.Studio
+                    _nmovie.Studios = scraperresult.Studios
                 End If
                 If tbTagline.TabCount > 0 AndAlso tbTagline.SelectedTab.Name.ToUpper.Contains(scraperresult.Scrapersource.ToUpper) Then
                     _nmovie.Tagline = scraperresult.Tagline
@@ -989,7 +1009,7 @@ Public Class dlgMovieDataScraperPreview
                 scraperresult.Rating = _nmovie.Rating
                 scraperresult.ReleaseDate = _nmovie.ReleaseDate
                 scraperresult.Runtime = _nmovie.Runtime
-                scraperresult.Studio = _nmovie.Studio
+                scraperresult.Studios = _nmovie.Studios
                 scraperresult.Tagline = _nmovie.Tagline
                 scraperresult.Title = _nmovie.Title
                 scraperresult.Top250 = _nmovie.Top250

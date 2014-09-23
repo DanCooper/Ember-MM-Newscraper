@@ -8199,13 +8199,21 @@ doCancel:
                 Me.createGenreThumbs(Master.currMovie.Movie.Genres)
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
-                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studio.ToLower) 'ByDef all images file a lower case
-                Me.pbStudio.Tag = Master.currMovie.Movie.Studio
+            If Master.currMovie.Movie.Studios.Count > 0 Then
+                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+                Me.pbStudio.Tag = Master.currMovie.Movie.Studios.Item(0)
             Else
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
                 Me.pbStudio.Tag = String.Empty
             End If
+
+            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
+            '    Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studio.ToLower) 'ByDef all images file a lower case
+            '    Me.pbStudio.Tag = Master.currMovie.Movie.Studio
+            'Else
+            '    Me.pbStudio.Image = APIXML.GetStudioImage("####")
+            '    Me.pbStudio.Tag = String.Empty
+            'End If
             If clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
                 lblStudio.Text = pbStudio.Tag.ToString
             End If

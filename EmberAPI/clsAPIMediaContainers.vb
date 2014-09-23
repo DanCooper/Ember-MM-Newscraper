@@ -457,7 +457,7 @@ Namespace MediaContainers
         Private _mpaa As String
         Private _certification As String
         Private _genres As New List(Of String)
-        Private _studio As String
+        Private _studios As New List(Of String)
         Private _directors As New List(Of String)
         Private _credits As New List(Of String)
         Private _tagline As String
@@ -801,20 +801,37 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlElement("studio")> _
+        <Obsolete("This property is depreciated. Use Movie.Studios [List(Of String)] instead.")> _
+       <XmlIgnore()> _
         Public Property Studio() As String
             Get
-                Return Me._studio
+                Return String.Join(" / ", _studios.ToArray)
             End Get
             Set(ByVal value As String)
-                Me._studio = value
+                _studios.Clear()
+                AddStudio(value)
             End Set
         End Property
+
+        <XmlElement("studio")> _
+        Public Property Studios() As List(Of String)
+            Get
+                Return _studios
+            End Get
+            Set(ByVal value As List(Of String))
+                If IsNothing(value) Then
+                    _studios.Clear()
+                Else
+                    _studios = value
+                End If
+            End Set
+        End Property
+
 
         <XmlIgnore()> _
         Public ReadOnly Property StudioSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._studio)
+                Return (_studios.Count > 0)
             End Get
         End Property
 
@@ -896,8 +913,8 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlElement("scrapersource")> _
-        Public Property Scrapersource() As String
+        <XmlIgnore()> _
+    Public Property Scrapersource() As String
             Get
                 Return Me._scrapersource
             End Get
@@ -1296,6 +1313,24 @@ Namespace MediaContainers
             End If
         End Sub
 
+        Public Sub AddStudio(ByVal value As String)
+            If String.IsNullOrEmpty(value) Then Return
+
+            If value.Contains("/") Then
+                Dim values As String() = value.Split(New [Char]() {"/"c})
+                For Each studio As String In values
+                    studio = studio.Trim
+                    If Not _studios.Contains(studio) Then
+                        _studios.Add(studio)
+                    End If
+                Next
+            Else
+                If Not _studios.Contains(value) Then
+                    _studios.Add(value.Trim)
+                End If
+            End If
+        End Sub
+
         Public Sub AddDirector(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
 
@@ -1374,7 +1409,7 @@ Namespace MediaContainers
             Me._genres.Clear()
             Me._runtime = String.Empty
             Me._releaseDate = String.Empty
-            Me._studio = String.Empty
+            Me._studios.Clear()
             Me._directors.Clear()
             Me._credits.Clear()
             Me._playcount = String.Empty
@@ -1411,7 +1446,7 @@ Namespace MediaContainers
             Me._genres.Clear()
             Me._runtime = String.Empty
             Me._releaseDate = String.Empty
-            Me._studio = String.Empty
+            Me._studios.Clear()
             Me._directors.Clear()
             Me._credits.Clear()
             Me._playcount = String.Empty
