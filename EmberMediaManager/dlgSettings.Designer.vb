@@ -219,6 +219,7 @@ Partial Class dlgSettings
         Me.gbScrapers = New System.Windows.Forms.GroupBox()
         Me.chkGeneralResumeScraper = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMainWindow = New System.Windows.Forms.GroupBox()
+        Me.chkGeneralShowImgNames = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDoubleClickScrape = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHideLandscape = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHideDiscArt = New System.Windows.Forms.CheckBox()
@@ -539,7 +540,6 @@ Partial Class dlgSettings
         Me.gbTVGeneralMiscOpts = New System.Windows.Forms.GroupBox()
         Me.chkTVGeneralMarkNewShows = New System.Windows.Forms.CheckBox()
         Me.chkTVGeneralMarkNewEpisodes = New System.Windows.Forms.CheckBox()
-        Me.chkTVGeneralDisplayASPoster = New System.Windows.Forms.CheckBox()
         Me.gbTVShowFilterOpts = New System.Windows.Forms.GroupBox()
         Me.btnTVShowFilterReset = New System.Windows.Forms.Button()
         Me.btnTVShowFilterDown = New System.Windows.Forms.Button()
@@ -1059,7 +1059,6 @@ Partial Class dlgSettings
         Me.lblMovieSetPosterSize = New System.Windows.Forms.Label()
         Me.cbMovieSetPosterPrefSize = New System.Windows.Forms.ComboBox()
         Me.chkMovieSetPosterOverwrite = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralShowImgNames = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -3380,6 +3379,17 @@ Partial Class dlgSettings
         Me.gbGeneralMainWindow.TabIndex = 14
         Me.gbGeneralMainWindow.TabStop = false
         Me.gbGeneralMainWindow.Text = "Main Window"
+        '
+        'chkGeneralShowImgNames
+        '
+        Me.chkGeneralShowImgNames.AutoSize = true
+        Me.chkGeneralShowImgNames.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralShowImgNames.Location = New System.Drawing.Point(6, 90)
+        Me.chkGeneralShowImgNames.Name = "chkGeneralShowImgNames"
+        Me.chkGeneralShowImgNames.Size = New System.Drawing.Size(134, 17)
+        Me.chkGeneralShowImgNames.TabIndex = 20
+        Me.chkGeneralShowImgNames.Text = "Display Image Names"
+        Me.chkGeneralShowImgNames.UseVisualStyleBackColor = true
         '
         'chkGeneralDoubleClickScrape
         '
@@ -6783,7 +6793,6 @@ Partial Class dlgSettings
         '
         Me.gbTVGeneralMiscOpts.Controls.Add(Me.chkTVGeneralMarkNewShows)
         Me.gbTVGeneralMiscOpts.Controls.Add(Me.chkTVGeneralMarkNewEpisodes)
-        Me.gbTVGeneralMiscOpts.Controls.Add(Me.chkTVGeneralDisplayASPoster)
         Me.gbTVGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVGeneralMiscOpts.Location = New System.Drawing.Point(6, 7)
         Me.gbTVGeneralMiscOpts.Name = "gbTVGeneralMiscOpts"
@@ -6811,16 +6820,6 @@ Partial Class dlgSettings
         Me.chkTVGeneralMarkNewEpisodes.TabIndex = 4
         Me.chkTVGeneralMarkNewEpisodes.Text = "Mark New Episodes"
         Me.chkTVGeneralMarkNewEpisodes.UseVisualStyleBackColor = true
-        '
-        'chkTVGeneralDisplayASPoster
-        '
-        Me.chkTVGeneralDisplayASPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVGeneralDisplayASPoster.Location = New System.Drawing.Point(6, 16)
-        Me.chkTVGeneralDisplayASPoster.Name = "chkTVGeneralDisplayASPoster"
-        Me.chkTVGeneralDisplayASPoster.Size = New System.Drawing.Size(204, 17)
-        Me.chkTVGeneralDisplayASPoster.TabIndex = 2
-        Me.chkTVGeneralDisplayASPoster.Text = "Display All Season Poster"
-        Me.chkTVGeneralDisplayASPoster.UseVisualStyleBackColor = true
         '
         'gbTVShowFilterOpts
         '
@@ -12560,17 +12559,6 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterOverwrite.Text = "Overwrite Existing"
         Me.chkMovieSetPosterOverwrite.UseVisualStyleBackColor = true
         '
-        'chkGeneralShowImgNames
-        '
-        Me.chkGeneralShowImgNames.AutoSize = true
-        Me.chkGeneralShowImgNames.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralShowImgNames.Location = New System.Drawing.Point(6, 90)
-        Me.chkGeneralShowImgNames.Name = "chkGeneralShowImgNames"
-        Me.chkGeneralShowImgNames.Size = New System.Drawing.Size(134, 17)
-        Me.chkGeneralShowImgNames.TabIndex = 20
-        Me.chkGeneralShowImgNames.Text = "Display Image Names"
-        Me.chkGeneralShowImgNames.UseVisualStyleBackColor = true
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -13337,7 +13325,6 @@ End Sub
     Friend WithEvents tsSettingsTopMenu As System.Windows.Forms.ToolStrip
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents pbSettingsCurrent As System.Windows.Forms.PictureBox
-    Friend WithEvents chkTVGeneralDisplayASPoster As System.Windows.Forms.CheckBox
     Friend WithEvents gbSettingsHelp As System.Windows.Forms.GroupBox
     Friend WithEvents lblHelp As System.Windows.Forms.Label
     Friend WithEvents pnlSettingsHelp As System.Windows.Forms.Panel

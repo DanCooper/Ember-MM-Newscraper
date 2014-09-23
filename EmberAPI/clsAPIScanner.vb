@@ -586,34 +586,66 @@ Public Class Scanner
 
             'season banner
             If String.IsNullOrEmpty(TVDB.SeasonBannerPath) Then
-                For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonBanner)
-                    TVDB.SeasonBannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.SeasonBannerPath) Then Exit For
-                Next
+                'all-seasons
+                If Season = 999 Then
+                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsBanner)
+                        TVDB.SeasonBannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                        If Not String.IsNullOrEmpty(TVDB.SeasonBannerPath) Then Exit For
+                    Next
+                Else
+                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonBanner)
+                        TVDB.SeasonBannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                        If Not String.IsNullOrEmpty(TVDB.SeasonBannerPath) Then Exit For
+                    Next
+                End If
             End If
 
             'season fanart
             If String.IsNullOrEmpty(TVDB.SeasonFanartPath) Then
-                For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonFanart)
-                    TVDB.SeasonFanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.SeasonFanartPath) Then Exit For
-                Next
+                'all-seasons
+                If Season = 999 Then
+                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsFanart)
+                        TVDB.SeasonFanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                        If Not String.IsNullOrEmpty(TVDB.SeasonFanartPath) Then Exit For
+                    Next
+                Else
+                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonFanart)
+                        TVDB.SeasonFanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                        If Not String.IsNullOrEmpty(TVDB.SeasonFanartPath) Then Exit For
+                    Next
+                End If
             End If
 
             'season landscape
             If String.IsNullOrEmpty(TVDB.SeasonLandscapePath) Then
-                For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonLandscape)
-                    TVDB.SeasonLandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.SeasonLandscapePath) Then Exit For
-                Next
+                'all-seasons
+                If Season = 999 Then
+                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsLandscape)
+                        TVDB.SeasonLandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                        If Not String.IsNullOrEmpty(TVDB.SeasonLandscapePath) Then Exit For
+                    Next
+                Else
+                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonLandscape)
+                        TVDB.SeasonLandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                        If Not String.IsNullOrEmpty(TVDB.SeasonLandscapePath) Then Exit For
+                    Next
+                End If
             End If
 
             'season poster
             If String.IsNullOrEmpty(TVDB.SeasonPosterPath) Then
-                For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonPoster)
-                    TVDB.SeasonPosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.SeasonPosterPath) Then Exit For
-                Next
+                'all-seasons
+                If Season = 999 Then
+                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsPoster)
+                        TVDB.SeasonPosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                        If Not String.IsNullOrEmpty(TVDB.SeasonPosterPath) Then Exit For
+                    Next
+                Else
+                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonPoster)
+                        TVDB.SeasonPosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                        If Not String.IsNullOrEmpty(TVDB.SeasonPosterPath) Then Exit For
+                    Next
+                End If
             End If
 
         Catch ex As Exception

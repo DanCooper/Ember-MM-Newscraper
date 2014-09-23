@@ -343,7 +343,6 @@ Partial Public Class clsXMLSettings
     Private _tvepisodeposterwidth As Integer
     Private _tvepisodepropercase As Boolean
     Private _tvepisodewatchedcol As Boolean
-    Private _tvgeneraldisplayasposter As Boolean
     Private _tvgeneralflaglang As String
     Private _tvgeneralignorelastscan As Boolean
     Private _tvgenerallanguage As String
@@ -1173,15 +1172,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movietrailerdeleteexisting = value
-        End Set
-    End Property
-
-    Public Property TVGeneralDisplayASPoster() As Boolean
-        Get
-            Return Me._tvgeneraldisplayasposter
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvgeneraldisplayasposter = value
         End Set
     End Property
 

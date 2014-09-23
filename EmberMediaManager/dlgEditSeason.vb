@@ -81,7 +81,13 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonBannerScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonBanner, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonBanner, Images))
+        Dim tImage As New Images
+
+        If Master.currShow.TVEp.Season = 999 Then
+            tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonBanner, Images))
+        Else
+            tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonBanner, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonBanner, Images))
+        End If
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             SeasonBanner = tImage
@@ -136,7 +142,13 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonFanartScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonFanart, Images))
+        Dim tImage As New Images
+
+        If Master.currShow.TVEp.Season = 999 Then
+            tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonFanart, Images))
+        Else
+            tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonFanart, Images))
+        End If
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             SeasonFanart = tImage
@@ -191,7 +203,13 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonLandscapeScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonLandscape, Images))
+        Dim tImage As New Images
+
+        If Master.currShow.TVEp.Season = 999 Then
+            tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonLandscape, Images))
+        Else
+            tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonLandscape, Images))
+        End If
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             SeasonLandscape = tImage
@@ -246,7 +264,13 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonPosterScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonPoster, Images))
+        Dim tImage As New Images
+
+        If Master.currShow.TVEp.Season = 999 Then
+            tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonPoster, Images))
+        Else
+            tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonPoster, Images))
+        End If
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             SeasonPoster = tImage
@@ -449,39 +473,79 @@ Public Class dlgEditSeason
             With Me
 
                 'Banner
-                If Not IsNothing(.SeasonBanner.Image) Then
-                    Dim fPath As String = .SeasonBanner.SaveAsTVSeasonBanner(Master.currShow)
-                    Master.currShow.SeasonBannerPath = fPath
+                If Master.currShow.TVEp.Season = 999 Then
+                    If Not IsNothing(.SeasonBanner.Image) Then
+                        'AllSeasons Banner
+                        Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVASBanner(Master.currShow, "")
+                    Else
+                        .SeasonBanner.DeleteTVASBanner(Master.currShow)
+                        Master.currShow.SeasonBannerPath = String.Empty
+                    End If
                 Else
-                    .SeasonBanner.DeleteTVSeasonBanner(Master.currShow)
-                    Master.currShow.SeasonBannerPath = String.Empty
+                    'Season Banner
+                    If Not IsNothing(.SeasonBanner.Image) Then
+                        Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVSeasonBanner(Master.currShow)
+                    Else
+                        .SeasonBanner.DeleteTVSeasonBanner(Master.currShow)
+                        Master.currShow.SeasonBannerPath = String.Empty
+                    End If
                 End If
 
                 'Fanart
-                If Not IsNothing(.SeasonFanart.Image) Then
-                    Dim fPath As String = .SeasonFanart.SaveAsTVSeasonFanart(Master.currShow)
-                    Master.currShow.SeasonFanartPath = fPath
+                If Master.currShow.TVEp.Season = 999 Then
+                    If Not IsNothing(.SeasonFanart.Image) Then
+                        'AllSeasons Fanart
+                        Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVASFanart(Master.currShow, "")
+                    Else
+                        .SeasonFanart.DeleteTVASFanart(Master.currShow)
+                        Master.currShow.SeasonFanartPath = String.Empty
+                    End If
                 Else
-                    .SeasonFanart.DeleteTVSeasonFanart(Master.currShow)
-                    Master.currShow.SeasonFanartPath = String.Empty
+                    'Season Fanart
+                    If Not IsNothing(.SeasonFanart.Image) Then
+                        Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVSeasonFanart(Master.currShow)
+                    Else
+                        .SeasonFanart.DeleteTVSeasonFanart(Master.currShow)
+                        Master.currShow.SeasonFanartPath = String.Empty
+                    End If
                 End If
 
                 'Landscape
-                If Not IsNothing(.SeasonLandscape.Image) Then
-                    Dim fPath As String = .SeasonLandscape.SaveAsTVSeasonLandscape(Master.currShow)
-                    Master.currShow.SeasonLandscapePath = fPath
+                If Master.currShow.TVEp.Season = 999 Then
+                    If Not IsNothing(.SeasonLandscape.Image) Then
+                        'AllSeasons Landscape
+                        Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVASLandscape(Master.currShow, "")
+                    Else
+                        .SeasonLandscape.DeleteTVASLandscape(Master.currShow)
+                        Master.currShow.SeasonLandscapePath = String.Empty
+                    End If
                 Else
-                    .SeasonLandscape.DeleteTVSeasonLandscape(Master.currShow)
-                    Master.currShow.SeasonLandscapePath = String.Empty
+                    'Season Landscape
+                    If Not IsNothing(.SeasonLandscape.Image) Then
+                        Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVSeasonLandscape(Master.currShow)
+                    Else
+                        .SeasonLandscape.DeleteTVSeasonLandscape(Master.currShow)
+                        Master.currShow.SeasonLandscapePath = String.Empty
+                    End If
                 End If
 
                 'Poster
-                If Not IsNothing(.SeasonPoster.Image) Then
-                    Dim pPath As String = .SeasonPoster.SaveAsTVSeasonPoster(Master.currShow)
-                    Master.currShow.SeasonPosterPath = pPath
+                If Master.currShow.TVEp.Season = 999 Then
+                    If Not IsNothing(.SeasonPoster.Image) Then
+                        'AllSeasons Poster
+                        Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVASPoster(Master.currShow, "")
+                    Else
+                        .SeasonPoster.DeleteTVASPoster(Master.currShow)
+                        Master.currShow.SeasonPosterPath = String.Empty
+                    End If
                 Else
-                    .SeasonPoster.DeleteTVSeasonPosters(Master.currShow)
-                    Master.currShow.SeasonPosterPath = String.Empty
+                    'Season Poster
+                    If Not IsNothing(.SeasonPoster.Image) Then
+                        Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVSeasonPoster(Master.currShow)
+                    Else
+                        .SeasonPoster.DeleteTVSeasonPoster(Master.currShow)
+                        Master.currShow.SeasonPosterPath = String.Empty
+                    End If
                 End If
 
             End With

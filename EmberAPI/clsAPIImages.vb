@@ -253,7 +253,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVASPosters(ByVal mShow As Structures.DBTV)
+    Public Sub DeleteTVASPoster(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -661,7 +661,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVSeasonPosters(ByVal mShow As Structures.DBTV)
+    Public Sub DeleteTVSeasonPoster(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try

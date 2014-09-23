@@ -2231,7 +2231,7 @@ Public Class dlgEditShow
                 If Not IsNothing(.ASPoster.Image) Then
                     Master.currShow.SeasonPosterPath = .ASPoster.SaveAsTVASPoster(Master.currShow, "")
                 Else
-                    .ASPoster.DeleteTVASPosters(Master.currShow)
+                    .ASPoster.DeleteTVASPoster(Master.currShow)
                     Master.currShow.SeasonPosterPath = String.Empty
                 End If
 

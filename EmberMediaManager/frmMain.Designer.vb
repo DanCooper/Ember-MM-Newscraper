@@ -310,9 +310,6 @@ Partial Class frmMain
         Me.prbCanceling = New System.Windows.Forms.ProgressBar()
         Me.lblCanceling = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
-        Me.pnlAllSeason = New System.Windows.Forms.Panel()
-        Me.pbAllSeason = New System.Windows.Forms.PictureBox()
-        Me.pbAllSeasonCache = New System.Windows.Forms.PictureBox()
         Me.pnlNoInfo = New System.Windows.Forms.Panel()
         Me.pnlNoInfoBG = New System.Windows.Forms.Panel()
         Me.pbNoInfo = New System.Windows.Forms.PictureBox()
@@ -964,9 +961,6 @@ Partial Class frmMain
         CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlCancel.SuspendLayout()
-        Me.pnlAllSeason.SuspendLayout()
-        CType(Me.pbAllSeason, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAllSeasonCache, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlNoInfo.SuspendLayout()
         Me.pnlNoInfoBG.SuspendLayout()
         CType(Me.pbNoInfo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1349,8 +1343,6 @@ Partial Class frmMain
         Me.scMain.Panel2.BackColor = System.Drawing.SystemColors.Control
         Me.scMain.Panel2.Controls.Add(Me.pnlTop)
         Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
-        Me.scMain.Panel2.Controls.Add(Me.pnlAllSeason)
-        Me.scMain.Panel2.Controls.Add(Me.pbAllSeasonCache)
         Me.scMain.Panel2.Controls.Add(Me.pnlNoInfo)
         Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
         Me.scMain.Panel2.Controls.Add(Me.pnlPoster)
@@ -3519,35 +3511,6 @@ Partial Class frmMain
         Me.btnCancel.Text = "Cancel Scraper"
         Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnCancel.UseVisualStyleBackColor = True
-        '
-        'pnlAllSeason
-        '
-        Me.pnlAllSeason.BackColor = System.Drawing.Color.Gainsboro
-        Me.pnlAllSeason.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlAllSeason.Controls.Add(Me.pbAllSeason)
-        Me.pnlAllSeason.Location = New System.Drawing.Point(508, 112)
-        Me.pnlAllSeason.Name = "pnlAllSeason"
-        Me.pnlAllSeason.Size = New System.Drawing.Size(131, 169)
-        Me.pnlAllSeason.TabIndex = 3
-        Me.pnlAllSeason.Visible = False
-        '
-        'pbAllSeason
-        '
-        Me.pbAllSeason.BackColor = System.Drawing.SystemColors.Control
-        Me.pbAllSeason.Location = New System.Drawing.Point(4, 4)
-        Me.pbAllSeason.Name = "pbAllSeason"
-        Me.pbAllSeason.Size = New System.Drawing.Size(121, 159)
-        Me.pbAllSeason.TabIndex = 0
-        Me.pbAllSeason.TabStop = False
-        '
-        'pbAllSeasonCache
-        '
-        Me.pbAllSeasonCache.Location = New System.Drawing.Point(333, 107)
-        Me.pbAllSeasonCache.Name = "pbAllSeasonCache"
-        Me.pbAllSeasonCache.Size = New System.Drawing.Size(115, 111)
-        Me.pbAllSeasonCache.TabIndex = 13
-        Me.pbAllSeasonCache.TabStop = False
-        Me.pbAllSeasonCache.Visible = False
         '
         'pnlNoInfo
         '
@@ -8058,9 +8021,6 @@ Partial Class frmMain
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlCancel.ResumeLayout(False)
         Me.pnlCancel.PerformLayout()
-        Me.pnlAllSeason.ResumeLayout(False)
-        CType(Me.pbAllSeason, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAllSeasonCache, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlNoInfo.ResumeLayout(False)
         Me.pnlNoInfoBG.ResumeLayout(False)
         CType(Me.pbNoInfo, System.ComponentModel.ISupportInitialize).EndInit()
@@ -8540,9 +8500,6 @@ Partial Class frmMain
     Friend WithEvents ToolStripSeparator27 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuEpisodeOpenFolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator28 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents pnlAllSeason As System.Windows.Forms.Panel
-    Friend WithEvents pbAllSeason As System.Windows.Forms.PictureBox
-    Friend WithEvents pbAllSeasonCache As System.Windows.Forms.PictureBox
     Friend WithEvents tmrAppExit As System.Windows.Forms.Timer
     Friend WithEvents mnuMainHelpUpdate As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tmrKeyBuffer As System.Windows.Forms.Timer

@@ -79,7 +79,6 @@ Public Class frmMain
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
     Private LoadingDone As Boolean = False
-    Private MainAllSeason As New Images
     Private MainClearArt As New Images
     Private MainFanart As New Images
     Private MainPoster As New Images
@@ -261,7 +260,7 @@ Public Class frmMain
 #End Region 'Properties
 
 #Region "Methods"
-    Public Sub ClearInfo(Optional ByVal WithAllSeasons As Boolean = True)
+    Public Sub ClearInfo()
 
         Try
             With Me
@@ -313,15 +312,6 @@ Public Class frmMain
                 End If
                 .pnlLandscape.Visible = False
                 .MainLandscape.Clear()
-
-                If WithAllSeasons Then
-                    If Not IsNothing(.pbAllSeason.Image) Then
-                        .pbAllSeason.Image.Dispose()
-                        .pbAllSeason.Image = Nothing
-                    End If
-                    .MainAllSeason.Clear()
-                End If
-                .pnlAllSeason.Visible = False
 
                 'remove all the current genres
                 Try
@@ -1582,10 +1572,6 @@ Public Class frmMain
             If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
             If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.ShowFanartPath)
             If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currShow.ShowLandscapePath)
-
-            If Master.eSettings.TVGeneralDisplayASPoster AndAlso Master.eSettings.TVASPosterAnyEnabled Then
-                Me.MainAllSeason.FromFile(Master.currShow.SeasonPosterPath)
-            End If
 
             If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
@@ -5047,7 +5033,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuRemoveSeasonFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuRemoveSeasonFromDB.Click
-        Me.ClearInfo(False)
+        Me.ClearInfo()
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
@@ -5064,7 +5050,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuRemoveTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRemoveFromDB.Click
-        Me.ClearInfo(False)
+        Me.ClearInfo()
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
@@ -8116,7 +8102,6 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
-            If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
             If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
@@ -8985,7 +8970,6 @@ doCancel:
 
             Me.pnlTop.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
-            If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
             If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
@@ -9232,31 +9216,6 @@ doCancel:
                 End If
             End If
 
-            If Not IsNothing(Me.MainAllSeason.Image) Then
-                Me.pbAllSeasonCache.Image = Me.MainAllSeason.Image
-                ImageUtils.ResizePB(Me.pbAllSeason, Me.pbAllSeasonCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbAllSeason)
-                Me.pnlAllSeason.Size = New Size(Me.pbAllSeason.Width + 10, Me.pbAllSeason.Height + 10)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(Me.pbAllSeason.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainAllSeason.Image.Width, Me.MainAllSeason.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((Me.pbAllSeason.Image.Width - lenSize) / 2 - 15), Me.pbAllSeason.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((Me.pbAllSeason.Image.Width - lenSize) / 2), Me.pbAllSeason.Height - 20)
-                End If
-
-                Me.pbAllSeason.Location = New Point(4, 4)
-                Me.pnlAllSeason.Location = New Point(Me.pbFanart.Width - Me.pnlAllSeason.Width - 9, 112)
-            Else
-                If Not IsNothing(Me.pbAllSeason.Image) Then
-                    Me.pbAllSeason.Image.Dispose()
-                    Me.pbAllSeason.Image = Nothing
-                End If
-            End If
-
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
@@ -9272,7 +9231,6 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
-            If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
             If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
@@ -9983,7 +9941,6 @@ doCancel:
                 Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
                 Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
                 Me.pnlLoadSettings.Location = New Point(Convert.ToInt32((Me.Width - Me.pnlLoadSettings.Width) / 2), Convert.ToInt32((Me.Height - Me.pnlLoadSettings.Height) / 2))
-                Me.pnlAllSeason.Location = New Point(Me.pbFanart.Width - Me.pnlAllSeason.Width - 9, 112)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -10084,7 +10041,7 @@ doCancel:
 
             If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
 
-            Me.ClearInfo(False)
+            Me.ClearInfo()
 
             Me.bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadEpInfo.WorkerSupportsCancellation = True
@@ -10166,7 +10123,7 @@ doCancel:
                 Me.ApplyTheme(Theming.ThemeType.Show)
             End If
 
-            Me.ClearInfo(False)
+            Me.ClearInfo()
 
             Me.bwLoadSeasonInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadSeasonInfo.WorkerSupportsCancellation = True
@@ -12457,16 +12414,30 @@ doCancel:
                                 oldImage.FromFile(Master.currShow.SeasonFanartPath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As New Images
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-                                newImage = tImage
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVSeasonFanart(Master.currShow)
-                                If Me.RefreshSeason(ShowID, Season, False) Then
-                                    Me.FillSeasons(ShowID)
+                            If Season = 999 Then
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                    newImage = tImage
+                                    newImage.IsEdit = True
+                                    newImage.SaveAsTVASFanart(Master.currShow)
+                                    If Me.RefreshSeason(ShowID, Season, False) Then
+                                        Me.FillSeasons(ShowID)
+                                    End If
+                                End If
+                            Else
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                    newImage = tImage
+                                    newImage.IsEdit = True
+                                    newImage.SaveAsTVSeasonFanart(Master.currShow)
+                                    If Me.RefreshSeason(ShowID, Season, False) Then
+                                        Me.FillSeasons(ShowID)
+                                    End If
                                 End If
                             End If
+
                             Me.SetControlsEnabled(True)
 
                             'TV Episode list
@@ -12632,14 +12603,27 @@ doCancel:
                                 oldImage.FromFile(Master.currShow.SeasonPosterPath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As New Images
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-                                newImage = tImage
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVSeasonPoster(Master.currShow)
-                                If Me.RefreshSeason(ShowID, Season, False) Then
-                                    Me.FillSeasons(ShowID)
+                            If Season = 999 Then
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                    newImage = tImage
+                                    newImage.IsEdit = True
+                                    newImage.SaveAsTVASPoster(Master.currShow)
+                                    If Me.RefreshSeason(ShowID, Season, False) Then
+                                        Me.FillSeasons(ShowID)
+                                    End If
+                                End If
+                            Else
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                    newImage = tImage
+                                    newImage.IsEdit = True
+                                    newImage.SaveAsTVSeasonPoster(Master.currShow)
+                                    If Me.RefreshSeason(ShowID, Season, False) Then
+                                        Me.FillSeasons(ShowID)
+                                    End If
                                 End If
                             End If
                             Me.SetControlsEnabled(True)
@@ -12807,14 +12791,27 @@ doCancel:
                                 oldImage.FromFile(Master.currShow.SeasonLandscapePath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As New Images
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-                                newImage = tImage
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVSeasonLandscape(Master.currShow)
-                                If Me.RefreshSeason(ShowID, Season, False) Then
-                                    Me.FillSeasons(ShowID)
+                            If Season = 999 Then
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                    newImage = tImage
+                                    newImage.IsEdit = True
+                                    newImage.SaveAsTVASLandscape(Master.currShow)
+                                    If Me.RefreshSeason(ShowID, Season, False) Then
+                                        Me.FillSeasons(ShowID)
+                                    End If
+                                End If
+                            Else
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                    newImage = tImage
+                                    newImage.IsEdit = True
+                                    newImage.SaveAsTVSeasonLandscape(Master.currShow)
+                                    If Me.RefreshSeason(ShowID, Season, False) Then
+                                        Me.FillSeasons(ShowID)
+                                    End If
                                 End If
                             End If
                             Me.SetControlsEnabled(True)
@@ -12831,18 +12828,6 @@ doCancel:
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             Me.SetControlsEnabled(True)
-        End Try
-    End Sub
-
-    Private Sub pbAllSeason_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbAllSeason.DoubleClick
-        Try
-            If Not IsNothing(Me.pbAllSeason.Image) Then
-                Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(Me.pbAllSeasonCache.Image)
-                End Using
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -13893,7 +13878,7 @@ doCancel:
             End While
 
             If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(6, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) Then
-                Me.ClearInfo(False)
+                Me.ClearInfo()
                 Me.ShowNoInfo(True, 2)
 
                 Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, iRow).Value), True)
@@ -14238,7 +14223,7 @@ doCancel:
                 Threading.Thread.Sleep(50)
             End While
 
-            Me.ClearInfo(False)
+            Me.ClearInfo()
             If String.IsNullOrEmpty(Master.currShow.ShowPosterPath) AndAlso String.IsNullOrEmpty(Master.currShow.ShowFanartPath) AndAlso _
                String.IsNullOrEmpty(Master.currShow.ShowNfoPath) AndAlso Not Convert.ToBoolean(Me.dgvTVSeasons.Item(3, iRow).Value) AndAlso _
                Not Convert.ToBoolean(Me.dgvTVSeasons.Item(4, iRow).Value) Then

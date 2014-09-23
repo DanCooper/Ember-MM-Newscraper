@@ -1379,10 +1379,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVGeneralDisplayASPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVGeneralDisplayASPoster.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkTVDisplayMissingEpisodes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVDisplayMissingEpisodes.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3235,7 +3231,6 @@ Public Class dlgSettings
                 End If
                 Me.chkTVEpisodeProperCase.Checked = .TVEpisodeProperCase
                 Me.chkTVEpisodeWatchedCol.Checked = .TVEpisodeWatchedCol
-                Me.chkTVGeneralDisplayASPoster.Checked = .TVGeneralDisplayASPoster
                 Me.chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
                 Me.chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
                 Me.chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
@@ -4814,7 +4809,6 @@ Public Class dlgSettings
                 .TVEpisodePosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVEpisodePosterWidth.Text), Convert.ToInt32(Me.txtTVEpisodePosterWidth.Text), 0)
                 .TVEpisodeProperCase = Me.chkTVEpisodeProperCase.Checked
                 .TVEpisodeWatchedCol = Me.chkTVEpisodeWatchedCol.Checked
-                .TVGeneralDisplayASPoster = Me.chkTVGeneralDisplayASPoster.Checked
                 .TVGeneralFlagLang = If(Me.cbTVLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cbTVLanguageOverlay.Text)
                 .TVGeneralIgnoreLastScan = Me.chkTVGeneralIgnoreLastScan.Checked
                 'cocotus, 2014/05/21 Fixed: If cbTVGeneralLang.Text is empty it will crash here -> no AdvancedSettings.xml will be built/saved!!(happens when user has not yet set TVLanguage via Fetch language button!)
@@ -5497,7 +5491,6 @@ Public Class dlgSettings
         Me.chkProxyEnable.Text = Master.eLang.GetString(673, "Enable Proxy")
         Me.chkTVDisplayMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
         Me.chkTVEpisodeNoFilter.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
-        Me.chkTVGeneralDisplayASPoster.Text = Master.eLang.GetString(832, "Display All Season Poster")
         Me.chkTVGeneralMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
         Me.chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         Me.chkTVLockEpisodePlot.Text = Master.eLang.GetString(496, "Lock Plot")
