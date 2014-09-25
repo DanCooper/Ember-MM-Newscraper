@@ -437,16 +437,24 @@ Public Class FanartTV_Image
 
         LoadSettings_MovieSet()
 
-        Dim Settings As FanartTVs.Scraper.sMySettings_ForScraper
-        Settings.ApiKey = _MySettings_MovieSet.ApiKey
-        Settings.ClearArtOnlyHD = _MySettings_MovieSet.ClearArtOnlyHD
-        Settings.ClearLogoOnlyHD = _MySettings_MovieSet.ClearLogoOnlyHD
-        Settings.GetBlankImages = _MySettings_MovieSet.GetBlankImages
-        Settings.GetEnglishImages = _MySettings_MovieSet.GetEnglishImages
-        Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
-        Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
+        If String.IsNullOrEmpty(DBMovieset.MovieSet.ID) Then
+            If Not IsNothing(DBMovieset.Movies) AndAlso DBMovieset.Movies.Count > 0 Then
+                DBMovieset.MovieSet.ID = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.Movies.Item(0).Movie.ID)
+            End If
+        End If
 
-        ImageList = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, Type, Settings)
+        If Not String.IsNullOrEmpty(DBMovieset.MovieSet.ID) Then
+            Dim Settings As FanartTVs.Scraper.sMySettings_ForScraper
+            Settings.ApiKey = _MySettings_MovieSet.ApiKey
+            Settings.ClearArtOnlyHD = _MySettings_MovieSet.ClearArtOnlyHD
+            Settings.ClearLogoOnlyHD = _MySettings_MovieSet.ClearLogoOnlyHD
+            Settings.GetBlankImages = _MySettings_MovieSet.GetBlankImages
+            Settings.GetEnglishImages = _MySettings_MovieSet.GetEnglishImages
+            Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
+            Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
+
+            ImageList = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, Type, Settings)
+        End If
 
         logger.Trace("Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
