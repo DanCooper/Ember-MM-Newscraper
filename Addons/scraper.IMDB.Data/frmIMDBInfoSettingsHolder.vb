@@ -258,7 +258,7 @@ Public Class frmIMDBInfoSettingsHolder
         Me.lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")
         Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top250")
-        Me.chkCountryAbbreviation.Text = Master.eLang.GetString(1255, "Country-Tag: Save country abbreviation(s) instead of full name(s)")
+        Me.chkCountryAbbreviation.Text = Master.eLang.GetString(1257, "Country-Tag: Save country abbreviation(s) instead of full name(s)")
 
     End Sub
 

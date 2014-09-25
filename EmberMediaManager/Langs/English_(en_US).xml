@@ -535,7 +535,7 @@
   <string id="534">Valid Video Extensions</string>
   <string id="535">Edit Source</string>
   <string id="536">Miscellaneous Options</string>
-  <string id="537">Recognize VIDEO_TS</string>
+  <string id="537">Detect VIDEO_TS folders even if they are not named VIDEO_TS</string>
   <string id="538">Skip Size Check of Stacked Files</string>
   <string id="539">MB</string>
   <string id="540">Skip files smaller than:</string>
@@ -1078,7 +1078,7 @@
   <string id="986">MovieSet Artwork Folder</string>
   <string id="988">DAEMON Tools settings (only used for scanning image files (.iso))</string>
   <string id="989">Driveletter</string>
-  <string id="990">Path to DTLite.exe</string>
+  <string id="990">Path to DTLite.exe/VCDMount.exe</string>
   <string id="991">Actor Thumbs</string>
   <string id="992">Extrafanarts</string>
   <string id="993">Export TV Shows</string>
@@ -1263,7 +1263,7 @@
   <string id="1173">Source</string>
   <string id="1174">Export</string>
   <string id="1175">Optional Settings</string>
-  <string id="1176">Protect VIDEO_TS and BDMV Structure</string>
+  <string id="1176">Protect DVD/Bluray structure (no Fanart/Nfo/Poster will be saved inside VIDEO_TS/BDMV folder)</string>
   <string id="1177">Use .watched Files</string>
   <string id="1178">Stack {0}filename{1}</string>
   <string id="1179">also save unstacked</string>
@@ -1345,4 +1345,8 @@
   <string id="1255">Display Image Names</string>
   <string id="1256">* All Seasons</string>
   <string id="1257">Country-Tag: Save country abbreviation(s) instead of full name(s)</string>
+  <string id="1258">Store themes in movie directory</string>
+  <string id="1259">Store themes in a custom path</string>
+  <string id="1260">Store themes in sub directorys</string>
+  <string id="1261">Configuration ISO Filescanning</string>
 </strings>

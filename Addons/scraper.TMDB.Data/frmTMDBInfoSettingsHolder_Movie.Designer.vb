@@ -116,11 +116,10 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         '
         'chkGetAdultItems
         '
-        Me.chkGetAdultItems.AutoSize = True
         Me.chkGetAdultItems.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkGetAdultItems.Location = New System.Drawing.Point(339, 67)
+        Me.chkGetAdultItems.Location = New System.Drawing.Point(388, 67)
         Me.chkGetAdultItems.Name = "chkGetAdultItems"
-        Me.chkGetAdultItems.Size = New System.Drawing.Size(125, 17)
+        Me.chkGetAdultItems.Size = New System.Drawing.Size(200, 17)
         Me.chkGetAdultItems.TabIndex = 6
         Me.chkGetAdultItems.Text = "Include Adult Items"
         Me.chkGetAdultItems.UseVisualStyleBackColor = True
@@ -136,11 +135,10 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         '
         'chkFallBackEng
         '
-        Me.chkFallBackEng.AutoSize = True
         Me.chkFallBackEng.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkFallBackEng.Location = New System.Drawing.Point(190, 67)
         Me.chkFallBackEng.Name = "chkFallBackEng"
-        Me.chkFallBackEng.Size = New System.Drawing.Size(129, 17)
+        Me.chkFallBackEng.Size = New System.Drawing.Size(188, 17)
         Me.chkFallBackEng.TabIndex = 4
         Me.chkFallBackEng.Text = "Fall back on english"
         Me.chkFallBackEng.UseVisualStyleBackColor = True
@@ -306,187 +304,170 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         '
         'chkWriters
         '
-        Me.chkWriters.AutoSize = True
         Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWriters.Location = New System.Drawing.Point(315, 36)
+        Me.chkWriters.Location = New System.Drawing.Point(332, 36)
         Me.chkWriters.Name = "chkWriters"
-        Me.chkWriters.Size = New System.Drawing.Size(63, 17)
+        Me.chkWriters.Size = New System.Drawing.Size(175, 17)
         Me.chkWriters.TabIndex = 77
         Me.chkWriters.Text = "Writers"
         Me.chkWriters.UseVisualStyleBackColor = True
         '
         'chkCollection
         '
-        Me.chkCollection.AutoSize = True
         Me.chkCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCollection.Location = New System.Drawing.Point(315, 53)
+        Me.chkCollection.Location = New System.Drawing.Point(332, 53)
         Me.chkCollection.Name = "chkCollection"
-        Me.chkCollection.Size = New System.Drawing.Size(78, 17)
+        Me.chkCollection.Size = New System.Drawing.Size(175, 17)
         Me.chkCollection.TabIndex = 76
         Me.chkCollection.Text = "Collection"
         Me.chkCollection.UseVisualStyleBackColor = True
         '
         'chkDirector
         '
-        Me.chkDirector.AutoSize = True
         Me.chkDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDirector.Location = New System.Drawing.Point(315, 19)
+        Me.chkDirector.Location = New System.Drawing.Point(332, 19)
         Me.chkDirector.Name = "chkDirector"
-        Me.chkDirector.Size = New System.Drawing.Size(67, 17)
+        Me.chkDirector.Size = New System.Drawing.Size(175, 17)
         Me.chkDirector.TabIndex = 19
         Me.chkDirector.Text = "Director"
         Me.chkDirector.UseVisualStyleBackColor = True
         '
         'chkCountry
         '
-        Me.chkCountry.AutoSize = True
         Me.chkCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCountry.Location = New System.Drawing.Point(173, 123)
+        Me.chkCountry.Location = New System.Drawing.Point(190, 123)
         Me.chkCountry.Name = "chkCountry"
-        Me.chkCountry.Size = New System.Drawing.Size(67, 17)
+        Me.chkCountry.Size = New System.Drawing.Size(136, 17)
         Me.chkCountry.TabIndex = 18
         Me.chkCountry.Text = "Country"
         Me.chkCountry.UseVisualStyleBackColor = True
         '
         'chkStudio
         '
-        Me.chkStudio.AutoSize = True
         Me.chkStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkStudio.Location = New System.Drawing.Point(173, 19)
+        Me.chkStudio.Location = New System.Drawing.Point(190, 19)
         Me.chkStudio.Name = "chkStudio"
-        Me.chkStudio.Size = New System.Drawing.Size(60, 17)
+        Me.chkStudio.Size = New System.Drawing.Size(136, 17)
         Me.chkStudio.TabIndex = 8
         Me.chkStudio.Text = "Studio"
         Me.chkStudio.UseVisualStyleBackColor = True
         '
         'chkRuntime
         '
-        Me.chkRuntime.AutoSize = True
         Me.chkRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkRuntime.Location = New System.Drawing.Point(6, 89)
         Me.chkRuntime.Name = "chkRuntime"
-        Me.chkRuntime.Size = New System.Drawing.Size(69, 17)
+        Me.chkRuntime.Size = New System.Drawing.Size(178, 17)
         Me.chkRuntime.TabIndex = 5
         Me.chkRuntime.Text = "Runtime"
         Me.chkRuntime.UseVisualStyleBackColor = True
         '
         'chkPlot
         '
-        Me.chkPlot.AutoSize = True
         Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlot.Location = New System.Drawing.Point(173, 53)
+        Me.chkPlot.Location = New System.Drawing.Point(190, 53)
         Me.chkPlot.Name = "chkPlot"
-        Me.chkPlot.Size = New System.Drawing.Size(46, 17)
+        Me.chkPlot.Size = New System.Drawing.Size(136, 17)
         Me.chkPlot.TabIndex = 10
         Me.chkPlot.Text = "Plot"
         Me.chkPlot.UseVisualStyleBackColor = True
         '
         'chkGenre
         '
-        Me.chkGenre.AutoSize = True
         Me.chkGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGenre.Location = New System.Drawing.Point(173, 72)
+        Me.chkGenre.Location = New System.Drawing.Point(190, 72)
         Me.chkGenre.Name = "chkGenre"
-        Me.chkGenre.Size = New System.Drawing.Size(57, 17)
+        Me.chkGenre.Size = New System.Drawing.Size(136, 17)
         Me.chkGenre.TabIndex = 15
         Me.chkGenre.Text = "Genre"
         Me.chkGenre.UseVisualStyleBackColor = True
         '
         'chkTagline
         '
-        Me.chkTagline.AutoSize = True
         Me.chkTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTagline.Location = New System.Drawing.Point(173, 36)
+        Me.chkTagline.Location = New System.Drawing.Point(190, 36)
         Me.chkTagline.Name = "chkTagline"
-        Me.chkTagline.Size = New System.Drawing.Size(63, 17)
+        Me.chkTagline.Size = New System.Drawing.Size(136, 17)
         Me.chkTagline.TabIndex = 9
         Me.chkTagline.Text = "Tagline"
         Me.chkTagline.UseVisualStyleBackColor = True
         '
         'chkCast
         '
-        Me.chkCast.AutoSize = True
         Me.chkCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCast.Location = New System.Drawing.Point(173, 89)
+        Me.chkCast.Location = New System.Drawing.Point(190, 89)
         Me.chkCast.Name = "chkCast"
-        Me.chkCast.Size = New System.Drawing.Size(48, 17)
+        Me.chkCast.Size = New System.Drawing.Size(136, 17)
         Me.chkCast.TabIndex = 12
         Me.chkCast.Text = "Cast"
         Me.chkCast.UseVisualStyleBackColor = True
         '
         'chkVotes
         '
-        Me.chkVotes.AutoSize = True
         Me.chkVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkVotes.Location = New System.Drawing.Point(6, 123)
         Me.chkVotes.Name = "chkVotes"
-        Me.chkVotes.Size = New System.Drawing.Size(88, 17)
+        Me.chkVotes.Size = New System.Drawing.Size(178, 17)
         Me.chkVotes.TabIndex = 7
         Me.chkVotes.Text = "TMDB Votes"
         Me.chkVotes.UseVisualStyleBackColor = True
         '
         'chkTrailer
         '
-        Me.chkTrailer.AutoSize = True
         Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailer.Location = New System.Drawing.Point(173, 106)
+        Me.chkTrailer.Location = New System.Drawing.Point(190, 106)
         Me.chkTrailer.Name = "chkTrailer"
-        Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
+        Me.chkTrailer.Size = New System.Drawing.Size(136, 17)
         Me.chkTrailer.TabIndex = 17
         Me.chkTrailer.Text = "Trailer"
         Me.chkTrailer.UseVisualStyleBackColor = True
         '
         'chkRating
         '
-        Me.chkRating.AutoSize = True
         Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkRating.Location = New System.Drawing.Point(6, 106)
         Me.chkRating.Name = "chkRating"
-        Me.chkRating.Size = New System.Drawing.Size(93, 17)
+        Me.chkRating.Size = New System.Drawing.Size(178, 17)
         Me.chkRating.TabIndex = 6
         Me.chkRating.Text = "TMDB Rating"
         Me.chkRating.UseVisualStyleBackColor = True
         '
         'chkRelease
         '
-        Me.chkRelease.AutoSize = True
         Me.chkRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkRelease.Location = New System.Drawing.Point(6, 72)
         Me.chkRelease.Name = "chkRelease"
-        Me.chkRelease.Size = New System.Drawing.Size(92, 17)
+        Me.chkRelease.Size = New System.Drawing.Size(178, 17)
         Me.chkRelease.TabIndex = 4
         Me.chkRelease.Text = "Release Date"
         Me.chkRelease.UseVisualStyleBackColor = True
         '
         'chkMPAA
         '
-        Me.chkMPAA.AutoSize = True
         Me.chkMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMPAA.Location = New System.Drawing.Point(6, 53)
         Me.chkMPAA.Name = "chkMPAA"
-        Me.chkMPAA.Size = New System.Drawing.Size(123, 17)
+        Me.chkMPAA.Size = New System.Drawing.Size(178, 17)
         Me.chkMPAA.TabIndex = 2
         Me.chkMPAA.Text = "MPAA/Certification"
         Me.chkMPAA.UseVisualStyleBackColor = True
         '
         'chkYear
         '
-        Me.chkYear.AutoSize = True
         Me.chkYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkYear.Location = New System.Drawing.Point(6, 36)
         Me.chkYear.Name = "chkYear"
-        Me.chkYear.Size = New System.Drawing.Size(47, 17)
+        Me.chkYear.Size = New System.Drawing.Size(178, 17)
         Me.chkYear.TabIndex = 1
         Me.chkYear.Text = "Year"
         Me.chkYear.UseVisualStyleBackColor = True
         '
         'chkTitle
         '
-        Me.chkTitle.AutoSize = True
         Me.chkTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTitle.Location = New System.Drawing.Point(6, 19)
         Me.chkTitle.Name = "chkTitle"
-        Me.chkTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkTitle.Size = New System.Drawing.Size(178, 17)
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
@@ -515,7 +496,6 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.pnlSettings.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbScraperOpts.ResumeLayout(False)
-        Me.gbScraperOpts.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
