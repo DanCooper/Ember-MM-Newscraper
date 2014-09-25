@@ -15984,7 +15984,7 @@ doCancel:
                 TT.Active = True
 
                 .cbSearch.Items.Clear()
-                .cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(100, "Actor"), Master.eLang.GetString(233, "Role"), Master.eLang.GetString(62, "Director"), Master.eLang.GetString(729, "Credits")})
+                .cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(302, "Original Title"), Master.eLang.GetString(100, "Actor"), Master.eLang.GetString(233, "Role"), Master.eLang.GetString(62, "Director"), Master.eLang.GetString(729, "Credits"), Master.eLang.GetString(301, "Country"), Master.eLang.GetString(395, "Studio")})
 
                 If doTheme Then
                     Me.tTheme = New Theming
@@ -16360,6 +16360,9 @@ doCancel:
                     Case Master.eLang.GetString(21, "Title")
                         Me.filSearch = String.Concat("ListTitle LIKE '%", Me.txtSearch.Text, "%'")
                         Me.FilterArray.Add(Me.filSearch)
+                    Case Master.eLang.GetString(302, "Original Title")
+                        Me.filSearch = String.Concat("OriginalTitle LIKE '%", Me.txtSearch.Text, "%'")
+                        Me.FilterArray.Add(Me.filSearch)
                     Case Master.eLang.GetString(100, "Actor")
                         Me.filSearch = Me.txtSearch.Text
                     Case Master.eLang.GetString(233, "Role")
@@ -16369,6 +16372,12 @@ doCancel:
                         Me.FilterArray.Add(Me.filSearch)
                     Case Master.eLang.GetString(729, "Credits")
                         Me.filSearch = String.Concat("Credits LIKE '%", Me.txtSearch.Text, "%'")
+                        Me.FilterArray.Add(Me.filSearch)
+                    Case Master.eLang.GetString(301, "Country")
+                        Me.filSearch = String.Concat("Country LIKE '%", Me.txtSearch.Text, "%'")
+                        Me.FilterArray.Add(Me.filSearch)
+                    Case Master.eLang.GetString(395, "Studio")
+                        Me.filSearch = String.Concat("Studio LIKE '%", Me.txtSearch.Text, "%'")
                         Me.FilterArray.Add(Me.filSearch)
 
                 End Select
