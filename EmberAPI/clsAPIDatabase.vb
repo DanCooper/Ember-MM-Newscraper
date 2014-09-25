@@ -677,6 +677,38 @@ Public Class Database
         _TVDB.TVShow = _tmpTVDB.TVShow
     End Sub
 
+    Public Function GetMovieCountries() As String()
+        Dim cList As New List(Of String)
+        Dim mCountry As String
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT Movies.Country FROM Movies;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    mCountry = SQLreader("Country").ToString
+                    If mCountry.Contains("/") Then
+                        Dim values As String() = mCountry.Split(New [Char]() {"/"c})
+                        For Each country As String In values
+                            country = country.Trim
+                            If Not cList.Contains(country) Then
+                                cList.Add(country)
+                            End If
+                        Next
+                    Else
+                        If Not String.IsNullOrEmpty(mCountry) Then
+                            If Not cList.Contains(mCountry) Then
+                                cList.Add(mCountry.Trim)
+                            End If
+                        End If
+                    End If
+                End While
+            End Using
+        End Using
+
+        cList.Sort()
+        Return cList.ToArray
+    End Function
+
     Public Function GetMoviePaths() As List(Of String)
         Dim tList As New List(Of String)
         Dim mPath As String = String.Empty

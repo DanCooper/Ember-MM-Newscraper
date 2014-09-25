@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -72,6 +72,10 @@ Partial Class frmMain
         Me.mnuMainError = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuVersion = New System.Windows.Forms.ToolStripMenuItem()
         Me.scMain = New System.Windows.Forms.SplitContainer()
+        Me.pnlFilterCountry = New System.Windows.Forms.Panel()
+        Me.clbFilterCountries = New System.Windows.Forms.CheckedListBox()
+        Me.lblCFilClose = New System.Windows.Forms.Label()
+        Me.lblFilterCountries = New System.Windows.Forms.Label()
         Me.pnlFilterGenre = New System.Windows.Forms.Panel()
         Me.clbFilterGenres = New System.Windows.Forms.CheckedListBox()
         Me.lblGFilClose = New System.Windows.Forms.Label()
@@ -259,6 +263,8 @@ Partial Class frmMain
         Me.chkFilterMissing = New System.Windows.Forms.CheckBox()
         Me.chkFilterDupe = New System.Windows.Forms.CheckBox()
         Me.gbFilterSpecific = New System.Windows.Forms.GroupBox()
+        Me.txtFilterCountry = New System.Windows.Forms.TextBox()
+        Me.lblFilterCountry = New System.Windows.Forms.Label()
         Me.chkFilterMarkCustom4 = New System.Windows.Forms.CheckBox()
         Me.chkFilterMarkCustom3 = New System.Windows.Forms.CheckBox()
         Me.chkFilterMarkCustom2 = New System.Windows.Forms.CheckBox()
@@ -912,6 +918,7 @@ Partial Class frmMain
         Me.scMain.Panel1.SuspendLayout()
         Me.scMain.Panel2.SuspendLayout()
         Me.scMain.SuspendLayout()
+        Me.pnlFilterCountry.SuspendLayout()
         Me.pnlFilterGenre.SuspendLayout()
         Me.pnlFilterSource.SuspendLayout()
         CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1328,6 +1335,7 @@ Partial Class frmMain
         'scMain.Panel1
         '
         Me.scMain.Panel1.BackColor = System.Drawing.SystemColors.Control
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilterCountry)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterGenre)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterSource)
         Me.scMain.Panel1.Controls.Add(Me.dgvMovies)
@@ -1363,13 +1371,64 @@ Partial Class frmMain
         Me.scMain.TabIndex = 7
         Me.scMain.TabStop = False
         '
+        'pnlFilterCountry
+        '
+        Me.pnlFilterCountry.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterCountry.Controls.Add(Me.clbFilterCountries)
+        Me.pnlFilterCountry.Controls.Add(Me.lblCFilClose)
+        Me.pnlFilterCountry.Controls.Add(Me.lblFilterCountries)
+        Me.pnlFilterCountry.Location = New System.Drawing.Point(50, 714)
+        Me.pnlFilterCountry.Name = "pnlFilterCountry"
+        Me.pnlFilterCountry.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterCountry.TabIndex = 25
+        Me.pnlFilterCountry.Visible = False
+        '
+        'clbFilterCountries
+        '
+        Me.clbFilterCountries.CheckOnClick = True
+        Me.clbFilterCountries.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.clbFilterCountries.FormattingEnabled = True
+        Me.clbFilterCountries.Location = New System.Drawing.Point(1, 20)
+        Me.clbFilterCountries.Name = "clbFilterCountries"
+        Me.clbFilterCountries.Size = New System.Drawing.Size(162, 123)
+        Me.clbFilterCountries.TabIndex = 8
+        Me.clbFilterCountries.TabStop = False
+        '
+        'lblCFilClose
+        '
+        Me.lblCFilClose.AutoSize = True
+        Me.lblCFilClose.BackColor = System.Drawing.Color.DimGray
+        Me.lblCFilClose.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblCFilClose.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblCFilClose.ForeColor = System.Drawing.Color.White
+        Me.lblCFilClose.Location = New System.Drawing.Point(130, 2)
+        Me.lblCFilClose.Name = "lblCFilClose"
+        Me.lblCFilClose.Size = New System.Drawing.Size(35, 13)
+        Me.lblCFilClose.TabIndex = 24
+        Me.lblCFilClose.Text = "Close"
+        '
+        'lblFilterCountries
+        '
+        Me.lblFilterCountries.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblFilterCountries.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblFilterCountries.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterCountries.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterCountries.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilterCountries.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterCountries.Name = "lblFilterCountries"
+        Me.lblFilterCountries.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterCountries.TabIndex = 23
+        Me.lblFilterCountries.Text = "Countries"
+        Me.lblFilterCountries.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'pnlFilterGenre
         '
         Me.pnlFilterGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFilterGenre.Controls.Add(Me.clbFilterGenres)
         Me.pnlFilterGenre.Controls.Add(Me.lblGFilClose)
         Me.pnlFilterGenre.Controls.Add(Me.lblFilterGenres)
-        Me.pnlFilterGenre.Location = New System.Drawing.Point(395, 714)
+        Me.pnlFilterGenre.Location = New System.Drawing.Point(390, 714)
         Me.pnlFilterGenre.Name = "pnlFilterGenre"
         Me.pnlFilterGenre.Size = New System.Drawing.Size(166, 146)
         Me.pnlFilterGenre.TabIndex = 15
@@ -1420,7 +1479,7 @@ Partial Class frmMain
         Me.pnlFilterSource.Controls.Add(Me.lblSFilClose)
         Me.pnlFilterSource.Controls.Add(Me.lblFilterSources)
         Me.pnlFilterSource.Controls.Add(Me.clbFilterSource)
-        Me.pnlFilterSource.Location = New System.Drawing.Point(213, 714)
+        Me.pnlFilterSource.Location = New System.Drawing.Point(220, 714)
         Me.pnlFilterSource.Name = "pnlFilterSource"
         Me.pnlFilterSource.Size = New System.Drawing.Size(166, 146)
         Me.pnlFilterSource.TabIndex = 16
@@ -1470,8 +1529,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = False
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1487,7 +1546,7 @@ Partial Class frmMain
         Me.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMovies.ShowCellErrors = False
         Me.dgvMovies.ShowRowErrors = False
-        Me.dgvMovies.Size = New System.Drawing.Size(567, 451)
+        Me.dgvMovies.Size = New System.Drawing.Size(567, 409)
         Me.dgvMovies.StandardTab = True
         Me.dgvMovies.TabIndex = 0
         '
@@ -2054,8 +2113,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = False
         Me.dgvMovieSets.AllowUserToDeleteRows = False
         Me.dgvMovieSets.AllowUserToResizeRows = False
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2071,7 +2130,7 @@ Partial Class frmMain
         Me.dgvMovieSets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMovieSets.ShowCellErrors = False
         Me.dgvMovieSets.ShowRowErrors = False
-        Me.dgvMovieSets.Size = New System.Drawing.Size(567, 451)
+        Me.dgvMovieSets.Size = New System.Drawing.Size(567, 409)
         Me.dgvMovieSets.StandardTab = True
         Me.dgvMovieSets.TabIndex = 17
         '
@@ -2178,8 +2237,8 @@ Partial Class frmMain
         '
         Me.scTV.Panel2.BackColor = System.Drawing.SystemColors.Control
         Me.scTV.Panel2.Controls.Add(Me.scTVSeasonsEpisodes)
-        Me.scTV.Size = New System.Drawing.Size(567, 451)
-        Me.scTV.SplitterDistance = 113
+        Me.scTV.Size = New System.Drawing.Size(567, 409)
+        Me.scTV.SplitterDistance = 101
         Me.scTV.TabIndex = 3
         Me.scTV.TabStop = False
         '
@@ -2188,8 +2247,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2205,7 +2264,7 @@ Partial Class frmMain
         Me.dgvTVShows.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvTVShows.ShowCellErrors = False
         Me.dgvTVShows.ShowRowErrors = False
-        Me.dgvTVShows.Size = New System.Drawing.Size(567, 111)
+        Me.dgvTVShows.Size = New System.Drawing.Size(567, 99)
         Me.dgvTVShows.StandardTab = True
         Me.dgvTVShows.TabIndex = 0
         '
@@ -2379,8 +2438,8 @@ Partial Class frmMain
         'scTVSeasonsEpisodes.Panel2
         '
         Me.scTVSeasonsEpisodes.Panel2.Controls.Add(Me.dgvTVEpisodes)
-        Me.scTVSeasonsEpisodes.Size = New System.Drawing.Size(567, 334)
-        Me.scTVSeasonsEpisodes.SplitterDistance = 114
+        Me.scTVSeasonsEpisodes.Size = New System.Drawing.Size(567, 304)
+        Me.scTVSeasonsEpisodes.SplitterDistance = 103
         Me.scTVSeasonsEpisodes.TabIndex = 0
         Me.scTVSeasonsEpisodes.TabStop = False
         '
@@ -2389,8 +2448,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2406,7 +2465,7 @@ Partial Class frmMain
         Me.dgvTVSeasons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvTVSeasons.ShowCellErrors = False
         Me.dgvTVSeasons.ShowRowErrors = False
-        Me.dgvTVSeasons.Size = New System.Drawing.Size(567, 114)
+        Me.dgvTVSeasons.Size = New System.Drawing.Size(567, 103)
         Me.dgvTVSeasons.StandardTab = True
         Me.dgvTVSeasons.TabIndex = 0
         '
@@ -2534,8 +2593,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2551,7 +2610,7 @@ Partial Class frmMain
         Me.dgvTVEpisodes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvTVEpisodes.ShowCellErrors = False
         Me.dgvTVEpisodes.ShowRowErrors = False
-        Me.dgvTVEpisodes.Size = New System.Drawing.Size(567, 216)
+        Me.dgvTVEpisodes.Size = New System.Drawing.Size(567, 197)
         Me.dgvTVEpisodes.StandardTab = True
         Me.dgvTVEpisodes.TabIndex = 0
         '
@@ -2812,9 +2871,9 @@ Partial Class frmMain
         Me.pnlFilter.Controls.Add(Me.btnFilterUp)
         Me.pnlFilter.Controls.Add(Me.lblFilter)
         Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter.Location = New System.Drawing.Point(0, 507)
+        Me.pnlFilter.Location = New System.Drawing.Point(0, 465)
         Me.pnlFilter.Name = "pnlFilter"
-        Me.pnlFilter.Size = New System.Drawing.Size(567, 180)
+        Me.pnlFilter.Size = New System.Drawing.Size(567, 222)
         Me.pnlFilter.TabIndex = 12
         Me.pnlFilter.Visible = False
         '
@@ -2824,7 +2883,7 @@ Partial Class frmMain
         Me.gbSort.Controls.Add(Me.btnSortTitle)
         Me.gbSort.Controls.Add(Me.btnSortDate)
         Me.gbSort.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbSort.Location = New System.Drawing.Point(3, 81)
+        Me.gbSort.Location = New System.Drawing.Point(2, 106)
         Me.gbSort.Name = "gbSort"
         Me.gbSort.Size = New System.Drawing.Size(131, 77)
         Me.gbSort.TabIndex = 4
@@ -2872,7 +2931,7 @@ Partial Class frmMain
         Me.btnClearFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
         Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters.Location = New System.Drawing.Point(22, 160)
+        Me.btnClearFilters.Location = New System.Drawing.Point(21, 193)
         Me.btnClearFilters.Name = "btnClearFilters"
         Me.btnClearFilters.Size = New System.Drawing.Size(92, 20)
         Me.btnClearFilters.TabIndex = 5
@@ -2888,7 +2947,7 @@ Partial Class frmMain
         Me.gbFilterGeneral.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFilterGeneral.Location = New System.Drawing.Point(3, 22)
         Me.gbFilterGeneral.Name = "gbFilterGeneral"
-        Me.gbFilterGeneral.Size = New System.Drawing.Size(131, 59)
+        Me.gbFilterGeneral.Size = New System.Drawing.Size(131, 78)
         Me.gbFilterGeneral.TabIndex = 3
         Me.gbFilterGeneral.TabStop = False
         Me.gbFilterGeneral.Text = "General"
@@ -2897,7 +2956,7 @@ Partial Class frmMain
         '
         Me.chkFilterTolerance.AutoSize = True
         Me.chkFilterTolerance.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterTolerance.Location = New System.Drawing.Point(7, 41)
+        Me.chkFilterTolerance.Location = New System.Drawing.Point(6, 54)
         Me.chkFilterTolerance.Name = "chkFilterTolerance"
         Me.chkFilterTolerance.Size = New System.Drawing.Size(112, 17)
         Me.chkFilterTolerance.TabIndex = 2
@@ -2908,7 +2967,7 @@ Partial Class frmMain
         '
         Me.chkFilterMissing.AutoSize = True
         Me.chkFilterMissing.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterMissing.Location = New System.Drawing.Point(7, 27)
+        Me.chkFilterMissing.Location = New System.Drawing.Point(6, 36)
         Me.chkFilterMissing.Name = "chkFilterMissing"
         Me.chkFilterMissing.Size = New System.Drawing.Size(96, 17)
         Me.chkFilterMissing.TabIndex = 1
@@ -2919,7 +2978,7 @@ Partial Class frmMain
         '
         Me.chkFilterDupe.AutoSize = True
         Me.chkFilterDupe.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 13)
+        Me.chkFilterDupe.Location = New System.Drawing.Point(6, 18)
         Me.chkFilterDupe.Name = "chkFilterDupe"
         Me.chkFilterDupe.Size = New System.Drawing.Size(80, 17)
         Me.chkFilterDupe.TabIndex = 0
@@ -2928,6 +2987,8 @@ Partial Class frmMain
         '
         'gbFilterSpecific
         '
+        Me.gbFilterSpecific.Controls.Add(Me.txtFilterCountry)
+        Me.gbFilterSpecific.Controls.Add(Me.lblFilterCountry)
         Me.gbFilterSpecific.Controls.Add(Me.chkFilterMarkCustom4)
         Me.gbFilterSpecific.Controls.Add(Me.chkFilterMarkCustom3)
         Me.gbFilterSpecific.Controls.Add(Me.chkFilterMarkCustom2)
@@ -2948,16 +3009,36 @@ Partial Class frmMain
         Me.gbFilterSpecific.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFilterSpecific.Location = New System.Drawing.Point(135, 22)
         Me.gbFilterSpecific.Name = "gbFilterSpecific"
-        Me.gbFilterSpecific.Size = New System.Drawing.Size(422, 155)
+        Me.gbFilterSpecific.Size = New System.Drawing.Size(422, 195)
         Me.gbFilterSpecific.TabIndex = 6
         Me.gbFilterSpecific.TabStop = False
         Me.gbFilterSpecific.Text = "Specific"
+        '
+        'txtFilterCountry
+        '
+        Me.txtFilterCountry.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFilterCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFilterCountry.Location = New System.Drawing.Point(250, 157)
+        Me.txtFilterCountry.Name = "txtFilterCountry"
+        Me.txtFilterCountry.ReadOnly = True
+        Me.txtFilterCountry.Size = New System.Drawing.Size(166, 22)
+        Me.txtFilterCountry.TabIndex = 36
+        '
+        'lblFilterCountry
+        '
+        Me.lblFilterCountry.AutoSize = True
+        Me.lblFilterCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterCountry.Location = New System.Drawing.Point(143, 159)
+        Me.lblFilterCountry.Name = "lblFilterCountry"
+        Me.lblFilterCountry.Size = New System.Drawing.Size(51, 13)
+        Me.lblFilterCountry.TabIndex = 37
+        Me.lblFilterCountry.Text = "Country:"
         '
         'chkFilterMarkCustom4
         '
         Me.chkFilterMarkCustom4.AutoSize = True
         Me.chkFilterMarkCustom4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterMarkCustom4.Location = New System.Drawing.Point(9, 108)
+        Me.chkFilterMarkCustom4.Location = New System.Drawing.Point(6, 108)
         Me.chkFilterMarkCustom4.Name = "chkFilterMarkCustom4"
         Me.chkFilterMarkCustom4.Size = New System.Drawing.Size(81, 17)
         Me.chkFilterMarkCustom4.TabIndex = 35
@@ -2968,7 +3049,7 @@ Partial Class frmMain
         '
         Me.chkFilterMarkCustom3.AutoSize = True
         Me.chkFilterMarkCustom3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterMarkCustom3.Location = New System.Drawing.Point(9, 90)
+        Me.chkFilterMarkCustom3.Location = New System.Drawing.Point(6, 90)
         Me.chkFilterMarkCustom3.Name = "chkFilterMarkCustom3"
         Me.chkFilterMarkCustom3.Size = New System.Drawing.Size(81, 17)
         Me.chkFilterMarkCustom3.TabIndex = 34
@@ -2979,7 +3060,7 @@ Partial Class frmMain
         '
         Me.chkFilterMarkCustom2.AutoSize = True
         Me.chkFilterMarkCustom2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterMarkCustom2.Location = New System.Drawing.Point(9, 72)
+        Me.chkFilterMarkCustom2.Location = New System.Drawing.Point(6, 72)
         Me.chkFilterMarkCustom2.Name = "chkFilterMarkCustom2"
         Me.chkFilterMarkCustom2.Size = New System.Drawing.Size(81, 17)
         Me.chkFilterMarkCustom2.TabIndex = 33
@@ -2990,7 +3071,7 @@ Partial Class frmMain
         '
         Me.chkFilterMarkCustom1.AutoSize = True
         Me.chkFilterMarkCustom1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterMarkCustom1.Location = New System.Drawing.Point(9, 54)
+        Me.chkFilterMarkCustom1.Location = New System.Drawing.Point(6, 54)
         Me.chkFilterMarkCustom1.Name = "chkFilterMarkCustom1"
         Me.chkFilterMarkCustom1.Size = New System.Drawing.Size(81, 17)
         Me.chkFilterMarkCustom1.TabIndex = 32
@@ -3001,7 +3082,7 @@ Partial Class frmMain
         '
         Me.txtFilterSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFilterSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilterSource.Location = New System.Drawing.Point(187, 129)
+        Me.txtFilterSource.Location = New System.Drawing.Point(250, 129)
         Me.txtFilterSource.Name = "txtFilterSource"
         Me.txtFilterSource.ReadOnly = True
         Me.txtFilterSource.Size = New System.Drawing.Size(166, 22)
@@ -3022,7 +3103,7 @@ Partial Class frmMain
         Me.cbFilterFileSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbFilterFileSource.FormattingEnabled = True
-        Me.cbFilterFileSource.Location = New System.Drawing.Point(214, 105)
+        Me.cbFilterFileSource.Location = New System.Drawing.Point(277, 105)
         Me.cbFilterFileSource.Name = "cbFilterFileSource"
         Me.cbFilterFileSource.Size = New System.Drawing.Size(139, 21)
         Me.cbFilterFileSource.TabIndex = 9
@@ -3031,7 +3112,7 @@ Partial Class frmMain
         '
         Me.chkFilterLock.AutoSize = True
         Me.chkFilterLock.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFilterLock.Location = New System.Drawing.Point(9, 126)
+        Me.chkFilterLock.Location = New System.Drawing.Point(6, 126)
         Me.chkFilterLock.Name = "chkFilterLock"
         Me.chkFilterLock.Size = New System.Drawing.Size(62, 17)
         Me.chkFilterLock.TabIndex = 2
@@ -3044,7 +3125,7 @@ Partial Class frmMain
         Me.gbFilterModifier.Controls.Add(Me.rbFilterOr)
         Me.gbFilterModifier.Location = New System.Drawing.Point(140, 10)
         Me.gbFilterModifier.Name = "gbFilterModifier"
-        Me.gbFilterModifier.Size = New System.Drawing.Size(76, 43)
+        Me.gbFilterModifier.Size = New System.Drawing.Size(160, 40)
         Me.gbFilterModifier.TabIndex = 3
         Me.gbFilterModifier.TabStop = False
         Me.gbFilterModifier.Text = "Modifier"
@@ -3054,7 +3135,7 @@ Partial Class frmMain
         Me.rbFilterAnd.AutoSize = True
         Me.rbFilterAnd.Checked = True
         Me.rbFilterAnd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbFilterAnd.Location = New System.Drawing.Point(6, 11)
+        Me.rbFilterAnd.Location = New System.Drawing.Point(6, 16)
         Me.rbFilterAnd.Name = "rbFilterAnd"
         Me.rbFilterAnd.Size = New System.Drawing.Size(46, 17)
         Me.rbFilterAnd.TabIndex = 0
@@ -3066,7 +3147,7 @@ Partial Class frmMain
         '
         Me.rbFilterOr.AutoSize = True
         Me.rbFilterOr.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbFilterOr.Location = New System.Drawing.Point(6, 25)
+        Me.rbFilterOr.Location = New System.Drawing.Point(86, 16)
         Me.rbFilterOr.Name = "rbFilterOr"
         Me.rbFilterOr.Size = New System.Drawing.Size(38, 17)
         Me.rbFilterOr.TabIndex = 1
@@ -3077,7 +3158,7 @@ Partial Class frmMain
         '
         Me.chkFilterNew.AutoSize = True
         Me.chkFilterNew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterNew.Location = New System.Drawing.Point(9, 18)
+        Me.chkFilterNew.Location = New System.Drawing.Point(6, 18)
         Me.chkFilterNew.Name = "chkFilterNew"
         Me.chkFilterNew.Size = New System.Drawing.Size(49, 17)
         Me.chkFilterNew.TabIndex = 0
@@ -3090,7 +3171,7 @@ Partial Class frmMain
         Me.cbFilterYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbFilterYear.FormattingEnabled = True
         Me.cbFilterYear.Items.AddRange(New Object() {"=", ">", "<", "!="})
-        Me.cbFilterYear.Location = New System.Drawing.Point(278, 81)
+        Me.cbFilterYear.Location = New System.Drawing.Point(341, 81)
         Me.cbFilterYear.Name = "cbFilterYear"
         Me.cbFilterYear.Size = New System.Drawing.Size(75, 21)
         Me.cbFilterYear.TabIndex = 7
@@ -3099,7 +3180,7 @@ Partial Class frmMain
         '
         Me.chkFilterMark.AutoSize = True
         Me.chkFilterMark.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterMark.Location = New System.Drawing.Point(9, 36)
+        Me.chkFilterMark.Location = New System.Drawing.Point(6, 36)
         Me.chkFilterMark.Name = "chkFilterMark"
         Me.chkFilterMark.Size = New System.Drawing.Size(65, 17)
         Me.chkFilterMark.TabIndex = 1
@@ -3112,7 +3193,7 @@ Partial Class frmMain
         Me.cbFilterYearMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbFilterYearMod.FormattingEnabled = True
         Me.cbFilterYearMod.Items.AddRange(New Object() {"=", ">", "<", "<>"})
-        Me.cbFilterYearMod.Location = New System.Drawing.Point(214, 81)
+        Me.cbFilterYearMod.Location = New System.Drawing.Point(277, 81)
         Me.cbFilterYearMod.Name = "cbFilterYearMod"
         Me.cbFilterYearMod.Size = New System.Drawing.Size(59, 21)
         Me.cbFilterYearMod.TabIndex = 6
@@ -3131,7 +3212,7 @@ Partial Class frmMain
         '
         Me.txtFilterGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFilterGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilterGenre.Location = New System.Drawing.Point(187, 56)
+        Me.txtFilterGenre.Location = New System.Drawing.Point(250, 56)
         Me.txtFilterGenre.Name = "txtFilterGenre"
         Me.txtFilterGenre.ReadOnly = True
         Me.txtFilterGenre.Size = New System.Drawing.Size(166, 22)
@@ -3143,9 +3224,9 @@ Partial Class frmMain
         Me.lblFilterSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFilterSource.Location = New System.Drawing.Point(143, 132)
         Me.lblFilterSource.Name = "lblFilterSource"
-        Me.lblFilterSource.Size = New System.Drawing.Size(45, 13)
+        Me.lblFilterSource.Size = New System.Drawing.Size(78, 13)
         Me.lblFilterSource.TabIndex = 10
-        Me.lblFilterSource.Text = "Source:"
+        Me.lblFilterSource.Text = "Video Source:"
         '
         'lblFilterGenre
         '
@@ -7962,6 +8043,8 @@ Partial Class frmMain
         Me.scMain.Panel2.PerformLayout()
         CType(Me.scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.scMain.ResumeLayout(False)
+        Me.pnlFilterCountry.ResumeLayout(False)
+        Me.pnlFilterCountry.PerformLayout()
         Me.pnlFilterGenre.ResumeLayout(False)
         Me.pnlFilterGenre.PerformLayout()
         Me.pnlFilterSource.ResumeLayout(False)
@@ -8057,9 +8140,9 @@ Partial Class frmMain
         CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoadSettings.ResumeLayout(False)
         Me.ResumeLayout(False)
-        Me.PerformLayout()
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents BottomToolStripPanel As System.Windows.Forms.ToolStripPanel
     Friend WithEvents TopToolStripPanel As System.Windows.Forms.ToolStripPanel
     Friend WithEvents RightToolStripPanel As System.Windows.Forms.ToolStripPanel
@@ -8938,4 +9021,10 @@ Partial Class frmMain
     Friend WithEvents chkFilterMarkCustom3 As System.Windows.Forms.CheckBox
     Friend WithEvents chkFilterMarkCustom2 As System.Windows.Forms.CheckBox
     Friend WithEvents chkFilterMarkCustom1 As System.Windows.Forms.CheckBox
+    Friend WithEvents txtFilterCountry As System.Windows.Forms.TextBox
+    Friend WithEvents lblFilterCountry As System.Windows.Forms.Label
+    Friend WithEvents pnlFilterCountry As System.Windows.Forms.Panel
+    Friend WithEvents clbFilterCountries As System.Windows.Forms.CheckedListBox
+    Friend WithEvents lblCFilClose As System.Windows.Forms.Label
+    Friend WithEvents lblFilterCountries As System.Windows.Forms.Label
 End Class

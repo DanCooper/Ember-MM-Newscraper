@@ -118,6 +118,7 @@ Public Class frmMain
     Private filSource As String = String.Empty
     Private filYear As String = String.Empty
     Private filGenre As String = String.Empty
+    Private filCountry As String = String.Empty
     Private filMissing As String = String.Empty
 
     'Theme Information
@@ -3345,6 +3346,48 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub clbFilterCountries_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterCountries.LostFocus
+        Try
+            Me.pnlFilterCountry.Visible = False
+            Me.pnlFilterCountry.Tag = "NO"
+
+            If clbFilterCountries.CheckedItems.Count > 0 Then
+                Me.txtFilterCountry.Text = String.Empty
+                Me.FilterArray.Remove(Me.filCountry)
+
+                Dim alCountries As New List(Of String)
+                alCountries.AddRange(clbFilterCountries.CheckedItems.OfType(Of String).ToList)
+
+                If rbFilterAnd.Checked Then
+                    Me.txtFilterCountry.Text = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " AND ")
+                Else
+                    Me.txtFilterCountry.Text = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " OR ")
+                End If
+
+                For i As Integer = 0 To alCountries.Count - 1
+                    alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+                Next
+
+                If rbFilterAnd.Checked Then
+                    Me.filCountry = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " AND "))
+                Else
+                    Me.filCountry = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " OR "))
+                End If
+
+                Me.FilterArray.Add(Me.filCountry)
+                Me.RunFilter()
+            Else
+                If Not String.IsNullOrEmpty(Me.filCountry) Then
+                    Me.txtFilterCountry.Text = String.Empty
+                    Me.FilterArray.Remove(Me.filCountry)
+                    Me.filCountry = String.Empty
+                    Me.RunFilter()
+                End If
+            End If
+        Catch
+        End Try
+    End Sub
+
     Private Sub clbFilterSource_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterSource.LostFocus
         Try
             Me.pnlFilterSource.Visible = False
@@ -3461,6 +3504,10 @@ doCancel:
             Me.txtFilterGenre.Text = String.Empty
             For i As Integer = 0 To Me.clbFilterGenres.Items.Count - 1
                 Me.clbFilterGenres.SetItemChecked(i, False)
+            Next
+            Me.txtFilterCountry.Text = String.Empty
+            For i As Integer = 0 To Me.clbFilterCountries.Items.Count - 1
+                Me.clbFilterCountries.SetItemChecked(i, False)
             Next
             Me.txtFilterSource.Text = String.Empty
             For i As Integer = 0 To Me.clbFilterSource.Items.Count - 1
@@ -7287,6 +7334,7 @@ doCancel:
         Me.rbFilterAnd.Enabled = isEnabled
         Me.txtFilterSource.Enabled = isEnabled
         Me.cbFilterFileSource.Enabled = isEnabled
+        Me.txtFilterCountry.Enabled = isEnabled
         Me.txtFilterGenre.Enabled = isEnabled
         Me.cbFilterYearMod.Enabled = isEnabled
         Me.cbFilterYear.Enabled = isEnabled
@@ -9946,6 +9994,7 @@ doCancel:
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
                 Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
+                Me.pnlFilterCountry.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterCountry.Left, (Me.pnlFilter.Top + Me.txtFilterCountry.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterCountry.Height)
                 Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
                 Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
                 Me.pnlLoadSettings.Location = New Point(Convert.ToInt32((Me.Width - Me.pnlLoadSettings.Width) / 2), Convert.ToInt32((Me.Height - Me.pnlLoadSettings.Height) / 2))
@@ -10034,6 +10083,11 @@ doCancel:
     Private Sub lblGFilClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblGFilClose.Click
         Me.txtFilterGenre.Focus()
         Me.pnlFilterGenre.Tag = String.Empty
+    End Sub
+
+    Private Sub lblCFilClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblCFilClose.Click
+        Me.txtFilterCountry.Focus()
+        Me.pnlFilterCountry.Tag = String.Empty
     End Sub
 
     Private Sub lblSFilClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblSFilClose.Click
@@ -12858,7 +12912,25 @@ doCancel:
             Me.FilterArray.Add(Me.filGenre)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
+        If clbFilterCountries.CheckedItems.Count > 0 Then
+            Me.txtFilterCountry.Text = String.Empty
+            Me.FilterArray.Remove(Me.filCountry)
+
+            Dim alCountries As New List(Of String)
+            alCountries.AddRange(clbFilterCountries.CheckedItems.OfType(Of String).ToList)
+
+            Me.txtFilterCountry.Text = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " AND ")
+
+            For i As Integer = 0 To alCountries.Count - 1
+                alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+            Next
+
+            Me.filCountry = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " AND ")
+
+            Me.FilterArray.Add(Me.filCountry)
+        End If
+
+        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.clbFilterCountries.CheckedItems.Count > 0 OrElse _
         Me.chkFilterMark.Checked OrElse Me.chkFilterMarkCustom1.Checked OrElse Me.chkFilterMarkCustom2.Checked OrElse Me.chkFilterMarkCustom3.Checked OrElse _
         Me.chkFilterMarkCustom4.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.clbFilterSource.CheckedItems.Count > 0 OrElse _
         Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter()
@@ -12883,7 +12955,25 @@ doCancel:
             Me.FilterArray.Add(Me.filGenre)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
+        If clbFilterCountries.CheckedItems.Count > 0 Then
+            Me.txtFilterCountry.Text = String.Empty
+            Me.FilterArray.Remove(Me.filCountry)
+
+            Dim alCountries As New List(Of String)
+            alCountries.AddRange(clbFilterCountries.CheckedItems.OfType(Of String).ToList)
+
+            Me.txtFilterCountry.Text = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " OR ")
+
+            For i As Integer = 0 To alCountries.Count - 1
+                alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+            Next
+
+            Me.filCountry = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " OR ")
+
+            Me.FilterArray.Add(Me.filCountry)
+        End If
+
+        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.clbFilterCountries.CheckedItems.Count > 0 OrElse _
         Me.chkFilterMark.Checked OrElse Me.chkFilterMarkCustom1.Checked OrElse Me.chkFilterMarkCustom2.Checked OrElse Me.chkFilterMarkCustom3.Checked OrElse _
         Me.chkFilterMarkCustom4.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.clbFilterSource.CheckedItems.Count > 0 OrElse _
         Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter()
@@ -13859,6 +13949,7 @@ doCancel:
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
                 Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
+                Me.pnlFilterCountry.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterCountry.Left, (Me.pnlFilter.Top + Me.txtFilterCountry.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterCountry.Height)
                 Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
                 Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
 
@@ -14931,6 +15022,10 @@ doCancel:
                 cmnuMovieGenresGenre.Items.AddRange(lGenre)
                 clbFilterGenres.Items.AddRange(lGenre)
 
+                Me.clbFilterCountries.Items.Clear()
+                Dim lCountry() As Object = Master.DB.GetMovieCountries
+                clbFilterCountries.Items.AddRange(lCountry)
+
                 cmnuShowLanguageLanguages.Items.Clear()
                 cmnuShowLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
@@ -15893,10 +15988,11 @@ doCancel:
                 .lblDirectorHeader.Text = Master.eLang.GetString(62, "Director")
                 .lblFilePathHeader.Text = Master.eLang.GetString(60, "File Path")
                 .lblFilter.Text = Master.eLang.GetString(52, "Filters")
+                .lblFilterCountry.Text = String.Concat(Master.eLang.GetString(301, "Country"), ":")
                 .lblFilterFileSource.Text = Master.eLang.GetString(579, "File Source:")
                 .lblFilterGenre.Text = Master.eLang.GetString(51, "Genre:")
                 .lblFilterGenres.Text = Master.eLang.GetString(20, "Genre")
-                .lblFilterSource.Text = Master.eLang.GetString(50, "Source:")
+                .lblFilterSource.Text = Master.eLang.GetString(824, "Video Source:")
                 .lblFilterSources.Text = Master.eLang.GetString(602, "Sources")
                 .lblFilterYear.Text = Master.eLang.GetString(49, "Year:")
                 .lblGFilClose.Text = Master.eLang.GetString(19, "Close")
@@ -15936,6 +16032,7 @@ doCancel:
                 .mnuUpdate.Text = Master.eLang.GetString(82, "Update Library")
                 .mnuUpdateMovies.Text = Master.eLang.GetString(36, "Movies")
                 .mnuUpdateShows.Text = Master.eLang.GetString(653, "TV Shows")
+                .pnlFilterCountry.Tag = String.Empty
                 .pnlFilterGenre.Tag = String.Empty
                 .pnlFilterSource.Tag = String.Empty
                 .rbFilterAnd.Text = Master.eLang.GetString(45, "And")
@@ -16608,6 +16705,19 @@ doCancel:
             Me.clbFilterGenres.Focus()
         Else
             Me.pnlFilterGenre.Tag = String.Empty
+        End If
+    End Sub
+
+    Private Sub txtFilterCountry_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterCountry.Click
+        Me.pnlFilterCountry.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterCountry.Left, (Me.pnlFilter.Top + Me.txtFilterCountry.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterCountry.Height)
+        If Me.pnlFilterCountry.Visible Then
+            Me.pnlFilterCountry.Visible = False
+        ElseIf Not Me.pnlFilterCountry.Tag.ToString = "NO" Then
+            Me.pnlFilterCountry.Tag = String.Empty
+            Me.pnlFilterCountry.Visible = True
+            Me.clbFilterCountries.Focus()
+        Else
+            Me.pnlFilterCountry.Tag = String.Empty
         End If
     End Sub
 
