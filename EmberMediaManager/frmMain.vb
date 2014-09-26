@@ -15085,14 +15085,6 @@ doCancel:
         Me.SetControlsEnabled(True)
     End Sub
 
-    Private Sub mnuMainToolsSetsManager_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsSetsManager.Click, cmnuTrayToolsSetsManager.Click
-        Me.SetControlsEnabled(False)
-        Using dSetsManager As New dlgSetsManager
-            dSetsManager.ShowDialog()
-        End Using
-        Me.SetControlsEnabled(True)
-    End Sub
-
     Private Sub SetStatus(ByVal sText As String)
         Me.tslStatus.Text = sText.Replace("&", "&&")
     End Sub
@@ -16027,7 +16019,6 @@ doCancel:
                 .mnuMainToolsOfflineHolder.Text = Master.eLang.GetString(524, "&Offline Media Manager")
                 .mnuMainToolsReloadMovies.Text = Master.eLang.GetString(18, "Re&load All Movies")
                 .mnuMainToolsReloadMovieSets.Text = Master.eLang.GetString(1208, "Reload All MovieSets")
-                .mnuMainToolsSetsManager.Text = Master.eLang.GetString(14, "Sets &Manager")
                 .mnuMainToolsSortFiles.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
                 .mnuUpdate.Text = Master.eLang.GetString(82, "Update Library")
                 .mnuUpdateMovies.Text = Master.eLang.GetString(36, "Movies")
@@ -16059,7 +16050,6 @@ doCancel:
                 .cmnuTrayToolsClearCache.Text = .mnuMainToolsClearCache.Text
                 .cmnuTrayToolsOfflineHolder.Text = .mnuMainToolsOfflineHolder.Text
                 .cmnuTrayToolsReloadMovies.Text = .mnuMainToolsReloadMovies.Text
-                .cmnuTrayToolsSetsManager.Text = .mnuMainToolsSetsManager.Text
                 .cmnuTrayToolsSortFiles.Text = .mnuMainToolsSortFiles.Text
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
