@@ -57,6 +57,7 @@ Partial Class dlgTrailerSelect
         Me.btnTrailerPlay = New System.Windows.Forms.Button()
         Me.axVLCTrailer = New AxAXVLC.AxVLCPlugin2()
         Me.btnPlayInBrowser = New System.Windows.Forms.Button()
+        Me.colExtension = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbSelectTrailer.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.gbYouTubeSearch.SuspendLayout()
@@ -69,7 +70,7 @@ Partial Class dlgTrailerSelect
         'OK_Button
         '
         Me.OK_Button.Enabled = False
-        Me.OK_Button.Location = New System.Drawing.Point(626, 500)
+        Me.OK_Button.Location = New System.Drawing.Point(758, 500)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(120, 23)
         Me.OK_Button.TabIndex = 6
@@ -78,7 +79,7 @@ Partial Class dlgTrailerSelect
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(752, 500)
+        Me.Cancel_Button.Location = New System.Drawing.Point(884, 500)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(120, 23)
         Me.Cancel_Button.TabIndex = 7
@@ -93,14 +94,14 @@ Partial Class dlgTrailerSelect
         Me.gbSelectTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSelectTrailer.Location = New System.Drawing.Point(9, 9)
         Me.gbSelectTrailer.Name = "gbSelectTrailer"
-        Me.gbSelectTrailer.Size = New System.Drawing.Size(458, 440)
+        Me.gbSelectTrailer.Size = New System.Drawing.Size(582, 440)
         Me.gbSelectTrailer.TabIndex = 0
         Me.gbSelectTrailer.TabStop = False
         Me.gbSelectTrailer.Text = "Select Trailer to Scrape"
         '
         'btnTrailerScrape
         '
-        Me.btnTrailerScrape.Location = New System.Drawing.Point(147, 323)
+        Me.btnTrailerScrape.Location = New System.Drawing.Point(6, 319)
         Me.btnTrailerScrape.Name = "btnTrailerScrape"
         Me.btnTrailerScrape.Size = New System.Drawing.Size(152, 23)
         Me.btnTrailerScrape.TabIndex = 5
@@ -141,11 +142,11 @@ Partial Class dlgTrailerSelect
         '
         'lvTrailers
         '
-        Me.lvTrailers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colDuration, Me.colQuality, Me.colSource})
+        Me.lvTrailers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colDuration, Me.colQuality, Me.colSource, Me.colExtension})
         Me.lvTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvTrailers.Location = New System.Drawing.Point(6, 19)
         Me.lvTrailers.Name = "lvTrailers"
-        Me.lvTrailers.Size = New System.Drawing.Size(445, 298)
+        Me.lvTrailers.Size = New System.Drawing.Size(570, 298)
         Me.lvTrailers.TabIndex = 4
         Me.lvTrailers.UseCompatibleStateImageBehavior = False
         Me.lvTrailers.View = System.Windows.Forms.View.Details
@@ -169,7 +170,7 @@ Partial Class dlgTrailerSelect
         'colDescription
         '
         Me.colDescription.Text = "Description"
-        Me.colDescription.Width = 220
+        Me.colDescription.Width = 270
         '
         'colDuration
         '
@@ -182,6 +183,7 @@ Partial Class dlgTrailerSelect
         'colSource
         '
         Me.colSource.Text = "Source"
+        Me.colSource.Width = 80
         '
         'gbYouTubeSearch
         '
@@ -304,7 +306,7 @@ Partial Class dlgTrailerSelect
         Me.pnlTrailerSelect.Controls.Add(Me.gbSelectTrailer)
         Me.pnlTrailerSelect.Location = New System.Drawing.Point(3, 3)
         Me.pnlTrailerSelect.Name = "pnlTrailerSelect"
-        Me.pnlTrailerSelect.Size = New System.Drawing.Size(879, 462)
+        Me.pnlTrailerSelect.Size = New System.Drawing.Size(1001, 462)
         Me.pnlTrailerSelect.TabIndex = 2
         '
         'gbPreview
@@ -315,7 +317,7 @@ Partial Class dlgTrailerSelect
         Me.gbPreview.Controls.Add(Me.btnTrailerPlay)
         Me.gbPreview.Controls.Add(Me.axVLCTrailer)
         Me.gbPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbPreview.Location = New System.Drawing.Point(473, 9)
+        Me.gbPreview.Location = New System.Drawing.Point(597, 9)
         Me.gbPreview.Name = "gbPreview"
         Me.gbPreview.Size = New System.Drawing.Size(396, 440)
         Me.gbPreview.TabIndex = 9
@@ -368,13 +370,18 @@ Partial Class dlgTrailerSelect
         Me.btnPlayInBrowser.Text = "Open In Browser"
         Me.btnPlayInBrowser.UseVisualStyleBackColor = True
         '
+        'colExtension
+        '
+        Me.colExtension.Text = "Typ"
+        Me.colExtension.Width = 50
+        '
         'dlgTrailerSelect
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(884, 535)
+        Me.ClientSize = New System.Drawing.Size(1008, 535)
         Me.ControlBox = False
         Me.Controls.Add(Me.pnlTrailerSelect)
         Me.Controls.Add(Me.Cancel_Button)
@@ -435,5 +442,6 @@ Partial Class dlgTrailerSelect
     Friend WithEvents colQuality As System.Windows.Forms.ColumnHeader
     Friend WithEvents colSource As System.Windows.Forms.ColumnHeader
     Friend WithEvents colNumber As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colExtension As System.Windows.Forms.ColumnHeader
 
 End Class

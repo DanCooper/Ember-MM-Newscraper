@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmAppleTrailerSettingsHolder
+Partial Class frmHDTrailersNetTrailerSettingsHolder
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
@@ -22,7 +22,7 @@ Partial Class frmAppleTrailerSettingsHolder
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAppleTrailerSettingsHolder))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmHDTrailersNetTrailerSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.gbSettings = New System.Windows.Forms.GroupBox()
         Me.cbTrailerPrefQual = New System.Windows.Forms.ComboBox()
@@ -61,8 +61,7 @@ Partial Class frmAppleTrailerSettingsHolder
         Me.gbSettings.Size = New System.Drawing.Size(611, 60)
         Me.gbSettings.TabIndex = 96
         Me.gbSettings.TabStop = False
-        Me.gbSettings.Text = "Apple"
-        Me.gbSettings.Visible = False
+        Me.gbSettings.Text = "HD-Trailers.net"
         '
         'cbTrailerPrefQual
         '
@@ -163,7 +162,7 @@ Partial Class frmAppleTrailerSettingsHolder
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
         '
-        'frmAppleTrailerSettingsHolder
+        'frmHDTrailersNetTrailerSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -174,7 +173,7 @@ Partial Class frmAppleTrailerSettingsHolder
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmAppleTrailerSettingsHolder"
+        Me.Name = "frmHDTrailersNetTrailerSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"

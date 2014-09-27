@@ -64,7 +64,14 @@ Public Class AppleTrailer
     Private Sub GetMovieTrailers()
         Dim BaseURL As String = "http://www.google.ch/search?q=apple+trailer+"
         Dim DownloadURL As String = "http://trailers.apple.com/trailers/"
-        Dim prevQual As String = clsAdvancedSettings.GetSetting("TrailerPrefQual", "1080p")
+        'get preferred quality setting
+        Dim prevQual As String = "480p"
+        prevQual = Master.eSettings.MovieTrailerPrefQual.ToString
+        If prevQual.Contains("720") Then
+            prevQual = "720p"
+        ElseIf prevQual.Contains("1080") Then
+            prevQual = "1080p"
+        End If
         Dim urlHD As String = "/includes/extralarge.html"
         Dim urlHQ As String = "/includes/large.html"
         Dim SearchTitle As String
@@ -72,6 +79,7 @@ Public Class AppleTrailer
 
         If Not String.IsNullOrEmpty(originaltitle) Then
             SearchTitle = Web.HttpUtility.UrlEncode(originaltitle)
+            'i.e http://www.google.ch/search?q=apple+trailer+Transformers%3a+Age+of+Extinction
             SearchURL = String.Concat(BaseURL, SearchTitle)
         Else
             SearchURL = String.Empty
@@ -96,7 +104,9 @@ Public Class AppleTrailer
                 Dim rResult As MatchCollection = Regex.Matches(Html, rPattern, RegexOptions.Singleline)
 
                 If rResult.Count > 0 Then
+                    'ie. http://trailers.apple.com/trailers/paramount/transformersageofextinction
                     Dim TrailerBaseURL As String = rResult.Item(0).Groups(1).Value
+                    'i.e http://trailers.apple.com/trailers/paramount/transformersageofextinction/includes/large.html
                     Dim TrailerSiteURL = String.Concat(TrailerBaseURL, urlHQ)
 
                     If Not String.IsNullOrEmpty(TrailerBaseURL) Then
@@ -137,6 +147,8 @@ Public Class AppleTrailer
                                     Case "480p"
                                         trailer.Quality = Enums.TrailerQuality.HQ480p
                                 End Select
+                                'set trailer extension
+                                trailer.Extention = IO.Path.GetExtension(trailer.URL)
                             End If
                         Next
                     End If

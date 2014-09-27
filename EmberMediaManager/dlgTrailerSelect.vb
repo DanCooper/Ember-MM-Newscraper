@@ -112,6 +112,7 @@ Public Class dlgTrailerSelect
             str(4) = aUrl.Duration.ToString
             str(5) = aUrl.Quality.ToString
             str(6) = aUrl.Source.ToString
+            str(7) = aUrl.Extention.ToString
             itm = New ListViewItem(str)
             lvTrailers.Items.Add(itm)
             ID = ID + 1
@@ -316,7 +317,7 @@ Public Class dlgTrailerSelect
 
     Private Sub btnTrailerScrape_Click(sender As Object, e As EventArgs) Handles btnTrailerScrape.Click
         Dim didCancel As Boolean = False
-
+        '     Me.lvTrailers.Clear()
         Me.SetControlsEnabled(False)
         Me.lblStatus.Text = Master.eLang.GetString(918, "Compiling trailer list...")
         Me.pbStatus.Style = ProgressBarStyle.Marquee
