@@ -825,9 +825,9 @@ Public Class Enums
         FullAuto = 1
         FullAsk = 2
         FullSkip = 3
-        UpdateAuto = 4
-        UpdateAsk = 5
-        UpdateSkip = 6
+        MissAuto = 4
+        MissAsk = 5
+        MissSkip = 6
         CleanFolders = 7
         NewAuto = 8
         NewAsk = 9

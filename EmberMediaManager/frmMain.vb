@@ -1821,9 +1821,9 @@ Public Class frmMain
                                         'End If
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -1879,9 +1879,9 @@ Public Class frmMain
                                         'End If
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -1940,9 +1940,9 @@ Public Class frmMain
                                         'End If
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -1994,9 +1994,9 @@ Public Class frmMain
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.LandscapeItem, True)
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(1063, "A landscape of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -2045,9 +2045,9 @@ Public Class frmMain
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.ClearArtItem, True)
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(1106, "A ClearArt of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -2096,9 +2096,9 @@ Public Class frmMain
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.ClearLogoItem, True)
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(1107, "A ClearLogo of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -2147,9 +2147,9 @@ Public Class frmMain
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.DiscArtItem, True)
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(1108, "A DiscArt of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -2492,9 +2492,9 @@ Public Class frmMain
                                         'End If
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -2550,9 +2550,9 @@ Public Class frmMain
                                         'End If
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -2609,9 +2609,9 @@ Public Class frmMain
                                         'End If
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -2663,9 +2663,9 @@ Public Class frmMain
                                         MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.LandscapeItem, True)
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(1063, "A landscape of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -2714,9 +2714,9 @@ Public Class frmMain
                                         MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ClearArtItem, True)
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(1106, "A ClearArt of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -2765,9 +2765,9 @@ Public Class frmMain
                                         MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ClearLogoItem, True)
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(1107, "A ClearLogo of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -2816,9 +2816,9 @@ Public Class frmMain
                                         MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.DiscArtItem, True)
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                         MsgBox(Master.eLang.GetString(1108, "A DiscArt of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
@@ -9597,13 +9597,13 @@ doCancel:
                         clScrapeType = Enums.ScrapeType.FullSkip
                         clAsk = False
                     Case "-missask"
-                        clScrapeType = Enums.ScrapeType.UpdateAsk
+                        clScrapeType = Enums.ScrapeType.MissAsk
                         clAsk = True
                     Case "-missauto"
-                        clScrapeType = Enums.ScrapeType.UpdateAuto
+                        clScrapeType = Enums.ScrapeType.MissAuto
                         clAsk = False
                     Case "-missskip"
-                        clScrapeType = Enums.ScrapeType.UpdateSkip
+                        clScrapeType = Enums.ScrapeType.MissSkip
                         clAsk = True
                     Case "-newask"
                         clScrapeType = Enums.ScrapeType.NewAsk
@@ -10698,137 +10698,137 @@ doCancel:
 
     Private Sub mnuMovieMissAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskAll.Click, cmnuTrayMovieMissAskAll.Click
         Functions.SetScraperMod(Enums.ModType_Movie.All, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskBanner.Click, cmnuTrayMovieMissAskBanner.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Banner, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskClearArt.Click, cmnuTrayMovieMissAskClearArt.Click
         Functions.SetScraperMod(Enums.ModType_Movie.ClearArt, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskClearLogo.Click, cmnuTrayMovieMissAskClearLogo.Click
         Functions.SetScraperMod(Enums.ModType_Movie.ClearLogo, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskDiscArt.Click, cmnuTrayMovieMissAskDiscArt.Click
         Functions.SetScraperMod(Enums.ModType_Movie.DiscArt, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskEFanarts.Click, cmnuTrayMovieMissAskEFanarts.Click
         Functions.SetScraperMod(Enums.ModType_Movie.EFanarts, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskEThumbs.Click, cmnuTrayMovieMissAskEThumbs.Click
         Functions.SetScraperMod(Enums.ModType_Movie.EThumbs, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskFanart.Click, cmnuTrayMovieMissAskFanart.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Fanart, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskLandscape.Click, cmnuTrayMovieMissAskLandscape.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Landscape, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskNfo.Click, cmnuTrayMovieMissAskNfo.Click
         Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskPoster.Click, cmnuTrayMovieMissAskPoster.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Poster, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskTheme.Click, cmnuTrayMovieMissAskTheme.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Theme, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAskTrailer.Click, cmnuTrayMovieMissAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Trailer, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoAll.Click, cmnuTrayMovieMissAutoAll.Click
         Functions.SetScraperMod(Enums.ModType_Movie.All, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoBanner.Click, cmnuTrayMovieMissAutoBanner.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Banner, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoClearArt.Click, cmnuTrayMovieMissAutoClearArt.Click
         Functions.SetScraperMod(Enums.ModType_Movie.ClearArt, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoClearLogo.Click, cmnuTrayMovieMissAutoClearLogo.Click
         Functions.SetScraperMod(Enums.ModType_Movie.ClearLogo, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoDiscArt.Click, cmnuTrayMovieMissAutoDiscArt.Click
         Functions.SetScraperMod(Enums.ModType_Movie.DiscArt, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoEFanarts.Click, cmnuTrayMovieMissAutoEFanarts.Click
         Functions.SetScraperMod(Enums.ModType_Movie.EFanarts, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoEThumbs.Click, cmnuTrayMovieMissAutoEThumbs.Click
         Functions.SetScraperMod(Enums.ModType_Movie.EThumbs, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoFanart.Click, cmnuTrayMovieMissAutoFanart.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Fanart, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoLandscape.Click, cmnuTrayMovieMissAutoLandscape.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Landscape, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoNfo.Click, cmnuTrayMovieMissAutoNfo.Click
         Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoPoster.Click, cmnuTrayMovieMissAutoPoster.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Poster, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoTheme.Click, cmnuTrayMovieMissAutoTheme.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Theme, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissAutoTrailer.Click, cmnuTrayMovieMissAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Trailer, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieMissSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieMissSkipAll.Click, cmnuTrayMovieMissSkipAll.Click
         Functions.SetScraperMod(Enums.ModType_Movie.All, True)
-        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateSkip, Master.DefaultMovieOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MissSkip, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMovieNewAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieNewAskAll.Click, cmnuTrayMovieNewAskAll.Click
@@ -11323,117 +11323,117 @@ doCancel:
 
     Private Sub mnuMovieSetMissAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskAll.Click
         Functions.SetScraperMod(Enums.ModType_Movie.All, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskBanner.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Banner, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAskClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskClearArt.Click
         Functions.SetScraperMod(Enums.ModType_Movie.ClearArt, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAskClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskClearLogo.Click
         Functions.SetScraperMod(Enums.ModType_Movie.ClearLogo, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAskDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskDiscArt.Click
         Functions.SetScraperMod(Enums.ModType_Movie.DiscArt, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskEFanarts.Click
         Functions.SetScraperMod(Enums.ModType_Movie.EFanarts, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskEThumbs.Click
         Functions.SetScraperMod(Enums.ModType_Movie.EThumbs, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskFanart.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Fanart, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAskLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskLandscape.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Landscape, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskNfo.Click
         Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAskPoster.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Poster, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAsk, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoAll.Click
         Functions.SetScraperMod(Enums.ModType_Movie.All, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoBanner.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Banner, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoClearArt.Click
         Functions.SetScraperMod(Enums.ModType_Movie.ClearArt, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoClearLogo.Click
         Functions.SetScraperMod(Enums.ModType_Movie.ClearLogo, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoDiscArt.Click
         Functions.SetScraperMod(Enums.ModType_Movie.DiscArt, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoEFanarts.Click
         Functions.SetScraperMod(Enums.ModType_Movie.EFanarts, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoEThumbs.Click
         Functions.SetScraperMod(Enums.ModType_Movie.EThumbs, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoFanart.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Fanart, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoLandscape.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Landscape, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoNfo.Click
         Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissAutoPoster.Click
         Functions.SetScraperMod(Enums.ModType_Movie.Poster, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissAuto, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetMissSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetMissSkipAll.Click
         Functions.SetScraperMod(Enums.ModType_Movie.All, True)
-        Me.MovieSetScrapeData(False, Enums.ScrapeType.UpdateSkip, Master.DefaultMovieSetOptions)
+        Me.MovieSetScrapeData(False, Enums.ScrapeType.MissSkip, Master.DefaultMovieSetOptions)
     End Sub
 
     Private Sub mnuMovieSetNewAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieSetNewAskAll.Click
@@ -11738,7 +11738,7 @@ doCancel:
                     Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                         Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
                         If Not index >= 0 Then Continue For
-                    Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.UpdateSkip
+                    Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
                         If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieMissingBanner AndAlso BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(51))) OrElse _
                                 (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieMissingClearArt AndAlso ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(61))) OrElse _
                                 (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieMissingClearLogo AndAlso ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(59))) OrElse _
@@ -11778,11 +11778,11 @@ doCancel:
                     Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
                 Case Enums.ScrapeType.FullSkip
                     Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-                Case Enums.ScrapeType.UpdateAuto
+                Case Enums.ScrapeType.MissAuto
                     Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                Case Enums.ScrapeType.UpdateAsk
+                Case Enums.ScrapeType.MissAsk
                     Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                Case Enums.ScrapeType.UpdateSkip
+                Case Enums.ScrapeType.MissSkip
                     Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
                 Case Enums.ScrapeType.NewAsk
                     Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
@@ -11950,7 +11950,7 @@ doCancel:
                         'Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
                         'If Not index >= 0 Then Continue For
                         Continue For
-                    Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.UpdateSkip
+                    Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
                         If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieSetMissingBanner AndAlso BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(8))) OrElse _
                                 (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieSetMissingClearArt AndAlso ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(16))) OrElse _
                                 (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieSetMissingClearLogo AndAlso ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(14))) OrElse _
@@ -11986,11 +11986,11 @@ doCancel:
                     Me.tslLoading.Text = Master.eLang.GetString(1216, "Scraping Media (All MovieSets - Auto):")
                 Case Enums.ScrapeType.FullSkip
                     Me.tslLoading.Text = Master.eLang.GetString(1217, "Scraping Media (All MovieSets - Skip):")
-                Case Enums.ScrapeType.UpdateAuto
+                Case Enums.ScrapeType.MissAuto
                     Me.tslLoading.Text = Master.eLang.GetString(1218, "Scraping Media (MovieSets Missing Items - Auto):")
-                Case Enums.ScrapeType.UpdateAsk
+                Case Enums.ScrapeType.MissAsk
                     Me.tslLoading.Text = Master.eLang.GetString(1219, "Scraping Media (MovieSets Missing Items - Ask):")
-                Case Enums.ScrapeType.UpdateSkip
+                Case Enums.ScrapeType.MissSkip
                     Me.tslLoading.Text = Master.eLang.GetString(1220, "Scraping Media (MovieSets Missing Items - Skip):")
                 Case Enums.ScrapeType.NewAsk
                     Me.tslLoading.Text = Master.eLang.GetString(1221, "Scraping Media (New MovieSets - Ask):")

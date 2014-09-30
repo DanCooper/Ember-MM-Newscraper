@@ -164,12 +164,6 @@
     <Compile Include="clsAPIXML.vb" />
     <Compile Include="clsAPIYouTube.vb" />
     <Compile Include="clsAPITrailers.vb" />
-    <Compile Include="dlgCompatibility.designer.vb">
-      <DependentUpon>dlgCompatibility.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgCompatibility.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgVersions.Designer.vb">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </Compile>
@@ -210,10 +204,6 @@
     <Compile Include="XML Serialization\clsXMLTVDBLanguages.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="dlgCompatibility.resx">
-      <DependentUpon>dlgCompatibility.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="dlgVersions.resx">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </EmbeddedResource>
