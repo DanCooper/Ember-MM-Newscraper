@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -1518,8 +1518,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = False
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2102,8 +2102,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = False
         Me.dgvMovieSets.AllowUserToDeleteRows = False
         Me.dgvMovieSets.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2236,8 +2236,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2437,8 +2437,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2582,8 +2582,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4533,7 +4533,7 @@ Partial Class frmMain
         '
         'mnuMovieMissAuto
         '
-        Me.mnuMovieMissAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMissAutoAll, Me.mnuMovieMissAutoActor, Me.mnuMovieMissAutoBanner, Me.mnuMovieMissAutoClearArt, Me.mnuMovieMissAutoClearLogo, Me.mnuMovieMissAutoDiscArt, Me.mnuMovieMissAutoEFanarts, Me.mnuMovieMissAutoEThumbs, Me.mnuMovieMissAutoFanart, Me.mnuMovieMissAutoLandscape, Me.mnuMovieMissAutoNfo, Me.mnuMovieMissAutoPoster, Me.mnuMovieMissAutoTrailer, Me.mnuMovieMissAutoTheme})
+        Me.mnuMovieMissAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMissAutoAll, Me.mnuMovieMissAutoActor, Me.mnuMovieMissAutoBanner, Me.mnuMovieMissAutoClearArt, Me.mnuMovieMissAutoClearLogo, Me.mnuMovieMissAutoDiscArt, Me.mnuMovieMissAutoEFanarts, Me.mnuMovieMissAutoEThumbs, Me.mnuMovieMissAutoFanart, Me.mnuMovieMissAutoLandscape, Me.mnuMovieMissAutoNfo, Me.mnuMovieMissAutoPoster, Me.mnuMovieMissAutoTheme, Me.mnuMovieMissAutoTrailer})
         Me.mnuMovieMissAuto.Name = "mnuMovieMissAuto"
         Me.mnuMovieMissAuto.Size = New System.Drawing.Size(264, 22)
         Me.mnuMovieMissAuto.Text = "Automatic (Force Best Match)"
@@ -4543,6 +4543,7 @@ Partial Class frmMain
         Me.mnuMovieMissAutoAll.Name = "mnuMovieMissAutoAll"
         Me.mnuMovieMissAutoAll.Size = New System.Drawing.Size(171, 22)
         Me.mnuMovieMissAutoAll.Text = "All Items"
+        Me.mnuMovieMissAutoAll.Visible = False
         '
         'mnuMovieMissAutoActor
         '
@@ -4647,6 +4648,7 @@ Partial Class frmMain
         Me.mnuMovieMissAskAll.Name = "mnuMovieMissAskAll"
         Me.mnuMovieMissAskAll.Size = New System.Drawing.Size(171, 22)
         Me.mnuMovieMissAskAll.Text = "All Items"
+        Me.mnuMovieMissAskAll.Visible = False
         '
         'mnuMovieMissAskActor
         '
@@ -4745,11 +4747,12 @@ Partial Class frmMain
         Me.mnuMovieMissSkip.Name = "mnuMovieMissSkip"
         Me.mnuMovieMissSkip.Size = New System.Drawing.Size(264, 22)
         Me.mnuMovieMissSkip.Text = "Skip (Skip If More Than One Match)"
+        Me.mnuMovieMissSkip.Visible = False
         '
         'mnuMovieMissSkipAll
         '
         Me.mnuMovieMissSkipAll.Name = "mnuMovieMissSkipAll"
-        Me.mnuMovieMissSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuMovieMissSkipAll.Size = New System.Drawing.Size(152, 22)
         Me.mnuMovieMissSkipAll.Text = "All Items"
         '
         'mnuMovieNew
@@ -6572,7 +6575,7 @@ Partial Class frmMain
         '
         Me.cmnuTray.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayTitle, Me.ToolStripSeparator21, Me.cmnuTrayUpdate, Me.cmnuTrayScrape, Me.cmnuTrayMediaCenters, Me.ToolStripSeparator23, Me.cmnuTrayTools, Me.ToolStripSeparator22, Me.cmnuTraySettings, Me.ToolStripSeparator13, Me.cmnuTrayExit})
         Me.cmnuTray.Name = "cmnuTrayIcon"
-        Me.cmnuTray.Size = New System.Drawing.Size(195, 204)
+        Me.cmnuTray.Size = New System.Drawing.Size(195, 182)
         Me.cmnuTray.Text = "Ember Media Manager"
         '
         'cmnuTrayTitle
