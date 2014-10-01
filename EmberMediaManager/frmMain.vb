@@ -7289,7 +7289,7 @@ doCancel:
                                 End If
                             End If
 
-                            LevFail = StringUtils.ComputeLevenshtein(StringUtils.FilterName(drvRow.Cells(15).Value.ToString, False, True).ToLower, StringUtils.FilterName(pTitle, False, True).ToLower) > Master.eSettings.MovieLevTolerance
+                            LevFail = StringUtils.ComputeLevenshtein(StringUtils.FilterName_Movie(drvRow.Cells(15).Value.ToString, False, True).ToLower, StringUtils.FilterName_Movie(pTitle, False, True).ToLower) > Master.eSettings.MovieLevTolerance
 
                             parOutOfTolerance.Value = LevFail
                             drvRow.Cells(44).Value = LevFail
@@ -9759,11 +9759,11 @@ doCancel:
                             Master.currMovie = Master.DB.LoadMovieFromDB(MoviePath)
                             Dim tmpTitle As String = String.Empty
                             If FileUtils.Common.isVideoTS(MoviePath) Then
-                                tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(MoviePath).FullName).Name, False)
+                                tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(MoviePath).FullName).Name, False)
                             ElseIf FileUtils.Common.isBDRip(MoviePath) Then
-                                tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(MoviePath).FullName).FullName).Name, False)
+                                tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(MoviePath).FullName).FullName).Name, False)
                             Else
-                                tmpTitle = StringUtils.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
+                                tmpTitle = StringUtils.FilterName_Movie(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
                             End If
                             If IsNothing(Master.currMovie.Movie) Then
                                 Master.currMovie.Movie = New MediaContainers.Movie
@@ -9782,14 +9782,14 @@ doCancel:
                                     'no title so assume it's an invalid nfo, clear nfo path if exists
                                     sFile.Nfo = String.Empty
                                     If FileUtils.Common.isVideoTS(sFile.Filename) Then
-                                        Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                        Master.currMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
                                     ElseIf FileUtils.Common.isBDRip(sFile.Filename) Then
-                                        Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).FullName).Name)
+                                        Master.currMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).FullName).Name)
                                     Else
                                         If sFile.UseFolder AndAlso sFile.isSingle Then
-                                            Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(sFile.Filename).Name)
+                                            Master.currMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(sFile.Filename).Name)
                                         Else
-                                            Master.currMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                            Master.currMovie.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(sFile.Filename))
                                         End If
                                     End If
                                 Else
@@ -13062,7 +13062,7 @@ doCancel:
                 End If
 
                 If String.IsNullOrEmpty(tmpShowDb.TVEp.Title) Then
-                    tmpShowDb.TVEp.Title = StringUtils.FilterTVEpName(Path.GetFileNameWithoutExtension(tmpShowDb.Filename), tmpShowDb.TVShow.Title, False)
+                    tmpShowDb.TVEp.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(tmpShowDb.Filename), tmpShowDb.TVShow.Title, False)
                 End If
 
                 Dim eContainer As New Scanner.EpisodeContainer With {.Filename = tmpShowDb.Filename}
@@ -13183,18 +13183,18 @@ doCancel:
 
                 If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
                     If FileUtils.Common.isVideoTS(tmpMovieDB.Filename) Then
-                        tmpMovieDB.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).Name)
-                        tmpMovieDB.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).Name, False)
+                        tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).Name)
+                        tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).Name, False)
                     ElseIf FileUtils.Common.isBDRip(tmpMovieDB.Filename) Then
-                        tmpMovieDB.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).FullName).Name)
-                        tmpMovieDB.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).FullName).Name, False)
+                        tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).FullName).Name)
+                        tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDB.Filename).FullName).FullName).Name, False)
                     Else
                         If tmpMovieDB.UseFolder AndAlso tmpMovieDB.IsSingle Then
-                            tmpMovieDB.ListTitle = StringUtils.FilterName(Directory.GetParent(tmpMovieDB.Filename).Name)
-                            tmpMovieDB.Movie.Title = StringUtils.FilterName(Directory.GetParent(tmpMovieDB.Filename).Name, False)
+                            tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(tmpMovieDB.Filename).Name)
+                            tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(tmpMovieDB.Filename).Name, False)
                         Else
-                            tmpMovieDB.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDB.Filename))
-                            tmpMovieDB.Movie.Title = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDB.Filename), False)
+                            tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(tmpMovieDB.Filename))
+                            tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(tmpMovieDB.Filename), False)
                         End If
                     End If
                 Else
@@ -13579,7 +13579,15 @@ doCancel:
                 End If
 
                 If String.IsNullOrEmpty(tmpShowDb.TVShow.Title) Then
-                    tmpShowDb.TVShow.Title = StringUtils.FilterTVShowName(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath), False)
+                    tmpShowDb.ListTitle = StringUtils.FilterName_TVShow(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath))
+                    tmpShowDb.TVShow.Title = StringUtils.FilterName_TVShow(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath), False)
+                Else
+                    Dim tTitle As String = StringUtils.FilterTokens_TV(tmpShowDb.TVShow.Title)
+                    If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(tmpShowDb.TVShow.Status) Then
+                        tmpShowDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpShowDb.TVShow.Status)
+                    Else
+                        tmpShowDb.ListTitle = tTitle
+                    End If
                 End If
 
                 Dim sContainer As New Scanner.TVShowContainer With {.ShowPath = tmpShowDb.ShowPath}

@@ -874,52 +874,6 @@ Public Class Scanner
                 End If
             End If
 
-            If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                'no title so assume it's an invalid nfo, clear nfo path if exists
-                mContainer.Nfo = String.Empty
-
-                If FileUtils.Common.isVideoTS(mContainer.Filename) Then
-                    tmpMovieDB.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
-                    tmpMovieDB.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name, False)
-                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                        tmpMovieDB.ListTitle = Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name
-                        tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name
-                    End If
-                ElseIf FileUtils.Common.isBDRip(mContainer.Filename) Then
-                    tmpMovieDB.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name)
-                    tmpMovieDB.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name, False)
-                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                        tmpMovieDB.ListTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name
-                        tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name
-                    End If
-                Else
-                    If mContainer.UseFolder AndAlso mContainer.isSingle Then
-                        tmpMovieDB.ListTitle = StringUtils.FilterName(Directory.GetParent(mContainer.Filename).Name)
-                        tmpMovieDB.Movie.Title = StringUtils.FilterName(Directory.GetParent(mContainer.Filename).Name, False)
-                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                            tmpMovieDB.ListTitle = Directory.GetParent(mContainer.Filename).Name
-                            tmpMovieDB.Movie.Title = Directory.GetParent(mContainer.Filename).Name
-                        End If
-                    Else
-                        tmpMovieDB.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(mContainer.Filename))
-                        tmpMovieDB.Movie.Title = StringUtils.FilterName(Path.GetFileNameWithoutExtension(mContainer.Filename), False)
-                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                            tmpMovieDB.ListTitle = Path.GetFileNameWithoutExtension(mContainer.Filename)
-                            tmpMovieDB.Movie.Title = Path.GetFileNameWithoutExtension(mContainer.Filename)
-                        End If
-                    End If
-                End If
-
-
-            Else
-                Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
-                If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
-                    tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
-                Else
-                    tmpMovieDB.ListTitle = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
-                End If
-            End If
-
             If String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
                 If FileUtils.Common.isVideoTS(mContainer.Filename) Then
                     tmpMovieDB.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
@@ -931,6 +885,51 @@ Public Class Scanner
                     Else
                         tmpMovieDB.Movie.Year = StringUtils.GetYear(Path.GetFileNameWithoutExtension(mContainer.Filename))
                     End If
+                End If
+            End If
+
+            If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                'no title so assume it's an invalid nfo, clear nfo path if exists
+                mContainer.Nfo = String.Empty
+
+                If FileUtils.Common.isVideoTS(mContainer.Filename) Then
+                    tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
+                    tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name, False)
+                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                        tmpMovieDB.ListTitle = Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name
+                        tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name
+                    End If
+                ElseIf FileUtils.Common.isBDRip(mContainer.Filename) Then
+                    tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name)
+                    tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name, False)
+                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                        tmpMovieDB.ListTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name
+                        tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name
+                    End If
+                Else
+                    If mContainer.UseFolder AndAlso mContainer.isSingle Then
+                        tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(mContainer.Filename).Name)
+                        tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(mContainer.Filename).Name, False)
+                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                            tmpMovieDB.ListTitle = Directory.GetParent(mContainer.Filename).Name
+                            tmpMovieDB.Movie.Title = Directory.GetParent(mContainer.Filename).Name
+                        End If
+                    Else
+                        tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(mContainer.Filename))
+                        tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(mContainer.Filename), False)
+                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                            tmpMovieDB.ListTitle = Path.GetFileNameWithoutExtension(mContainer.Filename)
+                            tmpMovieDB.Movie.Title = Path.GetFileNameWithoutExtension(mContainer.Filename)
+                        End If
+                    End If
+                End If
+
+            Else
+                Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
+                If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
+                    tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
+                Else
+                    tmpMovieDB.ListTitle = tTitle
                 End If
             End If
 
@@ -1484,42 +1483,47 @@ Public Class Scanner
                     If String.IsNullOrEmpty(tmpTVDB.TVShow.Title) Then
                         'no title so assume it's an invalid nfo, clear nfo path if exists
                         TVContainer.ShowNfo = String.Empty
-                        tmpTVDB.TVShow.Title = StringUtils.FilterTVShowName(FileUtils.Common.GetDirectory(TVContainer.ShowPath))
+
+                        tmpTVDB.ListTitle = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(TVContainer.ShowPath))
+                        tmpTVDB.TVShow.Title = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(TVContainer.ShowPath), False)
 
                         'everything was filtered out... just set to directory name
-                        If String.IsNullOrEmpty(tmpTVDB.TVShow.Title) Then tmpTVDB.TVShow.Title = FileUtils.Common.GetDirectory(TVContainer.ShowPath)
+                        If String.IsNullOrEmpty(tmpTVDB.TVShow.Title) Then
+                            tmpTVDB.ListTitle = FileUtils.Common.GetDirectory(TVContainer.ShowPath)
+                            tmpTVDB.TVShow.Title = FileUtils.Common.GetDirectory(TVContainer.ShowPath)
+                        End If
+                    Else
+                        Dim tTitle As String = StringUtils.FilterTokens_TV(tmpTVDB.TVShow.Title)
+                        If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(tmpTVDB.TVShow.Status) Then
+                            tmpTVDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpTVDB.TVShow.Status)
+                        Else
+                            tmpTVDB.ListTitle = tTitle
+                        End If
                     End If
 
-                    tmpTVDB.ShowBannerPath = TVContainer.ShowBanner
-                    tmpTVDB.ShowCharacterArtPath = TVContainer.ShowCharacterArt
-                    tmpTVDB.ShowClearArtPath = TVContainer.ShowClearArt
-                    tmpTVDB.ShowClearLogoPath = TVContainer.ShowClearLogo
-                    tmpTVDB.ShowFanartPath = TVContainer.ShowFanart
-                    tmpTVDB.ShowLandscapePath = TVContainer.ShowLandscape
-                    tmpTVDB.ShowNfoPath = TVContainer.ShowNfo
-                    tmpTVDB.ShowPath = TVContainer.ShowPath
-                    tmpTVDB.ShowPosterPath = TVContainer.ShowPoster
-                    tmpTVDB.ShowThemePath = TVContainer.ShowTheme
-                    tmpTVDB.IsLockShow = False
-                    tmpTVDB.IsMarkShow = False
-                    tmpTVDB.Source = TVContainer.Source
-                    tmpTVDB.Ordering = TVContainer.Ordering
-                    tmpTVDB.ShowLanguage = TVContainer.Language
-                    'get the install wizard selected language for initial scan
-                    'Dim ShowLang As String = clsAdvancedSettings.GetSetting("TVDBLanguage", String.Empty, "scraper.TVDB")
-                    'If Not String.IsNullOrEmpty(ShowLang) Then
-                    '    tmpTVDB.ShowLanguage = ShowLang
-                    'ElseIf Not String.IsNullOrEmpty(Master.eSettings.TVGeneralLanguage) Then
-                    '    tmpTVDB.ShowLanguage = Master.eSettings.TVGeneralLanguage
-                    'Else
-                    '    tmpTVDB.ShowLanguage = "en"
-                    'End If
+                    If Not String.IsNullOrEmpty(tmpTVDB.ListTitle) Then
+                        tmpTVDB.ShowBannerPath = TVContainer.ShowBanner
+                        tmpTVDB.ShowCharacterArtPath = TVContainer.ShowCharacterArt
+                        tmpTVDB.ShowClearArtPath = TVContainer.ShowClearArt
+                        tmpTVDB.ShowClearLogoPath = TVContainer.ShowClearLogo
+                        tmpTVDB.ShowFanartPath = TVContainer.ShowFanart
+                        tmpTVDB.ShowLandscapePath = TVContainer.ShowLandscape
+                        tmpTVDB.ShowNfoPath = TVContainer.ShowNfo
+                        tmpTVDB.ShowPath = TVContainer.ShowPath
+                        tmpTVDB.ShowPosterPath = TVContainer.ShowPoster
+                        tmpTVDB.ShowThemePath = TVContainer.ShowTheme
+                        tmpTVDB.IsLockShow = False
+                        tmpTVDB.IsMarkShow = False
+                        tmpTVDB.Source = TVContainer.Source
+                        tmpTVDB.Ordering = TVContainer.Ordering
+                        tmpTVDB.ShowLanguage = TVContainer.Language
 
-                    Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
-
+                        Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
+                    End If
                 Else
                     tmpTVDB = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(htTVShows.Item(TVContainer.ShowPath.ToLower)))
                 End If
+
                 If tmpTVDB.ShowID > -1 Then
                     For Each Episode In TVContainer.Episodes
                         If Not String.IsNullOrEmpty(Episode.Filename) Then
@@ -1597,7 +1601,7 @@ Public Class Scanner
                                         'no title so assume it's an invalid nfo, clear nfo path if exists
                                         Episode.Nfo = String.Empty
                                         'set title based on episode file
-                                        If Not Master.eSettings.TVEpisodeNoFilter Then tmpTVDB.TVEp.Title = StringUtils.FilterTVEpName(Path.GetFileNameWithoutExtension(Episode.Filename), tmpTVDB.TVShow.Title)
+                                        If Not Master.eSettings.TVEpisodeNoFilter Then tmpTVDB.TVEp.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(Episode.Filename), tmpTVDB.TVShow.Title)
                                     End If
 
                                     If tmpTVDB.TVEp.Season = -999 Then tmpTVDB.TVEp.Season = sSeasons.Season

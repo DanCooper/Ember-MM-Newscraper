@@ -350,7 +350,7 @@ Public Class StringUtils
     ''' and duplicate whitespaces, replacing them all with a simple space </param>
     ''' <returns>The filtered name as a <c>String</c></returns>
     ''' <remarks></remarks>
-    Public Shared Function FilterName(ByVal movieName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
+    Public Shared Function FilterName_Movie(ByVal movieName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
         If String.IsNullOrEmpty(movieName) Then Return String.Empty
 
         movieName = ApplyFilters(movieName, Master.eSettings.MovieFilterCustom)
@@ -366,6 +366,71 @@ Public Class StringUtils
         If remPunct Then movieName = RemovePunctuation(movieName.Trim)
 
         Return movieName.Trim
+    End Function
+    ''' <summary>
+    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
+    ''' </summary>
+    ''' <param name="TVEpName">The <c>String</c> TV Episode name to clean</param>
+    ''' <param name="TVShowName">The <c>String</c> EV Show name to clean</param>
+    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
+    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
+    ''' and duplicate whitespaces, replacing them all with a simple space </param>
+    ''' <returns>The filtered name as a <c>String</c></returns>
+    ''' <remarks></remarks>
+    Public Shared Function FilterName_TVEp(ByVal TVEpName As String, ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
+        Try
+
+            If String.IsNullOrEmpty(TVEpName) Then Return String.Empty
+            TVEpName = TVEpName.Trim
+            TVEpName = ApplyFilters(TVEpName, Master.eSettings.TVEpisodeFilterCustom)
+            TVEpName = CleanStackingMarkers(TVEpName)
+
+            'remove the show name from the episode name
+            If Not String.IsNullOrEmpty(TVShowName) Then TVEpName = Strings.Replace(TVEpName, TVShowName.Trim, String.Empty, 1, -1, CompareMethod.Text)
+
+            'Convert String To Proper Case
+            If Master.eSettings.TVEpisodeProperCase AndAlso doExtras Then
+                TVEpName = ProperCase(TVEpName.Trim)
+            End If
+
+            'TODO Dekker500 Why are we not using this next line (FilterTokens)?
+            ' Answer: No FilterTokens for episodes, also no ListTitle (make no sense)
+            'If doExtras Then TVEpName = FilterTokens(TVEpName.Trim)
+            If remPunct Then TVEpName = RemovePunctuation(TVEpName.Trim)
+
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+        Return TVEpName.Trim
+    End Function
+    ''' <summary>
+    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
+    ''' </summary>
+    ''' <param name="TVShowName">The <c>String</c> TV Show name to clean</param>
+    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
+    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
+    ''' and duplicate whitespaces, replacing them all with a simple space </param>
+    ''' <returns>The filtered name as a <c>String</c></returns>
+    ''' <remarks></remarks>
+    Public Shared Function FilterName_TVShow(ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
+        '//
+        ' Clean all the crap out of the name
+        '\\
+        If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
+        TVShowName = TVShowName.Trim
+        TVShowName = ApplyFilters(TVShowName, Master.eSettings.TVShowFilterCustom)
+        'TVShowName = CleanStackingMarkers(TVShowName)
+
+        'Convert String To Proper Case
+        If Master.eSettings.TVShowProperCase AndAlso doExtras Then
+            TVShowName = ProperCase(TVShowName)
+        End If
+
+        If doExtras Then TVShowName = FilterTokens_TV(TVShowName.Trim)
+        If remPunct Then TVShowName = RemovePunctuation(CleanStackingMarkers(TVShowName.Trim))
+
+        Return TVShowName.Trim
     End Function
     ''' <summary>
     ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
@@ -510,71 +575,6 @@ Public Class StringUtils
             Next
         End If
         Return newTitle.Trim
-    End Function
-    ''' <summary>
-    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
-    ''' </summary>
-    ''' <param name="TVEpName">The <c>String</c> TV Episode name to clean</param>
-    ''' <param name="TVShowName">The <c>String</c> EV Show name to clean</param>
-    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
-    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
-    ''' and duplicate whitespaces, replacing them all with a simple space </param>
-    ''' <returns>The filtered name as a <c>String</c></returns>
-    ''' <remarks></remarks>
-    Public Shared Function FilterTVEpName(ByVal TVEpName As String, ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
-        Try
-
-            If String.IsNullOrEmpty(TVEpName) Then Return String.Empty
-            TVEpName = TVEpName.Trim
-            TVEpName = ApplyFilters(TVEpName, Master.eSettings.TVEpisodeFilterCustom)
-            TVEpName = CleanStackingMarkers(TVEpName)
-
-            'remove the show name from the episode name
-            If Not String.IsNullOrEmpty(TVShowName) Then TVEpName = Strings.Replace(TVEpName, TVShowName.Trim, String.Empty, 1, -1, CompareMethod.Text)
-
-            'Convert String To Proper Case
-            If Master.eSettings.TVEpisodeProperCase AndAlso doExtras Then
-                TVEpName = ProperCase(TVEpName.Trim)
-            End If
-
-            'TODO Dekker500 Why are we not using this next line (FilterTokens)?
-            'If doExtras Then TVEpName = FilterTokens(TVEpName.Trim)
-            If remPunct Then TVEpName = RemovePunctuation(TVEpName.Trim)
-
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-        Return TVEpName.Trim
-    End Function
-    ''' <summary>
-    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
-    ''' </summary>
-    ''' <param name="TVShowName">The <c>String</c> TV Show name to clean</param>
-    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
-    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
-    ''' and duplicate whitespaces, replacing them all with a simple space </param>
-    ''' <returns>The filtered name as a <c>String</c></returns>
-    ''' <remarks></remarks>
-    Public Shared Function FilterTVShowName(ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
-        '//
-        ' Clean all the crap out of the name
-        '\\
-        If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
-        TVShowName = TVShowName.Trim
-        TVShowName = ApplyFilters(TVShowName, Master.eSettings.TVShowFilterCustom)
-        'TVShowName = CleanStackingMarkers(TVShowName)
-
-        'Convert String To Proper Case
-        If Master.eSettings.TVShowProperCase AndAlso doExtras Then
-            TVShowName = ProperCase(TVShowName)
-        End If
-
-        'TODO Dekker500 Why are we not using this next line (FilterTokens)?
-        'If doExtras Then TVEpName = FilterTokens(TVEpName.Trim)
-        If remPunct Then TVShowName = RemovePunctuation(CleanStackingMarkers(TVShowName.Trim))
-
-        Return TVShowName.Trim
     End Function
     ''' <summary>
     ''' Removes the four-digit year from the given <c>String</c>

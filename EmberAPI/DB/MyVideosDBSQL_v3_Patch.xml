@@ -133,7 +133,8 @@
         ClearArtPath      text,
         HasEFanarts       bool NOT NULL DEFAULT False,
         EFanartsPath      text,
-        Runtime           text
+        Runtime           text,
+        Title             text
         );
 
         CREATE UNIQUE INDEX UniqueTVShowPath
@@ -180,7 +181,8 @@
         ClearArtPath,
         HasEFanarts,
         EFanartsPath,
-        Runtime)
+        Runtime,
+        Title)
         SELECT
         ID,
         Title,
@@ -221,15 +223,12 @@
         ClearArtPath,
         HasEFanarts,
         EFanartsPath,
-        Runtime
+        Runtime,
+        Title
         FROM TVShows01;
 
         DROP TABLE TVShows01;
       </execute>
-    </command>
-    <command type="DB">
-      <description>2</description>
-      <execute>ALTER TABLE TVShows ADD Title TEXT;</execute>
     </command>
   </transaction>
   <noTransaction type="">
