@@ -18,8 +18,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 1024, 768
-' # Panel size: 750, 500
+' # Dialog size: 1024; 768
+' # Panel size: 750; 500
 ' # Enlarge it to see all the panels.
 
 Imports System

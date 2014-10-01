@@ -1915,7 +1915,7 @@ Partial Class dlgSettings
         Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesOpts)
         Me.pnlMovieImages.Controls.Add(Me.gbMovieFanartOpts)
         Me.pnlMovieImages.Controls.Add(Me.gbMoviePosterOpts)
-        Me.pnlMovieImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlMovieImages.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.pnlMovieImages.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieImages.Name = "pnlMovieImages"
         Me.pnlMovieImages.Size = New System.Drawing.Size(750, 500)
@@ -3302,7 +3302,7 @@ Partial Class dlgSettings
         Me.pnlGeneral.Controls.Add(Me.gbGeneralMainWindow)
         Me.pnlGeneral.Controls.Add(Me.gbGeneralInterface)
         Me.pnlGeneral.Controls.Add(Me.gbGeneralMisc)
-        Me.pnlGeneral.Location = New System.Drawing.Point(5, 3)
+        Me.pnlGeneral.Location = New System.Drawing.Point(900, 900)
         Me.pnlGeneral.Name = "pnlGeneral"
         Me.pnlGeneral.Size = New System.Drawing.Size(750, 500)
         Me.pnlGeneral.TabIndex = 10
@@ -4355,7 +4355,7 @@ Partial Class dlgSettings
         Me.pnlMovieSources.Controls.Add(Me.lvMovieSources)
         Me.pnlMovieSources.Controls.Add(Me.btnMovieSourceRemove)
         Me.pnlMovieSources.Controls.Add(Me.btnMovieSourceAdd)
-        Me.pnlMovieSources.Location = New System.Drawing.Point(905, 900)
+        Me.pnlMovieSources.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieSources.Name = "pnlMovieSources"
         Me.pnlMovieSources.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieSources.TabIndex = 13
@@ -11196,7 +11196,7 @@ Partial Class dlgSettings
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperFieldsOpts)
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperMiscOpts)
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperMetaDataOpts)
-        Me.pnlMovieScraper.Location = New System.Drawing.Point(4, 4)
+        Me.pnlMovieScraper.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
         Me.pnlMovieScraper.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieScraper.TabIndex = 14
@@ -11441,7 +11441,7 @@ Partial Class dlgSettings
         '
         Me.pnlTVThemes.BackColor = System.Drawing.Color.White
         Me.pnlTVThemes.Controls.Add(Me.Label2)
-        Me.pnlTVThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlTVThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.pnlTVThemes.Location = New System.Drawing.Point(900, 900)
         Me.pnlTVThemes.Name = "pnlTVThemes"
         Me.pnlTVThemes.Size = New System.Drawing.Size(750, 500)
@@ -11453,7 +11453,7 @@ Partial Class dlgSettings
         Me.Label2.AutoSize = true
         Me.Label2.Location = New System.Drawing.Point(206, 235)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(138, 13)
+        Me.Label2.Size = New System.Drawing.Size(131, 13)
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "TV Themes Dummy Label"
         '
@@ -12015,8 +12015,6 @@ Partial Class dlgSettings
         Me.pnlMovieSetImages.Controls.Add(Me.gbMovieSetLandscapeOpts)
         Me.pnlMovieSetImages.Controls.Add(Me.gbMovieSetFanartOpts)
         Me.pnlMovieSetImages.Controls.Add(Me.gbMovieSetPosterOpts)
-        Me.pnlMovieSetImages.Controls.Add(Me.pnlMovieScraper)
-        Me.pnlMovieSetImages.Controls.Add(Me.pnlGeneral)
         Me.pnlMovieSetImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.pnlMovieSetImages.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieSetImages.Name = "pnlMovieSetImages"
@@ -12561,7 +12559,9 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlMovieSetImages)
         Me.Controls.Add(Me.pnlMovieSetScraper)
         Me.Controls.Add(Me.pnlMovieSetSources)
+        Me.Controls.Add(Me.pnlMovieScraper)
         Me.Controls.Add(Me.pnlMovieSetGeneral)
+        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlTVThemes)
         Me.Controls.Add(Me.pnlMovieThemes)
         Me.Controls.Add(Me.pnlProxy)
@@ -12584,9 +12584,7 @@ Partial Class dlgSettings
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
         Me.MaximizeBox = false
-        Me.MaximumSize = New System.Drawing.Size(1024, 768)
         Me.MinimizeBox = false
-        Me.MinimumSize = New System.Drawing.Size(1024, 768)
         Me.Name = "dlgSettings"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Settings"
