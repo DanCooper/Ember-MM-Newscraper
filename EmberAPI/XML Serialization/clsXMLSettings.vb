@@ -192,6 +192,7 @@ Partial Public Class clsXMLSettings
     Private _moviescrapercertformpaa As Boolean
     Private _moviescrapercertification As Boolean
     Private _moviescrapercertlang As String
+    Private _moviescrapercleanfields As Boolean
     Private _moviescrapercleanplotoutline As Boolean
     Private _moviescrapercollection As Boolean
     Private _moviescrapercountry As Boolean
@@ -1705,6 +1706,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As String)
             Me._moviegeneralflaglang = value
+        End Set
+    End Property
+
+    Public Property MovieScraperCleanFields() As Boolean
+        Get
+            Return Me._moviescrapercleanfields
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescrapercleanfields = value
         End Set
     End Property
 

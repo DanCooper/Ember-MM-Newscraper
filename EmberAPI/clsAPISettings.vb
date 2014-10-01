@@ -952,6 +952,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieScraperCleanFields() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperCleanFields
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperCleanFields = value
+        End Set
+    End Property
+
     Public Property MovieScraperCleanPlotOutline() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperCleanPlotOutline

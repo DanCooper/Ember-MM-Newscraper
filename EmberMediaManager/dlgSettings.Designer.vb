@@ -926,6 +926,7 @@ Partial Class dlgSettings
         Me.chkMovieLockTagline = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockTitle = New System.Windows.Forms.CheckBox()
         Me.gbMovieScraperMiscOpts = New System.Windows.Forms.GroupBox()
+        Me.chkMovieScraperCleanFields = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperDetailView = New System.Windows.Forms.CheckBox()
         Me.gbMovieCertification = New System.Windows.Forms.GroupBox()
         Me.chkMovieScraperCertForMPAA = New System.Windows.Forms.CheckBox()
@@ -11068,6 +11069,7 @@ Partial Class dlgSettings
         '
         'gbMovieScraperMiscOpts
         '
+        Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCleanFields)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperDetailView)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.gbMovieCertification)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperOnlyValueForMPAA)
@@ -11086,15 +11088,25 @@ Partial Class dlgSettings
         Me.gbMovieScraperMiscOpts.TabStop = false
         Me.gbMovieScraperMiscOpts.Text = "Miscellaneous"
         '
+        'chkMovieScraperCleanFields
+        '
+        Me.chkMovieScraperCleanFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieScraperCleanFields.Location = New System.Drawing.Point(242, 19)
+        Me.chkMovieScraperCleanFields.Name = "chkMovieScraperCleanFields"
+        Me.chkMovieScraperCleanFields.Size = New System.Drawing.Size(179, 17)
+        Me.chkMovieScraperCleanFields.TabIndex = 79
+        Me.chkMovieScraperCleanFields.Text = "Cleanup disabled fields"
+        Me.chkMovieScraperCleanFields.UseVisualStyleBackColor = True
+        '
         'chkMovieScraperDetailView
         '
-        Me.chkMovieScraperDetailView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperDetailView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperDetailView.Location = New System.Drawing.Point(6, 133)
         Me.chkMovieScraperDetailView.Name = "chkMovieScraperDetailView"
         Me.chkMovieScraperDetailView.Size = New System.Drawing.Size(256, 17)
         Me.chkMovieScraperDetailView.TabIndex = 78
         Me.chkMovieScraperDetailView.Text = "Show scraped results in detailed view"
-        Me.chkMovieScraperDetailView.UseVisualStyleBackColor = true
+        Me.chkMovieScraperDetailView.UseVisualStyleBackColor = True
         '
         'gbMovieCertification
         '
@@ -11104,90 +11116,90 @@ Partial Class dlgSettings
         Me.gbMovieCertification.Name = "gbMovieCertification"
         Me.gbMovieCertification.Size = New System.Drawing.Size(304, 59)
         Me.gbMovieCertification.TabIndex = 77
-        Me.gbMovieCertification.TabStop = false
+        Me.gbMovieCertification.TabStop = False
         Me.gbMovieCertification.Text = "Certification"
         '
         'chkMovieScraperCertForMPAA
         '
-        Me.chkMovieScraperCertForMPAA.Enabled = false
-        Me.chkMovieScraperCertForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCertForMPAA.Enabled = False
+        Me.chkMovieScraperCertForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCertForMPAA.Location = New System.Drawing.Point(6, 16)
         Me.chkMovieScraperCertForMPAA.Name = "chkMovieScraperCertForMPAA"
         Me.chkMovieScraperCertForMPAA.Size = New System.Drawing.Size(256, 17)
         Me.chkMovieScraperCertForMPAA.TabIndex = 6
         Me.chkMovieScraperCertForMPAA.Text = "Use Certification for MPAA (XBMC users)"
-        Me.chkMovieScraperCertForMPAA.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCertForMPAA.UseVisualStyleBackColor = True
         '
         'chkMovieScraperUseMPAAFSK
         '
-        Me.chkMovieScraperUseMPAAFSK.Enabled = false
-        Me.chkMovieScraperUseMPAAFSK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperUseMPAAFSK.Enabled = False
+        Me.chkMovieScraperUseMPAAFSK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperUseMPAAFSK.Location = New System.Drawing.Point(6, 36)
         Me.chkMovieScraperUseMPAAFSK.Name = "chkMovieScraperUseMPAAFSK"
         Me.chkMovieScraperUseMPAAFSK.Size = New System.Drawing.Size(256, 17)
         Me.chkMovieScraperUseMPAAFSK.TabIndex = 67
         Me.chkMovieScraperUseMPAAFSK.Text = "Use MPAA as Fallback for FSK Rating"
-        Me.chkMovieScraperUseMPAAFSK.UseVisualStyleBackColor = true
+        Me.chkMovieScraperUseMPAAFSK.UseVisualStyleBackColor = True
         '
         'chkMovieScraperOnlyValueForMPAA
         '
-        Me.chkMovieScraperOnlyValueForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperOnlyValueForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperOnlyValueForMPAA.Location = New System.Drawing.Point(6, 114)
         Me.chkMovieScraperOnlyValueForMPAA.Name = "chkMovieScraperOnlyValueForMPAA"
         Me.chkMovieScraperOnlyValueForMPAA.Size = New System.Drawing.Size(256, 17)
         Me.chkMovieScraperOnlyValueForMPAA.TabIndex = 66
         Me.chkMovieScraperOnlyValueForMPAA.Text = "MPAA: Save only number (only for YAMJ)"
-        Me.chkMovieScraperOnlyValueForMPAA.UseVisualStyleBackColor = true
+        Me.chkMovieScraperOnlyValueForMPAA.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCleanPlotOutline
         '
-        Me.chkMovieScraperCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCleanPlotOutline.Location = New System.Drawing.Point(6, 38)
         Me.chkMovieScraperCleanPlotOutline.Name = "chkMovieScraperCleanPlotOutline"
-        Me.chkMovieScraperCleanPlotOutline.Size = New System.Drawing.Size(380, 17)
+        Me.chkMovieScraperCleanPlotOutline.Size = New System.Drawing.Size(415, 17)
         Me.chkMovieScraperCleanPlotOutline.TabIndex = 76
         Me.chkMovieScraperCleanPlotOutline.Text = "Clean Plot/Outline"
-        Me.chkMovieScraperCleanPlotOutline.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCleanPlotOutline.UseVisualStyleBackColor = True
         '
         'chkMovieScraperOutlinePlotEnglishOverwrite
         '
-        Me.chkMovieScraperOutlinePlotEnglishOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperOutlinePlotEnglishOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Location = New System.Drawing.Point(6, 95)
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Name = "chkMovieScraperOutlinePlotEnglishOverwrite"
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Size = New System.Drawing.Size(380, 17)
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.TabIndex = 72
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Text = "Only overwrite english plot/outline"
-        Me.chkMovieScraperOutlinePlotEnglishOverwrite.UseVisualStyleBackColor = true
+        Me.chkMovieScraperOutlinePlotEnglishOverwrite.UseVisualStyleBackColor = True
         '
         'chkMovieScraperPlotForOutline
         '
-        Me.chkMovieScraperPlotForOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperPlotForOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperPlotForOutline.Location = New System.Drawing.Point(6, 57)
         Me.chkMovieScraperPlotForOutline.Name = "chkMovieScraperPlotForOutline"
         Me.chkMovieScraperPlotForOutline.Size = New System.Drawing.Size(248, 17)
         Me.chkMovieScraperPlotForOutline.TabIndex = 68
         Me.chkMovieScraperPlotForOutline.Text = "Use Plot  for Outline if Outline is Empty"
-        Me.chkMovieScraperPlotForOutline.UseVisualStyleBackColor = true
+        Me.chkMovieScraperPlotForOutline.UseVisualStyleBackColor = True
         '
         'chkMovieScraperOutlineForPlot
         '
-        Me.chkMovieScraperOutlineForPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperOutlineForPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperOutlineForPlot.Location = New System.Drawing.Point(6, 76)
         Me.chkMovieScraperOutlineForPlot.Name = "chkMovieScraperOutlineForPlot"
         Me.chkMovieScraperOutlineForPlot.Size = New System.Drawing.Size(380, 17)
         Me.chkMovieScraperOutlineForPlot.TabIndex = 3
         Me.chkMovieScraperOutlineForPlot.Text = "Use Outline for Plot if Plot is Empty"
-        Me.chkMovieScraperOutlineForPlot.UseVisualStyleBackColor = true
+        Me.chkMovieScraperOutlineForPlot.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCastWithImg
         '
-        Me.chkMovieScraperCastWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCastWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCastWithImg.Location = New System.Drawing.Point(6, 19)
         Me.chkMovieScraperCastWithImg.Name = "chkMovieScraperCastWithImg"
-        Me.chkMovieScraperCastWithImg.Size = New System.Drawing.Size(380, 17)
+        Me.chkMovieScraperCastWithImg.Size = New System.Drawing.Size(230, 17)
         Me.chkMovieScraperCastWithImg.TabIndex = 1
         Me.chkMovieScraperCastWithImg.Text = "Scrape Only Actors With Images"
-        Me.chkMovieScraperCastWithImg.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCastWithImg.UseVisualStyleBackColor = True
         '
         'pnlMovieScraper
         '
@@ -13919,4 +13931,5 @@ End Sub
     Friend WithEvents chkTVScraperShowRuntime As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVLockShowRuntime As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralShowImgNames As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieScraperCleanFields As System.Windows.Forms.CheckBox
 End Class
