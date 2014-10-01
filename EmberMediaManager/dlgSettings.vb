@@ -584,6 +584,18 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub btnTVSortTokenAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSortTokenAdd.Click
+        If Not String.IsNullOrEmpty(txtTVSortToken.Text) Then
+            If Not lstTVSortTokens.Items.Contains(txtTVSortToken.Text) Then
+                lstTVSortTokens.Items.Add(txtTVSortToken.Text)
+                Me.sResult.NeedsRefresh = True
+                Me.SetApplyButton(True)
+                txtTVSortToken.Text = String.Empty
+                txtTVSortToken.Focus()
+            End If
+        End If
+    End Sub
+
     Private Sub btnTVSourceAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourceAdd.Click
         Using dSource As New dlgTVSource
             If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -1017,6 +1029,10 @@ Public Class dlgSettings
         Me.RemoveMovieSetSortToken()
     End Sub
 
+    Private Sub btnTVSortTokenRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSortTokenRemove.Click
+        Me.RemoveTVSortToken()
+    End Sub
+
     Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
         Master.eSettings.TVGeneralLanguages = ModulesManager.Instance.TVGetLangs("thetvdb.com")
         Me.cbTVGeneralLang.Items.Clear()
@@ -1389,6 +1405,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieDisplayYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieDisplayYear.CheckedChanged
+        Me.sResult.NeedsRefresh = True
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVDisplayStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVDisplayStatus.CheckedChanged
         Me.sResult.NeedsRefresh = True
         Me.SetApplyButton(True)
     End Sub
@@ -3219,6 +3240,7 @@ Public Class dlgSettings
                 End If
                 Me.chkTVCleanDB.Checked = .TVCleanDB
                 Me.chkTVDisplayMissingEpisodes.Checked = .TVDisplayMissingEpisodes
+                Me.chkTVDisplayStatus.Checked = .TVDisplayStatus
                 Me.chkTVEpisodeFanartCol.Checked = .TVEpisodeFanartCol
                 Me.chkTVEpisodeFanartOverwrite.Checked = .TVEpisodeFanartOverwrite
                 Me.chkTVEpisodeFanartResize.Checked = .TVEpisodeFanartResize
@@ -3333,6 +3355,7 @@ Public Class dlgSettings
                 Me.lstFileSystemNoStackExts.Items.AddRange(.FileSystemNoStackExts.ToArray)
                 Me.lstMovieSortTokens.Items.AddRange(.MovieSortTokens.ToArray)
                 Me.lstMovieSetSortTokens.Items.AddRange(.MovieSetSortTokens.ToArray)
+                Me.lstTVSortTokens.Items.AddRange(.TVSortTokens.ToArray)
                 Me.tbMovieBannerQual.Value = .MovieBannerQual
                 Me.tbMovieEFanartsQual.Value = .MovieEFanartsQual
                 Me.tbMovieEThumbsQual.Value = .MovieEThumbsQual
@@ -4123,6 +4146,10 @@ Public Class dlgSettings
         If e.KeyCode = Keys.Delete Then Me.RemoveMovieSetSortToken()
     End Sub
 
+    Private Sub lsttvSortTokens_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstTVSortTokens.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveTVSortToken()
+    End Sub
+
     Private Sub lstTVScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstTVScraperDefFIExt.DoubleClick
         If Me.lstTVScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo
@@ -4426,6 +4453,16 @@ Public Class dlgSettings
         If Me.lstMovieSetSortTokens.Items.Count > 0 AndAlso Me.lstMovieSetSortTokens.SelectedItems.Count > 0 Then
             While Me.lstMovieSetSortTokens.SelectedItems.Count > 0
                 Me.lstMovieSetSortTokens.Items.Remove(Me.lstMovieSetSortTokens.SelectedItems(0))
+            End While
+            Me.sResult.NeedsRefresh = True
+            Me.SetApplyButton(True)
+        End If
+    End Sub
+
+    Private Sub RemoveTVSortToken()
+        If Me.lstTVSortTokens.Items.Count > 0 AndAlso Me.lstTVSortTokens.SelectedItems.Count > 0 Then
+            While Me.lstTVSortTokens.SelectedItems.Count > 0
+                Me.lstTVSortTokens.Items.Remove(Me.lstTVSortTokens.SelectedItems(0))
             End While
             Me.sResult.NeedsRefresh = True
             Me.SetApplyButton(True)
@@ -4796,6 +4833,7 @@ Public Class dlgSettings
                 .TVASPosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVASPosterWidth.Text), Convert.ToInt32(Me.txtTVASPosterWidth.Text), 0)
                 .TVCleanDB = Me.chkTVCleanDB.Checked
                 .TVDisplayMissingEpisodes = Me.chkTVDisplayMissingEpisodes.Checked
+                .TVDisplayStatus = Me.chkTVDisplayStatus.Checked
                 .TVEpisodeFanartCol = Me.chkTVEpisodeFanartCol.Checked
                 .TVEpisodeFanartHeight = If(Not String.IsNullOrEmpty(Me.txtTVEpisodeFanartHeight.Text), Convert.ToInt32(Me.txtTVEpisodeFanartHeight.Text), 0)
                 .TVEpisodeFanartOverwrite = Me.chkTVEpisodeFanartOverwrite.Checked
@@ -4931,6 +4969,9 @@ Public Class dlgSettings
                 .TVShowRegexes.AddRange(Me.TVShowRegex)
                 .TVShowThemeCol = Me.chkTVShowThemeCol.Checked
                 .TVSkipLessThan = Convert.ToInt32(Me.txtTVSkipLessThan.Text)
+                .TVSortTokens.Clear()
+                .TVSortTokens.AddRange(lstTVSortTokens.Items.OfType(Of String).ToList)
+                If .TVSortTokens.Count <= 0 Then .TVSortTokensIsEmpty = True
 
                 If Me.tcFileSystemCleaner.SelectedTab.Name = "tpFileSystemCleanerExpert" Then
                     .FileSystemExpertCleaner = True
@@ -5503,12 +5544,12 @@ Public Class dlgSettings
         Me.chkMovieXBMCThemeCustom.Text = Master.eLang.GetString(1259, "Store themes in a custom path")
         Me.chkMovieXBMCThemeSub.Text = Master.eLang.GetString(1260, "Store themes in sub directorys")
         Me.chkMovieXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "XBMC Trailer Format")
-
         Me.chkMovieYAMJCompatibleSets.Text = Master.eLang.GetString(561, "YAMJ Compatible Sets")
         Me.chkMovieYAMJWatchedFile.Text = Master.eLang.GetString(1177, "Use .watched Files")
         Me.chkProxyCredsEnable.Text = Master.eLang.GetString(677, "Enable Credentials")
         Me.chkProxyEnable.Text = Master.eLang.GetString(673, "Enable Proxy")
         Me.chkTVDisplayMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
+        Me.chkTVDisplayStatus.Text = Master.eLang.GetString(126, "Display Status in List Title")
         Me.chkTVEpisodeNoFilter.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
         Me.chkTVGeneralMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
         Me.chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
@@ -5781,6 +5822,7 @@ Public Class dlgSettings
         Me.gbTVShowFanartOpts.Text = Me.gbMovieFanartOpts.Text
         Me.gbTVShowLandscapeOpts.Text = Me.gbMovieLandscapeOpts.Text
         Me.gbTVShowPosterOpts.Text = Me.gbMoviePosterOpts.Text
+        Me.gbTVSortTokensOpts.Text = Me.gbMovieSortTokensOpts.Text
         Me.lblMovieBannerHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblMovieBannerQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieBannerWidth.Text = Me.lblMoviePosterWidth.Text

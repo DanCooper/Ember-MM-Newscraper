@@ -52,6 +52,7 @@ Public Class frmMain
     Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovieSets As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwRefreshTVShows As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Private alActors As New List(Of String)
@@ -722,8 +723,10 @@ Public Class frmMain
         If Me.bwMovieSetScraper.IsBusy Then Me.bwMovieSetScraper.CancelAsync()
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
         If Me.bwRefreshMovieSets.IsBusy Then Me.bwRefreshMovieSets.CancelAsync()
+        If Me.bwRefreshTVShows.IsBusy Then Me.bwRefreshTVShows.CancelAsync()
         If Me.bwNonScrape.IsBusy Then Me.bwNonScrape.CancelAsync()
-        While Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse Me.bwNonScrape.IsBusy
+        While Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
+            Me.bwNonScrape.IsBusy OrElse Me.bwRefreshTVShows.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -7519,7 +7522,7 @@ doCancel:
                 Me.bsEpisodes.DataSource = Nothing
                 Me.dgvTVEpisodes.DataSource = Nothing
                 Me.ClearInfo()
-                Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime FROM TVShows ORDER BY Title COLLATE NOCASE;")
+                Master.DB.FillDataTable(Me.dtShows, "SELECT ID, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title FROM TVShows ORDER BY Title COLLATE NOCASE;")
             End If
 
             If Master.isCL Then
@@ -13610,7 +13613,7 @@ doCancel:
                     tmpShowDb.IsLockShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(10))
 
                     If Me.InvokeRequired Then
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpShowDb.TVShow.Title})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpShowDb.ListTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 2, hasPoster})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 3, hasFanart})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)})
@@ -13624,7 +13627,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 35, hasClearArt})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 37, hasEFanarts})
                     Else
-                        DirectCast(dRow(0), DataRow).Item(1) = tmpShowDb.TVShow.Title
+                        DirectCast(dRow(0), DataRow).Item(1) = tmpShowDb.ListTitle
                         DirectCast(dRow(0), DataRow).Item(2) = hasPoster
                         DirectCast(dRow(0), DataRow).Item(3) = hasFanart
                         DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)

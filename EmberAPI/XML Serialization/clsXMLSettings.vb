@@ -325,6 +325,7 @@ Partial Public Class clsXMLSettings
     Private _tvasposterwidth As Integer
     Private _tvcleandb As Boolean
     Private _tvdisplaymissingepisodes As Boolean
+    Private _tvdisplaystatus As Boolean
     Private _tvepisodefanartcol As Boolean
     Private _tvepisodefanartheight As Integer
     Private _tvepisodefanartoverwrite As Boolean
@@ -448,6 +449,8 @@ Partial Public Class clsXMLSettings
     Private _tvshowpropercase As Boolean
     Private _tvshowregexes As List(Of TVShowRegEx)
     Private _tvskiplessthan As Integer
+    Private _tvsorttokens As List(Of String)
+    Private _tvsorttokensisempty As Boolean
     Private _tvshowthemecol As Boolean
     Private _username As String
     Private _usetrakt As Boolean
@@ -1182,6 +1185,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvdisplaymissingepisodes = value
+        End Set
+    End Property
+
+    Public Property TVDisplayStatus() As Boolean
+        Get
+            Return Me._tvdisplaystatus
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvdisplaystatus = value
         End Set
     End Property
 
@@ -2826,6 +2838,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviesetsorttokensisempty = value
+        End Set
+    End Property
+
+    Public Property TVSortTokensIsEmpty() As Boolean
+        Get
+            Return Me._tvsorttokensisempty
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvsorttokensisempty = value
         End Set
     End Property
 
@@ -4500,6 +4521,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As List(Of String))
             Me._moviesetsorttokens = value
+        End Set
+    End Property
+
+    Public Property TVSortTokens() As List(Of String)
+        Get
+            Return Me._tvsorttokens
+        End Get
+        Set(ByVal value As List(Of String))
+            Me._tvsorttokens = value
         End Set
     End Property
 

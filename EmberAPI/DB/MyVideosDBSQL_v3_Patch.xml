@@ -1,0 +1,243 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v2_to_v3">
+    <command type="DB">
+      <description>1</description>
+      <execute>
+        CREATE TABLE TVShows01(
+        ID,
+        Title,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Language,
+        Ordering,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        Status,
+        HasTheme,
+        ThemePath,
+        HasCharacterArt,
+        CharacterArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        HasEFanarts,
+        EFanartsPath,
+        Runtime
+        );
+
+        INSERT INTO TVShows01
+        SELECT
+        ID,
+        Title,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Language,
+        Ordering,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        Status,
+        HasTheme,
+        ThemePath,
+        HasCharacterArt,
+        CharacterArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        HasEFanarts,
+        EFanartsPath,
+        Runtime
+        FROM TVShows;
+
+        DROP TABLE TVShows;
+
+        CREATE TABLE TVShows (
+        ID                integer PRIMARY KEY AUTOINCREMENT,
+        ListTitle         text,
+        HasPoster         bool NOT NULL DEFAULT False,
+        HasFanart         bool NOT NULL DEFAULT False,
+        HasNfo            bool NOT NULL DEFAULT False,
+        "New"             bool DEFAULT False,
+        Mark              bool NOT NULL DEFAULT False,
+        TVShowPath        text NOT NULL,
+        Source            text NOT NULL,
+        TVDB              text,
+        Lock              bool NOT NULL DEFAULT False,
+        EpisodeGuide      text,
+        Plot              text,
+        Genre             text,
+        Premiered         text,
+        Studio            text,
+        MPAA              text,
+        Rating            text,
+        PosterPath        text,
+        FanartPath        text,
+        NfoPath           text,
+        NeedsSave         bool NOT NULL DEFAULT False,
+        Language          text,
+        Ordering          integer NOT NULL DEFAULT 0,
+        HasBanner         bool NOT NULL DEFAULT False,
+        BannerPath        text,
+        HasLandscape      bool NOT NULL DEFAULT False,
+        LandscapePath     text,
+        Status            text,
+        HasTheme          bool NOT NULL DEFAULT False,
+        ThemePath         text,
+        HasCharacterArt   bool NOT NULL DEFAULT False,
+        CharacterArtPath  text,
+        HasClearLogo      bool NOT NULL DEFAULT False,
+        ClearLogoPath     text,
+        HasClearArt       bool NOT NULL DEFAULT False,
+        ClearArtPath      text,
+        HasEFanarts       bool NOT NULL DEFAULT False,
+        EFanartsPath      text,
+        Runtime           text
+        );
+
+        CREATE UNIQUE INDEX UniqueTVShowPath
+        ON TVShows
+        (TVShowPath);
+
+        INSERT INTO TVShows
+        (ID,
+        ListTitle,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Language,
+        Ordering,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        Status,
+        HasTheme,
+        ThemePath,
+        HasCharacterArt,
+        CharacterArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        HasEFanarts,
+        EFanartsPath,
+        Runtime)
+        SELECT
+        ID,
+        Title,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Language,
+        Ordering,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        Status,
+        HasTheme,
+        ThemePath,
+        HasCharacterArt,
+        CharacterArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        HasEFanarts,
+        EFanartsPath,
+        Runtime
+        FROM TVShows01;
+
+        DROP TABLE TVShows01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>ALTER TABLE TVShows ADD Title TEXT;</execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

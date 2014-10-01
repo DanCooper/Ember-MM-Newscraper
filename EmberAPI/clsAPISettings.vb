@@ -426,6 +426,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVDisplayStatus() As Boolean
+        Get
+            Return Settings._XMLSettings.TVDisplayStatus
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVDisplayStatus = value
+        End Set
+    End Property
+
     Public Property MovieDisplayYear() As Boolean
         Get
             Return Settings._XMLSettings.moviedisplayyear
@@ -2071,6 +2080,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieSetSortTokensIsEmpty = value
+        End Set
+    End Property
+
+    Public Property TVSortTokensIsEmpty() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSortTokensIsEmpty
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSortTokensIsEmpty = value
         End Set
     End Property
 
@@ -3744,6 +3762,15 @@ Public Class Settings
         End Get
         Set(ByVal value As List(Of String))
             Settings._XMLSettings.MovieSetSortTokens = value
+        End Set
+    End Property
+
+    Public Property TVSortTokens() As List(Of String)
+        Get
+            Return Settings._XMLSettings.TVSortTokens
+        End Get
+        Set(ByVal value As List(Of String))
+            Settings._XMLSettings.TVSortTokens = value
         End Set
     End Property
 
@@ -5640,6 +5667,12 @@ Public Class Settings
             Master.eSettings.MovieSetSortTokens.Add("the[\W_]")
             Master.eSettings.MovieSetSortTokens.Add("a[\W_]")
             Master.eSettings.MovieSetSortTokens.Add("an[\W_]")
+        End If
+
+        If Type = Enums.DefaultType.All AndAlso Master.eSettings.TVSortTokens.Count <= 0 AndAlso Not Master.eSettings.TVSortTokensIsEmpty Then
+            Master.eSettings.TVSortTokens.Add("the[\W_]")
+            Master.eSettings.TVSortTokens.Add("a[\W_]")
+            Master.eSettings.TVSortTokens.Add("an[\W_]")
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then

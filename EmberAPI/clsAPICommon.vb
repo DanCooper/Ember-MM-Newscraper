@@ -1859,6 +1859,7 @@ Public Class Structures
         Dim IsMarkEp As Boolean
         Dim IsMarkSeason As Boolean
         Dim IsMarkShow As Boolean
+        Dim ListTitle As String
         Dim Ordering As Enums.Ordering
         Dim SeasonBannerPath As String
         Dim SeasonFanartPath As String
