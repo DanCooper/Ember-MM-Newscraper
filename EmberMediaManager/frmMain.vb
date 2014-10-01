@@ -52,7 +52,7 @@ Public Class frmMain
     Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovieSets As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwRefreshTVShows As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwRefreshShows As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Private alActors As New List(Of String)
@@ -723,10 +723,10 @@ Public Class frmMain
         If Me.bwMovieSetScraper.IsBusy Then Me.bwMovieSetScraper.CancelAsync()
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
         If Me.bwRefreshMovieSets.IsBusy Then Me.bwRefreshMovieSets.CancelAsync()
-        If Me.bwRefreshTVShows.IsBusy Then Me.bwRefreshTVShows.CancelAsync()
+        If Me.bwRefreshShows.IsBusy Then Me.bwRefreshShows.CancelAsync()
         If Me.bwNonScrape.IsBusy Then Me.bwNonScrape.CancelAsync()
         While Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
-            Me.bwNonScrape.IsBusy OrElse Me.bwRefreshTVShows.IsBusy
+            Me.bwNonScrape.IsBusy OrElse Me.bwRefreshShows.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -1757,7 +1757,7 @@ Public Class frmMain
 
                     'Cocotus 2014/08/31 First implementation of NewScraper logic: ScrapeData_MovieNew -> scrape results will be saved in list
                     Dim ScrapedList As New List(Of MediaContainers.Movie)
-                    If ModulesManager.Instance.ScrapeData_MovieNew(DBScrapeMovie, ScrapedList, Args.scrapeType, Args.Options) Then
+                    If ModulesManager.Instance.ScrapeData_MovieNew(DBScrapeMovie, ScrapedList, Args.scrapeType, Args.Options_Movie) Then
                         Exit Try
                     End If
                     'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
@@ -3089,6 +3089,45 @@ doCancel:
         Me.tslLoading.Visible = False
 
         Me.FillList(False, True, False)
+        Me.Cursor = Cursors.Default
+    End Sub
+
+    Private Sub bwRefreshShows_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshShows.DoWork
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+
+        Dim iCount As Integer = 0
+        Dim ShowIDs As New Dictionary(Of Long, String)
+
+        For Each sRow As DataRow In Me.dtShows.Rows
+            ShowIDs.Add(Convert.ToInt64(sRow.Item(0)), sRow.Item(1).ToString)
+        Next
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each KVP As KeyValuePair(Of Long, String) In ShowIDs
+                Try
+                    'If Me.bwMovieScraper.CancellationPending Then Return
+                    Me.bwRefreshShows.ReportProgress(iCount, KVP.Value)
+                    Me.RefreshShow(KVP.Key, True, False, False, Args.withEpisodes)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
+                iCount += 1
+            Next
+            SQLtransaction.Commit()
+        End Using
+    End Sub
+
+    Private Sub bwRefreshShows_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwRefreshShows.ProgressChanged
+        Me.SetStatus(e.UserState.ToString)
+        Me.tspbLoading.Value = e.ProgressPercentage
+    End Sub
+
+    Private Sub bwRefreshShows_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRefreshShows.RunWorkerCompleted
+        Me.tslLoading.Text = String.Empty
+        Me.tspbLoading.Visible = False
+        Me.tslLoading.Visible = False
+
+        Me.FillList(False, False, True)
         Me.Cursor = Cursors.Default
     End Sub
 
@@ -11835,7 +11874,7 @@ doCancel:
         Application.DoEvents()
         bwMovieScraper.WorkerSupportsCancellation = True
         bwMovieScraper.WorkerReportsProgress = True
-        bwMovieScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
+        bwMovieScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options_Movie = Options})
     End Sub
 
     Private Sub MovieSetInfoDownloaded()
@@ -12152,7 +12191,7 @@ doCancel:
 
         bwNonScrape.WorkerReportsProgress = True
         bwNonScrape.WorkerSupportsCancellation = True
-        bwNonScrape.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
+        bwNonScrape.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options_Movie = Options})
     End Sub
 
     Private Sub cmnuMovieOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieOpenFolder.Click
@@ -13015,6 +13054,27 @@ doCancel:
             Me.bwRefreshMovieSets.WorkerReportsProgress = True
             Me.bwRefreshMovieSets.WorkerSupportsCancellation = True
             Me.bwRefreshMovieSets.RunWorkerAsync(New Arguments With {.onlyNew = onlyNew})
+        Else
+            Me.SetControlsEnabled(True)
+        End If
+    End Sub
+
+    Private Sub RefreshAllShows(ByVal withEpisodes As Boolean)
+        If Me.dtShows.Rows.Count > 0 Then
+            Me.Cursor = Cursors.WaitCursor
+            Me.SetControlsEnabled(False, True)
+            Me.tspbLoading.Style = ProgressBarStyle.Continuous
+            Me.EnableFilters(False)
+
+            Me.tspbLoading.Maximum = Me.dtShows.Rows.Count + 1
+            Me.tspbLoading.Value = 0
+            Me.tslLoading.Text = Master.eLang.GetString(110, "Refreshing Media:")
+            Me.tspbLoading.Visible = True
+            Me.tslLoading.Visible = True
+
+            Me.bwRefreshShows.WorkerReportsProgress = True
+            Me.bwRefreshShows.WorkerSupportsCancellation = True
+            Me.bwRefreshShows.RunWorkerAsync(New Arguments With {.withEpisodes = withEpisodes})
         Else
             Me.SetControlsEnabled(True)
         End If
@@ -15142,23 +15202,51 @@ doCancel:
                 Me.dgvMovies.Columns(8).Visible = Not Master.eSettings.MovieSubCol
                 Me.dgvMovies.Columns(9).Visible = Not Master.eSettings.MovieEThumbsCol
                 Me.dgvMovies.Columns(34).Visible = Not Master.eSettings.MovieWatchedCol
+                Me.dgvMovies.Columns(49).Visible = Not Master.eSettings.MovieEFanartsCol
+                Me.dgvMovies.Columns(51).Visible = Not Master.eSettings.MovieBannerCol
+                Me.dgvMovies.Columns(53).Visible = Not Master.eSettings.MovieLandscapeCol
+                Me.dgvMovies.Columns(55).Visible = Not Master.eSettings.MovieThemeCol
+                Me.dgvMovies.Columns(57).Visible = Not Master.eSettings.MovieDiscArtCol
+                Me.dgvMovies.Columns(59).Visible = Not Master.eSettings.MovieClearLogoCol
+                Me.dgvMovies.Columns(61).Visible = Not Master.eSettings.MovieClearArtCol
+            End If
+
+            If Me.dgvMovieSets.RowCount > 0 Then
+                Me.dgvMovieSets.Columns(2).Visible = Not Master.eSettings.MovieSetNfoCol
+                Me.dgvMovieSets.Columns(4).Visible = Not Master.eSettings.MovieSetPosterCol
+                Me.dgvMovieSets.Columns(6).Visible = Not Master.eSettings.MovieSetFanartCol
+                Me.dgvMovieSets.Columns(8).Visible = Not Master.eSettings.MovieSetBannerCol
+                Me.dgvMovieSets.Columns(10).Visible = Not Master.eSettings.MovieSetLandscapeCol
+                Me.dgvMovieSets.Columns(12).Visible = Not Master.eSettings.MovieSetDiscArtCol
+                Me.dgvMovieSets.Columns(14).Visible = Not Master.eSettings.MovieSetClearLogoCol
+                Me.dgvMovieSets.Columns(16).Visible = Not Master.eSettings.MovieSetClearArtCol
             End If
 
             If Me.dgvTVShows.RowCount > 0 Then
                 Me.dgvTVShows.Columns(2).Visible = Not Master.eSettings.TVShowPosterCol
                 Me.dgvTVShows.Columns(3).Visible = Not Master.eSettings.TVShowFanartCol
                 Me.dgvTVShows.Columns(4).Visible = Not Master.eSettings.TVShowNfoCol
+                Me.dgvTVShows.Columns(24).Visible = Not Master.eSettings.TVShowBannerCol
+                Me.dgvTVShows.Columns(26).Visible = Not Master.eSettings.TVShowLandscapeCol
+                Me.dgvTVShows.Columns(29).Visible = Not Master.eSettings.TVShowThemeCol
+                Me.dgvTVShows.Columns(31).Visible = Not Master.eSettings.TVShowCharacterArtCol
+                Me.dgvTVShows.Columns(33).Visible = Not Master.eSettings.TVShowClearLogoCol
+                Me.dgvTVShows.Columns(35).Visible = Not Master.eSettings.TVShowClearArtCol
+                Me.dgvTVShows.Columns(37).Visible = Not Master.eSettings.TVShowEFanartsCol
             End If
 
             If Me.dgvTVSeasons.RowCount > 0 Then
                 Me.dgvTVSeasons.Columns(3).Visible = Not Master.eSettings.TVSeasonPosterCol
                 Me.dgvTVSeasons.Columns(4).Visible = Not Master.eSettings.TVSeasonFanartCol
+                Me.dgvTVSeasons.Columns(10).Visible = Not Master.eSettings.TVSeasonBannerCol
+                Me.dgvTVSeasons.Columns(12).Visible = Not Master.eSettings.TVSeasonLandscapeCol
             End If
 
             If Me.dgvTVEpisodes.RowCount > 0 Then
                 Me.dgvTVEpisodes.Columns(4).Visible = Not Master.eSettings.TVEpisodePosterCol
                 Me.dgvTVEpisodes.Columns(5).Visible = Not Master.eSettings.TVEpisodeFanartCol
                 Me.dgvTVEpisodes.Columns(6).Visible = Not Master.eSettings.TVEpisodeNfoCol
+                Me.dgvTVEpisodes.Columns(24).Visible = Not Master.eSettings.TVEpisodeWatchedCol
             End If
 
             'might as well wait for these
@@ -15167,22 +15255,45 @@ doCancel:
                 Threading.Thread.Sleep(50)
             End While
 
-            If dresult.NeedsRefresh OrElse dresult.NeedsUpdate Then 'TODO: Check for moviesets
-                If dresult.NeedsRefresh Then
+            If dresult.NeedsRefresh_Movie OrElse dresult.NeedsRefresh_MovieSet OrElse dresult.NeedsRefresh_TV OrElse dresult.NeedsUpdate Then
+                If dresult.NeedsRefresh_Movie Then
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse _
-                             Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse Me.bwCleanDB.IsBusy
+                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
+                            Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
                         Me.RefreshAllMovies()
+                    End If
+                End If
+                If dresult.NeedsRefresh_MovieSet Then
+                    If Not Me.fScanner.IsBusy Then
+                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse _
+                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
+                            Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwCleanDB.IsBusy
+                            Application.DoEvents()
+                            Threading.Thread.Sleep(50)
+                        End While
                         Me.RefreshAllMovieSets(False)
+                    End If
+                End If
+                If dresult.NeedsRefresh_TV Then
+                    If Not Me.fScanner.IsBusy Then
+                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse _
+                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
+                            Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwCleanDB.IsBusy
+                            Application.DoEvents()
+                            Threading.Thread.Sleep(50)
+                        End While
+                        Me.RefreshAllShows(False)
                     End If
                 End If
                 If dresult.NeedsUpdate Then
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse _
-                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse Me.bwCleanDB.IsBusy
+                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
+                            Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
@@ -15191,13 +15302,20 @@ doCancel:
                 End If
             Else
                 If Not Me.fScanner.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso _
-                    Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                    Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy AndAlso _
+                    Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwRefreshShows.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.FillList(True, True, True)
                 End If
             End If
 
             Me.SetMenus(True)
             If dresult.NeedsRestart Then
+                While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse _
+                    Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
+                    Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwCleanDB.IsBusy
+                    Application.DoEvents()
+                    Threading.Thread.Sleep(50)
+                End While
                 Using dRestart As New dlgRestart
                     If dRestart.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Application.Restart()
@@ -16865,7 +16983,7 @@ doCancel:
         Dim IsTV As Boolean
         Dim Movie As Structures.DBMovie
         Dim MovieSet As Structures.DBMovieSet
-        Dim Options As Structures.ScrapeOptions_Movie
+        Dim Options_Movie As Structures.ScrapeOptions_Movie
         Dim Options_MovieSet As Structures.ScrapeOptions_MovieSet
         Dim Path As String
         Dim pURL As String
@@ -16875,6 +16993,7 @@ doCancel:
         Dim TVShow As Structures.DBTV
         Dim SetName As String
         Dim onlyNew As Boolean
+        Dim withEpisodes As Boolean
 
 #End Region 'Fields
 

@@ -1968,7 +1968,9 @@ Public Class Structures
 
     Public Structure SettingsResult
         Dim DidCancel As Boolean
-        Dim NeedsRefresh As Boolean
+        Dim NeedsRefresh_Movie As Boolean
+        Dim NeedsRefresh_MovieSet As Boolean
+        Dim NeedsRefresh_TV As Boolean
         Dim NeedsUpdate As Boolean
         Dim NeedsRestart As Boolean
     End Structure

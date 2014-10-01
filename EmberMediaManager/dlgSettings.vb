@@ -564,7 +564,7 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtMovieSortToken.Text) Then
             If Not lstMovieSortTokens.Items.Contains(txtMovieSortToken.Text) Then
                 lstMovieSortTokens.Items.Add(txtMovieSortToken.Text)
-                Me.sResult.NeedsRefresh = True
+                Me.sResult.NeedsRefresh_Movie = True
                 Me.SetApplyButton(True)
                 txtMovieSortToken.Text = String.Empty
                 txtMovieSortToken.Focus()
@@ -576,7 +576,7 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtMovieSetSortToken.Text) Then
             If Not lstMovieSetSortTokens.Items.Contains(txtMovieSetSortToken.Text) Then
                 lstMovieSetSortTokens.Items.Add(txtMovieSetSortToken.Text)
-                Me.sResult.NeedsRefresh = True
+                Me.sResult.NeedsRefresh_MovieSet = True
                 Me.SetApplyButton(True)
                 txtMovieSetSortToken.Text = String.Empty
                 txtMovieSetSortToken.Focus()
@@ -588,7 +588,7 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtTVSortToken.Text) Then
             If Not lstTVSortTokens.Items.Contains(txtTVSortToken.Text) Then
                 lstTVSortTokens.Items.Add(txtTVSortToken.Text)
-                Me.sResult.NeedsRefresh = True
+                Me.sResult.NeedsRefresh_TV = True
                 Me.SetApplyButton(True)
                 txtTVSortToken.Text = String.Empty
                 txtTVSortToken.Focus()
@@ -622,7 +622,7 @@ Public Class dlgSettings
         Try
             Me.SaveSettings(True)
             Me.SetApplyButton(False)
-            If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh Then Me.didApply = True
+            If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh_Movie OrElse Me.sResult.NeedsRefresh_MovieSet OrElse Me.sResult.NeedsRefresh_TV Then Me.didApply = True
         Catch ex As Exception
             Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -657,7 +657,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Items.RemoveAt(iIndex)
                 Me.lstMovieFilters.SelectedIndex = iIndex + 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh = True
+                Me.sResult.NeedsRefresh_Movie = True
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
@@ -789,7 +789,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Items.RemoveAt(iIndex)
                 Me.lstTVEpisodeFilter.SelectedIndex = iIndex + 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh = True
+                Me.sResult.NeedsRefresh_TV = True
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
@@ -805,7 +805,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Items.RemoveAt(iIndex + 1)
                 Me.lstTVEpisodeFilter.SelectedIndex = iIndex - 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh = True
+                Me.sResult.NeedsRefresh_TV = True
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
@@ -1069,7 +1069,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Items.RemoveAt(iIndex)
                 Me.lstTVShowFilter.SelectedIndex = iIndex + 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh = True
+                Me.sResult.NeedsRefresh_TV = True
                 Me.lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
@@ -1085,7 +1085,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Items.RemoveAt(iIndex + 1)
                 Me.lstTVShowFilter.SelectedIndex = iIndex - 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh = True
+                Me.sResult.NeedsRefresh_TV = True
                 Me.lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
@@ -1102,7 +1102,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Items.RemoveAt(iIndex + 1)
                 Me.lstMovieFilters.SelectedIndex = iIndex - 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh = True
+                Me.sResult.NeedsRefresh_Movie = True
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
@@ -1405,12 +1405,12 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieDisplayYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieDisplayYear.CheckedChanged
-        Me.sResult.NeedsRefresh = True
+        Me.sResult.NeedsRefresh_Movie = True
         Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkTVDisplayStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVDisplayStatus.CheckedChanged
-        Me.sResult.NeedsRefresh = True
+        Me.sResult.NeedsRefresh_TV = True
         Me.SetApplyButton(True)
     End Sub
 
@@ -1496,7 +1496,7 @@ Public Class dlgSettings
 
     Private Sub chkTVEpisodeProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeProperCase.CheckedChanged
         Me.SetApplyButton(True)
-        Me.sResult.NeedsRefresh = True
+        Me.sResult.NeedsRefresh_TV = True
     End Sub
 
     Private Sub chkTVEpisodeWatchedCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeWatchedCol.CheckedChanged
@@ -1994,7 +1994,7 @@ Public Class dlgSettings
 
     Private Sub chkMovieProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieProperCase.CheckedChanged
         Me.SetApplyButton(True)
-        Me.sResult.NeedsRefresh = True
+        Me.sResult.NeedsRefresh_Movie = True
     End Sub
 
     Private Sub chkMovieScraperRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperRating.CheckedChanged
@@ -2411,7 +2411,7 @@ Public Class dlgSettings
 
     Private Sub chkTVShowProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowProperCase.CheckedChanged
         Me.SetApplyButton(True)
-        Me.sResult.NeedsRefresh = True
+        Me.sResult.NeedsRefresh_TV = True
     End Sub
 
     Private Sub chkMovieSortBeforeScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSortBeforeScan.CheckedChanged
@@ -3736,7 +3736,9 @@ Public Class dlgSettings
             Me.lvMovieSources.ListViewItemSorter = New ListViewItemComparer(1)
             Me.lvTVSources.ListViewItemSorter = New ListViewItemComparer(1)
             Me.sResult.NeedsUpdate = False
-            Me.sResult.NeedsRefresh = False
+            Me.sResult.NeedsRefresh_Movie = False
+            Me.sResult.NeedsRefresh_MovieSet = False
+            Me.sResult.NeedsRefresh_TV = False
             Me.sResult.DidCancel = False
             Me.didApply = False
             Me.NoUpdate = False
@@ -4319,7 +4321,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Items.Remove(Me.lstTVEpisodeFilter.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
-            Me.sResult.NeedsRefresh = True
+            Me.sResult.NeedsRefresh_TV = True
         End If
     End Sub
 
@@ -4329,7 +4331,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Items.Remove(Me.lstMovieFilters.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
-            Me.sResult.NeedsRefresh = True
+            Me.sResult.NeedsRefresh_Movie = True
         End If
     End Sub
 
@@ -4435,7 +4437,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Items.Remove(Me.lstTVShowFilter.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
-            Me.sResult.NeedsRefresh = True
+            Me.sResult.NeedsRefresh_TV = True
         End If
     End Sub
 
@@ -4444,7 +4446,7 @@ Public Class dlgSettings
             While Me.lstMovieSortTokens.SelectedItems.Count > 0
                 Me.lstMovieSortTokens.Items.Remove(Me.lstMovieSortTokens.SelectedItems(0))
             End While
-            Me.sResult.NeedsRefresh = True
+            Me.sResult.NeedsRefresh_Movie = True
             Me.SetApplyButton(True)
         End If
     End Sub
@@ -4454,7 +4456,7 @@ Public Class dlgSettings
             While Me.lstMovieSetSortTokens.SelectedItems.Count > 0
                 Me.lstMovieSetSortTokens.Items.Remove(Me.lstMovieSetSortTokens.SelectedItems(0))
             End While
-            Me.sResult.NeedsRefresh = True
+            Me.sResult.NeedsRefresh_MovieSet = True
             Me.SetApplyButton(True)
         End If
     End Sub
@@ -4464,7 +4466,7 @@ Public Class dlgSettings
             While Me.lstTVSortTokens.SelectedItems.Count > 0
                 Me.lstTVSortTokens.Items.Remove(Me.lstTVSortTokens.SelectedItems(0))
             End While
-            Me.sResult.NeedsRefresh = True
+            Me.sResult.NeedsRefresh_TV = True
             Me.SetApplyButton(True)
         End If
     End Sub
