@@ -1325,10 +1325,10 @@
   <string id="1235">Lock Collection</string>
   <string id="1236">Lock Country</string>
   <string id="1237">Lock Director</string>
-  <string id="1238">Originaltitle</string>
+  <string id="1238"></string>
   <string id="1239">IMDB Rating</string>
-  <string id="1240">Lock Originaltitle</string>
-  <string id="1241">Lock ReleaseDate</string>
+  <string id="1240">Lock Original Title</string>
+  <string id="1241">Lock Release Date</string>
   <string id="1242">Lock Runtime</string>
   <string id="1243">Lock Tags</string>
   <string id="1244">Lock TOP250</string>

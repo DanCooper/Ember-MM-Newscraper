@@ -815,12 +815,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperOriginaltitle() As Boolean
+    Public Property MovieScraperOriginalTitle() As Boolean
         Get
-            Return Settings._XMLSettings.MovieScraperOriginaltitle
+            Return Settings._XMLSettings.MovieScraperOriginalTitle
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieScraperOriginaltitle = value
+            Settings._XMLSettings.MovieScraperOriginalTitle = value
         End Set
     End Property
 
@@ -1256,12 +1256,12 @@ Public Class Settings
             Settings._XMLSettings.movielocktitle = value
         End Set
     End Property
-    Public Property MovieLockOriginaltitle() As Boolean
+    Public Property MovieLockOriginalTitle() As Boolean
         Get
-            Return Settings._XMLSettings.MovieLockTitle
+            Return Settings._XMLSettings.MovieLockOriginalTitle
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLockTitle = value
+            Settings._XMLSettings.MovieLockOriginalTitle = value
         End Set
     End Property
     Public Property MovieLockTrailer() As Boolean

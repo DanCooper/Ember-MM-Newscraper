@@ -1577,7 +1577,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieScraperOriginaltitle() As Boolean
+    Public Property MovieScraperOriginalTitle() As Boolean
         Get
             Return Me._moviescraperoriginaltitle
         End Get

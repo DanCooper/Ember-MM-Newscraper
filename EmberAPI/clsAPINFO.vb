@@ -61,9 +61,9 @@ Public Class NFO
                 End If
 
                 'Originaltitle
-                If (String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) OrElse Not Master.eSettings.MovieLockOriginaltitle) AndAlso Not String.IsNullOrEmpty(scrapedmovie.OriginalTitle) AndAlso Master.eSettings.MovieScraperOriginaltitle Then
+                If (String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) OrElse Not Master.eSettings.MovieLockOriginalTitle) AndAlso Not String.IsNullOrEmpty(scrapedmovie.OriginalTitle) AndAlso Master.eSettings.MovieScraperOriginalTitle Then
                     DBMovie.Movie.OriginalTitle = scrapedmovie.OriginalTitle
-                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOriginaltitle AndAlso Not Master.eSettings.MovieLockOriginaltitle Then
+                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOriginalTitle AndAlso Not Master.eSettings.MovieLockOriginalTitle Then
                     DBMovie.Movie.OriginalTitle = String.Empty
                 End If
 
