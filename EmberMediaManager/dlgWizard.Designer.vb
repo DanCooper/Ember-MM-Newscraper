@@ -275,7 +275,6 @@ Partial Class dlgWizard
         Me.Label11 = New System.Windows.Forms.Label()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
         Me.pnlMovieSetSettings = New System.Windows.Forms.Panel()
-        Me.Label48 = New System.Windows.Forms.Label()
         Me.gbMovieSetFileNaming = New System.Windows.Forms.GroupBox()
         Me.tcMovieSetFileNaming = New System.Windows.Forms.TabControl()
         Me.tpMovieSetFileNamingXBMC = New System.Windows.Forms.TabPage()
@@ -293,6 +292,8 @@ Partial Class dlgWizard
         Me.chkMovieSetFanartMSAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetPosterMSAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetNFOMSAA = New System.Windows.Forms.CheckBox()
+        Me.Label48 = New System.Windows.Forms.Label()
+        Me.colExclude = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.gbMovieFileNaming.SuspendLayout()
@@ -2337,7 +2338,7 @@ Partial Class dlgWizard
         '
         'lvMovies
         '
-        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colPath, Me.colRecur, Me.colFolder, Me.colSingle})
+        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colPath, Me.colRecur, Me.colFolder, Me.colSingle, Me.colExclude})
         Me.lvMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvMovies.FullRowSelect = True
         Me.lvMovies.HideSelection = False
@@ -2361,7 +2362,7 @@ Partial Class dlgWizard
         'colPath
         '
         Me.colPath.Text = "Path"
-        Me.colPath.Width = 220
+        Me.colPath.Width = 110
         '
         'colRecur
         '
@@ -2986,16 +2987,6 @@ Partial Class dlgWizard
         Me.pnlMovieSetSettings.TabIndex = 10
         Me.pnlMovieSetSettings.Visible = False
         '
-        'Label48
-        '
-        Me.Label48.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label48.Location = New System.Drawing.Point(9, 1)
-        Me.Label48.Name = "Label48"
-        Me.Label48.Size = New System.Drawing.Size(509, 93)
-        Me.Label48.TabIndex = 0
-        Me.Label48.Text = resources.GetString("Label48.Text")
-        Me.Label48.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'gbMovieSetFileNaming
         '
         Me.gbMovieSetFileNaming.Controls.Add(Me.tcMovieSetFileNaming)
@@ -3184,6 +3175,20 @@ Partial Class dlgWizard
         Me.chkMovieSetNFOMSAA.TabIndex = 0
         Me.chkMovieSetNFOMSAA.Text = "NFO"
         Me.chkMovieSetNFOMSAA.UseVisualStyleBackColor = True
+        '
+        'Label48
+        '
+        Me.Label48.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label48.Location = New System.Drawing.Point(9, 1)
+        Me.Label48.Name = "Label48"
+        Me.Label48.Size = New System.Drawing.Size(509, 93)
+        Me.Label48.TabIndex = 0
+        Me.Label48.Text = resources.GetString("Label48.Text")
+        Me.Label48.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'colExclude
+        '
+        Me.colExclude.Text = "Exclude"
         '
         'dlgWizard
         '
@@ -3563,4 +3568,5 @@ Partial Class dlgWizard
     Friend WithEvents chkMovieSetFanartMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetPosterMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetNFOMSAA As System.Windows.Forms.CheckBox
+    Friend WithEvents colExclude As System.Windows.Forms.ColumnHeader
 End Class

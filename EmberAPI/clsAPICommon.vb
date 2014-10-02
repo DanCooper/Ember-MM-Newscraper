@@ -1740,6 +1740,7 @@ Public Class Structures
         Dim Recursive As Boolean
         Dim UseFolderName As Boolean
         Dim IsSingle As Boolean
+        Dim Exclude As Boolean
     End Structure
     ''' <summary>
     ''' Structure representing a TV source path and its metadata

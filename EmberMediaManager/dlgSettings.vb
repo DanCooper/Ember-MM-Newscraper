@@ -4276,6 +4276,7 @@ Public Class dlgSettings
             lvItem.SubItems.Add(If(s.Recursive, "Yes", "No"))
             lvItem.SubItems.Add(If(s.UseFolderName, "Yes", "No"))
             lvItem.SubItems.Add(If(s.IsSingle, "Yes", "No"))
+            lvItem.SubItems.Add(If(s.Exclude, "Yes", "No"))
             lvMovieSources.Items.Add(lvItem)
         Next
     End Sub
@@ -5700,6 +5701,7 @@ Public Class dlgSettings
         Me.lvMovieSources.Columns(3).Text = Master.eLang.GetString(411, "Recursive")
         Me.lvMovieSources.Columns(4).Text = Master.eLang.GetString(412, "Use Folder Name")
         Me.lvMovieSources.Columns(5).Text = Master.eLang.GetString(413, "Single Video")
+        Me.lvMovieSources.Columns(6).Text = Master.eLang.GetString(264, "Exclude")
         Me.lvTVShowRegex.Columns(1).Text = Master.eLang.GetString(696, "Show Regex")
         Me.lvTVShowRegex.Columns(2).Text = Master.eLang.GetString(694, "Apply To")
         Me.lvTVShowRegex.Columns(3).Text = Master.eLang.GetString(697, "Episode Regex")

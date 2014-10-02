@@ -295,7 +295,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 4
+        Dim MyVideosDBVersion As Integer = 5
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -2771,7 +2771,7 @@ Public Class Database
         Master.MovieSources.Clear()
         Try
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT ID, Name, path, Recursive, Foldername, Single, LastScan FROM sources;"
+                SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
                         Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
@@ -2782,6 +2782,7 @@ Public Class Database
                             msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
                             msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
                             msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
+                            msource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
                             Master.MovieSources.Add(msource)
                         Catch ex As Exception
                             logger.Error(New StackFrame().GetMethod().Name, ex)
