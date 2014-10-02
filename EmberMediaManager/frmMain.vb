@@ -13349,9 +13349,10 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 9, hasEThumbs})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 10, False})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDB.Movie.Title})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDB.Movie.SortTitle})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 22, tmpMovieDB.Movie.Country})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 27, tmpMovieDB.Movie.Genre})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 34, hasWatched})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDB.Movie.SortTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 49, hasEFanarts})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 51, hasBanner})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 53, hasLandscape})
@@ -13370,9 +13371,10 @@ doCancel:
                         selRow.Item(9) = hasEThumbs
                         selRow.Item(10) = False
                         selRow.Item(15) = tmpMovieDB.Movie.Title
-                        selRow.Item(47) = tmpMovieDB.Movie.SortTitle
+                        selRow.Item(22) = tmpMovieDB.Movie.Country
                         selRow.Item(27) = tmpMovieDB.Movie.Genre
                         selRow.Item(34) = hasWatched
+                        selRow.Item(47) = tmpMovieDB.Movie.SortTitle
                         selRow.Item(49) = hasEFanarts
                         selRow.Item(51) = hasBanner
                         selRow.Item(53) = hasLandscape
