@@ -3342,6 +3342,16 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub clbFilterGenres_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles clbFilterGenres.ItemCheck
+        If e.Index = 0 Then
+            For i As Integer = 1 To clbFilterGenres.Items.Count - 1
+                Me.clbFilterGenres.SetItemChecked(i, False)
+            Next
+        Else
+            Me.clbFilterGenres.SetItemChecked(0, False)
+        End If
+    End Sub
+
     Private Sub clbFilterGenres_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterGenres.LostFocus
         Try
             Me.pnlFilterGenre.Visible = False
@@ -3361,7 +3371,11 @@ doCancel:
                 End If
 
                 For i As Integer = 0 To alGenres.Count - 1
-                    alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+                    If alGenres.Item(i) = Master.eLang.None Then
+                        alGenres.Item(i) = "Genre LIKE ''"
+                    Else
+                        alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+                    End If
                 Next
 
                 If rbFilterAnd.Checked Then
@@ -12942,7 +12956,11 @@ doCancel:
             Me.txtFilterGenre.Text = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " AND ")
 
             For i As Integer = 0 To alGenres.Count - 1
-                alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+                If alGenres.Item(i) = Master.eLang.None Then
+                    alGenres.Item(i) = "Genre LIKE ''"
+                Else
+                    alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+                End If
             Next
 
             Me.filGenre = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " AND ")
@@ -12985,7 +13003,11 @@ doCancel:
             Me.txtFilterGenre.Text = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " OR ")
 
             For i As Integer = 0 To alGenres.Count - 1
-                alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+                If alGenres.Item(i) = Master.eLang.None Then
+                    alGenres.Item(i) = "Genre LIKE ''"
+                Else
+                    alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+                End If
             Next
 
             Me.filGenre = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " OR ")
@@ -15089,6 +15111,7 @@ doCancel:
                 Me.clbFilterGenres.Items.Clear()
                 Dim lGenre() As Object = APIXML.GetGenreList
                 cmnuMovieGenresGenre.Items.AddRange(lGenre)
+                clbFilterGenres.Items.Add(Master.eLang.None)
                 clbFilterGenres.Items.AddRange(lGenre)
 
                 Me.clbFilterCountries.Items.Clear()
@@ -17065,4 +17088,5 @@ doCancel:
             End If
         End If
     End Sub
+
 End Class

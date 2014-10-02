@@ -421,8 +421,8 @@ Partial Class frmMain
         Me.mnuMovieMissAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMovieMissAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMovieMissAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMovieMissAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMovieMissAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMovieMissAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMovieMissAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMovieMissAskActor = New System.Windows.Forms.ToolStripMenuItem()
@@ -4622,19 +4622,19 @@ Partial Class frmMain
         Me.mnuMovieMissAutoPoster.Size = New System.Drawing.Size(171, 22)
         Me.mnuMovieMissAutoPoster.Text = "Poster Only"
         '
-        'mnuMovieMissAutoTrailer
-        '
-        Me.mnuMovieMissAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieMissAutoTrailer.Name = "mnuMovieMissAutoTrailer"
-        Me.mnuMovieMissAutoTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoTrailer.Text = "Trailer Only"
-        '
         'mnuMovieMissAutoTheme
         '
         Me.mnuMovieMissAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
         Me.mnuMovieMissAutoTheme.Name = "mnuMovieMissAutoTheme"
         Me.mnuMovieMissAutoTheme.Size = New System.Drawing.Size(171, 22)
         Me.mnuMovieMissAutoTheme.Text = "Theme Only"
+        '
+        'mnuMovieMissAutoTrailer
+        '
+        Me.mnuMovieMissAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
+        Me.mnuMovieMissAutoTrailer.Name = "mnuMovieMissAutoTrailer"
+        Me.mnuMovieMissAutoTrailer.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMissAutoTrailer.Text = "Trailer Only"
         '
         'mnuMovieMissAsk
         '
@@ -4752,7 +4752,7 @@ Partial Class frmMain
         'mnuMovieMissSkipAll
         '
         Me.mnuMovieMissSkipAll.Name = "mnuMovieMissSkipAll"
-        Me.mnuMovieMissSkipAll.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMovieMissSkipAll.Size = New System.Drawing.Size(117, 22)
         Me.mnuMovieMissSkipAll.Text = "All Items"
         '
         'mnuMovieNew

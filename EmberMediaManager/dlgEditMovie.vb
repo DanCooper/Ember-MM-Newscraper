@@ -1991,7 +1991,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbGenre.ItemCheck
+    Private Sub clbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbGenre.ItemCheck
         If e.Index = 0 Then
             For i As Integer = 1 To clbGenre.Items.Count - 1
                 Me.clbGenre.SetItemChecked(i, False)
