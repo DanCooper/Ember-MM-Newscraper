@@ -3352,6 +3352,16 @@ doCancel:
         End If
     End Sub
 
+    Private Sub clbFilterCountries_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles clbFilterCountries.ItemCheck
+        If e.Index = 0 Then
+            For i As Integer = 1 To clbFilterCountries.Items.Count - 1
+                Me.clbFilterCountries.SetItemChecked(i, False)
+            Next
+        Else
+            Me.clbFilterCountries.SetItemChecked(0, False)
+        End If
+    End Sub
+
     Private Sub clbFilterGenres_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterGenres.LostFocus
         Try
             Me.pnlFilterGenre.Visible = False
@@ -3417,7 +3427,11 @@ doCancel:
                 End If
 
                 For i As Integer = 0 To alCountries.Count - 1
-                    alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+                    If alCountries.Item(i) = Master.eLang.None Then
+                        alCountries.Item(i) = "Country LIKE ''"
+                    Else
+                        alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+                    End If
                 Next
 
                 If rbFilterAnd.Checked Then
@@ -12978,7 +12992,11 @@ doCancel:
             Me.txtFilterCountry.Text = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " AND ")
 
             For i As Integer = 0 To alCountries.Count - 1
-                alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+                If alCountries.Item(i) = Master.eLang.None Then
+                    alCountries.Item(i) = "Country LIKE ''"
+                Else
+                    alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+                End If
             Next
 
             Me.filCountry = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " AND ")
@@ -13025,7 +13043,11 @@ doCancel:
             Me.txtFilterCountry.Text = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " OR ")
 
             For i As Integer = 0 To alCountries.Count - 1
-                alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+                If alCountries.Item(i) = Master.eLang.None Then
+                    alCountries.Item(i) = "Country LIKE ''"
+                Else
+                    alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+                End If
             Next
 
             Me.filCountry = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " OR ")
@@ -15116,6 +15138,7 @@ doCancel:
 
                 Me.clbFilterCountries.Items.Clear()
                 Dim lCountry() As Object = Master.DB.GetMovieCountries
+                clbFilterCountries.Items.Add(Master.eLang.None)
                 clbFilterCountries.Items.AddRange(lCountry)
 
                 cmnuShowLanguageLanguages.Items.Clear()
