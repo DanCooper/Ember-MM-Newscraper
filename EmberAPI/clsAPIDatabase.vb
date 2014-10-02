@@ -1433,6 +1433,11 @@ Public Class Database
                         If TransOk Then
                             logger.Trace(New StackFrame().GetMethod().Name, String.Format("Transaction {0} Commit", Trans.name))
                             SQLtransaction.Commit()
+                            ' Housekeeping - consolidate and pack database using vacuum command http://www.sqlite.org/lang_vacuum.html
+                            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                SQLcommand.CommandText = "VACUUM;"
+                                SQLcommand.ExecuteNonQuery()
+                            End Using
                         Else
                             logger.Trace(New StackFrame().GetMethod().Name, String.Format("Transaction {0} RollBack", Trans.name))
                             SQLtransaction.Rollback()
@@ -1441,12 +1446,17 @@ Public Class Database
                 Next
                 For Each _cmd As Containers.CommandsNoTransactionCommand In _cmds.noTransaction
                     If _cmd.type = "DB" Then
-                        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            SQLcommand.CommandText = _cmd.execute
+                        Using SQLnotransaction As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                            SQLnotransaction.CommandText = _cmd.execute
                             Try
-                                SQLcommand.ExecuteNonQuery()
+                                SQLnotransaction.ExecuteNonQuery()
+                                ' Housekeeping - consolidate and pack database using vacuum command http://www.sqlite.org/lang_vacuum.html
+                                Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                    SQLcommand.CommandText = "VACUUM;"
+                                    SQLcommand.ExecuteNonQuery()
+                                End Using
                             Catch ex As Exception
-                                logger.Info(New StackFrame().GetMethod().Name, ex, SQLcommand, _cmd.description, _cmd.execute)
+                                logger.Info(New StackFrame().GetMethod().Name, ex, SQLnotransaction, _cmd.description, _cmd.execute)
                             End Try
                         End Using
                     End If

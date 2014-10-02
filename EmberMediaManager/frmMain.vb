@@ -15316,7 +15316,7 @@ doCancel:
                             Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
                             Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
-                            Threading.Thread.Sleep(50)
+                            'Threading.Thread.Sleep(50)
                         End While
                         Me.RefreshAllMovies()
                     End If
@@ -15327,7 +15327,7 @@ doCancel:
                             Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
                             Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
-                            Threading.Thread.Sleep(50)
+                            'Threading.Thread.Sleep(50)
                         End While
                         Me.RefreshAllMovieSets(False)
                     End If
@@ -15338,7 +15338,7 @@ doCancel:
                             Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
                             Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
-                            Threading.Thread.Sleep(50)
+                            'Threading.Thread.Sleep(50)
                         End While
                         Me.RefreshAllShows(False)
                     End If
@@ -15349,7 +15349,7 @@ doCancel:
                             Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
                             Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
-                            Threading.Thread.Sleep(50)
+                            'Threading.Thread.Sleep(50)
                         End While
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                     End If
@@ -15368,7 +15368,7 @@ doCancel:
                     Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
                     Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                     Application.DoEvents()
-                    Threading.Thread.Sleep(50)
+                    'Threading.Thread.Sleep(50)
                 End While
                 Using dRestart As New dlgRestart
                     If dRestart.ShowDialog = Windows.Forms.DialogResult.OK Then
