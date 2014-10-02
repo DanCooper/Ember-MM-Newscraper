@@ -7384,27 +7384,33 @@ doCancel:
     End Sub
 
     Private Sub EnableFilters(ByVal isEnabled As Boolean)
-        Me.txtSearch.Enabled = isEnabled
+        Me.btnClearFilters.Enabled = isEnabled
+        Me.btnSortDate.Enabled = isEnabled
+        Me.btnIMDBRating.Enabled = isEnabled
+        Me.btnSortTitle.Enabled = isEnabled
+        Me.cbFilterFileSource.Enabled = isEnabled
+        Me.cbFilterYear.Enabled = isEnabled
+        Me.cbFilterYearMod.Enabled = isEnabled
         Me.cbSearch.Enabled = isEnabled
         Me.chkFilterDupe.Enabled = isEnabled
-        Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
-        Me.chkFilterMissing.Enabled = isEnabled
+        Me.chkFilterLock.Enabled = isEnabled
         Me.chkFilterMark.Enabled = isEnabled
         Me.chkFilterMarkCustom1.Enabled = isEnabled
         Me.chkFilterMarkCustom2.Enabled = isEnabled
         Me.chkFilterMarkCustom3.Enabled = isEnabled
         Me.chkFilterMarkCustom4.Enabled = isEnabled
+        Me.chkFilterMissing.Enabled = isEnabled
         Me.chkFilterNew.Enabled = isEnabled
-        Me.chkFilterLock.Enabled = isEnabled
-        Me.rbFilterOr.Enabled = isEnabled
+        Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
         Me.rbFilterAnd.Enabled = isEnabled
-        Me.txtFilterSource.Enabled = isEnabled
-        Me.cbFilterFileSource.Enabled = isEnabled
+        Me.rbFilterOr.Enabled = isEnabled
+        Me.txtFilterCountry.Enabled = isEnabled
         Me.txtFilterCountry.Enabled = isEnabled
         Me.txtFilterGenre.Enabled = isEnabled
-        Me.cbFilterYearMod.Enabled = isEnabled
-        Me.cbFilterYear.Enabled = isEnabled
-        Me.btnClearFilters.Enabled = isEnabled
+        Me.txtFilterGenre.Enabled = isEnabled
+        Me.txtFilterSource.Enabled = isEnabled
+        Me.txtFilterSource.Enabled = isEnabled
+        Me.txtSearch.Enabled = isEnabled
     End Sub
 
     Private Sub ErrorOccurred()
