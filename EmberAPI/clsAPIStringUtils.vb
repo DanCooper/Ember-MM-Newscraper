@@ -908,11 +908,14 @@ Public Class StringUtils
 
         'Do specific replaces first
         fName = fName.Replace(":", " -")
+        fName = fName.Replace("/", "-")
+        fName = fName.Replace("?", String.Empty)
+        fName = fName.Replace("*", String.Empty)
 
         'Everthing else gets removed
         Dim invalidFileChars() As Char = Path.GetInvalidFileNameChars()
         For Each someChar In invalidFileChars
-            fName = fName.Replace(someChar, "-")
+            fName = fName.Replace(someChar, String.Empty)
         Next
 
         Return fName
@@ -930,11 +933,13 @@ Public Class StringUtils
         'Do specific replaces first
         fName = fName.Replace(":", " -")
         fName = fName.Replace("/", "-")
+        fName = fName.Replace("?", String.Empty)
+        fName = fName.Replace("*", String.Empty)
 
         'Everthing else gets removed
         Dim invalidPathChars() As Char = Path.GetInvalidPathChars()
         For Each someChar In invalidPathChars
-            fName = fName.Replace(someChar, "-")
+            fName = fName.Replace(someChar, String.Empty)
         Next
 
         Return fName
