@@ -3,7 +3,7 @@
   <transaction name="MyVideosDBSQL_v2_to_v3">
     <command type="DB">
       <description>1</description>
-      <execute>ALTER TABLE Sources ADD Exclude BOOL NOT NULL DEFAULT False;</execute>
+      <execute>ALTER TABLE Sources ADD Exclude BOOL NOT NULL DEFAULT 0;</execute>
     </command>
   </transaction>
   <noTransaction type="">
