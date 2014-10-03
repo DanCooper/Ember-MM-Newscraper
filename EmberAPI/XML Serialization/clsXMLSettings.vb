@@ -353,6 +353,7 @@ Partial Public Class clsXMLSettings
     Private _tvgeneralmarknewshows As Boolean
     Private _tvlockepisodeplot As Boolean
     Private _tvlockepisoderating As Boolean
+    Private _tvlockepisoderuntime As Boolean
     Private _tvlockepisodetitle As Boolean
     Private _tvlockshowgenre As Boolean
     Private _tvlockshowplot As Boolean
@@ -371,6 +372,7 @@ Partial Public Class clsXMLSettings
     Private _tvscraperepisodeepisode As Boolean
     Private _tvscraperepisodeplot As Boolean
     Private _tvscraperepisoderating As Boolean
+    Private _tvscraperepisoderuntime As Boolean
     Private _tvscraperepisodeseason As Boolean
     Private _tvscraperepisodetitle As Boolean
     Private _tvscrapermetadatascan As Boolean
@@ -389,6 +391,7 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowtitle As Boolean
     Private _tvscraperupdatetime As Enums.TVScraperUpdateTime
     Private _tvscraperusemdduration As Boolean
+    Private _tvscraperusesruntimeforep As Boolean
     Private _tvseasonbannercol As Boolean
     Private _tvseasonbannerheight As Integer
     Private _tvseasonbanneroverwrite As Boolean
@@ -1313,6 +1316,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvlockepisoderating = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeRuntime() As Boolean
+        Get
+            Return Me._tvlockepisoderuntime
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockepisoderuntime = value
         End Set
     End Property
 
@@ -3885,6 +3897,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeRuntime() As Boolean
+        Get
+            Return Me._tvscraperepisoderuntime
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscraperepisoderuntime = value
+        End Set
+    End Property
+
     Public Property TVScraperEpisodeSeason() As Boolean
         Get
             Return Me._tvscraperepisodeseason
@@ -4719,6 +4740,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscraperusemdduration = value
+        End Set
+    End Property
+
+    Public Property TVScraperUseSRuntimeForEp() As Boolean
+        Get
+            Return Me._tvscraperusesruntimeforep
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscraperusesruntimeforep = value
         End Set
     End Property
 

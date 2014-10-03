@@ -1987,6 +1987,7 @@ Public Class Structures
         Dim bEpEpisode As Boolean
         Dim bEpPlot As Boolean
         Dim bEpRating As Boolean
+        Dim bEpRuntime As Boolean
         Dim bEpSeason As Boolean
         Dim bEpTitle As Boolean
         Dim bShowActors As Boolean

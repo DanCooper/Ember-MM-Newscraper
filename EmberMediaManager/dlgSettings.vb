@@ -1490,6 +1490,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkTVLockEpisodeRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodeRuntime.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkTVLockEpisodeTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodeTitle.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2237,6 +2241,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkTVScraperEpisodeRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeRuntime.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkTVScraperEpisodeSeason_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeSeason.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2274,6 +2282,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkTVScraperShowRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowRuntime.CheckedChanged
+        Me.chkTVScraperUseSRuntimeForEp.Enabled = Me.chkTVScraperShowRuntime.Checked
+        If Not Me.chkTVScraperShowRuntime.Checked Then
+            Me.chkTVScraperUseSRuntimeForEp.Checked = False
+        End If
         Me.SetApplyButton(True)
     End Sub
 
@@ -2760,6 +2772,10 @@ Public Class dlgSettings
 
     Private Sub chkTVScraperUseMDDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperUseMDDuration.CheckedChanged
         Me.txtTVScraperDurationRuntimeFormat.Enabled = Me.chkTVScraperUseMDDuration.Checked
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVScraperUseSRuntimeForEp_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperUseSRuntimeForEp.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3264,6 +3280,7 @@ Public Class dlgSettings
                 Me.chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
                 Me.chkTVLockEpisodePlot.Checked = .TVLockEpisodePlot
                 Me.chkTVLockEpisodeRating.Checked = .TVLockEpisodeRating
+                Me.chkTVLockEpisodeRuntime.Checked = .TVLockEpisodeRuntime
                 Me.chkTVLockEpisodeTitle.Checked = .TVLockEpisodeTitle
                 Me.chkTVLockShowGenre.Checked = .TVLockShowGenre
                 Me.chkTVLockShowPlot.Checked = .TVLockShowPlot
@@ -3280,6 +3297,7 @@ Public Class dlgSettings
                 Me.chkTVScraperEpisodeEpisode.Checked = .TVScraperEpisodeEpisode
                 Me.chkTVScraperEpisodePlot.Checked = .TVScraperEpisodePlot
                 Me.chkTVScraperEpisodeRating.Checked = .TVScraperEpisodeRating
+                Me.chkTVScraperEpisodeRuntime.Checked = .TVScraperEpisodeRuntime
                 Me.chkTVScraperEpisodeSeason.Checked = .TVScraperEpisodeSeason
                 Me.chkTVScraperEpisodeTitle.Checked = .TVScraperEpisodeTitle
                 Me.chkTVScraperMetaDataScan.Checked = .TVScraperMetaDataScan
@@ -3295,6 +3313,7 @@ Public Class dlgSettings
                 Me.chkTVScraperShowStudio.Checked = .TVScraperShowStudio
                 Me.chkTVScraperShowTitle.Checked = .TVScraperShowTitle
                 Me.chkTVScraperUseMDDuration.Checked = .TVScraperUseMDDuration
+                Me.chkTVScraperUseSRuntimeForEp.Checked = .TVScraperUseSRuntimeForEp
                 Me.chkTVSeasonBannerCol.Checked = .TVSeasonBannerCol
                 Me.chkTVSeasonBannerOverwrite.Checked = .TVSeasonBannerOverwrite
                 Me.chkTVSeasonBannerResize.Checked = .TVSeasonBannerResize
@@ -4868,6 +4887,7 @@ Public Class dlgSettings
                 .TVGeneralMarkNewShows = Me.chkTVGeneralMarkNewShows.Checked
                 .TVLockEpisodePlot = Me.chkTVLockEpisodePlot.Checked
                 .TVLockEpisodeRating = Me.chkTVLockEpisodeRating.Checked
+                .TVLockEpisodeRuntime = Me.chkTVLockEpisodeRuntime.Checked
                 .TVLockEpisodeTitle = Me.chkTVLockEpisodeTitle.Checked
                 .TVLockShowGenre = Me.chkTVLockShowGenre.Checked
                 .TVLockShowPlot = Me.chkTVLockShowPlot.Checked
@@ -4887,6 +4907,7 @@ Public Class dlgSettings
                 .TVScraperEpisodeEpisode = Me.chkTVScraperEpisodeEpisode.Checked
                 .TVScraperEpisodePlot = Me.chkTVScraperEpisodePlot.Checked
                 .TVScraperEpisodeRating = Me.chkTVScraperEpisodeRating.Checked
+                .TVScraperEpisodeRuntime = Me.chkTVScraperEpisodeRuntime.Checked
                 .TVScraperEpisodeSeason = Me.chkTVScraperEpisodeSeason.Checked
                 .TVScraperEpisodeTitle = Me.chkTVScraperEpisodeTitle.Checked
                 .TVScraperMetaDataScan = Me.chkTVScraperMetaDataScan.Checked
@@ -4909,6 +4930,7 @@ Public Class dlgSettings
                 .TVScraperShowTitle = Me.chkTVScraperShowTitle.Checked
                 .TVScraperUpdateTime = DirectCast(Me.cbTVScraperUpdateTime.SelectedIndex, Enums.TVScraperUpdateTime)
                 .TVScraperUseMDDuration = Me.chkTVScraperUseMDDuration.Checked
+                .TVScraperUseSRuntimeForEp = Me.chkTVScraperUseSRuntimeForEp.Checked
                 .TVSeasonBannerCol = Me.chkTVSeasonBannerCol.Checked
                 .TVSeasonBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonBannerHeight.Text), Convert.ToInt32(Me.txtTVSeasonBannerHeight.Text), 0)
                 .TVSeasonBannerOverwrite = Me.chkTVSeasonBannerOverwrite.Checked
@@ -5585,6 +5607,7 @@ Public Class dlgSettings
         Me.chkTVScraperShowStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkTVScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkTVScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
+        Me.chkTVScraperUseSRuntimeForEp.Text = Master.eLang.GetString(1262, "Use Show Runtime for Episodes if no Episode Runtime can be found")
         Me.chkTVShowCharacterArtCol.Text = Master.eLang.GetString(1141, "Hide CharacterArt Column")
         Me.chkTVShowExtrafanartsXBMC.Text = Master.eLang.GetString(992, "Extrafanarts")
         Me.colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
@@ -5763,9 +5786,11 @@ Public Class dlgSettings
         Me.chkTVEpisodeProperCase.Text = Me.chkMovieProperCase.Text
         Me.chkTVEpisodeWatchedCol.Text = Me.chkMovieWatchedCol.Text
         Me.chkTVGeneralIgnoreLastScan.Text = Me.chkMovieGeneralIgnoreLastScan.Text
+        Me.chkTVLockEpisodeRuntime.Text = Me.chkMovieLockRuntime.Text
         Me.chkTVLockShowRuntime.Text = Me.chkMovieLockRuntime.Text
         Me.chkTVScanOrderModify.Text = Me.chkMovieScanOrderModify.Text
         Me.chkTVScraperMetaDataScan.Text = Me.chkMovieScraperMetaDataScan.Text
+        Me.chkTVScraperEpisodeRuntime.Text = Me.chkMovieScraperRuntime.Text
         Me.chkTVScraperShowRuntime.Text = Me.chkMovieScraperRuntime.Text
         Me.chkTVSeasonBannerCol.Text = Me.chkMovieBannerCol.Text
         Me.chkTVSeasonBannerOverwrite.Text = Me.chkMoviePosterOverwrite.Text

@@ -1349,4 +1349,5 @@
   <string id="1259">Store themes in a custom path</string>
   <string id="1260">Store themes in sub directorys</string>
   <string id="1261">Configuration ISO Filescanning</string>
+  <string id="1262">Use Show Runtime for Episodes if no Episode Runtime can be found</string>
 </strings>

@@ -554,6 +554,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVLockEpisodeRuntime() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeRuntime
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeRuntime = value
+        End Set
+    End Property
+
     Public Property TVLockEpisodeTitle() As Boolean
         Get
             Return Settings._XMLSettings.tvlockepisodetitle
@@ -3126,6 +3135,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeRuntime() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperEpisodeRuntime
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperEpisodeRuntime = value
+        End Set
+    End Property
+
     Public Property TVScraperEpisodeSeason() As Boolean
         Get
             Return Settings._XMLSettings.tvscraperepisodeseason
@@ -3957,6 +3975,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.tvscraperusemdduration = value
+        End Set
+    End Property
+
+    Public Property TVScraperUseSRuntimeForEp() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperUseSRuntimeForEp
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperUseSRuntimeForEp = value
         End Set
     End Property
 

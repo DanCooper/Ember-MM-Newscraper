@@ -1301,14 +1301,26 @@ Public Class NFO
     End Sub
 
     Public Shared Sub LoadTVEpDuration(ByVal _TVEpDB As Structures.DBTV)
-        'Fix for runtime to display in gui without watching episode first.
         Try
-            If Not IsNothing(_TVEpDB.TVEp.FileInfo.StreamDetails) AndAlso _TVEpDB.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
-                Dim cTotal As String = String.Empty
-                For Each tVid As MediaInfo.Video In _TVEpDB.TVEp.FileInfo.StreamDetails.Video
-                    cTotal = cTotal + tVid.Duration
-                Next
-                _TVEpDB.TVEp.Runtime = MediaInfo.FormatDuration(MediaInfo.DurationToSeconds(cTotal, True), Master.eSettings.TVScraperDurationRuntimeFormat)
+            Dim tRuntime As String = String.Empty
+            If Master.eSettings.TVScraperUseMDDuration Then
+                If Not IsNothing(_TVEpDB.TVEp.FileInfo.StreamDetails) AndAlso _TVEpDB.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
+                    Dim cTotal As String = String.Empty
+                    For Each tVid As MediaInfo.Video In _TVEpDB.TVEp.FileInfo.StreamDetails.Video
+                        cTotal = cTotal + tVid.Duration
+                    Next
+                    tRuntime = MediaInfo.FormatDuration(MediaInfo.DurationToSeconds(cTotal, True), Master.eSettings.TVScraperDurationRuntimeFormat)
+                End If
+            End If
+
+            If String.IsNullOrEmpty(tRuntime) Then
+                If (String.IsNullOrEmpty(_TVEpDB.TVEp.Runtime) OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso Not String.IsNullOrEmpty(_TVEpDB.TVShow.Runtime) AndAlso Master.eSettings.TVScraperUseSRuntimeForEp Then
+                    _TVEpDB.TVEp.Runtime = _TVEpDB.TVShow.Runtime
+                End If
+            Else
+                If (String.IsNullOrEmpty(_TVEpDB.TVEp.Runtime) OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso Master.eSettings.TVScraperUseMDDuration Then
+                    _TVEpDB.TVEp.Runtime = tRuntime
+                End If
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
