@@ -111,7 +111,7 @@ Public Class dlgBulkRenamer
                                                 MovieFile.Title = _curMovie.Movie.Title
                                             End If
                                             If String.IsNullOrEmpty(_curMovie.Movie.SortTitle) Then
-                                                ' MovieFile.SortTitle = MovieFile.Title
+                                                MovieFile.SortTitle = MovieFile.Title
                                             Else
                                                 MovieFile.SortTitle = _curMovie.Movie.SortTitle
                                             End If
