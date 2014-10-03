@@ -912,7 +912,7 @@ Public Class StringUtils
         'Everthing else gets removed
         Dim invalidFileChars() As Char = Path.GetInvalidFileNameChars()
         For Each someChar In invalidFileChars
-            fName = fName.Replace(someChar, " "c)
+            fName = fName.Replace(someChar, "-")
         Next
 
         Return fName
@@ -929,11 +929,12 @@ Public Class StringUtils
 
         'Do specific replaces first
         fName = fName.Replace(":", " -")
+        fName = fName.Replace("/", "-")
 
         'Everthing else gets removed
         Dim invalidPathChars() As Char = Path.GetInvalidPathChars()
         For Each someChar In invalidPathChars
-            fName = fName.Replace(someChar, " "c)
+            fName = fName.Replace(someChar, "-")
         Next
 
         Return fName

@@ -115,6 +115,11 @@ Public Class dlgBulkRenamer
                                             Else
                                                 MovieFile.SortTitle = _curMovie.Movie.SortTitle
                                             End If
+                                            If Not IsNothing(_curMovie.Movie.Sets) AndAlso _curMovie.Movie.Sets.Count > 0 Then
+                                                MovieFile.Collection = _curMovie.Movie.Sets.Item(0).Set
+                                            Else
+                                                MovieFile.Collection = String.Empty
+                                            End If
                                             MovieFile.Director = _curMovie.Movie.Director
                                             MovieFile.FileSource = _curMovie.FileSource
                                             MovieFile.Genre = _curMovie.Movie.Genre
@@ -185,6 +190,7 @@ Public Class dlgBulkRenamer
                                                 MovieFile.AudioCodec = String.Empty
                                                 MovieFile.Resolution = String.Empty
                                                 MovieFile.MultiViewCount = String.Empty
+                                                MovieFile.MultiViewLayout = String.Empty
                                             End If
 
                                             For Each i As String In FFRenamer.MovieFolders
@@ -515,7 +521,7 @@ Public Class dlgBulkRenamer
         Me.chkRenamedOnly.Text = Master.eLang.GetString(261, "Display Only Movies That Will Be Renamed")
 
         Dim frmToolTip As New ToolTip()
-        Dim s As String = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$L = List Title{0}$M = MPAA{0}$O = OriginalTitle{0}$P = Rating{0}$R = Resolution{0}$S = Source{0}$T = Title{0}$V = 3D (If Multiview > 1){0}$Y = Year{0}$X. (Replace Space with .){0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
+        Dim s As String = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$P = Rating{0}$R = Resolution{0}$S = Source{0}$T = Title{0}$V = 3D (If Multiview > 1){0}$Y = Year{0}$X. (Replace Space with .){0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
         frmToolTip.SetToolTip(Me.txtFolderPattern, s)
         frmToolTip.SetToolTip(Me.txtFilePattern, s)
         frmToolTip.SetToolTip(Me.txtFolderPatternNotSingle, s)

@@ -67,8 +67,8 @@ Public Class FileFolderRenamer
 
 #Region "Methods"
 
-    Public Shared Function HaveBase(ByVal fpath As String) As Boolean
-        If fpath.Contains("$B") Then
+    Public Shared Function HaveBase(ByVal fPattern As String) As Boolean
+        If fPattern.Contains("$B") Then
             Return True
         Else
             Return False
@@ -78,7 +78,7 @@ Public Class FileFolderRenamer
     Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String, ByVal isPath As Boolean) As String
         Try
             Dim pattern As String = opattern
-            Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
+            'Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
 
             'pattern = "$T{($S.$S)}"
             Dim joinIndex As Integer
@@ -107,10 +107,11 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "J", f.AudioCodec)
                     strCond = ApplyPattern(strCond, "L", f.ListTitle)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
+                    strCond = ApplyPattern(strCond, "N", f.Collection)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
-                    strCond = ApplyPattern(strCond, "S", strSource)
+                    strCond = ApplyPattern(strCond, "S", f.FileSource)
                     strCond = ApplyPattern(strCond, "T", f.Title)
                     strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
@@ -140,7 +141,7 @@ Public Class FileFolderRenamer
                             strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
                         End If
                     End If
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMORSTVY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMNORSTVY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
                     Else
@@ -167,10 +168,11 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "J", f.AudioCodec)
             pattern = ApplyPattern(pattern, "L", f.ListTitle)
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
+            pattern = ApplyPattern(pattern, "N", f.Collection)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
             pattern = ApplyPattern(pattern, "R", f.Resolution)
-            pattern = ApplyPattern(pattern, "S", strSource)
+            pattern = ApplyPattern(pattern, "S", f.FileSource)
             pattern = ApplyPattern(pattern, "T", f.Title)
             pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
             pattern = ApplyPattern(pattern, "Y", f.Year)
@@ -299,6 +301,12 @@ Public Class FileFolderRenamer
             MovieFile.MultiViewCount = String.Empty
             MovieFile.MultiViewLayout = String.Empty
             MovieFile.VideoCodec = String.Empty
+        End If
+
+        If Not IsNothing(_tmpMovie.Movie.Sets) AndAlso _tmpMovie.Movie.Sets.Count > 0 Then
+            MovieFile.Collection = _tmpMovie.Movie.Sets.Item(0).Set
+        Else
+            MovieFile.Collection = String.Empty
         End If
 
         MovieFile.Country = _tmpMovie.Movie.Country
@@ -668,10 +676,6 @@ Public Class FileFolderRenamer
                     f.NewPath = Path.Combine(f.OldPath, ProccessPattern(f, localFolderPattern, True).Trim)
                 End If
                 f.NewPath = If(f.NewPath.StartsWith(Path.DirectorySeparatorChar), f.NewPath.Substring(1), f.NewPath)
-                'Cocotus 20140906 Fix:  If movetitle contains invalid characters than there are problems when creating/moving subfolders! i.e title "Die Nackte Kanone 2 1/2 (1991)" --> folder with unwanted subfolder "2": \Die Nackte Kanone 2 1\ 2 (1991)
-                f.NewPath = StringUtils.CleanPath(f.NewPath)
-                f.NewPath = StringUtils.CleanFileName(f.NewPath)
-
                 f.FileExist = File.Exists(Path.Combine(f.BasePath, Path.Combine(f.NewPath, f.NewFileName))) AndAlso Not (f.FileName = f.NewFileName)
                 f.DirExist = File.Exists(Path.Combine(f.BasePath, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
 
@@ -873,6 +877,7 @@ Public Class FileFolderRenamer
         Private _audiochannels As String
         Private _audiocodec As String
         Private _basePath As String
+        Private _collection As String
         Private _dirExist As Boolean
         Private _fileExist As Boolean
         Private _fileName As String
@@ -932,6 +937,15 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As String)
                 _basePath = value
+            End Set
+        End Property
+
+        Public Property Collection() As String
+            Get
+                Return Me._collection
+            End Get
+            Set(ByVal value As String)
+                _collection = value
             End Set
         End Property
 
@@ -1216,6 +1230,7 @@ Public Class FileFolderRenamer
             _sorttitle = String.Empty
             _year = String.Empty
             _basePath = String.Empty
+            _collection = String.Empty
             _oldpath = String.Empty
             _path = String.Empty
             _fileName = String.Empty
