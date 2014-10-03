@@ -16624,7 +16624,7 @@ doCancel:
 
                 Select Case Me.cbSearch.Text
                     Case Master.eLang.GetString(21, "Title")
-                        Me.filSearch = String.Concat("ListTitle LIKE '%", Me.txtSearch.Text, "%'")
+                        Me.filSearch = String.Concat("Title LIKE '%", Me.txtSearch.Text, "%'")
                         Me.FilterArray.Add(Me.filSearch)
                     Case Master.eLang.GetString(302, "Original Title")
                         Me.filSearch = String.Concat("OriginalTitle LIKE '%", Me.txtSearch.Text, "%'")
