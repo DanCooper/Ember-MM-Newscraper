@@ -4540,6 +4540,7 @@ Partial Class frmMain
         '
         'mnuMovieMissAutoAll
         '
+        Me.mnuMovieMissAutoAll.Enabled = False
         Me.mnuMovieMissAutoAll.Name = "mnuMovieMissAutoAll"
         Me.mnuMovieMissAutoAll.Size = New System.Drawing.Size(171, 22)
         Me.mnuMovieMissAutoAll.Text = "All Items"
@@ -4645,6 +4646,7 @@ Partial Class frmMain
         '
         'mnuMovieMissAskAll
         '
+        Me.mnuMovieMissAskAll.Enabled = False
         Me.mnuMovieMissAskAll.Name = "mnuMovieMissAskAll"
         Me.mnuMovieMissAskAll.Size = New System.Drawing.Size(171, 22)
         Me.mnuMovieMissAskAll.Text = "All Items"
@@ -4744,6 +4746,7 @@ Partial Class frmMain
         'mnuMovieMissSkip
         '
         Me.mnuMovieMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMissSkipAll})
+        Me.mnuMovieMissSkip.Enabled = False
         Me.mnuMovieMissSkip.Name = "mnuMovieMissSkip"
         Me.mnuMovieMissSkip.Size = New System.Drawing.Size(264, 22)
         Me.mnuMovieMissSkip.Text = "Skip (Skip If More Than One Match)"
@@ -5710,9 +5713,11 @@ Partial Class frmMain
         '
         'mnuMovieSetMissAutoAll
         '
+        Me.mnuMovieSetMissAutoAll.Enabled = False
         Me.mnuMovieSetMissAutoAll.Name = "mnuMovieSetMissAutoAll"
         Me.mnuMovieSetMissAutoAll.Size = New System.Drawing.Size(165, 22)
         Me.mnuMovieSetMissAutoAll.Text = "All Items"
+        Me.mnuMovieSetMissAutoAll.Visible = False
         '
         'mnuMovieSetMissAutoBanner
         '
@@ -5795,9 +5800,11 @@ Partial Class frmMain
         '
         'mnuMovieSetMissAskAll
         '
+        Me.mnuMovieSetMissAskAll.Enabled = False
         Me.mnuMovieSetMissAskAll.Name = "mnuMovieSetMissAskAll"
         Me.mnuMovieSetMissAskAll.Size = New System.Drawing.Size(165, 22)
         Me.mnuMovieSetMissAskAll.Text = "All Items"
+        Me.mnuMovieSetMissAskAll.Visible = False
         '
         'mnuMovieSetMissAskBanner
         '
@@ -5874,9 +5881,11 @@ Partial Class frmMain
         'mnuMovieSetMissSkip
         '
         Me.mnuMovieSetMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetMissSkipAll})
+        Me.mnuMovieSetMissSkip.Enabled = False
         Me.mnuMovieSetMissSkip.Name = "mnuMovieSetMissSkip"
         Me.mnuMovieSetMissSkip.Size = New System.Drawing.Size(264, 22)
         Me.mnuMovieSetMissSkip.Text = "Skip (Skip If More Than One Match)"
+        Me.mnuMovieSetMissSkip.Visible = False
         '
         'mnuMovieSetMissSkipAll
         '
@@ -6877,9 +6886,11 @@ Partial Class frmMain
         '
         'cmnuTrayMovieMissAutoAll
         '
+        Me.cmnuTrayMovieMissAutoAll.Enabled = False
         Me.cmnuTrayMovieMissAutoAll.Name = "cmnuTrayMovieMissAutoAll"
         Me.cmnuTrayMovieMissAutoAll.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayMovieMissAutoAll.Text = "All Items"
+        Me.cmnuTrayMovieMissAutoAll.Visible = False
         '
         'cmnuTrayMovieMissAutoActor
         '
@@ -6981,9 +6992,11 @@ Partial Class frmMain
         '
         'cmnuTrayMovieMissAskAll
         '
+        Me.cmnuTrayMovieMissAskAll.Enabled = False
         Me.cmnuTrayMovieMissAskAll.Name = "cmnuTrayMovieMissAskAll"
         Me.cmnuTrayMovieMissAskAll.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayMovieMissAskAll.Text = "All Items"
+        Me.cmnuTrayMovieMissAskAll.Visible = False
         '
         'cmnuTrayMovieMissAskActor
         '
@@ -7079,14 +7092,16 @@ Partial Class frmMain
         'cmnuTrayMovieMissSkip
         '
         Me.cmnuTrayMovieMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieMissSkipAll})
+        Me.cmnuTrayMovieMissSkip.Enabled = False
         Me.cmnuTrayMovieMissSkip.Name = "cmnuTrayMovieMissSkip"
         Me.cmnuTrayMovieMissSkip.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayMovieMissSkip.Text = "Skip (Skip If More Than One Match)"
+        Me.cmnuTrayMovieMissSkip.Visible = False
         '
         'cmnuTrayMovieMissSkipAll
         '
         Me.cmnuTrayMovieMissSkipAll.Name = "cmnuTrayMovieMissSkipAll"
-        Me.cmnuTrayMovieMissSkipAll.Size = New System.Drawing.Size(120, 22)
+        Me.cmnuTrayMovieMissSkipAll.Size = New System.Drawing.Size(152, 22)
         Me.cmnuTrayMovieMissSkipAll.Text = "All Items"
         '
         'cmnuTrayMovieNew
