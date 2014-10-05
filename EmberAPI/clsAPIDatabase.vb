@@ -218,26 +218,32 @@ Public Class Database
             If (Master.DB.MyVideosDBConn IsNot Nothing) Then
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLcommand.CommandText = "UPDATE movies SET new = (?);"
-                        Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
+                        SQLcommand.CommandText = "UPDATE Movies SET New = (?);"
+                        Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "New")
+                        parNew.Value = False
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                    Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                        SQLcommand.CommandText = "UPDATE Sets SET New = (?);"
+                        Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "New")
                         parNew.Value = False
                         SQLcommand.ExecuteNonQuery()
                     End Using
                     Using SQLShowcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLShowcommand.CommandText = "UPDATE TVShows SET new = (?);"
-                        Dim parShowNew As SQLite.SQLiteParameter = SQLShowcommand.Parameters.Add("parShowNew", DbType.Boolean, 0, "new")
+                        SQLShowcommand.CommandText = "UPDATE TVShows SET New = (?);"
+                        Dim parShowNew As SQLite.SQLiteParameter = SQLShowcommand.Parameters.Add("parShowNew", DbType.Boolean, 0, "New")
                         parShowNew.Value = False
                         SQLShowcommand.ExecuteNonQuery()
                     End Using
                     Using SQLSeasoncommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLSeasoncommand.CommandText = "UPDATE TVSeason SET new = (?);"
-                        Dim parSeasonNew As SQLite.SQLiteParameter = SQLSeasoncommand.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "new")
+                        SQLSeasoncommand.CommandText = "UPDATE TVSeason SET New = (?);"
+                        Dim parSeasonNew As SQLite.SQLiteParameter = SQLSeasoncommand.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "New")
                         parSeasonNew.Value = False
                         SQLSeasoncommand.ExecuteNonQuery()
                     End Using
                     Using SQLEpcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLEpcommand.CommandText = "UPDATE TVEps SET new = (?);"
-                        Dim parEpNew As SQLite.SQLiteParameter = SQLEpcommand.Parameters.Add("parEpNew", DbType.Boolean, 0, "new")
+                        SQLEpcommand.CommandText = "UPDATE TVEps SET New = (?);"
+                        Dim parEpNew As SQLite.SQLiteParameter = SQLEpcommand.Parameters.Add("parEpNew", DbType.Boolean, 0, "New")
                         parEpNew.Value = False
                         SQLEpcommand.ExecuteNonQuery()
                     End Using

@@ -16732,7 +16732,7 @@ doCancel:
     End Sub
 
     Private Sub mnuUpdate_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuUpdate.ButtonClick
-        Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+        Me.LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
     End Sub
 
     Private Sub TVScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal iProgress As Integer, ByVal Parameter As Object)
