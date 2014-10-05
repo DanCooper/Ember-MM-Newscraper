@@ -111,14 +111,12 @@ Public Class dlgBulkRenamer
                                                 MovieFile.Title = _curMovie.Movie.Title
                                             End If
                                             If String.IsNullOrEmpty(_curMovie.Movie.SortTitle) Then
-                                                MovieFile.SortTitle = MovieFile.Title
+                                                MovieFile.SortTitle = MovieFile.ListTitle
                                             Else
                                                 MovieFile.SortTitle = _curMovie.Movie.SortTitle
                                             End If
                                             If Not IsNothing(_curMovie.Movie.Sets) AndAlso _curMovie.Movie.Sets.Count > 0 Then
                                                 MovieFile.Collection = _curMovie.Movie.Sets.Item(0).Set
-                                            Else
-                                                MovieFile.Collection = String.Empty
                                             End If
                                             MovieFile.Director = _curMovie.Movie.Director
                                             MovieFile.FileSource = _curMovie.FileSource
@@ -138,8 +136,6 @@ Public Class dlgBulkRenamer
                                                         Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
                                                         Dim tRes As String = NFO.GetResFromDimensions(tVid)
                                                         MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
-                                                    Else
-                                                        MovieFile.Resolution = String.Empty
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
@@ -147,50 +143,29 @@ Public Class dlgBulkRenamer
 
                                                         If tAud.ChannelsSpecified Then
                                                             MovieFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
-                                                        Else
-                                                            MovieFile.AudioChannels = String.Empty
                                                         End If
 
                                                         If tAud.CodecSpecified Then
                                                             MovieFile.AudioCodec = tAud.Codec
-                                                        Else
-                                                            MovieFile.AudioCodec = String.Empty
                                                         End If
                                                         'MovieFile.AudioChannels = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
-                                                    Else
-                                                        MovieFile.AudioChannels = String.Empty
-                                                        MovieFile.AudioCodec = String.Empty
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                                                         If Not String.IsNullOrEmpty(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
                                                             MovieFile.MultiViewCount = "3D"
-                                                        Else
-                                                            MovieFile.MultiViewCount = String.Empty
                                                         End If
-                                                    Else
-                                                        MovieFile.MultiViewCount = String.Empty
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                                                         If _curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).CodecSpecified Then
                                                             MovieFile.VideoCodec = _curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).Codec
-                                                        Else
-                                                            MovieFile.VideoCodec = String.Empty
                                                         End If
-                                                    Else
-                                                        MovieFile.VideoCodec = String.Empty
                                                     End If
 
                                                 Catch ex As Exception
                                                     logger.Error(New StackFrame().GetMethod().Name,ex)
                                                 End Try
-                                            Else
-                                                MovieFile.AudioChannels = String.Empty
-                                                MovieFile.AudioCodec = String.Empty
-                                                MovieFile.Resolution = String.Empty
-                                                MovieFile.MultiViewCount = String.Empty
-                                                MovieFile.MultiViewLayout = String.Empty
                                             End If
 
                                             For Each i As String In FFRenamer.MovieFolders

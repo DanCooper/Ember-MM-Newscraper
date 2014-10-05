@@ -258,8 +258,6 @@ Public Class FileFolderRenamer
                     Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpMovie.Movie.FileInfo)
                     Dim tRes As String = NFO.GetResFromDimensions(tVid)
                     MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
-                Else
-                    MovieFile.Resolution = String.Empty
                 End If
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
@@ -267,46 +265,26 @@ Public Class FileFolderRenamer
 
                     If tAud.ChannelsSpecified Then
                         MovieFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
-                    Else
-                        MovieFile.AudioChannels = String.Empty
                     End If
 
                     If tAud.CodecSpecified Then
                         MovieFile.AudioCodec = tAud.Codec
-                    Else
-                        MovieFile.AudioCodec = String.Empty
                     End If
                     'MovieFile.AudioChannels = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
-                Else
-                    MovieFile.AudioChannels = String.Empty
-                    MovieFile.AudioCodec = String.Empty
                 End If
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                     If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
                         MovieFile.MultiViewCount = "3D"
-                    Else
-                        MovieFile.MultiViewCount = String.Empty
                     End If
-                Else
-                    MovieFile.MultiViewCount = String.Empty
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        Else
-            MovieFile.AudioChannels = String.Empty
-            MovieFile.AudioCodec = String.Empty
-            MovieFile.Resolution = String.Empty
-            MovieFile.MultiViewCount = String.Empty
-            MovieFile.MultiViewLayout = String.Empty
-            MovieFile.VideoCodec = String.Empty
         End If
 
         If Not IsNothing(_tmpMovie.Movie.Sets) AndAlso _tmpMovie.Movie.Sets.Count > 0 Then
             MovieFile.Collection = _tmpMovie.Movie.Sets.Item(0).Set
-        Else
-            MovieFile.Collection = String.Empty
         End If
 
         MovieFile.Country = _tmpMovie.Movie.Country
@@ -318,7 +296,7 @@ Public Class FileFolderRenamer
         MovieFile.ListTitle = _tmpMovie.ListTitle
         MovieFile.OriginalTitle = _tmpMovie.Movie.OriginalTitle
         MovieFile.Rating = _tmpMovie.Movie.Rating
-        MovieFile.SortTitle = _tmpMovie.Movie.SortTitle
+        MovieFile.SortTitle = If(Not String.IsNullOrEmpty(_tmpMovie.Movie.SortTitle), _tmpMovie.Movie.SortTitle, _tmpMovie.ListTitle)
         MovieFile.Title = _tmpMovie.Movie.Title
         MovieFile.Year = _tmpMovie.Movie.Year
         Dim mFolders As New List(Of String)
@@ -1223,39 +1201,78 @@ Public Class FileFolderRenamer
 
 #Region "Methods"
 
-        Public Sub Clear()
-            _id = -1
-            _title = String.Empty
-            _listtitle = String.Empty
-            _sorttitle = String.Empty
-            _year = String.Empty
+        Public Sub New()
+            _audiochannels = String.Empty
+            _audiocodec = String.Empty
             _basePath = String.Empty
             _collection = String.Empty
-            _oldpath = String.Empty
-            _path = String.Empty
+            _country = String.Empty
+            _dirExist = False
+            _director = String.Empty
+            _fileExist = False
             _fileName = String.Empty
-            _newPath = String.Empty
-            _newFileName = String.Empty
-            _parent = String.Empty
-            _islocked = False
-            _dirExist = True
-            _fileExist = True
-            _isSingle = True
+            _filesource = String.Empty
+            _genre = String.Empty
+            _id = -1
+            _imdbid = String.Empty
             _isRenamed = False
+            _isSingle = False
+            _isbdmv = False
+            _islocked = False
+            _isvideo_ts = False
+            _listtitle = String.Empty
             _mpaarate = String.Empty
             _multiviewcount = String.Empty
             _multiviewlayout = String.Empty
+            _newFileName = String.Empty
+            _newPath = String.Empty
+            _oldpath = String.Empty
+            _originalTitle = String.Empty
+            _parent = String.Empty
+            _path = String.Empty
             _rating = String.Empty
             _resolution = String.Empty
+            _sorttitle = String.Empty
+            _title = String.Empty
+            _videocodec = String.Empty
+            _year = String.Empty
+        End Sub
+
+        Public Sub Clear()
             _audiochannels = String.Empty
             _audiocodec = String.Empty
-            _originalTitle = String.Empty
-            _isvideo_ts = False
-            _isbdmv = False
-            _genre = String.Empty
-            _director = String.Empty
+            _basePath = String.Empty
+            _collection = String.Empty
             _country = String.Empty
+            _dirExist = False
+            _director = String.Empty
+            _fileExist = False
+            _fileName = String.Empty
+            _filesource = String.Empty
+            _genre = String.Empty
+            _id = -1
+            _imdbid = String.Empty
+            _isRenamed = False
+            _isSingle = False
+            _isbdmv = False
+            _islocked = False
+            _isvideo_ts = False
+            _listtitle = String.Empty
+            _mpaarate = String.Empty
+            _multiviewcount = String.Empty
+            _multiviewlayout = String.Empty
+            _newFileName = String.Empty
+            _newPath = String.Empty
+            _oldpath = String.Empty
+            _originalTitle = String.Empty
+            _parent = String.Empty
+            _path = String.Empty
+            _rating = String.Empty
+            _resolution = String.Empty
+            _sorttitle = String.Empty
+            _title = String.Empty
             _videocodec = String.Empty
+            _year = String.Empty
         End Sub
 
 #End Region 'Methods

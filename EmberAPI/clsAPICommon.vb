@@ -1809,9 +1809,6 @@ Public Class Structures
         Dim ThemePath As String
         Dim TrailerPath As String
         Dim UseFolder As Boolean
-
-      
-
     End Structure
     ''' <summary>
     ''' Structure representing a movieset in the database
