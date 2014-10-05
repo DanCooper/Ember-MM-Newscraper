@@ -1222,7 +1222,7 @@
   <string id="1132">Edit the details for the selected movieset.</string>
   <string id="1133">You need your own API key for that</string>
   <string id="1134">Error</string>
-  <string id="1135">Collection</string>
+  <string id="1135">Collection ID</string>
   <string id="1136">Apple</string>
   <string id="1137">Lenght</string>
   <string id="1138">Quality</string>
@@ -1322,7 +1322,7 @@
   <string id="1232">MovieSet Search Results</string>
   <string id="1233">(Re)Scrape MovieSet</string>  
   <string id="1234">Lock Actors</string>
-  <string id="1235">Lock Collection</string>
+  <string id="1235">Lock Collection ID</string>
   <string id="1236">Lock Country</string>
   <string id="1237">Lock Director</string>
   <string id="1238"></string>
@@ -1350,4 +1350,8 @@
   <string id="1260">Store themes in sub directorys</string>
   <string id="1261">Configuration ISO Filescanning</string>
   <string id="1262">Use Show Runtime for Episodes if no Episode Runtime can be found</string>
+  <string id="1263">TMDB Collection ID found</string>
+  <string id="1264">Should the Collection ID of the movie "{0}" be used as ID for this Collection?</string>
+  <string id="1265">Lock Collections</string>
+  <string id="1266">Add Movie automatically to Collections</string>
 </strings>

@@ -83,16 +83,16 @@ Public Class NFO
 
 
                 'MPAA/Certification
-                If (String.IsNullOrEmpty(DBMovie.Movie.MPAA) OrElse Not Master.eSettings.MovieLockMPAA) AndAlso Not String.IsNullOrEmpty(scrapedmovie.MPAA) AndAlso Master.eSettings.MovieScraperCertification Then
+                If (String.IsNullOrEmpty(DBMovie.Movie.MPAA) OrElse Not Master.eSettings.MovieLockMPAA) AndAlso Not String.IsNullOrEmpty(scrapedmovie.MPAA) AndAlso Master.eSettings.MovieScraperCert Then
                     DBMovie.Movie.MPAA = scrapedmovie.MPAA
-                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCertification AndAlso Not Master.eSettings.MovieLockMPAA Then
+                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCert AndAlso Not Master.eSettings.MovieLockMPAA Then
                     DBMovie.Movie.MPAA = String.Empty
                 End If
-                If (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Certification) AndAlso Master.eSettings.MovieScraperCertification Then
+                If (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Certification) AndAlso Master.eSettings.MovieScraperCert Then
                     DBMovie.Movie.Certification = scrapedmovie.Certification
                     If Master.eSettings.MovieScraperCertForMPAA AndAlso (Not Master.eSettings.MovieScraperCertLang = "us" OrElse (Master.eSettings.MovieScraperCertLang = "us" AndAlso String.IsNullOrEmpty(DBMovie.Movie.MPAA))) Then
                         Dim tmpstring As String = ""
-                        tmpstring = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(DBMovie.Movie.Certification), If(Master.eSettings.MovieScraperOnlyValueForMPAA, DBMovie.Movie.Certification.Split(Convert.ToChar(":"))(1), DBMovie.Movie.Certification))
+                        tmpstring = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(DBMovie.Movie.Certification), If(Master.eSettings.MovieScraperCertOnlyValue, DBMovie.Movie.Certification.Split(Convert.ToChar(":"))(1), DBMovie.Movie.Certification))
                         'only update DBMovie if scraped result is not empty/nothing!
                         If Not String.IsNullOrEmpty(tmpstring) Then
                             DBMovie.Movie.MPAA = tmpstring
@@ -280,13 +280,15 @@ Public Class NFO
                     DBMovie.Movie.Credits.AddRange(scrapedmovie.Credits)
                 End If
 
-                'Collection
-                If (String.IsNullOrEmpty(DBMovie.Movie.TMDBColID) OrElse Not Master.eSettings.MovieLockCollection) AndAlso Not String.IsNullOrEmpty(scrapedmovie.TMDBColID) AndAlso Master.eSettings.MovieScraperCollection Then
+                'Collection ID
+                If (String.IsNullOrEmpty(DBMovie.Movie.TMDBColID) OrElse Not Master.eSettings.MovieLockCollectionID) AndAlso Not String.IsNullOrEmpty(scrapedmovie.TMDBColID) AndAlso Master.eSettings.MovieScraperCollectionID Then
                     DBMovie.Movie.TMDBColID = scrapedmovie.TMDBColID
-                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCollection AndAlso Not Master.eSettings.MovieLockCollection Then
+                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCollectionID AndAlso Not Master.eSettings.MovieLockCollectionID Then
                     DBMovie.Movie.TMDBColID = String.Empty
                 End If
-                If (DBMovie.Movie.Sets.Count < 1 OrElse Not Master.eSettings.MovieLockCollection) AndAlso scrapedmovie.Sets.Count > 0 AndAlso Master.eSettings.MovieScraperCollection Then
+
+                'Collections
+                If (DBMovie.Movie.Sets.Count < 1 OrElse Not Master.eSettings.MovieLockCollections) AndAlso scrapedmovie.Sets.Count > 0 AndAlso Master.eSettings.MovieScraperCollectionsAuto Then
                     DBMovie.Movie.Sets.Clear()
                     DBMovie.Movie.Sets.AddRange(scrapedmovie.Sets)
                 End If

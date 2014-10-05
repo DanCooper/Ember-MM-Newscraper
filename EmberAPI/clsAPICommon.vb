@@ -1096,7 +1096,7 @@ Public Class Functions
         With options
             .bCast = True
             .bCert = True
-            .bCollection = True
+            .bCollectionID = True
             .bCountry = True
             .bDirector = True
             .bFullCrew = True
@@ -1135,8 +1135,8 @@ Public Class Functions
             '.bLanguageV = Master.eSettings.FieldLanguageV
             '.buseMPAAForFSK = Master.eSettings.UseMPAAForFSK
             .bCast = Master.eSettings.MovieScraperCast
-            .bCert = Master.eSettings.MovieScraperCertification
-            .bCollection = Master.eSettings.MovieScraperCollection
+            .bCert = Master.eSettings.MovieScraperCert
+            .bCollectionID = Master.eSettings.MovieScraperCollectionID
             .bCountry = Master.eSettings.MovieScraperCountry
             .bDirector = Master.eSettings.MovieScraperDirector
             .bGenre = Master.eSettings.MovieScraperGenre
@@ -1425,7 +1425,7 @@ Public Class Functions
         Dim filterOptions As New Structures.ScrapeOptions_Movie
         filterOptions.bCast = Options.bCast AndAlso Options2.bCast
         filterOptions.bCert = Options.bCert AndAlso Options2.bCert
-        filterOptions.bCollection = Options.bCollection AndAlso Options2.bCollection
+        filterOptions.bCollectionID = Options.bCollectionID AndAlso Options2.bCollectionID
         filterOptions.bCountry = Options.bCountry AndAlso Options2.bCountry
         filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
         filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
@@ -1930,7 +1930,7 @@ Public Class Structures
     Public Structure ScrapeOptions_Movie
         Dim bCast As Boolean
         Dim bCert As Boolean
-        Dim bCollection As Boolean
+        Dim bCollectionID As Boolean
         Dim bDirector As Boolean
         Dim bFullCrew As Boolean
         Dim bGenre As Boolean

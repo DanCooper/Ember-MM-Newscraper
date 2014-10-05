@@ -44,7 +44,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.chkWriters = New System.Windows.Forms.CheckBox()
-        Me.chkCollection = New System.Windows.Forms.CheckBox()
+        Me.chkCollectionID = New System.Windows.Forms.CheckBox()
         Me.chkDirector = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
         Me.chkStudio = New System.Windows.Forms.CheckBox()
@@ -278,7 +278,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         'gbScraperOpts
         '
         Me.gbScraperOpts.Controls.Add(Me.chkWriters)
-        Me.gbScraperOpts.Controls.Add(Me.chkCollection)
+        Me.gbScraperOpts.Controls.Add(Me.chkCollectionID)
         Me.gbScraperOpts.Controls.Add(Me.chkDirector)
         Me.gbScraperOpts.Controls.Add(Me.chkCountry)
         Me.gbScraperOpts.Controls.Add(Me.chkStudio)
@@ -312,15 +312,15 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkWriters.Text = "Writers"
         Me.chkWriters.UseVisualStyleBackColor = True
         '
-        'chkCollection
+        'chkCollectionID
         '
-        Me.chkCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCollection.Location = New System.Drawing.Point(332, 53)
-        Me.chkCollection.Name = "chkCollection"
-        Me.chkCollection.Size = New System.Drawing.Size(175, 17)
-        Me.chkCollection.TabIndex = 76
-        Me.chkCollection.Text = "Collection"
-        Me.chkCollection.UseVisualStyleBackColor = True
+        Me.chkCollectionID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCollectionID.Location = New System.Drawing.Point(332, 53)
+        Me.chkCollectionID.Name = "chkCollectionID"
+        Me.chkCollectionID.Size = New System.Drawing.Size(175, 17)
+        Me.chkCollectionID.TabIndex = 76
+        Me.chkCollectionID.Text = "Collection ID"
+        Me.chkCollectionID.UseVisualStyleBackColor = True
         '
         'chkDirector
         '
@@ -532,7 +532,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
     Friend WithEvents chkDirector As System.Windows.Forms.CheckBox
     Friend WithEvents pbTMDBApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkGetAdultItems As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCollection As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCollectionID As System.Windows.Forms.CheckBox
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
     Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
     Friend WithEvents chkWriters As System.Windows.Forms.CheckBox

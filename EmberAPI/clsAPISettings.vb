@@ -770,12 +770,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperCollection() As Boolean
+    Public Property MovieScraperCollectionID() As Boolean
         Get
-            Return Settings._XMLSettings.moviescrapercollection
+            Return Settings._XMLSettings.MovieScraperCollectionID
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescrapercollection = value
+            Settings._XMLSettings.MovieScraperCollectionID = value
+        End Set
+    End Property
+
+    Public Property MovieScraperCollectionsAuto() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperCollectionsAuto
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperCollectionsAuto = value
         End Set
     End Property
 
@@ -797,12 +806,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperCertification() As Boolean
+    Public Property MovieScraperCert() As Boolean
         Get
-            Return Settings._XMLSettings.moviescrapercertification
+            Return Settings._XMLSettings.MovieScraperCert
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescrapercertification = value
+            Settings._XMLSettings.MovieScraperCert = value
         End Set
     End Property
 
@@ -1069,12 +1078,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieLockCollection() As Boolean
+    Public Property MovieLockCollectionID() As Boolean
         Get
-            Return Settings._XMLSettings.MovieLockCollection
+            Return Settings._XMLSettings.MovieLockCollectionID
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLockCollection = value
+            Settings._XMLSettings.MovieLockCollectionID = value
+        End Set
+    End Property
+
+    Public Property MovieLockCollections() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockCollections
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockCollections = value
         End Set
     End Property
 
@@ -1231,12 +1249,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperUseMPAAFSK() As Boolean
+    Public Property MovieScraperCertFSK() As Boolean
         Get
-            Return Settings._XMLSettings.moviescraperusempaafsk
+            Return Settings._XMLSettings.MovieScraperCertFSK
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescraperusempaafsk = value
+            Settings._XMLSettings.MovieScraperCertFSK = value
         End Set
     End Property
     Public Property MovieLockStudio() As Boolean
@@ -2164,12 +2182,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperOnlyValueForMPAA() As Boolean
+    Public Property MovieScraperCertOnlyValue() As Boolean
         Get
-            Return Settings._XMLSettings.moviescraperonlyvalueformpaa
+            Return Settings._XMLSettings.MovieScraperCertOnlyValue
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescraperonlyvalueformpaa = value
+            Settings._XMLSettings.MovieScraperCertOnlyValue = value
         End Set
     End Property
 

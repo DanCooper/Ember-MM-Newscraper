@@ -198,7 +198,7 @@ Public Class TMDB_Data
         _setup_Movie.cbEnabled.Checked = _ScraperEnabled_Movie
         _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.PrefLanguage
         _setup_Movie.chkCast.Checked = ConfigOptions_Movie.bCast
-        _setup_Movie.chkCollection.Checked = ConfigOptions_Movie.bCollection
+        _setup_Movie.chkCollectionID.Checked = ConfigOptions_Movie.bCollectionID
         _setup_Movie.chkCountry.Checked = ConfigOptions_Movie.bCountry
         _setup_Movie.chkDirector.Checked = ConfigOptions_Movie.bDirector
         _setup_Movie.chkFallBackEng.Checked = _MySettings_Movie.FallBackEng
@@ -268,7 +268,7 @@ Public Class TMDB_Data
     Sub LoadSettings_Movie()
         ConfigOptions_Movie.bCast = clsAdvancedSettings.GetBooleanSetting("DoCast", True, , Enums.Content_Type.Movie)
         ConfigOptions_Movie.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bCollection = clsAdvancedSettings.GetBooleanSetting("DoCollection", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bCollectionID = clsAdvancedSettings.GetBooleanSetting("DoCollectionID", True, , Enums.Content_Type.Movie)
         ConfigOptions_Movie.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.Content_Type.Movie)
         ConfigOptions_Movie.bDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.Content_Type.Movie)
         ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True, , Enums.Content_Type.Movie)
@@ -320,7 +320,7 @@ Public Class TMDB_Data
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoCast", ConfigOptions_Movie.bCast, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoCert", ConfigOptions_Movie.bCert, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoCollection", ConfigOptions_Movie.bCollection, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoCollectionID", ConfigOptions_Movie.bCollectionID, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoCountry", ConfigOptions_Movie.bCountry, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoDirector", ConfigOptions_Movie.bDirector, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.Fanart, , , Enums.Content_Type.Movie)
@@ -364,7 +364,7 @@ Public Class TMDB_Data
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
         ConfigOptions_Movie.bCast = _setup_Movie.chkCast.Checked
         ConfigOptions_Movie.bCert = _setup_Movie.chkMPAA.Checked
-        ConfigOptions_Movie.bCollection = _setup_Movie.chkCollection.Checked
+        ConfigOptions_Movie.bCollectionID = _setup_Movie.chkCollectionID.Checked
         ConfigOptions_Movie.bCountry = _setup_Movie.chkCountry.Checked
         ConfigOptions_Movie.bDirector = _setup_Movie.chkDirector.Checked
         ConfigOptions_Movie.bFullCrew = True

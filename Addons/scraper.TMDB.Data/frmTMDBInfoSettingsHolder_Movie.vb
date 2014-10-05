@@ -128,7 +128,7 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkCollection_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCollection.CheckedChanged
+    Private Sub chkCollectionID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCollectionID.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -239,7 +239,7 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
-        Me.chkCollection.Text = Master.eLang.GetString(1135, "Collection")
+        Me.chkCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
         Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")

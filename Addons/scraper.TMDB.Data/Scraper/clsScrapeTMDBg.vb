@@ -322,7 +322,7 @@ Namespace TMDBdata
                 If bwTMDBg.CancellationPending Then Return Nothing
 
                 'Use TMDB collection data?
-                If Options.bCollection Then
+                If Options.bCollectionID Then
                     'Get collection information
                     If IsNothing(Movie.belongs_to_collection) Then
                         If _MySettings.FallBackEng Then

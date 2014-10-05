@@ -268,35 +268,35 @@ Public Class MoviepilotDE_Data
                 Select Case CInt(tmpMoviepilotDE.FSK)
                     Case 0
                         nMovie.Certification = "Germany:0"
-                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+                        If Master.eSettings.MovieScraperCertOnlyValue = False Then
                             nMovie.MPAA = "Germany:0"
                         Else
                             nMovie.MPAA = "0"
                         End If
                     Case 6
                         nMovie.Certification = "Germany:6"
-                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+                        If Master.eSettings.MovieScraperCertOnlyValue = False Then
                             nMovie.MPAA = "Germany:6"
                         Else
                             nMovie.MPAA = "6"
                         End If
                     Case 16
                         nMovie.Certification = "Germany:16"
-                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+                        If Master.eSettings.MovieScraperCertOnlyValue = False Then
                             nMovie.MPAA = "Germany:16"
                         Else
                             nMovie.MPAA = "16"
                         End If
                     Case 12
                         nMovie.Certification = "Germany:12"
-                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+                        If Master.eSettings.MovieScraperCertOnlyValue = False Then
                             nMovie.MPAA = "Germany:12"
                         Else
                             nMovie.MPAA = "12"
                         End If
                     Case 18
                         nMovie.Certification = "Germany:18"
-                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+                        If Master.eSettings.MovieScraperCertOnlyValue = False Then
                             nMovie.MPAA = "Germany:18"
                         Else
                             nMovie.MPAA = "18"
