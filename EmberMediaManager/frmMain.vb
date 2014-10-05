@@ -9960,7 +9960,9 @@ doCancel:
 
             If Not CloseApp Then
                 Me.SetUp(True)
-                Me.cbSearch.SelectedIndex = 0
+                If Me.cbSearch.Items.Count > 0 Then
+                    Me.cbSearch.SelectedIndex = 0
+                End If
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(863, "Positioning controls..."))
                 Me.Location = Master.eSettings.GeneralWindowLoc
@@ -16251,6 +16253,9 @@ doCancel:
 
                 .cbSearch.Items.Clear()
                 .cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(302, "Original Title"), Master.eLang.GetString(100, "Actor"), Master.eLang.GetString(233, "Role"), Master.eLang.GetString(62, "Director"), Master.eLang.GetString(729, "Credits"), Master.eLang.GetString(301, "Country"), Master.eLang.GetString(395, "Studio")})
+                If Me.cbSearch.Items.Count > 0 Then
+                    Me.cbSearch.SelectedIndex = 0
+                End If
 
                 If doTheme Then
                     Me.tTheme = New Theming
