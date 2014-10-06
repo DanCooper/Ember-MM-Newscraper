@@ -3670,19 +3670,19 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub clbFilterVideoSource_Movies_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterVideoSource_Movies.LostFocus
+    Private Sub clbFilterSource_Movies_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterSource_Movies.LostFocus
         Try
             Me.pnlFilterSource_Movies.Visible = False
             Me.pnlFilterSource_Movies.Tag = "NO"
 
-            If clbFilterVideoSource_Movies.CheckedItems.Count > 0 Then
-                Me.txtFilterVideoSource_Movies.Text = String.Empty
+            If clbFilterSource_Movies.CheckedItems.Count > 0 Then
+                Me.txtFilterSource_Movies.Text = String.Empty
                 Me.FilterArray_Movies.Remove(Me.filSource_Movies)
 
                 Dim alSource As New List(Of String)
-                alSource.AddRange(clbFilterVideoSource_Movies.CheckedItems.OfType(Of String).ToList)
+                alSource.AddRange(clbFilterSource_Movies.CheckedItems.OfType(Of String).ToList)
 
-                Me.txtFilterVideoSource_Movies.Text = Microsoft.VisualBasic.Strings.Join(alSource.ToArray, " | ")
+                Me.txtFilterSource_Movies.Text = Microsoft.VisualBasic.Strings.Join(alSource.ToArray, " | ")
 
                 For i As Integer = 0 To alSource.Count - 1
                     alSource.Item(i) = String.Format("Source = '{0}'", alSource.Item(i))
@@ -3694,7 +3694,7 @@ doCancel:
                 Me.RunFilter_Movies()
             Else
                 If Not String.IsNullOrEmpty(Me.filSource_Movies) Then
-                    Me.txtFilterVideoSource_Movies.Text = String.Empty
+                    Me.txtFilterSource_Movies.Text = String.Empty
                     Me.FilterArray_Movies.Remove(Me.filSource_Movies)
                     Me.filSource_Movies = String.Empty
                     Me.RunFilter_Movies()
@@ -3704,39 +3704,39 @@ doCancel:
         End Try
     End Sub
 
-    'Private Sub clbFilterVideoSource_Shows_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterVideoSource_Shows.LostFocus TODO
-    '    Try
-    '        Me.pnlFilterSource_Shows.Visible = False
-    '        Me.pnlFilterSource_Shows.Tag = "NO"
+    Private Sub clbFilterSource_Shows_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterSource_Shows.LostFocus
+        Try
+            Me.pnlFilterSource_Shows.Visible = False
+            Me.pnlFilterSource_Shows.Tag = "NO"
 
-    '        If clbFilterVideoSource_Shows.CheckedItems.Count > 0 Then
-    '            Me.txtFilterVideoSource_Shows.Text = String.Empty
-    '            Me.FilterArray_Shows.Remove(Me.filSource_Shows)
+            If clbFilterSource_Shows.CheckedItems.Count > 0 Then
+                Me.txtFilterSource_Shows.Text = String.Empty
+                Me.FilterArray_Shows.Remove(Me.filSource_Shows)
 
-    '            Dim alSource As New List(Of String)
-    '            alSource.AddRange(clbFilterVideoSource_Shows.CheckedItems.OfType(Of String).ToList)
+                Dim alSource As New List(Of String)
+                alSource.AddRange(clbFilterSource_Shows.CheckedItems.OfType(Of String).ToList)
 
-    '            Me.txtFilterVideoSource_Shows.Text = Microsoft.VisualBasic.Strings.Join(alSource.ToArray, " | ")
+                Me.txtFilterSource_Shows.Text = Microsoft.VisualBasic.Strings.Join(alSource.ToArray, " | ")
 
-    '            For i As Integer = 0 To alSource.Count - 1
-    '                alSource.Item(i) = String.Format("Source = '{0}'", alSource.Item(i))
-    '            Next
+                For i As Integer = 0 To alSource.Count - 1
+                    alSource.Item(i) = String.Format("Source = '{0}'", alSource.Item(i))
+                Next
 
-    '            Me.filSource_Shows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alSource.ToArray, " OR "))
+                Me.filSource_Shows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alSource.ToArray, " OR "))
 
-    '            Me.FilterArray_Shows.Add(Me.filSource_Shows)
-    '            Me.RunFilter_Shows()
-    '        Else
-    '            If Not String.IsNullOrEmpty(Me.filSource_Shows) Then
-    '                Me.txtFilterVideoSource_Shows.Text = String.Empty
-    '                Me.FilterArray_Shows.Remove(Me.filSource_Shows)
-    '                Me.filSource_Shows = String.Empty
-    '                Me.RunFilter_Shows()
-    '            End If
-    '        End If
-    '    Catch
-    '    End Try
-    'End Sub
+                Me.FilterArray_Shows.Add(Me.filSource_Shows)
+                Me.RunFilter_Shows()
+            Else
+                If Not String.IsNullOrEmpty(Me.filSource_Shows) Then
+                    Me.txtFilterSource_Shows.Text = String.Empty
+                    Me.FilterArray_Shows.Remove(Me.filSource_Shows)
+                    Me.filSource_Shows = String.Empty
+                    Me.RunFilter_Shows()
+                End If
+            End If
+        Catch
+        End Try
+    End Sub
 
     Private Sub mnuMainToolsCleanDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsCleanDB.Click, cmnuTrayToolsCleanDB.Click
         Me.SetControlsEnabled(False, True)
@@ -3828,9 +3828,9 @@ doCancel:
             For i As Integer = 0 To Me.clbFilterCountries_Movies.Items.Count - 1
                 Me.clbFilterCountries_Movies.SetItemChecked(i, False)
             Next
-            Me.txtFilterVideoSource_Movies.Text = String.Empty
-            For i As Integer = 0 To Me.clbFilterVideoSource_Movies.Items.Count - 1
-                Me.clbFilterVideoSource_Movies.SetItemChecked(i, False)
+            Me.txtFilterSource_Movies.Text = String.Empty
+            For i As Integer = 0 To Me.clbFilterSource_Movies.Items.Count - 1
+                Me.clbFilterSource_Movies.SetItemChecked(i, False)
             Next
 
             RemoveHandler cbFilterYear_Movies.SelectedIndexChanged, AddressOf cbFilterYear_Movies_SelectedIndexChanged
@@ -3958,10 +3958,10 @@ doCancel:
             'For i As Integer = 0 To Me.clbFilterCountries.Items.Count - 1
             '    Me.clbFilterCountries.SetItemChecked(i, False)
             'Next
-            'Me.txtFilterVideoSource_Shows.Text = String.Empty      TODO
-            'For i As Integer = 0 To Me.clbFilterVideoSource_Shows.Items.Count - 1
-            '    Me.clbFilterVideoSource_Shows.SetItemChecked(i, False)
-            'Next
+            Me.txtFilterSource_Shows.Text = String.Empty
+            For i As Integer = 0 To Me.clbFilterSource_Shows.Items.Count - 1
+                Me.clbFilterSource_Shows.SetItemChecked(i, False)
+            Next
 
             'RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
             'If Me.cbFilterYear.Items.Count > 0 Then
@@ -7788,7 +7788,7 @@ doCancel:
         Me.rbFilterOr_Movies.Enabled = isEnabled
         Me.txtFilterCountry_Movies.Enabled = isEnabled
         Me.txtFilterGenre_Movies.Enabled = isEnabled
-        Me.txtFilterVideoSource_Movies.Enabled = isEnabled
+        Me.txtFilterSource_Movies.Enabled = isEnabled
         Me.txtSearchMovies.Enabled = isEnabled
     End Sub
 
@@ -7820,7 +7820,7 @@ doCancel:
     End Sub
 
     Private Sub EnableFilters_Shows(ByVal isEnabled As Boolean)
-        'Me.btnClearFilters.Enabled = isEnabled
+        Me.btnClearFilters_Shows.Enabled = isEnabled
         'Me.btnSortDate.Enabled = isEnabled
         'Me.btnIMDBRating.Enabled = isEnabled
         'Me.btnSortTitle.Enabled = isEnabled
@@ -7829,20 +7829,20 @@ doCancel:
         'Me.cbFilterYearMod.Enabled = isEnabled
         Me.cbSearchShows.Enabled = isEnabled
         'Me.chkFilterDuplicates.Enabled = isEnabled
-        'Me.chkFilterLock.Enabled = isEnabled
-        'Me.chkFilterMark.Enabled = isEnabled
+        Me.chkFilterLock_Shows.Enabled = isEnabled
+        Me.chkFilterMark_Shows.Enabled = isEnabled
         'Me.chkFilterMarkCustom1.Enabled = isEnabled
         'Me.chkFilterMarkCustom2.Enabled = isEnabled
         'Me.chkFilterMarkCustom3.Enabled = isEnabled
         'Me.chkFilterMarkCustom4.Enabled = isEnabled
-        'Me.chkFilterMissing.Enabled = isEnabled
-        'Me.chkFilterNew.Enabled = isEnabled
+        Me.chkFilterMissing_Shows.Enabled = isEnabled
+        Me.chkFilterNew_Shows.Enabled = isEnabled
         'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
-        'Me.rbFilterAnd.Enabled = isEnabled
-        'Me.rbFilterOr.Enabled = isEnabled
+        Me.rbFilterAnd_Shows.Enabled = isEnabled
+        Me.rbFilterOr_Shows.Enabled = isEnabled
         'Me.txtFilterCountry.Enabled = isEnabled
         'Me.txtFilterGenre.Enabled = isEnabled
-        'Me.txtFilterSource.Enabled = isEnabled
+        Me.txtFilterSource_Shows.Enabled = isEnabled
         Me.txtSearchShows.Enabled = isEnabled
     End Sub
 
@@ -10555,7 +10555,8 @@ doCancel:
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
                 Me.pnlFilterCountry_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterCountry_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterCountry_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterCountry_Movies.Height)
                 Me.pnlFilterGenre_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterGenre_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterGenre_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterGenre_Movies.Height)
-                Me.pnlFilterSource_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterVideoSource_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterVideoSource_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterSource_Movies.Height)
+                Me.pnlFilterSource_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterSource_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterSource_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterSource_Movies.Height)
+                Me.pnlFilterSource_Shows.Location = New Point(Me.gbFilterSpecific_Shows.Left + Me.txtFilterSource_Shows.Left, (Me.pnlFilter_Shows.Top + Me.txtFilterSource_Shows.Top + Me.gbFilterSpecific_Shows.Top) - Me.pnlFilterSource_Shows.Height)
                 Me.pnlLoadSettings.Location = New Point(Convert.ToInt32((Me.Width - Me.pnlLoadSettings.Width) / 2), Convert.ToInt32((Me.Height - Me.pnlLoadSettings.Height) / 2))
             End If
         Catch ex As Exception
@@ -10639,19 +10640,24 @@ doCancel:
         Me.cmnuShowLanguageSet.Enabled = True
     End Sub
 
-    Private Sub lblGFilClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblGFilClose.Click
+    Private Sub lblFilterGenreClose_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterGenreClose_Movies.Click
         Me.txtFilterGenre_Movies.Focus()
         Me.pnlFilterGenre_Movies.Tag = String.Empty
     End Sub
 
-    Private Sub lblCFilClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblCFilClose.Click
+    Private Sub lblFilterCountryClose_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterCountryClose_Movies.Click
         Me.txtFilterCountry_Movies.Focus()
         Me.pnlFilterCountry_Movies.Tag = String.Empty
     End Sub
 
-    Private Sub lblSFilClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblSFilClose.Click
-        Me.txtFilterVideoSource_Movies.Focus()
+    Private Sub lblFilterSourceClose_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterSourceClose_Movies.Click
+        Me.txtFilterSource_Movies.Focus()
         Me.pnlFilterSource_Movies.Tag = String.Empty
+    End Sub
+
+    Private Sub lblFilterSourceClose_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterSourceClose_Shows.Click
+        Me.txtFilterSource_Shows.Focus()
+        Me.pnlFilterSource_Shows.Tag = String.Empty
     End Sub
 
     Private Sub LoadEpisodeInfo(ByVal ID As Integer)
@@ -13501,13 +13507,62 @@ doCancel:
 
         If (Not String.IsNullOrEmpty(Me.cbFilterYear_Movies.Text) AndAlso Not Me.cbFilterYear_Movies.Text = Master.eLang.All) OrElse Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse _
         Me.chkFilterMark_Movies.Checked OrElse Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
-        Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse Not Me.clbFilterVideoSource_Movies.CheckedItems.Count > 0 OrElse _
+        Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse Not Me.clbFilterSource_Movies.CheckedItems.Count > 0 OrElse _
         Me.chkFilterDuplicates_Movies.Checked OrElse Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterFileSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterAnd_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_MovieSets.Click
         If Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse _
             Me.chkFilterMissing_MovieSets.Checked Then Me.RunFilter_MovieSets()
+    End Sub
+
+    Private Sub rbFilterAnd_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_Shows.Click
+        'If clbFilterGenres_Movies.CheckedItems.Count > 0 Then
+        '    Me.txtFilterGenre_Movies.Text = String.Empty
+        '    Me.FilterArray_Movies.Remove(Me.filGenre_Movies)
+
+        '    Dim alGenres As New List(Of String)
+        '    alGenres.AddRange(clbFilterGenres_Movies.CheckedItems.OfType(Of String).ToList)
+
+        '    Me.txtFilterGenre_Movies.Text = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " AND ")
+
+        '    For i As Integer = 0 To alGenres.Count - 1
+        '        If alGenres.Item(i) = Master.eLang.None Then
+        '            alGenres.Item(i) = "Genre LIKE ''"
+        '        Else
+        '            alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+        '        End If
+        '    Next
+
+        '    Me.filGenre_Movies = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " AND ")
+
+        '    Me.FilterArray_Movies.Add(Me.filGenre_Movies)
+        'End If
+
+        'If clbFilterCountries_Movies.CheckedItems.Count > 0 Then
+        '    Me.txtFilterCountry_Movies.Text = String.Empty
+        '    Me.FilterArray_Movies.Remove(Me.filCountry_Movies)
+
+        '    Dim alCountries As New List(Of String)
+        '    alCountries.AddRange(clbFilterCountries_Movies.CheckedItems.OfType(Of String).ToList)
+
+        '    Me.txtFilterCountry_Movies.Text = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " AND ")
+
+        '    For i As Integer = 0 To alCountries.Count - 1
+        '        If alCountries.Item(i) = Master.eLang.None Then
+        '            alCountries.Item(i) = "Country LIKE ''"
+        '        Else
+        '            alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+        '        End If
+        '    Next
+
+        '    Me.filCountry_Movies = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " AND ")
+
+        '    Me.FilterArray_Movies.Add(Me.filCountry_Movies)
+        'End If
+
+        If Me.chkFilterMark_Shows.Checked OrElse Me.chkFilterNew_Shows.Checked OrElse Me.chkFilterLock_Shows.Checked OrElse Not _
+            Me.clbFilterSource_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMissing_Shows.Checked Then Me.RunFilter_Shows()
     End Sub
 
     Private Sub rbFilterOr_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_Movies.Click
@@ -13557,13 +13612,62 @@ doCancel:
 
         If (Not String.IsNullOrEmpty(Me.cbFilterYear_Movies.Text) AndAlso Not Me.cbFilterYear_Movies.Text = Master.eLang.All) OrElse Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse _
         Me.chkFilterMark_Movies.Checked OrElse Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
-        Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse Not Me.clbFilterVideoSource_Movies.CheckedItems.Count > 0 OrElse _
+        Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse Not Me.clbFilterSource_Movies.CheckedItems.Count > 0 OrElse _
         Me.chkFilterDuplicates_Movies.Checked OrElse Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterFileSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterOr_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_MovieSets.Click
         If Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse _
             Me.chkFilterMissing_MovieSets.Checked Then Me.RunFilter_MovieSets()
+    End Sub
+
+    Private Sub rbFilterOr_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_Shows.Click
+        'If clbFilterGenres_Movies.CheckedItems.Count > 0 Then
+        '    Me.txtFilterGenre_Movies.Text = String.Empty
+        '    Me.FilterArray_Movies.Remove(Me.filGenre_Movies)
+
+        '    Dim alGenres As New List(Of String)
+        '    alGenres.AddRange(clbFilterGenres_Movies.CheckedItems.OfType(Of String).ToList)
+
+        '    Me.txtFilterGenre_Movies.Text = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " OR ")
+
+        '    For i As Integer = 0 To alGenres.Count - 1
+        '        If alGenres.Item(i) = Master.eLang.None Then
+        '            alGenres.Item(i) = "Genre LIKE ''"
+        '        Else
+        '            alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+        '        End If
+        '    Next
+
+        '    Me.filGenre_Movies = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " OR ")
+
+        '    Me.FilterArray_Movies.Add(Me.filGenre_Movies)
+        'End If
+
+        'If clbFilterCountries_Movies.CheckedItems.Count > 0 Then
+        '    Me.txtFilterCountry_Movies.Text = String.Empty
+        '    Me.FilterArray_Movies.Remove(Me.filCountry_Movies)
+
+        '    Dim alCountries As New List(Of String)
+        '    alCountries.AddRange(clbFilterCountries_Movies.CheckedItems.OfType(Of String).ToList)
+
+        '    Me.txtFilterCountry_Movies.Text = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " OR ")
+
+        '    For i As Integer = 0 To alCountries.Count - 1
+        '        If alCountries.Item(i) = Master.eLang.None Then
+        '            alCountries.Item(i) = "Country LIKE ''"
+        '        Else
+        '            alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
+        '        End If
+        '    Next
+
+        '    Me.filCountry_Movies = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " OR ")
+
+        '    Me.FilterArray_Movies.Add(Me.filCountry_Movies)
+        'End If
+
+        If Me.chkFilterMark_Shows.Checked OrElse Me.chkFilterNew_Shows.Checked OrElse Me.chkFilterLock_Shows.Checked OrElse Not _
+            Me.clbFilterSource_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMissing_Shows.Checked Then Me.RunFilter_Shows()
     End Sub
 
     Private Sub RefreshAllMovies()
@@ -14649,7 +14753,8 @@ doCancel:
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
                 Me.pnlFilterCountry_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterCountry_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterCountry_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterCountry_Movies.Height)
                 Me.pnlFilterGenre_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterGenre_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterGenre_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterGenre_Movies.Height)
-                Me.pnlFilterSource_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterVideoSource_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterVideoSource_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterSource_Movies.Height)
+                Me.pnlFilterSource_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterSource_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterSource_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterSource_Movies.Height)
+                Me.pnlFilterSource_Shows.Location = New Point(Me.gbFilterSpecific_Shows.Left + Me.txtFilterSource_Shows.Left, (Me.pnlFilter_Shows.Top + Me.txtFilterSource_Shows.Top + Me.gbFilterSpecific_Shows.Top) - Me.pnlFilterSource_Shows.Height)
 
                 Select Case Me.tcMain.SelectedIndex
                     Case 0
@@ -15734,12 +15839,22 @@ doCancel:
                 'not technically a menu, but it's a good place to put it
                 If ReloadFilters Then
 
-                    clbFilterVideoSource_Movies.Items.Clear()
+                    clbFilterSource_Movies.Items.Clear()
                     Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                             While SQLReader.Read
-                                clbFilterVideoSource_Movies.Items.Add(SQLReader("Name"))
+                                clbFilterSource_Movies.Items.Add(SQLReader("Name"))
+                            End While
+                        End Using
+                    End Using
+
+                    clbFilterSource_Shows.Items.Clear()
+                    Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLNewcommand.CommandText = String.Concat("SELECT Name FROM TVSources;")
+                        Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                            While SQLReader.Read
+                                clbFilterSource_Shows.Items.Add(SQLReader("Name"))
                             End While
                         End Using
                     End Using
@@ -16755,9 +16870,9 @@ doCancel:
                 .lblFilterGenre_Movies.Text = Master.eLang.GetString(51, "Genre:")
                 .lblFilterGenres.Text = Master.eLang.GetString(20, "Genre")
                 .lblFilterVideoSource_Movies.Text = Master.eLang.GetString(824, "Video Source:")
-                .lblFilterSources.Text = Master.eLang.GetString(602, "Sources")
+                .lblFilterSource_Movies.Text = Master.eLang.GetString(602, "Sources")
                 .lblFilterYear_Movies.Text = Master.eLang.GetString(49, "Year:")
-                .lblGFilClose.Text = Master.eLang.GetString(19, "Close")
+                .lblFilterGenreClose_Movies.Text = Master.eLang.GetString(19, "Close")
                 .lblIMDBHeader.Text = Master.eLang.GetString(61, "IMDB ID")
                 .lblInfoPanelHeader.Text = Master.eLang.GetString(66, "Info")
                 .lblLoadSettings.Text = Master.eLang.GetString(484, "Loading Settings...")
@@ -16766,7 +16881,7 @@ doCancel:
                 .lblOutlineHeader.Text = Master.eLang.GetString(64, "Plot Outline")
                 .lblPlotHeader.Text = Master.eLang.GetString(65, "Plot")
                 .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
-                .lblSFilClose.Text = Master.eLang.GetString(19, "Close")
+                .lblFilterSourceClose_Movies.Text = Master.eLang.GetString(19, "Close")
                 .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
                 .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
                 .mnuMainEdit.Text = Master.eLang.GetString(3, "&Edit")
@@ -16796,6 +16911,7 @@ doCancel:
                 .pnlFilterCountry_Movies.Tag = String.Empty
                 .pnlFilterGenre_Movies.Tag = String.Empty
                 .pnlFilterSource_Movies.Tag = String.Empty
+                .pnlFilterSource_Shows.Tag = String.Empty
                 .rbFilterAnd_Movies.Text = Master.eLang.GetString(45, "And")
                 .rbFilterAnd_MovieSets.Text = .rbFilterAnd_Movies.Text
                 .rbFilterOr_Movies.Text = Master.eLang.GetString(46, "Or")
@@ -16843,7 +16959,7 @@ doCancel:
                 TT.SetToolTip(.chkFilterMark_MovieSets, Master.eLang.GetString(1270, "Display only marked moviesets."))
                 TT.SetToolTip(.chkFilterLock_Movies, Master.eLang.GetString(96, "Display only locked movies."))
                 TT.SetToolTip(.chkFilterLock_MovieSets, Master.eLang.GetString(1271, "Display only locked moviesets."))
-                TT.SetToolTip(.txtFilterVideoSource_Movies, Master.eLang.GetString(97, "Display only movies from the selected source."))
+                TT.SetToolTip(.txtFilterSource_Movies, Master.eLang.GetString(97, "Display only movies from the selected source."))
                 TT.SetToolTip(.cbFilterFileSource_Movies, Master.eLang.GetString(580, "Display only movies from the selected file source."))
                 TT.Active = True
 
@@ -17673,16 +17789,29 @@ doCancel:
         End If
     End Sub
 
-    Private Sub txtFilterVideoSource_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterVideoSource_Movies.Click
-        Me.pnlFilterSource_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterVideoSource_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterVideoSource_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterSource_Movies.Height)
+    Private Sub txtFilterSource_Movies_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource_Movies.Click
+        Me.pnlFilterSource_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterSource_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterSource_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterSource_Movies.Height)
         If Me.pnlFilterSource_Movies.Visible Then
             Me.pnlFilterSource_Movies.Visible = False
         ElseIf Not Me.pnlFilterSource_Movies.Tag.ToString = "NO" Then
             Me.pnlFilterSource_Movies.Tag = String.Empty
             Me.pnlFilterSource_Movies.Visible = True
-            Me.clbFilterVideoSource_Movies.Focus()
+            Me.clbFilterSource_Movies.Focus()
         Else
             Me.pnlFilterSource_Movies.Tag = String.Empty
+        End If
+    End Sub
+
+    Private Sub txtFilterSource_Shows_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource_Shows.Click
+        Me.pnlFilterSource_Shows.Location = New Point(Me.gbFilterSpecific_Shows.Left + Me.txtFilterSource_Shows.Left, (Me.pnlFilter_Shows.Top + Me.txtFilterSource_Shows.Top + Me.gbFilterSpecific_Shows.Top) - Me.pnlFilterSource_Shows.Height)
+        If Me.pnlFilterSource_Shows.Visible Then
+            Me.pnlFilterSource_Shows.Visible = False
+        ElseIf Not Me.pnlFilterSource_Shows.Tag.ToString = "NO" Then
+            Me.pnlFilterSource_Shows.Tag = String.Empty
+            Me.pnlFilterSource_Shows.Visible = True
+            Me.clbFilterSource_Shows.Focus()
+        Else
+            Me.pnlFilterSource_Shows.Tag = String.Empty
         End If
     End Sub
 
