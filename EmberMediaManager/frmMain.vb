@@ -62,8 +62,8 @@ Public Class frmMain
     Private aniMovieType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private aniMovieSetType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private aniShowType As Integer = 0 '0 = down, 1 = mid, 2 = up
-    Private bsEpisodes As New BindingSource
 
+    Private bsEpisodes As New BindingSource
     Private bsMovies As New BindingSource
     Private bsMovieSets As New BindingSource
     Private bsSeasons As New BindingSource
@@ -87,8 +87,6 @@ Public Class frmMain
     Private MainLandscape As New Images
     Private pbGenre() As PictureBox = Nothing
     Private pnlGenre() As Panel = Nothing
-    Private prevTextSearchMovies As String = String.Empty
-    Private prevTextSearchMovieSets As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
     Private ScrapeList As New List(Of DataRow)
     Private ScraperDone As Boolean = False
@@ -105,18 +103,15 @@ Public Class frmMain
     Private currSeasonRow As Integer = -1
     Private currShowRow As Integer = -1
     Private currList As Integer = 0
-    Private currTextSearchMovies As String = String.Empty
-    Private currTextSearchMovieSets As String = String.Empty
     Private currThemeType As Theming.ThemeType
     Private prevEpRow As Integer = -1
     Private prevMovieRow As Integer = -1
     Private prevMovieSetRow As Integer = -1
     Private prevSeasonRow As Integer = -1
     Private prevShowRow As Integer = -1
-    Private bDoingSearch_Movie As Boolean = False
-    Private bDoingSearch_MovieSet As Boolean = False
 
-    'filters movies
+    'filter movies
+    Private bDoingSearch_Movies As Boolean = False
     Private FilterArray_Movies As New List(Of String)
     Private filSearch_Movies As String = String.Empty
     Private filSource_Movies As String = String.Empty
@@ -124,8 +119,11 @@ Public Class frmMain
     Private filGenre_Movies As String = String.Empty
     Private filCountry_Movies As String = String.Empty
     Private filMissing_Movies As String = String.Empty
+    Private currTextSearch_Movies As String = String.Empty
+    Private prevTextSearch_Movies As String = String.Empty
 
-    'filters moviesets
+    'filter moviesets
+    Private bDoingSearch_MovieSets As Boolean = False
     Private FilterArray_MovieSets As New List(Of String)
     Private filSearch_MovieSets As String = String.Empty
     'Private filSource_MovieSets As String = String.Empty
@@ -133,6 +131,20 @@ Public Class frmMain
     'Private filGenre_MovieSets As String = String.Empty
     'Private filCountry_MovieSets As String = String.Empty
     Private filMissing_MovieSets As String = String.Empty
+    Private currTextSearch_MovieSets As String = String.Empty
+    Private prevTextSearch_MovieSets As String = String.Empty
+
+    'filter tv shows
+    Private bDoingSearch_Shows As Boolean = False
+    Private FilterArray_Shows As New List(Of String)
+    Private filSearch_Shows As String = String.Empty
+    Private filSource_Shows As String = String.Empty
+    'Private filYear_TVShows As String = String.Empty
+    'Private filGenre_TVShows As String = String.Empty
+    'Private filCountry_TVShows As String = String.Empty
+    'Private filMissing_TVShows As String = String.Empty
+    Private currTextSearch_Shows As String = String.Empty
+    Private prevTextSearch_Shows As String = String.Empty
 
     'Theme Information
     Private _clearartmaxheight As Integer = 160
@@ -422,7 +434,7 @@ Public Class frmMain
             Application.DoEvents()
 
             Me.ClearInfo()
-            Me.ClearFilters()
+            Me.ClearFilters_Movies()
             Me.EnableFilters_Movies(False)
 
             Me.SetControlsEnabled(False)
@@ -431,6 +443,7 @@ Public Class frmMain
             Me.tpTVShows.Text = Master.eLang.GetString(653, "TV")
             Me.txtSearchMovies.Text = String.Empty
             Me.txtSearchMovieSets.Text = String.Empty
+            Me.txtSearchShows.Text = String.Empty
 
             Me.fScanner.CancelAndWait()
 
@@ -746,7 +759,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnClearFilters_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearFilters.Click
-        Me.ClearFilters(True)
+        Me.ClearFilters_Movies(True)
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
@@ -3214,22 +3227,30 @@ doCancel:
     End Sub
 
     Private Sub cbSearchMovies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSearchMovies.SelectedIndexChanged
-        Me.currTextSearchMovies = Me.txtSearchMovies.Text
+        Me.currTextSearch_Movies = Me.txtSearchMovies.Text
 
-        Me.tmrSearchMoviesWait.Enabled = False
-        Me.tmrSearchMovies.Enabled = False
-        Me.tmrSearchMoviesWait.Enabled = True
+        Me.tmrSearchWait_Movies.Enabled = False
+        Me.tmrSearch_Movies.Enabled = False
+        Me.tmrSearchWait_Movies.Enabled = True
     End Sub
 
     Private Sub cbSearchMovieSets_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSearchMovieSets.SelectedIndexChanged
-        Me.currTextSearchMovieSets = Me.txtSearchMovieSets.Text
+        Me.currTextSearch_MovieSets = Me.txtSearchMovieSets.Text
 
-        Me.tmrSearchMovieSetsWait.Enabled = False
-        Me.tmrSearchMovieSets.Enabled = False
-        Me.tmrSearchMovieSetsWait.Enabled = True
+        Me.tmrSearchWait_MovieSets.Enabled = False
+        Me.tmrSearch_MovieSets.Enabled = False
+        Me.tmrSearchWait_MovieSets.Enabled = True
     End Sub
 
-    Private Sub chkFilterDupe_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.Click
+    Private Sub cbSearchShows_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSearchShows.SelectedIndexChanged
+        Me.currTextSearch_Shows = Me.txtSearchShows.Text
+
+        Me.tmrSearchWait_Shows.Enabled = False
+        Me.tmrSearch_Shows.Enabled = False
+        Me.tmrSearchWait_Shows.Enabled = True
+    End Sub
+
+    Private Sub chkFilterDuplicates_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDuplicates.Click
         Try
             Me.RunFilter_Movies(True)
         Catch ex As Exception
@@ -3560,7 +3581,7 @@ doCancel:
         'for future use
     End Sub
 
-    Private Sub ClearFilters(Optional ByVal Reload As Boolean = False)
+    Private Sub ClearFilters_Movies(Optional ByVal Reload As Boolean = False)
         Try
             Me.bsMovies.RemoveFilter()
             Me.FilterArray_Movies.Clear()
@@ -3576,14 +3597,7 @@ doCancel:
                 Me.cbSearchMovies.SelectedIndex = 0
             End If
 
-            RemoveHandler txtSearchMovieSets.TextChanged, AddressOf txtSearchMovieSets_TextChanged
-            Me.txtSearchMovieSets.Text = String.Empty
-            AddHandler txtSearchMovieSets.TextChanged, AddressOf txtSearchMovieSets_TextChanged
-            If Me.cbSearchMovieSets.Items.Count > 0 Then
-                Me.cbSearchMovieSets.SelectedIndex = 0
-            End If
-
-            Me.chkFilterDupe.Checked = False
+            Me.chkFilterDuplicates.Checked = False
             Me.chkFilterTolerance.Checked = False
             Me.chkFilterMissing.Checked = False
             Me.chkFilterMark.Checked = False
@@ -3627,6 +3641,136 @@ doCancel:
             AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
 
             If Reload Then Me.FillList(True, False, False)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub ClearFilters_MovieSets(Optional ByVal Reload As Boolean = False)
+        Try
+            Me.bsMovieSets.RemoveFilter()
+            Me.FilterArray_MovieSets.Clear()
+            Me.filSearch_MovieSets = String.Empty
+            'Me.filGenre_Moviesets = String.Empty
+            'Me.filYear_Moviesets = String.Empty
+            'Me.filSource_Moviesets = String.Empty
+
+            RemoveHandler txtSearchMovieSets.TextChanged, AddressOf txtSearchMovieSets_TextChanged
+            Me.txtSearchMovieSets.Text = String.Empty
+            AddHandler txtSearchMovieSets.TextChanged, AddressOf txtSearchMovieSets_TextChanged
+            If Me.cbSearchMovieSets.Items.Count > 0 Then
+                Me.cbSearchMovieSets.SelectedIndex = 0
+            End If
+
+            'Me.chkFilterDuplicates.Checked = False
+            'Me.chkFilterTolerance.Checked = False
+            'Me.chkFilterMissing.Checked = False
+            'Me.chkFilterMark.Checked = False
+            'Me.chkFilterMarkCustom1.Checked = False
+            'Me.chkFilterMarkCustom2.Checked = False
+            'Me.chkFilterMarkCustom3.Checked = False
+            'Me.chkFilterMarkCustom4.Checked = False
+            'Me.chkFilterNew.Checked = False
+            'Me.chkFilterLock.Checked = False
+            'Me.rbFilterOr.Checked = False
+            'Me.rbFilterAnd.Checked = True
+            'Me.txtFilterGenre.Text = String.Empty
+            'For i As Integer = 0 To Me.clbFilterGenres.Items.Count - 1
+            '    Me.clbFilterGenres.SetItemChecked(i, False)
+            'Next
+            'Me.txtFilterCountry.Text = String.Empty
+            'For i As Integer = 0 To Me.clbFilterCountries.Items.Count - 1
+            '    Me.clbFilterCountries.SetItemChecked(i, False)
+            'Next
+            'Me.txtFilterSource.Text = String.Empty
+            'For i As Integer = 0 To Me.clbFilterSource.Items.Count - 1
+            '    Me.clbFilterSource.SetItemChecked(i, False)
+            'Next
+
+            'RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+            'If Me.cbFilterYear.Items.Count > 0 Then
+            '    Me.cbFilterYear.SelectedIndex = 0
+            'End If
+            'AddHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+
+            'RemoveHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+            'If Me.cbFilterYearMod.Items.Count > 0 Then
+            '    Me.cbFilterYearMod.SelectedIndex = 0
+            'End If
+            'AddHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+
+            'RemoveHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
+            'If Me.cbFilterFileSource.Items.Count > 0 Then
+            '    Me.cbFilterFileSource.SelectedIndex = 0
+            'End If
+            'AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
+
+            If Reload Then Me.FillList(False, True, False)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub ClearFilters_Shows(Optional ByVal Reload As Boolean = False)
+        Try
+            Me.bsShows.RemoveFilter()
+            Me.FilterArray_Shows.Clear()
+            Me.filSearch_Shows = String.Empty
+            'Me.filGenre_Shows = String.Empty
+            'Me.filYear_Shows = String.Empty
+            Me.filSource_Shows = String.Empty
+
+            RemoveHandler txtSearchShows.TextChanged, AddressOf txtSearchShows_TextChanged
+            Me.txtSearchShows.Text = String.Empty
+            AddHandler txtSearchShows.TextChanged, AddressOf txtSearchShows_TextChanged
+            If Me.cbSearchShows.Items.Count > 0 Then
+                Me.cbSearchShows.SelectedIndex = 0
+            End If
+
+            'Me.chkFilterDuplicates.Checked = False
+            'Me.chkFilterTolerance.Checked = False
+            'Me.chkFilterMissing.Checked = False
+            'Me.chkFilterMark.Checked = False
+            'Me.chkFilterMarkCustom1.Checked = False
+            'Me.chkFilterMarkCustom2.Checked = False
+            'Me.chkFilterMarkCustom3.Checked = False
+            'Me.chkFilterMarkCustom4.Checked = False
+            'Me.chkFilterNew.Checked = False
+            'Me.chkFilterLock.Checked = False
+            'Me.rbFilterOr.Checked = False
+            'Me.rbFilterAnd.Checked = True
+            'Me.txtFilterGenre.Text = String.Empty
+            'For i As Integer = 0 To Me.clbFilterGenres.Items.Count - 1
+            '    Me.clbFilterGenres.SetItemChecked(i, False)
+            'Next
+            'Me.txtFilterCountry.Text = String.Empty
+            'For i As Integer = 0 To Me.clbFilterCountries.Items.Count - 1
+            '    Me.clbFilterCountries.SetItemChecked(i, False)
+            'Next
+            'Me.txtFilterSource.Text = String.Empty
+            'For i As Integer = 0 To Me.clbFilterSource.Items.Count - 1
+            '    Me.clbFilterSource.SetItemChecked(i, False)
+            'Next
+
+            'RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+            'If Me.cbFilterYear.Items.Count > 0 Then
+            '    Me.cbFilterYear.SelectedIndex = 0
+            'End If
+            'AddHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+
+            'RemoveHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+            'If Me.cbFilterYearMod.Items.Count > 0 Then
+            '    Me.cbFilterYearMod.SelectedIndex = 0
+            'End If
+            'AddHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+
+            'RemoveHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
+            'If Me.cbFilterFileSource.Items.Count > 0 Then
+            '    Me.cbFilterFileSource.SelectedIndex = 0
+            'End If
+            'AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
+
+            If Reload Then Me.FillList(False, False, True)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -7201,7 +7345,8 @@ doCancel:
 
     Private Sub dgvTVShows_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvTVShows.KeyDown
         'stop enter key from selecting next list item
-        e.Handled = e.KeyCode = Keys.Enter
+        e.Handled = (e.KeyCode = Keys.Enter)
+        If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.S Then txtSearchShows.Focus()
     End Sub
 
     Private Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
@@ -7418,7 +7563,7 @@ doCancel:
         Me.cbFilterYear.Enabled = isEnabled
         Me.cbFilterYearMod.Enabled = isEnabled
         Me.cbSearchMovies.Enabled = isEnabled
-        Me.chkFilterDupe.Enabled = isEnabled
+        Me.chkFilterDuplicates.Enabled = isEnabled
         Me.chkFilterLock.Enabled = isEnabled
         Me.chkFilterMark.Enabled = isEnabled
         Me.chkFilterMarkCustom1.Enabled = isEnabled
@@ -7461,6 +7606,33 @@ doCancel:
         'Me.txtFilterGenre.Enabled = isEnabled
         'Me.txtFilterSource.Enabled = isEnabled
         Me.txtSearchMovieSets.Enabled = isEnabled
+    End Sub
+
+    Private Sub EnableFilters_Shows(ByVal isEnabled As Boolean)
+        'Me.btnClearFilters.Enabled = isEnabled
+        'Me.btnSortDate.Enabled = isEnabled
+        'Me.btnIMDBRating.Enabled = isEnabled
+        'Me.btnSortTitle.Enabled = isEnabled
+        'Me.cbFilterFileSource.Enabled = isEnabled
+        'Me.cbFilterYear.Enabled = isEnabled
+        'Me.cbFilterYearMod.Enabled = isEnabled
+        Me.cbSearchShows.Enabled = isEnabled
+        'Me.chkFilterDuplicates.Enabled = isEnabled
+        'Me.chkFilterLock.Enabled = isEnabled
+        'Me.chkFilterMark.Enabled = isEnabled
+        'Me.chkFilterMarkCustom1.Enabled = isEnabled
+        'Me.chkFilterMarkCustom2.Enabled = isEnabled
+        'Me.chkFilterMarkCustom3.Enabled = isEnabled
+        'Me.chkFilterMarkCustom4.Enabled = isEnabled
+        'Me.chkFilterMissing.Enabled = isEnabled
+        'Me.chkFilterNew.Enabled = isEnabled
+        'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
+        'Me.rbFilterAnd.Enabled = isEnabled
+        'Me.rbFilterOr.Enabled = isEnabled
+        'Me.txtFilterCountry.Enabled = isEnabled
+        'Me.txtFilterGenre.Enabled = isEnabled
+        'Me.txtFilterSource.Enabled = isEnabled
+        Me.txtSearchShows.Enabled = isEnabled
     End Sub
 
     Private Sub ErrorOccurred()
@@ -7618,7 +7790,7 @@ doCancel:
                                                                       "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies ", _
                                                                       "WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch_Movies, "%') ORDER BY ListTitle COLLATE NOCASE;"))
                 Else
-                    If Me.chkFilterDupe.Checked Then
+                    If Me.chkFilterDuplicates.Checked Then
                         Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
                     Else
                         Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies ORDER BY ListTitle COLLATE NOCASE;")
@@ -8582,9 +8754,10 @@ doCancel:
             Else
                 Me.dgvMovies.Enabled = True
             End If
-            If bDoingSearch_Movie Then
+
+            If bDoingSearch_Movies Then
                 Me.txtSearchMovies.Focus()
-                bDoingSearch_Movie = False
+                bDoingSearch_Movies = False
             Else
                 Me.dgvMovies.Focus()
             End If
@@ -8904,15 +9077,16 @@ doCancel:
 
             Me.InfoCleared = False
 
-            If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not Me.bwNonScrape.IsBusy Then
+            If Not bwMovieSetScraper.IsBusy AndAlso Not bwRefreshMovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not Me.bwNonScrape.IsBusy Then
                 Me.SetControlsEnabled(True)
                 Me.EnableFilters_MovieSets(True)
             Else
                 Me.dgvMovieSets.Enabled = True
             End If
-            If bDoingSearch_MovieSet Then
+
+            If bDoingSearch_MovieSets Then
                 Me.txtSearchMovieSets.Focus()
-                bDoingSearch_MovieSet = False
+                bDoingSearch_MovieSets = False
             Else
                 Me.dgvMovieSets.Focus()
             End If
@@ -9407,6 +9581,13 @@ doCancel:
                 Me.dgvTVShows.Focus()
             End If
 
+            If bDoingSearch_Shows Then
+                Me.txtSearchShows.Focus()
+                bDoingSearch_Shows = False
+            Else
+                Me.dgvMovieSets.Focus()
+            End If
+
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
@@ -9569,7 +9750,7 @@ doCancel:
                 Master.eSettings.GeneralTVShowInfoPanelState = Me.aniShowType
                 Master.eSettings.GeneralFilterPanelState = Me.aniFilterRaise
                 Master.eSettings.GeneralMainSplitterPanelState = Me.scMain.SplitterDistance
-                Me.pnlFilter.Visible = False
+                Me.pnlFilter_Movies.Visible = False
                 Master.eSettings.GeneralSeasonSplitterPanelState = Me.scTVSeasonsEpisodes.SplitterDistance
                 Master.eSettings.GeneralShowSplitterPanelState = Me.scTV.SplitterDistance
                 Master.eSettings.GeneralMainFilterSortDate = Me.btnSortDate.Tag.ToString
@@ -10020,6 +10201,10 @@ doCancel:
                     Me.cbSearchMovieSets.SelectedIndex = 0
                 End If
 
+                If Me.cbSearchShows.Items.Count > 0 Then
+                    Me.cbSearchShows.SelectedIndex = 0
+                End If
+
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(863, "Positioning controls..."))
                 Me.Location = Master.eSettings.GeneralWindowLoc
                 Me.Size = Master.eSettings.GeneralWindowSize
@@ -10050,11 +10235,11 @@ doCancel:
 
                 Me.aniFilterRaise = Master.eSettings.GeneralFilterPanelState
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = Functions.Quantize(Me.gbFilterSpecific.Height + Me.lblFilter.Height + 15, 5)
+                    Me.pnlFilter_Movies.Height = Functions.Quantize(Me.gbFilterSpecific.Height + Me.lblFilter.Height + 15, 5)
                     Me.btnFilterDown.Enabled = True
                     Me.btnFilterUp.Enabled = False
                 Else
-                    Me.pnlFilter.Height = 25
+                    Me.pnlFilter_Movies.Height = 25
                     Me.btnFilterDown.Enabled = False
                     Me.btnFilterUp.Enabled = True
                 End If
@@ -10064,7 +10249,7 @@ doCancel:
                     Me.scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.GeneralSeasonSplitterPanelState
                 Catch ex As Exception
                 End Try
-                Me.pnlFilter.Visible = True
+                Me.pnlFilter_Movies.Visible = True
 
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1165, "Initializing Main Form. Please wait..."))
@@ -10124,9 +10309,9 @@ doCancel:
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
                 Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
-                Me.pnlFilterCountry.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterCountry.Left, (Me.pnlFilter.Top + Me.txtFilterCountry.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterCountry.Height)
-                Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
-                Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
+                Me.pnlFilterCountry.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterCountry.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterCountry.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterCountry.Height)
+                Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
+                Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
                 Me.pnlLoadSettings.Location = New Point(Convert.ToInt32((Me.Width - Me.pnlLoadSettings.Width) / 2), Convert.ToInt32((Me.Height - Me.pnlLoadSettings.Height) / 2))
             End If
         Catch ex As Exception
@@ -13071,7 +13256,7 @@ doCancel:
         If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.clbFilterCountries.CheckedItems.Count > 0 OrElse _
         Me.chkFilterMark.Checked OrElse Me.chkFilterMarkCustom1.Checked OrElse Me.chkFilterMarkCustom2.Checked OrElse Me.chkFilterMarkCustom3.Checked OrElse _
         Me.chkFilterMarkCustom4.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.clbFilterSource.CheckedItems.Count > 0 OrElse _
-        Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter_Movies()
+        Me.chkFilterDuplicates.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterOr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.Click
@@ -13122,7 +13307,7 @@ doCancel:
         If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.clbFilterCountries.CheckedItems.Count > 0 OrElse _
         Me.chkFilterMark.Checked OrElse Me.chkFilterMarkCustom1.Checked OrElse Me.chkFilterMarkCustom2.Checked OrElse Me.chkFilterMarkCustom3.Checked OrElse _
         Me.chkFilterMarkCustom4.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.clbFilterSource.CheckedItems.Count > 0 OrElse _
-        Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter_Movies()
+        Me.chkFilterDuplicates.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub RefreshAllMovies()
@@ -14125,6 +14310,43 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub RunFilter_Shows(Optional ByVal doFill As Boolean = False)
+        Try
+            If Me.Visible Then
+
+                Me.ClearInfo()
+
+                Me.prevShowRow = -2
+                Me.currShowRow = -1
+                Me.dgvTVShows.ClearSelection()
+                Me.dgvTVShows.CurrentCell = Nothing
+
+                If FilterArray_Shows.Count > 0 Then
+                    Dim FilterString As String = String.Empty
+
+                    If rbFilterAnd.Checked Then
+                        FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Shows.ToArray, " AND ")
+                    Else
+                        FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Shows.ToArray, " OR ")
+                    End If
+
+                    bsShows.Filter = FilterString
+                Else
+                    bsShows.RemoveFilter()
+                End If
+
+                If doFill Then
+                    Me.FillList(False, False, True)
+                Else
+                    Me.txtSearchShows.Focus()
+                End If
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
         Select Case iType
             Case 1
@@ -14163,9 +14385,9 @@ doCancel:
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
                 Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
-                Me.pnlFilterCountry.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterCountry.Left, (Me.pnlFilter.Top + Me.txtFilterCountry.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterCountry.Height)
-                Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
-                Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
+                Me.pnlFilterCountry.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterCountry.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterCountry.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterCountry.Height)
+                Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
+                Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
 
                 Select Case Me.tcMain.SelectedIndex
                     Case 0
@@ -14646,6 +14868,7 @@ doCancel:
         Me.cmnuEpisode.Enabled = isEnabled
         Me.txtSearchMovies.Enabled = isEnabled
         Me.txtSearchMovieSets.Enabled = isEnabled
+        Me.txtSearchShows.Enabled = isEnabled
         Me.tcMain.Enabled = isEnabled
         Me.btnMarkAll.Enabled = isEnabled
         Me.btnMetaDataRefresh.Enabled = isEnabled
@@ -16153,7 +16376,7 @@ doCancel:
                 .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
                 .btnSortTitle.Tag = String.Empty
                 .btnSortTitle.Text = Master.eLang.GetString(642, "Sort Title")
-                .chkFilterDupe.Text = Master.eLang.GetString(41, "Duplicates")
+                .chkFilterDuplicates.Text = Master.eLang.GetString(41, "Duplicates")
                 .chkFilterLock.Text = Master.eLang.GetString(43, "Locked")
                 .chkFilterMark.Text = Master.eLang.GetString(48, "Marked")
                 .chkFilterMarkCustom1.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker1Name), Master.eSettings.MovieGeneralCustomMarker1Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #1"))
@@ -16334,9 +16557,10 @@ doCancel:
                 TT.SetToolTip(.btnMarkAll, Master.eLang.GetString(87, "Mark or Unmark all movies in the list."))
                 TT.SetToolTip(.txtSearchMovies, Master.eLang.GetString(88, "Search the movie titles by entering text here."))
                 TT.SetToolTip(.txtSearchMovieSets, Master.eLang.GetString(1267, "Search the movie titles by entering text here."))
+                TT.SetToolTip(.txtSearchShows, Master.eLang.GetString(1268, "Search the tv show titles by entering text here."))
                 TT.SetToolTip(.btnPlay, Master.eLang.GetString(89, "Play the movie file with the system default media player."))
                 TT.SetToolTip(.btnMetaDataRefresh, Master.eLang.GetString(90, "Rescan and save the meta data for the selected movie."))
-                TT.SetToolTip(.chkFilterDupe, Master.eLang.GetString(91, "Display only movies that have duplicate IMDB IDs."))
+                TT.SetToolTip(.chkFilterDuplicates, Master.eLang.GetString(91, "Display only movies that have duplicate IMDB IDs."))
                 TT.SetToolTip(.chkFilterTolerance, Master.eLang.GetString(92, "Display only movies whose title matching is out of tolerance."))
                 TT.SetToolTip(.chkFilterMissing, Master.eLang.GetString(93, "Display only movies that have items missing."))
                 TT.SetToolTip(.chkFilterNew, Master.eLang.GetString(94, "Display only new movies."))
@@ -16356,6 +16580,12 @@ doCancel:
                 .cbSearchMovieSets.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title")})
                 If Me.cbSearchMovieSets.Items.Count > 0 Then
                     Me.cbSearchMovieSets.SelectedIndex = 0
+                End If
+
+                .cbSearchShows.Items.Clear()
+                .cbSearchShows.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title")})
+                If Me.cbSearchShows.Items.Count > 0 Then
+                    Me.cbSearchShows.SelectedIndex = 0
                 End If
 
                 If doTheme Then
@@ -16433,7 +16663,7 @@ doCancel:
                 Me.cmnuTrayTools.Enabled = True
                 Me.mnuScrapeMovies.Visible = True
                 Me.mnuScrapeMovieSets.Visible = False
-                Me.pnlFilter.Visible = True
+                Me.pnlFilter_Movies.Visible = True
                 Me.pnlListTop.Height = 56
                 Me.pnlSearchMovies.Visible = True
                 Me.pnlSearchMovieSets.Visible = False
@@ -16464,7 +16694,7 @@ doCancel:
                 Me.cmnuTrayTools.Enabled = True
                 Me.mnuScrapeMovies.Visible = False
                 Me.mnuScrapeMovieSets.Visible = True
-                Me.pnlFilter.Visible = False
+                Me.pnlFilter_Movies.Visible = False
                 Me.pnlListTop.Height = 56
                 Me.pnlSearchMovies.Visible = False
                 Me.pnlSearchMovieSets.Visible = True
@@ -16501,7 +16731,7 @@ doCancel:
                 Me.cmnuTrayScrape.Enabled = False
                 Me.dgvMovies.Visible = False
                 Me.dgvMovieSets.Visible = False
-                Me.pnlFilter.Visible = False
+                Me.pnlFilter_Movies.Visible = False
                 Me.pnlListTop.Height = 56
                 Me.pnlSearchMovies.Visible = False
                 Me.pnlSearchMovieSets.Visible = False
@@ -16599,23 +16829,23 @@ doCancel:
 
             If Master.eSettings.GeneralInfoPanelAnim Then
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height += 5
+                    Me.pnlFilter_Movies.Height += 5
                 Else
-                    Me.pnlFilter.Height -= 5
+                    Me.pnlFilter_Movies.Height -= 5
                 End If
             Else
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = pHeight
+                    Me.pnlFilter_Movies.Height = pHeight
                 Else
-                    Me.pnlFilter.Height = 25
+                    Me.pnlFilter_Movies.Height = 25
                 End If
             End If
 
-            If Me.pnlFilter.Height = 25 Then
+            If Me.pnlFilter_Movies.Height = 25 Then
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = True
                 Me.btnFilterDown.Enabled = False
-            ElseIf Me.pnlFilter.Height = pHeight Then
+            ElseIf Me.pnlFilter_Movies.Height = pHeight Then
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = False
                 Me.btnFilterDown.Enabled = True
@@ -16719,19 +16949,19 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub tmrSearchMoviesWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchMoviesWait.Tick
-        Me.tmrSearchMovies.Enabled = False
-        If Me.prevTextSearchMovies = Me.currTextSearchMovies Then
-            Me.tmrSearchMovies.Enabled = True
+    Private Sub tmrSearchWait_Movies_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_Movies.Tick
+        Me.tmrSearch_Movies.Enabled = False
+        If Me.prevTextSearch_Movies = Me.currTextSearch_Movies Then
+            Me.tmrSearch_Movies.Enabled = True
         Else
-            Me.prevTextSearchMovies = Me.currTextSearchMovies
+            Me.prevTextSearch_Movies = Me.currTextSearch_Movies
         End If
     End Sub
 
-    Private Sub tmrSearchMovie_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchMovies.Tick
-        Me.tmrSearchMoviesWait.Enabled = False
-        Me.tmrSearchMovies.Enabled = False
-        bDoingSearch_Movie = True
+    Private Sub tmrSearch_Movies_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch_Movies.Tick
+        Me.tmrSearchWait_Movies.Enabled = False
+        Me.tmrSearch_Movies.Enabled = False
+        bDoingSearch_Movies = True
         Try
             If Not String.IsNullOrEmpty(Me.txtSearchMovies.Text) Then
                 Me.FilterArray_Movies.Remove(Me.filSearch_Movies)
@@ -16775,19 +17005,19 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub tmrSearchMovieSetsWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchMovieSetsWait.Tick
-        Me.tmrSearchMovieSets.Enabled = False
-        If Me.prevTextSearchMovieSets = Me.currTextSearchMovieSets Then
-            Me.tmrSearchMovieSets.Enabled = True
+    Private Sub tmrSearchWait_MovieSets_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_MovieSets.Tick
+        Me.tmrSearch_MovieSets.Enabled = False
+        If Me.prevTextSearch_MovieSets = Me.currTextSearch_MovieSets Then
+            Me.tmrSearch_MovieSets.Enabled = True
         Else
-            Me.prevTextSearchMovieSets = Me.currTextSearchMovieSets
+            Me.prevTextSearch_MovieSets = Me.currTextSearch_MovieSets
         End If
     End Sub
 
-    Private Sub tmrSearchMovieSets_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchMovieSets.Tick
-        Me.tmrSearchMovieSetsWait.Enabled = False
-        Me.tmrSearchMovieSets.Enabled = False
-        bDoingSearch_MovieSet = True
+    Private Sub tmrSearch_MovieSets_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch_MovieSets.Tick
+        Me.tmrSearchWait_MovieSets.Enabled = False
+        Me.tmrSearch_MovieSets.Enabled = False
+        bDoingSearch_MovieSets = True
         Try
             If Not String.IsNullOrEmpty(Me.txtSearchMovieSets.Text) Then
                 Me.FilterArray_MovieSets.Remove(Me.filSearch_MovieSets)
@@ -16795,7 +17025,7 @@ doCancel:
 
                 Select Case Me.cbSearchMovieSets.Text
                     Case Master.eLang.GetString(21, "Title")
-                        Me.filSearch_MovieSets = String.Concat("Title LIKE '%", Me.txtSearchMovieSets.Text, "%'")
+                        Me.filSearch_MovieSets = String.Concat("SetName LIKE '%", Me.txtSearchMovieSets.Text, "%'")
                         Me.FilterArray_MovieSets.Add(Me.filSearch_MovieSets)
                 End Select
 
@@ -16807,6 +17037,43 @@ doCancel:
                     Me.filSearch_MovieSets = String.Empty
                 End If
                 Me.RunFilter_MovieSets(True)
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub tmrSearchWait_Shows_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_Shows.Tick
+        Me.tmrSearch_Shows.Enabled = False
+        If Me.prevTextSearch_Shows = Me.currTextSearch_Shows Then
+            Me.tmrSearch_Shows.Enabled = True
+        Else
+            Me.prevTextSearch_Shows = Me.currTextSearch_Shows
+        End If
+    End Sub
+
+    Private Sub tmrSearch_Shows_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch_Shows.Tick
+        Me.tmrSearchWait_Shows.Enabled = False
+        Me.tmrSearch_Shows.Enabled = False
+        bDoingSearch_Shows = True
+        Try
+            If Not String.IsNullOrEmpty(Me.txtSearchShows.Text) Then
+                Me.FilterArray_Shows.Remove(Me.filSearch_Shows)
+                Me.filSearch_Shows = String.Empty
+
+                Select Case Me.cbSearchShows.Text
+                    Case Master.eLang.GetString(21, "Title")
+                        Me.filSearch_Shows = String.Concat("Title LIKE '%", Me.txtSearchShows.Text, "%'")
+                        Me.FilterArray_Shows.Add(Me.filSearch_Shows)
+                End Select
+
+                Me.RunFilter_Shows(False)
+
+            Else
+                If Not String.IsNullOrEmpty(Me.filSearch_Shows) Then
+                    Me.FilterArray_Shows.Remove(Me.filSearch_Shows)
+                    Me.filSearch_Shows = String.Empty
+                End If
+                Me.RunFilter_Shows(True)
             End If
         Catch
         End Try
@@ -17016,7 +17283,7 @@ doCancel:
     End Sub
 
     Private Sub txtFilterGenre_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterGenre.Click
-        Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
+        Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
         If Me.pnlFilterGenre.Visible Then
             Me.pnlFilterGenre.Visible = False
         ElseIf Not Me.pnlFilterGenre.Tag.ToString = "NO" Then
@@ -17029,7 +17296,7 @@ doCancel:
     End Sub
 
     Private Sub txtFilterCountry_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterCountry.Click
-        Me.pnlFilterCountry.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterCountry.Left, (Me.pnlFilter.Top + Me.txtFilterCountry.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterCountry.Height)
+        Me.pnlFilterCountry.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterCountry.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterCountry.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterCountry.Height)
         If Me.pnlFilterCountry.Visible Then
             Me.pnlFilterCountry.Visible = False
         ElseIf Not Me.pnlFilterCountry.Tag.ToString = "NO" Then
@@ -17042,7 +17309,7 @@ doCancel:
     End Sub
 
     Private Sub txtFilterSource_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource.Click
-        Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
+        Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
         If Me.pnlFilterSource.Visible Then
             Me.pnlFilterSource.Visible = False
         ElseIf Not Me.pnlFilterSource.Tag.ToString = "NO" Then
@@ -17062,11 +17329,11 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovies_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearchMovies.TextChanged
-        Me.currTextSearchMovies = Me.txtSearchMovies.Text
+        Me.currTextSearch_Movies = Me.txtSearchMovies.Text
 
-        Me.tmrSearchMoviesWait.Enabled = False
-        Me.tmrSearchMovies.Enabled = False
-        Me.tmrSearchMoviesWait.Enabled = True
+        Me.tmrSearchWait_Movies.Enabled = False
+        Me.tmrSearch_Movies.Enabled = False
+        Me.tmrSearchWait_Movies.Enabled = True
     End Sub
 
     Private Sub txtSearchMovieSets_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovieSets.KeyPress
@@ -17077,11 +17344,26 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovieSets_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearchMovieSets.TextChanged
-        Me.currTextSearchMovieSets = Me.txtSearchMovieSets.Text
+        Me.currTextSearch_MovieSets = Me.txtSearchMovieSets.Text
 
-        Me.tmrSearchMovieSetsWait.Enabled = False
-        Me.tmrSearchMovieSets.Enabled = False
-        Me.tmrSearchMovieSetsWait.Enabled = True
+        Me.tmrSearchWait_MovieSets.Enabled = False
+        Me.tmrSearch_MovieSets.Enabled = False
+        Me.tmrSearchWait_MovieSets.Enabled = True
+    End Sub
+
+    Private Sub txtSearchShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchShows.KeyPress
+        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
+            Me.dgvTVShows.Focus()
+        End If
+    End Sub
+
+    Private Sub txtSearchShows_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearchShows.TextChanged
+        Me.currTextSearch_Shows = Me.txtSearchShows.Text
+
+        Me.tmrSearchWait_Shows.Enabled = False
+        Me.tmrSearch_Shows.Enabled = False
+        Me.tmrSearchWait_Shows.Enabled = True
     End Sub
 
     Private Sub VersionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpVersions.Click
