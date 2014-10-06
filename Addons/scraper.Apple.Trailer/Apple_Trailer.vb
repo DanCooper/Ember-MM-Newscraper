@@ -163,7 +163,7 @@ Public Class Apple_Trailer
             tTitle = DBMovie.Movie.OriginalTitle
         End If
 
-        Dim tAppleTrailer As New AppleTrailer(tTitle)
+        Dim tAppleTrailer As New AppleTrailer(tTitle, DBMovie.Movie.IMDBID)
 
         If tAppleTrailer.TrailerList.Count > 0 Then
             URLList = tAppleTrailer.TrailerList
