@@ -413,7 +413,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub StringUtils_FilterName_NothingParameter()
             'Arrange
-            Dim returnValue As String = StringUtils.FilterName(Nothing)
+            Dim returnValue As String = StringUtils.FilterName_Movie(Nothing)
             'Assert
             Assert.AreEqual(String.Empty, returnValue, "Source was Nothing")
         End Sub
@@ -446,7 +446,7 @@ Namespace EmberTests
 
             For Each entry As KeyValuePair(Of String, String) In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterName(entry.Key, True, False)
+                Dim returnValue As String = StringUtils.FilterName_Movie(entry.Key, True, False)
                 'Assert
                 Assert.AreEqual(entry.Value, returnValue, "Source <{0}>", entry.Key)
             Next
@@ -480,7 +480,7 @@ Namespace EmberTests
 
             For Each entry As KeyValuePair(Of String, String) In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterName(entry.Key, True, True)
+                Dim returnValue As String = StringUtils.FilterName_Movie(entry.Key, True, True)
                 'Assert
                 Assert.AreEqual(entry.Value, returnValue, "Source <{0}>", entry.Key)
             Next
@@ -514,7 +514,7 @@ Namespace EmberTests
 
             For Each entry As KeyValuePair(Of String, String) In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterName(entry.Key, False, True)
+                Dim returnValue As String = StringUtils.FilterName_Movie(entry.Key, False, True)
                 'Assert
                 Assert.AreEqual(entry.Value, returnValue, "Source <{0}>", entry.Key)
             Next
@@ -548,7 +548,7 @@ Namespace EmberTests
 
             For Each entry As KeyValuePair(Of String, String) In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterName(entry.Key, False, False)
+                Dim returnValue As String = StringUtils.FilterName_Movie(entry.Key, False, False)
                 'Assert
                 Assert.AreEqual(entry.Value, returnValue, "Source <{0}>", entry.Key)
             Next
@@ -624,7 +624,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub StringUtils_FilterTVEpName_NothingEpName()
             'Arrange
-            Dim returnValue As String = StringUtils.FilterTVEpName(Nothing, "Test Show")
+            Dim returnValue As String = StringUtils.FilterName_TVEp(Nothing, "Test Show")
             'Assert
             Assert.AreEqual(String.Empty, returnValue, "Episode name was Nothing")
         End Sub
@@ -633,7 +633,7 @@ Namespace EmberTests
         Public Sub StringUtils_FilterTVEpName_NothingShowName()
             'Arrange
             Dim episodeName = "Test Episode"
-            Dim returnValue As String = StringUtils.FilterTVEpName(episodeName.Clone, Nothing)  'Cloned to prevent original from being modified
+            Dim returnValue As String = StringUtils.FilterName_TVEp(episodeName.Clone, Nothing)  'Cloned to prevent original from being modified
             'Assert
             Assert.AreEqual(episodeName, returnValue, "Show name was Nothing")
         End Sub
@@ -641,7 +641,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub StringUtils_FilterTVEpName_NothingEpAndShowName()
             'Arrange
-            Dim returnValue As String = StringUtils.FilterTVEpName(Nothing, Nothing)
+            Dim returnValue As String = StringUtils.FilterName_TVEp(Nothing, Nothing)
             'Assert
             Assert.AreEqual(String.Empty, returnValue, "Episode and Show name was Nothing")
         End Sub
@@ -693,7 +693,7 @@ Namespace EmberTests
 
             For Each entry As Triplet In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterTVEpName(entry.Episode, entry.Show, True, False)
+                Dim returnValue As String = StringUtils.FilterName_TVEp(entry.Episode, entry.Show, True, False)
                 'Assert
                 Assert.AreEqual(entry.Expected, returnValue, "Episode <{0}>, Show <{1}>", entry.Episode, entry.Show)
             Next
@@ -732,7 +732,7 @@ Namespace EmberTests
 
             For Each entry As Triplet In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterTVEpName(entry.Episode, entry.Show, True, True)
+                Dim returnValue As String = StringUtils.FilterName_TVEp(entry.Episode, entry.Show, True, True)
                 'Assert
                 Assert.AreEqual(entry.Expected, returnValue, "Episode <{0}>, Show <{1}>", entry.Episode, entry.Show)
             Next
@@ -770,7 +770,7 @@ Namespace EmberTests
 
             For Each entry As Triplet In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterTVEpName(entry.Episode, entry.Show, False, True)
+                Dim returnValue As String = StringUtils.FilterName_TVEp(entry.Episode, entry.Show, False, True)
                 'Assert
                 Assert.AreEqual(entry.Expected, returnValue, "Episode <{0}>, Show <{1}>", entry.Episode, entry.Show)
             Next
@@ -808,7 +808,7 @@ Namespace EmberTests
 
             For Each entry As Triplet In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterTVEpName(entry.Episode, entry.Show, False, False)
+                Dim returnValue As String = StringUtils.FilterName_TVEp(entry.Episode, entry.Show, False, False)
                 'Assert
                 Assert.AreEqual(entry.Expected, returnValue, "Episode <{0}>, Show <{1}>", entry.Episode, entry.Show)
             Next
@@ -817,7 +817,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub StringUtils_FilterTVShowName_NothingParameter()
             'Arrange
-            Dim returnValue As String = StringUtils.FilterTVShowName(Nothing)
+            Dim returnValue As String = StringUtils.FilterName_TVShow(Nothing)
             'Assert
             Assert.AreEqual(String.Empty, returnValue, "Source was Nothing")
         End Sub
@@ -850,7 +850,7 @@ Namespace EmberTests
 
             For Each entry As KeyValuePair(Of String, String) In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterTVShowName(entry.Key, True, False)
+                Dim returnValue As String = StringUtils.FilterName_TVShow(entry.Key, True, False)
                 'Assert
                 Assert.AreEqual(entry.Value, returnValue, "Source <{0}>", entry.Key)
             Next
@@ -884,7 +884,7 @@ Namespace EmberTests
 
             For Each entry As KeyValuePair(Of String, String) In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterTVShowName(entry.Key, True, True)
+                Dim returnValue As String = StringUtils.FilterName_TVShow(entry.Key, True, True)
                 'Assert
                 Assert.AreEqual(entry.Value, returnValue, "Source <{0}>", entry.Key)
             Next
@@ -918,7 +918,7 @@ Namespace EmberTests
 
             For Each entry As KeyValuePair(Of String, String) In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterTVShowName(entry.Key, False, True)
+                Dim returnValue As String = StringUtils.FilterName_TVShow(entry.Key, False, True)
                 'Assert
                 Assert.AreEqual(entry.Value, returnValue, "Source <{0}>", entry.Key)
             Next
@@ -952,7 +952,7 @@ Namespace EmberTests
 
             For Each entry As KeyValuePair(Of String, String) In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterTVShowName(entry.Key, False, False)
+                Dim returnValue As String = StringUtils.FilterName_TVShow(entry.Key, False, False)
                 'Assert
                 Assert.AreEqual(entry.Value, returnValue, "Source <{0}>", entry.Key)
             Next

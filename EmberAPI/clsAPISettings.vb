@@ -426,6 +426,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVDisplayStatus() As Boolean
+        Get
+            Return Settings._XMLSettings.TVDisplayStatus
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVDisplayStatus = value
+        End Set
+    End Property
+
     Public Property MovieDisplayYear() As Boolean
         Get
             Return Settings._XMLSettings.moviedisplayyear
@@ -542,6 +551,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.tvlockepisoderating = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeRuntime() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeRuntime
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeRuntime = value
         End Set
     End Property
 
@@ -752,12 +770,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperCollection() As Boolean
+    Public Property MovieScraperCollectionID() As Boolean
         Get
-            Return Settings._XMLSettings.moviescrapercollection
+            Return Settings._XMLSettings.MovieScraperCollectionID
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescrapercollection = value
+            Settings._XMLSettings.MovieScraperCollectionID = value
+        End Set
+    End Property
+
+    Public Property MovieScraperCollectionsAuto() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperCollectionsAuto
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperCollectionsAuto = value
         End Set
     End Property
 
@@ -779,12 +806,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperCertification() As Boolean
+    Public Property MovieScraperCert() As Boolean
         Get
-            Return Settings._XMLSettings.moviescrapercertification
+            Return Settings._XMLSettings.MovieScraperCert
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescrapercertification = value
+            Settings._XMLSettings.MovieScraperCert = value
         End Set
     End Property
 
@@ -806,12 +833,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperOriginaltitle() As Boolean
+    Public Property MovieScraperOriginalTitle() As Boolean
         Get
-            Return Settings._XMLSettings.MovieScraperOriginaltitle
+            Return Settings._XMLSettings.MovieScraperOriginalTitle
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieScraperOriginaltitle = value
+            Settings._XMLSettings.MovieScraperOriginalTitle = value
         End Set
     End Property
 
@@ -934,12 +961,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GeneralFilterPanelState() As Boolean
+    Public Property GeneralFilterPanelStateMovie() As Boolean
         Get
-            Return Settings._XMLSettings.generalfilterpanelstate
+            Return Settings._XMLSettings.GeneralFilterPanelStateMovie
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.generalfilterpanelstate = value
+            Settings._XMLSettings.GeneralFilterPanelStateMovie = value
+        End Set
+    End Property
+
+    Public Property GeneralFilterPanelStateMovieSet() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralFilterPanelStateMovieSet
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralFilterPanelStateMovieSet = value
+        End Set
+    End Property
+
+    Public Property GeneralFilterPanelStateShow() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralFilterPanelStateShow
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralFilterPanelStateShow = value
         End Set
     End Property
 
@@ -949,6 +994,15 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Settings._XMLSettings.moviegeneralflaglang = value
+        End Set
+    End Property
+
+    Public Property MovieScraperCleanFields() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperCleanFields
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperCleanFields = value
         End Set
     End Property
 
@@ -1042,12 +1096,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieLockCollection() As Boolean
+    Public Property MovieLockCollectionID() As Boolean
         Get
-            Return Settings._XMLSettings.MovieLockCollection
+            Return Settings._XMLSettings.MovieLockCollectionID
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLockCollection = value
+            Settings._XMLSettings.MovieLockCollectionID = value
+        End Set
+    End Property
+
+    Public Property MovieLockCollections() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockCollections
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockCollections = value
         End Set
     End Property
 
@@ -1204,12 +1267,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperUseMPAAFSK() As Boolean
+    Public Property MovieScraperCertFSK() As Boolean
         Get
-            Return Settings._XMLSettings.moviescraperusempaafsk
+            Return Settings._XMLSettings.MovieScraperCertFSK
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescraperusempaafsk = value
+            Settings._XMLSettings.MovieScraperCertFSK = value
         End Set
     End Property
     Public Property MovieLockStudio() As Boolean
@@ -1238,12 +1301,12 @@ Public Class Settings
             Settings._XMLSettings.movielocktitle = value
         End Set
     End Property
-    Public Property MovieLockOriginaltitle() As Boolean
+    Public Property MovieLockOriginalTitle() As Boolean
         Get
-            Return Settings._XMLSettings.MovieLockTitle
+            Return Settings._XMLSettings.MovieLockOriginalTitle
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLockTitle = value
+            Settings._XMLSettings.MovieLockOriginalTitle = value
         End Set
     End Property
     Public Property MovieLockTrailer() As Boolean
@@ -1365,10 +1428,10 @@ Public Class Settings
 
     Public Property MovieMissingBanner() As Boolean
         Get
-            Return Settings._XMLSettings.moviemissingbanner
+            Return Settings._XMLSettings.MovieMissingBanner
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviemissingbanner = value
+            Settings._XMLSettings.MovieMissingBanner = value
         End Set
     End Property
 
@@ -2065,6 +2128,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVSortTokensIsEmpty() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSortTokensIsEmpty
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSortTokensIsEmpty = value
+        End Set
+    End Property
+
     Public Property OMMDummyFormat() As Integer
         Get
             Return Settings._XMLSettings.ommdummyformat
@@ -2128,12 +2200,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperOnlyValueForMPAA() As Boolean
+    Public Property MovieScraperCertOnlyValue() As Boolean
         Get
-            Return Settings._XMLSettings.moviescraperonlyvalueformpaa
+            Return Settings._XMLSettings.MovieScraperCertOnlyValue
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.moviescraperonlyvalueformpaa = value
+            Settings._XMLSettings.MovieScraperCertOnlyValue = value
         End Set
     End Property
 
@@ -3099,6 +3171,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeRuntime() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperEpisodeRuntime
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperEpisodeRuntime = value
+        End Set
+    End Property
+
     Public Property TVScraperEpisodeSeason() As Boolean
         Get
             Return Settings._XMLSettings.tvscraperepisodeseason
@@ -3738,6 +3819,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVSortTokens() As List(Of String)
+        Get
+            Return Settings._XMLSettings.TVSortTokens
+        End Get
+        Set(ByVal value As List(Of String))
+            Settings._XMLSettings.TVSortTokens = value
+        End Set
+    End Property
+
     Public Property GeneralSourceFromFolder() As Boolean
         Get
             Return Settings._XMLSettings.generalsourcefromfolder
@@ -3921,6 +4011,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.tvscraperusemdduration = value
+        End Set
+    End Property
+
+    Public Property TVScraperUseSRuntimeForEp() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperUseSRuntimeForEp
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperUseSRuntimeForEp = value
         End Set
     End Property
 
@@ -5418,6 +5517,96 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowMissingBanner() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowMissingBanner
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowMissingBanner = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingCharacterArt() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowMissingCharacterArt
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowMissingCharacterArt = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingClearArt() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowmissingclearart
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowmissingclearart = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingClearLogo() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowmissingclearlogo
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowmissingclearlogo = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingEFanarts() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowmissingefanarts
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowmissingefanarts = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingFanart() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowmissingfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowmissingfanart = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingLandscape() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowmissinglandscape
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowmissinglandscape = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingNFO() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowmissingnfo
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowmissingnfo = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingPoster() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowmissingposter
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowmissingposter = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingTheme() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowmissingtheme
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowmissingtheme = value
+        End Set
+    End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -5631,6 +5820,12 @@ Public Class Settings
             Master.eSettings.MovieSetSortTokens.Add("the[\W_]")
             Master.eSettings.MovieSetSortTokens.Add("a[\W_]")
             Master.eSettings.MovieSetSortTokens.Add("an[\W_]")
+        End If
+
+        If Type = Enums.DefaultType.All AndAlso Master.eSettings.TVSortTokens.Count <= 0 AndAlso Not Master.eSettings.TVSortTokensIsEmpty Then
+            Master.eSettings.TVSortTokens.Add("the[\W_]")
+            Master.eSettings.TVSortTokens.Add("a[\W_]")
+            Master.eSettings.TVSortTokens.Add("an[\W_]")
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then

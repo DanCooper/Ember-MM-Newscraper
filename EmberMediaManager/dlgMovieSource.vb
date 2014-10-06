@@ -132,6 +132,7 @@ Public Class dlgMovieSource
                 If Not s.id Is Nothing Then
                     Me.txtSourceName.Text = s.Name
                     Me.txtSourcePath.Text = s.Path
+                    Me.chkExclude.Checked = s.Exclude
                     Me.chkScanRecursive.Checked = s.Recursive
                     Me.chkSingle.Checked = s.IsSingle
                     Me.chkUseFolderName.Checked = s.UseFolderName
@@ -174,9 +175,9 @@ Public Class dlgMovieSource
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Me._id >= 0 Then
-                        SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?) WHERE ID =", Me._id, ";")
+                        SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?), lastscan = (?), exclude = (?) WHERE ID =", Me._id, ";")
                     Else
-                        SQLcommand.CommandText = "INSERT OR REPLACE INTO sources (name, path, recursive, foldername, single, LastScan) VALUES (?,?,?,?,?,?);"
+                        SQLcommand.CommandText = "INSERT OR REPLACE INTO sources (name, path, recursive, foldername, single, LastScan, Exclude) VALUES (?,?,?,?,?,?,?);"
                     End If
                     Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
@@ -184,12 +185,14 @@ Public Class dlgMovieSource
                     Dim parFolder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFolder", DbType.Boolean, 0, "foldername")
                     Dim parSingle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSingle", DbType.Boolean, 0, "single")
                     Dim parLastScan As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
+                    Dim parExclude As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExclude", DbType.Boolean, 0, "Exclude")
                     parName.Value = txtSourceName.Text.Trim
                     parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
                     parRecur.Value = chkScanRecursive.Checked
                     parFolder.Value = chkUseFolderName.Checked
                     parSingle.Value = chkSingle.Checked
                     parLastScan.Value = Now
+                    parExclude.Value = chkExclude.Checked
 
                     SQLcommand.ExecuteNonQuery()
                 End Using
@@ -213,7 +216,8 @@ Public Class dlgMovieSource
         Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
         Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
         Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
-        Me.chkSingle.Text = Master.eLang.GetString(202, "Only Detect One Movie From Each Folder*")
+        Me.chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
+        Me.chkSingle.Text = Master.eLang.GetString(202, "Movies are in separate folders *")
         Me.chkUseFolderName.Text = Master.eLang.GetString(203, "Use Folder Name for Initial Listing")
         Me.chkScanRecursive.Text = Master.eLang.GetString(204, "Scan Recursively")
         Me.fbdBrowse.Description = Master.eLang.GetString(205, "Select the parent folder for your movie folders/files.")

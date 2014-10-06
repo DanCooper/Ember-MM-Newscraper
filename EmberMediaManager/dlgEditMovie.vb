@@ -1991,7 +1991,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbGenre.ItemCheck
+    Private Sub clbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbGenre.ItemCheck
         If e.Index = 0 Then
             For i As Integer = 1 To clbGenre.Items.Count - 1
                 Me.clbGenre.SetItemChecked(i, False)
@@ -2751,7 +2751,7 @@ Public Class dlgEditMovie
         If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
             Try
                 If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "us" AndAlso APIXML.RatingXML.movies.FindAll(Function(f) f.country.ToLower = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name.ToLower).Count > 0 Then
-                    If Master.eSettings.MovieScraperOnlyValueForMPAA Then
+                    If Master.eSettings.MovieScraperCertOnlyValue Then
                         Dim sItem As String = String.Empty
                         For i As Integer = 0 To Me.lbMPAA.Items.Count - 1
                             sItem = Me.lbMPAA.Items(i).ToString
@@ -2852,13 +2852,13 @@ Public Class dlgEditMovie
                 Master.currMovie.Movie.VideoSource = .txtFileSource.Text.Trim
 
                 If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
-                    Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.MovieScraperCertForMPAA AndAlso Master.eSettings.MovieScraperOnlyValueForMPAA AndAlso .lbMPAA.SelectedItem.ToString.Contains(":"), .lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), .lbMPAA.SelectedItem.ToString), " ", .txtMPAADesc.Text).Trim
+                    Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.MovieScraperCertForMPAA AndAlso Master.eSettings.MovieScraperCertOnlyValue AndAlso .lbMPAA.SelectedItem.ToString.Contains(":"), .lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), .lbMPAA.SelectedItem.ToString), " ", .txtMPAADesc.Text).Trim
                 Else
                     If Master.eSettings.MovieScraperCertForMPAA AndAlso (Not Master.eSettings.MovieScraperCertLang = "us" OrElse (Master.eSettings.MovieScraperCertLang = "us" AndAlso .lbMPAA.SelectedIndex = 0)) Then
                         Dim lCert() As String = .txtCerts.Text.Trim.Split(Convert.ToChar("/"))
                         Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang.ToLower).name), "\:(.*?)"))
                         If fCert.Count > 0 Then
-                            Master.currMovie.Movie.MPAA = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(fCert(0).ToString.Trim), If(Master.eSettings.MovieScraperOnlyValueForMPAA, fCert(0).ToString.Trim.Split(Convert.ToChar(":"))(1), fCert(0).ToString.Trim))
+                            Master.currMovie.Movie.MPAA = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(fCert(0).ToString.Trim), If(Master.eSettings.MovieScraperCertOnlyValue, fCert(0).ToString.Trim.Split(Convert.ToChar(":"))(1), fCert(0).ToString.Trim))
                         Else
                             Master.currMovie.Movie.MPAA = String.Empty
                         End If

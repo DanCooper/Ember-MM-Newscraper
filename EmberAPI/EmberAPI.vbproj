@@ -164,12 +164,6 @@
     <Compile Include="clsAPIXML.vb" />
     <Compile Include="clsAPIYouTube.vb" />
     <Compile Include="clsAPITrailers.vb" />
-    <Compile Include="dlgCompatibility.designer.vb">
-      <DependentUpon>dlgCompatibility.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgCompatibility.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgVersions.Designer.vb">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </Compile>
@@ -210,10 +204,6 @@
     <Compile Include="XML Serialization\clsXMLTVDBLanguages.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="dlgCompatibility.resx">
-      <DependentUpon>dlgCompatibility.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="dlgVersions.resx">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </EmbeddedResource>
@@ -247,6 +237,20 @@
     </None>
     <None Include="DB\MyVideosDBSQL_v2_Patch.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v3_Patch.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v4.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v4_Patch.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v5.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Defaults\DefaultMovieCertLanguages.xml">
@@ -311,6 +315,7 @@
     </None>
     <Content Include="Defaults\DefaultSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Defaults\DefaultAdvancedSettings - MovieSources.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

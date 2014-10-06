@@ -218,26 +218,32 @@ Public Class Database
             If (Master.DB.MyVideosDBConn IsNot Nothing) Then
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLcommand.CommandText = "UPDATE movies SET new = (?);"
-                        Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
+                        SQLcommand.CommandText = "UPDATE Movies SET New = (?);"
+                        Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "New")
+                        parNew.Value = False
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                    Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                        SQLcommand.CommandText = "UPDATE Sets SET New = (?);"
+                        Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "New")
                         parNew.Value = False
                         SQLcommand.ExecuteNonQuery()
                     End Using
                     Using SQLShowcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLShowcommand.CommandText = "UPDATE TVShows SET new = (?);"
-                        Dim parShowNew As SQLite.SQLiteParameter = SQLShowcommand.Parameters.Add("parShowNew", DbType.Boolean, 0, "new")
+                        SQLShowcommand.CommandText = "UPDATE TVShows SET New = (?);"
+                        Dim parShowNew As SQLite.SQLiteParameter = SQLShowcommand.Parameters.Add("parShowNew", DbType.Boolean, 0, "New")
                         parShowNew.Value = False
                         SQLShowcommand.ExecuteNonQuery()
                     End Using
                     Using SQLSeasoncommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLSeasoncommand.CommandText = "UPDATE TVSeason SET new = (?);"
-                        Dim parSeasonNew As SQLite.SQLiteParameter = SQLSeasoncommand.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "new")
+                        SQLSeasoncommand.CommandText = "UPDATE TVSeason SET New = (?);"
+                        Dim parSeasonNew As SQLite.SQLiteParameter = SQLSeasoncommand.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "New")
                         parSeasonNew.Value = False
                         SQLSeasoncommand.ExecuteNonQuery()
                     End Using
                     Using SQLEpcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLEpcommand.CommandText = "UPDATE TVEps SET new = (?);"
-                        Dim parEpNew As SQLite.SQLiteParameter = SQLEpcommand.Parameters.Add("parEpNew", DbType.Boolean, 0, "new")
+                        SQLEpcommand.CommandText = "UPDATE TVEps SET New = (?);"
+                        Dim parEpNew As SQLite.SQLiteParameter = SQLEpcommand.Parameters.Add("parEpNew", DbType.Boolean, 0, "New")
                         parEpNew.Value = False
                         SQLEpcommand.ExecuteNonQuery()
                     End Using
@@ -295,7 +301,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 3
+        Dim MyVideosDBVersion As Integer = 5
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -676,6 +682,38 @@ Public Class Database
         _TVDB.Source = _tmpTVDB.Source
         _TVDB.TVShow = _tmpTVDB.TVShow
     End Sub
+
+    Public Function GetMovieCountries() As String()
+        Dim cList As New List(Of String)
+        Dim mCountry As String
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT Movies.Country FROM Movies;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    mCountry = SQLreader("Country").ToString
+                    If mCountry.Contains("/") Then
+                        Dim values As String() = mCountry.Split(New [Char]() {"/"c})
+                        For Each country As String In values
+                            country = country.Trim
+                            If Not cList.Contains(country) Then
+                                cList.Add(country)
+                            End If
+                        Next
+                    Else
+                        If Not String.IsNullOrEmpty(mCountry) Then
+                            If Not cList.Contains(mCountry) Then
+                                cList.Add(mCountry.Trim)
+                            End If
+                        End If
+                    End If
+                End While
+            End Using
+        End Using
+
+        cList.Sort()
+        Return cList.ToArray
+    End Function
 
     Public Function GetMoviePaths() As List(Of String)
         Dim tList As New List(Of String)
@@ -1283,13 +1321,14 @@ Public Class Database
         Try
             _TVDB.ShowID = ShowID
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, ", _
+                SQLcommand.CommandText = String.Concat("SELECT ID, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, ", _
                                                        "Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, ", _
                                                        "HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, ", _
-                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime FROM TVShows WHERE id = ", ShowID, ";")
+                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title FROM TVShows WHERE id = ", ShowID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
+                        If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _TVDB.ListTitle = SQLreader("ListTitle").ToString
                         If Not DBNull.Value.Equals(SQLreader("CharacterArtPath")) Then _TVDB.ShowCharacterArtPath = SQLreader("CharacterArtPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("ClearArtPath")) Then _TVDB.ShowClearArtPath = SQLreader("ClearArtPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("ClearLogoPath")) Then _TVDB.ShowClearLogoPath = SQLreader("ClearLogoPath").ToString
@@ -1400,6 +1439,11 @@ Public Class Database
                         If TransOk Then
                             logger.Trace(New StackFrame().GetMethod().Name, String.Format("Transaction {0} Commit", Trans.name))
                             SQLtransaction.Commit()
+                            ' Housekeeping - consolidate and pack database using vacuum command http://www.sqlite.org/lang_vacuum.html
+                            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                SQLcommand.CommandText = "VACUUM;"
+                                SQLcommand.ExecuteNonQuery()
+                            End Using
                         Else
                             logger.Trace(New StackFrame().GetMethod().Name, String.Format("Transaction {0} RollBack", Trans.name))
                             SQLtransaction.Rollback()
@@ -1408,12 +1452,17 @@ Public Class Database
                 Next
                 For Each _cmd As Containers.CommandsNoTransactionCommand In _cmds.noTransaction
                     If _cmd.type = "DB" Then
-                        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            SQLcommand.CommandText = _cmd.execute
+                        Using SQLnotransaction As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                            SQLnotransaction.CommandText = _cmd.execute
                             Try
-                                SQLcommand.ExecuteNonQuery()
+                                SQLnotransaction.ExecuteNonQuery()
+                                ' Housekeeping - consolidate and pack database using vacuum command http://www.sqlite.org/lang_vacuum.html
+                                Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                    SQLcommand.CommandText = "VACUUM;"
+                                    SQLcommand.ExecuteNonQuery()
+                                End Using
                             Catch ex As Exception
-                                logger.Info(New StackFrame().GetMethod().Name, ex, SQLcommand, _cmd.description, _cmd.execute)
+                                logger.Info(New StackFrame().GetMethod().Name, ex, SQLnotransaction, _cmd.description, _cmd.execute)
                             End Try
                         End Using
                     End If
@@ -2543,18 +2592,18 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVShows (", _
-                     "TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, Title, EpisodeGuide, ", _
+                     "TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
                      "Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, ", _
                      "HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, ", _
-                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVShows (", _
-                     "ID, TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, Title, EpisodeGuide, ", _
+                     "ID, TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
                      "Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, ", _
                      "HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, ", _
-                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
                     Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "ID")
                     parTVShowID.Value = _TVShowDB.ShowID
                 End If
@@ -2568,7 +2617,7 @@ Public Class Database
                 Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                 Dim parTVDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVDB", DbType.String, 0, "TVDB")
                 Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "Title")
+                Dim parListTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
                 Dim parEpisodeGuide As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEpisodeGuide", DbType.String, 0, "EpisodeGuide")
                 Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
                 Dim parGenre As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGenre", DbType.String, 0, "Genre")
@@ -2598,6 +2647,7 @@ Public Class Database
                 Dim parHasEFanarts As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasEFanarts", DbType.Boolean, 0, "HasEFanarts")
                 Dim parEFanartsPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEFanartsPath", DbType.String, 0, "EFanartsPath")
                 Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
+                Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "Title")
 
                 With _TVShowDB.TVShow
                     parTVDB.Value = .ID
@@ -2639,6 +2689,7 @@ Public Class Database
                 parHasTheme.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowThemePath)
 
                 parNew.Value = IsNew
+                parListTitle.Value = _TVShowDB.ListTitle
                 parMark.Value = _TVShowDB.IsMarkShow
                 parLock.Value = _TVShowDB.IsLockShow
                 parSource.Value = _TVShowDB.Source
@@ -2736,7 +2787,7 @@ Public Class Database
         Master.MovieSources.Clear()
         Try
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT ID, Name, path, Recursive, Foldername, Single, LastScan FROM sources;"
+                SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
                         Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
@@ -2747,6 +2798,7 @@ Public Class Database
                             msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
                             msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
                             msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
+                            msource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
                             Master.MovieSources.Add(msource)
                         Catch ex As Exception
                             logger.Error(New StackFrame().GetMethod().Name, ex)

@@ -42,6 +42,7 @@ Partial Class dlgMovieSource
         Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
         Me.lblHint = New System.Windows.Forms.Label()
         Me.pnlMovieSource = New System.Windows.Forms.Panel()
+        Me.chkExclude = New System.Windows.Forms.CheckBox()
         Me.gbSourceOptions.SuspendLayout()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMovieSource.SuspendLayout()
@@ -51,7 +52,7 @@ Partial Class dlgMovieSource
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(286, 138)
+        Me.OK_Button.Location = New System.Drawing.Point(285, 165)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -61,7 +62,7 @@ Partial Class dlgMovieSource
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(359, 138)
+        Me.Cancel_Button.Location = New System.Drawing.Point(358, 165)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -89,7 +90,7 @@ Partial Class dlgMovieSource
         '
         Me.lblSourcePath.AutoSize = True
         Me.lblSourcePath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblSourcePath.Location = New System.Drawing.Point(10, 83)
+        Me.lblSourcePath.Location = New System.Drawing.Point(10, 103)
         Me.lblSourcePath.Name = "lblSourcePath"
         Me.lblSourcePath.Size = New System.Drawing.Size(72, 13)
         Me.lblSourcePath.TabIndex = 2
@@ -98,7 +99,7 @@ Partial Class dlgMovieSource
         'txtSourcePath
         '
         Me.txtSourcePath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtSourcePath.Location = New System.Drawing.Point(12, 98)
+        Me.txtSourcePath.Location = New System.Drawing.Point(12, 118)
         Me.txtSourcePath.Name = "txtSourcePath"
         Me.txtSourcePath.Size = New System.Drawing.Size(376, 22)
         Me.txtSourcePath.TabIndex = 3
@@ -106,7 +107,7 @@ Partial Class dlgMovieSource
         'btnBrowse
         '
         Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(397, 97)
+        Me.btnBrowse.Location = New System.Drawing.Point(397, 117)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(26, 23)
         Me.btnBrowse.TabIndex = 4
@@ -115,13 +116,14 @@ Partial Class dlgMovieSource
         '
         'gbSourceOptions
         '
+        Me.gbSourceOptions.Controls.Add(Me.chkExclude)
         Me.gbSourceOptions.Controls.Add(Me.chkSingle)
         Me.gbSourceOptions.Controls.Add(Me.chkUseFolderName)
         Me.gbSourceOptions.Controls.Add(Me.chkScanRecursive)
         Me.gbSourceOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSourceOptions.Location = New System.Drawing.Point(172, 5)
         Me.gbSourceOptions.Name = "gbSourceOptions"
-        Me.gbSourceOptions.Size = New System.Drawing.Size(251, 85)
+        Me.gbSourceOptions.Size = New System.Drawing.Size(251, 107)
         Me.gbSourceOptions.TabIndex = 5
         Me.gbSourceOptions.TabStop = False
         Me.gbSourceOptions.Text = "Source Options"
@@ -134,9 +136,9 @@ Partial Class dlgMovieSource
         Me.chkSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkSingle.Location = New System.Drawing.Point(6, 39)
         Me.chkSingle.Name = "chkSingle"
-        Me.chkSingle.Size = New System.Drawing.Size(242, 17)
+        Me.chkSingle.Size = New System.Drawing.Size(188, 17)
         Me.chkSingle.TabIndex = 1
-        Me.chkSingle.Text = "Only Detect One Movie From Each Folder*"
+        Me.chkSingle.Text = "Movies are in separate folders *"
         Me.chkSingle.UseVisualStyleBackColor = True
         '
         'chkUseFolderName
@@ -195,7 +197,7 @@ Partial Class dlgMovieSource
         'lblHint
         '
         Me.lblHint.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHint.Location = New System.Drawing.Point(0, 138)
+        Me.lblHint.Location = New System.Drawing.Point(-1, 165)
         Me.lblHint.Name = "lblHint"
         Me.lblHint.Size = New System.Drawing.Size(268, 24)
         Me.lblHint.TabIndex = 3
@@ -215,8 +217,19 @@ Partial Class dlgMovieSource
         Me.pnlMovieSource.Controls.Add(Me.txtSourceName)
         Me.pnlMovieSource.Location = New System.Drawing.Point(2, 3)
         Me.pnlMovieSource.Name = "pnlMovieSource"
-        Me.pnlMovieSource.Size = New System.Drawing.Size(436, 129)
+        Me.pnlMovieSource.Size = New System.Drawing.Size(436, 156)
         Me.pnlMovieSource.TabIndex = 2
+        '
+        'chkExclude
+        '
+        Me.chkExclude.AutoSize = True
+        Me.chkExclude.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkExclude.Location = New System.Drawing.Point(6, 82)
+        Me.chkExclude.Name = "chkExclude"
+        Me.chkExclude.Size = New System.Drawing.Size(199, 17)
+        Me.chkExclude.TabIndex = 3
+        Me.chkExclude.Text = "Exclude path from library updates"
+        Me.chkExclude.UseVisualStyleBackColor = True
         '
         'dlgMovieSource
         '
@@ -224,7 +237,7 @@ Partial Class dlgMovieSource
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(441, 164)
+        Me.ClientSize = New System.Drawing.Size(441, 197)
         Me.Controls.Add(Me.pnlMovieSource)
         Me.Controls.Add(Me.lblHint)
         Me.Controls.Add(Me.OK_Button)
@@ -266,5 +279,6 @@ Partial Class dlgMovieSource
     Friend WithEvents tmrPath As System.Windows.Forms.Timer
     Friend WithEvents lblHint As System.Windows.Forms.Label
     Friend WithEvents pnlMovieSource As System.Windows.Forms.Panel
+    Friend WithEvents chkExclude As System.Windows.Forms.CheckBox
 
 End Class

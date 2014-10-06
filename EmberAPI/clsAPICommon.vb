@@ -825,9 +825,9 @@ Public Class Enums
         FullAuto = 1
         FullAsk = 2
         FullSkip = 3
-        UpdateAuto = 4
-        UpdateAsk = 5
-        UpdateSkip = 6
+        MissAuto = 4
+        MissAsk = 5
+        MissSkip = 6
         CleanFolders = 7
         NewAuto = 8
         NewAsk = 9
@@ -1096,7 +1096,7 @@ Public Class Functions
         With options
             .bCast = True
             .bCert = True
-            .bCollection = True
+            .bCollectionID = True
             .bCountry = True
             .bDirector = True
             .bFullCrew = True
@@ -1135,8 +1135,8 @@ Public Class Functions
             '.bLanguageV = Master.eSettings.FieldLanguageV
             '.buseMPAAForFSK = Master.eSettings.UseMPAAForFSK
             .bCast = Master.eSettings.MovieScraperCast
-            .bCert = Master.eSettings.MovieScraperCertification
-            .bCollection = Master.eSettings.MovieScraperCollection
+            .bCert = Master.eSettings.MovieScraperCert
+            .bCollectionID = Master.eSettings.MovieScraperCollectionID
             .bCountry = Master.eSettings.MovieScraperCountry
             .bDirector = Master.eSettings.MovieScraperDirector
             .bGenre = Master.eSettings.MovieScraperGenre
@@ -1425,7 +1425,7 @@ Public Class Functions
         Dim filterOptions As New Structures.ScrapeOptions_Movie
         filterOptions.bCast = Options.bCast AndAlso Options2.bCast
         filterOptions.bCert = Options.bCert AndAlso Options2.bCert
-        filterOptions.bCollection = Options.bCollection AndAlso Options2.bCollection
+        filterOptions.bCollectionID = Options.bCollectionID AndAlso Options2.bCollectionID
         filterOptions.bCountry = Options.bCountry AndAlso Options2.bCountry
         filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
         filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
@@ -1740,6 +1740,7 @@ Public Class Structures
         Dim Recursive As Boolean
         Dim UseFolderName As Boolean
         Dim IsSingle As Boolean
+        Dim Exclude As Boolean
     End Structure
     ''' <summary>
     ''' Structure representing a TV source path and its metadata
@@ -1808,9 +1809,6 @@ Public Class Structures
         Dim ThemePath As String
         Dim TrailerPath As String
         Dim UseFolder As Boolean
-
-      
-
     End Structure
     ''' <summary>
     ''' Structure representing a movieset in the database
@@ -1859,6 +1857,7 @@ Public Class Structures
         Dim IsMarkEp As Boolean
         Dim IsMarkSeason As Boolean
         Dim IsMarkShow As Boolean
+        Dim ListTitle As String
         Dim Ordering As Enums.Ordering
         Dim SeasonBannerPath As String
         Dim SeasonFanartPath As String
@@ -1931,7 +1930,7 @@ Public Class Structures
     Public Structure ScrapeOptions_Movie
         Dim bCast As Boolean
         Dim bCert As Boolean
-        Dim bCollection As Boolean
+        Dim bCollectionID As Boolean
         Dim bDirector As Boolean
         Dim bFullCrew As Boolean
         Dim bGenre As Boolean
@@ -1967,7 +1966,9 @@ Public Class Structures
 
     Public Structure SettingsResult
         Dim DidCancel As Boolean
-        Dim NeedsRefresh As Boolean
+        Dim NeedsRefresh_Movie As Boolean
+        Dim NeedsRefresh_MovieSet As Boolean
+        Dim NeedsRefresh_TV As Boolean
         Dim NeedsUpdate As Boolean
         Dim NeedsRestart As Boolean
     End Structure
@@ -1983,6 +1984,7 @@ Public Class Structures
         Dim bEpEpisode As Boolean
         Dim bEpPlot As Boolean
         Dim bEpRating As Boolean
+        Dim bEpRuntime As Boolean
         Dim bEpSeason As Boolean
         Dim bEpTitle As Boolean
         Dim bShowActors As Boolean

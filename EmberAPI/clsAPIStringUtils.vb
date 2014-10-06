@@ -350,7 +350,7 @@ Public Class StringUtils
     ''' and duplicate whitespaces, replacing them all with a simple space </param>
     ''' <returns>The filtered name as a <c>String</c></returns>
     ''' <remarks></remarks>
-    Public Shared Function FilterName(ByVal movieName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
+    Public Shared Function FilterName_Movie(ByVal movieName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
         If String.IsNullOrEmpty(movieName) Then Return String.Empty
 
         movieName = ApplyFilters(movieName, Master.eSettings.MovieFilterCustom)
@@ -368,8 +368,73 @@ Public Class StringUtils
         Return movieName.Trim
     End Function
     ''' <summary>
+    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
+    ''' </summary>
+    ''' <param name="TVEpName">The <c>String</c> TV Episode name to clean</param>
+    ''' <param name="TVShowName">The <c>String</c> EV Show name to clean</param>
+    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
+    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
+    ''' and duplicate whitespaces, replacing them all with a simple space </param>
+    ''' <returns>The filtered name as a <c>String</c></returns>
+    ''' <remarks></remarks>
+    Public Shared Function FilterName_TVEp(ByVal TVEpName As String, ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
+        Try
+
+            If String.IsNullOrEmpty(TVEpName) Then Return String.Empty
+            TVEpName = TVEpName.Trim
+            TVEpName = ApplyFilters(TVEpName, Master.eSettings.TVEpisodeFilterCustom)
+            TVEpName = CleanStackingMarkers(TVEpName)
+
+            'remove the show name from the episode name
+            If Not String.IsNullOrEmpty(TVShowName) Then TVEpName = Strings.Replace(TVEpName, TVShowName.Trim, String.Empty, 1, -1, CompareMethod.Text)
+
+            'Convert String To Proper Case
+            If Master.eSettings.TVEpisodeProperCase AndAlso doExtras Then
+                TVEpName = ProperCase(TVEpName.Trim)
+            End If
+
+            'TODO Dekker500 Why are we not using this next line (FilterTokens)?
+            ' Answer: No FilterTokens for episodes, also no ListTitle (make no sense)
+            'If doExtras Then TVEpName = FilterTokens(TVEpName.Trim)
+            If remPunct Then TVEpName = RemovePunctuation(TVEpName.Trim)
+
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+        Return TVEpName.Trim
+    End Function
+    ''' <summary>
+    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
+    ''' </summary>
+    ''' <param name="TVShowName">The <c>String</c> TV Show name to clean</param>
+    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
+    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
+    ''' and duplicate whitespaces, replacing them all with a simple space </param>
+    ''' <returns>The filtered name as a <c>String</c></returns>
+    ''' <remarks></remarks>
+    Public Shared Function FilterName_TVShow(ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
+        '//
+        ' Clean all the crap out of the name
+        '\\
+        If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
+        TVShowName = TVShowName.Trim
+        TVShowName = ApplyFilters(TVShowName, Master.eSettings.TVShowFilterCustom)
+        'TVShowName = CleanStackingMarkers(TVShowName)
+
+        'Convert String To Proper Case
+        If Master.eSettings.TVShowProperCase AndAlso doExtras Then
+            TVShowName = ProperCase(TVShowName)
+        End If
+
+        If doExtras Then TVShowName = FilterTokens_TV(TVShowName.Trim)
+        If remPunct Then TVShowName = RemovePunctuation(CleanStackingMarkers(TVShowName.Trim))
+
+        Return TVShowName.Trim
+    End Function
+    ''' <summary>
     ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
-    ''' sort tokens (<c>Master.eSettings.SortTokens"</c>) then remove it from the front
+    ''' sort tokens (<c>Master.eSettings.MovieSortTokens"</c>) then remove it from the front
     ''' of the string and move it to the end after a comma.
     ''' </summary>
     ''' <param name="sTitle"><c>String</c> to clean up</param>
@@ -417,12 +482,12 @@ Public Class StringUtils
     End Function
     ''' <summary>
     ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
-    ''' sort tokens (<c>Master.eSettings.SortTokens"</c>) then remove it from the front
+    ''' sort tokens (<c>Master.eSettings.MovieSetSortTokens"</c>) then remove it from the front
     ''' of the string and move it to the end after a comma.
     ''' </summary>
     ''' <param name="sTitle"><c>String</c> to clean up</param>
     ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
-    ''' <remarks>This function will take a string such as "The Movie" and return "Movie, The".
+    ''' <remarks>This function will take a string such as "The MovieSet" and return "MovieSet, The".
     ''' The default tokens are:
     '''  <list>
     '''    <item>a</item>
@@ -464,69 +529,52 @@ Public Class StringUtils
         Return newTitle.Trim
     End Function
     ''' <summary>
-    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
+    ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
+    ''' sort tokens (<c>Master.eSettings.SortTokens"</c>) then remove it from the front
+    ''' of the string and move it to the end after a comma.
     ''' </summary>
-    ''' <param name="TVEpName">The <c>String</c> TV Episode name to clean</param>
-    ''' <param name="TVShowName">The <c>String</c> EV Show name to clean</param>
-    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
-    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
-    ''' and duplicate whitespaces, replacing them all with a simple space </param>
-    ''' <returns>The filtered name as a <c>String</c></returns>
-    ''' <remarks></remarks>
-    Public Shared Function FilterTVEpName(ByVal TVEpName As String, ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
-        Try
+    ''' <param name="sTitle"><c>String</c> to clean up</param>
+    ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
+    ''' <remarks>This function will take a string such as "The Show" and return "Show, The".
+    ''' The default tokens are:
+    '''  <list>
+    '''    <item>a</item>
+    '''    <item>an</item>
+    '''    <item>the</item>
+    ''' </list>
+    ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
+    Public Shared Function FilterTokens_TV(ByVal sTitle As String) As String
+        If String.IsNullOrEmpty(sTitle) Then Return String.Empty
+        Dim newTitle As String = sTitle
 
-            If String.IsNullOrEmpty(TVEpName) Then Return String.Empty
-            TVEpName = TVEpName.Trim
-            TVEpName = ApplyFilters(TVEpName, Master.eSettings.TVEpisodeFilterCustom)
-            TVEpName = CleanStackingMarkers(TVEpName)
+        If Master.eSettings.TVSortTokens.Count > 0 Then
+            Dim tokenContents As String
+            Dim onlyTokenFromTitle As RegularExpressions.Match
+            Dim titleWithoutToken As String
+            For Each sToken As String In Master.eSettings.TVSortTokens
+                Try
+                    If Regex.IsMatch(sTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
+                        tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)
 
-            'remove the show name from the episode name
-            If Not String.IsNullOrEmpty(TVShowName) Then TVEpName = Strings.Replace(TVEpName, TVShowName.Trim, String.Empty, 1, -1, CompareMethod.Text)
+                        onlyTokenFromTitle = Regex.Match(sTitle, String.Concat("^", tokenContents), RegexOptions.IgnoreCase)
 
-            'Convert String To Proper Case
-            If Master.eSettings.TVEpisodeProperCase AndAlso doExtras Then
-                TVEpName = ProperCase(TVEpName.Trim)
-            End If
+                        'cocotus 20140207, Fix for movies like "A.C.O.D." -> check for tokenContents(="A","An","the"..) followed by whitespace at the start of title -> If no space -> don't do anyn filtering!
+                        If sTitle.ToLower.StartsWith(tokenContents.ToLower & " ") = False Then
+                            Exit For
+                        End If
 
-            'TODO Dekker500 Why are we not using this next line (FilterTokens)?
-            'If doExtras Then TVEpName = FilterTokens(TVEpName.Trim)
-            If remPunct Then TVEpName = RemovePunctuation(TVEpName.Trim)
+                        titleWithoutToken = Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim
+                        newTitle = String.Format("{0}, {1}", titleWithoutToken, onlyTokenFromTitle.Value).Trim
 
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-        Return TVEpName.Trim
-    End Function
-    ''' <summary>
-    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
-    ''' </summary>
-    ''' <param name="TVShowName">The <c>String</c> TV Show name to clean</param>
-    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
-    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
-    ''' and duplicate whitespaces, replacing them all with a simple space </param>
-    ''' <returns>The filtered name as a <c>String</c></returns>
-    ''' <remarks></remarks>
-    Public Shared Function FilterTVShowName(ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
-        '//
-        ' Clean all the crap out of the name
-        '\\
-        If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
-        TVShowName = TVShowName.Trim
-        TVShowName = ApplyFilters(TVShowName, Master.eSettings.TVShowFilterCustom)
-        'TVShowName = CleanStackingMarkers(TVShowName)
-
-        'Convert String To Proper Case
-        If Master.eSettings.TVShowProperCase AndAlso doExtras Then
-            TVShowName = ProperCase(TVShowName)
+                        'newTitle = String.Format("{0}, {1}", Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim, Regex.Match(sTitle, String.Concat("^", Regex.Replace(sToken, "\[(.*?)\]", String.Empty)), RegexOptions.IgnoreCase)).Trim
+                        Exit For
+                    End If
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Title: " & sTitle & " generated an error message", ex)
+                End Try
+            Next
         End If
-
-        'TODO Dekker500 Why are we not using this next line (FilterTokens)?
-        'If doExtras Then TVEpName = FilterTokens(TVEpName.Trim)
-        If remPunct Then TVShowName = RemovePunctuation(CleanStackingMarkers(TVShowName.Trim))
-
-        Return TVShowName.Trim
+        Return newTitle.Trim
     End Function
     ''' <summary>
     ''' Removes the four-digit year from the given <c>String</c>
@@ -860,11 +908,14 @@ Public Class StringUtils
 
         'Do specific replaces first
         fName = fName.Replace(":", " -")
+        fName = fName.Replace("/", "-")
+        fName = fName.Replace("?", String.Empty)
+        fName = fName.Replace("*", String.Empty)
 
         'Everthing else gets removed
         Dim invalidFileChars() As Char = Path.GetInvalidFileNameChars()
         For Each someChar In invalidFileChars
-            fName = fName.Replace(someChar, " "c)
+            fName = fName.Replace(someChar, String.Empty)
         Next
 
         Return fName
@@ -881,11 +932,14 @@ Public Class StringUtils
 
         'Do specific replaces first
         fName = fName.Replace(":", " -")
+        fName = fName.Replace("/", "-")
+        fName = fName.Replace("?", String.Empty)
+        fName = fName.Replace("*", String.Empty)
 
         'Everthing else gets removed
         Dim invalidPathChars() As Char = Path.GetInvalidPathChars()
         For Each someChar In invalidPathChars
-            fName = fName.Replace(someChar, " "c)
+            fName = fName.Replace(someChar, String.Empty)
         Next
 
         Return fName

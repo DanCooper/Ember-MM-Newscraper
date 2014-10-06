@@ -67,8 +67,8 @@ Public Class FileFolderRenamer
 
 #Region "Methods"
 
-    Public Shared Function HaveBase(ByVal fpath As String) As Boolean
-        If fpath.Contains("$B") Then
+    Public Shared Function HaveBase(ByVal fPattern As String) As Boolean
+        If fPattern.Contains("$B") Then
             Return True
         Else
             Return False
@@ -78,7 +78,7 @@ Public Class FileFolderRenamer
     Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String, ByVal isPath As Boolean) As String
         Try
             Dim pattern As String = opattern
-            Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
+            'Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
 
             'pattern = "$T{($S.$S)}"
             Dim joinIndex As Integer
@@ -107,10 +107,11 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "J", f.AudioCodec)
                     strCond = ApplyPattern(strCond, "L", f.ListTitle)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
+                    strCond = ApplyPattern(strCond, "N", f.Collection)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
-                    strCond = ApplyPattern(strCond, "S", strSource)
+                    strCond = ApplyPattern(strCond, "S", f.FileSource)
                     strCond = ApplyPattern(strCond, "T", f.Title)
                     strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
@@ -140,7 +141,7 @@ Public Class FileFolderRenamer
                             strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
                         End If
                     End If
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMORSTVY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMNORSTVY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
                     Else
@@ -167,10 +168,11 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "J", f.AudioCodec)
             pattern = ApplyPattern(pattern, "L", f.ListTitle)
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
+            pattern = ApplyPattern(pattern, "N", f.Collection)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
             pattern = ApplyPattern(pattern, "R", f.Resolution)
-            pattern = ApplyPattern(pattern, "S", strSource)
+            pattern = ApplyPattern(pattern, "S", f.FileSource)
             pattern = ApplyPattern(pattern, "T", f.Title)
             pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
             pattern = ApplyPattern(pattern, "Y", f.Year)
@@ -256,8 +258,6 @@ Public Class FileFolderRenamer
                     Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpMovie.Movie.FileInfo)
                     Dim tRes As String = NFO.GetResFromDimensions(tVid)
                     MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
-                Else
-                    MovieFile.Resolution = String.Empty
                 End If
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
@@ -265,40 +265,26 @@ Public Class FileFolderRenamer
 
                     If tAud.ChannelsSpecified Then
                         MovieFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
-                    Else
-                        MovieFile.AudioChannels = String.Empty
                     End If
 
                     If tAud.CodecSpecified Then
                         MovieFile.AudioCodec = tAud.Codec
-                    Else
-                        MovieFile.AudioCodec = String.Empty
                     End If
                     'MovieFile.AudioChannels = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
-                Else
-                    MovieFile.AudioChannels = String.Empty
-                    MovieFile.AudioCodec = String.Empty
                 End If
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                     If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
                         MovieFile.MultiViewCount = "3D"
-                    Else
-                        MovieFile.MultiViewCount = String.Empty
                     End If
-                Else
-                    MovieFile.MultiViewCount = String.Empty
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        Else
-            MovieFile.AudioChannels = String.Empty
-            MovieFile.AudioCodec = String.Empty
-            MovieFile.Resolution = String.Empty
-            MovieFile.MultiViewCount = String.Empty
-            MovieFile.MultiViewLayout = String.Empty
-            MovieFile.VideoCodec = String.Empty
+        End If
+
+        If Not IsNothing(_tmpMovie.Movie.Sets) AndAlso _tmpMovie.Movie.Sets.Count > 0 Then
+            MovieFile.Collection = _tmpMovie.Movie.Sets.Item(0).Set
         End If
 
         MovieFile.Country = _tmpMovie.Movie.Country
@@ -310,7 +296,7 @@ Public Class FileFolderRenamer
         MovieFile.ListTitle = _tmpMovie.ListTitle
         MovieFile.OriginalTitle = _tmpMovie.Movie.OriginalTitle
         MovieFile.Rating = _tmpMovie.Movie.Rating
-        MovieFile.SortTitle = _tmpMovie.Movie.SortTitle
+        MovieFile.SortTitle = If(Not String.IsNullOrEmpty(_tmpMovie.Movie.SortTitle), _tmpMovie.Movie.SortTitle, _tmpMovie.ListTitle)
         MovieFile.Title = _tmpMovie.Movie.Title
         MovieFile.Year = _tmpMovie.Movie.Year
         Dim mFolders As New List(Of String)
@@ -668,10 +654,6 @@ Public Class FileFolderRenamer
                     f.NewPath = Path.Combine(f.OldPath, ProccessPattern(f, localFolderPattern, True).Trim)
                 End If
                 f.NewPath = If(f.NewPath.StartsWith(Path.DirectorySeparatorChar), f.NewPath.Substring(1), f.NewPath)
-                'Cocotus 20140906 Fix:  If movetitle contains invalid characters than there are problems when creating/moving subfolders! i.e title "Die Nackte Kanone 2 1/2 (1991)" --> folder with unwanted subfolder "2": \Die Nackte Kanone 2 1\ 2 (1991)
-                f.NewPath = StringUtils.CleanPath(f.NewPath)
-                f.NewPath = StringUtils.CleanFileName(f.NewPath)
-
                 f.FileExist = File.Exists(Path.Combine(f.BasePath, Path.Combine(f.NewPath, f.NewFileName))) AndAlso Not (f.FileName = f.NewFileName)
                 f.DirExist = File.Exists(Path.Combine(f.BasePath, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
 
@@ -873,6 +855,7 @@ Public Class FileFolderRenamer
         Private _audiochannels As String
         Private _audiocodec As String
         Private _basePath As String
+        Private _collection As String
         Private _dirExist As Boolean
         Private _fileExist As Boolean
         Private _fileName As String
@@ -932,6 +915,15 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As String)
                 _basePath = value
+            End Set
+        End Property
+
+        Public Property Collection() As String
+            Get
+                Return Me._collection
+            End Get
+            Set(ByVal value As String)
+                _collection = value
             End Set
         End Property
 
@@ -1209,38 +1201,78 @@ Public Class FileFolderRenamer
 
 #Region "Methods"
 
-        Public Sub Clear()
-            _id = -1
-            _title = String.Empty
-            _listtitle = String.Empty
-            _sorttitle = String.Empty
-            _year = String.Empty
+        Public Sub New()
+            _audiochannels = String.Empty
+            _audiocodec = String.Empty
             _basePath = String.Empty
-            _oldpath = String.Empty
-            _path = String.Empty
+            _collection = String.Empty
+            _country = String.Empty
+            _dirExist = False
+            _director = String.Empty
+            _fileExist = False
             _fileName = String.Empty
-            _newPath = String.Empty
-            _newFileName = String.Empty
-            _parent = String.Empty
-            _islocked = False
-            _dirExist = True
-            _fileExist = True
-            _isSingle = True
+            _filesource = String.Empty
+            _genre = String.Empty
+            _id = -1
+            _imdbid = String.Empty
             _isRenamed = False
+            _isSingle = False
+            _isbdmv = False
+            _islocked = False
+            _isvideo_ts = False
+            _listtitle = String.Empty
             _mpaarate = String.Empty
             _multiviewcount = String.Empty
             _multiviewlayout = String.Empty
+            _newFileName = String.Empty
+            _newPath = String.Empty
+            _oldpath = String.Empty
+            _originalTitle = String.Empty
+            _parent = String.Empty
+            _path = String.Empty
             _rating = String.Empty
             _resolution = String.Empty
+            _sorttitle = String.Empty
+            _title = String.Empty
+            _videocodec = String.Empty
+            _year = String.Empty
+        End Sub
+
+        Public Sub Clear()
             _audiochannels = String.Empty
             _audiocodec = String.Empty
-            _originalTitle = String.Empty
-            _isvideo_ts = False
-            _isbdmv = False
-            _genre = String.Empty
-            _director = String.Empty
+            _basePath = String.Empty
+            _collection = String.Empty
             _country = String.Empty
+            _dirExist = False
+            _director = String.Empty
+            _fileExist = False
+            _fileName = String.Empty
+            _filesource = String.Empty
+            _genre = String.Empty
+            _id = -1
+            _imdbid = String.Empty
+            _isRenamed = False
+            _isSingle = False
+            _isbdmv = False
+            _islocked = False
+            _isvideo_ts = False
+            _listtitle = String.Empty
+            _mpaarate = String.Empty
+            _multiviewcount = String.Empty
+            _multiviewlayout = String.Empty
+            _newFileName = String.Empty
+            _newPath = String.Empty
+            _oldpath = String.Empty
+            _originalTitle = String.Empty
+            _parent = String.Empty
+            _path = String.Empty
+            _rating = String.Empty
+            _resolution = String.Empty
+            _sorttitle = String.Empty
+            _title = String.Empty
             _videocodec = String.Empty
+            _year = String.Empty
         End Sub
 
 #End Region 'Methods

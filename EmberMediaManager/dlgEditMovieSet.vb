@@ -238,6 +238,13 @@ Public Class dlgEditMovieSet
                     Me.sMovieID = Me.lvMoviesInDB.SelectedItems(0).SubItems(0).Text.ToString
                     lMov = Me.MoviesInDB.Find(AddressOf FindMovie)
                     If Not IsNothing(lMov) Then
+                        If String.IsNullOrEmpty(Me.txtCollectionID.Text) AndAlso lMov.DBMovie.Movie.TMDBColIDSpecified Then
+                            Dim result As DialogResult = MessageBox.Show(String.Format(Master.eLang.GetString(1264, "Should the Collection ID of the movie ""{0}"" be used as ID for this Collection?"), lMov.DBMovie.Movie.Title), Master.eLang.GetString(1263, "TMDB Collection ID found"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
+                            If result = Windows.Forms.DialogResult.Yes Then
+                                Me.txtCollectionID.Text = lMov.DBMovie.Movie.TMDBColID
+                                currMovieSet.MovieSet.ID = lMov.DBMovie.Movie.TMDBColID
+                            End If
+                        End If
                         Me.MoviesInSet.Add(lMov)
                         Me.MoviesInDB.Remove(lMov)
                     Else

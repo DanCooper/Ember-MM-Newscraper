@@ -2171,6 +2171,14 @@ Public Class dlgEditShow
                 Master.currShow.TVShow.Status = .txtStatus.Text.Trim
                 Master.currShow.TVShow.Studio = .txtStudio.Text.Trim
 
+                If Not String.IsNullOrEmpty(.txtTitle.Text) Then
+                    If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(.txtStatus.Text.Trim) Then
+                        Master.currShow.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens_TV(.txtTitle.Text.Trim), .txtStatus.Text.Trim)
+                    Else
+                        Master.currShow.ListTitle = StringUtils.FilterTokens_TV(.txtTitle.Text.Trim)
+                    End If
+                End If
+
                 If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
                     Master.currShow.TVShow.MPAA = .lbMPAA.SelectedItem.ToString
                 End If
