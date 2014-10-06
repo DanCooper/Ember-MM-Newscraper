@@ -35,7 +35,9 @@ Partial Public Class clsXMLSettings
     Private _generaldaemondrive As String
     Private _generaldaemonpath As String
     Private _generaldoubleclickscrape As Boolean
-    Private _generalfilterpanelstate As Boolean
+    Private _generalfilterpanelstatemovie As Boolean
+    Private _generalfilterpanelstatemovieset As Boolean
+    Private _generalfilterpanelstateshow As Boolean
     Private _generalmainfiltersortdate As String
     Private _generalmainfiltersorttitle As String
     Private _generalmainfilterIMDBrating As String
@@ -443,6 +445,16 @@ Partial Public Class clsXMLSettings
     Private _tvshowfiltercustomisempty As Boolean
     Private _tvshowlandscapecol As Boolean
     Private _tvshowlandscapeoverwrite As Boolean
+    Private _tvshowmissingbanner As Boolean
+    Private _tvshowmissingcharacterart As Boolean
+    Private _tvshowmissingclearart As Boolean
+    Private _tvshowmissingclearlogo As Boolean
+    Private _tvshowmissingefanarts As Boolean
+    Private _tvshowmissingfanart As Boolean
+    Private _tvshowmissinglandscape As Boolean
+    Private _tvshowmissingnfo As Boolean
+    Private _tvshowmissingposter As Boolean
+    Private _tvshowmissingtheme As Boolean
     Private _tvshownfocol As Boolean
     Private _tvshowpostercol As Boolean
     Private _tvshowposterheight As Integer
@@ -1726,12 +1738,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property GeneralFilterPanelState() As Boolean
+    Public Property GeneralFilterPanelStateMovie() As Boolean
         Get
-            Return Me._generalfilterpanelstate
+            Return Me._generalfilterpanelstatemovie
         End Get
         Set(ByVal value As Boolean)
-            Me._generalfilterpanelstate = value
+            Me._generalfilterpanelstatemovie = value
+        End Set
+    End Property
+
+    Public Property GeneralFilterPanelStateMovieSet() As Boolean
+        Get
+            Return Me._generalfilterpanelstatemovieset
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalfilterpanelstatemovieset = value
+        End Set
+    End Property
+
+    Public Property GeneralFilterPanelStateShow() As Boolean
+        Get
+            Return Me._generalfilterpanelstateshow
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalfilterpanelstateshow = value
         End Set
     End Property
 
@@ -6264,6 +6294,96 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvseasonlandscapexbmc = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingBanner() As Boolean
+        Get
+            Return Me._tvshowmissingbanner
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowmissingbanner = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingCharacterArt() As Boolean
+        Get
+            Return Me._tvshowmissingclearart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowmissingclearart = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingClearArt() As Boolean
+        Get
+            Return Me._tvshowmissingclearart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowmissingclearart = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingClearLogo() As Boolean
+        Get
+            Return Me._tvshowmissingclearlogo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowmissingclearlogo = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingEFanarts() As Boolean
+        Get
+            Return Me._tvshowmissingefanarts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowmissingefanarts = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingFanart() As Boolean
+        Get
+            Return Me._tvshowmissingfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowmissingfanart = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingLandscape() As Boolean
+        Get
+            Return Me._tvshowmissinglandscape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowmissinglandscape = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingNFO() As Boolean
+        Get
+            Return Me._tvshowmissingnfo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowmissingnfo = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingPoster() As Boolean
+        Get
+            Return Me._tvshowmissingposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowmissingposter = value
+        End Set
+    End Property
+
+    Public Property TVShowMissingTheme() As Boolean
+        Get
+            Return Me._tvshowmissingtheme
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowmissingtheme = value
         End Set
     End Property
 
