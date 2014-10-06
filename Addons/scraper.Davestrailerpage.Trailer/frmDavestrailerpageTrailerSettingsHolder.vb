@@ -21,7 +21,7 @@
 Imports System.IO
 Imports EmberAPI
 
-Public Class frmOFDBInfoSettingsHolder
+Public Class frmDavestrailerpageTrailerSettingsHolder
 
 #Region "Events"
 
@@ -29,53 +29,39 @@ Public Class frmOFDBInfoSettingsHolder
 
     Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
 
+    Public Event SetupNeedsRestart()
+
 #End Region 'Events
 
 #Region "Methods"
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ModuleOrder
-        If order < ModulesManager.Instance.externalScrapersModules_Data_Movie.Count - 1 Then
-            ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ModuleOrder = order + 1
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Davestrailerpage_Trailer._AssemblyName).ModuleOrder
+        If order < ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count - 1 Then
+            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
+            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Davestrailerpage_Trailer._AssemblyName).ModuleOrder = order + 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ModuleOrder
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Davestrailerpage_Trailer._AssemblyName).ModuleOrder
         If order > 0 Then
-            ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ModuleOrder = order - 1
+            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
+            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Davestrailerpage_Trailer._AssemblyName).ModuleOrder = order - 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
 
-    Private Sub bEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
-
-    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenre.CheckedChanged
+    Private Sub cbTrailerPrefQual_SelectedIndexChanged(sender As Object, e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOutline.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkOFDBPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTitle.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkRating.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
 
     Public Sub New()
         InitializeComponent()
@@ -83,9 +69,9 @@ Public Class frmOFDBInfoSettingsHolder
     End Sub
 
     Sub orderChanged()
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ModuleOrder
-        If ModulesManager.Instance.externalScrapersModules_Data_Movie.Count > 0 Then
-            btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Data_Movie.Count - 1)
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Davestrailerpage_Trailer._AssemblyName).ModuleOrder
+        If ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count > 0 Then
+            btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count - 1)
             btnUp.Enabled = (order > 0)
         Else
             btnDown.Enabled = False
@@ -93,16 +79,12 @@ Public Class frmOFDBInfoSettingsHolder
         End If
     End Sub
 
-    Private Sub SetUp()
-        Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkOutline.Text = Master.eLang.GetString(64, "Outline")
-        Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkRating.Text = Master.eLang.GetString(722, "MPAA/Certification")
-        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
+    Sub SetUp()
+        Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
 
 #End Region 'Methods
+
 End Class

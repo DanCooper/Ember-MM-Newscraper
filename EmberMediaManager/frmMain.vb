@@ -2222,7 +2222,13 @@ Public Class frmMain
                     If Trailer.WebTrailer.IsAllowedToDownload(DBScrapeMovie) Then
                         If Not ModulesManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
                             If aUrlList.Count > 0 Then
+                                logger.Warn("[" & DBScrapeMovie.Movie.Title & "] Avalaible trailers: " & aUrlList.Count)
+                            Else
+                                logger.Warn("[" & DBScrapeMovie.Movie.Title & "] NO trailers avalaible!")
+                            End If
+                            If aUrlList.Count > 0 Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.GetPreferredTrailer(aUrlList, Trailer) Then
+
 
                                     'Cocotus 2014/09/26 After going thourgh GetPreferredTrailers aUrlList is now sorted/filtered - any trailer on this list is ok and can be downloaded!
                                     For Each _trailer As Trailers In aUrlList

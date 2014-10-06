@@ -94,15 +94,10 @@ Public Class frmMoviepilotDEInfoSettingsHolder
         Me.chkMoviepilotPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkMoviepilotOutline.Text = Master.eLang.GetString(64, "Outline")
         Me.chkMoviepilotRating.Text = Master.eLang.GetString(722, "MPAA/Certification")
-
-
-        Me.gbOptions.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
 
 #End Region 'Methods
-
-
 End Class

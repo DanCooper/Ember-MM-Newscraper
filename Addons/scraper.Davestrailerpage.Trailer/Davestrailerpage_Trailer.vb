@@ -23,10 +23,10 @@ Imports System.IO
 Imports NLog
 
 ''' <summary>
-''' HDTrailerNet Trailer scraper
+''' Davestrailerpage Trailer scraper
 ''' </summary>
 ''' <remarks></remarks>
-Public Class HDTrailerNet_Trailer
+Public Class Davestrailerpage_Trailer
     Implements Interfaces.ScraperModule_Trailer_Movie
 
 
@@ -37,10 +37,10 @@ Public Class HDTrailerNet_Trailer
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
-    Private _Name As String = "HDTrailersNet_Trailer"
+    Private _Name As String = "Davestrailerpage_Trailer"
     Private _MySettings As New sMySettings
     Private _ScraperEnabled As Boolean = False
-    Private _setup As frmHDTrailersNetTrailerSettingsHolder
+    Private _setup As frmDavestrailerpageTrailerSettingsHolder
 
 #End Region 'Fields
 
@@ -109,12 +109,12 @@ Public Class HDTrailerNet_Trailer
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Trailer_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmHDTrailersNetTrailerSettingsHolder
+        _setup = New frmDavestrailerpageTrailerSettingsHolder
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
-        SPanel.Text = "HD-trailers.net"
+        SPanel.Text = "Davestrailerpage"
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Prefix = "HDTrailersNetTrailer_"
+        SPanel.Prefix = "DavestrailerpageTrailer_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieTrailer"
         SPanel.Type = Master.eLang.GetString(36, "Movies")
@@ -158,10 +158,10 @@ Public Class HDTrailerNet_Trailer
             tTitle = DBMovie.Movie.OriginalTitle
         End If
 
-        Dim tHDTrailersNetTrailer As New HDTrailersNetTrailer(tTitle)
+        Dim tDavestrailerpageTrailer As New DavestrailerpageTrailer(tTitle, DBMovie.Movie.IMDBID)
 
-        If tHDTrailersNetTrailer.TrailerList.Count > 0 Then
-            URLList = tHDTrailersNetTrailer.TrailerList
+        If tDavestrailerpageTrailer.TrailerList.Count > 0 Then
+            URLList = tDavestrailerpageTrailer.TrailerList
         End If
 
         logger.Trace("Finished scrape", New StackTrace().ToString())
@@ -179,7 +179,6 @@ Public Class HDTrailerNet_Trailer
     Structure sMySettings
 
 #Region "Fields"
-        Dim TrailerPrefQual As String
 #End Region 'Fields
 
     End Structure
