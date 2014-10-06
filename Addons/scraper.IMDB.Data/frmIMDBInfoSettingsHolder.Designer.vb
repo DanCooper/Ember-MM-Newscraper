@@ -299,7 +299,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperFields.Size = New System.Drawing.Size(588, 161)
         Me.gbScraperFields.TabIndex = 3
         Me.gbScraperFields.TabStop = False
-        Me.gbScraperFields.Text = "Scraper Fields"
+        Me.gbScraperFields.Text = "IMDB"
         '
         'gbScraperFieldsCredits
         '

@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3E5F4B11-1425-44CA-8146-309BEB292E97}</ProjectGuid>
+    <ProjectGuid>{2113C1FB-C2C9-437C-AAC3-D72507739F14}</ProjectGuid>
     <OutputType>Library</OutputType>
     <StartupObject>
     </StartupObject>
     <RootNamespace>ScraperModule</RootNamespace>
-    <AssemblyName>scraper.Trailer.Apple</AssemblyName>
+    <AssemblyName>scraper.Trailer.TrailerDavestrailerpage</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -76,16 +76,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\20140905\Ember-MM-Newscraper\Ember-MM-Newscraper\Ember-MM-Newscraper\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -107,14 +102,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Apple_Trailer.vb" />
-    <Compile Include="frmAppleTrailerSettingsHolder.vb">
+    <Compile Include="frmDavestrailerpageTrailerSettingsHolder.Designer.vb">
+      <DependentUpon>frmDavestrailerpageTrailerSettingsHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDavestrailerpageTrailerSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAppleTrailerSettingsHolder.Designer.vb">
-      <DependentUpon>frmAppleTrailerSettingsHolder.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Davestrailerpage_Trailer.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -130,11 +124,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Scraper\clsScrapeTrailerApple.vb" />
+    <Compile Include="Scraper\clsScrapeTrailerDavestrailerpage.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmAppleTrailerSettingsHolder.resx">
-      <DependentUpon>frmAppleTrailerSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmDavestrailerpageTrailerSettingsHolder.resx">
+      <DependentUpon>frmDavestrailerpageTrailerSettingsHolder.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

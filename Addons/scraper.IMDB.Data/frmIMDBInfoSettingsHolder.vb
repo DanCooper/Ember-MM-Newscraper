@@ -229,7 +229,6 @@ Public Class frmIMDBInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.gbScraperFields.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.gbScraperOptions.Text = Master.eLang.GetString(1186, "Scraper Options")
         Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
         Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By")
@@ -263,9 +262,4 @@ Public Class frmIMDBInfoSettingsHolder
     End Sub
 
 #End Region 'Methods
-
-
-
-
-
 End Class

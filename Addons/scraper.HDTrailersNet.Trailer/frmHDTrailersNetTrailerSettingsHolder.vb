@@ -58,18 +58,8 @@ Public Class frmHDTrailersNetTrailerSettingsHolder
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
-    Private Sub cbTrailerPrefQual_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbTrailerPrefQual.SelectedIndexChanged
+    Private Sub cbTrailerPrefQual_SelectedIndexChanged(sender As Object, e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub LoadMovieTrailerQualities()
-        Dim items As New Dictionary(Of String, Enums.TrailerQuality)
-        items.Add("1080p", Enums.TrailerQuality.HD1080p)
-        items.Add("720p", Enums.TrailerQuality.HD720p)
-        items.Add("480p", Enums.TrailerQuality.HQ480p)
-        Me.cbTrailerPrefQual.DataSource = items.ToList
-        Me.cbTrailerPrefQual.DisplayMember = "Key"
-        Me.cbTrailerPrefQual.ValueMember = "Value"
     End Sub
 
     Public Sub New()
@@ -92,8 +82,6 @@ Public Class frmHDTrailersNetTrailerSettingsHolder
         Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
-        Me.lblTrailerPrefQual.Text = Master.eLang.GetString(800, "Preferred Quality:")
-        LoadMovieTrailerQualities()
     End Sub
 
 #End Region 'Methods
