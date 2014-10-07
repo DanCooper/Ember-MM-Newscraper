@@ -146,7 +146,6 @@ Partial Public Class clsXMLSettings
     Private _movielocklanguagea As Boolean
     Private _movielocklanguagev As Boolean
     Private _movielockmpaa As Boolean
-    Private _moviescraperusedetailview As Boolean
     Private _movielockoriginaltitle As Boolean
     Private _movielockoutline As Boolean
     Private _movielockplot As Boolean
@@ -202,6 +201,7 @@ Partial Public Class clsXMLSettings
     Private _moviescrapercountry As Boolean
     Private _moviescraperdirector As Boolean
     Private _moviescraperdurationruntimeformat As String
+    Private _moviescraperformatreleasedate As Boolean
     Private _moviescrapergenre As Boolean
     Private _moviescrapergenrelimit As Integer
     Private _moviescrapermetadataifoscan As Boolean
@@ -222,6 +222,7 @@ Partial Public Class clsXMLSettings
     Private _moviescrapertitle As Boolean
     Private _moviescrapertop250 As Boolean
     Private _moviescrapertrailer As Boolean
+    Private _moviescraperusedetailview As Boolean
     Private _moviescraperusemdduration As Boolean
     Private _moviescrapercertfsk As Boolean
     Private _moviescrapervotes As Boolean
@@ -1603,6 +1604,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieScraperFormatReleasedate() As Boolean
+        Get
+            Return Me._moviescraperformatreleasedate
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescraperformatreleasedate = value
+        End Set
+    End Property
+
     Public Property MovieScraperGenre() As Boolean
         Get
             Return Me._moviescrapergenre
@@ -1699,6 +1709,14 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescrapertrailer = value
+        End Set
+    End Property
+    Public Property MovieScraperUseDetailView() As Boolean
+        Get
+            Return Me._moviescraperusedetailview
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescraperusedetailview = value
         End Set
     End Property
 
@@ -1969,15 +1987,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movielockmpaa = value
-        End Set
-    End Property
-
-    Public Property MovieScraperUseDetailView() As Boolean
-        Get
-            Return Me._moviescraperusedetailview
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviescraperusedetailview = value
         End Set
     End Property
 

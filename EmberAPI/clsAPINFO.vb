@@ -102,7 +102,17 @@ Public Class NFO
 
                 'Releasedate
                 If (String.IsNullOrEmpty(DBMovie.Movie.ReleaseDate) OrElse Not Master.eSettings.MovieLockReleaseDate) AndAlso Not String.IsNullOrEmpty(scrapedmovie.ReleaseDate) AndAlso Master.eSettings.MovieScraperRelease Then
-                    DBMovie.Movie.ReleaseDate = scrapedmovie.ReleaseDate
+                    If Master.eSettings.MovieScraperFormatReleasedate = False Then
+                        Dim formatteddate As Date
+                        If DateTime.TryParseExact(scrapedmovie.ReleaseDate, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture, Globalization.DateTimeStyles.None, formatteddate) Then
+                            DBMovie.Movie.ReleaseDate = Strings.FormatDateTime(formatteddate, Microsoft.VisualBasic.DateFormat.ShortDate).ToString
+                        Else
+                            DBMovie.Movie.ReleaseDate = scrapedmovie.ReleaseDate
+                        End If
+                    Else
+                        DBMovie.Movie.ReleaseDate = scrapedmovie.ReleaseDate
+                    End If
+
                 ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRelease AndAlso Not Master.eSettings.MovieLockReleaseDate Then
                     DBMovie.Movie.ReleaseDate = String.Empty
                 End If

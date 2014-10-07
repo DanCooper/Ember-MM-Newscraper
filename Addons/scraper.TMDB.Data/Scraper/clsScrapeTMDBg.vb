@@ -415,6 +415,10 @@ Namespace TMDBdata
                         Dim RelDate As Date
                         If Date.TryParse(scrapedresult, RelDate) Then
                             nMovie.ReleaseDate = Strings.FormatDateTime(RelDate, Microsoft.VisualBasic.DateFormat.ShortDate).ToString
+                            'FormatDateTime interprets date according to the CurrentCulture of user -> different results depending on user country!
+                            '  nMovie.ReleaseDate = Strings.FormatDateTime(RelDate, Microsoft.VisualBasic.DateFormat.ShortDate).ToString
+                            'always save date in same date format not depending on users language setting!
+                            nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
                         Else
                             nMovie.ReleaseDate = scrapedresult
                         End If
