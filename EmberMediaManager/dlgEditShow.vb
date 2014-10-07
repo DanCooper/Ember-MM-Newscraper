@@ -1110,6 +1110,18 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Try
+            For Each Pan In Me.pnlEFImage
+                CType(Pan.Tag, Images).Dispose()
+            Next
+            For Each Pan In Me.pbEFImage
+                CType(Pan.Tag, Images).Dispose()
+                Pan.Image.Dispose()
+            Next
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
@@ -1557,8 +1569,15 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVASAnyEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
+            For Each Pan In Me.pnlEFImage
+                CType(Pan.Tag, Images).Dispose()
+            Next
+            For Each Pan In Me.pbEFImage
+                CType(Pan.Tag, Images).Dispose()
+                Pan.Image.Dispose()
+            Next
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK

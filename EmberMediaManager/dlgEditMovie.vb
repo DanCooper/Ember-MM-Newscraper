@@ -1425,6 +1425,27 @@ Public Class dlgEditMovie
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.TrailerStop()
         Me.CleanUp()
+
+        Try
+            For Each Pan In Me.pnlETImage
+                CType(Pan.Tag, Images).Dispose()
+            Next
+            For Each Pan In Me.pbETImage
+                CType(Pan.Tag, Images).Dispose()
+                Pan.Image.Dispose()
+            Next
+            For Each Pan In Me.pnlEFImage
+                CType(Pan.Tag, Images).Dispose()
+            Next
+            For Each Pan In Me.pbEFImage
+                CType(Pan.Tag, Images).Dispose()
+                Pan.Image.Dispose()
+            Next
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+
         Master.currMovie = Master.DB.LoadMovieFromDB(Master.currMovie.ID)
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
@@ -2243,6 +2264,21 @@ Public Class dlgEditMovie
             Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
 
             Me.CleanUp()
+
+            For Each Pan In Me.pnlETImage
+                CType(Pan.Tag, Images).Dispose()
+            Next
+            For Each Pan In Me.pbETImage
+                CType(Pan.Tag, Images).Dispose()
+                Pan.Image.Dispose()
+            Next
+            For Each Pan In Me.pnlEFImage
+                CType(Pan.Tag, Images).Dispose()
+            Next
+            For Each Pan In Me.pbEFImage
+                CType(Pan.Tag, Images).Dispose()
+                Pan.Image.Dispose()
+            Next
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
