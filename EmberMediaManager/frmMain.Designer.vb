@@ -71,21 +71,25 @@ Partial Class frmMain
         Me.mnuMainError = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuVersion = New System.Windows.Forms.ToolStripMenuItem()
         Me.scMain = New System.Windows.Forms.SplitContainer()
-        Me.pnlFilterCountry_Movies = New System.Windows.Forms.Panel()
+        Me.pnlFilterCountries_Movies = New System.Windows.Forms.Panel()
         Me.clbFilterCountries_Movies = New System.Windows.Forms.CheckedListBox()
-        Me.lblFilterCountryClose_Movies = New System.Windows.Forms.Label()
-        Me.lblFilterCountries = New System.Windows.Forms.Label()
-        Me.pnlFilterGenre_Movies = New System.Windows.Forms.Panel()
+        Me.lblFilterCountriesClose_Movies = New System.Windows.Forms.Label()
+        Me.lblFilterCountries_Movies = New System.Windows.Forms.Label()
+        Me.pnlFilterGenres_Movies = New System.Windows.Forms.Panel()
         Me.clbFilterGenres_Movies = New System.Windows.Forms.CheckedListBox()
-        Me.lblFilterGenreClose_Movies = New System.Windows.Forms.Label()
-        Me.lblFilterGenres = New System.Windows.Forms.Label()
-        Me.pnlFilterSource_Movies = New System.Windows.Forms.Panel()
-        Me.lblFilterSourceClose_Movies = New System.Windows.Forms.Label()
-        Me.lblFilterSource_Movies = New System.Windows.Forms.Label()
+        Me.lblFilterGenresClose_Movies = New System.Windows.Forms.Label()
+        Me.lblFilterGenres_Movies = New System.Windows.Forms.Label()
+        Me.pnlFilterGenres_Shows = New System.Windows.Forms.Panel()
+        Me.clbFilterGenres_Shows = New System.Windows.Forms.CheckedListBox()
+        Me.lblFilterGenresClose_Shows = New System.Windows.Forms.Label()
+        Me.lblFilterGenres_Shows = New System.Windows.Forms.Label()
+        Me.pnlFilterSources_Movies = New System.Windows.Forms.Panel()
+        Me.lblFilterSourcesClose_Movies = New System.Windows.Forms.Label()
+        Me.lblFilterSources_Movies = New System.Windows.Forms.Label()
         Me.clbFilterSource_Movies = New System.Windows.Forms.CheckedListBox()
-        Me.pnlFilterSource_Shows = New System.Windows.Forms.Panel()
-        Me.lblFilterSourceClose_Shows = New System.Windows.Forms.Label()
-        Me.lblFilterSource_Shows = New System.Windows.Forms.Label()
+        Me.pnlFilterSources_Shows = New System.Windows.Forms.Panel()
+        Me.lblFilterSourcesClose_Shows = New System.Windows.Forms.Label()
+        Me.lblFilterSources_Shows = New System.Windows.Forms.Label()
         Me.clbFilterSource_Shows = New System.Windows.Forms.CheckedListBox()
         Me.dgvMovies = New System.Windows.Forms.DataGridView()
         Me.cmnuMovie = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -293,7 +297,7 @@ Partial Class frmMain
         Me.cbFilterYearMod_Movies = New System.Windows.Forms.ComboBox()
         Me.lblFilterYear_Movies = New System.Windows.Forms.Label()
         Me.txtFilterGenre_Movies = New System.Windows.Forms.TextBox()
-        Me.lblFilterVideoSource_Movies = New System.Windows.Forms.Label()
+        Me.lblFilterSource_Movies = New System.Windows.Forms.Label()
         Me.lblFilterGenre_Movies = New System.Windows.Forms.Label()
         Me.btnFilterDown_Movies = New System.Windows.Forms.Button()
         Me.btnFilterUp_Movies = New System.Windows.Forms.Button()
@@ -320,7 +324,7 @@ Partial Class frmMain
         Me.chkFilterMissing_Shows = New System.Windows.Forms.CheckBox()
         Me.gbFilterSpecific_Shows = New System.Windows.Forms.GroupBox()
         Me.txtFilterSource_Shows = New System.Windows.Forms.TextBox()
-        Me.lblFilterVideoSource_Shows = New System.Windows.Forms.Label()
+        Me.lblFilterSource_Shows = New System.Windows.Forms.Label()
         Me.chkFilterLock_Shows = New System.Windows.Forms.CheckBox()
         Me.gbFilterModifier_Shows = New System.Windows.Forms.GroupBox()
         Me.rbFilterAnd_Shows = New System.Windows.Forms.RadioButton()
@@ -962,108 +966,109 @@ Partial Class frmMain
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni_Shows = New System.Windows.Forms.Timer(Me.components)
-        Me.StatusStrip.SuspendLayout()
-        Me.mnuMain.SuspendLayout()
-        CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.scMain.Panel1.SuspendLayout()
-        Me.scMain.Panel2.SuspendLayout()
-        Me.scMain.SuspendLayout()
-        Me.pnlFilterCountry_Movies.SuspendLayout()
-        Me.pnlFilterGenre_Movies.SuspendLayout()
-        Me.pnlFilterSource_Movies.SuspendLayout()
-        Me.pnlFilterSource_Shows.SuspendLayout()
-        CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuMovie.SuspendLayout()
-        CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuMovieSet.SuspendLayout()
-        CType(Me.scTV, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.scTV.Panel1.SuspendLayout()
-        Me.scTV.Panel2.SuspendLayout()
-        Me.scTV.SuspendLayout()
-        CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuShow.SuspendLayout()
-        CType(Me.scTVSeasonsEpisodes, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.scTVSeasonsEpisodes.Panel1.SuspendLayout()
-        Me.scTVSeasonsEpisodes.Panel2.SuspendLayout()
-        Me.scTVSeasonsEpisodes.SuspendLayout()
-        CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuSeason.SuspendLayout()
-        CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuEpisode.SuspendLayout()
-        Me.pnlListTop.SuspendLayout()
-        Me.pnlSearchMovies.SuspendLayout()
-        CType(Me.picSearchMovies, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlSearchMovieSets.SuspendLayout()
-        CType(Me.picSearchMovieSets, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlSearchTVShows.SuspendLayout()
-        CType(Me.picSearchTVShows, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tcMain.SuspendLayout()
-        Me.pnlFilter_Movies.SuspendLayout()
-        Me.gbFilterSorting_Movies.SuspendLayout()
-        Me.gbFilterGeneral_Movies.SuspendLayout()
-        Me.gbFilterSpecific_Movies.SuspendLayout()
-        Me.gbFilterModifier_Movies.SuspendLayout()
-        Me.pnlFilter_MovieSets.SuspendLayout()
-        Me.gbFilterGeneral_MovieSets.SuspendLayout()
-        Me.gbFilterSpecific_MovieSets.SuspendLayout()
-        Me.gbFilterModifier_MovieSets.SuspendLayout()
-        Me.pnlFilter_Shows.SuspendLayout()
-        Me.gbFilterGeneral_Shows.SuspendLayout()
-        Me.gbFilterSpecific_Shows.SuspendLayout()
-        Me.gbFilterModifier_Shows.SuspendLayout()
-        Me.pnlTop.SuspendLayout()
-        Me.pnlInfoIcons.SuspendLayout()
-        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbVideo, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudio, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbResolution, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbChannels, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlRating.SuspendLayout()
-        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlCancel.SuspendLayout()
-        Me.pnlNoInfo.SuspendLayout()
-        Me.pnlNoInfoBG.SuspendLayout()
-        CType(Me.pbNoInfo, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlInfoPanel.SuspendLayout()
-        Me.pnlMoviesInSet.SuspendLayout()
-        CType(Me.pbMILoading, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlActors.SuspendLayout()
-        CType(Me.pbActLoad, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbActors, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlTop250.SuspendLayout()
-        CType(Me.pbTop250, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlPoster.SuspendLayout()
-        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlFanartSmall.SuspendLayout()
-        CType(Me.pbFanartSmall, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlLandscape.SuspendLayout()
-        CType(Me.pbLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlClearArt.SuspendLayout()
-        CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbClearArtCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlMPAA.SuspendLayout()
-        CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tsMain.SuspendLayout()
-        Me.cmnuTray.SuspendLayout()
-        Me.pnlLoadSettingsBG.SuspendLayout()
-        CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlLoadSettings.SuspendLayout()
-        Me.SuspendLayout()
+        Me.StatusStrip.SuspendLayout
+        Me.mnuMain.SuspendLayout
+        CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.scMain.Panel1.SuspendLayout
+        Me.scMain.Panel2.SuspendLayout
+        Me.scMain.SuspendLayout
+        Me.pnlFilterCountries_Movies.SuspendLayout
+        Me.pnlFilterGenres_Movies.SuspendLayout
+        Me.pnlFilterGenres_Shows.SuspendLayout
+        Me.pnlFilterSources_Movies.SuspendLayout
+        Me.pnlFilterSources_Shows.SuspendLayout
+        CType(Me.dgvMovies,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.cmnuMovie.SuspendLayout
+        CType(Me.dgvMovieSets,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.cmnuMovieSet.SuspendLayout
+        CType(Me.scTV,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.scTV.Panel1.SuspendLayout
+        Me.scTV.Panel2.SuspendLayout
+        Me.scTV.SuspendLayout
+        CType(Me.dgvTVShows,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.cmnuShow.SuspendLayout
+        CType(Me.scTVSeasonsEpisodes,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.scTVSeasonsEpisodes.Panel1.SuspendLayout
+        Me.scTVSeasonsEpisodes.Panel2.SuspendLayout
+        Me.scTVSeasonsEpisodes.SuspendLayout
+        CType(Me.dgvTVSeasons,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.cmnuSeason.SuspendLayout
+        CType(Me.dgvTVEpisodes,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.cmnuEpisode.SuspendLayout
+        Me.pnlListTop.SuspendLayout
+        Me.pnlSearchMovies.SuspendLayout
+        CType(Me.picSearchMovies,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlSearchMovieSets.SuspendLayout
+        CType(Me.picSearchMovieSets,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlSearchTVShows.SuspendLayout
+        CType(Me.picSearchTVShows,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.tcMain.SuspendLayout
+        Me.pnlFilter_Movies.SuspendLayout
+        Me.gbFilterSorting_Movies.SuspendLayout
+        Me.gbFilterGeneral_Movies.SuspendLayout
+        Me.gbFilterSpecific_Movies.SuspendLayout
+        Me.gbFilterModifier_Movies.SuspendLayout
+        Me.pnlFilter_MovieSets.SuspendLayout
+        Me.gbFilterGeneral_MovieSets.SuspendLayout
+        Me.gbFilterSpecific_MovieSets.SuspendLayout
+        Me.gbFilterModifier_MovieSets.SuspendLayout
+        Me.pnlFilter_Shows.SuspendLayout
+        Me.gbFilterGeneral_Shows.SuspendLayout
+        Me.gbFilterSpecific_Shows.SuspendLayout
+        Me.gbFilterModifier_Shows.SuspendLayout
+        Me.pnlTop.SuspendLayout
+        Me.pnlInfoIcons.SuspendLayout
+        CType(Me.pbVType,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStudio,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbVideo,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbAudio,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbResolution,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbChannels,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlRating.SuspendLayout
+        CType(Me.pbStar10,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar9,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar8,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar7,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar6,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar5,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar4,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar3,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar2,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlCancel.SuspendLayout
+        Me.pnlNoInfo.SuspendLayout
+        Me.pnlNoInfoBG.SuspendLayout
+        CType(Me.pbNoInfo,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlInfoPanel.SuspendLayout
+        Me.pnlMoviesInSet.SuspendLayout
+        CType(Me.pbMILoading,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlActors.SuspendLayout
+        CType(Me.pbActLoad,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbActors,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlTop250.SuspendLayout
+        CType(Me.pbTop250,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlPoster.SuspendLayout
+        CType(Me.pbPoster,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbPosterCache,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbFanartSmallCache,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlFanartSmall.SuspendLayout
+        CType(Me.pbFanartSmall,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlLandscape.SuspendLayout
+        CType(Me.pbLandscape,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbLandscapeCache,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlClearArt.SuspendLayout
+        CType(Me.pbClearArt,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbClearArtCache,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlMPAA.SuspendLayout
+        CType(Me.pbMPAA,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbFanartCache,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbFanart,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.tsMain.SuspendLayout
+        Me.cmnuTray.SuspendLayout
+        Me.pnlLoadSettingsBG.SuspendLayout
+        CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlLoadSettings.SuspendLayout
+        Me.SuspendLayout
         '
         'BottomToolStripPanel
         '
@@ -1104,14 +1109,14 @@ Partial Class frmMain
         'mnuMainFile
         '
         Me.mnuMainFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainFileExit})
-        Me.mnuMainFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.mnuMainFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.mnuMainFile.Name = "mnuMainFile"
         Me.mnuMainFile.Size = New System.Drawing.Size(37, 20)
         Me.mnuMainFile.Text = "&File"
         '
         'mnuMainFileExit
         '
-        Me.mnuMainFileExit.Image = CType(resources.GetObject("mnuMainFileExit.Image"), System.Drawing.Image)
+        Me.mnuMainFileExit.Image = CType(resources.GetObject("mnuMainFileExit.Image"),System.Drawing.Image)
         Me.mnuMainFileExit.Name = "mnuMainFileExit"
         Me.mnuMainFileExit.Size = New System.Drawing.Size(92, 22)
         Me.mnuMainFileExit.Text = "E&xit"
@@ -1119,14 +1124,14 @@ Partial Class frmMain
         'mnuMainEdit
         '
         Me.mnuMainEdit.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainEditSettings})
-        Me.mnuMainEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.mnuMainEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.mnuMainEdit.Name = "mnuMainEdit"
         Me.mnuMainEdit.Size = New System.Drawing.Size(39, 20)
         Me.mnuMainEdit.Text = "&Edit"
         '
         'mnuMainEditSettings
         '
-        Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"), System.Drawing.Image)
+        Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"),System.Drawing.Image)
         Me.mnuMainEditSettings.Name = "mnuMainEditSettings"
         Me.mnuMainEditSettings.Size = New System.Drawing.Size(125, 22)
         Me.mnuMainEditSettings.Text = "&Settings..."
@@ -1134,40 +1139,40 @@ Partial Class frmMain
         'mnuMainHelp
         '
         Me.mnuMainHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainHelpWiki, Me.ToolStripSeparator18, Me.mnuMainHelpVersions, Me.mnuMainHelpUpdate, Me.ToolStripSeparator19, Me.mnuMainHelpAbout})
-        Me.mnuMainHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.mnuMainHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.mnuMainHelp.Name = "mnuMainHelp"
         Me.mnuMainHelp.Size = New System.Drawing.Size(43, 20)
         Me.mnuMainHelp.Text = "&Help"
         '
         'mnuMainHelpWiki
         '
-        Me.mnuMainHelpWiki.Image = CType(resources.GetObject("mnuMainHelpWiki.Image"), System.Drawing.Image)
+        Me.mnuMainHelpWiki.Image = CType(resources.GetObject("mnuMainHelpWiki.Image"),System.Drawing.Image)
         Me.mnuMainHelpWiki.Name = "mnuMainHelpWiki"
         Me.mnuMainHelpWiki.Size = New System.Drawing.Size(185, 22)
         Me.mnuMainHelpWiki.Text = "EmberMM.com &Wiki..."
-        Me.mnuMainHelpWiki.Visible = False
+        Me.mnuMainHelpWiki.Visible = false
         '
         'ToolStripSeparator18
         '
         Me.ToolStripSeparator18.Name = "ToolStripSeparator18"
         Me.ToolStripSeparator18.Size = New System.Drawing.Size(182, 6)
-        Me.ToolStripSeparator18.Visible = False
+        Me.ToolStripSeparator18.Visible = false
         '
         'mnuMainHelpVersions
         '
-        Me.mnuMainHelpVersions.Image = CType(resources.GetObject("mnuMainHelpVersions.Image"), System.Drawing.Image)
+        Me.mnuMainHelpVersions.Image = CType(resources.GetObject("mnuMainHelpVersions.Image"),System.Drawing.Image)
         Me.mnuMainHelpVersions.Name = "mnuMainHelpVersions"
         Me.mnuMainHelpVersions.Size = New System.Drawing.Size(185, 22)
         Me.mnuMainHelpVersions.Text = "&Versions..."
         '
         'mnuMainHelpUpdate
         '
-        Me.mnuMainHelpUpdate.Enabled = False
-        Me.mnuMainHelpUpdate.Image = CType(resources.GetObject("mnuMainHelpUpdate.Image"), System.Drawing.Image)
+        Me.mnuMainHelpUpdate.Enabled = false
+        Me.mnuMainHelpUpdate.Image = CType(resources.GetObject("mnuMainHelpUpdate.Image"),System.Drawing.Image)
         Me.mnuMainHelpUpdate.Name = "mnuMainHelpUpdate"
         Me.mnuMainHelpUpdate.Size = New System.Drawing.Size(185, 22)
         Me.mnuMainHelpUpdate.Text = "Check For Updates"
-        Me.mnuMainHelpUpdate.Visible = False
+        Me.mnuMainHelpUpdate.Visible = false
         '
         'ToolStripSeparator19
         '
@@ -1176,7 +1181,7 @@ Partial Class frmMain
         '
         'mnuMainHelpAbout
         '
-        Me.mnuMainHelpAbout.Image = CType(resources.GetObject("mnuMainHelpAbout.Image"), System.Drawing.Image)
+        Me.mnuMainHelpAbout.Image = CType(resources.GetObject("mnuMainHelpAbout.Image"),System.Drawing.Image)
         Me.mnuMainHelpAbout.Name = "mnuMainHelpAbout"
         Me.mnuMainHelpAbout.Size = New System.Drawing.Size(185, 22)
         Me.mnuMainHelpAbout.Text = "&About..."
@@ -1201,28 +1206,28 @@ Partial Class frmMain
         '
         Me.tsSpring.Name = "tsSpring"
         Me.tsSpring.Size = New System.Drawing.Size(1329, 17)
-        Me.tsSpring.Spring = True
+        Me.tsSpring.Spring = true
         Me.tsSpring.Text = "  "
         '
         'tslLoading
         '
-        Me.tslLoading.AutoSize = False
-        Me.tslLoading.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tslLoading.AutoSize = false
+        Me.tslLoading.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.tslLoading.Name = "tslLoading"
         Me.tslLoading.Size = New System.Drawing.Size(424, 17)
         Me.tslLoading.Text = "Loading Media:"
         Me.tslLoading.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.tslLoading.Visible = False
+        Me.tslLoading.Visible = false
         '
         'tspbLoading
         '
         Me.tspbLoading.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.tspbLoading.AutoSize = False
+        Me.tspbLoading.AutoSize = false
         Me.tspbLoading.MarqueeAnimationSpeed = 25
         Me.tspbLoading.Name = "tspbLoading"
         Me.tspbLoading.Size = New System.Drawing.Size(150, 16)
         Me.tspbLoading.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.tspbLoading.Visible = False
+        Me.tspbLoading.Visible = false
         '
         'tmrAni
         '
@@ -1241,35 +1246,35 @@ Partial Class frmMain
         'mnuMainTools
         '
         Me.mnuMainTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainToolsCleanFiles, Me.mnuMainToolsSortFiles, Me.mnuMainToolsBackdrops, Me.ToolStripSeparator4, Me.mnuMainToolsOfflineHolder, Me.ToolStripMenuItem3, Me.mnuMainToolsClearCache, Me.mnuMainToolsReloadMovies, Me.mnuMainToolsReloadMovieSets, Me.mnuMainToolsCleanDB, Me.ToolStripSeparator5, Me.mnuMainToolsExport})
-        Me.mnuMainTools.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.mnuMainTools.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.mnuMainTools.Name = "mnuMainTools"
         Me.mnuMainTools.Size = New System.Drawing.Size(46, 20)
         Me.mnuMainTools.Text = "&Tools"
         '
         'mnuMainToolsCleanFiles
         '
-        Me.mnuMainToolsCleanFiles.Image = CType(resources.GetObject("mnuMainToolsCleanFiles.Image"), System.Drawing.Image)
+        Me.mnuMainToolsCleanFiles.Image = CType(resources.GetObject("mnuMainToolsCleanFiles.Image"),System.Drawing.Image)
         Me.mnuMainToolsCleanFiles.Name = "mnuMainToolsCleanFiles"
-        Me.mnuMainToolsCleanFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
+        Me.mnuMainToolsCleanFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.C),System.Windows.Forms.Keys)
         Me.mnuMainToolsCleanFiles.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsCleanFiles.Text = "&Clean Files"
         '
         'mnuMainToolsSortFiles
         '
-        Me.mnuMainToolsSortFiles.Image = CType(resources.GetObject("mnuMainToolsSortFiles.Image"), System.Drawing.Image)
+        Me.mnuMainToolsSortFiles.Image = CType(resources.GetObject("mnuMainToolsSortFiles.Image"),System.Drawing.Image)
         Me.mnuMainToolsSortFiles.Name = "mnuMainToolsSortFiles"
-        Me.mnuMainToolsSortFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
+        Me.mnuMainToolsSortFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.S),System.Windows.Forms.Keys)
         Me.mnuMainToolsSortFiles.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsSortFiles.Text = "&Sort Files Into Folders"
         '
         'mnuMainToolsBackdrops
         '
-        Me.mnuMainToolsBackdrops.Image = CType(resources.GetObject("mnuMainToolsBackdrops.Image"), System.Drawing.Image)
+        Me.mnuMainToolsBackdrops.Image = CType(resources.GetObject("mnuMainToolsBackdrops.Image"),System.Drawing.Image)
         Me.mnuMainToolsBackdrops.Name = "mnuMainToolsBackdrops"
-        Me.mnuMainToolsBackdrops.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.B), System.Windows.Forms.Keys)
+        Me.mnuMainToolsBackdrops.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.B),System.Windows.Forms.Keys)
         Me.mnuMainToolsBackdrops.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsBackdrops.Text = "Copy Existing Fanart To &Backdrops Folder"
         '
@@ -1280,11 +1285,11 @@ Partial Class frmMain
         '
         'mnuMainToolsOfflineHolder
         '
-        Me.mnuMainToolsOfflineHolder.Image = CType(resources.GetObject("mnuMainToolsOfflineHolder.Image"), System.Drawing.Image)
+        Me.mnuMainToolsOfflineHolder.Image = CType(resources.GetObject("mnuMainToolsOfflineHolder.Image"),System.Drawing.Image)
         Me.mnuMainToolsOfflineHolder.Name = "mnuMainToolsOfflineHolder"
         Me.mnuMainToolsOfflineHolder.ShortcutKeyDisplayString = ""
-        Me.mnuMainToolsOfflineHolder.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
+        Me.mnuMainToolsOfflineHolder.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.O),System.Windows.Forms.Keys)
         Me.mnuMainToolsOfflineHolder.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsOfflineHolder.Text = "&Offline Media Manager"
         '
@@ -1295,35 +1300,35 @@ Partial Class frmMain
         '
         'mnuMainToolsClearCache
         '
-        Me.mnuMainToolsClearCache.Image = CType(resources.GetObject("mnuMainToolsClearCache.Image"), System.Drawing.Image)
+        Me.mnuMainToolsClearCache.Image = CType(resources.GetObject("mnuMainToolsClearCache.Image"),System.Drawing.Image)
         Me.mnuMainToolsClearCache.Name = "mnuMainToolsClearCache"
-        Me.mnuMainToolsClearCache.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
+        Me.mnuMainToolsClearCache.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.A),System.Windows.Forms.Keys)
         Me.mnuMainToolsClearCache.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsClearCache.Text = "Clear &All Caches"
         '
         'mnuMainToolsReloadMovies
         '
-        Me.mnuMainToolsReloadMovies.Image = CType(resources.GetObject("mnuMainToolsReloadMovies.Image"), System.Drawing.Image)
+        Me.mnuMainToolsReloadMovies.Image = CType(resources.GetObject("mnuMainToolsReloadMovies.Image"),System.Drawing.Image)
         Me.mnuMainToolsReloadMovies.Name = "mnuMainToolsReloadMovies"
-        Me.mnuMainToolsReloadMovies.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
+        Me.mnuMainToolsReloadMovies.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.L),System.Windows.Forms.Keys)
         Me.mnuMainToolsReloadMovies.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsReloadMovies.Text = "Re&load All Movies"
         '
         'mnuMainToolsReloadMovieSets
         '
-        Me.mnuMainToolsReloadMovieSets.Image = CType(resources.GetObject("mnuMainToolsReloadMovieSets.Image"), System.Drawing.Image)
+        Me.mnuMainToolsReloadMovieSets.Image = CType(resources.GetObject("mnuMainToolsReloadMovieSets.Image"),System.Drawing.Image)
         Me.mnuMainToolsReloadMovieSets.Name = "mnuMainToolsReloadMovieSets"
         Me.mnuMainToolsReloadMovieSets.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsReloadMovieSets.Text = "Re&load All MovieSets"
         '
         'mnuMainToolsCleanDB
         '
-        Me.mnuMainToolsCleanDB.Image = CType(resources.GetObject("mnuMainToolsCleanDB.Image"), System.Drawing.Image)
+        Me.mnuMainToolsCleanDB.Image = CType(resources.GetObject("mnuMainToolsCleanDB.Image"),System.Drawing.Image)
         Me.mnuMainToolsCleanDB.Name = "mnuMainToolsCleanDB"
-        Me.mnuMainToolsCleanDB.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
+        Me.mnuMainToolsCleanDB.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.D),System.Windows.Forms.Keys)
         Me.mnuMainToolsCleanDB.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsCleanDB.Text = "Clean &Database"
         '
@@ -1354,8 +1359,8 @@ Partial Class frmMain
         '
         'mnuMainDonate
         '
-        Me.mnuMainDonate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.mnuMainDonate.Image = CType(resources.GetObject("mnuMainDonate.Image"), System.Drawing.Image)
+        Me.mnuMainDonate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.mnuMainDonate.Image = CType(resources.GetObject("mnuMainDonate.Image"),System.Drawing.Image)
         Me.mnuMainDonate.Name = "mnuMainDonate"
         Me.mnuMainDonate.Size = New System.Drawing.Size(73, 20)
         Me.mnuMainDonate.Text = "Donate"
@@ -1364,11 +1369,11 @@ Partial Class frmMain
         '
         Me.mnuMainError.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.mnuMainError.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.mnuMainError.Image = CType(resources.GetObject("mnuMainError.Image"), System.Drawing.Image)
+        Me.mnuMainError.Image = CType(resources.GetObject("mnuMainError.Image"),System.Drawing.Image)
         Me.mnuMainError.Name = "mnuMainError"
         Me.mnuMainError.Size = New System.Drawing.Size(28, 20)
         Me.mnuMainError.ToolTipText = "An Error Has Occurred"
-        Me.mnuMainError.Visible = False
+        Me.mnuMainError.Visible = false
         '
         'mnuVersion
         '
@@ -1389,10 +1394,11 @@ Partial Class frmMain
         'scMain.Panel1
         '
         Me.scMain.Panel1.BackColor = System.Drawing.SystemColors.Control
-        Me.scMain.Panel1.Controls.Add(Me.pnlFilterCountry_Movies)
-        Me.scMain.Panel1.Controls.Add(Me.pnlFilterGenre_Movies)
-        Me.scMain.Panel1.Controls.Add(Me.pnlFilterSource_Movies)
-        Me.scMain.Panel1.Controls.Add(Me.pnlFilterSource_Shows)
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilterCountries_Movies)
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilterGenres_Movies)
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilterGenres_Shows)
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilterSources_Movies)
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilterSources_Shows)
         Me.scMain.Panel1.Controls.Add(Me.dgvMovies)
         Me.scMain.Panel1.Controls.Add(Me.dgvMovieSets)
         Me.scMain.Panel1.Controls.Add(Me.scTV)
@@ -1426,19 +1432,19 @@ Partial Class frmMain
         Me.scMain.Size = New System.Drawing.Size(1344, 687)
         Me.scMain.SplitterDistance = 567
         Me.scMain.TabIndex = 7
-        Me.scMain.TabStop = False
+        Me.scMain.TabStop = false
         '
-        'pnlFilterCountry_Movies
+        'pnlFilterCountries_Movies
         '
-        Me.pnlFilterCountry_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilterCountry_Movies.Controls.Add(Me.clbFilterCountries_Movies)
-        Me.pnlFilterCountry_Movies.Controls.Add(Me.lblFilterCountryClose_Movies)
-        Me.pnlFilterCountry_Movies.Controls.Add(Me.lblFilterCountries)
-        Me.pnlFilterCountry_Movies.Location = New System.Drawing.Point(50, 714)
-        Me.pnlFilterCountry_Movies.Name = "pnlFilterCountry_Movies"
-        Me.pnlFilterCountry_Movies.Size = New System.Drawing.Size(166, 146)
-        Me.pnlFilterCountry_Movies.TabIndex = 25
-        Me.pnlFilterCountry_Movies.Visible = False
+        Me.pnlFilterCountries_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterCountries_Movies.Controls.Add(Me.clbFilterCountries_Movies)
+        Me.pnlFilterCountries_Movies.Controls.Add(Me.lblFilterCountriesClose_Movies)
+        Me.pnlFilterCountries_Movies.Controls.Add(Me.lblFilterCountries_Movies)
+        Me.pnlFilterCountries_Movies.Location = New System.Drawing.Point(50, 714)
+        Me.pnlFilterCountries_Movies.Name = "pnlFilterCountries_Movies"
+        Me.pnlFilterCountries_Movies.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterCountries_Movies.TabIndex = 25
+        Me.pnlFilterCountries_Movies.Visible = False
         '
         'clbFilterCountries_Movies
         '
@@ -1451,45 +1457,45 @@ Partial Class frmMain
         Me.clbFilterCountries_Movies.TabIndex = 8
         Me.clbFilterCountries_Movies.TabStop = False
         '
-        'lblCFilClose
+        'lblFilterCountriesClose_Movies
         '
-        Me.lblFilterCountryClose_Movies.AutoSize = True
-        Me.lblFilterCountryClose_Movies.BackColor = System.Drawing.Color.DimGray
-        Me.lblFilterCountryClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterCountryClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilterCountryClose_Movies.ForeColor = System.Drawing.Color.White
-        Me.lblFilterCountryClose_Movies.Location = New System.Drawing.Point(130, 2)
-        Me.lblFilterCountryClose_Movies.Name = "lblCFilClose"
-        Me.lblFilterCountryClose_Movies.Size = New System.Drawing.Size(35, 13)
-        Me.lblFilterCountryClose_Movies.TabIndex = 24
-        Me.lblFilterCountryClose_Movies.Text = "Close"
+        Me.lblFilterCountriesClose_Movies.AutoSize = True
+        Me.lblFilterCountriesClose_Movies.BackColor = System.Drawing.Color.DimGray
+        Me.lblFilterCountriesClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblFilterCountriesClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterCountriesClose_Movies.ForeColor = System.Drawing.Color.White
+        Me.lblFilterCountriesClose_Movies.Location = New System.Drawing.Point(130, 2)
+        Me.lblFilterCountriesClose_Movies.Name = "lblFilterCountriesClose_Movies"
+        Me.lblFilterCountriesClose_Movies.Size = New System.Drawing.Size(35, 13)
+        Me.lblFilterCountriesClose_Movies.TabIndex = 24
+        Me.lblFilterCountriesClose_Movies.Text = "Close"
         '
-        'lblFilterCountries
+        'lblFilterCountries_Movies
         '
-        Me.lblFilterCountries.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.lblFilterCountries_Movies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblFilterCountries.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilterCountries.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilterCountries.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilterCountries.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilterCountries.Location = New System.Drawing.Point(1, 1)
-        Me.lblFilterCountries.Name = "lblFilterCountries"
-        Me.lblFilterCountries.Size = New System.Drawing.Size(162, 17)
-        Me.lblFilterCountries.TabIndex = 23
-        Me.lblFilterCountries.Text = "Countries"
-        Me.lblFilterCountries.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblFilterCountries_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblFilterCountries_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterCountries_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterCountries_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilterCountries_Movies.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterCountries_Movies.Name = "lblFilterCountries_Movies"
+        Me.lblFilterCountries_Movies.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterCountries_Movies.TabIndex = 23
+        Me.lblFilterCountries_Movies.Text = "Countries"
+        Me.lblFilterCountries_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'pnlFilterGenre_Movies
+        'pnlFilterGenres_Movies
         '
-        Me.pnlFilterGenre_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilterGenre_Movies.Controls.Add(Me.clbFilterGenres_Movies)
-        Me.pnlFilterGenre_Movies.Controls.Add(Me.lblFilterGenreClose_Movies)
-        Me.pnlFilterGenre_Movies.Controls.Add(Me.lblFilterGenres)
-        Me.pnlFilterGenre_Movies.Location = New System.Drawing.Point(390, 714)
-        Me.pnlFilterGenre_Movies.Name = "pnlFilterGenre_Movies"
-        Me.pnlFilterGenre_Movies.Size = New System.Drawing.Size(166, 146)
-        Me.pnlFilterGenre_Movies.TabIndex = 15
-        Me.pnlFilterGenre_Movies.Visible = False
+        Me.pnlFilterGenres_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterGenres_Movies.Controls.Add(Me.clbFilterGenres_Movies)
+        Me.pnlFilterGenres_Movies.Controls.Add(Me.lblFilterGenresClose_Movies)
+        Me.pnlFilterGenres_Movies.Controls.Add(Me.lblFilterGenres_Movies)
+        Me.pnlFilterGenres_Movies.Location = New System.Drawing.Point(390, 714)
+        Me.pnlFilterGenres_Movies.Name = "pnlFilterGenres_Movies"
+        Me.pnlFilterGenres_Movies.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterGenres_Movies.TabIndex = 15
+        Me.pnlFilterGenres_Movies.Visible = False
         '
         'clbFilterGenres_Movies
         '
@@ -1502,73 +1508,124 @@ Partial Class frmMain
         Me.clbFilterGenres_Movies.TabIndex = 8
         Me.clbFilterGenres_Movies.TabStop = False
         '
-        'lblGFilClose
+        'lblFilterGenresClose_Movies
         '
-        Me.lblFilterGenreClose_Movies.AutoSize = True
-        Me.lblFilterGenreClose_Movies.BackColor = System.Drawing.Color.DimGray
-        Me.lblFilterGenreClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterGenreClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilterGenreClose_Movies.ForeColor = System.Drawing.Color.White
-        Me.lblFilterGenreClose_Movies.Location = New System.Drawing.Point(130, 2)
-        Me.lblFilterGenreClose_Movies.Name = "lblGFilClose"
-        Me.lblFilterGenreClose_Movies.Size = New System.Drawing.Size(35, 13)
-        Me.lblFilterGenreClose_Movies.TabIndex = 24
-        Me.lblFilterGenreClose_Movies.Text = "Close"
+        Me.lblFilterGenresClose_Movies.AutoSize = True
+        Me.lblFilterGenresClose_Movies.BackColor = System.Drawing.Color.DimGray
+        Me.lblFilterGenresClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblFilterGenresClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterGenresClose_Movies.ForeColor = System.Drawing.Color.White
+        Me.lblFilterGenresClose_Movies.Location = New System.Drawing.Point(130, 2)
+        Me.lblFilterGenresClose_Movies.Name = "lblFilterGenresClose_Movies"
+        Me.lblFilterGenresClose_Movies.Size = New System.Drawing.Size(35, 13)
+        Me.lblFilterGenresClose_Movies.TabIndex = 24
+        Me.lblFilterGenresClose_Movies.Text = "Close"
         '
-        'lblFilterGenres
+        'lblFilterGenres_Movies
         '
-        Me.lblFilterGenres.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.lblFilterGenres_Movies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblFilterGenres.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilterGenres.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilterGenres.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilterGenres.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilterGenres.Location = New System.Drawing.Point(1, 1)
-        Me.lblFilterGenres.Name = "lblFilterGenres"
-        Me.lblFilterGenres.Size = New System.Drawing.Size(162, 17)
-        Me.lblFilterGenres.TabIndex = 23
-        Me.lblFilterGenres.Text = "Genres"
-        Me.lblFilterGenres.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblFilterGenres_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblFilterGenres_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterGenres_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterGenres_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilterGenres_Movies.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterGenres_Movies.Name = "lblFilterGenres_Movies"
+        Me.lblFilterGenres_Movies.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterGenres_Movies.TabIndex = 23
+        Me.lblFilterGenres_Movies.Text = "Genres"
+        Me.lblFilterGenres_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'pnlFilterSource_Movies
+        'pnlFilterGenres_Shows
         '
-        Me.pnlFilterSource_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilterSource_Movies.Controls.Add(Me.lblFilterSourceClose_Movies)
-        Me.pnlFilterSource_Movies.Controls.Add(Me.lblFilterSource_Movies)
-        Me.pnlFilterSource_Movies.Controls.Add(Me.clbFilterSource_Movies)
-        Me.pnlFilterSource_Movies.Location = New System.Drawing.Point(220, 714)
-        Me.pnlFilterSource_Movies.Name = "pnlFilterSource_Movies"
-        Me.pnlFilterSource_Movies.Size = New System.Drawing.Size(166, 146)
-        Me.pnlFilterSource_Movies.TabIndex = 16
-        Me.pnlFilterSource_Movies.Visible = False
+        Me.pnlFilterGenres_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterGenres_Shows.Controls.Add(Me.clbFilterGenres_Shows)
+        Me.pnlFilterGenres_Shows.Controls.Add(Me.lblFilterGenresClose_Shows)
+        Me.pnlFilterGenres_Shows.Controls.Add(Me.lblFilterGenres_Shows)
+        Me.pnlFilterGenres_Shows.Location = New System.Drawing.Point(730, 714)
+        Me.pnlFilterGenres_Shows.Name = "pnlFilterGenres_Shows"
+        Me.pnlFilterGenres_Shows.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterGenres_Shows.TabIndex = 16
+        Me.pnlFilterGenres_Shows.Visible = False
         '
-        'lblFilterSourceClose_Movies
+        'clbFilterGenres_Shows
         '
-        Me.lblFilterSourceClose_Movies.AutoSize = True
-        Me.lblFilterSourceClose_Movies.BackColor = System.Drawing.Color.DimGray
-        Me.lblFilterSourceClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterSourceClose_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFilterSourceClose_Movies.ForeColor = System.Drawing.Color.White
-        Me.lblFilterSourceClose_Movies.Location = New System.Drawing.Point(130, 2)
-        Me.lblFilterSourceClose_Movies.Name = "lblFilterSourceClose_Movies"
-        Me.lblFilterSourceClose_Movies.Size = New System.Drawing.Size(33, 13)
-        Me.lblFilterSourceClose_Movies.TabIndex = 24
-        Me.lblFilterSourceClose_Movies.Text = "Close"
+        Me.clbFilterGenres_Shows.CheckOnClick = True
+        Me.clbFilterGenres_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.clbFilterGenres_Shows.FormattingEnabled = True
+        Me.clbFilterGenres_Shows.Location = New System.Drawing.Point(1, 20)
+        Me.clbFilterGenres_Shows.Name = "clbFilterGenres_Shows"
+        Me.clbFilterGenres_Shows.Size = New System.Drawing.Size(162, 123)
+        Me.clbFilterGenres_Shows.TabIndex = 8
+        Me.clbFilterGenres_Shows.TabStop = False
         '
-        'lblFilterSource_Movies
+        'lblFilterGenresClose_Shows
         '
-        Me.lblFilterSource_Movies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.lblFilterGenresClose_Shows.AutoSize = True
+        Me.lblFilterGenresClose_Shows.BackColor = System.Drawing.Color.DimGray
+        Me.lblFilterGenresClose_Shows.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblFilterGenresClose_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterGenresClose_Shows.ForeColor = System.Drawing.Color.White
+        Me.lblFilterGenresClose_Shows.Location = New System.Drawing.Point(130, 2)
+        Me.lblFilterGenresClose_Shows.Name = "lblFilterGenresClose_Shows"
+        Me.lblFilterGenresClose_Shows.Size = New System.Drawing.Size(35, 13)
+        Me.lblFilterGenresClose_Shows.TabIndex = 24
+        Me.lblFilterGenresClose_Shows.Text = "Close"
+        '
+        'lblFilterGenres_Shows
+        '
+        Me.lblFilterGenres_Shows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblFilterSource_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilterSource_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilterSource_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFilterSource_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilterSource_Movies.Location = New System.Drawing.Point(1, 1)
-        Me.lblFilterSource_Movies.Name = "lblFilterSource_Movies"
-        Me.lblFilterSource_Movies.Size = New System.Drawing.Size(162, 17)
-        Me.lblFilterSource_Movies.TabIndex = 23
-        Me.lblFilterSource_Movies.Text = "Sources"
-        Me.lblFilterSource_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblFilterGenres_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblFilterGenres_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterGenres_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterGenres_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilterGenres_Shows.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterGenres_Shows.Name = "lblFilterGenres_Shows"
+        Me.lblFilterGenres_Shows.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterGenres_Shows.TabIndex = 23
+        Me.lblFilterGenres_Shows.Text = "Genres"
+        Me.lblFilterGenres_Shows.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'pnlFilterSources_Movies
+        '
+        Me.pnlFilterSources_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterSources_Movies.Controls.Add(Me.lblFilterSourcesClose_Movies)
+        Me.pnlFilterSources_Movies.Controls.Add(Me.lblFilterSources_Movies)
+        Me.pnlFilterSources_Movies.Controls.Add(Me.clbFilterSource_Movies)
+        Me.pnlFilterSources_Movies.Location = New System.Drawing.Point(220, 714)
+        Me.pnlFilterSources_Movies.Name = "pnlFilterSources_Movies"
+        Me.pnlFilterSources_Movies.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterSources_Movies.TabIndex = 16
+        Me.pnlFilterSources_Movies.Visible = False
+        '
+        'lblFilterSourcesClose_Movies
+        '
+        Me.lblFilterSourcesClose_Movies.AutoSize = True
+        Me.lblFilterSourcesClose_Movies.BackColor = System.Drawing.Color.DimGray
+        Me.lblFilterSourcesClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblFilterSourcesClose_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilterSourcesClose_Movies.ForeColor = System.Drawing.Color.White
+        Me.lblFilterSourcesClose_Movies.Location = New System.Drawing.Point(130, 2)
+        Me.lblFilterSourcesClose_Movies.Name = "lblFilterSourcesClose_Movies"
+        Me.lblFilterSourcesClose_Movies.Size = New System.Drawing.Size(33, 13)
+        Me.lblFilterSourcesClose_Movies.TabIndex = 24
+        Me.lblFilterSourcesClose_Movies.Text = "Close"
+        '
+        'lblFilterSources_Movies
+        '
+        Me.lblFilterSources_Movies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblFilterSources_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblFilterSources_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterSources_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilterSources_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilterSources_Movies.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterSources_Movies.Name = "lblFilterSources_Movies"
+        Me.lblFilterSources_Movies.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterSources_Movies.TabIndex = 23
+        Me.lblFilterSources_Movies.Text = "Sources"
+        Me.lblFilterSources_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'clbFilterSource_Movies
         '
@@ -1581,45 +1638,45 @@ Partial Class frmMain
         Me.clbFilterSource_Movies.TabIndex = 8
         Me.clbFilterSource_Movies.TabStop = False
         '
-        'pnlFilterSource_Shows
+        'pnlFilterSources_Shows
         '
-        Me.pnlFilterSource_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilterSource_Shows.Controls.Add(Me.lblFilterSourceClose_Shows)
-        Me.pnlFilterSource_Shows.Controls.Add(Me.lblFilterSource_Shows)
-        Me.pnlFilterSource_Shows.Controls.Add(Me.clbFilterSource_Shows)
-        Me.pnlFilterSource_Shows.Location = New System.Drawing.Point(560, 714)
-        Me.pnlFilterSource_Shows.Name = "pnlFilterSource_Shows"
-        Me.pnlFilterSource_Shows.Size = New System.Drawing.Size(166, 146)
-        Me.pnlFilterSource_Shows.TabIndex = 34
-        Me.pnlFilterSource_Shows.Visible = False
+        Me.pnlFilterSources_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterSources_Shows.Controls.Add(Me.lblFilterSourcesClose_Shows)
+        Me.pnlFilterSources_Shows.Controls.Add(Me.lblFilterSources_Shows)
+        Me.pnlFilterSources_Shows.Controls.Add(Me.clbFilterSource_Shows)
+        Me.pnlFilterSources_Shows.Location = New System.Drawing.Point(560, 714)
+        Me.pnlFilterSources_Shows.Name = "pnlFilterSources_Shows"
+        Me.pnlFilterSources_Shows.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterSources_Shows.TabIndex = 34
+        Me.pnlFilterSources_Shows.Visible = False
         '
-        'lblFilterSourceClose_Shows
+        'lblFilterSourcesClose_Shows
         '
-        Me.lblFilterSourceClose_Shows.AutoSize = True
-        Me.lblFilterSourceClose_Shows.BackColor = System.Drawing.Color.DimGray
-        Me.lblFilterSourceClose_Shows.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterSourceClose_Shows.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFilterSourceClose_Shows.ForeColor = System.Drawing.Color.White
-        Me.lblFilterSourceClose_Shows.Location = New System.Drawing.Point(130, 2)
-        Me.lblFilterSourceClose_Shows.Name = "lblFilterSourceClose_Shows"
-        Me.lblFilterSourceClose_Shows.Size = New System.Drawing.Size(33, 13)
-        Me.lblFilterSourceClose_Shows.TabIndex = 24
-        Me.lblFilterSourceClose_Shows.Text = "Close"
+        Me.lblFilterSourcesClose_Shows.AutoSize = True
+        Me.lblFilterSourcesClose_Shows.BackColor = System.Drawing.Color.DimGray
+        Me.lblFilterSourcesClose_Shows.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblFilterSourcesClose_Shows.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilterSourcesClose_Shows.ForeColor = System.Drawing.Color.White
+        Me.lblFilterSourcesClose_Shows.Location = New System.Drawing.Point(130, 2)
+        Me.lblFilterSourcesClose_Shows.Name = "lblFilterSourcesClose_Shows"
+        Me.lblFilterSourcesClose_Shows.Size = New System.Drawing.Size(33, 13)
+        Me.lblFilterSourcesClose_Shows.TabIndex = 24
+        Me.lblFilterSourcesClose_Shows.Text = "Close"
         '
-        'lblFilterSource_Shows
+        'lblFilterSources_Shows
         '
-        Me.lblFilterSource_Shows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.lblFilterSources_Shows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblFilterSource_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilterSource_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilterSource_Shows.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFilterSource_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilterSource_Shows.Location = New System.Drawing.Point(1, 1)
-        Me.lblFilterSource_Shows.Name = "lblFilterSource_Shows"
-        Me.lblFilterSource_Shows.Size = New System.Drawing.Size(162, 17)
-        Me.lblFilterSource_Shows.TabIndex = 23
-        Me.lblFilterSource_Shows.Text = "Sources"
-        Me.lblFilterSource_Shows.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblFilterSources_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblFilterSources_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterSources_Shows.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilterSources_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilterSources_Shows.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterSources_Shows.Name = "lblFilterSources_Shows"
+        Me.lblFilterSources_Shows.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterSources_Shows.TabIndex = 23
+        Me.lblFilterSources_Shows.Text = "Sources"
+        Me.lblFilterSources_Shows.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'clbFilterSource_Shows
         '
@@ -3206,7 +3263,7 @@ Partial Class frmMain
         Me.gbFilterSpecific_Movies.Controls.Add(Me.cbFilterYearMod_Movies)
         Me.gbFilterSpecific_Movies.Controls.Add(Me.lblFilterYear_Movies)
         Me.gbFilterSpecific_Movies.Controls.Add(Me.txtFilterGenre_Movies)
-        Me.gbFilterSpecific_Movies.Controls.Add(Me.lblFilterVideoSource_Movies)
+        Me.gbFilterSpecific_Movies.Controls.Add(Me.lblFilterSource_Movies)
         Me.gbFilterSpecific_Movies.Controls.Add(Me.lblFilterGenre_Movies)
         Me.gbFilterSpecific_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFilterSpecific_Movies.Location = New System.Drawing.Point(135, 22)
@@ -3420,15 +3477,15 @@ Partial Class frmMain
         Me.txtFilterGenre_Movies.Size = New System.Drawing.Size(166, 22)
         Me.txtFilterGenre_Movies.TabIndex = 4
         '
-        'lblFilterVideoSource_Movies
+        'lblFilterSource_Movies
         '
-        Me.lblFilterVideoSource_Movies.AutoSize = True
-        Me.lblFilterVideoSource_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilterVideoSource_Movies.Location = New System.Drawing.Point(143, 132)
-        Me.lblFilterVideoSource_Movies.Name = "lblFilterVideoSource_Movies"
-        Me.lblFilterVideoSource_Movies.Size = New System.Drawing.Size(78, 13)
-        Me.lblFilterVideoSource_Movies.TabIndex = 10
-        Me.lblFilterVideoSource_Movies.Text = "Video Source:"
+        Me.lblFilterSource_Movies.AutoSize = True
+        Me.lblFilterSource_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterSource_Movies.Location = New System.Drawing.Point(143, 132)
+        Me.lblFilterSource_Movies.Name = "lblFilterSource_Movies"
+        Me.lblFilterSource_Movies.Size = New System.Drawing.Size(78, 13)
+        Me.lblFilterSource_Movies.TabIndex = 10
+        Me.lblFilterSource_Movies.Text = "Video Source:"
         '
         'lblFilterGenre_Movies
         '
@@ -3737,7 +3794,7 @@ Partial Class frmMain
         'gbFilterSpecific_Shows
         '
         Me.gbFilterSpecific_Shows.Controls.Add(Me.txtFilterSource_Shows)
-        Me.gbFilterSpecific_Shows.Controls.Add(Me.lblFilterVideoSource_Shows)
+        Me.gbFilterSpecific_Shows.Controls.Add(Me.lblFilterSource_Shows)
         Me.gbFilterSpecific_Shows.Controls.Add(Me.chkFilterLock_Shows)
         Me.gbFilterSpecific_Shows.Controls.Add(Me.gbFilterModifier_Shows)
         Me.gbFilterSpecific_Shows.Controls.Add(Me.chkFilterNew_Shows)
@@ -3758,19 +3815,19 @@ Partial Class frmMain
         Me.txtFilterSource_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtFilterSource_Shows.Location = New System.Drawing.Point(250, 129)
         Me.txtFilterSource_Shows.Name = "txtFilterSource_Shows"
-        Me.txtFilterSource_Shows.ReadOnly = true
+        Me.txtFilterSource_Shows.ReadOnly = True
         Me.txtFilterSource_Shows.Size = New System.Drawing.Size(166, 22)
         Me.txtFilterSource_Shows.TabIndex = 33
         '
-        'lblFilterVideoSource_Shows
+        'lblFilterSource_Shows
         '
-        Me.lblFilterVideoSource_Shows.AutoSize = true
-        Me.lblFilterVideoSource_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblFilterVideoSource_Shows.Location = New System.Drawing.Point(143, 132)
-        Me.lblFilterVideoSource_Shows.Name = "lblFilterVideoSource_Shows"
-        Me.lblFilterVideoSource_Shows.Size = New System.Drawing.Size(78, 13)
-        Me.lblFilterVideoSource_Shows.TabIndex = 32
-        Me.lblFilterVideoSource_Shows.Text = "Video Source:"
+        Me.lblFilterSource_Shows.AutoSize = True
+        Me.lblFilterSource_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterSource_Shows.Location = New System.Drawing.Point(143, 132)
+        Me.lblFilterSource_Shows.Name = "lblFilterSource_Shows"
+        Me.lblFilterSource_Shows.Size = New System.Drawing.Size(78, 13)
+        Me.lblFilterSource_Shows.TabIndex = 32
+        Me.lblFilterSource_Shows.Text = "Video Source:"
         '
         'chkFilterLock_Shows
         '
@@ -8700,14 +8757,16 @@ Partial Class frmMain
         Me.scMain.Panel2.PerformLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).EndInit
         Me.scMain.ResumeLayout(false)
-        Me.pnlFilterCountry_Movies.ResumeLayout(false)
-        Me.pnlFilterCountry_Movies.PerformLayout
-        Me.pnlFilterGenre_Movies.ResumeLayout(false)
-        Me.pnlFilterGenre_Movies.PerformLayout
-        Me.pnlFilterSource_Movies.ResumeLayout(false)
-        Me.pnlFilterSource_Movies.PerformLayout
-        Me.pnlFilterSource_Shows.ResumeLayout(false)
-        Me.pnlFilterSource_Shows.PerformLayout
+        Me.pnlFilterCountries_Movies.ResumeLayout(false)
+        Me.pnlFilterCountries_Movies.PerformLayout
+        Me.pnlFilterGenres_Movies.ResumeLayout(false)
+        Me.pnlFilterGenres_Movies.PerformLayout
+        Me.pnlFilterGenres_Shows.ResumeLayout(false)
+        Me.pnlFilterGenres_Shows.PerformLayout
+        Me.pnlFilterSources_Movies.ResumeLayout(false)
+        Me.pnlFilterSources_Movies.PerformLayout
+        Me.pnlFilterSources_Shows.ResumeLayout(false)
+        Me.pnlFilterSources_Shows.PerformLayout
         CType(Me.dgvMovies,System.ComponentModel.ISupportInitialize).EndInit
         Me.cmnuMovie.ResumeLayout(false)
         CType(Me.dgvMovieSets,System.ComponentModel.ISupportInitialize).EndInit
@@ -8979,7 +9038,7 @@ End Sub
     Friend WithEvents btnFilterDown_Movies As System.Windows.Forms.Button
     Friend WithEvents btnFilterUp_Movies As System.Windows.Forms.Button
     Friend WithEvents tmrFilterAni_Movies As System.Windows.Forms.Timer
-    Friend WithEvents lblFilterVideoSource_Movies As System.Windows.Forms.Label
+    Friend WithEvents lblFilterSource_Movies As System.Windows.Forms.Label
     Friend WithEvents mnuMovieAllAutoTrailer As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMovieAllAskTrailer As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMovieMissAutoTrailer As System.Windows.Forms.ToolStripMenuItem
@@ -9008,9 +9067,9 @@ End Sub
     Friend WithEvents lblFilterGenre_Movies As System.Windows.Forms.Label
     Friend WithEvents clbFilterGenres_Movies As System.Windows.Forms.CheckedListBox
     Friend WithEvents txtFilterGenre_Movies As System.Windows.Forms.TextBox
-    Friend WithEvents pnlFilterGenre_Movies As System.Windows.Forms.Panel
-    Friend WithEvents lblFilterGenreClose_Movies As System.Windows.Forms.Label
-    Friend WithEvents lblFilterGenres As System.Windows.Forms.Label
+    Friend WithEvents pnlFilterGenres_Movies As System.Windows.Forms.Panel
+    Friend WithEvents lblFilterGenresClose_Movies As System.Windows.Forms.Label
+    Friend WithEvents lblFilterGenres_Movies As System.Windows.Forms.Label
     Friend WithEvents cbSearchMovies As System.Windows.Forms.ComboBox
     Friend WithEvents cbFilterYearMod_Movies As System.Windows.Forms.ComboBox
     Friend WithEvents lblFilterYear_Movies As System.Windows.Forms.Label
@@ -9027,9 +9086,9 @@ End Sub
     Friend WithEvents cmnuMovieEditMetaData As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents gbFilterSorting_Movies As System.Windows.Forms.GroupBox
     Friend WithEvents btnFilterSortDate_Movies As System.Windows.Forms.Button
-    Friend WithEvents pnlFilterSource_Movies As System.Windows.Forms.Panel
-    Friend WithEvents lblFilterSourceClose_Movies As System.Windows.Forms.Label
-    Friend WithEvents lblFilterSource_Movies As System.Windows.Forms.Label
+    Friend WithEvents pnlFilterSources_Movies As System.Windows.Forms.Panel
+    Friend WithEvents lblFilterSourcesClose_Movies As System.Windows.Forms.Label
+    Friend WithEvents lblFilterSources_Movies As System.Windows.Forms.Label
     Friend WithEvents clbFilterSource_Movies As System.Windows.Forms.CheckedListBox
     Friend WithEvents txtFilterSource_Movies As System.Windows.Forms.TextBox
     Friend WithEvents mnuMovieFilter As System.Windows.Forms.ToolStripMenuItem
@@ -9700,10 +9759,10 @@ End Sub
     Friend WithEvents chkFilterMarkCustom1_Movies As System.Windows.Forms.CheckBox
     Friend WithEvents txtFilterCountry_Movies As System.Windows.Forms.TextBox
     Friend WithEvents lblFilterCountry_Movies As System.Windows.Forms.Label
-    Friend WithEvents pnlFilterCountry_Movies As System.Windows.Forms.Panel
+    Friend WithEvents pnlFilterCountries_Movies As System.Windows.Forms.Panel
     Friend WithEvents clbFilterCountries_Movies As System.Windows.Forms.CheckedListBox
-    Friend WithEvents lblFilterCountryClose_Movies As System.Windows.Forms.Label
-    Friend WithEvents lblFilterCountries As System.Windows.Forms.Label
+    Friend WithEvents lblFilterCountriesClose_Movies As System.Windows.Forms.Label
+    Friend WithEvents lblFilterCountries_Movies As System.Windows.Forms.Label
     Friend WithEvents pnlSearchMovieSets As System.Windows.Forms.Panel
     Friend WithEvents cbSearchMovieSets As System.Windows.Forms.ComboBox
     Friend WithEvents picSearchMovieSets As System.Windows.Forms.PictureBox
@@ -9751,9 +9810,13 @@ End Sub
     Friend WithEvents btnFilterUp_Shows As System.Windows.Forms.Button
     Friend WithEvents lblFilter_Shows As System.Windows.Forms.Label
     Friend WithEvents txtFilterSource_Shows As System.Windows.Forms.TextBox
-    Friend WithEvents lblFilterVideoSource_Shows As System.Windows.Forms.Label
-    Friend WithEvents pnlFilterSource_Shows As System.Windows.Forms.Panel
-    Friend WithEvents lblFilterSourceClose_Shows As System.Windows.Forms.Label
     Friend WithEvents lblFilterSource_Shows As System.Windows.Forms.Label
+    Friend WithEvents pnlFilterSources_Shows As System.Windows.Forms.Panel
+    Friend WithEvents lblFilterSourcesClose_Shows As System.Windows.Forms.Label
+    Friend WithEvents lblFilterSources_Shows As System.Windows.Forms.Label
     Friend WithEvents clbFilterSource_Shows As System.Windows.Forms.CheckedListBox
+    Friend WithEvents pnlFilterGenres_Shows As System.Windows.Forms.Panel
+    Friend WithEvents clbFilterGenres_Shows As System.Windows.Forms.CheckedListBox
+    Friend WithEvents lblFilterGenresClose_Shows As System.Windows.Forms.Label
+    Friend WithEvents lblFilterGenres_Shows As System.Windows.Forms.Label
 End Class
