@@ -1332,7 +1332,9 @@ Public Class dlgSettings
     Private Sub chkMovieScraperDetailView_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperDetailView.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
-
+    Private Sub chkMovieScraperFormatReleasedate_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperFormatReleasedate.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
     Private Sub chkMovieLevTolerance_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLevTolerance.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -3218,6 +3220,7 @@ Public Class dlgSettings
                 Me.chkMovieScraperCollectionsAuto.Checked = .MovieScraperCollectionsAuto
                 Me.chkMovieScraperCountry.Checked = .MovieScraperCountry
                 Me.chkMovieScraperDirector.Checked = .MovieScraperDirector
+                Me.chkMovieScraperFormatReleasedate.Checked = .MovieScraperFormatReleasedate
                 Me.chkMovieScraperGenre.Checked = .MovieScraperGenre
                 Me.chkMovieScraperMetaDataIFOScan.Checked = .MovieScraperMetaDataIFOScan
                 Me.chkMovieScraperMetaDataScan.Checked = .MovieScraperMetaDataScan
@@ -4786,6 +4789,7 @@ Public Class dlgSettings
                 .MovieScraperCollectionsAuto = Me.chkMovieScraperCollectionsAuto.Checked
                 .MovieScraperCountry = Me.chkMovieScraperCountry.Checked
                 .MovieScraperDirector = Me.chkMovieScraperDirector.Checked
+                .MovieScraperFormatReleasedate = Me.chkMovieScraperFormatReleasedate.Checked
                 .MovieScraperDurationRuntimeFormat = Me.txtMovieScraperDurationRuntimeFormat.Text
                 .MovieScraperGenre = Me.chkMovieScraperGenre.Checked
                 If Not String.IsNullOrEmpty(Me.txtMovieScraperGenreLimit.Text) Then
@@ -5534,6 +5538,7 @@ Public Class dlgSettings
         Me.chkMovieScraperCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
         Me.chkMovieScraperDirector.Text = Master.eLang.GetString(62, "Director")
+        Me.chkMovieScraperFormatReleasedate.Text = Master.eLang.GetString(1272, "Date format Releasedate: yyyy-mm-dd")
         Me.chkMovieScraperGenre.Text = Master.eLang.GetString(20, "Genre")
         Me.chkMovieScraperOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         Me.chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
@@ -7625,5 +7630,6 @@ Public Class dlgSettings
     End Sub
 
 #End Region 'Methods
+
 
 End Class

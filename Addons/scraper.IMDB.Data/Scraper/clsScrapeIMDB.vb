@@ -286,7 +286,10 @@ Namespace IMDB
                     Dim sRelDate As MatchCollection = Regex.Matches(HTML, "<h5>Release Date:</h5>.*?(?<DATE>\d+\s\w+\s\d\d\d\d\s)", RegexOptions.Singleline)
                     If sRelDate.Count > 0 Then
                         If Date.TryParse(sRelDate.Item(0).Groups(1).Value, RelDate) Then
-                            nMovie.ReleaseDate = Strings.FormatDateTime(RelDate, DateFormat.ShortDate).ToString
+                            'FormatDateTime interprets date according to the CurrentCulture of user -> different results depending on user country!
+                            '  nMovie.ReleaseDate = Strings.FormatDateTime(RelDate, DateFormat.ShortDate).ToString
+                            'always save date in same date format not depending on users language setting!
+                            nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
                         End If
                     End If
                 End If
