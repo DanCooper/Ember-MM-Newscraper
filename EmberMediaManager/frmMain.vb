@@ -5921,7 +5921,6 @@ doCancel:
 
     Private Sub dgvMovies_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellClick
         Try
-
             If e.ColumnIndex = 3 OrElse e.ColumnIndex = 34 OrElse Not Master.eSettings.MovieClickScrape Then 'Title
                 If Not e.ColumnIndex = 34 Then
                     If Me.dgvMovies.SelectedRows.Count > 0 Then
@@ -6047,7 +6046,6 @@ doCancel:
 
     Private Sub dgvMovies_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellDoubleClick
         Try
-
             If e.RowIndex < 0 Then Exit Sub
 
             If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
@@ -6254,7 +6252,6 @@ doCancel:
 
     Private Sub dgvMovies_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovies.CellPainting
         Try
-
             If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
                 e.Handled = True
                 Return
@@ -6373,7 +6370,6 @@ doCancel:
                     If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(KeyBuffer) Then
                         drvRow.Selected = True
                         Me.dgvMovies.CurrentCell = drvRow.Cells(3)
-
                         Exit For
                     End If
                 Next
@@ -6434,7 +6430,6 @@ doCancel:
 
     Private Sub dgvMovieSets_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellClick
         Try
-
             If e.ColumnIndex = 1 OrElse Not Master.eSettings.MovieSetClickScrape Then 'Title
                 If Me.dgvMovieSets.SelectedRows.Count > 0 Then
                     If Me.dgvMovieSets.RowCount > 0 Then
@@ -6484,7 +6479,6 @@ doCancel:
 
     Private Sub dgvMovieSets_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellDoubleClick
         Try
-
             If e.RowIndex < 0 Then Exit Sub
 
             If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
@@ -6684,7 +6678,6 @@ doCancel:
 
     Private Sub dgvMovieSets_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovieSets.CellPainting
         Try
-
             If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovieSets.Item(e.ColumnIndex, e.RowIndex).Displayed Then
                 e.Handled = True
                 Return
@@ -6763,7 +6756,7 @@ doCancel:
                 End If
             End If
 
-                Me.tpMovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(366, "Sets"), Me.dgvMovieSets.RowCount)
+            Me.tpMovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(366, "Sets"), Me.dgvMovieSets.RowCount)
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -6782,10 +6775,9 @@ doCancel:
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvMovieSets.Rows
-                    If drvRow.Cells(0).Value.ToString.ToLower.StartsWith(KeyBuffer) Then
+                    If drvRow.Cells(1).Value.ToString.ToLower.StartsWith(KeyBuffer) Then
                         drvRow.Selected = True
-                        Me.dgvMovieSets.CurrentCell = drvRow.Cells(0)
-
+                        Me.dgvMovieSets.CurrentCell = drvRow.Cells(1)
                         Exit For
                     End If
                 Next
