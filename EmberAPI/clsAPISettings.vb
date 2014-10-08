@@ -1149,12 +1149,12 @@ Public Class Settings
             Settings._XMLSettings.MovieScraperUseDetailView = value
         End Set
     End Property
-    Public Property MovieScraperFormatReleasedate() As Boolean
+    Public Property MovieScraperReleaseFormat() As Boolean
         Get
-            Return Settings._XMLSettings.MovieScraperFormatReleasedate
+            Return Settings._XMLSettings.MovieScraperReleaseFormat
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieScraperFormatReleasedate = value
+            Settings._XMLSettings.MovieScraperReleaseFormat = value
         End Set
     End Property
 

@@ -938,7 +938,7 @@ Partial Class dlgSettings
         Me.chkMovieLockTagline = New System.Windows.Forms.CheckBox()
         Me.chkMovieLockTitle = New System.Windows.Forms.CheckBox()
         Me.gbMovieScraperMiscOpts = New System.Windows.Forms.GroupBox()
-        Me.chkMovieScraperFormatReleasedate = New System.Windows.Forms.CheckBox()
+        Me.chkMovieScraperReleaseFormat = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCollectionsAuto = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCleanFields = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperDetailView = New System.Windows.Forms.CheckBox()
@@ -6384,7 +6384,6 @@ Partial Class dlgSettings
         Me.pnlTVGeneral.Controls.Add(Me.gbTVEpisodeFilterOpts)
         Me.pnlTVGeneral.Controls.Add(Me.gbTVGeneralMiscOpts)
         Me.pnlTVGeneral.Controls.Add(Me.gbTVShowFilterOpts)
-        Me.pnlTVGeneral.Controls.Add(Me.pnlMovieScraper)
         Me.pnlTVGeneral.Location = New System.Drawing.Point(900, 900)
         Me.pnlTVGeneral.Name = "pnlTVGeneral"
         Me.pnlTVGeneral.Size = New System.Drawing.Size(750, 500)
@@ -11208,7 +11207,7 @@ Partial Class dlgSettings
         '
         'gbMovieScraperMiscOpts
         '
-        Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperFormatReleasedate)
+        Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperReleaseFormat)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCollectionsAuto)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCleanFields)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperDetailView)
@@ -11228,15 +11227,15 @@ Partial Class dlgSettings
         Me.gbMovieScraperMiscOpts.TabStop = false
         Me.gbMovieScraperMiscOpts.Text = "Miscellaneous"
         '
-        'chkMovieScraperFormatReleasedate
+        'chkMovieScraperReleaseFormat
         '
-        Me.chkMovieScraperFormatReleasedate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperFormatReleasedate.Location = New System.Drawing.Point(6, 152)
-        Me.chkMovieScraperFormatReleasedate.Name = "chkMovieScraperFormatReleasedate"
-        Me.chkMovieScraperFormatReleasedate.Size = New System.Drawing.Size(410, 17)
-        Me.chkMovieScraperFormatReleasedate.TabIndex = 81
-        Me.chkMovieScraperFormatReleasedate.Text = "Date format Releasedate: yyyy-mm-dd"
-        Me.chkMovieScraperFormatReleasedate.UseVisualStyleBackColor = true
+        Me.chkMovieScraperReleaseFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieScraperReleaseFormat.Location = New System.Drawing.Point(6, 152)
+        Me.chkMovieScraperReleaseFormat.Name = "chkMovieScraperReleaseFormat"
+        Me.chkMovieScraperReleaseFormat.Size = New System.Drawing.Size(410, 17)
+        Me.chkMovieScraperReleaseFormat.TabIndex = 81
+        Me.chkMovieScraperReleaseFormat.Text = "Date format Releasedate: yyyy-mm-dd"
+        Me.chkMovieScraperReleaseFormat.UseVisualStyleBackColor = true
         '
         'chkMovieScraperCollectionsAuto
         '
@@ -11371,7 +11370,7 @@ Partial Class dlgSettings
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperFieldsOpts)
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperMiscOpts)
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperMetaDataOpts)
-        Me.pnlMovieScraper.Location = New System.Drawing.Point(4, 2)
+        Me.pnlMovieScraper.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
         Me.pnlMovieScraper.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieScraper.TabIndex = 14
@@ -12746,6 +12745,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlMovieSources)
         Me.Controls.Add(Me.pnlMovieGeneral)
+        Me.Controls.Add(Me.pnlMovieScraper)
         Me.Controls.Add(Me.pnlMovieImages)
         Me.Controls.Add(Me.pnlFileSystem)
         Me.Controls.Add(Me.pnlSettingsMain)
@@ -14110,5 +14110,5 @@ End Sub
     Friend WithEvents chkTVScraperUseSRuntimeForEp As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockCollections As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperCollectionsAuto As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieScraperFormatReleasedate As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieScraperReleaseFormat As System.Windows.Forms.CheckBox
 End Class
