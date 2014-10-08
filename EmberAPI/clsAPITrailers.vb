@@ -338,9 +338,6 @@ Public Class Trailers
 
         Try
 
-            'Reverse list of scraped trailerresults (trailers on end of the list are the preferred ones (=module order))
-            UrlList.Reverse()
-
             'Check 1 Youtube/IMDB handling: At this point trailers from Youtube and IMDB don't have quality property set, so let's analyze the quality of given trailer and set correct trailerurl/quality of each trailerlink in list
             For Each aUrl As Trailers In UrlList
                 If Regex.IsMatch(aUrl.URL, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
