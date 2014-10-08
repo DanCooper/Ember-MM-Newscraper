@@ -31,7 +31,6 @@ Public Class dlgEditMovieSet
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwLoadMoviesInSet As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadMoviesFromDB As New System.ComponentModel.BackgroundWorker
 
     Private CachePath As String = String.Empty
     Private fResults As New Containers.ImgResult
@@ -49,10 +48,20 @@ Public Class dlgEditMovieSet
     Private sMovieID As String = String.Empty
     Private needsMovieUpdate As Boolean = False
 
-    Private MoviesInDB As New List(Of MovieInSet) 'list of all movies loaded from DB
     Private MoviesToRemove As New List(Of MovieInSet)
     Private MoviesInSet As New List(Of MovieInSet)
 
+    Private bsMovies As New BindingSource
+    Private dtMovies As New DataTable
+    Private KeyBuffer As String = String.Empty
+
+    'filter movies
+    Private bDoingSearch As Boolean = False
+    Private FilterArray As New List(Of String)
+    Private filMoviesInSet As String = String.Empty
+    Private filSearch As String = String.Empty
+    Private currTextSearch As String = String.Empty
+    Private prevTextSearch As String = String.Empty
 
 #End Region 'Fields
 
@@ -103,23 +112,16 @@ Public Class dlgEditMovieSet
         Me.ReAddToSet()
     End Sub
 
-    Private Sub btnLoadMoviesFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadMoviesFromDB.Click
+    Private Sub btnSearchMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearchMovie.Click
         Try
             Me.SetControlsEnabled(False)
 
-            btnCancel.Visible = True
-            lblCompiling.Visible = True
-            prbCompile.Visible = True
-            prbCompile.Style = ProgressBarStyle.Continuous
-            lblCanceling.Visible = False
-            pnlCancel.Visible = True
             Application.DoEvents()
 
-            Me.bwLoadMoviesFromDB.WorkerSupportsCancellation = True
-            Me.bwLoadMoviesFromDB.WorkerReportsProgress = True
-            Me.bwLoadMoviesFromDB.RunWorkerAsync()
+            Me.FillMoviesFromDB()
+            Me.RunFilter_Movies()
         Catch ex As Exception
-
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -188,20 +190,6 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub lvMoviesInDB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvMoviesInDB.SelectedIndexChanged
-        If Me.lvMoviesInDB.SelectedItems.Count > 0 Then
-            Me.btnMovieAdd.Enabled = True
-        Else
-            Me.btnMovieAdd.Enabled = False
-        End If
-    End Sub
-
-    Private Sub lvMoviesInDB_DoubleClick(sender As Object, e As EventArgs) Handles lvMoviesInDB.DoubleClick
-        If Me.lvMoviesInDB.SelectedItems.Count = 1 Then
-            AddMovieToSet()
-        End If
-    End Sub
-
     Private Sub lvMoviesInSet_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvMoviesInSet.SelectedIndexChanged
         If Me.lvMoviesInSet.SelectedItems.Count > 0 Then
             Me.btnMovieDown.Enabled = True
@@ -230,27 +218,27 @@ Public Class dlgEditMovieSet
         Try
             needsMovieUpdate = True
 
-            Dim lMov As New MovieInSet
-
-            If Me.lvMoviesInDB.SelectedItems.Count > 0 Then
+            If Me.dgvMovies.SelectedRows.Count > 0 Then
                 Me.SetControlsEnabled(False)
-                While Me.lvMoviesInDB.SelectedItems.Count > 0
-                    Me.sMovieID = Me.lvMoviesInDB.SelectedItems(0).SubItems(0).Text.ToString
-                    lMov = Me.MoviesInDB.Find(AddressOf FindMovie)
-                    If Not IsNothing(lMov) Then
-                        If String.IsNullOrEmpty(Me.txtCollectionID.Text) AndAlso lMov.DBMovie.Movie.TMDBColIDSpecified Then
-                            Dim result As DialogResult = MessageBox.Show(String.Format(Master.eLang.GetString(1264, "Should the Collection ID of the movie ""{0}"" be used as ID for this Collection?"), lMov.DBMovie.Movie.Title), Master.eLang.GetString(1263, "TMDB Collection ID found"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
+                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                    Dim tmpMovie As New Structures.DBMovie
+                    tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+                    If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
+                        If String.IsNullOrEmpty(Me.txtCollectionID.Text) AndAlso tmpMovie.Movie.TMDBColIDSpecified Then
+                            Dim result As DialogResult = MessageBox.Show(String.Format(Master.eLang.GetString(1264, "Should the Collection ID of the movie ""{0}"" be used as ID for this Collection?"), tmpMovie.Movie.Title), Master.eLang.GetString(1263, "TMDB Collection ID found"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
                             If result = Windows.Forms.DialogResult.Yes Then
-                                Me.txtCollectionID.Text = lMov.DBMovie.Movie.TMDBColID
-                                currMovieSet.MovieSet.ID = lMov.DBMovie.Movie.TMDBColID
+                                Me.txtCollectionID.Text = tmpMovie.Movie.TMDBColID
+                                currMovieSet.MovieSet.ID = tmpMovie.Movie.TMDBColID
                             End If
                         End If
-                        Me.MoviesInSet.Add(lMov)
-                        Me.MoviesInDB.Remove(lMov)
-                    Else
-                        Me.lvMoviesInDB.Items.Remove(Me.lvMoviesInDB.SelectedItems(0))
+                        Dim newMovie As New MovieInSet With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .ID = tmpMovie.ID}
+                        Me.MoviesInSet.Add(newMovie)
+                        bsMovies.Remove(sRow.DataBoundItem)
                     End If
-                End While
+                Next
+
+                Me.dgvMovies.ClearSelection()
+                Me.dgvMovies.CurrentCell = Nothing
 
                 Me.FillMoviesInSet()
                 Me.FillMoviesToRemove()
@@ -852,10 +840,6 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub bwLoadMoviesInSet_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMoviesInSet.DoWork
-        '//
-        ' Start thread to load movieset information from database
-        '\\
-
         Try
 
             MoviesInSet.Clear()
@@ -887,25 +871,10 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub bwLoadMoviesInSet_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadMoviesInSet.ProgressChanged
-        If e.ProgressPercentage >= 0 Then
-            Me.prbCompile.Value = e.ProgressPercentage
-            Me.lblFile.Text = e.UserState.ToString
-        Else
-            Me.prbCompile.Maximum = Convert.ToInt32(e.UserState)
-        End If
-    End Sub
-
     Private Sub bwLoadMoviesInSet_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadMoviesInSet.RunWorkerCompleted
-        '//
-        ' Thread finished: fill movie list
-        '\\
-
         If Me.MoviesInSet.Count > 0 Then
             Me.FillMoviesInSet()
         End If
-
-        Me.pnlCancel.Visible = False
 
         Me.lvMoviesInSet.Enabled = True
         Me.btnMovieUp.Enabled = True
@@ -914,100 +883,44 @@ Public Class dlgEditMovieSet
         Me.btnMovieAdd.Enabled = True
     End Sub
 
-    Private Sub bwLoadMoviesFromDB_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMoviesFromDB.DoWork
-        '//
-        ' Start thread to load movie information from nfo
-        '\\
-
+    Private Sub FillMoviesFromDB()
         Try
-            MoviesInDB.Clear()
+            Me.dgvMovies.SuspendLayout()
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim tmpMovie As New Structures.DBMovie
-                Dim iProg As Integer = 0
-                SQLcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
-                Using SQLcount As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    SQLcount.Read()
-                    Me.bwLoadMoviesFromDB.ReportProgress(-1, SQLcount("mcount"))
-                End Using
-                SQLcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY ListTitle ASC;")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        While SQLreader.Read()
-                            If bwLoadMoviesFromDB.CancellationPending Then Return
-                            tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("ID")))
-                            If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
+            Me.bsMovies.DataSource = Nothing
+            Me.dgvMovies.DataSource = Nothing
 
-                                'cocotus build up tempmovie list which contains all movies belonging to one movieset! this is used to filter right side movies(used in FillList)!
-                                'If tmpMovie.Movie.Sets.Count > 0 Then
-                                '    lMoviesinSets.Add(String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)))
-                                'End If
+            Master.DB.FillDataTable(Me.dtMovies, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
 
-                                MoviesInDB.Add(New MovieInSet With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .ID = tmpMovie.ID})
+            If Me.dtMovies.Rows.Count > 0 Then
+                With Me
+                    .bsMovies.DataSource = .dtMovies
+                    .dgvMovies.DataSource = .bsMovies
 
-                                'If tmpMovie.Movie.Sets.Count > 0 Then
-                                '    For Each mSet As MediaContainers.Set In tmpMovie.Movie.Sets
-                                '        If Not alSets.Contains(mSet.Set) AndAlso Not String.IsNullOrEmpty(mSet.Set) Then
-                                '            alSets.Add(mSet.Set)
-                                '        End If
-                                '    Next
-                                'End If
+                    .dgvMovies.Columns(0).Visible = False
+                    .dgvMovies.Columns(1).Visible = False
+                    .dgvMovies.Columns(2).Visible = False
+                    .dgvMovies.Columns(3).Resizable = DataGridViewTriState.True
+                    .dgvMovies.Columns(3).ReadOnly = True
+                    .dgvMovies.Columns(3).MinimumWidth = 83
+                    .dgvMovies.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvMovies.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
+                    .dgvMovies.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
 
-                            End If
-                            Me.bwLoadMoviesFromDB.ReportProgress(iProg, tmpMovie.Movie.Title)
-                            iProg += 1
-                        End While
-                    End If
-                End Using
-            End Using
+                    For i As Integer = 4 To .dgvMovies.Columns.Count - 1
+                        .dgvMovies.Columns(i).Visible = False
+                    Next
 
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
+                    .dgvMovies.Columns(0).ValueType = GetType(Int32)
 
-    Private Sub bwLoadMoviesFromDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadMoviesFromDB.ProgressChanged
-        If e.ProgressPercentage >= 0 Then
-            Me.prbCompile.Value = e.ProgressPercentage
-            Me.lblFile.Text = e.UserState.ToString
-        Else
-            Me.prbCompile.Maximum = Convert.ToInt32(e.UserState)
-        End If
-    End Sub
+                    .SetControlsEnabled(True)
 
-    Private Sub bwLoadMoviesFromDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadMoviesFromDB.RunWorkerCompleted
-        '//
-        ' Thread finished: fill movie list
-        '\\
+                End With
+            End If
 
-        Me.FillMoviesInDB()
-
-        Me.pnlCancel.Visible = False
-
-        SetControlsEnabled(True)
-        Me.btnMovieAdd.Enabled = False
-    End Sub
-
-    Private Sub FillMoviesInDB()
-        Try
-            Me.lvMoviesInDB.SuspendLayout()
-
-            Me.lvMoviesInDB.Items.Clear()
-
-            Dim lvItem As ListViewItem
-            For Each lMovie As MovieInSet In MoviesInDB
-                'If Not Me.lbMoviesInSet.Items.Contains(lMov.ListTitle) Then Me.lbMoviesInDB.Items.Add(lMov.ListTitle)
-                'If lMoviesinSets.Contains(lMov.ListTitle) = False Then
-                'If Not Me.lvMoviesInSet.Items.Contains(lMov.ID) Then Me.lbMoviesInDB.Items.Add(lMov.ID)
-                'End If
-                If Not Me.MoviesInSet.Contains(lMovie) Then
-                    lvItem = Me.lvMoviesInDB.Items.Add(lMovie.ID.ToString)
-                    lvItem.SubItems.Add(lMovie.Order.ToString)
-                    lvItem.SubItems.Add(lMovie.ListTitle)
-                End If
-            Next
-
-            Me.lvMoviesInDB.ResumeLayout()
+            Me.dgvMovies.ResumeLayout()
+            SetControlsEnabled(True)
+            Me.btnMovieAdd.Enabled = False
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -1027,6 +940,32 @@ Public Class dlgEditMovieSet
                 lvItem.SubItems.Add(tMovie.Order.ToString)
                 lvItem.SubItems.Add(tMovie.ListTitle)
             Next
+
+            'filter out all movies that are already in movieset
+            If MoviesInSet.Count > 0 Then
+                Me.FilterArray.Remove(Me.filMoviesInSet)
+
+                Dim alMoviesInSet As New List(Of String)
+
+                For Each movie In MoviesInSet
+                    alMoviesInSet.Add(movie.DBMovie.ID.ToString)
+                Next
+
+                For i As Integer = 0 To alMoviesInSet.Count - 1
+                    alMoviesInSet.Item(i) = String.Format("ID NOT = '{0}'", alMoviesInSet.Item(i))
+                Next
+
+                Me.filMoviesInSet = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alMoviesInSet.ToArray, " AND "))
+
+                Me.FilterArray.Add(Me.filMoviesInSet)
+                Me.RunFilter_Movies()
+            Else
+                If Not String.IsNullOrEmpty(Me.filMoviesInSet) Then
+                    Me.FilterArray.Remove(Me.filMoviesInSet)
+                    Me.filMoviesInSet = String.Empty
+                    Me.RunFilter_Movies()
+                End If
+            End If
 
             Me.lvMoviesInSet.ResumeLayout()
             Me.btnMovieUp.Enabled = False
@@ -1128,13 +1067,6 @@ Public Class dlgEditMovieSet
     Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
 
-        ' Show Cancel Panel
-        btnCancel.Visible = True
-        lblCompiling.Visible = True
-        prbCompile.Visible = True
-        prbCompile.Style = ProgressBarStyle.Continuous
-        lblCanceling.Visible = False
-        pnlCancel.Visible = True
         Application.DoEvents()
 
         Me.bwLoadMoviesInSet.WorkerSupportsCancellation = True
@@ -1501,12 +1433,13 @@ Public Class dlgEditMovieSet
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
         'Me.pnlSaving.Visible = Not isEnabled
         Me.OK_Button.Enabled = isEnabled
-        Me.btnLoadMoviesFromDB.Enabled = isEnabled
+        Me.btnSearchMovie.Enabled = isEnabled
         Me.btnMovieAdd.Enabled = isEnabled
         Me.btnMovieDown.Enabled = isEnabled
         Me.btnMovieRemove.Enabled = isEnabled
         Me.btnMovieUp.Enabled = isEnabled
-        Me.lvMoviesInDB.Enabled = isEnabled
+        Me.btnRescrape.Enabled = isEnabled
+        Me.dgvMovies.Enabled = isEnabled
         Me.lvMoviesInSet.Enabled = isEnabled
         Me.lvMoviesToRemove.Enabled = isEnabled
 
@@ -1518,7 +1451,7 @@ Public Class dlgEditMovieSet
             With Me
                 Me.OK_Button.Enabled = False
                 Me.Cancel_Button.Enabled = False
-                Me.btnLoadMoviesFromDB.Enabled = False
+                Me.btnSearchMovie.Enabled = False
                 Me.btnRescrape.Enabled = False
 
                 Master.currMovieSet.IsMark = Me.chkMark.Checked
@@ -1634,6 +1567,7 @@ Public Class dlgEditMovieSet
         Me.btnRemoveMovieLandscape.Text = Master.eLang.GetString(1034, "Remove Landscape")
         Me.btnRemoveMoviePoster.Text = Master.eLang.GetString(247, "Remove Poster")
         Me.btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
+        Me.btnSearchMovie.Text = Master.eLang.GetString(528, "Search Movie")
         Me.btnSetMovieBannerDL.Text = Master.eLang.GetString(1023, "Change Banner (Download)")
         Me.btnSetMovieBannerLocal.Text = Master.eLang.GetString(1021, "Change Banner (Local)")
         Me.btnSetMovieBannerScrape.Text = Master.eLang.GetString(1022, "Change Banner (Scrape)")
@@ -1680,6 +1614,199 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
+    Private Sub FillList()
+        Try
+            Me.bsMovies.DataSource = Nothing
+            Me.dgvMovies.DataSource = Nothing
+
+            Master.DB.FillDataTable(Me.dtMovies, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+
+
+            If Me.dtMovies.Rows.Count > 0 Then
+                With Me
+                    .bsMovies.DataSource = .dtMovies
+                    .dgvMovies.DataSource = .bsMovies
+
+                    .dgvMovies.Columns(0).Visible = False
+                    .dgvMovies.Columns(1).Visible = False
+                    .dgvMovies.Columns(2).Visible = False
+                    .dgvMovies.Columns(3).Resizable = DataGridViewTriState.True
+                    .dgvMovies.Columns(3).ReadOnly = True
+                    .dgvMovies.Columns(3).MinimumWidth = 83
+                    .dgvMovies.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvMovies.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
+                    .dgvMovies.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
+
+                    For i As Integer = 4 To .dgvMovies.Columns.Count - 1
+                        .dgvMovies.Columns(i).Visible = False
+                    Next
+
+                    .dgvMovies.Columns(0).ValueType = GetType(Int32)
+
+                    .SetControlsEnabled(True)
+
+                End With
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub RunFilter_Movies()
+        Try
+            If Me.Visible Then
+
+                Me.dgvMovies.ClearSelection()
+                Me.dgvMovies.CurrentCell = Nothing
+
+                If FilterArray.Count > 0 Then
+                    Dim FilterString As String = String.Empty
+
+                    FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray.ToArray, " AND ")
+
+                    bsMovies.Filter = FilterString
+                Else
+                    bsMovies.RemoveFilter()
+                End If
+
+                Me.txtSearchMovies.Focus()
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub dgvMovies_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovies.Sorted
+        If Me.dgvMovies.RowCount > 0 Then
+            Me.dgvMovies.CurrentCell = Nothing
+            Me.dgvMovies.ClearSelection()
+            Me.dgvMovies.Rows(0).Selected = True
+            Me.dgvMovies.CurrentCell = Me.dgvMovies.Rows(0).Cells(3)
+        End If
+    End Sub
+
+    Private Sub dgvMovies_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMovies.KeyDown
+        'stop enter key from selecting next list item
+        e.Handled = (e.KeyCode = Keys.Enter)
+        If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.S Then txtSearchMovies.Focus()
+    End Sub
+
+    Private Sub dgvMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovies.KeyPress
+        Try
+            If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
+                KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
+                tmrKeyBuffer.Start()
+                For Each drvRow As DataGridViewRow In Me.dgvMovies.Rows
+                    If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(KeyBuffer) Then
+                        drvRow.Selected = True
+                        Me.dgvMovies.CurrentCell = drvRow.Cells(3)
+
+                        Exit For
+                    End If
+                Next
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub tmrKeyBuffer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrKeyBuffer.Tick
+        tmrKeyBuffer.Enabled = False
+        KeyBuffer = String.Empty
+    End Sub
+
+    Private Sub txtSearchMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovies.KeyPress
+        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
+            Me.dgvMovies.Focus()
+        End If
+    End Sub
+
+    Private Sub txtSearchMovies_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearchMovies.TextChanged
+        Me.currTextSearch = Me.txtSearchMovies.Text
+
+        Me.tmrSearchWait_Movies.Enabled = False
+        Me.tmrSearch_Movies.Enabled = False
+        Me.tmrSearchWait_Movies.Enabled = True
+    End Sub
+
+    Private Sub tmrSearch_Movies_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch_Movies.Tick
+        Me.tmrSearchWait_Movies.Enabled = False
+        Me.tmrSearch_Movies.Enabled = False
+        bDoingSearch = True
+        Try
+            If Not String.IsNullOrEmpty(Me.txtSearchMovies.Text) Then
+                Me.FilterArray.Remove(Me.filSearch)
+                Me.filSearch = String.Empty
+
+                Me.filSearch = String.Concat("Title LIKE '%", Me.txtSearchMovies.Text, "%'")
+                Me.FilterArray.Add(Me.filSearch)
+
+                Me.RunFilter_Movies()
+
+            Else
+                If Not String.IsNullOrEmpty(Me.filSearch) Then
+                    Me.FilterArray.Remove(Me.filSearch)
+                    Me.filSearch = String.Empty
+                End If
+                Me.RunFilter_Movies()
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub tmrSearchWait_Movies_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_Movies.Tick
+        Me.tmrSearch_Movies.Enabled = False
+        If Me.prevTextSearch = Me.currTextSearch Then
+            Me.tmrSearch_Movies.Enabled = True
+        Else
+            Me.prevTextSearch = Me.currTextSearch
+        End If
+    End Sub
+
+    Private Sub dgvMovies_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovies.CellPainting
+        Try
+
+            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+                e.Handled = True
+                Return
+            End If
+
+            'text
+            If e.ColumnIndex = 3 AndAlso e.RowIndex >= 0 Then
+                e.CellStyle.BackColor = Color.White
+                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub dgvMovies_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvMovies.CellClick
+        If Me.dgvMovies.SelectedRows.Count > 0 Then
+            Me.btnMovieAdd.Enabled = True
+        Else
+            Me.btnMovieAdd.Enabled = False
+        End If
+    End Sub
+
+    Private Sub dgvMovies_SelectionChanged(sender As Object, e As EventArgs) Handles dgvMovies.SelectionChanged
+        If Me.dgvMovies.SelectedRows.Count > 0 Then
+            Me.btnMovieAdd.Enabled = True
+        Else
+            Me.btnMovieAdd.Enabled = False
+        End If
+    End Sub
+
+    Private Sub dgvMovies_DoubleClick(sender As Object, e As EventArgs) Handles dgvMovies.DoubleClick
+        If Me.dgvMovies.SelectedRows.Count = 1 Then
+            AddMovieToSet()
+        End If
+    End Sub
 
 #End Region 'Methods
 
