@@ -14755,15 +14755,15 @@ doCancel:
                 Me.dgvTVShows.ClearSelection()
                 Me.dgvTVShows.CurrentCell = Nothing
 
-                Me.bsSeasons.DataSource = Nothing
-                Me.dgvTVEpisodes.DataSource = Nothing
                 Me.dgvTVSeasons.ClearSelection()
                 Me.dgvTVSeasons.CurrentCell = Nothing
-
-                Me.bsEpisodes.DataSource = Nothing
+                Me.bsSeasons.DataSource = Nothing
                 Me.dgvTVEpisodes.DataSource = Nothing
+
                 Me.dgvTVEpisodes.ClearSelection()
                 Me.dgvTVEpisodes.CurrentCell = Nothing
+                Me.bsEpisodes.DataSource = Nothing
+                Me.dgvTVEpisodes.DataSource = Nothing
 
                 If FilterArray_Shows.Count > 0 Then
                     Dim FilterString As String = String.Empty
