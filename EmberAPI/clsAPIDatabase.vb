@@ -104,7 +104,8 @@ Public Class Database
                         End If
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
-                                If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) Then
+                                If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) OrElse _
+                                    Master.ExcludeDirs.Exists(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(s.ToLower)) Then
                                     MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                     Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                 ElseIf Master.eSettings.MovieSkipLessThan > 0 Then
@@ -150,7 +151,8 @@ Public Class Database
 
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
-                                If Not File.Exists(SQLReader("TVEpPath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("TVEpPath").ToString).ToLower) Then
+                                If Not File.Exists(SQLReader("TVEpPath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("TVEpPath").ToString).ToLower) OrElse _
+                                    Master.ExcludeDirs.Exists(Function(s) SQLReader("TVEpPath").ToString.ToLower.StartsWith(s.ToLower)) Then
                                     Master.DB.DeleteTVEpFromDBByPath(SQLReader("TVEpPath").ToString, False, True)
                                 End If
                             End While
@@ -2800,6 +2802,31 @@ Public Class Database
                             msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
                             msource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
                             Master.MovieSources.Add(msource)
+                        Catch ex As Exception
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
+                        End Try
+                    End While
+                End Using
+            End Using
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of movie Sources
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub LoadExcludeDirsFromDB()
+        Master.ExcludeDirs.Clear()
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = "SELECT Dirname FROM ExcludeDir;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
+                            Dim eDir As String = String.Empty
+                            eDir = SQLreader("Dirname").ToString
+                            Master.ExcludeDirs.Add(eDir)
                         Catch ex As Exception
                             logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try

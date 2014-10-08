@@ -836,7 +836,9 @@ Public Class Scanner
     ''' <returns>True if directory is valid, false if not.</returns>
     Public Function isValidDir(ByVal dInfo As DirectoryInfo, ByVal isTV As Boolean) As Boolean
         Try
-
+            For Each s As String In Master.ExcludeDirs
+                If dInfo.FullName.ToLower = s.ToLower Then Return False
+            Next
             If (Not isTV AndAlso dInfo.Name.ToLower = "extras") OrElse _
             If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
                 Return False

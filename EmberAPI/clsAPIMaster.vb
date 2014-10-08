@@ -53,6 +53,7 @@ Public Class Master
     Public Shared tmpMovieSet As New MediaContainers.MovieSet
     Public Shared MovieSources As New List(Of Structures.MovieSource)
     Public Shared TVSources As New List(Of Structures.TVSource)
+    Public Shared ExcludeDirs As New List(Of String)
 
 #End Region 'Fields
 

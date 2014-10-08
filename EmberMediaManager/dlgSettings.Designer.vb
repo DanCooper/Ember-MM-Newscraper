@@ -271,6 +271,11 @@ Partial Class dlgSettings
         Me.chkMovieMissingSubs = New System.Windows.Forms.CheckBox()
         Me.chkMovieMissingFanart = New System.Windows.Forms.CheckBox()
         Me.pnlFileSystem = New System.Windows.Forms.Panel()
+        Me.gbFileSystemExcludedDirs = New System.Windows.Forms.GroupBox()
+        Me.btnFileSystemExcludedDirsRemove = New System.Windows.Forms.Button()
+        Me.btnFileSystemExcludedDirsAdd = New System.Windows.Forms.Button()
+        Me.txtFileSystemExcludedDirs = New System.Windows.Forms.TextBox()
+        Me.lstFileSystemExcludedDirs = New System.Windows.Forms.ListBox()
         Me.gbFileSystemValidThemeExts = New System.Windows.Forms.GroupBox()
         Me.btnFileSystemValidThemeExtsReset = New System.Windows.Forms.Button()
         Me.btnFileSystemValidThemeExtsRemove = New System.Windows.Forms.Button()
@@ -1115,6 +1120,7 @@ Partial Class dlgSettings
         Me.gbMovieGeneralFiltersOpts.SuspendLayout
         Me.gbMovieGeneralMissingItemsOpts.SuspendLayout
         Me.pnlFileSystem.SuspendLayout
+        Me.gbFileSystemExcludedDirs.SuspendLayout
         Me.gbFileSystemValidThemeExts.SuspendLayout
         Me.gbFileSystemNoStackExts.SuspendLayout
         Me.gbFileSystemValidExts.SuspendLayout
@@ -1601,7 +1607,7 @@ Partial Class dlgSettings
         Me.gbFileSystemCleanFiles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFileSystemCleanFiles.Location = New System.Drawing.Point(401, 6)
         Me.gbFileSystemCleanFiles.Name = "gbFileSystemCleanFiles"
-        Me.gbFileSystemCleanFiles.Size = New System.Drawing.Size(208, 385)
+        Me.gbFileSystemCleanFiles.Size = New System.Drawing.Size(208, 351)
         Me.gbFileSystemCleanFiles.TabIndex = 2
         Me.gbFileSystemCleanFiles.TabStop = false
         Me.gbFileSystemCleanFiles.Text = "Clean Files"
@@ -1615,7 +1621,7 @@ Partial Class dlgSettings
         Me.tcFileSystemCleaner.Location = New System.Drawing.Point(6, 19)
         Me.tcFileSystemCleaner.Name = "tcFileSystemCleaner"
         Me.tcFileSystemCleaner.SelectedIndex = 0
-        Me.tcFileSystemCleaner.Size = New System.Drawing.Size(196, 363)
+        Me.tcFileSystemCleaner.Size = New System.Drawing.Size(196, 326)
         Me.tcFileSystemCleaner.TabIndex = 0
         '
         'tpFileSystemCleanerStandard
@@ -1637,7 +1643,7 @@ Partial Class dlgSettings
         Me.tpFileSystemCleanerStandard.Location = New System.Drawing.Point(4, 25)
         Me.tpFileSystemCleanerStandard.Name = "tpFileSystemCleanerStandard"
         Me.tpFileSystemCleanerStandard.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpFileSystemCleanerStandard.Size = New System.Drawing.Size(188, 334)
+        Me.tpFileSystemCleanerStandard.Size = New System.Drawing.Size(188, 297)
         Me.tpFileSystemCleanerStandard.TabIndex = 0
         Me.tpFileSystemCleanerStandard.Text = "Standard"
         Me.tpFileSystemCleanerStandard.UseVisualStyleBackColor = true
@@ -1798,7 +1804,7 @@ Partial Class dlgSettings
         Me.tpFileSystemCleanerExpert.Location = New System.Drawing.Point(4, 25)
         Me.tpFileSystemCleanerExpert.Name = "tpFileSystemCleanerExpert"
         Me.tpFileSystemCleanerExpert.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpFileSystemCleanerExpert.Size = New System.Drawing.Size(188, 334)
+        Me.tpFileSystemCleanerExpert.Size = New System.Drawing.Size(188, 297)
         Me.tpFileSystemCleanerExpert.TabIndex = 1
         Me.tpFileSystemCleanerExpert.Text = "Expert"
         Me.tpFileSystemCleanerExpert.UseVisualStyleBackColor = true
@@ -3941,6 +3947,7 @@ Partial Class dlgSettings
         'pnlFileSystem
         '
         Me.pnlFileSystem.BackColor = System.Drawing.Color.White
+        Me.pnlFileSystem.Controls.Add(Me.gbFileSystemExcludedDirs)
         Me.pnlFileSystem.Controls.Add(Me.gbFileSystemValidThemeExts)
         Me.pnlFileSystem.Controls.Add(Me.gbFileSystemNoStackExts)
         Me.pnlFileSystem.Controls.Add(Me.gbFileSystemCleanFiles)
@@ -3951,6 +3958,57 @@ Partial Class dlgSettings
         Me.pnlFileSystem.TabIndex = 17
         Me.pnlFileSystem.Visible = false
         '
+        'gbFileSystemExcludedDirs
+        '
+        Me.gbFileSystemExcludedDirs.Controls.Add(Me.btnFileSystemExcludedDirsRemove)
+        Me.gbFileSystemExcludedDirs.Controls.Add(Me.btnFileSystemExcludedDirsAdd)
+        Me.gbFileSystemExcludedDirs.Controls.Add(Me.txtFileSystemExcludedDirs)
+        Me.gbFileSystemExcludedDirs.Controls.Add(Me.lstFileSystemExcludedDirs)
+        Me.gbFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbFileSystemExcludedDirs.Location = New System.Drawing.Point(3, 363)
+        Me.gbFileSystemExcludedDirs.Name = "gbFileSystemExcludedDirs"
+        Me.gbFileSystemExcludedDirs.Size = New System.Drawing.Size(744, 134)
+        Me.gbFileSystemExcludedDirs.TabIndex = 4
+        Me.gbFileSystemExcludedDirs.TabStop = false
+        Me.gbFileSystemExcludedDirs.Text = "Excluded Directories"
+        '
+        'btnFileSystemExcludedDirsRemove
+        '
+        Me.btnFileSystemExcludedDirsRemove.Image = CType(resources.GetObject("btnFileSystemExcludedDirsRemove.Image"),System.Drawing.Image)
+        Me.btnFileSystemExcludedDirsRemove.Location = New System.Drawing.Point(715, 108)
+        Me.btnFileSystemExcludedDirsRemove.Name = "btnFileSystemExcludedDirsRemove"
+        Me.btnFileSystemExcludedDirsRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnFileSystemExcludedDirsRemove.TabIndex = 6
+        Me.btnFileSystemExcludedDirsRemove.UseVisualStyleBackColor = True
+        '
+        'btnFileSystemExcludedDirsAdd
+        '
+        Me.btnFileSystemExcludedDirsAdd.Image = CType(resources.GetObject("btnFileSystemExcludedDirsAdd.Image"), System.Drawing.Image)
+        Me.btnFileSystemExcludedDirsAdd.Location = New System.Drawing.Point(646, 109)
+        Me.btnFileSystemExcludedDirsAdd.Name = "btnFileSystemExcludedDirsAdd"
+        Me.btnFileSystemExcludedDirsAdd.Size = New System.Drawing.Size(23, 23)
+        Me.btnFileSystemExcludedDirsAdd.TabIndex = 5
+        Me.btnFileSystemExcludedDirsAdd.UseVisualStyleBackColor = True
+        '
+        'txtFileSystemExcludedDirs
+        '
+        Me.txtFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFileSystemExcludedDirs.Location = New System.Drawing.Point(9, 109)
+        Me.txtFileSystemExcludedDirs.Name = "txtFileSystemExcludedDirs"
+        Me.txtFileSystemExcludedDirs.Size = New System.Drawing.Size(631, 22)
+        Me.txtFileSystemExcludedDirs.TabIndex = 4
+        '
+        'lstFileSystemExcludedDirs
+        '
+        Me.lstFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstFileSystemExcludedDirs.FormattingEnabled = True
+        Me.lstFileSystemExcludedDirs.Location = New System.Drawing.Point(9, 21)
+        Me.lstFileSystemExcludedDirs.Name = "lstFileSystemExcludedDirs"
+        Me.lstFileSystemExcludedDirs.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstFileSystemExcludedDirs.Size = New System.Drawing.Size(729, 82)
+        Me.lstFileSystemExcludedDirs.Sorted = true
+        Me.lstFileSystemExcludedDirs.TabIndex = 1
+        '
         'gbFileSystemValidThemeExts
         '
         Me.gbFileSystemValidThemeExts.Controls.Add(Me.btnFileSystemValidThemeExtsReset)
@@ -3959,9 +4017,9 @@ Partial Class dlgSettings
         Me.gbFileSystemValidThemeExts.Controls.Add(Me.txtFileSystemValidThemeExts)
         Me.gbFileSystemValidThemeExts.Controls.Add(Me.lstFileSystemValidThemeExts)
         Me.gbFileSystemValidThemeExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbFileSystemValidThemeExts.Location = New System.Drawing.Point(202, 212)
+        Me.gbFileSystemValidThemeExts.Location = New System.Drawing.Point(202, 140)
         Me.gbFileSystemValidThemeExts.Name = "gbFileSystemValidThemeExts"
-        Me.gbFileSystemValidThemeExts.Size = New System.Drawing.Size(194, 209)
+        Me.gbFileSystemValidThemeExts.Size = New System.Drawing.Size(194, 217)
         Me.gbFileSystemValidThemeExts.TabIndex = 3
         Me.gbFileSystemValidThemeExts.TabStop = false
         Me.gbFileSystemValidThemeExts.Text = "Valid Theme Extensions"
@@ -3978,7 +4036,7 @@ Partial Class dlgSettings
         'btnFileSystemValidThemeExtsRemove
         '
         Me.btnFileSystemValidThemeExtsRemove.Image = CType(resources.GetObject("btnFileSystemValidThemeExtsRemove.Image"),System.Drawing.Image)
-        Me.btnFileSystemValidThemeExtsRemove.Location = New System.Drawing.Point(163, 178)
+        Me.btnFileSystemValidThemeExtsRemove.Location = New System.Drawing.Point(163, 185)
         Me.btnFileSystemValidThemeExtsRemove.Name = "btnFileSystemValidThemeExtsRemove"
         Me.btnFileSystemValidThemeExtsRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnFileSystemValidThemeExtsRemove.TabIndex = 3
@@ -3987,7 +4045,7 @@ Partial Class dlgSettings
         'btnFileSystemValidThemeExtsAdd
         '
         Me.btnFileSystemValidThemeExtsAdd.Image = CType(resources.GetObject("btnFileSystemValidThemeExtsAdd.Image"),System.Drawing.Image)
-        Me.btnFileSystemValidThemeExtsAdd.Location = New System.Drawing.Point(68, 178)
+        Me.btnFileSystemValidThemeExtsAdd.Location = New System.Drawing.Point(68, 185)
         Me.btnFileSystemValidThemeExtsAdd.Name = "btnFileSystemValidThemeExtsAdd"
         Me.btnFileSystemValidThemeExtsAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnFileSystemValidThemeExtsAdd.TabIndex = 2
@@ -3996,7 +4054,7 @@ Partial Class dlgSettings
         'txtFileSystemValidThemeExts
         '
         Me.txtFileSystemValidThemeExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtFileSystemValidThemeExts.Location = New System.Drawing.Point(6, 179)
+        Me.txtFileSystemValidThemeExts.Location = New System.Drawing.Point(6, 186)
         Me.txtFileSystemValidThemeExts.Name = "txtFileSystemValidThemeExts"
         Me.txtFileSystemValidThemeExts.Size = New System.Drawing.Size(61, 22)
         Me.txtFileSystemValidThemeExts.TabIndex = 1
@@ -4005,7 +4063,7 @@ Partial Class dlgSettings
         '
         Me.lstFileSystemValidThemeExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lstFileSystemValidThemeExts.FormattingEnabled = true
-        Me.lstFileSystemValidThemeExts.Location = New System.Drawing.Point(6, 37)
+        Me.lstFileSystemValidThemeExts.Location = New System.Drawing.Point(6, 46)
         Me.lstFileSystemValidThemeExts.Name = "lstFileSystemValidThemeExts"
         Me.lstFileSystemValidThemeExts.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lstFileSystemValidThemeExts.Size = New System.Drawing.Size(180, 134)
@@ -4021,7 +4079,7 @@ Partial Class dlgSettings
         Me.gbFileSystemNoStackExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFileSystemNoStackExts.Location = New System.Drawing.Point(202, 6)
         Me.gbFileSystemNoStackExts.Name = "gbFileSystemNoStackExts"
-        Me.gbFileSystemNoStackExts.Size = New System.Drawing.Size(194, 199)
+        Me.gbFileSystemNoStackExts.Size = New System.Drawing.Size(194, 128)
         Me.gbFileSystemNoStackExts.TabIndex = 1
         Me.gbFileSystemNoStackExts.TabStop = false
         Me.gbFileSystemNoStackExts.Text = "No Stack Extensions"
@@ -4029,7 +4087,7 @@ Partial Class dlgSettings
         'btnFileSystemNoStackExtsRemove
         '
         Me.btnFileSystemNoStackExtsRemove.Image = CType(resources.GetObject("btnFileSystemNoStackExtsRemove.Image"),System.Drawing.Image)
-        Me.btnFileSystemNoStackExtsRemove.Location = New System.Drawing.Point(160, 167)
+        Me.btnFileSystemNoStackExtsRemove.Location = New System.Drawing.Point(160, 91)
         Me.btnFileSystemNoStackExtsRemove.Name = "btnFileSystemNoStackExtsRemove"
         Me.btnFileSystemNoStackExtsRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnFileSystemNoStackExtsRemove.TabIndex = 3
@@ -4038,7 +4096,7 @@ Partial Class dlgSettings
         'btnFileSystemNoStackExtsAdd
         '
         Me.btnFileSystemNoStackExtsAdd.Image = CType(resources.GetObject("btnFileSystemNoStackExtsAdd.Image"),System.Drawing.Image)
-        Me.btnFileSystemNoStackExtsAdd.Location = New System.Drawing.Point(73, 167)
+        Me.btnFileSystemNoStackExtsAdd.Location = New System.Drawing.Point(73, 91)
         Me.btnFileSystemNoStackExtsAdd.Name = "btnFileSystemNoStackExtsAdd"
         Me.btnFileSystemNoStackExtsAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnFileSystemNoStackExtsAdd.TabIndex = 2
@@ -4047,7 +4105,7 @@ Partial Class dlgSettings
         'txtFileSystemNoStackExts
         '
         Me.txtFileSystemNoStackExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtFileSystemNoStackExts.Location = New System.Drawing.Point(11, 168)
+        Me.txtFileSystemNoStackExts.Location = New System.Drawing.Point(11, 92)
         Me.txtFileSystemNoStackExts.Name = "txtFileSystemNoStackExts"
         Me.txtFileSystemNoStackExts.Size = New System.Drawing.Size(61, 22)
         Me.txtFileSystemNoStackExts.TabIndex = 1
@@ -4059,7 +4117,7 @@ Partial Class dlgSettings
         Me.lstFileSystemNoStackExts.Location = New System.Drawing.Point(11, 15)
         Me.lstFileSystemNoStackExts.Name = "lstFileSystemNoStackExts"
         Me.lstFileSystemNoStackExts.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstFileSystemNoStackExts.Size = New System.Drawing.Size(171, 134)
+        Me.lstFileSystemNoStackExts.Size = New System.Drawing.Size(171, 69)
         Me.lstFileSystemNoStackExts.Sorted = true
         Me.lstFileSystemNoStackExts.TabIndex = 0
         '
@@ -4073,7 +4131,7 @@ Partial Class dlgSettings
         Me.gbFileSystemValidExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFileSystemValidExts.Location = New System.Drawing.Point(3, 6)
         Me.gbFileSystemValidExts.Name = "gbFileSystemValidExts"
-        Me.gbFileSystemValidExts.Size = New System.Drawing.Size(192, 385)
+        Me.gbFileSystemValidExts.Size = New System.Drawing.Size(192, 351)
         Me.gbFileSystemValidExts.TabIndex = 0
         Me.gbFileSystemValidExts.TabStop = false
         Me.gbFileSystemValidExts.Text = "Valid Video Extensions"
@@ -4090,7 +4148,7 @@ Partial Class dlgSettings
         'btnFileSystemValidExtsRemove
         '
         Me.btnFileSystemValidExtsRemove.Image = CType(resources.GetObject("btnFileSystemValidExtsRemove.Image"),System.Drawing.Image)
-        Me.btnFileSystemValidExtsRemove.Location = New System.Drawing.Point(163, 356)
+        Me.btnFileSystemValidExtsRemove.Location = New System.Drawing.Point(163, 320)
         Me.btnFileSystemValidExtsRemove.Name = "btnFileSystemValidExtsRemove"
         Me.btnFileSystemValidExtsRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnFileSystemValidExtsRemove.TabIndex = 3
@@ -4099,7 +4157,7 @@ Partial Class dlgSettings
         'btnFileSystemValidExtsAdd
         '
         Me.btnFileSystemValidExtsAdd.Image = CType(resources.GetObject("btnFileSystemValidExtsAdd.Image"),System.Drawing.Image)
-        Me.btnFileSystemValidExtsAdd.Location = New System.Drawing.Point(68, 356)
+        Me.btnFileSystemValidExtsAdd.Location = New System.Drawing.Point(68, 320)
         Me.btnFileSystemValidExtsAdd.Name = "btnFileSystemValidExtsAdd"
         Me.btnFileSystemValidExtsAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnFileSystemValidExtsAdd.TabIndex = 2
@@ -4108,7 +4166,7 @@ Partial Class dlgSettings
         'txtFileSystemValidExts
         '
         Me.txtFileSystemValidExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtFileSystemValidExts.Location = New System.Drawing.Point(6, 357)
+        Me.txtFileSystemValidExts.Location = New System.Drawing.Point(6, 321)
         Me.txtFileSystemValidExts.Name = "txtFileSystemValidExts"
         Me.txtFileSystemValidExts.Size = New System.Drawing.Size(61, 22)
         Me.txtFileSystemValidExts.TabIndex = 1
@@ -4120,7 +4178,7 @@ Partial Class dlgSettings
         Me.lstFileSystemValidExts.Location = New System.Drawing.Point(6, 37)
         Me.lstFileSystemValidExts.Name = "lstFileSystemValidExts"
         Me.lstFileSystemValidExts.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstFileSystemValidExts.Size = New System.Drawing.Size(180, 303)
+        Me.lstFileSystemValidExts.Size = New System.Drawing.Size(180, 277)
         Me.lstFileSystemValidExts.Sorted = true
         Me.lstFileSystemValidExts.TabIndex = 0
         '
@@ -11229,7 +11287,7 @@ Partial Class dlgSettings
         '
         'chkMovieScraperReleaseFormat
         '
-        Me.chkMovieScraperReleaseFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieScraperReleaseFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieScraperReleaseFormat.Location = New System.Drawing.Point(6, 152)
         Me.chkMovieScraperReleaseFormat.Name = "chkMovieScraperReleaseFormat"
         Me.chkMovieScraperReleaseFormat.Size = New System.Drawing.Size(410, 17)
@@ -12828,6 +12886,8 @@ Partial Class dlgSettings
         Me.gbMovieGeneralFiltersOpts.PerformLayout
         Me.gbMovieGeneralMissingItemsOpts.ResumeLayout(false)
         Me.pnlFileSystem.ResumeLayout(false)
+        Me.gbFileSystemExcludedDirs.ResumeLayout(false)
+        Me.gbFileSystemExcludedDirs.PerformLayout
         Me.gbFileSystemValidThemeExts.ResumeLayout(false)
         Me.gbFileSystemValidThemeExts.PerformLayout
         Me.gbFileSystemNoStackExts.ResumeLayout(false)
@@ -14111,4 +14171,9 @@ End Sub
     Friend WithEvents chkMovieLockCollections As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperCollectionsAuto As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperReleaseFormat As System.Windows.Forms.CheckBox
+    Friend WithEvents gbFileSystemExcludedDirs As System.Windows.Forms.GroupBox
+    Friend WithEvents btnFileSystemExcludedDirsRemove As System.Windows.Forms.Button
+    Friend WithEvents btnFileSystemExcludedDirsAdd As System.Windows.Forms.Button
+    Friend WithEvents txtFileSystemExcludedDirs As System.Windows.Forms.TextBox
+    Friend WithEvents lstFileSystemExcludedDirs As System.Windows.Forms.ListBox
 End Class

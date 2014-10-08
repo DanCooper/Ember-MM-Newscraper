@@ -491,6 +491,83 @@ Public Class dlgSettings
         Me.txtMovieFilter.Focus()
     End Sub
 
+    Private Sub btnFileSystemExcludedDirsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemExcludedDirsAdd.Click
+        If Not String.IsNullOrEmpty(txtFileSystemExcludedDirs.Text) Then
+            If Not lstFileSystemExcludedDirs.Items.Contains(txtFileSystemExcludedDirs.Text.ToLower) Then
+                AddExcludedDir(txtFileSystemExcludedDirs.Text)
+                Me.RefreshFileSystemExcludeDirs()
+                txtFileSystemExcludedDirs.Text = String.Empty
+                txtFileSystemExcludedDirs.Focus()
+            End If
+        End If
+    End Sub
+
+    Private Sub btnFileSystemExcludedDirsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemExcludedDirsRemove.Click
+        Me.RemoveExcludeDir()
+        Me.RefreshFileSystemExcludeDirs()
+    End Sub
+
+    Private Sub lstFileSystemExcludedDirs_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemExcludedDirs.KeyDown
+        If e.KeyCode = Keys.Delete Then
+            Me.RemoveExcludeDir()
+            Me.RefreshFileSystemExcludeDirs()
+        End If
+    End Sub
+
+    Private Sub AddExcludedDir(ByVal Path As String)
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLcommand.CommandText = "INSERT OR REPLACE INTO ExcludeDir (Dirname) VALUES (?);"
+
+                    Dim parDirname As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirname", DbType.String, 0, "Dirname")
+                    parDirname.Value = Path
+
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Me.SetApplyButton(True)
+            Me.sResult.NeedsUpdate = True
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        Finally
+            Master.DB.LoadExcludeDirsFromDB()
+        End Try
+    End Sub
+
+    Private Sub RemoveExcludeDir()
+        Try
+            If Me.lstFileSystemExcludedDirs.SelectedItems.Count > 0 Then
+                Me.lstFileSystemExcludedDirs.BeginUpdate()
+
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        Dim parDirname As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirname", DbType.String, 0, "Dirname")
+                        While Me.lstFileSystemExcludedDirs.SelectedItems.Count > 0
+                            parDirname.Value = lstFileSystemExcludedDirs.SelectedItems(0).ToString
+                            SQLcommand.CommandText = String.Concat("DELETE FROM ExcludeDir WHERE Dirname = (?);")
+                            SQLcommand.ExecuteNonQuery()
+                            lstFileSystemExcludedDirs.Items.Remove(lstFileSystemExcludedDirs.SelectedItems(0))
+                        End While
+                    End Using
+                    SQLtransaction.Commit()
+                End Using
+
+                Me.lstFileSystemExcludedDirs.EndUpdate()
+                Me.lstFileSystemExcludedDirs.Refresh()
+
+                Me.SetApplyButton(True)
+                Me.sResult.NeedsUpdate = True
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        Finally
+            Master.DB.LoadExcludeDirsFromDB()
+        End Try
+    End Sub
+
     Private Sub btnFileSystemValidExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidExtsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemValidExts.Text) Then
             If Not Strings.Left(txtFileSystemValidExts.Text, 1) = "." Then txtFileSystemValidExts.Text = String.Concat(".", txtFileSystemValidExts.Text)
@@ -624,7 +701,7 @@ Public Class dlgSettings
             Me.SetApplyButton(False)
             If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh_Movie OrElse Me.sResult.NeedsRefresh_MovieSet OrElse Me.sResult.NeedsRefresh_TV Then Me.didApply = True
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -661,7 +738,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -793,7 +870,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -809,7 +886,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -896,7 +973,7 @@ Public Class dlgSettings
                 Me.lvTVShowRegex.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -923,7 +1000,7 @@ Public Class dlgSettings
                 Me.lvTVShowRegex.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1073,7 +1150,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1089,7 +1166,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1106,7 +1183,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3495,6 +3572,7 @@ Public Class dlgSettings
                 Me.RefreshTVShowFilters()
                 Me.RefreshTVEpisodeFilters()
                 Me.RefreshMovieFilters()
+                Me.RefreshFileSystemExcludeDirs()
                 Me.RefreshFileSystemValidExts()
                 Me.RefreshFileSystemValidThemeExts()
 
@@ -4330,6 +4408,11 @@ Public Class dlgSettings
                 End While
             End Using
         End Using
+    End Sub
+
+    Private Sub RefreshFileSystemExcludeDirs()
+        Me.lstFileSystemExcludedDirs.Items.Clear()
+        Me.lstFileSystemExcludedDirs.Items.AddRange(Master.ExcludeDirs.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemValidExts()
@@ -5628,6 +5711,7 @@ Public Class dlgSettings
         Me.colPath.Text = Master.eLang.GetString(410, "Path")
         Me.colRecur.Text = Master.eLang.GetString(411, "Recursive")
         Me.colSingle.Text = Master.eLang.GetString(413, "Single Video")
+        Me.gbFileSystemExcludedDirs.Text = Master.eLang.GetString(1273, "Excluded Directories")
         Me.gbFileSystemCleanFiles.Text = Master.eLang.GetString(437, "Clean Files")
         Me.gbFileSystemNoStackExts.Text = Master.eLang.GetString(530, "No Stack Extensions")
         Me.gbFileSystemValidExts.Text = Master.eLang.GetString(534, "Valid Video Extensions")

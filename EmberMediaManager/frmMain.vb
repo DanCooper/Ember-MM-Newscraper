@@ -10299,6 +10299,7 @@ doCancel:
             End If
             Master.DB.LoadMovieSourcesFromDB()
             Master.DB.LoadTVSourcesFromDB()
+            Master.DB.LoadExcludeDirsFromDB()
             If RunModule Then
                 Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
@@ -10578,6 +10579,7 @@ doCancel:
 
                 Master.DB.LoadMovieSourcesFromDB()
                 Master.DB.LoadTVSourcesFromDB()
+                Master.DB.LoadExcludeDirsFromDB()
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
                 Me.SetMenus(True)
