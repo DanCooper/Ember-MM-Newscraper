@@ -24,6 +24,8 @@ Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
 Imports System.Net
+Imports System.Windows.Forms
+Imports System.Drawing
 
 Public Class dlgMovieDataScraperPreview
 

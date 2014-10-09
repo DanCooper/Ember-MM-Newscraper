@@ -22,7 +22,6 @@ Partial Class dlgMovieDataScraperPreview
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgMovieDataScraperPreview))
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
         Me.lblTopTitle = New System.Windows.Forms.Label()
@@ -390,7 +389,6 @@ Partial Class dlgMovieDataScraperPreview
         'pbTopLogo
         '
         Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
-        Me.pbTopLogo.Image = CType(resources.GetObject("pbTopLogo.Image"), System.Drawing.Image)
         Me.pbTopLogo.Location = New System.Drawing.Point(7, 8)
         Me.pbTopLogo.Name = "pbTopLogo"
         Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
@@ -557,8 +555,7 @@ Partial Class dlgMovieDataScraperPreview
         'btnPlayTrailer
         '
         Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(958, 565)
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(958, 559)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"
         Me.btnPlayTrailer.Size = New System.Drawing.Size(23, 23)
         Me.btnPlayTrailer.TabIndex = 124
@@ -2692,9 +2689,9 @@ Partial Class dlgMovieDataScraperPreview
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(839, 697)
+        Me.Cancel_Button.Location = New System.Drawing.Point(814, 700)
         Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
+        Me.Cancel_Button.Size = New System.Drawing.Size(92, 27)
         Me.Cancel_Button.TabIndex = 106
         Me.Cancel_Button.Text = "Cancel"
         Me.Cancel_Button.Visible = False
@@ -2702,7 +2699,7 @@ Partial Class dlgMovieDataScraperPreview
         'OK_Button
         '
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(912, 693)
+        Me.OK_Button.Location = New System.Drawing.Point(912, 700)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(92, 27)
         Me.OK_Button.TabIndex = 105

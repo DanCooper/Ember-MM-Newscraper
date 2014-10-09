@@ -24,6 +24,7 @@ Imports System.Text.RegularExpressions
 Imports System.Xml
 Imports System.Xml.Serialization
 Imports NLog
+Imports System.Windows.Forms
 
 Public Class NFO
 
@@ -71,10 +72,10 @@ Public Class NFO
         Dim new_Votes As Boolean = False
         Dim new_Year As Boolean = False
 
-        ''If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
-        'If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieScraperUseDetailView Then
-        '    Me.PreviewDataScraperResults(ScrapedList)
-        'End If
+        'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
+        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieScraperUseDetailView Then
+            PreviewDataScraperResults(ScrapedList)
+        End If
 
         Try
             For Each scrapedmovie In ScrapedList
@@ -415,6 +416,27 @@ Public Class NFO
         End Try
         Return DBMovie
     End Function
+    ''' <summary>
+    ''' Open MovieDataScraperPreview Window
+    ''' </summary>
+    ''' <param name="ScrapedList"><c>List(Of MediaContainers.Movie)</c> which contains unfiltered results of each data scraper</param>
+    ''' <remarks>
+    ''' 2014/09/13 Cocotus - First implementation: Display all scrapedresults in preview window, so that user can select the information which should be used
+    ''' </remarks>
+    Public Shared Sub PreviewDataScraperResults(ByRef ScrapedList As List(Of MediaContainers.Movie))
+        Try
+            Application.DoEvents()
+            'Open/Show preview window
+            Using dlgMovieDataScraperPreview As New dlgMovieDataScraperPreview(ScrapedList)
+                Select Case dlgMovieDataScraperPreview.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        'For now nothing here
+                End Select
+            End Using
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
 
     Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal isTV As Boolean) As String
         '//

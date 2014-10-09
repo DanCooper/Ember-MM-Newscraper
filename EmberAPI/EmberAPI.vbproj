@@ -164,6 +164,12 @@
     <Compile Include="clsAPIXML.vb" />
     <Compile Include="clsAPIYouTube.vb" />
     <Compile Include="clsAPITrailers.vb" />
+    <Compile Include="dlgMovieDataScraperPreview.Designer.vb">
+      <DependentUpon>dlgMovieDataScraperPreview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgMovieDataScraperPreview.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgVersions.Designer.vb">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </Compile>
@@ -204,6 +210,10 @@
     <Compile Include="XML Serialization\clsXMLTVDBLanguages.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="dlgMovieDataScraperPreview.resx">
+      <DependentUpon>dlgMovieDataScraperPreview.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgVersions.resx">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </EmbeddedResource>

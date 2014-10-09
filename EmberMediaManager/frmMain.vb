@@ -12301,27 +12301,6 @@ doCancel:
             Me.Refresh()
         End If
     End Sub
-    ''' <summary>
-    ''' Open MovieDataScraperPreview Window
-    ''' </summary>
-    ''' <param name="ScrapedList"><c>List(Of MediaContainers.Movie)</c> which contains unfiltered results of each data scraper</param>
-    ''' <remarks>
-    ''' 2014/09/13 Cocotus - First implementation: Display all scrapedresults in preview window, so that user can select the information which should be used
-    ''' </remarks>
-    Private Sub PreviewDataScraperResults(ByRef ScrapedList As List(Of MediaContainers.Movie))
-        Try
-            Application.DoEvents()
-            'Open/Show preview window
-            Using dlgMovieDataScraperPreview As New dlgMovieDataScraperPreview(ScrapedList)
-                Select Case dlgMovieDataScraperPreview.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        'For now nothing here
-                End Select
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
 
     Private Sub MovieScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, Optional ByVal Restart As Boolean = False)
         ScrapeList.Clear()
