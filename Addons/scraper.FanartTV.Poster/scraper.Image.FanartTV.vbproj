@@ -151,7 +151,7 @@
     <Compile Include="frmFanartTVMediaSettingsHolder_MovieSet.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Scraper\clsScrapeFANARTTV.vb" />
+    <Compile Include="Scraper\clsScrapeFanartTV.vb" />
     <Compile Include="frmFanartTVMediaSettingsHolder_Movie.Designer.vb">
       <DependentUpon>frmFanartTVMediaSettingsHolder_Movie.vb</DependentUpon>
     </Compile>

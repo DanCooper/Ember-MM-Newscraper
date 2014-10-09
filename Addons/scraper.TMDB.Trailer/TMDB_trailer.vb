@@ -21,7 +21,7 @@
 Imports System.IO
 Imports EmberAPI
 Imports WatTmdb
-Imports ScraperModule.TMDBtrailer
+Imports ScraperModule.TMDB
 Imports NLog
 
 Public Class TMDB_Trailer
@@ -35,7 +35,7 @@ Public Class TMDB_Trailer
     Public Shared _AssemblyName As String
 
     Private TMDBId As String
-    Private _TMDBt As TMDBtrailer.Scraper
+    Private _TMDBt As TMDB.Scraper
 
     ''' <summary>
     ''' Scraping Here
@@ -121,7 +121,7 @@ Public Class TMDB_Trailer
         _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings.APIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
         _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings.APIKey, "")
-        _TMDBt = New TMDBtrailer.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
+        _TMDBt = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
     End Sub
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Trailer_Movie.InjectSetupScraper

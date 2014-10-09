@@ -39,7 +39,7 @@ Public Class IMDB_Image
     Private _Name As String = "IMDB_Poster"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmIMDBMediaSettingsHolder
-    Private IMDB As IMDBg.Scraper
+    Private IMDB As IMDB.Scraper
 
 #End Region 'Fields
 
@@ -113,7 +113,7 @@ Public Class IMDB_Image
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_Movie.Init
         _AssemblyName = sAssemblyName
         LoadSettings()
-        IMDB = New IMDBg.Scraper()
+        IMDB = New IMDB.Scraper()
     End Sub
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper

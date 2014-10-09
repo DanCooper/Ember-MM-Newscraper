@@ -23,8 +23,7 @@ Imports EmberAPI
 Imports WatTmdb
 Imports NLog
 
-
-Namespace TMDBtrailer
+Namespace TMDB
 
     Public Class Scraper
 

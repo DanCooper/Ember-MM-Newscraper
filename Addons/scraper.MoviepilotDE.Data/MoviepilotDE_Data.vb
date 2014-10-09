@@ -169,7 +169,7 @@ Public Class MoviepilotDE_Data
         End If
 
         'we have the originaltitle -> now we can use scraper methods!
-        Dim tmpMoviepilotDE As New MoviepilotDE(oDBMovie.Movie.OriginalTitle)
+        Dim tmpMoviepilotDE As New MoviepilotDE.Scraper(oDBMovie.Movie.OriginalTitle)
 
         'Use Moviepilot FSK?
         If ConfigOptions.bCert Then

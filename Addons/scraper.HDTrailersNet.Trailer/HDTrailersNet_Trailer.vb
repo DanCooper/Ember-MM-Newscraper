@@ -26,7 +26,7 @@ Imports NLog
 ''' HDTrailerNet Trailer scraper
 ''' </summary>
 ''' <remarks></remarks>
-Public Class HDTrailerNet_Trailer
+Public Class HDTrailerdNet_Trailer
     Implements Interfaces.ScraperModule_Trailer_Movie
 
 
@@ -157,7 +157,7 @@ Public Class HDTrailerNet_Trailer
             tTitle = DBMovie.Movie.OriginalTitle
         End If
 
-        Dim tHDTrailersNetTrailer As New HDTrailersNetTrailer(tTitle)
+        Dim tHDTrailersNetTrailer As New HDTrailersNet.Scraper(tTitle)
 
         If tHDTrailersNetTrailer.TrailerList.Count > 0 Then
             URLList = tHDTrailersNetTrailer.TrailerList

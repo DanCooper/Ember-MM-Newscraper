@@ -26,7 +26,7 @@ Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
 
-Namespace IMDBg
+Namespace IMDB
 
     Public Class Scraper
 
@@ -74,7 +74,7 @@ Namespace IMDBg
                             If mSYSX.Success Then
                                 alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = mcIMDB(0).Value, .Width = mSYSX.Groups(2).Value, .Height = mSYSX.Groups(1).Value, .ParentID = aParentID})
                             Else
-                                logger.Error( "Unknown IMDB Poster URL")
+                                logger.Error("Unknown IMDB Poster URL")
                             End If
                         Else
                             aPar2 = Split(aPar(0), ".")
@@ -94,7 +94,7 @@ Namespace IMDBg
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return alPoster

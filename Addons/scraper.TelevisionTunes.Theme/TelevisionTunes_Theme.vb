@@ -142,7 +142,7 @@ Public Class TelevisionTunes_Theme
     Function Scraper(ByVal DBTV As Structures.DBTV, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
         logger.Trace("Started scrape")
 
-        Dim tTelevisionTunes As New TelevisionTunes(DBTV.TVShow.Title)
+        Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBTV.TVShow.Title)
 
         If tTelevisionTunes.ThemeList.Count > 0 Then
             ThemeList = tTelevisionTunes.ThemeList

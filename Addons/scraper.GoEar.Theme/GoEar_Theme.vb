@@ -143,7 +143,7 @@ Public Class GoEar_Theme
     Function Scraper(ByVal DBMovie As Structures.DBMovie, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
         logger.Trace("Started scrape")
 
-        Dim tGoEar As New GoEar(DBMovie.Movie.OriginalTitle, DBMovie.ListTitle)
+        Dim tGoEar As New GoEar.Scraper(DBMovie.Movie.OriginalTitle, DBMovie.ListTitle)
 
         If tGoEar.ThemeList.Count > 0 Then
             ThemeList = tGoEar.ThemeList

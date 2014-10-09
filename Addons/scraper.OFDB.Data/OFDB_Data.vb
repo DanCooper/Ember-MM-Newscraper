@@ -186,7 +186,7 @@ Public Class OFDB_Data
         nMovie.Scrapersource = "OFDB"
 
         ' we have the IMDB-ID -> now we can use scraper methods!
-        Dim tOFDB As New OFDB(oDBMovie.Movie.ID)
+        Dim tOFDB As New OFDB.Scraper(oDBMovie.Movie.ID)
 
         'Use OFDB title?
         If ConfigOptions.bTitle Then

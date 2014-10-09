@@ -370,7 +370,6 @@ Public Class FanartTV_Image
         ConfigScrapeModifier_Movie.DiscArt = _setup_Movie.chkScrapeDiscArt.Checked
         ConfigScrapeModifier_Movie.Landscape = _setup_Movie.chkScrapeLandscape.Checked
         SaveSettings_Movie()
-        'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
             RemoveHandler _setup_Movie.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
@@ -395,7 +394,6 @@ Public Class FanartTV_Image
         ConfigScrapeModifier_MovieSet.DiscArt = _setup_MovieSet.chkScrapeDiscArt.Checked
         ConfigScrapeModifier_MovieSet.Landscape = _setup_MovieSet.chkScrapeLandscape.Checked
         SaveSettings_MovieSet()
-        'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_MovieSet
             RemoveHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_MovieSet
@@ -405,7 +403,7 @@ Public Class FanartTV_Image
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
-        logger.Trace("Started scrape")
+        logger.Trace("Started scrape FanartTV")
 
         LoadSettings_Movie()
 
@@ -426,12 +424,12 @@ Public Class FanartTV_Image
             logger.Trace(String.Concat("No IMDB and TMDB ID exist to search: ", DBMovie.ListTitle))
         End If
 
-        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape")
+        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape FanartTV")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
-        logger.Trace("Started scrape")
+        logger.Trace("Started scrape FanartTV")
 
         LoadSettings_MovieSet()
 
@@ -454,7 +452,7 @@ Public Class FanartTV_Image
             ImageList = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, Type, Settings)
         End If
 
-        logger.Trace("Finished scrape")
+        logger.Trace("Finished scrape FanartTV")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

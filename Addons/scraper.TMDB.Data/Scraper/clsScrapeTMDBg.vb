@@ -30,7 +30,7 @@ Imports WatTmdb
 Imports NLog
 Imports System.Diagnostics
 
-Namespace TMDBdata
+Namespace TMDB
 
     Public Class SearchResults_Movie
 
@@ -130,9 +130,9 @@ Namespace TMDBdata
 
         Public Event SearchInfoDownloaded_MovieSet(ByVal sPoster As String, ByVal bSuccess As Boolean)
 
-        Public Event SearchResultsDownloaded_Movie(ByVal mResults As TMDBdata.SearchResults_Movie)
+        Public Event SearchResultsDownloaded_Movie(ByVal mResults As TMDB.SearchResults_Movie)
 
-        Public Event SearchResultsDownloaded_MovieSet(ByVal mResults As TMDBdata.SearchResults_MovieSet)
+        Public Event SearchResultsDownloaded_MovieSet(ByVal mResults As TMDB.SearchResults_MovieSet)
 
 #End Region 'Events
 

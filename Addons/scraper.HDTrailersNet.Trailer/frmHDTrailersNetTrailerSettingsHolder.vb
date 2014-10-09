@@ -36,20 +36,20 @@ Public Class frmHDTrailersNetTrailerSettingsHolder
 #Region "Methods"
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = HDTrailerNet_Trailer._AssemblyName).ModuleOrder
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = HDTrailerdNet_Trailer._AssemblyName).ModuleOrder
         If order < ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = HDTrailerNet_Trailer._AssemblyName).ModuleOrder = order + 1
+            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = HDTrailerdNet_Trailer._AssemblyName).ModuleOrder = order + 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = HDTrailerNet_Trailer._AssemblyName).ModuleOrder
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = HDTrailerdNet_Trailer._AssemblyName).ModuleOrder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = HDTrailerNet_Trailer._AssemblyName).ModuleOrder = order - 1
+            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = HDTrailerdNet_Trailer._AssemblyName).ModuleOrder = order - 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
             orderChanged()
         End If
@@ -68,7 +68,7 @@ Public Class frmHDTrailersNetTrailerSettingsHolder
     End Sub
 
     Sub orderChanged()
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = HDTrailerNet_Trailer._AssemblyName).ModuleOrder
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = HDTrailerdNet_Trailer._AssemblyName).ModuleOrder
         If ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count > 0 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count - 1)
             btnUp.Enabled = (order > 0)
