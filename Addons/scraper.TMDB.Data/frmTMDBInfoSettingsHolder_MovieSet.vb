@@ -42,7 +42,6 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
 
 #End Region 'Fields
 
-
 #Region "Properties"
 
     Public Property API() As String
@@ -74,8 +73,16 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
 
 #End Region 'Properties
 
-
 #Region "Methods"
+
+    Public Sub New()
+        _api = String.Empty
+        _language = String.Empty
+        _getadultitems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+        InitializeComponent()
+        Me.SetUp()
+    End Sub
+
     Private Sub pbTMDBApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbTMDBApiKeyInfo.Click
         If Master.isWindows Then
             Process.Start("http://docs.themoviedb.apiary.io/")
@@ -119,9 +126,6 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
     End Sub
 
     Private Sub chkGetAdult_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGetAdultItems.CheckedChanged
-        If Not (_getadultitems = chkGetAdultItems.Checked) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -138,29 +142,12 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
     End Sub
 
     Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
-        If Not (_language = cbPrefLanguage.Text) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
         _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub txtTMDBApiKey_TextValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Validated
-        If Not (_api = txtApiKey.Text) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
-    End Sub
-
-    Public Sub New()
-        _api = String.Empty
-        _language = String.Empty
-        _getadultitems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
-        InitializeComponent()
-        Me.SetUp()
     End Sub
 
     Sub orderChanged()

@@ -60,6 +60,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
+        Me.chkOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.gbGlobalOpts.SuspendLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -277,6 +278,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         '
         'gbScraperOpts
         '
+        Me.gbScraperOpts.Controls.Add(Me.chkOriginalTitle)
         Me.gbScraperOpts.Controls.Add(Me.chkWriters)
         Me.gbScraperOpts.Controls.Add(Me.chkCollectionID)
         Me.gbScraperOpts.Controls.Add(Me.chkDirector)
@@ -472,6 +474,16 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
+        'chkOriginalTitle
+        '
+        Me.chkOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkOriginalTitle.Location = New System.Drawing.Point(332, 72)
+        Me.chkOriginalTitle.Name = "chkOriginalTitle"
+        Me.chkOriginalTitle.Size = New System.Drawing.Size(175, 17)
+        Me.chkOriginalTitle.TabIndex = 78
+        Me.chkOriginalTitle.Text = "Original Title"
+        Me.chkOriginalTitle.UseVisualStyleBackColor = True
+        '
         'frmTMDBInfoSettingsHolder_Movie
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -536,5 +548,6 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
     Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
     Friend WithEvents chkWriters As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOriginalTitle As System.Windows.Forms.CheckBox
 
 End Class

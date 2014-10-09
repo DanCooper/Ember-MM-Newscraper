@@ -82,12 +82,14 @@ Namespace TMDB
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
         Private _TMDBConf As V3.TmdbConfiguration
         Private _TMDBConfE As V3.TmdbConfiguration
+        Private _TMDBConfA As V3.TmdbConfiguration
         Private _TMDBApi As V3.Tmdb
         Private _TMDBApiE As V3.Tmdb
         Private _TMDBApiA As V3.Tmdb
-        Private _MySettings As TMDB_Data.sMySettings
+        Private _MySettings As sMySettings_ForScraper
         Private _TMDBConf_MovieSet As V3.TmdbConfiguration
         Private _TMDBConfE_MovieSet As V3.TmdbConfiguration
         Private _TMDBApi_MovieSet As V3.Tmdb
@@ -138,32 +140,26 @@ Namespace TMDB
 
 #Region "Methods"
 
-        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb, ByVal IsMovie As Boolean)
-            If IsMovie Then
-                strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.Movie)
-                _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.Movie)
-                _MySettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-                _MySettings.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
-                _MySettings.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.Movie)
+        Public Sub New(ByVal Settings As sMySettings_ForScraper)
+            Try
+                _TMDBApi = New WatTmdb.V3.Tmdb(Settings.ApiKey, Settings.PrefLanguage)
+                If IsNothing(_TMDBApi) Then
+                    logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
+                Else
+                    If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
+                        logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
+                    End If
+                End If
+                _TMDBConf = _TMDBApi.GetConfiguration()
+                _TMDBApiE = New WatTmdb.V3.Tmdb(Settings.ApiKey)
+                _TMDBConfE = _TMDBApiE.GetConfiguration()
+                _TMDBApiA = New WatTmdb.V3.Tmdb(Settings.ApiKey, String.Empty)
+                _TMDBConfA = _TMDBApiA.GetConfiguration()
 
-                _TMDBApi = tTMDBApi
-                _TMDBConf = tTMDBConf
-                _TMDBApiE = tTMDBApiE
-                _TMDBApiA = tTMDBApiA
-                _TMDBConfE = tTMDBConfE
-            Else
-                strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.MovieSet)
-                _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.MovieSet)
-                _MySettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-                _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.MovieSet)
-                _MySettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.MovieSet)
-
-                _TMDBApi_MovieSet = tTMDBApi
-                _TMDBConf_MovieSet = tTMDBConf
-                _TMDBApiE_MovieSet = tTMDBApiE
-                _TMDBApiA_MovieSet = tTMDBApiA
-                _TMDBConfE_MovieSet = tTMDBConfE
-            End If
+                _MySettings = Settings
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
         End Sub
 
         Public Sub CancelAsync()
@@ -260,10 +256,10 @@ Namespace TMDB
                 If bwTMDBg.CancellationPending Then Return Nothing
 
                 If Strings.Left(strID.ToLower(), 2) = "tt" Then
-                    Movie = _TMDBApi.GetMovieByIMDB(strID, _MySettings.PrefLanguage)
+                    Movie = _TMDBApi.GetMovieByIMDB(strID)
                     MovieE = _TMDBApiE.GetMovieByIMDB(strID)
                 Else
-                    Movie = _TMDBApi.GetMovieInfo(CInt(strID), _MySettings.PrefLanguage)
+                    Movie = _TMDBApi.GetMovieInfo(CInt(strID))
                     MovieE = _TMDBApiE.GetMovieInfo(CInt(strID))
                 End If
 
@@ -295,21 +291,11 @@ Namespace TMDB
                 '' ...
                 '' </movie>
 
-                'Use TMDB title/originaltitle?
+                'Title
                 If Options.bTitle Then
-                    If String.IsNullOrEmpty(Movie.original_title) Then
-                        If _MySettings.FallBackEng Then
-                            If String.IsNullOrEmpty(MovieE.original_title) = False Then
-                                nMovie.OriginalTitle = MovieE.original_title
-                            End If
-                        End If
-                    Else
-                        nMovie.OriginalTitle = Movie.original_title
-                    End If
-
                     If String.IsNullOrEmpty(Movie.title) Then
                         If _MySettings.FallBackEng Then
-                            If String.IsNullOrEmpty(MovieE.title) = False Then
+                            If Not String.IsNullOrEmpty(MovieE.title) Then
                                 nMovie.Title = MovieE.title
                             End If
                         End If
@@ -318,10 +304,24 @@ Namespace TMDB
                     End If
                 End If
 
+                If bwTMDBg.CancellationPending Then Return Nothing
+
+                'OriginalTitle
+                If Options.bOriginalTitle Then
+                    If String.IsNullOrEmpty(Movie.original_title) Then
+                        If _MySettings.FallBackEng Then
+                            If Not String.IsNullOrEmpty(MovieE.original_title) Then
+                                nMovie.OriginalTitle = MovieE.original_title
+                            End If
+                        End If
+                    Else
+                        nMovie.OriginalTitle = Movie.original_title
+                    End If
+                End If
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB collection data?
+                'Collection ID
                 If Options.bCollectionID Then
                     'Get collection information
                     If IsNothing(Movie.belongs_to_collection) Then
@@ -339,7 +339,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB posters?
+                'Posters (only for SearchResult dialog)
                 If GetPoster Then
                     ' I will add original always. to be updated if size, TMDBConf.images.poster_sizes(0) & 
                     Dim Images As WatTmdb.V3.TmdbMovieImages
@@ -364,7 +364,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB year?
+                'Year
                 If Options.bYear Then
                     scrapedresult = Left(CStr(IIf(String.IsNullOrEmpty(Movie.release_date) AndAlso _MySettings.FallBackEng, MovieE.release_date, Movie.release_date)), 4)
                     'only update nMovie if scraped result is not empty/nothing!
@@ -373,10 +373,11 @@ Namespace TMDB
                     End If
                 End If
 
+                If bwTMDBg.CancellationPending Then Return Nothing
 
                 Dim Releases As WatTmdb.V3.TmdbMovieReleases = Nothing
 
-                'Use TMDB MPAA/Certification ?
+                'MPAA/Certification
                 If Options.bCert Then
                     Releases = _TMDBApi.GetMovieReleases(Movie.id)
                     If Not IsNothing(Releases) AndAlso Not IsNothing(Releases.countries) Then
@@ -407,7 +408,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB release date?
+                'ReleaseDate
                 If Options.bRelease Then
                     scrapedresult = CStr(IIf(String.IsNullOrEmpty(Movie.release_date) AndAlso _MySettings.FallBackEng, MovieE.release_date, Movie.release_date))
                     'only update nMovie if scraped result is not empty/nothing!
@@ -425,7 +426,9 @@ Namespace TMDB
                     End If
                 End If
 
-                'Use TMDB rating?
+                If bwTMDBg.CancellationPending Then Return Nothing
+
+                'Rating
                 If Options.bRating Then
                     scrapedresult = CStr(IIf(IsNothing(Movie.vote_average) AndAlso Movie.vote_average = 0 AndAlso _MySettings.FallBackEng, MovieE.vote_average, Movie.vote_average))
                     'only update nMovie if scraped result is not empty/nothing!
@@ -436,7 +439,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB trailer?
+                'Trailer
                 If Options.bTrailer Then
                     Dim Trailers As WatTmdb.V3.TmdbMovieTrailers
                     Trailers = _TMDBApi.GetMovieTrailers(Movie.id)
@@ -459,7 +462,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB votes?
+                'Votes
                 If Options.bVotes Then
                     scrapedresult = CStr(IIf(IsNothing(Movie.vote_count) AndAlso Movie.vote_count = 0 AndAlso _MySettings.FallBackEng, MovieE.vote_count.ToString(), Movie.vote_count.ToString()))
                     'only update nMovie if scraped result is not empty/nothing!
@@ -470,7 +473,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB actors?
+                'Actors
                 Dim aCast As WatTmdb.V3.TmdbMovieCast = Nothing
                 If Options.bCast Then
                     aCast = _TMDBApi.GetMovieCast(Movie.id)
@@ -503,11 +506,13 @@ Namespace TMDB
                     End If
                 End If
 
-                'Use TMDB tagline?
+                If bwTMDBg.CancellationPending Then Return Nothing
+
+                'Tagline
                 If Options.bTagline Then
                     If String.IsNullOrEmpty(Movie.tagline) Then
                         If _MySettings.FallBackEng Then
-                            If String.IsNullOrEmpty(MovieE.tagline) = False Then
+                            If Not String.IsNullOrEmpty(MovieE.tagline) Then
                                 nMovie.Tagline = MovieE.tagline
                             End If
                         End If
@@ -518,7 +523,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB countries?
+                'Countries
                 If Options.bCountry Then
                     nMovie.Countries.Clear()
                     If Not IsNothing(Movie.production_countries) AndAlso Movie.production_countries.Count > 0 Then
@@ -530,7 +535,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB genres?
+                'Genres
                 If Options.bGenre Then
                     nMovie.Genres.Clear()
                     Dim tGen As System.Collections.Generic.List(Of WatTmdb.V3.MovieGenre)
@@ -549,11 +554,11 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB plot?
+                'Plot
                 If Options.bPlot Then
                     If String.IsNullOrEmpty(Movie.overview) Then
                         If _MySettings.FallBackEng Then
-                            If String.IsNullOrEmpty(MovieE.overview) = False Then
+                            If Not String.IsNullOrEmpty(MovieE.overview) Then
                                 nMovie.Plot = MovieE.overview
                             End If
                         End If
@@ -564,7 +569,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'Use TMDB runtime?
+                'Runtime
                 If Options.bRuntime Then
                     scrapedresult = CStr(IIf(IsNothing(Movie.runtime) AndAlso Movie.runtime = 0 AndAlso _MySettings.FallBackEng, MovieE.runtime.ToString(), Movie.runtime.ToString()))
                     'only update nMovie if scraped result is not empty/nothing!
@@ -573,7 +578,7 @@ Namespace TMDB
                     End If
                 End If
 
-                'Use TMDB studios?
+                'Studios
                 If Options.bStudio Then
                     'Get Production Studio
                     tStr = ""
@@ -653,7 +658,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                MovieSet = _TMDBApi_MovieSet.GetCollectionInfo(CInt(strID), _MySettings_MovieSet.PrefLanguage)
+                MovieSet = _TMDBApi_MovieSet.GetCollectionInfo(CInt(strID))
                 MovieSetE = _TMDBApiE_MovieSet.GetCollectionInfo(CInt(strID))
 
                 If (Not MovieSet.id > 0 AndAlso Not _MySettings_MovieSet.FallBackEng) OrElse (Not MovieSet.id > 0 AndAlso Not MovieSetE.id > 0) Then
@@ -681,11 +686,11 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'images
+                'Posters (only for SearchResult dialog)
                 If GetPoster Then
                     ' I will add original always. to be updated if size, TMDBConf.images.poster_sizes(0) & 
                     Dim Images As WatTmdb.V3.TmdbMovieImages
-                    Images = _TMDBApi_MovieSet.GetMovieImages(MovieSet.id, _MySettings_MovieSet.PrefLanguage)
+                    Images = _TMDBApi_MovieSet.GetMovieImages(MovieSet.id)
                     If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
                         If (Images.posters.Count = 0) Then
                             Images = _TMDBApiE_MovieSet.GetMovieImages(MovieSet.id)
@@ -704,7 +709,7 @@ Namespace TMDB
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                'plot
+                'Plot
                 If Options.bPlot Then
                     If String.IsNullOrEmpty(DBMovieSet.Plot) OrElse Not Master.eSettings.MovieSetLockPlot Then
                         If String.IsNullOrEmpty(MovieSet.overview) Then
@@ -1164,6 +1169,19 @@ Namespace TMDB
             Dim Result As Object
             Dim ResultType As SearchType
             Dim Success As Boolean
+
+#End Region 'Fields
+
+        End Structure
+
+        Structure sMySettings_ForScraper
+
+#Region "Fields"
+
+            Dim ApiKey As String
+            Dim FallBackEng As Boolean
+            Dim GetAdultItems As Boolean
+            Dim PrefLanguage As String
 
 #End Region 'Fields
 

@@ -1103,6 +1103,7 @@ Public Class Functions
             .bGenre = Not Master.eSettings.MovieLockGenre    'Dekker500 This used to just be =True
             .bMPAA = True
             .bMusicBy = True
+            .bOriginalTitle = True
             .bOtherCrew = True
             .bOutline = Not Master.eSettings.MovieLockOutline
             .bPlot = Not Master.eSettings.MovieLockPlot
@@ -1140,6 +1141,7 @@ Public Class Functions
             .bCountry = Master.eSettings.MovieScraperCountry
             .bDirector = Master.eSettings.MovieScraperDirector
             .bGenre = Master.eSettings.MovieScraperGenre
+            .bOriginalTitle = Master.eSettings.MovieScraperOriginalTitle
             .bOutline = Master.eSettings.MovieScraperOutline
             .bPlot = Master.eSettings.MovieScraperPlot
             .bRating = Master.eSettings.MovieScraperRating

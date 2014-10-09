@@ -37,9 +37,7 @@ Public Class dlgTMDBSearchResults_Movie
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
-    Private MySettings As TMDB_Data.sMySettings
-    'Private TMDBConf As V3.TmdbConfiguration
-    'Private TMDBApi As V3.Tmdb
+    Private MySettings As TMDB.Scraper.sMySettings_ForScraper
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.Movie)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
@@ -49,12 +47,9 @@ Public Class dlgTMDBSearchResults_Movie
 
 #Region "Methods"
 
-    Public Sub New(_MySettings As TMDB_Data.sMySettings, _TMDBg As TMDB.Scraper)
-
+    Public Sub New(_MySettings As TMDB.Scraper.sMySettings_ForScraper, _TMDBg As TMDB.Scraper)
         ' This call is required by the designer.
         InitializeComponent()
-        'TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
-        'TMDBConf = TMDBApi.GetConfiguration()
         MySettings = _MySettings
         TMDBg = _TMDBg
     End Sub
@@ -71,7 +66,7 @@ Public Class dlgTMDBSearchResults_Movie
         Me.txtSearch.Text = sMovieTitle
         Me.txtFileName.Text = sMovieFilename
         chkManual.Enabled = False
-        'TMDBg.IMDBURL = TMDBId
+
         TMDBg.SearchMovieAsync(sMovieTitle, _filterOptions, sMovieYear)
 
         Return MyBase.ShowDialog()
@@ -102,7 +97,7 @@ Public Class dlgTMDBSearchResults_Movie
             Me.pnlLoading.Visible = True
             chkManual.Enabled = False
             TMDBg.CancelAsync()
-            'IMDB.IMDBURL = IMDBURL
+
             TMDBg.SearchMovieAsync(Me.txtSearch.Text, _filterOptions)
         End If
     End Sub
@@ -137,10 +132,6 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
-        '//
-        ' Thread finished: display pic if it was able to get one
-        '\\
-
         Dim Res As Results = DirectCast(e.Result, Results)
 
         Try
@@ -216,7 +207,7 @@ Public Class dlgTMDBSearchResults_Movie
     Private Sub dlgTMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         pnlPicStatus.Visible = False
-        'TMDBg.IMDBURL = IMDBURL
+
         AddHandler TMDBg.SearchInfoDownloaded_Movie, AddressOf SearchMovieInfoDownloaded
         AddHandler TMDBg.SearchResultsDownloaded_Movie, AddressOf SearchResultsDownloaded
 
@@ -238,10 +229,6 @@ Public Class dlgTMDBSearchResults_Movie
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
-            'If Me.chkManual.Checked AndAlso Me.btnVerify.Enabled Then
-            '    '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-            '    Master.tmpMovie.IMDBID = Me.txtTMDBID.Text
-            'End If
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -251,10 +238,6 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
-        '//
-        ' Info downloaded... fill form with data
-        '\\
-
         Me.pnlLoading.Visible = False
         Me.OK_Button.Enabled = True
 
@@ -305,12 +288,6 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Sub SearchResultsDownloaded(ByVal M As TMDB.SearchResults_Movie)
-        '//
-        ' Process the results that TMDB gave us
-        '\\
-        'Dim TnP As New TreeNode
-        'Dim selNode As New TreeNode
-
         Try
             Me.tvResults.Nodes.Clear()
             Me.ClearInfo()

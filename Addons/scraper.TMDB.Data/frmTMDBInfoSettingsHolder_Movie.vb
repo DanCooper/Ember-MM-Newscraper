@@ -42,7 +42,6 @@ Public Class frmTMDBInfoSettingsHolder_Movie
 
 #End Region 'Fields
 
-
 #Region "Properties"
 
     Public Property API() As String
@@ -74,8 +73,16 @@ Public Class frmTMDBInfoSettingsHolder_Movie
 
 #End Region 'Properties
 
-
 #Region "Methods"
+
+    Public Sub New()
+        _api = String.Empty
+        _language = String.Empty
+        _getadultitems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+        InitializeComponent()
+        Me.SetUp()
+    End Sub
+
     Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles pbTMDBApiKeyInfo.Click
         If Master.isWindows Then
             Process.Start("http://docs.themoviedb.apiary.io/")
@@ -137,13 +144,14 @@ Public Class frmTMDBInfoSettingsHolder_Movie
     End Sub
 
     Private Sub chkGetAdult_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGetAdultItems.CheckedChanged
-        If Not (_getadultitems = chkGetAdultItems.Checked) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMPAA.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkOriginalTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOriginalTitle.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -195,31 +203,13 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-
     Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
-        If Not (_language = cbPrefLanguage.Text) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
         _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub txtTMDBApiKey_TextValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Validated
-        If Not (_api = txtApiKey.Text) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
-    End Sub
-
-    Public Sub New()
-        _api = String.Empty
-        _language = String.Empty
-        _getadultitems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
-        InitializeComponent()
-        Me.SetUp()
     End Sub
 
     Sub orderChanged()
@@ -246,6 +236,7 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
         Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
         Me.chkMPAA.Text = Master.eLang.GetString(722, "MPAA/Certification")
+        Me.chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkRating.Text = Master.eLang.GetString(1250, "TMDB Rating")
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
@@ -265,6 +256,6 @@ Public Class frmTMDBInfoSettingsHolder_Movie
 
     End Sub
 
-
 #End Region 'Methods
+
 End Class

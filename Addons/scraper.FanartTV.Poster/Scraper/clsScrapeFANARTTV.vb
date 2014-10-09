@@ -51,13 +51,13 @@ Namespace FanartTVs
 
 #End Region 'Fields
 
-        '#Region "Events"
+#Region "Events"
 
         '		Public Event PostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
 
         '		Public Event ProgressUpdated(ByVal iPercent As Integer)
 
-        '#End Region	'Events
+#End Region 'Events
 
 #Region "Methods"
 
@@ -406,6 +406,7 @@ Namespace FanartTVs
         Structure sMySettings_ForScraper
 
 #Region "Fields"
+
             Dim ApiKey As String
             Dim ClearArtOnlyHD As Boolean
             Dim ClearLogoOnlyHD As Boolean
@@ -413,6 +414,7 @@ Namespace FanartTVs
             Dim GetBlankImages As Boolean
             Dim PrefLanguage As String
             Dim PrefLanguageOnly As Boolean
+
 #End Region 'Fields
 
         End Structure
