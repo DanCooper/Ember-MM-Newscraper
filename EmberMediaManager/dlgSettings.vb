@@ -2059,6 +2059,46 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkTVShowMissingBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingBanner.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowMissingCharacterArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingCharacterArt.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowMissingCleaArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingClearArt.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowMissingClearLogo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingClearLogo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowMissingEFanarts_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingEFanarts.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowMissingFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowMissingLandscape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingLandscape.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowMissingNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingNFO.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowMissingPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingPoster.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowMissingTheme_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingTheme.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieScraperPlotForOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperPlotForOutline.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -3456,6 +3496,16 @@ Public Class dlgSettings
                 End If
                 Me.chkTVShowLandscapeCol.Checked = .TVShowLandscapeCol
                 Me.chkTVShowLandscapeOverwrite.Checked = .TVShowLandscapeOverwrite
+                Me.chkTVShowMissingBanner.Checked = .TVShowMissingBanner
+                Me.chkTVShowMissingCharacterArt.Checked = .TVShowMissingCharacterArt
+                Me.chkTVShowMissingClearArt.Checked = .TVShowMissingClearArt
+                Me.chkTVShowMissingClearLogo.Checked = .TVShowMissingClearLogo
+                Me.chkTVShowMissingEFanarts.Checked = .TVShowMissingEFanarts
+                Me.chkTVShowMissingFanart.Checked = .TVShowMissingFanart
+                Me.chkTVShowMissingLandscape.Checked = .TVShowMissingLandscape
+                Me.chkTVShowMissingNFO.Checked = .TVShowMissingNFO
+                Me.chkTVShowMissingPoster.Checked = .TVShowMissingPoster
+                Me.chkTVShowMissingTheme.Checked = .TVShowMissingTheme
                 Me.chkTVShowNfoCol.Checked = .TVShowNfoCol
                 Me.chkTVShowPosterCol.Checked = .TVShowPosterCol
                 Me.chkTVShowPosterOverwrite.Checked = .TVShowPosterOverwrite
@@ -5074,6 +5124,16 @@ Public Class dlgSettings
                 If .TVShowFilterCustom.Count <= 0 Then .TVShowFilterCustomIsEmpty = True
                 .TVShowLandscapeCol = Me.chkTVShowLandscapeCol.Checked
                 .TVShowLandscapeOverwrite = Me.chkTVShowLandscapeOverwrite.Checked
+                .TVShowMissingBanner = Me.chkTVShowMissingBanner.Checked
+                .TVShowMissingCharacterArt = Me.chkTVShowMissingCharacterArt.Checked
+                .TVShowMissingClearArt = Me.chkTVShowMissingClearArt.Checked
+                .TVShowMissingClearLogo = Me.chkTVShowMissingClearLogo.Checked
+                .TVShowMissingEFanarts = Me.chkTVShowMissingEFanarts.Checked
+                .TVShowMissingFanart = Me.chkTVShowMissingFanart.Checked
+                .TVShowMissingLandscape = Me.chkTVShowMissingLandscape.Checked
+                .TVShowMissingNFO = Me.chkTVShowMissingNFO.Checked
+                .TVShowMissingPoster = Me.chkTVShowMissingPoster.Checked
+                .TVShowMissingTheme = Me.chkTVShowMissingTheme.Checked
                 .TVShowNfoCol = Me.chkTVShowNfoCol.Checked
                 .TVShowPosterCol = Me.chkTVShowPosterCol.Checked
                 .TVShowPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVShowPosterHeight.Text), Convert.ToInt32(Me.txtTVShowPosterHeight.Text), 0)
@@ -5706,6 +5766,7 @@ Public Class dlgSettings
         Me.chkTVScraperUseSRuntimeForEp.Text = Master.eLang.GetString(1262, "Use Show Runtime for Episodes if no Episode Runtime can be found")
         Me.chkTVShowCharacterArtCol.Text = Master.eLang.GetString(1141, "Hide CharacterArt Column")
         Me.chkTVShowExtrafanartsXBMC.Text = Master.eLang.GetString(992, "Extrafanarts")
+        Me.chkTVShowMissingCharacterArt.Text = Master.eLang.GetString(1274, "Check for CharacterArt")
         Me.colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colPath.Text = Master.eLang.GetString(410, "Path")
@@ -5914,6 +5975,15 @@ Public Class dlgSettings
         Me.chkTVShowFanartResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVShowLandscapeCol.Text = Me.chkMovieLandscapeCol.Text
         Me.chkTVShowLandscapeOverwrite.Text = Me.chkMoviePosterOverwrite.Text
+        Me.chkTVShowMissingBanner.Text = Me.chkMovieMissingBanner.Text
+        Me.chkTVShowMissingClearArt.Text = Me.chkMovieMissingClearArt.Text
+        Me.chkTVShowMissingClearLogo.Text = Me.chkMovieMissingClearLogo.Text
+        Me.chkTVShowMissingEFanarts.Text = Me.chkMovieMissingEFanarts.Text
+        Me.chkTVShowMissingFanart.Text = Me.chkMovieMissingFanart.Text
+        Me.chkTVShowMissingLandscape.Text = Me.chkMovieMissingLandscape.Text
+        Me.chkTVShowMissingNFO.Text = Me.chkMovieMissingNFO.Text
+        Me.chkTVShowMissingPoster.Text = Me.chkMovieMissingPoster.Text
+        Me.chkTVShowMissingTheme.Text = Me.chkMovieMissingTheme.Text
         Me.chkTVShowNfoCol.Text = Me.chkMovieNFOCol.Text
         Me.chkTVShowPosterCol.Text = Me.chkMoviePosterCol.Text
         Me.chkTVShowPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
@@ -5936,6 +6006,8 @@ Public Class dlgSettings
         Me.gbTVEpisodeFanartOpts.Text = Me.gbMovieFanartOpts.Text
         Me.gbTVEpisodePosterOpts.Text = Me.gbMoviePosterOpts.Text
         Me.gbTVGeneralMiscOpts.Text = Me.gbGeneralMisc.Text
+        Me.gbTVGeneralMissingItemsOpts.Text = Me.gbMovieGeneralMissingItemsOpts.Text
+        Me.gbTVGeneralMissingShowOpts.Text = Me.gbTVGeneralListShowOpts.Text
         Me.gbTVScraperDefFIExtOpts.Text = Me.gbTVScraperDefFIExtOpts.Text
         Me.gbTVScraperMetaDataOpts.Text = Me.gbMovieScraperMetaDataOpts.Text
         Me.gbTVSeasonBannerOpts.Text = Me.gbMovieBannerOpts.Text
@@ -7714,6 +7786,5 @@ Public Class dlgSettings
     End Sub
 
 #End Region 'Methods
-
 
 End Class

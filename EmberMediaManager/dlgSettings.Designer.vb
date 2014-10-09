@@ -507,6 +507,18 @@ Partial Class dlgSettings
         Me.btnMovieSetMSAAPathBrowse = New System.Windows.Forms.Button()
         Me.txtMovieSetMSAAPath = New System.Windows.Forms.TextBox()
         Me.pnlTVGeneral = New System.Windows.Forms.Panel()
+        Me.gbTVGeneralMissingItemsOpts = New System.Windows.Forms.GroupBox()
+        Me.gbTVGeneralMissingShowOpts = New System.Windows.Forms.GroupBox()
+        Me.chkTVShowMissingBanner = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowMissingTheme = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowMissingClearLogo = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowMissingLandscape = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowMissingCharacterArt = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowMissingEFanarts = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowMissingPoster = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowMissingClearArt = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowMissingNFO = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowMissingFanart = New System.Windows.Forms.CheckBox()
         Me.gbTVSortTokensOpts = New System.Windows.Forms.GroupBox()
         Me.btnTVSortTokenRemove = New System.Windows.Forms.Button()
         Me.btnTVSortTokenAdd = New System.Windows.Forms.Button()
@@ -1162,6 +1174,8 @@ Partial Class dlgSettings
         Me.gbMovieMiscOpts.SuspendLayout
         Me.gbMovieSetMSAAPath.SuspendLayout
         Me.pnlTVGeneral.SuspendLayout
+        Me.gbTVGeneralMissingItemsOpts.SuspendLayout
+        Me.gbTVGeneralMissingShowOpts.SuspendLayout
         Me.gbTVSortTokensOpts.SuspendLayout
         Me.gbTVGeneralLangOpts.SuspendLayout
         Me.gbTVGeneralMediaListOpts.SuspendLayout
@@ -3979,20 +3993,20 @@ Partial Class dlgSettings
         Me.btnFileSystemExcludedDirsRemove.Name = "btnFileSystemExcludedDirsRemove"
         Me.btnFileSystemExcludedDirsRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnFileSystemExcludedDirsRemove.TabIndex = 6
-        Me.btnFileSystemExcludedDirsRemove.UseVisualStyleBackColor = True
+        Me.btnFileSystemExcludedDirsRemove.UseVisualStyleBackColor = true
         '
         'btnFileSystemExcludedDirsAdd
         '
-        Me.btnFileSystemExcludedDirsAdd.Image = CType(resources.GetObject("btnFileSystemExcludedDirsAdd.Image"), System.Drawing.Image)
+        Me.btnFileSystemExcludedDirsAdd.Image = CType(resources.GetObject("btnFileSystemExcludedDirsAdd.Image"),System.Drawing.Image)
         Me.btnFileSystemExcludedDirsAdd.Location = New System.Drawing.Point(646, 109)
         Me.btnFileSystemExcludedDirsAdd.Name = "btnFileSystemExcludedDirsAdd"
         Me.btnFileSystemExcludedDirsAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnFileSystemExcludedDirsAdd.TabIndex = 5
-        Me.btnFileSystemExcludedDirsAdd.UseVisualStyleBackColor = True
+        Me.btnFileSystemExcludedDirsAdd.UseVisualStyleBackColor = true
         '
         'txtFileSystemExcludedDirs
         '
-        Me.txtFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtFileSystemExcludedDirs.Location = New System.Drawing.Point(9, 109)
         Me.txtFileSystemExcludedDirs.Name = "txtFileSystemExcludedDirs"
         Me.txtFileSystemExcludedDirs.Size = New System.Drawing.Size(631, 22)
@@ -4000,8 +4014,8 @@ Partial Class dlgSettings
         '
         'lstFileSystemExcludedDirs
         '
-        Me.lstFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lstFileSystemExcludedDirs.FormattingEnabled = True
+        Me.lstFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lstFileSystemExcludedDirs.FormattingEnabled = true
         Me.lstFileSystemExcludedDirs.Location = New System.Drawing.Point(9, 21)
         Me.lstFileSystemExcludedDirs.Name = "lstFileSystemExcludedDirs"
         Me.lstFileSystemExcludedDirs.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
@@ -6436,6 +6450,7 @@ Partial Class dlgSettings
         'pnlTVGeneral
         '
         Me.pnlTVGeneral.BackColor = System.Drawing.Color.White
+        Me.pnlTVGeneral.Controls.Add(Me.gbTVGeneralMissingItemsOpts)
         Me.pnlTVGeneral.Controls.Add(Me.gbTVSortTokensOpts)
         Me.pnlTVGeneral.Controls.Add(Me.gbTVGeneralLangOpts)
         Me.pnlTVGeneral.Controls.Add(Me.gbTVGeneralMediaListOpts)
@@ -6448,6 +6463,136 @@ Partial Class dlgSettings
         Me.pnlTVGeneral.TabIndex = 20
         Me.pnlTVGeneral.Visible = false
         '
+        'gbTVGeneralMissingItemsOpts
+        '
+        Me.gbTVGeneralMissingItemsOpts.Controls.Add(Me.gbTVGeneralMissingShowOpts)
+        Me.gbTVGeneralMissingItemsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVGeneralMissingItemsOpts.Location = New System.Drawing.Point(231, 103)
+        Me.gbTVGeneralMissingItemsOpts.Name = "gbTVGeneralMissingItemsOpts"
+        Me.gbTVGeneralMissingItemsOpts.Size = New System.Drawing.Size(185, 394)
+        Me.gbTVGeneralMissingItemsOpts.TabIndex = 73
+        Me.gbTVGeneralMissingItemsOpts.TabStop = false
+        Me.gbTVGeneralMissingItemsOpts.Text = "Missing Items Filter"
+        '
+        'gbTVGeneralMissingShowOpts
+        '
+        Me.gbTVGeneralMissingShowOpts.Controls.Add(Me.chkTVShowMissingBanner)
+        Me.gbTVGeneralMissingShowOpts.Controls.Add(Me.chkTVShowMissingTheme)
+        Me.gbTVGeneralMissingShowOpts.Controls.Add(Me.chkTVShowMissingClearLogo)
+        Me.gbTVGeneralMissingShowOpts.Controls.Add(Me.chkTVShowMissingLandscape)
+        Me.gbTVGeneralMissingShowOpts.Controls.Add(Me.chkTVShowMissingCharacterArt)
+        Me.gbTVGeneralMissingShowOpts.Controls.Add(Me.chkTVShowMissingEFanarts)
+        Me.gbTVGeneralMissingShowOpts.Controls.Add(Me.chkTVShowMissingPoster)
+        Me.gbTVGeneralMissingShowOpts.Controls.Add(Me.chkTVShowMissingClearArt)
+        Me.gbTVGeneralMissingShowOpts.Controls.Add(Me.chkTVShowMissingNFO)
+        Me.gbTVGeneralMissingShowOpts.Controls.Add(Me.chkTVShowMissingFanart)
+        Me.gbTVGeneralMissingShowOpts.Location = New System.Drawing.Point(6, 21)
+        Me.gbTVGeneralMissingShowOpts.Name = "gbTVGeneralMissingShowOpts"
+        Me.gbTVGeneralMissingShowOpts.Size = New System.Drawing.Size(173, 180)
+        Me.gbTVGeneralMissingShowOpts.TabIndex = 16
+        Me.gbTVGeneralMissingShowOpts.TabStop = false
+        Me.gbTVGeneralMissingShowOpts.Text = "Shows"
+        '
+        'chkTVShowMissingBanner
+        '
+        Me.chkTVShowMissingBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingBanner.Location = New System.Drawing.Point(6, 16)
+        Me.chkTVShowMissingBanner.Name = "chkTVShowMissingBanner"
+        Me.chkTVShowMissingBanner.Size = New System.Drawing.Size(161, 17)
+        Me.chkTVShowMissingBanner.TabIndex = 11
+        Me.chkTVShowMissingBanner.Text = "Check for Banner"
+        Me.chkTVShowMissingBanner.UseVisualStyleBackColor = true
+        '
+        'chkTVShowMissingTheme
+        '
+        Me.chkTVShowMissingTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingTheme.Location = New System.Drawing.Point(6, 160)
+        Me.chkTVShowMissingTheme.Name = "chkTVShowMissingTheme"
+        Me.chkTVShowMissingTheme.Size = New System.Drawing.Size(161, 17)
+        Me.chkTVShowMissingTheme.TabIndex = 9
+        Me.chkTVShowMissingTheme.Text = "Check for Theme"
+        Me.chkTVShowMissingTheme.UseVisualStyleBackColor = true
+        '
+        'chkTVShowMissingClearLogo
+        '
+        Me.chkTVShowMissingClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingClearLogo.Location = New System.Drawing.Point(6, 64)
+        Me.chkTVShowMissingClearLogo.Name = "chkTVShowMissingClearLogo"
+        Me.chkTVShowMissingClearLogo.Size = New System.Drawing.Size(161, 17)
+        Me.chkTVShowMissingClearLogo.TabIndex = 14
+        Me.chkTVShowMissingClearLogo.Text = "Check for ClearLogo"
+        Me.chkTVShowMissingClearLogo.UseVisualStyleBackColor = true
+        '
+        'chkTVShowMissingLandscape
+        '
+        Me.chkTVShowMissingLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingLandscape.Location = New System.Drawing.Point(6, 112)
+        Me.chkTVShowMissingLandscape.Name = "chkTVShowMissingLandscape"
+        Me.chkTVShowMissingLandscape.Size = New System.Drawing.Size(161, 17)
+        Me.chkTVShowMissingLandscape.TabIndex = 10
+        Me.chkTVShowMissingLandscape.Text = "Check for Landscape"
+        Me.chkTVShowMissingLandscape.UseVisualStyleBackColor = true
+        '
+        'chkTVShowMissingCharacterArt
+        '
+        Me.chkTVShowMissingCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingCharacterArt.Location = New System.Drawing.Point(6, 32)
+        Me.chkTVShowMissingCharacterArt.Name = "chkTVShowMissingCharacterArt"
+        Me.chkTVShowMissingCharacterArt.Size = New System.Drawing.Size(161, 17)
+        Me.chkTVShowMissingCharacterArt.TabIndex = 15
+        Me.chkTVShowMissingCharacterArt.Text = "Check for CharacterArt"
+        Me.chkTVShowMissingCharacterArt.UseVisualStyleBackColor = true
+        '
+        'chkTVShowMissingEFanarts
+        '
+        Me.chkTVShowMissingEFanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingEFanarts.Location = New System.Drawing.Point(6, 80)
+        Me.chkTVShowMissingEFanarts.Name = "chkTVShowMissingEFanarts"
+        Me.chkTVShowMissingEFanarts.Size = New System.Drawing.Size(161, 17)
+        Me.chkTVShowMissingEFanarts.TabIndex = 12
+        Me.chkTVShowMissingEFanarts.Text = "Check for Extrafanarts"
+        Me.chkTVShowMissingEFanarts.UseVisualStyleBackColor = true
+        '
+        'chkTVShowMissingPoster
+        '
+        Me.chkTVShowMissingPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingPoster.Location = New System.Drawing.Point(6, 144)
+        Me.chkTVShowMissingPoster.Name = "chkTVShowMissingPoster"
+        Me.chkTVShowMissingPoster.Size = New System.Drawing.Size(161, 17)
+        Me.chkTVShowMissingPoster.TabIndex = 6
+        Me.chkTVShowMissingPoster.Text = "Check for Poster"
+        Me.chkTVShowMissingPoster.UseVisualStyleBackColor = true
+        '
+        'chkTVShowMissingClearArt
+        '
+        Me.chkTVShowMissingClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingClearArt.Location = New System.Drawing.Point(6, 48)
+        Me.chkTVShowMissingClearArt.Name = "chkTVShowMissingClearArt"
+        Me.chkTVShowMissingClearArt.Size = New System.Drawing.Size(161, 17)
+        Me.chkTVShowMissingClearArt.TabIndex = 13
+        Me.chkTVShowMissingClearArt.Text = "Check for ClearArt"
+        Me.chkTVShowMissingClearArt.UseVisualStyleBackColor = true
+        '
+        'chkTVShowMissingNFO
+        '
+        Me.chkTVShowMissingNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingNFO.Location = New System.Drawing.Point(6, 128)
+        Me.chkTVShowMissingNFO.Name = "chkTVShowMissingNFO"
+        Me.chkTVShowMissingNFO.Size = New System.Drawing.Size(161, 17)
+        Me.chkTVShowMissingNFO.TabIndex = 8
+        Me.chkTVShowMissingNFO.Text = "Check for NFO"
+        Me.chkTVShowMissingNFO.UseVisualStyleBackColor = true
+        '
+        'chkTVShowMissingFanart
+        '
+        Me.chkTVShowMissingFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingFanart.Location = New System.Drawing.Point(6, 96)
+        Me.chkTVShowMissingFanart.Name = "chkTVShowMissingFanart"
+        Me.chkTVShowMissingFanart.Size = New System.Drawing.Size(161, 17)
+        Me.chkTVShowMissingFanart.TabIndex = 7
+        Me.chkTVShowMissingFanart.Text = "Check for Fanart"
+        Me.chkTVShowMissingFanart.UseVisualStyleBackColor = true
+        '
         'gbTVSortTokensOpts
         '
         Me.gbTVSortTokensOpts.Controls.Add(Me.btnTVSortTokenRemove)
@@ -6455,9 +6600,9 @@ Partial Class dlgSettings
         Me.gbTVSortTokensOpts.Controls.Add(Me.txtTVSortToken)
         Me.gbTVSortTokensOpts.Controls.Add(Me.lstTVSortTokens)
         Me.gbTVSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVSortTokensOpts.Location = New System.Drawing.Point(433, 396)
+        Me.gbTVSortTokensOpts.Location = New System.Drawing.Point(231, 7)
         Me.gbTVSortTokensOpts.Name = "gbTVSortTokensOpts"
-        Me.gbTVSortTokensOpts.Size = New System.Drawing.Size(200, 93)
+        Me.gbTVSortTokensOpts.Size = New System.Drawing.Size(185, 93)
         Me.gbTVSortTokensOpts.TabIndex = 72
         Me.gbTVSortTokensOpts.TabStop = false
         Me.gbTVSortTokensOpts.Text = "Sort Tokens to Ignore"
@@ -6465,7 +6610,7 @@ Partial Class dlgSettings
         'btnTVSortTokenRemove
         '
         Me.btnTVSortTokenRemove.Image = CType(resources.GetObject("btnTVSortTokenRemove.Image"),System.Drawing.Image)
-        Me.btnTVSortTokenRemove.Location = New System.Drawing.Point(168, 64)
+        Me.btnTVSortTokenRemove.Location = New System.Drawing.Point(156, 64)
         Me.btnTVSortTokenRemove.Name = "btnTVSortTokenRemove"
         Me.btnTVSortTokenRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSortTokenRemove.TabIndex = 3
@@ -6474,7 +6619,7 @@ Partial Class dlgSettings
         'btnTVSortTokenAdd
         '
         Me.btnTVSortTokenAdd.Image = CType(resources.GetObject("btnTVSortTokenAdd.Image"),System.Drawing.Image)
-        Me.btnTVSortTokenAdd.Location = New System.Drawing.Point(72, 64)
+        Me.btnTVSortTokenAdd.Location = New System.Drawing.Point(106, 64)
         Me.btnTVSortTokenAdd.Name = "btnTVSortTokenAdd"
         Me.btnTVSortTokenAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSortTokenAdd.TabIndex = 2
@@ -6485,7 +6630,7 @@ Partial Class dlgSettings
         Me.txtTVSortToken.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtTVSortToken.Location = New System.Drawing.Point(10, 64)
         Me.txtTVSortToken.Name = "txtTVSortToken"
-        Me.txtTVSortToken.Size = New System.Drawing.Size(61, 22)
+        Me.txtTVSortToken.Size = New System.Drawing.Size(90, 22)
         Me.txtTVSortToken.TabIndex = 1
         '
         'lstTVSortTokens
@@ -6495,7 +6640,7 @@ Partial Class dlgSettings
         Me.lstTVSortTokens.Location = New System.Drawing.Point(10, 15)
         Me.lstTVSortTokens.Name = "lstTVSortTokens"
         Me.lstTVSortTokens.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstTVSortTokens.Size = New System.Drawing.Size(180, 43)
+        Me.lstTVSortTokens.Size = New System.Drawing.Size(169, 43)
         Me.lstTVSortTokens.Sorted = true
         Me.lstTVSortTokens.TabIndex = 0
         '
@@ -6504,9 +6649,9 @@ Partial Class dlgSettings
         Me.gbTVGeneralLangOpts.Controls.Add(Me.btnTVGeneralLangFetch)
         Me.gbTVGeneralLangOpts.Controls.Add(Me.cbTVGeneralLang)
         Me.gbTVGeneralLangOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbTVGeneralLangOpts.Location = New System.Drawing.Point(229, 396)
+        Me.gbTVGeneralLangOpts.Location = New System.Drawing.Point(422, 398)
         Me.gbTVGeneralLangOpts.Name = "gbTVGeneralLangOpts"
-        Me.gbTVGeneralLangOpts.Size = New System.Drawing.Size(198, 84)
+        Me.gbTVGeneralLangOpts.Size = New System.Drawing.Size(201, 99)
         Me.gbTVGeneralLangOpts.TabIndex = 4
         Me.gbTVGeneralLangOpts.TabStop = false
         Me.gbTVGeneralLangOpts.Text = "Language Options"
@@ -6514,7 +6659,7 @@ Partial Class dlgSettings
         'btnTVGeneralLangFetch
         '
         Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(16, 48)
+        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(16, 55)
         Me.btnTVGeneralLangFetch.Name = "btnTVGeneralLangFetch"
         Me.btnTVGeneralLangFetch.Size = New System.Drawing.Size(166, 23)
         Me.btnTVGeneralLangFetch.TabIndex = 10
@@ -6825,9 +6970,9 @@ Partial Class dlgSettings
         Me.gbTVEpisodeFilterOpts.Controls.Add(Me.txtTVEpisodeFilter)
         Me.gbTVEpisodeFilterOpts.Controls.Add(Me.lstTVEpisodeFilter)
         Me.gbTVEpisodeFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVEpisodeFilterOpts.Location = New System.Drawing.Point(229, 185)
+        Me.gbTVEpisodeFilterOpts.Location = New System.Drawing.Point(422, 187)
         Me.gbTVEpisodeFilterOpts.Name = "gbTVEpisodeFilterOpts"
-        Me.gbTVEpisodeFilterOpts.Size = New System.Drawing.Size(382, 205)
+        Me.gbTVEpisodeFilterOpts.Size = New System.Drawing.Size(325, 205)
         Me.gbTVEpisodeFilterOpts.TabIndex = 3
         Me.gbTVEpisodeFilterOpts.TabStop = false
         Me.gbTVEpisodeFilterOpts.Text = "Episode Folder/File Name Filters"
@@ -6835,7 +6980,7 @@ Partial Class dlgSettings
         'btnTVEpisodeFilterReset
         '
         Me.btnTVEpisodeFilterReset.Image = CType(resources.GetObject("btnTVEpisodeFilterReset.Image"),System.Drawing.Image)
-        Me.btnTVEpisodeFilterReset.Location = New System.Drawing.Point(354, 38)
+        Me.btnTVEpisodeFilterReset.Location = New System.Drawing.Point(297, 38)
         Me.btnTVEpisodeFilterReset.Name = "btnTVEpisodeFilterReset"
         Me.btnTVEpisodeFilterReset.Size = New System.Drawing.Size(23, 23)
         Me.btnTVEpisodeFilterReset.TabIndex = 3
@@ -6856,7 +7001,7 @@ Partial Class dlgSettings
         'btnTVEpisodeFilterDown
         '
         Me.btnTVEpisodeFilterDown.Image = CType(resources.GetObject("btnTVEpisodeFilterDown.Image"),System.Drawing.Image)
-        Me.btnTVEpisodeFilterDown.Location = New System.Drawing.Point(320, 176)
+        Me.btnTVEpisodeFilterDown.Location = New System.Drawing.Point(267, 176)
         Me.btnTVEpisodeFilterDown.Name = "btnTVEpisodeFilterDown"
         Me.btnTVEpisodeFilterDown.Size = New System.Drawing.Size(23, 23)
         Me.btnTVEpisodeFilterDown.TabIndex = 7
@@ -6865,7 +7010,7 @@ Partial Class dlgSettings
         'btnTVEpisodeFilterUp
         '
         Me.btnTVEpisodeFilterUp.Image = CType(resources.GetObject("btnTVEpisodeFilterUp.Image"),System.Drawing.Image)
-        Me.btnTVEpisodeFilterUp.Location = New System.Drawing.Point(296, 176)
+        Me.btnTVEpisodeFilterUp.Location = New System.Drawing.Point(243, 176)
         Me.btnTVEpisodeFilterUp.Name = "btnTVEpisodeFilterUp"
         Me.btnTVEpisodeFilterUp.Size = New System.Drawing.Size(23, 23)
         Me.btnTVEpisodeFilterUp.TabIndex = 6
@@ -6885,7 +7030,7 @@ Partial Class dlgSettings
         'btnTVEpisodeFilterRemove
         '
         Me.btnTVEpisodeFilterRemove.Image = CType(resources.GetObject("btnTVEpisodeFilterRemove.Image"),System.Drawing.Image)
-        Me.btnTVEpisodeFilterRemove.Location = New System.Drawing.Point(354, 176)
+        Me.btnTVEpisodeFilterRemove.Location = New System.Drawing.Point(301, 176)
         Me.btnTVEpisodeFilterRemove.Name = "btnTVEpisodeFilterRemove"
         Me.btnTVEpisodeFilterRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnTVEpisodeFilterRemove.TabIndex = 8
@@ -6894,7 +7039,7 @@ Partial Class dlgSettings
         'btnTVEpisodeFilterAdd
         '
         Me.btnTVEpisodeFilterAdd.Image = CType(resources.GetObject("btnTVEpisodeFilterAdd.Image"),System.Drawing.Image)
-        Me.btnTVEpisodeFilterAdd.Location = New System.Drawing.Point(260, 176)
+        Me.btnTVEpisodeFilterAdd.Location = New System.Drawing.Point(207, 176)
         Me.btnTVEpisodeFilterAdd.Name = "btnTVEpisodeFilterAdd"
         Me.btnTVEpisodeFilterAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnTVEpisodeFilterAdd.TabIndex = 5
@@ -6905,7 +7050,7 @@ Partial Class dlgSettings
         Me.txtTVEpisodeFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtTVEpisodeFilter.Location = New System.Drawing.Point(6, 177)
         Me.txtTVEpisodeFilter.Name = "txtTVEpisodeFilter"
-        Me.txtTVEpisodeFilter.Size = New System.Drawing.Size(252, 22)
+        Me.txtTVEpisodeFilter.Size = New System.Drawing.Size(195, 22)
         Me.txtTVEpisodeFilter.TabIndex = 4
         '
         'lstTVEpisodeFilter
@@ -6915,7 +7060,7 @@ Partial Class dlgSettings
         Me.lstTVEpisodeFilter.Location = New System.Drawing.Point(6, 64)
         Me.lstTVEpisodeFilter.Name = "lstTVEpisodeFilter"
         Me.lstTVEpisodeFilter.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstTVEpisodeFilter.Size = New System.Drawing.Size(371, 95)
+        Me.lstTVEpisodeFilter.Size = New System.Drawing.Size(314, 95)
         Me.lstTVEpisodeFilter.TabIndex = 2
         '
         'gbTVGeneralMiscOpts
@@ -6961,9 +7106,9 @@ Partial Class dlgSettings
         Me.gbTVShowFilterOpts.Controls.Add(Me.txtTVShowFilter)
         Me.gbTVShowFilterOpts.Controls.Add(Me.lstTVShowFilter)
         Me.gbTVShowFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVShowFilterOpts.Location = New System.Drawing.Point(229, 7)
+        Me.gbTVShowFilterOpts.Location = New System.Drawing.Point(422, 9)
         Me.gbTVShowFilterOpts.Name = "gbTVShowFilterOpts"
-        Me.gbTVShowFilterOpts.Size = New System.Drawing.Size(382, 175)
+        Me.gbTVShowFilterOpts.Size = New System.Drawing.Size(325, 175)
         Me.gbTVShowFilterOpts.TabIndex = 2
         Me.gbTVShowFilterOpts.TabStop = false
         Me.gbTVShowFilterOpts.Text = "Show Folder/File Name Filters"
@@ -6971,7 +7116,7 @@ Partial Class dlgSettings
         'btnTVShowFilterReset
         '
         Me.btnTVShowFilterReset.Image = CType(resources.GetObject("btnTVShowFilterReset.Image"),System.Drawing.Image)
-        Me.btnTVShowFilterReset.Location = New System.Drawing.Point(354, 9)
+        Me.btnTVShowFilterReset.Location = New System.Drawing.Point(297, 9)
         Me.btnTVShowFilterReset.Name = "btnTVShowFilterReset"
         Me.btnTVShowFilterReset.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowFilterReset.TabIndex = 2
@@ -6980,7 +7125,7 @@ Partial Class dlgSettings
         'btnTVShowFilterDown
         '
         Me.btnTVShowFilterDown.Image = CType(resources.GetObject("btnTVShowFilterDown.Image"),System.Drawing.Image)
-        Me.btnTVShowFilterDown.Location = New System.Drawing.Point(320, 146)
+        Me.btnTVShowFilterDown.Location = New System.Drawing.Point(267, 147)
         Me.btnTVShowFilterDown.Name = "btnTVShowFilterDown"
         Me.btnTVShowFilterDown.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowFilterDown.TabIndex = 6
@@ -6989,7 +7134,7 @@ Partial Class dlgSettings
         'btnTVShowFilterUp
         '
         Me.btnTVShowFilterUp.Image = CType(resources.GetObject("btnTVShowFilterUp.Image"),System.Drawing.Image)
-        Me.btnTVShowFilterUp.Location = New System.Drawing.Point(296, 146)
+        Me.btnTVShowFilterUp.Location = New System.Drawing.Point(243, 147)
         Me.btnTVShowFilterUp.Name = "btnTVShowFilterUp"
         Me.btnTVShowFilterUp.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowFilterUp.TabIndex = 5
@@ -7009,7 +7154,7 @@ Partial Class dlgSettings
         'btnTVShowFilterRemove
         '
         Me.btnTVShowFilterRemove.Image = CType(resources.GetObject("btnTVShowFilterRemove.Image"),System.Drawing.Image)
-        Me.btnTVShowFilterRemove.Location = New System.Drawing.Point(354, 146)
+        Me.btnTVShowFilterRemove.Location = New System.Drawing.Point(301, 147)
         Me.btnTVShowFilterRemove.Name = "btnTVShowFilterRemove"
         Me.btnTVShowFilterRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowFilterRemove.TabIndex = 7
@@ -7018,7 +7163,7 @@ Partial Class dlgSettings
         'btnTVShowFilterAdd
         '
         Me.btnTVShowFilterAdd.Image = CType(resources.GetObject("btnTVShowFilterAdd.Image"),System.Drawing.Image)
-        Me.btnTVShowFilterAdd.Location = New System.Drawing.Point(260, 146)
+        Me.btnTVShowFilterAdd.Location = New System.Drawing.Point(207, 147)
         Me.btnTVShowFilterAdd.Name = "btnTVShowFilterAdd"
         Me.btnTVShowFilterAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowFilterAdd.TabIndex = 4
@@ -7029,7 +7174,7 @@ Partial Class dlgSettings
         Me.txtTVShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtTVShowFilter.Location = New System.Drawing.Point(6, 147)
         Me.txtTVShowFilter.Name = "txtTVShowFilter"
-        Me.txtTVShowFilter.Size = New System.Drawing.Size(252, 22)
+        Me.txtTVShowFilter.Size = New System.Drawing.Size(195, 22)
         Me.txtTVShowFilter.TabIndex = 3
         '
         'lstTVShowFilter
@@ -7039,7 +7184,7 @@ Partial Class dlgSettings
         Me.lstTVShowFilter.Location = New System.Drawing.Point(6, 35)
         Me.lstTVShowFilter.Name = "lstTVShowFilter"
         Me.lstTVShowFilter.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstTVShowFilter.Size = New System.Drawing.Size(371, 95)
+        Me.lstTVShowFilter.Size = New System.Drawing.Size(314, 95)
         Me.lstTVShowFilter.TabIndex = 1
         '
         'pnlTVSources
@@ -12956,6 +13101,8 @@ Partial Class dlgSettings
         Me.gbMovieSetMSAAPath.ResumeLayout(false)
         Me.gbMovieSetMSAAPath.PerformLayout
         Me.pnlTVGeneral.ResumeLayout(false)
+        Me.gbTVGeneralMissingItemsOpts.ResumeLayout(false)
+        Me.gbTVGeneralMissingShowOpts.ResumeLayout(false)
         Me.gbTVSortTokensOpts.ResumeLayout(false)
         Me.gbTVSortTokensOpts.PerformLayout
         Me.gbTVGeneralLangOpts.ResumeLayout(false)
@@ -14176,4 +14323,16 @@ End Sub
     Friend WithEvents btnFileSystemExcludedDirsAdd As System.Windows.Forms.Button
     Friend WithEvents txtFileSystemExcludedDirs As System.Windows.Forms.TextBox
     Friend WithEvents lstFileSystemExcludedDirs As System.Windows.Forms.ListBox
+    Friend WithEvents gbTVGeneralMissingItemsOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents gbTVGeneralMissingShowOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents chkTVShowMissingBanner As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowMissingTheme As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowMissingClearLogo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowMissingLandscape As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowMissingCharacterArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowMissingEFanarts As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowMissingPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowMissingClearArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowMissingNFO As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowMissingFanart As System.Windows.Forms.CheckBox
 End Class
