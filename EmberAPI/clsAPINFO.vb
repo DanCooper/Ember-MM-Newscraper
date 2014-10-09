@@ -381,6 +381,28 @@ Public Class NFO
                 'TODO Tags
             Next
 
+            'set ListTitle at the end of merging
+            If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+                Dim tTitle As String = StringUtils.FilterTokens_Movie(DBMovie.Movie.Title)
+                If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
+                    DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
+                Else
+                    DBMovie.ListTitle = tTitle
+                End If
+            Else
+                If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                    DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
+                ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                    DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
+                Else
+                    If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
+                        DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(DBMovie.Filename).Name)
+                    Else
+                        DBMovie.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBMovie.Filename))
+                    End If
+                End If
+            End If
+
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
