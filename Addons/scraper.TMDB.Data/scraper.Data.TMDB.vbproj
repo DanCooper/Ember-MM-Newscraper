@@ -147,7 +147,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TMDB_Data.vb" />
-    <Compile Include="Scraper\clsScrapeTMDBg.vb" />
+    <Compile Include="Scraper\clsScrapeTMDB.vb" />
     <Compile Include="Scraper\dlgTMDBSearchResults_Movie.Designer.vb">
       <DependentUpon>dlgTMDBSearchResults_Movie.vb</DependentUpon>
     </Compile>
