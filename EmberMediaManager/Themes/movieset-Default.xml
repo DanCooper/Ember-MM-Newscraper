@@ -106,7 +106,7 @@ fontstyle code 5.
 
     <object name="pnlMoviesInSet">
       <width>pnlInfoPanel.Width</width>
-      <height>244</height>
+      <height>164</height>
       <left>3</left>
       <top>133</top>
       <backcolor>-2302756</backcolor>
@@ -129,7 +129,7 @@ fontstyle code 5.
 
     <object name="lstMoviesInSet">
       <width>lblMoviesInSetHeader.Width - 500</width>
-      <height>221</height>
+      <height>140</height>
       <left>3</left>
       <top>21</top>
       <backcolor>-2302756</backcolor>
