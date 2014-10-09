@@ -30,26 +30,39 @@ Namespace TMDB
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 		Private _TMDBConf As V3.TmdbConfiguration
-		Private _TMDBConfE As V3.TmdbConfiguration
-		Private _TMDBApi As V3.Tmdb
-        Private _TMDBApiE As V3.Tmdb
-        Private _TMDBApiA As V3.Tmdb
-        Private _MySettings As TMDB_Image.sMySettings
+        Private _TMDBConfE As V3.TmdbConfiguration
+        Private _TMDBConfA As V3.TmdbConfiguration
+        Private _TMDBApi As V3.Tmdb 'preferred language
+        Private _TMDBApiE As V3.Tmdb 'english language
+        Private _TMDBApiA As V3.Tmdb 'all languages
+        Private _MySettings As TMDB.Scraper.sMySettings_ForScraper
 
-        'Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
+        Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
 
 #End Region 'Fields
 
 #Region "Methods"
 
-        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb, ByRef tMySettings As TMDB_Image.sMySettings)
-            _TMDBConf = tTMDBConf
-            _TMDBConfE = tTMDBConfE
-            _TMDBApi = tTMDBApi
-            _TMDBApiE = tTMDBApiE
-            _TMDBApiA = tTMDBApiA
-            _MySettings = tMySettings
-            ' v3 does not have description anymore
+        Public Sub New(ByVal Settings As sMySettings_ForScraper)
+            Try
+                _TMDBApi = New WatTmdb.V3.Tmdb(Settings.APIKey, Settings.PrefLanguage)
+                If IsNothing(_TMDBApi) Then
+                    logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
+                Else
+                    If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
+                        logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
+                    End If
+                End If
+                _TMDBConf = _TMDBApi.GetConfiguration()
+                _TMDBApiE = New WatTmdb.V3.Tmdb(Settings.APIKey)
+                _TMDBConfE = _TMDBApiE.GetConfiguration()
+                _TMDBApiA = New WatTmdb.V3.Tmdb(Settings.APIKey, String.Empty)
+                _TMDBConfA = _TMDBApiA.GetConfiguration()
+
+                _MySettings = Settings
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
         End Sub
 
         'Public Sub Cancel()
@@ -84,7 +97,8 @@ Namespace TMDB
             Dim images As V3.TmdbMovieImages
             Dim aW, aH As Integer
 
-            ';If bwTMDB.CancellationPending Then Return Nothing
+            If bwTMDB.CancellationPending Then Return Nothing
+
             Try
                 If Not String.IsNullOrEmpty(TMDBID) Then
                     images = _TMDBApiA.GetMovieImages(CInt(TMDBID))
@@ -108,7 +122,7 @@ Namespace TMDB
                     '    bwTMDB.ReportProgress(1)
                     'End If
 
-                    'If bwTMDB.CancellationPending Then Return Nothing
+                    If bwTMDB.CancellationPending Then Return Nothing
 
                     If Type = Enums.ScraperCapabilities.Poster Then
                         For Each tmdbI As V3.Poster In images.posters

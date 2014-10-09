@@ -37,7 +37,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
-    Private MySettings As TMDB_Data.sMySettings
+    Private MySettings As TMDB.Scraper.sMySettings_ForScraper
     'Private TMDBConf As V3.TmdbConfiguration
     'Private TMDBApi As V3.Tmdb
 
@@ -49,12 +49,10 @@ Public Class dlgTMDBSearchResults_MovieSet
 
 #Region "Methods"
 
-    Public Sub New(_MySettings As TMDB_Data.sMySettings, _TMDBg As TMDB.Scraper)
+    Public Sub New(_MySettings As TMDB.Scraper.sMySettings_ForScraper, _TMDBg As TMDB.Scraper)
 
         ' This call is required by the designer.
         InitializeComponent()
-        'TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
-        'TMDBConf = TMDBApi.GetConfiguration()
         MySettings = _MySettings
         TMDBg = _TMDBg
     End Sub
@@ -146,7 +144,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        If TMDBg.bwTMDBg.IsBusy Then
+        If TMDBg.bwTMDB.IsBusy Then
             TMDBg.CancelAsync()
         End If
         Master.tmpMovie.Clear()

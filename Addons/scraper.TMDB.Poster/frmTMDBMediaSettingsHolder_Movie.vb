@@ -141,16 +141,7 @@ Public Class frmTMDBMediaSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtApiKey_TextValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Validated
-        If Not (_api = txtApiKey.Text) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
-    End Sub
-
     Private Sub cbPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
-        If Not (_language = cbPrefLanguage.Text) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

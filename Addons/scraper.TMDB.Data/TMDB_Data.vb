@@ -34,6 +34,7 @@ Public Class TMDB_Data
 #Region "Fields"
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
     Public Shared ConfigOptions_Movie As New Structures.ScrapeOptions_Movie
     Public Shared ConfigOptions_MovieSet As New Structures.ScrapeOptions_MovieSet
     Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
@@ -410,6 +411,7 @@ Public Class TMDB_Data
         Dim _scraper As New TMDB.Scraper(Settings)
 
         sCollectionID = _scraper.GetMovieCollectionID(sIMDBID)
+
         If String.IsNullOrEmpty(sCollectionID) Then
             Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
         End If
@@ -439,23 +441,6 @@ Public Class TMDB_Data
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = oDBMovie.Movie.Title
         Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions_Movie)
-
-        'If IsNothing(_TMDBApi) Then
-        '    logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
-        '    Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-        'Else
-        '    If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-        '        logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
-        '        'try to create a new one
-        '        logger.Trace("Create new TMDB API")
-        '        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, _MySettings_Movie.PrefLanguage)
-        '        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey)
-        '        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, "")
-        '        If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-        '            Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-        '        End If
-        '    End If
-        'End If
 
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) Then
@@ -579,7 +564,7 @@ Public Class TMDB_Data
     End Function
 
     Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
-        logger.Trace("Started scrape FanartTV")
+        logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()
 
@@ -594,24 +579,6 @@ Public Class TMDB_Data
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = DBMovieSet.ListTitle
         Dim filterOptions As Structures.ScrapeOptions_MovieSet = Functions.MovieSetScrapeOptionsAndAlso(Options, ConfigOptions_MovieSet)
-
-        'If IsNothing(_TMDBApi_MovieSet) Then
-        '    logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi_MovieSet.Error.status_message)
-        '    Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-        'Else
-        '    If Not IsNothing(_TMDBApi_MovieSet.Error) AndAlso _TMDBApi_MovieSet.Error.status_message.Length > 0 Then
-        '        logger.Error(_TMDBApi_MovieSet.Error.status_message, _TMDBApi_MovieSet.Error.status_code.ToString())
-        '        'try to create a new one
-        '        logger.Trace("Create new TMDB API")
-        '        _TMDBApi_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, _MySettings_MovieSet.PrefLanguage)
-        '        _TMDBApiE_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey)
-        '        _TMDBApiA_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, "")
-        '        If Not IsNothing(_TMDBApi_MovieSet.Error) AndAlso _TMDBApi_MovieSet.Error.status_message.Length > 0 Then
-        '            logger.Error(_TMDBApi_MovieSet.Error.status_message, _TMDBApi_MovieSet.Error.status_code.ToString())
-        '            Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-        '        End If
-        '    End If
-        'End If
 
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
@@ -658,7 +625,7 @@ Public Class TMDB_Data
                 'I don't know another way to remove it. It works, It works so far without errors.
                 _scraper = New TMDB.Scraper(Settings)
 
-                Using dSearch As New dlgTMDBSearchResults_MovieSet(_MySettings_MovieSet, _scraper)
+                Using dSearch As New dlgTMDBSearchResults_MovieSet(Settings, _scraper)
                     Dim tmpTitle As String = DBMovieSet.MovieSet.Title
                     If String.IsNullOrEmpty(tmpTitle) Then
                         tmpTitle = DBMovieSet.ListTitle
@@ -701,6 +668,7 @@ Public Class TMDB_Data
             DBMovieSet.ListTitle = tTitle
         End If
 
+        logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

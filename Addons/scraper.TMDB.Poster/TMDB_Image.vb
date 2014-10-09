@@ -30,6 +30,7 @@ Public Class TMDB_Image
 
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
@@ -37,7 +38,6 @@ Public Class TMDB_Image
     Public Shared _AssemblyName As String
 
     Private TMDBId As String
-    Private _scraper As TMDB.Scraper
 
     ''' <summary>
     ''' Scraping Here
@@ -173,39 +173,11 @@ Public Class TMDB_Image
     Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_Movie.Init
         _AssemblyName = sAssemblyName
         LoadSettings_Movie()
-        'Must be after Load settings to retrieve the correct API key
-        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, _MySettings_Movie.PrefLanguage)
-        If IsNothing(_TMDBApi) Then
-            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
-        Else
-            If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
-            End If
-        End If
-        _TMDBConf = _TMDBApi.GetConfiguration()
-        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey)
-        _TMDBConfE = _TMDBApiE.GetConfiguration()
-        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, "")
-        _scraper = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings_Movie)
     End Sub
 
     Sub Init_MovieSet(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_MovieSet.Init
         _AssemblyName = sAssemblyName
         LoadSettings_MovieSet()
-        'Must be after Load settings to retrieve the correct API key
-        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, _MySettings_MovieSet.PrefLanguage)
-        If IsNothing(_TMDBApi) Then
-            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
-        Else
-            If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
-            End If
-        End If
-        _TMDBConf = _TMDBApi.GetConfiguration()
-        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey)
-        _TMDBConfE = _TMDBApiE.GetConfiguration()
-        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, "")
-        _scraper = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings_Movie) 'todo: _MySettings_MovieSet
     End Sub
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
@@ -301,6 +273,7 @@ Public Class TMDB_Image
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+        logger.Trace("Started scrape TMDB")
 
         LoadSettings_Movie()
 
@@ -316,13 +289,17 @@ Public Class TMDB_Image
             Settings.PrefLanguage = _MySettings_Movie.PrefLanguage
             Settings.PrefLanguageOnly = _MySettings_Movie.PrefLanguageOnly
 
+            Dim _scraper As New TMDB.Scraper(Settings)
+
             ImageList = _scraper.GetTMDBImages(DBMovie.Movie.TMDBID, Type, Settings)
         End If
 
+        logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
+        logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()
 
@@ -340,9 +317,12 @@ Public Class TMDB_Image
             Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
             Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
 
+            Dim _scraper As New TMDB.Scraper(Settings)
+
             ImageList = _scraper.GetTMDBImages(DBMovieSet.MovieSet.ID, Type, Settings)
         End If
 
+        logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

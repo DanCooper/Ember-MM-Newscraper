@@ -147,7 +147,7 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        If TMDBg.bwTMDBg.IsBusy Then
+        If TMDBg.bwTMDB.IsBusy Then
             TMDBg.CancelAsync()
         End If
         Master.tmpMovie.Clear()
