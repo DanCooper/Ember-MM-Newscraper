@@ -362,7 +362,7 @@ Namespace EmberTests
             'Act
             '   Dim mmovie As Structures.DBMovie = Nothing
             Dim mmovie As MediaContainers.Movie = Nothing
-            Dim result As Interfaces.ModuleResult = provider.ScraperNew(movie, mmovie, scrapeType, options)
+            Dim result As Interfaces.ModuleResult = provider.Scraper(movie, mmovie, scrapeType, options)
 
             Dim methodName = GetMethodName()
 

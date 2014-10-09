@@ -749,14 +749,12 @@ Namespace TMDBdata
 
             Try
                 Select Case iType
-                    Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk
-
+                    Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
                         If r.Matches.Count = 1 Then
                             b = GetMovieInfo(r.Matches.Item(0).TMDBID, nMovie, True, False, Options, True)
                         Else
                             Master.tmpMovie.Clear()
                             Using dTMDB As New dlgTMDBSearchResults_Movie(_MySettings, Me)
-
                                 If dTMDB.ShowDialog(r, sMovieName, dbMovie.Filename) = Windows.Forms.DialogResult.OK Then
                                     If String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
                                         b = False

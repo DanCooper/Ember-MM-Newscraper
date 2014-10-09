@@ -1432,6 +1432,7 @@ Public Class Functions
         filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
         filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
         filterOptions.bMusicBy = Options.bMusicBy AndAlso Options2.bMusicBy
+        filterOptions.bOriginalTitle = Options.bOriginalTitle AndAlso Options2.bOriginalTitle
         filterOptions.bOtherCrew = Options.bOtherCrew AndAlso Options2.bOtherCrew
         filterOptions.bOutline = Options.bOutline AndAlso Options2.bOutline
         filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
@@ -1936,6 +1937,7 @@ Public Class Structures
         Dim bGenre As Boolean
         Dim bMPAA As Boolean
         Dim bMusicBy As Boolean
+        Dim bOriginalTitle As Boolean
         Dim bOtherCrew As Boolean
         Dim bOutline As Boolean
         Dim bPlot As Boolean

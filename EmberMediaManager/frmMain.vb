@@ -1829,18 +1829,9 @@ Public Class frmMain
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
 
                 If Master.GlobalScrapeMod.NFO Then
-
-                    'Cocotus 2014/08/31 First implementation of NewScraper logic: ScrapeData_MovieNew -> scrape results will be saved in list
-                    Dim ScrapedList As New List(Of MediaContainers.Movie)
-                    If ModulesManager.Instance.ScrapeData_MovieNew(DBScrapeMovie, ScrapedList, Args.scrapeType, Args.Options_Movie) Then
+                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie) Then
                         Exit Try
                     End If
-                    'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
-                    If Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieScraperUseDetailView Then
-                        Me.PreviewDataScraperResults(ScrapedList)
-                    End If
-                    'Merge scraperresults considering global datascraper settings
-                    DBScrapeMovie = NFO.MergeDataScraperResults(DBScrapeMovie, ScrapedList)
                 Else
                     ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
                     If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (Master.GlobalScrapeMod.ActorThumbs Or Master.GlobalScrapeMod.Banner Or Master.GlobalScrapeMod.ClearArt Or _
@@ -12310,9 +12301,6 @@ doCancel:
             Me.Refresh()
         End If
     End Sub
-
-
-
     ''' <summary>
     ''' Open MovieDataScraperPreview Window
     ''' </summary>

@@ -106,7 +106,6 @@ Public Class OFDB_Data
         LoadSettings()
     End Sub
 
-
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmOFDBInfoSettingsHolder
@@ -161,116 +160,12 @@ Public Class OFDB_Data
         ConfigOptions.bPlot = _setup.chkPlot.Checked
         ConfigOptions.bGenre = _setup.chkGenre.Checked
         SaveSettings()
-        'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If
     End Sub
-
-    'Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
-    '    ' as we do not have a OFDB search / show dialog we use IMDB
-    '    If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
-    '        Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
-    '        Dim IMDB As New IMDB_Data
-    '        Dim aRet As Interfaces.ModuleResult = IMDB.Scraper(DBMovie, ScrapeType, tOpt)
-    '        If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
-    '            Return aRet
-    '        End If
-    '    End If
-
-    '    ' we have the ID
-    '    Dim tOFDB As New OFDB(DBMovie.Movie.ID, DBMovie.Movie)
-
-    '    Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
-
-    '    If filterOptions.bTitle AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Title) OrElse Not Master.eSettings.MovieLockTitle) Then
-    '        If Not String.IsNullOrEmpty(tOFDB.Title) Then
-    '            DBMovie.Movie.Title = tOFDB.Title
-    '        End If
-    '    End If
-
-    '    If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
-    '        If Not String.IsNullOrEmpty(tOFDB.Outline) Then
-    '            'check if brackets should be removed...
-    '            If ConfigOptions.bCleanPlotOutline Then
-    '                DBMovie.Movie.Outline = StringUtils.RemoveBrackets(tOFDB.Outline)
-    '            Else
-    '                DBMovie.Movie.Outline = tOFDB.Outline
-    '            End If
-
-    '        End If
-    '    End If
-
-    '    If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
-    '        If Not String.IsNullOrEmpty(tOFDB.Plot) Then
-    '            'check if brackets should be removed...
-    '            If ConfigOptions.bCleanPlotOutline Then
-    '                DBMovie.Movie.Plot = StringUtils.RemoveBrackets(tOFDB.Plot)
-    '            Else
-    '                DBMovie.Movie.Plot = tOFDB.Plot
-    '            End If
-    '        End If
-    '    End If
-
-    '    If filterOptions.bGenre AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Genre) OrElse Not Master.eSettings.MovieLockGenre) Then
-    '        If Not String.IsNullOrEmpty(tOFDB.Genre) Then
-    '            DBMovie.Movie.Genre = tOFDB.Genre
-    '        End If
-    '    End If
-
-    '    'Use OFDB FSK?
-    '    If filterOptions.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) Then
-
-
-    '        If Not String.IsNullOrEmpty(tOFDB.FSK) Then
-    '            Select Case CInt(tOFDB.FSK)
-    '                Case 0
-    '                    DBMovie.Movie.Certification = "Germany:0"
-    '                    If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
-    '                        DBMovie.Movie.MPAA = "Germany:0"
-    '                    Else
-    '                        DBMovie.Movie.MPAA = "0"
-    '                    End If
-    '                Case 6
-    '                    DBMovie.Movie.Certification = "Germany:6"
-    '                    If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
-    '                        DBMovie.Movie.MPAA = "Germany:6"
-    '                    Else
-    '                        DBMovie.Movie.MPAA = "6"
-    '                    End If
-    '                Case 16
-    '                    DBMovie.Movie.Certification = "Germany:16"
-    '                    If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
-    '                        DBMovie.Movie.MPAA = "Germany:16"
-    '                    Else
-    '                        DBMovie.Movie.MPAA = "16"
-    '                    End If
-    '                Case 12
-    '                    DBMovie.Movie.Certification = "Germany:12"
-    '                    If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
-    '                        DBMovie.Movie.MPAA = "Germany:12"
-    '                    Else
-    '                        DBMovie.Movie.MPAA = "12"
-    '                    End If
-    '                Case 18
-    '                    DBMovie.Movie.Certification = "Germany:18"
-    '                    If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
-    '                        DBMovie.Movie.MPAA = "Germany:18"
-    '                    Else
-    '                        DBMovie.Movie.MPAA = "18"
-    '                    End If
-    '            End Select
-    '        End If
-
-    '    End If
-
-
-    '    Return New Interfaces.ModuleResult With {.breakChain = False}
-    'End Function
-
-
     ''' <summary>
     '''  Scrape MovieDetails from OFDB
     ''' </summary>
@@ -279,11 +174,11 @@ Public Class OFDB_Data
     ''' <param name="Options">(NOT used at moment!)What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper should NOT consider global scraper settings/locks in Ember, just scraper options of module</remarks>
-    Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.ScraperNew
-        logger.Trace("Started OFDB ScraperNew")
+    Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+        logger.Trace("Started OFDB Scraper")
 
         'datascraper needs imdb of movie!
-        If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
+        If String.IsNullOrEmpty(oDBMovie.Movie.ID) Then
             logger.Trace("IMDB-ID of movie is needed, but not availaible! Leave OFDB scraper...")
             Return New Interfaces.ModuleResult With {.breakChain = False}
         End If
@@ -291,7 +186,7 @@ Public Class OFDB_Data
         nMovie.Scrapersource = "OFDB"
 
         ' we have the IMDB-ID -> now we can use scraper methods!
-        Dim tOFDB As New OFDB(DBMovie.Movie.ID)
+        Dim tOFDB As New OFDB(oDBMovie.Movie.ID)
 
         'Use OFDB title?
         If ConfigOptions.bTitle Then
@@ -365,7 +260,7 @@ Public Class OFDB_Data
             End If
         End If
 
-        logger.Trace("Finished OFDB ScraperNew")
+        logger.Trace("Finished OFDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

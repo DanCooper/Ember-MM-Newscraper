@@ -390,7 +390,6 @@ Public Class TMDB_Data
         _MySettings_Movie.GetAdultItems = _setup_Movie.chkGetAdultItems.Checked
         _MySettings_Movie.PrefLanguage = _setup_Movie.cbPrefLanguage.Text
         SaveSettings_Movie()
-        'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
             RemoveHandler _setup_Movie.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
@@ -405,7 +404,6 @@ Public Class TMDB_Data
         _MySettings_MovieSet.GetAdultItems = _setup_MovieSet.chkGetAdultItems.Checked
         _MySettings_MovieSet.PrefLanguage = _setup_MovieSet.cbPrefLanguage.Text
         SaveSettings_MovieSet()
-        'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movieset
             RemoveHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_MovieSet
@@ -431,166 +429,6 @@ Public Class TMDB_Data
         End If
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
-
-    'Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
-    '    Dim tTitle As String = String.Empty
-    '    Dim OldTitle As String = DBMovie.Movie.Title
-    '    Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions_Movie)
-
-    '    If IsNothing(_TMDBApi) Then
-    '        logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
-    '        Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-    '    Else
-    '        If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-    '            logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
-    '            'try to create a new one
-    '            logger.Trace("Create new TMDB API")
-    '            _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, _MySettings_Movie.PrefLanguage)
-    '            _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey)
-    '            _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, "")
-    '            If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-    '                Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-    '            End If
-    '        End If
-    '    End If
-
-    '    If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
-    '        If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
-    '            _TMDBg.GetMovieInfo(DBMovie.Movie.ID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
-    '        ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
-    '            If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-    '                DBMovie.Movie = _TMDBg.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, ScrapeType, filterOptions)
-    '            End If
-    '            If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-    '        End If
-    '    End If
-
-    '    ' why a scraper should initialize the DBMovie structure?
-    '    ' Answer (DanCooper): If you want to CHANGE the movie. For this, all existing (incorrect) information must be deleted.
-    '    If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
-    '     AndAlso ModulesManager.Instance.externalScrapersModules_Data_Movie.OrderBy(Function(y) y.ModuleOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
-    '        DBMovie.Movie.IMDBID = String.Empty
-    '        DBMovie.RemoveActorThumbs = True
-    '        DBMovie.RemoveBanner = True
-    '        DBMovie.RemoveClearArt = True
-    '        DBMovie.RemoveClearLogo = True
-    '        DBMovie.RemoveDiscArt = True
-    '        DBMovie.RemoveEFanarts = True
-    '        DBMovie.RemoveEThumbs = True
-    '        DBMovie.RemoveFanart = True
-    '        DBMovie.RemoveLandscape = True
-    '        DBMovie.RemovePoster = True
-    '        DBMovie.RemoveTheme = True
-    '        DBMovie.RemoveTrailer = True
-    '        DBMovie.BannerPath = String.Empty
-    '        DBMovie.ClearArtPath = String.Empty
-    '        DBMovie.ClearLogoPath = String.Empty
-    '        DBMovie.DiscArtPath = String.Empty
-    '        DBMovie.EFanartsPath = String.Empty
-    '        DBMovie.EThumbsPath = String.Empty
-    '        DBMovie.FanartPath = String.Empty
-    '        DBMovie.LandscapePath = String.Empty
-    '        DBMovie.NfoPath = String.Empty
-    '        DBMovie.PosterPath = String.Empty
-    '        DBMovie.SubPath = String.Empty
-    '        DBMovie.ThemePath = String.Empty
-    '        DBMovie.TrailerPath = String.Empty
-    '        DBMovie.Movie.Clear()
-    '    End If
-
-    '    If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-    '        Select Case ScrapeType
-    '            Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
-    '                Return New Interfaces.ModuleResult With {.breakChain = False}
-    '        End Select
-    '        If ScrapeType = Enums.ScrapeType.SingleScrape Then
-
-    '            'This is a workaround to remove the "TreeView" error on search results window. The problem is that the last search results are still existing in _TMDBg. 
-    '            'I don't know another way to remove it. It works, It works so far without errors.
-    '            'TODO: maybe find another solution.
-    '            Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
-
-    '            Using dSearch As New dlgTMDBSearchResults_Movie(_MySettings_Movie, Me._TMDBg)
-    '                Dim tmpTitle As String = DBMovie.Movie.Title
-    '                Dim tmpYear As Integer = CInt(IIf(Not String.IsNullOrEmpty(DBMovie.Movie.Year), DBMovie.Movie.Year, 0))
-    '                If String.IsNullOrEmpty(tmpTitle) Then
-    '                    If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-    '                        tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
-    '                    ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-    '                        tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
-    '                    Else
-    '                        tmpTitle = StringUtils.FilterName(If(DBMovie.IsSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
-    '                    End If
-    '                End If
-    '                If dSearch.ShowDialog(tmpTitle, DBMovie.Filename, filterOptions, tmpYear) = Windows.Forms.DialogResult.OK Then
-    '                    If Not String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
-    '                        ' if we changed the ID tipe we need to clear everything and rescrape
-    '                        ' TODO: check TMDB if IMDB NullOrEmpty
-    '                        If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Not (DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID) Then
-    '                            Master.currMovie.RemoveActorThumbs = True
-    '                            Master.currMovie.RemoveBanner = True
-    '                            Master.currMovie.RemoveClearArt = True
-    '                            Master.currMovie.RemoveClearLogo = True
-    '                            Master.currMovie.RemoveDiscArt = True
-    '                            Master.currMovie.RemoveEThumbs = True
-    '                            Master.currMovie.RemoveEFanarts = True
-    '                            Master.currMovie.RemoveFanart = True
-    '                            Master.currMovie.RemoveLandscape = True
-    '                            Master.currMovie.RemovePoster = True
-    '                            Master.currMovie.RemoveTheme = True
-    '                            Master.currMovie.RemoveTrailer = True
-    '                            Master.currMovie.BannerPath = String.Empty
-    '                            Master.currMovie.ClearArtPath = String.Empty
-    '                            Master.currMovie.ClearLogoPath = String.Empty
-    '                            Master.currMovie.DiscArtPath = String.Empty
-    '                            Master.currMovie.EFanartsPath = String.Empty
-    '                            Master.currMovie.EThumbsPath = String.Empty
-    '                            Master.currMovie.FanartPath = String.Empty
-    '                            Master.currMovie.NfoPath = String.Empty
-    '                            Master.currMovie.LandscapePath = String.Empty
-    '                            Master.currMovie.PosterPath = String.Empty
-    '                            Master.currMovie.SubPath = String.Empty
-    '                            Master.currMovie.ThemePath = String.Empty
-    '                            Master.currMovie.TrailerPath = String.Empty
-    '                        End If
-    '                        DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
-    '                        DBMovie.Movie.TMDBID = Master.tmpMovie.TMDBID
-    '                    End If
-    '                    If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
-    '                        _TMDBg.GetMovieInfo(DBMovie.Movie.TMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
-    '                    End If
-    '                Else
-    '                    Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-    '                End If
-    '            End Using
-    '        End If
-    '    End If
-
-    '    If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-    '        tTitle = StringUtils.FilterTokens_Movie(DBMovie.Movie.Title)
-    '        If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = tTitle
-    '        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
-    '            DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
-    '        Else
-    '            DBMovie.ListTitle = tTitle
-    '        End If
-    '    Else
-    '        If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-    '            DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
-    '        ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-    '            DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
-    '        Else
-    '            If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
-    '                DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(DBMovie.Filename).Name)
-    '            Else
-    '                DBMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(DBMovie.Filename))
-    '            End If
-    '        End If
-    '        If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
-    '    End If
-
-    '    Return New Interfaces.ModuleResult With {.breakChain = False}
-    'End Function
 
     Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
         Dim tTitle As String = String.Empty
@@ -706,24 +544,20 @@ Public Class TMDB_Data
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
-
-
     ''' <summary>
     '''  Scrape MovieDetails from TMDB
     ''' </summary>
     ''' <param name="DBMovie">Movie to be scraped. DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper</param>
     ''' <param name="nMovie">New scraped movie data</param>
-    ''' <param name="Options">(NOT used at moment!)What kind of data is being requested from the scrape(global scraper settings)</param>
+    ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
-    ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper module should NOT use global scraper settings/locks in Ember, just scraper options of module
-    ''' Instead of directly saving scraped results into DBMovie we use empty nMovie movie container to store retrieved information of scraper</remarks>
-    Function ScraperNew(ByRef DBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.ScraperNew
-        logger.Trace("Started TMDB ScraperNew")
+    ''' <remarks></remarks>
+    Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+        logger.Trace("Started TMDB Scraper")
 
         Dim tTitle As String = String.Empty
-        Dim OldTitle As String = DBMovie.Movie.Title
-        'only scraper module settings will be considered
-        Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(ConfigOptions_Movie, ConfigOptions_Movie)
+        Dim OldTitle As String = oDBMovie.Movie.Title
+        Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions_Movie)
 
         If IsNothing(_TMDBApi) Then
             logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
@@ -743,16 +577,16 @@ Public Class TMDB_Data
         End If
 
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
-            If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
+            If Not String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                _TMDBg.GetMovieInfo(DBMovie.Movie.ID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
+                _TMDBg.GetMovieInfo(oDBMovie.Movie.ID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first and try to get ID!
-                If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-                    DBMovie.Movie = _TMDBg.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, nMovie, ScrapeType, filterOptions)
+                If Not String.IsNullOrEmpty(oDBMovie.Movie.Title) Then
+                    oDBMovie.Movie = _TMDBg.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie, nMovie, ScrapeType, filterOptions)
                 End If
                 'if still no ID retrieved -> exit
-                If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                If String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
         End If
 
@@ -760,36 +594,36 @@ Public Class TMDB_Data
         ' Answer (DanCooper): If you want to CHANGE the movie. For this, all existing (incorrect) information must be deleted.
         If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
          AndAlso ModulesManager.Instance.externalScrapersModules_Data_Movie.OrderBy(Function(y) y.ModuleOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
-            DBMovie.Movie.IMDBID = String.Empty
-            DBMovie.RemoveActorThumbs = True
-            DBMovie.RemoveBanner = True
-            DBMovie.RemoveClearArt = True
-            DBMovie.RemoveClearLogo = True
-            DBMovie.RemoveDiscArt = True
-            DBMovie.RemoveEFanarts = True
-            DBMovie.RemoveEThumbs = True
-            DBMovie.RemoveFanart = True
-            DBMovie.RemoveLandscape = True
-            DBMovie.RemovePoster = True
-            DBMovie.RemoveTheme = True
-            DBMovie.RemoveTrailer = True
-            DBMovie.BannerPath = String.Empty
-            DBMovie.ClearArtPath = String.Empty
-            DBMovie.ClearLogoPath = String.Empty
-            DBMovie.DiscArtPath = String.Empty
-            DBMovie.EFanartsPath = String.Empty
-            DBMovie.EThumbsPath = String.Empty
-            DBMovie.FanartPath = String.Empty
-            DBMovie.LandscapePath = String.Empty
-            DBMovie.NfoPath = String.Empty
-            DBMovie.PosterPath = String.Empty
-            DBMovie.SubPath = String.Empty
-            DBMovie.ThemePath = String.Empty
-            DBMovie.TrailerPath = String.Empty
-            DBMovie.Movie.Clear()
+            oDBMovie.Movie.IMDBID = String.Empty
+            oDBMovie.RemoveActorThumbs = True
+            oDBMovie.RemoveBanner = True
+            oDBMovie.RemoveClearArt = True
+            oDBMovie.RemoveClearLogo = True
+            oDBMovie.RemoveDiscArt = True
+            oDBMovie.RemoveEFanarts = True
+            oDBMovie.RemoveEThumbs = True
+            oDBMovie.RemoveFanart = True
+            oDBMovie.RemoveLandscape = True
+            oDBMovie.RemovePoster = True
+            oDBMovie.RemoveTheme = True
+            oDBMovie.RemoveTrailer = True
+            oDBMovie.BannerPath = String.Empty
+            oDBMovie.ClearArtPath = String.Empty
+            oDBMovie.ClearLogoPath = String.Empty
+            oDBMovie.DiscArtPath = String.Empty
+            oDBMovie.EFanartsPath = String.Empty
+            oDBMovie.EThumbsPath = String.Empty
+            oDBMovie.FanartPath = String.Empty
+            oDBMovie.LandscapePath = String.Empty
+            oDBMovie.NfoPath = String.Empty
+            oDBMovie.PosterPath = String.Empty
+            oDBMovie.SubPath = String.Empty
+            oDBMovie.ThemePath = String.Empty
+            oDBMovie.TrailerPath = String.Empty
+            oDBMovie.Movie.Clear()
         End If
 
-        If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
+        If String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
                     Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -802,22 +636,22 @@ Public Class TMDB_Data
                 Me._TMDBg = New TMDBdata.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
 
                 Using dSearch As New dlgTMDBSearchResults_Movie(_MySettings_Movie, Me._TMDBg)
-                    Dim tmpTitle As String = DBMovie.Movie.Title
-                    Dim tmpYear As Integer = CInt(IIf(Not String.IsNullOrEmpty(DBMovie.Movie.Year), DBMovie.Movie.Year, 0))
+                    Dim tmpTitle As String = oDBMovie.Movie.Title
+                    Dim tmpYear As Integer = CInt(IIf(Not String.IsNullOrEmpty(oDBMovie.Movie.Year), oDBMovie.Movie.Year, 0))
                     If String.IsNullOrEmpty(tmpTitle) Then
-                        If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-                            tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
-                        ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-                            tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
+                        If FileUtils.Common.isVideoTS(oDBMovie.Filename) Then
+                            tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(oDBMovie.Filename).FullName).Name, False)
+                        ElseIf FileUtils.Common.isBDRip(oDBMovie.Filename) Then
+                            tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(oDBMovie.Filename).FullName).FullName).Name, False)
                         Else
-                            tmpTitle = StringUtils.FilterName_Movie(If(DBMovie.IsSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                            tmpTitle = StringUtils.FilterName_Movie(If(oDBMovie.IsSingle, Directory.GetParent(oDBMovie.Filename).Name, Path.GetFileNameWithoutExtension(oDBMovie.Filename)))
                         End If
                     End If
-                    If dSearch.ShowDialog(tmpTitle, DBMovie.Filename, filterOptions, tmpYear) = Windows.Forms.DialogResult.OK Then
+                    If dSearch.ShowDialog(tmpTitle, oDBMovie.Filename, filterOptions, tmpYear) = Windows.Forms.DialogResult.OK Then
                         If Not String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
-                            ' if we changed the ID tipe we need to clear everything and rescrape
+                            ' if we changed the ID type we need to clear everything and rescrape
                             ' TODO: check TMDB if IMDB NullOrEmpty
-                            If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Not (DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID) Then
+                            If Not String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) AndAlso Not (oDBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID) Then
                                 Master.currMovie.RemoveActorThumbs = True
                                 Master.currMovie.RemoveBanner = True
                                 Master.currMovie.RemoveClearArt = True
@@ -844,14 +678,14 @@ Public Class TMDB_Data
                                 Master.currMovie.ThemePath = String.Empty
                                 Master.currMovie.TrailerPath = String.Empty
                             End If
-                            DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
-                            DBMovie.Movie.TMDBID = Master.tmpMovie.TMDBID
+                            oDBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
+                            oDBMovie.Movie.TMDBID = Master.tmpMovie.TMDBID
                         End If
-                        If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
-                            _TMDBg.GetMovieInfo(DBMovie.Movie.TMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
-                            DBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
-                            DBMovie.Movie.Title = nMovie.Title
-                            DBMovie.Movie.ID = nMovie.ID
+                        If Not String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
+                            _TMDBg.GetMovieInfo(oDBMovie.Movie.TMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
+                            oDBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
+                            oDBMovie.Movie.Title = nMovie.Title
+                            oDBMovie.Movie.ID = nMovie.ID
                         End If
                     Else
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -860,7 +694,7 @@ Public Class TMDB_Data
             End If
         End If
 
-        logger.Trace("Finished TMDB ScraperNew")
+        logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
