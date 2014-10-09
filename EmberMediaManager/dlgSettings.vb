@@ -2067,7 +2067,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVShowMissingCleaArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingClearArt.CheckedChanged
+    Private Sub chkTVShowMissingClearArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowMissingClearArt.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
