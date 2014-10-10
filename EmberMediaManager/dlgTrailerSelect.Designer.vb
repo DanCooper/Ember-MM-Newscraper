@@ -38,6 +38,7 @@ Partial Class dlgTrailerSelect
         Me.colDuration = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colQuality = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colSource = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colExtension = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbYouTubeSearch = New System.Windows.Forms.GroupBox()
         Me.btnYouTubeSearch = New System.Windows.Forms.Button()
         Me.txtYouTubeSearch = New System.Windows.Forms.TextBox()
@@ -57,7 +58,6 @@ Partial Class dlgTrailerSelect
         Me.btnTrailerPlay = New System.Windows.Forms.Button()
         Me.axVLCTrailer = New AxAXVLC.AxVLCPlugin2()
         Me.btnPlayInBrowser = New System.Windows.Forms.Button()
-        Me.colExtension = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbSelectTrailer.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.gbYouTubeSearch.SuspendLayout()
@@ -184,6 +184,11 @@ Partial Class dlgTrailerSelect
         '
         Me.colSource.Text = "Source"
         Me.colSource.Width = 80
+        '
+        'colExtension
+        '
+        Me.colExtension.Text = "Typ"
+        Me.colExtension.Width = 50
         '
         'gbYouTubeSearch
         '
@@ -335,6 +340,7 @@ Partial Class dlgTrailerSelect
         '
         'btnTrailerStop
         '
+        Me.btnTrailerStop.Enabled = False
         Me.btnTrailerStop.Location = New System.Drawing.Point(94, 244)
         Me.btnTrailerStop.Name = "btnTrailerStop"
         Me.btnTrailerStop.Size = New System.Drawing.Size(75, 23)
@@ -344,6 +350,7 @@ Partial Class dlgTrailerSelect
         '
         'btnTrailerPlay
         '
+        Me.btnTrailerPlay.Enabled = False
         Me.btnTrailerPlay.Location = New System.Drawing.Point(13, 244)
         Me.btnTrailerPlay.Name = "btnTrailerPlay"
         Me.btnTrailerPlay.Size = New System.Drawing.Size(75, 23)
@@ -369,11 +376,6 @@ Partial Class dlgTrailerSelect
         Me.btnPlayInBrowser.TabIndex = 4
         Me.btnPlayInBrowser.Text = "Open In Browser"
         Me.btnPlayInBrowser.UseVisualStyleBackColor = True
-        '
-        'colExtension
-        '
-        Me.colExtension.Text = "Typ"
-        Me.colExtension.Width = 50
         '
         'dlgTrailerSelect
         '
