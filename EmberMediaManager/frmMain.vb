@@ -3306,6 +3306,14 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub chkFilterEmpty_MovieSets_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterEmpty_MovieSets.Click
+        Try
+            Me.RunFilter_Movies(True)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub chkFilterLock_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterLock_Movies.Click
         Try
             If Me.chkFilterLock_Movies.Checked Then
@@ -16800,6 +16808,7 @@ doCancel:
                 .btnFilterSortTitle_Movies.Tag = String.Empty
                 .btnFilterSortTitle_Movies.Text = Master.eLang.GetString(642, "Sort Title")
                 .chkFilterDuplicates_Movies.Text = Master.eLang.GetString(41, "Duplicates")
+                .chkFilterEmpty_MovieSets.Text = Master.eLang.GetString(1275, "Empty")
                 .chkFilterLock_Movies.Text = Master.eLang.GetString(43, "Locked")
                 .chkFilterLock_MovieSets.Text = chkFilterLock_Movies.Text
                 .chkFilterLock_Shows.Text = chkFilterLock_Movies.Text
