@@ -90,7 +90,8 @@ Public Class dlgTrailerSelect
             Me.lvTrailers.Select()
             Me.lvTrailers.Items(0).Selected = True
         End If
-
+        Me.btnTrailerPlay.Enabled = False
+        Me.btnTrailerStop.Enabled = False
         Return MyBase.ShowDialog()
     End Function
 
@@ -248,6 +249,8 @@ Public Class dlgTrailerSelect
             Me.pnlStatus.Visible = False
             Me.SetControlsEnabled(True)
             Me.SetEnabled()
+            Me.btnTrailerPlay.Enabled = False
+            Me.btnTrailerStop.Enabled = False
         End If
     End Sub
 
@@ -280,6 +283,8 @@ Public Class dlgTrailerSelect
             MsgBox(Master.eLang.GetString(908, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(59, "Error Playing Trailer"))
             Me.SetControlsEnabled(True)
             Me.SetEnabled()
+            Me.btnTrailerPlay.Enabled = False
+            Me.btnTrailerStop.Enabled = False
         End Try
     End Sub
 
@@ -378,6 +383,8 @@ Public Class dlgTrailerSelect
         Me.pnlStatus.Visible = False
         Me.SetControlsEnabled(True)
         Me.SetEnabled()
+        Me.btnTrailerPlay.Enabled = False
+        Me.btnTrailerStop.Enabled = False
     End Sub
 
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
@@ -412,6 +419,8 @@ Public Class dlgTrailerSelect
                 Me.pnlStatus.Visible = False
                 Me.SetControlsEnabled(True)
                 Me.SetEnabled()
+                Me.btnTrailerPlay.Enabled = False
+                Me.btnTrailerStop.Enabled = False
             End If
         End If
         RemoveHandler Trailers.ProgressUpdated, AddressOf DownloadProgressUpdated
@@ -446,7 +455,7 @@ Public Class dlgTrailerSelect
                     Dim sFormat As String = dFormats.ShowDialog(vLink)
                     Me.TrailerAddToPlayer(sFormat)
                 End Using
-            ElseIf Regex.IsMatch(vLink, "https?:\/\/movietrailers\.apple\.com.*?") Then
+            ElseIf Regex.IsMatch(vLink, "https?:\/\/movietrailers\.apple\.com.*?") OrElse Regex.IsMatch(vLink, "https?:\/\/trailers.apple.com\*?") Then
                 MsgBox(String.Format(Master.eLang.GetString(1169, "Please use the {0}{1}{0} button for this trailer"), """", Master.eLang.GetString(931, "Open In Browser")), MsgBoxStyle.Information, Master.eLang.GetString(271, "Error Playing Trailer"))
             Else
                 Me.TrailerAddToPlayer(vLink)
@@ -542,18 +551,34 @@ Public Class dlgTrailerSelect
     End Sub
 
     Private Sub TrailerStart()
-        If Me.axVLCTrailer.playlist.isPlaying Then
-            Me.axVLCTrailer.playlist.togglePause()
-            Me.btnTrailerPlay.Text = "Play"
+
+        'Cocotus 2014/10/09 Check if there's at least one video in playlist before attempt to change button...
+        If Me.axVLCTrailer.playlist.items.count > 0 Then
+            If Me.axVLCTrailer.playlist.isPlaying Then
+                Me.axVLCTrailer.playlist.togglePause()
+                Me.btnTrailerPlay.Enabled = True
+                Me.btnTrailerPlay.Text = "Play"
+                Me.btnTrailerStop.Enabled = True
+            Else
+                Me.axVLCTrailer.playlist.play()
+                Me.btnTrailerPlay.Enabled = True
+                Me.btnTrailerPlay.Text = "Pause"
+                Me.btnTrailerStop.Enabled = True
+            End If
         Else
-            Me.axVLCTrailer.playlist.play()
-            Me.btnTrailerPlay.Text = "Pause"
+            'nothing to play
+            Me.axVLCTrailer.playlist.togglePause()
+            Me.btnTrailerPlay.Enabled = False
+            Me.btnTrailerPlay.Text = "Play"
+            Me.btnTrailerStop.Enabled = False
         End If
     End Sub
 
     Private Sub TrailerStop()
         Me.axVLCTrailer.playlist.stop()
         Me.btnTrailerPlay.Text = "Play"
+        Me.btnTrailerStop.Enabled = False
+        Me.btnTrailerPlay.Enabled = False
     End Sub
 
     Private Sub TrailerAddToPlayer(ByVal Trailer As String)
