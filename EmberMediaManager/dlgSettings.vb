@@ -3089,6 +3089,38 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub FillMovieSetScraperMapper()
+        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetScraperMapper:"))
+            Dim i As Integer = dgvMovieSetScraperMapper.Rows.Add(New Object() {sett.Name.Substring(22), sett.Value})
+            If Not sett.DefaultValue = String.Empty Then
+                dgvMovieSetScraperMapper.Rows(i).Tag = True
+                dgvMovieSetScraperMapper.Rows(i).Cells(0).ReadOnly = True
+                dgvMovieSetScraperMapper.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
+            Else
+                dgvMovieSetScraperMapper.Rows(i).Tag = False
+            End If
+        Next
+        dgvMovieSetScraperMapper.ClearSelection()
+    End Sub
+
+    Private Sub SaveMovieSetScraperMapper()
+        Dim deleteitem As New List(Of String)
+        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetScraperMapper:"))
+            deleteitem.Add(sett.Name)
+        Next
+
+        Using settings = New clsAdvancedSettings()
+            For Each s As String In deleteitem
+                settings.CleanSetting(s, "*EmberAPP")
+            Next
+            For Each r As DataGridViewRow In dgvMovieSetScraperMapper.Rows
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not String.IsNullOrEmpty(r.Cells(1).Value.ToString) Then
+                    settings.SetSetting(String.Concat("MovieSetScraperMapper:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
+                End If
+            Next
+        End Using
+    End Sub
+
     Private Sub FillList(ByVal sType As String)
         Dim pNode As New TreeNode
         Dim cNode As New TreeNode
@@ -3569,8 +3601,8 @@ Public Class dlgSettings
                 Me.txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat.ToString
                 Me.txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
 
-
                 FillGenres()
+                FillMovieSetScraperMapper()
 
                 If .MovieLevTolerance > 0 Then
                     Me.chkMovieLevTolerance.Checked = True
@@ -5215,6 +5247,8 @@ Public Class dlgSettings
                 LoadGenreLangs()
                 FillGenres()
 
+                SaveMovieSetScraperMapper()
+
                 If Not String.IsNullOrEmpty(Me.txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(Me.txtProxyPort.Text) Then
                     .ProxyURI = Me.txtProxyURI.Text
                     .ProxyPort = Convert.ToInt32(Me.txtProxyPort.Text)
@@ -5582,6 +5616,8 @@ Public Class dlgSettings
         Me.Text = Master.eLang.GetString(420, "Settings")
         Me.btnApply.Text = Master.eLang.GetString(276, "Apply")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        Me.btnMovieSetScraperMapperAdd.Text = Master.eLang.GetString(28, "Add")
+        Me.btnMovieSetScraperMapperRemove.Text = Master.eLang.GetString(30, "Remove")
         Me.btnMovieSourceAdd.Text = Master.eLang.GetString(407, "Add Source")
         Me.btnMovieSourceEdit.Text = Master.eLang.GetString(535, "Edit Source")
         Me.btnMovieSourceRemove.Text = Master.eLang.GetString(30, "Remove")
@@ -5785,6 +5821,8 @@ Public Class dlgSettings
         Me.colPath.Text = Master.eLang.GetString(410, "Path")
         Me.colRecur.Text = Master.eLang.GetString(411, "Recursive")
         Me.colSingle.Text = Master.eLang.GetString(413, "Single Video")
+        Me.dgvMovieSetScraperMapper.Columns(0).HeaderText = Master.eLang.GetString(1277, "Scraped Name")
+        Me.dgvMovieSetScraperMapper.Columns(1).HeaderText = Master.eLang.GetString(1278, "Mapped Name")
         Me.gbFileSystemExcludedDirs.Text = Master.eLang.GetString(1273, "Excluded Directories")
         Me.gbFileSystemCleanFiles.Text = Master.eLang.GetString(437, "Clean Files")
         Me.gbFileSystemNoStackExts.Text = Master.eLang.GetString(530, "No Stack Extensions")
@@ -5821,6 +5859,7 @@ Public Class dlgSettings
         Me.gbMovieScraperGlobalLocksOpts.Text = Master.eLang.GetString(488, "Global Locks")
         Me.gbMovieScraperMetaDataOpts.Text = Master.eLang.GetString(59, "Meta Data")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
+        Me.gbMovieSetScraperMapperOpts.Text = Master.eLang.GetString(1279, "Name Mapper")
         Me.gbMovieSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         Me.gbMovieTrailerOpts.Text = Master.eLang.GetString(1195, "Trailers")
         Me.gbMovieXBMCOptionalSettings.Text = Master.eLang.GetString(1175, "Optional Settings")
@@ -7798,6 +7837,37 @@ Public Class dlgSettings
                 Explorer.Start()
             End Using
         End If
+    End Sub
+
+    Private Sub btnMovieSetScraperMapperAdd_Click(sender As Object, e As EventArgs) Handles btnMovieSetScraperMapperAdd.Click
+        Dim i As Integer = dgvMovieSetScraperMapper.Rows.Add(New Object() {String.Empty, String.Empty})
+        dgvMovieSetScraperMapper.Rows(i).Tag = False
+        dgvMovieSetScraperMapper.CurrentCell = dgvMovieSetScraperMapper.Rows(i).Cells(0)
+        dgvMovieSetScraperMapper.BeginEdit(True)
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub btnMovieSetScraperMapperRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetScraperMapperRemove.Click
+        If dgvMovieSetScraperMapper.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvMovieSetScraperMapper.Rows(dgvMovieSetScraperMapper.SelectedCells(0).RowIndex).Tag) Then
+            dgvMovieSetScraperMapper.Rows.RemoveAt(dgvMovieSetScraperMapper.SelectedCells(0).RowIndex)
+            Me.SetApplyButton(True)
+        End If
+    End Sub
+
+    Private Sub dgvMovieSetScraperMapper_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovieSetScraperMapper.CurrentCellDirtyStateChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub dgvMovieSetScraperMapper_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovieSetScraperMapper.SelectionChanged
+        If dgvMovieSetScraperMapper.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvMovieSetScraperMapper.Rows(dgvMovieSetScraperMapper.SelectedCells(0).RowIndex).Tag) Then
+            btnMovieSetScraperMapperRemove.Enabled = True
+        Else
+            btnMovieSetScraperMapperRemove.Enabled = False
+        End If
+    End Sub
+
+    Private Sub dgvMovieSetScraperMapper_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMovieSetScraperMapper.KeyDown
+        e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
 #End Region 'Methods
