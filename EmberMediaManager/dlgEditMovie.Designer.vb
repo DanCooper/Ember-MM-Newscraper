@@ -32,6 +32,11 @@ Partial Class dlgEditMovie
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditMovie = New System.Windows.Forms.TabControl()
         Me.tpDetails = New System.Windows.Forms.TabPage()
+        Me.pbStar10 = New System.Windows.Forms.PictureBox()
+        Me.pbStar9 = New System.Windows.Forms.PictureBox()
+        Me.pbStar8 = New System.Windows.Forms.PictureBox()
+        Me.pbStar7 = New System.Windows.Forms.PictureBox()
+        Me.pbStar6 = New System.Windows.Forms.PictureBox()
         Me.txtOriginalTitle = New System.Windows.Forms.TextBox()
         Me.lblOriginalTitle = New System.Windows.Forms.Label()
         Me.txtCountry = New System.Windows.Forms.TextBox()
@@ -196,15 +201,15 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie = New System.Windows.Forms.Button()
         Me.tmrDelay = New System.Windows.Forms.Timer(Me.components)
         Me.chkWatched = New System.Windows.Forms.CheckBox()
-        Me.pbStar6 = New System.Windows.Forms.PictureBox()
-        Me.pbStar7 = New System.Windows.Forms.PictureBox()
-        Me.pbStar8 = New System.Windows.Forms.PictureBox()
-        Me.pbStar9 = New System.Windows.Forms.PictureBox()
-        Me.pbStar10 = New System.Windows.Forms.PictureBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditMovie.SuspendLayout()
         Me.tpDetails.SuspendLayout()
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -238,11 +243,6 @@ Partial Class dlgEditMovie
         Me.tpTheme.SuspendLayout()
         Me.tpMetaData.SuspendLayout()
         Me.tpMediaStub.SuspendLayout()
-        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -410,6 +410,46 @@ Partial Class dlgEditMovie
         Me.tpDetails.Text = "Details"
         Me.tpDetails.UseVisualStyleBackColor = True
         '
+        'pbStar10
+        '
+        Me.pbStar10.Location = New System.Drawing.Point(223, 220)
+        Me.pbStar10.Name = "pbStar10"
+        Me.pbStar10.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar10.TabIndex = 72
+        Me.pbStar10.TabStop = False
+        '
+        'pbStar9
+        '
+        Me.pbStar9.Location = New System.Drawing.Point(199, 220)
+        Me.pbStar9.Name = "pbStar9"
+        Me.pbStar9.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar9.TabIndex = 71
+        Me.pbStar9.TabStop = False
+        '
+        'pbStar8
+        '
+        Me.pbStar8.Location = New System.Drawing.Point(175, 220)
+        Me.pbStar8.Name = "pbStar8"
+        Me.pbStar8.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar8.TabIndex = 70
+        Me.pbStar8.TabStop = False
+        '
+        'pbStar7
+        '
+        Me.pbStar7.Location = New System.Drawing.Point(151, 220)
+        Me.pbStar7.Name = "pbStar7"
+        Me.pbStar7.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar7.TabIndex = 69
+        Me.pbStar7.TabStop = False
+        '
+        'pbStar6
+        '
+        Me.pbStar6.Location = New System.Drawing.Point(127, 220)
+        Me.pbStar6.Name = "pbStar6"
+        Me.pbStar6.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar6.TabIndex = 68
+        Me.pbStar6.TabStop = False
+        '
         'txtOriginalTitle
         '
         Me.txtOriginalTitle.BackColor = System.Drawing.SystemColors.Window
@@ -451,6 +491,7 @@ Partial Class dlgEditMovie
         'txtFileSource
         '
         Me.txtFileSource.BackColor = System.Drawing.SystemColors.Window
+        Me.txtFileSource.Enabled = False
         Me.txtFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtFileSource.Location = New System.Drawing.Point(692, 386)
         Me.txtFileSource.Name = "txtFileSource"
@@ -571,7 +612,7 @@ Partial Class dlgEditMovie
         Me.lblTrailerURL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTrailerURL.Location = New System.Drawing.Point(271, 411)
         Me.lblTrailerURL.Name = "lblTrailerURL"
-        Me.lblTrailerURL.Size = New System.Drawing.Size(66, 13)
+        Me.lblTrailerURL.Size = New System.Drawing.Size(65, 13)
         Me.lblTrailerURL.TabIndex = 49
         Me.lblTrailerURL.Text = "Trailer URL:"
         '
@@ -666,7 +707,7 @@ Partial Class dlgEditMovie
         Me.lblMPAADesc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMPAADesc.Location = New System.Drawing.Point(689, 246)
         Me.lblMPAADesc.Name = "lblMPAADesc"
-        Me.lblMPAADesc.Size = New System.Drawing.Size(143, 13)
+        Me.lblMPAADesc.Size = New System.Drawing.Size(142, 13)
         Me.lblMPAADesc.TabIndex = 38
         Me.lblMPAADesc.Text = "MPAA Rating Description:"
         '
@@ -783,7 +824,7 @@ Partial Class dlgEditMovie
         Me.lblMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMPAA.Location = New System.Drawing.Point(689, 142)
         Me.lblMPAA.Name = "lblMPAA"
-        Me.lblMPAA.Size = New System.Drawing.Size(81, 13)
+        Me.lblMPAA.Size = New System.Drawing.Size(80, 13)
         Me.lblMPAA.TabIndex = 36
         Me.lblMPAA.Text = "MPAA Rating:"
         '
@@ -821,7 +862,7 @@ Partial Class dlgEditMovie
         Me.lblTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTop250.Location = New System.Drawing.Point(153, 290)
         Me.lblTop250.Name = "lblTop250"
-        Me.lblTop250.Size = New System.Drawing.Size(51, 13)
+        Me.lblTop250.Size = New System.Drawing.Size(50, 13)
         Me.lblTop250.TabIndex = 19
         Me.lblTop250.Text = "Top 250:"
         '
@@ -875,7 +916,7 @@ Partial Class dlgEditMovie
         Me.lblTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTagline.Location = New System.Drawing.Point(5, 127)
         Me.lblTagline.Name = "lblTagline"
-        Me.lblTagline.Size = New System.Drawing.Size(48, 13)
+        Me.lblTagline.Size = New System.Drawing.Size(47, 13)
         Me.lblTagline.TabIndex = 6
         Me.lblTagline.Text = "Tagline:"
         '
@@ -943,7 +984,7 @@ Partial Class dlgEditMovie
         Me.lblVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblVotes.Location = New System.Drawing.Point(78, 290)
         Me.lblVotes.Name = "lblVotes"
-        Me.lblVotes.Size = New System.Drawing.Size(39, 13)
+        Me.lblVotes.Size = New System.Drawing.Size(38, 13)
         Me.lblVotes.TabIndex = 17
         Me.lblVotes.Text = "Votes:"
         '
@@ -974,7 +1015,7 @@ Partial Class dlgEditMovie
         Me.lblYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblYear.Location = New System.Drawing.Point(5, 167)
         Me.lblYear.Name = "lblYear"
-        Me.lblYear.Size = New System.Drawing.Size(33, 13)
+        Me.lblYear.Size = New System.Drawing.Size(32, 13)
         Me.lblYear.TabIndex = 8
         Me.lblYear.Text = "Year:"
         '
@@ -1961,7 +2002,7 @@ Partial Class dlgEditMovie
         Me.axVLCTrailer.Location = New System.Drawing.Point(6, 6)
         Me.axVLCTrailer.Name = "axVLCTrailer"
         Me.axVLCTrailer.OcxState = CType(resources.GetObject("axVLCTrailer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 450)
+        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 449)
         Me.axVLCTrailer.TabIndex = 9
         '
         'btnSetMovieTrailerDL
@@ -2198,46 +2239,6 @@ Partial Class dlgEditMovie
         Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
         '
-        'pbStar6
-        '
-        Me.pbStar6.Location = New System.Drawing.Point(127, 220)
-        Me.pbStar6.Name = "pbStar6"
-        Me.pbStar6.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar6.TabIndex = 68
-        Me.pbStar6.TabStop = False
-        '
-        'pbStar7
-        '
-        Me.pbStar7.Location = New System.Drawing.Point(151, 220)
-        Me.pbStar7.Name = "pbStar7"
-        Me.pbStar7.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar7.TabIndex = 69
-        Me.pbStar7.TabStop = False
-        '
-        'pbStar8
-        '
-        Me.pbStar8.Location = New System.Drawing.Point(175, 220)
-        Me.pbStar8.Name = "pbStar8"
-        Me.pbStar8.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar8.TabIndex = 70
-        Me.pbStar8.TabStop = False
-        '
-        'pbStar9
-        '
-        Me.pbStar9.Location = New System.Drawing.Point(199, 220)
-        Me.pbStar9.Name = "pbStar9"
-        Me.pbStar9.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar9.TabIndex = 71
-        Me.pbStar9.TabStop = False
-        '
-        'pbStar10
-        '
-        Me.pbStar10.Location = New System.Drawing.Point(223, 220)
-        Me.pbStar10.Name = "pbStar10"
-        Me.pbStar10.Size = New System.Drawing.Size(24, 24)
-        Me.pbStar10.TabIndex = 72
-        Me.pbStar10.TabStop = False
-        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -2267,6 +2268,11 @@ Partial Class dlgEditMovie
         Me.tcEditMovie.ResumeLayout(False)
         Me.tpDetails.ResumeLayout(False)
         Me.tpDetails.PerformLayout()
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2301,11 +2307,6 @@ Partial Class dlgEditMovie
         Me.tpMetaData.ResumeLayout(False)
         Me.tpMediaStub.ResumeLayout(False)
         Me.tpMediaStub.PerformLayout()
-        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

@@ -208,6 +208,32 @@
       <Item Name="sd[-\s]?tv">sdtv</Item>
       <Item Name="hd[-\s]?dvd">hddvd</Item>
       <Item Name="vhs">vhs</Item>
+      <Item Name="bd25">bluray</Item>
+      <Item Name="bd50">bluray</Item>
+      <Item Name="pdtv">sdtv</Item>
+      <Item Name="dsr">sdtv</Item>
+      <Item Name="tvrip">sdtv</Item>
+      <Item Name="ntsc">sdtv</Item>
+      <Item Name="dvd5">dvd</Item>
+      <Item Name="dvd9">dvd</Item>
+      <Item Name="r5">web-dl</Item>
+      <Item Name="dvdscr">web-dl</Item>
+      <Item Name="dvdrip">web-dl</Item>
+      <Item Name="dvdr">web-dl</Item>
+      <Item Name="hd2dvd">hddvd</Item>
+      <Item Name="dth">vhs</Item>
+      <Item Name="d-theater">vhs</Item>
+      <Item Name="dtheater">vhs</Item>
+      <Item Name="web-dl">web-dl</Item>
+      <Item Name="webrip">web-dl</Item>
+      <Item Name="3dbd">3dbd</Item>
+      <Item Name="720p">hdtv</Item>
+      <Item Name="1080p">hdtv</Item>
+      <Item Name="1080i">hdtv</Item>
+      <Item Name="pal.">sdtv</Item>
+      <Item Name="cam.">web-dl</Item>
+      <Item Name="line.">web-dl</Item>
+      <Item Name="ts.">web-dl</Item>
     </Table>
   </ComplexSettings>
 </AdvancedSettings>
