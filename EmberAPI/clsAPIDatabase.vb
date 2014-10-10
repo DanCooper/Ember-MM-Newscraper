@@ -68,7 +68,7 @@ Public Class Database
     ''' <param name="CleanTV">If <c>True</c>, process the TV files</param>
     ''' <param name="source">Optional. If provided, only process entries from that named video source.</param>
     ''' <remarks></remarks>
-    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanTV As Boolean, Optional ByVal source As String = "")
+    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanMovieSets As Boolean, ByVal CleanTV As Boolean, Optional ByVal source As String = "")
         Dim fInfo As FileInfo
         Dim tPath As String = String.Empty
         Dim sPath As String = String.Empty
@@ -135,6 +135,19 @@ Public Class Database
                                         MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                         Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                     End If
+                                End If
+                            End While
+                        End Using
+                    End Using
+                End If
+
+                If CleanMovieSets Then
+                    Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                        SQLcommand.CommandText = "SELECT Sets.ID, COUNT(MoviesSets.MovieID) AS 'Count' FROM Sets LEFT OUTER JOIN MoviesSets ON Sets.ID = MoviesSets.SetID GROUP BY Sets.ID ORDER BY Sets.ID COLLATE NOCASE;"
+                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            While SQLreader.Read
+                                If Convert.ToInt64(SQLreader("Count")) = 0 Then
+                                    Master.DB.DeleteMovieSetFromDB(Convert.ToInt64(SQLreader("ID")), True)
                                 End If
                             End While
                         End Using
@@ -409,7 +422,6 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets ", _
                                                        "WHERE SetID = ", ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-
                     While SQLreader.Read
                         Dim movie As New Structures.DBMovie
                         If Not DBNull.Value.Equals(SQLreader("MovieID")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
@@ -418,13 +430,38 @@ Public Class Database
                 End Using
             End Using
 
-            'remove the movieset from movie and write new NFO
+            'remove the movieset from movie and write new movie NFOs
             If moviesToSave.Count > 0 Then
                 For Each movie In moviesToSave
                     movie.Movie.RemoveSet(ID)
                     SaveMovieToDB(movie, False, BatchMode, True)
                 Next
             End If
+
+            'delete all movieset images and if this setting is enabled
+            If Master.eSettings.MovieSetCleanFiles Then
+                Dim tmpImage As New Images
+                Dim MovieSet As Structures.DBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
+                tmpImage.DeleteMovieSetBanner(MovieSet)
+                tmpImage.DeleteMovieSetClearArt(MovieSet)
+                tmpImage.DeleteMovieSetClearLogo(MovieSet)
+                tmpImage.DeleteMovieSetDiscArt(MovieSet)
+                tmpImage.DeleteMovieSetFanart(MovieSet)
+                tmpImage.DeleteMovieSetLandscape(MovieSet)
+                tmpImage.DeleteMovieSetPoster(MovieSet)
+            End If
+
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets ", _
+                                                       "WHERE SetID = ", ID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Dim movie As New Structures.DBMovie
+                        If Not DBNull.Value.Equals(SQLreader("MovieID")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
+                        moviesToSave.Add(movie)
+                    End While
+                End Using
+            End Using
 
             'remove the movieset and still existing moviessets entries
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()

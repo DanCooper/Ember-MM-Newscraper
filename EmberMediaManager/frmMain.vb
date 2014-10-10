@@ -1286,7 +1286,7 @@ Public Class frmMain
     End Sub
 
     Private Sub bwCleanDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCleanDB.DoWork
-        Master.DB.Clean(True, True)
+        Master.DB.Clean(True, True, True)
     End Sub
 
     Private Sub bwCleanDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCleanDB.RunWorkerCompleted

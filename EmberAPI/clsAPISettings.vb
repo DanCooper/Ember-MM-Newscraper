@@ -273,6 +273,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieSetCleanDB() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetCleanDB
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetCleanDB = value
+        End Set
+    End Property
+
+    Public Property MovieSetCleanFiles() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetCleanFiles
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetCleanFiles = value
+        End Set
+    End Property
+
     Public Property CleanDotFanartJPG() As Boolean
         Get
             Return Settings._XMLSettings.cleandotfanartJpg

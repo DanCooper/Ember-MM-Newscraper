@@ -494,7 +494,7 @@ Partial Class dlgSettings
         Me.lblMovieNFOExpertBDMV = New System.Windows.Forms.Label()
         Me.chkMovieUseExpert = New System.Windows.Forms.CheckBox()
         Me.btnMovieSourceEdit = New System.Windows.Forms.Button()
-        Me.gbMovieMiscOpts = New System.Windows.Forms.GroupBox()
+        Me.gbMovieSourcesMiscOpts = New System.Windows.Forms.GroupBox()
         Me.chkMovieScanOrderModify = New System.Windows.Forms.CheckBox()
         Me.chkMovieSortBeforeScan = New System.Windows.Forms.CheckBox()
         Me.chkMovieGeneralIgnoreLastScan = New System.Windows.Forms.CheckBox()
@@ -1091,6 +1091,9 @@ Partial Class dlgSettings
         Me.lblMovieSetPosterSize = New System.Windows.Forms.Label()
         Me.cbMovieSetPosterPrefSize = New System.Windows.Forms.ComboBox()
         Me.chkMovieSetPosterOverwrite = New System.Windows.Forms.CheckBox()
+        Me.gbMovieSetSourceMiscOpts = New System.Windows.Forms.GroupBox()
+        Me.chkMovieSetCleanFiles = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetCleanDB = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -1171,7 +1174,7 @@ Partial Class dlgSettings
         Me.tpMovieFileNamingExpertBDMV.SuspendLayout
         Me.gbMovieExpertBDMVOptionalSettings.SuspendLayout
         Me.gbMovieExpertBDMVOptionalImages.SuspendLayout
-        Me.gbMovieMiscOpts.SuspendLayout
+        Me.gbMovieSourcesMiscOpts.SuspendLayout
         Me.gbMovieSetMSAAPath.SuspendLayout
         Me.pnlTVGeneral.SuspendLayout
         Me.gbTVGeneralMissingItemsOpts.SuspendLayout
@@ -1288,6 +1291,7 @@ Partial Class dlgSettings
         CType(Me.tbMovieSetFanartQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMovieSetPosterOpts.SuspendLayout
         CType(Me.tbMovieSetPosterQual,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.gbMovieSetSourceMiscOpts.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -4443,7 +4447,7 @@ Partial Class dlgSettings
         Me.pnlMovieSources.Controls.Add(Me.gbMovieFileNaming)
         Me.pnlMovieSources.Controls.Add(Me.gbMovieBackdropsFolder)
         Me.pnlMovieSources.Controls.Add(Me.btnMovieSourceEdit)
-        Me.pnlMovieSources.Controls.Add(Me.gbMovieMiscOpts)
+        Me.pnlMovieSources.Controls.Add(Me.gbMovieSourcesMiscOpts)
         Me.pnlMovieSources.Controls.Add(Me.lvMovieSources)
         Me.pnlMovieSources.Controls.Add(Me.btnMovieSourceRemove)
         Me.pnlMovieSources.Controls.Add(Me.btnMovieSourceAdd)
@@ -4451,17 +4455,17 @@ Partial Class dlgSettings
         Me.pnlMovieSources.Name = "pnlMovieSources"
         Me.pnlMovieSources.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieSources.TabIndex = 13
-        Me.pnlMovieSources.Visible = false
+        Me.pnlMovieSources.Visible = False
         '
         'gbMovieFileNaming
         '
         Me.gbMovieFileNaming.Controls.Add(Me.tcMovieFileNaming)
-        Me.gbMovieFileNaming.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieFileNaming.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieFileNaming.Location = New System.Drawing.Point(223, 113)
         Me.gbMovieFileNaming.Name = "gbMovieFileNaming"
         Me.gbMovieFileNaming.Size = New System.Drawing.Size(521, 384)
         Me.gbMovieFileNaming.TabIndex = 8
-        Me.gbMovieFileNaming.TabStop = false
+        Me.gbMovieFileNaming.TabStop = False
         Me.gbMovieFileNaming.Text = "File Naming"
         '
         'tcMovieFileNaming
@@ -4488,7 +4492,7 @@ Partial Class dlgSettings
         Me.tpMovieFileNamingXBMC.Size = New System.Drawing.Size(505, 336)
         Me.tpMovieFileNamingXBMC.TabIndex = 1
         Me.tpMovieFileNamingXBMC.Text = "XBMC"
-        Me.tpMovieFileNamingXBMC.UseVisualStyleBackColor = true
+        Me.tpMovieFileNamingXBMC.UseVisualStyleBackColor = True
         '
         'gbMovieXBMCTheme
         '
@@ -4504,44 +4508,44 @@ Partial Class dlgSettings
         Me.gbMovieXBMCTheme.Name = "gbMovieXBMCTheme"
         Me.gbMovieXBMCTheme.Size = New System.Drawing.Size(260, 174)
         Me.gbMovieXBMCTheme.TabIndex = 3
-        Me.gbMovieXBMCTheme.TabStop = false
+        Me.gbMovieXBMCTheme.TabStop = False
         Me.gbMovieXBMCTheme.Text = "Theme Settings"
         '
         'chkMovieXBMCThemeMovie
         '
-        Me.chkMovieXBMCThemeMovie.Enabled = false
+        Me.chkMovieXBMCThemeMovie.Enabled = False
         Me.chkMovieXBMCThemeMovie.Location = New System.Drawing.Point(7, 46)
         Me.chkMovieXBMCThemeMovie.Name = "chkMovieXBMCThemeMovie"
         Me.chkMovieXBMCThemeMovie.Size = New System.Drawing.Size(247, 17)
         Me.chkMovieXBMCThemeMovie.TabIndex = 6
         Me.chkMovieXBMCThemeMovie.Text = "Store themes in movie directory"
-        Me.chkMovieXBMCThemeMovie.UseVisualStyleBackColor = true
+        Me.chkMovieXBMCThemeMovie.UseVisualStyleBackColor = True
         '
         'btnMovieXBMCThemeCustomPathBrowse
         '
-        Me.btnMovieXBMCThemeCustomPathBrowse.Enabled = false
-        Me.btnMovieXBMCThemeCustomPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnMovieXBMCThemeCustomPathBrowse.Enabled = False
+        Me.btnMovieXBMCThemeCustomPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnMovieXBMCThemeCustomPathBrowse.Location = New System.Drawing.Point(229, 93)
         Me.btnMovieXBMCThemeCustomPathBrowse.Name = "btnMovieXBMCThemeCustomPathBrowse"
         Me.btnMovieXBMCThemeCustomPathBrowse.Size = New System.Drawing.Size(25, 22)
         Me.btnMovieXBMCThemeCustomPathBrowse.TabIndex = 5
         Me.btnMovieXBMCThemeCustomPathBrowse.Text = "..."
-        Me.btnMovieXBMCThemeCustomPathBrowse.UseVisualStyleBackColor = true
+        Me.btnMovieXBMCThemeCustomPathBrowse.UseVisualStyleBackColor = True
         '
         'chkMovieXBMCThemeSub
         '
-        Me.chkMovieXBMCThemeSub.AutoSize = true
-        Me.chkMovieXBMCThemeSub.Enabled = false
+        Me.chkMovieXBMCThemeSub.AutoSize = True
+        Me.chkMovieXBMCThemeSub.Enabled = False
         Me.chkMovieXBMCThemeSub.Location = New System.Drawing.Point(7, 122)
         Me.chkMovieXBMCThemeSub.Name = "chkMovieXBMCThemeSub"
         Me.chkMovieXBMCThemeSub.Size = New System.Drawing.Size(181, 17)
         Me.chkMovieXBMCThemeSub.TabIndex = 4
         Me.chkMovieXBMCThemeSub.Text = "Store themes in sub directorys"
-        Me.chkMovieXBMCThemeSub.UseVisualStyleBackColor = true
+        Me.chkMovieXBMCThemeSub.UseVisualStyleBackColor = True
         '
         'txtMovieXBMCThemeSubDir
         '
-        Me.txtMovieXBMCThemeSubDir.Enabled = false
+        Me.txtMovieXBMCThemeSubDir.Enabled = False
         Me.txtMovieXBMCThemeSubDir.Location = New System.Drawing.Point(7, 145)
         Me.txtMovieXBMCThemeSubDir.Name = "txtMovieXBMCThemeSubDir"
         Me.txtMovieXBMCThemeSubDir.Size = New System.Drawing.Size(216, 22)
@@ -4549,7 +4553,7 @@ Partial Class dlgSettings
         '
         'txtMovieXBMCThemeCustomPath
         '
-        Me.txtMovieXBMCThemeCustomPath.Enabled = false
+        Me.txtMovieXBMCThemeCustomPath.Enabled = False
         Me.txtMovieXBMCThemeCustomPath.Location = New System.Drawing.Point(7, 93)
         Me.txtMovieXBMCThemeCustomPath.Name = "txtMovieXBMCThemeCustomPath"
         Me.txtMovieXBMCThemeCustomPath.Size = New System.Drawing.Size(216, 22)
@@ -4557,56 +4561,56 @@ Partial Class dlgSettings
         '
         'chkMovieXBMCThemeCustom
         '
-        Me.chkMovieXBMCThemeCustom.Enabled = false
+        Me.chkMovieXBMCThemeCustom.Enabled = False
         Me.chkMovieXBMCThemeCustom.Location = New System.Drawing.Point(7, 69)
         Me.chkMovieXBMCThemeCustom.Name = "chkMovieXBMCThemeCustom"
         Me.chkMovieXBMCThemeCustom.Size = New System.Drawing.Size(247, 17)
         Me.chkMovieXBMCThemeCustom.TabIndex = 1
         Me.chkMovieXBMCThemeCustom.Text = "Store themes in a custom path"
-        Me.chkMovieXBMCThemeCustom.UseVisualStyleBackColor = true
+        Me.chkMovieXBMCThemeCustom.UseVisualStyleBackColor = True
         '
         'chkMovieXBMCThemeEnable
         '
-        Me.chkMovieXBMCThemeEnable.Enabled = false
+        Me.chkMovieXBMCThemeEnable.Enabled = False
         Me.chkMovieXBMCThemeEnable.Location = New System.Drawing.Point(7, 22)
         Me.chkMovieXBMCThemeEnable.Name = "chkMovieXBMCThemeEnable"
         Me.chkMovieXBMCThemeEnable.Size = New System.Drawing.Size(236, 17)
         Me.chkMovieXBMCThemeEnable.TabIndex = 0
         Me.chkMovieXBMCThemeEnable.Text = "Enable Theme"
-        Me.chkMovieXBMCThemeEnable.UseVisualStyleBackColor = true
+        Me.chkMovieXBMCThemeEnable.UseVisualStyleBackColor = True
         '
         'gbMovieXBMCOptionalSettings
         '
         Me.gbMovieXBMCOptionalSettings.Controls.Add(Me.chkMovieXBMCProtectVTSBDMV)
         Me.gbMovieXBMCOptionalSettings.Controls.Add(Me.chkMovieXBMCTrailerFormat)
-        Me.gbMovieXBMCOptionalSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieXBMCOptionalSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieXBMCOptionalSettings.Location = New System.Drawing.Point(238, 6)
         Me.gbMovieXBMCOptionalSettings.Name = "gbMovieXBMCOptionalSettings"
         Me.gbMovieXBMCOptionalSettings.Size = New System.Drawing.Size(261, 107)
         Me.gbMovieXBMCOptionalSettings.TabIndex = 2
-        Me.gbMovieXBMCOptionalSettings.TabStop = false
+        Me.gbMovieXBMCOptionalSettings.TabStop = False
         Me.gbMovieXBMCOptionalSettings.Text = "Optional Settings"
         '
         'chkMovieXBMCProtectVTSBDMV
         '
-        Me.chkMovieXBMCProtectVTSBDMV.Enabled = false
+        Me.chkMovieXBMCProtectVTSBDMV.Enabled = False
         Me.chkMovieXBMCProtectVTSBDMV.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieXBMCProtectVTSBDMV.Name = "chkMovieXBMCProtectVTSBDMV"
         Me.chkMovieXBMCProtectVTSBDMV.Size = New System.Drawing.Size(248, 59)
         Me.chkMovieXBMCProtectVTSBDMV.TabIndex = 1
-        Me.chkMovieXBMCProtectVTSBDMV.Text = "Protect DVD/Bluray structure (no Fanart/Nfo/Poster will be saved inside VIDEO_TS/"& _ 
+        Me.chkMovieXBMCProtectVTSBDMV.Text = "Protect DVD/Bluray structure (no Fanart/Nfo/Poster will be saved inside VIDEO_TS/" & _
     "BDMV folder)"
-        Me.chkMovieXBMCProtectVTSBDMV.UseVisualStyleBackColor = true
+        Me.chkMovieXBMCProtectVTSBDMV.UseVisualStyleBackColor = True
         '
         'chkMovieXBMCTrailerFormat
         '
-        Me.chkMovieXBMCTrailerFormat.AutoSize = true
+        Me.chkMovieXBMCTrailerFormat.AutoSize = True
         Me.chkMovieXBMCTrailerFormat.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieXBMCTrailerFormat.Name = "chkMovieXBMCTrailerFormat"
         Me.chkMovieXBMCTrailerFormat.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieXBMCTrailerFormat.TabIndex = 0
         Me.chkMovieXBMCTrailerFormat.Text = "XBMC Trailer Format"
-        Me.chkMovieXBMCTrailerFormat.UseVisualStyleBackColor = true
+        Me.chkMovieXBMCTrailerFormat.UseVisualStyleBackColor = True
         '
         'gbMovieEden
         '
@@ -4618,100 +4622,100 @@ Partial Class dlgSettings
         Me.gbMovieEden.Controls.Add(Me.chkMovieFanartEden)
         Me.gbMovieEden.Controls.Add(Me.chkMoviePosterEden)
         Me.gbMovieEden.Controls.Add(Me.chkMovieNFOEden)
-        Me.gbMovieEden.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieEden.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieEden.Location = New System.Drawing.Point(122, 6)
         Me.gbMovieEden.Name = "gbMovieEden"
         Me.gbMovieEden.Size = New System.Drawing.Size(110, 324)
         Me.gbMovieEden.TabIndex = 1
-        Me.gbMovieEden.TabStop = false
+        Me.gbMovieEden.TabStop = False
         Me.gbMovieEden.Text = "Eden"
         '
         'chkMovieExtrafanartsEden
         '
-        Me.chkMovieExtrafanartsEden.AutoSize = true
-        Me.chkMovieExtrafanartsEden.Enabled = false
+        Me.chkMovieExtrafanartsEden.AutoSize = True
+        Me.chkMovieExtrafanartsEden.Enabled = False
         Me.chkMovieExtrafanartsEden.Location = New System.Drawing.Point(6, 159)
         Me.chkMovieExtrafanartsEden.Name = "chkMovieExtrafanartsEden"
         Me.chkMovieExtrafanartsEden.Size = New System.Drawing.Size(87, 17)
         Me.chkMovieExtrafanartsEden.TabIndex = 20
         Me.chkMovieExtrafanartsEden.Text = "Extrafanarts"
-        Me.chkMovieExtrafanartsEden.UseVisualStyleBackColor = true
+        Me.chkMovieExtrafanartsEden.UseVisualStyleBackColor = True
         '
         'chkMovieExtrathumbsEden
         '
-        Me.chkMovieExtrathumbsEden.AutoSize = true
-        Me.chkMovieExtrathumbsEden.Enabled = false
+        Me.chkMovieExtrathumbsEden.AutoSize = True
+        Me.chkMovieExtrathumbsEden.Enabled = False
         Me.chkMovieExtrathumbsEden.Location = New System.Drawing.Point(6, 136)
         Me.chkMovieExtrathumbsEden.Name = "chkMovieExtrathumbsEden"
         Me.chkMovieExtrathumbsEden.Size = New System.Drawing.Size(90, 17)
         Me.chkMovieExtrathumbsEden.TabIndex = 19
         Me.chkMovieExtrathumbsEden.Text = "Extrathumbs"
-        Me.chkMovieExtrathumbsEden.UseVisualStyleBackColor = true
+        Me.chkMovieExtrathumbsEden.UseVisualStyleBackColor = True
         '
         'chkMovieUseEden
         '
-        Me.chkMovieUseEden.AutoSize = true
+        Me.chkMovieUseEden.AutoSize = True
         Me.chkMovieUseEden.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieUseEden.Name = "chkMovieUseEden"
         Me.chkMovieUseEden.Size = New System.Drawing.Size(45, 17)
         Me.chkMovieUseEden.TabIndex = 18
         Me.chkMovieUseEden.Text = "Use"
-        Me.chkMovieUseEden.UseVisualStyleBackColor = true
+        Me.chkMovieUseEden.UseVisualStyleBackColor = True
         '
         'chkMovieActorThumbsEden
         '
-        Me.chkMovieActorThumbsEden.AutoSize = true
-        Me.chkMovieActorThumbsEden.Enabled = false
+        Me.chkMovieActorThumbsEden.AutoSize = True
+        Me.chkMovieActorThumbsEden.Enabled = False
         Me.chkMovieActorThumbsEden.Location = New System.Drawing.Point(6, 113)
         Me.chkMovieActorThumbsEden.Name = "chkMovieActorThumbsEden"
         Me.chkMovieActorThumbsEden.Size = New System.Drawing.Size(96, 17)
         Me.chkMovieActorThumbsEden.TabIndex = 17
         Me.chkMovieActorThumbsEden.Text = "Actor Thumbs"
-        Me.chkMovieActorThumbsEden.UseVisualStyleBackColor = true
+        Me.chkMovieActorThumbsEden.UseVisualStyleBackColor = True
         '
         'chkMovieTrailerEden
         '
-        Me.chkMovieTrailerEden.AutoSize = true
-        Me.chkMovieTrailerEden.Enabled = false
+        Me.chkMovieTrailerEden.AutoSize = True
+        Me.chkMovieTrailerEden.Enabled = False
         Me.chkMovieTrailerEden.Location = New System.Drawing.Point(6, 182)
         Me.chkMovieTrailerEden.Name = "chkMovieTrailerEden"
         Me.chkMovieTrailerEden.Size = New System.Drawing.Size(57, 17)
         Me.chkMovieTrailerEden.TabIndex = 16
         Me.chkMovieTrailerEden.Text = "Trailer"
-        Me.chkMovieTrailerEden.UseVisualStyleBackColor = true
+        Me.chkMovieTrailerEden.UseVisualStyleBackColor = True
         '
         'chkMovieFanartEden
         '
-        Me.chkMovieFanartEden.AutoSize = true
-        Me.chkMovieFanartEden.Enabled = false
+        Me.chkMovieFanartEden.AutoSize = True
+        Me.chkMovieFanartEden.Enabled = False
         Me.chkMovieFanartEden.Location = New System.Drawing.Point(6, 90)
         Me.chkMovieFanartEden.Name = "chkMovieFanartEden"
         Me.chkMovieFanartEden.Size = New System.Drawing.Size(59, 17)
         Me.chkMovieFanartEden.TabIndex = 15
         Me.chkMovieFanartEden.Text = "Fanart"
-        Me.chkMovieFanartEden.UseVisualStyleBackColor = true
+        Me.chkMovieFanartEden.UseVisualStyleBackColor = True
         '
         'chkMoviePosterEden
         '
-        Me.chkMoviePosterEden.AutoSize = true
-        Me.chkMoviePosterEden.Enabled = false
+        Me.chkMoviePosterEden.AutoSize = True
+        Me.chkMoviePosterEden.Enabled = False
         Me.chkMoviePosterEden.Location = New System.Drawing.Point(6, 67)
         Me.chkMoviePosterEden.Name = "chkMoviePosterEden"
         Me.chkMoviePosterEden.Size = New System.Drawing.Size(58, 17)
         Me.chkMoviePosterEden.TabIndex = 14
         Me.chkMoviePosterEden.Text = "Poster"
-        Me.chkMoviePosterEden.UseVisualStyleBackColor = true
+        Me.chkMoviePosterEden.UseVisualStyleBackColor = True
         '
         'chkMovieNFOEden
         '
-        Me.chkMovieNFOEden.AutoSize = true
-        Me.chkMovieNFOEden.Enabled = false
+        Me.chkMovieNFOEden.AutoSize = True
+        Me.chkMovieNFOEden.Enabled = False
         Me.chkMovieNFOEden.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieNFOEden.Name = "chkMovieNFOEden"
         Me.chkMovieNFOEden.Size = New System.Drawing.Size(49, 17)
         Me.chkMovieNFOEden.TabIndex = 13
         Me.chkMovieNFOEden.Text = "NFO"
-        Me.chkMovieNFOEden.UseVisualStyleBackColor = true
+        Me.chkMovieNFOEden.UseVisualStyleBackColor = True
         '
         'gbMovieFrodo
         '
@@ -4728,155 +4732,155 @@ Partial Class dlgSettings
         Me.gbMovieFrodo.Controls.Add(Me.chkMovieFanartFrodo)
         Me.gbMovieFrodo.Controls.Add(Me.chkMoviePosterFrodo)
         Me.gbMovieFrodo.Controls.Add(Me.chkMovieNFOFrodo)
-        Me.gbMovieFrodo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieFrodo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieFrodo.Location = New System.Drawing.Point(6, 6)
         Me.gbMovieFrodo.Name = "gbMovieFrodo"
         Me.gbMovieFrodo.Size = New System.Drawing.Size(110, 324)
         Me.gbMovieFrodo.TabIndex = 0
-        Me.gbMovieFrodo.TabStop = false
+        Me.gbMovieFrodo.TabStop = False
         Me.gbMovieFrodo.Text = "Frodo"
         '
         'chkMovieExtrafanartsFrodo
         '
-        Me.chkMovieExtrafanartsFrodo.AutoSize = true
-        Me.chkMovieExtrafanartsFrodo.Enabled = false
+        Me.chkMovieExtrafanartsFrodo.AutoSize = True
+        Me.chkMovieExtrafanartsFrodo.Enabled = False
         Me.chkMovieExtrafanartsFrodo.Location = New System.Drawing.Point(6, 159)
         Me.chkMovieExtrafanartsFrodo.Name = "chkMovieExtrafanartsFrodo"
         Me.chkMovieExtrafanartsFrodo.Size = New System.Drawing.Size(87, 17)
         Me.chkMovieExtrafanartsFrodo.TabIndex = 12
         Me.chkMovieExtrafanartsFrodo.Text = "Extrafanarts"
-        Me.chkMovieExtrafanartsFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieExtrafanartsFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieExtrathumbsFrodo
         '
-        Me.chkMovieExtrathumbsFrodo.AutoSize = true
-        Me.chkMovieExtrathumbsFrodo.Enabled = false
+        Me.chkMovieExtrathumbsFrodo.AutoSize = True
+        Me.chkMovieExtrathumbsFrodo.Enabled = False
         Me.chkMovieExtrathumbsFrodo.Location = New System.Drawing.Point(6, 136)
         Me.chkMovieExtrathumbsFrodo.Name = "chkMovieExtrathumbsFrodo"
         Me.chkMovieExtrathumbsFrodo.Size = New System.Drawing.Size(90, 17)
         Me.chkMovieExtrathumbsFrodo.TabIndex = 11
         Me.chkMovieExtrathumbsFrodo.Text = "Extrathumbs"
-        Me.chkMovieExtrathumbsFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieExtrathumbsFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieUseFrodo
         '
-        Me.chkMovieUseFrodo.AutoSize = true
+        Me.chkMovieUseFrodo.AutoSize = True
         Me.chkMovieUseFrodo.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieUseFrodo.Name = "chkMovieUseFrodo"
         Me.chkMovieUseFrodo.Size = New System.Drawing.Size(45, 17)
         Me.chkMovieUseFrodo.TabIndex = 10
         Me.chkMovieUseFrodo.Text = "Use"
-        Me.chkMovieUseFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieUseFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieLandscapeFrodo
         '
-        Me.chkMovieLandscapeFrodo.AutoSize = true
-        Me.chkMovieLandscapeFrodo.Enabled = false
+        Me.chkMovieLandscapeFrodo.AutoSize = True
+        Me.chkMovieLandscapeFrodo.Enabled = False
         Me.chkMovieLandscapeFrodo.Location = New System.Drawing.Point(6, 297)
         Me.chkMovieLandscapeFrodo.Name = "chkMovieLandscapeFrodo"
         Me.chkMovieLandscapeFrodo.Size = New System.Drawing.Size(80, 17)
         Me.chkMovieLandscapeFrodo.TabIndex = 9
         Me.chkMovieLandscapeFrodo.Text = "Landscape"
-        Me.chkMovieLandscapeFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieLandscapeFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieBannerFrodo
         '
-        Me.chkMovieBannerFrodo.AutoSize = true
-        Me.chkMovieBannerFrodo.Enabled = false
+        Me.chkMovieBannerFrodo.AutoSize = True
+        Me.chkMovieBannerFrodo.Enabled = False
         Me.chkMovieBannerFrodo.Location = New System.Drawing.Point(6, 205)
         Me.chkMovieBannerFrodo.Name = "chkMovieBannerFrodo"
         Me.chkMovieBannerFrodo.Size = New System.Drawing.Size(63, 17)
         Me.chkMovieBannerFrodo.TabIndex = 8
         Me.chkMovieBannerFrodo.Text = "Banner"
-        Me.chkMovieBannerFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieBannerFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieDiscArtFrodo
         '
-        Me.chkMovieDiscArtFrodo.AutoSize = true
-        Me.chkMovieDiscArtFrodo.Enabled = false
+        Me.chkMovieDiscArtFrodo.AutoSize = True
+        Me.chkMovieDiscArtFrodo.Enabled = False
         Me.chkMovieDiscArtFrodo.Location = New System.Drawing.Point(6, 274)
         Me.chkMovieDiscArtFrodo.Name = "chkMovieDiscArtFrodo"
         Me.chkMovieDiscArtFrodo.Size = New System.Drawing.Size(62, 17)
         Me.chkMovieDiscArtFrodo.TabIndex = 7
         Me.chkMovieDiscArtFrodo.Text = "DiscArt"
-        Me.chkMovieDiscArtFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieDiscArtFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieClearArtFrodo
         '
-        Me.chkMovieClearArtFrodo.AutoSize = true
-        Me.chkMovieClearArtFrodo.Enabled = false
+        Me.chkMovieClearArtFrodo.AutoSize = True
+        Me.chkMovieClearArtFrodo.Enabled = False
         Me.chkMovieClearArtFrodo.Location = New System.Drawing.Point(6, 251)
         Me.chkMovieClearArtFrodo.Name = "chkMovieClearArtFrodo"
         Me.chkMovieClearArtFrodo.Size = New System.Drawing.Size(67, 17)
         Me.chkMovieClearArtFrodo.TabIndex = 6
         Me.chkMovieClearArtFrodo.Text = "ClearArt"
-        Me.chkMovieClearArtFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieClearArtFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieClearLogoFrodo
         '
-        Me.chkMovieClearLogoFrodo.AutoSize = true
-        Me.chkMovieClearLogoFrodo.Enabled = false
+        Me.chkMovieClearLogoFrodo.AutoSize = True
+        Me.chkMovieClearLogoFrodo.Enabled = False
         Me.chkMovieClearLogoFrodo.Location = New System.Drawing.Point(6, 228)
         Me.chkMovieClearLogoFrodo.Name = "chkMovieClearLogoFrodo"
         Me.chkMovieClearLogoFrodo.Size = New System.Drawing.Size(78, 17)
         Me.chkMovieClearLogoFrodo.TabIndex = 5
         Me.chkMovieClearLogoFrodo.Text = "ClearLogo"
-        Me.chkMovieClearLogoFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieClearLogoFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieActorThumbsFrodo
         '
-        Me.chkMovieActorThumbsFrodo.AutoSize = true
-        Me.chkMovieActorThumbsFrodo.Enabled = false
+        Me.chkMovieActorThumbsFrodo.AutoSize = True
+        Me.chkMovieActorThumbsFrodo.Enabled = False
         Me.chkMovieActorThumbsFrodo.Location = New System.Drawing.Point(6, 113)
         Me.chkMovieActorThumbsFrodo.Name = "chkMovieActorThumbsFrodo"
         Me.chkMovieActorThumbsFrodo.Size = New System.Drawing.Size(96, 17)
         Me.chkMovieActorThumbsFrodo.TabIndex = 4
         Me.chkMovieActorThumbsFrodo.Text = "Actor Thumbs"
-        Me.chkMovieActorThumbsFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieActorThumbsFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieTrailerFrodo
         '
-        Me.chkMovieTrailerFrodo.AutoSize = true
-        Me.chkMovieTrailerFrodo.Enabled = false
+        Me.chkMovieTrailerFrodo.AutoSize = True
+        Me.chkMovieTrailerFrodo.Enabled = False
         Me.chkMovieTrailerFrodo.Location = New System.Drawing.Point(6, 182)
         Me.chkMovieTrailerFrodo.Name = "chkMovieTrailerFrodo"
         Me.chkMovieTrailerFrodo.Size = New System.Drawing.Size(57, 17)
         Me.chkMovieTrailerFrodo.TabIndex = 3
         Me.chkMovieTrailerFrodo.Text = "Trailer"
-        Me.chkMovieTrailerFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieTrailerFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieFanartFrodo
         '
-        Me.chkMovieFanartFrodo.AutoSize = true
-        Me.chkMovieFanartFrodo.Enabled = false
+        Me.chkMovieFanartFrodo.AutoSize = True
+        Me.chkMovieFanartFrodo.Enabled = False
         Me.chkMovieFanartFrodo.Location = New System.Drawing.Point(6, 90)
         Me.chkMovieFanartFrodo.Name = "chkMovieFanartFrodo"
         Me.chkMovieFanartFrodo.Size = New System.Drawing.Size(59, 17)
         Me.chkMovieFanartFrodo.TabIndex = 2
         Me.chkMovieFanartFrodo.Text = "Fanart"
-        Me.chkMovieFanartFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieFanartFrodo.UseVisualStyleBackColor = True
         '
         'chkMoviePosterFrodo
         '
-        Me.chkMoviePosterFrodo.AutoSize = true
-        Me.chkMoviePosterFrodo.Enabled = false
+        Me.chkMoviePosterFrodo.AutoSize = True
+        Me.chkMoviePosterFrodo.Enabled = False
         Me.chkMoviePosterFrodo.Location = New System.Drawing.Point(6, 67)
         Me.chkMoviePosterFrodo.Name = "chkMoviePosterFrodo"
         Me.chkMoviePosterFrodo.Size = New System.Drawing.Size(58, 17)
         Me.chkMoviePosterFrodo.TabIndex = 1
         Me.chkMoviePosterFrodo.Text = "Poster"
-        Me.chkMoviePosterFrodo.UseVisualStyleBackColor = true
+        Me.chkMoviePosterFrodo.UseVisualStyleBackColor = True
         '
         'chkMovieNFOFrodo
         '
-        Me.chkMovieNFOFrodo.AutoSize = true
-        Me.chkMovieNFOFrodo.Enabled = false
+        Me.chkMovieNFOFrodo.AutoSize = True
+        Me.chkMovieNFOFrodo.Enabled = False
         Me.chkMovieNFOFrodo.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieNFOFrodo.Name = "chkMovieNFOFrodo"
         Me.chkMovieNFOFrodo.Size = New System.Drawing.Size(49, 17)
         Me.chkMovieNFOFrodo.TabIndex = 0
         Me.chkMovieNFOFrodo.Text = "NFO"
-        Me.chkMovieNFOFrodo.UseVisualStyleBackColor = true
+        Me.chkMovieNFOFrodo.UseVisualStyleBackColor = True
         '
         'tpMovieFileNamingNMT
         '
@@ -4889,7 +4893,7 @@ Partial Class dlgSettings
         Me.tpMovieFileNamingNMT.Size = New System.Drawing.Size(505, 336)
         Me.tpMovieFileNamingNMT.TabIndex = 3
         Me.tpMovieFileNamingNMT.Text = "NMT"
-        Me.tpMovieFileNamingNMT.UseVisualStyleBackColor = true
+        Me.tpMovieFileNamingNMT.UseVisualStyleBackColor = True
         '
         'gbMovieNMTOptionalSettings
         '
@@ -4902,33 +4906,33 @@ Partial Class dlgSettings
         Me.gbMovieNMTOptionalSettings.Name = "gbMovieNMTOptionalSettings"
         Me.gbMovieNMTOptionalSettings.Size = New System.Drawing.Size(261, 107)
         Me.gbMovieNMTOptionalSettings.TabIndex = 18
-        Me.gbMovieNMTOptionalSettings.TabStop = false
+        Me.gbMovieNMTOptionalSettings.TabStop = False
         Me.gbMovieNMTOptionalSettings.Text = "Optional Settings"
         '
         'chkMovieYAMJCompatibleSets
         '
-        Me.chkMovieYAMJCompatibleSets.AutoSize = true
+        Me.chkMovieYAMJCompatibleSets.AutoSize = True
         Me.chkMovieYAMJCompatibleSets.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieYAMJCompatibleSets.Name = "chkMovieYAMJCompatibleSets"
         Me.chkMovieYAMJCompatibleSets.Size = New System.Drawing.Size(138, 17)
         Me.chkMovieYAMJCompatibleSets.TabIndex = 3
         Me.chkMovieYAMJCompatibleSets.Text = "YAMJ Compatible Sets"
-        Me.chkMovieYAMJCompatibleSets.UseVisualStyleBackColor = true
+        Me.chkMovieYAMJCompatibleSets.UseVisualStyleBackColor = True
         '
         'btnMovieYAMJWatchedFilesBrowse
         '
-        Me.btnMovieYAMJWatchedFilesBrowse.Enabled = false
-        Me.btnMovieYAMJWatchedFilesBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnMovieYAMJWatchedFilesBrowse.Enabled = False
+        Me.btnMovieYAMJWatchedFilesBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnMovieYAMJWatchedFilesBrowse.Location = New System.Drawing.Point(230, 67)
         Me.btnMovieYAMJWatchedFilesBrowse.Name = "btnMovieYAMJWatchedFilesBrowse"
         Me.btnMovieYAMJWatchedFilesBrowse.Size = New System.Drawing.Size(25, 22)
         Me.btnMovieYAMJWatchedFilesBrowse.TabIndex = 2
         Me.btnMovieYAMJWatchedFilesBrowse.Text = "..."
-        Me.btnMovieYAMJWatchedFilesBrowse.UseVisualStyleBackColor = true
+        Me.btnMovieYAMJWatchedFilesBrowse.UseVisualStyleBackColor = True
         '
         'txtMovieYAMJWatchedFolder
         '
-        Me.txtMovieYAMJWatchedFolder.Enabled = false
+        Me.txtMovieYAMJWatchedFolder.Enabled = False
         Me.txtMovieYAMJWatchedFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.txtMovieYAMJWatchedFolder.Location = New System.Drawing.Point(6, 67)
         Me.txtMovieYAMJWatchedFolder.Name = "txtMovieYAMJWatchedFolder"
@@ -4937,15 +4941,15 @@ Partial Class dlgSettings
         '
         'chkMovieYAMJWatchedFile
         '
-        Me.chkMovieYAMJWatchedFile.AutoSize = true
-        Me.chkMovieYAMJWatchedFile.Enabled = false
+        Me.chkMovieYAMJWatchedFile.AutoSize = True
+        Me.chkMovieYAMJWatchedFile.Enabled = False
         Me.chkMovieYAMJWatchedFile.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.chkMovieYAMJWatchedFile.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieYAMJWatchedFile.Name = "chkMovieYAMJWatchedFile"
         Me.chkMovieYAMJWatchedFile.Size = New System.Drawing.Size(121, 17)
         Me.chkMovieYAMJWatchedFile.TabIndex = 0
         Me.chkMovieYAMJWatchedFile.Text = "Use .watched Files"
-        Me.chkMovieYAMJWatchedFile.UseVisualStyleBackColor = true
+        Me.chkMovieYAMJWatchedFile.UseVisualStyleBackColor = True
         '
         'gbMovieNMJ
         '
@@ -4955,78 +4959,78 @@ Partial Class dlgSettings
         Me.gbMovieNMJ.Controls.Add(Me.chkMovieFanartNMJ)
         Me.gbMovieNMJ.Controls.Add(Me.chkMoviePosterNMJ)
         Me.gbMovieNMJ.Controls.Add(Me.chkMovieNFONMJ)
-        Me.gbMovieNMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieNMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieNMJ.Location = New System.Drawing.Point(122, 6)
         Me.gbMovieNMJ.Name = "gbMovieNMJ"
         Me.gbMovieNMJ.Size = New System.Drawing.Size(110, 324)
         Me.gbMovieNMJ.TabIndex = 17
-        Me.gbMovieNMJ.TabStop = false
+        Me.gbMovieNMJ.TabStop = False
         Me.gbMovieNMJ.Text = "NMJ"
         '
         'chkMovieUseNMJ
         '
-        Me.chkMovieUseNMJ.AutoSize = true
+        Me.chkMovieUseNMJ.AutoSize = True
         Me.chkMovieUseNMJ.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieUseNMJ.Name = "chkMovieUseNMJ"
         Me.chkMovieUseNMJ.Size = New System.Drawing.Size(45, 17)
         Me.chkMovieUseNMJ.TabIndex = 16
         Me.chkMovieUseNMJ.Text = "Use"
-        Me.chkMovieUseNMJ.UseVisualStyleBackColor = true
+        Me.chkMovieUseNMJ.UseVisualStyleBackColor = True
         '
         'chkMovieBannerNMJ
         '
-        Me.chkMovieBannerNMJ.AutoSize = true
-        Me.chkMovieBannerNMJ.Enabled = false
+        Me.chkMovieBannerNMJ.AutoSize = True
+        Me.chkMovieBannerNMJ.Enabled = False
         Me.chkMovieBannerNMJ.Location = New System.Drawing.Point(6, 113)
         Me.chkMovieBannerNMJ.Name = "chkMovieBannerNMJ"
         Me.chkMovieBannerNMJ.Size = New System.Drawing.Size(63, 17)
         Me.chkMovieBannerNMJ.TabIndex = 15
         Me.chkMovieBannerNMJ.Text = "Banner"
-        Me.chkMovieBannerNMJ.UseVisualStyleBackColor = true
+        Me.chkMovieBannerNMJ.UseVisualStyleBackColor = True
         '
         'chkMovieTrailerNMJ
         '
-        Me.chkMovieTrailerNMJ.AutoSize = true
-        Me.chkMovieTrailerNMJ.Enabled = false
+        Me.chkMovieTrailerNMJ.AutoSize = True
+        Me.chkMovieTrailerNMJ.Enabled = False
         Me.chkMovieTrailerNMJ.Location = New System.Drawing.Point(6, 136)
         Me.chkMovieTrailerNMJ.Name = "chkMovieTrailerNMJ"
         Me.chkMovieTrailerNMJ.Size = New System.Drawing.Size(57, 17)
         Me.chkMovieTrailerNMJ.TabIndex = 14
         Me.chkMovieTrailerNMJ.Text = "Trailer"
-        Me.chkMovieTrailerNMJ.UseVisualStyleBackColor = true
+        Me.chkMovieTrailerNMJ.UseVisualStyleBackColor = True
         '
         'chkMovieFanartNMJ
         '
-        Me.chkMovieFanartNMJ.AutoSize = true
-        Me.chkMovieFanartNMJ.Enabled = false
+        Me.chkMovieFanartNMJ.AutoSize = True
+        Me.chkMovieFanartNMJ.Enabled = False
         Me.chkMovieFanartNMJ.Location = New System.Drawing.Point(6, 90)
         Me.chkMovieFanartNMJ.Name = "chkMovieFanartNMJ"
         Me.chkMovieFanartNMJ.Size = New System.Drawing.Size(59, 17)
         Me.chkMovieFanartNMJ.TabIndex = 13
         Me.chkMovieFanartNMJ.Text = "Fanart"
-        Me.chkMovieFanartNMJ.UseVisualStyleBackColor = true
+        Me.chkMovieFanartNMJ.UseVisualStyleBackColor = True
         '
         'chkMoviePosterNMJ
         '
-        Me.chkMoviePosterNMJ.AutoSize = true
-        Me.chkMoviePosterNMJ.Enabled = false
+        Me.chkMoviePosterNMJ.AutoSize = True
+        Me.chkMoviePosterNMJ.Enabled = False
         Me.chkMoviePosterNMJ.Location = New System.Drawing.Point(6, 67)
         Me.chkMoviePosterNMJ.Name = "chkMoviePosterNMJ"
         Me.chkMoviePosterNMJ.Size = New System.Drawing.Size(58, 17)
         Me.chkMoviePosterNMJ.TabIndex = 12
         Me.chkMoviePosterNMJ.Text = "Poster"
-        Me.chkMoviePosterNMJ.UseVisualStyleBackColor = true
+        Me.chkMoviePosterNMJ.UseVisualStyleBackColor = True
         '
         'chkMovieNFONMJ
         '
-        Me.chkMovieNFONMJ.AutoSize = true
-        Me.chkMovieNFONMJ.Enabled = false
+        Me.chkMovieNFONMJ.AutoSize = True
+        Me.chkMovieNFONMJ.Enabled = False
         Me.chkMovieNFONMJ.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieNFONMJ.Name = "chkMovieNFONMJ"
         Me.chkMovieNFONMJ.Size = New System.Drawing.Size(49, 17)
         Me.chkMovieNFONMJ.TabIndex = 11
         Me.chkMovieNFONMJ.Text = "NFO"
-        Me.chkMovieNFONMJ.UseVisualStyleBackColor = true
+        Me.chkMovieNFONMJ.UseVisualStyleBackColor = True
         '
         'gbMovieYAMJ
         '
@@ -5036,78 +5040,78 @@ Partial Class dlgSettings
         Me.gbMovieYAMJ.Controls.Add(Me.chkMovieFanartYAMJ)
         Me.gbMovieYAMJ.Controls.Add(Me.chkMoviePosterYAMJ)
         Me.gbMovieYAMJ.Controls.Add(Me.chkMovieNFOYAMJ)
-        Me.gbMovieYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieYAMJ.Location = New System.Drawing.Point(6, 6)
         Me.gbMovieYAMJ.Name = "gbMovieYAMJ"
         Me.gbMovieYAMJ.Size = New System.Drawing.Size(110, 324)
         Me.gbMovieYAMJ.TabIndex = 3
-        Me.gbMovieYAMJ.TabStop = false
+        Me.gbMovieYAMJ.TabStop = False
         Me.gbMovieYAMJ.Text = "YAMJ"
         '
         'chkMovieUseYAMJ
         '
-        Me.chkMovieUseYAMJ.AutoSize = true
+        Me.chkMovieUseYAMJ.AutoSize = True
         Me.chkMovieUseYAMJ.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieUseYAMJ.Name = "chkMovieUseYAMJ"
         Me.chkMovieUseYAMJ.Size = New System.Drawing.Size(45, 17)
         Me.chkMovieUseYAMJ.TabIndex = 16
         Me.chkMovieUseYAMJ.Text = "Use"
-        Me.chkMovieUseYAMJ.UseVisualStyleBackColor = true
+        Me.chkMovieUseYAMJ.UseVisualStyleBackColor = True
         '
         'chkMovieBannerYAMJ
         '
-        Me.chkMovieBannerYAMJ.AutoSize = true
-        Me.chkMovieBannerYAMJ.Enabled = false
+        Me.chkMovieBannerYAMJ.AutoSize = True
+        Me.chkMovieBannerYAMJ.Enabled = False
         Me.chkMovieBannerYAMJ.Location = New System.Drawing.Point(6, 113)
         Me.chkMovieBannerYAMJ.Name = "chkMovieBannerYAMJ"
         Me.chkMovieBannerYAMJ.Size = New System.Drawing.Size(63, 17)
         Me.chkMovieBannerYAMJ.TabIndex = 15
         Me.chkMovieBannerYAMJ.Text = "Banner"
-        Me.chkMovieBannerYAMJ.UseVisualStyleBackColor = true
+        Me.chkMovieBannerYAMJ.UseVisualStyleBackColor = True
         '
         'chkMovieTrailerYAMJ
         '
-        Me.chkMovieTrailerYAMJ.AutoSize = true
-        Me.chkMovieTrailerYAMJ.Enabled = false
+        Me.chkMovieTrailerYAMJ.AutoSize = True
+        Me.chkMovieTrailerYAMJ.Enabled = False
         Me.chkMovieTrailerYAMJ.Location = New System.Drawing.Point(6, 136)
         Me.chkMovieTrailerYAMJ.Name = "chkMovieTrailerYAMJ"
         Me.chkMovieTrailerYAMJ.Size = New System.Drawing.Size(57, 17)
         Me.chkMovieTrailerYAMJ.TabIndex = 14
         Me.chkMovieTrailerYAMJ.Text = "Trailer"
-        Me.chkMovieTrailerYAMJ.UseVisualStyleBackColor = true
+        Me.chkMovieTrailerYAMJ.UseVisualStyleBackColor = True
         '
         'chkMovieFanartYAMJ
         '
-        Me.chkMovieFanartYAMJ.AutoSize = true
-        Me.chkMovieFanartYAMJ.Enabled = false
+        Me.chkMovieFanartYAMJ.AutoSize = True
+        Me.chkMovieFanartYAMJ.Enabled = False
         Me.chkMovieFanartYAMJ.Location = New System.Drawing.Point(6, 90)
         Me.chkMovieFanartYAMJ.Name = "chkMovieFanartYAMJ"
         Me.chkMovieFanartYAMJ.Size = New System.Drawing.Size(59, 17)
         Me.chkMovieFanartYAMJ.TabIndex = 13
         Me.chkMovieFanartYAMJ.Text = "Fanart"
-        Me.chkMovieFanartYAMJ.UseVisualStyleBackColor = true
+        Me.chkMovieFanartYAMJ.UseVisualStyleBackColor = True
         '
         'chkMoviePosterYAMJ
         '
-        Me.chkMoviePosterYAMJ.AutoSize = true
-        Me.chkMoviePosterYAMJ.Enabled = false
+        Me.chkMoviePosterYAMJ.AutoSize = True
+        Me.chkMoviePosterYAMJ.Enabled = False
         Me.chkMoviePosterYAMJ.Location = New System.Drawing.Point(6, 67)
         Me.chkMoviePosterYAMJ.Name = "chkMoviePosterYAMJ"
         Me.chkMoviePosterYAMJ.Size = New System.Drawing.Size(58, 17)
         Me.chkMoviePosterYAMJ.TabIndex = 12
         Me.chkMoviePosterYAMJ.Text = "Poster"
-        Me.chkMoviePosterYAMJ.UseVisualStyleBackColor = true
+        Me.chkMoviePosterYAMJ.UseVisualStyleBackColor = True
         '
         'chkMovieNFOYAMJ
         '
-        Me.chkMovieNFOYAMJ.AutoSize = true
-        Me.chkMovieNFOYAMJ.Enabled = false
+        Me.chkMovieNFOYAMJ.AutoSize = True
+        Me.chkMovieNFOYAMJ.Enabled = False
         Me.chkMovieNFOYAMJ.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieNFOYAMJ.Name = "chkMovieNFOYAMJ"
         Me.chkMovieNFOYAMJ.Size = New System.Drawing.Size(49, 17)
         Me.chkMovieNFOYAMJ.TabIndex = 11
         Me.chkMovieNFOYAMJ.Text = "NFO"
-        Me.chkMovieNFOYAMJ.UseVisualStyleBackColor = true
+        Me.chkMovieNFOYAMJ.UseVisualStyleBackColor = True
         '
         'tpMovieFileNamingBoxee
         '
@@ -5117,7 +5121,7 @@ Partial Class dlgSettings
         Me.tpMovieFileNamingBoxee.Size = New System.Drawing.Size(505, 336)
         Me.tpMovieFileNamingBoxee.TabIndex = 4
         Me.tpMovieFileNamingBoxee.Text = "Boxee"
-        Me.tpMovieFileNamingBoxee.UseVisualStyleBackColor = true
+        Me.tpMovieFileNamingBoxee.UseVisualStyleBackColor = True
         '
         'gbMovieBoxee
         '
@@ -5125,56 +5129,56 @@ Partial Class dlgSettings
         Me.gbMovieBoxee.Controls.Add(Me.chkMovieFanartBoxee)
         Me.gbMovieBoxee.Controls.Add(Me.chkMoviePosterBoxee)
         Me.gbMovieBoxee.Controls.Add(Me.chkMovieNFOBoxee)
-        Me.gbMovieBoxee.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieBoxee.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieBoxee.Location = New System.Drawing.Point(6, 6)
         Me.gbMovieBoxee.Name = "gbMovieBoxee"
         Me.gbMovieBoxee.Size = New System.Drawing.Size(110, 324)
         Me.gbMovieBoxee.TabIndex = 4
-        Me.gbMovieBoxee.TabStop = false
+        Me.gbMovieBoxee.TabStop = False
         Me.gbMovieBoxee.Text = "Boxee"
         '
         'chkMovieUseBoxee
         '
-        Me.chkMovieUseBoxee.AutoSize = true
+        Me.chkMovieUseBoxee.AutoSize = True
         Me.chkMovieUseBoxee.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieUseBoxee.Name = "chkMovieUseBoxee"
         Me.chkMovieUseBoxee.Size = New System.Drawing.Size(45, 17)
         Me.chkMovieUseBoxee.TabIndex = 16
         Me.chkMovieUseBoxee.Text = "Use"
-        Me.chkMovieUseBoxee.UseVisualStyleBackColor = true
+        Me.chkMovieUseBoxee.UseVisualStyleBackColor = True
         '
         'chkMovieFanartBoxee
         '
-        Me.chkMovieFanartBoxee.AutoSize = true
-        Me.chkMovieFanartBoxee.Enabled = false
+        Me.chkMovieFanartBoxee.AutoSize = True
+        Me.chkMovieFanartBoxee.Enabled = False
         Me.chkMovieFanartBoxee.Location = New System.Drawing.Point(6, 90)
         Me.chkMovieFanartBoxee.Name = "chkMovieFanartBoxee"
         Me.chkMovieFanartBoxee.Size = New System.Drawing.Size(59, 17)
         Me.chkMovieFanartBoxee.TabIndex = 13
         Me.chkMovieFanartBoxee.Text = "Fanart"
-        Me.chkMovieFanartBoxee.UseVisualStyleBackColor = true
+        Me.chkMovieFanartBoxee.UseVisualStyleBackColor = True
         '
         'chkMoviePosterBoxee
         '
-        Me.chkMoviePosterBoxee.AutoSize = true
-        Me.chkMoviePosterBoxee.Enabled = false
+        Me.chkMoviePosterBoxee.AutoSize = True
+        Me.chkMoviePosterBoxee.Enabled = False
         Me.chkMoviePosterBoxee.Location = New System.Drawing.Point(6, 67)
         Me.chkMoviePosterBoxee.Name = "chkMoviePosterBoxee"
         Me.chkMoviePosterBoxee.Size = New System.Drawing.Size(58, 17)
         Me.chkMoviePosterBoxee.TabIndex = 12
         Me.chkMoviePosterBoxee.Text = "Poster"
-        Me.chkMoviePosterBoxee.UseVisualStyleBackColor = true
+        Me.chkMoviePosterBoxee.UseVisualStyleBackColor = True
         '
         'chkMovieNFOBoxee
         '
-        Me.chkMovieNFOBoxee.AutoSize = true
-        Me.chkMovieNFOBoxee.Enabled = false
+        Me.chkMovieNFOBoxee.AutoSize = True
+        Me.chkMovieNFOBoxee.Enabled = False
         Me.chkMovieNFOBoxee.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieNFOBoxee.Name = "chkMovieNFOBoxee"
         Me.chkMovieNFOBoxee.Size = New System.Drawing.Size(49, 17)
         Me.chkMovieNFOBoxee.TabIndex = 11
         Me.chkMovieNFOBoxee.Text = "NFO"
-        Me.chkMovieNFOBoxee.UseVisualStyleBackColor = true
+        Me.chkMovieNFOBoxee.UseVisualStyleBackColor = True
         '
         'tpMovieFileNamingExpert
         '
@@ -5185,7 +5189,7 @@ Partial Class dlgSettings
         Me.tpMovieFileNamingExpert.Size = New System.Drawing.Size(505, 336)
         Me.tpMovieFileNamingExpert.TabIndex = 2
         Me.tpMovieFileNamingExpert.Text = "Expert"
-        Me.tpMovieFileNamingExpert.UseVisualStyleBackColor = true
+        Me.tpMovieFileNamingExpert.UseVisualStyleBackColor = True
         '
         'gbMovieExpert
         '
@@ -5196,7 +5200,7 @@ Partial Class dlgSettings
         Me.gbMovieExpert.Name = "gbMovieExpert"
         Me.gbMovieExpert.Size = New System.Drawing.Size(493, 324)
         Me.gbMovieExpert.TabIndex = 7
-        Me.gbMovieExpert.TabStop = false
+        Me.gbMovieExpert.TabStop = False
         Me.gbMovieExpert.Text = "Expert Settings"
         '
         'tcMovieFileNamingExpert
@@ -5239,7 +5243,7 @@ Partial Class dlgSettings
         Me.tpMovieFileNamingExpertSingle.Size = New System.Drawing.Size(473, 254)
         Me.tpMovieFileNamingExpertSingle.TabIndex = 0
         Me.tpMovieFileNamingExpertSingle.Text = "Single"
-        Me.tpMovieFileNamingExpertSingle.UseVisualStyleBackColor = true
+        Me.tpMovieFileNamingExpertSingle.UseVisualStyleBackColor = True
         '
         'gbMovieExpertSingleOptionalSettings
         '
@@ -5250,41 +5254,41 @@ Partial Class dlgSettings
         Me.gbMovieExpertSingleOptionalSettings.Name = "gbMovieExpertSingleOptionalSettings"
         Me.gbMovieExpertSingleOptionalSettings.Size = New System.Drawing.Size(160, 93)
         Me.gbMovieExpertSingleOptionalSettings.TabIndex = 12
-        Me.gbMovieExpertSingleOptionalSettings.TabStop = false
+        Me.gbMovieExpertSingleOptionalSettings.TabStop = False
         Me.gbMovieExpertSingleOptionalSettings.Text = "Optional Settings"
         '
         'chkMovieUnstackExpertSingle
         '
-        Me.chkMovieUnstackExpertSingle.AutoSize = true
-        Me.chkMovieUnstackExpertSingle.Enabled = false
+        Me.chkMovieUnstackExpertSingle.AutoSize = True
+        Me.chkMovieUnstackExpertSingle.Enabled = False
         Me.chkMovieUnstackExpertSingle.Location = New System.Drawing.Point(6, 67)
         Me.chkMovieUnstackExpertSingle.Name = "chkMovieUnstackExpertSingle"
         Me.chkMovieUnstackExpertSingle.Size = New System.Drawing.Size(128, 17)
         Me.chkMovieUnstackExpertSingle.TabIndex = 3
         Me.chkMovieUnstackExpertSingle.Text = "also save unstacked"
-        Me.chkMovieUnstackExpertSingle.UseVisualStyleBackColor = true
+        Me.chkMovieUnstackExpertSingle.UseVisualStyleBackColor = True
         '
         'chkMovieStackExpertSingle
         '
-        Me.chkMovieStackExpertSingle.AutoSize = true
-        Me.chkMovieStackExpertSingle.Enabled = false
+        Me.chkMovieStackExpertSingle.AutoSize = True
+        Me.chkMovieStackExpertSingle.Enabled = False
         Me.chkMovieStackExpertSingle.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieStackExpertSingle.Name = "chkMovieStackExpertSingle"
         Me.chkMovieStackExpertSingle.Size = New System.Drawing.Size(116, 17)
         Me.chkMovieStackExpertSingle.TabIndex = 2
         Me.chkMovieStackExpertSingle.Text = "Stack <filename>"
-        Me.chkMovieStackExpertSingle.UseVisualStyleBackColor = true
+        Me.chkMovieStackExpertSingle.UseVisualStyleBackColor = True
         '
         'chkMovieXBMCTrailerFormatExpertSingle
         '
-        Me.chkMovieXBMCTrailerFormatExpertSingle.AutoSize = true
-        Me.chkMovieXBMCTrailerFormatExpertSingle.Enabled = false
+        Me.chkMovieXBMCTrailerFormatExpertSingle.AutoSize = True
+        Me.chkMovieXBMCTrailerFormatExpertSingle.Enabled = False
         Me.chkMovieXBMCTrailerFormatExpertSingle.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieXBMCTrailerFormatExpertSingle.Name = "chkMovieXBMCTrailerFormatExpertSingle"
         Me.chkMovieXBMCTrailerFormatExpertSingle.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieXBMCTrailerFormatExpertSingle.TabIndex = 1
         Me.chkMovieXBMCTrailerFormatExpertSingle.Text = "XBMC Trailer Format"
-        Me.chkMovieXBMCTrailerFormatExpertSingle.UseVisualStyleBackColor = true
+        Me.chkMovieXBMCTrailerFormatExpertSingle.UseVisualStyleBackColor = True
         '
         'gbMovieExpertSingleOptionalImages
         '
@@ -5296,12 +5300,12 @@ Partial Class dlgSettings
         Me.gbMovieExpertSingleOptionalImages.Name = "gbMovieExpertSingleOptionalImages"
         Me.gbMovieExpertSingleOptionalImages.Size = New System.Drawing.Size(160, 93)
         Me.gbMovieExpertSingleOptionalImages.TabIndex = 13
-        Me.gbMovieExpertSingleOptionalImages.TabStop = false
+        Me.gbMovieExpertSingleOptionalImages.TabStop = False
         Me.gbMovieExpertSingleOptionalImages.Text = "Optional Images"
         '
         'txtMovieActorThumbsExtExpertSingle
         '
-        Me.txtMovieActorThumbsExtExpertSingle.Enabled = false
+        Me.txtMovieActorThumbsExtExpertSingle.Enabled = False
         Me.txtMovieActorThumbsExtExpertSingle.Location = New System.Drawing.Point(108, 19)
         Me.txtMovieActorThumbsExtExpertSingle.Name = "txtMovieActorThumbsExtExpertSingle"
         Me.txtMovieActorThumbsExtExpertSingle.Size = New System.Drawing.Size(46, 22)
@@ -5309,40 +5313,40 @@ Partial Class dlgSettings
         '
         'chkMovieActorThumbsExpertSingle
         '
-        Me.chkMovieActorThumbsExpertSingle.AutoSize = true
-        Me.chkMovieActorThumbsExpertSingle.Enabled = false
+        Me.chkMovieActorThumbsExpertSingle.AutoSize = True
+        Me.chkMovieActorThumbsExpertSingle.Enabled = False
         Me.chkMovieActorThumbsExpertSingle.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieActorThumbsExpertSingle.Name = "chkMovieActorThumbsExpertSingle"
         Me.chkMovieActorThumbsExpertSingle.Size = New System.Drawing.Size(96, 17)
         Me.chkMovieActorThumbsExpertSingle.TabIndex = 1
         Me.chkMovieActorThumbsExpertSingle.Text = "Actor Thumbs"
-        Me.chkMovieActorThumbsExpertSingle.UseVisualStyleBackColor = true
+        Me.chkMovieActorThumbsExpertSingle.UseVisualStyleBackColor = True
         '
         'chkMovieExtrafanartsExpertSingle
         '
-        Me.chkMovieExtrafanartsExpertSingle.AutoSize = true
-        Me.chkMovieExtrafanartsExpertSingle.Enabled = false
+        Me.chkMovieExtrafanartsExpertSingle.AutoSize = True
+        Me.chkMovieExtrafanartsExpertSingle.Enabled = False
         Me.chkMovieExtrafanartsExpertSingle.Location = New System.Drawing.Point(6, 67)
         Me.chkMovieExtrafanartsExpertSingle.Name = "chkMovieExtrafanartsExpertSingle"
         Me.chkMovieExtrafanartsExpertSingle.Size = New System.Drawing.Size(87, 17)
         Me.chkMovieExtrafanartsExpertSingle.TabIndex = 4
         Me.chkMovieExtrafanartsExpertSingle.Text = "Extrafanarts"
-        Me.chkMovieExtrafanartsExpertSingle.UseVisualStyleBackColor = true
+        Me.chkMovieExtrafanartsExpertSingle.UseVisualStyleBackColor = True
         '
         'chkMovieExtrathumbsExpertSingle
         '
-        Me.chkMovieExtrathumbsExpertSingle.AutoSize = true
-        Me.chkMovieExtrathumbsExpertSingle.Enabled = false
+        Me.chkMovieExtrathumbsExpertSingle.AutoSize = True
+        Me.chkMovieExtrathumbsExpertSingle.Enabled = False
         Me.chkMovieExtrathumbsExpertSingle.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieExtrathumbsExpertSingle.Name = "chkMovieExtrathumbsExpertSingle"
         Me.chkMovieExtrathumbsExpertSingle.Size = New System.Drawing.Size(90, 17)
         Me.chkMovieExtrathumbsExpertSingle.TabIndex = 3
         Me.chkMovieExtrathumbsExpertSingle.Text = "Extrathumbs"
-        Me.chkMovieExtrathumbsExpertSingle.UseVisualStyleBackColor = true
+        Me.chkMovieExtrathumbsExpertSingle.UseVisualStyleBackColor = True
         '
         'lblMovieClearArtExpertSingle
         '
-        Me.lblMovieClearArtExpertSingle.AutoSize = true
+        Me.lblMovieClearArtExpertSingle.AutoSize = True
         Me.lblMovieClearArtExpertSingle.Location = New System.Drawing.Point(6, 171)
         Me.lblMovieClearArtExpertSingle.Name = "lblMovieClearArtExpertSingle"
         Me.lblMovieClearArtExpertSingle.Size = New System.Drawing.Size(48, 13)
@@ -5351,7 +5355,7 @@ Partial Class dlgSettings
         '
         'txtMoviePosterExpertSingle
         '
-        Me.txtMoviePosterExpertSingle.Enabled = false
+        Me.txtMoviePosterExpertSingle.Enabled = False
         Me.txtMoviePosterExpertSingle.Location = New System.Drawing.Point(71, 33)
         Me.txtMoviePosterExpertSingle.Name = "txtMoviePosterExpertSingle"
         Me.txtMoviePosterExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -5359,7 +5363,7 @@ Partial Class dlgSettings
         '
         'txtMovieFanartExpertSingle
         '
-        Me.txtMovieFanartExpertSingle.Enabled = false
+        Me.txtMovieFanartExpertSingle.Enabled = False
         Me.txtMovieFanartExpertSingle.Location = New System.Drawing.Point(71, 60)
         Me.txtMovieFanartExpertSingle.Name = "txtMovieFanartExpertSingle"
         Me.txtMovieFanartExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -5367,7 +5371,7 @@ Partial Class dlgSettings
         '
         'txtMovieTrailerExpertSingle
         '
-        Me.txtMovieTrailerExpertSingle.Enabled = false
+        Me.txtMovieTrailerExpertSingle.Enabled = False
         Me.txtMovieTrailerExpertSingle.Location = New System.Drawing.Point(71, 87)
         Me.txtMovieTrailerExpertSingle.Name = "txtMovieTrailerExpertSingle"
         Me.txtMovieTrailerExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -5375,7 +5379,7 @@ Partial Class dlgSettings
         '
         'txtMovieBannerExpertSingle
         '
-        Me.txtMovieBannerExpertSingle.Enabled = false
+        Me.txtMovieBannerExpertSingle.Enabled = False
         Me.txtMovieBannerExpertSingle.Location = New System.Drawing.Point(71, 114)
         Me.txtMovieBannerExpertSingle.Name = "txtMovieBannerExpertSingle"
         Me.txtMovieBannerExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -5383,7 +5387,7 @@ Partial Class dlgSettings
         '
         'txtMovieClearLogoExpertSingle
         '
-        Me.txtMovieClearLogoExpertSingle.Enabled = false
+        Me.txtMovieClearLogoExpertSingle.Enabled = False
         Me.txtMovieClearLogoExpertSingle.Location = New System.Drawing.Point(71, 141)
         Me.txtMovieClearLogoExpertSingle.Name = "txtMovieClearLogoExpertSingle"
         Me.txtMovieClearLogoExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -5391,7 +5395,7 @@ Partial Class dlgSettings
         '
         'txtMovieClearArtExpertSingle
         '
-        Me.txtMovieClearArtExpertSingle.Enabled = false
+        Me.txtMovieClearArtExpertSingle.Enabled = False
         Me.txtMovieClearArtExpertSingle.Location = New System.Drawing.Point(71, 168)
         Me.txtMovieClearArtExpertSingle.Name = "txtMovieClearArtExpertSingle"
         Me.txtMovieClearArtExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -5399,7 +5403,7 @@ Partial Class dlgSettings
         '
         'txtMovieLandscapeExpertSingle
         '
-        Me.txtMovieLandscapeExpertSingle.Enabled = false
+        Me.txtMovieLandscapeExpertSingle.Enabled = False
         Me.txtMovieLandscapeExpertSingle.Location = New System.Drawing.Point(71, 222)
         Me.txtMovieLandscapeExpertSingle.Name = "txtMovieLandscapeExpertSingle"
         Me.txtMovieLandscapeExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -5407,7 +5411,7 @@ Partial Class dlgSettings
         '
         'txtMovieDiscArtExpertSingle
         '
-        Me.txtMovieDiscArtExpertSingle.Enabled = false
+        Me.txtMovieDiscArtExpertSingle.Enabled = False
         Me.txtMovieDiscArtExpertSingle.Location = New System.Drawing.Point(71, 195)
         Me.txtMovieDiscArtExpertSingle.Name = "txtMovieDiscArtExpertSingle"
         Me.txtMovieDiscArtExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -5415,7 +5419,7 @@ Partial Class dlgSettings
         '
         'lblMovieLandscapeExpertSingle
         '
-        Me.lblMovieLandscapeExpertSingle.AutoSize = true
+        Me.lblMovieLandscapeExpertSingle.AutoSize = True
         Me.lblMovieLandscapeExpertSingle.Location = New System.Drawing.Point(6, 225)
         Me.lblMovieLandscapeExpertSingle.Name = "lblMovieLandscapeExpertSingle"
         Me.lblMovieLandscapeExpertSingle.Size = New System.Drawing.Size(61, 13)
@@ -5424,7 +5428,7 @@ Partial Class dlgSettings
         '
         'lblMovieDiscArtExpertSingle
         '
-        Me.lblMovieDiscArtExpertSingle.AutoSize = true
+        Me.lblMovieDiscArtExpertSingle.AutoSize = True
         Me.lblMovieDiscArtExpertSingle.Location = New System.Drawing.Point(6, 198)
         Me.lblMovieDiscArtExpertSingle.Name = "lblMovieDiscArtExpertSingle"
         Me.lblMovieDiscArtExpertSingle.Size = New System.Drawing.Size(43, 13)
@@ -5433,7 +5437,7 @@ Partial Class dlgSettings
         '
         'lblMovieBannerExpertSingle
         '
-        Me.lblMovieBannerExpertSingle.AutoSize = true
+        Me.lblMovieBannerExpertSingle.AutoSize = True
         Me.lblMovieBannerExpertSingle.Location = New System.Drawing.Point(6, 117)
         Me.lblMovieBannerExpertSingle.Name = "lblMovieBannerExpertSingle"
         Me.lblMovieBannerExpertSingle.Size = New System.Drawing.Size(44, 13)
@@ -5442,7 +5446,7 @@ Partial Class dlgSettings
         '
         'lblMovieTrailerExpertSingle
         '
-        Me.lblMovieTrailerExpertSingle.AutoSize = true
+        Me.lblMovieTrailerExpertSingle.AutoSize = True
         Me.lblMovieTrailerExpertSingle.Location = New System.Drawing.Point(6, 90)
         Me.lblMovieTrailerExpertSingle.Name = "lblMovieTrailerExpertSingle"
         Me.lblMovieTrailerExpertSingle.Size = New System.Drawing.Size(38, 13)
@@ -5451,7 +5455,7 @@ Partial Class dlgSettings
         '
         'lblMovieClearLogoExpertSingle
         '
-        Me.lblMovieClearLogoExpertSingle.AutoSize = true
+        Me.lblMovieClearLogoExpertSingle.AutoSize = True
         Me.lblMovieClearLogoExpertSingle.Location = New System.Drawing.Point(6, 144)
         Me.lblMovieClearLogoExpertSingle.Name = "lblMovieClearLogoExpertSingle"
         Me.lblMovieClearLogoExpertSingle.Size = New System.Drawing.Size(59, 13)
@@ -5460,7 +5464,7 @@ Partial Class dlgSettings
         '
         'lblMovieFanartExpertSingle
         '
-        Me.lblMovieFanartExpertSingle.AutoSize = true
+        Me.lblMovieFanartExpertSingle.AutoSize = True
         Me.lblMovieFanartExpertSingle.Location = New System.Drawing.Point(6, 64)
         Me.lblMovieFanartExpertSingle.Name = "lblMovieFanartExpertSingle"
         Me.lblMovieFanartExpertSingle.Size = New System.Drawing.Size(40, 13)
@@ -5469,7 +5473,7 @@ Partial Class dlgSettings
         '
         'lblMoviePosterExpertSingle
         '
-        Me.lblMoviePosterExpertSingle.AutoSize = true
+        Me.lblMoviePosterExpertSingle.AutoSize = True
         Me.lblMoviePosterExpertSingle.Location = New System.Drawing.Point(6, 36)
         Me.lblMoviePosterExpertSingle.Name = "lblMoviePosterExpertSingle"
         Me.lblMoviePosterExpertSingle.Size = New System.Drawing.Size(39, 13)
@@ -5478,7 +5482,7 @@ Partial Class dlgSettings
         '
         'txtMovieNFOExpertSingle
         '
-        Me.txtMovieNFOExpertSingle.Enabled = false
+        Me.txtMovieNFOExpertSingle.Enabled = False
         Me.txtMovieNFOExpertSingle.Location = New System.Drawing.Point(71, 6)
         Me.txtMovieNFOExpertSingle.Name = "txtMovieNFOExpertSingle"
         Me.txtMovieNFOExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -5486,7 +5490,7 @@ Partial Class dlgSettings
         '
         'lblMovieNFOExpertSingle
         '
-        Me.lblMovieNFOExpertSingle.AutoSize = true
+        Me.lblMovieNFOExpertSingle.AutoSize = True
         Me.lblMovieNFOExpertSingle.Location = New System.Drawing.Point(6, 9)
         Me.lblMovieNFOExpertSingle.Name = "lblMovieNFOExpertSingle"
         Me.lblMovieNFOExpertSingle.Size = New System.Drawing.Size(30, 13)
@@ -5521,7 +5525,7 @@ Partial Class dlgSettings
         Me.tpMovieFileNamingExpertMulti.Size = New System.Drawing.Size(473, 254)
         Me.tpMovieFileNamingExpertMulti.TabIndex = 1
         Me.tpMovieFileNamingExpertMulti.Text = "Multi"
-        Me.tpMovieFileNamingExpertMulti.UseVisualStyleBackColor = true
+        Me.tpMovieFileNamingExpertMulti.UseVisualStyleBackColor = True
         '
         'gbMovieExpertMultiOptionalImages
         '
@@ -5531,12 +5535,12 @@ Partial Class dlgSettings
         Me.gbMovieExpertMultiOptionalImages.Name = "gbMovieExpertMultiOptionalImages"
         Me.gbMovieExpertMultiOptionalImages.Size = New System.Drawing.Size(160, 52)
         Me.gbMovieExpertMultiOptionalImages.TabIndex = 11
-        Me.gbMovieExpertMultiOptionalImages.TabStop = false
+        Me.gbMovieExpertMultiOptionalImages.TabStop = False
         Me.gbMovieExpertMultiOptionalImages.Text = "Optional Images"
         '
         'txtMovieActorThumbsExtExpertMulti
         '
-        Me.txtMovieActorThumbsExtExpertMulti.Enabled = false
+        Me.txtMovieActorThumbsExtExpertMulti.Enabled = False
         Me.txtMovieActorThumbsExtExpertMulti.Location = New System.Drawing.Point(108, 19)
         Me.txtMovieActorThumbsExtExpertMulti.Name = "txtMovieActorThumbsExtExpertMulti"
         Me.txtMovieActorThumbsExtExpertMulti.Size = New System.Drawing.Size(46, 22)
@@ -5544,14 +5548,14 @@ Partial Class dlgSettings
         '
         'chkMovieActorThumbsExpertMulti
         '
-        Me.chkMovieActorThumbsExpertMulti.AutoSize = true
-        Me.chkMovieActorThumbsExpertMulti.Enabled = false
+        Me.chkMovieActorThumbsExpertMulti.AutoSize = True
+        Me.chkMovieActorThumbsExpertMulti.Enabled = False
         Me.chkMovieActorThumbsExpertMulti.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieActorThumbsExpertMulti.Name = "chkMovieActorThumbsExpertMulti"
         Me.chkMovieActorThumbsExpertMulti.Size = New System.Drawing.Size(96, 17)
         Me.chkMovieActorThumbsExpertMulti.TabIndex = 1
         Me.chkMovieActorThumbsExpertMulti.Text = "Actor Thumbs"
-        Me.chkMovieActorThumbsExpertMulti.UseVisualStyleBackColor = true
+        Me.chkMovieActorThumbsExpertMulti.UseVisualStyleBackColor = True
         '
         'gbMovieExpertMultiOptionalSettings
         '
@@ -5562,45 +5566,45 @@ Partial Class dlgSettings
         Me.gbMovieExpertMultiOptionalSettings.Name = "gbMovieExpertMultiOptionalSettings"
         Me.gbMovieExpertMultiOptionalSettings.Size = New System.Drawing.Size(160, 93)
         Me.gbMovieExpertMultiOptionalSettings.TabIndex = 10
-        Me.gbMovieExpertMultiOptionalSettings.TabStop = false
+        Me.gbMovieExpertMultiOptionalSettings.TabStop = False
         Me.gbMovieExpertMultiOptionalSettings.Text = "Optional Settings"
         '
         'chkMovieUnstackExpertMulti
         '
-        Me.chkMovieUnstackExpertMulti.AutoSize = true
-        Me.chkMovieUnstackExpertMulti.Enabled = false
+        Me.chkMovieUnstackExpertMulti.AutoSize = True
+        Me.chkMovieUnstackExpertMulti.Enabled = False
         Me.chkMovieUnstackExpertMulti.Location = New System.Drawing.Point(6, 67)
         Me.chkMovieUnstackExpertMulti.Name = "chkMovieUnstackExpertMulti"
         Me.chkMovieUnstackExpertMulti.Size = New System.Drawing.Size(128, 17)
         Me.chkMovieUnstackExpertMulti.TabIndex = 3
         Me.chkMovieUnstackExpertMulti.Text = "also save unstacked"
-        Me.chkMovieUnstackExpertMulti.UseVisualStyleBackColor = true
+        Me.chkMovieUnstackExpertMulti.UseVisualStyleBackColor = True
         '
         'chkMovieStackExpertMulti
         '
-        Me.chkMovieStackExpertMulti.AutoSize = true
-        Me.chkMovieStackExpertMulti.Enabled = false
+        Me.chkMovieStackExpertMulti.AutoSize = True
+        Me.chkMovieStackExpertMulti.Enabled = False
         Me.chkMovieStackExpertMulti.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieStackExpertMulti.Name = "chkMovieStackExpertMulti"
         Me.chkMovieStackExpertMulti.Size = New System.Drawing.Size(116, 17)
         Me.chkMovieStackExpertMulti.TabIndex = 2
         Me.chkMovieStackExpertMulti.Text = "Stack <filename>"
-        Me.chkMovieStackExpertMulti.UseVisualStyleBackColor = true
+        Me.chkMovieStackExpertMulti.UseVisualStyleBackColor = True
         '
         'chkMovieXBMCTrailerFormatExpertMulti
         '
-        Me.chkMovieXBMCTrailerFormatExpertMulti.AutoSize = true
-        Me.chkMovieXBMCTrailerFormatExpertMulti.Enabled = false
+        Me.chkMovieXBMCTrailerFormatExpertMulti.AutoSize = True
+        Me.chkMovieXBMCTrailerFormatExpertMulti.Enabled = False
         Me.chkMovieXBMCTrailerFormatExpertMulti.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieXBMCTrailerFormatExpertMulti.Name = "chkMovieXBMCTrailerFormatExpertMulti"
         Me.chkMovieXBMCTrailerFormatExpertMulti.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieXBMCTrailerFormatExpertMulti.TabIndex = 1
         Me.chkMovieXBMCTrailerFormatExpertMulti.Text = "XBMC Trailer Format"
-        Me.chkMovieXBMCTrailerFormatExpertMulti.UseVisualStyleBackColor = true
+        Me.chkMovieXBMCTrailerFormatExpertMulti.UseVisualStyleBackColor = True
         '
         'txtMoviePosterExpertMulti
         '
-        Me.txtMoviePosterExpertMulti.Enabled = false
+        Me.txtMoviePosterExpertMulti.Enabled = False
         Me.txtMoviePosterExpertMulti.Location = New System.Drawing.Point(71, 33)
         Me.txtMoviePosterExpertMulti.Name = "txtMoviePosterExpertMulti"
         Me.txtMoviePosterExpertMulti.Size = New System.Drawing.Size(220, 22)
@@ -5608,7 +5612,7 @@ Partial Class dlgSettings
         '
         'txtMovieFanartExpertMulti
         '
-        Me.txtMovieFanartExpertMulti.Enabled = false
+        Me.txtMovieFanartExpertMulti.Enabled = False
         Me.txtMovieFanartExpertMulti.Location = New System.Drawing.Point(71, 60)
         Me.txtMovieFanartExpertMulti.Name = "txtMovieFanartExpertMulti"
         Me.txtMovieFanartExpertMulti.Size = New System.Drawing.Size(220, 22)
@@ -5616,7 +5620,7 @@ Partial Class dlgSettings
         '
         'lblMovieClearArtExpertMulti
         '
-        Me.lblMovieClearArtExpertMulti.AutoSize = true
+        Me.lblMovieClearArtExpertMulti.AutoSize = True
         Me.lblMovieClearArtExpertMulti.Location = New System.Drawing.Point(6, 171)
         Me.lblMovieClearArtExpertMulti.Name = "lblMovieClearArtExpertMulti"
         Me.lblMovieClearArtExpertMulti.Size = New System.Drawing.Size(48, 13)
@@ -5625,7 +5629,7 @@ Partial Class dlgSettings
         '
         'txtMovieTrailerExpertMulti
         '
-        Me.txtMovieTrailerExpertMulti.Enabled = false
+        Me.txtMovieTrailerExpertMulti.Enabled = False
         Me.txtMovieTrailerExpertMulti.Location = New System.Drawing.Point(71, 87)
         Me.txtMovieTrailerExpertMulti.Name = "txtMovieTrailerExpertMulti"
         Me.txtMovieTrailerExpertMulti.Size = New System.Drawing.Size(220, 22)
@@ -5633,7 +5637,7 @@ Partial Class dlgSettings
         '
         'txtMovieBannerExpertMulti
         '
-        Me.txtMovieBannerExpertMulti.Enabled = false
+        Me.txtMovieBannerExpertMulti.Enabled = False
         Me.txtMovieBannerExpertMulti.Location = New System.Drawing.Point(71, 114)
         Me.txtMovieBannerExpertMulti.Name = "txtMovieBannerExpertMulti"
         Me.txtMovieBannerExpertMulti.Size = New System.Drawing.Size(220, 22)
@@ -5641,7 +5645,7 @@ Partial Class dlgSettings
         '
         'txtMovieClearLogoExpertMulti
         '
-        Me.txtMovieClearLogoExpertMulti.Enabled = false
+        Me.txtMovieClearLogoExpertMulti.Enabled = False
         Me.txtMovieClearLogoExpertMulti.Location = New System.Drawing.Point(71, 141)
         Me.txtMovieClearLogoExpertMulti.Name = "txtMovieClearLogoExpertMulti"
         Me.txtMovieClearLogoExpertMulti.Size = New System.Drawing.Size(220, 22)
@@ -5649,7 +5653,7 @@ Partial Class dlgSettings
         '
         'txtMovieClearArtExpertMulti
         '
-        Me.txtMovieClearArtExpertMulti.Enabled = false
+        Me.txtMovieClearArtExpertMulti.Enabled = False
         Me.txtMovieClearArtExpertMulti.Location = New System.Drawing.Point(71, 168)
         Me.txtMovieClearArtExpertMulti.Name = "txtMovieClearArtExpertMulti"
         Me.txtMovieClearArtExpertMulti.Size = New System.Drawing.Size(220, 22)
@@ -5657,7 +5661,7 @@ Partial Class dlgSettings
         '
         'txtMovieLandscapeExpertMulti
         '
-        Me.txtMovieLandscapeExpertMulti.Enabled = false
+        Me.txtMovieLandscapeExpertMulti.Enabled = False
         Me.txtMovieLandscapeExpertMulti.Location = New System.Drawing.Point(71, 222)
         Me.txtMovieLandscapeExpertMulti.Name = "txtMovieLandscapeExpertMulti"
         Me.txtMovieLandscapeExpertMulti.Size = New System.Drawing.Size(220, 22)
@@ -5665,7 +5669,7 @@ Partial Class dlgSettings
         '
         'txtMovieDiscArtExpertMulti
         '
-        Me.txtMovieDiscArtExpertMulti.Enabled = false
+        Me.txtMovieDiscArtExpertMulti.Enabled = False
         Me.txtMovieDiscArtExpertMulti.Location = New System.Drawing.Point(71, 195)
         Me.txtMovieDiscArtExpertMulti.Name = "txtMovieDiscArtExpertMulti"
         Me.txtMovieDiscArtExpertMulti.Size = New System.Drawing.Size(220, 22)
@@ -5673,7 +5677,7 @@ Partial Class dlgSettings
         '
         'lblMovieLandscapeExpertMulti
         '
-        Me.lblMovieLandscapeExpertMulti.AutoSize = true
+        Me.lblMovieLandscapeExpertMulti.AutoSize = True
         Me.lblMovieLandscapeExpertMulti.Location = New System.Drawing.Point(6, 225)
         Me.lblMovieLandscapeExpertMulti.Name = "lblMovieLandscapeExpertMulti"
         Me.lblMovieLandscapeExpertMulti.Size = New System.Drawing.Size(61, 13)
@@ -5682,7 +5686,7 @@ Partial Class dlgSettings
         '
         'lblMovieDiscArtExpertMulti
         '
-        Me.lblMovieDiscArtExpertMulti.AutoSize = true
+        Me.lblMovieDiscArtExpertMulti.AutoSize = True
         Me.lblMovieDiscArtExpertMulti.Location = New System.Drawing.Point(6, 198)
         Me.lblMovieDiscArtExpertMulti.Name = "lblMovieDiscArtExpertMulti"
         Me.lblMovieDiscArtExpertMulti.Size = New System.Drawing.Size(43, 13)
@@ -5691,7 +5695,7 @@ Partial Class dlgSettings
         '
         'lblMovieBannerExpertMulti
         '
-        Me.lblMovieBannerExpertMulti.AutoSize = true
+        Me.lblMovieBannerExpertMulti.AutoSize = True
         Me.lblMovieBannerExpertMulti.Location = New System.Drawing.Point(6, 117)
         Me.lblMovieBannerExpertMulti.Name = "lblMovieBannerExpertMulti"
         Me.lblMovieBannerExpertMulti.Size = New System.Drawing.Size(44, 13)
@@ -5700,7 +5704,7 @@ Partial Class dlgSettings
         '
         'lblMovieTrailerExpertMulti
         '
-        Me.lblMovieTrailerExpertMulti.AutoSize = true
+        Me.lblMovieTrailerExpertMulti.AutoSize = True
         Me.lblMovieTrailerExpertMulti.Location = New System.Drawing.Point(6, 90)
         Me.lblMovieTrailerExpertMulti.Name = "lblMovieTrailerExpertMulti"
         Me.lblMovieTrailerExpertMulti.Size = New System.Drawing.Size(38, 13)
@@ -5709,7 +5713,7 @@ Partial Class dlgSettings
         '
         'lblMovieClearLogoExpertMulti
         '
-        Me.lblMovieClearLogoExpertMulti.AutoSize = true
+        Me.lblMovieClearLogoExpertMulti.AutoSize = True
         Me.lblMovieClearLogoExpertMulti.Location = New System.Drawing.Point(6, 144)
         Me.lblMovieClearLogoExpertMulti.Name = "lblMovieClearLogoExpertMulti"
         Me.lblMovieClearLogoExpertMulti.Size = New System.Drawing.Size(59, 13)
@@ -5718,7 +5722,7 @@ Partial Class dlgSettings
         '
         'lblMovieFanartExpertMulti
         '
-        Me.lblMovieFanartExpertMulti.AutoSize = true
+        Me.lblMovieFanartExpertMulti.AutoSize = True
         Me.lblMovieFanartExpertMulti.Location = New System.Drawing.Point(6, 64)
         Me.lblMovieFanartExpertMulti.Name = "lblMovieFanartExpertMulti"
         Me.lblMovieFanartExpertMulti.Size = New System.Drawing.Size(40, 13)
@@ -5727,7 +5731,7 @@ Partial Class dlgSettings
         '
         'lblMoviePosterExpertMulti
         '
-        Me.lblMoviePosterExpertMulti.AutoSize = true
+        Me.lblMoviePosterExpertMulti.AutoSize = True
         Me.lblMoviePosterExpertMulti.Location = New System.Drawing.Point(6, 36)
         Me.lblMoviePosterExpertMulti.Name = "lblMoviePosterExpertMulti"
         Me.lblMoviePosterExpertMulti.Size = New System.Drawing.Size(39, 13)
@@ -5736,7 +5740,7 @@ Partial Class dlgSettings
         '
         'txtMovieNFOExpertMulti
         '
-        Me.txtMovieNFOExpertMulti.Enabled = false
+        Me.txtMovieNFOExpertMulti.Enabled = False
         Me.txtMovieNFOExpertMulti.Location = New System.Drawing.Point(71, 6)
         Me.txtMovieNFOExpertMulti.Name = "txtMovieNFOExpertMulti"
         Me.txtMovieNFOExpertMulti.Size = New System.Drawing.Size(220, 22)
@@ -5744,7 +5748,7 @@ Partial Class dlgSettings
         '
         'lblMovieNFOExpertMulti
         '
-        Me.lblMovieNFOExpertMulti.AutoSize = true
+        Me.lblMovieNFOExpertMulti.AutoSize = True
         Me.lblMovieNFOExpertMulti.Location = New System.Drawing.Point(6, 9)
         Me.lblMovieNFOExpertMulti.Name = "lblMovieNFOExpertMulti"
         Me.lblMovieNFOExpertMulti.Size = New System.Drawing.Size(30, 13)
@@ -5778,7 +5782,7 @@ Partial Class dlgSettings
         Me.tpMovieFileNamingExpertVTS.Size = New System.Drawing.Size(473, 254)
         Me.tpMovieFileNamingExpertVTS.TabIndex = 2
         Me.tpMovieFileNamingExpertVTS.Text = "VIDEO_TS"
-        Me.tpMovieFileNamingExpertVTS.UseVisualStyleBackColor = true
+        Me.tpMovieFileNamingExpertVTS.UseVisualStyleBackColor = True
         '
         'gbMovieExpertVTSOptionalSettings
         '
@@ -5789,38 +5793,38 @@ Partial Class dlgSettings
         Me.gbMovieExpertVTSOptionalSettings.Name = "gbMovieExpertVTSOptionalSettings"
         Me.gbMovieExpertVTSOptionalSettings.Size = New System.Drawing.Size(203, 130)
         Me.gbMovieExpertVTSOptionalSettings.TabIndex = 10
-        Me.gbMovieExpertVTSOptionalSettings.TabStop = false
+        Me.gbMovieExpertVTSOptionalSettings.TabStop = False
         Me.gbMovieExpertVTSOptionalSettings.Text = "Optional Settings"
         '
         'chkMovieRecognizeVTSExpertVTS
         '
-        Me.chkMovieRecognizeVTSExpertVTS.Enabled = false
+        Me.chkMovieRecognizeVTSExpertVTS.Enabled = False
         Me.chkMovieRecognizeVTSExpertVTS.Location = New System.Drawing.Point(6, 86)
         Me.chkMovieRecognizeVTSExpertVTS.Name = "chkMovieRecognizeVTSExpertVTS"
         Me.chkMovieRecognizeVTSExpertVTS.Size = New System.Drawing.Size(191, 32)
         Me.chkMovieRecognizeVTSExpertVTS.TabIndex = 3
         Me.chkMovieRecognizeVTSExpertVTS.Text = "Detect VIDEO_TS folders even if they are not named VIDEO_TS"
-        Me.chkMovieRecognizeVTSExpertVTS.UseVisualStyleBackColor = true
+        Me.chkMovieRecognizeVTSExpertVTS.UseVisualStyleBackColor = True
         '
         'chkMovieUseBaseDirectoryExpertVTS
         '
-        Me.chkMovieUseBaseDirectoryExpertVTS.Enabled = false
+        Me.chkMovieUseBaseDirectoryExpertVTS.Enabled = False
         Me.chkMovieUseBaseDirectoryExpertVTS.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieUseBaseDirectoryExpertVTS.Name = "chkMovieUseBaseDirectoryExpertVTS"
         Me.chkMovieUseBaseDirectoryExpertVTS.Size = New System.Drawing.Size(191, 34)
         Me.chkMovieUseBaseDirectoryExpertVTS.TabIndex = 2
         Me.chkMovieUseBaseDirectoryExpertVTS.Text = "Don't save any files in VIDEO_TS/BDMV folders"
-        Me.chkMovieUseBaseDirectoryExpertVTS.UseVisualStyleBackColor = true
+        Me.chkMovieUseBaseDirectoryExpertVTS.UseVisualStyleBackColor = True
         '
         'chkMovieXBMCTrailerFormatExpertVTS
         '
-        Me.chkMovieXBMCTrailerFormatExpertVTS.Enabled = false
+        Me.chkMovieXBMCTrailerFormatExpertVTS.Enabled = False
         Me.chkMovieXBMCTrailerFormatExpertVTS.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieXBMCTrailerFormatExpertVTS.Name = "chkMovieXBMCTrailerFormatExpertVTS"
         Me.chkMovieXBMCTrailerFormatExpertVTS.Size = New System.Drawing.Size(191, 17)
         Me.chkMovieXBMCTrailerFormatExpertVTS.TabIndex = 1
         Me.chkMovieXBMCTrailerFormatExpertVTS.Text = "XBMC Trailer Format"
-        Me.chkMovieXBMCTrailerFormatExpertVTS.UseVisualStyleBackColor = true
+        Me.chkMovieXBMCTrailerFormatExpertVTS.UseVisualStyleBackColor = True
         '
         'gbMovieExpertVTSOptionalImages
         '
@@ -5832,12 +5836,12 @@ Partial Class dlgSettings
         Me.gbMovieExpertVTSOptionalImages.Name = "gbMovieExpertVTSOptionalImages"
         Me.gbMovieExpertVTSOptionalImages.Size = New System.Drawing.Size(203, 93)
         Me.gbMovieExpertVTSOptionalImages.TabIndex = 11
-        Me.gbMovieExpertVTSOptionalImages.TabStop = false
+        Me.gbMovieExpertVTSOptionalImages.TabStop = False
         Me.gbMovieExpertVTSOptionalImages.Text = "Optional Images"
         '
         'txtMovieActorThumbsExtExpertVTS
         '
-        Me.txtMovieActorThumbsExtExpertVTS.Enabled = false
+        Me.txtMovieActorThumbsExtExpertVTS.Enabled = False
         Me.txtMovieActorThumbsExtExpertVTS.Location = New System.Drawing.Point(108, 19)
         Me.txtMovieActorThumbsExtExpertVTS.Name = "txtMovieActorThumbsExtExpertVTS"
         Me.txtMovieActorThumbsExtExpertVTS.Size = New System.Drawing.Size(46, 22)
@@ -5845,40 +5849,40 @@ Partial Class dlgSettings
         '
         'chkMovieActorThumbsExpertVTS
         '
-        Me.chkMovieActorThumbsExpertVTS.AutoSize = true
-        Me.chkMovieActorThumbsExpertVTS.Enabled = false
+        Me.chkMovieActorThumbsExpertVTS.AutoSize = True
+        Me.chkMovieActorThumbsExpertVTS.Enabled = False
         Me.chkMovieActorThumbsExpertVTS.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieActorThumbsExpertVTS.Name = "chkMovieActorThumbsExpertVTS"
         Me.chkMovieActorThumbsExpertVTS.Size = New System.Drawing.Size(96, 17)
         Me.chkMovieActorThumbsExpertVTS.TabIndex = 1
         Me.chkMovieActorThumbsExpertVTS.Text = "Actor Thumbs"
-        Me.chkMovieActorThumbsExpertVTS.UseVisualStyleBackColor = true
+        Me.chkMovieActorThumbsExpertVTS.UseVisualStyleBackColor = True
         '
         'chkMovieExtrafanartsExpertVTS
         '
-        Me.chkMovieExtrafanartsExpertVTS.AutoSize = true
-        Me.chkMovieExtrafanartsExpertVTS.Enabled = false
+        Me.chkMovieExtrafanartsExpertVTS.AutoSize = True
+        Me.chkMovieExtrafanartsExpertVTS.Enabled = False
         Me.chkMovieExtrafanartsExpertVTS.Location = New System.Drawing.Point(6, 67)
         Me.chkMovieExtrafanartsExpertVTS.Name = "chkMovieExtrafanartsExpertVTS"
         Me.chkMovieExtrafanartsExpertVTS.Size = New System.Drawing.Size(87, 17)
         Me.chkMovieExtrafanartsExpertVTS.TabIndex = 4
         Me.chkMovieExtrafanartsExpertVTS.Text = "Extrafanarts"
-        Me.chkMovieExtrafanartsExpertVTS.UseVisualStyleBackColor = true
+        Me.chkMovieExtrafanartsExpertVTS.UseVisualStyleBackColor = True
         '
         'chkMovieExtrathumbsExpertVTS
         '
-        Me.chkMovieExtrathumbsExpertVTS.AutoSize = true
-        Me.chkMovieExtrathumbsExpertVTS.Enabled = false
+        Me.chkMovieExtrathumbsExpertVTS.AutoSize = True
+        Me.chkMovieExtrathumbsExpertVTS.Enabled = False
         Me.chkMovieExtrathumbsExpertVTS.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieExtrathumbsExpertVTS.Name = "chkMovieExtrathumbsExpertVTS"
         Me.chkMovieExtrathumbsExpertVTS.Size = New System.Drawing.Size(90, 17)
         Me.chkMovieExtrathumbsExpertVTS.TabIndex = 3
         Me.chkMovieExtrathumbsExpertVTS.Text = "Extrathumbs"
-        Me.chkMovieExtrathumbsExpertVTS.UseVisualStyleBackColor = true
+        Me.chkMovieExtrathumbsExpertVTS.UseVisualStyleBackColor = True
         '
         'lblMovieClearArtExpertVTS
         '
-        Me.lblMovieClearArtExpertVTS.AutoSize = true
+        Me.lblMovieClearArtExpertVTS.AutoSize = True
         Me.lblMovieClearArtExpertVTS.Location = New System.Drawing.Point(6, 171)
         Me.lblMovieClearArtExpertVTS.Name = "lblMovieClearArtExpertVTS"
         Me.lblMovieClearArtExpertVTS.Size = New System.Drawing.Size(48, 13)
@@ -5887,7 +5891,7 @@ Partial Class dlgSettings
         '
         'txtMoviePosterExpertVTS
         '
-        Me.txtMoviePosterExpertVTS.Enabled = false
+        Me.txtMoviePosterExpertVTS.Enabled = False
         Me.txtMoviePosterExpertVTS.Location = New System.Drawing.Point(71, 33)
         Me.txtMoviePosterExpertVTS.Name = "txtMoviePosterExpertVTS"
         Me.txtMoviePosterExpertVTS.Size = New System.Drawing.Size(187, 22)
@@ -5895,7 +5899,7 @@ Partial Class dlgSettings
         '
         'txtMovieFanartExpertVTS
         '
-        Me.txtMovieFanartExpertVTS.Enabled = false
+        Me.txtMovieFanartExpertVTS.Enabled = False
         Me.txtMovieFanartExpertVTS.Location = New System.Drawing.Point(71, 60)
         Me.txtMovieFanartExpertVTS.Name = "txtMovieFanartExpertVTS"
         Me.txtMovieFanartExpertVTS.Size = New System.Drawing.Size(187, 22)
@@ -5903,7 +5907,7 @@ Partial Class dlgSettings
         '
         'txtMovieTrailerExpertVTS
         '
-        Me.txtMovieTrailerExpertVTS.Enabled = false
+        Me.txtMovieTrailerExpertVTS.Enabled = False
         Me.txtMovieTrailerExpertVTS.Location = New System.Drawing.Point(71, 87)
         Me.txtMovieTrailerExpertVTS.Name = "txtMovieTrailerExpertVTS"
         Me.txtMovieTrailerExpertVTS.Size = New System.Drawing.Size(187, 22)
@@ -5911,7 +5915,7 @@ Partial Class dlgSettings
         '
         'txtMovieBannerExpertVTS
         '
-        Me.txtMovieBannerExpertVTS.Enabled = false
+        Me.txtMovieBannerExpertVTS.Enabled = False
         Me.txtMovieBannerExpertVTS.Location = New System.Drawing.Point(71, 114)
         Me.txtMovieBannerExpertVTS.Name = "txtMovieBannerExpertVTS"
         Me.txtMovieBannerExpertVTS.Size = New System.Drawing.Size(187, 22)
@@ -5919,7 +5923,7 @@ Partial Class dlgSettings
         '
         'txtMovieClearLogoExpertVTS
         '
-        Me.txtMovieClearLogoExpertVTS.Enabled = false
+        Me.txtMovieClearLogoExpertVTS.Enabled = False
         Me.txtMovieClearLogoExpertVTS.Location = New System.Drawing.Point(71, 141)
         Me.txtMovieClearLogoExpertVTS.Name = "txtMovieClearLogoExpertVTS"
         Me.txtMovieClearLogoExpertVTS.Size = New System.Drawing.Size(187, 22)
@@ -5927,7 +5931,7 @@ Partial Class dlgSettings
         '
         'txtMovieClearArtExpertVTS
         '
-        Me.txtMovieClearArtExpertVTS.Enabled = false
+        Me.txtMovieClearArtExpertVTS.Enabled = False
         Me.txtMovieClearArtExpertVTS.Location = New System.Drawing.Point(71, 168)
         Me.txtMovieClearArtExpertVTS.Name = "txtMovieClearArtExpertVTS"
         Me.txtMovieClearArtExpertVTS.Size = New System.Drawing.Size(187, 22)
@@ -5935,7 +5939,7 @@ Partial Class dlgSettings
         '
         'txtMovieLandscapeExpertVTS
         '
-        Me.txtMovieLandscapeExpertVTS.Enabled = false
+        Me.txtMovieLandscapeExpertVTS.Enabled = False
         Me.txtMovieLandscapeExpertVTS.Location = New System.Drawing.Point(71, 222)
         Me.txtMovieLandscapeExpertVTS.Name = "txtMovieLandscapeExpertVTS"
         Me.txtMovieLandscapeExpertVTS.Size = New System.Drawing.Size(187, 22)
@@ -5943,7 +5947,7 @@ Partial Class dlgSettings
         '
         'txtMovieDiscArtExpertVTS
         '
-        Me.txtMovieDiscArtExpertVTS.Enabled = false
+        Me.txtMovieDiscArtExpertVTS.Enabled = False
         Me.txtMovieDiscArtExpertVTS.Location = New System.Drawing.Point(71, 195)
         Me.txtMovieDiscArtExpertVTS.Name = "txtMovieDiscArtExpertVTS"
         Me.txtMovieDiscArtExpertVTS.Size = New System.Drawing.Size(187, 22)
@@ -5951,7 +5955,7 @@ Partial Class dlgSettings
         '
         'lblMovieLandscapeExpertVTS
         '
-        Me.lblMovieLandscapeExpertVTS.AutoSize = true
+        Me.lblMovieLandscapeExpertVTS.AutoSize = True
         Me.lblMovieLandscapeExpertVTS.Location = New System.Drawing.Point(6, 225)
         Me.lblMovieLandscapeExpertVTS.Name = "lblMovieLandscapeExpertVTS"
         Me.lblMovieLandscapeExpertVTS.Size = New System.Drawing.Size(61, 13)
@@ -5960,7 +5964,7 @@ Partial Class dlgSettings
         '
         'lblMovieDiscArtExpertVTS
         '
-        Me.lblMovieDiscArtExpertVTS.AutoSize = true
+        Me.lblMovieDiscArtExpertVTS.AutoSize = True
         Me.lblMovieDiscArtExpertVTS.Location = New System.Drawing.Point(6, 198)
         Me.lblMovieDiscArtExpertVTS.Name = "lblMovieDiscArtExpertVTS"
         Me.lblMovieDiscArtExpertVTS.Size = New System.Drawing.Size(43, 13)
@@ -5969,7 +5973,7 @@ Partial Class dlgSettings
         '
         'lblMovieBannerExpertVTS
         '
-        Me.lblMovieBannerExpertVTS.AutoSize = true
+        Me.lblMovieBannerExpertVTS.AutoSize = True
         Me.lblMovieBannerExpertVTS.Location = New System.Drawing.Point(6, 117)
         Me.lblMovieBannerExpertVTS.Name = "lblMovieBannerExpertVTS"
         Me.lblMovieBannerExpertVTS.Size = New System.Drawing.Size(44, 13)
@@ -5978,7 +5982,7 @@ Partial Class dlgSettings
         '
         'lblMovieTrailerExpertVTS
         '
-        Me.lblMovieTrailerExpertVTS.AutoSize = true
+        Me.lblMovieTrailerExpertVTS.AutoSize = True
         Me.lblMovieTrailerExpertVTS.Location = New System.Drawing.Point(6, 90)
         Me.lblMovieTrailerExpertVTS.Name = "lblMovieTrailerExpertVTS"
         Me.lblMovieTrailerExpertVTS.Size = New System.Drawing.Size(38, 13)
@@ -5987,7 +5991,7 @@ Partial Class dlgSettings
         '
         'lblMovieClearLogoExpertVTS
         '
-        Me.lblMovieClearLogoExpertVTS.AutoSize = true
+        Me.lblMovieClearLogoExpertVTS.AutoSize = True
         Me.lblMovieClearLogoExpertVTS.Location = New System.Drawing.Point(6, 144)
         Me.lblMovieClearLogoExpertVTS.Name = "lblMovieClearLogoExpertVTS"
         Me.lblMovieClearLogoExpertVTS.Size = New System.Drawing.Size(59, 13)
@@ -5996,7 +6000,7 @@ Partial Class dlgSettings
         '
         'lblMovieFanartExpertVTS
         '
-        Me.lblMovieFanartExpertVTS.AutoSize = true
+        Me.lblMovieFanartExpertVTS.AutoSize = True
         Me.lblMovieFanartExpertVTS.Location = New System.Drawing.Point(6, 64)
         Me.lblMovieFanartExpertVTS.Name = "lblMovieFanartExpertVTS"
         Me.lblMovieFanartExpertVTS.Size = New System.Drawing.Size(40, 13)
@@ -6005,7 +6009,7 @@ Partial Class dlgSettings
         '
         'lblMoviePosterExpertVTS
         '
-        Me.lblMoviePosterExpertVTS.AutoSize = true
+        Me.lblMoviePosterExpertVTS.AutoSize = True
         Me.lblMoviePosterExpertVTS.Location = New System.Drawing.Point(6, 36)
         Me.lblMoviePosterExpertVTS.Name = "lblMoviePosterExpertVTS"
         Me.lblMoviePosterExpertVTS.Size = New System.Drawing.Size(39, 13)
@@ -6014,7 +6018,7 @@ Partial Class dlgSettings
         '
         'txtMovieNFOExpertVTS
         '
-        Me.txtMovieNFOExpertVTS.Enabled = false
+        Me.txtMovieNFOExpertVTS.Enabled = False
         Me.txtMovieNFOExpertVTS.Location = New System.Drawing.Point(71, 6)
         Me.txtMovieNFOExpertVTS.Name = "txtMovieNFOExpertVTS"
         Me.txtMovieNFOExpertVTS.Size = New System.Drawing.Size(187, 22)
@@ -6022,7 +6026,7 @@ Partial Class dlgSettings
         '
         'lblMovieNFOExpertVTS
         '
-        Me.lblMovieNFOExpertVTS.AutoSize = true
+        Me.lblMovieNFOExpertVTS.AutoSize = True
         Me.lblMovieNFOExpertVTS.Location = New System.Drawing.Point(6, 9)
         Me.lblMovieNFOExpertVTS.Name = "lblMovieNFOExpertVTS"
         Me.lblMovieNFOExpertVTS.Size = New System.Drawing.Size(30, 13)
@@ -6056,7 +6060,7 @@ Partial Class dlgSettings
         Me.tpMovieFileNamingExpertBDMV.Size = New System.Drawing.Size(473, 254)
         Me.tpMovieFileNamingExpertBDMV.TabIndex = 3
         Me.tpMovieFileNamingExpertBDMV.Text = "BDMV"
-        Me.tpMovieFileNamingExpertBDMV.UseVisualStyleBackColor = true
+        Me.tpMovieFileNamingExpertBDMV.UseVisualStyleBackColor = True
         '
         'gbMovieExpertBDMVOptionalSettings
         '
@@ -6066,28 +6070,28 @@ Partial Class dlgSettings
         Me.gbMovieExpertBDMVOptionalSettings.Name = "gbMovieExpertBDMVOptionalSettings"
         Me.gbMovieExpertBDMVOptionalSettings.Size = New System.Drawing.Size(203, 93)
         Me.gbMovieExpertBDMVOptionalSettings.TabIndex = 10
-        Me.gbMovieExpertBDMVOptionalSettings.TabStop = false
+        Me.gbMovieExpertBDMVOptionalSettings.TabStop = False
         Me.gbMovieExpertBDMVOptionalSettings.Text = "Optional Settings"
         '
         'chkMovieUseBaseDirectoryExpertBDMV
         '
-        Me.chkMovieUseBaseDirectoryExpertBDMV.Enabled = false
+        Me.chkMovieUseBaseDirectoryExpertBDMV.Enabled = False
         Me.chkMovieUseBaseDirectoryExpertBDMV.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieUseBaseDirectoryExpertBDMV.Name = "chkMovieUseBaseDirectoryExpertBDMV"
         Me.chkMovieUseBaseDirectoryExpertBDMV.Size = New System.Drawing.Size(191, 34)
         Me.chkMovieUseBaseDirectoryExpertBDMV.TabIndex = 2
         Me.chkMovieUseBaseDirectoryExpertBDMV.Text = "Don't save any files in VIDEO_TS/BDMV folders"
-        Me.chkMovieUseBaseDirectoryExpertBDMV.UseVisualStyleBackColor = true
+        Me.chkMovieUseBaseDirectoryExpertBDMV.UseVisualStyleBackColor = True
         '
         'chkMovieXBMCTrailerFormatExpertBDMV
         '
-        Me.chkMovieXBMCTrailerFormatExpertBDMV.Enabled = false
+        Me.chkMovieXBMCTrailerFormatExpertBDMV.Enabled = False
         Me.chkMovieXBMCTrailerFormatExpertBDMV.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieXBMCTrailerFormatExpertBDMV.Name = "chkMovieXBMCTrailerFormatExpertBDMV"
         Me.chkMovieXBMCTrailerFormatExpertBDMV.Size = New System.Drawing.Size(191, 17)
         Me.chkMovieXBMCTrailerFormatExpertBDMV.TabIndex = 1
         Me.chkMovieXBMCTrailerFormatExpertBDMV.Text = "XBMC Trailer Format"
-        Me.chkMovieXBMCTrailerFormatExpertBDMV.UseVisualStyleBackColor = true
+        Me.chkMovieXBMCTrailerFormatExpertBDMV.UseVisualStyleBackColor = True
         '
         'gbMovieExpertBDMVOptionalImages
         '
@@ -6099,12 +6103,12 @@ Partial Class dlgSettings
         Me.gbMovieExpertBDMVOptionalImages.Name = "gbMovieExpertBDMVOptionalImages"
         Me.gbMovieExpertBDMVOptionalImages.Size = New System.Drawing.Size(203, 93)
         Me.gbMovieExpertBDMVOptionalImages.TabIndex = 1
-        Me.gbMovieExpertBDMVOptionalImages.TabStop = false
+        Me.gbMovieExpertBDMVOptionalImages.TabStop = False
         Me.gbMovieExpertBDMVOptionalImages.Text = "Optional Images"
         '
         'txtMovieActorThumbsExtExpertBDMV
         '
-        Me.txtMovieActorThumbsExtExpertBDMV.Enabled = false
+        Me.txtMovieActorThumbsExtExpertBDMV.Enabled = False
         Me.txtMovieActorThumbsExtExpertBDMV.Location = New System.Drawing.Point(108, 19)
         Me.txtMovieActorThumbsExtExpertBDMV.Name = "txtMovieActorThumbsExtExpertBDMV"
         Me.txtMovieActorThumbsExtExpertBDMV.Size = New System.Drawing.Size(46, 22)
@@ -6112,40 +6116,40 @@ Partial Class dlgSettings
         '
         'chkMovieActorThumbsExpertBDMV
         '
-        Me.chkMovieActorThumbsExpertBDMV.AutoSize = true
-        Me.chkMovieActorThumbsExpertBDMV.Enabled = false
+        Me.chkMovieActorThumbsExpertBDMV.AutoSize = True
+        Me.chkMovieActorThumbsExpertBDMV.Enabled = False
         Me.chkMovieActorThumbsExpertBDMV.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieActorThumbsExpertBDMV.Name = "chkMovieActorThumbsExpertBDMV"
         Me.chkMovieActorThumbsExpertBDMV.Size = New System.Drawing.Size(96, 17)
         Me.chkMovieActorThumbsExpertBDMV.TabIndex = 1
         Me.chkMovieActorThumbsExpertBDMV.Text = "Actor Thumbs"
-        Me.chkMovieActorThumbsExpertBDMV.UseVisualStyleBackColor = true
+        Me.chkMovieActorThumbsExpertBDMV.UseVisualStyleBackColor = True
         '
         'chkMovieExtrafanartsExpertBDMV
         '
-        Me.chkMovieExtrafanartsExpertBDMV.AutoSize = true
-        Me.chkMovieExtrafanartsExpertBDMV.Enabled = false
+        Me.chkMovieExtrafanartsExpertBDMV.AutoSize = True
+        Me.chkMovieExtrafanartsExpertBDMV.Enabled = False
         Me.chkMovieExtrafanartsExpertBDMV.Location = New System.Drawing.Point(6, 67)
         Me.chkMovieExtrafanartsExpertBDMV.Name = "chkMovieExtrafanartsExpertBDMV"
         Me.chkMovieExtrafanartsExpertBDMV.Size = New System.Drawing.Size(87, 17)
         Me.chkMovieExtrafanartsExpertBDMV.TabIndex = 4
         Me.chkMovieExtrafanartsExpertBDMV.Text = "Extrafanarts"
-        Me.chkMovieExtrafanartsExpertBDMV.UseVisualStyleBackColor = true
+        Me.chkMovieExtrafanartsExpertBDMV.UseVisualStyleBackColor = True
         '
         'chkMovieExtrathumbsExpertBDMV
         '
-        Me.chkMovieExtrathumbsExpertBDMV.AutoSize = true
-        Me.chkMovieExtrathumbsExpertBDMV.Enabled = false
+        Me.chkMovieExtrathumbsExpertBDMV.AutoSize = True
+        Me.chkMovieExtrathumbsExpertBDMV.Enabled = False
         Me.chkMovieExtrathumbsExpertBDMV.Location = New System.Drawing.Point(6, 44)
         Me.chkMovieExtrathumbsExpertBDMV.Name = "chkMovieExtrathumbsExpertBDMV"
         Me.chkMovieExtrathumbsExpertBDMV.Size = New System.Drawing.Size(90, 17)
         Me.chkMovieExtrathumbsExpertBDMV.TabIndex = 3
         Me.chkMovieExtrathumbsExpertBDMV.Text = "Extrathumbs"
-        Me.chkMovieExtrathumbsExpertBDMV.UseVisualStyleBackColor = true
+        Me.chkMovieExtrathumbsExpertBDMV.UseVisualStyleBackColor = True
         '
         'lblMovieClearArtExpertBDMV
         '
-        Me.lblMovieClearArtExpertBDMV.AutoSize = true
+        Me.lblMovieClearArtExpertBDMV.AutoSize = True
         Me.lblMovieClearArtExpertBDMV.Location = New System.Drawing.Point(6, 171)
         Me.lblMovieClearArtExpertBDMV.Name = "lblMovieClearArtExpertBDMV"
         Me.lblMovieClearArtExpertBDMV.Size = New System.Drawing.Size(48, 13)
@@ -6154,7 +6158,7 @@ Partial Class dlgSettings
         '
         'txtMoviePosterExpertBDMV
         '
-        Me.txtMoviePosterExpertBDMV.Enabled = false
+        Me.txtMoviePosterExpertBDMV.Enabled = False
         Me.txtMoviePosterExpertBDMV.Location = New System.Drawing.Point(71, 33)
         Me.txtMoviePosterExpertBDMV.Name = "txtMoviePosterExpertBDMV"
         Me.txtMoviePosterExpertBDMV.Size = New System.Drawing.Size(187, 22)
@@ -6162,7 +6166,7 @@ Partial Class dlgSettings
         '
         'txtMovieFanartExpertBDMV
         '
-        Me.txtMovieFanartExpertBDMV.Enabled = false
+        Me.txtMovieFanartExpertBDMV.Enabled = False
         Me.txtMovieFanartExpertBDMV.Location = New System.Drawing.Point(71, 60)
         Me.txtMovieFanartExpertBDMV.Name = "txtMovieFanartExpertBDMV"
         Me.txtMovieFanartExpertBDMV.Size = New System.Drawing.Size(187, 22)
@@ -6170,7 +6174,7 @@ Partial Class dlgSettings
         '
         'txtMovieTrailerExpertBDMV
         '
-        Me.txtMovieTrailerExpertBDMV.Enabled = false
+        Me.txtMovieTrailerExpertBDMV.Enabled = False
         Me.txtMovieTrailerExpertBDMV.Location = New System.Drawing.Point(71, 87)
         Me.txtMovieTrailerExpertBDMV.Name = "txtMovieTrailerExpertBDMV"
         Me.txtMovieTrailerExpertBDMV.Size = New System.Drawing.Size(187, 22)
@@ -6178,7 +6182,7 @@ Partial Class dlgSettings
         '
         'txtMovieBannerExpertBDMV
         '
-        Me.txtMovieBannerExpertBDMV.Enabled = false
+        Me.txtMovieBannerExpertBDMV.Enabled = False
         Me.txtMovieBannerExpertBDMV.Location = New System.Drawing.Point(71, 114)
         Me.txtMovieBannerExpertBDMV.Name = "txtMovieBannerExpertBDMV"
         Me.txtMovieBannerExpertBDMV.Size = New System.Drawing.Size(187, 22)
@@ -6186,7 +6190,7 @@ Partial Class dlgSettings
         '
         'txtMovieClearLogoExpertBDMV
         '
-        Me.txtMovieClearLogoExpertBDMV.Enabled = false
+        Me.txtMovieClearLogoExpertBDMV.Enabled = False
         Me.txtMovieClearLogoExpertBDMV.Location = New System.Drawing.Point(71, 141)
         Me.txtMovieClearLogoExpertBDMV.Name = "txtMovieClearLogoExpertBDMV"
         Me.txtMovieClearLogoExpertBDMV.Size = New System.Drawing.Size(187, 22)
@@ -6194,7 +6198,7 @@ Partial Class dlgSettings
         '
         'txtMovieClearArtExpertBDMV
         '
-        Me.txtMovieClearArtExpertBDMV.Enabled = false
+        Me.txtMovieClearArtExpertBDMV.Enabled = False
         Me.txtMovieClearArtExpertBDMV.Location = New System.Drawing.Point(71, 168)
         Me.txtMovieClearArtExpertBDMV.Name = "txtMovieClearArtExpertBDMV"
         Me.txtMovieClearArtExpertBDMV.Size = New System.Drawing.Size(187, 22)
@@ -6202,7 +6206,7 @@ Partial Class dlgSettings
         '
         'txtMovieLandscapeExpertBDMV
         '
-        Me.txtMovieLandscapeExpertBDMV.Enabled = false
+        Me.txtMovieLandscapeExpertBDMV.Enabled = False
         Me.txtMovieLandscapeExpertBDMV.Location = New System.Drawing.Point(71, 222)
         Me.txtMovieLandscapeExpertBDMV.Name = "txtMovieLandscapeExpertBDMV"
         Me.txtMovieLandscapeExpertBDMV.Size = New System.Drawing.Size(187, 22)
@@ -6210,7 +6214,7 @@ Partial Class dlgSettings
         '
         'txtMovieDiscArtExpertBDMV
         '
-        Me.txtMovieDiscArtExpertBDMV.Enabled = false
+        Me.txtMovieDiscArtExpertBDMV.Enabled = False
         Me.txtMovieDiscArtExpertBDMV.Location = New System.Drawing.Point(71, 195)
         Me.txtMovieDiscArtExpertBDMV.Name = "txtMovieDiscArtExpertBDMV"
         Me.txtMovieDiscArtExpertBDMV.Size = New System.Drawing.Size(187, 22)
@@ -6218,7 +6222,7 @@ Partial Class dlgSettings
         '
         'lblMovieLandscapeExpertBDMV
         '
-        Me.lblMovieLandscapeExpertBDMV.AutoSize = true
+        Me.lblMovieLandscapeExpertBDMV.AutoSize = True
         Me.lblMovieLandscapeExpertBDMV.Location = New System.Drawing.Point(6, 225)
         Me.lblMovieLandscapeExpertBDMV.Name = "lblMovieLandscapeExpertBDMV"
         Me.lblMovieLandscapeExpertBDMV.Size = New System.Drawing.Size(61, 13)
@@ -6227,7 +6231,7 @@ Partial Class dlgSettings
         '
         'lblMovieDiscArtExpertBDMV
         '
-        Me.lblMovieDiscArtExpertBDMV.AutoSize = true
+        Me.lblMovieDiscArtExpertBDMV.AutoSize = True
         Me.lblMovieDiscArtExpertBDMV.Location = New System.Drawing.Point(6, 198)
         Me.lblMovieDiscArtExpertBDMV.Name = "lblMovieDiscArtExpertBDMV"
         Me.lblMovieDiscArtExpertBDMV.Size = New System.Drawing.Size(43, 13)
@@ -6236,7 +6240,7 @@ Partial Class dlgSettings
         '
         'lblMovieBannerExpertBDMV
         '
-        Me.lblMovieBannerExpertBDMV.AutoSize = true
+        Me.lblMovieBannerExpertBDMV.AutoSize = True
         Me.lblMovieBannerExpertBDMV.Location = New System.Drawing.Point(6, 117)
         Me.lblMovieBannerExpertBDMV.Name = "lblMovieBannerExpertBDMV"
         Me.lblMovieBannerExpertBDMV.Size = New System.Drawing.Size(44, 13)
@@ -6245,7 +6249,7 @@ Partial Class dlgSettings
         '
         'lblMovieTrailerExpertBDMV
         '
-        Me.lblMovieTrailerExpertBDMV.AutoSize = true
+        Me.lblMovieTrailerExpertBDMV.AutoSize = True
         Me.lblMovieTrailerExpertBDMV.Location = New System.Drawing.Point(6, 90)
         Me.lblMovieTrailerExpertBDMV.Name = "lblMovieTrailerExpertBDMV"
         Me.lblMovieTrailerExpertBDMV.Size = New System.Drawing.Size(38, 13)
@@ -6254,7 +6258,7 @@ Partial Class dlgSettings
         '
         'lblMovieClearLogoExpertBDMV
         '
-        Me.lblMovieClearLogoExpertBDMV.AutoSize = true
+        Me.lblMovieClearLogoExpertBDMV.AutoSize = True
         Me.lblMovieClearLogoExpertBDMV.Location = New System.Drawing.Point(6, 144)
         Me.lblMovieClearLogoExpertBDMV.Name = "lblMovieClearLogoExpertBDMV"
         Me.lblMovieClearLogoExpertBDMV.Size = New System.Drawing.Size(59, 13)
@@ -6263,7 +6267,7 @@ Partial Class dlgSettings
         '
         'lblMovieFanartExpertBDMV
         '
-        Me.lblMovieFanartExpertBDMV.AutoSize = true
+        Me.lblMovieFanartExpertBDMV.AutoSize = True
         Me.lblMovieFanartExpertBDMV.Location = New System.Drawing.Point(6, 64)
         Me.lblMovieFanartExpertBDMV.Name = "lblMovieFanartExpertBDMV"
         Me.lblMovieFanartExpertBDMV.Size = New System.Drawing.Size(40, 13)
@@ -6272,7 +6276,7 @@ Partial Class dlgSettings
         '
         'lblMoviePosterExpertBDMV
         '
-        Me.lblMoviePosterExpertBDMV.AutoSize = true
+        Me.lblMoviePosterExpertBDMV.AutoSize = True
         Me.lblMoviePosterExpertBDMV.Location = New System.Drawing.Point(6, 36)
         Me.lblMoviePosterExpertBDMV.Name = "lblMoviePosterExpertBDMV"
         Me.lblMoviePosterExpertBDMV.Size = New System.Drawing.Size(39, 13)
@@ -6281,7 +6285,7 @@ Partial Class dlgSettings
         '
         'txtMovieNFOExpertBDMV
         '
-        Me.txtMovieNFOExpertBDMV.Enabled = false
+        Me.txtMovieNFOExpertBDMV.Enabled = False
         Me.txtMovieNFOExpertBDMV.Location = New System.Drawing.Point(71, 6)
         Me.txtMovieNFOExpertBDMV.Name = "txtMovieNFOExpertBDMV"
         Me.txtMovieNFOExpertBDMV.Size = New System.Drawing.Size(187, 22)
@@ -6289,7 +6293,7 @@ Partial Class dlgSettings
         '
         'lblMovieNFOExpertBDMV
         '
-        Me.lblMovieNFOExpertBDMV.AutoSize = true
+        Me.lblMovieNFOExpertBDMV.AutoSize = True
         Me.lblMovieNFOExpertBDMV.Location = New System.Drawing.Point(6, 9)
         Me.lblMovieNFOExpertBDMV.Name = "lblMovieNFOExpertBDMV"
         Me.lblMovieNFOExpertBDMV.Size = New System.Drawing.Size(30, 13)
@@ -6298,19 +6302,19 @@ Partial Class dlgSettings
         '
         'chkMovieUseExpert
         '
-        Me.chkMovieUseExpert.AutoSize = true
-        Me.chkMovieUseExpert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieUseExpert.AutoSize = True
+        Me.chkMovieUseExpert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieUseExpert.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieUseExpert.Name = "chkMovieUseExpert"
         Me.chkMovieUseExpert.Size = New System.Drawing.Size(45, 17)
         Me.chkMovieUseExpert.TabIndex = 1
         Me.chkMovieUseExpert.Text = "Use"
-        Me.chkMovieUseExpert.UseVisualStyleBackColor = true
+        Me.chkMovieUseExpert.UseVisualStyleBackColor = True
         '
         'btnMovieSourceEdit
         '
-        Me.btnMovieSourceEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.btnMovieSourceEdit.Image = CType(resources.GetObject("btnMovieSourceEdit.Image"),System.Drawing.Image)
+        Me.btnMovieSourceEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnMovieSourceEdit.Image = CType(resources.GetObject("btnMovieSourceEdit.Image"), System.Drawing.Image)
         Me.btnMovieSourceEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnMovieSourceEdit.Location = New System.Drawing.Point(638, 35)
         Me.btnMovieSourceEdit.Name = "btnMovieSourceEdit"
@@ -6318,82 +6322,82 @@ Partial Class dlgSettings
         Me.btnMovieSourceEdit.TabIndex = 2
         Me.btnMovieSourceEdit.Text = "Edit Source"
         Me.btnMovieSourceEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieSourceEdit.UseVisualStyleBackColor = true
+        Me.btnMovieSourceEdit.UseVisualStyleBackColor = True
         '
         'gbMovieMiscOpts
         '
-        Me.gbMovieMiscOpts.Controls.Add(Me.chkMovieScanOrderModify)
-        Me.gbMovieMiscOpts.Controls.Add(Me.chkMovieSortBeforeScan)
-        Me.gbMovieMiscOpts.Controls.Add(Me.chkMovieGeneralIgnoreLastScan)
-        Me.gbMovieMiscOpts.Controls.Add(Me.chkMovieCleanDB)
-        Me.gbMovieMiscOpts.Controls.Add(Me.chkMovieSkipStackedSizeCheck)
-        Me.gbMovieMiscOpts.Controls.Add(Me.lblMovieSkipLessThanMB)
-        Me.gbMovieMiscOpts.Controls.Add(Me.txtMovieSkipLessThan)
-        Me.gbMovieMiscOpts.Controls.Add(Me.lblMovieSkipLessThan)
-        Me.gbMovieMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbMovieMiscOpts.Location = New System.Drawing.Point(5, 113)
-        Me.gbMovieMiscOpts.Name = "gbMovieMiscOpts"
-        Me.gbMovieMiscOpts.Size = New System.Drawing.Size(212, 283)
-        Me.gbMovieMiscOpts.TabIndex = 4
-        Me.gbMovieMiscOpts.TabStop = false
-        Me.gbMovieMiscOpts.Text = "Miscellaneous Options"
+        Me.gbMovieSourcesMiscOpts.Controls.Add(Me.chkMovieScanOrderModify)
+        Me.gbMovieSourcesMiscOpts.Controls.Add(Me.chkMovieSortBeforeScan)
+        Me.gbMovieSourcesMiscOpts.Controls.Add(Me.chkMovieGeneralIgnoreLastScan)
+        Me.gbMovieSourcesMiscOpts.Controls.Add(Me.chkMovieCleanDB)
+        Me.gbMovieSourcesMiscOpts.Controls.Add(Me.chkMovieSkipStackedSizeCheck)
+        Me.gbMovieSourcesMiscOpts.Controls.Add(Me.lblMovieSkipLessThanMB)
+        Me.gbMovieSourcesMiscOpts.Controls.Add(Me.txtMovieSkipLessThan)
+        Me.gbMovieSourcesMiscOpts.Controls.Add(Me.lblMovieSkipLessThan)
+        Me.gbMovieSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieSourcesMiscOpts.Location = New System.Drawing.Point(5, 113)
+        Me.gbMovieSourcesMiscOpts.Name = "gbMovieMiscOpts"
+        Me.gbMovieSourcesMiscOpts.Size = New System.Drawing.Size(212, 283)
+        Me.gbMovieSourcesMiscOpts.TabIndex = 4
+        Me.gbMovieSourcesMiscOpts.TabStop = False
+        Me.gbMovieSourcesMiscOpts.Text = "Miscellaneous Options"
         '
         'chkMovieScanOrderModify
         '
-        Me.chkMovieScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScanOrderModify.Location = New System.Drawing.Point(6, 189)
         Me.chkMovieScanOrderModify.Name = "chkMovieScanOrderModify"
         Me.chkMovieScanOrderModify.Size = New System.Drawing.Size(200, 33)
         Me.chkMovieScanOrderModify.TabIndex = 8
         Me.chkMovieScanOrderModify.Text = "Scan in order of last write time."
-        Me.chkMovieScanOrderModify.UseVisualStyleBackColor = true
+        Me.chkMovieScanOrderModify.UseVisualStyleBackColor = True
         '
         'chkMovieSortBeforeScan
         '
-        Me.chkMovieSortBeforeScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSortBeforeScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSortBeforeScan.Location = New System.Drawing.Point(6, 113)
         Me.chkMovieSortBeforeScan.Name = "chkMovieSortBeforeScan"
         Me.chkMovieSortBeforeScan.Size = New System.Drawing.Size(200, 31)
         Me.chkMovieSortBeforeScan.TabIndex = 6
         Me.chkMovieSortBeforeScan.Text = "Sort files into folders before each library update"
-        Me.chkMovieSortBeforeScan.UseVisualStyleBackColor = true
+        Me.chkMovieSortBeforeScan.UseVisualStyleBackColor = True
         '
         'chkMovieGeneralIgnoreLastScan
         '
-        Me.chkMovieGeneralIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieGeneralIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieGeneralIgnoreLastScan.Location = New System.Drawing.Point(6, 150)
         Me.chkMovieGeneralIgnoreLastScan.Name = "chkMovieGeneralIgnoreLastScan"
         Me.chkMovieGeneralIgnoreLastScan.Size = New System.Drawing.Size(200, 33)
         Me.chkMovieGeneralIgnoreLastScan.TabIndex = 7
         Me.chkMovieGeneralIgnoreLastScan.Text = "Always scan all media when updating library"
-        Me.chkMovieGeneralIgnoreLastScan.UseVisualStyleBackColor = true
+        Me.chkMovieGeneralIgnoreLastScan.UseVisualStyleBackColor = True
         '
         'chkMovieCleanDB
         '
-        Me.chkMovieCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieCleanDB.Location = New System.Drawing.Point(6, 228)
         Me.chkMovieCleanDB.Name = "chkMovieCleanDB"
         Me.chkMovieCleanDB.Size = New System.Drawing.Size(200, 33)
         Me.chkMovieCleanDB.TabIndex = 9
         Me.chkMovieCleanDB.Text = "Clean database after updating library"
-        Me.chkMovieCleanDB.UseVisualStyleBackColor = true
+        Me.chkMovieCleanDB.UseVisualStyleBackColor = True
         '
         'chkMovieSkipStackedSizeCheck
         '
         Me.chkMovieSkipStackedSizeCheck.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieSkipStackedSizeCheck.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSkipStackedSizeCheck.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSkipStackedSizeCheck.Location = New System.Drawing.Point(21, 80)
         Me.chkMovieSkipStackedSizeCheck.Name = "chkMovieSkipStackedSizeCheck"
         Me.chkMovieSkipStackedSizeCheck.Size = New System.Drawing.Size(185, 17)
         Me.chkMovieSkipStackedSizeCheck.TabIndex = 3
         Me.chkMovieSkipStackedSizeCheck.Text = "Skip Size Check of Stacked Files"
         Me.chkMovieSkipStackedSizeCheck.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.chkMovieSkipStackedSizeCheck.UseVisualStyleBackColor = true
+        Me.chkMovieSkipStackedSizeCheck.UseVisualStyleBackColor = True
         '
         'lblMovieSkipLessThanMB
         '
-        Me.lblMovieSkipLessThanMB.AutoSize = true
-        Me.lblMovieSkipLessThanMB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieSkipLessThanMB.AutoSize = True
+        Me.lblMovieSkipLessThanMB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSkipLessThanMB.Location = New System.Drawing.Point(78, 62)
         Me.lblMovieSkipLessThanMB.Name = "lblMovieSkipLessThanMB"
         Me.lblMovieSkipLessThanMB.Size = New System.Drawing.Size(24, 13)
@@ -6402,7 +6406,7 @@ Partial Class dlgSettings
         '
         'txtMovieSkipLessThan
         '
-        Me.txtMovieSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieSkipLessThan.Location = New System.Drawing.Point(21, 53)
         Me.txtMovieSkipLessThan.Name = "txtMovieSkipLessThan"
         Me.txtMovieSkipLessThan.Size = New System.Drawing.Size(51, 22)
@@ -6410,7 +6414,7 @@ Partial Class dlgSettings
         '
         'lblMovieSkipLessThan
         '
-        Me.lblMovieSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSkipLessThan.Location = New System.Drawing.Point(4, 26)
         Me.lblMovieSkipLessThan.Name = "lblMovieSkipLessThan"
         Me.lblMovieSkipLessThan.Size = New System.Drawing.Size(202, 13)
@@ -6426,22 +6430,22 @@ Partial Class dlgSettings
         Me.gbMovieSetMSAAPath.Name = "gbMovieSetMSAAPath"
         Me.gbMovieSetMSAAPath.Size = New System.Drawing.Size(307, 58)
         Me.gbMovieSetMSAAPath.TabIndex = 7
-        Me.gbMovieSetMSAAPath.TabStop = false
+        Me.gbMovieSetMSAAPath.TabStop = False
         Me.gbMovieSetMSAAPath.Text = "MovieSet Artwork Folder"
         '
         'btnMovieSetMSAAPathBrowse
         '
-        Me.btnMovieSetMSAAPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnMovieSetMSAAPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnMovieSetMSAAPathBrowse.Location = New System.Drawing.Point(276, 21)
         Me.btnMovieSetMSAAPathBrowse.Name = "btnMovieSetMSAAPathBrowse"
         Me.btnMovieSetMSAAPathBrowse.Size = New System.Drawing.Size(25, 22)
         Me.btnMovieSetMSAAPathBrowse.TabIndex = 1
         Me.btnMovieSetMSAAPathBrowse.Text = "..."
-        Me.btnMovieSetMSAAPathBrowse.UseVisualStyleBackColor = true
+        Me.btnMovieSetMSAAPathBrowse.UseVisualStyleBackColor = True
         '
         'txtMovieSetMSAAPath
         '
-        Me.txtMovieSetMSAAPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieSetMSAAPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieSetMSAAPath.Location = New System.Drawing.Point(6, 21)
         Me.txtMovieSetMSAAPath.Name = "txtMovieSetMSAAPath"
         Me.txtMovieSetMSAAPath.Size = New System.Drawing.Size(264, 22)
@@ -6461,17 +6465,17 @@ Partial Class dlgSettings
         Me.pnlTVGeneral.Name = "pnlTVGeneral"
         Me.pnlTVGeneral.Size = New System.Drawing.Size(750, 500)
         Me.pnlTVGeneral.TabIndex = 20
-        Me.pnlTVGeneral.Visible = false
+        Me.pnlTVGeneral.Visible = False
         '
         'gbTVGeneralMissingItemsOpts
         '
         Me.gbTVGeneralMissingItemsOpts.Controls.Add(Me.gbTVGeneralMissingShowOpts)
-        Me.gbTVGeneralMissingItemsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVGeneralMissingItemsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVGeneralMissingItemsOpts.Location = New System.Drawing.Point(231, 103)
         Me.gbTVGeneralMissingItemsOpts.Name = "gbTVGeneralMissingItemsOpts"
         Me.gbTVGeneralMissingItemsOpts.Size = New System.Drawing.Size(185, 394)
         Me.gbTVGeneralMissingItemsOpts.TabIndex = 73
-        Me.gbTVGeneralMissingItemsOpts.TabStop = false
+        Me.gbTVGeneralMissingItemsOpts.TabStop = False
         Me.gbTVGeneralMissingItemsOpts.Text = "Missing Items Filter"
         '
         'gbTVGeneralMissingShowOpts
@@ -6490,108 +6494,108 @@ Partial Class dlgSettings
         Me.gbTVGeneralMissingShowOpts.Name = "gbTVGeneralMissingShowOpts"
         Me.gbTVGeneralMissingShowOpts.Size = New System.Drawing.Size(173, 180)
         Me.gbTVGeneralMissingShowOpts.TabIndex = 16
-        Me.gbTVGeneralMissingShowOpts.TabStop = false
+        Me.gbTVGeneralMissingShowOpts.TabStop = False
         Me.gbTVGeneralMissingShowOpts.Text = "Shows"
         '
         'chkTVShowMissingBanner
         '
-        Me.chkTVShowMissingBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowMissingBanner.Location = New System.Drawing.Point(6, 16)
         Me.chkTVShowMissingBanner.Name = "chkTVShowMissingBanner"
         Me.chkTVShowMissingBanner.Size = New System.Drawing.Size(161, 17)
         Me.chkTVShowMissingBanner.TabIndex = 11
         Me.chkTVShowMissingBanner.Text = "Check for Banner"
-        Me.chkTVShowMissingBanner.UseVisualStyleBackColor = true
+        Me.chkTVShowMissingBanner.UseVisualStyleBackColor = True
         '
         'chkTVShowMissingTheme
         '
-        Me.chkTVShowMissingTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowMissingTheme.Location = New System.Drawing.Point(6, 160)
         Me.chkTVShowMissingTheme.Name = "chkTVShowMissingTheme"
         Me.chkTVShowMissingTheme.Size = New System.Drawing.Size(161, 17)
         Me.chkTVShowMissingTheme.TabIndex = 9
         Me.chkTVShowMissingTheme.Text = "Check for Theme"
-        Me.chkTVShowMissingTheme.UseVisualStyleBackColor = true
+        Me.chkTVShowMissingTheme.UseVisualStyleBackColor = True
         '
         'chkTVShowMissingClearLogo
         '
-        Me.chkTVShowMissingClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowMissingClearLogo.Location = New System.Drawing.Point(6, 64)
         Me.chkTVShowMissingClearLogo.Name = "chkTVShowMissingClearLogo"
         Me.chkTVShowMissingClearLogo.Size = New System.Drawing.Size(161, 17)
         Me.chkTVShowMissingClearLogo.TabIndex = 14
         Me.chkTVShowMissingClearLogo.Text = "Check for ClearLogo"
-        Me.chkTVShowMissingClearLogo.UseVisualStyleBackColor = true
+        Me.chkTVShowMissingClearLogo.UseVisualStyleBackColor = True
         '
         'chkTVShowMissingLandscape
         '
-        Me.chkTVShowMissingLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowMissingLandscape.Location = New System.Drawing.Point(6, 112)
         Me.chkTVShowMissingLandscape.Name = "chkTVShowMissingLandscape"
         Me.chkTVShowMissingLandscape.Size = New System.Drawing.Size(161, 17)
         Me.chkTVShowMissingLandscape.TabIndex = 10
         Me.chkTVShowMissingLandscape.Text = "Check for Landscape"
-        Me.chkTVShowMissingLandscape.UseVisualStyleBackColor = true
+        Me.chkTVShowMissingLandscape.UseVisualStyleBackColor = True
         '
         'chkTVShowMissingCharacterArt
         '
-        Me.chkTVShowMissingCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowMissingCharacterArt.Location = New System.Drawing.Point(6, 32)
         Me.chkTVShowMissingCharacterArt.Name = "chkTVShowMissingCharacterArt"
         Me.chkTVShowMissingCharacterArt.Size = New System.Drawing.Size(161, 17)
         Me.chkTVShowMissingCharacterArt.TabIndex = 15
         Me.chkTVShowMissingCharacterArt.Text = "Check for CharacterArt"
-        Me.chkTVShowMissingCharacterArt.UseVisualStyleBackColor = true
+        Me.chkTVShowMissingCharacterArt.UseVisualStyleBackColor = True
         '
         'chkTVShowMissingEFanarts
         '
-        Me.chkTVShowMissingEFanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingEFanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowMissingEFanarts.Location = New System.Drawing.Point(6, 80)
         Me.chkTVShowMissingEFanarts.Name = "chkTVShowMissingEFanarts"
         Me.chkTVShowMissingEFanarts.Size = New System.Drawing.Size(161, 17)
         Me.chkTVShowMissingEFanarts.TabIndex = 12
         Me.chkTVShowMissingEFanarts.Text = "Check for Extrafanarts"
-        Me.chkTVShowMissingEFanarts.UseVisualStyleBackColor = true
+        Me.chkTVShowMissingEFanarts.UseVisualStyleBackColor = True
         '
         'chkTVShowMissingPoster
         '
-        Me.chkTVShowMissingPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowMissingPoster.Location = New System.Drawing.Point(6, 144)
         Me.chkTVShowMissingPoster.Name = "chkTVShowMissingPoster"
         Me.chkTVShowMissingPoster.Size = New System.Drawing.Size(161, 17)
         Me.chkTVShowMissingPoster.TabIndex = 6
         Me.chkTVShowMissingPoster.Text = "Check for Poster"
-        Me.chkTVShowMissingPoster.UseVisualStyleBackColor = true
+        Me.chkTVShowMissingPoster.UseVisualStyleBackColor = True
         '
         'chkTVShowMissingClearArt
         '
-        Me.chkTVShowMissingClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowMissingClearArt.Location = New System.Drawing.Point(6, 48)
         Me.chkTVShowMissingClearArt.Name = "chkTVShowMissingClearArt"
         Me.chkTVShowMissingClearArt.Size = New System.Drawing.Size(161, 17)
         Me.chkTVShowMissingClearArt.TabIndex = 13
         Me.chkTVShowMissingClearArt.Text = "Check for ClearArt"
-        Me.chkTVShowMissingClearArt.UseVisualStyleBackColor = true
+        Me.chkTVShowMissingClearArt.UseVisualStyleBackColor = True
         '
         'chkTVShowMissingNFO
         '
-        Me.chkTVShowMissingNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowMissingNFO.Location = New System.Drawing.Point(6, 128)
         Me.chkTVShowMissingNFO.Name = "chkTVShowMissingNFO"
         Me.chkTVShowMissingNFO.Size = New System.Drawing.Size(161, 17)
         Me.chkTVShowMissingNFO.TabIndex = 8
         Me.chkTVShowMissingNFO.Text = "Check for NFO"
-        Me.chkTVShowMissingNFO.UseVisualStyleBackColor = true
+        Me.chkTVShowMissingNFO.UseVisualStyleBackColor = True
         '
         'chkTVShowMissingFanart
         '
-        Me.chkTVShowMissingFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowMissingFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowMissingFanart.Location = New System.Drawing.Point(6, 96)
         Me.chkTVShowMissingFanart.Name = "chkTVShowMissingFanart"
         Me.chkTVShowMissingFanart.Size = New System.Drawing.Size(161, 17)
         Me.chkTVShowMissingFanart.TabIndex = 7
         Me.chkTVShowMissingFanart.Text = "Check for Fanart"
-        Me.chkTVShowMissingFanart.UseVisualStyleBackColor = true
+        Me.chkTVShowMissingFanart.UseVisualStyleBackColor = True
         '
         'gbTVSortTokensOpts
         '
@@ -6599,35 +6603,35 @@ Partial Class dlgSettings
         Me.gbTVSortTokensOpts.Controls.Add(Me.btnTVSortTokenAdd)
         Me.gbTVSortTokensOpts.Controls.Add(Me.txtTVSortToken)
         Me.gbTVSortTokensOpts.Controls.Add(Me.lstTVSortTokens)
-        Me.gbTVSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVSortTokensOpts.Location = New System.Drawing.Point(231, 7)
         Me.gbTVSortTokensOpts.Name = "gbTVSortTokensOpts"
         Me.gbTVSortTokensOpts.Size = New System.Drawing.Size(185, 93)
         Me.gbTVSortTokensOpts.TabIndex = 72
-        Me.gbTVSortTokensOpts.TabStop = false
+        Me.gbTVSortTokensOpts.TabStop = False
         Me.gbTVSortTokensOpts.Text = "Sort Tokens to Ignore"
         '
         'btnTVSortTokenRemove
         '
-        Me.btnTVSortTokenRemove.Image = CType(resources.GetObject("btnTVSortTokenRemove.Image"),System.Drawing.Image)
+        Me.btnTVSortTokenRemove.Image = CType(resources.GetObject("btnTVSortTokenRemove.Image"), System.Drawing.Image)
         Me.btnTVSortTokenRemove.Location = New System.Drawing.Point(156, 64)
         Me.btnTVSortTokenRemove.Name = "btnTVSortTokenRemove"
         Me.btnTVSortTokenRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSortTokenRemove.TabIndex = 3
-        Me.btnTVSortTokenRemove.UseVisualStyleBackColor = true
+        Me.btnTVSortTokenRemove.UseVisualStyleBackColor = True
         '
         'btnTVSortTokenAdd
         '
-        Me.btnTVSortTokenAdd.Image = CType(resources.GetObject("btnTVSortTokenAdd.Image"),System.Drawing.Image)
+        Me.btnTVSortTokenAdd.Image = CType(resources.GetObject("btnTVSortTokenAdd.Image"), System.Drawing.Image)
         Me.btnTVSortTokenAdd.Location = New System.Drawing.Point(106, 64)
         Me.btnTVSortTokenAdd.Name = "btnTVSortTokenAdd"
         Me.btnTVSortTokenAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSortTokenAdd.TabIndex = 2
-        Me.btnTVSortTokenAdd.UseVisualStyleBackColor = true
+        Me.btnTVSortTokenAdd.UseVisualStyleBackColor = True
         '
         'txtTVSortToken
         '
-        Me.txtTVSortToken.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVSortToken.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVSortToken.Location = New System.Drawing.Point(10, 64)
         Me.txtTVSortToken.Name = "txtTVSortToken"
         Me.txtTVSortToken.Size = New System.Drawing.Size(90, 22)
@@ -6635,41 +6639,41 @@ Partial Class dlgSettings
         '
         'lstTVSortTokens
         '
-        Me.lstTVSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lstTVSortTokens.FormattingEnabled = true
+        Me.lstTVSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstTVSortTokens.FormattingEnabled = True
         Me.lstTVSortTokens.Location = New System.Drawing.Point(10, 15)
         Me.lstTVSortTokens.Name = "lstTVSortTokens"
         Me.lstTVSortTokens.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lstTVSortTokens.Size = New System.Drawing.Size(169, 43)
-        Me.lstTVSortTokens.Sorted = true
+        Me.lstTVSortTokens.Sorted = True
         Me.lstTVSortTokens.TabIndex = 0
         '
         'gbTVGeneralLangOpts
         '
         Me.gbTVGeneralLangOpts.Controls.Add(Me.btnTVGeneralLangFetch)
         Me.gbTVGeneralLangOpts.Controls.Add(Me.cbTVGeneralLang)
-        Me.gbTVGeneralLangOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVGeneralLangOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVGeneralLangOpts.Location = New System.Drawing.Point(422, 398)
         Me.gbTVGeneralLangOpts.Name = "gbTVGeneralLangOpts"
         Me.gbTVGeneralLangOpts.Size = New System.Drawing.Size(201, 99)
         Me.gbTVGeneralLangOpts.TabIndex = 4
-        Me.gbTVGeneralLangOpts.TabStop = false
+        Me.gbTVGeneralLangOpts.TabStop = False
         Me.gbTVGeneralLangOpts.Text = "Language Options"
         '
         'btnTVGeneralLangFetch
         '
-        Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(16, 55)
         Me.btnTVGeneralLangFetch.Name = "btnTVGeneralLangFetch"
         Me.btnTVGeneralLangFetch.Size = New System.Drawing.Size(166, 23)
         Me.btnTVGeneralLangFetch.TabIndex = 10
         Me.btnTVGeneralLangFetch.Text = "Fetch Available Languages"
-        Me.btnTVGeneralLangFetch.UseVisualStyleBackColor = true
+        Me.btnTVGeneralLangFetch.UseVisualStyleBackColor = True
         '
         'cbTVGeneralLang
         '
         Me.cbTVGeneralLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVGeneralLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbTVGeneralLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbTVGeneralLang.Location = New System.Drawing.Point(16, 21)
         Me.cbTVGeneralLang.Name = "cbTVGeneralLang"
         Me.cbTVGeneralLang.Size = New System.Drawing.Size(166, 21)
@@ -6682,35 +6686,35 @@ Partial Class dlgSettings
         Me.gbTVGeneralMediaListOpts.Controls.Add(Me.gbTVGeneralListEpisodeOpts)
         Me.gbTVGeneralMediaListOpts.Controls.Add(Me.gbTVGeneralListSeasonOpts)
         Me.gbTVGeneralMediaListOpts.Controls.Add(Me.gbTVGeneralListShowOpts)
-        Me.gbTVGeneralMediaListOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVGeneralMediaListOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVGeneralMediaListOpts.Location = New System.Drawing.Point(6, 64)
         Me.gbTVGeneralMediaListOpts.Name = "gbTVGeneralMediaListOpts"
         Me.gbTVGeneralMediaListOpts.Size = New System.Drawing.Size(219, 433)
         Me.gbTVGeneralMediaListOpts.TabIndex = 1
-        Me.gbTVGeneralMediaListOpts.TabStop = false
+        Me.gbTVGeneralMediaListOpts.TabStop = False
         Me.gbTVGeneralMediaListOpts.Text = "Media List Options"
         '
         'chkTVDisplayStatus
         '
-        Me.chkTVDisplayStatus.AutoSize = true
-        Me.chkTVDisplayStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVDisplayStatus.AutoSize = True
+        Me.chkTVDisplayStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVDisplayStatus.Location = New System.Drawing.Point(6, 16)
         Me.chkTVDisplayStatus.Name = "chkTVDisplayStatus"
         Me.chkTVDisplayStatus.Size = New System.Drawing.Size(155, 17)
         Me.chkTVDisplayStatus.TabIndex = 73
         Me.chkTVDisplayStatus.Text = "Display Status in List Title"
-        Me.chkTVDisplayStatus.UseVisualStyleBackColor = true
+        Me.chkTVDisplayStatus.UseVisualStyleBackColor = True
         '
         'chkTVDisplayMissingEpisodes
         '
-        Me.chkTVDisplayMissingEpisodes.AutoSize = true
-        Me.chkTVDisplayMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVDisplayMissingEpisodes.AutoSize = True
+        Me.chkTVDisplayMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVDisplayMissingEpisodes.Location = New System.Drawing.Point(6, 32)
         Me.chkTVDisplayMissingEpisodes.Name = "chkTVDisplayMissingEpisodes"
         Me.chkTVDisplayMissingEpisodes.Size = New System.Drawing.Size(155, 17)
         Me.chkTVDisplayMissingEpisodes.TabIndex = 3
         Me.chkTVDisplayMissingEpisodes.Text = "Display Missing Episodes"
-        Me.chkTVDisplayMissingEpisodes.UseVisualStyleBackColor = true
+        Me.chkTVDisplayMissingEpisodes.UseVisualStyleBackColor = True
         '
         'gbTVGeneralListEpisodeOpts
         '
@@ -6718,57 +6722,57 @@ Partial Class dlgSettings
         Me.gbTVGeneralListEpisodeOpts.Controls.Add(Me.chkTVEpisodeFanartCol)
         Me.gbTVGeneralListEpisodeOpts.Controls.Add(Me.chkTVEpisodeWatchedCol)
         Me.gbTVGeneralListEpisodeOpts.Controls.Add(Me.chkTVEpisodePosterCol)
-        Me.gbTVGeneralListEpisodeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVGeneralListEpisodeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVGeneralListEpisodeOpts.Location = New System.Drawing.Point(9, 339)
         Me.gbTVGeneralListEpisodeOpts.Name = "gbTVGeneralListEpisodeOpts"
         Me.gbTVGeneralListEpisodeOpts.Size = New System.Drawing.Size(199, 87)
         Me.gbTVGeneralListEpisodeOpts.TabIndex = 2
-        Me.gbTVGeneralListEpisodeOpts.TabStop = false
+        Me.gbTVGeneralListEpisodeOpts.TabStop = False
         Me.gbTVGeneralListEpisodeOpts.Text = "Episodes"
         '
         'chkTVEpisodeNfoCol
         '
-        Me.chkTVEpisodeNfoCol.AutoSize = true
-        Me.chkTVEpisodeNfoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodeNfoCol.AutoSize = True
+        Me.chkTVEpisodeNfoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVEpisodeNfoCol.Location = New System.Drawing.Point(6, 32)
         Me.chkTVEpisodeNfoCol.Name = "chkTVEpisodeNfoCol"
         Me.chkTVEpisodeNfoCol.Size = New System.Drawing.Size(119, 17)
         Me.chkTVEpisodeNfoCol.TabIndex = 2
         Me.chkTVEpisodeNfoCol.Text = "Hide NFO Column"
-        Me.chkTVEpisodeNfoCol.UseVisualStyleBackColor = true
+        Me.chkTVEpisodeNfoCol.UseVisualStyleBackColor = True
         '
         'chkTVEpisodeFanartCol
         '
-        Me.chkTVEpisodeFanartCol.AutoSize = true
-        Me.chkTVEpisodeFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodeFanartCol.AutoSize = True
+        Me.chkTVEpisodeFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVEpisodeFanartCol.Location = New System.Drawing.Point(6, 16)
         Me.chkTVEpisodeFanartCol.Name = "chkTVEpisodeFanartCol"
         Me.chkTVEpisodeFanartCol.Size = New System.Drawing.Size(129, 17)
         Me.chkTVEpisodeFanartCol.TabIndex = 1
         Me.chkTVEpisodeFanartCol.Text = "Hide Fanart Column"
-        Me.chkTVEpisodeFanartCol.UseVisualStyleBackColor = true
+        Me.chkTVEpisodeFanartCol.UseVisualStyleBackColor = True
         '
         'chkTVEpisodeWatchedCol
         '
-        Me.chkTVEpisodeWatchedCol.AutoSize = true
-        Me.chkTVEpisodeWatchedCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodeWatchedCol.AutoSize = True
+        Me.chkTVEpisodeWatchedCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVEpisodeWatchedCol.Location = New System.Drawing.Point(6, 64)
         Me.chkTVEpisodeWatchedCol.Name = "chkTVEpisodeWatchedCol"
         Me.chkTVEpisodeWatchedCol.Size = New System.Drawing.Size(142, 17)
         Me.chkTVEpisodeWatchedCol.TabIndex = 83
         Me.chkTVEpisodeWatchedCol.Text = "Hide Watched Column"
-        Me.chkTVEpisodeWatchedCol.UseVisualStyleBackColor = true
+        Me.chkTVEpisodeWatchedCol.UseVisualStyleBackColor = True
         '
         'chkTVEpisodePosterCol
         '
-        Me.chkTVEpisodePosterCol.AutoSize = true
-        Me.chkTVEpisodePosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodePosterCol.AutoSize = True
+        Me.chkTVEpisodePosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVEpisodePosterCol.Location = New System.Drawing.Point(6, 48)
         Me.chkTVEpisodePosterCol.Name = "chkTVEpisodePosterCol"
         Me.chkTVEpisodePosterCol.Size = New System.Drawing.Size(128, 17)
         Me.chkTVEpisodePosterCol.TabIndex = 0
         Me.chkTVEpisodePosterCol.Text = "Hide Poster Column"
-        Me.chkTVEpisodePosterCol.UseVisualStyleBackColor = true
+        Me.chkTVEpisodePosterCol.UseVisualStyleBackColor = True
         '
         'gbTVGeneralListSeasonOpts
         '
@@ -6776,57 +6780,57 @@ Partial Class dlgSettings
         Me.gbTVGeneralListSeasonOpts.Controls.Add(Me.chkTVSeasonBannerCol)
         Me.gbTVGeneralListSeasonOpts.Controls.Add(Me.chkTVSeasonFanartCol)
         Me.gbTVGeneralListSeasonOpts.Controls.Add(Me.chkTVSeasonPosterCol)
-        Me.gbTVGeneralListSeasonOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVGeneralListSeasonOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVGeneralListSeasonOpts.Location = New System.Drawing.Point(9, 246)
         Me.gbTVGeneralListSeasonOpts.Name = "gbTVGeneralListSeasonOpts"
         Me.gbTVGeneralListSeasonOpts.Size = New System.Drawing.Size(199, 87)
         Me.gbTVGeneralListSeasonOpts.TabIndex = 1
-        Me.gbTVGeneralListSeasonOpts.TabStop = false
+        Me.gbTVGeneralListSeasonOpts.TabStop = False
         Me.gbTVGeneralListSeasonOpts.Text = "Seasons"
         '
         'chkTVSeasonLandscapeCol
         '
-        Me.chkTVSeasonLandscapeCol.AutoSize = true
-        Me.chkTVSeasonLandscapeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonLandscapeCol.AutoSize = True
+        Me.chkTVSeasonLandscapeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonLandscapeCol.Location = New System.Drawing.Point(6, 48)
         Me.chkTVSeasonLandscapeCol.Name = "chkTVSeasonLandscapeCol"
         Me.chkTVSeasonLandscapeCol.Size = New System.Drawing.Size(150, 17)
         Me.chkTVSeasonLandscapeCol.TabIndex = 3
         Me.chkTVSeasonLandscapeCol.Text = "Hide Landscape Column"
-        Me.chkTVSeasonLandscapeCol.UseVisualStyleBackColor = true
+        Me.chkTVSeasonLandscapeCol.UseVisualStyleBackColor = True
         '
         'chkTVSeasonBannerCol
         '
-        Me.chkTVSeasonBannerCol.AutoSize = true
-        Me.chkTVSeasonBannerCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonBannerCol.AutoSize = True
+        Me.chkTVSeasonBannerCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonBannerCol.Location = New System.Drawing.Point(6, 16)
         Me.chkTVSeasonBannerCol.Name = "chkTVSeasonBannerCol"
         Me.chkTVSeasonBannerCol.Size = New System.Drawing.Size(133, 17)
         Me.chkTVSeasonBannerCol.TabIndex = 2
         Me.chkTVSeasonBannerCol.Text = "Hide Banner Column"
-        Me.chkTVSeasonBannerCol.UseVisualStyleBackColor = true
+        Me.chkTVSeasonBannerCol.UseVisualStyleBackColor = True
         '
         'chkTVSeasonFanartCol
         '
-        Me.chkTVSeasonFanartCol.AutoSize = true
-        Me.chkTVSeasonFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonFanartCol.AutoSize = True
+        Me.chkTVSeasonFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonFanartCol.Location = New System.Drawing.Point(6, 32)
         Me.chkTVSeasonFanartCol.Name = "chkTVSeasonFanartCol"
         Me.chkTVSeasonFanartCol.Size = New System.Drawing.Size(129, 17)
         Me.chkTVSeasonFanartCol.TabIndex = 1
         Me.chkTVSeasonFanartCol.Text = "Hide Fanart Column"
-        Me.chkTVSeasonFanartCol.UseVisualStyleBackColor = true
+        Me.chkTVSeasonFanartCol.UseVisualStyleBackColor = True
         '
         'chkTVSeasonPosterCol
         '
-        Me.chkTVSeasonPosterCol.AutoSize = true
-        Me.chkTVSeasonPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonPosterCol.AutoSize = True
+        Me.chkTVSeasonPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonPosterCol.Location = New System.Drawing.Point(6, 64)
         Me.chkTVSeasonPosterCol.Name = "chkTVSeasonPosterCol"
         Me.chkTVSeasonPosterCol.Size = New System.Drawing.Size(128, 17)
         Me.chkTVSeasonPosterCol.TabIndex = 0
         Me.chkTVSeasonPosterCol.Text = "Hide Poster Column"
-        Me.chkTVSeasonPosterCol.UseVisualStyleBackColor = true
+        Me.chkTVSeasonPosterCol.UseVisualStyleBackColor = True
         '
         'gbTVGeneralListShowOpts
         '
@@ -6840,123 +6844,123 @@ Partial Class dlgSettings
         Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowNfoCol)
         Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowFanartCol)
         Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowPosterCol)
-        Me.gbTVGeneralListShowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVGeneralListShowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVGeneralListShowOpts.Location = New System.Drawing.Point(9, 60)
         Me.gbTVGeneralListShowOpts.Name = "gbTVGeneralListShowOpts"
         Me.gbTVGeneralListShowOpts.Size = New System.Drawing.Size(199, 180)
         Me.gbTVGeneralListShowOpts.TabIndex = 0
-        Me.gbTVGeneralListShowOpts.TabStop = false
+        Me.gbTVGeneralListShowOpts.TabStop = False
         Me.gbTVGeneralListShowOpts.Text = "Shows"
         '
         'chkTVShowClearLogoCol
         '
-        Me.chkTVShowClearLogoCol.AutoSize = true
-        Me.chkTVShowClearLogoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowClearLogoCol.AutoSize = True
+        Me.chkTVShowClearLogoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowClearLogoCol.Location = New System.Drawing.Point(6, 64)
         Me.chkTVShowClearLogoCol.Name = "chkTVShowClearLogoCol"
         Me.chkTVShowClearLogoCol.Size = New System.Drawing.Size(148, 17)
         Me.chkTVShowClearLogoCol.TabIndex = 88
         Me.chkTVShowClearLogoCol.Text = "Hide ClearLogo Column"
-        Me.chkTVShowClearLogoCol.UseVisualStyleBackColor = true
+        Me.chkTVShowClearLogoCol.UseVisualStyleBackColor = True
         '
         'chkTVShowClearArtCol
         '
-        Me.chkTVShowClearArtCol.AutoSize = true
-        Me.chkTVShowClearArtCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowClearArtCol.AutoSize = True
+        Me.chkTVShowClearArtCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowClearArtCol.Location = New System.Drawing.Point(6, 48)
         Me.chkTVShowClearArtCol.Name = "chkTVShowClearArtCol"
         Me.chkTVShowClearArtCol.Size = New System.Drawing.Size(137, 17)
         Me.chkTVShowClearArtCol.TabIndex = 87
         Me.chkTVShowClearArtCol.Text = "Hide ClearArt Column"
-        Me.chkTVShowClearArtCol.UseVisualStyleBackColor = true
+        Me.chkTVShowClearArtCol.UseVisualStyleBackColor = True
         '
         'chkTVShowCharacterArtCol
         '
-        Me.chkTVShowCharacterArtCol.AutoSize = true
-        Me.chkTVShowCharacterArtCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowCharacterArtCol.AutoSize = True
+        Me.chkTVShowCharacterArtCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowCharacterArtCol.Location = New System.Drawing.Point(6, 32)
         Me.chkTVShowCharacterArtCol.Name = "chkTVShowCharacterArtCol"
         Me.chkTVShowCharacterArtCol.Size = New System.Drawing.Size(160, 17)
         Me.chkTVShowCharacterArtCol.TabIndex = 89
         Me.chkTVShowCharacterArtCol.Text = "Hide CharacterArt Column"
-        Me.chkTVShowCharacterArtCol.UseVisualStyleBackColor = true
+        Me.chkTVShowCharacterArtCol.UseVisualStyleBackColor = True
         '
         'chkTVShowEFanartsCol
         '
-        Me.chkTVShowEFanartsCol.AutoSize = true
-        Me.chkTVShowEFanartsCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowEFanartsCol.AutoSize = True
+        Me.chkTVShowEFanartsCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowEFanartsCol.Location = New System.Drawing.Point(6, 80)
         Me.chkTVShowEFanartsCol.Name = "chkTVShowEFanartsCol"
         Me.chkTVShowEFanartsCol.Size = New System.Drawing.Size(152, 17)
         Me.chkTVShowEFanartsCol.TabIndex = 82
         Me.chkTVShowEFanartsCol.Text = "Hide Extrafanart Column"
-        Me.chkTVShowEFanartsCol.UseVisualStyleBackColor = true
+        Me.chkTVShowEFanartsCol.UseVisualStyleBackColor = True
         '
         'chkTVShowThemeCol
         '
-        Me.chkTVShowThemeCol.AutoSize = true
-        Me.chkTVShowThemeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowThemeCol.AutoSize = True
+        Me.chkTVShowThemeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowThemeCol.Location = New System.Drawing.Point(6, 160)
         Me.chkTVShowThemeCol.Name = "chkTVShowThemeCol"
         Me.chkTVShowThemeCol.Size = New System.Drawing.Size(129, 17)
         Me.chkTVShowThemeCol.TabIndex = 85
         Me.chkTVShowThemeCol.Text = "Hide Theme Column"
-        Me.chkTVShowThemeCol.UseVisualStyleBackColor = true
+        Me.chkTVShowThemeCol.UseVisualStyleBackColor = True
         '
         'chkTVShowLandscapeCol
         '
-        Me.chkTVShowLandscapeCol.AutoSize = true
-        Me.chkTVShowLandscapeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowLandscapeCol.AutoSize = True
+        Me.chkTVShowLandscapeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowLandscapeCol.Location = New System.Drawing.Point(6, 112)
         Me.chkTVShowLandscapeCol.Name = "chkTVShowLandscapeCol"
         Me.chkTVShowLandscapeCol.Size = New System.Drawing.Size(150, 17)
         Me.chkTVShowLandscapeCol.TabIndex = 84
         Me.chkTVShowLandscapeCol.Text = "Hide Landscape Column"
-        Me.chkTVShowLandscapeCol.UseVisualStyleBackColor = true
+        Me.chkTVShowLandscapeCol.UseVisualStyleBackColor = True
         '
         'chkTVShowBannerCol
         '
-        Me.chkTVShowBannerCol.AutoSize = true
-        Me.chkTVShowBannerCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowBannerCol.AutoSize = True
+        Me.chkTVShowBannerCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowBannerCol.Location = New System.Drawing.Point(6, 16)
         Me.chkTVShowBannerCol.Name = "chkTVShowBannerCol"
         Me.chkTVShowBannerCol.Size = New System.Drawing.Size(133, 17)
         Me.chkTVShowBannerCol.TabIndex = 86
         Me.chkTVShowBannerCol.Text = "Hide Banner Column"
-        Me.chkTVShowBannerCol.UseVisualStyleBackColor = true
+        Me.chkTVShowBannerCol.UseVisualStyleBackColor = True
         '
         'chkTVShowNfoCol
         '
-        Me.chkTVShowNfoCol.AutoSize = true
-        Me.chkTVShowNfoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowNfoCol.AutoSize = True
+        Me.chkTVShowNfoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowNfoCol.Location = New System.Drawing.Point(6, 128)
         Me.chkTVShowNfoCol.Name = "chkTVShowNfoCol"
         Me.chkTVShowNfoCol.Size = New System.Drawing.Size(119, 17)
         Me.chkTVShowNfoCol.TabIndex = 2
         Me.chkTVShowNfoCol.Text = "Hide NFO Column"
-        Me.chkTVShowNfoCol.UseVisualStyleBackColor = true
+        Me.chkTVShowNfoCol.UseVisualStyleBackColor = True
         '
         'chkTVShowFanartCol
         '
-        Me.chkTVShowFanartCol.AutoSize = true
-        Me.chkTVShowFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowFanartCol.AutoSize = True
+        Me.chkTVShowFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowFanartCol.Location = New System.Drawing.Point(6, 96)
         Me.chkTVShowFanartCol.Name = "chkTVShowFanartCol"
         Me.chkTVShowFanartCol.Size = New System.Drawing.Size(129, 17)
         Me.chkTVShowFanartCol.TabIndex = 1
         Me.chkTVShowFanartCol.Text = "Hide Fanart Column"
-        Me.chkTVShowFanartCol.UseVisualStyleBackColor = true
+        Me.chkTVShowFanartCol.UseVisualStyleBackColor = True
         '
         'chkTVShowPosterCol
         '
-        Me.chkTVShowPosterCol.AutoSize = true
-        Me.chkTVShowPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowPosterCol.AutoSize = True
+        Me.chkTVShowPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowPosterCol.Location = New System.Drawing.Point(6, 144)
         Me.chkTVShowPosterCol.Name = "chkTVShowPosterCol"
         Me.chkTVShowPosterCol.Size = New System.Drawing.Size(128, 17)
         Me.chkTVShowPosterCol.TabIndex = 0
         Me.chkTVShowPosterCol.Text = "Hide Poster Column"
-        Me.chkTVShowPosterCol.UseVisualStyleBackColor = true
+        Me.chkTVShowPosterCol.UseVisualStyleBackColor = True
         '
         'gbTVEpisodeFilterOpts
         '
@@ -6969,85 +6973,85 @@ Partial Class dlgSettings
         Me.gbTVEpisodeFilterOpts.Controls.Add(Me.btnTVEpisodeFilterAdd)
         Me.gbTVEpisodeFilterOpts.Controls.Add(Me.txtTVEpisodeFilter)
         Me.gbTVEpisodeFilterOpts.Controls.Add(Me.lstTVEpisodeFilter)
-        Me.gbTVEpisodeFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVEpisodeFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVEpisodeFilterOpts.Location = New System.Drawing.Point(422, 187)
         Me.gbTVEpisodeFilterOpts.Name = "gbTVEpisodeFilterOpts"
         Me.gbTVEpisodeFilterOpts.Size = New System.Drawing.Size(325, 205)
         Me.gbTVEpisodeFilterOpts.TabIndex = 3
-        Me.gbTVEpisodeFilterOpts.TabStop = false
+        Me.gbTVEpisodeFilterOpts.TabStop = False
         Me.gbTVEpisodeFilterOpts.Text = "Episode Folder/File Name Filters"
         '
         'btnTVEpisodeFilterReset
         '
-        Me.btnTVEpisodeFilterReset.Image = CType(resources.GetObject("btnTVEpisodeFilterReset.Image"),System.Drawing.Image)
+        Me.btnTVEpisodeFilterReset.Image = CType(resources.GetObject("btnTVEpisodeFilterReset.Image"), System.Drawing.Image)
         Me.btnTVEpisodeFilterReset.Location = New System.Drawing.Point(297, 38)
         Me.btnTVEpisodeFilterReset.Name = "btnTVEpisodeFilterReset"
         Me.btnTVEpisodeFilterReset.Size = New System.Drawing.Size(23, 23)
         Me.btnTVEpisodeFilterReset.TabIndex = 3
-        Me.btnTVEpisodeFilterReset.UseVisualStyleBackColor = true
+        Me.btnTVEpisodeFilterReset.UseVisualStyleBackColor = True
         '
         'chkTVEpisodeNoFilter
         '
         Me.chkTVEpisodeNoFilter.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVEpisodeNoFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkTVEpisodeNoFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkTVEpisodeNoFilter.Location = New System.Drawing.Point(6, 15)
         Me.chkTVEpisodeNoFilter.Name = "chkTVEpisodeNoFilter"
         Me.chkTVEpisodeNoFilter.Size = New System.Drawing.Size(371, 21)
         Me.chkTVEpisodeNoFilter.TabIndex = 0
         Me.chkTVEpisodeNoFilter.Text = "Build Episode Title Instead of Filtering"
         Me.chkTVEpisodeNoFilter.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVEpisodeNoFilter.UseVisualStyleBackColor = true
+        Me.chkTVEpisodeNoFilter.UseVisualStyleBackColor = True
         '
         'btnTVEpisodeFilterDown
         '
-        Me.btnTVEpisodeFilterDown.Image = CType(resources.GetObject("btnTVEpisodeFilterDown.Image"),System.Drawing.Image)
+        Me.btnTVEpisodeFilterDown.Image = CType(resources.GetObject("btnTVEpisodeFilterDown.Image"), System.Drawing.Image)
         Me.btnTVEpisodeFilterDown.Location = New System.Drawing.Point(267, 176)
         Me.btnTVEpisodeFilterDown.Name = "btnTVEpisodeFilterDown"
         Me.btnTVEpisodeFilterDown.Size = New System.Drawing.Size(23, 23)
         Me.btnTVEpisodeFilterDown.TabIndex = 7
-        Me.btnTVEpisodeFilterDown.UseVisualStyleBackColor = true
+        Me.btnTVEpisodeFilterDown.UseVisualStyleBackColor = True
         '
         'btnTVEpisodeFilterUp
         '
-        Me.btnTVEpisodeFilterUp.Image = CType(resources.GetObject("btnTVEpisodeFilterUp.Image"),System.Drawing.Image)
+        Me.btnTVEpisodeFilterUp.Image = CType(resources.GetObject("btnTVEpisodeFilterUp.Image"), System.Drawing.Image)
         Me.btnTVEpisodeFilterUp.Location = New System.Drawing.Point(243, 176)
         Me.btnTVEpisodeFilterUp.Name = "btnTVEpisodeFilterUp"
         Me.btnTVEpisodeFilterUp.Size = New System.Drawing.Size(23, 23)
         Me.btnTVEpisodeFilterUp.TabIndex = 6
-        Me.btnTVEpisodeFilterUp.UseVisualStyleBackColor = true
+        Me.btnTVEpisodeFilterUp.UseVisualStyleBackColor = True
         '
         'chkTVEpisodeProperCase
         '
-        Me.chkTVEpisodeProperCase.AutoSize = true
-        Me.chkTVEpisodeProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodeProperCase.AutoSize = True
+        Me.chkTVEpisodeProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVEpisodeProperCase.Location = New System.Drawing.Point(6, 47)
         Me.chkTVEpisodeProperCase.Name = "chkTVEpisodeProperCase"
         Me.chkTVEpisodeProperCase.Size = New System.Drawing.Size(181, 17)
         Me.chkTVEpisodeProperCase.TabIndex = 1
         Me.chkTVEpisodeProperCase.Text = "Convert Names to Proper Case"
-        Me.chkTVEpisodeProperCase.UseVisualStyleBackColor = true
+        Me.chkTVEpisodeProperCase.UseVisualStyleBackColor = True
         '
         'btnTVEpisodeFilterRemove
         '
-        Me.btnTVEpisodeFilterRemove.Image = CType(resources.GetObject("btnTVEpisodeFilterRemove.Image"),System.Drawing.Image)
+        Me.btnTVEpisodeFilterRemove.Image = CType(resources.GetObject("btnTVEpisodeFilterRemove.Image"), System.Drawing.Image)
         Me.btnTVEpisodeFilterRemove.Location = New System.Drawing.Point(301, 176)
         Me.btnTVEpisodeFilterRemove.Name = "btnTVEpisodeFilterRemove"
         Me.btnTVEpisodeFilterRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnTVEpisodeFilterRemove.TabIndex = 8
-        Me.btnTVEpisodeFilterRemove.UseVisualStyleBackColor = true
+        Me.btnTVEpisodeFilterRemove.UseVisualStyleBackColor = True
         '
         'btnTVEpisodeFilterAdd
         '
-        Me.btnTVEpisodeFilterAdd.Image = CType(resources.GetObject("btnTVEpisodeFilterAdd.Image"),System.Drawing.Image)
+        Me.btnTVEpisodeFilterAdd.Image = CType(resources.GetObject("btnTVEpisodeFilterAdd.Image"), System.Drawing.Image)
         Me.btnTVEpisodeFilterAdd.Location = New System.Drawing.Point(207, 176)
         Me.btnTVEpisodeFilterAdd.Name = "btnTVEpisodeFilterAdd"
         Me.btnTVEpisodeFilterAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnTVEpisodeFilterAdd.TabIndex = 5
-        Me.btnTVEpisodeFilterAdd.UseVisualStyleBackColor = true
+        Me.btnTVEpisodeFilterAdd.UseVisualStyleBackColor = True
         '
         'txtTVEpisodeFilter
         '
-        Me.txtTVEpisodeFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVEpisodeFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVEpisodeFilter.Location = New System.Drawing.Point(6, 177)
         Me.txtTVEpisodeFilter.Name = "txtTVEpisodeFilter"
         Me.txtTVEpisodeFilter.Size = New System.Drawing.Size(195, 22)
@@ -7055,8 +7059,8 @@ Partial Class dlgSettings
         '
         'lstTVEpisodeFilter
         '
-        Me.lstTVEpisodeFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lstTVEpisodeFilter.FormattingEnabled = true
+        Me.lstTVEpisodeFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstTVEpisodeFilter.FormattingEnabled = True
         Me.lstTVEpisodeFilter.Location = New System.Drawing.Point(6, 64)
         Me.lstTVEpisodeFilter.Name = "lstTVEpisodeFilter"
         Me.lstTVEpisodeFilter.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
@@ -7067,33 +7071,33 @@ Partial Class dlgSettings
         '
         Me.gbTVGeneralMiscOpts.Controls.Add(Me.chkTVGeneralMarkNewShows)
         Me.gbTVGeneralMiscOpts.Controls.Add(Me.chkTVGeneralMarkNewEpisodes)
-        Me.gbTVGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVGeneralMiscOpts.Location = New System.Drawing.Point(6, 7)
         Me.gbTVGeneralMiscOpts.Name = "gbTVGeneralMiscOpts"
         Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(219, 54)
         Me.gbTVGeneralMiscOpts.TabIndex = 0
-        Me.gbTVGeneralMiscOpts.TabStop = false
+        Me.gbTVGeneralMiscOpts.TabStop = False
         Me.gbTVGeneralMiscOpts.Text = "Miscellaneous"
         '
         'chkTVGeneralMarkNewShows
         '
-        Me.chkTVGeneralMarkNewShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVGeneralMarkNewShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVGeneralMarkNewShows.Location = New System.Drawing.Point(6, 16)
         Me.chkTVGeneralMarkNewShows.Name = "chkTVGeneralMarkNewShows"
         Me.chkTVGeneralMarkNewShows.Size = New System.Drawing.Size(204, 17)
         Me.chkTVGeneralMarkNewShows.TabIndex = 3
         Me.chkTVGeneralMarkNewShows.Text = "Mark New Shows"
-        Me.chkTVGeneralMarkNewShows.UseVisualStyleBackColor = true
+        Me.chkTVGeneralMarkNewShows.UseVisualStyleBackColor = True
         '
         'chkTVGeneralMarkNewEpisodes
         '
-        Me.chkTVGeneralMarkNewEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVGeneralMarkNewEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVGeneralMarkNewEpisodes.Location = New System.Drawing.Point(6, 32)
         Me.chkTVGeneralMarkNewEpisodes.Name = "chkTVGeneralMarkNewEpisodes"
         Me.chkTVGeneralMarkNewEpisodes.Size = New System.Drawing.Size(204, 17)
         Me.chkTVGeneralMarkNewEpisodes.TabIndex = 4
         Me.chkTVGeneralMarkNewEpisodes.Text = "Mark New Episodes"
-        Me.chkTVGeneralMarkNewEpisodes.UseVisualStyleBackColor = true
+        Me.chkTVGeneralMarkNewEpisodes.UseVisualStyleBackColor = True
         '
         'gbTVShowFilterOpts
         '
@@ -7105,73 +7109,73 @@ Partial Class dlgSettings
         Me.gbTVShowFilterOpts.Controls.Add(Me.btnTVShowFilterAdd)
         Me.gbTVShowFilterOpts.Controls.Add(Me.txtTVShowFilter)
         Me.gbTVShowFilterOpts.Controls.Add(Me.lstTVShowFilter)
-        Me.gbTVShowFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVShowFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVShowFilterOpts.Location = New System.Drawing.Point(422, 9)
         Me.gbTVShowFilterOpts.Name = "gbTVShowFilterOpts"
         Me.gbTVShowFilterOpts.Size = New System.Drawing.Size(325, 175)
         Me.gbTVShowFilterOpts.TabIndex = 2
-        Me.gbTVShowFilterOpts.TabStop = false
+        Me.gbTVShowFilterOpts.TabStop = False
         Me.gbTVShowFilterOpts.Text = "Show Folder/File Name Filters"
         '
         'btnTVShowFilterReset
         '
-        Me.btnTVShowFilterReset.Image = CType(resources.GetObject("btnTVShowFilterReset.Image"),System.Drawing.Image)
+        Me.btnTVShowFilterReset.Image = CType(resources.GetObject("btnTVShowFilterReset.Image"), System.Drawing.Image)
         Me.btnTVShowFilterReset.Location = New System.Drawing.Point(297, 9)
         Me.btnTVShowFilterReset.Name = "btnTVShowFilterReset"
         Me.btnTVShowFilterReset.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowFilterReset.TabIndex = 2
-        Me.btnTVShowFilterReset.UseVisualStyleBackColor = true
+        Me.btnTVShowFilterReset.UseVisualStyleBackColor = True
         '
         'btnTVShowFilterDown
         '
-        Me.btnTVShowFilterDown.Image = CType(resources.GetObject("btnTVShowFilterDown.Image"),System.Drawing.Image)
+        Me.btnTVShowFilterDown.Image = CType(resources.GetObject("btnTVShowFilterDown.Image"), System.Drawing.Image)
         Me.btnTVShowFilterDown.Location = New System.Drawing.Point(267, 147)
         Me.btnTVShowFilterDown.Name = "btnTVShowFilterDown"
         Me.btnTVShowFilterDown.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowFilterDown.TabIndex = 6
-        Me.btnTVShowFilterDown.UseVisualStyleBackColor = true
+        Me.btnTVShowFilterDown.UseVisualStyleBackColor = True
         '
         'btnTVShowFilterUp
         '
-        Me.btnTVShowFilterUp.Image = CType(resources.GetObject("btnTVShowFilterUp.Image"),System.Drawing.Image)
+        Me.btnTVShowFilterUp.Image = CType(resources.GetObject("btnTVShowFilterUp.Image"), System.Drawing.Image)
         Me.btnTVShowFilterUp.Location = New System.Drawing.Point(243, 147)
         Me.btnTVShowFilterUp.Name = "btnTVShowFilterUp"
         Me.btnTVShowFilterUp.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowFilterUp.TabIndex = 5
-        Me.btnTVShowFilterUp.UseVisualStyleBackColor = true
+        Me.btnTVShowFilterUp.UseVisualStyleBackColor = True
         '
         'chkTVShowProperCase
         '
-        Me.chkTVShowProperCase.AutoSize = true
-        Me.chkTVShowProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowProperCase.AutoSize = True
+        Me.chkTVShowProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowProperCase.Location = New System.Drawing.Point(6, 17)
         Me.chkTVShowProperCase.Name = "chkTVShowProperCase"
         Me.chkTVShowProperCase.Size = New System.Drawing.Size(181, 17)
         Me.chkTVShowProperCase.TabIndex = 0
         Me.chkTVShowProperCase.Text = "Convert Names to Proper Case"
-        Me.chkTVShowProperCase.UseVisualStyleBackColor = true
+        Me.chkTVShowProperCase.UseVisualStyleBackColor = True
         '
         'btnTVShowFilterRemove
         '
-        Me.btnTVShowFilterRemove.Image = CType(resources.GetObject("btnTVShowFilterRemove.Image"),System.Drawing.Image)
+        Me.btnTVShowFilterRemove.Image = CType(resources.GetObject("btnTVShowFilterRemove.Image"), System.Drawing.Image)
         Me.btnTVShowFilterRemove.Location = New System.Drawing.Point(301, 147)
         Me.btnTVShowFilterRemove.Name = "btnTVShowFilterRemove"
         Me.btnTVShowFilterRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowFilterRemove.TabIndex = 7
-        Me.btnTVShowFilterRemove.UseVisualStyleBackColor = true
+        Me.btnTVShowFilterRemove.UseVisualStyleBackColor = True
         '
         'btnTVShowFilterAdd
         '
-        Me.btnTVShowFilterAdd.Image = CType(resources.GetObject("btnTVShowFilterAdd.Image"),System.Drawing.Image)
+        Me.btnTVShowFilterAdd.Image = CType(resources.GetObject("btnTVShowFilterAdd.Image"), System.Drawing.Image)
         Me.btnTVShowFilterAdd.Location = New System.Drawing.Point(207, 147)
         Me.btnTVShowFilterAdd.Name = "btnTVShowFilterAdd"
         Me.btnTVShowFilterAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowFilterAdd.TabIndex = 4
-        Me.btnTVShowFilterAdd.UseVisualStyleBackColor = true
+        Me.btnTVShowFilterAdd.UseVisualStyleBackColor = True
         '
         'txtTVShowFilter
         '
-        Me.txtTVShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVShowFilter.Location = New System.Drawing.Point(6, 147)
         Me.txtTVShowFilter.Name = "txtTVShowFilter"
         Me.txtTVShowFilter.Size = New System.Drawing.Size(195, 22)
@@ -7179,8 +7183,8 @@ Partial Class dlgSettings
         '
         'lstTVShowFilter
         '
-        Me.lstTVShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lstTVShowFilter.FormattingEnabled = true
+        Me.lstTVShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstTVShowFilter.FormattingEnabled = True
         Me.lstTVShowFilter.Location = New System.Drawing.Point(6, 35)
         Me.lstTVShowFilter.Name = "lstTVShowFilter"
         Me.lstTVShowFilter.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
@@ -7195,13 +7199,13 @@ Partial Class dlgSettings
         Me.pnlTVSources.Name = "pnlTVSources"
         Me.pnlTVSources.Size = New System.Drawing.Size(750, 500)
         Me.pnlTVSources.TabIndex = 11
-        Me.pnlTVSources.Visible = false
+        Me.pnlTVSources.Visible = False
         '
         'tcTVSources
         '
         Me.tcTVSources.Controls.Add(Me.tpTVSourcesGeneral)
         Me.tcTVSources.Controls.Add(Me.tpTVSourcesRegex)
-        Me.tcTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.tcTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.tcTVSources.Location = New System.Drawing.Point(3, 4)
         Me.tcTVSources.Name = "tcTVSources"
         Me.tcTVSources.SelectedIndex = 0
@@ -7222,7 +7226,7 @@ Partial Class dlgSettings
         Me.tpTVSourcesGeneral.Size = New System.Drawing.Size(736, 467)
         Me.tpTVSourcesGeneral.TabIndex = 0
         Me.tpTVSourcesGeneral.Text = "General"
-        Me.tpTVSourcesGeneral.UseVisualStyleBackColor = true
+        Me.tpTVSourcesGeneral.UseVisualStyleBackColor = True
         '
         'gbTVFileNaming
         '
@@ -7231,7 +7235,7 @@ Partial Class dlgSettings
         Me.gbTVFileNaming.Name = "gbTVFileNaming"
         Me.gbTVFileNaming.Size = New System.Drawing.Size(567, 351)
         Me.gbTVFileNaming.TabIndex = 6
-        Me.gbTVFileNaming.TabStop = false
+        Me.gbTVFileNaming.TabStop = False
         Me.gbTVFileNaming.Text = "File Naming"
         '
         'tcTVFileNaming
@@ -7256,7 +7260,7 @@ Partial Class dlgSettings
         Me.tpTVFileNamingXBMC.Size = New System.Drawing.Size(547, 301)
         Me.tpTVFileNamingXBMC.TabIndex = 0
         Me.tpTVFileNamingXBMC.Text = "XBMC"
-        Me.tpTVFileNamingXBMC.UseVisualStyleBackColor = true
+        Me.tpTVFileNamingXBMC.UseVisualStyleBackColor = True
         '
         'gbTVXBMCAdditional
         '
@@ -7274,34 +7278,34 @@ Partial Class dlgSettings
         Me.gbTVXBMCAdditional.Name = "gbTVXBMCAdditional"
         Me.gbTVXBMCAdditional.Size = New System.Drawing.Size(200, 268)
         Me.gbTVXBMCAdditional.TabIndex = 2
-        Me.gbTVXBMCAdditional.TabStop = false
+        Me.gbTVXBMCAdditional.TabStop = False
         Me.gbTVXBMCAdditional.Text = "Additional Stuff"
         '
         'chkTVShowExtrafanartsXBMC
         '
-        Me.chkTVShowExtrafanartsXBMC.AutoSize = true
-        Me.chkTVShowExtrafanartsXBMC.Enabled = false
+        Me.chkTVShowExtrafanartsXBMC.AutoSize = True
+        Me.chkTVShowExtrafanartsXBMC.Enabled = False
         Me.chkTVShowExtrafanartsXBMC.Location = New System.Drawing.Point(7, 93)
         Me.chkTVShowExtrafanartsXBMC.Name = "chkTVShowExtrafanartsXBMC"
         Me.chkTVShowExtrafanartsXBMC.Size = New System.Drawing.Size(87, 17)
         Me.chkTVShowExtrafanartsXBMC.TabIndex = 8
         Me.chkTVShowExtrafanartsXBMC.Text = "Extrafanarts"
-        Me.chkTVShowExtrafanartsXBMC.UseVisualStyleBackColor = true
+        Me.chkTVShowExtrafanartsXBMC.UseVisualStyleBackColor = True
         '
         'btnTVShowTVThemeBrowse
         '
-        Me.btnTVShowTVThemeBrowse.Enabled = false
-        Me.btnTVShowTVThemeBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnTVShowTVThemeBrowse.Enabled = False
+        Me.btnTVShowTVThemeBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnTVShowTVThemeBrowse.Location = New System.Drawing.Point(169, 192)
         Me.btnTVShowTVThemeBrowse.Name = "btnTVShowTVThemeBrowse"
         Me.btnTVShowTVThemeBrowse.Size = New System.Drawing.Size(25, 22)
         Me.btnTVShowTVThemeBrowse.TabIndex = 7
         Me.btnTVShowTVThemeBrowse.Text = "..."
-        Me.btnTVShowTVThemeBrowse.UseVisualStyleBackColor = true
+        Me.btnTVShowTVThemeBrowse.UseVisualStyleBackColor = True
         '
         'txtTVShowTVThemeFolderXBMC
         '
-        Me.txtTVShowTVThemeFolderXBMC.Enabled = false
+        Me.txtTVShowTVThemeFolderXBMC.Enabled = False
         Me.txtTVShowTVThemeFolderXBMC.Location = New System.Drawing.Point(7, 192)
         Me.txtTVShowTVThemeFolderXBMC.Name = "txtTVShowTVThemeFolderXBMC"
         Me.txtTVShowTVThemeFolderXBMC.Size = New System.Drawing.Size(156, 22)
@@ -7309,69 +7313,69 @@ Partial Class dlgSettings
         '
         'chkTVShowTVThemeXBMC
         '
-        Me.chkTVShowTVThemeXBMC.AutoSize = true
-        Me.chkTVShowTVThemeXBMC.Enabled = false
+        Me.chkTVShowTVThemeXBMC.AutoSize = True
+        Me.chkTVShowTVThemeXBMC.Enabled = False
         Me.chkTVShowTVThemeXBMC.Location = New System.Drawing.Point(7, 168)
         Me.chkTVShowTVThemeXBMC.Name = "chkTVShowTVThemeXBMC"
         Me.chkTVShowTVThemeXBMC.Size = New System.Drawing.Size(74, 17)
         Me.chkTVShowTVThemeXBMC.TabIndex = 5
         Me.chkTVShowTVThemeXBMC.Text = "TV Theme"
-        Me.chkTVShowTVThemeXBMC.UseVisualStyleBackColor = true
+        Me.chkTVShowTVThemeXBMC.UseVisualStyleBackColor = True
         '
         'chkTVSeasonLandscapeXBMC
         '
-        Me.chkTVSeasonLandscapeXBMC.AutoSize = true
-        Me.chkTVSeasonLandscapeXBMC.Enabled = false
+        Me.chkTVSeasonLandscapeXBMC.AutoSize = True
+        Me.chkTVSeasonLandscapeXBMC.Enabled = False
         Me.chkTVSeasonLandscapeXBMC.Location = New System.Drawing.Point(7, 141)
         Me.chkTVSeasonLandscapeXBMC.Name = "chkTVSeasonLandscapeXBMC"
         Me.chkTVSeasonLandscapeXBMC.Size = New System.Drawing.Size(120, 17)
         Me.chkTVSeasonLandscapeXBMC.TabIndex = 4
         Me.chkTVSeasonLandscapeXBMC.Text = "Season Landscape"
-        Me.chkTVSeasonLandscapeXBMC.UseVisualStyleBackColor = true
+        Me.chkTVSeasonLandscapeXBMC.UseVisualStyleBackColor = True
         '
         'chkTVShowLandscapeXBMC
         '
-        Me.chkTVShowLandscapeXBMC.AutoSize = true
-        Me.chkTVShowLandscapeXBMC.Enabled = false
+        Me.chkTVShowLandscapeXBMC.AutoSize = True
+        Me.chkTVShowLandscapeXBMC.Enabled = False
         Me.chkTVShowLandscapeXBMC.Location = New System.Drawing.Point(7, 117)
         Me.chkTVShowLandscapeXBMC.Name = "chkTVShowLandscapeXBMC"
         Me.chkTVShowLandscapeXBMC.Size = New System.Drawing.Size(112, 17)
         Me.chkTVShowLandscapeXBMC.TabIndex = 3
         Me.chkTVShowLandscapeXBMC.Text = "Show Landscape"
-        Me.chkTVShowLandscapeXBMC.UseVisualStyleBackColor = true
+        Me.chkTVShowLandscapeXBMC.UseVisualStyleBackColor = True
         '
         'chkTVShowCharacterArtXBMC
         '
-        Me.chkTVShowCharacterArtXBMC.AutoSize = true
-        Me.chkTVShowCharacterArtXBMC.Enabled = false
+        Me.chkTVShowCharacterArtXBMC.AutoSize = True
+        Me.chkTVShowCharacterArtXBMC.Enabled = False
         Me.chkTVShowCharacterArtXBMC.Location = New System.Drawing.Point(7, 70)
         Me.chkTVShowCharacterArtXBMC.Name = "chkTVShowCharacterArtXBMC"
         Me.chkTVShowCharacterArtXBMC.Size = New System.Drawing.Size(90, 17)
         Me.chkTVShowCharacterArtXBMC.TabIndex = 2
         Me.chkTVShowCharacterArtXBMC.Text = "CharacterArt"
-        Me.chkTVShowCharacterArtXBMC.UseVisualStyleBackColor = true
+        Me.chkTVShowCharacterArtXBMC.UseVisualStyleBackColor = True
         '
         'chkTVShowClearArtXBMC
         '
-        Me.chkTVShowClearArtXBMC.AutoSize = true
-        Me.chkTVShowClearArtXBMC.Enabled = false
+        Me.chkTVShowClearArtXBMC.AutoSize = True
+        Me.chkTVShowClearArtXBMC.Enabled = False
         Me.chkTVShowClearArtXBMC.Location = New System.Drawing.Point(7, 46)
         Me.chkTVShowClearArtXBMC.Name = "chkTVShowClearArtXBMC"
         Me.chkTVShowClearArtXBMC.Size = New System.Drawing.Size(67, 17)
         Me.chkTVShowClearArtXBMC.TabIndex = 1
         Me.chkTVShowClearArtXBMC.Text = "ClearArt"
-        Me.chkTVShowClearArtXBMC.UseVisualStyleBackColor = true
+        Me.chkTVShowClearArtXBMC.UseVisualStyleBackColor = True
         '
         'chkTVShowClearLogoXBMC
         '
-        Me.chkTVShowClearLogoXBMC.AutoSize = true
-        Me.chkTVShowClearLogoXBMC.Enabled = false
+        Me.chkTVShowClearLogoXBMC.AutoSize = True
+        Me.chkTVShowClearLogoXBMC.Enabled = False
         Me.chkTVShowClearLogoXBMC.Location = New System.Drawing.Point(7, 22)
         Me.chkTVShowClearLogoXBMC.Name = "chkTVShowClearLogoXBMC"
         Me.chkTVShowClearLogoXBMC.Size = New System.Drawing.Size(78, 17)
         Me.chkTVShowClearLogoXBMC.TabIndex = 0
         Me.chkTVShowClearLogoXBMC.Text = "ClearLogo"
-        Me.chkTVShowClearLogoXBMC.UseVisualStyleBackColor = true
+        Me.chkTVShowClearLogoXBMC.UseVisualStyleBackColor = True
         '
         'gbTVFrodo
         '
@@ -7385,122 +7389,122 @@ Partial Class dlgSettings
         Me.gbTVFrodo.Controls.Add(Me.chkTVSeasonFanartFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVShowFanartFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVShowPosterFrodo)
-        Me.gbTVFrodo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVFrodo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVFrodo.Location = New System.Drawing.Point(6, 6)
         Me.gbTVFrodo.Name = "gbTVFrodo"
         Me.gbTVFrodo.Size = New System.Drawing.Size(152, 289)
         Me.gbTVFrodo.TabIndex = 1
-        Me.gbTVFrodo.TabStop = false
+        Me.gbTVFrodo.TabStop = False
         Me.gbTVFrodo.Text = "Frodo"
         '
         'chkTVSeasonPosterFrodo
         '
-        Me.chkTVSeasonPosterFrodo.AutoSize = true
-        Me.chkTVSeasonPosterFrodo.Enabled = false
+        Me.chkTVSeasonPosterFrodo.AutoSize = True
+        Me.chkTVSeasonPosterFrodo.Enabled = False
         Me.chkTVSeasonPosterFrodo.Location = New System.Drawing.Point(6, 136)
         Me.chkTVSeasonPosterFrodo.Name = "chkTVSeasonPosterFrodo"
         Me.chkTVSeasonPosterFrodo.Size = New System.Drawing.Size(98, 17)
         Me.chkTVSeasonPosterFrodo.TabIndex = 12
         Me.chkTVSeasonPosterFrodo.Text = "Season Poster"
-        Me.chkTVSeasonPosterFrodo.UseVisualStyleBackColor = true
+        Me.chkTVSeasonPosterFrodo.UseVisualStyleBackColor = True
         '
         'chkTVShowBannerFrodo
         '
-        Me.chkTVShowBannerFrodo.AutoSize = true
-        Me.chkTVShowBannerFrodo.Enabled = false
+        Me.chkTVShowBannerFrodo.AutoSize = True
+        Me.chkTVShowBannerFrodo.Enabled = False
         Me.chkTVShowBannerFrodo.Location = New System.Drawing.Point(6, 113)
         Me.chkTVShowBannerFrodo.Name = "chkTVShowBannerFrodo"
         Me.chkTVShowBannerFrodo.Size = New System.Drawing.Size(95, 17)
         Me.chkTVShowBannerFrodo.TabIndex = 11
         Me.chkTVShowBannerFrodo.Text = "Show Banner"
-        Me.chkTVShowBannerFrodo.UseVisualStyleBackColor = true
+        Me.chkTVShowBannerFrodo.UseVisualStyleBackColor = True
         '
         'chkTVUseFrodo
         '
-        Me.chkTVUseFrodo.AutoSize = true
+        Me.chkTVUseFrodo.AutoSize = True
         Me.chkTVUseFrodo.Location = New System.Drawing.Point(6, 21)
         Me.chkTVUseFrodo.Name = "chkTVUseFrodo"
         Me.chkTVUseFrodo.Size = New System.Drawing.Size(45, 17)
         Me.chkTVUseFrodo.TabIndex = 10
         Me.chkTVUseFrodo.Text = "Use"
-        Me.chkTVUseFrodo.UseVisualStyleBackColor = true
+        Me.chkTVUseFrodo.UseVisualStyleBackColor = True
         '
         'chkTVEpisodeActorThumbsFrodo
         '
-        Me.chkTVEpisodeActorThumbsFrodo.AutoSize = true
-        Me.chkTVEpisodeActorThumbsFrodo.Enabled = false
+        Me.chkTVEpisodeActorThumbsFrodo.AutoSize = True
+        Me.chkTVEpisodeActorThumbsFrodo.Enabled = False
         Me.chkTVEpisodeActorThumbsFrodo.Location = New System.Drawing.Point(6, 251)
         Me.chkTVEpisodeActorThumbsFrodo.Name = "chkTVEpisodeActorThumbsFrodo"
         Me.chkTVEpisodeActorThumbsFrodo.Size = New System.Drawing.Size(140, 17)
         Me.chkTVEpisodeActorThumbsFrodo.TabIndex = 9
         Me.chkTVEpisodeActorThumbsFrodo.Text = "Episode Actor Thumbs"
-        Me.chkTVEpisodeActorThumbsFrodo.UseVisualStyleBackColor = true
+        Me.chkTVEpisodeActorThumbsFrodo.UseVisualStyleBackColor = True
         '
         'chkTVSeasonBannerFrodo
         '
-        Me.chkTVSeasonBannerFrodo.AutoSize = true
-        Me.chkTVSeasonBannerFrodo.Enabled = false
+        Me.chkTVSeasonBannerFrodo.AutoSize = True
+        Me.chkTVSeasonBannerFrodo.Enabled = False
         Me.chkTVSeasonBannerFrodo.Location = New System.Drawing.Point(6, 182)
         Me.chkTVSeasonBannerFrodo.Name = "chkTVSeasonBannerFrodo"
         Me.chkTVSeasonBannerFrodo.Size = New System.Drawing.Size(103, 17)
         Me.chkTVSeasonBannerFrodo.TabIndex = 8
         Me.chkTVSeasonBannerFrodo.Text = "Season Banner"
-        Me.chkTVSeasonBannerFrodo.UseVisualStyleBackColor = true
+        Me.chkTVSeasonBannerFrodo.UseVisualStyleBackColor = True
         '
         'chkTVEpisodePosterFrodo
         '
-        Me.chkTVEpisodePosterFrodo.AutoSize = true
-        Me.chkTVEpisodePosterFrodo.Enabled = false
+        Me.chkTVEpisodePosterFrodo.AutoSize = True
+        Me.chkTVEpisodePosterFrodo.Enabled = False
         Me.chkTVEpisodePosterFrodo.Location = New System.Drawing.Point(6, 205)
         Me.chkTVEpisodePosterFrodo.Name = "chkTVEpisodePosterFrodo"
         Me.chkTVEpisodePosterFrodo.Size = New System.Drawing.Size(102, 17)
         Me.chkTVEpisodePosterFrodo.TabIndex = 5
         Me.chkTVEpisodePosterFrodo.Text = "Episode Poster"
-        Me.chkTVEpisodePosterFrodo.UseVisualStyleBackColor = true
+        Me.chkTVEpisodePosterFrodo.UseVisualStyleBackColor = True
         '
         'chkTVShowActorThumbsFrodo
         '
-        Me.chkTVShowActorThumbsFrodo.AutoSize = true
-        Me.chkTVShowActorThumbsFrodo.Enabled = false
+        Me.chkTVShowActorThumbsFrodo.AutoSize = True
+        Me.chkTVShowActorThumbsFrodo.Enabled = False
         Me.chkTVShowActorThumbsFrodo.Location = New System.Drawing.Point(6, 90)
         Me.chkTVShowActorThumbsFrodo.Name = "chkTVShowActorThumbsFrodo"
         Me.chkTVShowActorThumbsFrodo.Size = New System.Drawing.Size(128, 17)
         Me.chkTVShowActorThumbsFrodo.TabIndex = 4
         Me.chkTVShowActorThumbsFrodo.Text = "Show Actor Thumbs"
-        Me.chkTVShowActorThumbsFrodo.UseVisualStyleBackColor = true
+        Me.chkTVShowActorThumbsFrodo.UseVisualStyleBackColor = True
         '
         'chkTVSeasonFanartFrodo
         '
-        Me.chkTVSeasonFanartFrodo.AutoSize = true
-        Me.chkTVSeasonFanartFrodo.Enabled = false
+        Me.chkTVSeasonFanartFrodo.AutoSize = True
+        Me.chkTVSeasonFanartFrodo.Enabled = False
         Me.chkTVSeasonFanartFrodo.Location = New System.Drawing.Point(6, 159)
         Me.chkTVSeasonFanartFrodo.Name = "chkTVSeasonFanartFrodo"
         Me.chkTVSeasonFanartFrodo.Size = New System.Drawing.Size(99, 17)
         Me.chkTVSeasonFanartFrodo.TabIndex = 3
         Me.chkTVSeasonFanartFrodo.Text = "Season Fanart"
-        Me.chkTVSeasonFanartFrodo.UseVisualStyleBackColor = true
+        Me.chkTVSeasonFanartFrodo.UseVisualStyleBackColor = True
         '
         'chkTVShowFanartFrodo
         '
-        Me.chkTVShowFanartFrodo.AutoSize = true
-        Me.chkTVShowFanartFrodo.Enabled = false
+        Me.chkTVShowFanartFrodo.AutoSize = True
+        Me.chkTVShowFanartFrodo.Enabled = False
         Me.chkTVShowFanartFrodo.Location = New System.Drawing.Point(6, 67)
         Me.chkTVShowFanartFrodo.Name = "chkTVShowFanartFrodo"
         Me.chkTVShowFanartFrodo.Size = New System.Drawing.Size(91, 17)
         Me.chkTVShowFanartFrodo.TabIndex = 2
         Me.chkTVShowFanartFrodo.Text = "Show Fanart"
-        Me.chkTVShowFanartFrodo.UseVisualStyleBackColor = true
+        Me.chkTVShowFanartFrodo.UseVisualStyleBackColor = True
         '
         'chkTVShowPosterFrodo
         '
-        Me.chkTVShowPosterFrodo.AutoSize = true
-        Me.chkTVShowPosterFrodo.Enabled = false
+        Me.chkTVShowPosterFrodo.AutoSize = True
+        Me.chkTVShowPosterFrodo.Enabled = False
         Me.chkTVShowPosterFrodo.Location = New System.Drawing.Point(6, 44)
         Me.chkTVShowPosterFrodo.Name = "chkTVShowPosterFrodo"
         Me.chkTVShowPosterFrodo.Size = New System.Drawing.Size(90, 17)
         Me.chkTVShowPosterFrodo.TabIndex = 1
         Me.chkTVShowPosterFrodo.Text = "Show Poster"
-        Me.chkTVShowPosterFrodo.UseVisualStyleBackColor = true
+        Me.chkTVShowPosterFrodo.UseVisualStyleBackColor = True
         '
         'tpTVFileNamingNMT
         '
@@ -7512,7 +7516,7 @@ Partial Class dlgSettings
         Me.tpTVFileNamingNMT.Size = New System.Drawing.Size(547, 301)
         Me.tpTVFileNamingNMT.TabIndex = 1
         Me.tpTVFileNamingNMT.Text = "NMT"
-        Me.tpTVFileNamingNMT.UseVisualStyleBackColor = true
+        Me.tpTVFileNamingNMT.UseVisualStyleBackColor = True
         '
         'gbTVNMT
         '
@@ -7524,100 +7528,100 @@ Partial Class dlgSettings
         Me.gbTVNMT.Controls.Add(Me.chkTVShowFanartNMJ)
         Me.gbTVNMT.Controls.Add(Me.chkTVShowPosterNMJ)
         Me.gbTVNMT.Controls.Add(Me.chkTVUseNMJ)
-        Me.gbTVNMT.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVNMT.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVNMT.Location = New System.Drawing.Point(164, 9)
         Me.gbTVNMT.Name = "gbTVNMT"
         Me.gbTVNMT.Size = New System.Drawing.Size(152, 289)
         Me.gbTVNMT.TabIndex = 19
-        Me.gbTVNMT.TabStop = false
+        Me.gbTVNMT.TabStop = False
         Me.gbTVNMT.Text = "NMJ"
         '
         'chkTVSeasonPosterNMJ
         '
-        Me.chkTVSeasonPosterNMJ.AutoSize = true
-        Me.chkTVSeasonPosterNMJ.Enabled = false
+        Me.chkTVSeasonPosterNMJ.AutoSize = True
+        Me.chkTVSeasonPosterNMJ.Enabled = False
         Me.chkTVSeasonPosterNMJ.Location = New System.Drawing.Point(6, 136)
         Me.chkTVSeasonPosterNMJ.Name = "chkTVSeasonPosterNMJ"
         Me.chkTVSeasonPosterNMJ.Size = New System.Drawing.Size(98, 17)
         Me.chkTVSeasonPosterNMJ.TabIndex = 26
         Me.chkTVSeasonPosterNMJ.Text = "Season Poster"
-        Me.chkTVSeasonPosterNMJ.UseVisualStyleBackColor = true
+        Me.chkTVSeasonPosterNMJ.UseVisualStyleBackColor = True
         '
         'chkTVShowBannerNMJ
         '
-        Me.chkTVShowBannerNMJ.AutoSize = true
-        Me.chkTVShowBannerNMJ.Enabled = false
+        Me.chkTVShowBannerNMJ.AutoSize = True
+        Me.chkTVShowBannerNMJ.Enabled = False
         Me.chkTVShowBannerNMJ.Location = New System.Drawing.Point(6, 113)
         Me.chkTVShowBannerNMJ.Name = "chkTVShowBannerNMJ"
         Me.chkTVShowBannerNMJ.Size = New System.Drawing.Size(95, 17)
         Me.chkTVShowBannerNMJ.TabIndex = 25
         Me.chkTVShowBannerNMJ.Text = "Show Banner"
-        Me.chkTVShowBannerNMJ.UseVisualStyleBackColor = true
+        Me.chkTVShowBannerNMJ.UseVisualStyleBackColor = True
         '
         'chkTVSeasonBannerNMJ
         '
-        Me.chkTVSeasonBannerNMJ.AutoSize = true
-        Me.chkTVSeasonBannerNMJ.Enabled = false
+        Me.chkTVSeasonBannerNMJ.AutoSize = True
+        Me.chkTVSeasonBannerNMJ.Enabled = False
         Me.chkTVSeasonBannerNMJ.Location = New System.Drawing.Point(6, 182)
         Me.chkTVSeasonBannerNMJ.Name = "chkTVSeasonBannerNMJ"
         Me.chkTVSeasonBannerNMJ.Size = New System.Drawing.Size(103, 17)
         Me.chkTVSeasonBannerNMJ.TabIndex = 23
         Me.chkTVSeasonBannerNMJ.Text = "Season Banner"
-        Me.chkTVSeasonBannerNMJ.UseVisualStyleBackColor = true
+        Me.chkTVSeasonBannerNMJ.UseVisualStyleBackColor = True
         '
         'chkTVEpisodePosterNMJ
         '
-        Me.chkTVEpisodePosterNMJ.AutoSize = true
-        Me.chkTVEpisodePosterNMJ.Enabled = false
+        Me.chkTVEpisodePosterNMJ.AutoSize = True
+        Me.chkTVEpisodePosterNMJ.Enabled = False
         Me.chkTVEpisodePosterNMJ.Location = New System.Drawing.Point(6, 205)
         Me.chkTVEpisodePosterNMJ.Name = "chkTVEpisodePosterNMJ"
         Me.chkTVEpisodePosterNMJ.Size = New System.Drawing.Size(102, 17)
         Me.chkTVEpisodePosterNMJ.TabIndex = 21
         Me.chkTVEpisodePosterNMJ.Text = "Episode Poster"
-        Me.chkTVEpisodePosterNMJ.UseVisualStyleBackColor = true
+        Me.chkTVEpisodePosterNMJ.UseVisualStyleBackColor = True
         '
         'chkTVSeasonFanartNMJ
         '
-        Me.chkTVSeasonFanartNMJ.AutoSize = true
-        Me.chkTVSeasonFanartNMJ.Enabled = false
+        Me.chkTVSeasonFanartNMJ.AutoSize = True
+        Me.chkTVSeasonFanartNMJ.Enabled = False
         Me.chkTVSeasonFanartNMJ.Location = New System.Drawing.Point(6, 159)
         Me.chkTVSeasonFanartNMJ.Name = "chkTVSeasonFanartNMJ"
         Me.chkTVSeasonFanartNMJ.Size = New System.Drawing.Size(99, 17)
         Me.chkTVSeasonFanartNMJ.TabIndex = 19
         Me.chkTVSeasonFanartNMJ.Text = "Season Fanart"
-        Me.chkTVSeasonFanartNMJ.UseVisualStyleBackColor = true
+        Me.chkTVSeasonFanartNMJ.UseVisualStyleBackColor = True
         '
         'chkTVShowFanartNMJ
         '
-        Me.chkTVShowFanartNMJ.AutoSize = true
-        Me.chkTVShowFanartNMJ.Enabled = false
+        Me.chkTVShowFanartNMJ.AutoSize = True
+        Me.chkTVShowFanartNMJ.Enabled = False
         Me.chkTVShowFanartNMJ.Location = New System.Drawing.Point(6, 67)
         Me.chkTVShowFanartNMJ.Name = "chkTVShowFanartNMJ"
         Me.chkTVShowFanartNMJ.Size = New System.Drawing.Size(91, 17)
         Me.chkTVShowFanartNMJ.TabIndex = 18
         Me.chkTVShowFanartNMJ.Text = "Show Fanart"
-        Me.chkTVShowFanartNMJ.UseVisualStyleBackColor = true
+        Me.chkTVShowFanartNMJ.UseVisualStyleBackColor = True
         '
         'chkTVShowPosterNMJ
         '
-        Me.chkTVShowPosterNMJ.AutoSize = true
-        Me.chkTVShowPosterNMJ.Enabled = false
+        Me.chkTVShowPosterNMJ.AutoSize = True
+        Me.chkTVShowPosterNMJ.Enabled = False
         Me.chkTVShowPosterNMJ.Location = New System.Drawing.Point(6, 44)
         Me.chkTVShowPosterNMJ.Name = "chkTVShowPosterNMJ"
         Me.chkTVShowPosterNMJ.Size = New System.Drawing.Size(90, 17)
         Me.chkTVShowPosterNMJ.TabIndex = 17
         Me.chkTVShowPosterNMJ.Text = "Show Poster"
-        Me.chkTVShowPosterNMJ.UseVisualStyleBackColor = true
+        Me.chkTVShowPosterNMJ.UseVisualStyleBackColor = True
         '
         'chkTVUseNMJ
         '
-        Me.chkTVUseNMJ.AutoSize = true
+        Me.chkTVUseNMJ.AutoSize = True
         Me.chkTVUseNMJ.Location = New System.Drawing.Point(6, 21)
         Me.chkTVUseNMJ.Name = "chkTVUseNMJ"
         Me.chkTVUseNMJ.Size = New System.Drawing.Size(45, 17)
         Me.chkTVUseNMJ.TabIndex = 16
         Me.chkTVUseNMJ.Text = "Use"
-        Me.chkTVUseNMJ.UseVisualStyleBackColor = true
+        Me.chkTVUseNMJ.UseVisualStyleBackColor = True
         '
         'gbTVYAMJ
         '
@@ -7629,100 +7633,100 @@ Partial Class dlgSettings
         Me.gbTVYAMJ.Controls.Add(Me.chkTVShowFanartYAMJ)
         Me.gbTVYAMJ.Controls.Add(Me.chkTVShowPosterYAMJ)
         Me.gbTVYAMJ.Controls.Add(Me.chkTVUseYAMJ)
-        Me.gbTVYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVYAMJ.Location = New System.Drawing.Point(6, 6)
         Me.gbTVYAMJ.Name = "gbTVYAMJ"
         Me.gbTVYAMJ.Size = New System.Drawing.Size(152, 289)
         Me.gbTVYAMJ.TabIndex = 18
-        Me.gbTVYAMJ.TabStop = false
+        Me.gbTVYAMJ.TabStop = False
         Me.gbTVYAMJ.Text = "YAMJ"
         '
         'chkTVSeasonPosterYAMJ
         '
-        Me.chkTVSeasonPosterYAMJ.AutoSize = true
-        Me.chkTVSeasonPosterYAMJ.Enabled = false
+        Me.chkTVSeasonPosterYAMJ.AutoSize = True
+        Me.chkTVSeasonPosterYAMJ.Enabled = False
         Me.chkTVSeasonPosterYAMJ.Location = New System.Drawing.Point(6, 136)
         Me.chkTVSeasonPosterYAMJ.Name = "chkTVSeasonPosterYAMJ"
         Me.chkTVSeasonPosterYAMJ.Size = New System.Drawing.Size(98, 17)
         Me.chkTVSeasonPosterYAMJ.TabIndex = 26
         Me.chkTVSeasonPosterYAMJ.Text = "Season Poster"
-        Me.chkTVSeasonPosterYAMJ.UseVisualStyleBackColor = true
+        Me.chkTVSeasonPosterYAMJ.UseVisualStyleBackColor = True
         '
         'chkTVShowBannerYAMJ
         '
-        Me.chkTVShowBannerYAMJ.AutoSize = true
-        Me.chkTVShowBannerYAMJ.Enabled = false
+        Me.chkTVShowBannerYAMJ.AutoSize = True
+        Me.chkTVShowBannerYAMJ.Enabled = False
         Me.chkTVShowBannerYAMJ.Location = New System.Drawing.Point(6, 113)
         Me.chkTVShowBannerYAMJ.Name = "chkTVShowBannerYAMJ"
         Me.chkTVShowBannerYAMJ.Size = New System.Drawing.Size(95, 17)
         Me.chkTVShowBannerYAMJ.TabIndex = 25
         Me.chkTVShowBannerYAMJ.Text = "Show Banner"
-        Me.chkTVShowBannerYAMJ.UseVisualStyleBackColor = true
+        Me.chkTVShowBannerYAMJ.UseVisualStyleBackColor = True
         '
         'chkTVSeasonBannerYAMJ
         '
-        Me.chkTVSeasonBannerYAMJ.AutoSize = true
-        Me.chkTVSeasonBannerYAMJ.Enabled = false
+        Me.chkTVSeasonBannerYAMJ.AutoSize = True
+        Me.chkTVSeasonBannerYAMJ.Enabled = False
         Me.chkTVSeasonBannerYAMJ.Location = New System.Drawing.Point(6, 182)
         Me.chkTVSeasonBannerYAMJ.Name = "chkTVSeasonBannerYAMJ"
         Me.chkTVSeasonBannerYAMJ.Size = New System.Drawing.Size(103, 17)
         Me.chkTVSeasonBannerYAMJ.TabIndex = 23
         Me.chkTVSeasonBannerYAMJ.Text = "Season Banner"
-        Me.chkTVSeasonBannerYAMJ.UseVisualStyleBackColor = true
+        Me.chkTVSeasonBannerYAMJ.UseVisualStyleBackColor = True
         '
         'chkTVEpisodePosterYAMJ
         '
-        Me.chkTVEpisodePosterYAMJ.AutoSize = true
-        Me.chkTVEpisodePosterYAMJ.Enabled = false
+        Me.chkTVEpisodePosterYAMJ.AutoSize = True
+        Me.chkTVEpisodePosterYAMJ.Enabled = False
         Me.chkTVEpisodePosterYAMJ.Location = New System.Drawing.Point(6, 205)
         Me.chkTVEpisodePosterYAMJ.Name = "chkTVEpisodePosterYAMJ"
         Me.chkTVEpisodePosterYAMJ.Size = New System.Drawing.Size(102, 17)
         Me.chkTVEpisodePosterYAMJ.TabIndex = 21
         Me.chkTVEpisodePosterYAMJ.Text = "Episode Poster"
-        Me.chkTVEpisodePosterYAMJ.UseVisualStyleBackColor = true
+        Me.chkTVEpisodePosterYAMJ.UseVisualStyleBackColor = True
         '
         'chkTVSeasonFanartYAMJ
         '
-        Me.chkTVSeasonFanartYAMJ.AutoSize = true
-        Me.chkTVSeasonFanartYAMJ.Enabled = false
+        Me.chkTVSeasonFanartYAMJ.AutoSize = True
+        Me.chkTVSeasonFanartYAMJ.Enabled = False
         Me.chkTVSeasonFanartYAMJ.Location = New System.Drawing.Point(6, 159)
         Me.chkTVSeasonFanartYAMJ.Name = "chkTVSeasonFanartYAMJ"
         Me.chkTVSeasonFanartYAMJ.Size = New System.Drawing.Size(99, 17)
         Me.chkTVSeasonFanartYAMJ.TabIndex = 19
         Me.chkTVSeasonFanartYAMJ.Text = "Season Fanart"
-        Me.chkTVSeasonFanartYAMJ.UseVisualStyleBackColor = true
+        Me.chkTVSeasonFanartYAMJ.UseVisualStyleBackColor = True
         '
         'chkTVShowFanartYAMJ
         '
-        Me.chkTVShowFanartYAMJ.AutoSize = true
-        Me.chkTVShowFanartYAMJ.Enabled = false
+        Me.chkTVShowFanartYAMJ.AutoSize = True
+        Me.chkTVShowFanartYAMJ.Enabled = False
         Me.chkTVShowFanartYAMJ.Location = New System.Drawing.Point(6, 67)
         Me.chkTVShowFanartYAMJ.Name = "chkTVShowFanartYAMJ"
         Me.chkTVShowFanartYAMJ.Size = New System.Drawing.Size(91, 17)
         Me.chkTVShowFanartYAMJ.TabIndex = 18
         Me.chkTVShowFanartYAMJ.Text = "Show Fanart"
-        Me.chkTVShowFanartYAMJ.UseVisualStyleBackColor = true
+        Me.chkTVShowFanartYAMJ.UseVisualStyleBackColor = True
         '
         'chkTVShowPosterYAMJ
         '
-        Me.chkTVShowPosterYAMJ.AutoSize = true
-        Me.chkTVShowPosterYAMJ.Enabled = false
+        Me.chkTVShowPosterYAMJ.AutoSize = True
+        Me.chkTVShowPosterYAMJ.Enabled = False
         Me.chkTVShowPosterYAMJ.Location = New System.Drawing.Point(6, 44)
         Me.chkTVShowPosterYAMJ.Name = "chkTVShowPosterYAMJ"
         Me.chkTVShowPosterYAMJ.Size = New System.Drawing.Size(90, 17)
         Me.chkTVShowPosterYAMJ.TabIndex = 17
         Me.chkTVShowPosterYAMJ.Text = "Show Poster"
-        Me.chkTVShowPosterYAMJ.UseVisualStyleBackColor = true
+        Me.chkTVShowPosterYAMJ.UseVisualStyleBackColor = True
         '
         'chkTVUseYAMJ
         '
-        Me.chkTVUseYAMJ.AutoSize = true
+        Me.chkTVUseYAMJ.AutoSize = True
         Me.chkTVUseYAMJ.Location = New System.Drawing.Point(6, 21)
         Me.chkTVUseYAMJ.Name = "chkTVUseYAMJ"
         Me.chkTVUseYAMJ.Size = New System.Drawing.Size(45, 17)
         Me.chkTVUseYAMJ.TabIndex = 16
         Me.chkTVUseYAMJ.Text = "Use"
-        Me.chkTVUseYAMJ.UseVisualStyleBackColor = true
+        Me.chkTVUseYAMJ.UseVisualStyleBackColor = True
         '
         'tpTVFileNamingBoxee
         '
@@ -7732,7 +7736,7 @@ Partial Class dlgSettings
         Me.tpTVFileNamingBoxee.Size = New System.Drawing.Size(547, 301)
         Me.tpTVFileNamingBoxee.TabIndex = 3
         Me.tpTVFileNamingBoxee.Text = "Boxee"
-        Me.tpTVFileNamingBoxee.UseVisualStyleBackColor = true
+        Me.tpTVFileNamingBoxee.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
@@ -7742,78 +7746,78 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkTVShowFanartBoxee)
         Me.GroupBox1.Controls.Add(Me.chkTVShowPosterBoxee)
         Me.GroupBox1.Controls.Add(Me.chkTVUseBoxee)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(6, 6)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(152, 289)
         Me.GroupBox1.TabIndex = 19
-        Me.GroupBox1.TabStop = false
+        Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Boxee"
         '
         'chkTVSeasonPosterBoxee
         '
-        Me.chkTVSeasonPosterBoxee.AutoSize = true
-        Me.chkTVSeasonPosterBoxee.Enabled = false
+        Me.chkTVSeasonPosterBoxee.AutoSize = True
+        Me.chkTVSeasonPosterBoxee.Enabled = False
         Me.chkTVSeasonPosterBoxee.Location = New System.Drawing.Point(6, 113)
         Me.chkTVSeasonPosterBoxee.Name = "chkTVSeasonPosterBoxee"
         Me.chkTVSeasonPosterBoxee.Size = New System.Drawing.Size(98, 17)
         Me.chkTVSeasonPosterBoxee.TabIndex = 26
         Me.chkTVSeasonPosterBoxee.Text = "Season Poster"
-        Me.chkTVSeasonPosterBoxee.UseVisualStyleBackColor = true
+        Me.chkTVSeasonPosterBoxee.UseVisualStyleBackColor = True
         '
         'chkTVShowBannerBoxee
         '
-        Me.chkTVShowBannerBoxee.AutoSize = true
-        Me.chkTVShowBannerBoxee.Enabled = false
+        Me.chkTVShowBannerBoxee.AutoSize = True
+        Me.chkTVShowBannerBoxee.Enabled = False
         Me.chkTVShowBannerBoxee.Location = New System.Drawing.Point(6, 90)
         Me.chkTVShowBannerBoxee.Name = "chkTVShowBannerBoxee"
         Me.chkTVShowBannerBoxee.Size = New System.Drawing.Size(95, 17)
         Me.chkTVShowBannerBoxee.TabIndex = 25
         Me.chkTVShowBannerBoxee.Text = "Show Banner"
-        Me.chkTVShowBannerBoxee.UseVisualStyleBackColor = true
+        Me.chkTVShowBannerBoxee.UseVisualStyleBackColor = True
         '
         'chkTVEpisodePosterBoxee
         '
-        Me.chkTVEpisodePosterBoxee.AutoSize = true
-        Me.chkTVEpisodePosterBoxee.Enabled = false
+        Me.chkTVEpisodePosterBoxee.AutoSize = True
+        Me.chkTVEpisodePosterBoxee.Enabled = False
         Me.chkTVEpisodePosterBoxee.Location = New System.Drawing.Point(6, 136)
         Me.chkTVEpisodePosterBoxee.Name = "chkTVEpisodePosterBoxee"
         Me.chkTVEpisodePosterBoxee.Size = New System.Drawing.Size(102, 17)
         Me.chkTVEpisodePosterBoxee.TabIndex = 21
         Me.chkTVEpisodePosterBoxee.Text = "Episode Poster"
-        Me.chkTVEpisodePosterBoxee.UseVisualStyleBackColor = true
+        Me.chkTVEpisodePosterBoxee.UseVisualStyleBackColor = True
         '
         'chkTVShowFanartBoxee
         '
-        Me.chkTVShowFanartBoxee.AutoSize = true
-        Me.chkTVShowFanartBoxee.Enabled = false
+        Me.chkTVShowFanartBoxee.AutoSize = True
+        Me.chkTVShowFanartBoxee.Enabled = False
         Me.chkTVShowFanartBoxee.Location = New System.Drawing.Point(6, 67)
         Me.chkTVShowFanartBoxee.Name = "chkTVShowFanartBoxee"
         Me.chkTVShowFanartBoxee.Size = New System.Drawing.Size(91, 17)
         Me.chkTVShowFanartBoxee.TabIndex = 18
         Me.chkTVShowFanartBoxee.Text = "Show Fanart"
-        Me.chkTVShowFanartBoxee.UseVisualStyleBackColor = true
+        Me.chkTVShowFanartBoxee.UseVisualStyleBackColor = True
         '
         'chkTVShowPosterBoxee
         '
-        Me.chkTVShowPosterBoxee.AutoSize = true
-        Me.chkTVShowPosterBoxee.Enabled = false
+        Me.chkTVShowPosterBoxee.AutoSize = True
+        Me.chkTVShowPosterBoxee.Enabled = False
         Me.chkTVShowPosterBoxee.Location = New System.Drawing.Point(6, 44)
         Me.chkTVShowPosterBoxee.Name = "chkTVShowPosterBoxee"
         Me.chkTVShowPosterBoxee.Size = New System.Drawing.Size(90, 17)
         Me.chkTVShowPosterBoxee.TabIndex = 17
         Me.chkTVShowPosterBoxee.Text = "Show Poster"
-        Me.chkTVShowPosterBoxee.UseVisualStyleBackColor = true
+        Me.chkTVShowPosterBoxee.UseVisualStyleBackColor = True
         '
         'chkTVUseBoxee
         '
-        Me.chkTVUseBoxee.AutoSize = true
+        Me.chkTVUseBoxee.AutoSize = True
         Me.chkTVUseBoxee.Location = New System.Drawing.Point(6, 21)
         Me.chkTVUseBoxee.Name = "chkTVUseBoxee"
         Me.chkTVUseBoxee.Size = New System.Drawing.Size(45, 17)
         Me.chkTVUseBoxee.TabIndex = 16
         Me.chkTVUseBoxee.Text = "Use"
-        Me.chkTVUseBoxee.UseVisualStyleBackColor = true
+        Me.chkTVUseBoxee.UseVisualStyleBackColor = True
         '
         'tpTVFileNamingExpert
         '
@@ -7822,20 +7826,20 @@ Partial Class dlgSettings
         Me.tpTVFileNamingExpert.Size = New System.Drawing.Size(547, 301)
         Me.tpTVFileNamingExpert.TabIndex = 2
         Me.tpTVFileNamingExpert.Text = "Expert"
-        Me.tpTVFileNamingExpert.UseVisualStyleBackColor = true
+        Me.tpTVFileNamingExpert.UseVisualStyleBackColor = True
         '
         'lvTVSources
         '
         Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
-        Me.lvTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lvTVSources.FullRowSelect = true
-        Me.lvTVSources.HideSelection = false
+        Me.lvTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvTVSources.FullRowSelect = True
+        Me.lvTVSources.HideSelection = False
         Me.lvTVSources.Location = New System.Drawing.Point(6, 4)
         Me.lvTVSources.Name = "lvTVSources"
         Me.lvTVSources.Size = New System.Drawing.Size(614, 105)
         Me.lvTVSources.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvTVSources.TabIndex = 0
-        Me.lvTVSources.UseCompatibleStateImageBehavior = false
+        Me.lvTVSources.UseCompatibleStateImageBehavior = False
         Me.lvTVSources.View = System.Windows.Forms.View.Details
         '
         'ColumnHeader1
@@ -7869,18 +7873,18 @@ Partial Class dlgSettings
         Me.gbTVSourcesMiscOpts.Controls.Add(Me.chkTVScanOrderModify)
         Me.gbTVSourcesMiscOpts.Controls.Add(Me.chkTVGeneralIgnoreLastScan)
         Me.gbTVSourcesMiscOpts.Controls.Add(Me.chkTVCleanDB)
-        Me.gbTVSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(6, 110)
         Me.gbTVSourcesMiscOpts.Name = "gbTVSourcesMiscOpts"
         Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(151, 188)
         Me.gbTVSourcesMiscOpts.TabIndex = 4
-        Me.gbTVSourcesMiscOpts.TabStop = false
+        Me.gbTVSourcesMiscOpts.TabStop = False
         Me.gbTVSourcesMiscOpts.Text = "Miscellaneous Options"
         '
         'lblTVSkipLessThanMB
         '
-        Me.lblTVSkipLessThanMB.AutoSize = true
-        Me.lblTVSkipLessThanMB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSkipLessThanMB.AutoSize = True
+        Me.lblTVSkipLessThanMB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSkipLessThanMB.Location = New System.Drawing.Point(114, 39)
         Me.lblTVSkipLessThanMB.Name = "lblTVSkipLessThanMB"
         Me.lblTVSkipLessThanMB.Size = New System.Drawing.Size(24, 13)
@@ -7889,7 +7893,7 @@ Partial Class dlgSettings
         '
         'txtTVSkipLessThan
         '
-        Me.txtTVSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVSkipLessThan.Location = New System.Drawing.Point(11, 34)
         Me.txtTVSkipLessThan.Name = "txtTVSkipLessThan"
         Me.txtTVSkipLessThan.Size = New System.Drawing.Size(100, 22)
@@ -7897,8 +7901,8 @@ Partial Class dlgSettings
         '
         'lblTVSkipLessThan
         '
-        Me.lblTVSkipLessThan.AutoSize = true
-        Me.lblTVSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSkipLessThan.AutoSize = True
+        Me.lblTVSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSkipLessThan.Location = New System.Drawing.Point(6, 18)
         Me.lblTVSkipLessThan.Name = "lblTVSkipLessThan"
         Me.lblTVSkipLessThan.Size = New System.Drawing.Size(122, 13)
@@ -7908,43 +7912,43 @@ Partial Class dlgSettings
         'chkTVScanOrderModify
         '
         Me.chkTVScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScanOrderModify.Location = New System.Drawing.Point(4, 110)
         Me.chkTVScanOrderModify.Name = "chkTVScanOrderModify"
         Me.chkTVScanOrderModify.Size = New System.Drawing.Size(142, 43)
         Me.chkTVScanOrderModify.TabIndex = 4
         Me.chkTVScanOrderModify.Text = "Scan in order of last write time"
         Me.chkTVScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVScanOrderModify.UseVisualStyleBackColor = true
+        Me.chkTVScanOrderModify.UseVisualStyleBackColor = True
         '
         'chkTVGeneralIgnoreLastScan
         '
         Me.chkTVGeneralIgnoreLastScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVGeneralIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVGeneralIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVGeneralIgnoreLastScan.Location = New System.Drawing.Point(4, 68)
         Me.chkTVGeneralIgnoreLastScan.Name = "chkTVGeneralIgnoreLastScan"
         Me.chkTVGeneralIgnoreLastScan.Size = New System.Drawing.Size(142, 43)
         Me.chkTVGeneralIgnoreLastScan.TabIndex = 3
         Me.chkTVGeneralIgnoreLastScan.Text = "Ignore last scan time when updating library"
         Me.chkTVGeneralIgnoreLastScan.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVGeneralIgnoreLastScan.UseVisualStyleBackColor = true
+        Me.chkTVGeneralIgnoreLastScan.UseVisualStyleBackColor = True
         '
         'chkTVCleanDB
         '
         Me.chkTVCleanDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVCleanDB.Location = New System.Drawing.Point(4, 152)
         Me.chkTVCleanDB.Name = "chkTVCleanDB"
         Me.chkTVCleanDB.Size = New System.Drawing.Size(142, 43)
         Me.chkTVCleanDB.TabIndex = 5
         Me.chkTVCleanDB.Text = "Clean database after updating library"
         Me.chkTVCleanDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVCleanDB.UseVisualStyleBackColor = true
+        Me.chkTVCleanDB.UseVisualStyleBackColor = True
         '
         'btnTVSourceAdd
         '
-        Me.btnTVSourceAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVSourceAdd.Image = CType(resources.GetObject("btnTVSourceAdd.Image"),System.Drawing.Image)
+        Me.btnTVSourceAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVSourceAdd.Image = CType(resources.GetObject("btnTVSourceAdd.Image"), System.Drawing.Image)
         Me.btnTVSourceAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnTVSourceAdd.Location = New System.Drawing.Point(626, 4)
         Me.btnTVSourceAdd.Name = "btnTVSourceAdd"
@@ -7952,12 +7956,12 @@ Partial Class dlgSettings
         Me.btnTVSourceAdd.TabIndex = 1
         Me.btnTVSourceAdd.Text = "Add Source"
         Me.btnTVSourceAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVSourceAdd.UseVisualStyleBackColor = true
+        Me.btnTVSourceAdd.UseVisualStyleBackColor = True
         '
         'btnTVSourceEdit
         '
-        Me.btnTVSourceEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVSourceEdit.Image = CType(resources.GetObject("btnTVSourceEdit.Image"),System.Drawing.Image)
+        Me.btnTVSourceEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVSourceEdit.Image = CType(resources.GetObject("btnTVSourceEdit.Image"), System.Drawing.Image)
         Me.btnTVSourceEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnTVSourceEdit.Location = New System.Drawing.Point(626, 34)
         Me.btnTVSourceEdit.Name = "btnTVSourceEdit"
@@ -7965,12 +7969,12 @@ Partial Class dlgSettings
         Me.btnTVSourceEdit.TabIndex = 2
         Me.btnTVSourceEdit.Text = "Edit Source"
         Me.btnTVSourceEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVSourceEdit.UseVisualStyleBackColor = true
+        Me.btnTVSourceEdit.UseVisualStyleBackColor = True
         '
         'btnRemTVSource
         '
-        Me.btnRemTVSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnRemTVSource.Image = CType(resources.GetObject("btnRemTVSource.Image"),System.Drawing.Image)
+        Me.btnRemTVSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemTVSource.Image = CType(resources.GetObject("btnRemTVSource.Image"), System.Drawing.Image)
         Me.btnRemTVSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnRemTVSource.Location = New System.Drawing.Point(626, 86)
         Me.btnRemTVSource.Name = "btnRemTVSource"
@@ -7978,7 +7982,7 @@ Partial Class dlgSettings
         Me.btnRemTVSource.TabIndex = 3
         Me.btnRemTVSource.Text = "Remove"
         Me.btnRemTVSource.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnRemTVSource.UseVisualStyleBackColor = true
+        Me.btnRemTVSource.UseVisualStyleBackColor = True
         '
         'tpTVSourcesRegex
         '
@@ -7996,43 +8000,43 @@ Partial Class dlgSettings
         Me.tpTVSourcesRegex.Size = New System.Drawing.Size(736, 467)
         Me.tpTVSourcesRegex.TabIndex = 1
         Me.tpTVSourcesRegex.Text = "Regex"
-        Me.tpTVSourcesRegex.UseVisualStyleBackColor = true
+        Me.tpTVSourcesRegex.UseVisualStyleBackColor = True
         '
         'btnTVShowRegexGet
         '
-        Me.btnTVShowRegexGet.Image = CType(resources.GetObject("btnTVShowRegexGet.Image"),System.Drawing.Image)
+        Me.btnTVShowRegexGet.Image = CType(resources.GetObject("btnTVShowRegexGet.Image"), System.Drawing.Image)
         Me.btnTVShowRegexGet.Location = New System.Drawing.Point(550, 3)
         Me.btnTVShowRegexGet.Name = "btnTVShowRegexGet"
         Me.btnTVShowRegexGet.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowRegexGet.TabIndex = 1
-        Me.btnTVShowRegexGet.UseVisualStyleBackColor = true
+        Me.btnTVShowRegexGet.UseVisualStyleBackColor = True
         '
         'btnTVShowRegexDown
         '
-        Me.btnTVShowRegexDown.Image = CType(resources.GetObject("btnTVShowRegexDown.Image"),System.Drawing.Image)
+        Me.btnTVShowRegexDown.Image = CType(resources.GetObject("btnTVShowRegexDown.Image"), System.Drawing.Image)
         Me.btnTVShowRegexDown.Location = New System.Drawing.Point(304, 167)
         Me.btnTVShowRegexDown.Name = "btnTVShowRegexDown"
         Me.btnTVShowRegexDown.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowRegexDown.TabIndex = 5
-        Me.btnTVShowRegexDown.UseVisualStyleBackColor = true
+        Me.btnTVShowRegexDown.UseVisualStyleBackColor = True
         '
         'btnTVShowRegexUp
         '
-        Me.btnTVShowRegexUp.Image = CType(resources.GetObject("btnTVShowRegexUp.Image"),System.Drawing.Image)
+        Me.btnTVShowRegexUp.Image = CType(resources.GetObject("btnTVShowRegexUp.Image"), System.Drawing.Image)
         Me.btnTVShowRegexUp.Location = New System.Drawing.Point(280, 167)
         Me.btnTVShowRegexUp.Name = "btnTVShowRegexUp"
         Me.btnTVShowRegexUp.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowRegexUp.TabIndex = 4
-        Me.btnTVShowRegexUp.UseVisualStyleBackColor = true
+        Me.btnTVShowRegexUp.UseVisualStyleBackColor = True
         '
         'btnTVShowRegexReset
         '
-        Me.btnTVShowRegexReset.Image = CType(resources.GetObject("btnTVShowRegexReset.Image"),System.Drawing.Image)
+        Me.btnTVShowRegexReset.Image = CType(resources.GetObject("btnTVShowRegexReset.Image"), System.Drawing.Image)
         Me.btnTVShowRegexReset.Location = New System.Drawing.Point(576, 3)
         Me.btnTVShowRegexReset.Name = "btnTVShowRegexReset"
         Me.btnTVShowRegexReset.Size = New System.Drawing.Size(23, 23)
         Me.btnTVShowRegexReset.TabIndex = 2
-        Me.btnTVShowRegexReset.UseVisualStyleBackColor = true
+        Me.btnTVShowRegexReset.UseVisualStyleBackColor = True
         '
         'gbTVShowRegex
         '
@@ -8046,18 +8050,18 @@ Partial Class dlgSettings
         Me.gbTVShowRegex.Controls.Add(Me.txtTVEpisodeRegex)
         Me.gbTVShowRegex.Controls.Add(Me.lblTVEpisodeMatch)
         Me.gbTVShowRegex.Controls.Add(Me.cbTVEpisodeRetrieve)
-        Me.gbTVShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVShowRegex.Location = New System.Drawing.Point(6, 196)
         Me.gbTVShowRegex.Name = "gbTVShowRegex"
         Me.gbTVShowRegex.Size = New System.Drawing.Size(592, 148)
         Me.gbTVShowRegex.TabIndex = 7
-        Me.gbTVShowRegex.TabStop = false
+        Me.gbTVShowRegex.TabStop = False
         Me.gbTVShowRegex.Text = "Show Match Regex"
         '
         'btnTVShowRegexClear
         '
-        Me.btnTVShowRegexClear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVShowRegexClear.Image = CType(resources.GetObject("btnTVShowRegexClear.Image"),System.Drawing.Image)
+        Me.btnTVShowRegexClear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVShowRegexClear.Image = CType(resources.GetObject("btnTVShowRegexClear.Image"), System.Drawing.Image)
         Me.btnTVShowRegexClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnTVShowRegexClear.Location = New System.Drawing.Point(10, 116)
         Me.btnTVShowRegexClear.Name = "btnTVShowRegexClear"
@@ -8065,12 +8069,12 @@ Partial Class dlgSettings
         Me.btnTVShowRegexClear.TabIndex = 8
         Me.btnTVShowRegexClear.Text = "Clear"
         Me.btnTVShowRegexClear.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVShowRegexClear.UseVisualStyleBackColor = true
+        Me.btnTVShowRegexClear.UseVisualStyleBackColor = True
         '
         'lblTVSeasonMatch
         '
-        Me.lblTVSeasonMatch.AutoSize = true
-        Me.lblTVSeasonMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonMatch.AutoSize = True
+        Me.lblTVSeasonMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonMatch.Location = New System.Drawing.Point(8, 25)
         Me.lblTVSeasonMatch.Name = "lblTVSeasonMatch"
         Me.lblTVSeasonMatch.Size = New System.Drawing.Size(116, 13)
@@ -8079,9 +8083,9 @@ Partial Class dlgSettings
         '
         'btnTVShowRegexAdd
         '
-        Me.btnTVShowRegexAdd.Enabled = false
-        Me.btnTVShowRegexAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVShowRegexAdd.Image = CType(resources.GetObject("btnTVShowRegexAdd.Image"),System.Drawing.Image)
+        Me.btnTVShowRegexAdd.Enabled = False
+        Me.btnTVShowRegexAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVShowRegexAdd.Image = CType(resources.GetObject("btnTVShowRegexAdd.Image"), System.Drawing.Image)
         Me.btnTVShowRegexAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnTVShowRegexAdd.Location = New System.Drawing.Point(482, 117)
         Me.btnTVShowRegexAdd.Name = "btnTVShowRegexAdd"
@@ -8089,11 +8093,11 @@ Partial Class dlgSettings
         Me.btnTVShowRegexAdd.TabIndex = 9
         Me.btnTVShowRegexAdd.Text = "Add Regex"
         Me.btnTVShowRegexAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVShowRegexAdd.UseVisualStyleBackColor = true
+        Me.btnTVShowRegexAdd.UseVisualStyleBackColor = True
         '
         'txtTVSeasonRegex
         '
-        Me.txtTVSeasonRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVSeasonRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVSeasonRegex.Location = New System.Drawing.Point(10, 40)
         Me.txtTVSeasonRegex.Name = "txtTVSeasonRegex"
         Me.txtTVSeasonRegex.Size = New System.Drawing.Size(417, 22)
@@ -8101,8 +8105,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodeRetrieve
         '
-        Me.lblTVEpisodeRetrieve.AutoSize = true
-        Me.lblTVEpisodeRetrieve.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVEpisodeRetrieve.AutoSize = True
+        Me.lblTVEpisodeRetrieve.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVEpisodeRetrieve.Location = New System.Drawing.Point(441, 69)
         Me.lblTVEpisodeRetrieve.Name = "lblTVEpisodeRetrieve"
         Me.lblTVEpisodeRetrieve.Size = New System.Drawing.Size(54, 13)
@@ -8112,8 +8116,8 @@ Partial Class dlgSettings
         'cbTVSeasonRetrieve
         '
         Me.cbTVSeasonRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVSeasonRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.cbTVSeasonRetrieve.FormattingEnabled = true
+        Me.cbTVSeasonRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbTVSeasonRetrieve.FormattingEnabled = True
         Me.cbTVSeasonRetrieve.Items.AddRange(New Object() {"Folder Name", "File Name"})
         Me.cbTVSeasonRetrieve.Location = New System.Drawing.Point(443, 40)
         Me.cbTVSeasonRetrieve.Name = "cbTVSeasonRetrieve"
@@ -8122,8 +8126,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonRetrieve
         '
-        Me.lblTVSeasonRetrieve.AutoSize = true
-        Me.lblTVSeasonRetrieve.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonRetrieve.AutoSize = True
+        Me.lblTVSeasonRetrieve.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonRetrieve.Location = New System.Drawing.Point(441, 25)
         Me.lblTVSeasonRetrieve.Name = "lblTVSeasonRetrieve"
         Me.lblTVSeasonRetrieve.Size = New System.Drawing.Size(54, 13)
@@ -8132,7 +8136,7 @@ Partial Class dlgSettings
         '
         'txtTVEpisodeRegex
         '
-        Me.txtTVEpisodeRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVEpisodeRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVEpisodeRegex.Location = New System.Drawing.Point(10, 84)
         Me.txtTVEpisodeRegex.Name = "txtTVEpisodeRegex"
         Me.txtTVEpisodeRegex.Size = New System.Drawing.Size(417, 22)
@@ -8140,8 +8144,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodeMatch
         '
-        Me.lblTVEpisodeMatch.AutoSize = true
-        Me.lblTVEpisodeMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVEpisodeMatch.AutoSize = True
+        Me.lblTVEpisodeMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVEpisodeMatch.Location = New System.Drawing.Point(8, 69)
         Me.lblTVEpisodeMatch.Name = "lblTVEpisodeMatch"
         Me.lblTVEpisodeMatch.Size = New System.Drawing.Size(120, 13)
@@ -8151,8 +8155,8 @@ Partial Class dlgSettings
         'cbTVEpisodeRetrieve
         '
         Me.cbTVEpisodeRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVEpisodeRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.cbTVEpisodeRetrieve.FormattingEnabled = true
+        Me.cbTVEpisodeRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbTVEpisodeRetrieve.FormattingEnabled = True
         Me.cbTVEpisodeRetrieve.Items.AddRange(New Object() {"Folder Name", "File Name", "Season Result"})
         Me.cbTVEpisodeRetrieve.Location = New System.Drawing.Point(443, 84)
         Me.cbTVEpisodeRetrieve.Name = "cbTVEpisodeRetrieve"
@@ -8161,8 +8165,8 @@ Partial Class dlgSettings
         '
         'btnTVShowRegexEdit
         '
-        Me.btnTVShowRegexEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVShowRegexEdit.Image = CType(resources.GetObject("btnTVShowRegexEdit.Image"),System.Drawing.Image)
+        Me.btnTVShowRegexEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVShowRegexEdit.Image = CType(resources.GetObject("btnTVShowRegexEdit.Image"), System.Drawing.Image)
         Me.btnTVShowRegexEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnTVShowRegexEdit.Location = New System.Drawing.Point(1, 167)
         Me.btnTVShowRegexEdit.Name = "btnTVShowRegexEdit"
@@ -8170,12 +8174,12 @@ Partial Class dlgSettings
         Me.btnTVShowRegexEdit.TabIndex = 3
         Me.btnTVShowRegexEdit.Text = "Edit Regex"
         Me.btnTVShowRegexEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVShowRegexEdit.UseVisualStyleBackColor = true
+        Me.btnTVShowRegexEdit.UseVisualStyleBackColor = True
         '
         'btnTVShowRegexRemove
         '
-        Me.btnTVShowRegexRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVShowRegexRemove.Image = CType(resources.GetObject("btnTVShowRegexRemove.Image"),System.Drawing.Image)
+        Me.btnTVShowRegexRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVShowRegexRemove.Image = CType(resources.GetObject("btnTVShowRegexRemove.Image"), System.Drawing.Image)
         Me.btnTVShowRegexRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnTVShowRegexRemove.Location = New System.Drawing.Point(494, 167)
         Me.btnTVShowRegexRemove.Name = "btnTVShowRegexRemove"
@@ -8183,20 +8187,20 @@ Partial Class dlgSettings
         Me.btnTVShowRegexRemove.TabIndex = 6
         Me.btnTVShowRegexRemove.Text = "Remove"
         Me.btnTVShowRegexRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVShowRegexRemove.UseVisualStyleBackColor = true
+        Me.btnTVShowRegexRemove.UseVisualStyleBackColor = True
         '
         'lvTVShowRegex
         '
         Me.lvTVShowRegex.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colTVShowRegexID, Me.colTVShowRegexSeason, Me.colTVShowRegexSeasonApply, Me.colTVShowRegexEpisode, Me.colTVShowRegexEpisodeApply})
-        Me.lvTVShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lvTVShowRegex.FullRowSelect = true
-        Me.lvTVShowRegex.HideSelection = false
+        Me.lvTVShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvTVShowRegex.FullRowSelect = True
+        Me.lvTVShowRegex.HideSelection = False
         Me.lvTVShowRegex.Location = New System.Drawing.Point(0, 28)
         Me.lvTVShowRegex.Name = "lvTVShowRegex"
         Me.lvTVShowRegex.Size = New System.Drawing.Size(598, 135)
         Me.lvTVShowRegex.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvTVShowRegex.TabIndex = 0
-        Me.lvTVShowRegex.UseCompatibleStateImageBehavior = false
+        Me.lvTVShowRegex.UseCompatibleStateImageBehavior = False
         Me.lvTVShowRegex.View = System.Windows.Forms.View.Details
         '
         'colTVShowRegexID
@@ -8236,7 +8240,7 @@ Partial Class dlgSettings
         Me.pnlTVImages.Name = "pnlTVImages"
         Me.pnlTVImages.Size = New System.Drawing.Size(750, 500)
         Me.pnlTVImages.TabIndex = 16
-        Me.pnlTVImages.Visible = false
+        Me.pnlTVImages.Visible = False
         '
         'tcTVImages
         '
@@ -8244,7 +8248,7 @@ Partial Class dlgSettings
         Me.tcTVImages.Controls.Add(Me.tpTVAllSeasons)
         Me.tcTVImages.Controls.Add(Me.tpTVSeason)
         Me.tcTVImages.Controls.Add(Me.tpTVEpisode)
-        Me.tcTVImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.tcTVImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.tcTVImages.Location = New System.Drawing.Point(5, 6)
         Me.tcTVImages.Name = "tcTVImages"
         Me.tcTVImages.SelectedIndex = 0
@@ -8266,95 +8270,95 @@ Partial Class dlgSettings
         Me.tpTVShow.Size = New System.Drawing.Size(734, 465)
         Me.tpTVShow.TabIndex = 0
         Me.tpTVShow.Text = "TV Show"
-        Me.tpTVShow.UseVisualStyleBackColor = true
+        Me.tpTVShow.UseVisualStyleBackColor = True
         '
         'gbTVShowCharacterArtOpts
         '
         Me.gbTVShowCharacterArtOpts.Controls.Add(Me.chkTVShowCharacterArtOverwrite)
-        Me.gbTVShowCharacterArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVShowCharacterArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVShowCharacterArtOpts.Location = New System.Drawing.Point(240, 179)
         Me.gbTVShowCharacterArtOpts.Name = "gbTVShowCharacterArtOpts"
         Me.gbTVShowCharacterArtOpts.Size = New System.Drawing.Size(228, 44)
         Me.gbTVShowCharacterArtOpts.TabIndex = 6
-        Me.gbTVShowCharacterArtOpts.TabStop = false
+        Me.gbTVShowCharacterArtOpts.TabStop = False
         Me.gbTVShowCharacterArtOpts.Text = "CharacterArt"
         '
         'chkTVShowCharacterArtOverwrite
         '
-        Me.chkTVShowCharacterArtOverwrite.AutoSize = true
-        Me.chkTVShowCharacterArtOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowCharacterArtOverwrite.AutoSize = True
+        Me.chkTVShowCharacterArtOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowCharacterArtOverwrite.Location = New System.Drawing.Point(6, 21)
         Me.chkTVShowCharacterArtOverwrite.Name = "chkTVShowCharacterArtOverwrite"
         Me.chkTVShowCharacterArtOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVShowCharacterArtOverwrite.TabIndex = 4
         Me.chkTVShowCharacterArtOverwrite.Text = "Overwrite Existing"
-        Me.chkTVShowCharacterArtOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVShowCharacterArtOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVShowClearArtOpts
         '
         Me.gbTVShowClearArtOpts.Controls.Add(Me.chkTVShowClearArtOverwrite)
-        Me.gbTVShowClearArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVShowClearArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVShowClearArtOpts.Location = New System.Drawing.Point(6, 229)
         Me.gbTVShowClearArtOpts.Name = "gbTVShowClearArtOpts"
         Me.gbTVShowClearArtOpts.Size = New System.Drawing.Size(228, 44)
         Me.gbTVShowClearArtOpts.TabIndex = 5
-        Me.gbTVShowClearArtOpts.TabStop = false
+        Me.gbTVShowClearArtOpts.TabStop = False
         Me.gbTVShowClearArtOpts.Text = "ClearArt"
         '
         'chkTVShowClearArtOverwrite
         '
-        Me.chkTVShowClearArtOverwrite.AutoSize = true
-        Me.chkTVShowClearArtOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowClearArtOverwrite.AutoSize = True
+        Me.chkTVShowClearArtOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowClearArtOverwrite.Location = New System.Drawing.Point(6, 21)
         Me.chkTVShowClearArtOverwrite.Name = "chkTVShowClearArtOverwrite"
         Me.chkTVShowClearArtOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVShowClearArtOverwrite.TabIndex = 4
         Me.chkTVShowClearArtOverwrite.Text = "Overwrite Existing"
-        Me.chkTVShowClearArtOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVShowClearArtOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVShowClearLogoOpts
         '
         Me.gbTVShowClearLogoOpts.Controls.Add(Me.chkTVShowClearLogoOverwrite)
-        Me.gbTVShowClearLogoOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVShowClearLogoOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVShowClearLogoOpts.Location = New System.Drawing.Point(240, 229)
         Me.gbTVShowClearLogoOpts.Name = "gbTVShowClearLogoOpts"
         Me.gbTVShowClearLogoOpts.Size = New System.Drawing.Size(228, 44)
         Me.gbTVShowClearLogoOpts.TabIndex = 4
-        Me.gbTVShowClearLogoOpts.TabStop = false
+        Me.gbTVShowClearLogoOpts.TabStop = False
         Me.gbTVShowClearLogoOpts.Text = "ClearLogo"
         '
         'chkTVShowClearLogoOverwrite
         '
-        Me.chkTVShowClearLogoOverwrite.AutoSize = true
-        Me.chkTVShowClearLogoOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowClearLogoOverwrite.AutoSize = True
+        Me.chkTVShowClearLogoOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowClearLogoOverwrite.Location = New System.Drawing.Point(6, 21)
         Me.chkTVShowClearLogoOverwrite.Name = "chkTVShowClearLogoOverwrite"
         Me.chkTVShowClearLogoOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVShowClearLogoOverwrite.TabIndex = 4
         Me.chkTVShowClearLogoOverwrite.Text = "Overwrite Existing"
-        Me.chkTVShowClearLogoOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVShowClearLogoOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVShowLandscapeOpts
         '
         Me.gbTVShowLandscapeOpts.Controls.Add(Me.chkTVShowLandscapeOverwrite)
-        Me.gbTVShowLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVShowLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVShowLandscapeOpts.Location = New System.Drawing.Point(6, 179)
         Me.gbTVShowLandscapeOpts.Name = "gbTVShowLandscapeOpts"
         Me.gbTVShowLandscapeOpts.Size = New System.Drawing.Size(228, 44)
         Me.gbTVShowLandscapeOpts.TabIndex = 3
-        Me.gbTVShowLandscapeOpts.TabStop = false
+        Me.gbTVShowLandscapeOpts.TabStop = False
         Me.gbTVShowLandscapeOpts.Text = "Landscape"
         '
         'chkTVShowLandscapeOverwrite
         '
-        Me.chkTVShowLandscapeOverwrite.AutoSize = true
-        Me.chkTVShowLandscapeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowLandscapeOverwrite.AutoSize = True
+        Me.chkTVShowLandscapeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowLandscapeOverwrite.Location = New System.Drawing.Point(6, 21)
         Me.chkTVShowLandscapeOverwrite.Name = "chkTVShowLandscapeOverwrite"
         Me.chkTVShowLandscapeOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVShowLandscapeOverwrite.TabIndex = 4
         Me.chkTVShowLandscapeOverwrite.Text = "Overwrite Existing"
-        Me.chkTVShowLandscapeOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVShowLandscapeOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVShowBannerOpts
         '
@@ -8369,18 +8373,18 @@ Partial Class dlgSettings
         Me.gbTVShowBannerOpts.Controls.Add(Me.lblTVShowBannerType)
         Me.gbTVShowBannerOpts.Controls.Add(Me.cbTVShowBannerPrefType)
         Me.gbTVShowBannerOpts.Controls.Add(Me.chkTVShowBannerOverwrite)
-        Me.gbTVShowBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVShowBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVShowBannerOpts.Location = New System.Drawing.Point(240, 6)
         Me.gbTVShowBannerOpts.Name = "gbTVShowBannerOpts"
         Me.gbTVShowBannerOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVShowBannerOpts.TabIndex = 2
-        Me.gbTVShowBannerOpts.TabStop = false
+        Me.gbTVShowBannerOpts.TabStop = False
         Me.gbTVShowBannerOpts.Text = "Banner"
         '
         'txtTVShowBannerWidth
         '
-        Me.txtTVShowBannerWidth.Enabled = false
-        Me.txtTVShowBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVShowBannerWidth.Enabled = False
+        Me.txtTVShowBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVShowBannerWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVShowBannerWidth.Name = "txtTVShowBannerWidth"
         Me.txtTVShowBannerWidth.Size = New System.Drawing.Size(40, 22)
@@ -8388,8 +8392,8 @@ Partial Class dlgSettings
         '
         'txtTVShowBannerHeight
         '
-        Me.txtTVShowBannerHeight.Enabled = false
-        Me.txtTVShowBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVShowBannerHeight.Enabled = False
+        Me.txtTVShowBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVShowBannerHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVShowBannerHeight.Name = "txtTVShowBannerHeight"
         Me.txtTVShowBannerHeight.Size = New System.Drawing.Size(40, 22)
@@ -8397,8 +8401,8 @@ Partial Class dlgSettings
         '
         'lblTVShowBannerQual
         '
-        Me.lblTVShowBannerQual.AutoSize = true
-        Me.lblTVShowBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVShowBannerQual.AutoSize = True
+        Me.lblTVShowBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTVShowBannerQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVShowBannerQual.Name = "lblTVShowBannerQual"
         Me.lblTVShowBannerQual.Size = New System.Drawing.Size(29, 17)
@@ -8407,7 +8411,7 @@ Partial Class dlgSettings
         '
         'tbTVShowBannerQual
         '
-        Me.tbTVShowBannerQual.AutoSize = false
+        Me.tbTVShowBannerQual.AutoSize = False
         Me.tbTVShowBannerQual.BackColor = System.Drawing.Color.White
         Me.tbTVShowBannerQual.LargeChange = 10
         Me.tbTVShowBannerQual.Location = New System.Drawing.Point(7, 131)
@@ -8420,8 +8424,8 @@ Partial Class dlgSettings
         '
         'lblTVShowBannerQ
         '
-        Me.lblTVShowBannerQ.AutoSize = true
-        Me.lblTVShowBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowBannerQ.AutoSize = True
+        Me.lblTVShowBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowBannerQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVShowBannerQ.Name = "lblTVShowBannerQ"
         Me.lblTVShowBannerQ.Size = New System.Drawing.Size(46, 13)
@@ -8430,8 +8434,8 @@ Partial Class dlgSettings
         '
         'lblTVShowBannerWidth
         '
-        Me.lblTVShowBannerWidth.AutoSize = true
-        Me.lblTVShowBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowBannerWidth.AutoSize = True
+        Me.lblTVShowBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowBannerWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVShowBannerWidth.Name = "lblTVShowBannerWidth"
         Me.lblTVShowBannerWidth.Size = New System.Drawing.Size(66, 13)
@@ -8440,8 +8444,8 @@ Partial Class dlgSettings
         '
         'lblTVShowBannerHeight
         '
-        Me.lblTVShowBannerHeight.AutoSize = true
-        Me.lblTVShowBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowBannerHeight.AutoSize = True
+        Me.lblTVShowBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowBannerHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVShowBannerHeight.Name = "lblTVShowBannerHeight"
         Me.lblTVShowBannerHeight.Size = New System.Drawing.Size(69, 13)
@@ -8450,19 +8454,19 @@ Partial Class dlgSettings
         '
         'chkTVShowBannerResize
         '
-        Me.chkTVShowBannerResize.AutoSize = true
-        Me.chkTVShowBannerResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowBannerResize.AutoSize = True
+        Me.chkTVShowBannerResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowBannerResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVShowBannerResize.Name = "chkTVShowBannerResize"
         Me.chkTVShowBannerResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVShowBannerResize.TabIndex = 5
         Me.chkTVShowBannerResize.Text = "Automatically Resize:"
-        Me.chkTVShowBannerResize.UseVisualStyleBackColor = true
+        Me.chkTVShowBannerResize.UseVisualStyleBackColor = True
         '
         'lblTVShowBannerType
         '
-        Me.lblTVShowBannerType.AutoSize = true
-        Me.lblTVShowBannerType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowBannerType.AutoSize = True
+        Me.lblTVShowBannerType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowBannerType.Location = New System.Drawing.Point(3, 14)
         Me.lblTVShowBannerType.Name = "lblTVShowBannerType"
         Me.lblTVShowBannerType.Size = New System.Drawing.Size(83, 13)
@@ -8472,8 +8476,8 @@ Partial Class dlgSettings
         'cbTVShowBannerPrefType
         '
         Me.cbTVShowBannerPrefType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVShowBannerPrefType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVShowBannerPrefType.FormattingEnabled = true
+        Me.cbTVShowBannerPrefType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVShowBannerPrefType.FormattingEnabled = True
         Me.cbTVShowBannerPrefType.Location = New System.Drawing.Point(6, 29)
         Me.cbTVShowBannerPrefType.Name = "cbTVShowBannerPrefType"
         Me.cbTVShowBannerPrefType.Size = New System.Drawing.Size(148, 21)
@@ -8481,14 +8485,14 @@ Partial Class dlgSettings
         '
         'chkTVShowBannerOverwrite
         '
-        Me.chkTVShowBannerOverwrite.AutoSize = true
-        Me.chkTVShowBannerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowBannerOverwrite.AutoSize = True
+        Me.chkTVShowBannerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowBannerOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVShowBannerOverwrite.Name = "chkTVShowBannerOverwrite"
         Me.chkTVShowBannerOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVShowBannerOverwrite.TabIndex = 4
         Me.chkTVShowBannerOverwrite.Text = "Overwrite Existing"
-        Me.chkTVShowBannerOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVShowBannerOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVShowPosterOpts
         '
@@ -8503,18 +8507,18 @@ Partial Class dlgSettings
         Me.gbTVShowPosterOpts.Controls.Add(Me.lblTVShowPosterSize)
         Me.gbTVShowPosterOpts.Controls.Add(Me.cbTVShowPosterPrefSize)
         Me.gbTVShowPosterOpts.Controls.Add(Me.chkTVShowPosterOverwrite)
-        Me.gbTVShowPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVShowPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVShowPosterOpts.Location = New System.Drawing.Point(6, 6)
         Me.gbTVShowPosterOpts.Name = "gbTVShowPosterOpts"
         Me.gbTVShowPosterOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVShowPosterOpts.TabIndex = 0
-        Me.gbTVShowPosterOpts.TabStop = false
+        Me.gbTVShowPosterOpts.TabStop = False
         Me.gbTVShowPosterOpts.Text = "Poster"
         '
         'txtTVShowPosterWidth
         '
-        Me.txtTVShowPosterWidth.Enabled = false
-        Me.txtTVShowPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVShowPosterWidth.Enabled = False
+        Me.txtTVShowPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVShowPosterWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVShowPosterWidth.Name = "txtTVShowPosterWidth"
         Me.txtTVShowPosterWidth.Size = New System.Drawing.Size(40, 22)
@@ -8522,8 +8526,8 @@ Partial Class dlgSettings
         '
         'txtTVShowPosterHeight
         '
-        Me.txtTVShowPosterHeight.Enabled = false
-        Me.txtTVShowPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVShowPosterHeight.Enabled = False
+        Me.txtTVShowPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVShowPosterHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVShowPosterHeight.Name = "txtTVShowPosterHeight"
         Me.txtTVShowPosterHeight.Size = New System.Drawing.Size(40, 22)
@@ -8531,8 +8535,8 @@ Partial Class dlgSettings
         '
         'lblTVShowPosterQual
         '
-        Me.lblTVShowPosterQual.AutoSize = true
-        Me.lblTVShowPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVShowPosterQual.AutoSize = True
+        Me.lblTVShowPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTVShowPosterQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVShowPosterQual.Name = "lblTVShowPosterQual"
         Me.lblTVShowPosterQual.Size = New System.Drawing.Size(29, 17)
@@ -8541,7 +8545,7 @@ Partial Class dlgSettings
         '
         'tbTVShowPosterQual
         '
-        Me.tbTVShowPosterQual.AutoSize = false
+        Me.tbTVShowPosterQual.AutoSize = False
         Me.tbTVShowPosterQual.BackColor = System.Drawing.Color.White
         Me.tbTVShowPosterQual.LargeChange = 10
         Me.tbTVShowPosterQual.Location = New System.Drawing.Point(7, 131)
@@ -8554,8 +8558,8 @@ Partial Class dlgSettings
         '
         'lblTVShowPosterQ
         '
-        Me.lblTVShowPosterQ.AutoSize = true
-        Me.lblTVShowPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowPosterQ.AutoSize = True
+        Me.lblTVShowPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowPosterQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVShowPosterQ.Name = "lblTVShowPosterQ"
         Me.lblTVShowPosterQ.Size = New System.Drawing.Size(46, 13)
@@ -8564,8 +8568,8 @@ Partial Class dlgSettings
         '
         'lblTVShowPosterWidth
         '
-        Me.lblTVShowPosterWidth.AutoSize = true
-        Me.lblTVShowPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowPosterWidth.AutoSize = True
+        Me.lblTVShowPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowPosterWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVShowPosterWidth.Name = "lblTVShowPosterWidth"
         Me.lblTVShowPosterWidth.Size = New System.Drawing.Size(66, 13)
@@ -8574,8 +8578,8 @@ Partial Class dlgSettings
         '
         'lblTVShowPosterHeight
         '
-        Me.lblTVShowPosterHeight.AutoSize = true
-        Me.lblTVShowPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowPosterHeight.AutoSize = True
+        Me.lblTVShowPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowPosterHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVShowPosterHeight.Name = "lblTVShowPosterHeight"
         Me.lblTVShowPosterHeight.Size = New System.Drawing.Size(69, 13)
@@ -8584,19 +8588,19 @@ Partial Class dlgSettings
         '
         'chkTVShowPosterResize
         '
-        Me.chkTVShowPosterResize.AutoSize = true
-        Me.chkTVShowPosterResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowPosterResize.AutoSize = True
+        Me.chkTVShowPosterResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowPosterResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVShowPosterResize.Name = "chkTVShowPosterResize"
         Me.chkTVShowPosterResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVShowPosterResize.TabIndex = 5
         Me.chkTVShowPosterResize.Text = "Automatically Resize:"
-        Me.chkTVShowPosterResize.UseVisualStyleBackColor = true
+        Me.chkTVShowPosterResize.UseVisualStyleBackColor = True
         '
         'lblTVShowPosterSize
         '
-        Me.lblTVShowPosterSize.AutoSize = true
-        Me.lblTVShowPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowPosterSize.AutoSize = True
+        Me.lblTVShowPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowPosterSize.Location = New System.Drawing.Point(3, 14)
         Me.lblTVShowPosterSize.Name = "lblTVShowPosterSize"
         Me.lblTVShowPosterSize.Size = New System.Drawing.Size(80, 13)
@@ -8606,8 +8610,8 @@ Partial Class dlgSettings
         'cbTVShowPosterPrefSize
         '
         Me.cbTVShowPosterPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVShowPosterPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVShowPosterPrefSize.FormattingEnabled = true
+        Me.cbTVShowPosterPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVShowPosterPrefSize.FormattingEnabled = True
         Me.cbTVShowPosterPrefSize.Location = New System.Drawing.Point(6, 29)
         Me.cbTVShowPosterPrefSize.Name = "cbTVShowPosterPrefSize"
         Me.cbTVShowPosterPrefSize.Size = New System.Drawing.Size(148, 21)
@@ -8615,14 +8619,14 @@ Partial Class dlgSettings
         '
         'chkTVShowPosterOverwrite
         '
-        Me.chkTVShowPosterOverwrite.AutoSize = true
-        Me.chkTVShowPosterOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowPosterOverwrite.AutoSize = True
+        Me.chkTVShowPosterOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowPosterOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVShowPosterOverwrite.Name = "chkTVShowPosterOverwrite"
         Me.chkTVShowPosterOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVShowPosterOverwrite.TabIndex = 4
         Me.chkTVShowPosterOverwrite.Text = "Overwrite Existing"
-        Me.chkTVShowPosterOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVShowPosterOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVShowFanartOpts
         '
@@ -8637,18 +8641,18 @@ Partial Class dlgSettings
         Me.gbTVShowFanartOpts.Controls.Add(Me.cbTVShowFanartPrefSize)
         Me.gbTVShowFanartOpts.Controls.Add(Me.lblTVShowFanartSize)
         Me.gbTVShowFanartOpts.Controls.Add(Me.chkTVShowFanartOverwrite)
-        Me.gbTVShowFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVShowFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVShowFanartOpts.Location = New System.Drawing.Point(474, 6)
         Me.gbTVShowFanartOpts.Name = "gbTVShowFanartOpts"
         Me.gbTVShowFanartOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVShowFanartOpts.TabIndex = 1
-        Me.gbTVShowFanartOpts.TabStop = false
+        Me.gbTVShowFanartOpts.TabStop = False
         Me.gbTVShowFanartOpts.Text = "Fanart"
         '
         'txtTVShowFanartWidth
         '
-        Me.txtTVShowFanartWidth.Enabled = false
-        Me.txtTVShowFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVShowFanartWidth.Enabled = False
+        Me.txtTVShowFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVShowFanartWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVShowFanartWidth.Name = "txtTVShowFanartWidth"
         Me.txtTVShowFanartWidth.Size = New System.Drawing.Size(40, 22)
@@ -8656,8 +8660,8 @@ Partial Class dlgSettings
         '
         'txtTVShowFanartHeight
         '
-        Me.txtTVShowFanartHeight.Enabled = false
-        Me.txtTVShowFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVShowFanartHeight.Enabled = False
+        Me.txtTVShowFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVShowFanartHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVShowFanartHeight.Name = "txtTVShowFanartHeight"
         Me.txtTVShowFanartHeight.Size = New System.Drawing.Size(40, 22)
@@ -8665,8 +8669,8 @@ Partial Class dlgSettings
         '
         'lblTVShowFanartQual
         '
-        Me.lblTVShowFanartQual.AutoSize = true
-        Me.lblTVShowFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVShowFanartQual.AutoSize = True
+        Me.lblTVShowFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTVShowFanartQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVShowFanartQual.Name = "lblTVShowFanartQual"
         Me.lblTVShowFanartQual.Size = New System.Drawing.Size(29, 17)
@@ -8675,7 +8679,7 @@ Partial Class dlgSettings
         '
         'tbTVShowFanartQual
         '
-        Me.tbTVShowFanartQual.AutoSize = false
+        Me.tbTVShowFanartQual.AutoSize = False
         Me.tbTVShowFanartQual.BackColor = System.Drawing.Color.White
         Me.tbTVShowFanartQual.LargeChange = 10
         Me.tbTVShowFanartQual.Location = New System.Drawing.Point(7, 131)
@@ -8688,8 +8692,8 @@ Partial Class dlgSettings
         '
         'lblTVShowFanartQ
         '
-        Me.lblTVShowFanartQ.AutoSize = true
-        Me.lblTVShowFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowFanartQ.AutoSize = True
+        Me.lblTVShowFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowFanartQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVShowFanartQ.Name = "lblTVShowFanartQ"
         Me.lblTVShowFanartQ.Size = New System.Drawing.Size(46, 13)
@@ -8698,8 +8702,8 @@ Partial Class dlgSettings
         '
         'lblTVShowFanartWidth
         '
-        Me.lblTVShowFanartWidth.AutoSize = true
-        Me.lblTVShowFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowFanartWidth.AutoSize = True
+        Me.lblTVShowFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowFanartWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVShowFanartWidth.Name = "lblTVShowFanartWidth"
         Me.lblTVShowFanartWidth.Size = New System.Drawing.Size(66, 13)
@@ -8708,8 +8712,8 @@ Partial Class dlgSettings
         '
         'lblTVShowFanartHeight
         '
-        Me.lblTVShowFanartHeight.AutoSize = true
-        Me.lblTVShowFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowFanartHeight.AutoSize = True
+        Me.lblTVShowFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowFanartHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVShowFanartHeight.Name = "lblTVShowFanartHeight"
         Me.lblTVShowFanartHeight.Size = New System.Drawing.Size(69, 13)
@@ -8718,20 +8722,20 @@ Partial Class dlgSettings
         '
         'chkTVShowFanartResize
         '
-        Me.chkTVShowFanartResize.AutoSize = true
-        Me.chkTVShowFanartResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowFanartResize.AutoSize = True
+        Me.chkTVShowFanartResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowFanartResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVShowFanartResize.Name = "chkTVShowFanartResize"
         Me.chkTVShowFanartResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVShowFanartResize.TabIndex = 3
         Me.chkTVShowFanartResize.Text = "Automatically Resize:"
-        Me.chkTVShowFanartResize.UseVisualStyleBackColor = true
+        Me.chkTVShowFanartResize.UseVisualStyleBackColor = True
         '
         'cbTVShowFanartPrefSize
         '
         Me.cbTVShowFanartPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVShowFanartPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVShowFanartPrefSize.FormattingEnabled = true
+        Me.cbTVShowFanartPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVShowFanartPrefSize.FormattingEnabled = True
         Me.cbTVShowFanartPrefSize.Location = New System.Drawing.Point(6, 29)
         Me.cbTVShowFanartPrefSize.Name = "cbTVShowFanartPrefSize"
         Me.cbTVShowFanartPrefSize.Size = New System.Drawing.Size(148, 21)
@@ -8739,8 +8743,8 @@ Partial Class dlgSettings
         '
         'lblTVShowFanartSize
         '
-        Me.lblTVShowFanartSize.AutoSize = true
-        Me.lblTVShowFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowFanartSize.AutoSize = True
+        Me.lblTVShowFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVShowFanartSize.Location = New System.Drawing.Point(3, 14)
         Me.lblTVShowFanartSize.Name = "lblTVShowFanartSize"
         Me.lblTVShowFanartSize.Size = New System.Drawing.Size(80, 13)
@@ -8749,14 +8753,14 @@ Partial Class dlgSettings
         '
         'chkTVShowFanartOverwrite
         '
-        Me.chkTVShowFanartOverwrite.AutoSize = true
-        Me.chkTVShowFanartOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowFanartOverwrite.AutoSize = True
+        Me.chkTVShowFanartOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVShowFanartOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVShowFanartOverwrite.Name = "chkTVShowFanartOverwrite"
         Me.chkTVShowFanartOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVShowFanartOverwrite.TabIndex = 2
         Me.chkTVShowFanartOverwrite.Text = "Overwrite Existing"
-        Me.chkTVShowFanartOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVShowFanartOverwrite.UseVisualStyleBackColor = True
         '
         'tpTVAllSeasons
         '
@@ -8770,29 +8774,29 @@ Partial Class dlgSettings
         Me.tpTVAllSeasons.Size = New System.Drawing.Size(734, 465)
         Me.tpTVAllSeasons.TabIndex = 3
         Me.tpTVAllSeasons.Text = "TV All Seasons"
-        Me.tpTVAllSeasons.UseVisualStyleBackColor = true
+        Me.tpTVAllSeasons.UseVisualStyleBackColor = True
         '
         'gbTVASLandscapeOpts
         '
         Me.gbTVASLandscapeOpts.Controls.Add(Me.chkTVASLandscapeOverwrite)
-        Me.gbTVASLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVASLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVASLandscapeOpts.Location = New System.Drawing.Point(6, 179)
         Me.gbTVASLandscapeOpts.Name = "gbTVASLandscapeOpts"
         Me.gbTVASLandscapeOpts.Size = New System.Drawing.Size(228, 44)
         Me.gbTVASLandscapeOpts.TabIndex = 8
-        Me.gbTVASLandscapeOpts.TabStop = false
+        Me.gbTVASLandscapeOpts.TabStop = False
         Me.gbTVASLandscapeOpts.Text = "Landscape"
         '
         'chkTVASLandscapeOverwrite
         '
-        Me.chkTVASLandscapeOverwrite.AutoSize = true
-        Me.chkTVASLandscapeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVASLandscapeOverwrite.AutoSize = True
+        Me.chkTVASLandscapeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVASLandscapeOverwrite.Location = New System.Drawing.Point(6, 21)
         Me.chkTVASLandscapeOverwrite.Name = "chkTVASLandscapeOverwrite"
         Me.chkTVASLandscapeOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVASLandscapeOverwrite.TabIndex = 4
         Me.chkTVASLandscapeOverwrite.Text = "Overwrite Existing"
-        Me.chkTVASLandscapeOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVASLandscapeOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVASFanartOpts
         '
@@ -8807,18 +8811,18 @@ Partial Class dlgSettings
         Me.gbTVASFanartOpts.Controls.Add(Me.cbTVASFanartPrefSize)
         Me.gbTVASFanartOpts.Controls.Add(Me.lblTVASFanartSize)
         Me.gbTVASFanartOpts.Controls.Add(Me.chkTVASFanartOverwrite)
-        Me.gbTVASFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVASFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVASFanartOpts.Location = New System.Drawing.Point(474, 6)
         Me.gbTVASFanartOpts.Name = "gbTVASFanartOpts"
         Me.gbTVASFanartOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVASFanartOpts.TabIndex = 7
-        Me.gbTVASFanartOpts.TabStop = false
+        Me.gbTVASFanartOpts.TabStop = False
         Me.gbTVASFanartOpts.Text = "Fanart"
         '
         'txtTVASFanartWidth
         '
-        Me.txtTVASFanartWidth.Enabled = false
-        Me.txtTVASFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVASFanartWidth.Enabled = False
+        Me.txtTVASFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVASFanartWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVASFanartWidth.Name = "txtTVASFanartWidth"
         Me.txtTVASFanartWidth.Size = New System.Drawing.Size(40, 22)
@@ -8826,8 +8830,8 @@ Partial Class dlgSettings
         '
         'txtTVASFanartHeight
         '
-        Me.txtTVASFanartHeight.Enabled = false
-        Me.txtTVASFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVASFanartHeight.Enabled = False
+        Me.txtTVASFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVASFanartHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVASFanartHeight.Name = "txtTVASFanartHeight"
         Me.txtTVASFanartHeight.Size = New System.Drawing.Size(40, 22)
@@ -8835,8 +8839,8 @@ Partial Class dlgSettings
         '
         'lblTVASFanartQual
         '
-        Me.lblTVASFanartQual.AutoSize = true
-        Me.lblTVASFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVASFanartQual.AutoSize = True
+        Me.lblTVASFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTVASFanartQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVASFanartQual.Name = "lblTVASFanartQual"
         Me.lblTVASFanartQual.Size = New System.Drawing.Size(29, 17)
@@ -8845,7 +8849,7 @@ Partial Class dlgSettings
         '
         'tbTVASFanartQual
         '
-        Me.tbTVASFanartQual.AutoSize = false
+        Me.tbTVASFanartQual.AutoSize = False
         Me.tbTVASFanartQual.BackColor = System.Drawing.Color.White
         Me.tbTVASFanartQual.LargeChange = 10
         Me.tbTVASFanartQual.Location = New System.Drawing.Point(7, 131)
@@ -8858,8 +8862,8 @@ Partial Class dlgSettings
         '
         'lblTVASFanartQ
         '
-        Me.lblTVASFanartQ.AutoSize = true
-        Me.lblTVASFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASFanartQ.AutoSize = True
+        Me.lblTVASFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASFanartQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVASFanartQ.Name = "lblTVASFanartQ"
         Me.lblTVASFanartQ.Size = New System.Drawing.Size(46, 13)
@@ -8868,8 +8872,8 @@ Partial Class dlgSettings
         '
         'lblTVASFanartWidth
         '
-        Me.lblTVASFanartWidth.AutoSize = true
-        Me.lblTVASFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASFanartWidth.AutoSize = True
+        Me.lblTVASFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASFanartWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVASFanartWidth.Name = "lblTVASFanartWidth"
         Me.lblTVASFanartWidth.Size = New System.Drawing.Size(66, 13)
@@ -8878,8 +8882,8 @@ Partial Class dlgSettings
         '
         'lblTVASFanartHeight
         '
-        Me.lblTVASFanartHeight.AutoSize = true
-        Me.lblTVASFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASFanartHeight.AutoSize = True
+        Me.lblTVASFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASFanartHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVASFanartHeight.Name = "lblTVASFanartHeight"
         Me.lblTVASFanartHeight.Size = New System.Drawing.Size(69, 13)
@@ -8888,20 +8892,20 @@ Partial Class dlgSettings
         '
         'chkTVASFanartResize
         '
-        Me.chkTVASFanartResize.AutoSize = true
-        Me.chkTVASFanartResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVASFanartResize.AutoSize = True
+        Me.chkTVASFanartResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVASFanartResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVASFanartResize.Name = "chkTVASFanartResize"
         Me.chkTVASFanartResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVASFanartResize.TabIndex = 3
         Me.chkTVASFanartResize.Text = "Automatically Resize:"
-        Me.chkTVASFanartResize.UseVisualStyleBackColor = true
+        Me.chkTVASFanartResize.UseVisualStyleBackColor = True
         '
         'cbTVASFanartPrefSize
         '
         Me.cbTVASFanartPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVASFanartPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVASFanartPrefSize.FormattingEnabled = true
+        Me.cbTVASFanartPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVASFanartPrefSize.FormattingEnabled = True
         Me.cbTVASFanartPrefSize.Location = New System.Drawing.Point(6, 29)
         Me.cbTVASFanartPrefSize.Name = "cbTVASFanartPrefSize"
         Me.cbTVASFanartPrefSize.Size = New System.Drawing.Size(148, 21)
@@ -8909,8 +8913,8 @@ Partial Class dlgSettings
         '
         'lblTVASFanartSize
         '
-        Me.lblTVASFanartSize.AutoSize = true
-        Me.lblTVASFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASFanartSize.AutoSize = True
+        Me.lblTVASFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASFanartSize.Location = New System.Drawing.Point(3, 14)
         Me.lblTVASFanartSize.Name = "lblTVASFanartSize"
         Me.lblTVASFanartSize.Size = New System.Drawing.Size(80, 13)
@@ -8919,14 +8923,14 @@ Partial Class dlgSettings
         '
         'chkTVASFanartOverwrite
         '
-        Me.chkTVASFanartOverwrite.AutoSize = true
-        Me.chkTVASFanartOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVASFanartOverwrite.AutoSize = True
+        Me.chkTVASFanartOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVASFanartOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVASFanartOverwrite.Name = "chkTVASFanartOverwrite"
         Me.chkTVASFanartOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVASFanartOverwrite.TabIndex = 2
         Me.chkTVASFanartOverwrite.Text = "Overwrite Existing"
-        Me.chkTVASFanartOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVASFanartOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVASBannerOpts
         '
@@ -8941,18 +8945,18 @@ Partial Class dlgSettings
         Me.gbTVASBannerOpts.Controls.Add(Me.lblTVASBannerType)
         Me.gbTVASBannerOpts.Controls.Add(Me.cbTVASBannerPrefType)
         Me.gbTVASBannerOpts.Controls.Add(Me.chkTVASBannerOverwrite)
-        Me.gbTVASBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVASBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVASBannerOpts.Location = New System.Drawing.Point(240, 6)
         Me.gbTVASBannerOpts.Name = "gbTVASBannerOpts"
         Me.gbTVASBannerOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVASBannerOpts.TabIndex = 6
-        Me.gbTVASBannerOpts.TabStop = false
+        Me.gbTVASBannerOpts.TabStop = False
         Me.gbTVASBannerOpts.Text = "Banner"
         '
         'txtTVASBannerWidth
         '
-        Me.txtTVASBannerWidth.Enabled = false
-        Me.txtTVASBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVASBannerWidth.Enabled = False
+        Me.txtTVASBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVASBannerWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVASBannerWidth.Name = "txtTVASBannerWidth"
         Me.txtTVASBannerWidth.Size = New System.Drawing.Size(40, 22)
@@ -8960,8 +8964,8 @@ Partial Class dlgSettings
         '
         'txtTVASBannerHeight
         '
-        Me.txtTVASBannerHeight.Enabled = false
-        Me.txtTVASBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVASBannerHeight.Enabled = False
+        Me.txtTVASBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVASBannerHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVASBannerHeight.Name = "txtTVASBannerHeight"
         Me.txtTVASBannerHeight.Size = New System.Drawing.Size(40, 22)
@@ -8969,8 +8973,8 @@ Partial Class dlgSettings
         '
         'lblTVASBannerQual
         '
-        Me.lblTVASBannerQual.AutoSize = true
-        Me.lblTVASBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVASBannerQual.AutoSize = True
+        Me.lblTVASBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTVASBannerQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVASBannerQual.Name = "lblTVASBannerQual"
         Me.lblTVASBannerQual.Size = New System.Drawing.Size(29, 17)
@@ -8979,7 +8983,7 @@ Partial Class dlgSettings
         '
         'tbTVASBannerQual
         '
-        Me.tbTVASBannerQual.AutoSize = false
+        Me.tbTVASBannerQual.AutoSize = False
         Me.tbTVASBannerQual.BackColor = System.Drawing.Color.White
         Me.tbTVASBannerQual.LargeChange = 10
         Me.tbTVASBannerQual.Location = New System.Drawing.Point(7, 131)
@@ -8992,8 +8996,8 @@ Partial Class dlgSettings
         '
         'lblTVASBannerQ
         '
-        Me.lblTVASBannerQ.AutoSize = true
-        Me.lblTVASBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASBannerQ.AutoSize = True
+        Me.lblTVASBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASBannerQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVASBannerQ.Name = "lblTVASBannerQ"
         Me.lblTVASBannerQ.Size = New System.Drawing.Size(46, 13)
@@ -9002,8 +9006,8 @@ Partial Class dlgSettings
         '
         'lblTVASBannerWidth
         '
-        Me.lblTVASBannerWidth.AutoSize = true
-        Me.lblTVASBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASBannerWidth.AutoSize = True
+        Me.lblTVASBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASBannerWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVASBannerWidth.Name = "lblTVASBannerWidth"
         Me.lblTVASBannerWidth.Size = New System.Drawing.Size(66, 13)
@@ -9012,8 +9016,8 @@ Partial Class dlgSettings
         '
         'lblTVASBannerHeight
         '
-        Me.lblTVASBannerHeight.AutoSize = true
-        Me.lblTVASBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASBannerHeight.AutoSize = True
+        Me.lblTVASBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASBannerHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVASBannerHeight.Name = "lblTVASBannerHeight"
         Me.lblTVASBannerHeight.Size = New System.Drawing.Size(69, 13)
@@ -9022,19 +9026,19 @@ Partial Class dlgSettings
         '
         'chkTVASBannerResize
         '
-        Me.chkTVASBannerResize.AutoSize = true
-        Me.chkTVASBannerResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVASBannerResize.AutoSize = True
+        Me.chkTVASBannerResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVASBannerResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVASBannerResize.Name = "chkTVASBannerResize"
         Me.chkTVASBannerResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVASBannerResize.TabIndex = 5
         Me.chkTVASBannerResize.Text = "Automatically Resize:"
-        Me.chkTVASBannerResize.UseVisualStyleBackColor = true
+        Me.chkTVASBannerResize.UseVisualStyleBackColor = True
         '
         'lblTVASBannerType
         '
-        Me.lblTVASBannerType.AutoSize = true
-        Me.lblTVASBannerType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASBannerType.AutoSize = True
+        Me.lblTVASBannerType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASBannerType.Location = New System.Drawing.Point(3, 14)
         Me.lblTVASBannerType.Name = "lblTVASBannerType"
         Me.lblTVASBannerType.Size = New System.Drawing.Size(83, 13)
@@ -9044,8 +9048,8 @@ Partial Class dlgSettings
         'cbTVASBannerPrefType
         '
         Me.cbTVASBannerPrefType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVASBannerPrefType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVASBannerPrefType.FormattingEnabled = true
+        Me.cbTVASBannerPrefType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVASBannerPrefType.FormattingEnabled = True
         Me.cbTVASBannerPrefType.Location = New System.Drawing.Point(6, 29)
         Me.cbTVASBannerPrefType.Name = "cbTVASBannerPrefType"
         Me.cbTVASBannerPrefType.Size = New System.Drawing.Size(148, 21)
@@ -9053,14 +9057,14 @@ Partial Class dlgSettings
         '
         'chkTVASBannerOverwrite
         '
-        Me.chkTVASBannerOverwrite.AutoSize = true
-        Me.chkTVASBannerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVASBannerOverwrite.AutoSize = True
+        Me.chkTVASBannerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVASBannerOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVASBannerOverwrite.Name = "chkTVASBannerOverwrite"
         Me.chkTVASBannerOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVASBannerOverwrite.TabIndex = 4
         Me.chkTVASBannerOverwrite.Text = "Overwrite Existing"
-        Me.chkTVASBannerOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVASBannerOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVASPosterOpts
         '
@@ -9075,18 +9079,18 @@ Partial Class dlgSettings
         Me.gbTVASPosterOpts.Controls.Add(Me.lblTVASPosterSize)
         Me.gbTVASPosterOpts.Controls.Add(Me.cbTVASPosterPrefSize)
         Me.gbTVASPosterOpts.Controls.Add(Me.chkTVASPosterOverwrite)
-        Me.gbTVASPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVASPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVASPosterOpts.Location = New System.Drawing.Point(6, 6)
         Me.gbTVASPosterOpts.Name = "gbTVASPosterOpts"
         Me.gbTVASPosterOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVASPosterOpts.TabIndex = 5
-        Me.gbTVASPosterOpts.TabStop = false
+        Me.gbTVASPosterOpts.TabStop = False
         Me.gbTVASPosterOpts.Text = "Poster"
         '
         'txtTVASPosterWidth
         '
-        Me.txtTVASPosterWidth.Enabled = false
-        Me.txtTVASPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVASPosterWidth.Enabled = False
+        Me.txtTVASPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVASPosterWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVASPosterWidth.Name = "txtTVASPosterWidth"
         Me.txtTVASPosterWidth.Size = New System.Drawing.Size(40, 22)
@@ -9094,8 +9098,8 @@ Partial Class dlgSettings
         '
         'txtTVASPosterHeight
         '
-        Me.txtTVASPosterHeight.Enabled = false
-        Me.txtTVASPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVASPosterHeight.Enabled = False
+        Me.txtTVASPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVASPosterHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVASPosterHeight.Name = "txtTVASPosterHeight"
         Me.txtTVASPosterHeight.Size = New System.Drawing.Size(40, 22)
@@ -9103,8 +9107,8 @@ Partial Class dlgSettings
         '
         'lblTVASPosterQual
         '
-        Me.lblTVASPosterQual.AutoSize = true
-        Me.lblTVASPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVASPosterQual.AutoSize = True
+        Me.lblTVASPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTVASPosterQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVASPosterQual.Name = "lblTVASPosterQual"
         Me.lblTVASPosterQual.Size = New System.Drawing.Size(29, 17)
@@ -9113,7 +9117,7 @@ Partial Class dlgSettings
         '
         'tbTVASPosterQual
         '
-        Me.tbTVASPosterQual.AutoSize = false
+        Me.tbTVASPosterQual.AutoSize = False
         Me.tbTVASPosterQual.BackColor = System.Drawing.Color.White
         Me.tbTVASPosterQual.LargeChange = 10
         Me.tbTVASPosterQual.Location = New System.Drawing.Point(7, 131)
@@ -9126,8 +9130,8 @@ Partial Class dlgSettings
         '
         'lblTVASPosterQ
         '
-        Me.lblTVASPosterQ.AutoSize = true
-        Me.lblTVASPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASPosterQ.AutoSize = True
+        Me.lblTVASPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASPosterQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVASPosterQ.Name = "lblTVASPosterQ"
         Me.lblTVASPosterQ.Size = New System.Drawing.Size(46, 13)
@@ -9136,8 +9140,8 @@ Partial Class dlgSettings
         '
         'lblTVASPosterWidth
         '
-        Me.lblTVASPosterWidth.AutoSize = true
-        Me.lblTVASPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASPosterWidth.AutoSize = True
+        Me.lblTVASPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASPosterWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVASPosterWidth.Name = "lblTVASPosterWidth"
         Me.lblTVASPosterWidth.Size = New System.Drawing.Size(66, 13)
@@ -9146,8 +9150,8 @@ Partial Class dlgSettings
         '
         'lblTVASPosterHeight
         '
-        Me.lblTVASPosterHeight.AutoSize = true
-        Me.lblTVASPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASPosterHeight.AutoSize = True
+        Me.lblTVASPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASPosterHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVASPosterHeight.Name = "lblTVASPosterHeight"
         Me.lblTVASPosterHeight.Size = New System.Drawing.Size(69, 13)
@@ -9156,19 +9160,19 @@ Partial Class dlgSettings
         '
         'chkTVASPosterResize
         '
-        Me.chkTVASPosterResize.AutoSize = true
-        Me.chkTVASPosterResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVASPosterResize.AutoSize = True
+        Me.chkTVASPosterResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVASPosterResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVASPosterResize.Name = "chkTVASPosterResize"
         Me.chkTVASPosterResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVASPosterResize.TabIndex = 5
         Me.chkTVASPosterResize.Text = "Automatically Resize:"
-        Me.chkTVASPosterResize.UseVisualStyleBackColor = true
+        Me.chkTVASPosterResize.UseVisualStyleBackColor = True
         '
         'lblTVASPosterSize
         '
-        Me.lblTVASPosterSize.AutoSize = true
-        Me.lblTVASPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVASPosterSize.AutoSize = True
+        Me.lblTVASPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVASPosterSize.Location = New System.Drawing.Point(3, 14)
         Me.lblTVASPosterSize.Name = "lblTVASPosterSize"
         Me.lblTVASPosterSize.Size = New System.Drawing.Size(80, 13)
@@ -9178,8 +9182,8 @@ Partial Class dlgSettings
         'cbTVASPosterPrefSize
         '
         Me.cbTVASPosterPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVASPosterPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVASPosterPrefSize.FormattingEnabled = true
+        Me.cbTVASPosterPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVASPosterPrefSize.FormattingEnabled = True
         Me.cbTVASPosterPrefSize.Location = New System.Drawing.Point(6, 29)
         Me.cbTVASPosterPrefSize.Name = "cbTVASPosterPrefSize"
         Me.cbTVASPosterPrefSize.Size = New System.Drawing.Size(148, 21)
@@ -9187,14 +9191,14 @@ Partial Class dlgSettings
         '
         'chkTVASPosterOverwrite
         '
-        Me.chkTVASPosterOverwrite.AutoSize = true
-        Me.chkTVASPosterOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVASPosterOverwrite.AutoSize = True
+        Me.chkTVASPosterOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVASPosterOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVASPosterOverwrite.Name = "chkTVASPosterOverwrite"
         Me.chkTVASPosterOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVASPosterOverwrite.TabIndex = 4
         Me.chkTVASPosterOverwrite.Text = "Overwrite Existing"
-        Me.chkTVASPosterOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVASPosterOverwrite.UseVisualStyleBackColor = True
         '
         'tpTVSeason
         '
@@ -9207,29 +9211,29 @@ Partial Class dlgSettings
         Me.tpTVSeason.Size = New System.Drawing.Size(734, 465)
         Me.tpTVSeason.TabIndex = 2
         Me.tpTVSeason.Text = "TV Season"
-        Me.tpTVSeason.UseVisualStyleBackColor = true
+        Me.tpTVSeason.UseVisualStyleBackColor = True
         '
         'gbTVSeasonLandscapeOpts
         '
         Me.gbTVSeasonLandscapeOpts.Controls.Add(Me.chkTVSeasonLandscapeOverwrite)
-        Me.gbTVSeasonLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVSeasonLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVSeasonLandscapeOpts.Location = New System.Drawing.Point(6, 179)
         Me.gbTVSeasonLandscapeOpts.Name = "gbTVSeasonLandscapeOpts"
         Me.gbTVSeasonLandscapeOpts.Size = New System.Drawing.Size(228, 44)
         Me.gbTVSeasonLandscapeOpts.TabIndex = 12
-        Me.gbTVSeasonLandscapeOpts.TabStop = false
+        Me.gbTVSeasonLandscapeOpts.TabStop = False
         Me.gbTVSeasonLandscapeOpts.Text = "Landscape"
         '
         'chkTVSeasonLandscapeOverwrite
         '
-        Me.chkTVSeasonLandscapeOverwrite.AutoSize = true
-        Me.chkTVSeasonLandscapeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonLandscapeOverwrite.AutoSize = True
+        Me.chkTVSeasonLandscapeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonLandscapeOverwrite.Location = New System.Drawing.Point(6, 21)
         Me.chkTVSeasonLandscapeOverwrite.Name = "chkTVSeasonLandscapeOverwrite"
         Me.chkTVSeasonLandscapeOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVSeasonLandscapeOverwrite.TabIndex = 2
         Me.chkTVSeasonLandscapeOverwrite.Text = "Overwrite Existing"
-        Me.chkTVSeasonLandscapeOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVSeasonLandscapeOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVSeasonBannerOpts
         '
@@ -9244,18 +9248,18 @@ Partial Class dlgSettings
         Me.gbTVSeasonBannerOpts.Controls.Add(Me.lblTVSeasonBannerType)
         Me.gbTVSeasonBannerOpts.Controls.Add(Me.cbTVSeasonBannerPrefType)
         Me.gbTVSeasonBannerOpts.Controls.Add(Me.chkTVSeasonBannerOverwrite)
-        Me.gbTVSeasonBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVSeasonBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVSeasonBannerOpts.Location = New System.Drawing.Point(240, 6)
         Me.gbTVSeasonBannerOpts.Name = "gbTVSeasonBannerOpts"
         Me.gbTVSeasonBannerOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVSeasonBannerOpts.TabIndex = 11
-        Me.gbTVSeasonBannerOpts.TabStop = false
+        Me.gbTVSeasonBannerOpts.TabStop = False
         Me.gbTVSeasonBannerOpts.Text = "Banner"
         '
         'txtTVSeasonBannerWidth
         '
-        Me.txtTVSeasonBannerWidth.Enabled = false
-        Me.txtTVSeasonBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVSeasonBannerWidth.Enabled = False
+        Me.txtTVSeasonBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVSeasonBannerWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVSeasonBannerWidth.Name = "txtTVSeasonBannerWidth"
         Me.txtTVSeasonBannerWidth.Size = New System.Drawing.Size(40, 22)
@@ -9263,8 +9267,8 @@ Partial Class dlgSettings
         '
         'txtTVSeasonBannerHeight
         '
-        Me.txtTVSeasonBannerHeight.Enabled = false
-        Me.txtTVSeasonBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVSeasonBannerHeight.Enabled = False
+        Me.txtTVSeasonBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVSeasonBannerHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVSeasonBannerHeight.Name = "txtTVSeasonBannerHeight"
         Me.txtTVSeasonBannerHeight.Size = New System.Drawing.Size(40, 22)
@@ -9272,8 +9276,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonBannerQual
         '
-        Me.lblTVSeasonBannerQual.AutoSize = true
-        Me.lblTVSeasonBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonBannerQual.AutoSize = True
+        Me.lblTVSeasonBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonBannerQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVSeasonBannerQual.Name = "lblTVSeasonBannerQual"
         Me.lblTVSeasonBannerQual.Size = New System.Drawing.Size(29, 17)
@@ -9282,7 +9286,7 @@ Partial Class dlgSettings
         '
         'tbTVSeasonBannerQual
         '
-        Me.tbTVSeasonBannerQual.AutoSize = false
+        Me.tbTVSeasonBannerQual.AutoSize = False
         Me.tbTVSeasonBannerQual.BackColor = System.Drawing.Color.White
         Me.tbTVSeasonBannerQual.LargeChange = 10
         Me.tbTVSeasonBannerQual.Location = New System.Drawing.Point(7, 131)
@@ -9295,8 +9299,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonBannerQ
         '
-        Me.lblTVSeasonBannerQ.AutoSize = true
-        Me.lblTVSeasonBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonBannerQ.AutoSize = True
+        Me.lblTVSeasonBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonBannerQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVSeasonBannerQ.Name = "lblTVSeasonBannerQ"
         Me.lblTVSeasonBannerQ.Size = New System.Drawing.Size(46, 13)
@@ -9305,8 +9309,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonBannerWidth
         '
-        Me.lblTVSeasonBannerWidth.AutoSize = true
-        Me.lblTVSeasonBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonBannerWidth.AutoSize = True
+        Me.lblTVSeasonBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonBannerWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVSeasonBannerWidth.Name = "lblTVSeasonBannerWidth"
         Me.lblTVSeasonBannerWidth.Size = New System.Drawing.Size(66, 13)
@@ -9315,8 +9319,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonBannerHeight
         '
-        Me.lblTVSeasonBannerHeight.AutoSize = true
-        Me.lblTVSeasonBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonBannerHeight.AutoSize = True
+        Me.lblTVSeasonBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonBannerHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVSeasonBannerHeight.Name = "lblTVSeasonBannerHeight"
         Me.lblTVSeasonBannerHeight.Size = New System.Drawing.Size(69, 13)
@@ -9325,19 +9329,19 @@ Partial Class dlgSettings
         '
         'chkTVSeasonBannerResize
         '
-        Me.chkTVSeasonBannerResize.AutoSize = true
-        Me.chkTVSeasonBannerResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonBannerResize.AutoSize = True
+        Me.chkTVSeasonBannerResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonBannerResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVSeasonBannerResize.Name = "chkTVSeasonBannerResize"
         Me.chkTVSeasonBannerResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVSeasonBannerResize.TabIndex = 3
         Me.chkTVSeasonBannerResize.Text = "Automatically Resize:"
-        Me.chkTVSeasonBannerResize.UseVisualStyleBackColor = true
+        Me.chkTVSeasonBannerResize.UseVisualStyleBackColor = True
         '
         'lblTVSeasonBannerType
         '
-        Me.lblTVSeasonBannerType.AutoSize = true
-        Me.lblTVSeasonBannerType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonBannerType.AutoSize = True
+        Me.lblTVSeasonBannerType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonBannerType.Location = New System.Drawing.Point(3, 14)
         Me.lblTVSeasonBannerType.Name = "lblTVSeasonBannerType"
         Me.lblTVSeasonBannerType.Size = New System.Drawing.Size(83, 13)
@@ -9347,8 +9351,8 @@ Partial Class dlgSettings
         'cbTVSeasonBannerPrefType
         '
         Me.cbTVSeasonBannerPrefType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVSeasonBannerPrefType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVSeasonBannerPrefType.FormattingEnabled = true
+        Me.cbTVSeasonBannerPrefType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVSeasonBannerPrefType.FormattingEnabled = True
         Me.cbTVSeasonBannerPrefType.Location = New System.Drawing.Point(6, 29)
         Me.cbTVSeasonBannerPrefType.Name = "cbTVSeasonBannerPrefType"
         Me.cbTVSeasonBannerPrefType.Size = New System.Drawing.Size(148, 21)
@@ -9356,14 +9360,14 @@ Partial Class dlgSettings
         '
         'chkTVSeasonBannerOverwrite
         '
-        Me.chkTVSeasonBannerOverwrite.AutoSize = true
-        Me.chkTVSeasonBannerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonBannerOverwrite.AutoSize = True
+        Me.chkTVSeasonBannerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonBannerOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVSeasonBannerOverwrite.Name = "chkTVSeasonBannerOverwrite"
         Me.chkTVSeasonBannerOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVSeasonBannerOverwrite.TabIndex = 2
         Me.chkTVSeasonBannerOverwrite.Text = "Overwrite Existing"
-        Me.chkTVSeasonBannerOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVSeasonBannerOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVSeasonPosterOpts
         '
@@ -9378,18 +9382,18 @@ Partial Class dlgSettings
         Me.gbTVSeasonPosterOpts.Controls.Add(Me.lblTVSeasonPosterSize)
         Me.gbTVSeasonPosterOpts.Controls.Add(Me.cbTVSeasonPosterPrefSize)
         Me.gbTVSeasonPosterOpts.Controls.Add(Me.chkTVSeasonPosterOverwrite)
-        Me.gbTVSeasonPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVSeasonPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVSeasonPosterOpts.Location = New System.Drawing.Point(6, 6)
         Me.gbTVSeasonPosterOpts.Name = "gbTVSeasonPosterOpts"
         Me.gbTVSeasonPosterOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVSeasonPosterOpts.TabIndex = 0
-        Me.gbTVSeasonPosterOpts.TabStop = false
+        Me.gbTVSeasonPosterOpts.TabStop = False
         Me.gbTVSeasonPosterOpts.Text = "Poster"
         '
         'txtTVSeasonPosterWidth
         '
-        Me.txtTVSeasonPosterWidth.Enabled = false
-        Me.txtTVSeasonPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVSeasonPosterWidth.Enabled = False
+        Me.txtTVSeasonPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVSeasonPosterWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVSeasonPosterWidth.Name = "txtTVSeasonPosterWidth"
         Me.txtTVSeasonPosterWidth.Size = New System.Drawing.Size(40, 22)
@@ -9397,8 +9401,8 @@ Partial Class dlgSettings
         '
         'txtTVSeasonPosterHeight
         '
-        Me.txtTVSeasonPosterHeight.Enabled = false
-        Me.txtTVSeasonPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVSeasonPosterHeight.Enabled = False
+        Me.txtTVSeasonPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVSeasonPosterHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVSeasonPosterHeight.Name = "txtTVSeasonPosterHeight"
         Me.txtTVSeasonPosterHeight.Size = New System.Drawing.Size(40, 22)
@@ -9406,8 +9410,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonPosterQual
         '
-        Me.lblTVSeasonPosterQual.AutoSize = true
-        Me.lblTVSeasonPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonPosterQual.AutoSize = True
+        Me.lblTVSeasonPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonPosterQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVSeasonPosterQual.Name = "lblTVSeasonPosterQual"
         Me.lblTVSeasonPosterQual.Size = New System.Drawing.Size(29, 17)
@@ -9416,7 +9420,7 @@ Partial Class dlgSettings
         '
         'tbTVSeasonPosterQual
         '
-        Me.tbTVSeasonPosterQual.AutoSize = false
+        Me.tbTVSeasonPosterQual.AutoSize = False
         Me.tbTVSeasonPosterQual.BackColor = System.Drawing.Color.White
         Me.tbTVSeasonPosterQual.LargeChange = 10
         Me.tbTVSeasonPosterQual.Location = New System.Drawing.Point(7, 131)
@@ -9429,8 +9433,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonPosterQ
         '
-        Me.lblTVSeasonPosterQ.AutoSize = true
-        Me.lblTVSeasonPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonPosterQ.AutoSize = True
+        Me.lblTVSeasonPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonPosterQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVSeasonPosterQ.Name = "lblTVSeasonPosterQ"
         Me.lblTVSeasonPosterQ.Size = New System.Drawing.Size(46, 13)
@@ -9439,8 +9443,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonPosterWidth
         '
-        Me.lblTVSeasonPosterWidth.AutoSize = true
-        Me.lblTVSeasonPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonPosterWidth.AutoSize = True
+        Me.lblTVSeasonPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonPosterWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVSeasonPosterWidth.Name = "lblTVSeasonPosterWidth"
         Me.lblTVSeasonPosterWidth.Size = New System.Drawing.Size(66, 13)
@@ -9449,8 +9453,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonPosterHeight
         '
-        Me.lblTVSeasonPosterHeight.AutoSize = true
-        Me.lblTVSeasonPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonPosterHeight.AutoSize = True
+        Me.lblTVSeasonPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonPosterHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVSeasonPosterHeight.Name = "lblTVSeasonPosterHeight"
         Me.lblTVSeasonPosterHeight.Size = New System.Drawing.Size(69, 13)
@@ -9459,19 +9463,19 @@ Partial Class dlgSettings
         '
         'chkTVSeasonPosterResize
         '
-        Me.chkTVSeasonPosterResize.AutoSize = true
-        Me.chkTVSeasonPosterResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonPosterResize.AutoSize = True
+        Me.chkTVSeasonPosterResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonPosterResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVSeasonPosterResize.Name = "chkTVSeasonPosterResize"
         Me.chkTVSeasonPosterResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVSeasonPosterResize.TabIndex = 3
         Me.chkTVSeasonPosterResize.Text = "Automatically Resize:"
-        Me.chkTVSeasonPosterResize.UseVisualStyleBackColor = true
+        Me.chkTVSeasonPosterResize.UseVisualStyleBackColor = True
         '
         'lblTVSeasonPosterSize
         '
-        Me.lblTVSeasonPosterSize.AutoSize = true
-        Me.lblTVSeasonPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonPosterSize.AutoSize = True
+        Me.lblTVSeasonPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonPosterSize.Location = New System.Drawing.Point(3, 14)
         Me.lblTVSeasonPosterSize.Name = "lblTVSeasonPosterSize"
         Me.lblTVSeasonPosterSize.Size = New System.Drawing.Size(80, 13)
@@ -9481,8 +9485,8 @@ Partial Class dlgSettings
         'cbTVSeasonPosterPrefSize
         '
         Me.cbTVSeasonPosterPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVSeasonPosterPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVSeasonPosterPrefSize.FormattingEnabled = true
+        Me.cbTVSeasonPosterPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVSeasonPosterPrefSize.FormattingEnabled = True
         Me.cbTVSeasonPosterPrefSize.Location = New System.Drawing.Point(6, 29)
         Me.cbTVSeasonPosterPrefSize.Name = "cbTVSeasonPosterPrefSize"
         Me.cbTVSeasonPosterPrefSize.Size = New System.Drawing.Size(148, 21)
@@ -9490,14 +9494,14 @@ Partial Class dlgSettings
         '
         'chkTVSeasonPosterOverwrite
         '
-        Me.chkTVSeasonPosterOverwrite.AutoSize = true
-        Me.chkTVSeasonPosterOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonPosterOverwrite.AutoSize = True
+        Me.chkTVSeasonPosterOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonPosterOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVSeasonPosterOverwrite.Name = "chkTVSeasonPosterOverwrite"
         Me.chkTVSeasonPosterOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVSeasonPosterOverwrite.TabIndex = 2
         Me.chkTVSeasonPosterOverwrite.Text = "Overwrite Existing"
-        Me.chkTVSeasonPosterOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVSeasonPosterOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVSeasonFanartOpts
         '
@@ -9512,18 +9516,18 @@ Partial Class dlgSettings
         Me.gbTVSeasonFanartOpts.Controls.Add(Me.cbTVSeasonFanartPrefSize)
         Me.gbTVSeasonFanartOpts.Controls.Add(Me.lblTVSeasonFanartSize)
         Me.gbTVSeasonFanartOpts.Controls.Add(Me.chkTVSeasonFanartOverwrite)
-        Me.gbTVSeasonFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVSeasonFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVSeasonFanartOpts.Location = New System.Drawing.Point(474, 6)
         Me.gbTVSeasonFanartOpts.Name = "gbTVSeasonFanartOpts"
         Me.gbTVSeasonFanartOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVSeasonFanartOpts.TabIndex = 1
-        Me.gbTVSeasonFanartOpts.TabStop = false
+        Me.gbTVSeasonFanartOpts.TabStop = False
         Me.gbTVSeasonFanartOpts.Text = "Fanart"
         '
         'txtTVSeasonFanartWidth
         '
-        Me.txtTVSeasonFanartWidth.Enabled = false
-        Me.txtTVSeasonFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVSeasonFanartWidth.Enabled = False
+        Me.txtTVSeasonFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVSeasonFanartWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVSeasonFanartWidth.Name = "txtTVSeasonFanartWidth"
         Me.txtTVSeasonFanartWidth.Size = New System.Drawing.Size(40, 22)
@@ -9531,8 +9535,8 @@ Partial Class dlgSettings
         '
         'txtTVSeasonFanartHeight
         '
-        Me.txtTVSeasonFanartHeight.Enabled = false
-        Me.txtTVSeasonFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVSeasonFanartHeight.Enabled = False
+        Me.txtTVSeasonFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVSeasonFanartHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVSeasonFanartHeight.Name = "txtTVSeasonFanartHeight"
         Me.txtTVSeasonFanartHeight.Size = New System.Drawing.Size(40, 22)
@@ -9540,8 +9544,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonFanartQual
         '
-        Me.lblTVSeasonFanartQual.AutoSize = true
-        Me.lblTVSeasonFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonFanartQual.AutoSize = True
+        Me.lblTVSeasonFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonFanartQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVSeasonFanartQual.Name = "lblTVSeasonFanartQual"
         Me.lblTVSeasonFanartQual.Size = New System.Drawing.Size(29, 17)
@@ -9550,7 +9554,7 @@ Partial Class dlgSettings
         '
         'tbTVSeasonFanartQual
         '
-        Me.tbTVSeasonFanartQual.AutoSize = false
+        Me.tbTVSeasonFanartQual.AutoSize = False
         Me.tbTVSeasonFanartQual.BackColor = System.Drawing.Color.White
         Me.tbTVSeasonFanartQual.LargeChange = 10
         Me.tbTVSeasonFanartQual.Location = New System.Drawing.Point(7, 131)
@@ -9563,8 +9567,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonFanartQ
         '
-        Me.lblTVSeasonFanartQ.AutoSize = true
-        Me.lblTVSeasonFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonFanartQ.AutoSize = True
+        Me.lblTVSeasonFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonFanartQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVSeasonFanartQ.Name = "lblTVSeasonFanartQ"
         Me.lblTVSeasonFanartQ.Size = New System.Drawing.Size(46, 13)
@@ -9573,8 +9577,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonFanartWidth
         '
-        Me.lblTVSeasonFanartWidth.AutoSize = true
-        Me.lblTVSeasonFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonFanartWidth.AutoSize = True
+        Me.lblTVSeasonFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonFanartWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVSeasonFanartWidth.Name = "lblTVSeasonFanartWidth"
         Me.lblTVSeasonFanartWidth.Size = New System.Drawing.Size(66, 13)
@@ -9583,8 +9587,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonFanartHeight
         '
-        Me.lblTVSeasonFanartHeight.AutoSize = true
-        Me.lblTVSeasonFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonFanartHeight.AutoSize = True
+        Me.lblTVSeasonFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonFanartHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVSeasonFanartHeight.Name = "lblTVSeasonFanartHeight"
         Me.lblTVSeasonFanartHeight.Size = New System.Drawing.Size(69, 13)
@@ -9593,20 +9597,20 @@ Partial Class dlgSettings
         '
         'chkTVSeasonFanartResize
         '
-        Me.chkTVSeasonFanartResize.AutoSize = true
-        Me.chkTVSeasonFanartResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonFanartResize.AutoSize = True
+        Me.chkTVSeasonFanartResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonFanartResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVSeasonFanartResize.Name = "chkTVSeasonFanartResize"
         Me.chkTVSeasonFanartResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVSeasonFanartResize.TabIndex = 3
         Me.chkTVSeasonFanartResize.Text = "Automatically Resize:"
-        Me.chkTVSeasonFanartResize.UseVisualStyleBackColor = true
+        Me.chkTVSeasonFanartResize.UseVisualStyleBackColor = True
         '
         'cbTVSeasonFanartPrefSize
         '
         Me.cbTVSeasonFanartPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVSeasonFanartPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVSeasonFanartPrefSize.FormattingEnabled = true
+        Me.cbTVSeasonFanartPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVSeasonFanartPrefSize.FormattingEnabled = True
         Me.cbTVSeasonFanartPrefSize.Location = New System.Drawing.Point(6, 29)
         Me.cbTVSeasonFanartPrefSize.Name = "cbTVSeasonFanartPrefSize"
         Me.cbTVSeasonFanartPrefSize.Size = New System.Drawing.Size(148, 21)
@@ -9614,8 +9618,8 @@ Partial Class dlgSettings
         '
         'lblTVSeasonFanartSize
         '
-        Me.lblTVSeasonFanartSize.AutoSize = true
-        Me.lblTVSeasonFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSeasonFanartSize.AutoSize = True
+        Me.lblTVSeasonFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSeasonFanartSize.Location = New System.Drawing.Point(3, 14)
         Me.lblTVSeasonFanartSize.Name = "lblTVSeasonFanartSize"
         Me.lblTVSeasonFanartSize.Size = New System.Drawing.Size(80, 13)
@@ -9624,14 +9628,14 @@ Partial Class dlgSettings
         '
         'chkTVSeasonFanartOverwrite
         '
-        Me.chkTVSeasonFanartOverwrite.AutoSize = true
-        Me.chkTVSeasonFanartOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonFanartOverwrite.AutoSize = True
+        Me.chkTVSeasonFanartOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVSeasonFanartOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVSeasonFanartOverwrite.Name = "chkTVSeasonFanartOverwrite"
         Me.chkTVSeasonFanartOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVSeasonFanartOverwrite.TabIndex = 2
         Me.chkTVSeasonFanartOverwrite.Text = "Overwrite Existing"
-        Me.chkTVSeasonFanartOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVSeasonFanartOverwrite.UseVisualStyleBackColor = True
         '
         'tpTVEpisode
         '
@@ -9643,7 +9647,7 @@ Partial Class dlgSettings
         Me.tpTVEpisode.Size = New System.Drawing.Size(734, 465)
         Me.tpTVEpisode.TabIndex = 1
         Me.tpTVEpisode.Text = "TV Episode"
-        Me.tpTVEpisode.UseVisualStyleBackColor = true
+        Me.tpTVEpisode.UseVisualStyleBackColor = True
         '
         'gbTVEpisodePosterOpts
         '
@@ -9658,18 +9662,18 @@ Partial Class dlgSettings
         Me.gbTVEpisodePosterOpts.Controls.Add(Me.lblTVEpisodePosterHeight)
         Me.gbTVEpisodePosterOpts.Controls.Add(Me.chkTVEpisodePosterResize)
         Me.gbTVEpisodePosterOpts.Controls.Add(Me.chkTVEpisodePosterOverwrite)
-        Me.gbTVEpisodePosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVEpisodePosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVEpisodePosterOpts.Location = New System.Drawing.Point(6, 6)
         Me.gbTVEpisodePosterOpts.Name = "gbTVEpisodePosterOpts"
         Me.gbTVEpisodePosterOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVEpisodePosterOpts.TabIndex = 0
-        Me.gbTVEpisodePosterOpts.TabStop = false
+        Me.gbTVEpisodePosterOpts.TabStop = False
         Me.gbTVEpisodePosterOpts.Text = "Poster"
         '
         'lblTVEpisodePosterSize
         '
-        Me.lblTVEpisodePosterSize.AutoSize = true
-        Me.lblTVEpisodePosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVEpisodePosterSize.AutoSize = True
+        Me.lblTVEpisodePosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVEpisodePosterSize.Location = New System.Drawing.Point(3, 14)
         Me.lblTVEpisodePosterSize.Name = "lblTVEpisodePosterSize"
         Me.lblTVEpisodePosterSize.Size = New System.Drawing.Size(80, 13)
@@ -9679,8 +9683,8 @@ Partial Class dlgSettings
         'cbTVEpisodePosterPrefSize
         '
         Me.cbTVEpisodePosterPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVEpisodePosterPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVEpisodePosterPrefSize.FormattingEnabled = true
+        Me.cbTVEpisodePosterPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVEpisodePosterPrefSize.FormattingEnabled = True
         Me.cbTVEpisodePosterPrefSize.Location = New System.Drawing.Point(6, 29)
         Me.cbTVEpisodePosterPrefSize.Name = "cbTVEpisodePosterPrefSize"
         Me.cbTVEpisodePosterPrefSize.Size = New System.Drawing.Size(148, 21)
@@ -9688,8 +9692,8 @@ Partial Class dlgSettings
         '
         'txtTVEpisodePosterWidth
         '
-        Me.txtTVEpisodePosterWidth.Enabled = false
-        Me.txtTVEpisodePosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVEpisodePosterWidth.Enabled = False
+        Me.txtTVEpisodePosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVEpisodePosterWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVEpisodePosterWidth.Name = "txtTVEpisodePosterWidth"
         Me.txtTVEpisodePosterWidth.Size = New System.Drawing.Size(40, 22)
@@ -9697,8 +9701,8 @@ Partial Class dlgSettings
         '
         'txtTVEpisodePosterHeight
         '
-        Me.txtTVEpisodePosterHeight.Enabled = false
-        Me.txtTVEpisodePosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVEpisodePosterHeight.Enabled = False
+        Me.txtTVEpisodePosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVEpisodePosterHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVEpisodePosterHeight.Name = "txtTVEpisodePosterHeight"
         Me.txtTVEpisodePosterHeight.Size = New System.Drawing.Size(40, 22)
@@ -9706,8 +9710,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodePosterQual
         '
-        Me.lblTVEpisodePosterQual.AutoSize = true
-        Me.lblTVEpisodePosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVEpisodePosterQual.AutoSize = True
+        Me.lblTVEpisodePosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTVEpisodePosterQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVEpisodePosterQual.Name = "lblTVEpisodePosterQual"
         Me.lblTVEpisodePosterQual.Size = New System.Drawing.Size(29, 17)
@@ -9716,7 +9720,7 @@ Partial Class dlgSettings
         '
         'tbTVEpisodePosterQual
         '
-        Me.tbTVEpisodePosterQual.AutoSize = false
+        Me.tbTVEpisodePosterQual.AutoSize = False
         Me.tbTVEpisodePosterQual.BackColor = System.Drawing.Color.White
         Me.tbTVEpisodePosterQual.LargeChange = 10
         Me.tbTVEpisodePosterQual.Location = New System.Drawing.Point(7, 131)
@@ -9729,8 +9733,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodePosterQ
         '
-        Me.lblTVEpisodePosterQ.AutoSize = true
-        Me.lblTVEpisodePosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVEpisodePosterQ.AutoSize = True
+        Me.lblTVEpisodePosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVEpisodePosterQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVEpisodePosterQ.Name = "lblTVEpisodePosterQ"
         Me.lblTVEpisodePosterQ.Size = New System.Drawing.Size(46, 13)
@@ -9739,8 +9743,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodePosterWidth
         '
-        Me.lblTVEpisodePosterWidth.AutoSize = true
-        Me.lblTVEpisodePosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVEpisodePosterWidth.AutoSize = True
+        Me.lblTVEpisodePosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVEpisodePosterWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVEpisodePosterWidth.Name = "lblTVEpisodePosterWidth"
         Me.lblTVEpisodePosterWidth.Size = New System.Drawing.Size(66, 13)
@@ -9749,8 +9753,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodePosterHeight
         '
-        Me.lblTVEpisodePosterHeight.AutoSize = true
-        Me.lblTVEpisodePosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVEpisodePosterHeight.AutoSize = True
+        Me.lblTVEpisodePosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVEpisodePosterHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVEpisodePosterHeight.Name = "lblTVEpisodePosterHeight"
         Me.lblTVEpisodePosterHeight.Size = New System.Drawing.Size(69, 13)
@@ -9759,25 +9763,25 @@ Partial Class dlgSettings
         '
         'chkTVEpisodePosterResize
         '
-        Me.chkTVEpisodePosterResize.AutoSize = true
-        Me.chkTVEpisodePosterResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodePosterResize.AutoSize = True
+        Me.chkTVEpisodePosterResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVEpisodePosterResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVEpisodePosterResize.Name = "chkTVEpisodePosterResize"
         Me.chkTVEpisodePosterResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVEpisodePosterResize.TabIndex = 1
         Me.chkTVEpisodePosterResize.Text = "Automatically Resize:"
-        Me.chkTVEpisodePosterResize.UseVisualStyleBackColor = true
+        Me.chkTVEpisodePosterResize.UseVisualStyleBackColor = True
         '
         'chkTVEpisodePosterOverwrite
         '
-        Me.chkTVEpisodePosterOverwrite.AutoSize = true
-        Me.chkTVEpisodePosterOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodePosterOverwrite.AutoSize = True
+        Me.chkTVEpisodePosterOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVEpisodePosterOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVEpisodePosterOverwrite.Name = "chkTVEpisodePosterOverwrite"
         Me.chkTVEpisodePosterOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVEpisodePosterOverwrite.TabIndex = 0
         Me.chkTVEpisodePosterOverwrite.Text = "Overwrite Existing"
-        Me.chkTVEpisodePosterOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVEpisodePosterOverwrite.UseVisualStyleBackColor = True
         '
         'gbTVEpisodeFanartOpts
         '
@@ -9792,18 +9796,18 @@ Partial Class dlgSettings
         Me.gbTVEpisodeFanartOpts.Controls.Add(Me.cbTVEpisodeFanartPrefSize)
         Me.gbTVEpisodeFanartOpts.Controls.Add(Me.lblTVEpisodeFanartSize)
         Me.gbTVEpisodeFanartOpts.Controls.Add(Me.chkTVEpisodeFanartOverwrite)
-        Me.gbTVEpisodeFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVEpisodeFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVEpisodeFanartOpts.Location = New System.Drawing.Point(240, 6)
         Me.gbTVEpisodeFanartOpts.Name = "gbTVEpisodeFanartOpts"
         Me.gbTVEpisodeFanartOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbTVEpisodeFanartOpts.TabIndex = 1
-        Me.gbTVEpisodeFanartOpts.TabStop = false
+        Me.gbTVEpisodeFanartOpts.TabStop = False
         Me.gbTVEpisodeFanartOpts.Text = "Fanart"
         '
         'txtTVEpisodeFanartWidth
         '
-        Me.txtTVEpisodeFanartWidth.Enabled = false
-        Me.txtTVEpisodeFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVEpisodeFanartWidth.Enabled = False
+        Me.txtTVEpisodeFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVEpisodeFanartWidth.Location = New System.Drawing.Point(71, 90)
         Me.txtTVEpisodeFanartWidth.Name = "txtTVEpisodeFanartWidth"
         Me.txtTVEpisodeFanartWidth.Size = New System.Drawing.Size(40, 22)
@@ -9811,8 +9815,8 @@ Partial Class dlgSettings
         '
         'txtTVEpisodeFanartHeight
         '
-        Me.txtTVEpisodeFanartHeight.Enabled = false
-        Me.txtTVEpisodeFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVEpisodeFanartHeight.Enabled = False
+        Me.txtTVEpisodeFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVEpisodeFanartHeight.Location = New System.Drawing.Point(182, 90)
         Me.txtTVEpisodeFanartHeight.Name = "txtTVEpisodeFanartHeight"
         Me.txtTVEpisodeFanartHeight.Size = New System.Drawing.Size(40, 22)
@@ -9820,8 +9824,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodeFanartQual
         '
-        Me.lblTVEpisodeFanartQual.AutoSize = true
-        Me.lblTVEpisodeFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVEpisodeFanartQual.AutoSize = True
+        Me.lblTVEpisodeFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTVEpisodeFanartQual.Location = New System.Drawing.Point(183, 138)
         Me.lblTVEpisodeFanartQual.Name = "lblTVEpisodeFanartQual"
         Me.lblTVEpisodeFanartQual.Size = New System.Drawing.Size(29, 17)
@@ -9830,7 +9834,7 @@ Partial Class dlgSettings
         '
         'tbTVEpisodeFanartQual
         '
-        Me.tbTVEpisodeFanartQual.AutoSize = false
+        Me.tbTVEpisodeFanartQual.AutoSize = False
         Me.tbTVEpisodeFanartQual.BackColor = System.Drawing.Color.White
         Me.tbTVEpisodeFanartQual.LargeChange = 10
         Me.tbTVEpisodeFanartQual.Location = New System.Drawing.Point(7, 131)
@@ -9843,8 +9847,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodeFanartQ
         '
-        Me.lblTVEpisodeFanartQ.AutoSize = true
-        Me.lblTVEpisodeFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVEpisodeFanartQ.AutoSize = True
+        Me.lblTVEpisodeFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVEpisodeFanartQ.Location = New System.Drawing.Point(3, 118)
         Me.lblTVEpisodeFanartQ.Name = "lblTVEpisodeFanartQ"
         Me.lblTVEpisodeFanartQ.Size = New System.Drawing.Size(46, 13)
@@ -9853,8 +9857,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodeFanartWidth
         '
-        Me.lblTVEpisodeFanartWidth.AutoSize = true
-        Me.lblTVEpisodeFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVEpisodeFanartWidth.AutoSize = True
+        Me.lblTVEpisodeFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVEpisodeFanartWidth.Location = New System.Drawing.Point(3, 94)
         Me.lblTVEpisodeFanartWidth.Name = "lblTVEpisodeFanartWidth"
         Me.lblTVEpisodeFanartWidth.Size = New System.Drawing.Size(66, 13)
@@ -9863,8 +9867,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodeFanartHeight
         '
-        Me.lblTVEpisodeFanartHeight.AutoSize = true
-        Me.lblTVEpisodeFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVEpisodeFanartHeight.AutoSize = True
+        Me.lblTVEpisodeFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVEpisodeFanartHeight.Location = New System.Drawing.Point(112, 94)
         Me.lblTVEpisodeFanartHeight.Name = "lblTVEpisodeFanartHeight"
         Me.lblTVEpisodeFanartHeight.Size = New System.Drawing.Size(69, 13)
@@ -9873,20 +9877,20 @@ Partial Class dlgSettings
         '
         'chkTVEpisodeFanartResize
         '
-        Me.chkTVEpisodeFanartResize.AutoSize = true
-        Me.chkTVEpisodeFanartResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodeFanartResize.AutoSize = True
+        Me.chkTVEpisodeFanartResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVEpisodeFanartResize.Location = New System.Drawing.Point(6, 69)
         Me.chkTVEpisodeFanartResize.Name = "chkTVEpisodeFanartResize"
         Me.chkTVEpisodeFanartResize.Size = New System.Drawing.Size(133, 17)
         Me.chkTVEpisodeFanartResize.TabIndex = 3
         Me.chkTVEpisodeFanartResize.Text = "Automatically Resize:"
-        Me.chkTVEpisodeFanartResize.UseVisualStyleBackColor = true
+        Me.chkTVEpisodeFanartResize.UseVisualStyleBackColor = True
         '
         'cbTVEpisodeFanartPrefSize
         '
         Me.cbTVEpisodeFanartPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVEpisodeFanartPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVEpisodeFanartPrefSize.FormattingEnabled = true
+        Me.cbTVEpisodeFanartPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVEpisodeFanartPrefSize.FormattingEnabled = True
         Me.cbTVEpisodeFanartPrefSize.Location = New System.Drawing.Point(6, 29)
         Me.cbTVEpisodeFanartPrefSize.Name = "cbTVEpisodeFanartPrefSize"
         Me.cbTVEpisodeFanartPrefSize.Size = New System.Drawing.Size(148, 21)
@@ -9894,8 +9898,8 @@ Partial Class dlgSettings
         '
         'lblTVEpisodeFanartSize
         '
-        Me.lblTVEpisodeFanartSize.AutoSize = true
-        Me.lblTVEpisodeFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVEpisodeFanartSize.AutoSize = True
+        Me.lblTVEpisodeFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVEpisodeFanartSize.Location = New System.Drawing.Point(3, 14)
         Me.lblTVEpisodeFanartSize.Name = "lblTVEpisodeFanartSize"
         Me.lblTVEpisodeFanartSize.Size = New System.Drawing.Size(80, 13)
@@ -9904,14 +9908,14 @@ Partial Class dlgSettings
         '
         'chkTVEpisodeFanartOverwrite
         '
-        Me.chkTVEpisodeFanartOverwrite.AutoSize = true
-        Me.chkTVEpisodeFanartOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodeFanartOverwrite.AutoSize = True
+        Me.chkTVEpisodeFanartOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVEpisodeFanartOverwrite.Location = New System.Drawing.Point(6, 53)
         Me.chkTVEpisodeFanartOverwrite.Name = "chkTVEpisodeFanartOverwrite"
         Me.chkTVEpisodeFanartOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkTVEpisodeFanartOverwrite.TabIndex = 2
         Me.chkTVEpisodeFanartOverwrite.Text = "Overwrite Existing"
-        Me.chkTVEpisodeFanartOverwrite.UseVisualStyleBackColor = true
+        Me.chkTVEpisodeFanartOverwrite.UseVisualStyleBackColor = True
         '
         'pnlTVScraper
         '
@@ -9925,39 +9929,39 @@ Partial Class dlgSettings
         Me.pnlTVScraper.Name = "pnlTVScraper"
         Me.pnlTVScraper.Size = New System.Drawing.Size(750, 500)
         Me.pnlTVScraper.TabIndex = 19
-        Me.pnlTVScraper.Visible = false
+        Me.pnlTVScraper.Visible = False
         '
         'gbTVScraperMiscOpts
         '
         Me.gbTVScraperMiscOpts.Controls.Add(Me.chkTVScraperUseSRuntimeForEp)
-        Me.gbTVScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVScraperMiscOpts.Location = New System.Drawing.Point(3, 398)
         Me.gbTVScraperMiscOpts.Name = "gbTVScraperMiscOpts"
         Me.gbTVScraperMiscOpts.Size = New System.Drawing.Size(403, 49)
         Me.gbTVScraperMiscOpts.TabIndex = 5
-        Me.gbTVScraperMiscOpts.TabStop = false
+        Me.gbTVScraperMiscOpts.TabStop = False
         Me.gbTVScraperMiscOpts.Text = "Miscellaneous"
         '
         'chkTVScraperUseSRuntimeForEp
         '
-        Me.chkTVScraperUseSRuntimeForEp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperUseSRuntimeForEp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperUseSRuntimeForEp.Location = New System.Drawing.Point(9, 21)
         Me.chkTVScraperUseSRuntimeForEp.Name = "chkTVScraperUseSRuntimeForEp"
         Me.chkTVScraperUseSRuntimeForEp.Size = New System.Drawing.Size(388, 17)
         Me.chkTVScraperUseSRuntimeForEp.TabIndex = 1
         Me.chkTVScraperUseSRuntimeForEp.Text = "Use Show Runtime for Episodes if no Episode Runtime can be found"
-        Me.chkTVScraperUseSRuntimeForEp.UseVisualStyleBackColor = true
+        Me.chkTVScraperUseSRuntimeForEp.UseVisualStyleBackColor = True
         '
         'gbTVScraperFieldsOpts
         '
         Me.gbTVScraperFieldsOpts.Controls.Add(Me.gbTVScraperFieldsShowOpts)
         Me.gbTVScraperFieldsOpts.Controls.Add(Me.gbTVScraperFieldsEpisodeOpts)
-        Me.gbTVScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperFieldsOpts.Location = New System.Drawing.Point(3, 255)
         Me.gbTVScraperFieldsOpts.Name = "gbTVScraperFieldsOpts"
         Me.gbTVScraperFieldsOpts.Size = New System.Drawing.Size(403, 137)
         Me.gbTVScraperFieldsOpts.TabIndex = 3
-        Me.gbTVScraperFieldsOpts.TabStop = false
+        Me.gbTVScraperFieldsOpts.TabStop = False
         Me.gbTVScraperFieldsOpts.Text = "Scraper Fields"
         '
         'gbTVScraperFieldsShowOpts
@@ -9973,123 +9977,123 @@ Partial Class dlgSettings
         Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowPlot)
         Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowGenre)
         Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowTitle)
-        Me.gbTVScraperFieldsShowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVScraperFieldsShowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperFieldsShowOpts.Location = New System.Drawing.Point(3, 14)
         Me.gbTVScraperFieldsShowOpts.Name = "gbTVScraperFieldsShowOpts"
         Me.gbTVScraperFieldsShowOpts.Size = New System.Drawing.Size(213, 117)
         Me.gbTVScraperFieldsShowOpts.TabIndex = 0
-        Me.gbTVScraperFieldsShowOpts.TabStop = false
+        Me.gbTVScraperFieldsShowOpts.TabStop = False
         Me.gbTVScraperFieldsShowOpts.Text = "Show"
         '
         'chkTVScraperShowRuntime
         '
-        Me.chkTVScraperShowRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowRuntime.Location = New System.Drawing.Point(6, 94)
         Me.chkTVScraperShowRuntime.Name = "chkTVScraperShowRuntime"
         Me.chkTVScraperShowRuntime.Size = New System.Drawing.Size(118, 17)
         Me.chkTVScraperShowRuntime.TabIndex = 10
         Me.chkTVScraperShowRuntime.Text = "Runtime"
-        Me.chkTVScraperShowRuntime.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowRuntime.UseVisualStyleBackColor = True
         '
         'chkTVScraperShowStatus
         '
-        Me.chkTVScraperShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowStatus.Location = New System.Drawing.Point(130, 77)
         Me.chkTVScraperShowStatus.Name = "chkTVScraperShowStatus"
         Me.chkTVScraperShowStatus.Size = New System.Drawing.Size(78, 17)
         Me.chkTVScraperShowStatus.TabIndex = 9
         Me.chkTVScraperShowStatus.Text = "Status"
-        Me.chkTVScraperShowStatus.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowStatus.UseVisualStyleBackColor = True
         '
         'chkTVScraperShowRating
         '
-        Me.chkTVScraperShowRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowRating.Location = New System.Drawing.Point(130, 29)
         Me.chkTVScraperShowRating.Name = "chkTVScraperShowRating"
         Me.chkTVScraperShowRating.Size = New System.Drawing.Size(78, 17)
         Me.chkTVScraperShowRating.TabIndex = 6
         Me.chkTVScraperShowRating.Text = "Rating"
-        Me.chkTVScraperShowRating.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowRating.UseVisualStyleBackColor = True
         '
         'chkTVScraperShowActors
         '
-        Me.chkTVScraperShowActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowActors.Location = New System.Drawing.Point(130, 61)
         Me.chkTVScraperShowActors.Name = "chkTVScraperShowActors"
         Me.chkTVScraperShowActors.Size = New System.Drawing.Size(78, 17)
         Me.chkTVScraperShowActors.TabIndex = 8
         Me.chkTVScraperShowActors.Text = "Actors"
-        Me.chkTVScraperShowActors.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowActors.UseVisualStyleBackColor = True
         '
         'chkTVScraperShowStudio
         '
-        Me.chkTVScraperShowStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowStudio.Location = New System.Drawing.Point(130, 45)
         Me.chkTVScraperShowStudio.Name = "chkTVScraperShowStudio"
         Me.chkTVScraperShowStudio.Size = New System.Drawing.Size(78, 17)
         Me.chkTVScraperShowStudio.TabIndex = 7
         Me.chkTVScraperShowStudio.Text = "Studio"
-        Me.chkTVScraperShowStudio.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowStudio.UseVisualStyleBackColor = True
         '
         'chkTVScraperShowPremiered
         '
-        Me.chkTVScraperShowPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowPremiered.Location = New System.Drawing.Point(130, 13)
         Me.chkTVScraperShowPremiered.Name = "chkTVScraperShowPremiered"
         Me.chkTVScraperShowPremiered.Size = New System.Drawing.Size(78, 17)
         Me.chkTVScraperShowPremiered.TabIndex = 5
         Me.chkTVScraperShowPremiered.Text = "Premiered"
-        Me.chkTVScraperShowPremiered.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowPremiered.UseVisualStyleBackColor = True
         '
         'chkTVScraperShowEpiGuideURL
         '
-        Me.chkTVScraperShowEpiGuideURL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowEpiGuideURL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowEpiGuideURL.Location = New System.Drawing.Point(6, 29)
         Me.chkTVScraperShowEpiGuideURL.Name = "chkTVScraperShowEpiGuideURL"
         Me.chkTVScraperShowEpiGuideURL.Size = New System.Drawing.Size(118, 17)
         Me.chkTVScraperShowEpiGuideURL.TabIndex = 1
         Me.chkTVScraperShowEpiGuideURL.Text = "EpisodeGuideURL"
-        Me.chkTVScraperShowEpiGuideURL.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowEpiGuideURL.UseVisualStyleBackColor = True
         '
         'chkTVScraperShowMPAA
         '
-        Me.chkTVScraperShowMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowMPAA.Location = New System.Drawing.Point(6, 61)
         Me.chkTVScraperShowMPAA.Name = "chkTVScraperShowMPAA"
         Me.chkTVScraperShowMPAA.Size = New System.Drawing.Size(119, 17)
         Me.chkTVScraperShowMPAA.TabIndex = 3
         Me.chkTVScraperShowMPAA.Text = "MPAA"
-        Me.chkTVScraperShowMPAA.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowMPAA.UseVisualStyleBackColor = True
         '
         'chkTVScraperShowPlot
         '
-        Me.chkTVScraperShowPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowPlot.Location = New System.Drawing.Point(6, 77)
         Me.chkTVScraperShowPlot.Name = "chkTVScraperShowPlot"
         Me.chkTVScraperShowPlot.Size = New System.Drawing.Size(119, 17)
         Me.chkTVScraperShowPlot.TabIndex = 4
         Me.chkTVScraperShowPlot.Text = "Plot"
-        Me.chkTVScraperShowPlot.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowPlot.UseVisualStyleBackColor = True
         '
         'chkTVScraperShowGenre
         '
-        Me.chkTVScraperShowGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowGenre.Location = New System.Drawing.Point(6, 45)
         Me.chkTVScraperShowGenre.Name = "chkTVScraperShowGenre"
         Me.chkTVScraperShowGenre.Size = New System.Drawing.Size(118, 17)
         Me.chkTVScraperShowGenre.TabIndex = 2
         Me.chkTVScraperShowGenre.Text = "Genre"
-        Me.chkTVScraperShowGenre.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowGenre.UseVisualStyleBackColor = True
         '
         'chkTVScraperShowTitle
         '
-        Me.chkTVScraperShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperShowTitle.Location = New System.Drawing.Point(6, 13)
         Me.chkTVScraperShowTitle.Name = "chkTVScraperShowTitle"
         Me.chkTVScraperShowTitle.Size = New System.Drawing.Size(118, 17)
         Me.chkTVScraperShowTitle.TabIndex = 0
         Me.chkTVScraperShowTitle.Text = "Title"
-        Me.chkTVScraperShowTitle.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowTitle.UseVisualStyleBackColor = True
         '
         'gbTVScraperFieldsEpisodeOpts
         '
@@ -10103,124 +10107,124 @@ Partial Class dlgSettings
         Me.gbTVScraperFieldsEpisodeOpts.Controls.Add(Me.chkTVScraperEpisodeTitle)
         Me.gbTVScraperFieldsEpisodeOpts.Controls.Add(Me.chkTVScraperEpisodeEpisode)
         Me.gbTVScraperFieldsEpisodeOpts.Controls.Add(Me.chkTVScraperEpisodeSeason)
-        Me.gbTVScraperFieldsEpisodeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVScraperFieldsEpisodeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperFieldsEpisodeOpts.Location = New System.Drawing.Point(219, 14)
         Me.gbTVScraperFieldsEpisodeOpts.Name = "gbTVScraperFieldsEpisodeOpts"
         Me.gbTVScraperFieldsEpisodeOpts.Size = New System.Drawing.Size(181, 117)
         Me.gbTVScraperFieldsEpisodeOpts.TabIndex = 1
-        Me.gbTVScraperFieldsEpisodeOpts.TabStop = false
+        Me.gbTVScraperFieldsEpisodeOpts.TabStop = False
         Me.gbTVScraperFieldsEpisodeOpts.Text = "Episode"
         '
         'chkTVScraperEpisodeRuntime
         '
-        Me.chkTVScraperEpisodeRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodeRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperEpisodeRuntime.Location = New System.Drawing.Point(6, 94)
         Me.chkTVScraperEpisodeRuntime.Name = "chkTVScraperEpisodeRuntime"
         Me.chkTVScraperEpisodeRuntime.Size = New System.Drawing.Size(82, 17)
         Me.chkTVScraperEpisodeRuntime.TabIndex = 9
         Me.chkTVScraperEpisodeRuntime.Text = "Runtime"
-        Me.chkTVScraperEpisodeRuntime.UseVisualStyleBackColor = true
+        Me.chkTVScraperEpisodeRuntime.UseVisualStyleBackColor = True
         '
         'chkTVScraperEpisodeActors
         '
-        Me.chkTVScraperEpisodeActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodeActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperEpisodeActors.Location = New System.Drawing.Point(94, 60)
         Me.chkTVScraperEpisodeActors.Name = "chkTVScraperEpisodeActors"
         Me.chkTVScraperEpisodeActors.Size = New System.Drawing.Size(81, 17)
         Me.chkTVScraperEpisodeActors.TabIndex = 0
         Me.chkTVScraperEpisodeActors.Text = "Actors"
-        Me.chkTVScraperEpisodeActors.UseVisualStyleBackColor = true
+        Me.chkTVScraperEpisodeActors.UseVisualStyleBackColor = True
         '
         'chkTVScraperEpisodeCredits
         '
-        Me.chkTVScraperEpisodeCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodeCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperEpisodeCredits.Location = New System.Drawing.Point(94, 44)
         Me.chkTVScraperEpisodeCredits.Name = "chkTVScraperEpisodeCredits"
         Me.chkTVScraperEpisodeCredits.Size = New System.Drawing.Size(81, 17)
         Me.chkTVScraperEpisodeCredits.TabIndex = 8
         Me.chkTVScraperEpisodeCredits.Text = "Credits"
-        Me.chkTVScraperEpisodeCredits.UseVisualStyleBackColor = true
+        Me.chkTVScraperEpisodeCredits.UseVisualStyleBackColor = True
         '
         'chkTVScraperEpisodeDirector
         '
-        Me.chkTVScraperEpisodeDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodeDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperEpisodeDirector.Location = New System.Drawing.Point(94, 28)
         Me.chkTVScraperEpisodeDirector.Name = "chkTVScraperEpisodeDirector"
         Me.chkTVScraperEpisodeDirector.Size = New System.Drawing.Size(81, 17)
         Me.chkTVScraperEpisodeDirector.TabIndex = 7
         Me.chkTVScraperEpisodeDirector.Text = "Director"
-        Me.chkTVScraperEpisodeDirector.UseVisualStyleBackColor = true
+        Me.chkTVScraperEpisodeDirector.UseVisualStyleBackColor = True
         '
         'chkTVScraperEpisodePlot
         '
-        Me.chkTVScraperEpisodePlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodePlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperEpisodePlot.Location = New System.Drawing.Point(94, 12)
         Me.chkTVScraperEpisodePlot.Name = "chkTVScraperEpisodePlot"
         Me.chkTVScraperEpisodePlot.Size = New System.Drawing.Size(81, 17)
         Me.chkTVScraperEpisodePlot.TabIndex = 6
         Me.chkTVScraperEpisodePlot.Text = "Plot"
-        Me.chkTVScraperEpisodePlot.UseVisualStyleBackColor = true
+        Me.chkTVScraperEpisodePlot.UseVisualStyleBackColor = True
         '
         'chkTVScraperEpisodeRating
         '
-        Me.chkTVScraperEpisodeRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodeRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperEpisodeRating.Location = New System.Drawing.Point(6, 77)
         Me.chkTVScraperEpisodeRating.Name = "chkTVScraperEpisodeRating"
         Me.chkTVScraperEpisodeRating.Size = New System.Drawing.Size(82, 17)
         Me.chkTVScraperEpisodeRating.TabIndex = 5
         Me.chkTVScraperEpisodeRating.Text = "Rating"
-        Me.chkTVScraperEpisodeRating.UseVisualStyleBackColor = true
+        Me.chkTVScraperEpisodeRating.UseVisualStyleBackColor = True
         '
         'chkTVScraperEpisodeAired
         '
-        Me.chkTVScraperEpisodeAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodeAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperEpisodeAired.Location = New System.Drawing.Point(6, 61)
         Me.chkTVScraperEpisodeAired.Name = "chkTVScraperEpisodeAired"
         Me.chkTVScraperEpisodeAired.Size = New System.Drawing.Size(82, 17)
         Me.chkTVScraperEpisodeAired.TabIndex = 4
         Me.chkTVScraperEpisodeAired.Text = "Aired"
-        Me.chkTVScraperEpisodeAired.UseVisualStyleBackColor = true
+        Me.chkTVScraperEpisodeAired.UseVisualStyleBackColor = True
         '
         'chkTVScraperEpisodeTitle
         '
-        Me.chkTVScraperEpisodeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperEpisodeTitle.Location = New System.Drawing.Point(6, 13)
         Me.chkTVScraperEpisodeTitle.Name = "chkTVScraperEpisodeTitle"
         Me.chkTVScraperEpisodeTitle.Size = New System.Drawing.Size(82, 17)
         Me.chkTVScraperEpisodeTitle.TabIndex = 0
         Me.chkTVScraperEpisodeTitle.Text = "Title"
-        Me.chkTVScraperEpisodeTitle.UseVisualStyleBackColor = true
+        Me.chkTVScraperEpisodeTitle.UseVisualStyleBackColor = True
         '
         'chkTVScraperEpisodeEpisode
         '
-        Me.chkTVScraperEpisodeEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodeEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperEpisodeEpisode.Location = New System.Drawing.Point(6, 45)
         Me.chkTVScraperEpisodeEpisode.Name = "chkTVScraperEpisodeEpisode"
         Me.chkTVScraperEpisodeEpisode.Size = New System.Drawing.Size(82, 17)
         Me.chkTVScraperEpisodeEpisode.TabIndex = 3
         Me.chkTVScraperEpisodeEpisode.Text = "Episode"
-        Me.chkTVScraperEpisodeEpisode.UseVisualStyleBackColor = true
+        Me.chkTVScraperEpisodeEpisode.UseVisualStyleBackColor = True
         '
         'chkTVScraperEpisodeSeason
         '
-        Me.chkTVScraperEpisodeSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodeSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperEpisodeSeason.Location = New System.Drawing.Point(6, 29)
         Me.chkTVScraperEpisodeSeason.Name = "chkTVScraperEpisodeSeason"
         Me.chkTVScraperEpisodeSeason.Size = New System.Drawing.Size(82, 17)
         Me.chkTVScraperEpisodeSeason.TabIndex = 2
         Me.chkTVScraperEpisodeSeason.Text = "Season"
-        Me.chkTVScraperEpisodeSeason.UseVisualStyleBackColor = true
+        Me.chkTVScraperEpisodeSeason.UseVisualStyleBackColor = True
         '
         'gbTVScraperGlobalLocksOpts
         '
         Me.gbTVScraperGlobalLocksOpts.Controls.Add(Me.gbTVScraperGlobalLocksEpisodeOpts)
         Me.gbTVScraperGlobalLocksOpts.Controls.Add(Me.gbTVScraperGlobalLocksShowOpts)
-        Me.gbTVScraperGlobalLocksOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVScraperGlobalLocksOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperGlobalLocksOpts.Location = New System.Drawing.Point(208, 6)
         Me.gbTVScraperGlobalLocksOpts.Name = "gbTVScraperGlobalLocksOpts"
         Me.gbTVScraperGlobalLocksOpts.Size = New System.Drawing.Size(198, 243)
         Me.gbTVScraperGlobalLocksOpts.TabIndex = 1
-        Me.gbTVScraperGlobalLocksOpts.TabStop = false
+        Me.gbTVScraperGlobalLocksOpts.TabStop = False
         Me.gbTVScraperGlobalLocksOpts.Text = "Global Locks"
         '
         'gbTVScraperGlobalLocksEpisodeOpts
@@ -10229,53 +10233,53 @@ Partial Class dlgSettings
         Me.gbTVScraperGlobalLocksEpisodeOpts.Controls.Add(Me.chkTVLockEpisodeTitle)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Controls.Add(Me.chkTVLockEpisodeRating)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Controls.Add(Me.chkTVLockEpisodePlot)
-        Me.gbTVScraperGlobalLocksEpisodeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVScraperGlobalLocksEpisodeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperGlobalLocksEpisodeOpts.Location = New System.Drawing.Point(5, 154)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Name = "gbTVScraperGlobalLocksEpisodeOpts"
         Me.gbTVScraperGlobalLocksEpisodeOpts.Size = New System.Drawing.Size(181, 83)
         Me.gbTVScraperGlobalLocksEpisodeOpts.TabIndex = 1
-        Me.gbTVScraperGlobalLocksEpisodeOpts.TabStop = false
+        Me.gbTVScraperGlobalLocksEpisodeOpts.TabStop = False
         Me.gbTVScraperGlobalLocksEpisodeOpts.Text = "Episode"
         '
         'chkTVLockEpisodeRuntime
         '
-        Me.chkTVLockEpisodeRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockEpisodeRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockEpisodeRuntime.Location = New System.Drawing.Point(6, 63)
         Me.chkTVLockEpisodeRuntime.Name = "chkTVLockEpisodeRuntime"
         Me.chkTVLockEpisodeRuntime.Size = New System.Drawing.Size(168, 17)
         Me.chkTVLockEpisodeRuntime.TabIndex = 3
         Me.chkTVLockEpisodeRuntime.Text = "Lock Runtime"
-        Me.chkTVLockEpisodeRuntime.UseVisualStyleBackColor = true
+        Me.chkTVLockEpisodeRuntime.UseVisualStyleBackColor = True
         '
         'chkTVLockEpisodeTitle
         '
-        Me.chkTVLockEpisodeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockEpisodeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockEpisodeTitle.Location = New System.Drawing.Point(6, 15)
         Me.chkTVLockEpisodeTitle.Name = "chkTVLockEpisodeTitle"
         Me.chkTVLockEpisodeTitle.Size = New System.Drawing.Size(166, 17)
         Me.chkTVLockEpisodeTitle.TabIndex = 0
         Me.chkTVLockEpisodeTitle.Text = "Lock Title"
-        Me.chkTVLockEpisodeTitle.UseVisualStyleBackColor = true
+        Me.chkTVLockEpisodeTitle.UseVisualStyleBackColor = True
         '
         'chkTVLockEpisodeRating
         '
-        Me.chkTVLockEpisodeRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockEpisodeRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockEpisodeRating.Location = New System.Drawing.Point(6, 47)
         Me.chkTVLockEpisodeRating.Name = "chkTVLockEpisodeRating"
         Me.chkTVLockEpisodeRating.Size = New System.Drawing.Size(168, 17)
         Me.chkTVLockEpisodeRating.TabIndex = 2
         Me.chkTVLockEpisodeRating.Text = "Lock Rating"
-        Me.chkTVLockEpisodeRating.UseVisualStyleBackColor = true
+        Me.chkTVLockEpisodeRating.UseVisualStyleBackColor = True
         '
         'chkTVLockEpisodePlot
         '
-        Me.chkTVLockEpisodePlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockEpisodePlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockEpisodePlot.Location = New System.Drawing.Point(6, 31)
         Me.chkTVLockEpisodePlot.Name = "chkTVLockEpisodePlot"
         Me.chkTVLockEpisodePlot.Size = New System.Drawing.Size(166, 17)
         Me.chkTVLockEpisodePlot.TabIndex = 1
         Me.chkTVLockEpisodePlot.Text = "Lock Plot"
-        Me.chkTVLockEpisodePlot.UseVisualStyleBackColor = true
+        Me.chkTVLockEpisodePlot.UseVisualStyleBackColor = True
         '
         'gbTVScraperGlobalLocksShowOpts
         '
@@ -10286,83 +10290,83 @@ Partial Class dlgSettings
         Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowStudio)
         Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowRating)
         Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowTitle)
-        Me.gbTVScraperGlobalLocksShowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVScraperGlobalLocksShowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperGlobalLocksShowOpts.Location = New System.Drawing.Point(5, 13)
         Me.gbTVScraperGlobalLocksShowOpts.Name = "gbTVScraperGlobalLocksShowOpts"
         Me.gbTVScraperGlobalLocksShowOpts.Size = New System.Drawing.Size(181, 135)
         Me.gbTVScraperGlobalLocksShowOpts.TabIndex = 0
-        Me.gbTVScraperGlobalLocksShowOpts.TabStop = false
+        Me.gbTVScraperGlobalLocksShowOpts.TabStop = False
         Me.gbTVScraperGlobalLocksShowOpts.Text = "Show"
         '
         'chkTVLockShowRuntime
         '
-        Me.chkTVLockShowRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockShowRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockShowRuntime.Location = New System.Drawing.Point(6, 110)
         Me.chkTVLockShowRuntime.Name = "chkTVLockShowRuntime"
         Me.chkTVLockShowRuntime.Size = New System.Drawing.Size(168, 17)
         Me.chkTVLockShowRuntime.TabIndex = 6
         Me.chkTVLockShowRuntime.Text = "Lock Runtime"
-        Me.chkTVLockShowRuntime.UseVisualStyleBackColor = true
+        Me.chkTVLockShowRuntime.UseVisualStyleBackColor = True
         '
         'chkTVLockShowStatus
         '
-        Me.chkTVLockShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockShowStatus.Location = New System.Drawing.Point(6, 77)
         Me.chkTVLockShowStatus.Name = "chkTVLockShowStatus"
         Me.chkTVLockShowStatus.Size = New System.Drawing.Size(168, 17)
         Me.chkTVLockShowStatus.TabIndex = 5
         Me.chkTVLockShowStatus.Text = "Lock Status"
-        Me.chkTVLockShowStatus.UseVisualStyleBackColor = true
+        Me.chkTVLockShowStatus.UseVisualStyleBackColor = True
         '
         'chkTVLockShowPlot
         '
-        Me.chkTVLockShowPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockShowPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockShowPlot.Location = New System.Drawing.Point(6, 29)
         Me.chkTVLockShowPlot.Name = "chkTVLockShowPlot"
         Me.chkTVLockShowPlot.Size = New System.Drawing.Size(168, 17)
         Me.chkTVLockShowPlot.TabIndex = 1
         Me.chkTVLockShowPlot.Text = "Lock Plot"
-        Me.chkTVLockShowPlot.UseVisualStyleBackColor = true
+        Me.chkTVLockShowPlot.UseVisualStyleBackColor = True
         '
         'chkTVLockShowGenre
         '
-        Me.chkTVLockShowGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockShowGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockShowGenre.Location = New System.Drawing.Point(6, 61)
         Me.chkTVLockShowGenre.Name = "chkTVLockShowGenre"
         Me.chkTVLockShowGenre.Size = New System.Drawing.Size(168, 17)
         Me.chkTVLockShowGenre.TabIndex = 3
         Me.chkTVLockShowGenre.Text = "Lock Genre"
-        Me.chkTVLockShowGenre.UseVisualStyleBackColor = true
+        Me.chkTVLockShowGenre.UseVisualStyleBackColor = True
         '
         'chkTVLockShowStudio
         '
-        Me.chkTVLockShowStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockShowStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockShowStudio.Location = New System.Drawing.Point(6, 93)
         Me.chkTVLockShowStudio.Name = "chkTVLockShowStudio"
         Me.chkTVLockShowStudio.Size = New System.Drawing.Size(168, 17)
         Me.chkTVLockShowStudio.TabIndex = 4
         Me.chkTVLockShowStudio.Text = "Lock Studio"
-        Me.chkTVLockShowStudio.UseVisualStyleBackColor = true
+        Me.chkTVLockShowStudio.UseVisualStyleBackColor = True
         '
         'chkTVLockShowRating
         '
-        Me.chkTVLockShowRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockShowRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockShowRating.Location = New System.Drawing.Point(6, 45)
         Me.chkTVLockShowRating.Name = "chkTVLockShowRating"
         Me.chkTVLockShowRating.Size = New System.Drawing.Size(168, 17)
         Me.chkTVLockShowRating.TabIndex = 2
         Me.chkTVLockShowRating.Text = "Lock Rating"
-        Me.chkTVLockShowRating.UseVisualStyleBackColor = true
+        Me.chkTVLockShowRating.UseVisualStyleBackColor = True
         '
         'chkTVLockShowTitle
         '
-        Me.chkTVLockShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVLockShowTitle.Location = New System.Drawing.Point(6, 13)
         Me.chkTVLockShowTitle.Name = "chkTVLockShowTitle"
         Me.chkTVLockShowTitle.Size = New System.Drawing.Size(168, 17)
         Me.chkTVLockShowTitle.TabIndex = 0
         Me.chkTVLockShowTitle.Text = "Lock Title"
-        Me.chkTVLockShowTitle.UseVisualStyleBackColor = true
+        Me.chkTVLockShowTitle.UseVisualStyleBackColor = True
         '
         'gbTVScraperMetaDataOpts
         '
@@ -10371,12 +10375,12 @@ Partial Class dlgSettings
         Me.gbTVScraperMetaDataOpts.Controls.Add(Me.cbTVLanguageOverlay)
         Me.gbTVScraperMetaDataOpts.Controls.Add(Me.lblTVLanguageOverlay)
         Me.gbTVScraperMetaDataOpts.Controls.Add(Me.chkTVScraperMetaDataScan)
-        Me.gbTVScraperMetaDataOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVScraperMetaDataOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperMetaDataOpts.Location = New System.Drawing.Point(412, 6)
         Me.gbTVScraperMetaDataOpts.Name = "gbTVScraperMetaDataOpts"
         Me.gbTVScraperMetaDataOpts.Size = New System.Drawing.Size(335, 386)
         Me.gbTVScraperMetaDataOpts.TabIndex = 2
-        Me.gbTVScraperMetaDataOpts.TabStop = false
+        Me.gbTVScraperMetaDataOpts.TabStop = False
         Me.gbTVScraperMetaDataOpts.Text = "Meta Data"
         '
         'gbTVScraperDefFIExtOpts
@@ -10387,18 +10391,18 @@ Partial Class dlgSettings
         Me.gbTVScraperDefFIExtOpts.Controls.Add(Me.btnTVScraperDefFIExtRemove)
         Me.gbTVScraperDefFIExtOpts.Controls.Add(Me.btnTVScraperDefFIExtEdit)
         Me.gbTVScraperDefFIExtOpts.Controls.Add(Me.btnTVScraperDefFIExtAdd)
-        Me.gbTVScraperDefFIExtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVScraperDefFIExtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperDefFIExtOpts.Location = New System.Drawing.Point(12, 93)
         Me.gbTVScraperDefFIExtOpts.Name = "gbTVScraperDefFIExtOpts"
         Me.gbTVScraperDefFIExtOpts.Size = New System.Drawing.Size(183, 144)
         Me.gbTVScraperDefFIExtOpts.TabIndex = 3
-        Me.gbTVScraperDefFIExtOpts.TabStop = false
+        Me.gbTVScraperDefFIExtOpts.TabStop = False
         Me.gbTVScraperDefFIExtOpts.Text = "Defaults by File Type"
         '
         'lstTVScraperDefFIExt
         '
-        Me.lstTVScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lstTVScraperDefFIExt.FormattingEnabled = true
+        Me.lstTVScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstTVScraperDefFIExt.FormattingEnabled = True
         Me.lstTVScraperDefFIExt.Location = New System.Drawing.Point(10, 16)
         Me.lstTVScraperDefFIExt.Name = "lstTVScraperDefFIExt"
         Me.lstTVScraperDefFIExt.Size = New System.Drawing.Size(165, 95)
@@ -10406,7 +10410,7 @@ Partial Class dlgSettings
         '
         'txtTVScraperDefFIExt
         '
-        Me.txtTVScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVScraperDefFIExt.Location = New System.Drawing.Point(73, 116)
         Me.txtTVScraperDefFIExt.Name = "txtTVScraperDefFIExt"
         Me.txtTVScraperDefFIExt.Size = New System.Drawing.Size(35, 22)
@@ -10414,7 +10418,7 @@ Partial Class dlgSettings
         '
         'lblTVScraperDefFIExt
         '
-        Me.lblTVScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVScraperDefFIExt.Location = New System.Drawing.Point(8, 116)
         Me.lblTVScraperDefFIExt.Name = "lblTVScraperDefFIExt"
         Me.lblTVScraperDefFIExt.Size = New System.Drawing.Size(66, 19)
@@ -10424,71 +10428,71 @@ Partial Class dlgSettings
         '
         'btnTVScraperDefFIExtRemove
         '
-        Me.btnTVScraperDefFIExtRemove.Enabled = false
-        Me.btnTVScraperDefFIExtRemove.Image = CType(resources.GetObject("btnTVScraperDefFIExtRemove.Image"),System.Drawing.Image)
+        Me.btnTVScraperDefFIExtRemove.Enabled = False
+        Me.btnTVScraperDefFIExtRemove.Image = CType(resources.GetObject("btnTVScraperDefFIExtRemove.Image"), System.Drawing.Image)
         Me.btnTVScraperDefFIExtRemove.Location = New System.Drawing.Point(153, 115)
         Me.btnTVScraperDefFIExtRemove.Name = "btnTVScraperDefFIExtRemove"
         Me.btnTVScraperDefFIExtRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnTVScraperDefFIExtRemove.TabIndex = 4
-        Me.btnTVScraperDefFIExtRemove.UseVisualStyleBackColor = true
+        Me.btnTVScraperDefFIExtRemove.UseVisualStyleBackColor = True
         '
         'btnTVScraperDefFIExtEdit
         '
-        Me.btnTVScraperDefFIExtEdit.Enabled = false
-        Me.btnTVScraperDefFIExtEdit.Image = CType(resources.GetObject("btnTVScraperDefFIExtEdit.Image"),System.Drawing.Image)
+        Me.btnTVScraperDefFIExtEdit.Enabled = False
+        Me.btnTVScraperDefFIExtEdit.Image = CType(resources.GetObject("btnTVScraperDefFIExtEdit.Image"), System.Drawing.Image)
         Me.btnTVScraperDefFIExtEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnTVScraperDefFIExtEdit.Location = New System.Drawing.Point(130, 115)
         Me.btnTVScraperDefFIExtEdit.Name = "btnTVScraperDefFIExtEdit"
         Me.btnTVScraperDefFIExtEdit.Size = New System.Drawing.Size(23, 23)
         Me.btnTVScraperDefFIExtEdit.TabIndex = 3
         Me.btnTVScraperDefFIExtEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVScraperDefFIExtEdit.UseVisualStyleBackColor = true
+        Me.btnTVScraperDefFIExtEdit.UseVisualStyleBackColor = True
         '
         'btnTVScraperDefFIExtAdd
         '
-        Me.btnTVScraperDefFIExtAdd.Enabled = false
-        Me.btnTVScraperDefFIExtAdd.Image = CType(resources.GetObject("btnTVScraperDefFIExtAdd.Image"),System.Drawing.Image)
+        Me.btnTVScraperDefFIExtAdd.Enabled = False
+        Me.btnTVScraperDefFIExtAdd.Image = CType(resources.GetObject("btnTVScraperDefFIExtAdd.Image"), System.Drawing.Image)
         Me.btnTVScraperDefFIExtAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnTVScraperDefFIExtAdd.Location = New System.Drawing.Point(108, 115)
         Me.btnTVScraperDefFIExtAdd.Name = "btnTVScraperDefFIExtAdd"
         Me.btnTVScraperDefFIExtAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnTVScraperDefFIExtAdd.TabIndex = 29
         Me.btnTVScraperDefFIExtAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVScraperDefFIExtAdd.UseVisualStyleBackColor = true
+        Me.btnTVScraperDefFIExtAdd.UseVisualStyleBackColor = True
         '
         'gbTVScraperDurationOpts
         '
         Me.gbTVScraperDurationOpts.Controls.Add(Me.lblTVScraperDurationRuntimeFormat)
         Me.gbTVScraperDurationOpts.Controls.Add(Me.chkTVScraperUseMDDuration)
         Me.gbTVScraperDurationOpts.Controls.Add(Me.txtTVScraperDurationRuntimeFormat)
-        Me.gbTVScraperDurationOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVScraperDurationOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVScraperDurationOpts.Location = New System.Drawing.Point(12, 249)
         Me.gbTVScraperDurationOpts.Name = "gbTVScraperDurationOpts"
         Me.gbTVScraperDurationOpts.Size = New System.Drawing.Size(317, 91)
         Me.gbTVScraperDurationOpts.TabIndex = 4
-        Me.gbTVScraperDurationOpts.TabStop = false
+        Me.gbTVScraperDurationOpts.TabStop = False
         Me.gbTVScraperDurationOpts.Text = "Duration Format"
         '
         'lblTVScraperDurationRuntimeFormat
         '
-        Me.lblTVScraperDurationRuntimeFormat.Font = New System.Drawing.Font("Segoe UI", 7!)
+        Me.lblTVScraperDurationRuntimeFormat.Font = New System.Drawing.Font("Segoe UI", 7.0!)
         Me.lblTVScraperDurationRuntimeFormat.Location = New System.Drawing.Point(218, 21)
         Me.lblTVScraperDurationRuntimeFormat.Name = "lblTVScraperDurationRuntimeFormat"
         Me.lblTVScraperDurationRuntimeFormat.Size = New System.Drawing.Size(72, 50)
         Me.lblTVScraperDurationRuntimeFormat.TabIndex = 24
-        Me.lblTVScraperDurationRuntimeFormat.Text = "<h>=Hours"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<m>=Minutes"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<s>=Seconds"
+        Me.lblTVScraperDurationRuntimeFormat.Text = "<h>=Hours" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "<m>=Minutes" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "<s>=Seconds"
         Me.lblTVScraperDurationRuntimeFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'chkTVScraperUseMDDuration
         '
-        Me.chkTVScraperUseMDDuration.AutoSize = true
-        Me.chkTVScraperUseMDDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperUseMDDuration.AutoSize = True
+        Me.chkTVScraperUseMDDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperUseMDDuration.Location = New System.Drawing.Point(9, 21)
         Me.chkTVScraperUseMDDuration.Name = "chkTVScraperUseMDDuration"
         Me.chkTVScraperUseMDDuration.Size = New System.Drawing.Size(158, 17)
         Me.chkTVScraperUseMDDuration.TabIndex = 1
         Me.chkTVScraperUseMDDuration.Text = "Use Duration for Runtime"
-        Me.chkTVScraperUseMDDuration.UseVisualStyleBackColor = true
+        Me.chkTVScraperUseMDDuration.UseVisualStyleBackColor = True
         '
         'txtTVScraperDurationRuntimeFormat
         '
@@ -10500,17 +10504,17 @@ Partial Class dlgSettings
         'cbTVLanguageOverlay
         '
         Me.cbTVLanguageOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVLanguageOverlay.FormattingEnabled = true
+        Me.cbTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVLanguageOverlay.FormattingEnabled = True
         Me.cbTVLanguageOverlay.Location = New System.Drawing.Point(13, 62)
         Me.cbTVLanguageOverlay.Name = "cbTVLanguageOverlay"
         Me.cbTVLanguageOverlay.Size = New System.Drawing.Size(182, 21)
-        Me.cbTVLanguageOverlay.Sorted = true
+        Me.cbTVLanguageOverlay.Sorted = True
         Me.cbTVLanguageOverlay.TabIndex = 2
         '
         'lblTVLanguageOverlay
         '
-        Me.lblTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVLanguageOverlay.Location = New System.Drawing.Point(4, 35)
         Me.lblTVLanguageOverlay.Name = "lblTVLanguageOverlay"
         Me.lblTVLanguageOverlay.Size = New System.Drawing.Size(202, 29)
@@ -10520,14 +10524,14 @@ Partial Class dlgSettings
         '
         'chkTVScraperMetaDataScan
         '
-        Me.chkTVScraperMetaDataScan.AutoSize = true
-        Me.chkTVScraperMetaDataScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperMetaDataScan.AutoSize = True
+        Me.chkTVScraperMetaDataScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVScraperMetaDataScan.Location = New System.Drawing.Point(5, 16)
         Me.chkTVScraperMetaDataScan.Name = "chkTVScraperMetaDataScan"
         Me.chkTVScraperMetaDataScan.Size = New System.Drawing.Size(106, 17)
         Me.chkTVScraperMetaDataScan.TabIndex = 0
         Me.chkTVScraperMetaDataScan.Text = "Scan Meta Data"
-        Me.chkTVScraperMetaDataScan.UseVisualStyleBackColor = true
+        Me.chkTVScraperMetaDataScan.UseVisualStyleBackColor = True
         '
         'gbTVScraperOptionsOpts
         '
@@ -10537,18 +10541,18 @@ Partial Class dlgSettings
         Me.gbTVScraperOptionsOpts.Controls.Add(Me.cbTVScraperOptionsOrdering)
         Me.gbTVScraperOptionsOpts.Controls.Add(Me.lblTVScraperUpdateTime)
         Me.gbTVScraperOptionsOpts.Controls.Add(Me.cbTVScraperUpdateTime)
-        Me.gbTVScraperOptionsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVScraperOptionsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperOptionsOpts.Location = New System.Drawing.Point(5, 6)
         Me.gbTVScraperOptionsOpts.Name = "gbTVScraperOptionsOpts"
         Me.gbTVScraperOptionsOpts.Size = New System.Drawing.Size(200, 243)
         Me.gbTVScraperOptionsOpts.TabIndex = 0
-        Me.gbTVScraperOptionsOpts.TabStop = false
+        Me.gbTVScraperOptionsOpts.TabStop = False
         Me.gbTVScraperOptionsOpts.Text = "Options"
         '
         'lblTVScraperRatingRegion
         '
-        Me.lblTVScraperRatingRegion.AutoSize = true
-        Me.lblTVScraperRatingRegion.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVScraperRatingRegion.AutoSize = True
+        Me.lblTVScraperRatingRegion.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVScraperRatingRegion.Location = New System.Drawing.Point(12, 163)
         Me.lblTVScraperRatingRegion.Name = "lblTVScraperRatingRegion"
         Me.lblTVScraperRatingRegion.Size = New System.Drawing.Size(99, 13)
@@ -10558,8 +10562,8 @@ Partial Class dlgSettings
         'cbTVScraperRatingRegion
         '
         Me.cbTVScraperRatingRegion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVScraperRatingRegion.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVScraperRatingRegion.FormattingEnabled = true
+        Me.cbTVScraperRatingRegion.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVScraperRatingRegion.FormattingEnabled = True
         Me.cbTVScraperRatingRegion.Location = New System.Drawing.Point(12, 178)
         Me.cbTVScraperRatingRegion.Name = "cbTVScraperRatingRegion"
         Me.cbTVScraperRatingRegion.Size = New System.Drawing.Size(163, 21)
@@ -10567,7 +10571,7 @@ Partial Class dlgSettings
         '
         'lblTVScraperOptionsOrdering
         '
-        Me.lblTVScraperOptionsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVScraperOptionsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTVScraperOptionsOrdering.Location = New System.Drawing.Point(10, 73)
         Me.lblTVScraperOptionsOrdering.Name = "lblTVScraperOptionsOrdering"
         Me.lblTVScraperOptionsOrdering.Size = New System.Drawing.Size(177, 13)
@@ -10578,8 +10582,8 @@ Partial Class dlgSettings
         'cbTVScraperOptionsOrdering
         '
         Me.cbTVScraperOptionsOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVScraperOptionsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVScraperOptionsOrdering.FormattingEnabled = true
+        Me.cbTVScraperOptionsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVScraperOptionsOrdering.FormattingEnabled = True
         Me.cbTVScraperOptionsOrdering.Location = New System.Drawing.Point(15, 89)
         Me.cbTVScraperOptionsOrdering.Name = "cbTVScraperOptionsOrdering"
         Me.cbTVScraperOptionsOrdering.Size = New System.Drawing.Size(166, 21)
@@ -10587,7 +10591,7 @@ Partial Class dlgSettings
         '
         'lblTVScraperUpdateTime
         '
-        Me.lblTVScraperUpdateTime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVScraperUpdateTime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVScraperUpdateTime.Location = New System.Drawing.Point(3, 18)
         Me.lblTVScraperUpdateTime.Name = "lblTVScraperUpdateTime"
         Me.lblTVScraperUpdateTime.Size = New System.Drawing.Size(190, 31)
@@ -10598,8 +10602,8 @@ Partial Class dlgSettings
         'cbTVScraperUpdateTime
         '
         Me.cbTVScraperUpdateTime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVScraperUpdateTime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVScraperUpdateTime.FormattingEnabled = true
+        Me.cbTVScraperUpdateTime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVScraperUpdateTime.FormattingEnabled = True
         Me.cbTVScraperUpdateTime.Location = New System.Drawing.Point(15, 49)
         Me.cbTVScraperUpdateTime.Name = "cbTVScraperUpdateTime"
         Me.cbTVScraperUpdateTime.Size = New System.Drawing.Size(166, 21)
@@ -10634,29 +10638,29 @@ Partial Class dlgSettings
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperRelease)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperYear)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperTitle)
-        Me.gbMovieScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperFieldsOpts.Location = New System.Drawing.Point(5, 253)
         Me.gbMovieScraperFieldsOpts.Name = "gbMovieScraperFieldsOpts"
         Me.gbMovieScraperFieldsOpts.Size = New System.Drawing.Size(302, 245)
         Me.gbMovieScraperFieldsOpts.TabIndex = 67
-        Me.gbMovieScraperFieldsOpts.TabStop = false
+        Me.gbMovieScraperFieldsOpts.TabStop = False
         Me.gbMovieScraperFieldsOpts.Text = "Scraper Fields - Global"
         '
         'chkMovieScraperOriginalTitle
         '
-        Me.chkMovieScraperOriginalTitle.AutoSize = true
-        Me.chkMovieScraperOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperOriginalTitle.AutoSize = True
+        Me.chkMovieScraperOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperOriginalTitle.Location = New System.Drawing.Point(6, 38)
         Me.chkMovieScraperOriginalTitle.Name = "chkMovieScraperOriginalTitle"
         Me.chkMovieScraperOriginalTitle.Size = New System.Drawing.Size(92, 17)
         Me.chkMovieScraperOriginalTitle.TabIndex = 29
         Me.chkMovieScraperOriginalTitle.Text = "Original Title"
-        Me.chkMovieScraperOriginalTitle.UseVisualStyleBackColor = true
+        Me.chkMovieScraperOriginalTitle.UseVisualStyleBackColor = True
         '
         'lblMovieScraperCertLang
         '
-        Me.lblMovieScraperCertLang.AutoSize = true
-        Me.lblMovieScraperCertLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieScraperCertLang.AutoSize = True
+        Me.lblMovieScraperCertLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieScraperCertLang.Location = New System.Drawing.Point(24, 194)
         Me.lblMovieScraperCertLang.Name = "lblMovieScraperCertLang"
         Me.lblMovieScraperCertLang.Size = New System.Drawing.Size(51, 13)
@@ -10666,64 +10670,64 @@ Partial Class dlgSettings
         '
         'chkMovieScraperTags
         '
-        Me.chkMovieScraperTags.AutoSize = true
-        Me.chkMovieScraperTags.Enabled = false
-        Me.chkMovieScraperTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperTags.AutoSize = True
+        Me.chkMovieScraperTags.Enabled = False
+        Me.chkMovieScraperTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperTags.Location = New System.Drawing.Point(98, 152)
         Me.chkMovieScraperTags.Name = "chkMovieScraperTags"
         Me.chkMovieScraperTags.Size = New System.Drawing.Size(49, 17)
         Me.chkMovieScraperTags.TabIndex = 27
         Me.chkMovieScraperTags.Text = "Tags"
-        Me.chkMovieScraperTags.UseVisualStyleBackColor = true
+        Me.chkMovieScraperTags.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCollectionID
         '
-        Me.chkMovieScraperCollectionID.AutoSize = true
-        Me.chkMovieScraperCollectionID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCollectionID.AutoSize = True
+        Me.chkMovieScraperCollectionID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCollectionID.Location = New System.Drawing.Point(98, 133)
         Me.chkMovieScraperCollectionID.Name = "chkMovieScraperCollectionID"
         Me.chkMovieScraperCollectionID.Size = New System.Drawing.Size(92, 17)
         Me.chkMovieScraperCollectionID.TabIndex = 26
         Me.chkMovieScraperCollectionID.Text = "Collection ID"
-        Me.chkMovieScraperCollectionID.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCollectionID.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCert
         '
-        Me.chkMovieScraperCert.AutoSize = true
-        Me.chkMovieScraperCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCert.AutoSize = True
+        Me.chkMovieScraperCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCert.Location = New System.Drawing.Point(6, 171)
         Me.chkMovieScraperCert.Name = "chkMovieScraperCert"
         Me.chkMovieScraperCert.Size = New System.Drawing.Size(123, 17)
         Me.chkMovieScraperCert.TabIndex = 24
         Me.chkMovieScraperCert.Text = "MPAA/Certification"
-        Me.chkMovieScraperCert.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCert.UseVisualStyleBackColor = True
         '
         'chkMovieScraperTop250
         '
-        Me.chkMovieScraperTop250.AutoSize = true
-        Me.chkMovieScraperTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperTop250.AutoSize = True
+        Me.chkMovieScraperTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperTop250.Location = New System.Drawing.Point(98, 94)
         Me.chkMovieScraperTop250.Name = "chkMovieScraperTop250"
         Me.chkMovieScraperTop250.Size = New System.Drawing.Size(66, 17)
         Me.chkMovieScraperTop250.TabIndex = 23
         Me.chkMovieScraperTop250.Text = "Top 250"
-        Me.chkMovieScraperTop250.UseVisualStyleBackColor = true
+        Me.chkMovieScraperTop250.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCountry
         '
-        Me.chkMovieScraperCountry.AutoSize = true
-        Me.chkMovieScraperCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCountry.AutoSize = True
+        Me.chkMovieScraperCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCountry.Location = New System.Drawing.Point(98, 76)
         Me.chkMovieScraperCountry.Name = "chkMovieScraperCountry"
         Me.chkMovieScraperCountry.Size = New System.Drawing.Size(67, 17)
         Me.chkMovieScraperCountry.TabIndex = 25
         Me.chkMovieScraperCountry.Text = "Country"
-        Me.chkMovieScraperCountry.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCountry.UseVisualStyleBackColor = True
         '
         'txtMovieScraperGenreLimit
         '
-        Me.txtMovieScraperGenreLimit.Enabled = false
-        Me.txtMovieScraperGenreLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieScraperGenreLimit.Enabled = False
+        Me.txtMovieScraperGenreLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieScraperGenreLimit.Location = New System.Drawing.Point(256, 117)
         Me.txtMovieScraperGenreLimit.Name = "txtMovieScraperGenreLimit"
         Me.txtMovieScraperGenreLimit.Size = New System.Drawing.Size(39, 22)
@@ -10731,8 +10735,8 @@ Partial Class dlgSettings
         '
         'lblMovieScraperGenreLimit
         '
-        Me.lblMovieScraperGenreLimit.AutoSize = true
-        Me.lblMovieScraperGenreLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieScraperGenreLimit.AutoSize = True
+        Me.lblMovieScraperGenreLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieScraperGenreLimit.Location = New System.Drawing.Point(224, 125)
         Me.lblMovieScraperGenreLimit.Name = "lblMovieScraperGenreLimit"
         Me.lblMovieScraperGenreLimit.Size = New System.Drawing.Size(34, 13)
@@ -10742,8 +10746,8 @@ Partial Class dlgSettings
         '
         'txtMovieScraperCastLimit
         '
-        Me.txtMovieScraperCastLimit.Enabled = false
-        Me.txtMovieScraperCastLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieScraperCastLimit.Enabled = False
+        Me.txtMovieScraperCastLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieScraperCastLimit.Location = New System.Drawing.Point(257, 74)
         Me.txtMovieScraperCastLimit.Name = "txtMovieScraperCastLimit"
         Me.txtMovieScraperCastLimit.Size = New System.Drawing.Size(39, 22)
@@ -10751,8 +10755,8 @@ Partial Class dlgSettings
         '
         'lblMovieScraperCastLimit
         '
-        Me.lblMovieScraperCastLimit.AutoSize = true
-        Me.lblMovieScraperCastLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieScraperCastLimit.AutoSize = True
+        Me.lblMovieScraperCastLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieScraperCastLimit.Location = New System.Drawing.Point(224, 80)
         Me.lblMovieScraperCastLimit.Name = "lblMovieScraperCastLimit"
         Me.lblMovieScraperCastLimit.Size = New System.Drawing.Size(34, 13)
@@ -10763,184 +10767,184 @@ Partial Class dlgSettings
         'cbMovieScraperCertLang
         '
         Me.cbMovieScraperCertLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieScraperCertLang.Enabled = false
-        Me.cbMovieScraperCertLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieScraperCertLang.FormattingEnabled = true
+        Me.cbMovieScraperCertLang.Enabled = False
+        Me.cbMovieScraperCertLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieScraperCertLang.FormattingEnabled = True
         Me.cbMovieScraperCertLang.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Hungary", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Poland", "Portugal", "Serbia", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "Turkey", "UK", "USA"})
         Me.cbMovieScraperCertLang.Location = New System.Drawing.Point(98, 191)
         Me.cbMovieScraperCertLang.Name = "cbMovieScraperCertLang"
         Me.cbMovieScraperCertLang.Size = New System.Drawing.Size(108, 21)
-        Me.cbMovieScraperCertLang.Sorted = true
+        Me.cbMovieScraperCertLang.Sorted = True
         Me.cbMovieScraperCertLang.TabIndex = 5
         '
         'chkMovieScraperCredits
         '
-        Me.chkMovieScraperCredits.AutoSize = true
-        Me.chkMovieScraperCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCredits.AutoSize = True
+        Me.chkMovieScraperCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCredits.Location = New System.Drawing.Point(205, 38)
         Me.chkMovieScraperCredits.Name = "chkMovieScraperCredits"
         Me.chkMovieScraperCredits.Size = New System.Drawing.Size(62, 17)
         Me.chkMovieScraperCredits.TabIndex = 15
         Me.chkMovieScraperCredits.Text = "Credits"
-        Me.chkMovieScraperCredits.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCredits.UseVisualStyleBackColor = True
         '
         'chkMovieScraperStudio
         '
-        Me.chkMovieScraperStudio.AutoSize = true
-        Me.chkMovieScraperStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperStudio.AutoSize = True
+        Me.chkMovieScraperStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperStudio.Location = New System.Drawing.Point(98, 57)
         Me.chkMovieScraperStudio.Name = "chkMovieScraperStudio"
         Me.chkMovieScraperStudio.Size = New System.Drawing.Size(60, 17)
         Me.chkMovieScraperStudio.TabIndex = 14
         Me.chkMovieScraperStudio.Text = "Studio"
-        Me.chkMovieScraperStudio.UseVisualStyleBackColor = true
+        Me.chkMovieScraperStudio.UseVisualStyleBackColor = True
         '
         'chkMovieScraperRuntime
         '
-        Me.chkMovieScraperRuntime.AutoSize = true
-        Me.chkMovieScraperRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperRuntime.AutoSize = True
+        Me.chkMovieScraperRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperRuntime.Location = New System.Drawing.Point(6, 152)
         Me.chkMovieScraperRuntime.Name = "chkMovieScraperRuntime"
         Me.chkMovieScraperRuntime.Size = New System.Drawing.Size(69, 17)
         Me.chkMovieScraperRuntime.TabIndex = 13
         Me.chkMovieScraperRuntime.Text = "Runtime"
-        Me.chkMovieScraperRuntime.UseVisualStyleBackColor = true
+        Me.chkMovieScraperRuntime.UseVisualStyleBackColor = True
         '
         'chkMovieScraperPlot
         '
-        Me.chkMovieScraperPlot.AutoSize = true
-        Me.chkMovieScraperPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperPlot.AutoSize = True
+        Me.chkMovieScraperPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperPlot.Location = New System.Drawing.Point(6, 76)
         Me.chkMovieScraperPlot.Name = "chkMovieScraperPlot"
         Me.chkMovieScraperPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkMovieScraperPlot.TabIndex = 12
         Me.chkMovieScraperPlot.Text = "Plot"
-        Me.chkMovieScraperPlot.UseVisualStyleBackColor = true
+        Me.chkMovieScraperPlot.UseVisualStyleBackColor = True
         '
         'chkMovieScraperOutline
         '
-        Me.chkMovieScraperOutline.AutoSize = true
-        Me.chkMovieScraperOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperOutline.AutoSize = True
+        Me.chkMovieScraperOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperOutline.Location = New System.Drawing.Point(6, 57)
         Me.chkMovieScraperOutline.Name = "chkMovieScraperOutline"
         Me.chkMovieScraperOutline.Size = New System.Drawing.Size(65, 17)
         Me.chkMovieScraperOutline.TabIndex = 11
         Me.chkMovieScraperOutline.Text = "Outline"
-        Me.chkMovieScraperOutline.UseVisualStyleBackColor = true
+        Me.chkMovieScraperOutline.UseVisualStyleBackColor = True
         '
         'chkMovieScraperGenre
         '
-        Me.chkMovieScraperGenre.AutoSize = true
-        Me.chkMovieScraperGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperGenre.AutoSize = True
+        Me.chkMovieScraperGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperGenre.Location = New System.Drawing.Point(205, 99)
         Me.chkMovieScraperGenre.Name = "chkMovieScraperGenre"
         Me.chkMovieScraperGenre.Size = New System.Drawing.Size(57, 17)
         Me.chkMovieScraperGenre.TabIndex = 10
         Me.chkMovieScraperGenre.Text = "Genre"
-        Me.chkMovieScraperGenre.UseVisualStyleBackColor = true
+        Me.chkMovieScraperGenre.UseVisualStyleBackColor = True
         '
         'chkMovieScraperDirector
         '
-        Me.chkMovieScraperDirector.AutoSize = true
-        Me.chkMovieScraperDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperDirector.AutoSize = True
+        Me.chkMovieScraperDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperDirector.Location = New System.Drawing.Point(205, 19)
         Me.chkMovieScraperDirector.Name = "chkMovieScraperDirector"
         Me.chkMovieScraperDirector.Size = New System.Drawing.Size(67, 17)
         Me.chkMovieScraperDirector.TabIndex = 9
         Me.chkMovieScraperDirector.Text = "Director"
-        Me.chkMovieScraperDirector.UseVisualStyleBackColor = true
+        Me.chkMovieScraperDirector.UseVisualStyleBackColor = True
         '
         'chkMovieScraperTagline
         '
-        Me.chkMovieScraperTagline.AutoSize = true
-        Me.chkMovieScraperTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperTagline.AutoSize = True
+        Me.chkMovieScraperTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperTagline.Location = New System.Drawing.Point(6, 133)
         Me.chkMovieScraperTagline.Name = "chkMovieScraperTagline"
         Me.chkMovieScraperTagline.Size = New System.Drawing.Size(63, 17)
         Me.chkMovieScraperTagline.TabIndex = 8
         Me.chkMovieScraperTagline.Text = "Tagline"
-        Me.chkMovieScraperTagline.UseVisualStyleBackColor = true
+        Me.chkMovieScraperTagline.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCast
         '
-        Me.chkMovieScraperCast.AutoSize = true
-        Me.chkMovieScraperCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCast.AutoSize = True
+        Me.chkMovieScraperCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCast.Location = New System.Drawing.Point(205, 57)
         Me.chkMovieScraperCast.Name = "chkMovieScraperCast"
         Me.chkMovieScraperCast.Size = New System.Drawing.Size(58, 17)
         Me.chkMovieScraperCast.TabIndex = 7
         Me.chkMovieScraperCast.Text = "Actors"
-        Me.chkMovieScraperCast.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCast.UseVisualStyleBackColor = True
         '
         'chkMovieScraperVotes
         '
-        Me.chkMovieScraperVotes.AutoSize = true
-        Me.chkMovieScraperVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperVotes.AutoSize = True
+        Me.chkMovieScraperVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperVotes.Location = New System.Drawing.Point(98, 114)
         Me.chkMovieScraperVotes.Name = "chkMovieScraperVotes"
         Me.chkMovieScraperVotes.Size = New System.Drawing.Size(55, 17)
         Me.chkMovieScraperVotes.TabIndex = 6
         Me.chkMovieScraperVotes.Text = "Votes"
-        Me.chkMovieScraperVotes.UseVisualStyleBackColor = true
+        Me.chkMovieScraperVotes.UseVisualStyleBackColor = True
         '
         'chkMovieScraperTrailer
         '
-        Me.chkMovieScraperTrailer.AutoSize = true
-        Me.chkMovieScraperTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperTrailer.AutoSize = True
+        Me.chkMovieScraperTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperTrailer.Location = New System.Drawing.Point(98, 19)
         Me.chkMovieScraperTrailer.Name = "chkMovieScraperTrailer"
         Me.chkMovieScraperTrailer.Size = New System.Drawing.Size(57, 17)
         Me.chkMovieScraperTrailer.TabIndex = 5
         Me.chkMovieScraperTrailer.Text = "Trailer"
-        Me.chkMovieScraperTrailer.UseVisualStyleBackColor = true
+        Me.chkMovieScraperTrailer.UseVisualStyleBackColor = True
         '
         'chkMovieScraperRating
         '
-        Me.chkMovieScraperRating.AutoSize = true
-        Me.chkMovieScraperRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperRating.AutoSize = True
+        Me.chkMovieScraperRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperRating.Location = New System.Drawing.Point(6, 114)
         Me.chkMovieScraperRating.Name = "chkMovieScraperRating"
         Me.chkMovieScraperRating.Size = New System.Drawing.Size(60, 17)
         Me.chkMovieScraperRating.TabIndex = 4
         Me.chkMovieScraperRating.Text = "Rating"
-        Me.chkMovieScraperRating.UseVisualStyleBackColor = true
+        Me.chkMovieScraperRating.UseVisualStyleBackColor = True
         '
         'chkMovieScraperRelease
         '
-        Me.chkMovieScraperRelease.AutoSize = true
-        Me.chkMovieScraperRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperRelease.AutoSize = True
+        Me.chkMovieScraperRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperRelease.Location = New System.Drawing.Point(98, 38)
         Me.chkMovieScraperRelease.Name = "chkMovieScraperRelease"
         Me.chkMovieScraperRelease.Size = New System.Drawing.Size(92, 17)
         Me.chkMovieScraperRelease.TabIndex = 3
         Me.chkMovieScraperRelease.Text = "Release Date"
-        Me.chkMovieScraperRelease.UseVisualStyleBackColor = true
+        Me.chkMovieScraperRelease.UseVisualStyleBackColor = True
         '
         'chkMovieScraperYear
         '
-        Me.chkMovieScraperYear.AutoSize = true
-        Me.chkMovieScraperYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperYear.AutoSize = True
+        Me.chkMovieScraperYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperYear.Location = New System.Drawing.Point(6, 95)
         Me.chkMovieScraperYear.Name = "chkMovieScraperYear"
         Me.chkMovieScraperYear.Size = New System.Drawing.Size(47, 17)
         Me.chkMovieScraperYear.TabIndex = 1
         Me.chkMovieScraperYear.Text = "Year"
-        Me.chkMovieScraperYear.UseVisualStyleBackColor = true
+        Me.chkMovieScraperYear.UseVisualStyleBackColor = True
         '
         'chkMovieScraperTitle
         '
-        Me.chkMovieScraperTitle.AutoSize = true
-        Me.chkMovieScraperTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperTitle.AutoSize = True
+        Me.chkMovieScraperTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperTitle.Location = New System.Drawing.Point(6, 19)
         Me.chkMovieScraperTitle.Name = "chkMovieScraperTitle"
         Me.chkMovieScraperTitle.Size = New System.Drawing.Size(47, 17)
         Me.chkMovieScraperTitle.TabIndex = 0
         Me.chkMovieScraperTitle.Text = "Title"
-        Me.chkMovieScraperTitle.UseVisualStyleBackColor = true
+        Me.chkMovieScraperTitle.UseVisualStyleBackColor = True
         '
         'lblMovieScraperOutlineLimit
         '
-        Me.lblMovieScraperOutlineLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieScraperOutlineLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieScraperOutlineLimit.Location = New System.Drawing.Point(259, 56)
         Me.lblMovieScraperOutlineLimit.Name = "lblMovieScraperOutlineLimit"
         Me.lblMovieScraperOutlineLimit.Size = New System.Drawing.Size(34, 17)
@@ -10950,8 +10954,8 @@ Partial Class dlgSettings
         '
         'txtMovieScraperOutlineLimit
         '
-        Me.txtMovieScraperOutlineLimit.Enabled = false
-        Me.txtMovieScraperOutlineLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieScraperOutlineLimit.Enabled = False
+        Me.txtMovieScraperOutlineLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieScraperOutlineLimit.Location = New System.Drawing.Point(299, 58)
         Me.txtMovieScraperOutlineLimit.Name = "txtMovieScraperOutlineLimit"
         Me.txtMovieScraperOutlineLimit.Size = New System.Drawing.Size(54, 22)
@@ -10965,12 +10969,12 @@ Partial Class dlgSettings
         Me.gbMovieScraperMetaDataOpts.Controls.Add(Me.lblMovieLanguageOverlay)
         Me.gbMovieScraperMetaDataOpts.Controls.Add(Me.gbMovieScraperDurationFormatOpts)
         Me.gbMovieScraperMetaDataOpts.Controls.Add(Me.chkMovieScraperMetaDataScan)
-        Me.gbMovieScraperMetaDataOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieScraperMetaDataOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperMetaDataOpts.Location = New System.Drawing.Point(313, 6)
         Me.gbMovieScraperMetaDataOpts.Name = "gbMovieScraperMetaDataOpts"
         Me.gbMovieScraperMetaDataOpts.Size = New System.Drawing.Size(427, 220)
         Me.gbMovieScraperMetaDataOpts.TabIndex = 63
-        Me.gbMovieScraperMetaDataOpts.TabStop = false
+        Me.gbMovieScraperMetaDataOpts.TabStop = False
         Me.gbMovieScraperMetaDataOpts.Text = "Meta Data"
         '
         'gbMovieScraperDefFIExtOpts
@@ -10981,18 +10985,18 @@ Partial Class dlgSettings
         Me.gbMovieScraperDefFIExtOpts.Controls.Add(Me.btnMovieScraperDefFIExtRemove)
         Me.gbMovieScraperDefFIExtOpts.Controls.Add(Me.btnMovieScraperDefFIExtEdit)
         Me.gbMovieScraperDefFIExtOpts.Controls.Add(Me.btnMovieScraperDefFIExtAdd)
-        Me.gbMovieScraperDefFIExtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieScraperDefFIExtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperDefFIExtOpts.Location = New System.Drawing.Point(244, 16)
         Me.gbMovieScraperDefFIExtOpts.Name = "gbMovieScraperDefFIExtOpts"
         Me.gbMovieScraperDefFIExtOpts.Size = New System.Drawing.Size(172, 187)
         Me.gbMovieScraperDefFIExtOpts.TabIndex = 8
-        Me.gbMovieScraperDefFIExtOpts.TabStop = false
+        Me.gbMovieScraperDefFIExtOpts.TabStop = False
         Me.gbMovieScraperDefFIExtOpts.Text = "Defaults by File Type"
         '
         'lstMovieScraperDefFIExt
         '
-        Me.lstMovieScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lstMovieScraperDefFIExt.FormattingEnabled = true
+        Me.lstMovieScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstMovieScraperDefFIExt.FormattingEnabled = True
         Me.lstMovieScraperDefFIExt.Location = New System.Drawing.Point(6, 18)
         Me.lstMovieScraperDefFIExt.Name = "lstMovieScraperDefFIExt"
         Me.lstMovieScraperDefFIExt.Size = New System.Drawing.Size(160, 108)
@@ -11000,7 +11004,7 @@ Partial Class dlgSettings
         '
         'txtMovieScraperDefFIExt
         '
-        Me.txtMovieScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieScraperDefFIExt.Location = New System.Drawing.Point(6, 148)
         Me.txtMovieScraperDefFIExt.Name = "txtMovieScraperDefFIExt"
         Me.txtMovieScraperDefFIExt.Size = New System.Drawing.Size(81, 22)
@@ -11008,7 +11012,7 @@ Partial Class dlgSettings
         '
         'lblMovieScraperDefFIExt
         '
-        Me.lblMovieScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieScraperDefFIExt.Location = New System.Drawing.Point(3, 133)
         Me.lblMovieScraperDefFIExt.Name = "lblMovieScraperDefFIExt"
         Me.lblMovieScraperDefFIExt.Size = New System.Drawing.Size(63, 19)
@@ -11017,63 +11021,63 @@ Partial Class dlgSettings
         '
         'btnMovieScraperDefFIExtRemove
         '
-        Me.btnMovieScraperDefFIExtRemove.Enabled = false
-        Me.btnMovieScraperDefFIExtRemove.Image = CType(resources.GetObject("btnMovieScraperDefFIExtRemove.Image"),System.Drawing.Image)
+        Me.btnMovieScraperDefFIExtRemove.Enabled = False
+        Me.btnMovieScraperDefFIExtRemove.Image = CType(resources.GetObject("btnMovieScraperDefFIExtRemove.Image"), System.Drawing.Image)
         Me.btnMovieScraperDefFIExtRemove.Location = New System.Drawing.Point(138, 148)
         Me.btnMovieScraperDefFIExtRemove.Name = "btnMovieScraperDefFIExtRemove"
         Me.btnMovieScraperDefFIExtRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieScraperDefFIExtRemove.TabIndex = 31
-        Me.btnMovieScraperDefFIExtRemove.UseVisualStyleBackColor = true
+        Me.btnMovieScraperDefFIExtRemove.UseVisualStyleBackColor = True
         '
         'btnMovieScraperDefFIExtEdit
         '
-        Me.btnMovieScraperDefFIExtEdit.Enabled = false
-        Me.btnMovieScraperDefFIExtEdit.Image = CType(resources.GetObject("btnMovieScraperDefFIExtEdit.Image"),System.Drawing.Image)
+        Me.btnMovieScraperDefFIExtEdit.Enabled = False
+        Me.btnMovieScraperDefFIExtEdit.Image = CType(resources.GetObject("btnMovieScraperDefFIExtEdit.Image"), System.Drawing.Image)
         Me.btnMovieScraperDefFIExtEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnMovieScraperDefFIExtEdit.Location = New System.Drawing.Point(115, 148)
         Me.btnMovieScraperDefFIExtEdit.Name = "btnMovieScraperDefFIExtEdit"
         Me.btnMovieScraperDefFIExtEdit.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieScraperDefFIExtEdit.TabIndex = 30
         Me.btnMovieScraperDefFIExtEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieScraperDefFIExtEdit.UseVisualStyleBackColor = true
+        Me.btnMovieScraperDefFIExtEdit.UseVisualStyleBackColor = True
         '
         'btnMovieScraperDefFIExtAdd
         '
-        Me.btnMovieScraperDefFIExtAdd.Enabled = false
-        Me.btnMovieScraperDefFIExtAdd.Image = CType(resources.GetObject("btnMovieScraperDefFIExtAdd.Image"),System.Drawing.Image)
+        Me.btnMovieScraperDefFIExtAdd.Enabled = False
+        Me.btnMovieScraperDefFIExtAdd.Image = CType(resources.GetObject("btnMovieScraperDefFIExtAdd.Image"), System.Drawing.Image)
         Me.btnMovieScraperDefFIExtAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnMovieScraperDefFIExtAdd.Location = New System.Drawing.Point(93, 148)
         Me.btnMovieScraperDefFIExtAdd.Name = "btnMovieScraperDefFIExtAdd"
         Me.btnMovieScraperDefFIExtAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieScraperDefFIExtAdd.TabIndex = 29
         Me.btnMovieScraperDefFIExtAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieScraperDefFIExtAdd.UseVisualStyleBackColor = true
+        Me.btnMovieScraperDefFIExtAdd.UseVisualStyleBackColor = True
         '
         'chkMovieScraperMetaDataIFOScan
         '
-        Me.chkMovieScraperMetaDataIFOScan.AutoSize = true
-        Me.chkMovieScraperMetaDataIFOScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperMetaDataIFOScan.AutoSize = True
+        Me.chkMovieScraperMetaDataIFOScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperMetaDataIFOScan.Location = New System.Drawing.Point(6, 33)
         Me.chkMovieScraperMetaDataIFOScan.Name = "chkMovieScraperMetaDataIFOScan"
         Me.chkMovieScraperMetaDataIFOScan.Size = New System.Drawing.Size(123, 17)
         Me.chkMovieScraperMetaDataIFOScan.TabIndex = 18
         Me.chkMovieScraperMetaDataIFOScan.Text = "Enable IFO Parsing"
-        Me.chkMovieScraperMetaDataIFOScan.UseVisualStyleBackColor = true
+        Me.chkMovieScraperMetaDataIFOScan.UseVisualStyleBackColor = True
         '
         'cbMovieLanguageOverlay
         '
         Me.cbMovieLanguageOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieLanguageOverlay.FormattingEnabled = true
+        Me.cbMovieLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieLanguageOverlay.FormattingEnabled = True
         Me.cbMovieLanguageOverlay.Location = New System.Drawing.Point(11, 155)
         Me.cbMovieLanguageOverlay.Name = "cbMovieLanguageOverlay"
         Me.cbMovieLanguageOverlay.Size = New System.Drawing.Size(174, 21)
-        Me.cbMovieLanguageOverlay.Sorted = true
+        Me.cbMovieLanguageOverlay.Sorted = True
         Me.cbMovieLanguageOverlay.TabIndex = 17
         '
         'lblMovieLanguageOverlay
         '
-        Me.lblMovieLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieLanguageOverlay.Location = New System.Drawing.Point(6, 123)
         Me.lblMovieLanguageOverlay.Name = "lblMovieLanguageOverlay"
         Me.lblMovieLanguageOverlay.Size = New System.Drawing.Size(234, 29)
@@ -11085,27 +11089,27 @@ Partial Class dlgSettings
         Me.gbMovieScraperDurationFormatOpts.Controls.Add(Me.lblMovieScraperDurationRuntimeFormat)
         Me.gbMovieScraperDurationFormatOpts.Controls.Add(Me.txtMovieScraperDurationRuntimeFormat)
         Me.gbMovieScraperDurationFormatOpts.Controls.Add(Me.chkMovieScraperUseMDDuration)
-        Me.gbMovieScraperDurationFormatOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieScraperDurationFormatOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperDurationFormatOpts.Location = New System.Drawing.Point(6, 50)
         Me.gbMovieScraperDurationFormatOpts.Name = "gbMovieScraperDurationFormatOpts"
         Me.gbMovieScraperDurationFormatOpts.Size = New System.Drawing.Size(234, 64)
         Me.gbMovieScraperDurationFormatOpts.TabIndex = 9
-        Me.gbMovieScraperDurationFormatOpts.TabStop = false
+        Me.gbMovieScraperDurationFormatOpts.TabStop = False
         Me.gbMovieScraperDurationFormatOpts.Text = "Duration Format"
         '
         'lblMovieScraperDurationRuntimeFormat
         '
-        Me.lblMovieScraperDurationRuntimeFormat.Font = New System.Drawing.Font("Segoe UI", 7!)
+        Me.lblMovieScraperDurationRuntimeFormat.Font = New System.Drawing.Font("Segoe UI", 7.0!)
         Me.lblMovieScraperDurationRuntimeFormat.Location = New System.Drawing.Point(160, 10)
         Me.lblMovieScraperDurationRuntimeFormat.Name = "lblMovieScraperDurationRuntimeFormat"
         Me.lblMovieScraperDurationRuntimeFormat.Size = New System.Drawing.Size(72, 50)
         Me.lblMovieScraperDurationRuntimeFormat.TabIndex = 23
-        Me.lblMovieScraperDurationRuntimeFormat.Text = "<h>=Hours"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<m>=Minutes"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<s>=Seconds"
+        Me.lblMovieScraperDurationRuntimeFormat.Text = "<h>=Hours" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "<m>=Minutes" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "<s>=Seconds"
         Me.lblMovieScraperDurationRuntimeFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txtMovieScraperDurationRuntimeFormat
         '
-        Me.txtMovieScraperDurationRuntimeFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieScraperDurationRuntimeFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieScraperDurationRuntimeFormat.Location = New System.Drawing.Point(5, 34)
         Me.txtMovieScraperDurationRuntimeFormat.Name = "txtMovieScraperDurationRuntimeFormat"
         Me.txtMovieScraperDurationRuntimeFormat.Size = New System.Drawing.Size(145, 22)
@@ -11113,25 +11117,25 @@ Partial Class dlgSettings
         '
         'chkMovieScraperUseMDDuration
         '
-        Me.chkMovieScraperUseMDDuration.AutoSize = true
-        Me.chkMovieScraperUseMDDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperUseMDDuration.AutoSize = True
+        Me.chkMovieScraperUseMDDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperUseMDDuration.Location = New System.Drawing.Point(5, 15)
         Me.chkMovieScraperUseMDDuration.Name = "chkMovieScraperUseMDDuration"
         Me.chkMovieScraperUseMDDuration.Size = New System.Drawing.Size(158, 17)
         Me.chkMovieScraperUseMDDuration.TabIndex = 8
         Me.chkMovieScraperUseMDDuration.Text = "Use Duration for Runtime"
-        Me.chkMovieScraperUseMDDuration.UseVisualStyleBackColor = true
+        Me.chkMovieScraperUseMDDuration.UseVisualStyleBackColor = True
         '
         'chkMovieScraperMetaDataScan
         '
-        Me.chkMovieScraperMetaDataScan.AutoSize = true
-        Me.chkMovieScraperMetaDataScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperMetaDataScan.AutoSize = True
+        Me.chkMovieScraperMetaDataScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperMetaDataScan.Location = New System.Drawing.Point(6, 16)
         Me.chkMovieScraperMetaDataScan.Name = "chkMovieScraperMetaDataScan"
         Me.chkMovieScraperMetaDataScan.Size = New System.Drawing.Size(106, 17)
         Me.chkMovieScraperMetaDataScan.TabIndex = 7
         Me.chkMovieScraperMetaDataScan.Text = "Scan Meta Data"
-        Me.chkMovieScraperMetaDataScan.UseVisualStyleBackColor = true
+        Me.chkMovieScraperMetaDataScan.UseVisualStyleBackColor = True
         '
         'gbMovieScraperGlobalLocksOpts
         '
@@ -11159,254 +11163,254 @@ Partial Class dlgSettings
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockRating)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockTagline)
         Me.gbMovieScraperGlobalLocksOpts.Controls.Add(Me.chkMovieLockTitle)
-        Me.gbMovieScraperGlobalLocksOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieScraperGlobalLocksOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperGlobalLocksOpts.Location = New System.Drawing.Point(6, 6)
         Me.gbMovieScraperGlobalLocksOpts.Name = "gbMovieScraperGlobalLocksOpts"
         Me.gbMovieScraperGlobalLocksOpts.Size = New System.Drawing.Size(301, 241)
         Me.gbMovieScraperGlobalLocksOpts.TabIndex = 1
-        Me.gbMovieScraperGlobalLocksOpts.TabStop = false
+        Me.gbMovieScraperGlobalLocksOpts.TabStop = False
         Me.gbMovieScraperGlobalLocksOpts.Text = "Global Locks"
         '
         'chkMovieLockCollections
         '
-        Me.chkMovieLockCollections.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockCollections.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockCollections.Location = New System.Drawing.Point(141, 186)
         Me.chkMovieLockCollections.Name = "chkMovieLockCollections"
         Me.chkMovieLockCollections.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockCollections.TabIndex = 66
         Me.chkMovieLockCollections.Text = "Lock Collections"
-        Me.chkMovieLockCollections.UseVisualStyleBackColor = true
+        Me.chkMovieLockCollections.UseVisualStyleBackColor = True
         '
         'chkMovieLockOriginalTitle
         '
-        Me.chkMovieLockOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockOriginalTitle.Location = New System.Drawing.Point(6, 33)
         Me.chkMovieLockOriginalTitle.Name = "chkMovieLockOriginalTitle"
         Me.chkMovieLockOriginalTitle.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockOriginalTitle.TabIndex = 65
         Me.chkMovieLockOriginalTitle.Text = "Lock Original Title"
-        Me.chkMovieLockOriginalTitle.UseVisualStyleBackColor = true
+        Me.chkMovieLockOriginalTitle.UseVisualStyleBackColor = True
         '
         'chkMovieLockTags
         '
-        Me.chkMovieLockTags.Enabled = false
-        Me.chkMovieLockTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockTags.Enabled = False
+        Me.chkMovieLockTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockTags.Location = New System.Drawing.Point(141, 101)
         Me.chkMovieLockTags.Name = "chkMovieLockTags"
         Me.chkMovieLockTags.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockTags.TabIndex = 64
         Me.chkMovieLockTags.Text = "Lock Tags"
-        Me.chkMovieLockTags.UseVisualStyleBackColor = true
+        Me.chkMovieLockTags.UseVisualStyleBackColor = True
         '
         'chkMovieLockCountry
         '
-        Me.chkMovieLockCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockCountry.Location = New System.Drawing.Point(6, 186)
         Me.chkMovieLockCountry.Name = "chkMovieLockCountry"
         Me.chkMovieLockCountry.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockCountry.TabIndex = 63
         Me.chkMovieLockCountry.Text = "Lock Country"
-        Me.chkMovieLockCountry.UseVisualStyleBackColor = true
+        Me.chkMovieLockCountry.UseVisualStyleBackColor = True
         '
         'chkMovieLockTop250
         '
-        Me.chkMovieLockTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockTop250.Location = New System.Drawing.Point(6, 152)
         Me.chkMovieLockTop250.Name = "chkMovieLockTop250"
         Me.chkMovieLockTop250.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockTop250.TabIndex = 61
         Me.chkMovieLockTop250.Text = "Lock Top 250"
-        Me.chkMovieLockTop250.UseVisualStyleBackColor = true
+        Me.chkMovieLockTop250.UseVisualStyleBackColor = True
         '
         'chkMovieLockLanguageA
         '
-        Me.chkMovieLockLanguageA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockLanguageA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockLanguageA.Location = New System.Drawing.Point(141, 135)
         Me.chkMovieLockLanguageA.Name = "chkMovieLockLanguageA"
         Me.chkMovieLockLanguageA.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockLanguageA.TabIndex = 48
         Me.chkMovieLockLanguageA.Text = "Lock Language (audio)"
-        Me.chkMovieLockLanguageA.UseVisualStyleBackColor = true
+        Me.chkMovieLockLanguageA.UseVisualStyleBackColor = True
         '
         'chkMovieLockCredits
         '
-        Me.chkMovieLockCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockCredits.Location = New System.Drawing.Point(141, 84)
         Me.chkMovieLockCredits.Name = "chkMovieLockCredits"
         Me.chkMovieLockCredits.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockCredits.TabIndex = 58
         Me.chkMovieLockCredits.Text = "Lock Credits"
-        Me.chkMovieLockCredits.UseVisualStyleBackColor = true
+        Me.chkMovieLockCredits.UseVisualStyleBackColor = True
         '
         'chkMovieLockDirector
         '
-        Me.chkMovieLockDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockDirector.Location = New System.Drawing.Point(141, 67)
         Me.chkMovieLockDirector.Name = "chkMovieLockDirector"
         Me.chkMovieLockDirector.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockDirector.TabIndex = 57
         Me.chkMovieLockDirector.Text = "Lock Director"
-        Me.chkMovieLockDirector.UseVisualStyleBackColor = true
+        Me.chkMovieLockDirector.UseVisualStyleBackColor = True
         '
         'chkMovieLockReleaseDate
         '
-        Me.chkMovieLockReleaseDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockReleaseDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockReleaseDate.Location = New System.Drawing.Point(6, 203)
         Me.chkMovieLockReleaseDate.Name = "chkMovieLockReleaseDate"
         Me.chkMovieLockReleaseDate.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockReleaseDate.TabIndex = 55
         Me.chkMovieLockReleaseDate.Text = "Lock Release Date"
-        Me.chkMovieLockReleaseDate.UseVisualStyleBackColor = true
+        Me.chkMovieLockReleaseDate.UseVisualStyleBackColor = True
         '
         'chkMovieLockStudio
         '
-        Me.chkMovieLockStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockStudio.Location = New System.Drawing.Point(6, 169)
         Me.chkMovieLockStudio.Name = "chkMovieLockStudio"
         Me.chkMovieLockStudio.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockStudio.TabIndex = 54
         Me.chkMovieLockStudio.Text = "Lock Studio"
-        Me.chkMovieLockStudio.UseVisualStyleBackColor = true
+        Me.chkMovieLockStudio.UseVisualStyleBackColor = True
         '
         'chkMovieLockVotes
         '
-        Me.chkMovieLockVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockVotes.Location = New System.Drawing.Point(141, 16)
         Me.chkMovieLockVotes.Name = "chkMovieLockVotes"
         Me.chkMovieLockVotes.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockVotes.TabIndex = 53
         Me.chkMovieLockVotes.Text = "Lock Votes"
-        Me.chkMovieLockVotes.UseVisualStyleBackColor = true
+        Me.chkMovieLockVotes.UseVisualStyleBackColor = True
         '
         'chkMovieLockYear
         '
-        Me.chkMovieLockYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockYear.Location = New System.Drawing.Point(6, 84)
         Me.chkMovieLockYear.Name = "chkMovieLockYear"
         Me.chkMovieLockYear.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockYear.TabIndex = 52
         Me.chkMovieLockYear.Text = "Lock Year"
-        Me.chkMovieLockYear.UseVisualStyleBackColor = true
+        Me.chkMovieLockYear.UseVisualStyleBackColor = True
         '
         'chkMovieLockRuntime
         '
-        Me.chkMovieLockRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockRuntime.Location = New System.Drawing.Point(6, 135)
         Me.chkMovieLockRuntime.Name = "chkMovieLockRuntime"
         Me.chkMovieLockRuntime.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockRuntime.TabIndex = 51
         Me.chkMovieLockRuntime.Text = "Lock Runtime"
-        Me.chkMovieLockRuntime.UseVisualStyleBackColor = true
+        Me.chkMovieLockRuntime.UseVisualStyleBackColor = True
         '
         'chkMovieLockActors
         '
-        Me.chkMovieLockActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockActors.Location = New System.Drawing.Point(141, 33)
         Me.chkMovieLockActors.Name = "chkMovieLockActors"
         Me.chkMovieLockActors.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockActors.TabIndex = 50
         Me.chkMovieLockActors.Text = "Lock Actors"
-        Me.chkMovieLockActors.UseVisualStyleBackColor = true
+        Me.chkMovieLockActors.UseVisualStyleBackColor = True
         '
         'chkMovieLockLanguageV
         '
-        Me.chkMovieLockLanguageV.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockLanguageV.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockLanguageV.Location = New System.Drawing.Point(141, 152)
         Me.chkMovieLockLanguageV.Name = "chkMovieLockLanguageV"
         Me.chkMovieLockLanguageV.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockLanguageV.TabIndex = 47
         Me.chkMovieLockLanguageV.Text = "Lock Language (video)"
-        Me.chkMovieLockLanguageV.UseVisualStyleBackColor = true
+        Me.chkMovieLockLanguageV.UseVisualStyleBackColor = True
         '
         'chkMovieLockMPAACertification
         '
-        Me.chkMovieLockMPAACertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockMPAACertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockMPAACertification.Location = New System.Drawing.Point(6, 220)
         Me.chkMovieLockMPAACertification.Name = "chkMovieLockMPAACertification"
         Me.chkMovieLockMPAACertification.Size = New System.Drawing.Size(239, 17)
         Me.chkMovieLockMPAACertification.TabIndex = 49
         Me.chkMovieLockMPAACertification.Text = "Lock MPAA/Certification"
-        Me.chkMovieLockMPAACertification.UseVisualStyleBackColor = true
+        Me.chkMovieLockMPAACertification.UseVisualStyleBackColor = True
         '
         'chkMovieLockOutline
         '
-        Me.chkMovieLockOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockOutline.Location = New System.Drawing.Point(6, 50)
         Me.chkMovieLockOutline.Name = "chkMovieLockOutline"
         Me.chkMovieLockOutline.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockOutline.TabIndex = 1
         Me.chkMovieLockOutline.Text = "Lock Outline"
-        Me.chkMovieLockOutline.UseVisualStyleBackColor = true
+        Me.chkMovieLockOutline.UseVisualStyleBackColor = True
         '
         'chkMovieLockPlot
         '
-        Me.chkMovieLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockPlot.Location = New System.Drawing.Point(6, 67)
         Me.chkMovieLockPlot.Name = "chkMovieLockPlot"
         Me.chkMovieLockPlot.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockPlot.TabIndex = 0
         Me.chkMovieLockPlot.Text = "Lock Plot"
-        Me.chkMovieLockPlot.UseVisualStyleBackColor = true
+        Me.chkMovieLockPlot.UseVisualStyleBackColor = True
         '
         'chkMovieLockTrailer
         '
-        Me.chkMovieLockTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockTrailer.Location = New System.Drawing.Point(141, 118)
         Me.chkMovieLockTrailer.Name = "chkMovieLockTrailer"
         Me.chkMovieLockTrailer.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockTrailer.TabIndex = 46
         Me.chkMovieLockTrailer.Text = "Lock Trailer"
-        Me.chkMovieLockTrailer.UseVisualStyleBackColor = true
+        Me.chkMovieLockTrailer.UseVisualStyleBackColor = True
         '
         'chkMovieLockGenre
         '
-        Me.chkMovieLockGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockGenre.Location = New System.Drawing.Point(141, 50)
         Me.chkMovieLockGenre.Name = "chkMovieLockGenre"
         Me.chkMovieLockGenre.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieLockGenre.TabIndex = 7
         Me.chkMovieLockGenre.Text = "Lock Genre"
-        Me.chkMovieLockGenre.UseVisualStyleBackColor = true
+        Me.chkMovieLockGenre.UseVisualStyleBackColor = True
         '
         'chkMovieLockCollectionID
         '
-        Me.chkMovieLockCollectionID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockCollectionID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockCollectionID.Location = New System.Drawing.Point(141, 170)
         Me.chkMovieLockCollectionID.Name = "chkMovieLockCollectionID"
         Me.chkMovieLockCollectionID.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockCollectionID.TabIndex = 5
         Me.chkMovieLockCollectionID.Text = "Lock Collection ID"
-        Me.chkMovieLockCollectionID.UseVisualStyleBackColor = true
+        Me.chkMovieLockCollectionID.UseVisualStyleBackColor = True
         '
         'chkMovieLockRating
         '
-        Me.chkMovieLockRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockRating.Location = New System.Drawing.Point(6, 101)
         Me.chkMovieLockRating.Name = "chkMovieLockRating"
         Me.chkMovieLockRating.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockRating.TabIndex = 4
         Me.chkMovieLockRating.Text = "Lock Rating"
-        Me.chkMovieLockRating.UseVisualStyleBackColor = true
+        Me.chkMovieLockRating.UseVisualStyleBackColor = True
         '
         'chkMovieLockTagline
         '
-        Me.chkMovieLockTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockTagline.Location = New System.Drawing.Point(6, 118)
         Me.chkMovieLockTagline.Name = "chkMovieLockTagline"
         Me.chkMovieLockTagline.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockTagline.TabIndex = 3
         Me.chkMovieLockTagline.Text = "Lock Tagline"
-        Me.chkMovieLockTagline.UseVisualStyleBackColor = true
+        Me.chkMovieLockTagline.UseVisualStyleBackColor = True
         '
         'chkMovieLockTitle
         '
-        Me.chkMovieLockTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockTitle.Location = New System.Drawing.Point(6, 16)
         Me.chkMovieLockTitle.Name = "chkMovieLockTitle"
         Me.chkMovieLockTitle.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieLockTitle.TabIndex = 2
         Me.chkMovieLockTitle.Text = "Lock Title"
-        Me.chkMovieLockTitle.UseVisualStyleBackColor = true
+        Me.chkMovieLockTitle.UseVisualStyleBackColor = True
         '
         'gbMovieScraperMiscOpts
         '
@@ -11422,54 +11426,54 @@ Partial Class dlgSettings
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.txtMovieScraperOutlineLimit)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperOutlineForPlot)
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCastWithImg)
-        Me.gbMovieScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperMiscOpts.Location = New System.Drawing.Point(313, 232)
         Me.gbMovieScraperMiscOpts.Name = "gbMovieScraperMiscOpts"
         Me.gbMovieScraperMiscOpts.Size = New System.Drawing.Size(427, 265)
         Me.gbMovieScraperMiscOpts.TabIndex = 0
-        Me.gbMovieScraperMiscOpts.TabStop = false
+        Me.gbMovieScraperMiscOpts.TabStop = False
         Me.gbMovieScraperMiscOpts.Text = "Miscellaneous"
         '
         'chkMovieScraperReleaseFormat
         '
-        Me.chkMovieScraperReleaseFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperReleaseFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperReleaseFormat.Location = New System.Drawing.Point(6, 152)
         Me.chkMovieScraperReleaseFormat.Name = "chkMovieScraperReleaseFormat"
         Me.chkMovieScraperReleaseFormat.Size = New System.Drawing.Size(410, 17)
         Me.chkMovieScraperReleaseFormat.TabIndex = 81
         Me.chkMovieScraperReleaseFormat.Text = "Date format Releasedate: yyyy-mm-dd"
-        Me.chkMovieScraperReleaseFormat.UseVisualStyleBackColor = true
+        Me.chkMovieScraperReleaseFormat.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCollectionsAuto
         '
-        Me.chkMovieScraperCollectionsAuto.Enabled = false
-        Me.chkMovieScraperCollectionsAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCollectionsAuto.Enabled = False
+        Me.chkMovieScraperCollectionsAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCollectionsAuto.Location = New System.Drawing.Point(6, 133)
         Me.chkMovieScraperCollectionsAuto.Name = "chkMovieScraperCollectionsAuto"
         Me.chkMovieScraperCollectionsAuto.Size = New System.Drawing.Size(415, 17)
         Me.chkMovieScraperCollectionsAuto.TabIndex = 80
         Me.chkMovieScraperCollectionsAuto.Text = "Add Movie automatically to Collections"
-        Me.chkMovieScraperCollectionsAuto.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCollectionsAuto.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCleanFields
         '
-        Me.chkMovieScraperCleanFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCleanFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCleanFields.Location = New System.Drawing.Point(242, 19)
         Me.chkMovieScraperCleanFields.Name = "chkMovieScraperCleanFields"
         Me.chkMovieScraperCleanFields.Size = New System.Drawing.Size(179, 17)
         Me.chkMovieScraperCleanFields.TabIndex = 79
         Me.chkMovieScraperCleanFields.Text = "Cleanup disabled fields"
-        Me.chkMovieScraperCleanFields.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCleanFields.UseVisualStyleBackColor = True
         '
         'chkMovieScraperDetailView
         '
-        Me.chkMovieScraperDetailView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperDetailView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperDetailView.Location = New System.Drawing.Point(6, 114)
         Me.chkMovieScraperDetailView.Name = "chkMovieScraperDetailView"
         Me.chkMovieScraperDetailView.Size = New System.Drawing.Size(256, 17)
         Me.chkMovieScraperDetailView.TabIndex = 78
         Me.chkMovieScraperDetailView.Text = "Show scraped results in detailed view"
-        Me.chkMovieScraperDetailView.UseVisualStyleBackColor = true
+        Me.chkMovieScraperDetailView.UseVisualStyleBackColor = True
         '
         'gbMovieScraperCertOpts
         '
@@ -11480,91 +11484,91 @@ Partial Class dlgSettings
         Me.gbMovieScraperCertOpts.Name = "gbMovieScraperCertOpts"
         Me.gbMovieScraperCertOpts.Size = New System.Drawing.Size(415, 81)
         Me.gbMovieScraperCertOpts.TabIndex = 77
-        Me.gbMovieScraperCertOpts.TabStop = false
+        Me.gbMovieScraperCertOpts.TabStop = False
         Me.gbMovieScraperCertOpts.Text = "Certification"
         '
         'chkMovieScraperCertForMPAA
         '
-        Me.chkMovieScraperCertForMPAA.Enabled = false
-        Me.chkMovieScraperCertForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCertForMPAA.Enabled = False
+        Me.chkMovieScraperCertForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCertForMPAA.Location = New System.Drawing.Point(6, 16)
         Me.chkMovieScraperCertForMPAA.Name = "chkMovieScraperCertForMPAA"
         Me.chkMovieScraperCertForMPAA.Size = New System.Drawing.Size(256, 17)
         Me.chkMovieScraperCertForMPAA.TabIndex = 6
         Me.chkMovieScraperCertForMPAA.Text = "Use Certification for MPAA (XBMC users)"
-        Me.chkMovieScraperCertForMPAA.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCertForMPAA.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCertFSK
         '
-        Me.chkMovieScraperCertFSK.Enabled = false
-        Me.chkMovieScraperCertFSK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCertFSK.Enabled = False
+        Me.chkMovieScraperCertFSK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCertFSK.Location = New System.Drawing.Point(6, 36)
         Me.chkMovieScraperCertFSK.Name = "chkMovieScraperCertFSK"
         Me.chkMovieScraperCertFSK.Size = New System.Drawing.Size(256, 17)
         Me.chkMovieScraperCertFSK.TabIndex = 67
         Me.chkMovieScraperCertFSK.Text = "Use MPAA as Fallback for FSK Rating"
-        Me.chkMovieScraperCertFSK.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCertFSK.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCertOnlyValue
         '
-        Me.chkMovieScraperCertOnlyValue.Enabled = false
-        Me.chkMovieScraperCertOnlyValue.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCertOnlyValue.Enabled = False
+        Me.chkMovieScraperCertOnlyValue.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCertOnlyValue.Location = New System.Drawing.Point(6, 57)
         Me.chkMovieScraperCertOnlyValue.Name = "chkMovieScraperCertOnlyValue"
         Me.chkMovieScraperCertOnlyValue.Size = New System.Drawing.Size(256, 17)
         Me.chkMovieScraperCertOnlyValue.TabIndex = 66
         Me.chkMovieScraperCertOnlyValue.Text = "MPAA: Save only number (only for YAMJ)"
-        Me.chkMovieScraperCertOnlyValue.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCertOnlyValue.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCleanPlotOutline
         '
-        Me.chkMovieScraperCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCleanPlotOutline.Location = New System.Drawing.Point(6, 38)
         Me.chkMovieScraperCleanPlotOutline.Name = "chkMovieScraperCleanPlotOutline"
         Me.chkMovieScraperCleanPlotOutline.Size = New System.Drawing.Size(415, 17)
         Me.chkMovieScraperCleanPlotOutline.TabIndex = 76
         Me.chkMovieScraperCleanPlotOutline.Text = "Clean Plot/Outline"
-        Me.chkMovieScraperCleanPlotOutline.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCleanPlotOutline.UseVisualStyleBackColor = True
         '
         'chkMovieScraperOutlinePlotEnglishOverwrite
         '
-        Me.chkMovieScraperOutlinePlotEnglishOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperOutlinePlotEnglishOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Location = New System.Drawing.Point(6, 95)
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Name = "chkMovieScraperOutlinePlotEnglishOverwrite"
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Size = New System.Drawing.Size(380, 17)
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.TabIndex = 72
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Text = "Only overwrite english plot/outline"
-        Me.chkMovieScraperOutlinePlotEnglishOverwrite.UseVisualStyleBackColor = true
+        Me.chkMovieScraperOutlinePlotEnglishOverwrite.UseVisualStyleBackColor = True
         '
         'chkMovieScraperPlotForOutline
         '
-        Me.chkMovieScraperPlotForOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperPlotForOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperPlotForOutline.Location = New System.Drawing.Point(6, 57)
         Me.chkMovieScraperPlotForOutline.Name = "chkMovieScraperPlotForOutline"
         Me.chkMovieScraperPlotForOutline.Size = New System.Drawing.Size(248, 17)
         Me.chkMovieScraperPlotForOutline.TabIndex = 68
         Me.chkMovieScraperPlotForOutline.Text = "Use Plot  for Outline if Outline is Empty"
-        Me.chkMovieScraperPlotForOutline.UseVisualStyleBackColor = true
+        Me.chkMovieScraperPlotForOutline.UseVisualStyleBackColor = True
         '
         'chkMovieScraperOutlineForPlot
         '
-        Me.chkMovieScraperOutlineForPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperOutlineForPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperOutlineForPlot.Location = New System.Drawing.Point(6, 76)
         Me.chkMovieScraperOutlineForPlot.Name = "chkMovieScraperOutlineForPlot"
         Me.chkMovieScraperOutlineForPlot.Size = New System.Drawing.Size(380, 17)
         Me.chkMovieScraperOutlineForPlot.TabIndex = 3
         Me.chkMovieScraperOutlineForPlot.Text = "Use Outline for Plot if Plot is Empty"
-        Me.chkMovieScraperOutlineForPlot.UseVisualStyleBackColor = true
+        Me.chkMovieScraperOutlineForPlot.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCastWithImg
         '
-        Me.chkMovieScraperCastWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCastWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCastWithImg.Location = New System.Drawing.Point(6, 19)
         Me.chkMovieScraperCastWithImg.Name = "chkMovieScraperCastWithImg"
         Me.chkMovieScraperCastWithImg.Size = New System.Drawing.Size(230, 17)
         Me.chkMovieScraperCastWithImg.TabIndex = 1
         Me.chkMovieScraperCastWithImg.Text = "Scrape Only Actors With Images"
-        Me.chkMovieScraperCastWithImg.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCastWithImg.UseVisualStyleBackColor = True
         '
         'pnlMovieScraper
         '
@@ -11577,24 +11581,24 @@ Partial Class dlgSettings
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
         Me.pnlMovieScraper.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieScraper.TabIndex = 14
-        Me.pnlMovieScraper.Visible = false
+        Me.pnlMovieScraper.Visible = False
         '
         'tsSettingsTopMenu
         '
-        Me.tsSettingsTopMenu.AllowMerge = false
+        Me.tsSettingsTopMenu.AllowMerge = False
         Me.tsSettingsTopMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.tsSettingsTopMenu.ImageScalingSize = New System.Drawing.Size(32, 32)
         Me.tsSettingsTopMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsSettingsTopMenu.Location = New System.Drawing.Point(0, 64)
         Me.tsSettingsTopMenu.Name = "tsSettingsTopMenu"
         Me.tsSettingsTopMenu.Size = New System.Drawing.Size(1008, 25)
-        Me.tsSettingsTopMenu.Stretch = true
+        Me.tsSettingsTopMenu.Stretch = True
         Me.tsSettingsTopMenu.TabIndex = 4
         Me.tsSettingsTopMenu.Text = "ToolStrip1"
         '
         'pnlSettingsMain
         '
-        Me.pnlSettingsMain.AutoScroll = true
+        Me.pnlSettingsMain.AutoScroll = True
         Me.pnlSettingsMain.BackColor = System.Drawing.Color.White
         Me.pnlSettingsMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlSettingsMain.Location = New System.Drawing.Point(251, 147)
@@ -11607,26 +11611,26 @@ Partial Class dlgSettings
         Me.gbSettingsHelp.BackColor = System.Drawing.Color.White
         Me.gbSettingsHelp.Controls.Add(Me.pbSettingsHelpLogo)
         Me.gbSettingsHelp.Controls.Add(Me.lblHelp)
-        Me.gbSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSettingsHelp.Location = New System.Drawing.Point(3, 3)
         Me.gbSettingsHelp.Name = "gbSettingsHelp"
         Me.gbSettingsHelp.Size = New System.Drawing.Size(692, 62)
         Me.gbSettingsHelp.TabIndex = 0
-        Me.gbSettingsHelp.TabStop = false
+        Me.gbSettingsHelp.TabStop = False
         Me.gbSettingsHelp.Text = "     Help"
         '
         'pbSettingsHelpLogo
         '
-        Me.pbSettingsHelpLogo.Image = CType(resources.GetObject("pbSettingsHelpLogo.Image"),System.Drawing.Image)
+        Me.pbSettingsHelpLogo.Image = CType(resources.GetObject("pbSettingsHelpLogo.Image"), System.Drawing.Image)
         Me.pbSettingsHelpLogo.Location = New System.Drawing.Point(6, -2)
         Me.pbSettingsHelpLogo.Name = "pbSettingsHelpLogo"
         Me.pbSettingsHelpLogo.Size = New System.Drawing.Size(16, 16)
         Me.pbSettingsHelpLogo.TabIndex = 1
-        Me.pbSettingsHelpLogo.TabStop = false
+        Me.pbSettingsHelpLogo.TabStop = False
         '
         'lblHelp
         '
-        Me.lblHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblHelp.Location = New System.Drawing.Point(3, 14)
         Me.lblHelp.Name = "lblHelp"
         Me.lblHelp.Size = New System.Drawing.Size(738, 43)
@@ -11634,11 +11638,11 @@ Partial Class dlgSettings
         '
         'pnlSettingsHelp
         '
-        Me.pnlSettingsHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.pnlSettingsHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.pnlSettingsHelp.BackColor = System.Drawing.Color.White
         Me.pnlSettingsHelp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlSettingsHelp.Controls.Add(Me.gbSettingsHelp)
-        Me.pnlSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlSettingsHelp.Location = New System.Drawing.Point(5, 657)
         Me.pnlSettingsHelp.Name = "pnlSettingsHelp"
         Me.pnlSettingsHelp.Size = New System.Drawing.Size(700, 69)
@@ -11648,12 +11652,12 @@ Partial Class dlgSettings
         '
         Me.pnlMovieTrailers.BackColor = System.Drawing.Color.White
         Me.pnlMovieTrailers.Controls.Add(Me.gbMovieTrailerOpts)
-        Me.pnlMovieTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlMovieTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlMovieTrailers.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieTrailers.Name = "pnlMovieTrailers"
         Me.pnlMovieTrailers.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieTrailers.TabIndex = 21
-        Me.pnlMovieTrailers.Visible = false
+        Me.pnlMovieTrailers.Visible = False
         '
         'gbMovieTrailerOpts
         '
@@ -11670,13 +11674,13 @@ Partial Class dlgSettings
         Me.gbMovieTrailerOpts.Name = "gbMovieTrailerOpts"
         Me.gbMovieTrailerOpts.Size = New System.Drawing.Size(213, 252)
         Me.gbMovieTrailerOpts.TabIndex = 1
-        Me.gbMovieTrailerOpts.TabStop = false
+        Me.gbMovieTrailerOpts.TabStop = False
         Me.gbMovieTrailerOpts.Text = "Trailers"
         '
         'lblMovieTrailerDefaultSearch
         '
-        Me.lblMovieTrailerDefaultSearch.AutoSize = true
-        Me.lblMovieTrailerDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieTrailerDefaultSearch.AutoSize = True
+        Me.lblMovieTrailerDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieTrailerDefaultSearch.Location = New System.Drawing.Point(24, 196)
         Me.lblMovieTrailerDefaultSearch.Name = "lblMovieTrailerDefaultSearch"
         Me.lblMovieTrailerDefaultSearch.Size = New System.Drawing.Size(139, 13)
@@ -11694,9 +11698,9 @@ Partial Class dlgSettings
         'cbMovieTrailerMinQual
         '
         Me.cbMovieTrailerMinQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieTrailerMinQual.Enabled = false
-        Me.cbMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieTrailerMinQual.FormattingEnabled = true
+        Me.cbMovieTrailerMinQual.Enabled = False
+        Me.cbMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieTrailerMinQual.FormattingEnabled = True
         Me.cbMovieTrailerMinQual.Location = New System.Drawing.Point(25, 148)
         Me.cbMovieTrailerMinQual.Name = "cbMovieTrailerMinQual"
         Me.cbMovieTrailerMinQual.Size = New System.Drawing.Size(125, 21)
@@ -11704,8 +11708,8 @@ Partial Class dlgSettings
         '
         'lblMovieTrailerMinQual
         '
-        Me.lblMovieTrailerMinQual.AutoSize = true
-        Me.lblMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieTrailerMinQual.AutoSize = True
+        Me.lblMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieTrailerMinQual.Location = New System.Drawing.Point(24, 132)
         Me.lblMovieTrailerMinQual.Name = "lblMovieTrailerMinQual"
         Me.lblMovieTrailerMinQual.Size = New System.Drawing.Size(97, 13)
@@ -11715,9 +11719,9 @@ Partial Class dlgSettings
         'cbMovieTrailerPrefQual
         '
         Me.cbMovieTrailerPrefQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieTrailerPrefQual.Enabled = false
-        Me.cbMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieTrailerPrefQual.FormattingEnabled = true
+        Me.cbMovieTrailerPrefQual.Enabled = False
+        Me.cbMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieTrailerPrefQual.FormattingEnabled = True
         Me.cbMovieTrailerPrefQual.Location = New System.Drawing.Point(25, 94)
         Me.cbMovieTrailerPrefQual.Name = "cbMovieTrailerPrefQual"
         Me.cbMovieTrailerPrefQual.Size = New System.Drawing.Size(125, 21)
@@ -11725,8 +11729,8 @@ Partial Class dlgSettings
         '
         'lblMovieTrailerPrefQual
         '
-        Me.lblMovieTrailerPrefQual.AutoSize = true
-        Me.lblMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieTrailerPrefQual.AutoSize = True
+        Me.lblMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieTrailerPrefQual.Location = New System.Drawing.Point(24, 78)
         Me.lblMovieTrailerPrefQual.Name = "lblMovieTrailerPrefQual"
         Me.lblMovieTrailerPrefQual.Size = New System.Drawing.Size(96, 13)
@@ -11736,49 +11740,49 @@ Partial Class dlgSettings
         'chkMovieTrailerDeleteExisting
         '
         Me.chkMovieTrailerDeleteExisting.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieTrailerDeleteExisting.Enabled = false
-        Me.chkMovieTrailerDeleteExisting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieTrailerDeleteExisting.Enabled = False
+        Me.chkMovieTrailerDeleteExisting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieTrailerDeleteExisting.Location = New System.Drawing.Point(25, 57)
         Me.chkMovieTrailerDeleteExisting.Name = "chkMovieTrailerDeleteExisting"
         Me.chkMovieTrailerDeleteExisting.Size = New System.Drawing.Size(152, 27)
         Me.chkMovieTrailerDeleteExisting.TabIndex = 5
         Me.chkMovieTrailerDeleteExisting.Text = "Delete All Existing"
         Me.chkMovieTrailerDeleteExisting.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieTrailerDeleteExisting.UseVisualStyleBackColor = true
+        Me.chkMovieTrailerDeleteExisting.UseVisualStyleBackColor = True
         '
         'chkMovieTrailerOverwrite
         '
-        Me.chkMovieTrailerOverwrite.AutoSize = true
-        Me.chkMovieTrailerOverwrite.Enabled = false
-        Me.chkMovieTrailerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieTrailerOverwrite.AutoSize = True
+        Me.chkMovieTrailerOverwrite.Enabled = False
+        Me.chkMovieTrailerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieTrailerOverwrite.Location = New System.Drawing.Point(25, 39)
         Me.chkMovieTrailerOverwrite.Name = "chkMovieTrailerOverwrite"
         Me.chkMovieTrailerOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieTrailerOverwrite.TabIndex = 4
         Me.chkMovieTrailerOverwrite.Text = "Overwrite Existing"
-        Me.chkMovieTrailerOverwrite.UseVisualStyleBackColor = true
+        Me.chkMovieTrailerOverwrite.UseVisualStyleBackColor = True
         '
         'chkMovieTrailerEnable
         '
-        Me.chkMovieTrailerEnable.AutoSize = true
-        Me.chkMovieTrailerEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieTrailerEnable.AutoSize = True
+        Me.chkMovieTrailerEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieTrailerEnable.Location = New System.Drawing.Point(12, 16)
         Me.chkMovieTrailerEnable.Name = "chkMovieTrailerEnable"
         Me.chkMovieTrailerEnable.Size = New System.Drawing.Size(140, 17)
         Me.chkMovieTrailerEnable.TabIndex = 0
         Me.chkMovieTrailerEnable.Text = "Enable Trailer Support"
-        Me.chkMovieTrailerEnable.UseVisualStyleBackColor = true
+        Me.chkMovieTrailerEnable.UseVisualStyleBackColor = True
         '
         'pnlMovieThemes
         '
         Me.pnlMovieThemes.BackColor = System.Drawing.Color.White
         Me.pnlMovieThemes.Controls.Add(Me.gbMovieThemeOpts)
-        Me.pnlMovieThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlMovieThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlMovieThemes.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieThemes.Name = "pnlMovieThemes"
         Me.pnlMovieThemes.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieThemes.TabIndex = 22
-        Me.pnlMovieThemes.Visible = false
+        Me.pnlMovieThemes.Visible = False
         '
         'gbMovieThemeOpts
         '
@@ -11788,46 +11792,46 @@ Partial Class dlgSettings
         Me.gbMovieThemeOpts.Name = "gbMovieThemeOpts"
         Me.gbMovieThemeOpts.Size = New System.Drawing.Size(183, 64)
         Me.gbMovieThemeOpts.TabIndex = 2
-        Me.gbMovieThemeOpts.TabStop = false
+        Me.gbMovieThemeOpts.TabStop = False
         Me.gbMovieThemeOpts.Text = "Themes"
         '
         'chkMovieThemeOverwrite
         '
-        Me.chkMovieThemeOverwrite.AutoSize = true
-        Me.chkMovieThemeOverwrite.Enabled = false
-        Me.chkMovieThemeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieThemeOverwrite.AutoSize = True
+        Me.chkMovieThemeOverwrite.Enabled = False
+        Me.chkMovieThemeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieThemeOverwrite.Location = New System.Drawing.Point(25, 39)
         Me.chkMovieThemeOverwrite.Name = "chkMovieThemeOverwrite"
         Me.chkMovieThemeOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieThemeOverwrite.TabIndex = 4
         Me.chkMovieThemeOverwrite.Text = "Overwrite Existing"
-        Me.chkMovieThemeOverwrite.UseVisualStyleBackColor = true
+        Me.chkMovieThemeOverwrite.UseVisualStyleBackColor = True
         '
         'chkMovieThemeEnable
         '
-        Me.chkMovieThemeEnable.AutoSize = true
-        Me.chkMovieThemeEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieThemeEnable.AutoSize = True
+        Me.chkMovieThemeEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieThemeEnable.Location = New System.Drawing.Point(12, 16)
         Me.chkMovieThemeEnable.Name = "chkMovieThemeEnable"
         Me.chkMovieThemeEnable.Size = New System.Drawing.Size(142, 17)
         Me.chkMovieThemeEnable.TabIndex = 0
         Me.chkMovieThemeEnable.Text = "Enable Theme Support"
-        Me.chkMovieThemeEnable.UseVisualStyleBackColor = true
+        Me.chkMovieThemeEnable.UseVisualStyleBackColor = True
         '
         'pnlTVThemes
         '
         Me.pnlTVThemes.BackColor = System.Drawing.Color.White
         Me.pnlTVThemes.Controls.Add(Me.Label2)
-        Me.pnlTVThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlTVThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlTVThemes.Location = New System.Drawing.Point(900, 900)
         Me.pnlTVThemes.Name = "pnlTVThemes"
         Me.pnlTVThemes.Size = New System.Drawing.Size(750, 500)
         Me.pnlTVThemes.TabIndex = 23
-        Me.pnlTVThemes.Visible = false
+        Me.pnlTVThemes.Visible = False
         '
         'Label2
         '
-        Me.Label2.AutoSize = true
+        Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(206, 235)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(131, 13)
@@ -11844,7 +11848,7 @@ Partial Class dlgSettings
         Me.pnlMovieSetGeneral.Name = "pnlMovieSetGeneral"
         Me.pnlMovieSetGeneral.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieSetGeneral.TabIndex = 24
-        Me.pnlMovieSetGeneral.Visible = false
+        Me.pnlMovieSetGeneral.Visible = False
         '
         'gbMovieSetGeneralMissingItemsOpts
         '
@@ -11856,127 +11860,127 @@ Partial Class dlgSettings
         Me.gbMovieSetGeneralMissingItemsOpts.Controls.Add(Me.chkMovieSetMissingPoster)
         Me.gbMovieSetGeneralMissingItemsOpts.Controls.Add(Me.chkMovieSetMissingNFO)
         Me.gbMovieSetGeneralMissingItemsOpts.Controls.Add(Me.chkMovieSetMissingFanart)
-        Me.gbMovieSetGeneralMissingItemsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetGeneralMissingItemsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieSetGeneralMissingItemsOpts.Location = New System.Drawing.Point(228, 256)
         Me.gbMovieSetGeneralMissingItemsOpts.Name = "gbMovieSetGeneralMissingItemsOpts"
         Me.gbMovieSetGeneralMissingItemsOpts.Size = New System.Drawing.Size(185, 241)
         Me.gbMovieSetGeneralMissingItemsOpts.TabIndex = 5
-        Me.gbMovieSetGeneralMissingItemsOpts.TabStop = false
+        Me.gbMovieSetGeneralMissingItemsOpts.TabStop = False
         Me.gbMovieSetGeneralMissingItemsOpts.Text = "Missing Items Filter"
         '
         'chkMovieSetMissingDiscArt
         '
-        Me.chkMovieSetMissingDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetMissingDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetMissingDiscArt.Location = New System.Drawing.Point(6, 69)
         Me.chkMovieSetMissingDiscArt.Name = "chkMovieSetMissingDiscArt"
         Me.chkMovieSetMissingDiscArt.Size = New System.Drawing.Size(174, 17)
         Me.chkMovieSetMissingDiscArt.TabIndex = 15
         Me.chkMovieSetMissingDiscArt.Text = "Check for DiscArt"
-        Me.chkMovieSetMissingDiscArt.UseVisualStyleBackColor = true
+        Me.chkMovieSetMissingDiscArt.UseVisualStyleBackColor = True
         '
         'chkMovieSetMissingClearLogo
         '
-        Me.chkMovieSetMissingClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetMissingClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetMissingClearLogo.Location = New System.Drawing.Point(6, 52)
         Me.chkMovieSetMissingClearLogo.Name = "chkMovieSetMissingClearLogo"
         Me.chkMovieSetMissingClearLogo.Size = New System.Drawing.Size(174, 17)
         Me.chkMovieSetMissingClearLogo.TabIndex = 14
         Me.chkMovieSetMissingClearLogo.Text = "Check for ClearLogo"
-        Me.chkMovieSetMissingClearLogo.UseVisualStyleBackColor = true
+        Me.chkMovieSetMissingClearLogo.UseVisualStyleBackColor = True
         '
         'chkMovieSetMissingClearArt
         '
-        Me.chkMovieSetMissingClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetMissingClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetMissingClearArt.Location = New System.Drawing.Point(6, 35)
         Me.chkMovieSetMissingClearArt.Name = "chkMovieSetMissingClearArt"
         Me.chkMovieSetMissingClearArt.Size = New System.Drawing.Size(174, 17)
         Me.chkMovieSetMissingClearArt.TabIndex = 13
         Me.chkMovieSetMissingClearArt.Text = "Check for ClearArt"
-        Me.chkMovieSetMissingClearArt.UseVisualStyleBackColor = true
+        Me.chkMovieSetMissingClearArt.UseVisualStyleBackColor = True
         '
         'chkMovieSetMissingLandscape
         '
-        Me.chkMovieSetMissingLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetMissingLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetMissingLandscape.Location = New System.Drawing.Point(6, 137)
         Me.chkMovieSetMissingLandscape.Name = "chkMovieSetMissingLandscape"
         Me.chkMovieSetMissingLandscape.Size = New System.Drawing.Size(174, 17)
         Me.chkMovieSetMissingLandscape.TabIndex = 10
         Me.chkMovieSetMissingLandscape.Text = "Check for Landscape"
-        Me.chkMovieSetMissingLandscape.UseVisualStyleBackColor = true
+        Me.chkMovieSetMissingLandscape.UseVisualStyleBackColor = True
         '
         'chkMovieSetMissingBanner
         '
-        Me.chkMovieSetMissingBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetMissingBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetMissingBanner.Location = New System.Drawing.Point(6, 17)
         Me.chkMovieSetMissingBanner.Name = "chkMovieSetMissingBanner"
         Me.chkMovieSetMissingBanner.Size = New System.Drawing.Size(174, 17)
         Me.chkMovieSetMissingBanner.TabIndex = 11
         Me.chkMovieSetMissingBanner.Text = "Check for Banner"
-        Me.chkMovieSetMissingBanner.UseVisualStyleBackColor = true
+        Me.chkMovieSetMissingBanner.UseVisualStyleBackColor = True
         '
         'chkMovieSetMissingPoster
         '
-        Me.chkMovieSetMissingPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetMissingPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetMissingPoster.Location = New System.Drawing.Point(6, 171)
         Me.chkMovieSetMissingPoster.Name = "chkMovieSetMissingPoster"
         Me.chkMovieSetMissingPoster.Size = New System.Drawing.Size(174, 17)
         Me.chkMovieSetMissingPoster.TabIndex = 6
         Me.chkMovieSetMissingPoster.Text = "Check for Poster"
-        Me.chkMovieSetMissingPoster.UseVisualStyleBackColor = true
+        Me.chkMovieSetMissingPoster.UseVisualStyleBackColor = True
         '
         'chkMovieSetMissingNFO
         '
-        Me.chkMovieSetMissingNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetMissingNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetMissingNFO.Location = New System.Drawing.Point(6, 154)
         Me.chkMovieSetMissingNFO.Name = "chkMovieSetMissingNFO"
         Me.chkMovieSetMissingNFO.Size = New System.Drawing.Size(174, 17)
         Me.chkMovieSetMissingNFO.TabIndex = 8
         Me.chkMovieSetMissingNFO.Text = "Check for NFO"
-        Me.chkMovieSetMissingNFO.UseVisualStyleBackColor = true
+        Me.chkMovieSetMissingNFO.UseVisualStyleBackColor = True
         '
         'chkMovieSetMissingFanart
         '
-        Me.chkMovieSetMissingFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetMissingFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetMissingFanart.Location = New System.Drawing.Point(6, 120)
         Me.chkMovieSetMissingFanart.Name = "chkMovieSetMissingFanart"
         Me.chkMovieSetMissingFanart.Size = New System.Drawing.Size(174, 17)
         Me.chkMovieSetMissingFanart.TabIndex = 7
         Me.chkMovieSetMissingFanart.Text = "Check for Fanart"
-        Me.chkMovieSetMissingFanart.UseVisualStyleBackColor = true
+        Me.chkMovieSetMissingFanart.UseVisualStyleBackColor = True
         '
         'gbMovieSetGeneralMiscOpts
         '
         Me.gbMovieSetGeneralMiscOpts.Controls.Add(Me.chkMovieSetClickScrape)
         Me.gbMovieSetGeneralMiscOpts.Controls.Add(Me.chkMovieSetClickScrapeAsk)
-        Me.gbMovieSetGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieSetGeneralMiscOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSetGeneralMiscOpts.Name = "gbMovieSetGeneralMiscOpts"
         Me.gbMovieSetGeneralMiscOpts.Size = New System.Drawing.Size(219, 71)
         Me.gbMovieSetGeneralMiscOpts.TabIndex = 1
-        Me.gbMovieSetGeneralMiscOpts.TabStop = false
+        Me.gbMovieSetGeneralMiscOpts.TabStop = False
         Me.gbMovieSetGeneralMiscOpts.Text = "Miscellaneous"
         '
         'chkMovieSetClickScrape
         '
-        Me.chkMovieSetClickScrape.AutoSize = true
-        Me.chkMovieSetClickScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkMovieSetClickScrape.AutoSize = True
+        Me.chkMovieSetClickScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieSetClickScrape.Location = New System.Drawing.Point(12, 32)
         Me.chkMovieSetClickScrape.Name = "chkMovieSetClickScrape"
         Me.chkMovieSetClickScrape.Size = New System.Drawing.Size(125, 17)
         Me.chkMovieSetClickScrape.TabIndex = 65
         Me.chkMovieSetClickScrape.Text = "Enable Click Scrape"
-        Me.chkMovieSetClickScrape.UseVisualStyleBackColor = true
+        Me.chkMovieSetClickScrape.UseVisualStyleBackColor = True
         '
         'chkMovieSetClickScrapeAsk
         '
-        Me.chkMovieSetClickScrapeAsk.AutoSize = true
-        Me.chkMovieSetClickScrapeAsk.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkMovieSetClickScrapeAsk.AutoSize = True
+        Me.chkMovieSetClickScrapeAsk.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieSetClickScrapeAsk.Location = New System.Drawing.Point(21, 48)
         Me.chkMovieSetClickScrapeAsk.Name = "chkMovieSetClickScrapeAsk"
         Me.chkMovieSetClickScrapeAsk.Size = New System.Drawing.Size(127, 17)
         Me.chkMovieSetClickScrapeAsk.TabIndex = 64
         Me.chkMovieSetClickScrapeAsk.Text = "Ask On Click Scrape"
-        Me.chkMovieSetClickScrapeAsk.UseVisualStyleBackColor = true
+        Me.chkMovieSetClickScrapeAsk.UseVisualStyleBackColor = True
         '
         'gbMovieSetGeneralMediaListOpts
         '
@@ -11989,12 +11993,12 @@ Partial Class dlgSettings
         Me.gbMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetPosterCol)
         Me.gbMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetNFOCol)
         Me.gbMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetFanartCol)
-        Me.gbMovieSetGeneralMediaListOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetGeneralMediaListOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieSetGeneralMediaListOpts.Location = New System.Drawing.Point(3, 80)
         Me.gbMovieSetGeneralMediaListOpts.Name = "gbMovieSetGeneralMediaListOpts"
         Me.gbMovieSetGeneralMediaListOpts.Size = New System.Drawing.Size(219, 417)
         Me.gbMovieSetGeneralMediaListOpts.TabIndex = 4
-        Me.gbMovieSetGeneralMediaListOpts.TabStop = false
+        Me.gbMovieSetGeneralMediaListOpts.TabStop = False
         Me.gbMovieSetGeneralMediaListOpts.Text = "Media List Options"
         '
         'gbMovieSetSortTokensOpts
@@ -12003,35 +12007,35 @@ Partial Class dlgSettings
         Me.gbMovieSetSortTokensOpts.Controls.Add(Me.btnMovieSetSortTokenAdd)
         Me.gbMovieSetSortTokensOpts.Controls.Add(Me.txtMovieSetSortToken)
         Me.gbMovieSetSortTokensOpts.Controls.Add(Me.lstMovieSetSortTokens)
-        Me.gbMovieSetSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieSetSortTokensOpts.Location = New System.Drawing.Point(8, 77)
         Me.gbMovieSetSortTokensOpts.Name = "gbMovieSetSortTokensOpts"
         Me.gbMovieSetSortTokensOpts.Size = New System.Drawing.Size(200, 93)
         Me.gbMovieSetSortTokensOpts.TabIndex = 83
-        Me.gbMovieSetSortTokensOpts.TabStop = false
+        Me.gbMovieSetSortTokensOpts.TabStop = False
         Me.gbMovieSetSortTokensOpts.Text = "Sort Tokens to Ignore"
         '
         'btnMovieSetSortTokenRemove
         '
-        Me.btnMovieSetSortTokenRemove.Image = CType(resources.GetObject("btnMovieSetSortTokenRemove.Image"),System.Drawing.Image)
+        Me.btnMovieSetSortTokenRemove.Image = CType(resources.GetObject("btnMovieSetSortTokenRemove.Image"), System.Drawing.Image)
         Me.btnMovieSetSortTokenRemove.Location = New System.Drawing.Point(168, 64)
         Me.btnMovieSetSortTokenRemove.Name = "btnMovieSetSortTokenRemove"
         Me.btnMovieSetSortTokenRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieSetSortTokenRemove.TabIndex = 3
-        Me.btnMovieSetSortTokenRemove.UseVisualStyleBackColor = true
+        Me.btnMovieSetSortTokenRemove.UseVisualStyleBackColor = True
         '
         'btnMovieSetSortTokenAdd
         '
-        Me.btnMovieSetSortTokenAdd.Image = CType(resources.GetObject("btnMovieSetSortTokenAdd.Image"),System.Drawing.Image)
+        Me.btnMovieSetSortTokenAdd.Image = CType(resources.GetObject("btnMovieSetSortTokenAdd.Image"), System.Drawing.Image)
         Me.btnMovieSetSortTokenAdd.Location = New System.Drawing.Point(72, 64)
         Me.btnMovieSetSortTokenAdd.Name = "btnMovieSetSortTokenAdd"
         Me.btnMovieSetSortTokenAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieSetSortTokenAdd.TabIndex = 2
-        Me.btnMovieSetSortTokenAdd.UseVisualStyleBackColor = true
+        Me.btnMovieSetSortTokenAdd.UseVisualStyleBackColor = True
         '
         'txtMovieSetSortToken
         '
-        Me.txtMovieSetSortToken.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieSetSortToken.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieSetSortToken.Location = New System.Drawing.Point(10, 64)
         Me.txtMovieSetSortToken.Name = "txtMovieSetSortToken"
         Me.txtMovieSetSortToken.Size = New System.Drawing.Size(61, 22)
@@ -12039,106 +12043,107 @@ Partial Class dlgSettings
         '
         'lstMovieSetSortTokens
         '
-        Me.lstMovieSetSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lstMovieSetSortTokens.FormattingEnabled = true
+        Me.lstMovieSetSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstMovieSetSortTokens.FormattingEnabled = True
         Me.lstMovieSetSortTokens.Location = New System.Drawing.Point(10, 15)
         Me.lstMovieSetSortTokens.Name = "lstMovieSetSortTokens"
         Me.lstMovieSetSortTokens.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lstMovieSetSortTokens.Size = New System.Drawing.Size(180, 43)
-        Me.lstMovieSetSortTokens.Sorted = true
+        Me.lstMovieSetSortTokens.Sorted = True
         Me.lstMovieSetSortTokens.TabIndex = 0
         '
         'chkMovieSetDiscArtCol
         '
-        Me.chkMovieSetDiscArtCol.AutoSize = true
-        Me.chkMovieSetDiscArtCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetDiscArtCol.AutoSize = True
+        Me.chkMovieSetDiscArtCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetDiscArtCol.Location = New System.Drawing.Point(6, 227)
         Me.chkMovieSetDiscArtCol.Name = "chkMovieSetDiscArtCol"
         Me.chkMovieSetDiscArtCol.Size = New System.Drawing.Size(132, 17)
         Me.chkMovieSetDiscArtCol.TabIndex = 82
         Me.chkMovieSetDiscArtCol.Text = "Hide DiscArt Column"
-        Me.chkMovieSetDiscArtCol.UseVisualStyleBackColor = true
+        Me.chkMovieSetDiscArtCol.UseVisualStyleBackColor = True
         '
         'chkMovieSetClearLogoCol
         '
-        Me.chkMovieSetClearLogoCol.AutoSize = true
-        Me.chkMovieSetClearLogoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetClearLogoCol.AutoSize = True
+        Me.chkMovieSetClearLogoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetClearLogoCol.Location = New System.Drawing.Point(6, 210)
         Me.chkMovieSetClearLogoCol.Name = "chkMovieSetClearLogoCol"
         Me.chkMovieSetClearLogoCol.Size = New System.Drawing.Size(148, 17)
         Me.chkMovieSetClearLogoCol.TabIndex = 81
         Me.chkMovieSetClearLogoCol.Text = "Hide ClearLogo Column"
-        Me.chkMovieSetClearLogoCol.UseVisualStyleBackColor = true
+        Me.chkMovieSetClearLogoCol.UseVisualStyleBackColor = True
         '
         'chkMovieSetClearArtCol
         '
-        Me.chkMovieSetClearArtCol.AutoSize = true
-        Me.chkMovieSetClearArtCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetClearArtCol.AutoSize = True
+        Me.chkMovieSetClearArtCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetClearArtCol.Location = New System.Drawing.Point(6, 193)
         Me.chkMovieSetClearArtCol.Name = "chkMovieSetClearArtCol"
         Me.chkMovieSetClearArtCol.Size = New System.Drawing.Size(137, 17)
         Me.chkMovieSetClearArtCol.TabIndex = 80
         Me.chkMovieSetClearArtCol.Text = "Hide ClearArt Column"
-        Me.chkMovieSetClearArtCol.UseVisualStyleBackColor = true
+        Me.chkMovieSetClearArtCol.UseVisualStyleBackColor = True
         '
         'chkMovieSetBannerCol
         '
-        Me.chkMovieSetBannerCol.AutoSize = true
-        Me.chkMovieSetBannerCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetBannerCol.AutoSize = True
+        Me.chkMovieSetBannerCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetBannerCol.Location = New System.Drawing.Point(6, 176)
         Me.chkMovieSetBannerCol.Name = "chkMovieSetBannerCol"
         Me.chkMovieSetBannerCol.Size = New System.Drawing.Size(133, 17)
         Me.chkMovieSetBannerCol.TabIndex = 79
         Me.chkMovieSetBannerCol.Text = "Hide Banner Column"
-        Me.chkMovieSetBannerCol.UseVisualStyleBackColor = true
+        Me.chkMovieSetBannerCol.UseVisualStyleBackColor = True
         '
         'chkMovieSetLandscapeCol
         '
-        Me.chkMovieSetLandscapeCol.AutoSize = true
-        Me.chkMovieSetLandscapeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetLandscapeCol.AutoSize = True
+        Me.chkMovieSetLandscapeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetLandscapeCol.Location = New System.Drawing.Point(6, 295)
         Me.chkMovieSetLandscapeCol.Name = "chkMovieSetLandscapeCol"
         Me.chkMovieSetLandscapeCol.Size = New System.Drawing.Size(150, 17)
         Me.chkMovieSetLandscapeCol.TabIndex = 77
         Me.chkMovieSetLandscapeCol.Text = "Hide Landscape Column"
-        Me.chkMovieSetLandscapeCol.UseVisualStyleBackColor = true
+        Me.chkMovieSetLandscapeCol.UseVisualStyleBackColor = True
         '
         'chkMovieSetPosterCol
         '
-        Me.chkMovieSetPosterCol.AutoSize = true
-        Me.chkMovieSetPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetPosterCol.AutoSize = True
+        Me.chkMovieSetPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetPosterCol.Location = New System.Drawing.Point(6, 329)
         Me.chkMovieSetPosterCol.Name = "chkMovieSetPosterCol"
         Me.chkMovieSetPosterCol.Size = New System.Drawing.Size(128, 17)
         Me.chkMovieSetPosterCol.TabIndex = 0
         Me.chkMovieSetPosterCol.Text = "Hide Poster Column"
-        Me.chkMovieSetPosterCol.UseVisualStyleBackColor = true
+        Me.chkMovieSetPosterCol.UseVisualStyleBackColor = True
         '
         'chkMovieSetNFOCol
         '
-        Me.chkMovieSetNFOCol.AutoSize = true
-        Me.chkMovieSetNFOCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetNFOCol.AutoSize = True
+        Me.chkMovieSetNFOCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetNFOCol.Location = New System.Drawing.Point(6, 312)
         Me.chkMovieSetNFOCol.Name = "chkMovieSetNFOCol"
         Me.chkMovieSetNFOCol.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieSetNFOCol.TabIndex = 2
         Me.chkMovieSetNFOCol.Text = "Hide NFO Column"
-        Me.chkMovieSetNFOCol.UseVisualStyleBackColor = true
+        Me.chkMovieSetNFOCol.UseVisualStyleBackColor = True
         '
         'chkMovieSetFanartCol
         '
-        Me.chkMovieSetFanartCol.AutoSize = true
-        Me.chkMovieSetFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetFanartCol.AutoSize = True
+        Me.chkMovieSetFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetFanartCol.Location = New System.Drawing.Point(6, 278)
         Me.chkMovieSetFanartCol.Name = "chkMovieSetFanartCol"
         Me.chkMovieSetFanartCol.Size = New System.Drawing.Size(129, 17)
         Me.chkMovieSetFanartCol.TabIndex = 1
         Me.chkMovieSetFanartCol.Text = "Hide Fanart Column"
-        Me.chkMovieSetFanartCol.UseVisualStyleBackColor = true
+        Me.chkMovieSetFanartCol.UseVisualStyleBackColor = True
         '
         'pnlMovieSetSources
         '
         Me.pnlMovieSetSources.BackColor = System.Drawing.Color.White
+        Me.pnlMovieSetSources.Controls.Add(Me.gbMovieSetSourceMiscOpts)
         Me.pnlMovieSetSources.Controls.Add(Me.gbMovieSetFileNaming)
         Me.pnlMovieSetSources.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieSetSources.Name = "pnlMovieSetSources"
@@ -12922,6 +12927,38 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterOverwrite.Text = "Overwrite Existing"
         Me.chkMovieSetPosterOverwrite.UseVisualStyleBackColor = true
         '
+        'gbMovieSetMiscOpts
+        '
+        Me.gbMovieSetSourceMiscOpts.Controls.Add(Me.chkMovieSetCleanFiles)
+        Me.gbMovieSetSourceMiscOpts.Controls.Add(Me.chkMovieSetCleanDB)
+        Me.gbMovieSetSourceMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetSourceMiscOpts.Location = New System.Drawing.Point(5, 113)
+        Me.gbMovieSetSourceMiscOpts.Name = "gbMovieSetMiscOpts"
+        Me.gbMovieSetSourceMiscOpts.Size = New System.Drawing.Size(212, 283)
+        Me.gbMovieSetSourceMiscOpts.TabIndex = 9
+        Me.gbMovieSetSourceMiscOpts.TabStop = false
+        Me.gbMovieSetSourceMiscOpts.Text = "Miscellaneous Options"
+        '
+        'chkMovieSetCleanFiles
+        '
+        Me.chkMovieSetCleanFiles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetCleanFiles.Location = New System.Drawing.Point(6, 189)
+        Me.chkMovieSetCleanFiles.Name = "chkMovieSetCleanFiles"
+        Me.chkMovieSetCleanFiles.Size = New System.Drawing.Size(200, 33)
+        Me.chkMovieSetCleanFiles.TabIndex = 8
+        Me.chkMovieSetCleanFiles.Text = "Remove Images and NFOs with MovieSets"
+        Me.chkMovieSetCleanFiles.UseVisualStyleBackColor = true
+        '
+        'chkMovieSetCleanDB
+        '
+        Me.chkMovieSetCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetCleanDB.Location = New System.Drawing.Point(6, 228)
+        Me.chkMovieSetCleanDB.Name = "chkMovieSetCleanDB"
+        Me.chkMovieSetCleanDB.Size = New System.Drawing.Size(200, 33)
+        Me.chkMovieSetCleanDB.TabIndex = 9
+        Me.chkMovieSetCleanDB.Text = "Clean database after updating library"
+        Me.chkMovieSetCleanDB.UseVisualStyleBackColor = true
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -13096,8 +13133,8 @@ Partial Class dlgSettings
         Me.gbMovieExpertBDMVOptionalSettings.ResumeLayout(false)
         Me.gbMovieExpertBDMVOptionalImages.ResumeLayout(false)
         Me.gbMovieExpertBDMVOptionalImages.PerformLayout
-        Me.gbMovieMiscOpts.ResumeLayout(false)
-        Me.gbMovieMiscOpts.PerformLayout
+        Me.gbMovieSourcesMiscOpts.ResumeLayout(false)
+        Me.gbMovieSourcesMiscOpts.PerformLayout
         Me.gbMovieSetMSAAPath.ResumeLayout(false)
         Me.gbMovieSetMSAAPath.PerformLayout
         Me.pnlTVGeneral.ResumeLayout(false)
@@ -13270,6 +13307,7 @@ Partial Class dlgSettings
         Me.gbMovieSetPosterOpts.ResumeLayout(false)
         Me.gbMovieSetPosterOpts.PerformLayout
         CType(Me.tbMovieSetPosterQual,System.ComponentModel.ISupportInitialize).EndInit
+        Me.gbMovieSetSourceMiscOpts.ResumeLayout(false)
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -13353,7 +13391,7 @@ End Sub
     Friend WithEvents pnlMovieSources As System.Windows.Forms.Panel
     Friend WithEvents clbMovieGenre As System.Windows.Forms.CheckedListBox
     Friend WithEvents pnlMovieImages As System.Windows.Forms.Panel
-    Friend WithEvents gbMovieMiscOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents gbMovieSourcesMiscOpts As System.Windows.Forms.GroupBox
     Friend WithEvents lblMovieSkipLessThanMB As System.Windows.Forms.Label
     Friend WithEvents txtMovieSkipLessThan As System.Windows.Forms.TextBox
     Friend WithEvents lblMovieSkipLessThan As System.Windows.Forms.Label
@@ -14335,4 +14373,7 @@ End Sub
     Friend WithEvents chkTVShowMissingClearArt As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowMissingNFO As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowMissingFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents gbMovieSetSourceMiscOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMovieSetCleanFiles As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetCleanDB As System.Windows.Forms.CheckBox
 End Class

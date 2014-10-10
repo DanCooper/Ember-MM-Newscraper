@@ -1423,6 +1423,14 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkMovieSetCleanDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetCleanDB.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetCleanFiles_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetCleanFiles.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkCleanDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanDotFanartJPG.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3285,6 +3293,8 @@ Public Class dlgSettings
                     Me.txtMovieSetBannerHeight.Text = .MovieSetBannerHeight.ToString
                     Me.txtMovieSetBannerWidth.Text = .MovieSetBannerWidth.ToString
                 End If
+                Me.chkMovieSetCleanDB.Checked = .MovieSetCleanDB
+                Me.chkMovieSetCleanFiles.Checked = .MovieSetCleanFiles
                 Me.chkMovieSetClearArtCol.Checked = .MovieSetClearArtCol
                 Me.chkMovieSetClearArtOverwrite.Checked = .MovieSetClearArtOverwrite
                 Me.chkMovieSetClearLogoCol.Checked = .MovieSetClearLogoCol
@@ -4862,6 +4872,8 @@ Public Class dlgSettings
                 .MovieSetBannerQual = Me.tbMovieSetBannerQual.Value
                 .MovieSetBannerResize = Me.chkMovieSetBannerResize.Checked
                 .MovieSetBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetBannerWidth.Text), Convert.ToInt32(Me.txtMovieSetBannerWidth.Text), 0)
+                .MovieSetCleanDB = Me.chkMovieSetCleanDB.Checked
+                .MovieSetCleanFiles = Me.chkMovieSetCleanFiles.Checked
                 .MovieSetClearArtCol = Me.chkMovieSetClearArtCol.Checked
                 .MovieSetClearArtOverwrite = Me.chkMovieSetClearArtOverwrite.Checked
                 .MovieSetClearLogoCol = Me.chkMovieSetClearLogoCol.Checked
@@ -5670,6 +5682,7 @@ Public Class dlgSettings
         Me.chkMovieUseBoxee.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieUseExpert.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieUseNMJ.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
         Me.chkMovieScraperCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         Me.chkMovieScraperCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
@@ -5791,7 +5804,7 @@ Public Class dlgSettings
         Me.gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         Me.gbMovieGeneralMissingItemsOpts.Text = Master.eLang.GetString(581, "Missing Items Filter")
         Me.gbMovieImagesOpts.Text = Master.eLang.GetString(497, "Images")
-        Me.gbMovieMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
+        Me.gbMovieSourcesMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
         Me.gbMovieScraperCertOpts.Text = Master.eLang.GetString(56, "Certification")
         Me.gbMovieActorThumbsOpts.Text = Master.eLang.GetString(991, "Actor Thumbs")
         Me.gbMovieBannerOpts.Text = Master.eLang.GetString(838, "Banner")
@@ -5919,6 +5932,7 @@ Public Class dlgSettings
         Me.chkMovieFanartPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkMovieFanartResize.Text = Me.chkMoviePosterResize.Text
         Me.chkMovieLandscapeOverwrite.Text = Me.chkMoviePosterOverwrite.Text
+        Me.chkMovieSetCleanDB.Text = Me.chkMovieCleanDB.Text
         Me.chkMovieStackExpertSingle.Text = Me.chkMovieStackExpertMulti.Text
         Me.chkMovieUnstackExpertSingle.Text = Me.chkMovieUnstackExpertMulti.Text
         Me.chkMovieUseBaseDirectoryExpertVTS.Text = Me.chkMovieUseBaseDirectoryExpertBDMV.Text
@@ -5998,6 +6012,7 @@ Public Class dlgSettings
         Me.gbMovieNMTOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
         Me.gbMovieScraperMiscOpts.Text = Me.gbGeneralMisc.Text
         Me.gbMovieSetSortTokensOpts.Text = Me.gbMovieSortTokensOpts.Text
+        Me.gbMovieSetSourceMiscOpts.Text = Me.gbMovieSourcesMiscOpts.Text
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
         Me.gbTVASBannerOpts.Text = Me.gbMovieBannerOpts.Text
         Me.gbTVASFanartOpts.Text = Me.gbMovieFanartOpts.Text

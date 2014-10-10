@@ -236,6 +236,8 @@ Partial Public Class clsXMLSettings
     Private _moviesetbannerqual As Integer
     Private _moviesetbannerresize As Boolean
     Private _moviesetbannerwidth As Integer
+    Private _moviesetcleandb As Boolean
+    Private _moviesetcleanfiles As Boolean
     Private _moviesetclearartcol As Boolean
     Private _moviesetclearartoverwrite As Boolean
     Private _moviesetclearlogocol As Boolean
@@ -1050,6 +1052,24 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviecleandb = value
+        End Set
+    End Property
+
+    Public Property MovieSetCleanDB() As Boolean
+        Get
+            Return Me._moviesetcleandb
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetcleandb = value
+        End Set
+    End Property
+
+    Public Property MovieSetCleanFiles() As Boolean
+        Get
+            Return Me._moviesetcleanfiles
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetcleanfiles = value
         End Set
     End Property
 
