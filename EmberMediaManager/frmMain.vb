@@ -3306,11 +3306,15 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub chkFilterEmpty_MovieSets_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterEmpty_MovieSets.Click
+    Private Sub chkFilterEmpty_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterEmpty_MovieSets.Click
         Try
-            Me.RunFilter_Movies(True)
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            If Me.chkFilterEmpty_MovieSets.Checked Then
+                Me.FilterArray_MovieSets.Add("Count = 0")
+            Else
+                Me.FilterArray_MovieSets.Remove("Count = 0")
+            End If
+            Me.RunFilter_MovieSets()
+        Catch
         End Try
     End Sub
 
@@ -3936,6 +3940,7 @@ doCancel:
 
             'Me.chkFilterDuplicates.Checked = False
             'Me.chkFilterTolerance.Checked = False
+            Me.chkFilterEmpty_MovieSets.Checked = False
             Me.chkFilterMissing_MovieSets.Checked = False
             Me.chkFilterMark_MovieSets.Checked = False
             'Me.chkFilterMarkCustom1.Checked = False
@@ -7602,6 +7607,7 @@ doCancel:
                     e.Handled = True
                 End If
             End If
+
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -8068,7 +8074,8 @@ doCancel:
                 Me.bsMovieSets.DataSource = Nothing
                 Me.dgvMovieSets.DataSource = Nothing
                 Me.ClearInfo()
-                Master.DB.FillDataTable(Me.dtMovieSets, "SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM sets ORDER BY ListTitle COLLATE NOCASE;")
+                'Master.DB.FillDataTable(Me.dtMovieSets, "SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM sets ORDER BY ListTitle COLLATE NOCASE;")
+                Master.DB.FillDataTable(Me.dtMovieSets, "SELECT Sets.ID, Sets.ListTitle, Sets.HasNfo, Sets.NfoPath, Sets.HasPoster, Sets.PosterPath, Sets.HasFanart, Sets.FanartPath, Sets.HasBanner, Sets.BannerPath, Sets.HasLandscape, Sets.LandscapePath, Sets.HasDiscArt, Sets.DiscArtPath, Sets.HasClearLogo, Sets.ClearLogoPath, Sets.HasClearArt, Sets.ClearArtPath, Sets.TMDBColID, Sets.Plot, Sets.SetName, Sets.New, Sets.Mark, Sets.Lock, COUNT(MoviesSets.MovieID) AS 'Count' FROM Sets LEFT OUTER JOIN MoviesSets ON Sets.ID = MoviesSets.SetID GROUP BY Sets.ID ORDER BY Sets.ListTitle COLLATE NOCASE;")
             End If
 
 
