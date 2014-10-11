@@ -15934,7 +15934,18 @@ doCancel:
                     RemoveHandler cbFilterFileSource_Movies.SelectedIndexChanged, AddressOf cbFilterFileSource_Movies_SelectedIndexChanged
                     cbFilterFileSource_Movies.Items.Clear()
                     cbFilterFileSource_Movies.Items.Add(Master.eLang.All)
-                    cbFilterFileSource_Movies.Items.AddRange(APIXML.SourceList.ToArray)
+                    'Cocotus 2014/10/11 Automatically populate avalaible videosources from user settings to sourcefilter instead of using hardcoded list here!
+                    Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
+                    mySources = clsAdvancedSettings.GetComplexSetting("MovieSources")
+                    If Not mySources Is Nothing Then
+                        For Each k In mySources
+                            If cbFilterFileSource_Movies.Items.Contains(k.Value) = False Then
+                                cbFilterFileSource_Movies.Items.Add(k.Value)
+                            End If
+                        Next
+                    Else
+                        cbFilterFileSource_Movies.Items.AddRange(APIXML.SourceList.ToArray)
+                    End If
                     cbFilterFileSource_Movies.Items.Add(Master.eLang.None)
                     cbFilterFileSource_Movies.SelectedIndex = 0
                     AddHandler cbFilterFileSource_Movies.SelectedIndexChanged, AddressOf cbFilterFileSource_Movies_SelectedIndexChanged
