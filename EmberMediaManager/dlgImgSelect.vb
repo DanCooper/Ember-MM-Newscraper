@@ -500,7 +500,8 @@ Public Class dlgImgSelect
                 Me.bwImgLoading.ReportProgress(i + 1)
                 i = i + 1
                 Application.DoEvents()
-            Catch
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Next
     End Sub

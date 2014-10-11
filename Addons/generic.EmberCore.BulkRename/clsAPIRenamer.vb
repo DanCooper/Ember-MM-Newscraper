@@ -741,7 +741,7 @@ Public Class FileFolderRenamer
                         If ShowError Then
                             MsgBox(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(165, "Unable to Rename Directory"))
                         Else
-                            logger.Error("Dir: <{0}> - <{1}> ", srcDir, destDir)
+                            logger.Error("Dir: <{0}> - <{1}>", srcDir, destDir)
                         End If
                     End Try
 
