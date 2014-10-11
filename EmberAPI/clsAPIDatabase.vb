@@ -2082,6 +2082,7 @@ Public Class Database
                                         parSets_New.Value = True
                                         parSets_Mark.Value = False
                                         parSets_Lock.Value = False
+                                        SQLcommandSets.ExecuteNonQuery()
 
                                         Using rdrSets As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                             If rdrSets.Read Then
