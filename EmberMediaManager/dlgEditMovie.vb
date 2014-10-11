@@ -1426,26 +1426,6 @@ Public Class dlgEditMovie
         Me.TrailerStop()
         Me.CleanUp()
 
-        Try
-            For Each Pan In Me.pnlETImage
-                CType(Pan.Tag, Images).Dispose()
-            Next
-            For Each Pan In Me.pbETImage
-                CType(Pan.Tag, Images).Dispose()
-                Pan.Image.Dispose()
-            Next
-            For Each Pan In Me.pnlEFImage
-                CType(Pan.Tag, Images).Dispose()
-            Next
-            For Each Pan In Me.pbEFImage
-                CType(Pan.Tag, Images).Dispose()
-                Pan.Image.Dispose()
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-
         Master.currMovie = Master.DB.LoadMovieFromDB(Master.currMovie.ID)
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
@@ -1471,6 +1451,29 @@ Public Class dlgEditMovie
 
             If Directory.Exists(Path.Combine(Master.TempPath, "extrafanarts")) Then
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrafanarts"))
+            End If
+
+            If Not IsNothing(Me.pnlETImage) Then
+                For Each Pan In Me.pnlETImage
+                    CType(Pan.Tag, Images).Dispose()
+                Next
+            End If
+            If Not IsNothing(Me.pbETImage) Then
+                For Each Pan In Me.pbETImage
+                    CType(Pan.Tag, Images).Dispose()
+                    Pan.Image.Dispose()
+                Next
+            End If
+            If Not IsNothing(Me.pnlEFImage) Then
+                For Each Pan In Me.pnlEFImage
+                    CType(Pan.Tag, Images).Dispose()
+                Next
+            End If
+            If Not IsNothing(Me.pbEFImage) Then
+                For Each Pan In Me.pbEFImage
+                    CType(Pan.Tag, Images).Dispose()
+                    Pan.Image.Dispose()
+                Next
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2265,21 +2268,6 @@ Public Class dlgEditMovie
 
             Me.CleanUp()
 
-            For Each Pan In Me.pnlETImage
-                CType(Pan.Tag, Images).Dispose()
-            Next
-            For Each Pan In Me.pbETImage
-                CType(Pan.Tag, Images).Dispose()
-                Pan.Image.Dispose()
-            Next
-            For Each Pan In Me.pnlEFImage
-                CType(Pan.Tag, Images).Dispose()
-            Next
-            For Each Pan In Me.pbEFImage
-                CType(Pan.Tag, Images).Dispose()
-                Pan.Image.Dispose()
-            Next
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -3019,7 +3007,7 @@ Public Class dlgEditMovie
                     .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
                 End If
 
-                If Master.GlobalScrapeMod.ActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
+                If Master.GlobalScrapeMod.ActorThumbs Then
                     For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
                         Dim img As New Images
                         img.FromWeb(act.Thumb)
