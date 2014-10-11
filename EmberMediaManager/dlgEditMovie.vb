@@ -1848,28 +1848,99 @@ Public Class dlgEditMovie
 
                 If DoAll Then
 
-                    If Not Master.currMovie.IsSingle Then
-                        tcEditMovie.TabPages.Remove(tpClearArt)
-                        tcEditMovie.TabPages.Remove(tpClearLogo)
-                        tcEditMovie.TabPages.Remove(tpDiscArt)
-                        tcEditMovie.TabPages.Remove(tpEThumbs)
-                        tcEditMovie.TabPages.Remove(tpEFanarts)
-                        tcEditMovie.TabPages.Remove(tpLandscape)
+                    Dim pExt As String = Path.GetExtension(Master.currMovie.Filename).ToLower
+                    If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
+                    pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse _
+                    pExt = ".disc" Then
+                        tcEditMovie.TabPages.Remove(tpFrameExtraction)
                     Else
-                        Dim pExt As String = Path.GetExtension(Master.currMovie.Filename).ToLower
-                        If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
-                        pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse _
-                        pExt = ".disc" Then
-                            tcEditMovie.TabPages.Remove(tpFrameExtraction)
-                        Else
-                            If Not pExt = ".disc" Then
-                                tcEditMovie.TabPages.Remove(tpMediaStub)
-                            End If
+                        If Not pExt = ".disc" Then
+                            tcEditMovie.TabPages.Remove(tpMediaStub)
                         End If
-                        .bwEThumbs.WorkerSupportsCancellation = True
-                        .bwEThumbs.RunWorkerAsync()
-                        .bwEFanarts.WorkerSupportsCancellation = True
-                        .bwEFanarts.RunWorkerAsync()
+                    End If
+                    .bwEThumbs.WorkerSupportsCancellation = True
+                    .bwEThumbs.RunWorkerAsync()
+                    .bwEFanarts.WorkerSupportsCancellation = True
+                    .bwEFanarts.RunWorkerAsync()
+
+                    If Master.eSettings.MovieBannerAnyEnabled Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Banner) Then
+                            .btnSetMovieBannerScrape.Enabled = False
+                        End If
+                    Else
+                        tcEditMovie.TabPages.Remove(tpBanner)
+                    End If
+
+                    If Master.eSettings.MovieClearArtAnyEnabled Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearArt) Then
+                            .btnSetMovieClearArtScrape.Enabled = False
+                        End If
+                    Else
+                        tcEditMovie.TabPages.Remove(tpClearArt)
+                    End If
+
+                    If Master.eSettings.MovieClearLogoAnyEnabled Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearLogo) Then
+                            .btnSetMovieClearLogoScrape.Enabled = False
+                        End If
+                    Else
+                        tcEditMovie.TabPages.Remove(tpClearLogo)
+                    End If
+
+                    If Master.eSettings.MovieDiscArtAnyEnabled Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.DiscArt) Then
+                            .btnSetMovieDiscArtScrape.Enabled = False
+                        End If
+                    Else
+                        tcEditMovie.TabPages.Remove(tpDiscArt)
+                    End If
+
+                    If Master.eSettings.MovieEFanartsAnyEnabled Then 'TODO: add buttons for extrafanarts
+                        'If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart) Then
+                        '    .btnSetMovieEFanarstScrape.Enabled = False
+                        'End If
+                    Else
+                        tcEditMovie.TabPages.Remove(tpEFanarts)
+                    End If
+
+                    If Master.eSettings.MovieEThumbsAnyEnabled Then 'TODO: add buttons for extrathumbs
+                        'If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart) Then
+                        '    .btnSetMovieEThumbsScrape.Enabled = False
+                        'End If
+                    Else
+                        tcEditMovie.TabPages.Remove(tpEThumbs)
+                    End If
+
+                    If Master.eSettings.MovieFanartAnyEnabled Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart) Then
+                            .btnSetMovieFanartScrape.Enabled = False
+                        End If
+                    Else
+                        tcEditMovie.TabPages.Remove(tpFanart)
+                    End If
+
+                    If Master.eSettings.MovieLandscapeAnyEnabled Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Landscape) Then
+                            .btnSetMovieLandscapeScrape.Enabled = False
+                        End If
+                    Else
+                        tcEditMovie.TabPages.Remove(tpLandscape)
+                    End If
+
+                    If Master.eSettings.MoviePosterAnyEnabled Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Poster) Then
+                            .btnSetMoviePosterScrape.Enabled = False
+                        End If
+                    Else
+                        tcEditMovie.TabPages.Remove(tpPoster)
+                    End If
+
+                    If Not Master.eSettings.MovieTrailerAnyEnabled Then
+                        tcEditMovie.TabPages.Remove(tpTrailer)
+                    End If
+
+                    If Not Master.eSettings.MovieThemeAnyEnabled Then
+                        tcEditMovie.TabPages.Remove(tpTheme)
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.BannerPath) AndAlso Master.currMovie.BannerPath.Substring(0, 1) = ":" Then
@@ -1972,34 +2043,6 @@ Public Class dlgEditMovie
                         Me.btnTrailerMute.Enabled = False
                         Me.btnTrailerPlay.Enabled = False
                         Me.btnTrailerStop.Enabled = False
-                    End If
-
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Banner) Then
-                        .btnSetMovieBannerScrape.Enabled = False
-                    End If
-
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearArt) Then
-                        .btnSetMovieClearArtScrape.Enabled = False
-                    End If
-
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearLogo) Then
-                        .btnSetMovieClearLogoScrape.Enabled = False
-                    End If
-
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.DiscArt) Then
-                        .btnSetMovieDiscArtScrape.Enabled = False
-                    End If
-
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart) Then
-                        .btnSetMovieFanartScrape.Enabled = False
-                    End If
-
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Landscape) Then
-                        .btnSetMovieLandscapeScrape.Enabled = False
-                    End If
-
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Poster) Then
-                        .btnSetMoviePosterScrape.Enabled = False
                     End If
 
                     If Path.GetExtension(Master.currMovie.Filename).ToLower = ".disc" Then
