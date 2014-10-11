@@ -30,9 +30,8 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.gbGeneralMisc = New System.Windows.Forms.GroupBox()
         Me.chkGeneralSourceFromFolder = New System.Windows.Forms.CheckBox()
         Me.chkGeneralCheckUpdates = New System.Windows.Forms.CheckBox()
@@ -1043,12 +1042,12 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterMSAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetNFOMSAA = New System.Windows.Forms.CheckBox()
         Me.pnlMovieSetScraper = New System.Windows.Forms.Panel()
-        Me.gbMovieSetScraperMapperOpts = New System.Windows.Forms.GroupBox()
-        Me.btnMovieSetScraperMapperRemove = New System.Windows.Forms.Button()
-        Me.btnMovieSetScraperMapperAdd = New System.Windows.Forms.Button()
-        Me.dgvMovieSetScraperMapper = New System.Windows.Forms.DataGridView()
-        Me.tbcMovieSetScrapedName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.tbcMovieSetMappedName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.gbMovieSetScraperTitleRenamerOpts = New System.Windows.Forms.GroupBox()
+        Me.btnMovieSetScraperTitleRenamerRemove = New System.Windows.Forms.Button()
+        Me.btnMovieSetScraperTitleRenamerAdd = New System.Windows.Forms.Button()
+        Me.dgvMovieSetScraperTitleRenamer = New System.Windows.Forms.DataGridView()
+        Me.tbcMovieSetScrapedTitleRenamerFrom = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.tbcMovieSetScrapedTitleRenamerTo = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.gbMovieSetScraperGlobalLocksOpts = New System.Windows.Forms.GroupBox()
         Me.chkMovieSetLockPlot = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetLockTitle = New System.Windows.Forms.CheckBox()
@@ -1288,8 +1287,8 @@ Partial Class dlgSettings
         CType(Me.pbMSAAInfo,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMovieSetMSAA.SuspendLayout
         Me.pnlMovieSetScraper.SuspendLayout
-        Me.gbMovieSetScraperMapperOpts.SuspendLayout
-        CType(Me.dgvMovieSetScraperMapper,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.gbMovieSetScraperTitleRenamerOpts.SuspendLayout
+        CType(Me.dgvMovieSetScraperTitleRenamer,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMovieSetScraperGlobalLocksOpts.SuspendLayout
         Me.gbMovieSetScraperFieldsOpts.SuspendLayout
         Me.pnlMovieSetImages.SuspendLayout
@@ -12356,7 +12355,7 @@ Partial Class dlgSettings
         'pnlMovieSetScraper
         '
         Me.pnlMovieSetScraper.BackColor = System.Drawing.Color.White
-        Me.pnlMovieSetScraper.Controls.Add(Me.gbMovieSetScraperMapperOpts)
+        Me.pnlMovieSetScraper.Controls.Add(Me.gbMovieSetScraperTitleRenamerOpts)
         Me.pnlMovieSetScraper.Controls.Add(Me.gbMovieSetScraperGlobalLocksOpts)
         Me.pnlMovieSetScraper.Controls.Add(Me.gbMovieSetScraperFieldsOpts)
         Me.pnlMovieSetScraper.Location = New System.Drawing.Point(900, 900)
@@ -12365,99 +12364,97 @@ Partial Class dlgSettings
         Me.pnlMovieSetScraper.TabIndex = 26
         Me.pnlMovieSetScraper.Visible = false
         '
-        'gbMovieSetScraperMapperOpts
+        'gbMovieSetScraperTitleRenamerOpts
         '
-        Me.gbMovieSetScraperMapperOpts.Controls.Add(Me.btnMovieSetScraperMapperRemove)
-        Me.gbMovieSetScraperMapperOpts.Controls.Add(Me.btnMovieSetScraperMapperAdd)
-        Me.gbMovieSetScraperMapperOpts.Controls.Add(Me.dgvMovieSetScraperMapper)
-        Me.gbMovieSetScraperMapperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.gbMovieSetScraperMapperOpts.Location = New System.Drawing.Point(311, 218)
-        Me.gbMovieSetScraperMapperOpts.Name = "gbMovieSetScraperMapperOpts"
-        Me.gbMovieSetScraperMapperOpts.Size = New System.Drawing.Size(316, 212)
-        Me.gbMovieSetScraperMapperOpts.TabIndex = 69
-        Me.gbMovieSetScraperMapperOpts.TabStop = false
-        Me.gbMovieSetScraperMapperOpts.Text = "Name Mapper"
+        Me.gbMovieSetScraperTitleRenamerOpts.Controls.Add(Me.btnMovieSetScraperTitleRenamerRemove)
+        Me.gbMovieSetScraperTitleRenamerOpts.Controls.Add(Me.btnMovieSetScraperTitleRenamerAdd)
+        Me.gbMovieSetScraperTitleRenamerOpts.Controls.Add(Me.dgvMovieSetScraperTitleRenamer)
+        Me.gbMovieSetScraperTitleRenamerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbMovieSetScraperTitleRenamerOpts.Location = New System.Drawing.Point(311, 218)
+        Me.gbMovieSetScraperTitleRenamerOpts.Name = "gbMovieSetScraperTitleRenamerOpts"
+        Me.gbMovieSetScraperTitleRenamerOpts.Size = New System.Drawing.Size(316, 212)
+        Me.gbMovieSetScraperTitleRenamerOpts.TabIndex = 69
+        Me.gbMovieSetScraperTitleRenamerOpts.TabStop = false
+        Me.gbMovieSetScraperTitleRenamerOpts.Text = "Title Renamer"
         '
-        'btnMovieSetScraperMapperRemove
+        'btnMovieSetScraperTitleRenamerRemove
         '
-        Me.btnMovieSetScraperMapperRemove.Enabled = false
-        Me.btnMovieSetScraperMapperRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.btnMovieSetScraperMapperRemove.Image = CType(resources.GetObject("btnMovieSetScraperMapperRemove.Image"),System.Drawing.Image)
-        Me.btnMovieSetScraperMapperRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieSetScraperMapperRemove.Location = New System.Drawing.Point(223, 183)
-        Me.btnMovieSetScraperMapperRemove.Name = "btnMovieSetScraperMapperRemove"
-        Me.btnMovieSetScraperMapperRemove.Size = New System.Drawing.Size(87, 23)
-        Me.btnMovieSetScraperMapperRemove.TabIndex = 70
-        Me.btnMovieSetScraperMapperRemove.Text = "Remove"
-        Me.btnMovieSetScraperMapperRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieSetScraperMapperRemove.UseVisualStyleBackColor = true
+        Me.btnMovieSetScraperTitleRenamerRemove.Enabled = false
+        Me.btnMovieSetScraperTitleRenamerRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.btnMovieSetScraperTitleRenamerRemove.Image = CType(resources.GetObject("btnMovieSetScraperTitleRenamerRemove.Image"),System.Drawing.Image)
+        Me.btnMovieSetScraperTitleRenamerRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieSetScraperTitleRenamerRemove.Location = New System.Drawing.Point(223, 183)
+        Me.btnMovieSetScraperTitleRenamerRemove.Name = "btnMovieSetScraperTitleRenamerRemove"
+        Me.btnMovieSetScraperTitleRenamerRemove.Size = New System.Drawing.Size(87, 23)
+        Me.btnMovieSetScraperTitleRenamerRemove.TabIndex = 70
+        Me.btnMovieSetScraperTitleRenamerRemove.Text = "Remove"
+        Me.btnMovieSetScraperTitleRenamerRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieSetScraperTitleRenamerRemove.UseVisualStyleBackColor = true
         '
-        'btnMovieSetScraperMapperAdd
+        'btnMovieSetScraperTitleRenamerAdd
         '
-        Me.btnMovieSetScraperMapperAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.btnMovieSetScraperMapperAdd.Image = CType(resources.GetObject("btnMovieSetScraperMapperAdd.Image"),System.Drawing.Image)
-        Me.btnMovieSetScraperMapperAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieSetScraperMapperAdd.Location = New System.Drawing.Point(130, 183)
-        Me.btnMovieSetScraperMapperAdd.Name = "btnMovieSetScraperMapperAdd"
-        Me.btnMovieSetScraperMapperAdd.Size = New System.Drawing.Size(87, 23)
-        Me.btnMovieSetScraperMapperAdd.TabIndex = 69
-        Me.btnMovieSetScraperMapperAdd.Text = "Add"
-        Me.btnMovieSetScraperMapperAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieSetScraperMapperAdd.UseVisualStyleBackColor = true
+        Me.btnMovieSetScraperTitleRenamerAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.btnMovieSetScraperTitleRenamerAdd.Image = CType(resources.GetObject("btnMovieSetScraperTitleRenamerAdd.Image"),System.Drawing.Image)
+        Me.btnMovieSetScraperTitleRenamerAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieSetScraperTitleRenamerAdd.Location = New System.Drawing.Point(130, 183)
+        Me.btnMovieSetScraperTitleRenamerAdd.Name = "btnMovieSetScraperTitleRenamerAdd"
+        Me.btnMovieSetScraperTitleRenamerAdd.Size = New System.Drawing.Size(87, 23)
+        Me.btnMovieSetScraperTitleRenamerAdd.TabIndex = 69
+        Me.btnMovieSetScraperTitleRenamerAdd.Text = "Add"
+        Me.btnMovieSetScraperTitleRenamerAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieSetScraperTitleRenamerAdd.UseVisualStyleBackColor = true
         '
-        'dgvMovieSetScraperMapper
+        'dgvMovieSetScraperTitleRenamer
         '
-        Me.dgvMovieSetScraperMapper.AllowUserToAddRows = false
-        Me.dgvMovieSetScraperMapper.AllowUserToDeleteRows = false
-        Me.dgvMovieSetScraperMapper.AllowUserToResizeColumns = false
-        Me.dgvMovieSetScraperMapper.AllowUserToResizeRows = false
-        Me.dgvMovieSetScraperMapper.BackgroundColor = System.Drawing.Color.White
+        Me.dgvMovieSetScraperTitleRenamer.AllowUserToAddRows = false
+        Me.dgvMovieSetScraperTitleRenamer.AllowUserToDeleteRows = false
+        Me.dgvMovieSetScraperTitleRenamer.AllowUserToResizeColumns = false
+        Me.dgvMovieSetScraperTitleRenamer.AllowUserToResizeRows = false
+        Me.dgvMovieSetScraperTitleRenamer.BackgroundColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvMovieSetScraperTitleRenamer.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
+        Me.dgvMovieSetScraperTitleRenamer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvMovieSetScraperTitleRenamer.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.tbcMovieSetScrapedTitleRenamerFrom, Me.tbcMovieSetScrapedTitleRenamerTo})
         DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
         DataGridViewCellStyle4.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
         DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvMovieSetScraperMapper.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
-        Me.dgvMovieSetScraperMapper.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvMovieSetScraperMapper.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.tbcMovieSetScrapedName, Me.tbcMovieSetMappedName})
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvMovieSetScraperMapper.DefaultCellStyle = DataGridViewCellStyle6
-        Me.dgvMovieSetScraperMapper.Location = New System.Drawing.Point(6, 21)
-        Me.dgvMovieSetScraperMapper.MultiSelect = false
-        Me.dgvMovieSetScraperMapper.Name = "dgvMovieSetScraperMapper"
-        Me.dgvMovieSetScraperMapper.RowHeadersVisible = false
-        Me.dgvMovieSetScraperMapper.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.dgvMovieSetScraperMapper.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
-        Me.dgvMovieSetScraperMapper.ShowCellErrors = false
-        Me.dgvMovieSetScraperMapper.ShowCellToolTips = false
-        Me.dgvMovieSetScraperMapper.ShowRowErrors = false
-        Me.dgvMovieSetScraperMapper.Size = New System.Drawing.Size(302, 156)
-        Me.dgvMovieSetScraperMapper.TabIndex = 68
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvMovieSetScraperTitleRenamer.DefaultCellStyle = DataGridViewCellStyle4
+        Me.dgvMovieSetScraperTitleRenamer.Location = New System.Drawing.Point(6, 21)
+        Me.dgvMovieSetScraperTitleRenamer.MultiSelect = false
+        Me.dgvMovieSetScraperTitleRenamer.Name = "dgvMovieSetScraperTitleRenamer"
+        Me.dgvMovieSetScraperTitleRenamer.RowHeadersVisible = false
+        Me.dgvMovieSetScraperTitleRenamer.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.dgvMovieSetScraperTitleRenamer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.dgvMovieSetScraperTitleRenamer.ShowCellErrors = false
+        Me.dgvMovieSetScraperTitleRenamer.ShowCellToolTips = false
+        Me.dgvMovieSetScraperTitleRenamer.ShowRowErrors = false
+        Me.dgvMovieSetScraperTitleRenamer.Size = New System.Drawing.Size(302, 156)
+        Me.dgvMovieSetScraperTitleRenamer.TabIndex = 68
         '
-        'tbcMovieSetScrapedName
+        'tbcMovieSetScrapedTitleRenamerFrom
         '
-        Me.tbcMovieSetScrapedName.FillWeight = 130!
-        Me.tbcMovieSetScrapedName.HeaderText = "Scraped Name"
-        Me.tbcMovieSetScrapedName.Name = "tbcMovieSetScrapedName"
-        Me.tbcMovieSetScrapedName.Width = 130
+        Me.tbcMovieSetScrapedTitleRenamerFrom.FillWeight = 130!
+        Me.tbcMovieSetScrapedTitleRenamerFrom.HeaderText = "From"
+        Me.tbcMovieSetScrapedTitleRenamerFrom.Name = "tbcMovieSetScrapedTitleRenamerFrom"
+        Me.tbcMovieSetScrapedTitleRenamerFrom.Width = 130
         '
-        'tbcMovieSetMappedName
+        'tbcMovieSetScrapedTitleRenamerTo
         '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.tbcMovieSetMappedName.DefaultCellStyle = DataGridViewCellStyle5
-        Me.tbcMovieSetMappedName.FillWeight = 150!
-        Me.tbcMovieSetMappedName.HeaderText = "Mapped Name"
-        Me.tbcMovieSetMappedName.Name = "tbcMovieSetMappedName"
-        Me.tbcMovieSetMappedName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.tbcMovieSetMappedName.Width = 150
+        Me.tbcMovieSetScrapedTitleRenamerTo.FillWeight = 150!
+        Me.tbcMovieSetScrapedTitleRenamerTo.HeaderText = "To"
+        Me.tbcMovieSetScrapedTitleRenamerTo.Name = "tbcMovieSetScrapedTitleRenamerTo"
+        Me.tbcMovieSetScrapedTitleRenamerTo.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.tbcMovieSetScrapedTitleRenamerTo.Width = 150
         '
         'gbMovieSetScraperGlobalLocksOpts
         '
@@ -13393,8 +13390,8 @@ Partial Class dlgSettings
         Me.gbMovieSetMSAA.ResumeLayout(false)
         Me.gbMovieSetMSAA.PerformLayout
         Me.pnlMovieSetScraper.ResumeLayout(false)
-        Me.gbMovieSetScraperMapperOpts.ResumeLayout(false)
-        CType(Me.dgvMovieSetScraperMapper,System.ComponentModel.ISupportInitialize).EndInit
+        Me.gbMovieSetScraperTitleRenamerOpts.ResumeLayout(false)
+        CType(Me.dgvMovieSetScraperTitleRenamer,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbMovieSetScraperGlobalLocksOpts.ResumeLayout(false)
         Me.gbMovieSetScraperFieldsOpts.ResumeLayout(false)
         Me.gbMovieSetScraperFieldsOpts.PerformLayout
@@ -14484,10 +14481,10 @@ End Sub
     Friend WithEvents gbMovieSetSourceMiscOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieSetCleanFiles As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetCleanDB As System.Windows.Forms.CheckBox
-    Friend WithEvents dgvMovieSetScraperMapper As System.Windows.Forms.DataGridView
-    Friend WithEvents gbMovieSetScraperMapperOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents tbcMovieSetScrapedName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents tbcMovieSetMappedName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnMovieSetScraperMapperRemove As System.Windows.Forms.Button
-    Friend WithEvents btnMovieSetScraperMapperAdd As System.Windows.Forms.Button
+    Friend WithEvents dgvMovieSetScraperTitleRenamer As System.Windows.Forms.DataGridView
+    Friend WithEvents gbMovieSetScraperTitleRenamerOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents btnMovieSetScraperTitleRenamerRemove As System.Windows.Forms.Button
+    Friend WithEvents btnMovieSetScraperTitleRenamerAdd As System.Windows.Forms.Button
+    Friend WithEvents tbcMovieSetScrapedTitleRenamerFrom As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents tbcMovieSetScrapedTitleRenamerTo As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

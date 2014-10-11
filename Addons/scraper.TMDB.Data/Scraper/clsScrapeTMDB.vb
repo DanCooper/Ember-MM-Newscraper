@@ -686,8 +686,8 @@ Namespace TMDB
 
                 'we need to move that in a separate class like we have done for movie infos
                 If Not String.IsNullOrEmpty(DBMovieSet.Title) Then
-                    For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetScraperMapper:"))
-                        DBMovieSet.Title = Replace(DBMovieSet.Title, sett.Name.Substring(22), sett.Value)
+                    For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
+                        DBMovieSet.Title = Replace(DBMovieSet.Title, sett.Name.Substring(21), sett.Value)
                     Next
                 End If
 
