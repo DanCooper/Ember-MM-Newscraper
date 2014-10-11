@@ -1,4 +1,96 @@
-Changelog 1.4.x Beta(2014-08-22)
+Changelog 1.4.x Beta (2014-10-11)
+
+[Main]
+added: MovieSet title renamer (auto rename titles like "Hangover Reihe" to "Hangover Collecetion")
+added: missing icons for sd video sources
+added: more video sources
+added: clean MovieSet DB on update
+added: delete images with MovieSets
+added: filters for MovieSets
+added: filters for TV Shows (beta)
+added: search bar for MovieSets
+added: search bar for TV Shows
+added: exclude directories (you can add directories who will be completely ignored by Ember)
+added: search bar in Edit MovieSet dialog
+added: key sensitive movie list in Edit MovieSet dialog
+added: setting to set the release date in US format (yyyy-mm-dd)
+added: more settings for MovieSets
+added: missing locks
+added: scrape global episode runtime for tv shows from TVDB
+added: runtime in tv show and episode NFO
+added: use Show Runtime for Episodes if no Episode Runtime can be found
+added: a Movie source can set as "exclude from DB update" like in XBMC
+added: filter "Country" to Movie filters
+added: [none] to genre filter to find movies/tv shows without genre
+added: ListTile and sort tokens for tv shows
+added: "Cleanup disabled fields" for movie scraper
+added: HD-Trailers.net and Davestrailerpage.com as additional trailer scrapers
+added: "* All Seasons" to season list
+added: "Display Image Names" for main window (like "ClearArt", "Landscape")
+fixed: MovieSet info panel height
+fixed: Ember wants restart while DB update after cloding settings dialog
+fixed: rating stars color for disabled stars
+fixed: MPAA/Certification handling
+fixed: Settings dialog is not sizable
+changed: Country and Studio are now saved in multiple NFO tags for each entry
+changed: trailer preview buttons logic in Edit Movie dialog
+changed: Movie data scraper handling (now the first scraper in settings has the highest priority)
+changed: trailer logic
+removed: old MovieSets manager
+
+[Renamer]
+added: MovieSet name tag
+fixed: bugs with special characters
+fixed: many other bugs
+
+[TMDB]
+fixed: MovieSet scraper get random images if no TMDBCOlID is available
+changed: API logic (now it's possible to change settings without restart)
+
+[Fanart.tv]
+added: private API key handling
+
+[IMDB]
+fixed: wrong runtime scraping
+fixed: wrong votes scraping
+
+
+Changelog 1.4.x Beta (2014-09-05)
+
+[Main]
+fixed: a part of extrathumbs/extrafanarts in expert settings (not really finished)
+added: custom markers to filter
+
+[Renamer]
+fixed: issues with folders
+
+
+Changelog 1.4.x Beta (2014-08-26)
+
+[Main]
+fixed: VideoSource handling in NFO
+fixed: some MovieSet issues
+fixed: key pressing in lists will be stopped by Sub LoadMovie/MovieSet/Show/Season/Episode (now timer is 2sec after each key you press)
+
+
+Changelog 1.4.x Beta (2014-08-25)
+
+[Main]
+fixed: some issues with AdvancedSettings.xml
+fixed: MovieSources, Audio Video Codec Mapping
+added: "Reload Default" buttons for Audio Video Codec Mapping
+
+
+Changelog 1.4.x Beta (2014-08-24)
+
+[Main]
+fixed: language issue
+fixed: Default xml are moved instead of copied
+added: MovieSet settings to InstallWizard
+changed: no notification on new movie/episode
+
+
+Changelog 1.4.x Beta(2014-08-23)
 
 [Main]
 added: -tvupdate to command line starting
