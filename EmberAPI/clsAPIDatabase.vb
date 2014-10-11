@@ -2012,7 +2012,7 @@ Public Class Database
                                 End If
 
                                 If Not IsNewSet Then
-                                    'create new MovieSet with existing SetID
+                                    'create new MoviesSets with existing SetID
                                     Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                                         SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
                                                                                          "MovieID, SetID, SetOrder", _
@@ -2034,7 +2034,7 @@ Public Class Database
                                                                                          "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                                                          "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
                                                                                          "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock", _
-                                                                                         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM Sets;")
+                                                                                         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
                                         Dim parSets_ListTitle As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ListTitle", DbType.String, 0, "ListTitle")
                                         Dim parSets_HasNfo As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasInfo", DbType.Boolean, 0, "HasNfo")
                                         Dim parSets_NfoPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_NfoPath", DbType.String, 0, "NfoPath")
@@ -2083,7 +2083,10 @@ Public Class Database
                                         parSets_Mark.Value = False
                                         parSets_Lock.Value = False
                                         SQLcommandSets.ExecuteNonQuery()
+                                    End Using
 
+                                    Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, TMDBColID FROM Sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
                                         Using rdrSets As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                             If rdrSets.Read Then
                                                 s.ID = Convert.ToInt64(rdrSets(0))
