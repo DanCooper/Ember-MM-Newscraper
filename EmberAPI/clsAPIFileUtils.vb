@@ -1174,14 +1174,33 @@ Namespace FileUtils
                 Case Enums.ModType_Movie.ActorThumbs
                     With Master.eSettings
                         If isVideoTS Then
-                            If .MovieUseFrodo AndAlso .MovieActorThumbsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(fileParPath, "/.actors", "/<placeholder>.jpg"))
-                            If .MovieUseEden AndAlso .MovieActorThumbsEden Then FilenameList.Add(String.Concat(fileParPath, "/.actors", "/<placeholder>.tbn"))
+                            If .MovieUseFrodo AndAlso .MovieActorThumbsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(fileParPath, "\.actors", "\<placeholder>.jpg"))
+                            If .MovieUseEden AndAlso .MovieActorThumbsEden Then FilenameList.Add(String.Concat(fileParPath, "\.actors", "\<placeholder>.tbn"))
+                            If .MovieUseExpert AndAlso .MovieActorThumbsExpertVTS AndAlso Not String.IsNullOrEmpty(.MovieActorThumbsExtExpertVTS) Then
+                                If .MovieUseBaseDirectoryExpertVTS Then
+                                    FilenameList.Add(String.Concat(basePath, "\.actors", "\<placeholder>", .MovieActorThumbsExtExpertVTS))
+                                Else
+                                    FilenameList.Add(String.Concat(fileParPath, "\.actors", "\<placeholder>", .MovieActorThumbsExtExpertVTS))
+                                End If
+                            End If
                         ElseIf isBDRip Then
-                            If .MovieUseFrodo AndAlso .MovieActorThumbsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "/.actors", "/<placeholder>.jpg"))
-                            If .MovieUseEden AndAlso .MovieActorThumbsEden Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "/.actors", "/<placeholder>.tbn"))
+                            If .MovieUseFrodo AndAlso .MovieActorThumbsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "\.actors", "\<placeholder>.jpg"))
+                            If .MovieUseEden AndAlso .MovieActorThumbsEden Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "\.actors", "\<placeholder>.tbn"))
+                            If .MovieUseExpert AndAlso .MovieActorThumbsExpertBDMV AndAlso Not String.IsNullOrEmpty(.MovieActorThumbsExtExpertBDMV) Then
+                                If .MovieUseBaseDirectoryExpertBDMV Then
+                                    FilenameList.Add(String.Concat(basePath, "\.actors", "\<placeholder>", .MovieActorThumbsExtExpertBDMV))
+                                Else
+                                    FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "\.actors", "\<placeholder>", .MovieActorThumbsExtExpertBDMV))
+                                End If
+                            End If
                         ElseIf isSingle Then
-                            If .MovieUseFrodo AndAlso .MovieActorThumbsFrodo Then FilenameList.Add(String.Concat(fileParPath, "/.actors", "/<placeholder>.jpg"))
-                            If .MovieUseEden AndAlso .MovieActorThumbsEden Then FilenameList.Add(String.Concat(fileParPath, "/.actors", "/<placeholder>.tbn"))
+                            If .MovieUseFrodo AndAlso .MovieActorThumbsFrodo Then FilenameList.Add(String.Concat(fileParPath, "\.actors", "\<placeholder>.jpg"))
+                            If .MovieUseEden AndAlso .MovieActorThumbsEden Then FilenameList.Add(String.Concat(fileParPath, "\.actors", "\<placeholder>.tbn"))
+                            If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS AndAlso Not String.IsNullOrEmpty(.MovieActorThumbsExtExpertVTS) Then
+                                FilenameList.Add(String.Concat(fileParPath, "\.actors", "\<placeholder>", .MovieActorThumbsExtExpertVTS))
+                            ElseIf .MovieUseExpert AndAlso .MovieActorThumbsExpertSingle AndAlso Not String.IsNullOrEmpty(.MovieActorThumbsExtExpertSingle) Then
+                                FilenameList.Add(String.Concat(fileParPath, "\.actors", "\<placeholder>", .MovieActorThumbsExtExpertSingle))
+                            End If
                         End If
                     End With
 
@@ -1192,7 +1211,7 @@ Namespace FileUtils
                             If .MovieUseEden AndAlso .MovieExtrathumbsEden Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrathumbs"))
                             If .MovieUseExpert AndAlso .MovieExtrathumbsExpertVTS Then
                                 If .MovieUseBaseDirectoryExpertVTS Then
-                                    FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "extrathumbs"))
+                                    FilenameList.Add(Path.Combine(basePath, "extrathumbs"))
                                 Else
                                     FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrathumbs"))
                                 End If
@@ -1213,7 +1232,7 @@ Namespace FileUtils
                             If .MovieUseEden AndAlso .MovieExtrafanartsEden Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrafanart"))
                             If .MovieUseExpert AndAlso .MovieExtrafanartsExpertVTS Then
                                 If .MovieUseBaseDirectoryExpertVTS Then
-                                    FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "extrafanart"))
+                                    FilenameList.Add(Path.Combine(basePath, "extrafanart"))
                                 Else
                                     FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrafanart"))
                                 End If
