@@ -80,7 +80,7 @@ Partial Class dlgFileInfo
         Me.lvStreams.Location = New System.Drawing.Point(4, 7)
         Me.lvStreams.MultiSelect = False
         Me.lvStreams.Name = "lvStreams"
-        Me.lvStreams.Size = New System.Drawing.Size(723, 315)
+        Me.lvStreams.Size = New System.Drawing.Size(862, 315)
         Me.lvStreams.TabIndex = 1
         Me.lvStreams.UseCompatibleStateImageBehavior = False
         Me.lvStreams.View = System.Windows.Forms.View.Details
@@ -201,7 +201,7 @@ Partial Class dlgFileInfo
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(735, 354)
+        Me.ClientSize = New System.Drawing.Size(874, 354)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.lblStreamType)
         Me.Controls.Add(Me.cbStreamType)
