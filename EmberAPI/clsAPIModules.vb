@@ -688,6 +688,38 @@ Public Class ModulesManager
             Application.DoEvents()
         End While
 
+        'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
+        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
+            DBMovie.RemoveActorThumbs = True
+            DBMovie.RemoveBanner = True
+            DBMovie.RemoveClearArt = True
+            DBMovie.RemoveClearLogo = True
+            DBMovie.RemoveDiscArt = True
+            DBMovie.RemoveEFanarts = True
+            DBMovie.RemoveEThumbs = True
+            DBMovie.RemoveFanart = True
+            DBMovie.RemoveLandscape = True
+            DBMovie.RemovePoster = True
+            DBMovie.RemoveTheme = True
+            DBMovie.RemoveTrailer = True
+            DBMovie.BannerPath = String.Empty
+            DBMovie.ClearArtPath = String.Empty
+            DBMovie.ClearLogoPath = String.Empty
+            DBMovie.DiscArtPath = String.Empty
+            DBMovie.EFanartsPath = String.Empty
+            DBMovie.EThumbsPath = String.Empty
+            DBMovie.FanartPath = String.Empty
+            DBMovie.LandscapePath = String.Empty
+            DBMovie.NfoPath = String.Empty
+            DBMovie.PosterPath = String.Empty
+            DBMovie.SubPath = String.Empty
+            DBMovie.ThemePath = String.Empty
+            DBMovie.TrailerPath = String.Empty
+            DBMovie.Movie.Clear()
+
+            oMovie = DBMovie
+        End If
+
         If (modules.Count() <= 0) Then
             logger.Warn("No movie scrapers are defined")
         Else

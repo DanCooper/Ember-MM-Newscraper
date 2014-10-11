@@ -1028,7 +1028,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property DateAddedSpecified() As Boolean
             Get
-                Return Not IsNothing(Me._dateadded)
+                Return Not String.IsNullOrEmpty(Me._dateadded)
             End Get
         End Property
 
@@ -1388,8 +1388,6 @@ Namespace MediaContainers
             End If
         End Sub
 
-       
-
         Public Sub Clear()
             'Me._imdbid = String.Empty
             Me._actors.Clear()
@@ -1426,7 +1424,6 @@ Namespace MediaContainers
             Me._ysets = New SetContainer
             Me.MovieID.Clear()
         End Sub
-
 
         Public Sub ClearForOfflineHolder()
             'Me._imdbid = String.Empty

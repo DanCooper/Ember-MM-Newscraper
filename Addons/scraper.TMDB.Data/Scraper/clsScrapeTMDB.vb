@@ -765,13 +765,13 @@ Namespace TMDB
                         If r.Matches.Count = 1 Then
                             b = GetMovieInfo(r.Matches.Item(0).TMDBID, nMovie, True, False, Options, True)
                         Else
-                            Master.tmpMovie.Clear()
+                            nMovie.Clear()
                             Using dTMDB As New dlgTMDBSearchResults_Movie(_MySettings, Me)
-                                If dTMDB.ShowDialog(r, sMovieName, dbMovie.Filename) = Windows.Forms.DialogResult.OK Then
-                                    If String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
+                                If dTMDB.ShowDialog(nMovie, r, sMovieName, dbMovie.Filename) = Windows.Forms.DialogResult.OK Then
+                                    If String.IsNullOrEmpty(nMovie.TMDBID) Then
                                         b = False
                                     Else
-                                        b = GetMovieInfo(Master.tmpMovie.TMDBID, nMovie, True, False, Options, True)
+                                        b = GetMovieInfo(nMovie.TMDBID, nMovie, True, False, Options, True)
                                     End If
                                 Else
                                     b = False
@@ -790,7 +790,6 @@ Namespace TMDB
                             b = GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).TMDBID, nMovie, True, False, Options, True)
                         End If
                 End Select
-
 
                 Return nMovie
 
@@ -812,14 +811,14 @@ Namespace TMDB
                         If r.Matches.Count = 1 Then
                             b = GetMovieSetInfo(r.Matches.Item(0).ID, tmdbMovieSet, False, Options, True)
                         Else
-                            Master.tmpMovie.Clear()
+                            Master.tmpMovieSet.Clear()
                             Using dTMDB As New dlgTMDBSearchResults_MovieSet(_MySettings, Me)
 
                                 If dTMDB.ShowDialog(r, sMovieSetName) = Windows.Forms.DialogResult.OK Then
-                                    If String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
+                                    If String.IsNullOrEmpty(Master.tmpMovieSet.ID) Then
                                         b = False
                                     Else
-                                        b = GetMovieSetInfo(Master.tmpMovie.TMDBID, tmdbMovieSet, False, Options, True)
+                                        b = GetMovieSetInfo(Master.tmpMovieSet.ID, tmdbMovieSet, False, Options, True)
                                     End If
                                 Else
                                     b = False
@@ -924,7 +923,7 @@ Namespace TMDB
             End Try
         End Sub
 
-        Private Sub bwTMDBg_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork
+        Private Sub bwTMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
@@ -951,7 +950,7 @@ Namespace TMDB
             End Try
         End Sub
 
-        Private Sub bwTMDBg_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
+        Private Sub bwTMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
             Dim Res As Results = DirectCast(e.Result, Results)
 
             Try

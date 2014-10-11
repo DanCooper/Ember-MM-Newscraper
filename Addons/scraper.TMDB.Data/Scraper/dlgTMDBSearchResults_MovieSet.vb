@@ -147,7 +147,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         If TMDBg.bwTMDB.IsBusy Then
             TMDBg.CancelAsync()
         End If
-        Master.tmpMovie.Clear()
+        Master.tmpMovieSet.Clear()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
