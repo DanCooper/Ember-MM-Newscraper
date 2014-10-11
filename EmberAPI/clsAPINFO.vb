@@ -383,6 +383,13 @@ Public Class NFO
                 If (DBMovie.Movie.Sets.Count < 1 OrElse Not Master.eSettings.MovieLockCollections) AndAlso _
                     scrapedmovie.Sets.Count > 0 AndAlso Master.eSettings.MovieScraperCollectionsAuto AndAlso Not new_Collections Then
                     DBMovie.Movie.Sets.Clear()
+                    For Each movieset In scrapedmovie.Sets
+                        If Not String.IsNullOrEmpty(movieset.Set) Then
+                            For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
+                                movieset.Set = Replace(movieset.Set, sett.Name.Substring(21), sett.Value)
+                            Next
+                        End If
+                    Next
                     DBMovie.Movie.Sets.AddRange(scrapedmovie.Sets)
                     new_Collections = True
                 End If
