@@ -12791,7 +12791,108 @@ doCancel:
             End If
         End If
     End Sub
+    ''' <summary>
+    ''' Disable TMDB/IMDB menutitem if selected movies don't have TMDBID/IMDBID
+    ''' </summary>
+    ''' <param name="sender">movielist contextmenu</param>
+    ''' <param name="e"></param>
+    ''' <remarks>
+    ''' 
+    ''' 
+    ''' 2014/10/10 Cocotus - First implementation: This is used to disable TMDB/IMDB menuitem(s) if not a single movie of selected movies has IMDBID or TMDBID
+    ''' </remarks>
+    ''' 
+    Private Sub cmnuMovie_Opened(sender As Object, e As EventArgs) Handles cmnuMovie.Opened
+        Try
+            If Me.dgvMovies.SelectedRows.Count > 0 Then
+                Dim enableIMDB As Boolean = False
+                Dim enableTMDB As Boolean = False
+                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                    If Not String.IsNullOrEmpty(sRow.Cells(13).Value.ToString) Then
+                        enableIMDB = True
+                    End If
+                    If Not String.IsNullOrEmpty(sRow.Cells(63).Value.ToString) Then
+                        enableTMDB = True
+                    End If
+                Next
+                cmnuMovieBrowseIMDB.Enabled = enableIMDB
+                cmnuMovieBrowseTMDB.Enabled = enableTMDB
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+       
+    End Sub
 
+    ''' <summary>
+    '''Open IMDB-Page of selected movie(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender">Browse to... menuitem</param>
+    ''' <param name="e"></param>
+    ''' <remarks>
+    ''' 
+    ''' 
+    ''' 2014/10/10 Cocotus - First implementation
+    ''' </remarks>
+    Private Sub cmnuMovieBrowseIMDB_Click(sender As Object, e As EventArgs) Handles cmnuMovieBrowseIMDB.Click
+        Try
+            If Me.dgvMovies.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If Me.dgvMovies.SelectedRows.Count > 10 Then
+                    If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMovies.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+                End If
+
+                If doOpen Then
+                    For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                        If Not String.IsNullOrEmpty(sRow.Cells(13).Value.ToString) Then    '  If Not String.IsNullOrEmpty(Master.currMovie.Movie.ID) Then
+                            If Not My.Resources.urlIMDB.EndsWith("/") Then
+                                Functions.Launch(My.Resources.urlIMDB & "/title/tt" & sRow.Cells(13).Value.ToString)
+                            Else
+                                Functions.Launch(My.Resources.urlIMDB & "title/tt" & sRow.Cells(13).Value.ToString)
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+       
+    End Sub
+    ''' <summary>
+    '''Open TMDB-Page of selected movie(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender">Browse to... menuitem</param>
+    ''' <param name="e"></param>
+    ''' <remarks>
+    ''' 
+    ''' 
+    ''' 2014/10/10 Cocotus - First implementation
+    ''' </remarks>
+    Private Sub cmnuMovieBrowseTMDB_Click(sender As Object, e As EventArgs) Handles cmnuMovieBrowseTMDB.Click
+        Try
+            If Me.dgvMovies.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If Me.dgvMovies.SelectedRows.Count > 10 Then
+                    If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMovies.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+                End If
+                If doOpen Then
+                    For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                        If Not String.IsNullOrEmpty(sRow.Cells(63).Value.ToString) Then
+                            If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
+                                Functions.Launch(My.Resources.urlTheMovieDb & "/movie/" & sRow.Cells(63).Value.ToString)
+                            Else
+                                Functions.Launch(My.Resources.urlTheMovieDb & "movie/" & sRow.Cells(63).Value.ToString)
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+    End Sub
     Private Sub OpenImageViewer(ByVal _Image As Image)
         Using dImgView As New dlgImgView
             dImgView.ShowDialog(_Image)
@@ -16854,6 +16955,8 @@ doCancel:
                 .cmnuEpisodeRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuEpisodeRemoveFromDisk.Text = Master.eLang.GetString(773, "Delete Episode")
                 .cmnuEpisodeRescrape.Text = Master.eLang.GetString(147, "(Re)Scrape Episode")
+                .cmnuMovieBrowseIMDB.Text = Master.eLang.GetString(1278, "Open IMDB-Page")
+                .cmnuMovieBrowseTMDB.Text = Master.eLang.GetString(1279, "Open TMDB-Page")
                 .cmnuMovieChange.Text = Master.eLang.GetString(32, "Change Movie")
                 .cmnuMovieEdit.Text = Master.eLang.GetString(25, "Edit Movie")
                 .cmnuMovieEditMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
@@ -18165,4 +18268,5 @@ doCancel:
         End If
     End Sub
 
+   
 End Class
