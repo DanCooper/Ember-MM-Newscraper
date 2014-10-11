@@ -915,6 +915,23 @@ Public Class Settings
             Settings._XMLSettings.moviescraperstudio = value
         End Set
     End Property
+    Public Property MovieScraperStudioLimit() As Integer
+        Get
+            Return Settings._XMLSettings.MovieScraperStudioLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.MovieScraperStudioLimit = value
+        End Set
+    End Property
+
+    Public Property MovieScraperStudioWithImgOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.moviescraperstudiowithimgonly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.moviescraperstudiowithimgonly = value
+        End Set
+    End Property
 
     Public Property MovieScraperTagline() As Boolean
         Get
