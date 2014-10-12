@@ -253,6 +253,9 @@ Namespace TMDB
                 Dim tStr As String
                 Dim scrapedresult As String = ""
 
+                'clear nMovie from search results
+                nMovie.Clear()
+
                 If bwTMDB.CancellationPending Then Return Nothing
 
                 If Strings.Left(strID.ToLower(), 2) = "tt" Then

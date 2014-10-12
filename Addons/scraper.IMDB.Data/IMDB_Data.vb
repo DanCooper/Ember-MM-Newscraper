@@ -335,6 +335,7 @@ Public Class IMDB_Data
                             oDBMovie.Movie.ID = nMovie.ID
                         End If
                     Else
+                        nMovie = Nothing
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
                     End If
                 End Using

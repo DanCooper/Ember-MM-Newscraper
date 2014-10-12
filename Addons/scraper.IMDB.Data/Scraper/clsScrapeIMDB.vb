@@ -169,6 +169,9 @@ Namespace IMDB
             Try
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                'clear nMovie from search results
+                nMovie.Clear()
+
                 Dim HTML As String
                 Using sHTTP As New HTTP
                     HTML = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/combined"))
@@ -193,7 +196,6 @@ Namespace IMDB
 
                 If Options.bTitle Then
                     'MOVIE ORIGINALTITLE
-                    Dim oldOTitle As String = nMovie.OriginalTitle
                     scrapedresult = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString)).Trim
                     'only update nMovie if scraped result is not empty/nothing!
                     If Not String.IsNullOrEmpty(scrapedresult) Then
