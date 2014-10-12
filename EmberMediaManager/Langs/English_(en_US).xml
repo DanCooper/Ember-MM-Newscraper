@@ -1076,6 +1076,7 @@
   <string id="984">Worldwide title as fallback</string>
   <string id="985">Clean Plot/Outline</string>
   <string id="986">MovieSet Artwork Folder</string>
+  <string id="987"></string>
   <string id="988">DAEMON Tools settings (only used for scanning image files (.iso))</string>
   <string id="989">Driveletter</string>
   <string id="990">Path to DTLite.exe/VCDMount.exe</string>
@@ -1088,6 +1089,7 @@
   <string id="997">Poster Height [px]</string>
   <string id="998">Filter Settings</string>
   <string id="999">Image Settings</string>
+  <string id="1000"></string>
   <string id="1001">Save Filter</string>
   <string id="1002">Reset Filter</string>
   <string id="1003">Template saved to:</string>
