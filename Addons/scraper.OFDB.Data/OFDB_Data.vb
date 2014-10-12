@@ -171,11 +171,14 @@ Public Class OFDB_Data
     ''' </summary>
     ''' <param name="DBMovie">Movie to be scraped. DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper</param>
     ''' <param name="nMovie">New scraped movie data</param>
-    ''' <param name="Options">(NOT used at moment!)What kind of data is being requested from the scrape(global scraper settings)</param>
+    ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper should NOT consider global scraper settings/locks in Ember, just scraper options of module</remarks>
     Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
         logger.Trace("Started OFDB Scraper")
+
+
+        Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
 
         'datascraper needs imdb of movie!
         If String.IsNullOrEmpty(oDBMovie.Movie.ID) Then
@@ -186,41 +189,41 @@ Public Class OFDB_Data
         nMovie.Scrapersource = "OFDB"
 
         ' we have the IMDB-ID -> now we can use scraper methods!
-        Dim tOFDB As New OFDB.Scraper(oDBMovie.Movie.ID)
+        Dim _scraper As New OFDB.Scraper(oDBMovie.Movie.ID)
 
         'Use OFDB title?
-        If ConfigOptions.bTitle Then
-            If Not String.IsNullOrEmpty(tOFDB.Title) Then
-                nMovie.Title = tOFDB.Title
+        If filterOptions.bTitle Then
+            If Not String.IsNullOrEmpty(_scraper.Title) Then
+                nMovie.Title = _scraper.Title
             End If
         End If
 
         'Use OFDB outline?
-        If ConfigOptions.bOutline Then
-            If Not String.IsNullOrEmpty(tOFDB.Outline) Then
-                nMovie.Outline = tOFDB.Outline
+        If filterOptions.bOutline Then
+            If Not String.IsNullOrEmpty(_scraper.Outline) Then
+                nMovie.Outline = _scraper.Outline
             End If
         End If
 
         'Use OFDB plot?
-        If ConfigOptions.bPlot Then
-            If Not String.IsNullOrEmpty(tOFDB.Plot) Then
-                nMovie.Plot = tOFDB.Plot
+        If filterOptions.bPlot Then
+            If Not String.IsNullOrEmpty(_scraper.Plot) Then
+                nMovie.Plot = _scraper.Plot
             End If
         End If
 
         'Use OFDB genres?
-        If ConfigOptions.bGenre Then
-            If Not String.IsNullOrEmpty(tOFDB.Genre) Then
-                nMovie.Genre = tOFDB.Genre
+        If filterOptions.bGenre Then
+            If Not String.IsNullOrEmpty(_scraper.Genre) Then
+                nMovie.Genre = _scraper.Genre
             End If
         End If
 
         'Use OFDB FSK?
-        If ConfigOptions.bCert Then
-            If Not String.IsNullOrEmpty(tOFDB.FSK) Then
+        If filterOptions.bCert Then
+            If Not String.IsNullOrEmpty(_scraper.FSK) Then
 
-                Select Case CInt(tOFDB.FSK)
+                Select Case CInt(_scraper.FSK)
                     Case 0
                         nMovie.Certification = "Germany:0"
                         If Master.eSettings.MovieScraperCertOnlyValue = False Then

@@ -156,11 +156,13 @@ Public Class MoviepilotDE_Data
     ''' </summary>
     ''' <param name="DBMovie">Movie to be scraped. DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper</param>
     ''' <param name="nMovie">New scraped movie data</param>
-    ''' <param name="Options">(NOT used at moment!)What kind of data is being requested from the scrape(global scraper settings)</param>
+    ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper should NOT consider global scraper settings/locks in Ember, just scraper options of module</remarks>
     Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
         logger.Trace("Started MoviepilotDE Scraper")
+
+        Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
 
         'Moviepilot-datascraper needs originaltitle of movie!
         If String.IsNullOrEmpty(oDBMovie.Movie.OriginalTitle) Then
@@ -169,12 +171,12 @@ Public Class MoviepilotDE_Data
         End If
 
         'we have the originaltitle -> now we can use scraper methods!
-        Dim tmpMoviepilotDE As New MoviepilotDE.Scraper(oDBMovie.Movie.OriginalTitle)
+        Dim _scraper As New MoviepilotDE.Scraper(oDBMovie.Movie.OriginalTitle)
 
         'Use Moviepilot FSK?
-        If ConfigOptions.bCert Then
-            If Not String.IsNullOrEmpty(tmpMoviepilotDE.FSK) Then
-                Select Case CInt(tmpMoviepilotDE.FSK)
+        If filterOptions.bCert Then
+            If Not String.IsNullOrEmpty(_scraper.FSK) Then
+                Select Case CInt(_scraper.FSK)
                     Case 0
                         nMovie.Certification = "Germany:0"
                         If Master.eSettings.MovieScraperCertOnlyValue = False Then
@@ -216,16 +218,16 @@ Public Class MoviepilotDE_Data
         nMovie.Scrapersource = "MOVIEPILOT"
 
         'Use Moviepilot Outline?
-        If ConfigOptions.bOutline Then
-            If Not String.IsNullOrEmpty(tmpMoviepilotDE.Outline) Then
-                nMovie.Outline = tmpMoviepilotDE.Outline
+        If filterOptions.bOutline Then
+            If Not String.IsNullOrEmpty(_scraper.Outline) Then
+                nMovie.Outline = _scraper.Outline
             End If
         End If
 
         'Use Moviepilot Plot?
-        If ConfigOptions.bPlot Then
-            If Not String.IsNullOrEmpty(tmpMoviepilotDE.Plot) Then
-                nMovie.Plot = tmpMoviepilotDE.Plot
+        If filterOptions.bPlot Then
+            If Not String.IsNullOrEmpty(_scraper.Plot) Then
+                nMovie.Plot = _scraper.Plot
             End If
         End If
 

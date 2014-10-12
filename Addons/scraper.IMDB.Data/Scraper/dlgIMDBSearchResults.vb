@@ -291,7 +291,7 @@ Public Class dlgIMDBSearchResults
 
                 'store clone of tmpmovie
                 If Not _InfoCache.ContainsKey(_nMovie.IMDBID) Then
-                    _InfoCache.Add(Master.tmpMovie.IMDBID, GetMovieClone(_nMovie))
+                    _InfoCache.Add(_nMovie.IMDBID, GetMovieClone(_nMovie))
                 End If
 
 
