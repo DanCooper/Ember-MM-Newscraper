@@ -59,8 +59,8 @@
   !define MUI_COMPONENTSPAGE_SMALLDESC
   !define MUI_FINISHPAGE_LINK "Please visit http://embermediamanager.org for more information."
   !define MUI_FINISHPAGE_LINK_LOCATION "http://embermediamanager.org"
-  !define MUI_FINISHPAGE_RUN "$INSTDIR\${emm_filename}"
-  !define MUI_FINISHPAGE_RUN_NOTCHECKED
+  ;!define MUI_FINISHPAGE_RUN "$INSTDIR\${emm_filename}"
+  ;!define MUI_FINISHPAGE_RUN_NOTCHECKED
   !define MUI_ABORTWARNING
 ;--------------------------------
 ;Pages
