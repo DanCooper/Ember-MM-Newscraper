@@ -218,6 +218,8 @@ Partial Public Class clsXMLSettings
     Private _moviescraperrelease As Boolean
     Private _moviescraperruntime As Boolean
     Private _moviescraperstudio As Boolean
+    Private _moviescraperstudiolimit As Integer
+    Private _moviescraperstudiowithimgonly As Boolean
     Private _moviescrapertagline As Boolean
     Private _moviescrapertitle As Boolean
     Private _moviescrapertop250 As Boolean
@@ -1702,6 +1704,24 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescraperstudio = value
+        End Set
+    End Property
+
+    Public Property MovieScraperStudioLimit() As Integer
+        Get
+            Return Me._moviescraperstudiolimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._moviescraperstudiolimit = value
+        End Set
+    End Property
+
+    Public Property MovieScraperStudioWithImgOnly() As Boolean
+        Get
+            Return Me._moviescraperstudiowithimgonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescraperstudiowithimgonly = value
         End Set
     End Property
 

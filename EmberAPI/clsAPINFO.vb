@@ -349,7 +349,23 @@ Public Class NFO
                 If (DBMovie.Movie.Studios.Count < 1 OrElse Not Master.eSettings.MovieLockStudio) AndAlso Options.bStudio AndAlso _
                     scrapedmovie.Studios.Count > 0 AndAlso Master.eSettings.MovieScraperStudio AndAlso Not new_Studio Then
                     DBMovie.Movie.Studios.Clear()
-                    DBMovie.Movie.Studios.AddRange(scrapedmovie.Studios)
+
+                    Dim _studios As New List(Of String)
+                    _studios.AddRange(scrapedmovie.Studios)
+
+                    If Master.eSettings.MovieScraperStudioWithImgOnly Then
+                        For i = _studios.Count - 1 To 0 Step -1
+                            If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
+                                _studios.RemoveAt(i)
+                            End If
+                        Next
+                    End If
+
+                    If Master.eSettings.MovieScraperStudioLimit > 0 AndAlso Master.eSettings.MovieScraperStudioLimit < _studios.Count AndAlso _studios.Count > 0 Then
+                        _studios.RemoveRange(Master.eSettings.MovieScraperStudioLimit, _studios.Count - Master.eSettings.MovieScraperStudioLimit)
+                    End If
+
+                    DBMovie.Movie.Studios.AddRange(_studios)
                     new_Studio = True
                 ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperStudio AndAlso Not Master.eSettings.MovieLockStudio Then
                     DBMovie.Movie.Studios.Clear()

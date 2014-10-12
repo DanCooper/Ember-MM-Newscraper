@@ -1354,7 +1354,19 @@ Public Class dlgSettings
     Private Sub chkMovieScraperCastWithImg_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCastWithImg.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+    Private Sub chkMovieScraperStudioWithImg_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperStudioWithImg.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 
+    Private Sub chkMovieScraperStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperStudio.CheckedChanged
+        Me.SetApplyButton(True)
+        Me.chkMovieScraperStudioWithImg.Enabled = Me.chkMovieScraperStudio.Checked
+        Me.txtMovieScraperStudioLimit.Enabled = Me.chkMovieScraperStudio.Checked
+        If Not Me.chkMovieScraperStudio.Checked Then
+            Me.chkMovieScraperStudioWithImg.Checked = False
+            Me.txtMovieScraperStudioLimit.Text = "0"
+        End If
+    End Sub
     Private Sub chkMovieScraperCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCast.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -2565,10 +2577,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieScraperStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperStudio.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieScraperTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperTagline.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3394,6 +3402,7 @@ Public Class dlgSettings
                 Me.chkMovieScraperReleaseFormat.Checked = .MovieScraperReleaseFormat
                 Me.chkMovieScraperRuntime.Checked = .MovieScraperRuntime
                 Me.chkMovieScraperStudio.Checked = .MovieScraperStudio
+                Me.chkMovieScraperStudioWithImg.Checked = .MovieScraperStudioWithImgOnly
                 Me.chkMovieScraperTagline.Checked = .MovieScraperTagline
                 Me.chkMovieScraperTitle.Checked = .MovieScraperTitle
                 Me.chkMovieScraperTop250.Checked = .MovieScraperTop250
@@ -3596,6 +3605,7 @@ Public Class dlgSettings
                 Me.txtMovieScraperDurationRuntimeFormat.Text = .MovieScraperDurationRuntimeFormat
                 Me.txtMovieScraperGenreLimit.Text = .MovieScraperGenreLimit.ToString
                 Me.txtMovieScraperOutlineLimit.Text = .MovieScraperOutlineLimit.ToString
+                Me.txtMovieScraperStudioLimit.Text = .MovieScraperStudioLimit.ToString
                 Me.txtMovieSkipLessThan.Text = .MovieSkipLessThan.ToString
                 Me.txtMovieTrailerDefaultSearch.Text = .MovieTrailerDefaultSearch.ToString
                 Me.txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat.ToString
@@ -4991,6 +5001,12 @@ Public Class dlgSettings
                 .MovieScraperReleaseFormat = Me.chkMovieScraperReleaseFormat.Checked
                 .MovieScraperRuntime = Me.chkMovieScraperRuntime.Checked
                 .MovieScraperStudio = Me.chkMovieScraperStudio.Checked
+                .MovieScraperStudioWithImgOnly = Me.chkMovieScraperStudioWithImg.Checked
+                If Not String.IsNullOrEmpty(Me.txtMovieScraperStudioLimit.Text) Then
+                    .MovieScraperStudioLimit = Convert.ToInt32(Me.txtMovieScraperStudioLimit.Text)
+                Else
+                    .MovieScraperStudioLimit = 0
+                End If
                 .MovieScraperTagline = Me.chkMovieScraperTagline.Checked
                 .MovieScraperTitle = Me.chkMovieScraperTitle.Checked
                 .MovieScraperTop250 = Me.chkMovieScraperTop250.Checked
@@ -5745,6 +5761,7 @@ Public Class dlgSettings
         Me.chkMovieScraperRelease.Text = Master.eLang.GetString(57, "Release Date")
         Me.chkMovieScraperRuntime.Text = Master.eLang.GetString(396, "Runtime")
         Me.chkMovieScraperStudio.Text = Master.eLang.GetString(395, "Studio")
+        Me.chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
         Me.chkMovieScraperTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkMovieScraperTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkMovieScraperTop250.Text = Master.eLang.GetString(591, "Top 250")
@@ -6093,6 +6110,7 @@ Public Class dlgSettings
         Me.lblMovieFanartSize.Text = Me.lblMoviePosterSize.Text
         Me.lblMovieFanartWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblMovieScraperGenreLimit.Text = Me.lblMovieScraperCastLimit.Text
+        Me.lblMovieScraperStudioLimit.Text = Me.lblMovieScraperCastLimit.Text
         Me.lblMovieScraperOutlineLimit.Text = Me.lblMovieScraperCastLimit.Text
         Me.lblSettingsTopTitle.Text = Me.Text
         Me.lblTVASBannerHeight.Text = Me.lblMoviePosterHeight.Text
@@ -6839,7 +6857,9 @@ Public Class dlgSettings
     Private Sub txtMovieScraperGenreLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieScraperGenreLimit.TextChanged
         Me.SetApplyButton(True)
     End Sub
-
+    Private Sub txtMovieScraperStudioLimit_TextChanged(sender As Object, e As EventArgs) Handles txtMovieScraperStudioLimit.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
     Private Sub txtMovieScraperOutlineLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieScraperOutlineLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
@@ -7871,5 +7891,4 @@ Public Class dlgSettings
     End Sub
 
 #End Region 'Methods
-
 End Class
