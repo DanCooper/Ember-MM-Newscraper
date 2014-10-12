@@ -2089,45 +2089,30 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub LoadEThumbs()
-        Dim ET_tPath As String = String.Empty
         Dim ET_lFI As New List(Of String)
         Dim ET_i As Integer = 0
         Dim ET_max As Integer = 30 'limited the number of images to avoid a memory error
 
-        '*************** XBMC Frodo & Eden settings ***************
-        If Master.eSettings.MovieUseFrodo OrElse Master.eSettings.MovieUseEden Then
-            If Master.eSettings.MovieExtrathumbsFrodo OrElse Master.eSettings.MovieExtrathumbsEden Then
-                If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-                    ET_tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
-                ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-                    ET_tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-                Else
-                    ET_tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
-                End If
-            End If
-        End If
-
         Try
-            If Directory.Exists(ET_tPath) Then
-                Try
-                    ET_lFI.AddRange(Directory.GetFiles(ET_tPath, "thumb*.jpg"))
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
-
-                ' load local Extrathumbs
-                If ET_lFI.Count > 0 Then
-                    For Each thumb As String In ET_lFI
-                        Dim ETImage As New Images
-                        If Me.bwEThumbs.CancellationPending Then Return
-                        If Not Me.etDeleteList.Contains(thumb) Then
-                            ETImage.FromFile(thumb)
-                            EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
-                            ET_i += 1
-                            If ET_i >= ET_max Then Exit For
-                        End If
-                    Next
+            ' load local Extrathumbs
+            For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EThumbs)
+                If Directory.Exists(a) Then
+                    ET_lFI.AddRange(Directory.GetFiles(a, "thumb*.jpg"))
+                    If ET_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
                 End If
+            Next
+
+            If ET_lFI.Count > 0 Then
+                For Each thumb As String In ET_lFI
+                    Dim ETImage As New Images
+                    If Me.bwEThumbs.CancellationPending Then Return
+                    If Not Me.etDeleteList.Contains(thumb) Then
+                        ETImage.FromFile(thumb)
+                        EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
+                        ET_i += 1
+                        If ET_i >= ET_max Then Exit For
+                    End If
+                Next
             End If
 
             ' load scraped Extrathumbs
@@ -2176,45 +2161,30 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub LoadEFanarts()
-        Dim EF_tPath As String = String.Empty
         Dim EF_lFI As New List(Of String)
         Dim EF_i As Integer = 0
         Dim EF_max As Integer = 30 'limited the number of images to avoid a memory error
 
-        '*************** XBMC Frodo & Eden settings ***************
-        If Master.eSettings.MovieUseFrodo OrElse Master.eSettings.MovieUseEden Then
-            If Master.eSettings.MovieExtrafanartsFrodo OrElse Master.eSettings.MovieExtrafanartsEden Then
-                If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-                    EF_tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
-                ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-                    EF_tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrafanart")
-                Else
-                    EF_tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
-                End If
-            End If
-        End If
-
         Try
-            If Directory.Exists(EF_tPath) Then
-                Try
-                    EF_lFI.AddRange(Directory.GetFiles(EF_tPath, "*.jpg"))
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
-
-                ' load local Extrafanarts
-                If EF_lFI.Count > 0 Then
-                    For Each fanart As String In EF_lFI
-                        Dim EFImage As New Images
-                        If Me.bwEFanarts.CancellationPending Then Return
-                        If Not Me.efDeleteList.Contains(fanart) Then
-                            EFImage.FromFile(fanart)
-                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
-                            EF_i += 1
-                            If EF_i >= EF_max Then Exit For
-                        End If
-                    Next
+            ' load local Extrafanarts
+            For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EFanarts)
+                If Directory.Exists(a) Then
+                    EF_lFI.AddRange(Directory.GetFiles(a, "*.jpg"))
+                    If EF_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
                 End If
+            Next
+
+            If EF_lFI.Count > 0 Then
+                For Each fanart As String In EF_lFI
+                    Dim EFImage As New Images
+                    If Me.bwEFanarts.CancellationPending Then Return
+                    If Not Me.efDeleteList.Contains(fanart) Then
+                        EFImage.FromFile(fanart)
+                        EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
+                        EF_i += 1
+                        If EF_i >= EF_max Then Exit For
+                    End If
+                Next
             End If
 
             ' load scraped Extrafanarts
