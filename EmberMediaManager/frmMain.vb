@@ -1790,8 +1790,8 @@ Public Class frmMain
 
     Private Sub bwMovieScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        Dim OldTitle As String = String.Empty
-        Dim NewTitle As String = String.Empty
+        Dim OldListTitle As String = String.Empty
+        Dim NewListTitle As String = String.Empty
         Dim Banner As New MediaContainers.Image
         Dim ClearArt As New MediaContainers.Image
         Dim ClearLogo As New MediaContainers.Image
@@ -1818,12 +1818,12 @@ Public Class frmMain
         For Each dRow As DataRow In ScrapeList
             Try
                 If bwMovieScraper.CancellationPending Then Exit For
-                OldTitle = dRow.Item(3).ToString
-                bwMovieScraper.ReportProgress(1, OldTitle)
+                OldListTitle = dRow.Item(3).ToString
+                bwMovieScraper.ReportProgress(1, OldListTitle)
 
                 dScrapeRow = dRow
 
-                logger.Trace(String.Concat("Start scraping: ", OldTitle))
+                logger.Trace(String.Concat("Start scraping: ", OldListTitle))
 
                 DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
@@ -1856,14 +1856,14 @@ Public Class frmMain
                     MovieScraperEvent(Enums.ScraperEventType_Movie.NFOItem, True)
                 End If
 
-                NewTitle = DBScrapeMovie.ListTitle
+                NewListTitle = DBScrapeMovie.ListTitle
 
-                If Not NewTitle = OldTitle Then
-                    bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
+                If Not NewListTitle = OldListTitle Then
+                    bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
                 End If
 
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-                    MovieScraperEvent(Enums.ScraperEventType_Movie.ListTitle, NewTitle)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.ListTitle, NewListTitle)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.SortTitle, DBScrapeMovie.Movie.SortTitle)
                 End If
 
@@ -2422,7 +2422,7 @@ Public Class frmMain
                     MovieScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
-                    bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
+                    bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                     bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
                 End If
 
@@ -2479,22 +2479,26 @@ Public Class frmMain
 
     Private Sub bwMovieSetScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieSetScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        Dim OldTitle As String = String.Empty
-        Dim NewTitle As String = String.Empty
         Dim Banner As New MediaContainers.Image
         Dim ClearArt As New MediaContainers.Image
         Dim ClearLogo As New MediaContainers.Image
+        Dim DBScrapeMovieSet As New Structures.DBMovieSet
         Dim DiscArt As New MediaContainers.Image
         Dim Fanart As New MediaContainers.Image
         Dim Landscape As New MediaContainers.Image
+        Dim NewListTitle As String = String.Empty
+        Dim NewTMDBColID As String = String.Empty
+        Dim NewTitle As String = String.Empty
+        Dim OldListTitle As String = String.Empty
+        Dim OldTMDBColID As String = String.Empty
+        Dim OldTitle As String = String.Empty
         Dim Poster As New MediaContainers.Image
-        Dim tURL As String = String.Empty
         Dim aList As New List(Of MediaContainers.Image)
+        Dim configpath As String = ""
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
-        Dim DBScrapeMovieSet As New Structures.DBMovieSet
-        Dim configpath As String = ""
         Dim formatter As New BinaryFormatter()
+        Dim tURL As String = String.Empty
 
         logger.Trace("Starting MOVIE SET scrape")
 
@@ -2503,8 +2507,10 @@ Public Class frmMain
         For Each dRow As DataRow In ScrapeList
             Try
                 If bwMovieSetScraper.CancellationPending Then Exit For
-                OldTitle = dRow.Item(1).ToString
-                bwMovieSetScraper.ReportProgress(1, OldTitle)
+                OldListTitle = dRow.Item(1).ToString
+                OldTitle = dRow.Item(20).ToString
+                OldTMDBColID = dRow.Item(18).ToString
+                bwMovieSetScraper.ReportProgress(1, OldListTitle)
 
                 dScrapeRow = dRow
 
@@ -2534,14 +2540,16 @@ Public Class frmMain
                     'MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.NFOItem, True)
                 End If
 
-                NewTitle = DBScrapeMovieSet.ListTitle
+                NewListTitle = DBScrapeMovieSet.ListTitle
+                NewTitle = DBScrapeMovieSet.MovieSet.Title
+                NewTMDBColID = DBScrapeMovieSet.MovieSet.ID
 
-                If Not NewTitle = OldTitle Then
-                    bwMovieSetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
+                If Not NewListTitle = OldListTitle Then
+                    bwMovieSetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
                 End If
 
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-                    MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ListTitle, NewTitle)
+                    MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ListTitle, NewListTitle)
                 End If
 
                 '-----
@@ -2926,9 +2934,13 @@ Public Class frmMain
                 If bwMovieScraper.CancellationPending Then Exit For
 
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                    Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True)
+                    If Not OldTitle = NewTitle OrElse Not OldTMDBColID = NewTMDBColID Then
+                        Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True, True)
+                    Else
+                        Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True)
+                    End If
                     'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovieSet)
-                    bwMovieSetScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
+                    bwMovieSetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                     bwMovieSetScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
                 End If
 
@@ -14303,7 +14315,7 @@ doCancel:
                 End If
             End If
 
-            Master.DB.SaveMovieSetToDB(tmpMovieSetDb, False, BatchMode, ToNfo)
+            Master.DB.SaveMovieSetToDB(tmpMovieSetDb, False, BatchMode, ToNfo, True)
 
             If Not BatchMode Then
 

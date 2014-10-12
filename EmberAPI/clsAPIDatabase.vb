@@ -2131,7 +2131,7 @@ Public Class Database
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     ''' <returns>Structures.DBMovieSet object</returns>
-    Public Function SaveMovieSetToDB(ByVal _moviesetDB As Structures.DBMovieSet, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Structures.DBMovieSet
+    Public Function SaveMovieSetToDB(ByVal _moviesetDB As Structures.DBMovieSet, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Structures.DBMovieSet
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
         Try
@@ -2226,8 +2226,35 @@ Public Class Database
                 Else
                     SQLcommand.ExecuteNonQuery()
                 End If
-
             End Using
+
+            If withMovies Then
+                Dim MoviesInSet As New List(Of MovieInSet)
+
+                Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets ", _
+                                                           "WHERE SetID = ", _moviesetDB.ID, ";")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        While SQLreader.Read
+                            Dim movie As New Structures.DBMovie
+                            Dim movieToSave As New MovieInSet
+                            If Not DBNull.Value.Equals(SQLreader("MovieID")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
+                            movieToSave.DBMovie = movie
+                            If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then movieToSave.Order = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), 0)
+                            MoviesInSet.Add(movieToSave)
+                        End While
+                    End Using
+                End Using
+
+                'remove the movieset from movie and write new movie NFOs
+                If MoviesInSet.Count > 0 Then
+                    For Each tMovie In MoviesInSet
+                        tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.ID)
+                        Master.DB.SaveMovieToDB(tMovie.DBMovie, False, BatchMode, True)
+                    Next
+                End If
+            End If
+
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
@@ -3294,6 +3321,84 @@ Public Class Database
 #End Region 'Methods
 
     End Class
+
+    Friend Class MovieInSet
+        Implements IComparable(Of MovieInSet)
+
+#Region "Fields"
+
+        Private _dbmovie As Structures.DBMovie
+        Private _id As Long
+        Private _listtitle As String
+        Private _order As Integer
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property DBMovie() As Structures.DBMovie
+            Get
+                Return Me._dbmovie
+            End Get
+            Set(ByVal value As Structures.DBMovie)
+                Me._dbmovie = value
+            End Set
+        End Property
+
+        Public Property ID() As Long
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As Long)
+                Me._id = value
+            End Set
+        End Property
+
+        Public Property ListTitle() As String
+            Get
+                Return Me._listtitle
+            End Get
+            Set(ByVal value As String)
+                Me._listtitle = value
+            End Set
+        End Property
+
+        Public Property Order() As Integer
+            Get
+                Return Me._order
+            End Get
+            Set(ByVal value As Integer)
+                Me._order = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._dbmovie = New Structures.DBMovie
+            Me._id = -1
+            Me._order = 0
+            Me._listtitle = String.Empty
+        End Sub
+
+        Public Function CompareTo(ByVal other As MovieInSet) As Integer Implements IComparable(Of MovieInSet).CompareTo
+            Return (Me.Order).CompareTo(other.Order)
+        End Function
+
+#End Region 'Methods
+
+    End Class
+
 
 #End Region 'Nested Types
 
