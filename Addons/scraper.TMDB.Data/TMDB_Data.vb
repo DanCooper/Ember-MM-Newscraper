@@ -492,6 +492,7 @@ Public Class TMDB_Data
         If String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
+                    nMovie = Nothing
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
         End If
