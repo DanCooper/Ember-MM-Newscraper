@@ -1771,13 +1771,13 @@ Public Class frmMain
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
             Me.MovieInfoDownloaded()
         Else
+            Me.FillList(False, True, False)
+            Me.RefreshAllMovieSets(True)
             If Me.dgvMovies.SelectedRows.Count > 0 Then
                 Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
             Else
                 Me.ClearInfo()
             End If
-            Me.FillList(False, True, False)
-            Me.RefreshAllMovieSets(True)
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.btnCancel.Visible = False
@@ -8250,7 +8250,6 @@ doCancel:
 
                             If .dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0 Then
                                 .dgvMovies.Sort(.dgvMovies.Columns(3), ComponentModel.ListSortDirection.Ascending)
-                                .SetControlsEnabled(True)
                             End If
 
                         End With
@@ -8338,7 +8337,6 @@ doCancel:
 
                             If .dgvMovieSets.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 1 Then
                                 .dgvMovieSets.Sort(.dgvMovieSets.Columns(1), ComponentModel.ListSortDirection.Ascending)
-                                .SetControlsEnabled(True)
                             End If
 
                         End With
@@ -8458,19 +8456,21 @@ doCancel:
 
                             If .dgvTVShows.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 2 Then
                                 .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
-                                .SetControlsEnabled(True)
                             End If
                         End With
                     End If
                     Me.dgvTVShows.Enabled = True
                 End If
-            End If
 
-                If Me.dtMovies.Rows.Count = 0 AndAlso Me.dtMovieSets.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
+                If Me.dgvMovies.RowCount > 0 OrElse Me.dgvMovieSets.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0 Then
+                    Me.SetControlsEnabled(True)
+                Else
                     Me.SetControlsEnabled(False, False, False)
                     Me.SetStatus(String.Empty)
                     Me.ClearInfo()
                 End If
+            End If
+
         Catch ex As Exception
             Me.LoadingDone = True
             logger.Error(New StackFrame().GetMethod().Name, ex)
