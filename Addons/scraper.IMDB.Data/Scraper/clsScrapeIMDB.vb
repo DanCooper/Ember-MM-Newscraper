@@ -152,9 +152,9 @@ Namespace IMDB
         End Sub
 
         ''' <summary>
-        '''  Scrape MovieDetails from TMDB
+        '''  Scrape MovieDetails from IMDB
         ''' </summary>
-        ''' <param name="strID">IMDBID/TMBID of movie to be scraped</param>
+        ''' <param name="strID">IMDBID (without "tt") of movie to be scraped</param>
         ''' <param name="nMovie">Container of scraped movie data</param>
         ''' <param name="FullCrew">Module setting: Scrape full cast?</param>
         ''' <param name="GetPoster">Scrape posters for the movie?</param>
@@ -709,7 +709,7 @@ mPlot:          'MOVIE PLOT
             Return alStudio
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef dbMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, ByVal FullCrew As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As MediaContainers.Movie
+        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, ByVal FullCrew As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As MediaContainers.Movie
             Dim r As MovieSearchResults = SearchMovie(sMovieName)
             Dim b As Boolean = False
 
@@ -729,13 +729,13 @@ mPlot:          'MOVIE PLOT
                         ElseIf r.ExactMatches.Count = 1 AndAlso r.ExactMatches(0).Lev <= 5 Then
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         Else
-                            Master.tmpMovie.Clear()
+                            nMovie.Clear()
                             Using dIMDB As New dlgIMDBSearchResults
-                                If dIMDB.ShowDialog(r, sMovieName, dbMovie.Filename) = Windows.Forms.DialogResult.OK Then
-                                    If String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
+                                If dIMDB.ShowDialog(nMovie, r, sMovieName, oDBMovie.Filename) = Windows.Forms.DialogResult.OK Then
+                                    If String.IsNullOrEmpty(nMovie.IMDBID) Then
                                         b = False
                                     Else
-                                        b = GetMovieInfo(Master.tmpMovie.IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                                        b = GetMovieInfo(nMovie.IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                                     End If
                                 Else
                                     b = False
@@ -757,8 +757,8 @@ mPlot:          'MOVIE PLOT
                         ((r.PartialMatches.Count > 0 AndAlso r.PartialMatches(0).Lev > 5) OrElse r.PartialMatches.Count = 0) Then
                             useAnyway = True
                         End If
-                        Dim exactHaveYear As Integer = FindYear(dbMovie.Filename, r.ExactMatches)
-                        Dim popularHaveYear As Integer = FindYear(dbMovie.Filename, r.PopularTitles)
+                        Dim exactHaveYear As Integer = FindYear(oDBMovie.Filename, r.ExactMatches)
+                        Dim popularHaveYear As Integer = FindYear(oDBMovie.Filename, r.PopularTitles)
                         'it seems "popular matches" is a better result than "exact matches" ..... nope
                         'If r.ExactMatches.Count = 1 AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count = 0 Then 'redirected to imdb info page
                         '    b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options, True)
@@ -849,6 +849,7 @@ mPlot:          'MOVIE PLOT
                     Case SearchType.Movies
                         Dim r As MovieSearchResults = SearchMovie(Args.Parameter)
                         e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
+
                     Case SearchType.SearchDetails
                         Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, True, Args.Options, True, True, "", False)
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
@@ -858,13 +859,14 @@ mPlot:          'MOVIE PLOT
             End Try
         End Sub
 
-        Private Sub BW_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwIMDB.RunWorkerCompleted
+        Private Sub bwIMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwIMDB.RunWorkerCompleted
             Dim Res As Results = DirectCast(e.Result, Results)
 
             Try
                 Select Case Res.ResultType
                     Case SearchType.Movies
                         RaiseEvent SearchResultsDownloaded(DirectCast(Res.Result, MovieSearchResults))
+
                     Case SearchType.SearchDetails
                         Dim movieInfo As MovieSearchResults = DirectCast(Res.Result, MovieSearchResults)
                         RaiseEvent SearchMovieInfoDownloaded(sPoster, Res.Success)

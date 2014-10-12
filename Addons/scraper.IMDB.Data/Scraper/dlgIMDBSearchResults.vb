@@ -44,32 +44,38 @@ Public Class dlgIMDBSearchResults
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
     Private _filterOptions As Structures.ScrapeOptions_Movie
 
+    Private _nMovie As MediaContainers.Movie
+
 #End Region 'Fields
 
 #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
         Me.tmrLoad.Interval = 100
 
         _filterOptions = filterOptions
+        _nMovie = nMovie
 
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
         Me.txtSearch.Text = sMovieTitle
         Me.txtFileName.Text = sMovieFilename
         chkManual.Enabled = False
+
         IMDB.SearchMovieAsync(sMovieTitle, _filterOptions)
 
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal Res As IMDB.MovieSearchResults, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal Res As IMDB.MovieSearchResults, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
         Me.tmrLoad.Interval = 100
+
+        _nMovie = nMovie
 
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
         Me.txtSearch.Text = sMovieTitle
@@ -98,7 +104,7 @@ Public Class dlgIMDBSearchResults
         Dim pOpt As New Structures.ScrapeOptions_Movie
         pOpt = SetPreviewOptions()
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
-            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie, pOpt)
+            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), _nMovie, pOpt)
         Else
             MsgBox(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
         End If
@@ -141,7 +147,7 @@ Public Class dlgIMDBSearchResults
             IMDB.CancelAsync()
         End If
 
-        Master.tmpMovie.Clear()
+        _nMovie.Clear()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
@@ -178,7 +184,7 @@ Public Class dlgIMDBSearchResults
         Me.lblIMDBID.Text = String.Empty
         Me.pbPoster.Image = Nothing
 
-        Master.tmpMovie.Clear()
+        _nMovie.Clear()
 
         IMDB.CancelAsync()
     End Sub
@@ -235,7 +241,7 @@ Public Class dlgIMDBSearchResults
                     If MsgBox(String.Concat(Master.eLang.GetString(821, "You have manually entered an IMDB ID but have not verified it is correct."), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.YesNo, Master.eLang.GetString(823, "Continue without verification?")) = MsgBoxResult.No Then
                         Exit Sub
                     Else
-                        Master.tmpMovie.IMDBID = Me.txtIMDBID.Text.Replace("tt", String.Empty)
+                        _nMovie.IMDBID = Me.txtIMDBID.Text.Replace("tt", String.Empty)
                     End If
                 End If
             End If
@@ -258,17 +264,17 @@ Public Class dlgIMDBSearchResults
         Try
             If bSuccess Then
                 Me.ControlsVisible(True)
-                Me.lblTitle.Text = Master.tmpMovie.Title
-                Me.lblTagline.Text = Master.tmpMovie.Tagline
-                Me.lblYear.Text = Master.tmpMovie.Year
-                Me.lblDirector.Text = Master.tmpMovie.Director
-                Me.lblGenre.Text = Master.tmpMovie.Genre
-                Me.txtOutline.Text = Master.tmpMovie.Outline
-                Me.lblIMDBID.Text = Master.tmpMovie.IMDBID
+                Me.lblTitle.Text = _nMovie.Title
+                Me.lblTagline.Text = _nMovie.Tagline
+                Me.lblYear.Text = _nMovie.Year
+                Me.lblDirector.Text = _nMovie.Director
+                Me.lblGenre.Text = _nMovie.Genre
+                Me.txtOutline.Text = _nMovie.Outline
+                Me.lblIMDBID.Text = _nMovie.IMDBID
 
-                If _PosterCache.ContainsKey(Master.tmpMovie.IMDBID) Then
+                If _PosterCache.ContainsKey(_nMovie.IMDBID) Then
                     'just set it
-                    Me.pbPoster.Image = _PosterCache(Master.tmpMovie.IMDBID)
+                    Me.pbPoster.Image = _PosterCache(_nMovie.IMDBID)
                 Else
                     'go download it, if available
                     If Not String.IsNullOrEmpty(sPoster) Then
@@ -278,14 +284,14 @@ Public Class dlgIMDBSearchResults
                         pnlPicStatus.Visible = True
                         Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
                         Me.bwDownloadPic.WorkerSupportsCancellation = True
-                        Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = Master.tmpMovie.IMDBID})
+                        Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _nMovie.IMDBID})
                     End If
 
                 End If
 
                 'store clone of tmpmovie
-                If Not _InfoCache.ContainsKey(Master.tmpMovie.IMDBID) Then
-                    _InfoCache.Add(Master.tmpMovie.IMDBID, GetMovieClone(Master.tmpMovie))
+                If Not _InfoCache.ContainsKey(_nMovie.IMDBID) Then
+                    _InfoCache.Add(Master.tmpMovie.IMDBID, GetMovieClone(_nMovie))
                 End If
 
 
@@ -458,7 +464,7 @@ Public Class dlgIMDBSearchResults
         Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, pOpt)
+        IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovie, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
@@ -484,7 +490,7 @@ Public Class dlgIMDBSearchResults
 
                 'check if this movie is in the cache already
                 If _InfoCache.ContainsKey(Me.tvResults.SelectedNode.Tag.ToString) Then
-                    Master.tmpMovie = GetMovieClone(_InfoCache(Me.tvResults.SelectedNode.Tag.ToString))
+                    _nMovie = GetMovieClone(_InfoCache(Me.tvResults.SelectedNode.Tag.ToString))
                     SearchMovieInfoDownloaded(String.Empty, True)
                     Return
                 End If
