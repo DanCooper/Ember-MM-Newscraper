@@ -2130,6 +2130,7 @@ Public Class Database
     ''' <param name="IsNew">Is this a new movieset (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
+    ''' <param name="withMovies">Save the information also to all linked movies?</param>
     ''' <returns>Structures.DBMovieSet object</returns>
     Public Function SaveMovieSetToDB(ByVal _moviesetDB As Structures.DBMovieSet, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Structures.DBMovieSet
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
@@ -2231,6 +2232,7 @@ Public Class Database
             If withMovies Then
                 Dim MoviesInSet As New List(Of MovieInSet)
 
+                'get all movies linked to this MovieSet
                 Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets ", _
                                                            "WHERE SetID = ", _moviesetDB.ID, ";")
@@ -2246,7 +2248,7 @@ Public Class Database
                     End Using
                 End Using
 
-                'remove the movieset from movie and write new movie NFOs
+                'write new movie NFOs
                 If MoviesInSet.Count > 0 Then
                     For Each tMovie In MoviesInSet
                         tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.ID)
