@@ -637,6 +637,7 @@ Public Class Enums
         ShowRegex = 5
         TrailerCodec = 6
         ValidThemeExts = 7
+        ValidSubtitleExts = 8
     End Enum
 
     Public Enum DelType As Integer
@@ -684,6 +685,7 @@ Public Class Enums
         WatchedFile = 15
         CharacterArt = 16
         Theme = 17
+        Subtitle = 18
     End Enum
     ''' <summary>
     ''' Enum representing possible scrape data types
@@ -1809,6 +1811,7 @@ Public Class Structures
         Dim RemoveTrailer As Boolean
         Dim Source As String
         Dim SubPath As String
+        Dim Subtitles As List(Of MediaInfo.Subtitle)
         Dim ThemePath As String
         Dim TrailerPath As String
         Dim UseFolder As Boolean

@@ -1372,4 +1372,6 @@
   <string id="1280">Scrape Only Studios With Images</string>
   <string id="1281">Open IMDB-Page</string>
   <string id="1282">Open TMDB-Page</string>
+  <string id="1283">Are you sure you want to reset to the default list of valid subtitle extensions?</string>
+  <string id="1284">Valid Subtitles Extensions</string>
 </strings>

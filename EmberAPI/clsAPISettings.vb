@@ -4075,6 +4075,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property FileSystemValidSubtitlesExts() As List(Of String)
+        Get
+            Return Settings._XMLSettings.FileSystemValidSubtitlesExts
+        End Get
+        Set(ByVal value As List(Of String))
+            Settings._XMLSettings.FileSystemValidSubtitlesExts = value
+        End Set
+    End Property
+
     Public Property FileSystemValidThemeExts() As List(Of String)
         Get
             Return Settings._XMLSettings.filesystemvalidthemeexts
@@ -5874,6 +5883,11 @@ Public Class Settings
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
             Master.eSettings.FileSystemValidExts.Clear()
             Master.eSettings.FileSystemValidExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.mpeg,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.ifo,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb,.webm,.disc,.3gpp", ","))
+        End If
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidSubtitleExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidSubtitlesExts.Count <= 0) Then
+            Master.eSettings.FileSystemValidSubtitlesExts.Clear()
+            Master.eSettings.FileSystemValidSubtitlesExts.AddRange(Strings.Split(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass", ","))
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidThemeExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidThemeExts.Count <= 0) Then

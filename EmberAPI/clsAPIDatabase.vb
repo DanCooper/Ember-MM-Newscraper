@@ -802,8 +802,6 @@ Public Class Database
     ''' <returns>Structures.DBMovie object</returns>
     Public Function LoadMovieFromDB(ByVal MovieID As Long) As Structures.DBMovie
         Dim _movieDB As New Structures.DBMovie
-        ' Clean some variables that in previous versions are nothing
-        _movieDB.FileSource = String.Empty
 
         Try
             _movieDB.ID = MovieID
@@ -941,8 +939,11 @@ Public Class Database
                     End While
                 End Using
             End Using
+
+            'embedded subtitles
+            _movieDB.Subtitles = New List(Of MediaInfo.Subtitle)
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path FROM MoviesSubs WHERE MovieID = ", MovieID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path FROM MoviesSubs WHERE MovieID = ", MovieID, " AND NOT Subs_Type = 'External';")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim subtitle As MediaInfo.Subtitle
                     While SQLreader.Read
@@ -952,6 +953,22 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
                         If Not DBNull.Value.Equals(SQLreader("Subs_Path")) Then subtitle.SubsPath = SQLreader("Subs_Path").ToString
                         _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Add(subtitle)
+                    End While
+                End Using
+            End Using
+
+            'external subtitles
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path FROM MoviesSubs WHERE MovieID = ", MovieID, " AND Subs_Type = 'External';")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim subtitle As MediaInfo.Subtitle
+                    While SQLreader.Read
+                        subtitle = New MediaInfo.Subtitle
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Path")) Then subtitle.SubsPath = SQLreader("Subs_Path").ToString
+                        _movieDB.Subtitles.Add(subtitle)
                     End While
                 End Using
             End Using
@@ -1710,7 +1727,7 @@ Public Class Database
                 parHasLandscape.Value = Not String.IsNullOrEmpty(_movieDB.LandscapePath)
                 parHasNfo.Value = Not String.IsNullOrEmpty(_movieDB.NfoPath)
                 parHasPoster.Value = Not String.IsNullOrEmpty(_movieDB.PosterPath)
-                parHasSub.Value = Not String.IsNullOrEmpty(_movieDB.SubPath)
+                parHasSub.Value = _movieDB.Subtitles.Count > 0 OrElse _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
                 parHasTheme.Value = Not String.IsNullOrEmpty(_movieDB.ThemePath)
                 parHasTrailer.Value = Not String.IsNullOrEmpty(_movieDB.TrailerPath)
                 parHasWatched.Value = Not String.IsNullOrEmpty(_movieDB.Movie.PlayCount) AndAlso Not _movieDB.Movie.PlayCount = "0"
@@ -1885,6 +1902,8 @@ Public Class Database
                             SQLcommandMoviesAStreams.ExecuteNonQuery()
                         Next
                     End Using
+
+                    'subtitles
                     Using SQLcommandMoviesSubs As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                         SQLcommandMoviesSubs.CommandText = String.Concat("DELETE FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, ";")
                         SQLcommandMoviesSubs.ExecuteNonQuery()
@@ -1898,16 +1917,56 @@ Public Class Database
                         Dim parSubs_LongLanguage As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_LongLanguage", DbType.String, 0, "Subs_LongLanguage")
                         Dim parSubs_Type As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Type", DbType.String, 0, "Subs_Type")
                         Dim parSubs_Path As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Path", DbType.String, 0, "Subs_Path")
+                        Dim iID As Integer = 0
+                        'embedded subtitles
                         For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
                             parSubs_MovieID.Value = _movieDB.ID
-                            parSubs_StreamID.Value = i
+                            parSubs_StreamID.Value = iID
                             parSubs_Language.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).Language
                             parSubs_LongLanguage.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).LongLanguage
                             parSubs_Type.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsType
                             parSubs_Path.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsPath
                             SQLcommandMoviesSubs.ExecuteNonQuery()
+                            iID += 1
+                        Next
+                        'external subtitles
+                        For i As Integer = 0 To _movieDB.Subtitles.Count - 1
+                            parSubs_MovieID.Value = _movieDB.ID
+                            parSubs_StreamID.Value = iID
+                            parSubs_Language.Value = _movieDB.Subtitles(i).Language
+                            parSubs_LongLanguage.Value = _movieDB.Subtitles(i).LongLanguage
+                            parSubs_Type.Value = _movieDB.Subtitles(i).SubsType
+                            parSubs_Path.Value = _movieDB.Subtitles(i).SubsPath
+                            SQLcommandMoviesSubs.ExecuteNonQuery()
+                            iID += 1
                         Next
                     End Using
+
+                    ''embedded subtitles
+                    'Using SQLcommandMoviesSubs As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    '    SQLcommandMoviesSubs.CommandText = String.Concat("DELETE FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, ";")
+                    '    SQLcommandMoviesSubs.ExecuteNonQuery()
+
+                    '    SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSubs (", _
+                    '       "MovieID, StreamID, Subs_Language, Subs_LongLanguage,Subs_Type, Subs_Path", _
+                    '       ") VALUES (?,?,?,?,?,?);")
+                    '    Dim parSubs_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.UInt64, 0, "MovieID")
+                    '    Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
+                    '    Dim parSubs_Language As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "Subs_Language")
+                    '    Dim parSubs_LongLanguage As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_LongLanguage", DbType.String, 0, "Subs_LongLanguage")
+                    '    Dim parSubs_Type As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Type", DbType.String, 0, "Subs_Type")
+                    '    Dim parSubs_Path As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Path", DbType.String, 0, "Subs_Path")
+                    '    For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
+                    '        parSubs_MovieID.Value = _movieDB.ID
+                    '        parSubs_StreamID.Value = i
+                    '        parSubs_Language.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).Language
+                    '        parSubs_LongLanguage.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).LongLanguage
+                    '        parSubs_Type.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsType
+                    '        parSubs_Path.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsPath
+                    '        SQLcommandMoviesSubs.ExecuteNonQuery()
+                    '    Next
+                    'End Using
+
                     ' For what i understand this is used from Poster/Fanart Modules... will not be read/wrtire directly when load/save Movie
                     Using SQLcommandMoviesPosters As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                         SQLcommandMoviesPosters.CommandText = String.Concat("DELETE FROM MoviesPosters WHERE MovieID = ", _movieDB.ID, ";")

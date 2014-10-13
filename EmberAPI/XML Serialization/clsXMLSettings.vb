@@ -28,6 +28,7 @@ Partial Public Class clsXMLSettings
     Private _filesystemexpertcleaner As Boolean
     Private _filesystemnostackexts As List(Of String)
     Private _filesystemvalidexts As List(Of String)
+    Private _filesystemvalidsubtitlesexts As List(Of String)
     Private _filesystemvalidthemeexts As List(Of String)
     Private _generalcheckupdates As Boolean
     Private _generaldateaddedignorenfo As Boolean
@@ -4858,6 +4859,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As List(Of String))
             Me._filesystemvalidexts = value
+        End Set
+    End Property
+
+    Public Property FileSystemValidSubtitlesExts() As List(Of String)
+        Get
+            Return Me._filesystemvalidsubtitlesexts
+        End Get
+        Set(ByVal value As List(Of String))
+            Me._filesystemvalidsubtitlesexts = value
         End Set
     End Property
 

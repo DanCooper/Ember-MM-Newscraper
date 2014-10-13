@@ -581,6 +581,19 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub btnFileSystemValidSubtitlesExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidSubtitlesExtsAdd.Click
+        If Not String.IsNullOrEmpty(txtFileSystemValidSubtitlesExts.Text) Then
+            If Not Strings.Left(txtFileSystemValidSubtitlesExts.Text, 1) = "." Then txtFileSystemValidSubtitlesExts.Text = String.Concat(".", txtFileSystemValidSubtitlesExts.Text)
+            If Not lstFileSystemValidSubtitlesExts.Items.Contains(txtFileSystemValidSubtitlesExts.Text.ToLower) Then
+                lstFileSystemValidSubtitlesExts.Items.Add(txtFileSystemValidSubtitlesExts.Text.ToLower)
+                Me.SetApplyButton(True)
+                Me.sResult.NeedsUpdate = True
+                txtFileSystemValidSubtitlesExts.Text = String.Empty
+                txtFileSystemValidSubtitlesExts.Focus()
+            End If
+        End If
+    End Sub
+
     Private Sub btnFileSystemValidThemeExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemValidThemeExts.Text) Then
             If Not Strings.Left(txtFileSystemValidThemeExts.Text, 1) = "." Then txtFileSystemValidThemeExts.Text = String.Concat(".", txtFileSystemValidThemeExts.Text)
@@ -1036,6 +1049,14 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click, btnFileSystemValidExtsReset.Click
+        If MsgBox(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidSubtitleExts, True)
+            Me.RefreshFileSystemValidSubtitlesExts()
+            Me.SetApplyButton(True)
+        End If
+    End Sub
+
     Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
         If MsgBox(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidThemeExts, True)
@@ -1068,6 +1089,10 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidExtsRemove.Click
         Me.RemoveFileSystemValidExts()
+    End Sub
+
+    Private Sub btnFileSystemValidSubtitlesExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidSubtitlesExtsRemove.Click
+        Me.RemoveFileSystemValidSubtitlesExts()
     End Sub
 
     Private Sub btnFileSystemValidThemeExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsRemove.Click
@@ -3676,6 +3701,7 @@ Public Class dlgSettings
                 Me.RefreshMovieFilters()
                 Me.RefreshFileSystemExcludeDirs()
                 Me.RefreshFileSystemValidExts()
+                Me.RefreshFileSystemValidSubtitlesExts()
                 Me.RefreshFileSystemValidThemeExts()
 
                 '***************************************************
@@ -4340,6 +4366,10 @@ Public Class dlgSettings
         If e.KeyCode = Keys.Delete Then Me.RemoveFileSystemValidExts()
     End Sub
 
+    Private Sub lstFileSystemValidSubtitlesExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemValidSubtitlesExts.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveFileSystemValidSubtitlesExts()
+    End Sub
+
     Private Sub lstFileSystemValidThemeExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemValidThemeExts.KeyDown
         If e.KeyCode = Keys.Delete Then Me.RemoveFileSystemValidThemeExts()
     End Sub
@@ -4522,6 +4552,11 @@ Public Class dlgSettings
         Me.lstFileSystemValidExts.Items.AddRange(Master.eSettings.FileSystemValidExts.ToArray)
     End Sub
 
+    Private Sub RefreshFileSystemValidSubtitlesExts()
+        Me.lstFileSystemValidSubtitlesExts.Items.Clear()
+        Me.lstFileSystemValidSubtitlesExts.Items.AddRange(Master.eSettings.FileSystemValidSubtitlesExts.ToArray)
+    End Sub
+
     Private Sub RefreshFileSystemValidThemeExts()
         Me.lstFileSystemValidThemeExts.Items.Clear()
         Me.lstFileSystemValidThemeExts.Items.AddRange(Master.eSettings.FileSystemValidThemeExts.ToArray)
@@ -4570,6 +4605,16 @@ Public Class dlgSettings
         If lstFileSystemValidExts.Items.Count > 0 AndAlso lstFileSystemValidExts.SelectedItems.Count > 0 Then
             While Me.lstFileSystemValidExts.SelectedItems.Count > 0
                 Me.lstFileSystemValidExts.Items.Remove(Me.lstFileSystemValidExts.SelectedItems(0))
+            End While
+            Me.SetApplyButton(True)
+            Me.sResult.NeedsUpdate = True
+        End If
+    End Sub
+
+    Private Sub RemoveFileSystemValidSubtitlesExts()
+        If lstFileSystemValidSubtitlesExts.Items.Count > 0 AndAlso lstFileSystemValidSubtitlesExts.SelectedItems.Count > 0 Then
+            While Me.lstFileSystemValidSubtitlesExts.SelectedItems.Count > 0
+                Me.lstFileSystemValidSubtitlesExts.Items.Remove(Me.lstFileSystemValidSubtitlesExts.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
             Me.sResult.NeedsUpdate = True
@@ -4752,6 +4797,8 @@ Public Class dlgSettings
                 .FileSystemNoStackExts.AddRange(lstFileSystemNoStackExts.Items.OfType(Of String).ToList)
                 .FileSystemValidExts.Clear()
                 .FileSystemValidExts.AddRange(lstFileSystemValidExts.Items.OfType(Of String).ToList)
+                .FileSystemValidSubtitlesExts.Clear()
+                .FileSystemValidSubtitlesExts.AddRange(lstFileSystemValidSubtitlesExts.Items.OfType(Of String).ToList)
                 .FileSystemValidThemeExts.Clear()
                 .FileSystemValidThemeExts.AddRange(lstFileSystemValidThemeExts.Items.OfType(Of String).ToList)
                 .RestartScraper = Me.chkGeneralResumeScraper.Checked
@@ -5844,6 +5891,7 @@ Public Class dlgSettings
         Me.gbFileSystemCleanFiles.Text = Master.eLang.GetString(437, "Clean Files")
         Me.gbFileSystemNoStackExts.Text = Master.eLang.GetString(530, "No Stack Extensions")
         Me.gbFileSystemValidExts.Text = Master.eLang.GetString(534, "Valid Video Extensions")
+        Me.gbFileSystemValidSubtitlesExts.Text = Master.eLang.GetString(1284, "Valid Subtitles Extensions")
         Me.gbFileSystemValidThemeExts.Text = Master.eLang.GetString(1081, "Valid Theme Extensions")
         Me.gbGeneralDaemon.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
         Me.gbGeneralInterface.Text = Master.eLang.GetString(795, "Interface")
@@ -7891,4 +7939,5 @@ Public Class dlgSettings
     End Sub
 
 #End Region 'Methods
+
 End Class

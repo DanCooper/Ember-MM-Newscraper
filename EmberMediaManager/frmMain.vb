@@ -10410,7 +10410,8 @@ doCancel:
                                     Master.currMovie.NfoPath = sFile.Nfo
                                     Master.currMovie.PosterPath = sFile.Poster
                                     Master.currMovie.Source = sFile.Source
-                                    Master.currMovie.SubPath = sFile.Subs
+                                    Master.currMovie.Subtitles = sFile.Subs
+                                    'Master.currMovie.SubPath = sFile.Subs
                                     Master.currMovie.ThemePath = sFile.Theme
                                     Master.currMovie.TrailerPath = sFile.Trailer
                                     Master.currMovie.UseFolder = sFile.UseFolder
@@ -14047,13 +14048,13 @@ doCancel:
                     Else
                         tmpMovie = NFO.LoadMovieFromNFO(tmpMovieDB.NfoPath, tmpMovieDB.IsSingle)
                     End If
-                    'subsType and subsPath not in NFO , try to load it from DB
-                    For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1
-                        If tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 AndAlso Not tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x) Is Nothing AndAlso tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).Language = tmpMovie.FileInfo.StreamDetails.Subtitle(x).Language Then
-                            tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsType = tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).SubsType
-                            tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsPath = tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).SubsPath
-                        End If
-                    Next
+                    ''subsType and subsPath not in NFO , try to load it from DB
+                    'For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1
+                    '    If tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 AndAlso Not tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x) Is Nothing AndAlso tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).Language = tmpMovie.FileInfo.StreamDetails.Subtitle(x).Language Then
+                    '        tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsType = tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).SubsType
+                    '        tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsPath = tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).SubsPath
+                    '    End If
+                    'Next
                     tmpMovieDB.Movie = tmpMovie
                 End If
 
@@ -14128,7 +14129,7 @@ doCancel:
                 tmpMovieDB.LandscapePath = mContainer.Landscape
                 tmpMovieDB.NfoPath = If(String.IsNullOrEmpty(tmpMovieDB.Movie.Title), String.Empty, mContainer.Nfo) 'assume invalid nfo if no title
                 tmpMovieDB.PosterPath = mContainer.Poster
-                tmpMovieDB.SubPath = mContainer.Subs
+                tmpMovieDB.Subtitles = mContainer.Subs
                 tmpMovieDB.ThemePath = mContainer.Theme
                 tmpMovieDB.TrailerPath = mContainer.Trailer
 
@@ -14142,7 +14143,7 @@ doCancel:
                 hasLandscape = Not String.IsNullOrEmpty(mContainer.Landscape)
                 hasNfo = Not String.IsNullOrEmpty(tmpMovieDB.NfoPath)
                 hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
-                hasSub = Not String.IsNullOrEmpty(mContainer.Subs)
+                hasSub = mContainer.Subs.Count > 0 OrElse tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
                 hasTheme = Not String.IsNullOrEmpty(mContainer.Theme)
                 hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
                 hasWatched = Not String.IsNullOrEmpty(tmpMovieDB.Movie.PlayCount) AndAlso Not tmpMovieDB.Movie.PlayCount = "0"

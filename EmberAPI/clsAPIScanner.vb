@@ -209,6 +209,7 @@ Public Class Scanner
         Dim currname As String = String.Empty
         Dim efList As New List(Of String)   'extrafanart list
         Dim etList As New List(Of String)   'extrathumbs list
+        Dim sList As New List(Of String)    'external subtitles files list
         Dim tList As New List(Of String)    'theme files list
         Dim fList As New List(Of String)    'all other files list
         Dim fName As String = String.Empty
@@ -269,6 +270,11 @@ Public Class Scanner
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EThumbs)
                     If Directory.Exists(a) Then
                         etList.AddRange(Directory.GetFiles(a))
+                    End If
+                Next
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Subtitle)
+                    If Directory.Exists(a) Then
+                        sList.AddRange(Directory.GetFiles(a))
                     End If
                 Next
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Theme)
@@ -340,6 +346,14 @@ Public Class Scanner
                 Next
             End If
 
+            'nfo
+            If String.IsNullOrEmpty(Movie.Nfo) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.NFO)
+                    Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+                Next
+            End If
+
             'poster
             If String.IsNullOrEmpty(Movie.Poster) Then
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Poster)
@@ -348,13 +362,12 @@ Public Class Scanner
                 Next
             End If
 
-            'nfo
-            If String.IsNullOrEmpty(Movie.Nfo) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.NFO)
-                    Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+            'subtitles (external)
+            For Each fFile As String In sList
+                For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
+                    If fFile.ToLower.EndsWith(ext) Then Movie.Subs.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External"})
                 Next
-            End If
+            Next
 
             'theme
             If String.IsNullOrEmpty(Movie.Theme) Then
@@ -378,18 +391,6 @@ Public Class Scanner
                 Next
             End If
 
-            For Each fFile As String In fList
-                'subs
-                If String.IsNullOrEmpty(Movie.Subs) Then
-                    If Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(filePath), clsAdvancedSettings.GetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")), RegexOptions.IgnoreCase) OrElse _
-                                Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(filePathStack), clsAdvancedSettings.GetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")), RegexOptions.IgnoreCase) Then
-                        Movie.Subs = fFile
-                        Continue For
-                    End If
-                End If
-                If Not String.IsNullOrEmpty(Movie.Subs) Then Exit For
-            Next
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -397,6 +398,7 @@ Public Class Scanner
         efList = Nothing
         etList = Nothing
         fList = Nothing
+        sList = Nothing
     End Sub
 
     ''' <summary>
@@ -911,7 +913,8 @@ Public Class Scanner
                 tmpMovieDB.NfoPath = mContainer.Nfo
                 tmpMovieDB.PosterPath = mContainer.Poster
                 tmpMovieDB.Source = mContainer.Source
-                tmpMovieDB.SubPath = mContainer.Subs
+                tmpMovieDB.Subtitles = mContainer.Subs
+                'tmpMovieDB.SubPath = mContainer.Subs
                 tmpMovieDB.ThemePath = mContainer.Theme
                 tmpMovieDB.TrailerPath = mContainer.Trailer
                 tmpMovieDB.UseFolder = mContainer.UseFolder
@@ -1707,7 +1710,7 @@ Public Class Scanner
         Private _poster As String
         Private _single As Boolean
         Private _source As String
-        Private _subs As String
+        Private _subs As List(Of MediaInfo.Subtitle)
         Private _theme As String
         Private _trailer As String
         Private _usefolder As Boolean
@@ -1841,11 +1844,11 @@ Public Class Scanner
             End Set
         End Property
 
-        Public Property Subs() As String
+        Public Property Subs() As List(Of MediaInfo.Subtitle)
             Get
                 Return _subs
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As List(Of MediaInfo.Subtitle))
                 _subs = value
             End Set
         End Property
@@ -1886,19 +1889,19 @@ Public Class Scanner
             _clearart = String.Empty
             _clearlogo = String.Empty
             _discart = String.Empty
-            _filename = String.Empty
-            _source = String.Empty
-            _single = False
-            _usefolder = False
-            _landscape = String.Empty
-            _poster = String.Empty
-            _fanart = String.Empty
-            _nfo = String.Empty
-            _ethumbs = String.Empty
             _efanarts = String.Empty
+            _ethumbs = String.Empty
+            _fanart = String.Empty
+            _filename = String.Empty
+            _landscape = String.Empty
+            _nfo = String.Empty
+            _poster = String.Empty
+            _single = False
+            _source = String.Empty
+            _subs = New List(Of MediaInfo.Subtitle)
             _theme = String.Empty
             _trailer = String.Empty
-            _subs = String.Empty
+            _usefolder = False
         End Sub
 
 #End Region 'Methods
