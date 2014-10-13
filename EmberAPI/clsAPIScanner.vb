@@ -234,30 +234,6 @@ Public Class Scanner
                     End If
                 Catch
                 End Try
-
-                If Movie.isSingle Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EFanarts)
-                        If Directory.Exists(a) Then
-                            efList.AddRange(Directory.GetFiles(a))
-                        End If
-                    Next
-                End If
-
-                If Movie.isSingle Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EThumbs)
-                        If Directory.Exists(a) Then
-                            etList.AddRange(Directory.GetFiles(a))
-                        End If
-                    Next
-                End If
-
-                If Movie.isSingle Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Theme)
-                        If Directory.Exists(Directory.GetParent(a).FullName) Then
-                            tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
-                        End If
-                    Next
-                End If
             ElseIf FileUtils.Common.isBDRip(Movie.Filename) Then
                 parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).FullName
 
@@ -269,30 +245,6 @@ Public Class Scanner
                     End If
                 Catch
                 End Try
-
-                If Movie.isSingle Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EFanarts)
-                        If Directory.Exists(a) Then
-                            efList.AddRange(Directory.GetFiles(a))
-                        End If
-                    Next
-                End If
-
-                If Movie.isSingle Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EThumbs)
-                        If Directory.Exists(a) Then
-                            etList.AddRange(Directory.GetFiles(a))
-                        End If
-                    Next
-                End If
-
-                If Movie.isSingle Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Theme)
-                        If Directory.Exists(Directory.GetParent(a).FullName) Then
-                            tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
-                        End If
-                    Next
-                End If
             Else
                 parPath = Directory.GetParent(Movie.Filename).FullName
 
@@ -305,30 +257,25 @@ Public Class Scanner
                     Catch
                     End Try
                 End If
+            End If
 
-                If Movie.isSingle Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EFanarts)
-                        If Directory.Exists(a) Then
-                            efList.AddRange(Directory.GetFiles(a))
-                        End If
-                    Next
-                End If
-
-                If Movie.isSingle Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EThumbs)
-                        If Directory.Exists(a) Then
-                            etList.AddRange(Directory.GetFiles(a))
-                        End If
-                    Next
-                End If
-
-                If Movie.isSingle Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Theme)
-                        If Directory.Exists(Directory.GetParent(a).FullName) Then
-                            tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
-                        End If
-                    Next
-                End If
+            'secondly add files from special folders to filelists
+            If Movie.isSingle Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EFanarts)
+                    If Directory.Exists(a) Then
+                        efList.AddRange(Directory.GetFiles(a))
+                    End If
+                Next
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EThumbs)
+                    If Directory.Exists(a) Then
+                        etList.AddRange(Directory.GetFiles(a))
+                    End If
+                Next
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Theme)
+                    If Directory.Exists(Directory.GetParent(a).FullName) Then
+                        tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
+                    End If
+                Next
             End If
 
             'banner

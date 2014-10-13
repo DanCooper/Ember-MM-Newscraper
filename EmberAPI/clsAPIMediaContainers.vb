@@ -671,7 +671,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property LCountrySpecified() As Boolean
             Get
-                Return (_countries.Count > 0)
+                Return Me._countries.Count > 0
             End Get
         End Property
 
@@ -785,7 +785,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property LGenreSpecified() As Boolean
             Get
-                Return (_genres.Count > 0)
+                Return Me._genres.Count > 0
             End Get
         End Property
 
@@ -865,7 +865,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property DirectorSpecified() As Boolean
             Get
-                Return (_directors.Count > 0)
+                Return Me._directors.Count > 0
             End Get
         End Property
 
@@ -899,7 +899,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property CreditsSpecified() As Boolean
             Get
-                Return (_credits.Count > 0)
+                Return Me._credits.Count > 0
             End Get
         End Property
 
@@ -1144,7 +1144,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property YSetsSpecified() As Boolean
             Get
-                Return _ysets.Sets.Count > 0
+                Return Me._ysets.Sets.Count > 0
             End Get
         End Property
 

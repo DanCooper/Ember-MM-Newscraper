@@ -1061,19 +1061,33 @@ Public Class MediaInfo
 
 #Region "Fields"
 
+        Private _bitrate As String = String.Empty
         Private _channels As String = String.Empty
         Private _codec As String = String.Empty
         Private _haspreferred As Boolean = False
         Private _language As String = String.Empty
         Private _longlanguage As String = String.Empty
 
-        'cocotus, 2013/02 Added support for new MediaInfo-fields
-        Private _bitrate As String = String.Empty
-        'cocotus end
-
 #End Region 'Fields
 
 #Region "Properties"
+
+        <XmlElement("bitrate")> _
+        Public Property Bitrate() As String
+            Get
+                Return Me._bitrate.Trim()
+            End Get
+            Set(ByVal Value As String)
+                Me._bitrate = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property BitrateSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._bitrate)
+            End Get
+        End Property
 
         <XmlElement("channels")> _
         Public Property Channels() As String
@@ -1088,7 +1102,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property ChannelsSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Channels)
+                Return Not String.IsNullOrEmpty(Me._channels)
             End Get
         End Property
 
@@ -1105,7 +1119,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Codec)
+                Return Not String.IsNullOrEmpty(Me._codec)
             End Get
         End Property
 
@@ -1132,7 +1146,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Language)
+                Return Not String.IsNullOrEmpty(Me._language)
             End Get
         End Property
 
@@ -1149,22 +1163,9 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(LongLanguage)
+                Return Not String.IsNullOrEmpty(Me._longlanguage)
             End Get
         End Property
-
-        'cocotus, 2013/02 Added support for new MediaInfo-fields
-        'add GETTER/Setter for new fields here..
-        <XmlElement("bitrate")> _
-        Public Property Bitrate() As String
-            Get
-                Return Me._bitrate.Trim()
-            End Get
-            Set(ByVal Value As String)
-                Me._bitrate = Value
-            End Set
-        End Property
-        'end cocotus
 
 #End Region 'Properties
 
@@ -1182,15 +1183,6 @@ Public Class MediaInfo
 
 #Region "Properties"
 
-        <XmlIgnore> _
-        Public ReadOnly Property StreamDetailsSpecified() As Boolean
-            Get
-                Return (Not IsNothing(_streamdetails.Video) AndAlso _streamdetails.Video.Count > 0) OrElse _
-                (Not IsNothing(_streamdetails.Audio) AndAlso _streamdetails.Audio.Count > 0) OrElse _
-                (Not IsNothing(_streamdetails.Subtitle) AndAlso _streamdetails.Subtitle.Count > 0)
-            End Get
-        End Property
-
         <XmlElement("streamdetails")> _
         Property StreamDetails() As StreamData
             Get
@@ -1199,6 +1191,15 @@ Public Class MediaInfo
             Set(ByVal value As StreamData)
                 _streamdetails = value
             End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property StreamDetailsSpecified() As Boolean
+            Get
+                Return (Not IsNothing(_streamdetails.Video) AndAlso _streamdetails.Video.Count > 0) OrElse _
+                (Not IsNothing(_streamdetails.Audio) AndAlso _streamdetails.Audio.Count > 0) OrElse _
+                (Not IsNothing(_streamdetails.Subtitle) AndAlso _streamdetails.Subtitle.Count > 0)
+            End Get
         End Property
 
 #End Region 'Properties
@@ -1322,7 +1323,7 @@ Public Class MediaInfo
             End Get
         End Property
 
-        <XmlIgnore> _
+        <XmlElement("path")> _
         Public Property SubsPath() As String
             Get
                 Return _subs_path
@@ -1333,6 +1334,13 @@ Public Class MediaInfo
         End Property
 
         <XmlIgnore> _
+        Public ReadOnly Property SubsPathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._subs_path)
+            End Get
+        End Property
+
+        <XmlElement("type")> _
         Public Property SubsType() As String
             Get
                 Return _subs_type
@@ -1340,6 +1348,13 @@ Public Class MediaInfo
             Set(ByVal value As String)
                 _subs_type = value
             End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property SubsTypeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._subs_type)
+            End Get
         End Property
 
 #End Region 'Properties
@@ -1352,24 +1367,20 @@ Public Class MediaInfo
 #Region "Fields"
 
         Private _aspect As String = String.Empty
+        Private _bitrate As String = String.Empty
         Private _codec As String = String.Empty
         Private _duration As String = String.Empty
-        Private _durationinseconds As String = String.Empty
+        Private _encoded_Settings As String = String.Empty
         Private _height As String = String.Empty
         Private _language As String = String.Empty
         Private _longlanguage As String = String.Empty
-        Private _scantype As String = String.Empty
-        Private _width As String = String.Empty
-
-        'cocotus, 2013/02 Added support for new MediaInfo-fields
-        Private _bitrate As String = String.Empty
         Private _multiview_count As String = String.Empty
         Private _multiview_layout As String = String.Empty
-        Private _encoded_Settings As String = String.Empty
-        'cocotus end
-
+        Private _scantype As String = String.Empty
         'XBMC multiview layout type (http://wiki.xbmc.org/index.php?title=3D)
         Private _stereomode As String = String.Empty
+        Private _width As String = String.Empty
+
 
 #End Region 'Fields
 
@@ -1388,7 +1399,24 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property AspectSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Aspect)
+                Return Not String.IsNullOrEmpty(Me._aspect)
+            End Get
+        End Property
+
+        <XmlElement("bitrate")> _
+        Public Property Bitrate() As String
+            Get
+                Return Me._bitrate.Trim()
+            End Get
+            Set(ByVal Value As String)
+                Me._bitrate = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property BitrateSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._bitrate)
             End Get
         End Property
 
@@ -1405,7 +1433,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Codec)
+                Return Not String.IsNullOrEmpty(Me._codec)
             End Get
         End Property
 
@@ -1422,7 +1450,24 @@ Public Class MediaInfo
         <XmlIgnore()> _
         Public ReadOnly Property DurationSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Duration)
+                Return Not String.IsNullOrEmpty(Me._duration)
+            End Get
+        End Property
+
+        <XmlElement("encodedsettings")> _
+        Public Property EncodedSettings() As String
+            Get
+                Return Me._encoded_Settings.Trim()
+            End Get
+            Set(ByVal Value As String)
+                Me._encoded_Settings = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property EncodedSettingsSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._encoded_Settings)
             End Get
         End Property
 
@@ -1439,7 +1484,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property HeightSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Height)
+                Return Not String.IsNullOrEmpty(Me._height)
             End Get
         End Property
 
@@ -1456,7 +1501,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Language)
+                Return Not String.IsNullOrEmpty(Me._language)
             End Get
         End Property
 
@@ -1473,7 +1518,41 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(LongLanguage)
+                Return Not String.IsNullOrEmpty(Me._longlanguage)
+            End Get
+        End Property
+
+        <XmlElement("multiview_count")> _
+        Public Property MultiViewCount() As String
+            Get
+                Return Me._multiview_count.Trim()
+            End Get
+            Set(ByVal Value As String)
+                Me._multiview_count = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property MultiViewCountSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._multiview_count)
+            End Get
+        End Property
+
+        <XmlElement("multiview_layout")> _
+        Public Property MultiViewLayout() As String
+            Get
+                Return Me._multiview_layout.Trim()
+            End Get
+            Set(ByVal Value As String)
+                Me._multiview_layout = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property MultiViewLayoutSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._multiview_layout)
             End Get
         End Property
 
@@ -1490,7 +1569,24 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property ScantypeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Scantype)
+                Return Not String.IsNullOrEmpty(Me._scantype)
+            End Get
+        End Property
+
+        <XmlElement("stereomode")> _
+        Public Property StereoMode() As String
+            Get
+                Return Me._stereomode.Trim()
+            End Get
+            Set(ByVal Value As String)
+                Me._stereomode = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property StereoModeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._stereomode)
             End Get
         End Property
 
@@ -1507,67 +1603,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property WidthSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Width)
-            End Get
-        End Property
-
-        'cocotus, 2013/02 Added support for new MediaInfo-fields
-        'add GETTER/Setter for new fields here..
-
-        <XmlElement("bitrate")> _
-        Public Property Bitrate() As String
-            Get
-                Return Me._bitrate.Trim()
-            End Get
-            Set(ByVal Value As String)
-                Me._bitrate = Value
-            End Set
-        End Property
-
-        <XmlElement("multiview_count")> _
-        Public Property MultiViewCount() As String
-            Get
-                Return Me._multiview_count.Trim()
-            End Get
-            Set(ByVal Value As String)
-                Me._multiview_count = Value
-            End Set
-        End Property
-
-        <XmlElement("multiview_layout")> _
-        Public Property MultiViewLayout() As String
-            Get
-                Return Me._multiview_layout.Trim()
-            End Get
-            Set(ByVal Value As String)
-                Me._multiview_layout = Value
-            End Set
-        End Property
-        <XmlElement("encodedsettings")> _
-        Public Property EncodedSettings() As String
-            Get
-                Return Me._encoded_Settings.Trim()
-            End Get
-            Set(ByVal Value As String)
-                Me._encoded_Settings = Value
-            End Set
-        End Property
-        'cocotus end
-
-        <XmlElement("stereomode")> _
-        Public Property StereoMode() As String
-            Get
-                Return Me._stereomode.Trim()
-            End Get
-            Set(ByVal Value As String)
-                Me._stereomode = Value
-            End Set
-        End Property
-
-        <XmlIgnore> _
-        Public ReadOnly Property StereoModeSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(StereoMode)
+                Return Not String.IsNullOrEmpty(Me._width)
             End Get
         End Property
 
