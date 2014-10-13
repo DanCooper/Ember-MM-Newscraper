@@ -58,7 +58,6 @@ Public Class dlgEditMovie
     Private EThumbsList As New List(Of ExtraImages)
     Private EThumbsExtractor As New List(Of String)
     Private EThumbsWarning As Boolean = True
-    Private hasClearedET As Boolean = False
     Private iETCounter As Integer = 0
     Private iETLeft As Integer = 1
     Private iETTop As Integer = 1
@@ -71,7 +70,6 @@ Public Class dlgEditMovie
     Private EFanartsList As New List(Of ExtraImages)
     Private EFanartsExtractor As New List(Of String)
     Private EFanartsWarning As Boolean = True
-    Private hasClearedEF As Boolean = False
     Private iEFCounter As Integer = 0
     Private iEFLeft As Integer = 1
     Private iEFTop As Integer = 1
@@ -1391,11 +1389,151 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub bwEThumbs_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwEThumbs.DoWork
-        If Not Master.currMovie.RemoveEThumbs OrElse hasClearedET Then LoadEThumbs()
+        Dim ET_lFI As New List(Of String)
+        Dim ET_i As Integer = 0
+        Dim ET_max As Integer = 30 'limited the number of images to avoid a memory error
+
+        Try
+            ' load local Extrathumbs
+            If Not Master.currMovie.RemoveEThumbs Then
+                For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EThumbs)
+                    If Directory.Exists(a) Then
+                        ET_lFI.AddRange(Directory.GetFiles(a, "thumb*.jpg"))
+                        If ET_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
+                    End If
+                Next
+
+                If ET_lFI.Count > 0 Then
+                    For Each thumb As String In ET_lFI
+                        Dim ETImage As New Images
+                        If Me.bwEThumbs.CancellationPending Then Return
+                        If Not Me.etDeleteList.Contains(thumb) Then
+                            ETImage.FromFile(thumb)
+                            EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
+                            ET_i += 1
+                            If ET_i >= ET_max Then Exit For
+                        End If
+                    Next
+                End If
+            End If
+
+            ' load scraped Extrathumbs
+            If Not Master.currMovie.etList Is Nothing Then
+                If Not ET_i >= ET_max Then
+                    For Each thumb As String In Master.currMovie.etList
+                        Dim ETImage As New Images
+                        If Not String.IsNullOrEmpty(thumb) Then
+                            ETImage.FromWeb(thumb.Substring(1, thumb.Length - 1))
+                        End If
+                        If Not IsNothing(ETImage.Image) Then
+                            EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
+                            ET_i += 1
+                            If ET_i >= ET_max Then Exit For
+                        End If
+                    Next
+                End If
+            End If
+
+            'load MovieExtractor Extrathumbs
+            If EThumbsExtractor.Count > 0 Then
+                If Not ET_i >= ET_max Then
+                    For Each thumb As String In EThumbsExtractor
+                        Dim ETImage As New Images
+                        If Me.bwEThumbs.CancellationPending Then Return
+                        If Not Me.etDeleteList.Contains(thumb) Then
+                            ETImage.FromFile(thumb)
+                            EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
+                            ET_i += 1
+                            If ET_i >= ET_max Then Exit For
+                        End If
+                    Next
+                End If
+            End If
+
+            If ET_i >= ET_max AndAlso EThumbsWarning Then
+                MsgBox(String.Format(Master.eLang.GetString(1120, "To prevent a memory overflow will not display more than {0} Extrathumbs."), ET_max), MsgBoxStyle.OkOnly, Master.eLang.GetString(356, "Warning"))
+                EThumbsWarning = False 'show warning only one time
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        ET_lFI = Nothing
     End Sub
 
     Private Sub bwEFanarts_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwEFanarts.DoWork
-        If Not Master.currMovie.RemoveEFanarts OrElse hasClearedEF Then LoadEFanarts()
+        Dim EF_lFI As New List(Of String)
+        Dim EF_i As Integer = 0
+        Dim EF_max As Integer = 30 'limited the number of images to avoid a memory error
+
+        Try
+            ' load local Extrafanarts
+            If Not Master.currMovie.RemoveEFanarts Then
+                For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EFanarts)
+                    If Directory.Exists(a) Then
+                        EF_lFI.AddRange(Directory.GetFiles(a, "*.jpg"))
+                        If EF_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
+                    End If
+                Next
+
+                If EF_lFI.Count > 0 Then
+                    For Each fanart As String In EF_lFI
+                        Dim EFImage As New Images
+                        If Me.bwEFanarts.CancellationPending Then Return
+                        If Not Me.efDeleteList.Contains(fanart) Then
+                            EFImage.FromFile(fanart)
+                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
+                            EF_i += 1
+                            If EF_i >= EF_max Then Exit For
+                        End If
+                    Next
+                End If
+            End If
+
+            ' load scraped Extrafanarts
+            If Not Master.currMovie.efList Is Nothing Then
+                If Not EF_i >= EF_max Then
+                    For Each fanart As String In Master.currMovie.efList
+                        Dim EFImage As New Images
+                        If Not String.IsNullOrEmpty(fanart) Then
+                            EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
+                        End If
+                        If Not IsNothing(EFImage.Image) Then
+                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
+                            EF_i += 1
+                            If EF_i >= EF_max Then Exit For
+                        End If
+                    Next
+                End If
+            End If
+
+            'load MovieExtractor Extrafanarts
+            If EFanartsExtractor.Count > 0 Then
+                If Not EF_i >= EF_max Then
+                    For Each thumb As String In EFanartsExtractor
+                        Dim EFImage As New Images
+                        If Me.bwEThumbs.CancellationPending Then Return
+                        If Not Me.etDeleteList.Contains(thumb) Then
+                            EFImage.FromFile(thumb)
+                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(thumb), .Index = EF_i, .Path = thumb})
+                            EF_i += 1
+                            If EF_i >= EF_max Then Exit For
+                        End If
+                    Next
+                End If
+            End If
+
+            If EF_i >= EF_max AndAlso EFanartsWarning Then
+                MsgBox(String.Format(Master.eLang.GetString(1119, "To prevent a memory overflow will not display more than {0} Extrafanarts."), EF_max), MsgBoxStyle.OkOnly, Master.eLang.GetString(356, "Warning"))
+                EFanartsWarning = False 'show warning only one time
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        EF_lFI = Nothing
     End Sub
 
     Private Sub bwEThumbs_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwEThumbs.RunWorkerCompleted
@@ -2086,150 +2224,6 @@ Public Class dlgEditMovie
         Me.lbMPAA.Items.Add(Master.eLang.None)
 
         Me.lbMPAA.Items.AddRange(APIXML.GetRatingList)
-    End Sub
-
-    Private Sub LoadEThumbs()
-        Dim ET_lFI As New List(Of String)
-        Dim ET_i As Integer = 0
-        Dim ET_max As Integer = 30 'limited the number of images to avoid a memory error
-
-        Try
-            ' load local Extrathumbs
-            For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EThumbs)
-                If Directory.Exists(a) Then
-                    ET_lFI.AddRange(Directory.GetFiles(a, "thumb*.jpg"))
-                    If ET_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
-                End If
-            Next
-
-            If ET_lFI.Count > 0 Then
-                For Each thumb As String In ET_lFI
-                    Dim ETImage As New Images
-                    If Me.bwEThumbs.CancellationPending Then Return
-                    If Not Me.etDeleteList.Contains(thumb) Then
-                        ETImage.FromFile(thumb)
-                        EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
-                        ET_i += 1
-                        If ET_i >= ET_max Then Exit For
-                    End If
-                Next
-            End If
-
-            ' load scraped Extrathumbs
-            If Not Master.currMovie.etList Is Nothing Then
-                If Not ET_i >= ET_max Then
-                    For Each thumb As String In Master.currMovie.etList
-                        Dim ETImage As New Images
-                        If Not String.IsNullOrEmpty(thumb) Then
-                            ETImage.FromWeb(thumb.Substring(1, thumb.Length - 1))
-                        End If
-                        If Not IsNothing(ETImage.Image) Then
-                            EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
-                            ET_i += 1
-                            If ET_i >= ET_max Then Exit For
-                        End If
-                    Next
-                End If
-            End If
-
-            'load MovieExtractor Extrathumbs
-            If EThumbsExtractor.Count > 0 Then
-                If Not ET_i >= ET_max Then
-                    For Each thumb As String In EThumbsExtractor
-                        Dim ETImage As New Images
-                        If Me.bwEThumbs.CancellationPending Then Return
-                        If Not Me.etDeleteList.Contains(thumb) Then
-                            ETImage.FromFile(thumb)
-                            EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
-                            ET_i += 1
-                            If ET_i >= ET_max Then Exit For
-                        End If
-                    Next
-                End If
-            End If
-
-            If ET_i >= ET_max AndAlso EThumbsWarning Then
-                MsgBox(String.Format(Master.eLang.GetString(1120, "To prevent a memory overflow will not display more than {0} Extrathumbs."), ET_max), MsgBoxStyle.OkOnly, Master.eLang.GetString(356, "Warning"))
-                EThumbsWarning = False 'show warning only one time
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        ET_lFI = Nothing
-    End Sub
-
-    Private Sub LoadEFanarts()
-        Dim EF_lFI As New List(Of String)
-        Dim EF_i As Integer = 0
-        Dim EF_max As Integer = 30 'limited the number of images to avoid a memory error
-
-        Try
-            ' load local Extrafanarts
-            For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EFanarts)
-                If Directory.Exists(a) Then
-                    EF_lFI.AddRange(Directory.GetFiles(a, "*.jpg"))
-                    If EF_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
-                End If
-            Next
-
-            If EF_lFI.Count > 0 Then
-                For Each fanart As String In EF_lFI
-                    Dim EFImage As New Images
-                    If Me.bwEFanarts.CancellationPending Then Return
-                    If Not Me.efDeleteList.Contains(fanart) Then
-                        EFImage.FromFile(fanart)
-                        EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
-                        EF_i += 1
-                        If EF_i >= EF_max Then Exit For
-                    End If
-                Next
-            End If
-
-            ' load scraped Extrafanarts
-            If Not Master.currMovie.efList Is Nothing Then
-                If Not EF_i >= EF_max Then
-                    For Each fanart As String In Master.currMovie.efList
-                        Dim EFImage As New Images
-                        If Not String.IsNullOrEmpty(fanart) Then
-                            EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
-                        End If
-                        If Not IsNothing(EFImage.Image) Then
-                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
-                            EF_i += 1
-                            If EF_i >= EF_max Then Exit For
-                        End If
-                    Next
-                End If
-            End If
-
-            'load MovieExtractor Extrafanarts
-            If EFanartsExtractor.Count > 0 Then
-                If Not EF_i >= EF_max Then
-                    For Each thumb As String In EFanartsExtractor
-                        Dim EFImage As New Images
-                        If Me.bwEThumbs.CancellationPending Then Return
-                        If Not Me.etDeleteList.Contains(thumb) Then
-                            EFImage.FromFile(thumb)
-                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(thumb), .Index = EF_i, .Path = thumb})
-                            EF_i += 1
-                            If EF_i >= EF_max Then Exit For
-                        End If
-                    Next
-                End If
-            End If
-
-            If EF_i >= EF_max AndAlso EFanartsWarning Then
-                MsgBox(String.Format(Master.eLang.GetString(1119, "To prevent a memory overflow will not display more than {0} Extrafanarts."), EF_max), MsgBoxStyle.OkOnly, Master.eLang.GetString(356, "Warning"))
-                EFanartsWarning = False 'show warning only one time
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        EF_lFI = Nothing
     End Sub
 
     Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvActors.ColumnClick
@@ -2981,7 +2975,12 @@ Public Class dlgEditMovie
                 End If
 
                 If Master.currMovie.RemoveActorThumbs Then
-                    'TODO
+                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
+                        Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
+                        If Directory.Exists(tmpPath) Then
+                            FileUtils.Delete.DeleteDirectory(tmpPath)
+                        End If
+                    Next
                 End If
 
                 If Master.currMovie.RemoveBanner Then
