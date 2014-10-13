@@ -491,11 +491,10 @@ Partial Class dlgEditMovie
         'txtFileSource
         '
         Me.txtFileSource.BackColor = System.Drawing.SystemColors.Window
-        Me.txtFileSource.Enabled = False
         Me.txtFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtFileSource.Location = New System.Drawing.Point(692, 386)
+        Me.txtFileSource.Location = New System.Drawing.Point(691, 386)
         Me.txtFileSource.Name = "txtFileSource"
-        Me.txtFileSource.Size = New System.Drawing.Size(212, 22)
+        Me.txtFileSource.Size = New System.Drawing.Size(213, 22)
         Me.txtFileSource.TabIndex = 48
         '
         'lblFileSource
@@ -2002,7 +2001,7 @@ Partial Class dlgEditMovie
         Me.axVLCTrailer.Location = New System.Drawing.Point(6, 6)
         Me.axVLCTrailer.Name = "axVLCTrailer"
         Me.axVLCTrailer.OcxState = CType(resources.GetObject("axVLCTrailer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 449)
+        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 450)
         Me.axVLCTrailer.TabIndex = 9
         '
         'btnSetMovieTrailerDL
