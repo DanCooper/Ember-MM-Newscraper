@@ -365,7 +365,10 @@ Public Class Scanner
             'subtitles (external)
             For Each fFile As String In sList
                 For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
-                    If fFile.ToLower.EndsWith(ext) Then Movie.Subs.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External"})
+                    If fFile.ToLower.EndsWith(ext) Then
+                        Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
+                        Movie.Subs.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                    End If
                 Next
             Next
 
