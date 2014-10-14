@@ -39,9 +39,9 @@ Partial Public Class clsXMLSettings
     Private _generalfilterpanelstatemovie As Boolean
     Private _generalfilterpanelstatemovieset As Boolean
     Private _generalfilterpanelstateshow As Boolean
-    Private _generalmainfiltersortdate As String
-    Private _generalmainfiltersorttitle As String
-    Private _generalmainfilterIMDBrating As String
+    Private _generalmainfiltersortdate_movies As String
+    Private _generalmainfiltersorttitle_movies As String
+    Private _generalmainfiltersortrating_movies As String
     Private _generalhidebanner As Boolean
     Private _generalhidecharacterart As Boolean
     Private _generalhideclearart As Boolean
@@ -4700,30 +4700,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property GeneralMainFilterSortDate() As String
+    Public Property GeneralMainFilterSortDate_Movies() As String
         Get
-            Return Me._generalmainfiltersortdate
+            Return Me._generalmainfiltersortdate_movies
         End Get
         Set(ByVal value As String)
-            Me._generalmainfiltersortdate = value
+            Me._generalmainfiltersortdate_movies = value
         End Set
     End Property
 
-    Public Property GeneralMainFilterSortTitle() As String
+    Public Property GeneralMainFilterSortTitle_Movies() As String
         Get
-            Return Me._generalmainfiltersorttitle
+            Return Me._generalmainfiltersorttitle_movies
         End Get
         Set(ByVal value As String)
-            Me._generalmainfiltersorttitle = value
+            Me._generalmainfiltersorttitle_movies = value
         End Set
     End Property
 
-    Public Property GeneralMainFilterIMDBRating() As String
+    Public Property GeneralMainFilterSortRating_Movies() As String
         Get
-            Return Me._generalmainfilterIMDBrating
+            Return Me._generalmainfiltersortrating_movies
         End Get
         Set(ByVal value As String)
-            Me._generalmainfilterIMDBrating = value
+            Me._generalmainfiltersortrating_movies = value
         End Set
     End Property
 

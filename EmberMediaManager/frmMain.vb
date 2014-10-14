@@ -941,71 +941,85 @@ Public Class frmMain
         '    logger.Error(New StackFrame().GetMethod().Name, ex)
         'End Try
     End Sub
-
+    ''' <summary>
+    ''' sorts the movielist by adding date
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks>this filter is inverted (DESC first) to get the newest title on the top of the list</remarks>
     Private Sub btnFilterSortDate_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortDate_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
             Me.btnFilterSortTitle_Movies.Tag = ""
             Me.btnFilterSortTitle_Movies.Image = Nothing
-            Me.btnFilterIMDBRating_Movies.Tag = ""
-            Me.btnFilterIMDBRating_Movies.Image = Nothing
-            Master.eSettings.GeneralMainFilterIMDBRating = ""
-            Master.eSettings.GeneralMainFilterSortTitle = ""
+            Me.btnFilterSortRating_Movies.Tag = ""
+            Me.btnFilterSortRating_Movies.Image = Nothing
             If Me.btnFilterSortDate_Movies.Tag.ToString = "DESC" Then
-                Master.eSettings.GeneralMainFilterSortDate = "DESC"
                 Me.btnFilterSortDate_Movies.Tag = "ASC"
-                Me.btnFilterSortDate_Movies.Image = My.Resources.desc
-                'cotocus 201303 Wrong Column! DateAdd column is 48 instead of 0 (ID)!
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Descending)
-            Else
-                Master.eSettings.GeneralMainFilterSortDate = "ASC"
-                Me.btnFilterSortDate_Movies.Tag = "DESC"
                 Me.btnFilterSortDate_Movies.Image = My.Resources.asc
-                'cotocus 201303 Wrong Column! DateAdd column is 48 instead of 0 (ID)!
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Ascending)
+            Else
+                Me.btnFilterSortDate_Movies.Tag = "DESC"
+                Me.btnFilterSortDate_Movies.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Descending)
             End If
+
+            Master.eSettings.GeneralMainFilterSortRating_Movies = Me.btnFilterSortRating_Movies.Tag.ToString
+            Master.eSettings.GeneralMainFilterSortDate_Movies = Me.btnFilterSortDate_Movies.Tag.ToString
+            Master.eSettings.GeneralMainFilterSortTitle_Movies = Me.btnFilterSortTitle_Movies.Tag.ToString
         End If
     End Sub
-
+    ''' <summary>
+    ''' sorts the movielist by sort title
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub btnFilterSortTitle_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortTitle_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
             Me.btnFilterSortDate_Movies.Tag = ""
             Me.btnFilterSortDate_Movies.Image = Nothing
-            Me.btnFilterIMDBRating_Movies.Tag = ""
-            Me.btnFilterIMDBRating_Movies.Image = Nothing
-            Master.eSettings.GeneralMainFilterIMDBRating = ""
-            Master.eSettings.GeneralMainFilterSortDate = ""
-            If Me.btnFilterSortTitle_Movies.Tag.ToString = "DESC" Then
-                Master.eSettings.GeneralMainFilterSortTitle = "DESC"
-                Me.btnFilterSortTitle_Movies.Tag = "ASC"
+            Me.btnFilterSortRating_Movies.Tag = ""
+            Me.btnFilterSortRating_Movies.Image = Nothing
+            If Me.btnFilterSortTitle_Movies.Tag.ToString = "ASC" Then
+                Me.btnFilterSortTitle_Movies.Tag = "DSC"
                 Me.btnFilterSortTitle_Movies.Image = My.Resources.desc
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Descending)
             Else
-                Master.eSettings.GeneralMainFilterSortTitle = "ASC"
-                Me.btnFilterSortTitle_Movies.Tag = "DESC"
+                Me.btnFilterSortTitle_Movies.Tag = "ASC"
                 Me.btnFilterSortTitle_Movies.Image = My.Resources.asc
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Ascending)
             End If
+
+            Master.eSettings.GeneralMainFilterSortRating_Movies = Me.btnFilterSortRating_Movies.Tag.ToString
+            Master.eSettings.GeneralMainFilterSortDate_Movies = Me.btnFilterSortDate_Movies.Tag.ToString
+            Master.eSettings.GeneralMainFilterSortTitle_Movies = Me.btnFilterSortTitle_Movies.Tag.ToString
         End If
     End Sub
-    Private Sub btnFilterIMDBRating_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterIMDBRating_Movies.Click
+    ''' <summary>
+    ''' sorts the movielist by rating
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks>this filter is inverted (DESC first) to get the highest rated title on the top of the list</remarks>
+    Private Sub btnFilterSortRating_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortRating_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
             Me.btnFilterSortDate_Movies.Tag = ""
             Me.btnFilterSortDate_Movies.Image = Nothing
             Me.btnFilterSortTitle_Movies.Tag = ""
             Me.btnFilterSortTitle_Movies.Image = Nothing
-            Master.eSettings.GeneralMainFilterSortTitle = ""
-            Master.eSettings.GeneralMainFilterSortDate = ""
-            If Me.btnFilterIMDBRating_Movies.Tag.ToString = "DESC" Then
-                Master.eSettings.GeneralMainFilterIMDBRating = "DESC"
-                Me.btnFilterIMDBRating_Movies.Tag = "ASC"
-                Me.btnFilterIMDBRating_Movies.Image = My.Resources.desc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Descending)
-            Else
-                Master.eSettings.GeneralMainFilterIMDBRating = "ASC"
-                Me.btnFilterIMDBRating_Movies.Tag = "DESC"
-                Me.btnFilterIMDBRating_Movies.Image = My.Resources.asc
+            If Me.btnFilterSortRating_Movies.Tag.ToString = "DESC" Then
+                Me.btnFilterSortRating_Movies.Tag = "ASC"
+                Me.btnFilterSortRating_Movies.Image = My.Resources.asc
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Ascending)
+            Else
+                Me.btnFilterSortRating_Movies.Tag = "DESC"
+                Me.btnFilterSortRating_Movies.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Descending)
             End If
+
+            Master.eSettings.GeneralMainFilterSortRating_Movies = Me.btnFilterSortRating_Movies.Tag.ToString
+            Master.eSettings.GeneralMainFilterSortDate_Movies = Me.btnFilterSortDate_Movies.Tag.ToString
+            Master.eSettings.GeneralMainFilterSortTitle_Movies = Me.btnFilterSortTitle_Movies.Tag.ToString
         End If
     End Sub
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
@@ -7839,7 +7853,7 @@ doCancel:
     Private Sub EnableFilters_Movies(ByVal isEnabled As Boolean)
         Me.btnClearFilters_Movies.Enabled = isEnabled
         Me.btnFilterSortDate_Movies.Enabled = isEnabled
-        Me.btnFilterIMDBRating_Movies.Enabled = isEnabled
+        Me.btnFilterSortRating_Movies.Enabled = isEnabled
         Me.btnFilterSortTitle_Movies.Enabled = isEnabled
         Me.cbFilterFileSource_Movies.Enabled = isEnabled
         Me.cbFilterYear_Movies.Enabled = isEnabled
@@ -8506,7 +8520,9 @@ doCancel:
             Me.SetMovieCount()
             Me.SetMovieSetCount()
             Me.SetTVCount()
-            'Me.SetDGVFilters() 'temp disabled, to many issues with following parts of code
+            If doMovies Then
+                Me.RestoreFilter_Movies()
+            End If
         End If
     End Sub
 
@@ -10043,9 +10059,9 @@ doCancel:
                 Me.pnlFilter_Shows.Visible = False
                 Master.eSettings.GeneralSeasonSplitterPanelState = Me.scTVSeasonsEpisodes.SplitterDistance
                 Master.eSettings.GeneralShowSplitterPanelState = Me.scTV.SplitterDistance
-                Master.eSettings.GeneralMainFilterSortDate = Me.btnFilterSortDate_Movies.Tag.ToString
-                Master.eSettings.GeneralMainFilterSortTitle = Me.btnFilterSortTitle_Movies.Tag.ToString
-                Master.eSettings.GeneralMainFilterIMDBRating = Me.btnFilterIMDBRating_Movies.Tag.ToString
+                Master.eSettings.GeneralMainFilterSortDate_Movies = Me.btnFilterSortDate_Movies.Tag.ToString
+                Master.eSettings.GeneralMainFilterSortTitle_Movies = Me.btnFilterSortTitle_Movies.Tag.ToString
+                Master.eSettings.GeneralMainFilterSortRating_Movies = Me.btnFilterSortRating_Movies.Tag.ToString
             End If
             If Not Me.WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
 
@@ -12842,7 +12858,7 @@ doCancel:
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-       
+
     End Sub
 
     ''' <summary>
@@ -12878,7 +12894,7 @@ doCancel:
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-       
+
     End Sub
     ''' <summary>
     '''Open TMDB-Page of selected movie(s) in defaultbrowser
@@ -14887,6 +14903,43 @@ doCancel:
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+    End Sub
+
+    ''' <summary>
+    ''' Set Sort Filters of DatagridView
+    ''' </summary>
+    ''' <remarks>Cocotus 2014/09/06 Sort filters in main view are now saved and reloaded after database refreshes</remarks>
+    Private Sub RestoreFilter_Movies()
+        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterSortDate_Movies) Then
+            Me.btnFilterSortDate_Movies.Tag = Master.eSettings.GeneralMainFilterSortDate_Movies
+            If Me.btnFilterSortDate_Movies.Tag.ToString = "ASC" Then
+                Me.btnFilterSortDate_Movies.Image = My.Resources.asc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Ascending)
+            Else
+                Me.btnFilterSortDate_Movies.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Descending)
+            End If
+        End If
+        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterSortTitle_Movies) Then
+            Me.btnFilterSortTitle_Movies.Tag = Master.eSettings.GeneralMainFilterSortTitle_Movies
+            If Me.btnFilterSortTitle_Movies.Tag.ToString = "ASC" Then
+                Me.btnFilterSortTitle_Movies.Image = My.Resources.asc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Ascending)
+            Else
+                Me.btnFilterSortTitle_Movies.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Descending)
+            End If
+        End If
+        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterSortRating_Movies) Then
+            Me.btnFilterSortRating_Movies.Tag = Master.eSettings.GeneralMainFilterSortRating_Movies
+            If Me.btnFilterSortRating_Movies.Tag.ToString = "ASC" Then
+                Me.btnFilterSortRating_Movies.Image = My.Resources.asc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Ascending)
+            Else
+                Me.btnFilterSortRating_Movies.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Descending)
+            End If
+        End If
     End Sub
 
     Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
@@ -16939,8 +16992,8 @@ doCancel:
                 .btnClearFilters_Movies.Text = Master.eLang.GetString(37, "Clear Filters")
                 .btnClearFilters_MovieSets.Text = .btnClearFilters_Movies.Text
                 .btnClearFilters_Shows.Text = .btnClearFilters_Movies.Text
-                .btnFilterIMDBRating_Movies.Tag = String.Empty
-                .btnFilterIMDBRating_Movies.Text = Master.eLang.GetString(400, "Rating")
+                .btnFilterSortRating_Movies.Tag = String.Empty
+                .btnFilterSortRating_Movies.Text = Master.eLang.GetString(400, "Rating")
                 .btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
                 .btnMetaDataRefresh.Text = Master.eLang.GetString(58, "Refresh")
                 .btnFilterSortDate_Movies.Tag = String.Empty
@@ -18196,6 +18249,7 @@ doCancel:
         mnuVersion.Text = sText
         mnuVersion.ForeColor = sForeColor
     End Sub
+
 #End Region 'Methods
 
 #Region "Nested Types"
@@ -18245,49 +18299,5 @@ doCancel:
     End Structure
 
 #End Region 'Nested Types
-
-    ''' <summary>
-    ''' Set Sort Filters of DatagridView
-    ''' </summary>
-    ''' <remarks>Cocotus 2014/09/06 Sort filters in main view are now saved and reloaded after database refreshes</remarks>
-    Private Sub SetDGVFilters()
-        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterSortDate) Then
-            Me.btnFilterSortDate_Movies.Tag = Master.eSettings.GeneralMainFilterSortDate
-            If Me.btnFilterSortDate_Movies.Tag.ToString = "DESC" Then
-                Me.btnFilterSortDate_Movies.Tag = "ASC"
-                Me.btnFilterSortDate_Movies.Image = My.Resources.desc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Descending)
-            Else
-                Me.btnFilterSortDate_Movies.Tag = "DESC"
-                Me.btnFilterSortDate_Movies.Image = My.Resources.asc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Ascending)
-            End If
-        End If
-        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterSortTitle) Then
-            Me.btnFilterSortTitle_Movies.Tag = Master.eSettings.GeneralMainFilterSortTitle
-            If Me.btnFilterSortTitle_Movies.Tag.ToString = "DESC" Then
-                Me.btnFilterSortTitle_Movies.Tag = "ASC"
-                Me.btnFilterSortTitle_Movies.Image = My.Resources.desc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Descending)
-            Else
-                Me.btnFilterSortTitle_Movies.Tag = "DESC"
-                Me.btnFilterSortTitle_Movies.Image = My.Resources.asc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Ascending)
-            End If
-        End If
-        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterIMDBRating) Then
-            Me.btnFilterIMDBRating_Movies.Tag = Master.eSettings.GeneralMainFilterIMDBRating
-            If Me.btnFilterIMDBRating_Movies.Tag.ToString = "DESC" Then
-                Me.btnFilterIMDBRating_Movies.Tag = "ASC"
-                Me.btnFilterIMDBRating_Movies.Image = My.Resources.desc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Descending)
-            Else
-                Me.btnFilterIMDBRating_Movies.Tag = "DESC"
-                Me.btnFilterIMDBRating_Movies.Image = My.Resources.asc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Ascending)
-            End If
-        End If
-    End Sub
-
    
 End Class
