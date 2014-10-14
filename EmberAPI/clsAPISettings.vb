@@ -3880,31 +3880,24 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GeneralMainFilterSortDate_Movies() As String
+    Public Property GeneralMainFilterSortColumn_Movies() As Integer
         Get
-            Return Settings._XMLSettings.GeneralMainFilterSortDate_Movies
+            Return Settings._XMLSettings.GeneralMainFilterSortColumn_Movies
         End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.GeneralMainFilterSortDate_Movies = value
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.GeneralMainFilterSortColumn_Movies = value
         End Set
     End Property
 
-    Public Property GeneralMainFilterSortTitle_Movies() As String
+    Public Property GeneralMainFilterSortOrder_Movies() As Integer
         Get
-            Return Settings._XMLSettings.GeneralMainFilterSortTitle_Movies
+            Return Settings._XMLSettings.GeneralMainFilterSortOrder_Movies
         End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.GeneralMainFilterSortTitle_Movies = value
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.GeneralMainFilterSortOrder_Movies = value
         End Set
     End Property
-    Public Property GeneralMainFilterSortRating_Movies() As String
-        Get
-            Return Settings._XMLSettings.GeneralMainFilterSortRating_Movies
-        End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.GeneralMainFilterSortRating_Movies = value
-        End Set
-    End Property
+
     Public Property GeneralMainSplitterPanelState() As Integer
         Get
             Return Settings._XMLSettings.generalmainsplitterpanelstate
@@ -3913,6 +3906,7 @@ Public Class Settings
             Settings._XMLSettings.generalmainsplitterpanelstate = value
         End Set
     End Property
+
     Public Property GeneralShowSplitterPanelState() As Integer
         Get
             Return Settings._XMLSettings.generalshowsplitterpanelstate

@@ -949,9 +949,9 @@ Public Class frmMain
     ''' <remarks>this filter is inverted (DESC first) to get the newest title on the top of the list</remarks>
     Private Sub btnFilterSortDate_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortDate_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
-            Me.btnFilterSortTitle_Movies.Tag = ""
+            Me.btnFilterSortTitle_Movies.Tag = String.Empty
             Me.btnFilterSortTitle_Movies.Image = Nothing
-            Me.btnFilterSortRating_Movies.Tag = ""
+            Me.btnFilterSortRating_Movies.Tag = String.Empty
             Me.btnFilterSortRating_Movies.Image = Nothing
             If Me.btnFilterSortDate_Movies.Tag.ToString = "DESC" Then
                 Me.btnFilterSortDate_Movies.Tag = "ASC"
@@ -963,9 +963,7 @@ Public Class frmMain
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Descending)
             End If
 
-            Master.eSettings.GeneralMainFilterSortRating_Movies = Me.btnFilterSortRating_Movies.Tag.ToString
-            Master.eSettings.GeneralMainFilterSortDate_Movies = Me.btnFilterSortDate_Movies.Tag.ToString
-            Master.eSettings.GeneralMainFilterSortTitle_Movies = Me.btnFilterSortTitle_Movies.Tag.ToString
+            Me.SaveFilter_Movies()
         End If
     End Sub
     ''' <summary>
@@ -976,9 +974,9 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub btnFilterSortTitle_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortTitle_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
-            Me.btnFilterSortDate_Movies.Tag = ""
+            Me.btnFilterSortDate_Movies.Tag = String.Empty
             Me.btnFilterSortDate_Movies.Image = Nothing
-            Me.btnFilterSortRating_Movies.Tag = ""
+            Me.btnFilterSortRating_Movies.Tag = String.Empty
             Me.btnFilterSortRating_Movies.Image = Nothing
             If Me.btnFilterSortTitle_Movies.Tag.ToString = "ASC" Then
                 Me.btnFilterSortTitle_Movies.Tag = "DSC"
@@ -990,9 +988,7 @@ Public Class frmMain
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Ascending)
             End If
 
-            Master.eSettings.GeneralMainFilterSortRating_Movies = Me.btnFilterSortRating_Movies.Tag.ToString
-            Master.eSettings.GeneralMainFilterSortDate_Movies = Me.btnFilterSortDate_Movies.Tag.ToString
-            Master.eSettings.GeneralMainFilterSortTitle_Movies = Me.btnFilterSortTitle_Movies.Tag.ToString
+            Me.SaveFilter_Movies()
         End If
     End Sub
     ''' <summary>
@@ -1003,9 +999,9 @@ Public Class frmMain
     ''' <remarks>this filter is inverted (DESC first) to get the highest rated title on the top of the list</remarks>
     Private Sub btnFilterSortRating_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortRating_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
-            Me.btnFilterSortDate_Movies.Tag = ""
+            Me.btnFilterSortDate_Movies.Tag = String.Empty
             Me.btnFilterSortDate_Movies.Image = Nothing
-            Me.btnFilterSortTitle_Movies.Tag = ""
+            Me.btnFilterSortTitle_Movies.Tag = String.Empty
             Me.btnFilterSortTitle_Movies.Image = Nothing
             If Me.btnFilterSortRating_Movies.Tag.ToString = "DESC" Then
                 Me.btnFilterSortRating_Movies.Tag = "ASC"
@@ -1017,9 +1013,7 @@ Public Class frmMain
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Descending)
             End If
 
-            Master.eSettings.GeneralMainFilterSortRating_Movies = Me.btnFilterSortRating_Movies.Tag.ToString
-            Master.eSettings.GeneralMainFilterSortDate_Movies = Me.btnFilterSortDate_Movies.Tag.ToString
-            Master.eSettings.GeneralMainFilterSortTitle_Movies = Me.btnFilterSortTitle_Movies.Tag.ToString
+            Me.SaveFilter_Movies()
         End If
     End Sub
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
@@ -6456,6 +6450,41 @@ doCancel:
             Me.dgvMovies.Rows(0).Selected = True
             Me.dgvMovies.CurrentCell = Me.dgvMovies.Rows(0).Cells(3)
         End If
+
+        If Me.dgvMovies.SortedColumn.Index = 18 AndAlso Me.dgvMovies.SortOrder = 1 Then
+            Me.btnFilterSortRating_Movies.Tag = "ASC"
+            Me.btnFilterSortRating_Movies.Image = My.Resources.asc
+        ElseIf Me.dgvMovies.SortedColumn.Index = 18 AndAlso Me.dgvMovies.SortOrder = 2 Then
+            Me.btnFilterSortRating_Movies.Tag = "DESC"
+            Me.btnFilterSortRating_Movies.Image = My.Resources.desc
+        Else
+            Me.btnFilterSortRating_Movies.Tag = String.Empty
+            Me.btnFilterSortRating_Movies.Image = Nothing
+        End If
+
+        If Me.dgvMovies.SortedColumn.Index = 47 AndAlso Me.dgvMovies.SortOrder = 1 Then
+            Me.btnFilterSortTitle_Movies.Tag = "ASC"
+            Me.btnFilterSortTitle_Movies.Image = My.Resources.asc
+        ElseIf Me.dgvMovies.SortedColumn.Index = 47 AndAlso Me.dgvMovies.SortOrder = 2 Then
+            Me.btnFilterSortTitle_Movies.Tag = "DESC"
+            Me.btnFilterSortTitle_Movies.Image = My.Resources.desc
+        Else
+            Me.btnFilterSortTitle_Movies.Tag = String.Empty
+            Me.btnFilterSortTitle_Movies.Image = Nothing
+        End If
+
+        If Me.dgvMovies.SortedColumn.Index = 48 AndAlso Me.dgvMovies.SortOrder = 1 Then
+            Me.btnFilterSortDate_Movies.Tag = "ASC"
+            Me.btnFilterSortDate_Movies.Image = My.Resources.asc
+        ElseIf Me.dgvMovies.SortedColumn.Index = 48 AndAlso Me.dgvMovies.SortOrder = 2 Then
+            Me.btnFilterSortDate_Movies.Tag = "DESC"
+            Me.btnFilterSortDate_Movies.Image = My.Resources.desc
+        Else
+            Me.btnFilterSortDate_Movies.Tag = String.Empty
+            Me.btnFilterSortDate_Movies.Image = Nothing
+        End If
+
+        Me.SaveFilter_Movies()
     End Sub
 
     Private Sub dgvMovieSets_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellClick
@@ -8274,9 +8303,9 @@ doCancel:
                             If Master.isWindows Then .dgvMovies.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                             ResizeMoviesList()
 
-                            If .dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0 Then
-                                .dgvMovies.Sort(.dgvMovies.Columns(3), ComponentModel.ListSortDirection.Ascending)
-                            End If
+                            'If .dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0 Then
+                            '    .dgvMovies.Sort(.dgvMovies.Columns(3), ComponentModel.ListSortDirection.Ascending)
+                            'End If
 
                         End With
                     End If
@@ -10059,9 +10088,6 @@ doCancel:
                 Me.pnlFilter_Shows.Visible = False
                 Master.eSettings.GeneralSeasonSplitterPanelState = Me.scTVSeasonsEpisodes.SplitterDistance
                 Master.eSettings.GeneralShowSplitterPanelState = Me.scTV.SplitterDistance
-                Master.eSettings.GeneralMainFilterSortDate_Movies = Me.btnFilterSortDate_Movies.Tag.ToString
-                Master.eSettings.GeneralMainFilterSortTitle_Movies = Me.btnFilterSortTitle_Movies.Tag.ToString
-                Master.eSettings.GeneralMainFilterSortRating_Movies = Me.btnFilterSortRating_Movies.Tag.ToString
             End If
             If Not Me.WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
 
@@ -14906,40 +14932,29 @@ doCancel:
     End Sub
 
     ''' <summary>
-    ''' Set Sort Filters of DatagridView
+    ''' Restore Sort Filters of Movie List
     ''' </summary>
     ''' <remarks>Cocotus 2014/09/06 Sort filters in main view are now saved and reloaded after database refreshes</remarks>
     Private Sub RestoreFilter_Movies()
-        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterSortDate_Movies) Then
-            Me.btnFilterSortDate_Movies.Tag = Master.eSettings.GeneralMainFilterSortDate_Movies
-            If Me.btnFilterSortDate_Movies.Tag.ToString = "ASC" Then
-                Me.btnFilterSortDate_Movies.Image = My.Resources.asc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Ascending)
-            Else
-                Me.btnFilterSortDate_Movies.Image = My.Resources.desc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Descending)
-            End If
-        End If
-        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterSortTitle_Movies) Then
-            Me.btnFilterSortTitle_Movies.Tag = Master.eSettings.GeneralMainFilterSortTitle_Movies
-            If Me.btnFilterSortTitle_Movies.Tag.ToString = "ASC" Then
-                Me.btnFilterSortTitle_Movies.Image = My.Resources.asc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Ascending)
-            Else
-                Me.btnFilterSortTitle_Movies.Image = My.Resources.desc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(47), ComponentModel.ListSortDirection.Descending)
-            End If
-        End If
-        If Not String.IsNullOrEmpty(Master.eSettings.GeneralMainFilterSortRating_Movies) Then
-            Me.btnFilterSortRating_Movies.Tag = Master.eSettings.GeneralMainFilterSortRating_Movies
-            If Me.btnFilterSortRating_Movies.Tag.ToString = "ASC" Then
-                Me.btnFilterSortRating_Movies.Image = My.Resources.asc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Ascending)
-            Else
-                Me.btnFilterSortRating_Movies.Image = My.Resources.desc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(18), ComponentModel.ListSortDirection.Descending)
-            End If
-        End If
+        Try
+            With Master.eSettings
+                If Not IsNothing(.GeneralMainFilterSortColumn_Movies) AndAlso Not IsNothing(.GeneralMainFilterSortOrder_Movies) Then
+                    Me.dgvMovies.Sort(Me.dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
+                End If
+            End With
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub SaveFilter_Movies()
+        Dim Order As Integer
+        If Me.dgvMovies.SortOrder = SortOrder.None Then Order = 0 'ComponentModel.ListSortDirection has only ASC and DESC. So set [None] to ASC
+        If Me.dgvMovies.SortOrder = SortOrder.Ascending Then Order = 0
+        If Me.dgvMovies.SortOrder = SortOrder.Descending Then Order = 1
+
+        Master.eSettings.GeneralMainFilterSortColumn_Movies = Me.dgvMovies.SortedColumn.Index
+        Master.eSettings.GeneralMainFilterSortOrder_Movies = Order
     End Sub
 
     Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
