@@ -236,8 +236,8 @@ Public Class Trailers
         Try
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Trailer)
                 For Each t As String In Master.eSettings.FileSystemValidExts
-                    If File.Exists(a & t) Then
-                        Delete(a & t)
+                    If File.Exists(String.Concat(a, t)) Then
+                        Delete(String.Concat(a, t))
                     End If
                 Next
             Next

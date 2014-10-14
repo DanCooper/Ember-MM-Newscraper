@@ -210,8 +210,8 @@ Public Class Themes
         Try
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Theme)
                 For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                    If File.Exists(a) Then
-                        Delete(a)
+                    If File.Exists(String.Concat(a, t)) Then
+                        Delete(String.Concat(a, t))
                     End If
                 Next
             Next
