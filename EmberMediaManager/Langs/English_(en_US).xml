@@ -627,7 +627,7 @@
   <string id="626">File Type</string>
   <string id="627">Selected Items: {0}</string>
   <string id="628">Enable IFO Parsing</string>
-  <string id="629">Themes</string>
+  <string id="629">GUI Themes</string>
   <string id="630"></string>
   <string id="631">Fanart as backdrop.jpg</string>
   <string id="632">Media Browser mymovies.xml</string>
@@ -1374,4 +1374,5 @@
   <string id="1282">Open TMDB-Page</string>
   <string id="1283">Are you sure you want to reset to the default list of valid subtitle extensions?</string>
   <string id="1284">Valid Subtitles Extensions</string>
+  <string id="1285">Themes</string>
 </strings>

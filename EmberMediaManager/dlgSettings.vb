@@ -5897,7 +5897,7 @@ Public Class dlgSettings
         Me.gbGeneralInterface.Text = Master.eLang.GetString(795, "Interface")
         Me.gbGeneralMainWindow.Text = Master.eLang.GetString(1152, "Main Window")
         Me.gbGeneralMisc.Text = Master.eLang.GetString(429, "Miscellaneous")
-        Me.gbGeneralThemes.Text = Master.eLang.GetString(629, "Themes")
+        Me.gbGeneralThemes.Text = Master.eLang.GetString(629, "GUI Themes")
         Me.gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         Me.gbMovieBackdropsFolder.Text = Master.eLang.GetString(520, "Backdrops Folder")
         Me.gbMovieFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
