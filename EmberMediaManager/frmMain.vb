@@ -8506,7 +8506,7 @@ doCancel:
             Me.SetMovieCount()
             Me.SetMovieSetCount()
             Me.SetTVCount()
-            Me.SetDGVFilters()
+            'Me.SetDGVFilters() 'temp disabled, to many issues with following parts of code
         End If
     End Sub
 
@@ -10780,6 +10780,14 @@ doCancel:
 
             If doInfo Then
                 Me.ClearInfo()
+
+                If Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.CancellationPending Then
+                    Me.bwLoadMovieInfo.CancelAsync()
+                End If
+
+                While Me.bwLoadMovieInfo.IsBusy
+                    Application.DoEvents()
+                End While
 
                 Me.bwLoadMovieInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwLoadMovieInfo.WorkerSupportsCancellation = True
