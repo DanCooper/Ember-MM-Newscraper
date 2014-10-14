@@ -1282,6 +1282,7 @@ Public Class MediaInfo
 
         Private _language As String = String.Empty
         Private _longlanguage As String = String.Empty
+        Private _subs_foced As Boolean = False
         Private _subs_path As String = String.Empty
         Private _subs_type As String = String.Empty
 
@@ -1320,6 +1321,23 @@ Public Class MediaInfo
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._longlanguage)
+            End Get
+        End Property
+
+        <XmlElement("forced")> _
+        Public Property SubsForced() As Boolean
+            Get
+                Return _subs_foced
+            End Get
+            Set(ByVal value As Boolean)
+                _subs_foced = value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property SubsForcedSpecified() As Boolean
+            Get
+                Return Not IsNothing(Me._subs_foced)
             End Get
         End Property
 

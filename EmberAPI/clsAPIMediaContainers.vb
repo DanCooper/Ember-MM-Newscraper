@@ -1161,9 +1161,10 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property FileInfoSpecified() As Boolean
             Get
-                If Not IsNothing(Me._fileInfo.StreamDetails.Video) OrElse _
-                Me._fileInfo.StreamDetails.Audio.Count > 0 OrElse _
-                 Me._fileInfo.StreamDetails.Subtitle.Count > 0 Then
+                If Not IsNothing(Me._fileInfo.StreamDetails.Video) AndAlso _
+                (Me._fileInfo.StreamDetails.Video.Count > 0 OrElse _
+                 Me._fileInfo.StreamDetails.Audio.Count > 0 OrElse _
+                 Me._fileInfo.StreamDetails.Subtitle.Count > 0) Then
                     Return True
                 Else
                     Return False

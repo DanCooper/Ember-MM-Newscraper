@@ -1256,33 +1256,12 @@ Namespace FileUtils
                 Case Enums.ModType_Movie.Subtitle
                     With Master.eSettings
                         If isVideoTS Then
-                            If .MovieUseFrodo AndAlso .MovieExtrathumbsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "subs"))
-                            If .MovieUseEden AndAlso .MovieExtrathumbsEden Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "subs"))
-                            If .MovieUseExpert AndAlso .MovieExtrathumbsExpertVTS Then
-                                If .MovieUseBaseDirectoryExpertVTS Then
-                                    FilenameList.Add(Path.Combine(basePath, "subs"))
-                                Else
-                                    FilenameList.Add(Path.Combine(fileParPath, "subs"))
-                                End If
-                            End If
+                            FilenameList.Add(Path.Combine(basePath, "subs"))
                         ElseIf isBDRip Then
-                            If .MovieUseFrodo AndAlso .MovieExtrathumbsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "subs"))
-                            If .MovieUseEden AndAlso .MovieExtrathumbsEden Then FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "subs"))
-                            If .MovieUseExpert AndAlso .MovieExtrathumbsExpertBDMV Then
-                                If .MovieUseBaseDirectoryExpertBDMV Then
-                                    FilenameList.Add(Path.Combine(basePath, "subs"))
-                                Else
-                                    FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "subs"))
-                                End If
-                            End If
+                            FilenameList.Add(Path.Combine(basePath, "subs"))
                         ElseIf isSingle Then
-                            If .MovieUseFrodo AndAlso .MovieExtrathumbsFrodo Then FilenameList.Add(Path.Combine(fileParPath, "subs"))
-                            If .MovieUseEden AndAlso .MovieExtrathumbsEden Then FilenameList.Add(Path.Combine(fileParPath, "subs"))
-                            If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS AndAlso .MovieExtrathumbsExpertVTS Then
-                                FilenameList.Add(Path.Combine(fileParPath, "subs"))
-                            ElseIf .MovieUseExpert AndAlso .MovieExtrathumbsExpertSingle Then
-                                FilenameList.Add(Path.Combine(fileParPath, "subs"))
-                            End If
+                            FilenameList.Add(Path.Combine(fileParPath, "subs"))
+                            FilenameList.Add(fileParPath)
                         End If
                     End With
 

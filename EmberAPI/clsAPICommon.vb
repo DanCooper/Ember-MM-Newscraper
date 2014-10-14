@@ -1856,6 +1856,7 @@ Public Class Structures
         Dim EpNeedsSave As Boolean
         Dim EpNfoPath As String
         Dim EpPosterPath As String
+        Dim EpSubtitles As List(Of MediaInfo.Subtitle)
         Dim Filename As String
         Dim IsLockEp As Boolean
         Dim IsLockSeason As Boolean

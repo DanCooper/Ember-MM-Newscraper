@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v2_to_v3">
+    <command type="DB">
+      <description>1</description>
+      <execute>ALTER TABLE MoviesSubs ADD Subs_Forced BOOL NOT NULL DEFAULT 0;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>ALTER TABLE TVSubs ADD Subs_Type TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>ALTER TABLE TVSubs ADD Subs_Path TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>ALTER TABLE TVSubs ADD Subs_Forced BOOL NOT NULL DEFAULT 0;</execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

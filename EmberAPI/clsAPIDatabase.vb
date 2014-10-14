@@ -316,7 +316,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 5
+        Dim MyVideosDBVersion As Integer = 6
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -943,7 +943,7 @@ Public Class Database
             'embedded subtitles
             _movieDB.Subtitles = New List(Of MediaInfo.Subtitle)
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path FROM MoviesSubs WHERE MovieID = ", MovieID, " AND NOT Subs_Type = 'External';")
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path, Subs_Forced FROM MoviesSubs WHERE MovieID = ", MovieID, " AND NOT Subs_Type = 'External';")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim subtitle As MediaInfo.Subtitle
                     While SQLreader.Read
@@ -952,6 +952,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
                         If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
                         If Not DBNull.Value.Equals(SQLreader("Subs_Path")) Then subtitle.SubsPath = SQLreader("Subs_Path").ToString
+                        subtitle.SubsForced = Convert.ToBoolean(SQLreader("Subs_Forced"))
                         _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Add(subtitle)
                     End While
                 End Using
@@ -959,7 +960,7 @@ Public Class Database
 
             'external subtitles
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path FROM MoviesSubs WHERE MovieID = ", MovieID, " AND Subs_Type = 'External';")
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path, Subs_Forced FROM MoviesSubs WHERE MovieID = ", MovieID, " AND Subs_Type = 'External';")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim subtitle As MediaInfo.Subtitle
                     While SQLreader.Read
@@ -968,6 +969,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
                         If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
                         If Not DBNull.Value.Equals(SQLreader("Subs_Path")) Then subtitle.SubsPath = SQLreader("Subs_Path").ToString
+                        subtitle.SubsForced = Convert.ToBoolean(SQLreader("Subs_Forced"))
                         _movieDB.Subtitles.Add(subtitle)
                     End While
                 End Using
@@ -1263,15 +1265,38 @@ Public Class Database
                     End While
                 End Using
             End Using
+
+            'embedded subtitles
+            _TVDB.EpSubtitles = New List(Of MediaInfo.Subtitle)
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT TVEpID, StreamID, Subs_Language, Subs_LongLanguage FROM TVSubs WHERE TVEpID = ", EpID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT TVEpID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path, Subs_Forced FROM TVSubs WHERE TVEpID = ", EpID, " AND NOT Subs_Type = 'External';")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim subtitle As MediaInfo.Subtitle
                     While SQLreader.Read
                         subtitle = New MediaInfo.Subtitle
                         If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language").ToString
                         If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Path")) Then subtitle.SubsPath = SQLreader("Subs_Path").ToString
+                        subtitle.SubsForced = Convert.ToBoolean(SQLreader("Subs_Forced"))
                         _TVDB.TVEp.FileInfo.StreamDetails.Subtitle.Add(subtitle)
+                    End While
+                End Using
+            End Using
+
+            'external subtitles
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT TVEpID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path FROM TVSubs WHERE TVEpID = ", EpID, " AND Subs_Type = 'External';")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim subtitle As MediaInfo.Subtitle
+                    While SQLreader.Read
+                        subtitle = New MediaInfo.Subtitle
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Path")) Then subtitle.SubsPath = SQLreader("Subs_Path").ToString
+                        subtitle.SubsForced = Convert.ToBoolean(SQLreader("Subs_Forced"))
+                        _TVDB.EpSubtitles.Add(subtitle)
                     End While
                 End Using
             End Using
@@ -1909,14 +1934,15 @@ Public Class Database
                         SQLcommandMoviesSubs.ExecuteNonQuery()
 
                         SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSubs (", _
-                           "MovieID, StreamID, Subs_Language, Subs_LongLanguage,Subs_Type, Subs_Path", _
-                           ") VALUES (?,?,?,?,?,?);")
+                           "MovieID, StreamID, Subs_Language, Subs_LongLanguage,Subs_Type, Subs_Path, Subs_Forced", _
+                           ") VALUES (?,?,?,?,?,?,?);")
                         Dim parSubs_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
                         Dim parSubs_Language As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "Subs_Language")
                         Dim parSubs_LongLanguage As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_LongLanguage", DbType.String, 0, "Subs_LongLanguage")
                         Dim parSubs_Type As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Type", DbType.String, 0, "Subs_Type")
                         Dim parSubs_Path As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Path", DbType.String, 0, "Subs_Path")
+                        Dim parSubs_Forced As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Forced", DbType.Boolean, 0, "Subs_Forced")
                         Dim iID As Integer = 0
                         'embedded subtitles
                         For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
@@ -1926,6 +1952,7 @@ Public Class Database
                             parSubs_LongLanguage.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).LongLanguage
                             parSubs_Type.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsType
                             parSubs_Path.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsPath
+                            parSubs_Forced.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsForced
                             SQLcommandMoviesSubs.ExecuteNonQuery()
                             iID += 1
                         Next
@@ -1937,35 +1964,11 @@ Public Class Database
                             parSubs_LongLanguage.Value = _movieDB.Subtitles(i).LongLanguage
                             parSubs_Type.Value = _movieDB.Subtitles(i).SubsType
                             parSubs_Path.Value = _movieDB.Subtitles(i).SubsPath
+                            parSubs_Forced.Value = _movieDB.Subtitles(i).SubsForced
                             SQLcommandMoviesSubs.ExecuteNonQuery()
                             iID += 1
                         Next
                     End Using
-
-                    ''embedded subtitles
-                    'Using SQLcommandMoviesSubs As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    '    SQLcommandMoviesSubs.CommandText = String.Concat("DELETE FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, ";")
-                    '    SQLcommandMoviesSubs.ExecuteNonQuery()
-
-                    '    SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSubs (", _
-                    '       "MovieID, StreamID, Subs_Language, Subs_LongLanguage,Subs_Type, Subs_Path", _
-                    '       ") VALUES (?,?,?,?,?,?);")
-                    '    Dim parSubs_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.UInt64, 0, "MovieID")
-                    '    Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
-                    '    Dim parSubs_Language As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "Subs_Language")
-                    '    Dim parSubs_LongLanguage As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_LongLanguage", DbType.String, 0, "Subs_LongLanguage")
-                    '    Dim parSubs_Type As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Type", DbType.String, 0, "Subs_Type")
-                    '    Dim parSubs_Path As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Path", DbType.String, 0, "Subs_Path")
-                    '    For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
-                    '        parSubs_MovieID.Value = _movieDB.ID
-                    '        parSubs_StreamID.Value = i
-                    '        parSubs_Language.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).Language
-                    '        parSubs_LongLanguage.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).LongLanguage
-                    '        parSubs_Type.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsType
-                    '        parSubs_Path.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsPath
-                    '        SQLcommandMoviesSubs.ExecuteNonQuery()
-                    '    Next
-                    'End Using
 
                     ' For what i understand this is used from Poster/Fanart Modules... will not be read/wrtire directly when load/save Movie
                     Using SQLcommandMoviesPosters As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -2624,23 +2627,46 @@ Public Class Database
                             SQLcommandTVAStreams.ExecuteNonQuery()
                         Next
                     End Using
+
+                    'subtitles
                     Using SQLcommandTVSubs As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                         SQLcommandTVSubs.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", _TVEpDB.EpID, ";")
                         SQLcommandTVSubs.ExecuteNonQuery()
 
                         SQLcommandTVSubs.CommandText = String.Concat("INSERT OR REPLACE INTO TVSubs (", _
-                          "TVEpID, StreamID, Subs_Language, Subs_LongLanguage", _
-                          ") VALUES (?,?,?,?);")
+                           "TVEpID, StreamID, Subs_Language, Subs_LongLanguage,Subs_Type, Subs_Path, Subs_Forced", _
+                           ") VALUES (?,?,?,?,?,?,?);")
                         Dim parSubs_EpID As SQLite.SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_EpID", DbType.UInt64, 0, "TVEpID")
                         Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
                         Dim parSubs_Language As SQLite.SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "Subs_Language")
                         Dim parSubs_LongLanguage As SQLite.SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_LongLanguage", DbType.String, 0, "Subs_LongLanguage")
+                        Dim parSubs_Type As SQLite.SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_Type", DbType.String, 0, "Subs_Type")
+                        Dim parSubs_Path As SQLite.SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_Path", DbType.String, 0, "Subs_Path")
+                        Dim parSubs_Forced As SQLite.SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_Forced", DbType.Boolean, 0, "Subs_Forced")
+                        Dim iID As Integer = 0
+                        'embedded subtitles
                         For i As Integer = 0 To _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle.Count - 1
                             parSubs_EpID.Value = _TVEpDB.EpID
-                            parSubs_StreamID.Value = i
+                            parSubs_StreamID.Value = iID
                             parSubs_Language.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle(i).Language
                             parSubs_LongLanguage.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle(i).LongLanguage
+                            parSubs_Type.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle(i).SubsType
+                            parSubs_Path.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle(i).SubsPath
+                            parSubs_Forced.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle(i).SubsForced
                             SQLcommandTVSubs.ExecuteNonQuery()
+                            iID += 1
+                        Next
+                        'external subtitles
+                        For i As Integer = 0 To _TVEpDB.EpSubtitles.Count - 1
+                            parSubs_EpID.Value = _TVEpDB.EpID
+                            parSubs_StreamID.Value = iID
+                            parSubs_Language.Value = _TVEpDB.EpSubtitles(i).Language
+                            parSubs_LongLanguage.Value = _TVEpDB.EpSubtitles(i).LongLanguage
+                            parSubs_Type.Value = _TVEpDB.EpSubtitles(i).SubsType
+                            parSubs_Path.Value = _TVEpDB.EpSubtitles(i).SubsPath
+                            parSubs_Forced.Value = _TVEpDB.EpSubtitles(i).SubsForced
+                            SQLcommandTVSubs.ExecuteNonQuery()
+                            iID += 1
                         Next
                     End Using
 
