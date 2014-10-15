@@ -484,7 +484,7 @@ Public Class frmMain
             Dim dRow = From drvRow In dtMovies.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT mark, SortTitle FROM movies WHERE id = ", iID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT Mark, SortTitle FROM Movies WHERE ID = ", iID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     SQLreader.Read()
                     DirectCast(dRow(0), DataRow).Item(11) = Convert.ToBoolean(SQLreader("mark"))
@@ -498,16 +498,15 @@ Public Class frmMain
 
     Public Sub SetMovieSetListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
         Try
-            'Dim dRow = From drvRow In dtMovieSets.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iSetName Select drvRow
+            Dim dRow = From drvRow In dtMovieSets.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
 
-            'Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            '    SQLcommand.CommandText = String.Concat("SELECT mark, SortTitle FROM movies WHERE id = ", iSetName, ";")
-            '    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-            '        SQLreader.Read()
-            '        DirectCast(dRow(0), DataRow).Item(11) = Convert.ToBoolean(SQLreader("mark"))
-            '        If Not DBNull.Value.Equals(SQLreader("SortTitle")) Then DirectCast(dRow(0), DataRow).Item(47) = SQLreader("SortTitle").ToString
-            '    End Using
-            'End Using
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT Mark FROM Sets WHERE ID = ", iID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    SQLreader.Read()
+                    DirectCast(dRow(0), DataRow).Item(22) = Convert.ToBoolean(SQLreader("Mark"))
+                End Using
+            End Using
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -1737,7 +1736,7 @@ Public Class frmMain
                         End If
                     Else
                         If Master.eSettings.MovieScraperMetaDataScan Then
-                            Me.SetAVImages(APIXML.GetAVImages(Res.Movie.Movie.FileInfo, Res.Movie.Filename, False, Res.Movie.FileSource))
+                            Me.SetAVImages(APIXML.GetAVImages(Res.Movie.Movie.FileInfo, Res.Movie.Filename, False, Res.Movie.Movie.VideoSource))
                             Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                             Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
                         Else
@@ -4140,7 +4139,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnShowOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowOpenFolder.Click
+    Private Sub cmnuShowOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowOpenFolder.Click
         If Me.dgvTVShows.SelectedRows.Count > 0 Then
             Dim doOpen As Boolean = True
             If Me.dgvTVShows.SelectedRows.Count > 10 Then
@@ -4165,7 +4164,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub cmnuChangeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeChange.Click
+    Private Sub cmnuEpisodeChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeChange.Click
         Me.SetControlsEnabled(False, True)
         Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB, Me.tmpLang)
 
@@ -4181,7 +4180,7 @@ doCancel:
         Me.SetControlsEnabled(True)
     End Sub
 
-    Private Sub cmnuChangeShow_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowChange.Click
+    Private Sub cmnuShowChange_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowChange.Click
         Me.SetControlsEnabled(False, True)
         Dim ShowLang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
         Dim SourceLang As String = Master.DB.GetTVSourceLanguage(Me.dgvTVShows.Item(8, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString)
@@ -4189,7 +4188,7 @@ doCancel:
         Me.SetControlsEnabled(True)
     End Sub
 
-    Private Sub cmnuDeleteSeason_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDisk.Click
+    Private Sub cmnuSeasonRemoveFromDisk_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDisk.Click
         Try
 
             Dim SeasonsToDelete As New Dictionary(Of Long, Long)
@@ -4219,7 +4218,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuDeleteTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRemoveFromDisk.Click
+    Private Sub cmnuEpisodeRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRemoveFromDisk.Click
         Try
 
             Dim EpsToDelete As New Dictionary(Of Long, Long)
@@ -4247,7 +4246,7 @@ doCancel:
 
     End Sub
 
-    Private Sub cmnuDeleteTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRemoveFromDisk.Click
+    Private Sub cmnuShowRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRemoveFromDisk.Click
         Try
 
             Dim ShowsToDelete As New Dictionary(Of Long, Long)
@@ -4273,7 +4272,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuEditEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeEdit.Click
+    Private Sub cmnuEpisodeEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeEdit.Click
         Try
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
@@ -4355,7 +4354,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuEditShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowEdit.Click
+    Private Sub cmnuShowEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowEdit.Click
         Try
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
@@ -4385,7 +4384,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuEpOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeOpenFolder.Click
+    Private Sub cmnuEpisodeOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeOpenFolder.Click
         If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Dim doOpen As Boolean = True
             Dim ePath As String = String.Empty
@@ -4487,7 +4486,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuHasWatchedEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeWatched.Click
+    Private Sub cmnuEpisodeWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeWatched.Click
         Try
             Dim setHasWatched As Boolean = False
             If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
@@ -4670,7 +4669,7 @@ doCancel:
     '    End Try
     'End Sub
 
-    Private Sub cmnuLockEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeLock.Click
+    Private Sub cmnuEpisodeLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeLock.Click
         Try
             Dim setLock As Boolean = False
             If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
@@ -4737,7 +4736,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuLockSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonLock.Click
+    Private Sub cmnuSeasonLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonLock.Click
         Try
             Dim setLock As Boolean = False
             If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
@@ -4789,7 +4788,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuLockShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLock.Click
+    Private Sub cmnuShowLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLock.Click
         Try
             Dim setLock As Boolean = False
             If Me.dgvTVShows.SelectedRows.Count > 1 Then
@@ -4843,6 +4842,16 @@ doCancel:
                 End Using
                 SQLtransaction.Commit()
             End Using
+
+            If Me.chkFilterLock_Shows.Checked Then
+                Me.dgvTVShows.ClearSelection()
+                Me.dgvTVShows.CurrentCell = Nothing
+                If Me.dgvTVShows.RowCount <= 0 Then
+                    Me.ClearInfo()
+                    Me.dgvTVSeasons.DataSource = Nothing
+                    Me.dgvTVEpisodes.DataSource = Nothing
+                End If
+            End If
 
             Me.dgvTVShows.Invalidate()
             Me.dgvTVSeasons.Invalidate()
@@ -4937,7 +4946,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuMarkEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeMark.Click
+    Private Sub cmnuEpisodeMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeMark.Click
         Try
             Dim setMark As Boolean = False
             If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
@@ -5004,7 +5013,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuMarkSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonMark.Click
+    Private Sub cmnuSeasonMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonMark.Click
         Try
             Dim setMark As Boolean = False
             If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
@@ -5056,7 +5065,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuMarkShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowMark.Click
+    Private Sub cmnuShowMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowMark.Click
         Try
             Dim setMark As Boolean = False
             If Me.dgvTVShows.SelectedRows.Count > 1 Then
@@ -5110,6 +5119,16 @@ doCancel:
                 End Using
                 SQLtransaction.Commit()
             End Using
+
+            If Me.chkFilterMark_Shows.Checked Then
+                Me.dgvTVShows.ClearSelection()
+                Me.dgvTVShows.CurrentCell = Nothing
+                If Me.dgvTVShows.RowCount <= 0 Then
+                    Me.ClearInfo()
+                    Me.dgvTVSeasons.DataSource = Nothing
+                    Me.dgvTVEpisodes.DataSource = Nothing
+                End If
+            End If
 
             Me.dgvTVShows.Invalidate()
             Me.dgvTVSeasons.Invalidate()
@@ -5426,7 +5445,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuMovieEditMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieEditMetaData.Click
+    Private Sub cmnuMovieEditMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieEditMetaData.Click
         If Me.dgvMovies.SelectedRows.Count > 1 Then Return
         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
@@ -5574,7 +5593,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuReloadEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeReload.Click
+    Private Sub cmnuEpisodeReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeReload.Click
         Try
             Me.dgvTVShows.Cursor = Cursors.WaitCursor
             Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
@@ -5606,7 +5625,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuReloadSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonReload.Click
+    Private Sub cmnuSeasonReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonReload.Click
         Me.dgvTVShows.Cursor = Cursors.WaitCursor
         Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
         Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
@@ -5646,7 +5665,7 @@ doCancel:
         If doFill Then Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
     End Sub
 
-    Private Sub cmnuReloadShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowReload.Click
+    Private Sub cmnuShowReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowReload.Click
         Try
             Me.dgvTVShows.Cursor = Cursors.WaitCursor
             Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
@@ -5681,7 +5700,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuRemoveSeasonFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuRemoveSeasonFromDB.Click
+    Private Sub cmnuSeasonRemoveFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDB.Click
         Me.ClearInfo()
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -5698,7 +5717,7 @@ doCancel:
         Me.SetTVCount()
     End Sub
 
-    Private Sub cmnuRemoveTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRemoveFromDB.Click
+    Private Sub cmnuEpisodeRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRemoveFromDB.Click
         Me.ClearInfo()
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -5724,7 +5743,7 @@ doCancel:
         Me.SetTVCount()
     End Sub
 
-    Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRemoveFromDB.Click
+    Private Sub cmnuShowRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRemoveFromDB.Click
         Me.ClearInfo()
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -5737,7 +5756,7 @@ doCancel:
         Me.FillList(False, False, True)
     End Sub
 
-    Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRescrape.Click
+    Private Sub cmnuEpisodeRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRescrape.Click
         Me.SetControlsEnabled(False, True)
         ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpOrdering, Master.DefaultTVOptions)
     End Sub
@@ -8959,7 +8978,7 @@ doCancel:
             End If
             If Master.eSettings.MovieScraperMetaDataScan Then
                 'Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False))
-                Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False, Master.currMovie.FileSource))
+                Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False, Master.currMovie.Movie.VideoSource))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -14125,7 +14144,16 @@ doCancel:
 
         Return False
     End Function
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="ID"></param>
+    ''' <param name="BatchMode"></param>
+    ''' <param name="FromNfo"></param>
+    ''' <param name="ToNfo"></param>
+    ''' <param name="delWatched"></param>
+    ''' <returns>reload list from database?</returns>
+    ''' <remarks></remarks>
     Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False, Optional ByVal delWatched As Boolean = False) As Boolean
         Dim tmpMovie As New MediaContainers.Movie
         Dim tmpMovieDB As New Structures.DBMovie
@@ -14409,6 +14437,8 @@ doCancel:
 
             If Not IsNothing(dRow(0)) Then
                 selRow = DirectCast(dRow(0), DataRow)
+                tmpMovieSetDb.IsMark = Convert.ToBoolean(selRow.Item(22))
+                tmpMovieSetDb.IsLock = Convert.ToBoolean(selRow.Item(23))
 
                 If Me.InvokeRequired Then
                     Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieSetDb.ListTitle})
@@ -14431,8 +14461,7 @@ doCancel:
                     Me.Invoke(myDelegate, New Object() {dRow(0), 18, tmpMovieSetDb.MovieSet.ID})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 19, tmpMovieSetDb.MovieSet.Plot})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 20, tmpMovieSetDb.MovieSet.Title})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 22, tmpMovieSetDb.IsMark})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 23, tmpMovieSetDb.IsLock})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 20, False})
                 Else
                     selRow.Item(1) = tmpMovieSetDb.ListTitle
                     selRow.Item(2) = hasNfo
@@ -14454,8 +14483,7 @@ doCancel:
                     selRow.Item(18) = tmpMovieSetDb.MovieSet.ID
                     selRow.Item(19) = tmpMovieSetDb.MovieSet.Plot
                     selRow.Item(20) = tmpMovieSetDb.MovieSet.Title
-                    selRow.Item(22) = tmpMovieSetDb.IsMark
-                    selRow.Item(23) = tmpMovieSetDb.IsLock
+                    selRow.Item(20) = False
                 End If
             End If
 
@@ -17186,7 +17214,7 @@ doCancel:
                 .cmnuMovieUpSelYear.Text = Master.eLang.GetString(278, "Year")
                 .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
                 .cmnuMovieUpSel.Text = Master.eLang.GetString(1126, "Update Single Data Field")
-                .cmnuRemoveSeasonFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
+                .cmnuSeasonRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuSeasonChangeImages.Text = Master.eLang.GetString(770, "Change Images")
                 .cmnuSeasonLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuSeasonMark.Text = Master.eLang.GetString(23, "Mark")

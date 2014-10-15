@@ -230,7 +230,7 @@ Partial Class frmMain
         Me.cmnuSeasonOpenFolder = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator27 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuSeasonRemove = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuRemoveSeasonFromDB = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuSeasonRemoveFromDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSeasonRemoveFromDisk = New System.Windows.Forms.ToolStripMenuItem()
         Me.dgvTVEpisodes = New System.Windows.Forms.DataGridView()
         Me.cmnuEpisode = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -2750,7 +2750,7 @@ Partial Class frmMain
         '
         'cmnuSeasonRemove
         '
-        Me.cmnuSeasonRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveSeasonFromDB, Me.cmnuSeasonRemoveFromDisk})
+        Me.cmnuSeasonRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuSeasonRemoveFromDB, Me.cmnuSeasonRemoveFromDisk})
         Me.cmnuSeasonRemove.Image = CType(resources.GetObject("cmnuSeasonRemove.Image"), System.Drawing.Image)
         Me.cmnuSeasonRemove.Name = "cmnuSeasonRemove"
         Me.cmnuSeasonRemove.Size = New System.Drawing.Size(246, 22)
@@ -2758,11 +2758,11 @@ Partial Class frmMain
         '
         'cmnuRemoveSeasonFromDB
         '
-        Me.cmnuRemoveSeasonFromDB.Image = CType(resources.GetObject("cmnuRemoveSeasonFromDB.Image"), System.Drawing.Image)
-        Me.cmnuRemoveSeasonFromDB.Name = "cmnuRemoveSeasonFromDB"
-        Me.cmnuRemoveSeasonFromDB.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.cmnuRemoveSeasonFromDB.Size = New System.Drawing.Size(225, 22)
-        Me.cmnuRemoveSeasonFromDB.Text = "Remove from Database"
+        Me.cmnuSeasonRemoveFromDB.Image = CType(resources.GetObject("cmnuRemoveSeasonFromDB.Image"), System.Drawing.Image)
+        Me.cmnuSeasonRemoveFromDB.Name = "cmnuRemoveSeasonFromDB"
+        Me.cmnuSeasonRemoveFromDB.ShortcutKeys = System.Windows.Forms.Keys.Delete
+        Me.cmnuSeasonRemoveFromDB.Size = New System.Drawing.Size(225, 22)
+        Me.cmnuSeasonRemoveFromDB.Text = "Remove from Database"
         '
         'cmnuSeasonRemoveFromDisk
         '
@@ -9221,7 +9221,7 @@ End Sub
     Friend WithEvents cmnuSeasonLock As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuSeasonMark As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator16 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents cmnuRemoveSeasonFromDB As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuSeasonRemoveFromDB As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuSeasonRemoveFromDisk As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuEpisodeChange As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuSeasonTitle As System.Windows.Forms.ToolStripMenuItem

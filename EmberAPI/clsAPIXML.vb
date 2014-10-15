@@ -168,7 +168,7 @@ Public Class APIXML
         End Try
     End Sub
 
-    Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal fileSource As String) As Image()
+    Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
         Dim iReturn(5) As Image
         Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
         Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, ForTV)
@@ -189,7 +189,7 @@ Public Class APIXML
                     End If
                 End If
 
-                Dim vSource As String = fileSource 'GetFileSource(fName)
+                Dim vSource As String = videoSource 'GetFileSource(fName)
                 Dim vsourceFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name.ToLower = vSource.ToLower AndAlso f.Type = FlagType.VideoSource)
                 If Not IsNothing(vsourceFlag) Then
                     iReturn(1) = vsourceFlag.Image
