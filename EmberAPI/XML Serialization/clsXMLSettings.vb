@@ -8,6 +8,7 @@ Imports System.Drawing
 <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
  System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="Settings")> _
 Partial Public Class clsXMLSettings
+
 #Region "Fields"
     Private _cleandotfanartjpg As Boolean
     Private _cleanextrathumbs As Boolean
@@ -706,7 +707,7 @@ Partial Public Class clsXMLSettings
 
 #Region "Properties"
 
-    Public Property movieactorthumbsnmj() As Boolean
+    Public Property MovieActorThumbsNMJ() As Boolean
         Get
             Return Me._movieactorthumbsnmj
         End Get
@@ -715,7 +716,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property restartscraper() As Boolean
+    Public Property RestartScraper() As Boolean
         Get
             Return Me._restartscraper
         End Get
@@ -724,7 +725,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movieactorthumbsyamj() As Boolean
+    Public Property MovieActorThumbsYAMJ() As Boolean
         Get
             Return Me._movieactorthumbsyamj
         End Get
@@ -733,7 +734,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movieclearartnmj() As Boolean
+    Public Property MovieClearArtNMJ() As Boolean
         Get
             Return Me._movieclearartnmj
         End Get
@@ -742,7 +743,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movieclearartyamj() As Boolean
+    Public Property MovieClearArtYAMJ() As Boolean
         Get
             Return Me._movieclearartyamj
         End Get
@@ -751,7 +752,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movieclearlogonmj() As Boolean
+    Public Property MovieClearLogoNMJ() As Boolean
         Get
             Return Me._movieclearlogonmj
         End Get
@@ -760,7 +761,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movieclearlogoyamj() As Boolean
+    Public Property MovieClearLogoYAMJ() As Boolean
         Get
             Return Me._movieclearlogoyamj
         End Get
@@ -769,7 +770,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property moviediscartnmj() As Boolean
+    Public Property MovieDiscArtNMJ() As Boolean
         Get
             Return Me._moviediscartnmj
         End Get
@@ -778,7 +779,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property moviediscartyamj() As Boolean
+    Public Property MovieDiscArtYAMJ() As Boolean
         Get
             Return Me._moviediscartyamj
         End Get
@@ -787,7 +788,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movieextrafanartsnmj() As Boolean
+    Public Property MovieExtrafanartsNMJ() As Boolean
         Get
             Return Me._movieextrafanartsnmj
         End Get
@@ -796,7 +797,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movieextrafanartsyamj() As Boolean
+    Public Property MovieExtrafanartsYAMJ() As Boolean
         Get
             Return Me._movieextrafanartsyamj
         End Get
@@ -805,7 +806,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movieextrathumbsnmj() As Boolean
+    Public Property MovieExtrathumbsNMJ() As Boolean
         Get
             Return Me._movieextrathumbsnmj
         End Get
@@ -814,7 +815,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movieextrathumbsyamj() As Boolean
+    Public Property MovieExtrathumbsYAMJ() As Boolean
         Get
             Return Me._movieextrathumbsyamj
         End Get
@@ -823,7 +824,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movielandscapenmj() As Boolean
+    Public Property MovieLandscapeNMJ() As Boolean
         Get
             Return Me._movielandscapenmj
         End Get
@@ -832,7 +833,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property movielandscapeyamj() As Boolean
+    Public Property MovieLandscapeYAMJ() As Boolean
         Get
             Return Me._movielandscapeyamj
         End Get
@@ -841,7 +842,7 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property proxycredentials() As NetworkCredential
+    Public Property ProxyCredentials() As NetworkCredential
         Get
             Return Me._proxycredentials
         End Get
@@ -1925,10 +1926,10 @@ Partial Public Class clsXMLSettings
 
     Public Property MovieLockActors() As Boolean
         Get
-            Return Me._MovieLockActors
+            Return Me._movielockactors
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieLockActors = value
+            Me._movielockactors = value
         End Set
     End Property
 
@@ -1952,19 +1953,19 @@ Partial Public Class clsXMLSettings
 
     Public Property MovieLockCountry() As Boolean
         Get
-            Return Me._MovieLockCountry
+            Return Me._movielockcountry
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieLockCountry = value
+            Me._movielockcountry = value
         End Set
     End Property
 
     Public Property MovieLockDirector() As Boolean
         Get
-            Return Me._MovieLockDirector
+            Return Me._movielockdirector
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieLockDirector = value
+            Me._movielockdirector = value
         End Set
     End Property
 
@@ -2032,10 +2033,10 @@ Partial Public Class clsXMLSettings
 
     Public Property MovieLockReleaseDate() As Boolean
         Get
-            Return Me._MovieLockReleaseDate
+            Return Me._movielockreleasedate
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieLockReleaseDate = value
+            Me._movielockreleasedate = value
         End Set
     End Property
 
@@ -2058,19 +2059,19 @@ Partial Public Class clsXMLSettings
 
     Public Property MovieLockTop250() As Boolean
         Get
-            Return Me._MovieLockTop250
+            Return Me._movielocktop250
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieLockTop250 = value
+            Me._movielocktop250 = value
         End Set
     End Property
 
     Public Property MovieLockVotes() As Boolean
         Get
-            Return Me._MovieLockVotes
+            Return Me._movielockvotes
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieLockVotes = value
+            Me._movielockvotes = value
         End Set
     End Property
 
@@ -2085,10 +2086,10 @@ Partial Public Class clsXMLSettings
 
     Public Property MovieLockYear() As Boolean
         Get
-            Return Me._MovieLockYear
+            Return Me._movielockyear
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieLockYear = value
+            Me._movielockyear = value
         End Set
     End Property
 
@@ -2577,19 +2578,19 @@ Partial Public Class clsXMLSettings
 
     Public Property MovieSetPosterPrefOnly() As Boolean
         Get
-            Return Me._moviesetPosterprefonly
+            Return Me._moviesetposterprefonly
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetPosterprefonly = value
+            Me._moviesetposterprefonly = value
         End Set
     End Property
 
     Public Property MovieSetPosterResize() As Boolean
         Get
-            Return Me._moviesetPosterresize
+            Return Me._moviesetposterresize
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetPosterresize = value
+            Me._moviesetposterresize = value
         End Set
     End Property
 
@@ -2649,73 +2650,73 @@ Partial Public Class clsXMLSettings
 
     Public Property MovieSetMissingBanner() As Boolean
         Get
-            Return Me._MovieSetmissingbanner
+            Return Me._moviesetmissingbanner
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieSetmissingbanner = value
+            Me._moviesetmissingbanner = value
         End Set
     End Property
 
     Public Property MovieSetMissingClearArt() As Boolean
         Get
-            Return Me._MovieSetmissingclearart
+            Return Me._moviesetmissingclearart
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieSetmissingclearart = value
+            Me._moviesetmissingclearart = value
         End Set
     End Property
 
     Public Property MovieSetMissingClearLogo() As Boolean
         Get
-            Return Me._MovieSetmissingclearlogo
+            Return Me._moviesetmissingclearlogo
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieSetmissingclearlogo = value
+            Me._moviesetmissingclearlogo = value
         End Set
     End Property
 
     Public Property MovieSetMissingDiscArt() As Boolean
         Get
-            Return Me._MovieSetmissingdiscart
+            Return Me._moviesetmissingdiscart
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieSetmissingdiscart = value
+            Me._moviesetmissingdiscart = value
         End Set
     End Property
 
     Public Property MovieSetMissingFanart() As Boolean
         Get
-            Return Me._MovieSetmissingfanart
+            Return Me._moviesetmissingfanart
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieSetmissingfanart = value
+            Me._moviesetmissingfanart = value
         End Set
     End Property
 
     Public Property MovieSetMissingLandscape() As Boolean
         Get
-            Return Me._MovieSetmissinglandscape
+            Return Me._moviesetmissinglandscape
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieSetmissinglandscape = value
+            Me._moviesetmissinglandscape = value
         End Set
     End Property
 
     Public Property MovieSetMissingNFO() As Boolean
         Get
-            Return Me._MovieSetmissingnfo
+            Return Me._moviesetmissingnfo
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieSetmissingnfo = value
+            Me._moviesetmissingnfo = value
         End Set
     End Property
 
     Public Property MovieSetMissingPoster() As Boolean
         Get
-            Return Me._MovieSetmissingposter
+            Return Me._moviesetmissingposter
         End Get
         Set(ByVal value As Boolean)
-            Me._MovieSetmissingposter = value
+            Me._moviesetmissingposter = value
         End Set
     End Property
 
