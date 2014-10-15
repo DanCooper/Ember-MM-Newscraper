@@ -2491,6 +2491,7 @@ Public Class frmMain
         Dim ClearArt As New MediaContainers.Image
         Dim ClearLogo As New MediaContainers.Image
         Dim DBScrapeMovieSet As New Structures.DBMovieSet
+        Dim cloneMovieSet As New Structures.DBMovieSet
         Dim DiscArt As New MediaContainers.Image
         Dim Fanart As New MediaContainers.Image
         Dim Landscape As New MediaContainers.Image
@@ -2523,6 +2524,18 @@ Public Class frmMain
                 dScrapeRow = dRow
 
                 DBScrapeMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(dRow.Item(0)))
+
+                'clone the existing MovieSet with old paths and title to remove old images if the title is changed during the scraping
+                cloneMovieSet.BannerPath = DBScrapeMovieSet.BannerPath
+                cloneMovieSet.ClearArtPath = DBScrapeMovieSet.ClearArtPath
+                cloneMovieSet.ClearLogoPath = DBScrapeMovieSet.ClearLogoPath
+                cloneMovieSet.DiscArtPath = DBScrapeMovieSet.DiscArtPath
+                cloneMovieSet.FanartPath = DBScrapeMovieSet.FanartPath
+                cloneMovieSet.LandscapePath = DBScrapeMovieSet.LandscapePath
+                cloneMovieSet.PosterPath = DBScrapeMovieSet.PosterPath
+                cloneMovieSet.MovieSet = New MediaContainers.MovieSet
+                cloneMovieSet.MovieSet.Title = DBScrapeMovieSet.MovieSet.Title
+
                 'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
 
                 If Master.GlobalScrapeMod.NFO Then
@@ -2554,6 +2567,47 @@ Public Class frmMain
 
                 If Not NewListTitle = OldListTitle Then
                     bwMovieSetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
+                End If
+
+                'rename old images with no longer valid <title>-imagetype.* file names to new MovieSet title
+                If Not NewTitle = OldTitle AndAlso Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                    'load all old images to memorystream
+                    If Not String.IsNullOrEmpty(cloneMovieSet.BannerPath) Then Banner.WebImage.FromFile(cloneMovieSet.BannerPath)
+                    If Not String.IsNullOrEmpty(cloneMovieSet.ClearArtPath) Then ClearArt.WebImage.FromFile(cloneMovieSet.ClearArtPath)
+                    If Not String.IsNullOrEmpty(cloneMovieSet.ClearLogoPath) Then ClearLogo.WebImage.FromFile(cloneMovieSet.ClearLogoPath)
+                    If Not String.IsNullOrEmpty(cloneMovieSet.DiscArtPath) Then DiscArt.WebImage.FromFile(cloneMovieSet.DiscArtPath)
+                    If Not String.IsNullOrEmpty(cloneMovieSet.FanartPath) Then Fanart.WebImage.FromFile(cloneMovieSet.FanartPath)
+                    If Not String.IsNullOrEmpty(cloneMovieSet.LandscapePath) Then Landscape.WebImage.FromFile(cloneMovieSet.LandscapePath)
+                    If Not String.IsNullOrEmpty(cloneMovieSet.PosterPath) Then Poster.WebImage.FromFile(cloneMovieSet.PosterPath)
+
+                    'save old images with new MovieSet title
+                    DBScrapeMovieSet.BannerPath = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
+                    DBScrapeMovieSet.ClearArtPath = ClearArt.WebImage.SaveAsMovieSetClearArt(DBScrapeMovieSet)
+                    DBScrapeMovieSet.ClearLogoPath = ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBScrapeMovieSet)
+                    DBScrapeMovieSet.DiscArtPath = DiscArt.WebImage.SaveAsMovieSetDiscArt(DBScrapeMovieSet)
+                    DBScrapeMovieSet.FanartPath = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
+                    DBScrapeMovieSet.LandscapePath = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
+                    DBScrapeMovieSet.PosterPath = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
+
+                    'delete old images
+                    Dim oldImage As New Images
+                    oldImage.DeleteMovieSetBanner(cloneMovieSet)
+                    oldImage.DeleteMovieSetClearArt(cloneMovieSet)
+                    oldImage.DeleteMovieSetClearLogo(cloneMovieSet)
+                    oldImage.DeleteMovieSetDiscArt(cloneMovieSet)
+                    oldImage.DeleteMovieSetFanart(cloneMovieSet)
+                    oldImage.DeleteMovieSetLandscape(cloneMovieSet)
+                    oldImage.DeleteMovieSetPoster(cloneMovieSet)
+                    oldImage.Dispose()
+
+                    'reset all images for scraper
+                    Banner = New MediaContainers.Image
+                    ClearArt = New MediaContainers.Image
+                    ClearLogo = New MediaContainers.Image
+                    DiscArt = New MediaContainers.Image
+                    Fanart = New MediaContainers.Image
+                    Landscape = New MediaContainers.Image
+                    Poster = New MediaContainers.Image
                 End If
 
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
@@ -14346,23 +14400,49 @@ doCancel:
                 If Me.InvokeRequired Then
                     Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieSetDb.ListTitle})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 2, hasNfo})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieSetDb.NfoPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 4, hasPoster})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 5, tmpMovieSetDb.PosterPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 6, hasFanart})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 7, tmpMovieSetDb.FanartPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 8, hasBanner})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 9, tmpMovieSetDb.BannerPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 10, hasLandscape})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 11, tmpMovieSetDb.LandscapePath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 12, hasDiscArt})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 13, tmpMovieSetDb.DiscArtPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 14, hasClearLogo})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieSetDb.ClearLogoPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 16, hasClearArt})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 17, tmpMovieSetDb.ClearArtPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 18, tmpMovieSetDb.MovieSet.ID})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 19, tmpMovieSetDb.MovieSet.Plot})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 20, tmpMovieSetDb.MovieSet.Title})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 22, tmpMovieSetDb.IsMark})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 23, tmpMovieSetDb.IsLock})
                 Else
                     selRow.Item(1) = tmpMovieSetDb.ListTitle
                     selRow.Item(2) = hasNfo
+                    selRow.Item(3) = tmpMovieSetDb.NfoPath
                     selRow.Item(4) = hasPoster
+                    selRow.Item(5) = tmpMovieSetDb.PosterPath
                     selRow.Item(6) = hasFanart
+                    selRow.Item(7) = tmpMovieSetDb.FanartPath
                     selRow.Item(8) = hasBanner
+                    selRow.Item(9) = tmpMovieSetDb.BannerPath
                     selRow.Item(10) = hasLandscape
+                    selRow.Item(11) = tmpMovieSetDb.LandscapePath
                     selRow.Item(12) = hasDiscArt
+                    selRow.Item(13) = tmpMovieSetDb.DiscArtPath
                     selRow.Item(14) = hasClearLogo
+                    selRow.Item(15) = tmpMovieSetDb.ClearLogoPath
                     selRow.Item(16) = hasClearArt
+                    selRow.Item(17) = tmpMovieSetDb.ClearArtPath
+                    selRow.Item(18) = tmpMovieSetDb.MovieSet.ID
+                    selRow.Item(19) = tmpMovieSetDb.MovieSet.Plot
+                    selRow.Item(20) = tmpMovieSetDb.MovieSet.Title
+                    selRow.Item(22) = tmpMovieSetDb.IsMark
+                    selRow.Item(23) = tmpMovieSetDb.IsLock
                 End If
             End If
 

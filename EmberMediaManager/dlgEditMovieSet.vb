@@ -1454,6 +1454,35 @@ Public Class dlgEditMovieSet
                 Me.btnSearchMovie.Enabled = False
                 Me.btnRescrape.Enabled = False
 
+                'it is important that existing images will be deleted before the new name is saved!
+                If Master.currMovieSet.RemoveBanner OrElse needsMovieUpdate Then
+                    .MovieBanner.DeleteMovieSetBanner(Master.currMovieSet)
+                End If
+
+                If Master.currMovieSet.RemoveClearArt OrElse needsMovieUpdate Then
+                    .MovieClearArt.DeleteMovieSetClearArt(Master.currMovieSet)
+                End If
+
+                If Master.currMovieSet.RemoveClearLogo OrElse needsMovieUpdate Then
+                    .MovieClearLogo.DeleteMovieSetClearLogo(Master.currMovieSet)
+                End If
+
+                If Master.currMovieSet.RemoveDiscArt OrElse needsMovieUpdate Then
+                    .MovieDiscArt.DeleteMovieSetDiscArt(Master.currMovieSet)
+                End If
+
+                If Master.currMovieSet.RemoveFanart OrElse needsMovieUpdate Then
+                    .MovieFanart.DeleteMovieSetFanart(Master.currMovieSet)
+                End If
+
+                If Master.currMovieSet.RemoveLandscape OrElse needsMovieUpdate Then
+                    .MovieLandscape.DeleteMovieSetLandscape(Master.currMovieSet)
+                End If
+
+                If Master.currMovieSet.RemovePoster OrElse needsMovieUpdate Then
+                    .MoviePoster.DeleteMovieSetPoster(Master.currMovieSet)
+                End If
+
                 Master.currMovieSet.IsMark = Me.chkMark.Checked
 
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
@@ -1463,34 +1492,6 @@ Public Class dlgEditMovieSet
 
                 Master.currMovieSet.MovieSet.ID = .txtCollectionID.Text.Trim
                 Master.currMovieSet.MovieSet.Plot = .txtPlot.Text.Trim
-
-                If Master.currMovieSet.RemoveBanner Then
-                    .MovieBanner.DeleteMovieSetBanner(Master.currMovieSet)
-                End If
-
-                If Master.currMovieSet.RemoveClearArt Then
-                    .MovieClearArt.DeleteMovieSetClearArt(Master.currMovieSet)
-                End If
-
-                If Master.currMovieSet.RemoveClearLogo Then
-                    .MovieClearLogo.DeleteMovieSetClearLogo(Master.currMovieSet)
-                End If
-
-                If Master.currMovieSet.RemoveDiscArt Then
-                    .MovieDiscArt.DeleteMovieSetDiscArt(Master.currMovieSet)
-                End If
-
-                If Master.currMovieSet.RemoveFanart Then
-                    .MovieFanart.DeleteMovieSetFanart(Master.currMovieSet)
-                End If
-
-                If Master.currMovieSet.RemoveLandscape Then
-                    .MovieLandscape.DeleteMovieSetLandscape(Master.currMovieSet)
-                End If
-
-                If Master.currMovieSet.RemovePoster Then
-                    .MoviePoster.DeleteMovieSetPoster(Master.currMovieSet)
-                End If
 
                 If Not IsNothing(.MovieBanner.Image) Then
                     Dim fPath As String = .MovieBanner.SaveAsMovieSetBanner(Master.currMovieSet)
