@@ -846,7 +846,7 @@ Public Class dlgSetsManager
 
         If Not String.IsNullOrEmpty(collectionartwork_path) AndAlso IO.Directory.Exists(collectionartwork_path) Then
             If Not IsNothing(Fanart.Image) Then
-                Dim fPath As String = Fanart.SaveAsMovieCollectionFanart(collectionartwork_path, currSet.Set)
+                'Dim fPath As String = Fanart.SaveAsMovieCollectionFanart(collectionartwork_path, currSet.Set)
                 ' Master.currMovie.FanartPath = fPath
             Else
                 ' Fanart.DeleteFanart(Master.currMovie)
@@ -854,7 +854,7 @@ Public Class dlgSetsManager
             End If
 
             If Not IsNothing(Poster.Image) Then
-                Dim pPath As String = Poster.SaveAsMovieCollectionPoster(collectionartwork_path, currSet.Set)
+                'Dim pPath As String = Poster.SaveAsMovieCollectionPoster(collectionartwork_path, currSet.Set)
                 ' Master.currMovie.PosterPath = pPath
             Else
                 '         Poster.DeletePosters(Master.currMovie)
