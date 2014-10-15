@@ -14744,7 +14744,25 @@ doCancel:
                 SQLtransaction.Commit()
                 SQLtransaction = Nothing
 
-                Me.LoadShowInfo(Convert.ToInt32(ID))
+                Dim selI As Integer = 0
+
+                If Me.dgvTVShows.SelectedRows.Count > 0 Then selI = Me.dgvTVShows.SelectedRows(0).Index
+
+                Me.dgvTVShows.ClearSelection()
+                Me.dgvTVShows.CurrentCell = Nothing
+
+                If Me.dgvTVShows.RowCount - 1 < selI Then selI = Me.dgvTVShows.RowCount
+
+                Me.ClearInfo()
+                Me.dgvTVSeasons.DataSource = Nothing
+                Me.dgvTVEpisodes.DataSource = Nothing
+                Me.prevShowRow = -2
+                Me.currShowRow = -1
+
+                If Me.dgvTVShows.RowCount > 0 Then
+                    Me.dgvTVShows.Rows(selI).Cells(1).Selected = True
+                    Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Rows(selI).Cells(1)
+                End If
 
                 Me.tslLoading.Visible = False
                 Me.tspbLoading.Visible = False
