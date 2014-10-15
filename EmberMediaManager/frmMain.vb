@@ -1779,7 +1779,6 @@ Public Class frmMain
             Me.MovieInfoDownloaded()
         Else
             Me.FillList(False, True, False)
-            Me.RefreshAllMovieSets(True)
             If Me.dgvMovies.SelectedRows.Count > 0 Then
                 Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
             Else
@@ -3203,7 +3202,6 @@ doCancel:
         Me.tslLoading.Visible = False
 
         Me.FillList(True, True, False)
-        Me.RefreshAllMovieSets(True)
         Me.Cursor = Cursors.Default
     End Sub
 
@@ -3214,13 +3212,7 @@ doCancel:
         Dim MovieSetIDs As New Dictionary(Of Long, String)
 
         For Each sRow As DataRow In Me.dtMovieSets.Rows
-            If Args.onlyNew Then
-                If Convert.ToBoolean(sRow.Item(21)) Then
-                    MovieSetIDs.Add(Convert.ToInt64(sRow.Item(0)), sRow.Item(1).ToString)
-                End If
-            Else
-                MovieSetIDs.Add(Convert.ToInt64(sRow.Item(0)), sRow.Item(1).ToString)
-            End If
+            MovieSetIDs.Add(Convert.ToInt64(sRow.Item(0)), sRow.Item(1).ToString)
         Next
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -12386,10 +12378,8 @@ doCancel:
                             Me.SetMovieListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(True, True, False)
-                                Me.RefreshAllMovieSets(True)
                             Else
                                 Me.FillList(False, True, False)
-                                Me.RefreshAllMovieSets(True)
                             End If
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
@@ -13987,7 +13977,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub RefreshAllMovieSets(ByVal onlyNew As Boolean)
+    Private Sub RefreshAllMovieSets()
         If Me.dtMovieSets.Rows.Count > 0 Then
             Me.Cursor = Cursors.WaitCursor
             Me.SetControlsEnabled(False, True)
@@ -14004,7 +13994,7 @@ doCancel:
 
             Me.bwRefreshMovieSets.WorkerReportsProgress = True
             Me.bwRefreshMovieSets.WorkerSupportsCancellation = True
-            Me.bwRefreshMovieSets.RunWorkerAsync(New Arguments With {.onlyNew = onlyNew})
+            Me.bwRefreshMovieSets.RunWorkerAsync()
         Else
             Me.SetControlsEnabled(True)
         End If
@@ -14038,7 +14028,7 @@ doCancel:
     End Sub
 
     Private Sub mnuMainToolsReloadMovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsReloadMovieSets.Click
-        RefreshAllMovieSets(False)
+        RefreshAllMovieSets()
     End Sub
 
     Private Function RefreshEpisode(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
@@ -15113,12 +15103,10 @@ doCancel:
         If Not Master.isCL Then
             Me.SetStatus(String.Empty)
             Me.FillList(True, True, True)
-            Me.RefreshAllMovieSets(True)
             Me.tspbLoading.Visible = False
             Me.tslLoading.Visible = False
         Else
             Me.FillList(True, True, True)
-            Me.RefreshAllMovieSets(True)
             LoadingDone = True
         End If
     End Sub
@@ -16424,7 +16412,7 @@ doCancel:
                             Application.DoEvents()
                             'Threading.Thread.Sleep(50)
                         End While
-                        Me.RefreshAllMovieSets(False)
+                        Me.RefreshAllMovieSets()
                     End If
                 End If
                 If dresult.NeedsRefresh_TV Then
@@ -18425,7 +18413,6 @@ doCancel:
         Dim setEnabled As Boolean
         Dim TVShow As Structures.DBTV
         Dim SetName As String
-        Dim onlyNew As Boolean
         Dim withEpisodes As Boolean
 
 #End Region 'Fields
