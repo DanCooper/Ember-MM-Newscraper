@@ -834,8 +834,7 @@ Public Class Trailers
             Catch ex As Exception
             End Try
 
-            Dim fExt As String = ""
-            fExt = Path.GetExtension(Me._ext)
+            Dim fExt As String = Path.GetExtension(Me._ext)
             '2014/09/26 before saving current trailer, check if we should delete existing trailer(s) - do this only if new trailer to save exists!
             If Master.eSettings.MovieTrailerDeleteExisting AndAlso fExt <> "" Then
                 DeleteMovieTrailer(Master.currMovie)
@@ -843,9 +842,9 @@ Public Class Trailers
 
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Trailer)
-                If Not File.Exists(a & fExt) OrElse (isEdit OrElse Master.eSettings.MovieTrailerOverwrite) Then
-                    Save(a & fExt)
-                    strReturn = (a & fExt)
+                If Not File.Exists(String.Concat(a, fExt)) OrElse (isEdit OrElse Master.eSettings.MovieTrailerOverwrite) Then
+                    Save(String.Concat(a, fExt))
+                    strReturn = (String.Concat(a, fExt))
                 End If
             Next
 

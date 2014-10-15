@@ -201,6 +201,10 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie = New System.Windows.Forms.Button()
         Me.tmrDelay = New System.Windows.Forms.Timer(Me.components)
         Me.chkWatched = New System.Windows.Forms.CheckBox()
+        Me.axVLCTheme = New AxAXVLC.AxVLCPlugin2()
+        Me.btnThemeMute = New System.Windows.Forms.Button()
+        Me.btnThemeStop = New System.Windows.Forms.Button()
+        Me.btnThemePlay = New System.Windows.Forms.Button()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditMovie.SuspendLayout()
@@ -243,6 +247,7 @@ Partial Class dlgEditMovie
         Me.tpTheme.SuspendLayout()
         Me.tpMetaData.SuspendLayout()
         Me.tpMediaStub.SuspendLayout()
+        CType(Me.axVLCTheme, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -2001,7 +2006,7 @@ Partial Class dlgEditMovie
         Me.axVLCTrailer.Location = New System.Drawing.Point(6, 6)
         Me.axVLCTrailer.Name = "axVLCTrailer"
         Me.axVLCTrailer.OcxState = CType(resources.GetObject("axVLCTrailer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 450)
+        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 449)
         Me.axVLCTrailer.TabIndex = 9
         '
         'btnSetMovieTrailerDL
@@ -2058,6 +2063,10 @@ Partial Class dlgEditMovie
         '
         'tpTheme
         '
+        Me.tpTheme.Controls.Add(Me.btnThemeMute)
+        Me.tpTheme.Controls.Add(Me.btnThemeStop)
+        Me.tpTheme.Controls.Add(Me.btnThemePlay)
+        Me.tpTheme.Controls.Add(Me.axVLCTheme)
         Me.tpTheme.Controls.Add(Me.btnSetMovieThemeDL)
         Me.tpTheme.Controls.Add(Me.btnRemoveMovieTheme)
         Me.tpTheme.Controls.Add(Me.btnSetMovieThemeScrape)
@@ -2238,6 +2247,42 @@ Partial Class dlgEditMovie
         Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
         '
+        'axVLCTheme
+        '
+        Me.axVLCTheme.Enabled = True
+        Me.axVLCTheme.Location = New System.Drawing.Point(6, 373)
+        Me.axVLCTheme.Name = "axVLCTheme"
+        Me.axVLCTheme.OcxState = CType(resources.GetObject("axVLCTheme.OcxState"), System.Windows.Forms.AxHost.State)
+        Me.axVLCTheme.Size = New System.Drawing.Size(800, 83)
+        Me.axVLCTheme.TabIndex = 10
+        '
+        'btnThemeMute
+        '
+        Me.btnThemeMute.Location = New System.Drawing.Point(302, 462)
+        Me.btnThemeMute.Name = "btnThemeMute"
+        Me.btnThemeMute.Size = New System.Drawing.Size(75, 23)
+        Me.btnThemeMute.TabIndex = 15
+        Me.btnThemeMute.Text = "Mute"
+        Me.btnThemeMute.UseVisualStyleBackColor = True
+        '
+        'btnThemeStop
+        '
+        Me.btnThemeStop.Location = New System.Drawing.Point(96, 462)
+        Me.btnThemeStop.Name = "btnThemeStop"
+        Me.btnThemeStop.Size = New System.Drawing.Size(75, 23)
+        Me.btnThemeStop.TabIndex = 14
+        Me.btnThemeStop.Text = "Stop"
+        Me.btnThemeStop.UseVisualStyleBackColor = True
+        '
+        'btnThemePlay
+        '
+        Me.btnThemePlay.Location = New System.Drawing.Point(15, 462)
+        Me.btnThemePlay.Name = "btnThemePlay"
+        Me.btnThemePlay.Size = New System.Drawing.Size(75, 23)
+        Me.btnThemePlay.TabIndex = 13
+        Me.btnThemePlay.Text = "Play"
+        Me.btnThemePlay.UseVisualStyleBackColor = True
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -2306,6 +2351,7 @@ Partial Class dlgEditMovie
         Me.tpMetaData.ResumeLayout(False)
         Me.tpMediaStub.ResumeLayout(False)
         Me.tpMediaStub.PerformLayout()
+        CType(Me.axVLCTheme, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2487,5 +2533,9 @@ Partial Class dlgEditMovie
     Friend WithEvents pbStar8 As System.Windows.Forms.PictureBox
     Friend WithEvents pbStar7 As System.Windows.Forms.PictureBox
     Friend WithEvents pbStar6 As System.Windows.Forms.PictureBox
+    Friend WithEvents btnThemeMute As System.Windows.Forms.Button
+    Friend WithEvents btnThemeStop As System.Windows.Forms.Button
+    Friend WithEvents btnThemePlay As System.Windows.Forms.Button
+    Friend WithEvents axVLCTheme As AxAXVLC.AxVLCPlugin2
 
 End Class

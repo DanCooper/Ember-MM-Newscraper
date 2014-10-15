@@ -251,6 +251,7 @@ Public Class Themes
                     Me._ms.Flush()
 
                     Me._ext = Path.GetExtension(sPath)
+                    Me._url = sPath
                 End Using
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sPath & ">", ex)
@@ -303,9 +304,9 @@ Public Class Themes
 
             Dim fExt As String = Path.GetExtension(Me._ext)
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Theme)
-                If Not File.Exists(a) OrElse (isNew OrElse Master.eSettings.MovieThemeOverwrite) Then
-                    Save(a & fExt)
-                    strReturn = (a & fExt)
+                If Not File.Exists(String.Concat(a, fExt)) OrElse (isNew OrElse Master.eSettings.MovieThemeOverwrite) Then
+                    Save(String.Concat(a, fExt))
+                    strReturn = (String.Concat(a, fExt))
                 End If
             Next
 

@@ -98,22 +98,22 @@ Namespace GoEar
                     Dim Html As String = sHTTP.DownloadData(SearchURL)
                     sHTTP = Nothing
 
-                    Dim rPattern As String = "<ol id=""search_results"">(?<RESULTS>.*?)</ol>"
-                    Dim sPattern As String = "<a title=""escuchar.*?href=""(?<URL>.*?)"".*?<span class=""song"">(?<TITLE>.*?)</span>.*?<li class=""length radius_3"">(?<LENGTH>.*?)</li>.*?<li class=""kbps radius_3"">(?<BITRATE>.*?)<abbr title=.*?<li class=""description"">(?<DESCRIPTION>.*?)</li>"
+                    Dim rPattern As String = "<div class=""board search_board"">(?<RESULTS>.*?)</ol>"
+                    Dim sPattern As String = "<a title=""escuchar.*?href=""(?<URL>.*?)"">(?<TITLE>.*?)</a>.*?""description""><.*?>(?<DESCRIPTION>.*?)</a>.*?""length"".*?>(?<LENGTH>.*?)</li>.*?""kbps"".*?>(?<BITRATE>.*?) <abbr"
 
                     Dim rResult As MatchCollection = Regex.Matches(Html, rPattern, RegexOptions.Singleline)
 
                     If rResult.Count > 0 Then
                         Dim sHTML As String = rResult.Item(0).Groups(1).Value
 
-                        Dim sResult As MatchCollection = Regex.Matches(sHTML, sPattern, RegexOptions.Singleline)
+                        Dim sResult As MatchCollection = Regex.Matches(sHTML, sPattern, RegexOptions.Singleline Or RegexOptions.IgnoreCase)
 
                         For ctr As Integer = 0 To sResult.Count - 1
                             tWebURL = Web.HttpUtility.HtmlDecode(sResult.Item(ctr).Groups(1).Value)
                             tTitle = sResult.Item(ctr).Groups(2).Value
-                            tLength = sResult.Item(ctr).Groups(3).Value
-                            tBitrate = sResult.Item(ctr).Groups(4).Value
-                            tDescription = sResult.Item(ctr).Groups(5).Value
+                            tDescription = sResult.Item(ctr).Groups(3).Value
+                            tLength = sResult.Item(ctr).Groups(4).Value
+                            tBitrate = sResult.Item(ctr).Groups(5).Value
                             tID = GetFileID(tWebURL)
                             tURL = String.Concat(DownloadURL, tID)
 

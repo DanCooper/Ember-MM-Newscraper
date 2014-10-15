@@ -228,6 +228,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnChangeMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeMovie.Click
+        Me.ThemeStop()
         Me.TrailerStop()
         Me.CleanUp()
         ' ***
@@ -397,6 +398,16 @@ Public Class dlgEditMovie
         Me.MoviePoster.Dispose()
     End Sub
 
+    Private Sub btnRemoveMovieTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieTheme.Click
+        Me.ThemeStop()
+        Me.axVLCTheme.playlist.items.clear()
+        Me.MovieTheme.Dispose()
+        Me.MovieTheme.toRemove = True
+        Me.btnThemeMute.Enabled = False
+        Me.btnThemePlay.Enabled = False
+        Me.btnThemeStop.Enabled = False
+    End Sub
+
     Private Sub btnRemoveMovieTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieTrailer.Click
         Me.TrailerStop()
         Me.axVLCTrailer.playlist.items.clear()
@@ -426,6 +437,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
+        Me.ThemeStop()
         Me.TrailerStop()
         Me.CleanUp()
         ' ***
@@ -999,6 +1011,71 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
+    'Private Sub btnSetMovieThemeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieThemeDL.Click
+    '    Dim tResults As New MediaContainers.Theme
+    '    Dim dlgTheS As dlgThemeSelect
+    '    Dim tList As New List(Of Themes)
+
+    '    Try
+    '        Me.ThemeStop()
+    '        dlgTheS = New dlgThemeSelect()
+    '        If dlgTheS.ShowDialog(Master.currMovie, tList) = Windows.Forms.DialogResult.OK Then
+    '            tResults = dlgTheS.Results
+    '            MovieTheme = dlgTheS.WebTheme
+    '            ThemeAddToPlayer(MovieTheme)
+    '        End If
+    '    Catch ex As Exception
+    '        logger.Error(New StackFrame().GetMethod().Name, ex)
+    '    End Try
+    'End Sub
+
+    Private Sub btnSetMovieThemeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieThemeScrape.Click
+        'Dim tResults As New MediaContainers.Theme
+        'Dim dlgTheS As dlgThemeSelect
+        'Dim tList As New List(Of Themes)
+
+        'Try
+        '    Me.ThemeStop()
+        '    dlgTheS = New dlgThemeSelect()
+        '    If dlgTheS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
+        '        tResults = dlgTheS.Results
+        '        MovieTheme = tResults.WebTheme
+        '        ThemeAddToPlayer(MovieTheme)
+        '    End If
+        'Catch ex As Exception
+        '    logger.Error(New StackFrame().GetMethod().Name, ex)
+        'End Try
+        Dim aUrlList As New List(Of Themes)
+        Dim tURL As String = String.Empty
+        If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
+            Using dThemeSelect As New dlgThemeSelect()
+                MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
+            End Using
+        End If
+
+        If Not String.IsNullOrEmpty(MovieTheme.URL) Then
+            ThemeAddToPlayer(MovieTheme)
+        End If
+    End Sub
+
+    Private Sub btnSetMovieThemeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieThemeLocal.Click
+        Try
+            Me.ThemeStop()
+            With ofdLocalFiles
+                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .Filter = Master.eLang.GetString(1285, "Themes") + "|*.mp3;*.wav"
+                .FilterIndex = 0
+            End With
+
+            If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
+                MovieTheme.FromFile(ofdLocalFiles.FileName)
+                ThemeAddToPlayer(MovieTheme)
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub btnSetMovietrailerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieTrailerDL.Click
         Dim tResults As New MediaContainers.Trailer
         Dim dlgTrlS As dlgTrailerSelect
@@ -1068,6 +1145,50 @@ Public Class dlgEditMovie
 
     Private Sub btnMovieEFanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEFanartsRefresh.Click
         Me.RefreshEFanarts()
+    End Sub
+
+    Private Sub ThemeStart()
+        If Me.axVLCTheme.playlist.isPlaying Then
+            Me.axVLCTheme.playlist.togglePause()
+            Me.btnThemePlay.Text = "Play"
+        Else
+            Me.axVLCTheme.playlist.play()
+            Me.btnThemePlay.Text = "Pause"
+        End If
+    End Sub
+
+    Private Sub ThemeStop()
+        Me.axVLCTheme.playlist.stop()
+        Me.btnThemePlay.Text = "Play"
+    End Sub
+
+    Private Sub ThemeAddToPlayer(ByVal Theme As Themes)
+        Dim Link As String = String.Empty
+        Me.axVLCTheme.playlist.stop()
+        Me.axVLCTheme.playlist.items.clear()
+
+        If Not String.IsNullOrEmpty(Theme.URL) Then
+            If Regex.IsMatch(Theme.URL, "http:\/\/.*?") Then
+                Me.axVLCTheme.playlist.add(Theme.URL)
+            Else
+                Me.axVLCTheme.playlist.add(String.Concat("file:///", Theme.URL))
+            End If
+            Me.btnThemeMute.Enabled = True
+            Me.btnThemePlay.Enabled = True
+            Me.btnThemeStop.Enabled = True
+        End If
+    End Sub
+
+    Private Sub btnThemePlay_Click(sender As Object, e As EventArgs) Handles btnThemePlay.Click
+        Me.ThemeStart()
+    End Sub
+
+    Private Sub btnThemeStop_Click(sender As Object, e As EventArgs) Handles btnThemeStop.Click
+        Me.ThemeStop()
+    End Sub
+
+    Private Sub btnThemeMute_Click(sender As Object, e As EventArgs) Handles btnThemeMute.Click
+        Me.axVLCTheme.audio.toggleMute()
     End Sub
 
     Private Sub TrailerStart()
@@ -1561,6 +1682,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.ThemeStop()
         Me.TrailerStop()
         Me.CleanUp()
 
@@ -2167,8 +2289,14 @@ Public Class dlgEditMovie
 
                     If Not String.IsNullOrEmpty(Master.currMovie.ThemePath) AndAlso Master.currMovie.ThemePath.Substring(0, 1) = ":" Then
                         MovieTheme.FromWeb(Master.currMovie.ThemePath.Substring(1, Master.currMovie.ThemePath.Length - 1))
-                    Else
+                        ThemeAddToPlayer(MovieTheme)
+                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
                         MovieTheme.FromFile(Master.currMovie.ThemePath)
+                        ThemeAddToPlayer(MovieTheme)
+                    Else
+                        Me.btnThemeMute.Enabled = False
+                        Me.btnThemePlay.Enabled = False
+                        Me.btnThemeStop.Enabled = False
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Substring(0, 1) = ":" Then
@@ -2268,6 +2396,7 @@ Public Class dlgEditMovie
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
+            Me.ThemeStop()
             Me.TrailerStop()
             Me.SetInfo()
 
@@ -3222,6 +3351,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub tcEditMovie_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tcEditMovie.SelectedIndexChanged
+        Me.ThemeStop()
         Me.TrailerStop()
     End Sub
 
