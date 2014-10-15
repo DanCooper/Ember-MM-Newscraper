@@ -396,7 +396,7 @@ Public Class NFO
                 End If
 
                 'Collections
-                If (DBMovie.Movie.Sets.Count < 1 OrElse Not Master.eSettings.MovieLockCollections) AndAlso _
+                If (DBMovie.Movie.Sets.Count = 0 OrElse Not Master.eSettings.MovieLockCollections) AndAlso _
                     scrapedmovie.Sets.Count > 0 AndAlso Master.eSettings.MovieScraperCollectionsAuto AndAlso Not new_Collections Then
                     DBMovie.Movie.Sets.Clear()
                     For Each movieset In scrapedmovie.Sets
