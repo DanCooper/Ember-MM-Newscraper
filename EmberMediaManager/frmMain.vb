@@ -2573,31 +2573,31 @@ Public Class frmMain
                 If Not NewTitle = OldTitle AndAlso Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
                     'load all old images to memorystream
                     'save old images with new MovieSet title
-                    If Not String.IsNullOrEmpty(cloneMovieSet.BannerPath) Then
+                    If Not String.IsNullOrEmpty(cloneMovieSet.BannerPath) AndAlso File.Exists(cloneMovieSet.BannerPath) Then
                         Banner.WebImage.FromFile(cloneMovieSet.BannerPath)
                         DBScrapeMovieSet.BannerPath = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
                     End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.ClearArtPath) Then
+                    If Not String.IsNullOrEmpty(cloneMovieSet.ClearArtPath) AndAlso File.Exists(cloneMovieSet.ClearArtPath) Then
                         ClearArt.WebImage.FromFile(cloneMovieSet.ClearArtPath)
                         DBScrapeMovieSet.ClearArtPath = ClearArt.WebImage.SaveAsMovieSetClearArt(DBScrapeMovieSet)
                     End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.ClearLogoPath) Then
+                    If Not String.IsNullOrEmpty(cloneMovieSet.ClearLogoPath) AndAlso File.Exists(cloneMovieSet.ClearLogoPath) Then
                         ClearLogo.WebImage.FromFile(cloneMovieSet.ClearLogoPath)
                         DBScrapeMovieSet.ClearLogoPath = ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBScrapeMovieSet)
                     End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.DiscArtPath) Then
+                    If Not String.IsNullOrEmpty(cloneMovieSet.DiscArtPath) AndAlso File.Exists(cloneMovieSet.DiscArtPath) Then
                         DiscArt.WebImage.FromFile(cloneMovieSet.DiscArtPath)
                         DBScrapeMovieSet.DiscArtPath = DiscArt.WebImage.SaveAsMovieSetDiscArt(DBScrapeMovieSet)
                     End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.FanartPath) Then
+                    If Not String.IsNullOrEmpty(cloneMovieSet.FanartPath) AndAlso File.Exists(cloneMovieSet.FanartPath) Then
                         Fanart.WebImage.FromFile(cloneMovieSet.FanartPath)
                         DBScrapeMovieSet.FanartPath = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
                     End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.LandscapePath) Then
+                    If Not String.IsNullOrEmpty(cloneMovieSet.LandscapePath) AndAlso File.Exists(cloneMovieSet.LandscapePath) Then
                         Landscape.WebImage.FromFile(cloneMovieSet.LandscapePath)
                         DBScrapeMovieSet.LandscapePath = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                     End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.PosterPath) Then
+                    If Not String.IsNullOrEmpty(cloneMovieSet.PosterPath) AndAlso File.Exists(cloneMovieSet.PosterPath) Then
                         Poster.WebImage.FromFile(cloneMovieSet.PosterPath)
                         DBScrapeMovieSet.PosterPath = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
                     End If
