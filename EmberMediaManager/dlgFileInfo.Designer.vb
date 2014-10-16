@@ -42,13 +42,13 @@ Partial Class dlgFileInfo
         Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader11 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnRemoveSet = New System.Windows.Forms.Button()
         Me.btnEditSet = New System.Windows.Forms.Button()
         Me.btnNewSet = New System.Windows.Forms.Button()
         Me.lblStreamType = New System.Windows.Forms.Label()
         Me.cbStreamType = New System.Windows.Forms.ComboBox()
-        Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SuspendLayout()
         '
         'Cancel_Button
@@ -128,11 +128,19 @@ Partial Class dlgFileInfo
         '
         'ColumnHeader10
         '
-        Me.ColumnHeader10.Width = 90
+        Me.ColumnHeader10.Width = 100
         '
         'ColumnHeader11
         '
         Me.ColumnHeader11.Width = 120
+        '
+        'ColumnHeader12
+        '
+        Me.ColumnHeader12.Width = 120
+        '
+        'ColumnHeader13
+        '
+        Me.ColumnHeader13.Width = 120
         '
         'btnRemoveSet
         '
@@ -193,14 +201,6 @@ Partial Class dlgFileInfo
         Me.cbStreamType.Name = "cbStreamType"
         Me.cbStreamType.Size = New System.Drawing.Size(93, 21)
         Me.cbStreamType.TabIndex = 3
-        '
-        'ColumnHeader12
-        '
-        Me.ColumnHeader12.Width = 120
-        '
-        'ColumnHeader13
-        '
-        Me.ColumnHeader13.Width = 120
         '
         'dlgFileInfo
         '

@@ -86,7 +86,7 @@ Public Class dlgFIStreamEditor
                 If Not movie Is Nothing Then
                     cbSubtitleLanguage.Text = movie.StreamDetails.Subtitle(idx).LongLanguage
                 End If
-
+                chkSubtitleForced.Checked = movie.StreamDetails.Subtitle(idx).SubsForced
             End If
 
             If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -122,6 +122,7 @@ Public Class dlgFIStreamEditor
                     If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.LongLanguage = If(cbSubtitleLanguage.SelectedItem Is Nothing, "", cbSubtitleLanguage.SelectedItem.ToString)
                     If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.Language = Localization.ISOLangGetCode3ByLang(cbSubtitleLanguage.SelectedItem.ToString)
                     If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.SubsType = "Embedded"
+                    If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.SubsForced = chkSubtitleForced.Checked
                     Return stream_s
                 End If
                 Return Nothing
@@ -163,6 +164,7 @@ Public Class dlgFIStreamEditor
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Text = Master.eLang.GetString(613, "Stream Editor")
+        Me.chkSubtitleForced.Text = Master.eLang.GetString(1287, "Forced")
         Me.gbAudioStreams.Text = Master.eLang.GetString(596, "Audio Streams")
         Me.gbSubtitleStreams.Text = Master.eLang.GetString(597, "Subtitle  Streams")
         Me.gbVideoStreams.Text = Master.eLang.GetString(595, "Video Streams")

@@ -26,6 +26,9 @@ Partial Class dlgFIStreamEditor
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.gbVideoStreams = New System.Windows.Forms.GroupBox()
+        Me.txtVideoStereoMode = New System.Windows.Forms.TextBox()
+        Me.lblVideoStereoMode = New System.Windows.Forms.Label()
+        Me.cbVideoMultiViewLayout = New System.Windows.Forms.ComboBox()
         Me.lblVideoMultiViewLayout = New System.Windows.Forms.Label()
         Me.lblVideoMultiViewCount = New System.Windows.Forms.Label()
         Me.txtVideoMultiViewCount = New System.Windows.Forms.TextBox()
@@ -60,9 +63,7 @@ Partial Class dlgFIStreamEditor
         Me.pnlStreamEditor = New System.Windows.Forms.Panel()
         Me.txtEncodingSettings = New System.Windows.Forms.TextBox()
         Me.lblEncoding = New System.Windows.Forms.Label()
-        Me.cbVideoMultiViewLayout = New System.Windows.Forms.ComboBox()
-        Me.lblVideoStereoMode = New System.Windows.Forms.Label()
-        Me.txtVideoStereoMode = New System.Windows.Forms.TextBox()
+        Me.chkSubtitleForced = New System.Windows.Forms.CheckBox()
         Me.tlpButtons.SuspendLayout()
         Me.gbVideoStreams.SuspendLayout()
         Me.gbAudioStreams.SuspendLayout()
@@ -138,6 +139,38 @@ Partial Class dlgFIStreamEditor
         Me.gbVideoStreams.TabStop = False
         Me.gbVideoStreams.Text = "Video Streams"
         Me.gbVideoStreams.Visible = False
+        '
+        'txtVideoStereoMode
+        '
+        Me.txtVideoStereoMode.Enabled = False
+        Me.txtVideoStereoMode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoStereoMode.Location = New System.Drawing.Point(150, 276)
+        Me.txtVideoStereoMode.Name = "txtVideoStereoMode"
+        Me.txtVideoStereoMode.Size = New System.Drawing.Size(158, 22)
+        Me.txtVideoStereoMode.TabIndex = 22
+        '
+        'lblVideoStereoMode
+        '
+        Me.lblVideoStereoMode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoStereoMode.Location = New System.Drawing.Point(6, 279)
+        Me.lblVideoStereoMode.Name = "lblVideoStereoMode"
+        Me.lblVideoStereoMode.Size = New System.Drawing.Size(138, 13)
+        Me.lblVideoStereoMode.TabIndex = 21
+        Me.lblVideoStereoMode.Text = "StereoMode"
+        Me.lblVideoStereoMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'cbVideoMultiViewLayout
+        '
+        Me.cbVideoMultiViewLayout.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.cbVideoMultiViewLayout.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cbVideoMultiViewLayout.DropDownWidth = 120
+        Me.cbVideoMultiViewLayout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbVideoMultiViewLayout.FormattingEnabled = True
+        Me.cbVideoMultiViewLayout.Items.AddRange(New Object() {"", "Side by Side (left eye first)", "Top-Bottom (right eye first)", "Top-Bottom (left eye first)", "Checkboard (right eye first)", "Checkboard (left eye first)", "Row Interleaved (right eye first)", "Row Interleaved (left eye first)", "Column Interleaved (right eye first)", "Column Interleaved (left eye first)", "Anaglyph (cyan/red)", "Side by Side (right eye first)", "Anaglyph (green/magenta) ", "Both Eyes laced in one block (left eye first)", "Both Eyes laced in one block (right eye first)"})
+        Me.cbVideoMultiViewLayout.Location = New System.Drawing.Point(150, 251)
+        Me.cbVideoMultiViewLayout.Name = "cbVideoMultiViewLayout"
+        Me.cbVideoMultiViewLayout.Size = New System.Drawing.Size(158, 21)
+        Me.cbVideoMultiViewLayout.TabIndex = 20
         '
         'lblVideoMultiViewLayout
         '
@@ -423,12 +456,13 @@ Partial Class dlgFIStreamEditor
         '
         'gbSubtitleStreams
         '
+        Me.gbSubtitleStreams.Controls.Add(Me.chkSubtitleForced)
         Me.gbSubtitleStreams.Controls.Add(Me.lblSubtitleLanguage)
         Me.gbSubtitleStreams.Controls.Add(Me.cbSubtitleLanguage)
         Me.gbSubtitleStreams.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSubtitleStreams.Location = New System.Drawing.Point(3, 3)
         Me.gbSubtitleStreams.Name = "gbSubtitleStreams"
-        Me.gbSubtitleStreams.Size = New System.Drawing.Size(315, 62)
+        Me.gbSubtitleStreams.Size = New System.Drawing.Size(315, 73)
         Me.gbSubtitleStreams.TabIndex = 6
         Me.gbSubtitleStreams.TabStop = False
         Me.gbSubtitleStreams.Text = "Subtitle  Streams"
@@ -488,37 +522,16 @@ Partial Class dlgFIStreamEditor
         Me.lblEncoding.Text = "Encoding Settings"
         Me.lblEncoding.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         '
-        'cbVideoMultiViewLayout
+        'chkSubtitleForced
         '
-        Me.cbVideoMultiViewLayout.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
-        Me.cbVideoMultiViewLayout.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me.cbVideoMultiViewLayout.DropDownWidth = 120
-        Me.cbVideoMultiViewLayout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbVideoMultiViewLayout.FormattingEnabled = True
-        Me.cbVideoMultiViewLayout.Items.AddRange(New Object() {"", "Side by Side (left eye first)", "Top-Bottom (right eye first)", "Top-Bottom (left eye first)", "Checkboard (right eye first)", "Checkboard (left eye first)", "Row Interleaved (right eye first)", "Row Interleaved (left eye first)", "Column Interleaved (right eye first)", "Column Interleaved (left eye first)", "Anaglyph (cyan/red)", "Side by Side (right eye first)", "Anaglyph (green/magenta) ", "Both Eyes laced in one block (left eye first)", "Both Eyes laced in one block (right eye first)"})
-        Me.cbVideoMultiViewLayout.Location = New System.Drawing.Point(150, 251)
-        Me.cbVideoMultiViewLayout.Name = "cbVideoMultiViewLayout"
-        Me.cbVideoMultiViewLayout.Size = New System.Drawing.Size(158, 21)
-        Me.cbVideoMultiViewLayout.TabIndex = 20
-        '
-        'lblVideoStereoMode
-        '
-        Me.lblVideoStereoMode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVideoStereoMode.Location = New System.Drawing.Point(6, 279)
-        Me.lblVideoStereoMode.Name = "lblVideoStereoMode"
-        Me.lblVideoStereoMode.Size = New System.Drawing.Size(138, 13)
-        Me.lblVideoStereoMode.TabIndex = 21
-        Me.lblVideoStereoMode.Text = "StereoMode"
-        Me.lblVideoStereoMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'txtVideoStereoMode
-        '
-        Me.txtVideoStereoMode.Enabled = False
-        Me.txtVideoStereoMode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVideoStereoMode.Location = New System.Drawing.Point(150, 276)
-        Me.txtVideoStereoMode.Name = "txtVideoStereoMode"
-        Me.txtVideoStereoMode.Size = New System.Drawing.Size(158, 22)
-        Me.txtVideoStereoMode.TabIndex = 22
+        Me.chkSubtitleForced.AutoSize = True
+        Me.chkSubtitleForced.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.chkSubtitleForced.Location = New System.Drawing.Point(53, 46)
+        Me.chkSubtitleForced.Name = "chkSubtitleForced"
+        Me.chkSubtitleForced.Size = New System.Drawing.Size(61, 17)
+        Me.chkSubtitleForced.TabIndex = 23
+        Me.chkSubtitleForced.Text = "Forced"
+        Me.chkSubtitleForced.UseVisualStyleBackColor = True
         '
         'dlgFIStreamEditor
         '
@@ -545,6 +558,7 @@ Partial Class dlgFIStreamEditor
         Me.gbAudioStreams.ResumeLayout(False)
         Me.gbAudioStreams.PerformLayout()
         Me.gbSubtitleStreams.ResumeLayout(False)
+        Me.gbSubtitleStreams.PerformLayout()
         Me.pnlStreamEditor.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -591,5 +605,6 @@ Partial Class dlgFIStreamEditor
     Friend WithEvents cbVideoMultiViewLayout As System.Windows.Forms.ComboBox
     Friend WithEvents txtVideoStereoMode As System.Windows.Forms.TextBox
     Friend WithEvents lblVideoStereoMode As System.Windows.Forms.Label
+    Friend WithEvents chkSubtitleForced As System.Windows.Forms.CheckBox
 
 End Class

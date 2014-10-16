@@ -233,8 +233,9 @@ Public Class MediaInfo
                             If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
                                 miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
                             End If
-                            miSubtitle.SubsType = "Embedded"
                             If Not String.IsNullOrEmpty(miSubtitle.Language) Then
+                                'miSubtitle.SubsForced = Not supported(?)
+                                miSubtitle.SubsType = "Embedded"
                                 fiOut.StreamDetails.Subtitle.Add(miSubtitle)
                             End If
                         End If
@@ -609,9 +610,10 @@ Public Class MediaInfo
                 If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
                     miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
                 End If
-                miSubtitle.SubsType = "Embedded"
             End If
             If Not String.IsNullOrEmpty(miSubtitle.Language) Then
+                miSubtitle.SubsForced = FormatBoolean(Me.Get_(StreamKind.Text, s, "Forced/String"))
+                miSubtitle.SubsType = "Embedded"
                 fiOut.StreamDetails.Subtitle.Add(miSubtitle)
             End If
         Next
@@ -871,21 +873,21 @@ Public Class MediaInfo
                         If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
                             miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
                         End If
-                        miSubtitle.SubsType = "Embedded"
+                        miSubtitle.SubsForced = True
 
                         'IFO Scan results (used when scanning VIDEO_TS files)
                     ElseIf fiIFO.StreamDetails.Subtitle.Count > 0 Then
                         If Not String.IsNullOrEmpty(fiIFO.StreamDetails.Subtitle(s).LongLanguage) Then
                             miSubtitle.LongLanguage = fiIFO.StreamDetails.Subtitle(s).LongLanguage
                             miSubtitle.Language = fiIFO.StreamDetails.Subtitle(s).Language
-                            miSubtitle.SubsType = "Embedded"
                         End If
-
                     End If
+
                     If Not String.IsNullOrEmpty(miSubtitle.Language) Then
+                        miSubtitle.SubsForced = FormatBoolean(Me.Get_(StreamKind.Text, s, "Forced/String"))
+                        miSubtitle.SubsType = "Embedded"
                         fiOut.StreamDetails.Subtitle.Add(miSubtitle)
                     End If
-
                 Next
 
                 Me.Close()
@@ -951,8 +953,23 @@ Public Class MediaInfo
         Return AudioChannelstring
         'cocotus end
     End Function
-
-
+    ''' <summary>
+    ''' Converts "Yes" and "No" to boolean
+    ''' </summary>
+    ''' <param name="bString"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Shared Function FormatBoolean(ByVal bString As String) As Boolean
+        If Not String.IsNullOrEmpty(bString) Then
+            Select Case bString.ToLower
+                Case "yes"
+                    Return True
+                Case "no"
+                    Return False
+            End Select
+        End If
+        Return False
+    End Function
 
     Public Shared Function FormatDuration(ByVal tDur As String, ByVal sMask As String) As String
         Dim sDuration As Match = Regex.Match(tDur, "(([0-9]+)h)?\s?(([0-9]+)min)?\s?(([0-9]+)s)?")

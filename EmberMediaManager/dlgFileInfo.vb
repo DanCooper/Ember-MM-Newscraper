@@ -312,6 +312,9 @@ Public Class dlgFileInfo
                 i.Tag = "Header"
                 i.Text = String.Empty
                 i.SubItems.Add(Master.eLang.GetString(610, "Language"))
+                i.SubItems.Add(Master.eLang.GetString(1288, "Type"))
+                i.SubItems.Add(Master.eLang.GetString(1287, "Forced"))
+
                 g.Items.Add(i)
                 lvStreams.Items.Add(i)
                 Dim s As MediaInfo.Subtitle
@@ -323,6 +326,8 @@ Public Class dlgFileInfo
                         i.Text = c.ToString
                         i.SubItems.Add(s.LongLanguage)
                         i.SubItems.Add(s.SubsType)
+                        i.SubItems.Add(If(s.SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+
                         g.Items.Add(i)
                         lvStreams.Items.Add(i)
                     End If
