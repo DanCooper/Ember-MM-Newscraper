@@ -2727,5 +2727,7 @@ Public Class Images
         Dispose(True)
         GC.SuppressFinalize(Me)
     End Sub
-#End Region
+
+#End Region 'IDisposable Support
+
 End Class
