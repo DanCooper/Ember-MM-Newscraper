@@ -1776,7 +1776,17 @@ Public Class frmMain
         End If
 
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
-            Me.MovieInfoDownloaded()
+            If Not Res.Cancelled Then
+                Me.MovieInfoDownloaded()
+            Else
+                Me.tslLoading.Visible = False
+                Me.tspbLoading.Visible = False
+                Me.btnCancel.Visible = False
+                Me.lblCanceling.Visible = False
+                Me.prbCanceling.Visible = False
+                Me.pnlCancel.Visible = False
+                Me.SetControlsEnabled(True)
+            End If
         Else
             Me.FillList(False, True, False)
             If Me.dgvMovies.SelectedRows.Count > 0 Then
@@ -1799,6 +1809,7 @@ Public Class frmMain
         Dim OldListTitle As String = String.Empty
         Dim NewListTitle As String = String.Empty
         Dim Banner As New MediaContainers.Image
+        Dim Cancelled As Boolean = False
         Dim ClearArt As New MediaContainers.Image
         Dim ClearLogo As New MediaContainers.Image
         Dim DiscArt As New MediaContainers.Image
@@ -1823,6 +1834,8 @@ Public Class frmMain
 
         For Each dRow As DataRow In ScrapeList
             Try
+                Cancelled = False
+
                 If bwMovieScraper.CancellationPending Then Exit For
                 OldListTitle = dRow.Item(3).ToString
                 bwMovieScraper.ReportProgress(1, OldListTitle)
@@ -1836,6 +1849,7 @@ Public Class frmMain
 
                 If Master.GlobalScrapeMod.NFO Then
                     If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie) Then
+                        Cancelled = True
                         Exit Try
                     End If
                 Else
@@ -2440,7 +2454,7 @@ Public Class frmMain
             Master.currMovie = DBScrapeMovie
         End If
         RemoveHandler ModulesManager.Instance.ScraperEvent_Movie, AddressOf MovieScraperEvent
-        e.Result = New Results With {.scrapeType = Args.scrapeType}
+        e.Result = New Results With {.scrapeType = Args.scrapeType, .Cancelled = Cancelled}
         logger.Trace("Ended MOVIE scrape")
     End Sub
 
@@ -18434,6 +18448,7 @@ doCancel:
         Dim scrapeType As Enums.ScrapeType
         Dim setEnabled As Boolean
         Dim TVShow As Structures.DBTV
+        Dim Cancelled As Boolean
 
 #End Region 'Fields
 

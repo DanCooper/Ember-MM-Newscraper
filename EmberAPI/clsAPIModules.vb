@@ -681,7 +681,7 @@ Public Class ModulesManager
     Public Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
-        Dim oMovie As Structures.DBMovie = DBMovie
+        Dim oMovie As New Structures.DBMovie
         Dim ScrapedList As New List(Of MediaContainers.Movie)
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -717,8 +717,23 @@ Public Class ModulesManager
             DBMovie.TrailerPath = String.Empty
             DBMovie.Movie.Clear()
 
-            oMovie = DBMovie
+            Dim tmpTitle As String = String.Empty
+            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
+            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
+            Else
+                tmpTitle = StringUtils.FilterName_Movie(If(DBMovie.IsSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+            End If
+
+            DBMovie.Movie.Title = tmpTitle
+            'DBMovie.Movie.Year = tmpYear TODO: get year from file/folder name
         End If
+
+        'create a copy of DBMovie
+        oMovie.Filename = DBMovie.Filename
+        oMovie.Movie = New MediaContainers.Movie With {.Title = DBMovie.Movie.Title, .OriginalTitle = DBMovie.Movie.OriginalTitle, .Year = DBMovie.Movie.Year, _
+                                                       .ID = DBMovie.Movie.ID, .IMDBID = DBMovie.Movie.IMDBID, .TMDBID = DBMovie.Movie.TMDBID}
 
         If (modules.Count() <= 0) Then
             logger.Warn("No movie scrapers are defined")
@@ -729,6 +744,8 @@ Public Class ModulesManager
                 Try
                     Dim nMovie As New MediaContainers.Movie
                     ret = _externalScraperModule.ProcessorModule.Scraper(oMovie, nMovie, ScrapeType, Options)
+
+                    If ret.Cancelled Then Return ret.Cancelled
 
                     If Not IsNothing(nMovie) Then
                         ScrapedList.Add(nMovie)

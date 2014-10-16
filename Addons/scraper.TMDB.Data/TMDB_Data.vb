@@ -450,51 +450,49 @@ Public Class TMDB_Data
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID or TMDB-ID for movie --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBMovie.Movie.Title) Then
-                    oDBMovie.Movie = _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie, nMovie, ScrapeType, filterOptions)
+                    _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie, nMovie, ScrapeType, filterOptions)
                 End If
                 'if still no ID retrieved -> exit
-                If String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-            End If
-        ElseIf ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
-            If String.IsNullOrEmpty(oDBMovie.Movie.ID) Then
-                Using dSearch As New dlgTMDBSearchResults_Movie(Settings, _scraper)
-                    Dim tmpTitle As String = oDBMovie.Movie.Title
-                    Dim tmpYear As Integer = CInt(IIf(Not String.IsNullOrEmpty(oDBMovie.Movie.Year), oDBMovie.Movie.Year, 0))
-                    If String.IsNullOrEmpty(tmpTitle) Then
-                        If FileUtils.Common.isVideoTS(oDBMovie.Filename) Then
-                            tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(oDBMovie.Filename).FullName).Name, False)
-                        ElseIf FileUtils.Common.isBDRip(oDBMovie.Filename) Then
-                            tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(oDBMovie.Filename).FullName).FullName).Name, False)
-                        Else
-                            tmpTitle = StringUtils.FilterName_Movie(If(oDBMovie.IsSingle, Directory.GetParent(oDBMovie.Filename).Name, Path.GetFileNameWithoutExtension(oDBMovie.Filename)))
-                        End If
-                    End If
-                    If dSearch.ShowDialog(nMovie, tmpTitle, oDBMovie.Filename, filterOptions, tmpYear) = Windows.Forms.DialogResult.OK Then
-                        If Not String.IsNullOrEmpty(nMovie.TMDBID) Then oDBMovie.Movie.TMDBID = nMovie.TMDBID
-                        If Not String.IsNullOrEmpty(nMovie.IMDBID) Then oDBMovie.Movie.IMDBID = nMovie.IMDBID
-
-                        If Not String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
-                            _scraper.GetMovieInfo(oDBMovie.Movie.TMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
-                            oDBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
-                            oDBMovie.Movie.Title = nMovie.Title
-                            oDBMovie.Movie.ID = nMovie.ID
-                        End If
-                    Else
-                        nMovie = Nothing
-                        Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-                    End If
-                End Using
-            Else
-                _scraper.GetMovieInfo(oDBMovie.Movie.ID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
+                If String.IsNullOrEmpty(nMovie.TMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
         End If
 
-        If String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
+        If String.IsNullOrEmpty(nMovie.TMDBID) Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
                     nMovie = Nothing
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
+        End If
+
+        If ScrapeType = Enums.ScrapeType.SingleScrape Then
+            If String.IsNullOrEmpty(oDBMovie.Movie.ID) AndAlso String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
+                Using dSearch As New dlgTMDBSearchResults_Movie(Settings, _scraper)
+                    If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Filename, filterOptions, 0) = Windows.Forms.DialogResult.OK Then
+                        _scraper.GetMovieInfo(nMovie.TMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
+                    Else
+                        nMovie = Nothing
+                        Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                    End If
+                End Using
+            End If
+        End If
+
+        'set new informations for following scrapers
+        If Not String.IsNullOrEmpty(nMovie.Title) Then
+            oDBMovie.Movie.Title = nMovie.Title
+        End If
+        If Not String.IsNullOrEmpty(nMovie.OriginalTitle) Then
+            oDBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
+        End If
+        If Not String.IsNullOrEmpty(nMovie.ID) Then
+            oDBMovie.Movie.ID = nMovie.ID
+        End If
+        If Not String.IsNullOrEmpty(nMovie.IMDBID) Then
+            oDBMovie.Movie.IMDBID = nMovie.IMDBID
+        End If
+        If Not String.IsNullOrEmpty(nMovie.TMDBID) Then
+            oDBMovie.Movie.TMDBID = nMovie.TMDBID
         End If
 
         logger.Trace("Finished TMDB Scraper")
