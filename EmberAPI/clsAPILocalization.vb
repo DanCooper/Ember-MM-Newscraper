@@ -119,7 +119,7 @@ Public Class Localization
         Try
             Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha2 = code))(0).Name
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            'logger.Error(New StackFrame().GetMethod().Name, ex)
             Return Master.eLang.GetString(1168, "Blank")
         End Try
     End Function
@@ -128,7 +128,7 @@ Public Class Localization
         Try
             Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = code))(0).Name
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            'logger.Error(New StackFrame().GetMethod().Name, ex)
             Return Master.eLang.GetString(1168, "Blank")
         End Try
     End Function
@@ -137,7 +137,7 @@ Public Class Localization
         Try
             Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha2
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            'logger.Error(New StackFrame().GetMethod().Name, ex)
             Return ""
         End Try
     End Function
@@ -146,7 +146,7 @@ Public Class Localization
         Try
             Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha3
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            'logger.Error(New StackFrame().GetMethod().Name, ex)
             Return ""
         End Try
     End Function
