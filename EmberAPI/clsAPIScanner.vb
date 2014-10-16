@@ -747,36 +747,6 @@ Public Class Scanner
         fList = Nothing
     End Sub
 
-    ''' <summary>
-    ''' Get the full path to a trailer, if it exists.
-    ''' </summary>
-    ''' <param name="sPath">Full path to a movie file for which you are trying to find the accompanying trailer.</param>
-    ''' <returns>Full path of trailer file.</returns>
-    Public Function GetMovieTrailerPath(ByVal sPath As String) As String
-        Dim tFile As String = String.Empty
-
-        Dim parPath As String = Directory.GetParent(sPath).FullName
-        Dim fileName As String = Path.Combine(parPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
-        Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
-        For Each t As String In Master.eSettings.FileSystemValidExts
-            If File.Exists(String.Concat(fileName, "-trailer", t)) Then
-                tFile = String.Concat(fileName, "-trailer", t)
-                Exit For
-            ElseIf File.Exists(String.Concat(fileName, "[trailer]", t)) Then
-                tFile = String.Concat(fileName, "[trailer]", t)
-                Exit For
-            ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) Then
-                tFile = String.Concat(tmpNameNoStack, "-trailer", t)
-                Exit For
-            ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
-                tFile = String.Concat(tmpNameNoStack, "[trailer]", t)
-                Exit For
-            End If
-        Next
-
-        Return tFile
-    End Function
-
     Public Function IsBusy() As Boolean
         Return bwPrelim.IsBusy
     End Function
