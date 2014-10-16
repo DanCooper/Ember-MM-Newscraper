@@ -786,6 +786,9 @@ Public Class Scanner
             'first, lets get the contents
             GetMovieFolderContents(mContainer)
 
+            'add filename to tmpMovie for UpdateMediaInfo
+            tmpMovieDB.Filename = mContainer.Filename
+
             If Not String.IsNullOrEmpty(mContainer.Nfo) Then
                 tmpMovieDB.Movie = NFO.LoadMovieFromNFO(mContainer.Nfo, mContainer.isSingle)
                 If Not tmpMovieDB.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) AndAlso Master.eSettings.MovieScraperMetaDataScan Then
