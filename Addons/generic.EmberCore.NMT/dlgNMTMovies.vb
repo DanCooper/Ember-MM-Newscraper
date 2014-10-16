@@ -810,13 +810,10 @@ Public Class dlgNMTMovies
         Return utf8String
     End Function
 
-
-
-
     Private Function GetMovieFileInfo(ByVal MovieID As String) As MediaInfo.Fileinfo
         Dim fi As New MediaInfo.Fileinfo
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration, Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings, Video_MultiViewLayout FROM MoviesVStreams WHERE MovieID = ", MovieID, ";")
+            SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration, Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiViewCount, Video_EncodedSettings, Video_MultiViewLayout, Video_StereoMode FROM MoviesVStreams WHERE MovieID = ", MovieID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim video As MediaInfo.Video
                 While SQLreader.Read

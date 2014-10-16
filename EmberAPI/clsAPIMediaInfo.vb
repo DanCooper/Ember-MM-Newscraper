@@ -458,6 +458,46 @@ Public Class MediaInfo
             End If
     End Function
 
+    Public Shared Function ConvertVStereoMode(ByVal sFormat As String) As String
+        If Not String.IsNullOrEmpty(sFormat) Then
+            Dim tFormat As String = String.Empty
+            Select Case sFormat.ToLower
+                Case "side by side (left eye first)"
+                    tFormat = "left_right"
+                Case "top-bottom (right eye first)"
+                    tFormat = "bottom_top"
+                Case "top-bottom (left eye first)"
+                    tFormat = "bottom_top"
+                Case "checkboard (right eye first)"
+                    tFormat = "checkerboard_rl"
+                Case "checkboard (left eye first)"
+                    tFormat = "checkerboard_lr"
+                Case "row interleaved (right eye first)"
+                    tFormat = "row_interleaved_rl"
+                Case "row interleaved (left eye first)"
+                    tFormat = "row_interleaved_lr"
+                Case "column interleaved (right eye first)"
+                    tFormat = "col_interleaved_rl"
+                Case "column interleaved (left eye first)"
+                    tFormat = "col_interleaved_lr"
+                Case "anaglyph (cyan/red)"
+                    tFormat = "anaglyph_cyan_red"
+                Case "side by side (right eye first)"
+                    tFormat = "right_left"
+                Case "anaglyph (green/magenta)"
+                    tFormat = "anaglyph_green_magenta"
+                Case "both eyes laced in one block (left eye first)"
+                    tFormat = "block_lr"
+                Case "both eyes laced in one block (right eye first)"
+                    tFormat = "block_rl"
+            End Select
+
+            Return tFormat
+        Else
+            Return String.Empty
+        End If
+    End Function
+
     Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
         If StreamNumber = UInteger.MaxValue Then
             Return MediaInfo_Count_Get(Handle, CType(StreamKind, UIntPtr), CType(-1, IntPtr))
@@ -598,7 +638,7 @@ Public Class MediaInfo
 
     End Function
 
-   ''' <summary>
+    ''' <summary>
     ''' Use MediaInfo to get/scan subtitle, audio Stream and video information of videofile
     ''' </summary>
     ''' <returns>Mediainfo-Scanresults as MediainfoFileInfoObject</returns>
@@ -726,6 +766,7 @@ Public Class MediaInfo
                     'Encoder-settings
                     miVideo.EncodedSettings = Me.Get_(StreamKind.Visual, v, "Encoded_Library_Settings")
                     'cocotus end
+                    miVideo.StereoMode = ConvertVStereoMode(miVideo.MultiViewLayout)
 
                     miVideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
                     miVideo.Height = Me.Get_(StreamKind.Visual, v, "Height")

@@ -60,15 +60,11 @@ Public Class dlgFIStreamEditor
                     End If
                     txtVideoDuration.Text = movie.StreamDetails.Video(idx).Duration
                     cbVideoLanguage.Text = movie.StreamDetails.Video(idx).LongLanguage
-
-                    'cocotus, 2013/02 Added support for new MediaInfo-fields
-                    'Display new fields in Streameditor
                     txtVideoMultiViewCount.Text = movie.StreamDetails.Video(idx).MultiViewCount
-                    txtVideoMultiViewLayout.Text = movie.StreamDetails.Video(idx).MultiViewLayout
+                    cbVideoMultiViewLayout.Text = movie.StreamDetails.Video(idx).MultiViewLayout
                     txtVideoBitrate.Text = movie.StreamDetails.Video(idx).Bitrate
                     txtEncodingSettings.Text = movie.StreamDetails.Video(idx).EncodedSettings
-                    'cocotus end
-
+                    txtVideoStereoMode.Text = movie.StreamDetails.Video(idx).StereoMode
                 End If
             End If
             If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
@@ -80,13 +76,7 @@ Public Class dlgFIStreamEditor
                     cbAudioCodec.Text = movie.StreamDetails.Audio(idx).Codec
                     cbAudioLanguage.Text = movie.StreamDetails.Audio(idx).LongLanguage
                     cbAudioChannels.Text = movie.StreamDetails.Audio(idx).Channels
-
-
-                    'cocotus, 2013/02 Added support for new MediaInfo-fields
-                    'Display new fields in Streameditor
                     txtAudioBitrate.Text = movie.StreamDetails.Audio(idx).Bitrate
-                    'cocotus end
-
                 End If
             End If
             If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
@@ -95,11 +85,6 @@ Public Class dlgFIStreamEditor
                 cbSubtitleLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
                 If Not movie Is Nothing Then
                     cbSubtitleLanguage.Text = movie.StreamDetails.Subtitle(idx).LongLanguage
-                    If movie.StreamDetails.Subtitle(idx).SubsType = "Embedded" Then
-                        rbSubtitleEmbedded.Checked = True
-                    Else
-                        rbSubtitleExternal.Checked = True
-                    End If
                 End If
 
             End If
@@ -116,13 +101,10 @@ Public Class dlgFIStreamEditor
                     'old
                     'stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
                     stream_v.Duration = txtVideoDuration.Text
-
-                    'cocotus, 2013/02 Added support for new MediaInfo-fields
-                    'Save edits of new fields
                     stream_v.Bitrate = txtVideoBitrate.Text
                     stream_v.MultiViewCount = txtVideoMultiViewCount.Text
-                    stream_v.MultiViewLayout = txtVideoMultiViewLayout.Text
-                    'cocotus end
+                    stream_v.MultiViewLayout = cbVideoMultiViewLayout.Text
+                    stream_v.StereoMode = txtVideoStereoMode.Text
 
                     If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.LongLanguage = cbVideoLanguage.SelectedItem.ToString
                     If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.Language = Localization.ISOLangGetCode3ByLang(cbVideoLanguage.SelectedItem.ToString)
@@ -133,20 +115,13 @@ Public Class dlgFIStreamEditor
                     If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.LongLanguage = cbAudioLanguage.SelectedItem.ToString
                     If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = Localization.ISOLangGetCode3ByLang(cbAudioLanguage.SelectedItem.ToString)
                     If Not cbAudioChannels.SelectedItem Is Nothing Then stream_a.Channels = cbAudioChannels.SelectedItem.ToString
-
-                    'cocotus, 2013/02 Added support for new MediaInfo-fields
-                    'Save edits of new fields
                     stream_a.Bitrate = txtAudioBitrate.Text
-                    'cocotus end
-
                     Return stream_a
                 End If
                 If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
                     If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.LongLanguage = If(cbSubtitleLanguage.SelectedItem Is Nothing, "", cbSubtitleLanguage.SelectedItem.ToString)
                     If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.Language = Localization.ISOLangGetCode3ByLang(cbSubtitleLanguage.SelectedItem.ToString)
-                    If Not cbSubtitleLanguage.SelectedItem Is Nothing Then
-                        stream_s.SubsType = If(rbSubtitleEmbedded.Checked, "Embedded", "External")
-                    End If
+                    If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.SubsType = "Embedded"
                     Return stream_s
                 End If
                 Return Nothing
@@ -168,6 +143,12 @@ Public Class dlgFIStreamEditor
         'Dim xAChanFlag = From xAChan In XML.FlagsXML...<achan>...<name> Where Regex.IsMatch(cbAudioCodec.SelectedItem, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.@searchstring
         'End If
     End Sub
+    Private Sub cbVideoMultiViewLayout_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbVideoMultiViewLayout.SelectedIndexChanged
+        If Not Me.cbVideoMultiViewLayout.Text = String.Empty Then
+            Me.txtVideoMultiViewCount.Text = "2"
+            Me.txtVideoStereoMode.Text = MediaInfo.ConvertVStereoMode(cbVideoMultiViewLayout.Text)
+        End If
+    End Sub
 
     Private Sub dlgFIStreamEditor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
@@ -179,26 +160,27 @@ Public Class dlgFIStreamEditor
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(613, "Stream Editor")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.gbVideoStreams.Text = Master.eLang.GetString(595, "Video Streams")
-        Me.lblVideoAspect.Text = Master.eLang.GetString(614, "Aspect Ratio")
-        Me.rbVideoInterlaced.Text = Master.eLang.GetString(615, "Interlaced")
-        Me.rbVideoProgressive.Text = Master.eLang.GetString(616, "Progressive")
-        Me.lblVideoCodec.Text = Master.eLang.GetString(604, "Codec")
-        Me.lblVideoDuration.Text = Master.eLang.GetString(609, "Duration")
-        Me.lblVideoHeight.Text = Master.eLang.GetString(607, "Height")
-        Me.lblVideoMultiViewCount.Text = Master.eLang.GetString(1156, "MultiView Count")
-        Me.lblVideoMultiViewLayout.Text = Master.eLang.GetString(1157, "MultiView Layout")
-        Me.lblVideoWidth.Text = Master.eLang.GetString(606, "Width")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Text = Master.eLang.GetString(613, "Stream Editor")
         Me.gbAudioStreams.Text = Master.eLang.GetString(596, "Audio Streams")
+        Me.gbSubtitleStreams.Text = Master.eLang.GetString(597, "Subtitle  Streams")
+        Me.gbVideoStreams.Text = Master.eLang.GetString(595, "Video Streams")
         Me.lblAudioChannels.Text = Master.eLang.GetString(611, "Channels")
         Me.lblAudioCodec.Text = Me.lblVideoCodec.Text
         Me.lblAudioLanguage.Text = Master.eLang.GetString(610, "Language")
-        Me.gbSubtitleStreams.Text = Master.eLang.GetString(597, "Subtitle  Streams")
         Me.lblSubtitleLanguage.Text = Me.lblAudioLanguage.Text
+        Me.lblVideoAspect.Text = Master.eLang.GetString(614, "Aspect Ratio")
+        Me.lblVideoCodec.Text = Master.eLang.GetString(604, "Codec")
+        Me.lblVideoDuration.Text = Master.eLang.GetString(609, "Duration")
+        Me.lblVideoHeight.Text = Master.eLang.GetString(607, "Height")
         Me.lblVideoLanguage.Text = Me.lblAudioLanguage.Text
+        Me.lblVideoMultiViewCount.Text = Master.eLang.GetString(1156, "MultiView Count")
+        Me.lblVideoMultiViewLayout.Text = Master.eLang.GetString(1157, "MultiView Layout")
+        Me.lblVideoStereoMode.Text = Master.eLang.GetString(1286, "StereoMode")
+        Me.lblVideoWidth.Text = Master.eLang.GetString(606, "Width")
+        Me.rbVideoInterlaced.Text = Master.eLang.GetString(615, "Interlaced")
+        Me.rbVideoProgressive.Text = Master.eLang.GetString(616, "Progressive")
     End Sub
 
 #End Region 'Methods

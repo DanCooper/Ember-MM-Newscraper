@@ -1,0 +1,207 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v2_to_v3">
+    <command type="DB">
+      <description>1</description>
+      <execute>
+        CREATE TABLE MoviesVStreams01(
+        MovieID,
+        StreamID,
+        Video_Width,
+        Video_Height,
+        Video_Codec,
+        Video_Duration,
+        Video_ScanType,
+        Video_AspectDisplayRatio,
+        Video_Language,
+        Video_LongLanguage,
+        Video_Bitrate,
+        Video_MultiView,
+        Video_EncodedSettings,
+        Video_MultiViewLayout
+        );
+
+        INSERT INTO MoviesVStreams01
+        SELECT
+        MovieID,
+        StreamID,
+        Video_Width,
+        Video_Height,
+        Video_Codec,
+        Video_Duration,
+        Video_ScanType,
+        Video_AspectDisplayRatio,
+        Video_Language,
+        Video_LongLanguage,
+        Video_Bitrate,
+        Video_MultiView,
+        Video_EncodedSettings,
+        Video_MultiViewLayout
+        FROM MoviesVStreams;
+
+        DROP TABLE MoviesVStreams;
+
+        CREATE TABLE MoviesVStreams (
+        MovieID                   integer NOT NULL,
+        StreamID                  integer NOT NULL,
+        Video_Width               text,
+        Video_Height              text,
+        Video_Codec               text,
+        Video_Duration            text,
+        Video_ScanType            text,
+        Video_AspectDisplayRatio  text,
+        Video_Language            text,
+        Video_LongLanguage        text,
+        Video_Bitrate             text,
+        Video_MultiViewCount      text,
+        Video_EncodedSettings     text,
+        Video_MultiViewLayout     text,
+        PRIMARY KEY (MovieID, StreamID)
+        );
+
+        INSERT INTO MoviesVStreams
+        (MovieID,
+        StreamID,
+        Video_Width,
+        Video_Height,
+        Video_Codec,
+        Video_Duration,
+        Video_ScanType,
+        Video_AspectDisplayRatio,
+        Video_Language,
+        Video_LongLanguage,
+        Video_Bitrate,
+        Video_MultiViewCount,
+        Video_EncodedSettings,
+        Video_MultiViewLayout)
+        SELECT
+        MovieID,
+        StreamID,
+        Video_Width,
+        Video_Height,
+        Video_Codec,
+        Video_Duration,
+        Video_ScanType,
+        Video_AspectDisplayRatio,
+        Video_Language,
+        Video_LongLanguage,
+        Video_Bitrate,
+        Video_MultiView,
+        Video_EncodedSettings,
+        Video_MultiViewLayout
+        FROM MoviesVStreams01;
+
+        DROP TABLE MoviesVStreams01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>
+        CREATE TABLE TVVStreams01(
+        TVEpID,
+        StreamID,
+        Video_Width,
+        Video_Height,
+        Video_Codec,
+        Video_Duration,
+        Video_ScanType,
+        Video_AspectDisplayRatio,
+        Video_Language,
+        Video_LongLanguage,
+        Video_Bitrate,
+        Video_MultiView,
+        Video_EncodedSettings,
+        Video_MultiViewLayout
+        );
+
+        INSERT INTO TVVStreams01
+        SELECT
+        TVEpID,
+        StreamID,
+        Video_Width,
+        Video_Height,
+        Video_Codec,
+        Video_Duration,
+        Video_ScanType,
+        Video_AspectDisplayRatio,
+        Video_Language,
+        Video_LongLanguage,
+        Video_Bitrate,
+        Video_MultiView,
+        Video_EncodedSettings,
+        Video_MultiViewLayout
+        FROM TVVStreams;
+
+        DROP TABLE TVVStreams;
+
+        CREATE TABLE TVVStreams (
+        TVEpID                    integer NOT NULL,
+        StreamID                  integer NOT NULL,
+        Video_Width               text,
+        Video_Height              text,
+        Video_Codec               text,
+        Video_Duration            text,
+        Video_ScanType            text,
+        Video_AspectDisplayRatio  text,
+        Video_Language            text,
+        Video_LongLanguage        text,
+        Video_Bitrate             text,
+        Video_MultiViewCount      text,
+        Video_EncodedSettings     text,
+        Video_MultiViewLayout     text,
+        PRIMARY KEY (TVEpID, StreamID)
+        );
+
+        INSERT INTO TVVStreams
+        (TVEpID,
+        StreamID,
+        Video_Width,
+        Video_Height,
+        Video_Codec,
+        Video_Duration,
+        Video_ScanType,
+        Video_AspectDisplayRatio,
+        Video_Language,
+        Video_LongLanguage,
+        Video_Bitrate,
+        Video_MultiViewCount,
+        Video_EncodedSettings,
+        Video_MultiViewLayout)
+        SELECT
+        TVEpID,
+        StreamID,
+        Video_Width,
+        Video_Height,
+        Video_Codec,
+        Video_Duration,
+        Video_ScanType,
+        Video_AspectDisplayRatio,
+        Video_Language,
+        Video_LongLanguage,
+        Video_Bitrate,
+        Video_MultiView,
+        Video_EncodedSettings,
+        Video_MultiViewLayout
+        FROM TVVStreams01;
+
+        DROP TABLE TVVStreams01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>ALTER TABLE MoviesVStreams ADD Video_StereoMode TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>ALTER TABLE TVVStreams ADD Video_StereoMode TEXT;</execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

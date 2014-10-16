@@ -27,6 +27,7 @@ Partial Class dlgFileInfo
         Dim ListViewGroup3 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Subtitles Stream", System.Windows.Forms.HorizontalAlignment.Left)
         Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "H264", "Progressive"}, -1)
         Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "AC3", "English"}, -1)
+        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgFileInfo))
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.lvStreams = New System.Windows.Forms.ListView()
@@ -46,6 +47,8 @@ Partial Class dlgFileInfo
         Me.btnNewSet = New System.Windows.Forms.Button()
         Me.lblStreamType = New System.Windows.Forms.Label()
         Me.cbStreamType = New System.Windows.Forms.ComboBox()
+        Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SuspendLayout()
         '
         'Cancel_Button
@@ -63,7 +66,7 @@ Partial Class dlgFileInfo
         Me.lvStreams.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader11})
+        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader11, Me.ColumnHeader12, Me.ColumnHeader13})
         Me.lvStreams.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvStreams.FullRowSelect = True
         ListViewGroup1.Header = "Video Streams"
@@ -76,7 +79,8 @@ Partial Class dlgFileInfo
         Me.lvStreams.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         ListViewItem1.Group = ListViewGroup1
         ListViewItem2.Group = ListViewGroup2
-        Me.lvStreams.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1, ListViewItem2})
+        ListViewItem3.Group = ListViewGroup3
+        Me.lvStreams.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1, ListViewItem2, ListViewItem3})
         Me.lvStreams.Location = New System.Drawing.Point(4, 7)
         Me.lvStreams.MultiSelect = False
         Me.lvStreams.Name = "lvStreams"
@@ -87,40 +91,35 @@ Partial Class dlgFileInfo
         '
         'ColumnHeader1
         '
-        Me.ColumnHeader1.Width = 31
+        Me.ColumnHeader1.Width = 25
         '
         'ColumnHeader2
         '
-        Me.ColumnHeader2.Width = 77
+        Me.ColumnHeader2.Width = 90
         '
         'ColumnHeader3
         '
-        Me.ColumnHeader3.Width = 92
+        Me.ColumnHeader3.Width = 90
         '
         'ColumnHeader4
         '
         Me.ColumnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader4.Width = 64
         '
         'ColumnHeader5
         '
         Me.ColumnHeader5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader5.Width = 58
         '
         'ColumnHeader6
         '
         Me.ColumnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader6.Width = 80
         '
         'ColumnHeader7
         '
         Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader7.Width = 90
         '
         'ColumnHeader8
         '
-        Me.ColumnHeader8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader8.Width = 65
+        Me.ColumnHeader8.Width = 90
         '
         'ColumnHeader9
         '
@@ -133,7 +132,7 @@ Partial Class dlgFileInfo
         '
         'ColumnHeader11
         '
-        Me.ColumnHeader11.Width = 90
+        Me.ColumnHeader11.Width = 120
         '
         'btnRemoveSet
         '
@@ -195,6 +194,14 @@ Partial Class dlgFileInfo
         Me.cbStreamType.Size = New System.Drawing.Size(93, 21)
         Me.cbStreamType.TabIndex = 3
         '
+        'ColumnHeader12
+        '
+        Me.ColumnHeader12.Width = 120
+        '
+        'ColumnHeader13
+        '
+        Me.ColumnHeader13.Width = 120
+        '
         'dlgFileInfo
         '
         Me.AcceptButton = Me.Cancel_Button
@@ -239,5 +246,7 @@ Partial Class dlgFileInfo
     Friend WithEvents ColumnHeader9 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader10 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader11 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader12 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader13 As System.Windows.Forms.ColumnHeader
 
 End Class
