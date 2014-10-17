@@ -367,7 +367,7 @@ Public Class Scanner
                 For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
                     If fFile.ToLower.EndsWith(ext) Then
                         Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
-                        Movie.Subs.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                        Movie.Subtitles.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
                     End If
                 Next
             Next
@@ -889,7 +889,7 @@ Public Class Scanner
                 tmpMovieDB.NfoPath = mContainer.Nfo
                 tmpMovieDB.PosterPath = mContainer.Poster
                 tmpMovieDB.Source = mContainer.Source
-                tmpMovieDB.Subtitles = mContainer.Subs
+                tmpMovieDB.Subtitles = mContainer.Subtitles
                 'tmpMovieDB.SubPath = mContainer.Subs
                 tmpMovieDB.ThemePath = mContainer.Theme
                 tmpMovieDB.TrailerPath = mContainer.Trailer
@@ -1460,6 +1460,7 @@ Public Class Scanner
 
                             tmpTVDB.EpNfoPath = Episode.Nfo
                             tmpTVDB.EpPosterPath = Episode.Poster
+                            tmpTVDB.EpSubtitles = Episode.Subtitles
                             tmpTVDB.Source = Episode.Source
                             tmpTVDB.IsLockEp = False
                             tmpTVDB.IsMarkEp = False
@@ -1596,6 +1597,7 @@ Public Class Scanner
         Private _nfo As String
         Private _poster As String
         Private _source As String
+        Private _subtiles As New List(Of MediaInfo.Subtitle)
 
 #End Region 'Fields
 
@@ -1654,6 +1656,15 @@ Public Class Scanner
             End Set
         End Property
 
+        Public Property Subtitles() As List(Of MediaInfo.Subtitle)
+            Get
+                Return _subtiles
+            End Get
+            Set(ByVal value As List(Of MediaInfo.Subtitle))
+                _subtiles = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -1661,6 +1672,7 @@ Public Class Scanner
         Public Sub Clear()
             _filename = String.Empty
             _source = String.Empty
+            _subtiles.Clear()
             _poster = String.Empty
             _fanart = String.Empty
             _nfo = String.Empty
@@ -1687,7 +1699,7 @@ Public Class Scanner
         Private _poster As String
         Private _single As Boolean
         Private _source As String
-        Private _subs As List(Of MediaInfo.Subtitle)
+        Private _subtitles As New List(Of MediaInfo.Subtitle)
         Private _theme As String
         Private _trailer As String
         Private _usefolder As Boolean
@@ -1821,12 +1833,12 @@ Public Class Scanner
             End Set
         End Property
 
-        Public Property Subs() As List(Of MediaInfo.Subtitle)
+        Public Property Subtitles() As List(Of MediaInfo.Subtitle)
             Get
-                Return _subs
+                Return _subtitles
             End Get
             Set(ByVal value As List(Of MediaInfo.Subtitle))
-                _subs = value
+                _subtitles = value
             End Set
         End Property
 
@@ -1875,7 +1887,7 @@ Public Class Scanner
             _poster = String.Empty
             _single = False
             _source = String.Empty
-            _subs = New List(Of MediaInfo.Subtitle)
+            _subtitles.Clear()
             _theme = String.Empty
             _trailer = String.Empty
             _usefolder = False

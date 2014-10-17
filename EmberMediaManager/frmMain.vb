@@ -10544,7 +10544,7 @@ doCancel:
                                     Master.currMovie.NfoPath = sFile.Nfo
                                     Master.currMovie.PosterPath = sFile.Poster
                                     Master.currMovie.Source = sFile.Source
-                                    Master.currMovie.Subtitles = sFile.Subs
+                                    Master.currMovie.Subtitles = sFile.Subtitles
                                     'Master.currMovie.SubPath = sFile.Subs
                                     Master.currMovie.ThemePath = sFile.Theme
                                     Master.currMovie.TrailerPath = sFile.Trailer
@@ -14054,6 +14054,7 @@ doCancel:
 
         Dim hasFanart As Boolean = False
         Dim hasPoster As Boolean = False
+        Dim hasSubtitles As Boolean = False
         Dim hasWatched As Boolean = False
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
@@ -14086,12 +14087,14 @@ doCancel:
                 fScanner.GetTVEpisodeFolderContents(eContainer)
                 tmpShowDb.EpPosterPath = eContainer.Poster
                 tmpShowDb.EpFanartPath = eContainer.Fanart
+                tmpShowDb.EpSubtitles = eContainer.Subtitles
                 'assume invalid nfo if no title
                 tmpShowDb.EpNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVEp.Title), String.Empty, eContainer.Nfo)
 
                 hasFanart = Not String.IsNullOrEmpty(eContainer.Fanart)
                 hasPoster = Not String.IsNullOrEmpty(eContainer.Poster)
                 hasWatched = Not String.IsNullOrEmpty(tmpShowDb.TVEp.Playcount) AndAlso Not tmpShowDb.TVEp.Playcount = "0"
+                hasSubtitles = eContainer.Subtitles.Count > 0 OrElse tmpShowDb.TVEp.FileInfo.StreamDetails.Subtitle.Count > 0
 
                 Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
 
@@ -14176,7 +14179,7 @@ doCancel:
         Dim hasPoster As Boolean = False
         Dim hasTheme As Boolean = False
         Dim hasTrailer As Boolean = False
-        Dim hasSub As Boolean = False
+        Dim hasSubtitles As Boolean = False
         Dim hasWatched As Boolean = False
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
@@ -14278,7 +14281,7 @@ doCancel:
                 tmpMovieDB.LandscapePath = mContainer.Landscape
                 tmpMovieDB.NfoPath = If(String.IsNullOrEmpty(tmpMovieDB.Movie.Title), String.Empty, mContainer.Nfo) 'assume invalid nfo if no title
                 tmpMovieDB.PosterPath = mContainer.Poster
-                tmpMovieDB.Subtitles = mContainer.Subs
+                tmpMovieDB.Subtitles = mContainer.Subtitles
                 tmpMovieDB.ThemePath = mContainer.Theme
                 tmpMovieDB.TrailerPath = mContainer.Trailer
 
@@ -14292,7 +14295,7 @@ doCancel:
                 hasLandscape = Not String.IsNullOrEmpty(mContainer.Landscape)
                 hasNfo = Not String.IsNullOrEmpty(tmpMovieDB.NfoPath)
                 hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
-                hasSub = mContainer.Subs.Count > 0 OrElse tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
+                hasSubtitles = mContainer.Subtitles.Count > 0 OrElse tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
                 hasTheme = Not String.IsNullOrEmpty(mContainer.Theme)
                 hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
                 hasWatched = Not String.IsNullOrEmpty(tmpMovieDB.Movie.PlayCount) AndAlso Not tmpMovieDB.Movie.PlayCount = "0"
@@ -14311,7 +14314,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 5, hasFanart})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 6, hasNfo})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 7, hasTrailer})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 8, hasSub})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 8, hasSubtitles})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 9, hasEThumbs})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 10, False})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDB.Movie.Title})
@@ -14333,7 +14336,7 @@ doCancel:
                         selRow.Item(5) = hasFanart
                         selRow.Item(6) = hasNfo
                         selRow.Item(7) = hasTrailer
-                        selRow.Item(8) = hasSub
+                        selRow.Item(8) = hasSubtitles
                         selRow.Item(9) = hasEThumbs
                         selRow.Item(10) = False
                         selRow.Item(15) = tmpMovieDB.Movie.Title

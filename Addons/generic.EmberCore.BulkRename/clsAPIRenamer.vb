@@ -358,7 +358,6 @@ Public Class FileFolderRenamer
                     MovieFile.FileName = Path.GetFileNameWithoutExtension(_tmpMovie.Filename)
                 End If
                 MovieFile.NewFileName = ProccessPattern(MovieFile, filePattern, False).Trim
-
             End If
         ElseIf MovieFile.IsBDMV Then
             MovieFile.FileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
