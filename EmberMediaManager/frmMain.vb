@@ -15090,7 +15090,12 @@ doCancel:
     Private Sub RestoreFilter_Movies()
         Try
             With Master.eSettings
-                If Not IsNothing(.GeneralMainFilterSortColumn_Movies) AndAlso Not IsNothing(.GeneralMainFilterSortOrder_Movies) Then
+                If .GeneralMainFilterSortColumn_Movies = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
+                    .GeneralMainFilterSortColumn_Movies = 3         'ListTitle
+                    .GeneralMainFilterSortOrder_Movies = 0          'ASC
+                End If
+
+                If Not IsNothing(Me.dgvMovies.DataSource) Then
                     Me.dgvMovies.Sort(Me.dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
                 End If
             End With
