@@ -326,6 +326,14 @@ Public Class Scraper
 
             Try
                 If File.Exists(fPath) Then
+
+                    'Check how old the ZIP file is. If it's older than 12h -> try to get a fresh/updated file
+                    'This is usefull for non english users because TVDB can has much "not yet translated" information if the file is to old
+                    Dim fileInfo As New FileInfo(fPath)
+                    If fileInfo.LastWriteTime < DateTime.Now.AddHours(-12) Then
+                        DownloadSeries(sInfo)
+                    End If
+
                     Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
                         Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
                         Me.ProcessTVDBZip(fZip, sInfo)
