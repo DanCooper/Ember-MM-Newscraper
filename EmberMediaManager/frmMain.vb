@@ -3410,6 +3410,18 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub chkFilterOne_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterOne_MovieSets.Click
+        Try
+            If Me.chkFilterOne_MovieSets.Checked Then
+                Me.FilterArray_MovieSets.Add("Count = 1")
+            Else
+                Me.FilterArray_MovieSets.Remove("Count = 1")
+            End If
+            Me.RunFilter_MovieSets()
+        Catch
+        End Try
+    End Sub
+
     Private Sub chkFilterLock_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterLock_Movies.Click
         Try
             If Me.chkFilterLock_Movies.Checked Then
@@ -4041,6 +4053,7 @@ doCancel:
             'Me.chkFilterMarkCustom4.Checked = False
             Me.chkFilterNew_MovieSets.Checked = False
             Me.chkFilterLock_MovieSets.Checked = False
+            Me.chkFilterOne_MovieSets.Checked = False
             Me.rbFilterOr_MovieSets.Checked = False
             Me.rbFilterAnd_MovieSets.Checked = True
             'Me.txtFilterGenre.Text = String.Empty
@@ -8008,6 +8021,7 @@ doCancel:
         'Me.cbFilterYearMod.Enabled = isEnabled
         Me.cbSearchMovieSets.Enabled = isEnabled
         'Me.chkFilterDupe.Enabled = isEnabled
+        Me.chkFilterEmpty_MovieSets.Enabled = isEnabled
         Me.chkFilterLock_MovieSets.Enabled = isEnabled
         Me.chkFilterMark_MovieSets.Enabled = isEnabled
         'Me.chkFilterMarkCustom1.Enabled = isEnabled
@@ -8016,6 +8030,7 @@ doCancel:
         'Me.chkFilterMarkCustom4.Enabled = isEnabled
         Me.chkFilterMissing_MovieSets.Enabled = isEnabled
         Me.chkFilterNew_MovieSets.Enabled = isEnabled
+        Me.chkFilterOne_MovieSets.Enabled = isEnabled
         'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
         Me.rbFilterAnd_MovieSets.Enabled = isEnabled
         Me.rbFilterOr_MovieSets.Enabled = isEnabled
@@ -13814,8 +13829,8 @@ doCancel:
     End Sub
 
     Private Sub rbFilterAnd_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_MovieSets.Click
-        If Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse _
-            Me.chkFilterMissing_MovieSets.Checked Then Me.RunFilter_MovieSets()
+        If Me.chkFilterEmpty_MovieSets.Checked OrElse Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse _
+            Me.chkFilterMissing_MovieSets.Checked OrElse Me.chkFilterOne_MovieSets.Checked Then Me.RunFilter_MovieSets()
     End Sub
 
     Private Sub rbFilterAnd_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_Shows.Click
@@ -13919,8 +13934,8 @@ doCancel:
     End Sub
 
     Private Sub rbFilterOr_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_MovieSets.Click
-        If Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse _
-            Me.chkFilterMissing_MovieSets.Checked Then Me.RunFilter_MovieSets()
+        If Me.chkFilterEmpty_MovieSets.Checked OrElse Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse _
+            Me.chkFilterMissing_MovieSets.Checked OrElse Me.chkFilterOne_MovieSets.Checked Then Me.RunFilter_MovieSets()
     End Sub
 
     Private Sub rbFilterOr_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_Shows.Click
@@ -17186,6 +17201,7 @@ doCancel:
                 .chkFilterNew_Movies.Text = Master.eLang.GetString(47, "New")
                 .chkFilterNew_MovieSets.Text = .chkFilterNew_Movies.Text
                 .chkFilterNew_Shows.Text = .chkFilterNew_Movies.Text
+                .chkFilterOne_MovieSets.Text = Master.eLang.GetString(1289, "Only One Movie")
                 .chkFilterTolerance_Movies.Text = Master.eLang.GetString(39, "Out of Tolerance")
                 .cmnuEpisodeChange.Text = Master.eLang.GetString(772, "Change Episode")
                 .cmnuEpisodeEdit.Text = Master.eLang.GetString(656, "Edit Episode")
