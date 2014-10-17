@@ -2116,9 +2116,11 @@ Namespace MediaContainers
         Public Property ParentID As String 'All images of the same size must have this identical, is used to group the images.
         Public Property ShortLang As String
         Public Property LongLang As String
-        Public Property Likes As String
+        Public Property Likes As Integer
         Public Property VoteAverage As String
-        Public Property VoteCount As String
+        Public Property VoteCount As Integer
+        Public Property Disc As Integer
+        Public Property DiscType As String
 
 #End Region 'Properties
 
@@ -2129,6 +2131,11 @@ Namespace MediaContainers
             Me._Description = String.Empty
             Me._WebImage = New Images
             Me._isChecked = False
+            Me._Likes = 0
+            Me._VoteAverage = String.Empty
+            Me.VoteCount = 0
+            Me._Disc = 0
+            Me._DiscType = String.Empty
         End Sub
 
 #End Region 'Methods
