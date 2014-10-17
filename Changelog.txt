@@ -1,7 +1,7 @@
-Changelog 1.4.x Beta (2014-10-11)
+Changelog 1.4.x Beta (2014-10-17)
 
 [Main]
-added: MovieSet title renamer (auto rename titles like "Hangover Reihe" to "Hangover Collecetion")
+added: MovieSet title renamer (auto rename titles like "Hangover Reihe" to "Hangover Collection")
 added: missing icons for sd video sources
 added: more video sources
 added: clean MovieSet DB on update
@@ -27,16 +27,29 @@ added: "Cleanup disabled fields" for movie scraper
 added: HD-Trailers.net and Davestrailerpage.com as additional trailer scrapers
 added: "* All Seasons" to season list
 added: "Display Image Names" for main window (like "ClearArt", "Landscape")
+added: XBMC <StereoMode> tag in NFO
+added: full MKV 3D support
+added: better external subtitles support (in movie folder and "subs" subfolder)
+added: "Original Title" as separate data scraper option
+added: MovieSet images renaming if movieset title has changed
 fixed: MovieSet info panel height
 fixed: Ember wants restart while DB update after cloding settings dialog
 fixed: rating stars color for disabled stars
 fixed: MPAA/Certification handling
 fixed: Settings dialog is not sizable
+fixed: "Remove MovieSet images with MovieSet" to cleanup images from deleted MovieSets
+fixed: theme scraper in Edit Movie dialog
+fixed: delete existing trailers/themes
+fixed: some issues in main menu
+fixed: extrathumbs, extrafanarts and actorthumbs handling in Edit Movie dialog
+fixed: all missing/wrong "Expert Settings" for movie
+changed: Movie data scraper handling (now the first scraper in settings has the highest priority)
+changed: list sorting in movie list or filter will be saved and restored while DB-update, changed settings or Ember restart
 changed: Country and Studio are now saved in multiple NFO tags for each entry
 changed: trailer preview buttons logic in Edit Movie dialog
-changed: Movie data scraper handling (now the first scraper in settings has the highest priority)
 changed: trailer logic
 removed: old MovieSets manager
+removed: Czech language (broken)
 
 [Renamer]
 added: MovieSet name tag
@@ -49,10 +62,14 @@ changed: API logic (now it's possible to change settings without restart)
 
 [Fanart.tv]
 added: private API key handling
+changed: API logic (now it's possible to change settings without restart)
 
 [IMDB]
 fixed: wrong runtime scraping
 fixed: wrong votes scraping
+
+[GoEar]
+fixed: theme scraping
 
 
 Changelog 1.4.x Beta (2014-09-05)
