@@ -40,7 +40,7 @@ Public Class dlgFIStreamEditor
             gbAudioStreams.Visible = False
             gbAudioStreams.Visible = False
 
-            If stream_type = Master.eLang.GetString(595, "Video Stream") Then
+            If stream_type = Master.eLang.GetString(595, "Video Streams") Then
                 gbVideoStreams.Visible = True
                 cbVideoCodec.Items.AddRange((From vCo In APIXML.lFlags Where vCo.Type = APIXML.FlagType.VideoCodec AndAlso Not vCo.Name = "defaultscreen" Select vCo.Name).ToArray)
                 cbVideoLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
@@ -52,8 +52,6 @@ Public Class dlgFIStreamEditor
                     'cocotus, 2013/09 Fix for Progressive setting in metadata - don't use language specific name!!
                     'see thread: http://forum.xbmc.org/showthread.php?tid=172326
                     If movie.StreamDetails.Video(idx).Scantype = "Progressive" OrElse movie.StreamDetails.Video(idx).Scantype = Master.eLang.GetString(616, "Progressive") Then
-                        'old
-                        'If movie.StreamDetails.Video(idx).Scantype = Master.eLang.GetString(616, "Progressive") Then
                         rbVideoProgressive.Checked = True
                     Else
                         rbVideoInterlaced.Checked = True
@@ -67,7 +65,7 @@ Public Class dlgFIStreamEditor
                     txtVideoStereoMode.Text = movie.StreamDetails.Video(idx).StereoMode
                 End If
             End If
-            If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
+            If stream_type = Master.eLang.GetString(596, "Audio Streams") Then
                 gbAudioStreams.Visible = True
                 cbAudioCodec.Items.AddRange((From aCo In APIXML.lFlags Where aCo.Type = APIXML.FlagType.AudioCodec AndAlso Not aCo.Name = "defaultaudio" Select aCo.Name).ToArray)
                 cbAudioLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
@@ -79,18 +77,20 @@ Public Class dlgFIStreamEditor
                     txtAudioBitrate.Text = movie.StreamDetails.Audio(idx).Bitrate
                 End If
             End If
-            If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
+            If stream_type = Master.eLang.GetString(597, "Subtitle Streams") Then
                 gbSubtitleStreams.Visible = True
 
                 cbSubtitleLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
                 If Not movie Is Nothing Then
                     cbSubtitleLanguage.Text = movie.StreamDetails.Subtitle(idx).LongLanguage
+                    chkSubtitleForced.Checked = movie.StreamDetails.Subtitle(idx).SubsForced
+                    txtSubtitlePath.Text = movie.StreamDetails.Subtitle(idx).SubsPath
+                    txtSubtitleType.Text = movie.StreamDetails.Subtitle(idx).SubsType
                 End If
-                chkSubtitleForced.Checked = movie.StreamDetails.Subtitle(idx).SubsForced
             End If
 
             If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                If stream_type = Master.eLang.GetString(595, "Video Stream") Then
+                If stream_type = Master.eLang.GetString(595, "Video Streams") Then
                     stream_v.Codec = If(cbVideoCodec.SelectedItem Is Nothing, "", cbVideoCodec.SelectedItem.ToString)
                     stream_v.Aspect = txtVideoAspect.Text
                     stream_v.Width = txtVideoWidth.Text
@@ -98,8 +98,6 @@ Public Class dlgFIStreamEditor
                     'cocotus, 2013/09 Fix for Progressive setting in metadata - don't use language specific name!!
                     'see thread: http://forum.xbmc.org/showthread.php?tid=172326
                     stream_v.Scantype = If(rbVideoProgressive.Checked, "Progressive", "Interlaced")
-                    'old
-                    'stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
                     stream_v.Duration = txtVideoDuration.Text
                     stream_v.Bitrate = txtVideoBitrate.Text
                     stream_v.MultiViewCount = txtVideoMultiViewCount.Text
@@ -110,19 +108,20 @@ Public Class dlgFIStreamEditor
                     If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.Language = Localization.ISOLangGetCode3ByLang(cbVideoLanguage.SelectedItem.ToString)
                     Return stream_v
                 End If
-                If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
+                If stream_type = Master.eLang.GetString(596, "Audio Streams") Then
                     stream_a.Codec = If(cbAudioCodec.SelectedItem Is Nothing, "", cbAudioCodec.SelectedItem.ToString)
                     If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.LongLanguage = cbAudioLanguage.SelectedItem.ToString
                     If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = Localization.ISOLangGetCode3ByLang(cbAudioLanguage.SelectedItem.ToString)
-                    If Not cbAudioChannels.SelectedItem Is Nothing Then stream_a.Channels = cbAudioChannels.SelectedItem.ToString
+                    stream_a.Channels = cbAudioChannels.SelectedItem.ToString
                     stream_a.Bitrate = txtAudioBitrate.Text
                     Return stream_a
                 End If
-                If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
+                If stream_type = Master.eLang.GetString(597, "Subtitle Streams") Then
                     If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.LongLanguage = If(cbSubtitleLanguage.SelectedItem Is Nothing, "", cbSubtitleLanguage.SelectedItem.ToString)
                     If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.Language = Localization.ISOLangGetCode3ByLang(cbSubtitleLanguage.SelectedItem.ToString)
-                    If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.SubsType = "Embedded"
-                    If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.SubsForced = chkSubtitleForced.Checked
+                    stream_s.SubsType = If(txtSubtitleType.Text.ToLower = "external" OrElse Not String.IsNullOrEmpty(stream_s.SubsPath), "External", "Embedded")
+                    stream_s.SubsForced = chkSubtitleForced.Checked
+                    stream_s.SubsPath = txtSubtitlePath.Text
                     Return stream_s
                 End If
                 Return Nothing

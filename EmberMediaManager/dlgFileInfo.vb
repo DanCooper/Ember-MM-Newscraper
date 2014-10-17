@@ -215,7 +215,7 @@ Public Class dlgFileInfo
         Try
             If _FileInfo.StreamDetails.Video.Count > 0 Then
                 g = New ListViewGroup
-                g.Header = Master.eLang.GetString(595, "Video Stream")
+                g.Header = Master.eLang.GetString(595, "Video Streams")
                 lvStreams.Groups.Add(g)
                 c = 1
                 ' Fake Group Header
@@ -245,7 +245,7 @@ Public Class dlgFileInfo
                     v = _FileInfo.StreamDetails.Video(c)
                     If Not v Is Nothing Then
                         i = New ListViewItem
-                        i.Tag = Master.eLang.GetString(595, "Video Stream")
+                        i.Tag = Master.eLang.GetString(595, "Video Streams")
                         i.Text = c.ToString
                         i.SubItems.Add(v.Codec)
                         i.SubItems.Add(v.Scantype)
@@ -267,7 +267,7 @@ Public Class dlgFileInfo
             End If
             If _FileInfo.StreamDetails.Audio.Count > 0 Then
                 g = New ListViewGroup
-                g.Header = Master.eLang.GetString(596, "Audio Stream")
+                g.Header = Master.eLang.GetString(596, "Audio Streams")
                 lvStreams.Groups.Add(g)
                 c = 1
                 ' Fake Group Header
@@ -322,7 +322,7 @@ Public Class dlgFileInfo
                     s = _FileInfo.StreamDetails.Subtitle(c)
                     If Not s Is Nothing Then
                         i = New ListViewItem
-                        i.Tag = Master.eLang.GetString(597, "Subtitle Stream")
+                        i.Tag = Master.eLang.GetString(597, "Subtitle Streams")
                         i.Text = c.ToString
                         i.SubItems.Add(s.LongLanguage)
                         i.SubItems.Add(s.SubsType)
@@ -375,9 +375,9 @@ Public Class dlgFileInfo
 
     Private Sub SetUp()
         cbStreamType.Items.Clear()
-        cbStreamType.Items.Add(Master.eLang.GetString(595, "Video Stream"))
-        cbStreamType.Items.Add(Master.eLang.GetString(596, "Audio Stream"))
-        cbStreamType.Items.Add(Master.eLang.GetString(597, "Subtitle Stream"))
+        cbStreamType.Items.Add(Master.eLang.GetString(595, "Video Streams"))
+        cbStreamType.Items.Add(Master.eLang.GetString(596, "Audio Streams"))
+        cbStreamType.Items.Add(Master.eLang.GetString(597, "Subtitle Streams"))
         Me.Text = Master.eLang.GetString(594, "Meta Data Editor")
         Me.lblStreamType.Text = Master.eLang.GetString(598, "Stream Type")
         Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")

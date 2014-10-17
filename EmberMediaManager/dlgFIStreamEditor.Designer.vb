@@ -58,12 +58,14 @@ Partial Class dlgFIStreamEditor
         Me.lblAudioLanguage = New System.Windows.Forms.Label()
         Me.cbAudioLanguage = New System.Windows.Forms.ComboBox()
         Me.gbSubtitleStreams = New System.Windows.Forms.GroupBox()
+        Me.chkSubtitleForced = New System.Windows.Forms.CheckBox()
         Me.lblSubtitleLanguage = New System.Windows.Forms.Label()
         Me.cbSubtitleLanguage = New System.Windows.Forms.ComboBox()
         Me.pnlStreamEditor = New System.Windows.Forms.Panel()
         Me.txtEncodingSettings = New System.Windows.Forms.TextBox()
         Me.lblEncoding = New System.Windows.Forms.Label()
-        Me.chkSubtitleForced = New System.Windows.Forms.CheckBox()
+        Me.txtSubtitlePath = New System.Windows.Forms.TextBox()
+        Me.txtSubtitleType = New System.Windows.Forms.TextBox()
         Me.tlpButtons.SuspendLayout()
         Me.gbVideoStreams.SuspendLayout()
         Me.gbAudioStreams.SuspendLayout()
@@ -456,6 +458,8 @@ Partial Class dlgFIStreamEditor
         '
         'gbSubtitleStreams
         '
+        Me.gbSubtitleStreams.Controls.Add(Me.txtSubtitleType)
+        Me.gbSubtitleStreams.Controls.Add(Me.txtSubtitlePath)
         Me.gbSubtitleStreams.Controls.Add(Me.chkSubtitleForced)
         Me.gbSubtitleStreams.Controls.Add(Me.lblSubtitleLanguage)
         Me.gbSubtitleStreams.Controls.Add(Me.cbSubtitleLanguage)
@@ -467,6 +471,17 @@ Partial Class dlgFIStreamEditor
         Me.gbSubtitleStreams.TabStop = False
         Me.gbSubtitleStreams.Text = "Subtitle  Streams"
         Me.gbSubtitleStreams.Visible = False
+        '
+        'chkSubtitleForced
+        '
+        Me.chkSubtitleForced.AutoSize = True
+        Me.chkSubtitleForced.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.chkSubtitleForced.Location = New System.Drawing.Point(53, 46)
+        Me.chkSubtitleForced.Name = "chkSubtitleForced"
+        Me.chkSubtitleForced.Size = New System.Drawing.Size(61, 17)
+        Me.chkSubtitleForced.TabIndex = 23
+        Me.chkSubtitleForced.Text = "Forced"
+        Me.chkSubtitleForced.UseVisualStyleBackColor = True
         '
         'lblSubtitleLanguage
         '
@@ -522,16 +537,23 @@ Partial Class dlgFIStreamEditor
         Me.lblEncoding.Text = "Encoding Settings"
         Me.lblEncoding.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         '
-        'chkSubtitleForced
+        'txtSubtitlePath
         '
-        Me.chkSubtitleForced.AutoSize = True
-        Me.chkSubtitleForced.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.chkSubtitleForced.Location = New System.Drawing.Point(53, 46)
-        Me.chkSubtitleForced.Name = "chkSubtitleForced"
-        Me.chkSubtitleForced.Size = New System.Drawing.Size(61, 17)
-        Me.chkSubtitleForced.TabIndex = 23
-        Me.chkSubtitleForced.Text = "Forced"
-        Me.chkSubtitleForced.UseVisualStyleBackColor = True
+        Me.txtSubtitlePath.Enabled = False
+        Me.txtSubtitlePath.Location = New System.Drawing.Point(248, 44)
+        Me.txtSubtitlePath.Name = "txtSubtitlePath"
+        Me.txtSubtitlePath.Size = New System.Drawing.Size(54, 22)
+        Me.txtSubtitlePath.TabIndex = 24
+        Me.txtSubtitlePath.Visible = False
+        '
+        'txtSubtitleType
+        '
+        Me.txtSubtitleType.Enabled = False
+        Me.txtSubtitleType.Location = New System.Drawing.Point(189, 44)
+        Me.txtSubtitleType.Name = "txtSubtitleType"
+        Me.txtSubtitleType.Size = New System.Drawing.Size(54, 22)
+        Me.txtSubtitleType.TabIndex = 25
+        Me.txtSubtitleType.Visible = False
         '
         'dlgFIStreamEditor
         '
@@ -606,5 +628,7 @@ Partial Class dlgFIStreamEditor
     Friend WithEvents txtVideoStereoMode As System.Windows.Forms.TextBox
     Friend WithEvents lblVideoStereoMode As System.Windows.Forms.Label
     Friend WithEvents chkSubtitleForced As System.Windows.Forms.CheckBox
+    Friend WithEvents txtSubtitlePath As System.Windows.Forms.TextBox
+    Friend WithEvents txtSubtitleType As System.Windows.Forms.TextBox
 
 End Class

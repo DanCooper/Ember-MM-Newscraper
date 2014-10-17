@@ -1343,6 +1343,7 @@ Public Class MediaInfo
         Private _subs_foced As Boolean = False
         Private _subs_path As String = String.Empty
         Private _subs_type As String = String.Empty
+        Private _toremove As Boolean = False            'trigger to delete local/external trailer files
 
 #End Region 'Fields
 
@@ -1431,6 +1432,16 @@ Public Class MediaInfo
             Get
                 Return Not String.IsNullOrEmpty(Me._subs_type)
             End Get
+        End Property
+
+        <XmlIgnore> _
+        Public Property toRemove() As Boolean
+            Get
+                Return _toremove
+            End Get
+            Set(ByVal value As Boolean)
+                _toremove = value
+            End Set
         End Property
 
 #End Region 'Properties
