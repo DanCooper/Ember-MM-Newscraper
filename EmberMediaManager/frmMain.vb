@@ -1883,8 +1883,9 @@ Public Class frmMain
                 End If
 
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-                    MovieScraperEvent(Enums.ScraperEventType_Movie.ListTitle, NewListTitle)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.ListTitle, DBScrapeMovie.ListTitle)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.SortTitle, DBScrapeMovie.Movie.SortTitle)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Title, DBScrapeMovie.Movie.Title)
                 End If
 
                 '-----
@@ -2581,6 +2582,11 @@ Public Class frmMain
                     bwMovieSetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
                 End If
 
+                If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                    MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ListTitle, DBScrapeMovieSet.ListTitle)
+                    MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.Title, DBScrapeMovieSet.MovieSet.Title)
+                End If
+
                 'rename old images with no longer valid <title>-imagetype.* file names to new MovieSet title
                 If Not NewTitle = OldTitle AndAlso Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
                     'load all old images to memorystream
@@ -2633,10 +2639,6 @@ Public Class frmMain
                     Fanart = New MediaContainers.Image
                     Landscape = New MediaContainers.Image
                     Poster = New MediaContainers.Image
-                End If
-
-                If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-                    MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ListTitle, NewListTitle)
                 End If
 
                 '-----
@@ -12842,6 +12844,8 @@ doCancel:
                     dScrapeRow(47) = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.ThemeItem
                     dScrapeRow(55) = DirectCast(Parameter, Boolean)
+                Case Enums.ScraperEventType_Movie.Title
+                    dScrapeRow(15) = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.TrailerItem
                     dScrapeRow(7) = DirectCast(Parameter, Boolean)
             End Select
@@ -12872,6 +12876,8 @@ doCancel:
                     dScrapeRow(2) = DirectCast(Parameter, Boolean)
                 Case Enums.ScraperEventType_MovieSet.PosterItem
                     dScrapeRow(4) = DirectCast(Parameter, Boolean)
+                Case Enums.ScraperEventType_MovieSet.Title
+                    dScrapeRow(20) = DirectCast(Parameter, String)
             End Select
             Me.dgvMovieSets.Invalidate()
         End If

@@ -784,6 +784,7 @@ Public Class Enums
         DiscArtItem = 12
         EFanartsItem = 13
         MoviePath = 14
+        Title = 15
     End Enum
 
     Public Enum ScraperEventType_MovieSet As Integer
@@ -796,6 +797,7 @@ Public Class Enums
         ClearArtItem = 10
         ClearLogoItem = 11
         DiscArtItem = 12
+        Title = 13
     End Enum
     ''' <summary>
     ''' Enum representing valid TV series ordering.
