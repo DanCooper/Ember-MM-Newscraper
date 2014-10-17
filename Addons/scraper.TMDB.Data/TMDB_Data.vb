@@ -470,6 +470,8 @@ Public Class TMDB_Data
                 Using dSearch As New dlgTMDBSearchResults_Movie(Settings, _scraper)
                     If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Filename, filterOptions, 0) = Windows.Forms.DialogResult.OK Then
                         _scraper.GetMovieInfo(nMovie.TMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
+                        'if a movie is found, set DoSearch back to "false" for following scrapers
+                        Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, False, False)
                     Else
                         nMovie = Nothing
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
