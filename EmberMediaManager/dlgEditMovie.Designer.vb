@@ -24,6 +24,8 @@ Partial Class dlgEditMovie
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditMovie))
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -174,6 +176,19 @@ Partial Class dlgEditMovie
         Me.pbMovieEThumbs = New System.Windows.Forms.PictureBox()
         Me.tpFrameExtraction = New System.Windows.Forms.TabPage()
         Me.pnlFrameExtrator = New System.Windows.Forms.Panel()
+        Me.tpSubtitles = New System.Windows.Forms.TabPage()
+        Me.lblSubtitlesPreview = New System.Windows.Forms.Label()
+        Me.txtSubtitlesPreview = New System.Windows.Forms.TextBox()
+        Me.lvSubtitles = New System.Windows.Forms.ListView()
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.btnRemoveMovieSubtitle = New System.Windows.Forms.Button()
+        Me.btnSetMovieSubtitleDL = New System.Windows.Forms.Button()
+        Me.btnSetMovieSubtitleScrape = New System.Windows.Forms.Button()
+        Me.btnSetMovieSubtitleLocal = New System.Windows.Forms.Button()
         Me.tpTrailer = New System.Windows.Forms.TabPage()
         Me.btnTrailerMute = New System.Windows.Forms.Button()
         Me.btnTrailerStop = New System.Windows.Forms.Button()
@@ -184,6 +199,10 @@ Partial Class dlgEditMovie
         Me.btnSetMovieTrailerScrape = New System.Windows.Forms.Button()
         Me.btnSetMovieTrailerLocal = New System.Windows.Forms.Button()
         Me.tpTheme = New System.Windows.Forms.TabPage()
+        Me.btnThemeMute = New System.Windows.Forms.Button()
+        Me.btnThemeStop = New System.Windows.Forms.Button()
+        Me.btnThemePlay = New System.Windows.Forms.Button()
+        Me.axVLCTheme = New AxAXVLC.AxVLCPlugin2()
         Me.btnSetMovieThemeDL = New System.Windows.Forms.Button()
         Me.btnRemoveMovieTheme = New System.Windows.Forms.Button()
         Me.btnSetMovieThemeScrape = New System.Windows.Forms.Button()
@@ -201,10 +220,6 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie = New System.Windows.Forms.Button()
         Me.tmrDelay = New System.Windows.Forms.Timer(Me.components)
         Me.chkWatched = New System.Windows.Forms.CheckBox()
-        Me.axVLCTheme = New AxAXVLC.AxVLCPlugin2()
-        Me.btnThemeMute = New System.Windows.Forms.Button()
-        Me.btnThemeStop = New System.Windows.Forms.Button()
-        Me.btnThemePlay = New System.Windows.Forms.Button()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditMovie.SuspendLayout()
@@ -242,18 +257,19 @@ Partial Class dlgEditMovie
         Me.pnlEThumbsSetAsFanart.SuspendLayout()
         CType(Me.pbMovieEThumbs, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFrameExtraction.SuspendLayout()
+        Me.tpSubtitles.SuspendLayout()
         Me.tpTrailer.SuspendLayout()
         CType(Me.axVLCTrailer, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpTheme.SuspendLayout()
+        CType(Me.axVLCTheme, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpMetaData.SuspendLayout()
         Me.tpMediaStub.SuspendLayout()
-        CType(Me.axVLCTheme, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(772, 592)
+        Me.OK_Button.Location = New System.Drawing.Point(856, 592)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -263,7 +279,7 @@ Partial Class dlgEditMovie
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(845, 592)
+        Me.Cancel_Button.Location = New System.Drawing.Point(929, 592)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -279,7 +295,7 @@ Partial Class dlgEditMovie
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(924, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(1008, 64)
         Me.pnlTop.TabIndex = 2
         '
         'lblTopDetails
@@ -330,6 +346,7 @@ Partial Class dlgEditMovie
         Me.tcEditMovie.Controls.Add(Me.tpEFanarts)
         Me.tcEditMovie.Controls.Add(Me.tpEThumbs)
         Me.tcEditMovie.Controls.Add(Me.tpFrameExtraction)
+        Me.tcEditMovie.Controls.Add(Me.tpSubtitles)
         Me.tcEditMovie.Controls.Add(Me.tpTrailer)
         Me.tcEditMovie.Controls.Add(Me.tpTheme)
         Me.tcEditMovie.Controls.Add(Me.tpMetaData)
@@ -338,7 +355,7 @@ Partial Class dlgEditMovie
         Me.tcEditMovie.Location = New System.Drawing.Point(4, 70)
         Me.tcEditMovie.Name = "tcEditMovie"
         Me.tcEditMovie.SelectedIndex = 0
-        Me.tcEditMovie.Size = New System.Drawing.Size(920, 517)
+        Me.tcEditMovie.Size = New System.Drawing.Size(1004, 517)
         Me.tcEditMovie.TabIndex = 3
         '
         'tpDetails
@@ -410,7 +427,7 @@ Partial Class dlgEditMovie
         Me.tpDetails.Location = New System.Drawing.Point(4, 22)
         Me.tpDetails.Name = "tpDetails"
         Me.tpDetails.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpDetails.Size = New System.Drawing.Size(912, 491)
+        Me.tpDetails.Size = New System.Drawing.Size(996, 491)
         Me.tpDetails.TabIndex = 0
         Me.tpDetails.Text = "Details"
         Me.tpDetails.UseVisualStyleBackColor = True
@@ -553,7 +570,7 @@ Partial Class dlgEditMovie
         '
         Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(639, 426)
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(723, 426)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"
         Me.btnPlayTrailer.Size = New System.Drawing.Size(23, 23)
         Me.btnPlayTrailer.TabIndex = 52
@@ -1053,7 +1070,7 @@ Partial Class dlgEditMovie
         Me.tpPoster.Location = New System.Drawing.Point(4, 22)
         Me.tpPoster.Name = "tpPoster"
         Me.tpPoster.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpPoster.Size = New System.Drawing.Size(912, 491)
+        Me.tpPoster.Size = New System.Drawing.Size(996, 491)
         Me.tpPoster.TabIndex = 1
         Me.tpPoster.Text = "Poster"
         Me.tpPoster.UseVisualStyleBackColor = True
@@ -1143,7 +1160,7 @@ Partial Class dlgEditMovie
         Me.tpBanner.Location = New System.Drawing.Point(4, 22)
         Me.tpBanner.Name = "tpBanner"
         Me.tpBanner.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpBanner.Size = New System.Drawing.Size(912, 491)
+        Me.tpBanner.Size = New System.Drawing.Size(996, 491)
         Me.tpBanner.TabIndex = 8
         Me.tpBanner.Text = "Banner"
         Me.tpBanner.UseVisualStyleBackColor = True
@@ -1232,7 +1249,7 @@ Partial Class dlgEditMovie
         Me.tpLandscape.Controls.Add(Me.pbMovieLandscape)
         Me.tpLandscape.Location = New System.Drawing.Point(4, 22)
         Me.tpLandscape.Name = "tpLandscape"
-        Me.tpLandscape.Size = New System.Drawing.Size(912, 491)
+        Me.tpLandscape.Size = New System.Drawing.Size(996, 491)
         Me.tpLandscape.TabIndex = 9
         Me.tpLandscape.Text = "Landscape"
         Me.tpLandscape.UseVisualStyleBackColor = True
@@ -1321,7 +1338,7 @@ Partial Class dlgEditMovie
         Me.tpClearArt.Controls.Add(Me.pbMovieClearArt)
         Me.tpClearArt.Location = New System.Drawing.Point(4, 22)
         Me.tpClearArt.Name = "tpClearArt"
-        Me.tpClearArt.Size = New System.Drawing.Size(912, 491)
+        Me.tpClearArt.Size = New System.Drawing.Size(996, 491)
         Me.tpClearArt.TabIndex = 11
         Me.tpClearArt.Text = "ClearArt"
         Me.tpClearArt.UseVisualStyleBackColor = True
@@ -1410,7 +1427,7 @@ Partial Class dlgEditMovie
         Me.tpClearLogo.Controls.Add(Me.pbMovieClearLogo)
         Me.tpClearLogo.Location = New System.Drawing.Point(4, 22)
         Me.tpClearLogo.Name = "tpClearLogo"
-        Me.tpClearLogo.Size = New System.Drawing.Size(912, 491)
+        Me.tpClearLogo.Size = New System.Drawing.Size(996, 491)
         Me.tpClearLogo.TabIndex = 12
         Me.tpClearLogo.Text = "ClearLogo"
         Me.tpClearLogo.UseVisualStyleBackColor = True
@@ -1499,7 +1516,7 @@ Partial Class dlgEditMovie
         Me.tpDiscArt.Controls.Add(Me.pbMovieDiscArt)
         Me.tpDiscArt.Location = New System.Drawing.Point(4, 22)
         Me.tpDiscArt.Name = "tpDiscArt"
-        Me.tpDiscArt.Size = New System.Drawing.Size(912, 491)
+        Me.tpDiscArt.Size = New System.Drawing.Size(996, 491)
         Me.tpDiscArt.TabIndex = 10
         Me.tpDiscArt.Text = "DiscArt"
         Me.tpDiscArt.UseVisualStyleBackColor = True
@@ -1588,7 +1605,7 @@ Partial Class dlgEditMovie
         Me.tpFanart.Controls.Add(Me.pbMovieFanart)
         Me.tpFanart.Location = New System.Drawing.Point(4, 22)
         Me.tpFanart.Name = "tpFanart"
-        Me.tpFanart.Size = New System.Drawing.Size(912, 491)
+        Me.tpFanart.Size = New System.Drawing.Size(996, 491)
         Me.tpFanart.TabIndex = 2
         Me.tpFanart.Text = "Fanart"
         Me.tpFanart.UseVisualStyleBackColor = True
@@ -1679,7 +1696,7 @@ Partial Class dlgEditMovie
         Me.tpEFanarts.Location = New System.Drawing.Point(4, 22)
         Me.tpEFanarts.Name = "tpEFanarts"
         Me.tpEFanarts.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpEFanarts.Size = New System.Drawing.Size(912, 491)
+        Me.tpEFanarts.Size = New System.Drawing.Size(996, 491)
         Me.tpEFanarts.TabIndex = 6
         Me.tpEFanarts.Text = "Extrafanarts"
         Me.tpEFanarts.UseVisualStyleBackColor = True
@@ -1804,7 +1821,7 @@ Partial Class dlgEditMovie
         Me.tpEThumbs.Controls.Add(Me.pbMovieEThumbs)
         Me.tpEThumbs.Location = New System.Drawing.Point(4, 22)
         Me.tpEThumbs.Name = "tpEThumbs"
-        Me.tpEThumbs.Size = New System.Drawing.Size(912, 491)
+        Me.tpEThumbs.Size = New System.Drawing.Size(996, 491)
         Me.tpEThumbs.TabIndex = 4
         Me.tpEThumbs.Text = "Extrathumbs"
         Me.tpEThumbs.UseVisualStyleBackColor = True
@@ -1944,7 +1961,7 @@ Partial Class dlgEditMovie
         Me.tpFrameExtraction.Location = New System.Drawing.Point(4, 22)
         Me.tpFrameExtraction.Name = "tpFrameExtraction"
         Me.tpFrameExtraction.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpFrameExtraction.Size = New System.Drawing.Size(912, 491)
+        Me.tpFrameExtraction.Size = New System.Drawing.Size(996, 491)
         Me.tpFrameExtraction.TabIndex = 3
         Me.tpFrameExtraction.Text = "Frame Extraction"
         Me.tpFrameExtraction.UseVisualStyleBackColor = True
@@ -1955,6 +1972,131 @@ Partial Class dlgEditMovie
         Me.pnlFrameExtrator.Name = "pnlFrameExtrator"
         Me.pnlFrameExtrator.Size = New System.Drawing.Size(906, 468)
         Me.pnlFrameExtrator.TabIndex = 0
+        '
+        'tpSubtitles
+        '
+        Me.tpSubtitles.Controls.Add(Me.lblSubtitlesPreview)
+        Me.tpSubtitles.Controls.Add(Me.txtSubtitlesPreview)
+        Me.tpSubtitles.Controls.Add(Me.lvSubtitles)
+        Me.tpSubtitles.Controls.Add(Me.btnRemoveMovieSubtitle)
+        Me.tpSubtitles.Controls.Add(Me.btnSetMovieSubtitleDL)
+        Me.tpSubtitles.Controls.Add(Me.btnSetMovieSubtitleScrape)
+        Me.tpSubtitles.Controls.Add(Me.btnSetMovieSubtitleLocal)
+        Me.tpSubtitles.Location = New System.Drawing.Point(4, 22)
+        Me.tpSubtitles.Name = "tpSubtitles"
+        Me.tpSubtitles.Size = New System.Drawing.Size(996, 491)
+        Me.tpSubtitles.TabIndex = 15
+        Me.tpSubtitles.Text = "Subtitles"
+        Me.tpSubtitles.UseVisualStyleBackColor = True
+        '
+        'lblSubtitlesPreview
+        '
+        Me.lblSubtitlesPreview.AutoSize = True
+        Me.lblSubtitlesPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblSubtitlesPreview.Location = New System.Drawing.Point(10, 295)
+        Me.lblSubtitlesPreview.Name = "lblSubtitlesPreview"
+        Me.lblSubtitlesPreview.Size = New System.Drawing.Size(51, 13)
+        Me.lblSubtitlesPreview.TabIndex = 37
+        Me.lblSubtitlesPreview.Text = "Preview:"
+        '
+        'txtSubtitlesPreview
+        '
+        Me.txtSubtitlesPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtSubtitlesPreview.Location = New System.Drawing.Point(6, 311)
+        Me.txtSubtitlesPreview.Multiline = True
+        Me.txtSubtitlesPreview.Name = "txtSubtitlesPreview"
+        Me.txtSubtitlesPreview.ReadOnly = True
+        Me.txtSubtitlesPreview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtSubtitlesPreview.Size = New System.Drawing.Size(800, 145)
+        Me.txtSubtitlesPreview.TabIndex = 11
+        '
+        'lvSubtitles
+        '
+        Me.lvSubtitles.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lvSubtitles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
+        Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvSubtitles.FullRowSelect = True
+        ListViewGroup2.Header = "Local Subtitles"
+        ListViewGroup2.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
+        Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+        ListViewItem2.Group = ListViewGroup2
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
+        Me.lvSubtitles.MultiSelect = False
+        Me.lvSubtitles.Name = "lvSubtitles"
+        Me.lvSubtitles.Size = New System.Drawing.Size(800, 261)
+        Me.lvSubtitles.TabIndex = 10
+        Me.lvSubtitles.UseCompatibleStateImageBehavior = False
+        Me.lvSubtitles.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Width = 25
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Width = 550
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Width = 100
+        '
+        'btnRemoveMovieSubtitle
+        '
+        Me.btnRemoveMovieSubtitle.Enabled = False
+        Me.btnRemoveMovieSubtitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveMovieSubtitle.Image = CType(resources.GetObject("btnRemoveMovieSubtitle.Image"), System.Drawing.Image)
+        Me.btnRemoveMovieSubtitle.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveMovieSubtitle.Location = New System.Drawing.Point(810, 373)
+        Me.btnRemoveMovieSubtitle.Name = "btnRemoveMovieSubtitle"
+        Me.btnRemoveMovieSubtitle.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveMovieSubtitle.TabIndex = 9
+        Me.btnRemoveMovieSubtitle.Text = "Remove Subtitle"
+        Me.btnRemoveMovieSubtitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveMovieSubtitle.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieSubtitleDL
+        '
+        Me.btnSetMovieSubtitleDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieSubtitleDL.Image = CType(resources.GetObject("btnSetMovieSubtitleDL.Image"), System.Drawing.Image)
+        Me.btnSetMovieSubtitleDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieSubtitleDL.Location = New System.Drawing.Point(810, 184)
+        Me.btnSetMovieSubtitleDL.Name = "btnSetMovieSubtitleDL"
+        Me.btnSetMovieSubtitleDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieSubtitleDL.TabIndex = 6
+        Me.btnSetMovieSubtitleDL.Text = "Add Subtitle (Download)"
+        Me.btnSetMovieSubtitleDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieSubtitleDL.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieSubtitleScrape
+        '
+        Me.btnSetMovieSubtitleScrape.Enabled = False
+        Me.btnSetMovieSubtitleScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieSubtitleScrape.Image = CType(resources.GetObject("btnSetMovieSubtitleScrape.Image"), System.Drawing.Image)
+        Me.btnSetMovieSubtitleScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieSubtitleScrape.Location = New System.Drawing.Point(810, 95)
+        Me.btnSetMovieSubtitleScrape.Name = "btnSetMovieSubtitleScrape"
+        Me.btnSetMovieSubtitleScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieSubtitleScrape.TabIndex = 5
+        Me.btnSetMovieSubtitleScrape.Text = "Add Subtitle (Scrape)"
+        Me.btnSetMovieSubtitleScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieSubtitleScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieSubtitleLocal
+        '
+        Me.btnSetMovieSubtitleLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieSubtitleLocal.Image = CType(resources.GetObject("btnSetMovieSubtitleLocal.Image"), System.Drawing.Image)
+        Me.btnSetMovieSubtitleLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieSubtitleLocal.Location = New System.Drawing.Point(810, 6)
+        Me.btnSetMovieSubtitleLocal.Name = "btnSetMovieSubtitleLocal"
+        Me.btnSetMovieSubtitleLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieSubtitleLocal.TabIndex = 4
+        Me.btnSetMovieSubtitleLocal.Text = "Add Subtitle (Local Browse)"
+        Me.btnSetMovieSubtitleLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieSubtitleLocal.UseVisualStyleBackColor = True
         '
         'tpTrailer
         '
@@ -1968,7 +2110,7 @@ Partial Class dlgEditMovie
         Me.tpTrailer.Controls.Add(Me.btnSetMovieTrailerLocal)
         Me.tpTrailer.Location = New System.Drawing.Point(4, 22)
         Me.tpTrailer.Name = "tpTrailer"
-        Me.tpTrailer.Size = New System.Drawing.Size(912, 491)
+        Me.tpTrailer.Size = New System.Drawing.Size(996, 491)
         Me.tpTrailer.TabIndex = 13
         Me.tpTrailer.Text = "Trailer"
         Me.tpTrailer.UseVisualStyleBackColor = True
@@ -2073,10 +2215,46 @@ Partial Class dlgEditMovie
         Me.tpTheme.Controls.Add(Me.btnSetMovieThemeLocal)
         Me.tpTheme.Location = New System.Drawing.Point(4, 22)
         Me.tpTheme.Name = "tpTheme"
-        Me.tpTheme.Size = New System.Drawing.Size(912, 491)
+        Me.tpTheme.Size = New System.Drawing.Size(996, 491)
         Me.tpTheme.TabIndex = 14
         Me.tpTheme.Text = "Theme"
         Me.tpTheme.UseVisualStyleBackColor = True
+        '
+        'btnThemeMute
+        '
+        Me.btnThemeMute.Location = New System.Drawing.Point(302, 462)
+        Me.btnThemeMute.Name = "btnThemeMute"
+        Me.btnThemeMute.Size = New System.Drawing.Size(75, 23)
+        Me.btnThemeMute.TabIndex = 15
+        Me.btnThemeMute.Text = "Mute"
+        Me.btnThemeMute.UseVisualStyleBackColor = True
+        '
+        'btnThemeStop
+        '
+        Me.btnThemeStop.Location = New System.Drawing.Point(96, 462)
+        Me.btnThemeStop.Name = "btnThemeStop"
+        Me.btnThemeStop.Size = New System.Drawing.Size(75, 23)
+        Me.btnThemeStop.TabIndex = 14
+        Me.btnThemeStop.Text = "Stop"
+        Me.btnThemeStop.UseVisualStyleBackColor = True
+        '
+        'btnThemePlay
+        '
+        Me.btnThemePlay.Location = New System.Drawing.Point(15, 462)
+        Me.btnThemePlay.Name = "btnThemePlay"
+        Me.btnThemePlay.Size = New System.Drawing.Size(75, 23)
+        Me.btnThemePlay.TabIndex = 13
+        Me.btnThemePlay.Text = "Play"
+        Me.btnThemePlay.UseVisualStyleBackColor = True
+        '
+        'axVLCTheme
+        '
+        Me.axVLCTheme.Enabled = True
+        Me.axVLCTheme.Location = New System.Drawing.Point(6, 373)
+        Me.axVLCTheme.Name = "axVLCTheme"
+        Me.axVLCTheme.OcxState = CType(resources.GetObject("axVLCTheme.OcxState"), System.Windows.Forms.AxHost.State)
+        Me.axVLCTheme.Size = New System.Drawing.Size(800, 83)
+        Me.axVLCTheme.TabIndex = 10
         '
         'btnSetMovieThemeDL
         '
@@ -2136,7 +2314,7 @@ Partial Class dlgEditMovie
         Me.tpMetaData.Location = New System.Drawing.Point(4, 22)
         Me.tpMetaData.Name = "tpMetaData"
         Me.tpMetaData.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpMetaData.Size = New System.Drawing.Size(912, 491)
+        Me.tpMetaData.Size = New System.Drawing.Size(996, 491)
         Me.tpMetaData.TabIndex = 5
         Me.tpMetaData.Text = "Meta Data"
         Me.tpMetaData.UseVisualStyleBackColor = True
@@ -2156,7 +2334,7 @@ Partial Class dlgEditMovie
         Me.tpMediaStub.Controls.Add(Me.txtMediaStubTitle)
         Me.tpMediaStub.Location = New System.Drawing.Point(4, 22)
         Me.tpMediaStub.Name = "tpMediaStub"
-        Me.tpMediaStub.Size = New System.Drawing.Size(912, 491)
+        Me.tpMediaStub.Size = New System.Drawing.Size(996, 491)
         Me.tpMediaStub.TabIndex = 7
         Me.tpMediaStub.Text = "Media Stub"
         Me.tpMediaStub.UseVisualStyleBackColor = True
@@ -2211,7 +2389,7 @@ Partial Class dlgEditMovie
         Me.btnRescrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRescrape.Image = CType(resources.GetObject("btnRescrape.Image"), System.Drawing.Image)
         Me.btnRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRescrape.Location = New System.Drawing.Point(310, 592)
+        Me.btnRescrape.Location = New System.Drawing.Point(399, 592)
         Me.btnRescrape.Name = "btnRescrape"
         Me.btnRescrape.Size = New System.Drawing.Size(98, 23)
         Me.btnRescrape.TabIndex = 7
@@ -2224,7 +2402,7 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnChangeMovie.Image = CType(resources.GetObject("btnChangeMovie.Image"), System.Drawing.Image)
         Me.btnChangeMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnChangeMovie.Location = New System.Drawing.Point(429, 592)
+        Me.btnChangeMovie.Location = New System.Drawing.Point(518, 592)
         Me.btnChangeMovie.Name = "btnChangeMovie"
         Me.btnChangeMovie.Size = New System.Drawing.Size(107, 23)
         Me.btnChangeMovie.TabIndex = 8
@@ -2247,49 +2425,13 @@ Partial Class dlgEditMovie
         Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
         '
-        'axVLCTheme
-        '
-        Me.axVLCTheme.Enabled = True
-        Me.axVLCTheme.Location = New System.Drawing.Point(6, 373)
-        Me.axVLCTheme.Name = "axVLCTheme"
-        Me.axVLCTheme.OcxState = CType(resources.GetObject("axVLCTheme.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCTheme.Size = New System.Drawing.Size(800, 83)
-        Me.axVLCTheme.TabIndex = 10
-        '
-        'btnThemeMute
-        '
-        Me.btnThemeMute.Location = New System.Drawing.Point(302, 462)
-        Me.btnThemeMute.Name = "btnThemeMute"
-        Me.btnThemeMute.Size = New System.Drawing.Size(75, 23)
-        Me.btnThemeMute.TabIndex = 15
-        Me.btnThemeMute.Text = "Mute"
-        Me.btnThemeMute.UseVisualStyleBackColor = True
-        '
-        'btnThemeStop
-        '
-        Me.btnThemeStop.Location = New System.Drawing.Point(96, 462)
-        Me.btnThemeStop.Name = "btnThemeStop"
-        Me.btnThemeStop.Size = New System.Drawing.Size(75, 23)
-        Me.btnThemeStop.TabIndex = 14
-        Me.btnThemeStop.Text = "Stop"
-        Me.btnThemeStop.UseVisualStyleBackColor = True
-        '
-        'btnThemePlay
-        '
-        Me.btnThemePlay.Location = New System.Drawing.Point(15, 462)
-        Me.btnThemePlay.Name = "btnThemePlay"
-        Me.btnThemePlay.Size = New System.Drawing.Size(75, 23)
-        Me.btnThemePlay.TabIndex = 13
-        Me.btnThemePlay.Text = "Play"
-        Me.btnThemePlay.UseVisualStyleBackColor = True
-        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(924, 621)
+        Me.ClientSize = New System.Drawing.Size(1008, 621)
         Me.Controls.Add(Me.chkWatched)
         Me.Controls.Add(Me.btnChangeMovie)
         Me.Controls.Add(Me.btnRescrape)
@@ -2345,13 +2487,15 @@ Partial Class dlgEditMovie
         Me.pnlEThumbsSetAsFanart.ResumeLayout(False)
         CType(Me.pbMovieEThumbs, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFrameExtraction.ResumeLayout(False)
+        Me.tpSubtitles.ResumeLayout(False)
+        Me.tpSubtitles.PerformLayout()
         Me.tpTrailer.ResumeLayout(False)
         CType(Me.axVLCTrailer, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpTheme.ResumeLayout(False)
+        CType(Me.axVLCTheme, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpMetaData.ResumeLayout(False)
         Me.tpMediaStub.ResumeLayout(False)
         Me.tpMediaStub.PerformLayout()
-        CType(Me.axVLCTheme, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2537,5 +2681,18 @@ Partial Class dlgEditMovie
     Friend WithEvents btnThemeStop As System.Windows.Forms.Button
     Friend WithEvents btnThemePlay As System.Windows.Forms.Button
     Friend WithEvents axVLCTheme As AxAXVLC.AxVLCPlugin2
+    Friend WithEvents tpSubtitles As System.Windows.Forms.TabPage
+    Friend WithEvents btnRemoveMovieSubtitle As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieSubtitleDL As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieSubtitleScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieSubtitleLocal As System.Windows.Forms.Button
+    Friend WithEvents lvSubtitles As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents lblSubtitlesPreview As System.Windows.Forms.Label
+    Friend WithEvents txtSubtitlesPreview As System.Windows.Forms.TextBox
 
 End Class

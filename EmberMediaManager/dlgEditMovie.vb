@@ -398,6 +398,10 @@ Public Class dlgEditMovie
         Me.MoviePoster.Dispose()
     End Sub
 
+    Private Sub btnRemoveMovieSubtitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieSubtitle.Click
+        Me.DeleteSubtitle()
+    End Sub
+
     Private Sub btnRemoveMovieTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieTheme.Click
         Me.ThemeStop()
         Me.axVLCTheme.playlist.items.clear()
@@ -2317,6 +2321,8 @@ Public Class dlgEditMovie
                         .txtMediaStubTitle.Text = DiscStub.Title
                         .txtMediaStubMessage.Text = DiscStub.Message
                     End If
+
+                    Me.LoadSubtitles()
                 End If
             End With
         Catch ex As Exception
@@ -3243,6 +3249,19 @@ Public Class dlgEditMovie
                 If Not Master.eSettings.MovieNoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
                 If Not Master.eSettings.MovieNoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
 
+                Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
+                For Each Subtitle In Master.currMovie.Subtitles
+                    If Subtitle.toRemove Then
+                        removeSubtitles.Add(Subtitle)
+                    End If
+                Next
+                For Each Subtitle In removeSubtitles
+                    If File.Exists(Subtitle.SubsPath) Then
+                        File.Delete(Subtitle.SubsPath)
+                    End If
+                    Master.currMovie.Subtitles.Remove(Subtitle)
+                Next
+
                 .SaveEThumbsList()
 
                 .SaveEFanartsList()
@@ -3351,6 +3370,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub tcEditMovie_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tcEditMovie.SelectedIndexChanged
+        Me.lvSubtitles.SelectedItems.Clear()
         Me.ThemeStop()
         Me.TrailerStop()
     End Sub
@@ -3409,6 +3429,144 @@ Public Class dlgEditMovie
         If e.KeyData = (Keys.Control Or Keys.A) Then
             Me.txtPlot.SelectAll()
         End If
+    End Sub
+
+    Private Sub lvSubtitles_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvSubtitles.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.DeleteSubtitle()
+    End Sub
+
+    Private Sub lvSubtitles_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvSubtitles.DoubleClick
+        If lvSubtitles.SelectedItems.Count > 0 Then
+            If lvSubtitles.SelectedItems.Item(0).Tag.ToString <> "Header" Then
+                EditSubtitle()
+            End If
+        End If
+    End Sub
+
+    Private Sub lvSubtitles_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSubtitles.SelectedIndexChanged
+        If lvSubtitles.SelectedItems.Count > 0 Then
+            If lvSubtitles.SelectedItems.Item(0).Tag.ToString = "Header" Then
+                lvSubtitles.SelectedItems.Clear()
+                btnRemoveMovieSubtitle.Enabled = False
+                txtSubtitlesPreview.Clear()
+            Else
+                btnRemoveMovieSubtitle.Enabled = True
+                txtSubtitlesPreview.Text = ReadSubtitle(Me.lvSubtitles.SelectedItems.Item(0).SubItems(1).Text.ToString)
+            End If
+        Else
+            btnRemoveMovieSubtitle.Enabled = False
+            txtSubtitlesPreview.Clear()
+        End If
+    End Sub
+
+    Private Function ReadSubtitle(ByVal sPath As String) As String
+        Dim sText As String = String.Empty
+
+        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
+            Try
+                Dim objReader As New StreamReader(sPath)
+
+                sText = objReader.ReadToEnd
+
+                objReader.Close()
+
+                Return sText
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End If
+
+        Return String.Empty
+    End Function
+
+    Private Sub EditSubtitle()
+        Try
+            If lvSubtitles.SelectedItems.Count > 0 Then
+                Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
+                Dim tmpFileInfo As New MediaInfo.Fileinfo
+                tmpFileInfo.StreamDetails.Subtitle.AddRange(Master.currMovie.Subtitles)
+                Using dEditStream As New dlgFIStreamEditor
+                    Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
+                    If Not stream Is Nothing Then
+                        If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
+                            Master.currMovie.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
+                        End If
+                        'NeedToRefresh = True
+                        LoadSubtitles()
+                    End If
+                End Using
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub DeleteSubtitle()
+        Try
+            If lvSubtitles.SelectedItems.Count > 0 Then
+                Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
+                If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
+                    Master.currMovie.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
+                End If
+                'NeedToRefresh = True
+                LoadSubtitles()
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub LoadSubtitles()
+        Dim c As Integer
+        Dim g As New ListViewGroup
+        Dim i As New ListViewItem
+        lvSubtitles.Groups.Clear()
+        lvSubtitles.Items.Clear()
+        Try
+            If Master.currMovie.Subtitles.Count > 0 Then
+                g = New ListViewGroup
+                g.Header = Master.eLang.GetString(597, "Subtitle Stream")
+                lvSubtitles.Groups.Add(g)
+                c = 1
+                ' Fake Group Header
+                i = New ListViewItem
+                'i.UseItemStyleForSubItems = False
+                i.ForeColor = Color.DarkBlue
+                i.Tag = "Header"
+                i.Text = String.Empty
+                i.SubItems.Add(Master.eLang.GetString(60, "File Path"))
+                i.SubItems.Add(Master.eLang.GetString(610, "Language"))
+                i.SubItems.Add(Master.eLang.GetString(1288, "Type"))
+                i.SubItems.Add(Master.eLang.GetString(1287, "Forced"))
+
+                g.Items.Add(i)
+                lvSubtitles.Items.Add(i)
+                Dim s As MediaInfo.Subtitle
+                For c = 0 To Master.currMovie.Subtitles.Count - 1
+                    s = Master.currMovie.Subtitles(c)
+                    If Not s Is Nothing Then
+                        i = New ListViewItem
+                        i.Tag = Master.eLang.GetString(597, "Subtitle Stream")
+                        i.Text = c.ToString
+                        i.SubItems.Add(s.SubsPath)
+                        i.SubItems.Add(s.LongLanguage)
+                        i.SubItems.Add(s.SubsType)
+                        i.SubItems.Add(If(s.SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+
+                        If s.toRemove Then
+                            i.ForeColor = Color.Red
+                        End If
+
+                        g.Items.Add(i)
+                        lvSubtitles.Items.Add(i)
+                    End If
+                Next
+            End If
+
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
 #End Region 'Methods
