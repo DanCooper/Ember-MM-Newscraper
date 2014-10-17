@@ -43,6 +43,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
+        Me.chkOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.chkWriters = New System.Windows.Forms.CheckBox()
         Me.chkCollectionID = New System.Windows.Forms.CheckBox()
         Me.chkDirector = New System.Windows.Forms.CheckBox()
@@ -60,7 +61,6 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
-        Me.chkOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.gbGlobalOpts.SuspendLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -304,6 +304,16 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Fields - Scraper specific"
         '
+        'chkOriginalTitle
+        '
+        Me.chkOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkOriginalTitle.Location = New System.Drawing.Point(332, 70)
+        Me.chkOriginalTitle.Name = "chkOriginalTitle"
+        Me.chkOriginalTitle.Size = New System.Drawing.Size(175, 17)
+        Me.chkOriginalTitle.TabIndex = 78
+        Me.chkOriginalTitle.Text = "Original Title"
+        Me.chkOriginalTitle.UseVisualStyleBackColor = True
+        '
         'chkWriters
         '
         Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -337,7 +347,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         'chkCountry
         '
         Me.chkCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCountry.Location = New System.Drawing.Point(190, 123)
+        Me.chkCountry.Location = New System.Drawing.Point(190, 122)
         Me.chkCountry.Name = "chkCountry"
         Me.chkCountry.Size = New System.Drawing.Size(136, 17)
         Me.chkCountry.TabIndex = 18
@@ -357,7 +367,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         'chkRuntime
         '
         Me.chkRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRuntime.Location = New System.Drawing.Point(6, 89)
+        Me.chkRuntime.Location = New System.Drawing.Point(6, 87)
         Me.chkRuntime.Name = "chkRuntime"
         Me.chkRuntime.Size = New System.Drawing.Size(178, 17)
         Me.chkRuntime.TabIndex = 5
@@ -377,7 +387,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         'chkGenre
         '
         Me.chkGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGenre.Location = New System.Drawing.Point(190, 72)
+        Me.chkGenre.Location = New System.Drawing.Point(190, 70)
         Me.chkGenre.Name = "chkGenre"
         Me.chkGenre.Size = New System.Drawing.Size(136, 17)
         Me.chkGenre.TabIndex = 15
@@ -397,7 +407,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         'chkCast
         '
         Me.chkCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCast.Location = New System.Drawing.Point(190, 89)
+        Me.chkCast.Location = New System.Drawing.Point(190, 87)
         Me.chkCast.Name = "chkCast"
         Me.chkCast.Size = New System.Drawing.Size(136, 17)
         Me.chkCast.TabIndex = 12
@@ -407,7 +417,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         'chkVotes
         '
         Me.chkVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkVotes.Location = New System.Drawing.Point(6, 123)
+        Me.chkVotes.Location = New System.Drawing.Point(6, 122)
         Me.chkVotes.Name = "chkVotes"
         Me.chkVotes.Size = New System.Drawing.Size(178, 17)
         Me.chkVotes.TabIndex = 7
@@ -417,7 +427,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         'chkTrailer
         '
         Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailer.Location = New System.Drawing.Point(190, 106)
+        Me.chkTrailer.Location = New System.Drawing.Point(190, 105)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(136, 17)
         Me.chkTrailer.TabIndex = 17
@@ -427,7 +437,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         'chkRating
         '
         Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRating.Location = New System.Drawing.Point(6, 106)
+        Me.chkRating.Location = New System.Drawing.Point(6, 105)
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(178, 17)
         Me.chkRating.TabIndex = 6
@@ -437,7 +447,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         'chkRelease
         '
         Me.chkRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRelease.Location = New System.Drawing.Point(6, 72)
+        Me.chkRelease.Location = New System.Drawing.Point(6, 70)
         Me.chkRelease.Name = "chkRelease"
         Me.chkRelease.Size = New System.Drawing.Size(178, 17)
         Me.chkRelease.TabIndex = 4
@@ -473,16 +483,6 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
-        '
-        'chkOriginalTitle
-        '
-        Me.chkOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOriginalTitle.Location = New System.Drawing.Point(332, 72)
-        Me.chkOriginalTitle.Name = "chkOriginalTitle"
-        Me.chkOriginalTitle.Size = New System.Drawing.Size(175, 17)
-        Me.chkOriginalTitle.TabIndex = 78
-        Me.chkOriginalTitle.Text = "Original Title"
-        Me.chkOriginalTitle.UseVisualStyleBackColor = True
         '
         'frmTMDBInfoSettingsHolder_Movie
         '
