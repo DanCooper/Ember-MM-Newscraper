@@ -3222,8 +3222,6 @@ doCancel:
     End Sub
 
     Private Sub bwRefreshMovieSets_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshMovieSets.DoWork
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-
         Dim iCount As Integer = 0
         Dim MovieSetIDs As New Dictionary(Of Long, String)
 
