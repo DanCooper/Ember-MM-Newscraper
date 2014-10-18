@@ -1,3 +1,9 @@
+Changelog 1.4.0.4 Beta (2014-10-18)
+
+[IMDB]
+fixed: fixed data scraper while change/search movie
+
+
 Changelog 1.4.0.3 Beta (2014-10-18)
 
 [Main]
