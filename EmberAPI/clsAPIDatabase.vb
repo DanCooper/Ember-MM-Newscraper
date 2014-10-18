@@ -1834,13 +1834,12 @@ Public Class Database
                         SQLcommandMoviesVStreams.CommandText = String.Concat("DELETE FROM MoviesVStreams WHERE MovieID = ", _movieDB.ID, ";")
                         SQLcommandMoviesVStreams.ExecuteNonQuery()
 
-                        'cocotus, 2013/02 Added support for new MediaInfo-fields
                         'Expanded SQL Statement to INSERT/replace new fields
                         SQLcommandMoviesVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesVStreams (", _
                            "MovieID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration, Video_ScanType, Video_AspectDisplayRatio, ", _
                            "Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiViewCount, Video_EncodedSettings, Video_MultiViewLayout, ", _
                            "Video_StereoMode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
-                        'cocotus end
+
                         Dim parVideo_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parVideo_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_StreamID", DbType.UInt64, 0, "StreamID")
                         Dim parVideo_Width As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
@@ -1881,12 +1880,10 @@ Public Class Database
                         SQLcommandMoviesAStreams.CommandText = String.Concat("DELETE FROM MoviesAStreams WHERE MovieID = ", _movieDB.ID, ";")
                         SQLcommandMoviesAStreams.ExecuteNonQuery()
 
-                        'cocotus, 2013/02 Added support for new MediaInfo-fields
                         'Expanded SQL Statement to INSERT/replace new fields
                         SQLcommandMoviesAStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesAStreams (", _
                           "MovieID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel, Audio_Bitrate", _
                           ") VALUES (?,?,?,?,?,?,?);")
-                        'cocotus end
 
                         Dim parAudio_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parAudio_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_StreamID", DbType.UInt64, 0, "StreamID")
@@ -2128,7 +2125,7 @@ Public Class Database
                                     End Using
 
                                     Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, TMDBColID FROM Sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
+                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName FROM Sets WHERE SetName LIKE """, s.Set, """;")
                                         Using rdrSets As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                             If rdrSets.Read Then
                                                 s.ID = Convert.ToInt64(rdrSets(0))
