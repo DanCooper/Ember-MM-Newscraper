@@ -1,3 +1,15 @@
+Changelog 1.4.0.3 Beta (2014-10-18)
+
+[Main]
+fixed: bug with MovieSet (reload all movies to fix existing and wrong sets)
+fixed: error while "Reload all MovieSets"
+fixed: missing movie list sorting after first start
+fixed: movie/movieset list does not refresh title for search bar
+fixed: FileInfo and StreamEditor
+added: external Subtitles preview in Edit Movie dialog
+added: filter "Only one Movie" to MovieSet filter
+
+
 Changelog 1.4.0.2 Beta (2014-10-17)
 
 [Main]
