@@ -224,4 +224,7 @@ Public Class frmFanartTVMediaSettingsHolder_MovieSet
 
 #End Region 'Methods
 
+    Private Sub gbImages_Enter(sender As Object, e As EventArgs) Handles gbImages.Enter
+
+    End Sub
 End Class
