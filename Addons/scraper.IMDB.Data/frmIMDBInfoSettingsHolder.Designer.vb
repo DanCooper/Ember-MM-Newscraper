@@ -309,7 +309,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperFieldsCredits.Controls.Add(Me.chkCrew)
         Me.gbScraperFieldsCredits.Location = New System.Drawing.Point(278, 53)
         Me.gbScraperFieldsCredits.Name = "gbScraperFieldsCredits"
-        Me.gbScraperFieldsCredits.Size = New System.Drawing.Size(145, 91)
+        Me.gbScraperFieldsCredits.Size = New System.Drawing.Size(169, 91)
         Me.gbScraperFieldsCredits.TabIndex = 79
         Me.gbScraperFieldsCredits.TabStop = False
         Me.gbScraperFieldsCredits.Text = "Credits"

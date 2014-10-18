@@ -241,11 +241,10 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         '
         'lblAPIHint
         '
-        Me.lblAPIHint.AutoSize = True
         Me.lblAPIHint.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblAPIHint.Location = New System.Drawing.Point(6, 62)
         Me.lblAPIHint.Name = "lblAPIHint"
-        Me.lblAPIHint.Size = New System.Drawing.Size(579, 13)
+        Me.lblAPIHint.Size = New System.Drawing.Size(579, 48)
         Me.lblAPIHint.TabIndex = 24
         Me.lblAPIHint.Text = "Using a Personal API Key reduces the time you have to wait for new images to show" & _
     " up from 7 days to 48 hours."
@@ -255,7 +254,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.chkGetBlankImages.AutoSize = True
         Me.chkGetBlankImages.Enabled = False
         Me.chkGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetBlankImages.Location = New System.Drawing.Point(212, 146)
+        Me.chkGetBlankImages.Location = New System.Drawing.Point(396, 140)
         Me.chkGetBlankImages.Name = "chkGetBlankImages"
         Me.chkGetBlankImages.Size = New System.Drawing.Size(140, 17)
         Me.chkGetBlankImages.TabIndex = 19
@@ -266,7 +265,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         '
         Me.chkPrefLanguageOnly.AutoSize = True
         Me.chkPrefLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPrefLanguageOnly.Location = New System.Drawing.Point(194, 100)
+        Me.chkPrefLanguageOnly.Location = New System.Drawing.Point(197, 117)
         Me.chkPrefLanguageOnly.Name = "chkPrefLanguageOnly"
         Me.chkPrefLanguageOnly.Size = New System.Drawing.Size(248, 17)
         Me.chkPrefLanguageOnly.TabIndex = 18
@@ -278,7 +277,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.chkGetEnglishImages.AutoSize = True
         Me.chkGetEnglishImages.Enabled = False
         Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetEnglishImages.Location = New System.Drawing.Point(212, 123)
+        Me.chkGetEnglishImages.Location = New System.Drawing.Point(215, 140)
         Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
         Me.chkGetEnglishImages.Size = New System.Drawing.Size(149, 17)
         Me.chkGetEnglishImages.TabIndex = 17
@@ -291,7 +290,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.cbPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.cbPrefLanguage.FormattingEnabled = True
         Me.cbPrefLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
-        Me.cbPrefLanguage.Location = New System.Drawing.Point(123, 96)
+        Me.cbPrefLanguage.Location = New System.Drawing.Point(126, 113)
         Me.cbPrefLanguage.Name = "cbPrefLanguage"
         Me.cbPrefLanguage.Size = New System.Drawing.Size(45, 21)
         Me.cbPrefLanguage.TabIndex = 8
@@ -300,7 +299,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         '
         Me.lblPrefLanguage.AutoSize = True
         Me.lblPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblPrefLanguage.Location = New System.Drawing.Point(6, 99)
+        Me.lblPrefLanguage.Location = New System.Drawing.Point(9, 116)
         Me.lblPrefLanguage.Name = "lblPrefLanguage"
         Me.lblPrefLanguage.Size = New System.Drawing.Size(111, 13)
         Me.lblPrefLanguage.TabIndex = 7
