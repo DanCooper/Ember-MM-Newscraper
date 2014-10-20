@@ -118,17 +118,39 @@ Public Class dlgBulkRenamer
                                             If Not IsNothing(_curMovie.Movie.Sets) AndAlso _curMovie.Movie.Sets.Count > 0 Then
                                                 MovieFile.Collection = _curMovie.Movie.Sets.Item(0).Set
                                             End If
-                                            MovieFile.Director = _curMovie.Movie.Director
-                                            MovieFile.FileSource = _curMovie.FileSource
-                                            MovieFile.Genre = _curMovie.Movie.Genre
-                                            MovieFile.IMDBID = If(Not String.IsNullOrEmpty(_curMovie.Movie.IMDBID), String.Concat("tt", _curMovie.Movie.IMDBID), String.Empty)
-                                            MovieFile.IsLocked = _curMovie.IsLock
-                                            MovieFile.IsSingle = _curMovie.IsSingle
-                                            MovieFile.ListTitle = _curMovie.ListTitle
-                                            MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_curMovie.Movie)
-                                            MovieFile.OriginalTitle = _curMovie.Movie.OriginalTitle
-                                            MovieFile.Rating = _curMovie.Movie.Rating
-                                            MovieFile.Year = _curMovie.Movie.Year
+                                            If Not IsNothing(_curMovie.Movie.Director) Then
+                                                MovieFile.Director = _curMovie.Movie.Director
+                                            End If
+                                            If Not IsNothing(_curMovie.FileSource) Then
+                                                MovieFile.FileSource = _curMovie.FileSource
+                                            End If
+                                            If Not IsNothing(_curMovie.Movie.Genre) Then
+                                                MovieFile.Genre = _curMovie.Movie.Genre
+                                            End If
+                                            If Not IsNothing(_curMovie.Movie.IMDBID) Then
+                                                MovieFile.IMDBID = If(Not String.IsNullOrEmpty(_curMovie.Movie.IMDBID), String.Concat("tt", _curMovie.Movie.IMDBID), String.Empty)
+                                            End If
+                                            If Not IsNothing(_curMovie.IsLock) Then
+                                                MovieFile.IsLocked = _curMovie.IsLock
+                                            End If
+                                            If Not IsNothing(_curMovie.IsSingle) Then
+                                                MovieFile.IsSingle = _curMovie.IsSingle
+                                            End If
+                                            If Not IsNothing(_curMovie.ListTitle) Then
+                                                MovieFile.ListTitle = _curMovie.ListTitle
+                                            End If
+                                            If Not IsNothing(_curMovie.Movie.MPAA) Then
+                                                MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_curMovie.Movie)
+                                            End If
+                                            If Not IsNothing(_curMovie.Movie.OriginalTitle) Then
+                                                MovieFile.OriginalTitle = _curMovie.Movie.OriginalTitle
+                                            End If
+                                            If Not IsNothing(_curMovie.Movie.Rating) Then
+                                                MovieFile.Rating = _curMovie.Movie.Rating
+                                            End If
+                                            If Not IsNothing(_curMovie.Movie.Year) Then
+                                                MovieFile.Year = _curMovie.Movie.Year
+                                            End If
 
                                             If Not IsNothing(_curMovie.Movie.FileInfo) Then
                                                 Try
@@ -164,7 +186,7 @@ Public Class dlgBulkRenamer
                                                     End If
 
                                                 Catch ex As Exception
-                                                    logger.Error(New StackFrame().GetMethod().Name,ex)
+                                                    logger.Error(New StackFrame().GetMethod().Name, ex)
                                                 End Try
                                             End If
 
@@ -220,7 +242,7 @@ Public Class dlgBulkRenamer
                                     End If
                                 End If
                             Catch ex As Exception
-                                logger.Error(New StackFrame().GetMethod().Name,ex)
+                                logger.Error(New StackFrame().GetMethod().Name, ex)
                             End Try
                             iProg += 1
 
