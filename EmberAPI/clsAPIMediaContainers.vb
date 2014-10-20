@@ -225,6 +225,13 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property CreditsSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._credits)
+            End Get
+        End Property
+
         <XmlElement("playcount")> _
         Public Property Playcount() As String
             Get
@@ -236,9 +243,9 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property CreditsSpecified() As Boolean
+        Public ReadOnly Property PlaycountSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._credits)
+                Return Not String.IsNullOrEmpty(Me._playcount)
             End Get
         End Property
 
