@@ -7316,6 +7316,7 @@ doCancel:
 
                             Me.cmnuEpisodeMark.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                             Me.cmnuEpisodeLock.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                            Me.cmnuEpisodeWatched.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(24, dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
                         End If
 
                     End If
