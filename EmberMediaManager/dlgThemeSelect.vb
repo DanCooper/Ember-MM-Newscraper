@@ -125,11 +125,16 @@ Public Class dlgThemeSelect
         Me.vlcPlayer.playlist.play()
     End Sub
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
-        Dim selID As Integer = CInt(Me.lvThemes.SelectedItems(0).SubItems(0).Text) - 1
-        Me.tTheme = _UrlList.Item(selID)
-        Me.tTheme.FromWeb(tTheme.URL, tTheme.WebURL)
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        If Me.lvThemes.SelectedItems.Count = 1 Then
+            Dim selID As Integer = CInt(Me.lvThemes.SelectedItems(0).SubItems(0).Text) - 1
+            Me.tTheme = _UrlList.Item(selID)
+            Me.tTheme.FromWeb(tTheme.URL, tTheme.WebURL)
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
+        Else
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.Close()
+        End If
     End Sub
 
     Private Sub SetUp()

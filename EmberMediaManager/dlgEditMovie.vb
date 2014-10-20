@@ -1038,28 +1038,32 @@ Public Class dlgEditMovie
         'Dim dlgTheS As dlgThemeSelect
         'Dim tList As New List(Of Themes)
 
-        'Try
-        '    Me.ThemeStop()
-        '    dlgTheS = New dlgThemeSelect()
-        '    If dlgTheS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
-        '        tResults = dlgTheS.Results
-        '        MovieTheme = tResults.WebTheme
-        '        ThemeAddToPlayer(MovieTheme)
-        '    End If
-        'Catch ex As Exception
-        '    logger.Error(New StackFrame().GetMethod().Name, ex)
-        'End Try
-        Dim aUrlList As New List(Of Themes)
-        Dim tURL As String = String.Empty
-        If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
-            Using dThemeSelect As New dlgThemeSelect()
-                MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
-            End Using
-        End If
+        Try
+            Me.ThemeStop()
 
-        If Not String.IsNullOrEmpty(MovieTheme.URL) Then
-            ThemeAddToPlayer(MovieTheme)
-        End If
+            '    dlgTheS = New dlgThemeSelect()
+            '    If dlgTheS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
+            '        tResults = dlgTheS.Results
+            '        MovieTheme = tResults.WebTheme
+            '        ThemeAddToPlayer(MovieTheme)
+            '    End If
+
+            Dim aUrlList As New List(Of Themes)
+            Dim tURL As String = String.Empty
+            If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
+                Using dThemeSelect As New dlgThemeSelect()
+                    If Not IsNothing(dThemeSelect.ShowDialog(Master.currMovie, aUrlList)) Then
+                        MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
+                    End If
+                End Using
+            End If
+
+            If Not String.IsNullOrEmpty(MovieTheme.URL) Then
+                ThemeAddToPlayer(MovieTheme)
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     Private Sub btnSetMovieThemeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieThemeLocal.Click
