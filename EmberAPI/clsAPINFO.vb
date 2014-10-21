@@ -1154,6 +1154,16 @@ Public Class NFO
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
 
+                'YAMJ support
+                If Master.eSettings.TVUseYAMJ Then
+                    If movieToSave.Movie.TMDBIDSpecified Then
+                        movieToSave.Movie.TMDBID = Nothing
+                    End If
+                    If movieToSave.Movie.IDMovieDBSpecified Then
+                        movieToSave.Movie.IDMovieDB = Nothing
+                    End If
+                End If
+
                 For Each a In FileUtils.GetFilenameList.Movie(movieToSave.Filename, movieToSave.IsSingle, Enums.ModType_Movie.NFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNfo(a, False)

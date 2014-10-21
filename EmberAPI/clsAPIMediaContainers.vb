@@ -579,6 +579,13 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
+        Public ReadOnly Property IDMovieDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me.MovieID.IDMovieDB)
+            End Get
+        End Property
+
+        <XmlIgnore()> _
         Public Property TMDBID() As String
             Get
                 Return Me.MovieID.IDTMDB
@@ -586,6 +593,13 @@ Namespace MediaContainers
             Set(ByVal value As String)
                 Me.MovieID.IDTMDB = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TMDBIDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me.MovieID.IDTMDB)
+            End Get
         End Property
 
         <XmlIgnore()> _
