@@ -346,15 +346,13 @@ Namespace TMDB
                 If GetPoster Then
                     ' I will add original always. to be updated if size, TMDBConf.images.poster_sizes(0) & 
                     Dim Images As WatTmdb.V3.TmdbMovieImages
-                    Images = _TMDBApi.GetMovieImages(Movie.id, _MySettings.PrefLanguage)
+                    Images = _TMDBApi.GetMovieImages(Movie.id)
                     If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
-                        If (Images.posters.Count = 0) AndAlso _MySettings.FallBackEng Then
+                        If Images.posters.Count = 0 Then
                             Images = _TMDBApiE.GetMovieImages(Movie.id)
                         End If
                     Else
-                        If _MySettings.FallBackEng Then
-                            Images = _TMDBApiE.GetMovieImages(Movie.id)
-                        End If
+                        Images = _TMDBApiE.GetMovieImages(Movie.id)
                     End If
                     If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
                         If Images.posters.Count > 0 Then
