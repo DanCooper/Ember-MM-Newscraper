@@ -1,3 +1,21 @@
+Changelog 1.4.0.5 Beta (2014-10-21)
+
+[Main]
+fixed: clean <id> node in NFOs for YAMJ
+fixed: DB error with episodes embedded subtitles
+fixed: crash on ThemeSelect
+fixed: missing "PlaycountSpecified" and "TMDBSpecified" (if empty, the nodes will no longer writed to NFO)
+fixed: missing "Not Watched" text in episode context menu
+changed: disabled "Watched" for tv show and season context menu (does not work atm)
+updated: MediaInfo.dll to latest version 0.7.70
+
+[Renamer]
+fixed: error if field isNothing 
+
+[TMDB]
+fixed: SearchResult does not always show a poster
+
+
 Changelog 1.4.0.4 Beta (2014-10-18)
 
 [IMDB]
