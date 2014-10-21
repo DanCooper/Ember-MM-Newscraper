@@ -1227,7 +1227,7 @@ Namespace MediaContainers
         Class _MovieID
             Private _imdbid As String
             Private _moviedb As String
-            Private _TMDBID As String
+            Private _tmdbid As String
 
             Sub New()
                 Me.Clear()
@@ -1236,7 +1236,7 @@ Namespace MediaContainers
             Public Sub Clear()
                 _imdbid = String.Empty
                 _moviedb = String.Empty
-                _TMDBID = String.Empty
+                _tmdbid = String.Empty
             End Sub
 
             <XmlText()> _
@@ -1266,22 +1266,30 @@ Namespace MediaContainers
                 End Set
             End Property
 
-            <XmlAttribute("TMDB")> _
-            Public Property IDTMDB() As String
-                Get
-                    Return _TMDBID
-                End Get
-                Set(ByVal value As String)
-                    Me._TMDBID = value
-                End Set
-            End Property
-
             <XmlIgnore()> _
             Public ReadOnly Property IDMovieDBSpecified() As Boolean
                 Get
                     Return Not String.IsNullOrEmpty(Me._moviedb)
                 End Get
             End Property
+
+            <XmlAttribute("TMDB")> _
+            Public Property IDTMDB() As String
+                Get
+                    Return _tmdbid
+                End Get
+                Set(ByVal value As String)
+                    Me._tmdbid = value
+                End Set
+            End Property
+
+            <XmlIgnore()> _
+            Public ReadOnly Property IDTMDBSpecified() As Boolean
+                Get
+                    Return Not String.IsNullOrEmpty(Me._tmdbid)
+                End Get
+            End Property
+
         End Class
 
 #End Region 'Properties
