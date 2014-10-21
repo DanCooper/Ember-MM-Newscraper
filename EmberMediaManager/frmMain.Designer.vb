@@ -2503,6 +2503,7 @@ Partial Class frmMain
         Me.cmnuShowWatched.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.W),System.Windows.Forms.Keys)
         Me.cmnuShowWatched.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowWatched.Text = "Watched"
+        Me.cmnuShowWatched.Visible = False
         '
         'ToolStripSeparator8
         '
@@ -2511,9 +2512,9 @@ Partial Class frmMain
         '
         'cmnuShowEdit
         '
-        Me.cmnuShowEdit.Image = CType(resources.GetObject("cmnuShowEdit.Image"),System.Drawing.Image)
+        Me.cmnuShowEdit.Image = CType(resources.GetObject("cmnuShowEdit.Image"), System.Drawing.Image)
         Me.cmnuShowEdit.Name = "cmnuShowEdit"
-        Me.cmnuShowEdit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E),System.Windows.Forms.Keys)
+        Me.cmnuShowEdit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
         Me.cmnuShowEdit.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowEdit.Text = "Edit Show"
         '
@@ -2524,16 +2525,16 @@ Partial Class frmMain
         '
         'cmnuShowRescrape
         '
-        Me.cmnuShowRescrape.Image = CType(resources.GetObject("cmnuShowRescrape.Image"),System.Drawing.Image)
+        Me.cmnuShowRescrape.Image = CType(resources.GetObject("cmnuShowRescrape.Image"), System.Drawing.Image)
         Me.cmnuShowRescrape.Name = "cmnuShowRescrape"
-        Me.cmnuShowRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I),System.Windows.Forms.Keys)
+        Me.cmnuShowRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
         Me.cmnuShowRescrape.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowRescrape.Text = "(Re)Scrape Show"
         '
         'cmnuShowRefresh
         '
         Me.cmnuShowRefresh.Name = "cmnuShowRefresh"
-        Me.cmnuShowRefresh.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R),System.Windows.Forms.Keys)
+        Me.cmnuShowRefresh.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
         Me.cmnuShowRefresh.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowRefresh.Text = "Refresh Data"
         '
@@ -2550,7 +2551,7 @@ Partial Class frmMain
         Me.cmnuShowLanguageLanguages.FlatStyle = System.Windows.Forms.FlatStyle.Standard
         Me.cmnuShowLanguageLanguages.Name = "cmnuShowLanguageLanguages"
         Me.cmnuShowLanguageLanguages.Size = New System.Drawing.Size(135, 23)
-        Me.cmnuShowLanguageLanguages.Sorted = true
+        Me.cmnuShowLanguageLanguages.Sorted = True
         '
         'cmnuShowLanguageSet
         '
@@ -2560,9 +2561,9 @@ Partial Class frmMain
         '
         'cmnuShowChange
         '
-        Me.cmnuShowChange.Image = CType(resources.GetObject("cmnuShowChange.Image"),System.Drawing.Image)
+        Me.cmnuShowChange.Image = CType(resources.GetObject("cmnuShowChange.Image"), System.Drawing.Image)
         Me.cmnuShowChange.Name = "cmnuShowChange"
-        Me.cmnuShowChange.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C),System.Windows.Forms.Keys)
+        Me.cmnuShowChange.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
         Me.cmnuShowChange.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowChange.Text = "Change Show"
         '
@@ -2573,9 +2574,9 @@ Partial Class frmMain
         '
         'cmnuShowOpenFolder
         '
-        Me.cmnuShowOpenFolder.Image = CType(resources.GetObject("cmnuShowOpenFolder.Image"),System.Drawing.Image)
+        Me.cmnuShowOpenFolder.Image = CType(resources.GetObject("cmnuShowOpenFolder.Image"), System.Drawing.Image)
         Me.cmnuShowOpenFolder.Name = "cmnuShowOpenFolder"
-        Me.cmnuShowOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O),System.Windows.Forms.Keys)
+        Me.cmnuShowOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
         Me.cmnuShowOpenFolder.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowOpenFolder.Text = "Open Containing Folder"
         '
@@ -2587,14 +2588,14 @@ Partial Class frmMain
         'cmnuShowRemove
         '
         Me.cmnuShowRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowRemoveFromDB, Me.cmnuShowRemoveFromDisk})
-        Me.cmnuShowRemove.Image = CType(resources.GetObject("cmnuShowRemove.Image"),System.Drawing.Image)
+        Me.cmnuShowRemove.Image = CType(resources.GetObject("cmnuShowRemove.Image"), System.Drawing.Image)
         Me.cmnuShowRemove.Name = "cmnuShowRemove"
         Me.cmnuShowRemove.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowRemove.Text = "Remove"
         '
         'cmnuShowRemoveFromDB
         '
-        Me.cmnuShowRemoveFromDB.Image = CType(resources.GetObject("cmnuShowRemoveFromDB.Image"),System.Drawing.Image)
+        Me.cmnuShowRemoveFromDB.Image = CType(resources.GetObject("cmnuShowRemoveFromDB.Image"), System.Drawing.Image)
         Me.cmnuShowRemoveFromDB.Name = "cmnuShowRemoveFromDB"
         Me.cmnuShowRemoveFromDB.ShortcutKeys = System.Windows.Forms.Keys.Delete
         Me.cmnuShowRemoveFromDB.Size = New System.Drawing.Size(225, 22)
@@ -2602,9 +2603,9 @@ Partial Class frmMain
         '
         'cmnuShowRemoveFromDisk
         '
-        Me.cmnuShowRemoveFromDisk.Image = CType(resources.GetObject("cmnuShowRemoveFromDisk.Image"),System.Drawing.Image)
+        Me.cmnuShowRemoveFromDisk.Image = CType(resources.GetObject("cmnuShowRemoveFromDisk.Image"), System.Drawing.Image)
         Me.cmnuShowRemoveFromDisk.Name = "cmnuShowRemoveFromDisk"
-        Me.cmnuShowRemoveFromDisk.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete),System.Windows.Forms.Keys)
+        Me.cmnuShowRemoveFromDisk.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
         Me.cmnuShowRemoveFromDisk.Size = New System.Drawing.Size(225, 22)
         Me.cmnuShowRemoveFromDisk.Text = "Delete TV Show"
         '
@@ -2626,14 +2627,14 @@ Partial Class frmMain
         Me.scTVSeasonsEpisodes.Size = New System.Drawing.Size(567, 25)
         Me.scTVSeasonsEpisodes.SplitterDistance = 25
         Me.scTVSeasonsEpisodes.TabIndex = 0
-        Me.scTVSeasonsEpisodes.TabStop = false
+        Me.scTVSeasonsEpisodes.TabStop = False
         '
         'dgvTVSeasons
         '
-        Me.dgvTVSeasons.AllowUserToAddRows = false
-        Me.dgvTVSeasons.AllowUserToDeleteRows = false
-        Me.dgvTVSeasons.AllowUserToResizeRows = false
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvTVSeasons.AllowUserToAddRows = False
+        Me.dgvTVSeasons.AllowUserToDeleteRows = False
+        Me.dgvTVSeasons.AllowUserToResizeRows = False
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
         Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -2642,28 +2643,28 @@ Partial Class frmMain
         Me.dgvTVSeasons.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvTVSeasons.ContextMenuStrip = Me.cmnuSeason
         Me.dgvTVSeasons.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvTVSeasons.GridColor = System.Drawing.Color.FromArgb(CType(CType(240,Byte),Integer), CType(CType(240,Byte),Integer), CType(CType(240,Byte),Integer))
+        Me.dgvTVSeasons.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.dgvTVSeasons.Location = New System.Drawing.Point(0, 0)
         Me.dgvTVSeasons.Name = "dgvTVSeasons"
-        Me.dgvTVSeasons.ReadOnly = true
-        Me.dgvTVSeasons.RowHeadersVisible = false
+        Me.dgvTVSeasons.ReadOnly = True
+        Me.dgvTVSeasons.RowHeadersVisible = False
         Me.dgvTVSeasons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvTVSeasons.ShowCellErrors = false
-        Me.dgvTVSeasons.ShowRowErrors = false
+        Me.dgvTVSeasons.ShowCellErrors = False
+        Me.dgvTVSeasons.ShowRowErrors = False
         Me.dgvTVSeasons.Size = New System.Drawing.Size(567, 25)
-        Me.dgvTVSeasons.StandardTab = true
+        Me.dgvTVSeasons.StandardTab = True
         Me.dgvTVSeasons.TabIndex = 0
         '
         'cmnuSeason
         '
         Me.cmnuSeason.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuSeasonTitle, Me.ToolStripSeparator17, Me.cmnuSeasonReload, Me.cmnuSeasonMark, Me.cmnuSeasonLock, Me.cmnuSeasonWatched, Me.ToolStripSeparator16, Me.cmnuSeasonChangeImages, Me.ToolStripSeparator14, Me.cmnuSeasonRescrape, Me.ToolStripSeparator15, Me.cmnuSeasonOpenFolder, Me.ToolStripSeparator27, Me.cmnuSeasonRemove})
         Me.cmnuSeason.Name = "mnuSeasons"
-        Me.cmnuSeason.Size = New System.Drawing.Size(247, 232)
+        Me.cmnuSeason.Size = New System.Drawing.Size(247, 254)
         '
         'cmnuSeasonTitle
         '
-        Me.cmnuSeasonTitle.Enabled = false
-        Me.cmnuSeasonTitle.Image = CType(resources.GetObject("cmnuSeasonTitle.Image"),System.Drawing.Image)
+        Me.cmnuSeasonTitle.Enabled = False
+        Me.cmnuSeasonTitle.Image = CType(resources.GetObject("cmnuSeasonTitle.Image"), System.Drawing.Image)
         Me.cmnuSeasonTitle.Name = "cmnuSeasonTitle"
         Me.cmnuSeasonTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonTitle.Text = "Title"
@@ -2675,7 +2676,7 @@ Partial Class frmMain
         '
         'cmnuSeasonReload
         '
-        Me.cmnuSeasonReload.Image = CType(resources.GetObject("cmnuSeasonReload.Image"),System.Drawing.Image)
+        Me.cmnuSeasonReload.Image = CType(resources.GetObject("cmnuSeasonReload.Image"), System.Drawing.Image)
         Me.cmnuSeasonReload.Name = "cmnuSeasonReload"
         Me.cmnuSeasonReload.ShortcutKeys = System.Windows.Forms.Keys.F5
         Me.cmnuSeasonReload.Size = New System.Drawing.Size(246, 22)
@@ -2683,17 +2684,17 @@ Partial Class frmMain
         '
         'cmnuSeasonMark
         '
-        Me.cmnuSeasonMark.Image = CType(resources.GetObject("cmnuSeasonMark.Image"),System.Drawing.Image)
+        Me.cmnuSeasonMark.Image = CType(resources.GetObject("cmnuSeasonMark.Image"), System.Drawing.Image)
         Me.cmnuSeasonMark.Name = "cmnuSeasonMark"
-        Me.cmnuSeasonMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M),System.Windows.Forms.Keys)
+        Me.cmnuSeasonMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
         Me.cmnuSeasonMark.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonMark.Text = "Mark"
         '
         'cmnuSeasonLock
         '
-        Me.cmnuSeasonLock.Image = CType(resources.GetObject("cmnuSeasonLock.Image"),System.Drawing.Image)
+        Me.cmnuSeasonLock.Image = CType(resources.GetObject("cmnuSeasonLock.Image"), System.Drawing.Image)
         Me.cmnuSeasonLock.Name = "cmnuSeasonLock"
-        Me.cmnuSeasonLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L),System.Windows.Forms.Keys)
+        Me.cmnuSeasonLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
         Me.cmnuSeasonLock.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonLock.Text = "Lock"
         '
@@ -2701,9 +2702,10 @@ Partial Class frmMain
         '
         Me.cmnuSeasonWatched.Image = Global.Ember_Media_Manager.My.Resources.Resources.haswatched
         Me.cmnuSeasonWatched.Name = "cmnuSeasonWatched"
-        Me.cmnuSeasonWatched.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.W),System.Windows.Forms.Keys)
+        Me.cmnuSeasonWatched.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.W), System.Windows.Forms.Keys)
         Me.cmnuSeasonWatched.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonWatched.Text = "Watched"
+        Me.cmnuSeasonWatched.Visible = False
         '
         'ToolStripSeparator16
         '
