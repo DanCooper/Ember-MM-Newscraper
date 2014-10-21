@@ -361,6 +361,12 @@
     <Compile Include="dlgWizard.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgImgSelectNew.Designer.vb">
+      <DependentUpon>dlgImgSelectNew.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgImgSelectNew.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
     </Compile>
@@ -492,6 +498,9 @@
     <EmbeddedResource Include="dlgWizard.resx">
       <DependentUpon>dlgWizard.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="dlgImgSelectNew.resx">
+      <DependentUpon>dlgImgSelectNew.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -616,6 +625,7 @@
     <Content Include="Resources\msaa.png" />
     <None Include="Resources\starempty.png" />
     <None Include="Resources\tmdb.png" />
+    <None Include="Resources\undo.png" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
