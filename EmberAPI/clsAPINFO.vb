@@ -1155,7 +1155,7 @@ Public Class NFO
                 Dim fAttWritable As Boolean = True
 
                 'YAMJ support
-                If Master.eSettings.TVUseYAMJ Then
+                If Master.eSettings.TVUseYAMJ AndAlso Master.eSettings.MovieNFOYAMJ Then
                     If movieToSave.Movie.TMDBIDSpecified Then
                         movieToSave.Movie.TMDBID = Nothing
                     End If
