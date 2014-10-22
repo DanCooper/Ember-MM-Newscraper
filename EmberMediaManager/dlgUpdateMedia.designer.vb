@@ -134,6 +134,7 @@ Partial Class dlgUpdateMedia
         Me.chkOptsYear = New System.Windows.Forms.CheckBox()
         Me.chkOptsTitle = New System.Windows.Forms.CheckBox()
         Me.pnlUpdateMedia = New System.Windows.Forms.Panel()
+        Me.chkOptsOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
@@ -567,6 +568,7 @@ Partial Class dlgUpdateMedia
         '
         'gbOptions
         '
+        Me.gbOptions.Controls.Add(Me.chkOptsOriginalTitle)
         Me.gbOptions.Controls.Add(Me.chkOptsCollectionID)
         Me.gbOptions.Controls.Add(Me.btnOptsNone)
         Me.gbOptions.Controls.Add(Me.chkOptsAll)
@@ -957,6 +959,20 @@ Partial Class dlgUpdateMedia
         Me.pnlUpdateMedia.Size = New System.Drawing.Size(568, 385)
         Me.pnlUpdateMedia.TabIndex = 3
         '
+        'chkOptsOriginalTitle
+        '
+        Me.chkOptsOriginalTitle.AutoSize = True
+        Me.chkOptsOriginalTitle.Checked = True
+        Me.chkOptsOriginalTitle.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsOriginalTitle.Enabled = False
+        Me.chkOptsOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsOriginalTitle.Location = New System.Drawing.Point(147, 267)
+        Me.chkOptsOriginalTitle.Name = "chkOptsOriginalTitle"
+        Me.chkOptsOriginalTitle.Size = New System.Drawing.Size(92, 17)
+        Me.chkOptsOriginalTitle.TabIndex = 24
+        Me.chkOptsOriginalTitle.Text = "Original Title"
+        Me.chkOptsOriginalTitle.UseVisualStyleBackColor = True
+        '
         'dlgUpdateMedia
         '
         Me.AcceptButton = Me.Update_Button
@@ -1004,6 +1020,7 @@ Partial Class dlgUpdateMedia
     Friend WithEvents btnModNone As System.Windows.Forms.Button
     Friend WithEvents btnOptsNone As System.Windows.Forms.Button
     Friend WithEvents chkOptsCollectionID As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsOriginalTitle As System.Windows.Forms.CheckBox
 
 #End Region 'Methods
 

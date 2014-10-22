@@ -80,6 +80,7 @@ Public Class dlgUpdateMedia
         chkOptsGenre.Checked = False
         chkOptsMPAA.Checked = False
         chkOptsMusicBy.Checked = False
+        chkOptsOriginalTitle.Checked = False
         chkOptsOutline.Checked = False
         chkOptsPlot.Checked = False
         chkOptsProducers.Checked = False
@@ -164,6 +165,8 @@ Public Class dlgUpdateMedia
                 chkOptsMPAA.Enabled = False
                 chkOptsMusicBy.Checked = True
                 chkOptsMusicBy.Enabled = False
+                chkOptsOriginalTitle.Checked = True
+                chkOptsOriginalTitle.Enabled = False
                 chkOptsOutline.Checked = True
                 chkOptsOutline.Enabled = False
                 chkOptsPlot.Checked = True
@@ -203,6 +206,7 @@ Public Class dlgUpdateMedia
                 chkOptsGenre.Enabled = True
                 chkOptsMPAA.Enabled = True
                 chkOptsMusicBy.Enabled = True
+                chkOptsOriginalTitle.Enabled = True
                 chkOptsOutline.Enabled = True
                 chkOptsPlot.Enabled = True
                 chkOptsProducers.Enabled = True
@@ -221,11 +225,12 @@ Public Class dlgUpdateMedia
 
             If chkModAll.Checked OrElse chkModNFO.Checked Then
                 If chkOptsCast.Checked OrElse chkOptsCrew.Checked OrElse chkOptsDirector.Checked OrElse chkOptsGenre.Checked OrElse _
-                chkOptsMPAA.Checked OrElse chkOptsCert.Checked OrElse chkOptsMusicBy.Checked OrElse chkOptsOutline.Checked OrElse chkOptsPlot.Checked OrElse _
-                chkOptsProducers.Checked OrElse chkOptsRating.Checked OrElse chkOptsRelease.Checked OrElse chkOptsRuntime.Checked OrElse _
-                chkOptsStudio.Checked OrElse chkOptsTagline.Checked OrElse chkOptsTitle.Checked OrElse chkOptsTrailer.Checked OrElse _
-                chkOptsVotes.Checked OrElse chkOptsVotes.Checked OrElse chkOptsWriters.Checked OrElse chkOptsYear.Checked OrElse chkOptsTop250.Checked OrElse _
-                chkOptsCountry.Checked OrElse chkOptsCollectionID.Checked Then
+                chkOptsMPAA.Checked OrElse chkOptsCert.Checked OrElse chkOptsMusicBy.Checked OrElse chkOptsOriginalTitle.Checked OrElse _
+                chkOptsOutline.Checked OrElse chkOptsPlot.Checked OrElse chkOptsProducers.Checked OrElse chkOptsRating.Checked OrElse _
+                chkOptsRelease.Checked OrElse chkOptsRuntime.Checked OrElse chkOptsStudio.Checked OrElse chkOptsTagline.Checked OrElse _
+                chkOptsTitle.Checked OrElse chkOptsTrailer.Checked OrElse chkOptsVotes.Checked OrElse chkOptsVotes.Checked OrElse _
+                chkOptsWriters.Checked OrElse chkOptsYear.Checked OrElse chkOptsTop250.Checked OrElse chkOptsCountry.Checked OrElse _
+                chkOptsCollectionID.Checked Then
                     Update_Button.Enabled = True
                 Else
                     Update_Button.Enabled = False
@@ -376,6 +381,11 @@ Public Class dlgUpdateMedia
         CheckEnable()
     End Sub
 
+    Private Sub chkOptsOriginalTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsOriginalTitle.CheckedChanged
+        CustomUpdater.Options.bOriginalTitle = chkOptsOriginalTitle.Checked
+        CheckEnable()
+    End Sub
+
     Private Sub chkOptsOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsOutline.CheckedChanged
         CustomUpdater.Options.bOutline = chkOptsOutline.Checked
         CheckEnable()
@@ -469,6 +479,8 @@ Public Class dlgUpdateMedia
             'disable options that are locked
             Me.chkOptsPlot.Enabled = Not Master.eSettings.MovieLockPlot
             Me.chkOptsPlot.Checked = Not Master.eSettings.MovieLockPlot
+            Me.chkOptsOriginalTitle.Enabled = Not Master.eSettings.MovieLockOriginalTitle
+            Me.chkOptsOriginalTitle.Checked = Not Master.eSettings.MovieLockOriginalTitle
             Me.chkOptsOutline.Enabled = Not Master.eSettings.MovieLockOutline
             Me.chkOptsOutline.Checked = Not Master.eSettings.MovieLockOutline
             Me.chkOptsTitle.Enabled = Not Master.eSettings.MovieLockTitle
@@ -624,6 +636,7 @@ Public Class dlgUpdateMedia
         Me.chkOptsGenre.Text = Master.eLang.GetString(20, "Genre")
         Me.chkOptsMPAA.Text = Master.eLang.GetString(401, "MPAA")
         Me.chkOptsMusicBy.Text = Master.eLang.GetString(392, "Music By")
+        Me.chkOptsOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         Me.chkOptsOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkOptsPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkOptsProducers.Text = Master.eLang.GetString(393, "Producers")
