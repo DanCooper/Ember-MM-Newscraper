@@ -386,49 +386,28 @@ Public Class MediaInfo
     End Sub
 
     Private Function ConvertAFormat(ByVal sFormat As String, Optional ByVal sProfile As String = "") As String
+        Dim tFormat As String = ""
         If Not String.IsNullOrEmpty(sFormat) Then
-            Select Case sFormat.ToLower
-                Case "dts", "a_dts"
-                    If sProfile.ToUpper.Contains("MA") Then
-                        sFormat = "dtshd_ma" 'Master Audio
-                    ElseIf sProfile.ToUpper.Contains("HRA") Then
-                        sFormat = "dtshd_hra" 'high resolution
-                    End If
-                    'Select Case sProfile.ToUpper
-                    '    Case "MA"   'master audio
-                    '        sFormat = "dtsma"
-                    '    Case "HRA"   'high resolution
-                    '        sFormat = "dtshr"
-                    'End Select
-            End Select
-            If sFormat.ToLower.Contains("truehd") Then
-                sFormat = "truehd" 'Dolby TrueHD
-            ElseIf sFormat.ToLower.Contains("vorbis") Then
-                sFormat = "vorbis" 'Vorbis
-            ElseIf sFormat.ToLower.Contains("eac3") Then
-                sFormat = "dolbydigital" 'EAC3
-            ElseIf sFormat.ToLower.Contains("flac") Then
-                sFormat = "flac" 'flac
-            End If
-            Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
-            'Return sFormat
-            'cocotus, 2013/02 Fix2 for DTS Scan
+            tFormat = sFormat.ToLower
         ElseIf Not String.IsNullOrEmpty(sProfile) Then
-            If sProfile.ToUpper.Contains("MA") Then
-                sFormat = "dtshd_ma" 'Master Audio
-            ElseIf sProfile.ToUpper.Contains("HRA") Then
-                sFormat = "dtshd_hra" 'high resolution
-            ElseIf sProfile.ToLower.Contains("truehd") Then
-                sFormat = "truehd" 'Dolby TrueHD
-            ElseIf sFormat.ToLower.Contains("vorbis") Then
-                sFormat = "vorbis" 'Vorbis
-            ElseIf sFormat.ToLower.Contains("eac3") Then
-                sFormat = "dolbydigital" 'EAC3
-            ElseIf sFormat.ToLower.Contains("flac") Then
-                sFormat = "flac" 'flac
+            tFormat = sProfile.ToLower
+        End If
+
+        If Not String.IsNullOrEmpty(tFormat) Then
+            Dim myconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            myconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts")
+            If Not myconversions Is Nothing Then
+                For Each k In myconversions
+                    If Regex.IsMatch(tFormat.ToLower, k.Name) Then
+                        Return k.Value
+                    End If
+                Next
+                Return tFormat.ToLower
+                'if AudioFormatConvert is not avalaible as complex setting (old)
+            Else
+                Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", tFormat.ToLower), tFormat.ToLower)
             End If
-            Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
-            'cocotus end
+
         Else
             Return String.Empty
         End If
@@ -437,26 +416,22 @@ Public Class MediaInfo
     Private Function ConvertVFormat(ByVal sFormat As String, Optional ByVal sModifier As String = "") As String
         If Not String.IsNullOrEmpty(sFormat) Then
             Dim tFormat As String = sFormat.ToLower
-            If tFormat.Contains("mpeg") AndAlso tFormat.Contains("video") Then
-                If sModifier.ToLower = "version 2" Then
-                    tFormat = "mpeg2"
-                Else
-                    tFormat = "mpeg1video"
-                End If
-            ElseIf tFormat.Contains("mpeg-4 visual") OrElse tFormat.Contains("mpeg4") Then
-                tFormat = "mpeg4"
-            ElseIf tFormat.Contains("vp6") Then
-                tFormat = "flv"
-            ElseIf tFormat.Contains("sorenson") Then
-                tFormat = "flv"
-            ElseIf tFormat.Contains("divx") Then
-                tFormat = "divx"
-            End If
-
-            Return clsAdvancedSettings.GetSetting(String.Concat("VideoFormatConvert:", tFormat.ToLower), tFormat.ToLower)
+            Dim myconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            myconversions = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts")
+            If Not myconversions Is Nothing Then
+                For Each k In myconversions
+                    If Regex.IsMatch(tFormat.ToLower, k.Name) Then
+                        Return k.Value
+                    End If
+                Next
+                Return tFormat.ToLower
+                'if VideoFormatConvert is not avalaible as complex setting (old)
             Else
-                Return String.Empty
+                Return clsAdvancedSettings.GetSetting(String.Concat("VideoFormatConvert:", tFormat.ToLower), tFormat.ToLower)
             End If
+        Else
+            Return String.Empty
+        End If
     End Function
 
     Public Shared Function ConvertVStereoMode(ByVal sFormat As String) As String

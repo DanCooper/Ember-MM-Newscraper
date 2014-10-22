@@ -224,6 +224,27 @@ Public Class clsAdvancedSettings
                     settings.SetDefaults()
                 End Using
             End If
+
+            'Add complex settings to general advancedsettings.xml if those settings don't exist
+            Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
+            If IsNothing(formatconversions) Then
+                Using settings = New clsAdvancedSettings()
+                    settings.SetDefaults(True, "VideoFormatConverts")
+                End Using
+            End If
+            formatconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
+            If IsNothing(formatconversions) Then
+                Using settings = New clsAdvancedSettings()
+                    settings.SetDefaults(True, "AudioFormatConverts")
+                End Using
+            End If
+            formatconversions = clsAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
+            If IsNothing(formatconversions) Then
+                Using settings = New clsAdvancedSettings()
+                    settings.SetDefaults(True, "MovieSources")
+                End Using
+            End If
+
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try

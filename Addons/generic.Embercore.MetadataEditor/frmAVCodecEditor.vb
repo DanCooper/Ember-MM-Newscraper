@@ -9,31 +9,20 @@ Public Class frmAVCodecEditor
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
 
-        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("AudioFormatConvert:"))
-            Dim i As Integer = dgvAudio.Rows.Add(New Object() {sett.Name.Substring(19), sett.Value})
-            If Not sett.DefaultValue = String.Empty Then
-                dgvAudio.Rows(i).Tag = True
-                dgvAudio.Rows(i).Cells(0).ReadOnly = True
-                'dgvAudio.Rows(i).Cells(0).Style.SelectionBackColor = Drawing.Color.White
-                dgvAudio.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
-            Else
-                dgvAudio.Rows(i).Tag = False
-            End If
-
-        Next
-        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("VideoFormatConvert:"))
-            Dim i As Integer = dgvVideo.Rows.Add(New Object() {sett.Name.Substring(19), sett.Value})
-            If Not sett.DefaultValue = String.Empty Then
-                dgvVideo.Rows(i).Tag = True
-                dgvVideo.Rows(i).Cells(0).ReadOnly = True
-                'dgvVideo.Rows(i).Cells(0).Style.SelectionBackColor = Drawing.Color.White
-                dgvVideo.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
-            Else
-                dgvVideo.Rows(i).Tag = False
-            End If
-
-        Next
+        Dim formataudioconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
+        If Not IsNothing(formataudioconversions) Then
+            For Each sett In formataudioconversions
+                dgvAudio.Rows.Add(New Object() {sett.Name, sett.Value})
+            Next
+        End If
         dgvAudio.ClearSelection()
+
+        Dim formatvideoconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
+        If Not IsNothing(formatvideoconversions) Then
+            For Each sett In formatvideoconversions
+                dgvVideo.Rows.Add(New Object() {sett.Name, sett.Value})
+            Next
+        End If
         dgvVideo.ClearSelection()
         SetUp()
     End Sub
@@ -68,7 +57,7 @@ Public Class frmAVCodecEditor
 
     Private Sub btnSetDefaultsAudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaultsAudio.Click
         Using settings = New clsAdvancedSettings()
-            settings.SetDefaults(True, "AudioFormatConvert")
+            settings.SetDefaults(True, "AudioFormatConverts")
         End Using
         LoadAudio()
         RaiseEvent ModuleSettingsChanged()
@@ -76,7 +65,7 @@ Public Class frmAVCodecEditor
 
     Private Sub btnSetDefaultsVideo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaultsVideo.Click
         Using settings = New clsAdvancedSettings()
-            settings.SetDefaults(True, "VideoFormatConvert")
+            settings.SetDefaults(True, "VideoFormatConverts")
         End Using
         LoadVideo()
         RaiseEvent ModuleSettingsChanged()
@@ -84,33 +73,23 @@ Public Class frmAVCodecEditor
 
     Private Sub LoadAudio()
         dgvAudio.Rows.Clear()
-        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("AudioFormatConvert:"))
-            Dim i As Integer = dgvAudio.Rows.Add(New Object() {sett.Name.Substring(19), sett.Value})
-            If Not sett.DefaultValue = String.Empty Then
-                dgvAudio.Rows(i).Tag = True
-                dgvAudio.Rows(i).Cells(0).ReadOnly = True
-                'dgvAudio.Rows(i).Cells(0).Style.SelectionBackColor = Drawing.Color.White
-                dgvAudio.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
-            Else
-                dgvAudio.Rows(i).Tag = False
-            End If
-        Next
+        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
+        If Not IsNothing(formatconversions) Then
+            For Each sett In formatconversions
+                dgvAudio.Rows.Add(New Object() {sett.Name, sett.Value})
+            Next
+        End If
         dgvAudio.ClearSelection()
     End Sub
 
     Private Sub LoadVideo()
         dgvVideo.Rows.Clear()
-        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("VideoFormatConvert:"))
-            Dim i As Integer = dgvVideo.Rows.Add(New Object() {sett.Name.Substring(19), sett.Value})
-            If Not sett.DefaultValue = String.Empty Then
-                dgvVideo.Rows(i).Tag = True
-                dgvVideo.Rows(i).Cells(0).ReadOnly = True
-                'dgvVideo.Rows(i).Cells(0).Style.SelectionBackColor = Drawing.Color.White
-                dgvVideo.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
-            Else
-                dgvVideo.Rows(i).Tag = False
-            End If
-        Next
+        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
+        If Not IsNothing(formatconversions) Then
+            For Each sett In formatconversions
+                dgvVideo.Rows.Add(New Object() {sett.Name, sett.Value})
+            Next
+        End If
         dgvVideo.ClearSelection()
     End Sub
 
@@ -172,12 +151,27 @@ Public Class frmAVCodecEditor
             For Each s As String In deleteitem
                 settings.CleanSetting(s, "*EmberAPP")
             Next
+
+            Dim formataudioconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
             For Each r As DataGridViewRow In dgvAudio.Rows
-                settings.SetSetting(String.Concat("AudioFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso (formataudioconversions.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
+                    formataudioconversions.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = r.Cells(0).Value.ToString, .Value = r.Cells(1).Value.ToString})
+                End If
             Next
+            If Not IsNothing(formataudioconversions) Then
+                settings.SetComplexSetting("AudioFormatConverts", formataudioconversions, "*EmberAPP")
+            End If
+
+            Dim formatvideoconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
             For Each r As DataGridViewRow In dgvVideo.Rows
-                settings.SetSetting(String.Concat("VideoFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso (formatvideoconversions.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
+                    formatvideoconversions.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = r.Cells(0).Value.ToString, .Value = r.Cells(1).Value.ToString})
+                End If
             Next
+            If Not IsNothing(formatvideoconversions) Then
+                settings.SetComplexSetting("VideoFormatConverts", formatvideoconversions, "*EmberAPP")
+            End If
+
         End Using
     End Sub
 End Class
