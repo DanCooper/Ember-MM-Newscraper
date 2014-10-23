@@ -14446,10 +14446,28 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 8, hasSubtitles})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 9, hasEThumbs})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 10, False})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 13, tmpMovieDB.Movie.ID})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDB.Movie.Title})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 16, tmpMovieDB.Movie.OriginalTitle})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 17, tmpMovieDB.Movie.Year})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 18, tmpMovieDB.Movie.Rating})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 19, tmpMovieDB.Movie.Votes})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 20, tmpMovieDB.Movie.MPAA})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 21, tmpMovieDB.Movie.Top250})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 22, tmpMovieDB.Movie.Country})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 23, tmpMovieDB.Movie.Outline})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 24, tmpMovieDB.Movie.Plot})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 25, tmpMovieDB.Movie.Tagline})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDB.Movie.Certification})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 27, tmpMovieDB.Movie.Genre})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 28, tmpMovieDB.Movie.Studio})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 29, tmpMovieDB.Movie.Runtime})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 30, tmpMovieDB.Movie.ReleaseDate})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 31, tmpMovieDB.Movie.Director})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 32, tmpMovieDB.Movie.Credits})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 33, tmpMovieDB.Movie.PlayCount})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 34, hasWatched})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 35, tmpMovieDB.Movie.Trailer})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDB.Movie.SortTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 49, hasEFanarts})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 51, hasBanner})
@@ -14458,6 +14476,8 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 57, hasDiscArt})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 59, hasClearLogo})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 61, hasClearArt})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 63, tmpMovieDB.Movie.TMDBID})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 64, tmpMovieDB.Movie.TMDBColID})
                     Else
                         selRow.Item(1) = tmpMovieDB.Filename
                         selRow.Item(3) = tmpMovieDB.ListTitle
@@ -14468,10 +14488,28 @@ doCancel:
                         selRow.Item(8) = hasSubtitles
                         selRow.Item(9) = hasEThumbs
                         selRow.Item(10) = False
+                        selRow.Item(13) = tmpMovieDB.Movie.ID
                         selRow.Item(15) = tmpMovieDB.Movie.Title
+                        selRow.Item(16) = tmpMovieDB.Movie.OriginalTitle
+                        selRow.Item(17) = tmpMovieDB.Movie.Year
+                        selRow.Item(18) = tmpMovieDB.Movie.Rating
+                        selRow.Item(19) = tmpMovieDB.Movie.Votes
+                        selRow.Item(20) = tmpMovieDB.Movie.MPAA
+                        selRow.Item(21) = tmpMovieDB.Movie.Top250
                         selRow.Item(22) = tmpMovieDB.Movie.Country
+                        selRow.Item(23) = tmpMovieDB.Movie.Outline
+                        selRow.Item(24) = tmpMovieDB.Movie.Plot
+                        selRow.Item(25) = tmpMovieDB.Movie.Tagline
+                        selRow.Item(26) = tmpMovieDB.Movie.Certification
                         selRow.Item(27) = tmpMovieDB.Movie.Genre
+                        selRow.Item(28) = tmpMovieDB.Movie.Studio
+                        selRow.Item(29) = tmpMovieDB.Movie.Runtime
+                        selRow.Item(30) = tmpMovieDB.Movie.ReleaseDate
+                        selRow.Item(31) = tmpMovieDB.Movie.Director
+                        selRow.Item(32) = tmpMovieDB.Movie.Credits
+                        selRow.Item(33) = tmpMovieDB.Movie.PlayCount
                         selRow.Item(34) = hasWatched
+                        selRow.Item(35) = tmpMovieDB.Movie.Trailer
                         selRow.Item(47) = tmpMovieDB.Movie.SortTitle
                         selRow.Item(49) = hasEFanarts
                         selRow.Item(51) = hasBanner
@@ -14480,6 +14518,8 @@ doCancel:
                         selRow.Item(57) = hasDiscArt
                         selRow.Item(59) = hasClearLogo
                         selRow.Item(61) = hasClearArt
+                        selRow.Item(63) = tmpMovieDB.Movie.TMDBID
+                        selRow.Item(64) = tmpMovieDB.Movie.TMDBColID
                     End If
                 End If
 
