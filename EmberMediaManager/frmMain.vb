@@ -3585,7 +3585,7 @@ doCancel:
                     If .MovieMissingTrailer Then MissingFilter.Add("HasTrailer = 0")
                 End With
                 filMissing_Movies = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
-                Me.FilterArray_Movies.Add(filMissing_Movies)
+                If Not IsNothing(filMissing_Movies) Then Me.FilterArray_Movies.Add(filMissing_Movies)
             Else
                 Me.FilterArray_Movies.Remove(filMissing_Movies)
             End If
@@ -3611,7 +3611,7 @@ doCancel:
                     If .MovieSetMissingPoster Then MissingFilter.Add("HasPoster = 0")
                 End With
                 filMissing_MovieSets = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
-                Me.FilterArray_MovieSets.Add(filMissing_MovieSets)
+                If Not IsNothing(filMissing_MovieSets) Then Me.FilterArray_MovieSets.Add(filMissing_MovieSets)
             Else
                 Me.FilterArray_MovieSets.Remove(filMissing_MovieSets)
             End If
@@ -3637,7 +3637,7 @@ doCancel:
                     If .TVShowMissingTheme Then MissingFilter.Add("HasTheme = 0")
                 End With
                 filMissing_Shows = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
-                Me.FilterArray_Shows.Add(filMissing_Shows)
+                If Not IsNothing(filMissing_Shows) Then Me.FilterArray_Shows.Add(filMissing_Shows)
             Else
                 Me.FilterArray_Shows.Remove(filMissing_Shows)
             End If
@@ -8081,7 +8081,7 @@ doCancel:
         Me.chkFilterMarkCustom2_Movies.Enabled = isEnabled
         Me.chkFilterMarkCustom3_Movies.Enabled = isEnabled
         Me.chkFilterMarkCustom4_Movies.Enabled = isEnabled
-        Me.chkFilterMissing_Movies.Enabled = isEnabled
+        Me.chkFilterMissing_Movies.Enabled = If(Master.eSettings.MovieMissingItemsAnyEnabled, isEnabled, False)
         Me.chkFilterNew_Movies.Enabled = isEnabled
         Me.chkFilterTolerance_Movies.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
         Me.rbFilterAnd_Movies.Enabled = isEnabled
@@ -8110,7 +8110,7 @@ doCancel:
         'Me.chkFilterMarkCustom2.Enabled = isEnabled
         'Me.chkFilterMarkCustom3.Enabled = isEnabled
         'Me.chkFilterMarkCustom4.Enabled = isEnabled
-        Me.chkFilterMissing_MovieSets.Enabled = isEnabled
+        Me.chkFilterMissing_MovieSets.Enabled = If(Master.eSettings.MovieSetMissingItemsAnyEnabled, isEnabled, False)
         Me.chkFilterNew_MovieSets.Enabled = isEnabled
         Me.chkFilterOne_MovieSets.Enabled = isEnabled
         'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
@@ -8138,7 +8138,7 @@ doCancel:
         'Me.chkFilterMarkCustom2.Enabled = isEnabled
         'Me.chkFilterMarkCustom3.Enabled = isEnabled
         'Me.chkFilterMarkCustom4.Enabled = isEnabled
-        Me.chkFilterMissing_Shows.Enabled = isEnabled
+        Me.chkFilterMissing_Shows.Enabled = If(Master.eSettings.TVShowMissingItemsAnyEnabled, isEnabled, False)
         Me.chkFilterNew_Shows.Enabled = isEnabled
         'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
         Me.rbFilterAnd_Shows.Enabled = isEnabled

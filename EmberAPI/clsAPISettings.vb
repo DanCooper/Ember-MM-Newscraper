@@ -5945,6 +5945,12 @@ Public Class Settings
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieLandscapeExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertMulti) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertSingle) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertVTS)))
     End Function
 
+    Public Function MovieMissingItemsAnyEnabled() As Boolean
+        Return MovieMissingBanner OrElse MovieMissingClearArt OrElse MovieMissingClearLogo OrElse MovieMissingDiscArt OrElse MovieMissingEFanarts OrElse _
+            MovieMissingEThumbs OrElse MovieMissingFanart OrElse MovieMissingLandscape OrElse MovieMissingNFO OrElse MovieMissingPoster OrElse _
+            MovieMissingSubs OrElse MovieMissingTheme OrElse MovieMissingTrailer
+    End Function
+
     Public Function MoviePosterAnyEnabled() As Boolean
         Return MoviePosterBoxee OrElse MoviePosterEden OrElse MoviePosterFrodo OrElse MoviePosterNMJ OrElse MoviePosterYAMJ OrElse _
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MoviePosterExpertBDMV) OrElse Not String.IsNullOrEmpty(MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(MoviePosterExpertSingle) OrElse Not String.IsNullOrEmpty(MoviePosterExpertVTS)))
@@ -5981,6 +5987,11 @@ Public Class Settings
 
     Public Function MovieSetLandscapeAnyEnabled() As Boolean
         Return MovieSetLandscapeMSAA
+    End Function
+
+    Public Function MovieSetMissingItemsAnyEnabled() As Boolean
+        Return MovieSetMissingBanner OrElse MovieSetMissingClearArt OrElse MovieSetMissingClearLogo OrElse MovieSetMissingDiscArt OrElse _
+            MovieSetMissingFanart OrElse MovieSetMissingLandscape OrElse MovieSetMissingNFO OrElse MovieSetMissingPoster
     End Function
 
     Public Function MovieSetPosterAnyEnabled() As Boolean
@@ -6057,6 +6068,12 @@ Public Class Settings
 
     Public Function TVShowLandscapeAnyEnabled() As Boolean
         Return TVShowLandscapeXBMC
+    End Function
+
+    Public Function TVShowMissingItemsAnyEnabled() As Boolean
+        Return TVShowMissingBanner OrElse TVShowMissingCharacterArt OrElse TVShowMissingClearArt OrElse TVShowMissingClearLogo OrElse _
+            TVShowMissingEFanarts OrElse TVShowMissingFanart OrElse TVShowMissingLandscape OrElse TVShowMissingNFO OrElse _
+            TVShowMissingPoster OrElse TVShowMissingTheme
     End Function
 
     Public Function TVShowPosterAnyEnabled() As Boolean
