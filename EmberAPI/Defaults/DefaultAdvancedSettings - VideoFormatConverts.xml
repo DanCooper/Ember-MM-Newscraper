@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AdvancedSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ <ComplexSettings>
+    <Table Section="*EmberAPP" Name="VideoFormatConverts">
+      <Item Name="v_mpeg4/iso/avc">h264</Item>
+      <Item Name="x264">h264</Item>
+      <Item Name="avc">h264</Item>
+      <Item Name="lmp4">h264</Item>
+      <Item Name="svq3">h264</Item>
+      <Item Name="^mpeg-4.*">mpeg4</Item>
+      <Item Name="divx">divx</Item>
+      <Item Name="divx 5">dx50</Item>
+      <Item Name="divx 3">div3</Item>
+      <Item Name="swf">flv</Item>
+      <Item Name="sorenson">flv</Item>
+      <Item Name="vp6">flv</Item>
+      <Item Name="^3iv.*">3ivx</Item>
+	  <Item Name="mpeg.*video*|video.*mpeg*">mpeg1video</Item>  
+    </Table>
+  </ComplexSettings>
+</AdvancedSettings>

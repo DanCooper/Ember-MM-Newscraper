@@ -277,6 +277,12 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Defaults\DefaultAdvancedSettings - AudioFormatConverts.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Defaults\DefaultAdvancedSettings - VideoFormatConverts.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Defaults\DefaultMovieCertLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -342,12 +348,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Defaults\DefaultAdvancedSettings - MovieSources.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Defaults\DefaultAdvancedSettings - VideoFormatConvert.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Defaults\DefaultAdvancedSettings - AudioFormatConvert.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Defaults\DefaultAdvancedSettings.xml">
