@@ -115,7 +115,7 @@ fontstyle code 5.
 
     <!-- BEGIN INTERNAL TO PNLMOVIESINSET -->
     <object name="lblMoviesInSetHeader">
-      <width>pnlMoviesInSet.Width</width>
+      <width>pnlMoviesInSet.Width - 10</width>
       <height>17</height>
       <left>0</left>
       <top>0</top>
@@ -127,10 +127,10 @@ fontstyle code 5.
       <fontstyle>1</fontstyle>
     </object>
 
-    <object name="lstMoviesInSet">
-      <width>lblMoviesInSetHeader.Width - 500</width>
-      <height>140</height>
-      <left>3</left>
+    <object name="lvMoviesInSet">
+      <width>lblMoviesInSetHeader.Width</width>
+      <height>130</height>
+      <left>0</left>
       <top>21</top>
       <backcolor>-2302756</backcolor>
       <forecolor>-16777216</forecolor>

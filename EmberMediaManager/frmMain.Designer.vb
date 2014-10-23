@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -382,8 +382,8 @@ Partial Class frmMain
         Me.lblNoInfo = New System.Windows.Forms.Label()
         Me.pnlInfoPanel = New System.Windows.Forms.Panel()
         Me.pnlMoviesInSet = New System.Windows.Forms.Panel()
+        Me.lvMoviesInSet = New System.Windows.Forms.ListView()
         Me.lblMoviesInSetHeader = New System.Windows.Forms.Label()
-        Me.lstMoviesInSet = New System.Windows.Forms.ListBox()
         Me.txtCerts = New System.Windows.Forms.TextBox()
         Me.lblCertsHeader = New System.Windows.Forms.Label()
         Me.lblReleaseDate = New System.Windows.Forms.Label()
@@ -977,6 +977,7 @@ Partial Class frmMain
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni_Shows = New System.Windows.Forms.Timer(Me.components)
+        Me.ilMoviesInSet = New System.Windows.Forms.ImageList(Me.components)
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1759,8 +1760,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = false
         Me.dgvMovies.AllowUserToDeleteRows = false
         Me.dgvMovies.AllowUserToResizeRows = false
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2359,8 +2360,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = false
         Me.dgvMovieSets.AllowUserToDeleteRows = false
         Me.dgvMovieSets.AllowUserToResizeRows = false
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2493,8 +2494,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = false
         Me.dgvTVShows.AllowUserToDeleteRows = false
         Me.dgvTVShows.AllowUserToResizeRows = false
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2686,7 +2687,6 @@ Partial Class frmMain
         '
         Me.scTVSeasonsEpisodes.Panel2.Controls.Add(Me.dgvTVEpisodes)
         Me.scTVSeasonsEpisodes.Size = New System.Drawing.Size(567, 25)
-        Me.scTVSeasonsEpisodes.SplitterDistance = 25
         Me.scTVSeasonsEpisodes.TabIndex = 0
         Me.scTVSeasonsEpisodes.TabStop = false
         '
@@ -2695,8 +2695,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = false
         Me.dgvTVSeasons.AllowUserToDeleteRows = false
         Me.dgvTVSeasons.AllowUserToResizeRows = false
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2712,7 +2712,7 @@ Partial Class frmMain
         Me.dgvTVSeasons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvTVSeasons.ShowCellErrors = false
         Me.dgvTVSeasons.ShowRowErrors = false
-        Me.dgvTVSeasons.Size = New System.Drawing.Size(567, 25)
+        Me.dgvTVSeasons.Size = New System.Drawing.Size(150, 50)
         Me.dgvTVSeasons.StandardTab = true
         Me.dgvTVSeasons.TabIndex = 0
         '
@@ -2841,8 +2841,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = false
         Me.dgvTVEpisodes.AllowUserToDeleteRows = false
         Me.dgvTVEpisodes.AllowUserToResizeRows = false
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2858,7 +2858,7 @@ Partial Class frmMain
         Me.dgvTVEpisodes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvTVEpisodes.ShowCellErrors = false
         Me.dgvTVEpisodes.ShowRowErrors = false
-        Me.dgvTVEpisodes.Size = New System.Drawing.Size(567, 25)
+        Me.dgvTVEpisodes.Size = New System.Drawing.Size(150, 46)
         Me.dgvTVEpisodes.StandardTab = true
         Me.dgvTVEpisodes.TabIndex = 0
         '
@@ -4493,12 +4493,20 @@ Partial Class frmMain
         '
         Me.pnlMoviesInSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.pnlMoviesInSet.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlMoviesInSet.Controls.Add(Me.lvMoviesInSet)
         Me.pnlMoviesInSet.Controls.Add(Me.lblMoviesInSetHeader)
-        Me.pnlMoviesInSet.Controls.Add(Me.lstMoviesInSet)
-        Me.pnlMoviesInSet.Location = New System.Drawing.Point(-200, 493)
+        Me.pnlMoviesInSet.Location = New System.Drawing.Point(0, 493)
         Me.pnlMoviesInSet.Name = "pnlMoviesInSet"
-        Me.pnlMoviesInSet.Size = New System.Drawing.Size(655, 244)
+        Me.pnlMoviesInSet.Size = New System.Drawing.Size(773, 244)
         Me.pnlMoviesInSet.TabIndex = 41
+        '
+        'lvMoviesInSet
+        '
+        Me.lvMoviesInSet.Location = New System.Drawing.Point(3, 23)
+        Me.lvMoviesInSet.Name = "lvMoviesInSet"
+        Me.lvMoviesInSet.Size = New System.Drawing.Size(765, 182)
+        Me.lvMoviesInSet.TabIndex = 41
+        Me.lvMoviesInSet.UseCompatibleStateImageBehavior = false
         '
         'lblMoviesInSetHeader
         '
@@ -4508,25 +4516,12 @@ Partial Class frmMain
         Me.lblMoviesInSetHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblMoviesInSetHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMoviesInSetHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblMoviesInSetHeader.Location = New System.Drawing.Point(0, 0)
+        Me.lblMoviesInSetHeader.Location = New System.Drawing.Point(3, 3)
         Me.lblMoviesInSetHeader.Name = "lblMoviesInSetHeader"
-        Me.lblMoviesInSetHeader.Size = New System.Drawing.Size(654, 17)
+        Me.lblMoviesInSetHeader.Size = New System.Drawing.Size(765, 17)
         Me.lblMoviesInSetHeader.TabIndex = 40
         Me.lblMoviesInSetHeader.Text = "Movies in Set"
         Me.lblMoviesInSetHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lstMoviesInSet
-        '
-        Me.lstMoviesInSet.BackColor = System.Drawing.Color.Gainsboro
-        Me.lstMoviesInSet.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.lstMoviesInSet.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lstMoviesInSet.ForeColor = System.Drawing.Color.Black
-        Me.lstMoviesInSet.FormattingEnabled = true
-        Me.lstMoviesInSet.Location = New System.Drawing.Point(3, 21)
-        Me.lstMoviesInSet.Name = "lstMoviesInSet"
-        Me.lstMoviesInSet.Size = New System.Drawing.Size(651, 182)
-        Me.lstMoviesInSet.TabIndex = 29
-        Me.lstMoviesInSet.TabStop = false
         '
         'txtCerts
         '
@@ -8871,6 +8866,12 @@ Partial Class frmMain
         '
         Me.tmrFilterAni_Shows.Interval = 1
         '
+        'ilMoviesInSet
+        '
+        Me.ilMoviesInSet.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+        Me.ilMoviesInSet.ImageSize = New System.Drawing.Size(250, 250)
+        Me.ilMoviesInSet.TransparentColor = System.Drawing.Color.Transparent
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
@@ -9717,7 +9718,6 @@ End Sub
     Friend WithEvents pnlClearArt As System.Windows.Forms.Panel
     Friend WithEvents pbClearArt As System.Windows.Forms.PictureBox
     Friend WithEvents pbClearArtCache As System.Windows.Forms.PictureBox
-    Friend WithEvents lstMoviesInSet As System.Windows.Forms.ListBox
     Friend WithEvents lblMoviesInSetHeader As System.Windows.Forms.Label
     Friend WithEvents pnlMoviesInSet As System.Windows.Forms.Panel
     Friend WithEvents mnuMainToolsExport As System.Windows.Forms.ToolStripMenuItem
@@ -9974,4 +9974,6 @@ End Sub
     Friend WithEvents lblFilterDataFields_Movies As System.Windows.Forms.Label
     Friend WithEvents gbFilterDataField_Movies As System.Windows.Forms.GroupBox
     Friend WithEvents cbFilterDataField_Movies As System.Windows.Forms.ComboBox
+    Friend WithEvents lvMoviesInSet As System.Windows.Forms.ListView
+    Friend WithEvents ilMoviesInSet As System.Windows.Forms.ImageList
 End Class

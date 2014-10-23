@@ -50,6 +50,7 @@ Public Class frmMain
     Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieSetScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwPosterPic As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovieSets As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshShows As New System.ComponentModel.BackgroundWorker
@@ -57,6 +58,7 @@ Public Class frmMain
 
     Private alActors As New List(Of String)
     Private alMoviesInSet As New List(Of String)
+    Private apMoviesInSet As New List(Of Images)
     Private aniFilterRaise_Movies As Boolean = False
     Private aniFilterRaise_MovieSets As Boolean = False
     Private aniFilterRaise_Shows As Boolean = False
@@ -298,12 +300,13 @@ Public Class frmMain
                 If .bwDownloadPic.IsBusy Then .bwDownloadPic.CancelAsync()
                 If .bwLoadMovieInfo.IsBusy Then .bwLoadMovieInfo.CancelAsync()
                 If .bwLoadMovieSetInfo.IsBusy Then .bwLoadMovieSetInfo.CancelAsync()
+                If .bwPosterPic.IsBusy Then .bwPosterPic.CancelAsync()
                 If .bwLoadShowInfo.IsBusy Then .bwLoadShowInfo.CancelAsync()
                 If .bwLoadSeasonInfo.IsBusy Then .bwLoadSeasonInfo.CancelAsync()
                 If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
 
                 While .bwDownloadPic.IsBusy OrElse .bwLoadMovieInfo.IsBusy OrElse .bwLoadMovieSetInfo.IsBusy OrElse _
-                    .bwLoadShowInfo.IsBusy OrElse .bwLoadSeasonInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy
+                    .bwLoadShowInfo.IsBusy OrElse .bwLoadSeasonInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy OrElse .bwPosterPic.IsBusy
                     Application.DoEvents()
                     Threading.Thread.Sleep(50)
                 End While
@@ -415,11 +418,11 @@ Public Class frmMain
                 .pnlTop.Visible = False
                 '.tslStatus.Text = String.Empty
 
-                .lstMoviesInSet.Items.Clear()
-                If Not IsNothing(.alMoviesInSet) Then
-                    .alMoviesInSet.Clear()
-                    .alMoviesInSet = Nothing
-                End If
+                '.lvMoviesInSet.Items.Clear()
+                'If Not IsNothing(.alMoviesInSet) Then
+                '    .alMoviesInSet.Clear()
+                '    .alMoviesInSet = Nothing
+                'End If
 
                 Application.DoEvents()
             End With
@@ -7026,8 +7029,8 @@ doCancel:
                 Next
             ElseIf e.KeyChar = Chr(13) Then
                 If Me.fScanner.IsBusy OrElse Me.bwMovieSetInfo.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse _
-                Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy _
-                OrElse Me.bwCleanDB.IsBusy Then Return
+                Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
+                Me.bwPosterPic.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
@@ -9367,18 +9370,38 @@ doCancel:
             'End If
 
             Me.alMoviesInSet = New List(Of String)
+            Me.ilMoviesInSet.Images.Clear()
 
             If Not IsNothing(Master.currMovieSet.Movies) AndAlso Master.currMovieSet.Movies.Count > 0 Then
                 'Me.pbActors.Image = My.Resources.actor_silhouette
-                For Each Movie As Structures.DBMovie In Master.currMovieSet.Movies
+                'For Each Movie As Structures.DBMovie In Master.currMovieSet.Movies
 
-                    If String.IsNullOrEmpty(Movie.Movie.Title) Then
-                        Me.lstMoviesInSet.Items.Add("Unknow Movie")
-                    Else
-                        Me.lstMoviesInSet.Items.Add(Movie.Movie.Title)
-                    End If
-                Next
-                Me.lstMoviesInSet.SelectedIndex = 0
+                '    If String.IsNullOrEmpty(Movie.Movie.Title) Then
+                '        Me.lstMoviesInSet.Items.Add("Unknow Movie")
+                '    Else
+                '        Me.lstMoviesInSet.Items.Add(Movie.Movie.Title)
+                '    End If
+                'Next
+                'Me.lstMoviesInSet.SelectedIndex = 0
+
+                Try
+                    For Each Movie As Structures.DBMovie In Master.currMovieSet.Movies
+                        Dim ResImg As Image
+                        Dim Poster As New Images
+                        If Not String.IsNullOrEmpty(Movie.PosterPath) Then
+                            Poster.FromFile(Movie.PosterPath)
+                        End If
+                        If Not IsNothing(Poster.Image) Then
+                            ResImg = CType(Poster.Image.Clone(), Image)
+                            ImageUtils.ResizeImage(ResImg, 250, 250, True, Color.White.ToArgb())
+                            Me.ilMoviesInSet.Images.Add(ResImg)
+
+                            Me.lvMoviesInSet.Items.Add(Movie.Movie.Title, Me.ilMoviesInSet.Images.Count - 1)
+                        End If
+                    Next
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
             End If
 
             'If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
@@ -10234,6 +10257,7 @@ doCancel:
             If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+            If Me.bwPosterPic.IsBusy Then Me.bwPosterPic.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
             If Me.bwCleanDB.IsBusy Then Me.bwCleanDB.CancelAsync()
             If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
@@ -10250,7 +10274,7 @@ doCancel:
             OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy _
             OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse Me.bwCleanDB.IsBusy _
             OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy _
-            OrElse ModulesManager.Instance.TVIsBusy
+            OrElse Me.bwPosterPic.IsBusy OrElse ModulesManager.Instance.TVIsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -16654,7 +16678,7 @@ doCancel:
             End If
 
             'might as well wait for these
-            While Me.bwMetaInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
+            While Me.bwMetaInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPosterPic.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -17756,6 +17780,7 @@ doCancel:
                 If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
                 If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+                If Me.bwPosterPic.IsBusy Then Me.bwPosterPic.CancelAsync()
                 If Me.dgvMovies.RowCount > 0 Then
                     Me.prevMovieRow = -1
 
@@ -17789,7 +17814,7 @@ doCancel:
                 If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
                 If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
                 If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
-                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+                If Me.bwPosterPic.IsBusy Then Me.bwPosterPic.CancelAsync()
                 If Me.dgvMovieSets.RowCount > 0 Then
                     Me.prevMovieSetRow = -1
 
@@ -17824,6 +17849,7 @@ doCancel:
                 If Me.bwLoadMovieInfo.IsBusy Then Me.bwLoadMovieInfo.CancelAsync()
                 If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+                If Me.bwPosterPic.IsBusy Then Me.bwposterPic.CancelAsync()
                 If Me.dgvTVShows.RowCount > 0 Then
                     Me.prevShowRow = -1
                     Me.currList = 0

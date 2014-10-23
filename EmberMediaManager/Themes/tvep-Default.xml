@@ -130,7 +130,7 @@ fontstyle code 5.
       <visible>false</visible>
     </object>
 
-    <object name="lstMoviesInSet">
+    <object name="lvMoviesInSet">
       <visible>false</visible>
     </object>
     <!-- END INTERNAL TO PNLMOVIESINSET -->
