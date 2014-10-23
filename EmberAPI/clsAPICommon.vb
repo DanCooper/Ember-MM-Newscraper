@@ -769,22 +769,44 @@ Public Class Enums
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer
-        NFOItem = 0
-        PosterItem = 1
-        FanartItem = 2
-        TrailerItem = 3
-        EThumbsItem = 4
-        SortTitle = 5
-        ListTitle = 6
-        BannerItem = 7
-        LandscapeItem = 8
-        ThemeItem = 9
-        ClearArtItem = 10
-        ClearLogoItem = 11
-        DiscArtItem = 12
-        EFanartsItem = 13
-        MoviePath = 14
-        Title = 15
+        BannerItem = 0
+        Certification = 1
+        ClearArtItem = 2
+        ClearLogoItem = 3
+        Country = 4
+        Credits = 5
+        Director = 6
+        DiscArtItem = 7
+        EFanartsItem = 8
+        EThumbsItem = 9
+        FanartItem = 10
+        Genre = 11
+        IMDBID = 12
+        LandscapeItem = 13
+        ListTitle = 14
+        MPAA = 15
+        MoviePath = 16
+        NFOItem = 17
+        OriginalTitle = 18
+        Outline = 19
+        Playcount = 20
+        Plot = 21
+        PosterItem = 22
+        Rating = 23
+        ReleaseDate = 24
+        Runtime = 25
+        SortTitle = 26
+        Studio = 27
+        TMDBColID = 28
+        TMDBID = 29
+        Tagline = 30
+        ThemeItem = 31
+        Title = 32
+        Top250 = 33
+        Trailer = 34
+        TrailerItem = 35
+        Votes = 36
+        Year = 37
     End Enum
 
     Public Enum ScraperEventType_MovieSet As Integer

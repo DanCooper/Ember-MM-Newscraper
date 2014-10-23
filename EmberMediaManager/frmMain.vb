@@ -1884,9 +1884,31 @@ Public Class frmMain
                 End If
 
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Certification, DBScrapeMovie.Movie.Certification)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Country, DBScrapeMovie.Movie.Country)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Credits, DBScrapeMovie.Movie.OldCredits)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Director, DBScrapeMovie.Movie.Director)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Genre, DBScrapeMovie.Movie.Genre)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.IMDBID, DBScrapeMovie.Movie.ID)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.ListTitle, DBScrapeMovie.ListTitle)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.MPAA, DBScrapeMovie.Movie.MPAA)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.OriginalTitle, DBScrapeMovie.Movie.OriginalTitle)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Outline, DBScrapeMovie.Movie.Outline)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Playcount, DBScrapeMovie.Movie.PlayCount)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Plot, DBScrapeMovie.Movie.Plot)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Rating, DBScrapeMovie.Movie.Rating)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.ReleaseDate, DBScrapeMovie.Movie.ReleaseDate)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Runtime, DBScrapeMovie.Movie.Runtime)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.SortTitle, DBScrapeMovie.Movie.SortTitle)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Studio, DBScrapeMovie.Movie.Studio)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.TMDBColID, DBScrapeMovie.Movie.TMDBColID)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.TMDBID, DBScrapeMovie.Movie.TMDBID)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Tagline, DBScrapeMovie.Movie.Tagline)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.Title, DBScrapeMovie.Movie.Title)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Top250, DBScrapeMovie.Movie.Top250)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Trailer, DBScrapeMovie.Movie.Trailer)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Votes, DBScrapeMovie.Movie.Votes)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.Year, DBScrapeMovie.Movie.Year)
                 End If
 
                 '-----
@@ -12927,6 +12949,50 @@ doCancel:
                     dScrapeRow(15) = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.TrailerItem
                     dScrapeRow(7) = DirectCast(Parameter, Boolean)
+                Case Enums.ScraperEventType_Movie.IMDBID
+                    dScrapeRow(13) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.OriginalTitle
+                    dScrapeRow(16) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Year
+                    dScrapeRow(17) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Rating
+                    dScrapeRow(18) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Votes
+                    dScrapeRow(19) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.MPAA
+                    dScrapeRow(20) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Top250
+                    dScrapeRow(21) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Country
+                    dScrapeRow(22) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Outline
+                    dScrapeRow(23) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Plot
+                    dScrapeRow(24) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Tagline
+                    dScrapeRow(25) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Certification
+                    dScrapeRow(26) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Genre
+                    dScrapeRow(27) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Studio
+                    dScrapeRow(28) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Runtime
+                    dScrapeRow(29) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.ReleaseDate
+                    dScrapeRow(30) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Director
+                    dScrapeRow(31) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Credits
+                    dScrapeRow(32) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Playcount
+                    dScrapeRow(33) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.Trailer
+                    dScrapeRow(35) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.TMDBID
+                    dScrapeRow(63) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.TMDBColID
+                    dScrapeRow(64) = DirectCast(Parameter, String)
             End Select
             Me.dgvMovies.Invalidate()
         End If
