@@ -626,6 +626,7 @@
     <None Include="Resources\starempty.png" />
     <None Include="Resources\tmdb.png" />
     <None Include="Resources\undo.png" />
+    <None Include="Resources\noposter.jpg" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
