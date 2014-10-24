@@ -105,13 +105,13 @@ Public Class DVDProfiler
         Select Case True
             Case cMovie.MediaTypes.BluRay = True
                 tMovie.DVDProfilerMediaType = "BluRay"
-                tMovie.FileSource = "bluray"
+                tMovie.VideoSource = "bluray"
             Case cMovie.MediaTypes.DVD = True
                 tMovie.DVDProfilerMediaType = "DVD"
-                tMovie.FileSource = "dvd"
+                tMovie.VideoSource = "dvd"
             Case cMovie.MediaTypes.HDDVD = True
                 tMovie.DVDProfilerMediaType = "HDDVD"
-                tMovie.FileSource = "hddvd"
+                tMovie.VideoSource = "hddvd"
         End Select
 
         If cMovie.Subtitles.Subtitle.Count > 0 Then

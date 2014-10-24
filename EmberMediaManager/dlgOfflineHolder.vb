@@ -1055,7 +1055,7 @@ Public Class dlgOfflineHolder
 
         Message = ProccessPattern(d, Message)
 
-        StubFile = String.Concat(destPath, Path.DirectorySeparatorChar, FileUtils.Common.MakeValidFilename(d.DVDProfilerTitle), If(Not String.IsNullOrEmpty(d.FileSource), String.Concat(".", d.FileSource.ToLower), String.Empty), ".disc")
+        StubFile = String.Concat(destPath, Path.DirectorySeparatorChar, FileUtils.Common.MakeValidFilename(d.DVDProfilerTitle), If(Not String.IsNullOrEmpty(d.VideoSource), String.Concat(".", d.VideoSource.ToLower), String.Empty), ".disc")
         d.Filename = StubFile
 
         MediaStub.SaveDiscStub(StubFile, Title, Message)

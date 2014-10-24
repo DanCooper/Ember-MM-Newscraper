@@ -190,13 +190,13 @@ Public Class APIXML
                 End If
 
                 Dim vSource As String = videoSource 'GetFileSource(fName)
-                Dim vsourceFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name.ToLower = vSource.ToLower AndAlso f.Type = FlagType.VideoSource)
-                If Not IsNothing(vsourceFlag) Then
-                    iReturn(1) = vsourceFlag.Image
+                Dim vSourceFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name.ToLower = vSource.ToLower AndAlso f.Type = FlagType.VideoSource)
+                If Not IsNothing(vSourceFlag) Then
+                    iReturn(1) = vSourceFlag.Image
                 Else
-                    vsourceFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoSource)
-                    If Not IsNothing(vsourceFlag) Then
-                        iReturn(1) = vsourceFlag.Image
+                    vSourceFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoSource)
+                    If Not IsNothing(vSourceFlag) Then
+                        iReturn(1) = vSourceFlag.Image
                     Else
                         iReturn(1) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
                     End If
@@ -270,7 +270,7 @@ Public Class APIXML
         Return iReturn
     End Function
 
-    Public Shared Function GetFileSource(ByVal sPath As String) As String
+    Public Shared Function GetVideoSource(ByVal sPath As String) As String
         Dim sourceCheck As String = String.Empty
 
         Try

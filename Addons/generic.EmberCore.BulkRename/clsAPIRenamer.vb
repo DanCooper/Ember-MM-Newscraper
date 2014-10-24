@@ -111,7 +111,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
-                    strCond = ApplyPattern(strCond, "S", f.FileSource)
+                    strCond = ApplyPattern(strCond, "S", f.VideoSource)
                     strCond = ApplyPattern(strCond, "T", f.Title)
                     strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
@@ -172,7 +172,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
             pattern = ApplyPattern(pattern, "R", f.Resolution)
-            pattern = ApplyPattern(pattern, "S", f.FileSource)
+            pattern = ApplyPattern(pattern, "S", f.VideoSource)
             pattern = ApplyPattern(pattern, "T", f.Title)
             pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
             pattern = ApplyPattern(pattern, "Y", f.Year)
@@ -289,7 +289,7 @@ Public Class FileFolderRenamer
 
         MovieFile.Country = _tmpMovie.Movie.Country
         MovieFile.Director = _tmpMovie.Movie.Director
-        MovieFile.FileSource = _tmpMovie.FileSource
+        MovieFile.VideoSource = _tmpMovie.VideoSource
         MovieFile.Genre = _tmpMovie.Movie.Genre
         MovieFile.IMDBID = _tmpMovie.Movie.IMDBID
         MovieFile.IsSingle = _tmpMovie.IsSingle
@@ -879,7 +879,7 @@ Public Class FileFolderRenamer
         Private _imdbid As String
         Private _genre As String
         Private _director As String
-        Private _filesource As String
+        Private _videosource As String
         Private _videocodec As String
 
 #End Region 'Fields
@@ -1183,12 +1183,12 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property FileSource() As String
+        Public Property VideoSource() As String
             Get
-                Return Me._filesource
+                Return Me._videosource
             End Get
             Set(ByVal value As String)
-                Me._filesource = value.Trim
+                Me._videosource = value.Trim
             End Set
         End Property
 
@@ -1206,7 +1206,7 @@ Public Class FileFolderRenamer
             _director = String.Empty
             _fileExist = False
             _fileName = String.Empty
-            _filesource = String.Empty
+            _videosource = String.Empty
             _genre = String.Empty
             _id = -1
             _imdbid = String.Empty
@@ -1243,7 +1243,7 @@ Public Class FileFolderRenamer
             _director = String.Empty
             _fileExist = False
             _fileName = String.Empty
-            _filesource = String.Empty
+            _videosource = String.Empty
             _genre = String.Empty
             _id = -1
             _imdbid = String.Empty

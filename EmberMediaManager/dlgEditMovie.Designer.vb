@@ -24,8 +24,8 @@ Partial Class dlgEditMovie
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditMovie))
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -43,8 +43,8 @@ Partial Class dlgEditMovie
         Me.lblOriginalTitle = New System.Windows.Forms.Label()
         Me.txtCountry = New System.Windows.Forms.TextBox()
         Me.lblCountry = New System.Windows.Forms.Label()
-        Me.txtFileSource = New System.Windows.Forms.TextBox()
-        Me.lblFileSource = New System.Windows.Forms.Label()
+        Me.txtVideoSource = New System.Windows.Forms.TextBox()
+        Me.lblVideoSource = New System.Windows.Forms.Label()
         Me.btnActorDown = New System.Windows.Forms.Button()
         Me.btnActorUp = New System.Windows.Forms.Button()
         Me.lblSortTilte = New System.Windows.Forms.Label()
@@ -369,8 +369,8 @@ Partial Class dlgEditMovie
         Me.tpDetails.Controls.Add(Me.lblOriginalTitle)
         Me.tpDetails.Controls.Add(Me.txtCountry)
         Me.tpDetails.Controls.Add(Me.lblCountry)
-        Me.tpDetails.Controls.Add(Me.txtFileSource)
-        Me.tpDetails.Controls.Add(Me.lblFileSource)
+        Me.tpDetails.Controls.Add(Me.txtVideoSource)
+        Me.tpDetails.Controls.Add(Me.lblVideoSource)
         Me.tpDetails.Controls.Add(Me.btnActorDown)
         Me.tpDetails.Controls.Add(Me.btnActorUp)
         Me.tpDetails.Controls.Add(Me.lblSortTilte)
@@ -510,24 +510,24 @@ Partial Class dlgEditMovie
         Me.lblCountry.TabIndex = 11
         Me.lblCountry.Text = "Country:"
         '
-        'txtFileSource
+        'txtVideoSource
         '
-        Me.txtFileSource.BackColor = System.Drawing.SystemColors.Window
-        Me.txtFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtFileSource.Location = New System.Drawing.Point(691, 386)
-        Me.txtFileSource.Name = "txtFileSource"
-        Me.txtFileSource.Size = New System.Drawing.Size(213, 22)
-        Me.txtFileSource.TabIndex = 48
+        Me.txtVideoSource.BackColor = System.Drawing.SystemColors.Window
+        Me.txtVideoSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoSource.Location = New System.Drawing.Point(691, 386)
+        Me.txtVideoSource.Name = "txtVideoSource"
+        Me.txtVideoSource.Size = New System.Drawing.Size(213, 22)
+        Me.txtVideoSource.TabIndex = 48
         '
-        'lblFileSource
+        'lblVideoSource
         '
-        Me.lblFileSource.AutoSize = True
-        Me.lblFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFileSource.Location = New System.Drawing.Point(689, 371)
-        Me.lblFileSource.Name = "lblFileSource"
-        Me.lblFileSource.Size = New System.Drawing.Size(78, 13)
-        Me.lblFileSource.TabIndex = 47
-        Me.lblFileSource.Text = "Video Source:"
+        Me.lblVideoSource.AutoSize = True
+        Me.lblVideoSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoSource.Location = New System.Drawing.Point(689, 371)
+        Me.lblVideoSource.Name = "lblVideoSource"
+        Me.lblVideoSource.Size = New System.Drawing.Size(78, 13)
+        Me.lblVideoSource.TabIndex = 47
+        Me.lblVideoSource.Text = "Video Source:"
         '
         'btnActorDown
         '
@@ -2018,12 +2018,12 @@ Partial Class dlgEditMovie
         Me.lvSubtitles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup2.Header = "Local Subtitles"
-        ListViewGroup2.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
+        ListViewGroup1.Header = "Local Subtitles"
+        ListViewGroup1.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem2.Group = ListViewGroup2
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewItem1.Group = ListViewGroup1
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -2148,7 +2148,7 @@ Partial Class dlgEditMovie
         Me.axVLCTrailer.Location = New System.Drawing.Point(6, 6)
         Me.axVLCTrailer.Name = "axVLCTrailer"
         Me.axVLCTrailer.OcxState = CType(resources.GetObject("axVLCTrailer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 449)
+        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 450)
         Me.axVLCTrailer.TabIndex = 9
         '
         'btnSetMovieTrailerDL
@@ -2253,7 +2253,7 @@ Partial Class dlgEditMovie
         Me.axVLCTheme.Location = New System.Drawing.Point(6, 373)
         Me.axVLCTheme.Name = "axVLCTheme"
         Me.axVLCTheme.OcxState = CType(resources.GetObject("axVLCTheme.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCTheme.Size = New System.Drawing.Size(800, 83)
+        Me.axVLCTheme.Size = New System.Drawing.Size(800, 82)
         Me.axVLCTheme.TabIndex = 10
         '
         'btnSetMovieThemeDL
@@ -2598,8 +2598,8 @@ Partial Class dlgEditMovie
     Friend WithEvents btnActorDown As System.Windows.Forms.Button
     Friend WithEvents btnActorUp As System.Windows.Forms.Button
     Friend WithEvents pnlFrameExtrator As System.Windows.Forms.Panel
-    Friend WithEvents txtFileSource As System.Windows.Forms.TextBox
-    Friend WithEvents lblFileSource As System.Windows.Forms.Label
+    Friend WithEvents txtVideoSource As System.Windows.Forms.TextBox
+    Friend WithEvents lblVideoSource As System.Windows.Forms.Label
     Friend WithEvents lblCountry As System.Windows.Forms.Label
     Friend WithEvents txtCountry As System.Windows.Forms.TextBox
     Friend WithEvents txtOriginalTitle As System.Windows.Forms.TextBox

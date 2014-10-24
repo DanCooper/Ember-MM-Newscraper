@@ -3316,7 +3316,7 @@ doCancel:
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Sub cbFilterFileSource_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterFileSource_Movies.SelectedIndexChanged
+    Private Sub cbFilterVideoSource_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterVideoSource_Movies.SelectedIndexChanged
         Try
             While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
@@ -3324,13 +3324,13 @@ doCancel:
             End While
 
             For i As Integer = Me.FilterArray_Movies.Count - 1 To 0 Step -1
-                If Me.FilterArray_Movies(i).ToString.StartsWith("FileSource =") Then
+                If Me.FilterArray_Movies(i).ToString.StartsWith("VideoSource =") Then
                     Me.FilterArray_Movies.RemoveAt(i)
                 End If
             Next
 
-            If Not cbFilterFileSource_Movies.Text = Master.eLang.All Then
-                Me.FilterArray_Movies.Add(String.Format("FileSource = '{0}'", If(cbFilterFileSource_Movies.Text = Master.eLang.None, String.Empty, cbFilterFileSource_Movies.Text)))
+            If Not cbFilterVideoSource_Movies.Text = Master.eLang.All Then
+                Me.FilterArray_Movies.Add(String.Format("VideoSource = '{0}'", If(cbFilterVideoSource_Movies.Text = Master.eLang.None, String.Empty, cbFilterVideoSource_Movies.Text)))
             End If
 
             Me.RunFilter_Movies()
@@ -4089,11 +4089,11 @@ doCancel:
             End If
             AddHandler cbFilterYearMod_Movies.SelectedIndexChanged, AddressOf cbFilterYearMod_Movies_SelectedIndexChanged
 
-            RemoveHandler cbFilterFileSource_Movies.SelectedIndexChanged, AddressOf cbFilterFileSource_Movies_SelectedIndexChanged
-            If Me.cbFilterFileSource_Movies.Items.Count > 0 Then
-                Me.cbFilterFileSource_Movies.SelectedIndex = 0
+            RemoveHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
+            If Me.cbFilterVideoSource_Movies.Items.Count > 0 Then
+                Me.cbFilterVideoSource_Movies.SelectedIndex = 0
             End If
-            AddHandler cbFilterFileSource_Movies.SelectedIndexChanged, AddressOf cbFilterFileSource_Movies_SelectedIndexChanged
+            AddHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
 
             If Reload Then Me.FillList(True, False, False)
         Catch ex As Exception
@@ -8066,7 +8066,7 @@ doCancel:
         Me.btnFilterSortRating_Movies.Enabled = isEnabled
         Me.btnFilterSortTitle_Movies.Enabled = isEnabled
         Me.cbFilterDataField_Movies.Enabled = isEnabled
-        Me.cbFilterFileSource_Movies.Enabled = isEnabled
+        Me.cbFilterVideoSource_Movies.Enabled = isEnabled
         Me.cbFilterYear_Movies.Enabled = isEnabled
         Me.cbFilterYearMod_Movies.Enabled = isEnabled
         Me.cbSearchMovies.Enabled = isEnabled
@@ -8284,7 +8284,7 @@ doCancel:
                                                                       "Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
                                                                       "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, ", _
                                                                       "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, ", _
-                                                                      "FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, ", _
+                                                                      "VideoSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, ", _
                                                                       "HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
                                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, ", _
                                                                       "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies WHERE ID IN ", _
@@ -8294,16 +8294,16 @@ doCancel:
                                                                       "HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, ", _
                                                                       "MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                                       "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
-                                                                      "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, ", _
+                                                                      "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdd, ", _
                                                                       "HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
                                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, ", _
                                                                       "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies ", _
                                                                       "WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch_Movies, "%') ORDER BY ListTitle COLLATE NOCASE;"))
                 Else
                     If Me.chkFilterDuplicates_Movies.Checked Then
-                        Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
+                        Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
                     Else
-                        Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                        Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies ORDER BY ListTitle COLLATE NOCASE;")
                     End If
                 End If
             End If
@@ -8810,7 +8810,7 @@ doCancel:
                 lblStudio.Text = pbStudio.Tag.ToString
             End If
             If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) Then
-                Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename, True, APIXML.GetFileSource(Master.currShow.Filename)))
+                Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename, True, APIXML.GetVideoSource(Master.currShow.Filename)))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -13988,7 +13988,7 @@ doCancel:
         If (Not String.IsNullOrEmpty(Me.cbFilterYear_Movies.Text) AndAlso Not Me.cbFilterYear_Movies.Text = Master.eLang.All) OrElse Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse _
         Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Movies.Checked OrElse Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
         Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse _
-        Me.chkFilterDuplicates_Movies.Checked OrElse Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterFileSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
+        Me.chkFilterDuplicates_Movies.Checked OrElse Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterAnd_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_MovieSets.Click
@@ -14115,7 +14115,7 @@ doCancel:
         If (Not String.IsNullOrEmpty(Me.cbFilterYear_Movies.Text) AndAlso Not Me.cbFilterYear_Movies.Text = Master.eLang.All) OrElse Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse _
             Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Movies.Checked OrElse Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
             Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse _
-            Me.chkFilterDuplicates_Movies.Checked OrElse Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterFileSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
+            Me.chkFilterDuplicates_Movies.Checked OrElse Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterOr_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_MovieSets.Click
@@ -14439,15 +14439,15 @@ doCancel:
                     End If
                 End If
 
-                Dim fromFile As String = APIXML.GetFileSource(tmpMovieDB.Filename)
+                Dim fromFile As String = APIXML.GetVideoSource(tmpMovieDB.Filename)
                 If Not String.IsNullOrEmpty(fromFile) Then
-                    tmpMovieDB.FileSource = fromFile
-                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.FileSource
-                ElseIf String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                    tmpMovieDB.FileSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
-                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.FileSource
+                    tmpMovieDB.VideoSource = fromFile
+                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.VideoSource
+                ElseIf String.IsNullOrEmpty(tmpMovieDB.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                    tmpMovieDB.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
+                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.VideoSource
                 ElseIf Not String.IsNullOrEmpty(tmpMovieDB.Movie.VideoSource) Then
-                    tmpMovieDB.FileSource = tmpMovieDB.Movie.VideoSource
+                    tmpMovieDB.VideoSource = tmpMovieDB.Movie.VideoSource
                 End If
 
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
@@ -16524,24 +16524,24 @@ doCancel:
                     Me.cbFilterYearMod_Movies.SelectedIndex = 0
                     AddHandler Me.cbFilterYearMod_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearMod_Movies_SelectedIndexChanged
 
-                    RemoveHandler Me.cbFilterFileSource_Movies.SelectedIndexChanged, AddressOf Me.cbFilterFileSource_Movies_SelectedIndexChanged
-                    Me.cbFilterFileSource_Movies.Items.Clear()
-                    Me.cbFilterFileSource_Movies.Items.Add(Master.eLang.All)
+                    RemoveHandler Me.cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf Me.cbFilterVideoSource_Movies_SelectedIndexChanged
+                    Me.cbFilterVideoSource_Movies.Items.Clear()
+                    Me.cbFilterVideoSource_Movies.Items.Add(Master.eLang.All)
                     'Cocotus 2014/10/11 Automatically populate avalaible videosources from user settings to sourcefilter instead of using hardcoded list here!
                     Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
                     mySources = clsAdvancedSettings.GetComplexSetting("MovieSources")
                     If Not mySources Is Nothing Then
                         For Each k In mySources
-                            If cbFilterFileSource_Movies.Items.Contains(k.Value) = False Then
-                                Me.cbFilterFileSource_Movies.Items.Add(k.Value)
+                            If cbFilterVideoSource_Movies.Items.Contains(k.Value) = False Then
+                                Me.cbFilterVideoSource_Movies.Items.Add(k.Value)
                             End If
                         Next
                     Else
-                        Me.cbFilterFileSource_Movies.Items.AddRange(APIXML.SourceList.ToArray)
+                        Me.cbFilterVideoSource_Movies.Items.AddRange(APIXML.SourceList.ToArray)
                     End If
-                    Me.cbFilterFileSource_Movies.Items.Add(Master.eLang.None)
-                    Me.cbFilterFileSource_Movies.SelectedIndex = 0
-                    AddHandler Me.cbFilterFileSource_Movies.SelectedIndexChanged, AddressOf Me.cbFilterFileSource_Movies_SelectedIndexChanged
+                    Me.cbFilterVideoSource_Movies.Items.Add(Master.eLang.None)
+                    Me.cbFilterVideoSource_Movies.SelectedIndex = 0
+                    AddHandler Me.cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf Me.cbFilterVideoSource_Movies_SelectedIndexChanged
 
                 End If
 
@@ -17546,12 +17546,12 @@ doCancel:
                 .lblFilterCountries_Movies.Text = Master.eLang.GetString(301, "Country")
                 .lblFilterCountriesClose_Movies.Text = Master.eLang.GetString(19, "Close")
                 .lblFilterCountry_Movies.Text = String.Concat(Master.eLang.GetString(301, "Country"), ":")
-                .lblFilterFileSource_Movies.Text = Master.eLang.GetString(579, "File Source:")
+                .lblFilterVideoSource_Movies.Text = Master.eLang.GetString(824, "Video Source:")
                 .lblFilterGenre_Movies.Text = Master.eLang.GetString(51, "Genre:")
                 .lblFilterGenre_Shows.Text = .lblFilterGenre_Movies.Text
                 .lblFilterGenres_Movies.Text = Master.eLang.GetString(20, "Genre")
                 .lblFilterGenres_Shows.Text = .lblFilterGenres_Movies.Text
-                .lblFilterSource_Movies.Text = Master.eLang.GetString(824, "Video Source:")
+                .lblFilterSource_Movies.Text = Master.eLang.GetString(50, "Source:")
                 .lblFilterSource_Shows.Text = .lblFilterSource_Movies.Text
                 .lblFilterSources_Movies.Text = Master.eLang.GetString(602, "Sources")
                 .lblFilterSources_Shows.Text = .lblFilterSources_Movies.Text
@@ -17652,7 +17652,7 @@ doCancel:
                 TT.SetToolTip(.chkFilterLock_Movies, Master.eLang.GetString(96, "Display only locked movies."))
                 TT.SetToolTip(.chkFilterLock_MovieSets, Master.eLang.GetString(1271, "Display only locked moviesets."))
                 TT.SetToolTip(.txtFilterSource_Movies, Master.eLang.GetString(97, "Display only movies from the selected source."))
-                TT.SetToolTip(.cbFilterFileSource_Movies, Master.eLang.GetString(580, "Display only movies from the selected file source."))
+                TT.SetToolTip(.cbFilterVideoSource_Movies, Master.eLang.GetString(580, "Display only movies from the selected video source."))
                 TT.Active = True
 
                 .cbSearchMovies.Items.Clear()

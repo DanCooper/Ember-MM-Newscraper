@@ -2019,10 +2019,10 @@ Public Class dlgEditMovie
                 End If
 
 
-                If Not String.IsNullOrEmpty(Master.currMovie.FileSource) Then
-                    .txtFileSource.Text = Master.currMovie.FileSource
+                If Not String.IsNullOrEmpty(Master.currMovie.VideoSource) Then
+                    .txtVideoSource.Text = Master.currMovie.VideoSource
                 ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.VideoSource) Then
-                    .txtFileSource.Text = Master.currMovie.Movie.VideoSource
+                    .txtVideoSource.Text = Master.currMovie.Movie.VideoSource
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Certification) Then
@@ -2088,15 +2088,15 @@ Public Class dlgEditMovie
                 Next
 
                 If Not Master.currMovie.Filename = String.Empty AndAlso Master.currMovie.Movie.VideoSource = "" Then
-                    Dim fSource As String = APIXML.GetFileSource(Master.currMovie.Filename)
-                    If Not String.IsNullOrEmpty(fSource) Then
-                        Master.currMovie.FileSource = fSource
-                        Master.currMovie.Movie.VideoSource = Master.currMovie.FileSource
-                    ElseIf String.IsNullOrEmpty(Master.currMovie.FileSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                        Master.currMovie.FileSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(Master.currMovie.Filename)), String.Empty, "*EmberAPP")
-                        Master.currMovie.Movie.VideoSource = Master.currMovie.FileSource
+                    Dim vSource As String = APIXML.GetVideoSource(Master.currMovie.Filename)
+                    If Not String.IsNullOrEmpty(vSource) Then
+                        Master.currMovie.VideoSource = vSource
+                        Master.currMovie.Movie.VideoSource = Master.currMovie.VideoSource
+                    ElseIf String.IsNullOrEmpty(Master.currMovie.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                        Master.currMovie.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(Master.currMovie.Filename)), String.Empty, "*EmberAPP")
+                        Master.currMovie.Movie.VideoSource = Master.currMovie.VideoSource
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.VideoSource) Then
-                        Master.currMovie.FileSource = Master.currMovie.Movie.VideoSource
+                        Master.currMovie.VideoSource = Master.currMovie.Movie.VideoSource
                     End If
                 End If
 
@@ -3018,8 +3018,8 @@ Public Class dlgEditMovie
 
                 Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
 
-                Master.currMovie.FileSource = .txtFileSource.Text.Trim
-                Master.currMovie.Movie.VideoSource = .txtFileSource.Text.Trim
+                Master.currMovie.VideoSource = .txtVideoSource.Text.Trim
+                Master.currMovie.Movie.VideoSource = .txtVideoSource.Text.Trim
 
                 If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
                     Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.MovieScraperCertForMPAA AndAlso Master.eSettings.MovieScraperCertOnlyValue AndAlso .lbMPAA.SelectedItem.ToString.Contains(":"), .lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), .lbMPAA.SelectedItem.ToString), " ", .txtMPAADesc.Text).Trim
@@ -3339,7 +3339,7 @@ Public Class dlgEditMovie
         Me.lblCountry.Text = String.Concat(Master.eLang.GetString(301, "Country"), ":")
         Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
         Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
-        Me.lblFileSource.Text = Master.eLang.GetString(824, "Video Source:")
+        Me.lblVideoSource.Text = Master.eLang.GetString(824, "Video Source:")
         Me.lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
         Me.lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
         Me.lblMPAADesc.Text = Master.eLang.GetString(229, "MPAA Rating Description:")

@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -294,8 +294,8 @@ Partial Class frmMain
         Me.chkFilterMarkCustom2_Movies = New System.Windows.Forms.CheckBox()
         Me.chkFilterMarkCustom1_Movies = New System.Windows.Forms.CheckBox()
         Me.txtFilterSource_Movies = New System.Windows.Forms.TextBox()
-        Me.lblFilterFileSource_Movies = New System.Windows.Forms.Label()
-        Me.cbFilterFileSource_Movies = New System.Windows.Forms.ComboBox()
+        Me.lblFilterVideoSource_Movies = New System.Windows.Forms.Label()
+        Me.cbFilterVideoSource_Movies = New System.Windows.Forms.ComboBox()
         Me.chkFilterLock_Movies = New System.Windows.Forms.CheckBox()
         Me.gbFilterModifier_Movies = New System.Windows.Forms.GroupBox()
         Me.rbFilterAnd_Movies = New System.Windows.Forms.RadioButton()
@@ -383,6 +383,7 @@ Partial Class frmMain
         Me.pnlInfoPanel = New System.Windows.Forms.Panel()
         Me.pnlMoviesInSet = New System.Windows.Forms.Panel()
         Me.lvMoviesInSet = New System.Windows.Forms.ListView()
+        Me.ilMoviesInSet = New System.Windows.Forms.ImageList(Me.components)
         Me.lblMoviesInSetHeader = New System.Windows.Forms.Label()
         Me.txtCerts = New System.Windows.Forms.TextBox()
         Me.lblCertsHeader = New System.Windows.Forms.Label()
@@ -977,7 +978,6 @@ Partial Class frmMain
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni_Shows = New System.Windows.Forms.Timer(Me.components)
-        Me.ilMoviesInSet = New System.Windows.Forms.ImageList(Me.components)
         Me.StatusStrip.SuspendLayout()
         Me.mnuMain.SuspendLayout()
         CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1760,8 +1760,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = False
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2360,8 +2360,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = False
         Me.dgvMovieSets.AllowUserToDeleteRows = False
         Me.dgvMovieSets.AllowUserToResizeRows = False
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2494,8 +2494,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2695,8 +2695,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2841,8 +2841,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -3337,8 +3337,8 @@ Partial Class frmMain
         Me.gbFilterSpecific_Movies.Controls.Add(Me.chkFilterMarkCustom2_Movies)
         Me.gbFilterSpecific_Movies.Controls.Add(Me.chkFilterMarkCustom1_Movies)
         Me.gbFilterSpecific_Movies.Controls.Add(Me.txtFilterSource_Movies)
-        Me.gbFilterSpecific_Movies.Controls.Add(Me.lblFilterFileSource_Movies)
-        Me.gbFilterSpecific_Movies.Controls.Add(Me.cbFilterFileSource_Movies)
+        Me.gbFilterSpecific_Movies.Controls.Add(Me.lblFilterVideoSource_Movies)
+        Me.gbFilterSpecific_Movies.Controls.Add(Me.cbFilterVideoSource_Movies)
         Me.gbFilterSpecific_Movies.Controls.Add(Me.chkFilterLock_Movies)
         Me.gbFilterSpecific_Movies.Controls.Add(Me.gbFilterModifier_Movies)
         Me.gbFilterSpecific_Movies.Controls.Add(Me.chkFilterNew_Movies)
@@ -3463,36 +3463,36 @@ Partial Class frmMain
         Me.txtFilterSource_Movies.Size = New System.Drawing.Size(160, 22)
         Me.txtFilterSource_Movies.TabIndex = 11
         '
-        'lblFilterFileSource_Movies
+        'lblFilterVideoSource_Movies
         '
-        Me.lblFilterFileSource_Movies.AutoSize = True
-        Me.lblFilterFileSource_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilterFileSource_Movies.Location = New System.Drawing.Point(143, 65)
-        Me.lblFilterFileSource_Movies.Name = "lblFilterFileSource_Movies"
-        Me.lblFilterFileSource_Movies.Size = New System.Drawing.Size(66, 13)
-        Me.lblFilterFileSource_Movies.TabIndex = 8
-        Me.lblFilterFileSource_Movies.Text = "File Source:"
+        Me.lblFilterVideoSource_Movies.AutoSize = True
+        Me.lblFilterVideoSource_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterVideoSource_Movies.Location = New System.Drawing.Point(143, 65)
+        Me.lblFilterVideoSource_Movies.Name = "lblFilterVideoSource_Movies"
+        Me.lblFilterVideoSource_Movies.Size = New System.Drawing.Size(78, 13)
+        Me.lblFilterVideoSource_Movies.TabIndex = 8
+        Me.lblFilterVideoSource_Movies.Text = "Video Source:"
         '
-        'cbFilterFileSource_Movies
+        'cbFilterVideoSource_Movies
         '
-        Me.cbFilterFileSource_Movies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterFileSource_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbFilterFileSource_Movies.FormattingEnabled = True
-        Me.cbFilterFileSource_Movies.Location = New System.Drawing.Point(250, 62)
-        Me.cbFilterFileSource_Movies.Name = "cbFilterFileSource_Movies"
-        Me.cbFilterFileSource_Movies.Size = New System.Drawing.Size(160, 21)
-        Me.cbFilterFileSource_Movies.TabIndex = 9
+        Me.cbFilterVideoSource_Movies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterVideoSource_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbFilterVideoSource_Movies.FormattingEnabled = True
+        Me.cbFilterVideoSource_Movies.Location = New System.Drawing.Point(250, 62)
+        Me.cbFilterVideoSource_Movies.Name = "cbFilterVideoSource_Movies"
+        Me.cbFilterVideoSource_Movies.Size = New System.Drawing.Size(160, 21)
+        Me.cbFilterVideoSource_Movies.TabIndex = 9
         '
         'chkFilterLock_Movies
         '
-        Me.chkFilterLock_Movies.AutoSize = True
-        Me.chkFilterLock_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFilterLock_Movies.AutoSize = true
+        Me.chkFilterLock_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkFilterLock_Movies.Location = New System.Drawing.Point(6, 172)
         Me.chkFilterLock_Movies.Name = "chkFilterLock_Movies"
         Me.chkFilterLock_Movies.Size = New System.Drawing.Size(62, 17)
         Me.chkFilterLock_Movies.TabIndex = 2
         Me.chkFilterLock_Movies.Text = "Locked"
-        Me.chkFilterLock_Movies.UseVisualStyleBackColor = True
+        Me.chkFilterLock_Movies.UseVisualStyleBackColor = true
         '
         'gbFilterModifier_Movies
         '
@@ -3502,49 +3502,49 @@ Partial Class frmMain
         Me.gbFilterModifier_Movies.Name = "gbFilterModifier_Movies"
         Me.gbFilterModifier_Movies.Size = New System.Drawing.Size(135, 40)
         Me.gbFilterModifier_Movies.TabIndex = 3
-        Me.gbFilterModifier_Movies.TabStop = False
+        Me.gbFilterModifier_Movies.TabStop = false
         Me.gbFilterModifier_Movies.Text = "Modifier"
         '
         'rbFilterAnd_Movies
         '
-        Me.rbFilterAnd_Movies.AutoSize = True
-        Me.rbFilterAnd_Movies.Checked = True
-        Me.rbFilterAnd_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbFilterAnd_Movies.AutoSize = true
+        Me.rbFilterAnd_Movies.Checked = true
+        Me.rbFilterAnd_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.rbFilterAnd_Movies.Location = New System.Drawing.Point(6, 16)
         Me.rbFilterAnd_Movies.Name = "rbFilterAnd_Movies"
         Me.rbFilterAnd_Movies.Size = New System.Drawing.Size(46, 17)
         Me.rbFilterAnd_Movies.TabIndex = 0
-        Me.rbFilterAnd_Movies.TabStop = True
+        Me.rbFilterAnd_Movies.TabStop = true
         Me.rbFilterAnd_Movies.Text = "And"
-        Me.rbFilterAnd_Movies.UseVisualStyleBackColor = True
+        Me.rbFilterAnd_Movies.UseVisualStyleBackColor = true
         '
         'rbFilterOr_Movies
         '
-        Me.rbFilterOr_Movies.AutoSize = True
-        Me.rbFilterOr_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbFilterOr_Movies.AutoSize = true
+        Me.rbFilterOr_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.rbFilterOr_Movies.Location = New System.Drawing.Point(81, 16)
         Me.rbFilterOr_Movies.Name = "rbFilterOr_Movies"
         Me.rbFilterOr_Movies.Size = New System.Drawing.Size(38, 17)
         Me.rbFilterOr_Movies.TabIndex = 1
         Me.rbFilterOr_Movies.Text = "Or"
-        Me.rbFilterOr_Movies.UseVisualStyleBackColor = True
+        Me.rbFilterOr_Movies.UseVisualStyleBackColor = true
         '
         'chkFilterNew_Movies
         '
-        Me.chkFilterNew_Movies.AutoSize = True
-        Me.chkFilterNew_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterNew_Movies.AutoSize = true
+        Me.chkFilterNew_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkFilterNew_Movies.Location = New System.Drawing.Point(6, 64)
         Me.chkFilterNew_Movies.Name = "chkFilterNew_Movies"
         Me.chkFilterNew_Movies.Size = New System.Drawing.Size(49, 17)
         Me.chkFilterNew_Movies.TabIndex = 0
         Me.chkFilterNew_Movies.Text = "New"
-        Me.chkFilterNew_Movies.UseVisualStyleBackColor = True
+        Me.chkFilterNew_Movies.UseVisualStyleBackColor = true
         '
         'cbFilterYear_Movies
         '
         Me.cbFilterYear_Movies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterYear_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbFilterYear_Movies.FormattingEnabled = True
+        Me.cbFilterYear_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.cbFilterYear_Movies.FormattingEnabled = true
         Me.cbFilterYear_Movies.Items.AddRange(New Object() {"=", ">", "<", "!="})
         Me.cbFilterYear_Movies.Location = New System.Drawing.Point(315, 38)
         Me.cbFilterYear_Movies.Name = "cbFilterYear_Movies"
@@ -3553,20 +3553,20 @@ Partial Class frmMain
         '
         'chkFilterMark_Movies
         '
-        Me.chkFilterMark_Movies.AutoSize = True
-        Me.chkFilterMark_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterMark_Movies.AutoSize = true
+        Me.chkFilterMark_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkFilterMark_Movies.Location = New System.Drawing.Point(6, 82)
         Me.chkFilterMark_Movies.Name = "chkFilterMark_Movies"
         Me.chkFilterMark_Movies.Size = New System.Drawing.Size(65, 17)
         Me.chkFilterMark_Movies.TabIndex = 1
         Me.chkFilterMark_Movies.Text = "Marked"
-        Me.chkFilterMark_Movies.UseVisualStyleBackColor = True
+        Me.chkFilterMark_Movies.UseVisualStyleBackColor = true
         '
         'cbFilterYearMod_Movies
         '
         Me.cbFilterYearMod_Movies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterYearMod_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbFilterYearMod_Movies.FormattingEnabled = True
+        Me.cbFilterYearMod_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.cbFilterYearMod_Movies.FormattingEnabled = true
         Me.cbFilterYearMod_Movies.Items.AddRange(New Object() {"=", ">", "<", "<>"})
         Me.cbFilterYearMod_Movies.Location = New System.Drawing.Point(250, 38)
         Me.cbFilterYearMod_Movies.Name = "cbFilterYearMod_Movies"
@@ -3575,8 +3575,8 @@ Partial Class frmMain
         '
         'lblFilterYear_Movies
         '
-        Me.lblFilterYear_Movies.AutoSize = True
-        Me.lblFilterYear_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterYear_Movies.AutoSize = true
+        Me.lblFilterYear_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterYear_Movies.Location = New System.Drawing.Point(143, 40)
         Me.lblFilterYear_Movies.Name = "lblFilterYear_Movies"
         Me.lblFilterYear_Movies.Size = New System.Drawing.Size(31, 13)
@@ -3586,27 +3586,27 @@ Partial Class frmMain
         'txtFilterGenre_Movies
         '
         Me.txtFilterGenre_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilterGenre_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFilterGenre_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtFilterGenre_Movies.Location = New System.Drawing.Point(250, 13)
         Me.txtFilterGenre_Movies.Name = "txtFilterGenre_Movies"
-        Me.txtFilterGenre_Movies.ReadOnly = True
+        Me.txtFilterGenre_Movies.ReadOnly = true
         Me.txtFilterGenre_Movies.Size = New System.Drawing.Size(160, 22)
         Me.txtFilterGenre_Movies.TabIndex = 4
         '
         'lblFilterSource_Movies
         '
-        Me.lblFilterSource_Movies.AutoSize = True
-        Me.lblFilterSource_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterSource_Movies.AutoSize = true
+        Me.lblFilterSource_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterSource_Movies.Location = New System.Drawing.Point(143, 89)
         Me.lblFilterSource_Movies.Name = "lblFilterSource_Movies"
-        Me.lblFilterSource_Movies.Size = New System.Drawing.Size(78, 13)
+        Me.lblFilterSource_Movies.Size = New System.Drawing.Size(45, 13)
         Me.lblFilterSource_Movies.TabIndex = 10
-        Me.lblFilterSource_Movies.Text = "Video Source:"
+        Me.lblFilterSource_Movies.Text = "Source:"
         '
         'lblFilterGenre_Movies
         '
-        Me.lblFilterGenre_Movies.AutoSize = True
-        Me.lblFilterGenre_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterGenre_Movies.AutoSize = true
+        Me.lblFilterGenre_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterGenre_Movies.Location = New System.Drawing.Point(143, 15)
         Me.lblFilterGenre_Movies.Name = "lblFilterGenre_Movies"
         Me.lblFilterGenre_Movies.Size = New System.Drawing.Size(41, 13)
@@ -3615,40 +3615,40 @@ Partial Class frmMain
         '
         'btnFilterDown_Movies
         '
-        Me.btnFilterDown_Movies.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterDown_Movies.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnFilterDown_Movies.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterDown_Movies.Enabled = False
-        Me.btnFilterDown_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterDown_Movies.Enabled = false
+        Me.btnFilterDown_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.btnFilterDown_Movies.Location = New System.Drawing.Point(527, 1)
         Me.btnFilterDown_Movies.Name = "btnFilterDown_Movies"
         Me.btnFilterDown_Movies.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterDown_Movies.TabIndex = 2
-        Me.btnFilterDown_Movies.TabStop = False
+        Me.btnFilterDown_Movies.TabStop = false
         Me.btnFilterDown_Movies.Text = "v"
         Me.btnFilterDown_Movies.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterDown_Movies.UseVisualStyleBackColor = False
+        Me.btnFilterDown_Movies.UseVisualStyleBackColor = false
         '
         'btnFilterUp_Movies
         '
-        Me.btnFilterUp_Movies.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterUp_Movies.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnFilterUp_Movies.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterUp_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterUp_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.btnFilterUp_Movies.Location = New System.Drawing.Point(495, 1)
         Me.btnFilterUp_Movies.Name = "btnFilterUp_Movies"
         Me.btnFilterUp_Movies.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterUp_Movies.TabIndex = 1
-        Me.btnFilterUp_Movies.TabStop = False
+        Me.btnFilterUp_Movies.TabStop = false
         Me.btnFilterUp_Movies.Text = "^"
         Me.btnFilterUp_Movies.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterUp_Movies.UseVisualStyleBackColor = False
+        Me.btnFilterUp_Movies.UseVisualStyleBackColor = false
         '
         'lblFilter_Movies
         '
-        Me.lblFilter_Movies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblFilter_Movies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.lblFilter_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblFilter_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilter_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilter_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilter_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilter_Movies.Location = New System.Drawing.Point(4, 3)
         Me.lblFilter_Movies.Name = "lblFilter_Movies"
@@ -3672,22 +3672,22 @@ Partial Class frmMain
         Me.pnlFilter_MovieSets.Name = "pnlFilter_MovieSets"
         Me.pnlFilter_MovieSets.Size = New System.Drawing.Size(567, 222)
         Me.pnlFilter_MovieSets.TabIndex = 26
-        Me.pnlFilter_MovieSets.Visible = False
+        Me.pnlFilter_MovieSets.Visible = false
         '
         'gbFilterSorting_MovieSets
         '
-        Me.gbFilterSorting_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbFilterSorting_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFilterSorting_MovieSets.Location = New System.Drawing.Point(2, 106)
         Me.gbFilterSorting_MovieSets.Name = "gbFilterSorting_MovieSets"
         Me.gbFilterSorting_MovieSets.Size = New System.Drawing.Size(131, 77)
         Me.gbFilterSorting_MovieSets.TabIndex = 4
-        Me.gbFilterSorting_MovieSets.TabStop = False
+        Me.gbFilterSorting_MovieSets.TabStop = false
         Me.gbFilterSorting_MovieSets.Text = "Extra Sorting"
         '
         'btnClearFilters_MovieSets
         '
-        Me.btnClearFilters_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnClearFilters_MovieSets.Image = CType(resources.GetObject("btnClearFilters_MovieSets.Image"), System.Drawing.Image)
+        Me.btnClearFilters_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnClearFilters_MovieSets.Image = CType(resources.GetObject("btnClearFilters_MovieSets.Image"),System.Drawing.Image)
         Me.btnClearFilters_MovieSets.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnClearFilters_MovieSets.Location = New System.Drawing.Point(21, 193)
         Me.btnClearFilters_MovieSets.Name = "btnClearFilters_MovieSets"
@@ -3695,53 +3695,53 @@ Partial Class frmMain
         Me.btnClearFilters_MovieSets.TabIndex = 5
         Me.btnClearFilters_MovieSets.Text = "Clear Filters"
         Me.btnClearFilters_MovieSets.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnClearFilters_MovieSets.UseVisualStyleBackColor = True
+        Me.btnClearFilters_MovieSets.UseVisualStyleBackColor = true
         '
         'gbFilterGeneral_MovieSets
         '
         Me.gbFilterGeneral_MovieSets.Controls.Add(Me.chkFilterOne_MovieSets)
         Me.gbFilterGeneral_MovieSets.Controls.Add(Me.chkFilterEmpty_MovieSets)
         Me.gbFilterGeneral_MovieSets.Controls.Add(Me.chkFilterMissing_MovieSets)
-        Me.gbFilterGeneral_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbFilterGeneral_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFilterGeneral_MovieSets.Location = New System.Drawing.Point(3, 22)
         Me.gbFilterGeneral_MovieSets.Name = "gbFilterGeneral_MovieSets"
         Me.gbFilterGeneral_MovieSets.Size = New System.Drawing.Size(131, 78)
         Me.gbFilterGeneral_MovieSets.TabIndex = 3
-        Me.gbFilterGeneral_MovieSets.TabStop = False
+        Me.gbFilterGeneral_MovieSets.TabStop = false
         Me.gbFilterGeneral_MovieSets.Text = "General"
         '
         'chkFilterOne_MovieSets
         '
-        Me.chkFilterOne_MovieSets.AutoSize = True
-        Me.chkFilterOne_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterOne_MovieSets.AutoSize = true
+        Me.chkFilterOne_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkFilterOne_MovieSets.Location = New System.Drawing.Point(6, 36)
         Me.chkFilterOne_MovieSets.Name = "chkFilterOne_MovieSets"
         Me.chkFilterOne_MovieSets.Size = New System.Drawing.Size(109, 17)
         Me.chkFilterOne_MovieSets.TabIndex = 3
         Me.chkFilterOne_MovieSets.Text = "Only One Movie"
-        Me.chkFilterOne_MovieSets.UseVisualStyleBackColor = True
+        Me.chkFilterOne_MovieSets.UseVisualStyleBackColor = true
         '
         'chkFilterEmpty_MovieSets
         '
-        Me.chkFilterEmpty_MovieSets.AutoSize = True
-        Me.chkFilterEmpty_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterEmpty_MovieSets.AutoSize = true
+        Me.chkFilterEmpty_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkFilterEmpty_MovieSets.Location = New System.Drawing.Point(6, 18)
         Me.chkFilterEmpty_MovieSets.Name = "chkFilterEmpty_MovieSets"
         Me.chkFilterEmpty_MovieSets.Size = New System.Drawing.Size(57, 17)
         Me.chkFilterEmpty_MovieSets.TabIndex = 2
         Me.chkFilterEmpty_MovieSets.Text = "Empty"
-        Me.chkFilterEmpty_MovieSets.UseVisualStyleBackColor = True
+        Me.chkFilterEmpty_MovieSets.UseVisualStyleBackColor = true
         '
         'chkFilterMissing_MovieSets
         '
-        Me.chkFilterMissing_MovieSets.AutoSize = True
-        Me.chkFilterMissing_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterMissing_MovieSets.AutoSize = true
+        Me.chkFilterMissing_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkFilterMissing_MovieSets.Location = New System.Drawing.Point(6, 54)
         Me.chkFilterMissing_MovieSets.Name = "chkFilterMissing_MovieSets"
         Me.chkFilterMissing_MovieSets.Size = New System.Drawing.Size(96, 17)
         Me.chkFilterMissing_MovieSets.TabIndex = 1
         Me.chkFilterMissing_MovieSets.Text = "Missing Items"
-        Me.chkFilterMissing_MovieSets.UseVisualStyleBackColor = True
+        Me.chkFilterMissing_MovieSets.UseVisualStyleBackColor = true
         '
         'gbFilterSpecific_MovieSets
         '
@@ -3749,24 +3749,24 @@ Partial Class frmMain
         Me.gbFilterSpecific_MovieSets.Controls.Add(Me.gbFilterModifier_MovieSets)
         Me.gbFilterSpecific_MovieSets.Controls.Add(Me.chkFilterNew_MovieSets)
         Me.gbFilterSpecific_MovieSets.Controls.Add(Me.chkFilterMark_MovieSets)
-        Me.gbFilterSpecific_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbFilterSpecific_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFilterSpecific_MovieSets.Location = New System.Drawing.Point(135, 22)
         Me.gbFilterSpecific_MovieSets.Name = "gbFilterSpecific_MovieSets"
         Me.gbFilterSpecific_MovieSets.Size = New System.Drawing.Size(422, 195)
         Me.gbFilterSpecific_MovieSets.TabIndex = 6
-        Me.gbFilterSpecific_MovieSets.TabStop = False
+        Me.gbFilterSpecific_MovieSets.TabStop = false
         Me.gbFilterSpecific_MovieSets.Text = "Specific"
         '
         'chkFilterLock_MovieSets
         '
-        Me.chkFilterLock_MovieSets.AutoSize = True
-        Me.chkFilterLock_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFilterLock_MovieSets.AutoSize = true
+        Me.chkFilterLock_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkFilterLock_MovieSets.Location = New System.Drawing.Point(6, 172)
         Me.chkFilterLock_MovieSets.Name = "chkFilterLock_MovieSets"
         Me.chkFilterLock_MovieSets.Size = New System.Drawing.Size(62, 17)
         Me.chkFilterLock_MovieSets.TabIndex = 2
         Me.chkFilterLock_MovieSets.Text = "Locked"
-        Me.chkFilterLock_MovieSets.UseVisualStyleBackColor = True
+        Me.chkFilterLock_MovieSets.UseVisualStyleBackColor = true
         '
         'gbFilterModifier_MovieSets
         '
@@ -3776,91 +3776,91 @@ Partial Class frmMain
         Me.gbFilterModifier_MovieSets.Name = "gbFilterModifier_MovieSets"
         Me.gbFilterModifier_MovieSets.Size = New System.Drawing.Size(135, 40)
         Me.gbFilterModifier_MovieSets.TabIndex = 3
-        Me.gbFilterModifier_MovieSets.TabStop = False
+        Me.gbFilterModifier_MovieSets.TabStop = false
         Me.gbFilterModifier_MovieSets.Text = "Modifier"
         '
         'rbFilterAnd_MovieSets
         '
-        Me.rbFilterAnd_MovieSets.AutoSize = True
-        Me.rbFilterAnd_MovieSets.Checked = True
-        Me.rbFilterAnd_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbFilterAnd_MovieSets.AutoSize = true
+        Me.rbFilterAnd_MovieSets.Checked = true
+        Me.rbFilterAnd_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.rbFilterAnd_MovieSets.Location = New System.Drawing.Point(6, 16)
         Me.rbFilterAnd_MovieSets.Name = "rbFilterAnd_MovieSets"
         Me.rbFilterAnd_MovieSets.Size = New System.Drawing.Size(46, 17)
         Me.rbFilterAnd_MovieSets.TabIndex = 0
-        Me.rbFilterAnd_MovieSets.TabStop = True
+        Me.rbFilterAnd_MovieSets.TabStop = true
         Me.rbFilterAnd_MovieSets.Text = "And"
-        Me.rbFilterAnd_MovieSets.UseVisualStyleBackColor = True
+        Me.rbFilterAnd_MovieSets.UseVisualStyleBackColor = true
         '
         'rbFilterOr_MovieSets
         '
-        Me.rbFilterOr_MovieSets.AutoSize = True
-        Me.rbFilterOr_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbFilterOr_MovieSets.AutoSize = true
+        Me.rbFilterOr_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.rbFilterOr_MovieSets.Location = New System.Drawing.Point(81, 16)
         Me.rbFilterOr_MovieSets.Name = "rbFilterOr_MovieSets"
         Me.rbFilterOr_MovieSets.Size = New System.Drawing.Size(38, 17)
         Me.rbFilterOr_MovieSets.TabIndex = 1
         Me.rbFilterOr_MovieSets.Text = "Or"
-        Me.rbFilterOr_MovieSets.UseVisualStyleBackColor = True
+        Me.rbFilterOr_MovieSets.UseVisualStyleBackColor = true
         '
         'chkFilterNew_MovieSets
         '
-        Me.chkFilterNew_MovieSets.AutoSize = True
-        Me.chkFilterNew_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterNew_MovieSets.AutoSize = true
+        Me.chkFilterNew_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkFilterNew_MovieSets.Location = New System.Drawing.Point(6, 64)
         Me.chkFilterNew_MovieSets.Name = "chkFilterNew_MovieSets"
         Me.chkFilterNew_MovieSets.Size = New System.Drawing.Size(49, 17)
         Me.chkFilterNew_MovieSets.TabIndex = 0
         Me.chkFilterNew_MovieSets.Text = "New"
-        Me.chkFilterNew_MovieSets.UseVisualStyleBackColor = True
+        Me.chkFilterNew_MovieSets.UseVisualStyleBackColor = true
         '
         'chkFilterMark_MovieSets
         '
-        Me.chkFilterMark_MovieSets.AutoSize = True
-        Me.chkFilterMark_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterMark_MovieSets.AutoSize = true
+        Me.chkFilterMark_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkFilterMark_MovieSets.Location = New System.Drawing.Point(6, 82)
         Me.chkFilterMark_MovieSets.Name = "chkFilterMark_MovieSets"
         Me.chkFilterMark_MovieSets.Size = New System.Drawing.Size(65, 17)
         Me.chkFilterMark_MovieSets.TabIndex = 1
         Me.chkFilterMark_MovieSets.Text = "Marked"
-        Me.chkFilterMark_MovieSets.UseVisualStyleBackColor = True
+        Me.chkFilterMark_MovieSets.UseVisualStyleBackColor = true
         '
         'btnFilterDown_MovieSets
         '
-        Me.btnFilterDown_MovieSets.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterDown_MovieSets.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnFilterDown_MovieSets.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterDown_MovieSets.Enabled = False
-        Me.btnFilterDown_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterDown_MovieSets.Enabled = false
+        Me.btnFilterDown_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.btnFilterDown_MovieSets.Location = New System.Drawing.Point(527, 1)
         Me.btnFilterDown_MovieSets.Name = "btnFilterDown_MovieSets"
         Me.btnFilterDown_MovieSets.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterDown_MovieSets.TabIndex = 2
-        Me.btnFilterDown_MovieSets.TabStop = False
+        Me.btnFilterDown_MovieSets.TabStop = false
         Me.btnFilterDown_MovieSets.Text = "v"
         Me.btnFilterDown_MovieSets.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterDown_MovieSets.UseVisualStyleBackColor = False
+        Me.btnFilterDown_MovieSets.UseVisualStyleBackColor = false
         '
         'btnFilterUp_MovieSets
         '
-        Me.btnFilterUp_MovieSets.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterUp_MovieSets.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnFilterUp_MovieSets.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterUp_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterUp_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.btnFilterUp_MovieSets.Location = New System.Drawing.Point(495, 1)
         Me.btnFilterUp_MovieSets.Name = "btnFilterUp_MovieSets"
         Me.btnFilterUp_MovieSets.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterUp_MovieSets.TabIndex = 1
-        Me.btnFilterUp_MovieSets.TabStop = False
+        Me.btnFilterUp_MovieSets.TabStop = false
         Me.btnFilterUp_MovieSets.Text = "^"
         Me.btnFilterUp_MovieSets.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterUp_MovieSets.UseVisualStyleBackColor = False
+        Me.btnFilterUp_MovieSets.UseVisualStyleBackColor = false
         '
         'lblFilter_MovieSets
         '
-        Me.lblFilter_MovieSets.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblFilter_MovieSets.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.lblFilter_MovieSets.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblFilter_MovieSets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilter_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilter_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilter_MovieSets.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilter_MovieSets.Location = New System.Drawing.Point(4, 3)
         Me.lblFilter_MovieSets.Name = "lblFilter_MovieSets"
@@ -3884,22 +3884,22 @@ Partial Class frmMain
         Me.pnlFilter_Shows.Name = "pnlFilter_Shows"
         Me.pnlFilter_Shows.Size = New System.Drawing.Size(567, 222)
         Me.pnlFilter_Shows.TabIndex = 27
-        Me.pnlFilter_Shows.Visible = False
+        Me.pnlFilter_Shows.Visible = false
         '
         'gbFilterSorting_Shows
         '
-        Me.gbFilterSorting_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbFilterSorting_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFilterSorting_Shows.Location = New System.Drawing.Point(2, 106)
         Me.gbFilterSorting_Shows.Name = "gbFilterSorting_Shows"
         Me.gbFilterSorting_Shows.Size = New System.Drawing.Size(131, 77)
         Me.gbFilterSorting_Shows.TabIndex = 4
-        Me.gbFilterSorting_Shows.TabStop = False
+        Me.gbFilterSorting_Shows.TabStop = false
         Me.gbFilterSorting_Shows.Text = "Extra Sorting"
         '
         'btnClearFilters_Shows
         '
-        Me.btnClearFilters_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnClearFilters_Shows.Image = CType(resources.GetObject("btnClearFilters_Shows.Image"), System.Drawing.Image)
+        Me.btnClearFilters_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnClearFilters_Shows.Image = CType(resources.GetObject("btnClearFilters_Shows.Image"),System.Drawing.Image)
         Me.btnClearFilters_Shows.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnClearFilters_Shows.Location = New System.Drawing.Point(21, 193)
         Me.btnClearFilters_Shows.Name = "btnClearFilters_Shows"
@@ -3907,29 +3907,29 @@ Partial Class frmMain
         Me.btnClearFilters_Shows.TabIndex = 5
         Me.btnClearFilters_Shows.Text = "Clear Filters"
         Me.btnClearFilters_Shows.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnClearFilters_Shows.UseVisualStyleBackColor = True
+        Me.btnClearFilters_Shows.UseVisualStyleBackColor = true
         '
         'gbFilterGeneral_Shows
         '
         Me.gbFilterGeneral_Shows.Controls.Add(Me.chkFilterMissing_Shows)
-        Me.gbFilterGeneral_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbFilterGeneral_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFilterGeneral_Shows.Location = New System.Drawing.Point(3, 22)
         Me.gbFilterGeneral_Shows.Name = "gbFilterGeneral_Shows"
         Me.gbFilterGeneral_Shows.Size = New System.Drawing.Size(131, 78)
         Me.gbFilterGeneral_Shows.TabIndex = 3
-        Me.gbFilterGeneral_Shows.TabStop = False
+        Me.gbFilterGeneral_Shows.TabStop = false
         Me.gbFilterGeneral_Shows.Text = "General"
         '
         'chkFilterMissing_Shows
         '
-        Me.chkFilterMissing_Shows.AutoSize = True
-        Me.chkFilterMissing_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterMissing_Shows.AutoSize = true
+        Me.chkFilterMissing_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkFilterMissing_Shows.Location = New System.Drawing.Point(6, 36)
         Me.chkFilterMissing_Shows.Name = "chkFilterMissing_Shows"
         Me.chkFilterMissing_Shows.Size = New System.Drawing.Size(96, 17)
         Me.chkFilterMissing_Shows.TabIndex = 1
         Me.chkFilterMissing_Shows.Text = "Missing Items"
-        Me.chkFilterMissing_Shows.UseVisualStyleBackColor = True
+        Me.chkFilterMissing_Shows.UseVisualStyleBackColor = true
         '
         'gbFilterSpecific_Shows
         '
@@ -3941,44 +3941,44 @@ Partial Class frmMain
         Me.gbFilterSpecific_Shows.Controls.Add(Me.chkFilterMark_Shows)
         Me.gbFilterSpecific_Shows.Controls.Add(Me.txtFilterGenre_Shows)
         Me.gbFilterSpecific_Shows.Controls.Add(Me.lblFilterGenre_Shows)
-        Me.gbFilterSpecific_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbFilterSpecific_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFilterSpecific_Shows.Location = New System.Drawing.Point(135, 22)
         Me.gbFilterSpecific_Shows.Name = "gbFilterSpecific_Shows"
         Me.gbFilterSpecific_Shows.Size = New System.Drawing.Size(422, 195)
         Me.gbFilterSpecific_Shows.TabIndex = 6
-        Me.gbFilterSpecific_Shows.TabStop = False
+        Me.gbFilterSpecific_Shows.TabStop = false
         Me.gbFilterSpecific_Shows.Text = "Specific"
         '
         'txtFilterSource_Shows
         '
         Me.txtFilterSource_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilterSource_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFilterSource_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtFilterSource_Shows.Location = New System.Drawing.Point(250, 86)
         Me.txtFilterSource_Shows.Name = "txtFilterSource_Shows"
-        Me.txtFilterSource_Shows.ReadOnly = True
+        Me.txtFilterSource_Shows.ReadOnly = true
         Me.txtFilterSource_Shows.Size = New System.Drawing.Size(160, 22)
         Me.txtFilterSource_Shows.TabIndex = 33
         '
         'lblFilterSource_Shows
         '
-        Me.lblFilterSource_Shows.AutoSize = True
-        Me.lblFilterSource_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterSource_Shows.AutoSize = true
+        Me.lblFilterSource_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterSource_Shows.Location = New System.Drawing.Point(143, 89)
         Me.lblFilterSource_Shows.Name = "lblFilterSource_Shows"
-        Me.lblFilterSource_Shows.Size = New System.Drawing.Size(78, 13)
+        Me.lblFilterSource_Shows.Size = New System.Drawing.Size(45, 13)
         Me.lblFilterSource_Shows.TabIndex = 32
-        Me.lblFilterSource_Shows.Text = "Video Source:"
+        Me.lblFilterSource_Shows.Text = "Source:"
         '
         'chkFilterLock_Shows
         '
-        Me.chkFilterLock_Shows.AutoSize = True
-        Me.chkFilterLock_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFilterLock_Shows.AutoSize = true
+        Me.chkFilterLock_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkFilterLock_Shows.Location = New System.Drawing.Point(6, 172)
         Me.chkFilterLock_Shows.Name = "chkFilterLock_Shows"
         Me.chkFilterLock_Shows.Size = New System.Drawing.Size(62, 17)
         Me.chkFilterLock_Shows.TabIndex = 2
         Me.chkFilterLock_Shows.Text = "Locked"
-        Me.chkFilterLock_Shows.UseVisualStyleBackColor = True
+        Me.chkFilterLock_Shows.UseVisualStyleBackColor = true
         '
         'gbFilterModifier_Shows
         '
@@ -3988,69 +3988,69 @@ Partial Class frmMain
         Me.gbFilterModifier_Shows.Name = "gbFilterModifier_Shows"
         Me.gbFilterModifier_Shows.Size = New System.Drawing.Size(135, 40)
         Me.gbFilterModifier_Shows.TabIndex = 3
-        Me.gbFilterModifier_Shows.TabStop = False
+        Me.gbFilterModifier_Shows.TabStop = false
         Me.gbFilterModifier_Shows.Text = "Modifier"
         '
         'rbFilterAnd_Shows
         '
-        Me.rbFilterAnd_Shows.AutoSize = True
-        Me.rbFilterAnd_Shows.Checked = True
-        Me.rbFilterAnd_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbFilterAnd_Shows.AutoSize = true
+        Me.rbFilterAnd_Shows.Checked = true
+        Me.rbFilterAnd_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.rbFilterAnd_Shows.Location = New System.Drawing.Point(6, 16)
         Me.rbFilterAnd_Shows.Name = "rbFilterAnd_Shows"
         Me.rbFilterAnd_Shows.Size = New System.Drawing.Size(46, 17)
         Me.rbFilterAnd_Shows.TabIndex = 0
-        Me.rbFilterAnd_Shows.TabStop = True
+        Me.rbFilterAnd_Shows.TabStop = true
         Me.rbFilterAnd_Shows.Text = "And"
-        Me.rbFilterAnd_Shows.UseVisualStyleBackColor = True
+        Me.rbFilterAnd_Shows.UseVisualStyleBackColor = true
         '
         'rbFilterOr_Shows
         '
-        Me.rbFilterOr_Shows.AutoSize = True
-        Me.rbFilterOr_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbFilterOr_Shows.AutoSize = true
+        Me.rbFilterOr_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.rbFilterOr_Shows.Location = New System.Drawing.Point(81, 16)
         Me.rbFilterOr_Shows.Name = "rbFilterOr_Shows"
         Me.rbFilterOr_Shows.Size = New System.Drawing.Size(38, 17)
         Me.rbFilterOr_Shows.TabIndex = 1
         Me.rbFilterOr_Shows.Text = "Or"
-        Me.rbFilterOr_Shows.UseVisualStyleBackColor = True
+        Me.rbFilterOr_Shows.UseVisualStyleBackColor = true
         '
         'chkFilterNew_Shows
         '
-        Me.chkFilterNew_Shows.AutoSize = True
-        Me.chkFilterNew_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterNew_Shows.AutoSize = true
+        Me.chkFilterNew_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkFilterNew_Shows.Location = New System.Drawing.Point(6, 64)
         Me.chkFilterNew_Shows.Name = "chkFilterNew_Shows"
         Me.chkFilterNew_Shows.Size = New System.Drawing.Size(49, 17)
         Me.chkFilterNew_Shows.TabIndex = 0
         Me.chkFilterNew_Shows.Text = "New"
-        Me.chkFilterNew_Shows.UseVisualStyleBackColor = True
+        Me.chkFilterNew_Shows.UseVisualStyleBackColor = true
         '
         'chkFilterMark_Shows
         '
-        Me.chkFilterMark_Shows.AutoSize = True
-        Me.chkFilterMark_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterMark_Shows.AutoSize = true
+        Me.chkFilterMark_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkFilterMark_Shows.Location = New System.Drawing.Point(6, 82)
         Me.chkFilterMark_Shows.Name = "chkFilterMark_Shows"
         Me.chkFilterMark_Shows.Size = New System.Drawing.Size(65, 17)
         Me.chkFilterMark_Shows.TabIndex = 1
         Me.chkFilterMark_Shows.Text = "Marked"
-        Me.chkFilterMark_Shows.UseVisualStyleBackColor = True
+        Me.chkFilterMark_Shows.UseVisualStyleBackColor = true
         '
         'txtFilterGenre_Shows
         '
         Me.txtFilterGenre_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilterGenre_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFilterGenre_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtFilterGenre_Shows.Location = New System.Drawing.Point(250, 13)
         Me.txtFilterGenre_Shows.Name = "txtFilterGenre_Shows"
-        Me.txtFilterGenre_Shows.ReadOnly = True
+        Me.txtFilterGenre_Shows.ReadOnly = true
         Me.txtFilterGenre_Shows.Size = New System.Drawing.Size(160, 22)
         Me.txtFilterGenre_Shows.TabIndex = 4
         '
         'lblFilterGenre_Shows
         '
-        Me.lblFilterGenre_Shows.AutoSize = True
-        Me.lblFilterGenre_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterGenre_Shows.AutoSize = true
+        Me.lblFilterGenre_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterGenre_Shows.Location = New System.Drawing.Point(143, 15)
         Me.lblFilterGenre_Shows.Name = "lblFilterGenre_Shows"
         Me.lblFilterGenre_Shows.Size = New System.Drawing.Size(41, 13)
@@ -4059,40 +4059,40 @@ Partial Class frmMain
         '
         'btnFilterDown_Shows
         '
-        Me.btnFilterDown_Shows.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterDown_Shows.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnFilterDown_Shows.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterDown_Shows.Enabled = False
-        Me.btnFilterDown_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterDown_Shows.Enabled = false
+        Me.btnFilterDown_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.btnFilterDown_Shows.Location = New System.Drawing.Point(527, 1)
         Me.btnFilterDown_Shows.Name = "btnFilterDown_Shows"
         Me.btnFilterDown_Shows.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterDown_Shows.TabIndex = 2
-        Me.btnFilterDown_Shows.TabStop = False
+        Me.btnFilterDown_Shows.TabStop = false
         Me.btnFilterDown_Shows.Text = "v"
         Me.btnFilterDown_Shows.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterDown_Shows.UseVisualStyleBackColor = False
+        Me.btnFilterDown_Shows.UseVisualStyleBackColor = false
         '
         'btnFilterUp_Shows
         '
-        Me.btnFilterUp_Shows.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterUp_Shows.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnFilterUp_Shows.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterUp_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterUp_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.btnFilterUp_Shows.Location = New System.Drawing.Point(495, 1)
         Me.btnFilterUp_Shows.Name = "btnFilterUp_Shows"
         Me.btnFilterUp_Shows.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterUp_Shows.TabIndex = 1
-        Me.btnFilterUp_Shows.TabStop = False
+        Me.btnFilterUp_Shows.TabStop = false
         Me.btnFilterUp_Shows.Text = "^"
         Me.btnFilterUp_Shows.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterUp_Shows.UseVisualStyleBackColor = False
+        Me.btnFilterUp_Shows.UseVisualStyleBackColor = false
         '
         'lblFilter_Shows
         '
-        Me.lblFilter_Shows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblFilter_Shows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.lblFilter_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblFilter_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilter_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilter_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilter_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilter_Shows.Location = New System.Drawing.Point(4, 3)
         Me.lblFilter_Shows.Name = "lblFilter_Shows"
@@ -4115,19 +4115,19 @@ Partial Class frmMain
         Me.pnlTop.Name = "pnlTop"
         Me.pnlTop.Size = New System.Drawing.Size(773, 74)
         Me.pnlTop.TabIndex = 9
-        Me.pnlTop.Visible = False
+        Me.pnlTop.Visible = false
         '
         'lblTitle
         '
-        Me.lblTitle.AutoSize = True
+        Me.lblTitle.AutoSize = true
         Me.lblTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTitle.ForeColor = System.Drawing.Color.Black
         Me.lblTitle.Location = New System.Drawing.Point(4, 2)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(0, 20)
         Me.lblTitle.TabIndex = 25
-        Me.lblTitle.UseMnemonic = False
+        Me.lblTitle.UseMnemonic = false
         '
         'pnlInfoIcons
         '
@@ -4148,21 +4148,21 @@ Partial Class frmMain
         '
         'lblOriginalTitle
         '
-        Me.lblOriginalTitle.AutoSize = True
+        Me.lblOriginalTitle.AutoSize = true
         Me.lblOriginalTitle.BackColor = System.Drawing.Color.Transparent
         Me.lblOriginalTitle.Dock = System.Windows.Forms.DockStyle.Right
-        Me.lblOriginalTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblOriginalTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblOriginalTitle.ForeColor = System.Drawing.Color.Black
         Me.lblOriginalTitle.Location = New System.Drawing.Point(390, 0)
         Me.lblOriginalTitle.Name = "lblOriginalTitle"
         Me.lblOriginalTitle.Size = New System.Drawing.Size(0, 20)
         Me.lblOriginalTitle.TabIndex = 38
         Me.lblOriginalTitle.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.lblOriginalTitle.UseMnemonic = False
+        Me.lblOriginalTitle.UseMnemonic = false
         '
         'lblStudio
         '
-        Me.lblStudio.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblStudio.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.lblStudio.Location = New System.Drawing.Point(223, 55)
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(167, 18)
@@ -4178,7 +4178,7 @@ Partial Class frmMain
         Me.pbVType.Size = New System.Drawing.Size(64, 44)
         Me.pbVType.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbVType.TabIndex = 36
-        Me.pbVType.TabStop = False
+        Me.pbVType.TabStop = false
         '
         'pbStudio
         '
@@ -4188,7 +4188,7 @@ Partial Class frmMain
         Me.pbStudio.Size = New System.Drawing.Size(64, 44)
         Me.pbStudio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbStudio.TabIndex = 31
-        Me.pbStudio.TabStop = False
+        Me.pbStudio.TabStop = false
         '
         'pbVideo
         '
@@ -4198,7 +4198,7 @@ Partial Class frmMain
         Me.pbVideo.Size = New System.Drawing.Size(64, 44)
         Me.pbVideo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbVideo.TabIndex = 33
-        Me.pbVideo.TabStop = False
+        Me.pbVideo.TabStop = false
         '
         'pbAudio
         '
@@ -4208,7 +4208,7 @@ Partial Class frmMain
         Me.pbAudio.Size = New System.Drawing.Size(64, 44)
         Me.pbAudio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbAudio.TabIndex = 35
-        Me.pbAudio.TabStop = False
+        Me.pbAudio.TabStop = false
         '
         'pbResolution
         '
@@ -4218,7 +4218,7 @@ Partial Class frmMain
         Me.pbResolution.Size = New System.Drawing.Size(64, 44)
         Me.pbResolution.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbResolution.TabIndex = 34
-        Me.pbResolution.TabStop = False
+        Me.pbResolution.TabStop = false
         '
         'pbChannels
         '
@@ -4228,12 +4228,12 @@ Partial Class frmMain
         Me.pbChannels.Size = New System.Drawing.Size(64, 44)
         Me.pbChannels.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbChannels.TabIndex = 32
-        Me.pbChannels.TabStop = False
+        Me.pbChannels.TabStop = false
         '
         'lblRuntime
         '
-        Me.lblRuntime.AutoSize = True
-        Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblRuntime.AutoSize = true
+        Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblRuntime.ForeColor = System.Drawing.Color.Black
         Me.lblRuntime.Location = New System.Drawing.Point(390, 32)
         Me.lblRuntime.Name = "lblRuntime"
@@ -4243,16 +4243,16 @@ Partial Class frmMain
         '
         'lblTagline
         '
-        Me.lblTagline.AutoSize = True
+        Me.lblTagline.AutoSize = true
         Me.lblTagline.BackColor = System.Drawing.Color.Transparent
-        Me.lblTagline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTagline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTagline.ForeColor = System.Drawing.Color.Black
         Me.lblTagline.Location = New System.Drawing.Point(5, 55)
         Me.lblTagline.Name = "lblTagline"
         Me.lblTagline.Size = New System.Drawing.Size(0, 13)
         Me.lblTagline.TabIndex = 26
         Me.lblTagline.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.lblTagline.UseMnemonic = False
+        Me.lblTagline.UseMnemonic = false
         '
         'pnlRating
         '
@@ -4279,7 +4279,7 @@ Partial Class frmMain
         Me.pbStar10.Name = "pbStar10"
         Me.pbStar10.Size = New System.Drawing.Size(24, 24)
         Me.pbStar10.TabIndex = 32
-        Me.pbStar10.TabStop = False
+        Me.pbStar10.TabStop = false
         '
         'pbStar9
         '
@@ -4287,7 +4287,7 @@ Partial Class frmMain
         Me.pbStar9.Name = "pbStar9"
         Me.pbStar9.Size = New System.Drawing.Size(24, 24)
         Me.pbStar9.TabIndex = 31
-        Me.pbStar9.TabStop = False
+        Me.pbStar9.TabStop = false
         '
         'pbStar8
         '
@@ -4295,7 +4295,7 @@ Partial Class frmMain
         Me.pbStar8.Name = "pbStar8"
         Me.pbStar8.Size = New System.Drawing.Size(24, 24)
         Me.pbStar8.TabIndex = 30
-        Me.pbStar8.TabStop = False
+        Me.pbStar8.TabStop = false
         '
         'pbStar7
         '
@@ -4303,7 +4303,7 @@ Partial Class frmMain
         Me.pbStar7.Name = "pbStar7"
         Me.pbStar7.Size = New System.Drawing.Size(24, 24)
         Me.pbStar7.TabIndex = 29
-        Me.pbStar7.TabStop = False
+        Me.pbStar7.TabStop = false
         '
         'pbStar6
         '
@@ -4311,7 +4311,7 @@ Partial Class frmMain
         Me.pbStar6.Name = "pbStar6"
         Me.pbStar6.Size = New System.Drawing.Size(24, 24)
         Me.pbStar6.TabIndex = 28
-        Me.pbStar6.TabStop = False
+        Me.pbStar6.TabStop = false
         '
         'pbStar5
         '
@@ -4319,7 +4319,7 @@ Partial Class frmMain
         Me.pbStar5.Name = "pbStar5"
         Me.pbStar5.Size = New System.Drawing.Size(24, 24)
         Me.pbStar5.TabIndex = 27
-        Me.pbStar5.TabStop = False
+        Me.pbStar5.TabStop = false
         '
         'pbStar4
         '
@@ -4327,7 +4327,7 @@ Partial Class frmMain
         Me.pbStar4.Name = "pbStar4"
         Me.pbStar4.Size = New System.Drawing.Size(24, 24)
         Me.pbStar4.TabIndex = 26
-        Me.pbStar4.TabStop = False
+        Me.pbStar4.TabStop = false
         '
         'pbStar3
         '
@@ -4335,7 +4335,7 @@ Partial Class frmMain
         Me.pbStar3.Name = "pbStar3"
         Me.pbStar3.Size = New System.Drawing.Size(24, 24)
         Me.pbStar3.TabIndex = 25
-        Me.pbStar3.TabStop = False
+        Me.pbStar3.TabStop = false
         '
         'pbStar2
         '
@@ -4343,7 +4343,7 @@ Partial Class frmMain
         Me.pbStar2.Name = "pbStar2"
         Me.pbStar2.Size = New System.Drawing.Size(24, 24)
         Me.pbStar2.TabIndex = 24
-        Me.pbStar2.TabStop = False
+        Me.pbStar2.TabStop = false
         '
         'pbStar1
         '
@@ -4351,12 +4351,12 @@ Partial Class frmMain
         Me.pbStar1.Name = "pbStar1"
         Me.pbStar1.Size = New System.Drawing.Size(24, 24)
         Me.pbStar1.TabIndex = 23
-        Me.pbStar1.TabStop = False
+        Me.pbStar1.TabStop = false
         '
         'lblRating
         '
-        Me.lblRating.AutoSize = True
-        Me.lblRating.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblRating.AutoSize = true
+        Me.lblRating.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblRating.ForeColor = System.Drawing.Color.Black
         Me.lblRating.Location = New System.Drawing.Point(247, 8)
         Me.lblRating.Name = "lblRating"
@@ -4375,7 +4375,7 @@ Partial Class frmMain
         Me.pnlCancel.Name = "pnlCancel"
         Me.pnlCancel.Size = New System.Drawing.Size(214, 63)
         Me.pnlCancel.TabIndex = 8
-        Me.pnlCancel.Visible = False
+        Me.pnlCancel.Visible = false
         '
         'prbCanceling
         '
@@ -4385,32 +4385,32 @@ Partial Class frmMain
         Me.prbCanceling.Size = New System.Drawing.Size(203, 20)
         Me.prbCanceling.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.prbCanceling.TabIndex = 2
-        Me.prbCanceling.Visible = False
+        Me.prbCanceling.Visible = false
         '
         'lblCanceling
         '
-        Me.lblCanceling.AutoSize = True
-        Me.lblCanceling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblCanceling.AutoSize = true
+        Me.lblCanceling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblCanceling.Location = New System.Drawing.Point(4, 12)
         Me.lblCanceling.Name = "lblCanceling"
         Me.lblCanceling.Size = New System.Drawing.Size(128, 17)
         Me.lblCanceling.TabIndex = 1
         Me.lblCanceling.Text = "Canceling Scraper..."
-        Me.lblCanceling.Visible = False
+        Me.lblCanceling.Visible = false
         '
         'btnCancel
         '
-        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
+        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"),System.Drawing.Image)
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnCancel.Location = New System.Drawing.Point(4, 4)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(205, 55)
         Me.btnCancel.TabIndex = 0
-        Me.btnCancel.TabStop = False
+        Me.btnCancel.TabStop = false
         Me.btnCancel.Text = "Cancel Scraper"
         Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCancel.UseVisualStyleBackColor = True
+        Me.btnCancel.UseVisualStyleBackColor = true
         '
         'pnlNoInfo
         '
@@ -4421,7 +4421,7 @@ Partial Class frmMain
         Me.pnlNoInfo.Name = "pnlNoInfo"
         Me.pnlNoInfo.Size = New System.Drawing.Size(259, 143)
         Me.pnlNoInfo.TabIndex = 8
-        Me.pnlNoInfo.Visible = False
+        Me.pnlNoInfo.Visible = false
         '
         'pnlNoInfoBG
         '
@@ -4436,16 +4436,16 @@ Partial Class frmMain
         '
         'pbNoInfo
         '
-        Me.pbNoInfo.Image = CType(resources.GetObject("pbNoInfo.Image"), System.Drawing.Image)
+        Me.pbNoInfo.Image = CType(resources.GetObject("pbNoInfo.Image"),System.Drawing.Image)
         Me.pbNoInfo.Location = New System.Drawing.Point(7, 38)
         Me.pbNoInfo.Name = "pbNoInfo"
         Me.pbNoInfo.Size = New System.Drawing.Size(63, 63)
         Me.pbNoInfo.TabIndex = 1
-        Me.pbNoInfo.TabStop = False
+        Me.pbNoInfo.TabStop = false
         '
         'lblNoInfo
         '
-        Me.lblNoInfo.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblNoInfo.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblNoInfo.Location = New System.Drawing.Point(71, 29)
         Me.lblNoInfo.Name = "lblNoInfo"
         Me.lblNoInfo.Size = New System.Drawing.Size(173, 78)
@@ -4491,7 +4491,7 @@ Partial Class frmMain
         '
         'pnlMoviesInSet
         '
-        Me.pnlMoviesInSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pnlMoviesInSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.pnlMoviesInSet.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlMoviesInSet.Controls.Add(Me.lvMoviesInSet)
         Me.pnlMoviesInSet.Controls.Add(Me.lblMoviesInSetHeader)
@@ -4508,6 +4508,12 @@ Partial Class frmMain
         Me.lvMoviesInSet.Size = New System.Drawing.Size(765, 182)
         Me.lvMoviesInSet.TabIndex = 41
         Me.lvMoviesInSet.UseCompatibleStateImageBehavior = false
+        '
+        'ilMoviesInSet
+        '
+        Me.ilMoviesInSet.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+        Me.ilMoviesInSet.ImageSize = New System.Drawing.Size(16, 16)
+        Me.ilMoviesInSet.TransparentColor = System.Drawing.Color.Transparent
         '
         'lblMoviesInSetHeader
         '
@@ -8867,12 +8873,6 @@ Partial Class frmMain
         '
         Me.tmrFilterAni_Shows.Interval = 1
         '
-        'ilMoviesInSet
-        '
-        Me.ilMoviesInSet.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
-        Me.ilMoviesInSet.ImageSize = New System.Drawing.Size(16, 16)
-        Me.ilMoviesInSet.TransparentColor = System.Drawing.Color.Transparent
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
@@ -9227,8 +9227,8 @@ End Sub
     Friend WithEvents chkFilterLock_Movies As System.Windows.Forms.CheckBox
     Friend WithEvents chkFilterMissing_Movies As System.Windows.Forms.CheckBox
     Friend WithEvents chkFilterTolerance_Movies As System.Windows.Forms.CheckBox
-    Friend WithEvents lblFilterFileSource_Movies As System.Windows.Forms.Label
-    Friend WithEvents cbFilterFileSource_Movies As System.Windows.Forms.ComboBox
+    Friend WithEvents lblFilterVideoSource_Movies As System.Windows.Forms.Label
+    Friend WithEvents cbFilterVideoSource_Movies As System.Windows.Forms.ComboBox
     Friend WithEvents cmnuMovieEditMetaData As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents gbFilterSorting_Movies As System.Windows.Forms.GroupBox
     Friend WithEvents btnFilterSortDate_Movies As System.Windows.Forms.Button

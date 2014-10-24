@@ -66,7 +66,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="CleanMovies">If <c>True</c>, process the movie files</param>
     ''' <param name="CleanTV">If <c>True</c>, process the TV files</param>
-    ''' <param name="source">Optional. If provided, only process entries from that named video source.</param>
+    ''' <param name="source">Optional. If provided, only process entries from that named source.</param>
     ''' <remarks></remarks>
     Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanMovieSets As Boolean, ByVal CleanTV As Boolean, Optional ByVal source As String = "")
         Dim fInfo As FileInfo
@@ -316,7 +316,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 7
+        Dim MyVideosDBVersion As Integer = 8
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -810,7 +810,7 @@ Public Class Database
                                                        "HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, ", _
                                                        "Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                        "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
-                                                       "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, ", _
+                                                       "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, ", _
                                                        "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
                                                        "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, ", _
                                                        "TMDBColID, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies WHERE id = ", MovieID, ";")
@@ -844,7 +844,7 @@ Public Class Database
                         _movieDB.IsMarkCustom2 = Convert.ToBoolean(SQLreader("MarkCustom2"))
                         _movieDB.IsMarkCustom3 = Convert.ToBoolean(SQLreader("MarkCustom3"))
                         _movieDB.IsMarkCustom4 = Convert.ToBoolean(SQLreader("MarkCustom4"))
-                        If Not DBNull.Value.Equals(SQLreader("FileSource")) Then _movieDB.FileSource = SQLreader("FileSource").ToString
+                        If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _movieDB.VideoSource = SQLreader("VideoSource").ToString
                         _movieDB.Movie = New MediaContainers.Movie
                         With _movieDB.Movie
                             If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdd"))).ToString("yyyy-MM-d HH:mm:ss")
@@ -871,7 +871,7 @@ Public Class Database
                             If Not DBNull.Value.Equals(SQLreader("Credits")) Then .OldCredits = SQLreader("Credits").ToString
                             If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = SQLreader("PlayCount").ToString
                             If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.MovieNoSaveImagesToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
-                            If Not DBNull.Value.Equals(SQLreader("FileSource")) Then .VideoSource = SQLreader("FileSource").ToString
+                            If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
                             If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDBID = SQLreader("TMDB").ToString
                             If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDBColID = SQLreader("TMDBColID").ToString
                         End With
@@ -1589,7 +1589,7 @@ Public Class Database
                      "MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, ", _
                      "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
                      "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, ", _
-                     "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, ", _
+                     "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
                      "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
                      "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4", _
                      ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
@@ -1598,7 +1598,7 @@ Public Class Database
                      "ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, ", _
                      "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
                      "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, ", _
-                     "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, ", _
+                     "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
                      "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
                      "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4", _
                      ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
@@ -1650,7 +1650,7 @@ Public Class Database
                 Dim parFanartURL As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartURL", DbType.String, 0, "FanartURL")
                 Dim parUseFolder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parUseFolder", DbType.Boolean, 0, "UseFolder")
                 Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
-                Dim parFileSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFileSource", DbType.String, 0, "FileSource")
+                Dim parVideoSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideoSource", DbType.String, 0, "VideoSource")
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
                 Dim parDateAdd As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdd", DbType.Int32, 0, "DateAdd")
                 Dim parHasEFanarts As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasEFanarts", DbType.Boolean, 0, "HasEFanarts")
@@ -1783,7 +1783,7 @@ Public Class Database
 
                 parUseFolder.Value = _movieDB.UseFolder
                 parOutOfTolerance.Value = _movieDB.OutOfTolerance
-                parFileSource.Value = _movieDB.FileSource
+                parVideoSource.Value = _movieDB.VideoSource
                 parNeedsSave.Value = _movieDB.NeedsSave
 
                 parSource.Value = _movieDB.Source
@@ -3148,7 +3148,7 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, ", _
                                                        "Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, ", _
                                                        "Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, ", _
-                                                       "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, ", _
+                                                       "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
                                                        "SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath FROM movies;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read

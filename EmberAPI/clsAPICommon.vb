@@ -1802,7 +1802,7 @@ Public Class Structures
         Dim etList As List(Of String)
         Dim EThumbsPath As String
         Dim FanartPath As String
-        Dim FileSource As String
+        Dim VideoSource As String
         Dim Filename As String
         Dim ID As Long
         Dim IsLock As Boolean

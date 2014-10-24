@@ -895,15 +895,15 @@ Public Class Scanner
                 tmpMovieDB.TrailerPath = mContainer.Trailer
                 tmpMovieDB.UseFolder = mContainer.UseFolder
                 tmpMovieDB.IsSingle = mContainer.isSingle
-                Dim fSource As String = APIXML.GetFileSource(mContainer.Filename)
-                If Not String.IsNullOrEmpty(fSource) Then
-                    tmpMovieDB.FileSource = fSource
-                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.FileSource
-                ElseIf String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                    tmpMovieDB.FileSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
-                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.FileSource
+                Dim vSource As String = APIXML.GetVideoSource(mContainer.Filename)
+                If Not String.IsNullOrEmpty(vSource) Then
+                    tmpMovieDB.VideoSource = vSource
+                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.VideoSource
+                ElseIf String.IsNullOrEmpty(tmpMovieDB.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                    tmpMovieDB.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
+                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.VideoSource
                 ElseIf Not String.IsNullOrEmpty(tmpMovieDB.Movie.VideoSource) Then
-                    tmpMovieDB.FileSource = tmpMovieDB.Movie.VideoSource
+                    tmpMovieDB.VideoSource = tmpMovieDB.Movie.VideoSource
                 End If
                 tmpMovieDB.IsLock = False
                 tmpMovieDB.IsMark = Master.eSettings.MovieGeneralMarkNew

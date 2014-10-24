@@ -82,7 +82,7 @@ Public Class dlgNMTMovies
             Me.SetUp()
             'If dtMovieMedia Is Nothing Then
             dtMovieMedia = New DataTable
-            Master.DB.FillDataTable(dtMovieMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtMovieMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
             'End If
             'If dtShows Is Nothing Then
             dtShows = New DataTable
@@ -581,7 +581,7 @@ Public Class dlgNMTMovies
             row = row.Replace("<$DIRNAME>", (Path.GetDirectoryName(_curMovie.Item("MoviePath").ToString)))
             row = row.Replace("<$OUTLINE>", ToStringNMT(_curMovie.Item("Outline").ToString))
             row = row.Replace("<$PLOT>", ToStringNMT(_curMovie.Item("Plot").ToString))
-            row = row.Replace("<$FILESOURCE>", If(Not String.IsNullOrEmpty(_curMovie.Item("FileSource").ToString), _curMovie.Item("FileSource").ToString, "default"))
+            row = row.Replace("<$VIDEOSOURCE>", If(Not String.IsNullOrEmpty(_curMovie.Item("VideoSource").ToString), _curMovie.Item("VideoSource").ToString, "default"))
             row = row.Replace("<$COUNTRY>", _curMovie.Item("Country").ToString)
             For Each s As String In _curMovie.Item("Country").ToString.Split(New String() {"/"}, StringSplitOptions.RemoveEmptyEntries)
                 If Not MoviesCountries.Contains(s.Trim) Then MoviesCountries.Add(s.Trim)
@@ -627,7 +627,7 @@ Public Class dlgNMTMovies
                     row = row.Replace("<$AUDIO>", _audDetails)
                 End If
             End If
-            row = GetAVImages(fiAV, row, _curMovie.Item("MoviePath").ToString, _curMovie.Item("FileSource").ToString, GetRelativePath(String.Empty, String.Empty, String.Empty, outputbase))
+            row = GetAVImages(fiAV, row, _curMovie.Item("MoviePath").ToString, _curMovie.Item("VideoSource").ToString, GetRelativePath(String.Empty, String.Empty, String.Empty, outputbase))
         Catch ex As Exception
         End Try
 
@@ -1210,7 +1210,7 @@ Public Class dlgNMTMovies
         End Try
     End Sub
 
-    Private Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal line As String, ByVal filename As String, ByVal FileSource As String, Optional ByVal relpath As String = "") As String
+    Private Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal line As String, ByVal filename As String, ByVal VideoSource As String, Optional ByVal relpath As String = "") As String
         If APIXML.lFlags.Count > 0 Then
             Try
                 Dim flagspath As String = GetUserParam("FlagsPath", "Flags/")
@@ -1228,7 +1228,7 @@ Public Class dlgNMTMovies
                 End If
 
                 'Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = APIXML.GetFileSource(filename) AndAlso f.Type = APIXML.FlagType.VideoSource)
-                Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name.ToLower = FileSource.ToLower AndAlso f.Type = APIXML.FlagType.VideoSource)
+                Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name.ToLower = VideoSource.ToLower AndAlso f.Type = APIXML.FlagType.VideoSource)
                 If Not IsNothing(vsourceFlag) Then
                     line = line.Replace("<$FLAG_VSOURCE>", String.Concat(relpath, flagspath, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
                 Else
@@ -1269,7 +1269,7 @@ Public Class dlgNMTMovies
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
         Return line
