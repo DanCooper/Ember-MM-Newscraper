@@ -14543,6 +14543,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 33, tmpMovieDB.Movie.PlayCount})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 34, hasWatched})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 35, tmpMovieDB.Movie.Trailer})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 45, tmpMovieDB.VideoSource})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDB.Movie.SortTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 49, hasEFanarts})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 51, hasBanner})
@@ -14585,6 +14586,7 @@ doCancel:
                         selRow.Item(33) = tmpMovieDB.Movie.PlayCount
                         selRow.Item(34) = hasWatched
                         selRow.Item(35) = tmpMovieDB.Movie.Trailer
+                        selRow.Item(45) = tmpMovieDB.VideoSource
                         selRow.Item(47) = tmpMovieDB.Movie.SortTitle
                         selRow.Item(49) = hasEFanarts
                         selRow.Item(51) = hasBanner
