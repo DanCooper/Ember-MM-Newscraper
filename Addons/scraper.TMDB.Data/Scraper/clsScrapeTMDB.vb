@@ -90,12 +90,6 @@ Namespace TMDB
         Private _TMDBApiE As V3.Tmdb 'english language
         Private _TMDBApiA As V3.Tmdb 'all languages
         Private _MySettings As sMySettings_ForScraper
-        'Private _TMDBConf_MovieSet As V3.TmdbConfiguration
-        'Private _TMDBConfE_MovieSet As V3.TmdbConfiguration
-        'Private _TMDBApi_MovieSet As V3.Tmdb 'preferred language
-        'Private _TMDBApiE_MovieSet As V3.Tmdb 'english language
-        'Private _TMDBApiA_MovieSet As V3.Tmdb 'all languages
-        'Private _MySettings_MovieSet As TMDB_Data.sMySettings
         Private strPrivateAPIKey As String = String.Empty
 
         Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker

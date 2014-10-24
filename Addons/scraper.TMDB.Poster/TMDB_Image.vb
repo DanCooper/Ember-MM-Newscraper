@@ -51,16 +51,12 @@ Public Class TMDB_Image
     Private _ScraperEnabled_MovieSet As Boolean = False
     Private _setup_Movie As frmTMDBMediaSettingsHolder_Movie
     Private _setup_MovieSet As frmTMDBMediaSettingsHolder_MovieSet
-    Private _TMDBConf As V3.TmdbConfiguration
-    Private _TMDBConfE As V3.TmdbConfiguration
-    Private _TMDBApi As V3.Tmdb 'preferred language
-    Private _TMDBApiE As V3.Tmdb 'english language
-    Private _TMDBApiA As V3.Tmdb 'all languages
 
 #End Region 'Fields
 
 #Region "Events"
 
+    'Movie part
     Public Event ModuleSettingsChanged_Movie() Implements Interfaces.ScraperModule_Image_Movie.ModuleSettingsChanged
 
     Public Event MovieScraperEvent_Movie(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_Movie.ScraperEvent
@@ -73,7 +69,7 @@ Public Class TMDB_Image
 
     Public Event ProgressUpdated_Movie(ByVal iPercent As Integer) Implements Interfaces.ScraperModule_Image_Movie.ProgressUpdated
 
-
+    'MovieSet part
     Public Event ModuleSettingsChanged_MovieSet() Implements Interfaces.ScraperModule_Image_MovieSet.ModuleSettingsChanged
 
     Public Event MovieScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_MovieSet.ScraperEvent
