@@ -622,6 +622,9 @@
     <None Include="Resources\valid2.png" />
     <None Include="Resources\set.png" />
     <None Include="Resources\imdb.png" />
+    <Content Include="Images\Ratings\uk\uk_R18.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\msaa.png" />
     <None Include="Resources\starempty.png" />
     <None Include="Resources\tmdb.png" />

@@ -45,12 +45,24 @@
       <icon>usa/mpaanc17.png</icon>
       <country>usa</country>
     </name>
-    <name searchstring="UK:12">
-      <icon>uk/uk_12.png</icon>
+    <name searchstring="UK:U">
+      <icon>uk/uk_u.png</icon>
       <country>uk</country>
+    </name>
+    <name searchstring="UK:UC">
+      <icon>uk/uk_uc.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:PG">
+      <country>uk</country>
+      <icon>uk/uk_pg.png</icon>
     </name>
     <name searchstring="UK:12A">
       <icon>uk/uk_12A.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:12">
+      <icon>uk/uk_12.png</icon>
       <country>uk</country>
     </name>
     <name searchstring="UK:15">
@@ -61,16 +73,8 @@
       <icon>uk/uk_18.png</icon>
       <country>uk</country>
     </name>
-    <name searchstring="UK:PG">
-      <country>uk</country>
-      <icon>uk/uk_pg.png</icon>
-    </name>
-    <name searchstring="UK:U">
-      <icon>uk/uk_u.png</icon>
-      <country>uk</country>
-    </name>
-    <name searchstring="UK:UC">
-      <icon>uk/uk_uc.png</icon>
+    <name searchstring="UK:R18">
+      <icon>uk/uk_R18.png</icon>
       <country>uk</country>
     </name>
     <name searchstring="Germany:o.Al.">
@@ -126,6 +130,62 @@
     <name searchstring="TV-MA">
       <icon>usa/tvma.png</icon>
       <country>usa</country>
+    </name>
+    <name searchstring="UK:U">
+      <icon>uk/uk_u.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:UC">
+      <icon>uk/uk_uc.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:PG">
+      <country>uk</country>
+      <icon>uk/uk_pg.png</icon>
+    </name>
+    <name searchstring="UK:12A">
+      <icon>uk/uk_12A.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:12">
+      <icon>uk/uk_12.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:15">
+      <icon>uk/uk_15.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:18">
+      <icon>uk/uk_18.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:R18">
+      <icon>uk/uk_R18.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="Germany:o.Al.">
+      <icon>de/de_0.png</icon>
+      <country>germany</country>
+    </name>
+    <name searchstring="Germany:0">
+      <icon>de/de_0.png</icon>
+      <country>germany</country>
+    </name>
+    <name searchstring="Germany:6">
+      <icon>de/de_6.png</icon>
+      <country>germany</country>
+    </name>
+    <name searchstring="Germany:12">
+      <icon>de/de_12.png</icon>
+      <country>germany</country>
+    </name>
+    <name searchstring="Germany:16">
+      <icon>de/de_16.png</icon>
+      <country>germany</country>
+    </name>
+    <name searchstring="Germany:18">
+      <icon>de/de_18.png</icon>
+      <country>germany</country>
     </name>
   </tv>
 </ratings>
