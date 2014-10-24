@@ -32,10 +32,11 @@ Namespace TMDB
 
         Private _TMDBConf As V3.TmdbConfiguration
         Private _TMDBConfE As V3.TmdbConfiguration
-        Private _TMDBApi As V3.Tmdb
-        Private _TMDBApiE As V3.Tmdb
-        Private _TMDBApiA As V3.Tmdb
-        Private _MySettings As TMDB_Trailer.sMySettings
+        Private _TMDBConfA As V3.TmdbConfiguration
+        Private _TMDBApi As V3.Tmdb 'preferred language
+        Private _TMDBApiE As V3.Tmdb 'english language
+        Private _TMDBApiA As V3.Tmdb 'all languages
+        Private _MySettings As sMySettings_ForScraper
         Private strPrivateAPIKey As String = String.Empty
 
         'Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
@@ -44,17 +45,26 @@ Namespace TMDB
 
 #Region "Methods"
 
-        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb)
-            strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.Movie)
-            _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.Movie)
-            _MySettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-            _MySettings.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
+        Public Sub New(ByVal Settings As sMySettings_ForScraper)
+            Try
+                _TMDBApi = New WatTmdb.V3.Tmdb(Settings.ApiKey, Settings.PrefLanguage)
+                If IsNothing(_TMDBApi) Then
+                    logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
+                Else
+                    If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
+                        logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
+                    End If
+                End If
+                _TMDBConf = _TMDBApi.GetConfiguration()
+                _TMDBApiE = New WatTmdb.V3.Tmdb(Settings.ApiKey)
+                _TMDBConfE = _TMDBApiE.GetConfiguration()
+                _TMDBApiA = New WatTmdb.V3.Tmdb(Settings.ApiKey, String.Empty)
+                _TMDBConfA = _TMDBApiA.GetConfiguration()
 
-            _TMDBApi = tTMDBApi
-            _TMDBConf = tTMDBConf
-            _TMDBApiE = tTMDBApiE
-            _TMDBApiA = tTMDBApiA
-            _TMDBConfE = tTMDBConfE
+                _MySettings = Settings
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
         End Sub
 
         'Public Sub Cancel()
@@ -86,8 +96,8 @@ Namespace TMDB
 
             Try
                 If Not String.IsNullOrEmpty(TMDBID) Then
-                    trailers = _TMDBApi.GetMovieTrailers(CInt(TMDBID), _MySettings.APIKey)
-                    If IsNothing(trailers.youtube) OrElse trailers.youtube.Count = 0 Then
+                    trailers = _TMDBApi.GetMovieTrailers(CInt(TMDBID))
+                    If IsNothing(trailers.youtube) OrElse trailers.youtube.Count = 0 AndAlso _MySettings.FallBackEng Then
                         trailers = _TMDBApiE.GetMovieTrailers(CInt(TMDBID))
                         If IsNothing(trailers.youtube) OrElse trailers.youtube.Count = 0 Then
                             Return alTrailers
@@ -152,6 +162,18 @@ Namespace TMDB
 
             Dim Parameter As String
             Dim Type As Enums.ScraperCapabilities
+
+#End Region 'Fields
+
+        End Structure
+
+        Structure sMySettings_ForScraper
+
+#Region "Fields"
+
+            Dim ApiKey As String
+            Dim FallBackEng As Boolean
+            Dim PrefLanguage As String
 
 #End Region 'Fields
 

@@ -46,11 +46,6 @@ Public Class TMDB_Trailer
     Private _Name As String = "TMDB_Trailer"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmTMDBTrailerSettingsHolder
-    Private _TMDBConf As V3.TmdbConfiguration
-    Private _TMDBConfE As V3.TmdbConfiguration
-    Private _TMDBApi As V3.Tmdb 'preferred language
-    Private _TMDBApiE As V3.Tmdb 'english language
-    Private _TMDBApiA As V3.Tmdb 'all languages
 
 #End Region 'Fields
 
@@ -108,20 +103,6 @@ Public Class TMDB_Trailer
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Trailer_Movie.Init
         _AssemblyName = sAssemblyName
         LoadSettings()
-        'Must be after Load settings to retrieve the correct API key
-        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.APIKey, _MySettings.PrefLanguage)
-        If IsNothing(_TMDBApi) Then
-            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
-        Else
-            If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
-            End If
-        End If
-        _TMDBConf = _TMDBApi.GetConfiguration()
-        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings.APIKey)
-        _TMDBConfE = _TMDBApiE.GetConfiguration()
-        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings.APIKey, "")
-        _TMDBt = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
     End Sub
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Trailer_Movie.InjectSetupScraper
@@ -170,7 +151,17 @@ Public Class TMDB_Trailer
             DBMovie.Movie.TMDBID = ModulesManager.Instance.GetMovieTMDBID(DBMovie.Movie.ID)
         End If
 
-        URLList = _TMDBt.GetTMDBTrailers(DBMovie.Movie.TMDBID)
+        If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
+            Dim Settings As TMDB.Scraper.sMySettings_ForScraper
+            Settings.ApiKey = _MySettings.APIKey
+            Settings.FallBackEng = _MySettings.FallBackEng
+            Settings.PrefLanguage = _MySettings.PrefLanguage
+
+            Dim _scraper As New TMDB.Scraper(Settings)
+
+            URLList = _scraper.GetTMDBTrailers(DBMovie.Movie.TMDBID)
+        End If
+
         logger.Trace("Finished scrape", New StackTrace().ToString())
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

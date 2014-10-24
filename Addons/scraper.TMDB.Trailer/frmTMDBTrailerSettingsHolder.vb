@@ -119,16 +119,7 @@ Public Class frmTMDBTrailerSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtTMDBApiKey_TextValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.Validated
-        If Not (_api = txtTMDBApiKey.Text) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
-    End Sub
-
     Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbTMDBPrefLanguage.SelectedIndexChanged
-        If Not (_language = cbTMDBPrefLanguage.Text) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -144,7 +135,4 @@ Public Class frmTMDBTrailerSettingsHolder
 
 #End Region 'Methods
 
-    Private Sub lblEMMAPI_Click(sender As Object, e As EventArgs) Handles lblEMMAPI.Click
-
-    End Sub
 End Class
