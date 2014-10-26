@@ -1,3 +1,23 @@
+Changelog 1.4.0.6 Beta (2014-10-26)
+
+[Main]
+added: "Original Title" field to custom scraper
+added: "Data Field" to movie list filter
+added: "Movies in Set" poster list (need a little bit longer to load, we add a background worker later)
+added: UK and Germany tv show rating list (not possible to scrape, but you can set the rating manually in "Edit Show" dialog) (delete .\Ember Media Manager\Settings\Ratings.xml to get the new list)
+fixed: "Video Source/File Source" confusion (Video Source = dvd, bluray... / File Source = Source)
+fixed: MediaInfo codec mapping (mpeg4 bug) (reload codec mapping in settings to get a proper info)
+fixed: movie list data field refreshing after scraping/editing
+fixed: "Missing" filter checkbox control
+fixed: tv show rating in "Edit Show" dialog
+
+[TMDB]
+fixed: trailer scraper
+
+[IMDB]
+changed: IMDB ID manually input is blocked while searching
+
+
 Changelog 1.4.0.5 Beta (2014-10-21)
 
 [Main]
