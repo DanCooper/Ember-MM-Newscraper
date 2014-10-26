@@ -217,7 +217,11 @@ Public Class NFO
                     End If
 
                     DBMovie.Movie.Actors = scrapedmovie.Actors
-                    new_Actors = True
+                    'added check if there's any actors left to add, if not then try with results of following scraper...
+                    If scrapedmovie.Actors.Count > 0 Then
+                        new_Actors = True
+                    End If
+
                 ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCast AndAlso Not Master.eSettings.MovieLockActors Then
                     DBMovie.Movie.Actors.Clear()
                 End If
@@ -261,11 +265,16 @@ Public Class NFO
                     DBMovie.Movie.Countries.Clear()
                 End If
 
-
+                If (String.IsNullOrEmpty(DBMovie.Movie.Year) OrElse Not Master.eSettings.MovieLockYear) AndAlso Options.bYear AndAlso _
+                 Not String.IsNullOrEmpty(scrapedmovie.Year) AndAlso Master.eSettings.MovieScraperYear AndAlso Not new_Year Then
+                    DBMovie.Movie.Year = scrapedmovie.Year
+                    new_Year = True
+                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperYear AndAlso Not Master.eSettings.MovieLockYear Then
+                    DBMovie.Movie.Year = String.Empty
+                End If
                 'Outline
-                If (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline OrElse _
-                    (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) AndAlso Options.bOutline AndAlso _
-                    Not String.IsNullOrEmpty(scrapedmovie.Outline) AndAlso Master.eSettings.MovieScraperOutline AndAlso Not new_Outline Then
+                If (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso Options.bOutline AndAlso _
+                    Not String.IsNullOrEmpty(scrapedmovie.Outline) AndAlso Master.eSettings.MovieScraperOutline AndAlso (Not new_Outline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
                     'check if brackets should be removed...
                     If Master.eSettings.MovieScraperCleanPlotOutline Then
                         DBMovie.Movie.Outline = StringUtils.RemoveBrackets(scrapedmovie.Outline)
@@ -278,9 +287,8 @@ Public Class NFO
                 End If
 
                 'Plot
-                If (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot OrElse _
-                    (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) AndAlso Options.bPlot AndAlso _
-                    Not String.IsNullOrEmpty(scrapedmovie.Plot) AndAlso Master.eSettings.MovieScraperPlot AndAlso Not new_Plot Then
+                If (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot) AndAlso Options.bPlot AndAlso _
+                    Not String.IsNullOrEmpty(scrapedmovie.Plot) AndAlso Master.eSettings.MovieScraperPlot AndAlso (Not new_Plot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
                     'check if brackets should be removed...
                     If Master.eSettings.MovieScraperCleanPlotOutline Then
                         DBMovie.Movie.Plot = StringUtils.RemoveBrackets(scrapedmovie.Plot)
@@ -365,8 +373,14 @@ Public Class NFO
                         _studios.RemoveRange(Master.eSettings.MovieScraperStudioLimit, _studios.Count - Master.eSettings.MovieScraperStudioLimit)
                     End If
 
+
                     DBMovie.Movie.Studios.AddRange(_studios)
-                    new_Studio = True
+                    'added check if there's any studios left to add, if not then try with results of following scraper...
+                    If _studios.Count > 0 Then
+                        new_Studio = True
+                    End If
+
+                   
                 ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperStudio AndAlso Not Master.eSettings.MovieLockStudio Then
                     DBMovie.Movie.Studios.Clear()
                 End If
