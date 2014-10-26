@@ -89,12 +89,12 @@ Public Class IMDB_Data
 
 #Region "Methods"
 
-    Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
+    Async Function GetMovieStudio(ByVal DBMovie As Structures.DBMovie, ByVal studio As List(Of String)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
         If (DBMovie.Movie Is Nothing OrElse String.IsNullOrEmpty(DBMovie.Movie.IMDBID)) Then
             logger.Error("Attempting to get studio for undefined movie")
             Return New Interfaces.ModuleResult With {.Cancelled = True}    'DEKKER500 VERIFY PLEASE
         End If
-        studio = _scraper.GetMovieStudios(DBMovie.Movie.IMDBID)
+        studio = Await _scraper.GetMovieStudios(DBMovie.Movie.IMDBID)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

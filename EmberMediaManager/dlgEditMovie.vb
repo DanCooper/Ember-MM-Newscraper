@@ -236,10 +236,10 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
-    Private Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Async Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim aUrlList As New List(Of Themes)
         Dim tURL As String = String.Empty
-        If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
+        If Not Await ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
             Using dThemeSelect As New dlgThemeSelect()
                 MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
             End Using
@@ -478,7 +478,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Banner, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Banner, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -546,7 +546,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtScrape.Click
+    Private Async Sub btnSetMovieClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -554,7 +554,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -622,7 +622,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoScrape.Click
+    Private Async Sub btnSetMovieClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -630,7 +630,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearLogo, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearLogo, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -698,7 +698,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieDiscArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtScrape.Click
+    Private Async Sub btnSetMovieDiscArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -706,7 +706,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.DiscArt, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.DiscArt, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -804,7 +804,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartScrape.Click
+    Private Async Sub btnSetMovieFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartScrape.Click
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
         Dim pResults As New MediaContainers.Image
@@ -812,7 +812,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
@@ -884,7 +884,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeScrape.Click
+    Private Async Sub btnSetMovieLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -892,7 +892,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -960,7 +960,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMoviePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterScrape.Click
+    Private Async Sub btnSetMoviePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -968,7 +968,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -1033,7 +1033,7 @@ Public Class dlgEditMovie
     '    End Try
     'End Sub
 
-    Private Sub btnSetMovieThemeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieThemeScrape.Click
+    Private Async Sub btnSetMovieThemeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieThemeScrape.Click
         'Dim tResults As New MediaContainers.Theme
         'Dim dlgTheS As dlgThemeSelect
         'Dim tList As New List(Of Themes)
@@ -1050,7 +1050,7 @@ Public Class dlgEditMovie
 
             Dim aUrlList As New List(Of Themes)
             Dim tURL As String = String.Empty
-            If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
+            If Not Await ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
                 Using dThemeSelect As New dlgThemeSelect()
                     If Not IsNothing(dThemeSelect.ShowDialog(Master.currMovie, aUrlList)) Then
                         MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)

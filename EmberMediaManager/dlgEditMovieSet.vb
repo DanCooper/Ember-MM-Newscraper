@@ -323,7 +323,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetMovieBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerScrape.Click
+    Private Async Sub btnSetMovieBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -331,7 +331,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Banner, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Banner, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -399,7 +399,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetMovieClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtScrape.Click
+    Private Async Sub btnSetMovieClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -407,7 +407,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearArt, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearArt, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -476,7 +476,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetMovieClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoScrape.Click
+    Private Async Sub btnSetMovieClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -484,7 +484,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearLogo, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearLogo, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -553,7 +553,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetMovieDiscArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtScrape.Click
+    Private Async Sub btnSetMovieDiscArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -561,7 +561,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.DiscArt, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.DiscArt, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -630,7 +630,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetMovieFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartScrape.Click
+    Private Async Sub btnSetMovieFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartScrape.Click
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
         Dim pResults As New MediaContainers.Image
@@ -638,7 +638,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Fanart, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Fanart, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
@@ -706,7 +706,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetMovieLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeScrape.Click
+    Private Async Sub btnSetMovieLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -714,7 +714,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Landscape, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Landscape, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -783,7 +783,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetMoviePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterScrape.Click
+    Private Async Sub btnSetMoviePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
@@ -791,7 +791,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Poster, aList) Then
+            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Poster, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then

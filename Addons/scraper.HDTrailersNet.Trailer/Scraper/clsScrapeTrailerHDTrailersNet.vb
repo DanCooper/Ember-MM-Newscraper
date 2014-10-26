@@ -81,7 +81,7 @@ Namespace HDTrailersNet
         ''''   --> we can extract URL and title
         ''' 4. Add found trailerlink to global list
         ''' </remarks>
-        Private Sub GetMovieTrailers()
+        Private Async Function GetMovieTrailers() As Task
             Try
                 Dim SearchURL As String = ""
                 Dim TrailerWEBPageURL As String = ""
@@ -92,7 +92,7 @@ Namespace HDTrailersNet
                     searchtitle = StringUtils.RemovePunctuation(originaltitle).Replace("+", "-").Replace(" ", "-")
                     Dim sHTTP As New HTTP
                     Dim sHtml As String = ""
-                    sHtml = sHTTP.DownloadData("http://www.hd-trailers.net/movie/" & searchtitle & "/")
+                    sHtml = Await sHTTP.DownloadData("http://www.hd-trailers.net/movie/" & searchtitle & "/")
                     sHTTP = Nothing
                     'Step 2: If trailerlink was found -> ok, else use Google to search for trailer on hd-trailer.net
                     If sHtml <> "" Then
@@ -109,7 +109,7 @@ Namespace HDTrailersNet
                         '--> i.e "
                         'performing google search to find avalaible links on hd-trailers.net
                         sHTTP = New HTTP
-                        sHtml = sHTTP.DownloadData(SearchURL)
+                        sHtml = Await sHTTP.DownloadData(SearchURL)
                         sHTTP = Nothing
                         If sHtml <> "" Then
                             'Now extract links from googleresults
@@ -155,7 +155,7 @@ Namespace HDTrailersNet
                         'find avalaible links on hd-trailers.net movie site
                         sHTTP = New HTTP
                         sHtml = ""
-                        sHtml = sHTTP.DownloadData(TrailerWEBPageURL)
+                        sHtml = Await sHTTP.DownloadData(TrailerWEBPageURL)
                         sHTTP = Nothing
                         'looking for trailerlinks
                         Dim trailerlinkPattern As String = "<a href=""(?<URL>.*?)"".*?title=""(?<TITLE>.*?)"""
@@ -215,7 +215,7 @@ Namespace HDTrailersNet
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
 #End Region 'Methods
 

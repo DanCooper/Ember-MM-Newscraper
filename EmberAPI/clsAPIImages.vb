@@ -857,7 +857,7 @@ Public Class Images
         If String.IsNullOrEmpty(sURL) Then Return
 
         Try
-            sHTTP.StartDownloadImage(sURL)
+            sHTTP.DownloadImage(sURL)
             While sHTTP.IsDownloading
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)

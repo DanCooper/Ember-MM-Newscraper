@@ -1304,7 +1304,7 @@ Public Class frmMain
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
 
-            sHTTP.StartDownloadImage(Args.pURL)
+            sHTTP.DownloadImage(Args.pURL)
 
             While sHTTP.IsDownloading
                 Application.DoEvents()
@@ -1845,7 +1845,7 @@ Public Class frmMain
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
 
                 If Master.GlobalScrapeMod.NFO Then
-                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie) Then
+                    If Await ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie) Then
                         Cancelled = True
                         Exit Try
                     End If
@@ -1856,7 +1856,7 @@ Public Class frmMain
                                                                              Master.GlobalScrapeMod.EThumbs Or Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
                                                                              Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer) Then
                         Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
-                        If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, tOpt) Then
+                        If Await ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, tOpt) Then
                             Exit For
                         End If
                     End If
@@ -2517,7 +2517,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub bwMovieSetScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieSetScraper.DoWork
+    Private Async Sub bwMovieSetScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieSetScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Banner As New MediaContainers.Image
         Dim ClearArt As New MediaContainers.Image
@@ -2571,7 +2571,7 @@ Public Class frmMain
                 'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
 
                 If Master.GlobalScrapeMod.NFO Then
-                    If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.scrapeType, Args.Options_MovieSet) Then
+                    If Await ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.scrapeType, Args.Options_MovieSet) Then
                         Exit Try
                     End If
                 Else
@@ -2581,7 +2581,7 @@ Public Class frmMain
                                                                              Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
                                                                              Master.GlobalScrapeMod.Poster) Then
                         Dim tOpt As New Structures.ScrapeOptions_MovieSet 'all false value not to override any field
-                        If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.scrapeType, tOpt) Then
+                        If Await ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.scrapeType, tOpt) Then
                             Exit For
                         End If
                     End If
@@ -18642,12 +18642,12 @@ doCancel:
         KeyBuffer = String.Empty
     End Sub
 
-    Private Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
+    Private Async Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
         Try
             Dim sHTTP As New EmberAPI.HTTP
             'Pull Assembly version info from current Ember repo on github
             Dim HTML As String
-            HTML = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
+            HTML = Await sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
             sHTTP = Nothing
             Dim aBit As String = Master.eLang.GetString(1008, "x64")
             If Master.is32Bit Then

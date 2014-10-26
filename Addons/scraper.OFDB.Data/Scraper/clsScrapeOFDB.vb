@@ -122,13 +122,13 @@ Namespace OFDB
             _fsk = String.Empty
         End Sub
 
-        Private Function GetFullPlot(ByVal sURL As String) As String
+        Private Async Function GetFullPlot(ByVal sURL As String) As Threading.Tasks.Task(Of String)
             Dim FullPlot As String = String.Empty
 
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
                     Dim sHTTP As New HTTP
-                    Dim HTML As String = sHTTP.DownloadData(sURL)
+                    Dim HTML As String = Await sHTTP.DownloadData(sURL)
                     sHTTP = Nothing
 
                     Dim D, W, Wq, Wqq, B As Integer
@@ -158,13 +158,13 @@ Namespace OFDB
             Return FullPlot
         End Function
 
-        Private Sub GetOFDBDetails()
-            Dim sURL As String = GetOFDBUrlFromIMDBID()
+        Private Async Function GetOFDBDetails() As Threading.Tasks.Task
+            Dim sURL As String = Await GetOFDBUrlFromIMDBID()
 
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
                     Dim sHTTP As New HTTP
-                    Dim HTML As String = sHTTP.DownloadData(sURL)
+                    Dim HTML As String = Await sHTTP.DownloadData(sURL)
                     sHTTP = Nothing
 
                     If Not String.IsNullOrEmpty(HTML) Then
@@ -219,8 +219,8 @@ Namespace OFDB
                                 B = tmpHTML.IndexOf("""><b>[mehr]</b>", W + 9)
                                 If B > 0 Then
                                     Dim FullPlot = GetFullPlot(String.Concat("http://www.ofdb.de/", tmpHTML.Substring(W + 9, B - (W + 9))))
-                                    If Not String.IsNullOrEmpty(FullPlot) Then
-                                        _plot = FullPlot
+                                    If Not String.IsNullOrEmpty(Await FullPlot) Then
+                                        _plot = Await FullPlot
                                     End If
                                 End If
                             End If
@@ -232,8 +232,8 @@ Namespace OFDB
                                 B = tmpHTML.IndexOf("""><b>[mehr]</b>", W + 9)
                                 If B > 0 Then
                                     Dim FullPlot = GetFullPlot(String.Concat("http://www.ofdb.de/", tmpHTML.Substring(W + 9, B - (W + 9))))
-                                    If Not String.IsNullOrEmpty(FullPlot) Then
-                                        _plot = FullPlot
+                                    If Not String.IsNullOrEmpty(Await FullPlot) Then
+                                        _plot = Await FullPlot
                                     End If
                                 End If
                             End If
@@ -274,14 +274,14 @@ Namespace OFDB
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
-        Private Function GetOFDBUrlFromIMDBID() As String
+        Private Async Function GetOFDBUrlFromIMDBID() As Threading.Tasks.Task(Of String)
             Dim ofdbURL As String = String.Empty
             Try
 
                 Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
+                Dim HTML As String = Await sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
                 sHTTP = Nothing
 
 

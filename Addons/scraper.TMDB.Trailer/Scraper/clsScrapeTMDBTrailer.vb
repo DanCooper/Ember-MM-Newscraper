@@ -88,7 +88,7 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetTMDBTrailers(ByVal TMDBID As String) As List(Of Trailers)
+        Public Async Function GetTMDBTrailers(ByVal TMDBID As String) As Threading.Tasks.Task(Of List(Of EmberAPI.Trailers))
             Dim alTrailers As New List(Of Trailers)
             Dim trailers As V3.TmdbMovieTrailers
             Dim tLink As String
@@ -105,7 +105,7 @@ Namespace TMDB
                     End If
                     For Each YTb As V3.Youtube In trailers.youtube
                         tLink = String.Format("http://www.youtube.com/watch?v={0}", YTb.source)
-                        tName = GetYouTubeTitle(tLink)
+                        tName = Await GetYouTubeTitle(tLink)
                         alTrailers.Add(New Trailers With {.URL = tLink, .WebURL = tLink, .Description = tName, .Source = "TMDB"})
                     Next
                 End If
@@ -117,11 +117,11 @@ Namespace TMDB
             Return alTrailers
         End Function
 
-        Public Shared Function GetYouTubeTitle(ByVal sURL As String) As String
+        Public Shared Async Function GetYouTubeTitle(ByVal sURL As String) As Threading.Tasks.Task(Of String)
             Dim oTitle As String
             Dim sHTTP As New HTTP
 
-            Dim HTML As String = sHTTP.DownloadData(String.Concat(sURL))
+            Dim HTML As String = Await sHTTP.DownloadData(String.Concat(sURL))
             sHTTP = Nothing
 
             oTitle = Regex.Match(HTML, "<meta property=""og:title"" content=""(.*?)"">", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim

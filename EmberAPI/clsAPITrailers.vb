@@ -287,14 +287,14 @@ Public Class Trailers
     ''' </summary>
     ''' <param name="sURL">URL to the trailer file</param>
     ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sURL As String)
+    Public Async Function FromWeb(ByVal sURL As String) As Threading.Tasks.Task
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
         Dim tTrailer As String = String.Empty
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
         Try
-            tTrailer = WebPage.DownloadFile(sURL, "", True, "trailer")
+            tTrailer = Await WebPage.DownloadFile(sURL, "", True, "trailer")
             If Not String.IsNullOrEmpty(tTrailer) Then
 
                 If Not IsNothing(Me._ms) Then
@@ -318,7 +318,7 @@ Public Class Trailers
         End Try
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-    End Sub
+    End Function
     ''' <summary>
     ''' Given a list of Trailers, determine which one best matches the user's
     ''' configured preferred trailer format. Return that URL in the <paramref name="tUrl"/>

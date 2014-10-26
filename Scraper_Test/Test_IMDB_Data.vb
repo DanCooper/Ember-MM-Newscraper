@@ -344,7 +344,7 @@ Namespace EmberTests
         End Sub
         <UnitTest()>
         <TestMethod()>
-        Public Sub Test_IMDB_Data_Scraper_HappyDay()
+        Public Async Function Test_IMDB_Data_Scraper_HappyDay() As Task
             'Arrange
             Dim movie As Structures.DBMovie = New Structures.DBMovie()
             movie.Movie = New MediaContainers.Movie()
@@ -362,7 +362,11 @@ Namespace EmberTests
             'Act
             '   Dim mmovie As Structures.DBMovie = Nothing
             Dim mmovie As MediaContainers.Movie = Nothing
-            Dim result As Interfaces.ModuleResult = provider.Scraper(movie, mmovie, scrapeType, options)
+            Dim result As Interfaces.ModuleResult = Await provider.Scraper(movie, mmovie, scrapeType, options)
+            movie = result.ReturnObj(0)
+            mmovie = result.ReturnObj(1)
+            scrapeType = result.ReturnObj(2)
+            options = result.ReturnObj(3)
 
             Dim methodName = GetMethodName()
 
@@ -384,7 +388,7 @@ Namespace EmberTests
 
             Assert.IsTrue(resultOK, "Result was Cancelled:<{0}> and breakChain:<{1}>", result.Cancelled, result.breakChain)
             Assert.IsTrue(dataOK, "Studios returned were not as expected")
-        End Sub
+        End Function
 
     End Class
 End Namespace

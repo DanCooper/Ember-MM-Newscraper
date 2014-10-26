@@ -74,7 +74,7 @@ Public Class dlgTVDBSearchResults
         End If
     End Sub
 
-    Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
+    Private Async Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
         If IsNumeric(Me.txtTVDBID.Text) AndAlso Me.txtTVDBID.Text.Length >= 5 Then
             Dim tmpXML As XDocument = Nothing
             Dim sLang As String = String.Empty
@@ -83,7 +83,7 @@ Public Class dlgTVDBSearchResults
             Me.pnlLoading.Visible = True
             Application.DoEvents()
 
-            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", clsAdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), Scraper.APIKey, Me.txtTVDBID.Text, clsAdvancedSettings.GetSetting("TVDBLanguage", "en")))
+            Dim forceXML As String = Await sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", clsAdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), Scraper.APIKey, Me.txtTVDBID.Text, clsAdvancedSettings.GetSetting("TVDBLanguage", "en")))
 
             If Not String.IsNullOrEmpty(forceXML) Then
                 Try
@@ -146,7 +146,7 @@ Public Class dlgTVDBSearchResults
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        sHTTP.StartDownloadImage(String.Format("http://{0}/banners/_cache/{1}", clsAdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), Args.pURL))
+        sHTTP.DownloadImage(String.Format("http://{0}/banners/_cache/{1}", clsAdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), Args.pURL))
 
         While sHTTP.IsDownloading
             Application.DoEvents()

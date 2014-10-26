@@ -89,11 +89,11 @@ Public Class Scraper
         Return sObject.ChangeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .ShowLang = Lang, .iSeason = -999})
     End Function
 
-    Public Function GetLangs(ByVal sMirror As String) As clsXMLTVDBLanguages
+    Public Async Function GetLangs(ByVal sMirror As String) As Threading.Tasks.Task(Of clsXMLTVDBLanguages)
         Dim sHTTP As New HTTP
         Dim aTVDBLang As New clsXMLTVDBLanguages
 
-        Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/languages.xml", sMirror, APIKey))
+        Dim apiXML As String = Await sHTTP.DownloadData(String.Format("http://{0}/api/{1}/languages.xml", sMirror, APIKey))
         sHTTP = Nothing
         Using reader As StringReader = New StringReader(apiXML)
             Dim xTVDBLang As New XmlSerializer(aTVDBLang.GetType)
@@ -278,7 +278,8 @@ Public Class Scraper
 
                 If doDownload OrElse Not fExists Then
                     Using sHTTP As New HTTP
-                        Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.ShowLang))
+                        sHTTP.DownloadFile(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.ShowLang), "", False, "other")
+                        Dim xZip As Byte() = sHTTP.ms.ToArray
 
                         If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
                             'save it to the temp dir
@@ -984,7 +985,7 @@ Public Class Scraper
             sImage = Nothing
         End Sub
 
-        Private Function SearchSeries(ByVal sInfo As Structures.ScrapeInfo) As List(Of TVSearchResults)
+        Private Async Function SearchSeries(ByVal sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task(Of List(Of TVSearchResults))
             Dim tvdbResults As New List(Of TVSearchResults)
             Dim cResult As New TVSearchResults
             Dim xmlTVDB As XDocument
@@ -994,7 +995,7 @@ Public Class Scraper
             Dim tmpID As String = String.Empty
 
             Try
-                Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/GetSeries.php?seriesname={1}&language={2}", _TVDBMirror, sInfo.ShowTitle, sInfo.ShowLang))
+                Dim apiXML As String = Await sHTTP.DownloadData(String.Format("http://{0}/api/GetSeries.php?seriesname={1}&language={2}", _TVDBMirror, sInfo.ShowTitle, sInfo.ShowLang))
 
                 If Not String.IsNullOrEmpty(apiXML) Then
                     Try
@@ -1010,7 +1011,7 @@ Public Class Scraper
                         tmpID = tID
                         If xSer.Where(Function(s) s.Element("seriesid").Value.ToString = tmpID AndAlso s.Element("language").Value.ToString = sInfo.ShowLang).Count = 0 Then
                             'no preferred language in this series, force it
-                            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", _TVDBMirror, APIKey, tmpID, sInfo.ShowLang))
+                            Dim forceXML As String = Await sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", _TVDBMirror, APIKey, tmpID, sInfo.ShowLang))
                             If Not String.IsNullOrEmpty(forceXML) Then
                                 Try
                                     tmpXML = XDocument.Parse(forceXML)

@@ -143,7 +143,13 @@ Public Class TMDB_Trailer
 
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Async Function Scraper(ByVal DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByVal URLList As List(Of Trailers)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+        ' Return Objects are
+        ' DBMovie
+        ' URLList
+
+        Dim RetO As Interfaces.ModuleResult
+
         logger.Trace("Started scrape", New StackTrace().ToString())
 
         LoadSettings()
@@ -159,11 +165,16 @@ Public Class TMDB_Trailer
 
             Dim _scraper As New TMDB.Scraper(Settings)
 
-            URLList = _scraper.GetTMDBTrailers(DBMovie.Movie.TMDBID)
+            URLList = Await _scraper.GetTMDBTrailers(DBMovie.Movie.TMDBID)
         End If
 
         logger.Trace("Finished scrape", New StackTrace().ToString())
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        RetO = New Interfaces.ModuleResult
+        RetO.breakChain = False
+        RetO.ReturnObj.Add(DBMovie)
+        RetO.ReturnObj.Add(URLList)
+        Return RetO
+
     End Function
 
     Sub SaveSettings()

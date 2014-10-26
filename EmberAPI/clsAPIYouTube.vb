@@ -68,14 +68,14 @@ Namespace YouTube
         ''' <remarks>If the <paramref name="url">URL</paramref> leads to a YouTube video page, this method will parse
         ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
         ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.</remarks>
-        Public Sub GetVideoLinks(ByVal url As String)
+        Public Async Function GetVideoLinks(ByVal url As String) As Threading.Tasks.Task
             Try
-                _VideoLinks = ParseYTFormats(url, False)
+                _VideoLinks = Await ParseYTFormats(url, False)
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
         ''' <summary>
         ''' Extract and return the title of the video from the supplied HTML.
         ''' </summary>
@@ -106,12 +106,12 @@ Namespace YouTube
         ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
         ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.
         ''' </remarks>
-        Private Function ParseYTFormats(ByVal url As String, ByVal doProgress As Boolean) As VideoLinkItemCollection
+        Private Async Function ParseYTFormats(ByVal url As String, ByVal doProgress As Boolean) As Threading.Tasks.Task(Of VideoLinkItemCollection)
             Dim DownloadLinks As New VideoLinkItemCollection
             Dim sHTTP As New HTTP
 
             Try
-                Dim Html As String = sHTTP.DownloadData(url)
+                Dim Html As String = Await sHTTP.DownloadData(url)
 
                 If Html.ToLower.Contains("page not found") Then
                     Html = String.Empty
@@ -291,14 +291,14 @@ Namespace YouTube
         ''' <param name="mName"><c>String</c> to search for</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function SearchOnYouTube(ByVal mName As String) As List(Of Trailers)
+        Public Shared Async Function SearchOnYouTube(ByVal mName As String) As Threading.Tasks.Task(Of List(Of Trailers))
             Dim tHTTP As New HTTP
             Dim tList As New List(Of Trailers)
             Dim tLength As String = String.Empty
             Dim tLink As String = String.Empty
             Dim tName As String = String.Empty
 
-            Dim Html As String = tHTTP.DownloadData("http://www.youtube.com/results?search_query=" & Web.HttpUtility.UrlEncode(mName))
+            Dim Html As String = Await tHTTP.DownloadData("http://www.youtube.com/results?search_query=" & Web.HttpUtility.UrlEncode(mName))
             If Html.ToLower.Contains("page not found") Then
                 Html = String.Empty
             End If

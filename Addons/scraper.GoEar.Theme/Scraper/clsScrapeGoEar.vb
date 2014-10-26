@@ -68,7 +68,7 @@ Namespace GoEar
             _themelist = New List(Of Themes)
         End Sub
 
-        Private Sub GetMovieThemes()
+        Private Async Function GetMovieThemes() As Threading.Tasks.Task
             Dim BaseURL As String = "http://www.goear.com/search/"
             Dim DownloadURL As String = "http://www.goear.com/action/sound/get/"
             Dim SearchTitle As String
@@ -95,7 +95,7 @@ Namespace GoEar
                     Dim tBitrate As String = String.Empty
 
                     Dim sHTTP As New HTTP
-                    Dim Html As String = sHTTP.DownloadData(SearchURL)
+                    Dim Html As String = Await sHTTP.DownloadData(SearchURL)
                     sHTTP = Nothing
 
                     Dim rPattern As String = "<div class=""board search_board"">(?<RESULTS>.*?)</ol>"
@@ -129,7 +129,7 @@ Namespace GoEar
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-        End Sub
+        End Function
 
         Private Function GetFileID(ByVal URL As String) As String
             If Not String.IsNullOrEmpty(URL) Then

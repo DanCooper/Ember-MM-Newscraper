@@ -172,7 +172,7 @@ Namespace IMDB
         ''' <returns>True: success, false: no success</returns>
         ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper module should NOT use global scraper settings/locks in Ember, just scraper options of module
         ''' Instead of directly saving scraped results into DBMovie we use empty nMovie movie container to store retrieved information of scraper</remarks>
-        Public Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As Boolean
+        Public Async Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As Threading.Tasks.Task(Of Boolean)
             Try
                 If bwIMDB.CancellationPending Then Return Nothing
 
@@ -181,7 +181,7 @@ Namespace IMDB
 
                 Dim HTML As String
                 intHTTP = New HTTP
-                HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/combined"))
+                HTML = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/combined"))
                 intHTTP.Dispose()
                 intHTTP = Nothing
 
@@ -189,7 +189,7 @@ Namespace IMDB
 
                 Dim PlotHtml As String
                 intHTTP = New HTTP
-                PlotHtml = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/plotsummary"))
+                PlotHtml = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/plotsummary"))
                 intHTTP.Dispose()
                 intHTTP = Nothing
 
@@ -214,7 +214,7 @@ Namespace IMDB
                     'MOVIE TITLE
                     If Not String.IsNullOrEmpty(ForceTitleLanguage) Then
                         'only update nMovie if scraped result is not empty/nothing!
-                        scrapedresult = GetForcedTitle(strID, nMovie.OriginalTitle, WorldWideTitleFallback, ForceTitleLanguage)
+                        scrapedresult = Await GetForcedTitle(strID, nMovie.OriginalTitle, WorldWideTitleFallback, ForceTitleLanguage)
                         If Not String.IsNullOrEmpty(scrapedresult) Then
                             nMovie.Title = scrapedresult
                         End If
@@ -320,7 +320,7 @@ Namespace IMDB
                 'IMDB trailer
                 If Options.bTrailer Then
                     'Get first IMDB trailer if possible
-                    Dim trailers As List(Of String) = GetTrailers(nMovie.IMDBID)
+                    Dim trailers As List(Of String) = Await GetTrailers(nMovie.IMDBID)
                     nMovie.Trailer = trailers.FirstOrDefault()
                 End If
 
@@ -692,7 +692,7 @@ mPlot:          'MOVIE PLOT
             End Try
         End Function
 
-        Public Function GetMovieStudios(ByVal strID As String) As List(Of String)
+        Public Async Function GetMovieStudios(ByVal strID As String) As Threading.Tasks.Task(Of List(Of String))
             Dim alStudio As New List(Of String)
             If (String.IsNullOrEmpty(strID)) Then
                 logger.Warn("Attempting to GetMovieStudios with invalid ID <{0}>", strID)
@@ -700,7 +700,7 @@ mPlot:          'MOVIE PLOT
             End If
             Dim HTML As String
             intHTTP = New HTTP
-            HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/combined"))
+            HTML = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/combined"))
             intHTTP.Dispose()
             intHTTP = Nothing
 
@@ -722,8 +722,8 @@ mPlot:          'MOVIE PLOT
             Return alStudio
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, ByVal FullCrew As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As MediaContainers.Movie
-            Dim r As MovieSearchResults = SearchMovie(sMovieName)
+        Public Async Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, ByVal FullCrew As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As Threading.Tasks.Task(Of MediaContainers.Movie)
+            Dim r As MovieSearchResults = Await SearchMovie(sMovieName)
             Dim b As Boolean = False
 
 
@@ -736,11 +736,11 @@ mPlot:          'MOVIE PLOT
                     Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
 
                         If r.ExactMatches.Count = 1 Then 'AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count = 0 Then 'redirected to imdb info page
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.PopularTitles.Count = 1 AndAlso r.PopularTitles(0).Lev <= 5 Then
-                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = Await GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.ExactMatches.Count = 1 AndAlso r.ExactMatches(0).Lev <= 5 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         Else
                             nMovie.Clear()
                             Using dIMDB As New dlgIMDBSearchResults
@@ -748,7 +748,7 @@ mPlot:          'MOVIE PLOT
                                     If String.IsNullOrEmpty(nMovie.IMDBID) Then
                                         b = False
                                     Else
-                                        b = GetMovieInfo(nMovie.IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                                        b = Await GetMovieInfo(nMovie.IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                                     End If
                                 Else
                                     b = False
@@ -758,7 +758,7 @@ mPlot:          'MOVIE PLOT
 
                     Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.FullSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.MissSkip
                         If r.ExactMatches.Count = 1 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         End If
 
                     Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.MissAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
@@ -783,17 +783,17 @@ mPlot:          'MOVIE PLOT
                         '    b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options, True)
                         'End If
                         If r.ExactMatches.Count = 1 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.ExactMatches.Count > 1 AndAlso exactHaveYear >= 0 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(exactHaveYear).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = Await GetMovieInfo(r.ExactMatches.Item(exactHaveYear).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.PopularTitles.Count > 0 AndAlso popularHaveYear >= 0 Then
-                            b = GetMovieInfo(r.PopularTitles.Item(popularHaveYear).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = Await GetMovieInfo(r.PopularTitles.Item(popularHaveYear).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.ExactMatches.Count > 0 AndAlso (r.ExactMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.PopularTitles.Count > 0 AndAlso (r.PopularTitles(0).Lev <= 5 OrElse useAnyway) Then
-                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = Await GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.PartialMatches.Count > 0 AndAlso (r.PartialMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = Await GetMovieInfo(r.PartialMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         End If
                 End Select
 
@@ -854,17 +854,17 @@ mPlot:          'MOVIE PLOT
             End Try
         End Sub
 
-        Private Sub bwIMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwIMDB.DoWork
+        Private Async Sub bwIMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwIMDB.DoWork
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
             Try
                 Select Case Args.Search
                     Case SearchType.Movies
-                        Dim r As MovieSearchResults = SearchMovie(Args.Parameter)
+                        Dim r As MovieSearchResults = Await SearchMovie(Args.Parameter)
                         e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
 
                     Case SearchType.SearchDetails
-                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, True, Args.Options, True, True, "", False)
+                        Dim s As Boolean = Await GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, True, Args.Options, True, True, "", False)
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
                 End Select
             Catch ex As Exception
@@ -902,14 +902,14 @@ mPlot:          'MOVIE PLOT
             Return CleanString
         End Function
 
-        Private Function GetForcedTitle(ByVal strID As String, ByVal oTitle As String, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String) As String
+        Private Async Function GetForcedTitle(ByVal strID As String, ByVal oTitle As String, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String) As Threading.Tasks.Task(Of String)
             Dim fTitle As String = oTitle
 
             Try
                 If bwIMDB.CancellationPending Then Return Nothing
                 Dim HTML As String
                 intHTTP = New HTTP
-                HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/releaseinfo#akas"))
+                HTML = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/releaseinfo#akas"))
                 intHTTP.Dispose()
                 intHTTP = Nothing
 
@@ -947,7 +947,7 @@ mPlot:          'MOVIE PLOT
             Return Regex.Match(strObj, IMDB_ID_REGEX).ToString.Replace("tt", String.Empty)
         End Function
 
-        Private Function SearchMovie(ByVal sMovie As String) As MovieSearchResults
+        Private Async Function SearchMovie(ByVal sMovie As String) As Threading.Tasks.Task(Of MovieSearchResults)
             Try
 
                 Dim D, W As Integer
@@ -962,21 +962,21 @@ mPlot:          'MOVIE PLOT
                 Dim rUri As String = String.Empty
 
                 intHTTP = New HTTP
-                HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft"))
-                HTMLe = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&exact=true&ref_=fn_tt_ex"))
+                HTML = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft"))
+                HTMLe = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&exact=true&ref_=fn_tt_ex"))
                 rUri = intHTTP.ResponseUri
 
                 If clsAdvancedSettings.GetBooleanSetting("SearchTvTitles", False) Then
-                    HTMLt = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=tv_movie"))
+                    HTMLt = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=tv_movie"))
                 End If
                 If clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False) Then
-                    HTMLv = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=video"))
+                    HTMLv = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=video"))
                 End If
                 If clsAdvancedSettings.GetBooleanSetting("SearchPartialTitles", True) Then
-                    HTMLm = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
+                    HTMLm = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
                 End If
                 If clsAdvancedSettings.GetBooleanSetting("SearchPopularTitles", True) Then
-                    HTMLp = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
+                    HTMLp = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
                 End If
                 intHTTP.Dispose()
                 intHTTP = Nothing
@@ -1065,7 +1065,7 @@ mResult:
             End Try
         End Function
 
-        Public Function GetTrailers(imdbID As String) As List(Of String)
+        Public Async Function GetTrailers(imdbID As String) As Threading.Tasks.Task(Of List(Of String))
             Dim TrailerList As New List(Of String)
             Dim TrailerNumber As Integer = 0
             Dim Links As MatchCollection
@@ -1077,7 +1077,7 @@ mResult:
             intHTTP = New HTTP
             Dim _ImdbTrailerPage As String = String.Empty
 
-            _ImdbTrailerPage = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", imdbID, "/videogallery/content_type-Trailer"))
+            _ImdbTrailerPage = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", imdbID, "/videogallery/content_type-Trailer"))
             If _ImdbTrailerPage.ToLower.Contains("page not found") Then
                 _ImdbTrailerPage = String.Empty
             End If
@@ -1093,7 +1093,7 @@ mResult:
 
                         For i As Integer = 1 To currPage
                             If Not i = 1 Then
-                                _ImdbTrailerPage = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", imdbID, "/videogallery/content_type-Trailer?page=", i))
+                                _ImdbTrailerPage = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", imdbID, "/videogallery/content_type-Trailer?page=", i))
                             End If
 
                             Links = Regex.Matches(_ImdbTrailerPage, "screenplay/(vi[0-9]+)/")
@@ -1104,7 +1104,7 @@ mResult:
 
                             For Each value As String In linksCollection
                                 If value.Contains("screenplay") Then
-                                    trailerPage = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/video/", value, "player"))
+                                    trailerPage = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/video/", value, "player"))
                                     trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+mp4").Value)
                                     If Not String.IsNullOrEmpty(trailerUrl) AndAlso intHTTP.IsValidURL(trailerUrl) Then
                                         TrailerList.Add(trailerUrl)

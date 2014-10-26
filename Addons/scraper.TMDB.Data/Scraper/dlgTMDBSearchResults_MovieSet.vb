@@ -114,7 +114,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
-        sHTTP.StartDownloadImage(Args.pURL)
+        sHTTP.DownloadImage(Args.pURL)
 
         While sHTTP.IsDownloading
             Application.DoEvents()

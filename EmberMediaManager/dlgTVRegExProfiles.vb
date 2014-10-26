@@ -48,10 +48,10 @@ Public Class dlgTVRegExProfiles
         Next
     End Sub
 
-    Public Function GetProfiles() As Boolean
+    Public Async Function GetProfiles() As Threading.Tasks.Task(Of Boolean)
         Dim sHTTP As New HTTP
         Dim xmlSer As XmlSerializer = Nothing
-        Dim updateXML As String = sHTTP.DownloadData("http://pcjco.dommel.be/emm-r/updates/setup/TVRegExProfiles.xml")
+        Dim updateXML As String = Await sHTTP.DownloadData("http://pcjco.dommel.be/emm-r/updates/setup/TVRegExProfiles.xml")
         sHTTP = Nothing
         If updateXML.Length > 0 Then
             Using xmlSR As StringReader = New StringReader(updateXML)
@@ -59,6 +59,7 @@ Public Class dlgTVRegExProfiles
                 MyTVShowRegExProfiles = DirectCast(xmlSer.Deserialize(xmlSR), TVShowRegExProfiles)
             End Using
         End If
+        Return Nothing
     End Function
     Sub SetUp()
         Me.Text = Master.eLang.GetString(819, "TV RegEx Profiles")

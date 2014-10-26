@@ -79,23 +79,23 @@ Namespace Apple
         ''' <remarks>If the <paramref name="url">URL</paramref> leads to a IMDb video page, this method will parse
         ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
         ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.</remarks>
-        Public Sub GetVideoLinks(ByVal url As String)
+        Public Async Function GetVideoLinks(ByVal url As String) As Threading.Tasks.Task
             Try
-                _VideoLinks = ParseIMDbFormats(url, False)
+                _VideoLinks = Await ParseIMDbFormats(url, False)
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
-        Public Sub GetTrailerLinks(ByVal url As String)
+        Public Async Function GetTrailerLinks(ByVal url As String) As Threading.Tasks.Task
             Try
-                _TrailerLinks = GetTrailerLinks(url, False)
+                _TrailerLinks = Await GetTrailerLinks(url, False)
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
         ''' <summary>
         ''' Extract and return the title of the video from the supplied HTML.
@@ -126,7 +126,7 @@ Namespace Apple
         ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
         ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.
         ''' </remarks>
-        Private Function ParseIMDbFormats(ByVal url As String, ByVal doProgress As Boolean) As VideoLinkItemCollection
+        Private Async Function ParseIMDbFormats(ByVal url As String, ByVal doProgress As Boolean) As Threading.Tasks.Task(Of VideoLinkItemCollection)
             Dim DownloadLinks As New VideoLinkItemCollection
             Dim sHTTP As New HTTP
             'Dim trailerTitle As String
@@ -137,7 +137,7 @@ Namespace Apple
             Dim qPattern As String = "imdb/single\?format=([0-9]+)p"            'Trailer qualities
 
             Try
-                Dim Html As String = sHTTP.DownloadData(url)
+                Dim Html As String = Await sHTTP.DownloadData(url)
 
                 If Html.ToLower.Contains("page not found") Then
                     Html = String.Empty
@@ -161,7 +161,7 @@ Namespace Apple
                     Dim Link As New VideoLinkItem
 
                     sHTTP = New HTTP
-                    Dim QualityPage As String = sHTTP.DownloadData(qual)
+                    Dim QualityPage As String = Await sHTTP.DownloadData(qual)
                     sHTTP = Nothing
                     Dim QualLink As Match = Regex.Match(QualityPage, "videoPlayerObject.*?viconst")
                     Dim dowloadURL As MatchCollection = Regex.Matches(QualLink.Value, "ffname"":""(?<QUAL>.*?)"",""height.*?url"":""(?<LINK>.*?)""")
@@ -201,7 +201,7 @@ Namespace Apple
             End Try
         End Function
 
-        Private Function GetTrailerLinks(ByVal url As String, ByVal doProgress As Boolean) As List(Of Trailers)
+        Private Async Function GetTrailerLinks(ByVal url As String, ByVal doProgress As Boolean) As Threading.Tasks.Task(Of List(Of Trailers))
             Dim TrailerLinks As New List(Of Trailers)
 
             Dim BaseURL As String = "http://www.google.ch/search?q=apple+trailer+"
@@ -228,7 +228,7 @@ Namespace Apple
                     If Not String.IsNullOrEmpty(TrailerBaseURL) Then
 
                         sHTTP = New HTTP
-                        Dim sHtml As String = sHTTP.DownloadData(TrailerSiteURL)
+                        Dim sHtml As String = Await sHTTP.DownloadData(TrailerSiteURL)
                         sHTTP = Nothing
 
                         Dim zResult As MatchCollection = Regex.Matches(sHtml, zPattern, RegexOptions.Singleline)
@@ -242,12 +242,12 @@ Namespace Apple
                             Dim TrailerSiteLink As String = String.Concat(TrailerBaseURL, "/", trailer.URL)
 
                             sHTTP = New HTTP
-                            Dim zHtml As String = sHTTP.DownloadData(TrailerSiteLink)
+                            Dim zHtml As String = Await sHTTP.DownloadData(TrailerSiteLink)
                             sHTTP = Nothing
 
                             If String.IsNullOrEmpty(zHtml) Then
                                 sHTTP = New HTTP
-                                zHtml = sHTTP.DownloadData(TrailerSiteLink.Replace("extralarge.html", "large.html"))
+                                zHtml = Await sHTTP.DownloadData(TrailerSiteLink.Replace("extralarge.html", "large.html"))
                                 sHTTP = Nothing
                             End If
 

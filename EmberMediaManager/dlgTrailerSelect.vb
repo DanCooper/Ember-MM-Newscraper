@@ -312,11 +312,11 @@ Public Class dlgTrailerSelect
         End If
     End Sub
 
-    Private Sub btnYouTubeSearch_Click(sender As Object, e As EventArgs) Handles btnYouTubeSearch.Click
+    Private Async Sub btnYouTubeSearch_Click(sender As Object, e As EventArgs) Handles btnYouTubeSearch.Click
         Dim ID As Integer = Me.lvTrailers.Items.Count + 1
         Dim nList As New List(Of Trailers)
 
-        nList = YouTube.Scraper.SearchOnYouTube(txtYouTubeSearch.Text)
+        nList = Await YouTube.Scraper.SearchOnYouTube(txtYouTubeSearch.Text)
         AddTrailersToList(nList)
     End Sub
 

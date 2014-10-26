@@ -122,8 +122,8 @@ Public Class TVDB_Data_Poster
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function GetLangs(ByVal sMirror As String, ByRef Langs As clsXMLTVDBLanguages) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.GetLangs
-        Langs = TVScraper.GetLangs(sMirror)
+    Public Async Function GetLangs(ByVal sMirror As String, ByRef Langs As clsXMLTVDBLanguages) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.GetLangs
+        Langs = Await TVScraper.GetLangs(sMirror)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
@@ -286,6 +286,7 @@ Public Class TVDB_Data_Poster
         ConfigOptions.bShowTitle = clsAdvancedSettings.GetBooleanSetting("ScraperShowTitle", True)
     End Sub
     Public Function PostScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.PosterScraper
+        Return Nothing
     End Function
 
     Public Function SaveImages() As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.SaveImages

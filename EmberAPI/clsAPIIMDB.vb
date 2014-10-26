@@ -67,14 +67,14 @@ Namespace IMDb
         ''' <remarks>If the <paramref name="url">URL</paramref> leads to a IMDb video page, this method will parse
         ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
         ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.</remarks>
-        Public Sub GetVideoLinks(ByVal url As String)
+        Public Async Function GetVideoLinks(ByVal url As String) As Threading.Tasks.Task
             Try
-                _VideoLinks = ParseIMDbFormats(url, False)
+                _VideoLinks = Await ParseIMDbFormats(url, False)
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
         ''' <summary>
         ''' Extract and return the title of the video from the supplied HTML.
         ''' </summary>
@@ -104,7 +104,7 @@ Namespace IMDb
         ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
         ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.
         ''' </remarks>
-        Private Function ParseIMDbFormats(ByVal url As String, ByVal doProgress As Boolean) As VideoLinkItemCollection
+        Private Async Function ParseIMDbFormats(ByVal url As String, ByVal doProgress As Boolean) As Threading.Tasks.Task(Of VideoLinkItemCollection)
             Dim DownloadLinks As New VideoLinkItemCollection
             Dim sHTTP As New HTTP
             'Dim trailerTitle As String
@@ -115,7 +115,7 @@ Namespace IMDb
             Dim qPattern As String = "imdb/single\?format=([0-9]+)p"            'Trailer qualities
 
             Try
-                Dim Html As String = sHTTP.DownloadData(url)
+                Dim Html As String = Await sHTTP.DownloadData(url)
 
                 If Html.ToLower.Contains("page not found") Then
                     Html = String.Empty
@@ -139,7 +139,7 @@ Namespace IMDb
                     Dim Link As New VideoLinkItem
 
                     sHTTP = New HTTP
-                    Dim QualityPage As String = sHTTP.DownloadData(qual)
+                    Dim QualityPage As String = Await sHTTP.DownloadData(qual)
                     sHTTP = Nothing
                     Dim QualLink As Match = Regex.Match(QualityPage, "videoPlayerObject.*?viconst")
                     Dim dowloadURL As MatchCollection = Regex.Matches(QualLink.Value, "ffname"":""(?<QUAL>.*?)"",""height.*?url"":""(?<LINK>.*?)""")

@@ -66,7 +66,7 @@ Namespace TelevisionTunes
             _themelist = New List(Of Themes)
         End Sub
 
-        Private Sub GetMovieThemes()
+        Private Async Function GetMovieThemes() As Threading.Tasks.Task
             Dim BaseURL As String = "http://www.televisiontunes.com/search.php?searWords={0}&Send=Search"
             Dim DownloadURL As String = "http://www.televisiontunes.com/download.php?f="
             Dim SearchTitle As String
@@ -90,7 +90,7 @@ Namespace TelevisionTunes
                     Dim tBitrate As String = String.Empty
 
                     Dim sHTTP As New HTTP
-                    Dim Html As String = sHTTP.DownloadData(SearchURL)
+                    Dim Html As String = Await sHTTP.DownloadData(SearchURL)
                     sHTTP = Nothing
 
                     Dim rPattern As String = "1.&nbsp;(?<RESULTS>.*?)</b>"
@@ -121,7 +121,7 @@ Namespace TelevisionTunes
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-        End Sub
+        End Function
 
         Private Function GetFileID(ByVal URL As String) As String
             If Not String.IsNullOrEmpty(URL) Then

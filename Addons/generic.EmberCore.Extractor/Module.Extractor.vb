@@ -110,7 +110,12 @@ Public Class FrameExtrator
         Return SPanel
     End Function
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByVal _params As System.Collections.Generic.List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Structures.DBMovie) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+        ' return parameters will add in ReturnObject
+        ' _params
+        '_refparam 
+        '_dbmovie 
+        Dim RetO As Interfaces.ModuleResult
         Select Case mType
             Case Enums.ModuleEventType.MovieFrameExtrator
                 frmMovie = New frmMovieExtractor
@@ -126,6 +131,13 @@ Public Class FrameExtrator
                 Dim edit As Boolean = DirectCast(_params(2), Boolean)
                 _params(3) = ThumbGenerator.CreateRandomThumbs(dbm, auto, edit)
         End Select
+        RetO = New Interfaces.ModuleResult
+        RetO.breakChain = False
+        RetO.Cancelled = False
+        RetO.ReturnObj.Add(_params)
+        RetO.ReturnObj.Add(_refparam)
+        RetO.ReturnObj.Add(_dbmovie)
+        Return RetO
     End Function
 
     Sub Handle_GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))

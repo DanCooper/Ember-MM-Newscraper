@@ -263,14 +263,14 @@ Public Class Themes
     ''' </summary>
     ''' <param name="sURL">URL to the theme file</param>
     ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sURL As String, Optional ByVal webURL As String = "")
+    Public Async Function FromWeb(ByVal sURL As String, Optional ByVal webURL As String = "") As Threading.Tasks.Task
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
         Dim tTheme As String = String.Empty
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
         Try
-            tTheme = WebPage.DownloadFile(sURL, "", True, "theme", webURL)
+            tTheme = Await WebPage.DownloadFile(sURL, "", True, "theme", webURL)
             If Not String.IsNullOrEmpty(tTheme) Then
 
                 If Not IsNothing(Me._ms) Then
@@ -290,7 +290,7 @@ Public Class Themes
         End Try
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-    End Sub
+    End Function
 
     Public Function SaveAsMovieTheme(ByVal mMovie As Structures.DBMovie) As String
         Dim strReturn As String = String.Empty

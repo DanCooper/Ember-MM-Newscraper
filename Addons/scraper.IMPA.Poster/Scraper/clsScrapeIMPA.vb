@@ -41,23 +41,23 @@ Namespace IMPA
 
 #Region "Methods"
 
-        Public Function GetIMPAPosters(ByVal imdbID As String) As List(Of MediaContainers.Image)
+        Public Async Function GetIMPAPosters(ByVal imdbID As String) As Threading.Tasks.Task(Of List(Of MediaContainers.Image))
             Dim alPoster As New List(Of MediaContainers.Image)
             Dim ParentID As String
             Dim oV As String = String.Empty
 
             Try
-                Dim sURL As String = GetLink(imdbID)
+                Dim sURL As String = Await GetLink(imdbID)
 
                 If Not String.IsNullOrEmpty(sURL) Then
 
                     Dim sHTTP As New HTTP
-                    Dim HTML As String = sHTTP.DownloadData(sURL)
+                    Dim HTML As String = Await sHTTP.DownloadData(sURL)
 
                     If HTML.Contains("equiv=""REFRESH""") Then
                         Dim newURL As String = Regex.Match(HTML, "URL=..*html").ToString
                         sURL = String.Concat("http://www.impawards.com", newURL.Replace("URL=..", String.Empty))
-                        HTML = sHTTP.DownloadData(sURL)
+                        HTML = Await sHTTP.DownloadData(sURL)
                     End If
 
                     sHTTP = Nothing
@@ -92,14 +92,14 @@ Namespace IMPA
             Return alPoster
         End Function
 
-        Private Function GetLink(ByVal IMDBID As String) As String
+        Private Async Function GetLink(ByVal IMDBID As String) As Threading.Tasks.Task(Of String)
             Try
 
                 Dim sHTTP As New HTTP
                 Dim sPoster As String
                 Dim sURLRequest As HttpWebRequest
 
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", IMDBID, "/posters"))
+                Dim HTML As String = Await sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", IMDBID, "/posters"))
                 sHTTP = Nothing
 
                 Dim mcIMPA As MatchCollection = Regex.Matches(HTML, "/offsite.*impawards.*""")
@@ -115,7 +115,7 @@ Namespace IMPA
                     Return String.Empty
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return String.Empty
             End Try
         End Function

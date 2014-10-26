@@ -92,7 +92,7 @@ Public Class dlgAddEditActor
     End Sub
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
-        sHTTP.StartDownloadImage(Me.txtThumb.Text)
+        sHTTP.DownloadImage(Me.txtThumb.Text)
 
         While sHTTP.IsDownloading
             Application.DoEvents()

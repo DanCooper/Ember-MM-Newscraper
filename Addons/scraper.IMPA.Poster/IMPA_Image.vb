@@ -136,11 +136,11 @@ Public Class IMPA_Image
         ConfigScrapeModifier.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Async Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Image_Movie.Scraper
 
         LoadSettings()
 
-        ImageList = IMPA.GetIMPAPosters(DBMovie.Movie.IMDBID)
+        ImageList = Await IMPA.GetIMPAPosters(DBMovie.Movie.IMDBID)
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

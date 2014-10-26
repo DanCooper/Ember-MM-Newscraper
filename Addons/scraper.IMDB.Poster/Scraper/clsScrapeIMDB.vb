@@ -41,7 +41,7 @@ Namespace IMDB
 
 #Region "Methods"
 
-        Public Function GetIMDBPosters(ByVal imdbID As String) As List(Of MediaContainers.Image)
+        Public Async Function GetIMDBPosters(ByVal imdbID As String) As Threading.Tasks.Task(Of List(Of MediaContainers.Image))
             Dim alPoster As New List(Of MediaContainers.Image)
             Dim aParentID As String = String.Empty
 
@@ -50,7 +50,7 @@ Namespace IMDB
                 Dim aStr As String = String.Empty
                 Dim aPar As String()
                 Dim aPar2 As String()
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.imdb.com/title/tt", imdbID, ""))
+                Dim HTML As String = Await sHTTP.DownloadData(String.Concat("http://www.imdb.com/title/tt", imdbID, ""))
                 sHTTP = Nothing
 
                 ' check existence of a line like this

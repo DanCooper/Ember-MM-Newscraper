@@ -98,45 +98,45 @@ Namespace EmberTests
         End Sub
         <IntegrationTest>
         <TestMethod()>
-        Public Sub YouTube_Scraper_SearchOnYouTube_HasValues()
+        Public Async Function YouTube_Scraper_SearchOnYouTube_HasValues() As Threading.Tasks.Task
             'Arrange
             'Note that this name should be modified occasionally (annually?) to uniquely match a popular movie.
             Dim name As String = "thor dark world"
             'Act
-            Dim trailers = YouTube.Scraper.SearchOnYouTube(name)
+            Dim trailers = Await YouTube.Scraper.SearchOnYouTube(name)
             'Assert
             Assert.IsTrue(trailers.Count > 0, "Expected some trailers (at least 1), got {0}", trailers.Count)
-        End Sub
+        End Function
         <IntegrationTest>
         <TestMethod()>
-        Public Sub YouTube_Scraper_SearchOnYouTube_HasNoValues()
+        Public Async Function YouTube_Scraper_SearchOnYouTube_HasNoValues() As Threading.Tasks.Task
             'Arrange
             Dim name As String = "JD*)(JGF0"
             'Act
-            Dim trailers = YouTube.Scraper.SearchOnYouTube(name)
+            Dim trailers = Await YouTube.Scraper.SearchOnYouTube(name)
             'Assert
             Assert.IsTrue(trailers.Count = 0, "Expected no trailers, got {0}", trailers.Count)
-        End Sub
+        End Function
         <IntegrationTest>
         <TestMethod()>
-        Public Sub YouTube_Scraper_SearchOnYouTube_NothingParameter()
+        Public Async Function YouTube_Scraper_SearchOnYouTube_NothingParameter() As Threading.Tasks.Task
             'Arrange
             Dim name As String = Nothing
             'Act
-            Dim trailers = YouTube.Scraper.SearchOnYouTube(name)
+            Dim trailers = Await YouTube.Scraper.SearchOnYouTube(name)
             'Assert
             Assert.IsTrue(trailers.Count = 0, "Expected no trailers, got {0}", trailers.Count)
-        End Sub
+        End Function
         <IntegrationTest>
         <TestMethod()>
-        Public Sub YouTube_Scraper_SearchOnYouTube_EmptyParameter()
+        Public Async Function YouTube_Scraper_SearchOnYouTube_EmptyParameter() As Threading.Tasks.Task
             'Arrange
             Dim name As String = String.Empty
             'Act
-            Dim trailers = YouTube.Scraper.SearchOnYouTube(name)
+            Dim trailers = Await YouTube.Scraper.SearchOnYouTube(name)
             'Assert
             Assert.IsTrue(trailers.Count = 0, "Expected no trailers, got {0}", trailers.Count)
-        End Sub
+        End Function
 
 
     End Class

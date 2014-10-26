@@ -84,7 +84,7 @@ Namespace Apple
         ''' 3. If URL to movie was found on http://trailers.apple.com/, download HTML and search for trailerlinks! Example: http://trailers.apple.com/trailers/paramount/transformersageofextinction/includes/large.html
         ''' 4. Add found trailerlink to global list
         ''' </remarks>
-        Private Sub GetMovieTrailers()
+        Private Async Function GetMovieTrailers() As Task
             Try
                 If Not String.IsNullOrEmpty(originaltitle) Then
                     'constant URL-part of query
@@ -107,7 +107,7 @@ Namespace Apple
                     ' Step 1: Use Apple quicksearch which will return json response!
                     BaseURL = "http://trailers.apple.com/trailers/home/scripts/quickfind.php?q="
                     SearchURL = String.Concat(BaseURL, searchtitle)
-                    sjson = sHTTP.DownloadData(SearchURL)
+                    sjson = Await sHTTP.DownloadData(SearchURL)
                     sHTTP = Nothing
 
                     ' Step 2: If json returned -> parse Json response and get Url to moviepage, else use google to search for trailer on Apple
@@ -122,7 +122,7 @@ Namespace Apple
                         'performing google search to find avalaible links on apple trailers
                         sHTTP = New HTTP
                         sHtml = ""
-                        sHtml = sHTTP.DownloadData(SearchURL)
+                        sHtml = Await sHTTP.DownloadData(SearchURL)
                         sHTTP = Nothing
                         If sHtml <> "" Then
                             'Now extract links from googleresults
@@ -202,7 +202,7 @@ Namespace Apple
                         'find avalaible links on apple movie site
                         sHTTP = New HTTP
                         sHtml = ""
-                        sHtml = sHTTP.DownloadData(TrailerSiteURL)
+                        sHtml = Await sHTTP.DownloadData(TrailerSiteURL)
                         sHTTP = Nothing
 
                         'looking for trailerlinks
@@ -225,7 +225,7 @@ Namespace Apple
                                 'i.e http://trailers.apple.com/trailers/wb/wrathofthetitans/includes/kronosfeature/large.html
 
                                 sHTTP = New HTTP
-                                Dim zHtml As String = sHTTP.DownloadData(TrailerSiteLink)
+                                Dim zHtml As String = Await sHTTP.DownloadData(TrailerSiteLink)
                                 sHTTP = Nothing
 
                                 Dim yResult As MatchCollection = Regex.Matches(zHtml, uPattern, RegexOptions.Singleline)
@@ -270,7 +270,7 @@ Namespace Apple
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-        End Sub
+        End Function
 
 #End Region 'Methods
 

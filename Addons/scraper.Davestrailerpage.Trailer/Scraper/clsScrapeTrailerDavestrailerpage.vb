@@ -78,7 +78,7 @@ Namespace Davestrailerpage
         ''' 3. Further extract trailerlinks of moviesection.
         ''' 4. Add found trailerlink to global list
         ''' </remarks>
-        Private Sub GetMovieTrailers()
+        Private Async Function GetMovieTrailers() As Task
             Try
                 If originaltitle <> "" Then
                     'constant URL-part of query
@@ -120,7 +120,7 @@ Namespace Davestrailerpage
                     'download HTML
                     sHTTP = New HTTP
                     sHtml = ""
-                    sHtml = sHTTP.DownloadData(SearchURL)
+                    sHtml = Await sHTTP.DownloadData(SearchURL)
                     sHTTP = Nothing
 
                     'Step 2: Extract moviesection on downloaded HTML
@@ -344,7 +344,7 @@ Namespace Davestrailerpage
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
 #End Region 'Methods
 

@@ -678,7 +678,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Boolean
+    Public Async Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task(Of Boolean)
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
         Dim oMovie As New Structures.DBMovie
@@ -743,7 +743,12 @@ Public Class ModulesManager
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 Try
                     Dim nMovie As New MediaContainers.Movie
-                    ret = _externalScraperModule.ProcessorModule.Scraper(oMovie, nMovie, ScrapeType, Options)
+                    ret = Await _externalScraperModule.ProcessorModule.Scraper(oMovie, nMovie, ScrapeType, Options)
+                    ' Return Objects are
+                    oMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                    nMovie = CType(ret.ReturnObj(1), MediaContainers.Movie)
+                    ScrapeType = CType(ret.ReturnObj(2), Enums.ScrapeType)
+                    Options = CType(ret.ReturnObj(3), Structures.ScrapeOptions_Movie)
 
                     If ret.Cancelled Then Return ret.Cancelled
 
@@ -772,7 +777,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_MovieSet) As Boolean
+    Public Async Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_MovieSet) As Threading.Tasks.Task(Of Boolean)
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -787,7 +792,11 @@ Public Class ModulesManager
                 logger.Trace("Scraping movie set data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
                 Try
-                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, ScrapeType, Options)
+                    ret = Await _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, ScrapeType, Options)
+                    DBMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                    ScrapeType = CType(ret.ReturnObj(1), Enums.ScrapeType)
+                    Options = CType(ret.ReturnObj(2), Structures.ScrapeOptions_MovieSet)
+
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie set data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
@@ -806,7 +815,7 @@ Public Class ModulesManager
     ''' <param name="ImageList">List of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+    Public Async Function ScrapeImage_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Boolean)
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_Movie) = externalScrapersModules_Image_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
@@ -824,7 +833,10 @@ Public Class ModulesManager
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                     Try
                         aList = New List(Of MediaContainers.Image)
-                        ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
+                        ret = Await _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
+                        DBMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+
                         If Not IsNothing(aList) AndAlso aList.Count > 0 Then
                             For Each aIm In aList
                                 ImageList.Add(aIm)
@@ -848,7 +860,7 @@ Public Class ModulesManager
     ''' <param name="ImageList">List of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+    Public Async Function ScrapeImage_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Boolean)
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_MovieSet) = externalScrapersModules_Image_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
@@ -866,7 +878,10 @@ Public Class ModulesManager
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
                     Try
                         aList = New List(Of MediaContainers.Image)
-                        ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, Type, aList)
+                        ret = Await _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, Type, aList)
+                        DBMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+
                         If Not IsNothing(aList) AndAlso aList.Count > 0 Then
                             For Each aIm In aList
                                 ImageList.Add(aIm)
@@ -890,7 +905,7 @@ Public Class ModulesManager
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTheme_Movie(ByRef DBMovie As Structures.DBMovie, ByRef URLList As List(Of Themes)) As Boolean
+    Public Async Function ScrapeTheme_Movie(ByRef DBMovie As Structures.DBMovie, ByRef URLList As List(Of Themes)) As Threading.Tasks.Task(Of Boolean)
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_Movie) = externalScrapersModules_Theme_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of Themes)
@@ -907,7 +922,8 @@ Public Class ModulesManager
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 Try
                     aList = New List(Of Themes)
-                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, aList)
+                    ret = Await _externalScraperModule.ProcessorModule.Scraper(DBMovie, aList)
+                    aList = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Global.EmberAPI.Themes))
                     If Not IsNothing(aList) AndAlso aList.Count > 0 Then
                         For Each aIm In aList
                             URLList.Add(aIm)
@@ -931,7 +947,7 @@ Public Class ModulesManager
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTrailer_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Boolean
+    Public Async Function ScrapeTrailer_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Threading.Tasks.Task(Of Boolean)
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer_Movie) = externalScrapersModules_Trailer_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of Trailers)
@@ -948,7 +964,9 @@ Public Class ModulesManager
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 Try
                     aList = New List(Of Trailers)
-                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
+                    ret = Await _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
+                    DBMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                    aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.Trailers))
                     If Not IsNothing(aList) AndAlso aList.Count > 0 Then
                         For Each aIm In aList
                             URLList.Add(aIm)
@@ -1292,7 +1310,7 @@ Public Class ModulesManager
         Next
     End Sub
 
-    Public Function TVGetLangs(ByVal sMirror As String) As clsXMLTVDBLanguages
+    Public Async Function TVGetLangs(ByVal sMirror As String) As Threading.Tasks.Task(Of clsXMLTVDBLanguages)
         Dim ret As Interfaces.ModuleResult
         Dim Langs As New clsXMLTVDBLanguages
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1300,7 +1318,7 @@ Public Class ModulesManager
         End While
         For Each _externaltvScraperModule As _externalScraperModuleClass_TV In externalScrapersModules_TV.Where(Function(e) e.ProcessorModule.IsPostScraper AndAlso e.ProcessorModule.PosterScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
             Try
-                ret = _externaltvScraperModule.ProcessorModule.GetLangs(sMirror, Langs)
+                ret = Await _externaltvScraperModule.ProcessorModule.GetLangs(sMirror, Langs)
             Catch ex As Exception
             End Try
             If ret.breakChain Then Exit For

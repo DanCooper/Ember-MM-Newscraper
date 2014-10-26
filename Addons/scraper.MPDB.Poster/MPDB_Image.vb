@@ -22,6 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports RestSharp
 Imports WatTmdb
+Imports System.Threading.Tasks
 
 ''' <summary>
 ''' Native Scraper
@@ -142,11 +143,14 @@ Public Class MPDB_Image
         ConfigScrapeModifier.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Async Function Scraper(ByVal DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByVal ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Image_Movie.Scraper
 
+        ' Return Objects are
+        ' DBMovie
+        ' ImageList
         LoadSettings()
 
-        ImageList = MPDB.GetMPDBPosters(DBMovie.Movie.IMDBID)
+        ImageList = Await MPDB.GetMPDBPosters(DBMovie.Movie.IMDBID)
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

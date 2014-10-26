@@ -1135,8 +1135,8 @@ Public Class dlgSettings
         Me.RemoveTVSortToken()
     End Sub
 
-    Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
-        Master.eSettings.TVGeneralLanguages = ModulesManager.Instance.TVGetLangs("thetvdb.com")
+    Private Async Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
+        Master.eSettings.TVGeneralLanguages = Await ModulesManager.Instance.TVGetLangs("thetvdb.com")
         Me.cbTVGeneralLang.Items.Clear()
         Me.cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 

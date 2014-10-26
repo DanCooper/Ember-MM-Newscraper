@@ -95,16 +95,16 @@ Namespace MoviepilotDE
         ''' 
         ''' 2013/12/21 Cocotus - First implementation
         ''' </remarks>
-        Private Sub GetMoviepilotDEDetails()
+        Private Async Function GetMoviepilotDEDetails() As Threading.Tasks.Task
 
             'First step is to retrieve URL for the movie on Moviepilot.de
-            Dim sURL As String = GetMoviePilotUrlFromOriginaltitle(originaltitle)
+            Dim sURL As String = Await GetMoviePilotUrlFromOriginaltitle(originaltitle)
 
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
                     'Now download HTML-Code
                     Dim sHTTP As New HTTP
-                    Dim HTML As String = sHTTP.DownloadData(sURL)
+                    Dim HTML As String = Await sHTTP.DownloadData(sURL)
                     sHTTP = Nothing
 
                     '....and use result to get the wanted information
@@ -127,7 +127,7 @@ Namespace MoviepilotDE
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
 
         ''' <summary>
@@ -139,12 +139,12 @@ Namespace MoviepilotDE
         ''' 
         ''' 2013/12/21 Cocotus - First implementation
         ''' </remarks>
-        Private Function GetMoviePilotUrlFromOriginaltitle(ByVal originaltitle As String) As String
+        Private Async Function GetMoviePilotUrlFromOriginaltitle(ByVal originaltitle As String) As Threading.Tasks.Task(Of String)
             Dim MoviePilotURL As String = String.Empty
             Try
 
                 Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.moviepilot.de/suche?q=", originaltitle, "&type=movie&sourceid=mozilla-search"))
+                Dim HTML As String = Await sHTTP.DownloadData(String.Concat("http://www.moviepilot.de/suche?q=", originaltitle, "&type=movie&sourceid=mozilla-search"))
                 sHTTP = Nothing
                 'Example:
                 '    http://www.moviepilot.de/suche?q=Machete+Kills&type=movie

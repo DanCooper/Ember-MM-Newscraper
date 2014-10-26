@@ -87,7 +87,13 @@ Public Class NMTExporterModule
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByVal _params As System.Collections.Generic.List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Structures.DBMovie) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+        ' return parameters will add in ReturnObject
+        ' _params
+        '_refparam 
+        '_dbmovie 
+        Dim RetO As Interfaces.ModuleResult
+
         Try
             Dim movie As New Structures.DBMovie
             Select Case mType
@@ -100,7 +106,13 @@ Public Class NMTExporterModule
             End Select
         Catch ex As Exception
         End Try
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        RetO = New Interfaces.ModuleResult
+        RetO.breakChain = False
+        RetO.Cancelled = False
+        RetO.ReturnObj.Add(_params)
+        RetO.ReturnObj.Add(_refparam)
+        RetO.ReturnObj.Add(_dbmovie)
+        Return RetO
     End Function
 
     Sub Disable()

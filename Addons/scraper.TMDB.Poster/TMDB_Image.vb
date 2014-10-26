@@ -268,7 +268,13 @@ Public Class TMDB_Image
 
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Async Function Scraper(ByVal DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByVal ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Image_Movie.Scraper
+        ' Return Objects are
+        ' DBMovie
+        ' ImageList
+
+        Dim RetO As Interfaces.ModuleResult
+
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_Movie()
@@ -291,7 +297,13 @@ Public Class TMDB_Image
         End If
 
         logger.Trace("Finished TMDB Scraper")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        RetO = New Interfaces.ModuleResult
+        RetO.breakChain = False
+        RetO.Cancelled = False
+        RetO.ReturnObj.Add(DBMovie)
+        RetO.ReturnObj.Add(ImageList)
+        Return RetO
+
     End Function
 
     Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
