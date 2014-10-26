@@ -54,6 +54,7 @@ Public Class dlgIMDBSearchResults
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
+
         Me.tmrLoad.Interval = 100
 
         _filterOptions = filterOptions
@@ -62,7 +63,10 @@ Public Class dlgIMDBSearchResults
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
         Me.txtSearch.Text = sMovieTitle
         Me.txtFileName.Text = sMovieFilename
-        chkManual.Enabled = False
+
+        ' fix for Enhancement #91
+        'chkManual.Enabled = False
+        chkManual.Enabled = True
 
         IMDB.SearchMovieAsync(sMovieTitle, _filterOptions)
 
@@ -94,7 +98,9 @@ Public Class dlgIMDBSearchResults
             Me.ClearInfo()
             Me.Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
             Me.pnlLoading.Visible = True
+
             chkManual.Enabled = False
+
             IMDB.CancelAsync()
             IMDB.SearchMovieAsync(Me.txtSearch.Text, _filterOptions)
         End If
@@ -104,6 +110,8 @@ Public Class dlgIMDBSearchResults
         Dim pOpt As New Structures.ScrapeOptions_Movie
         pOpt = SetPreviewOptions()
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
+            Me.pnlLoading.Visible = True
+            IMDB.CancelAsync()
             IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), _nMovie, pOpt)
         Else
             MsgBox(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
@@ -163,6 +171,10 @@ Public Class dlgIMDBSearchResults
 
     Private Sub chkManual_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkManual.CheckedChanged
         Me.ClearInfo()
+        If Me.chkManual.Enabled Then
+            Me.pnlLoading.Visible = False
+            IMDB.CancelAsync()
+        End If
         Me.OK_Button.Enabled = False
         Me.txtIMDBID.Enabled = Me.chkManual.Checked
         Me.btnVerify.Enabled = Me.chkManual.Checked

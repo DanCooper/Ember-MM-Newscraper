@@ -182,7 +182,7 @@ Partial Class dlgIMDBSearchResults
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(654, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(664, 64)
         Me.pnlTop.TabIndex = 2
         '
         'Label2
@@ -396,7 +396,7 @@ Partial Class dlgIMDBSearchResults
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(654, 461)
+        Me.ClientSize = New System.Drawing.Size(664, 494)
         Me.ControlBox = False
         Me.Controls.Add(Me.btnOpenFolder)
         Me.Controls.Add(Me.txtFileName)
