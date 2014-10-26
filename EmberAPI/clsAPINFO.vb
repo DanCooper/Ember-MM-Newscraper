@@ -265,13 +265,7 @@ Public Class NFO
                     DBMovie.Movie.Countries.Clear()
                 End If
 
-                If (String.IsNullOrEmpty(DBMovie.Movie.Year) OrElse Not Master.eSettings.MovieLockYear) AndAlso Options.bYear AndAlso _
-                 Not String.IsNullOrEmpty(scrapedmovie.Year) AndAlso Master.eSettings.MovieScraperYear AndAlso Not new_Year Then
-                    DBMovie.Movie.Year = scrapedmovie.Year
-                    new_Year = True
-                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperYear AndAlso Not Master.eSettings.MovieLockYear Then
-                    DBMovie.Movie.Year = String.Empty
-                End If
+
                 'Outline
                 If (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso Options.bOutline AndAlso _
                     Not String.IsNullOrEmpty(scrapedmovie.Outline) AndAlso Master.eSettings.MovieScraperOutline AndAlso (Not new_Outline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
