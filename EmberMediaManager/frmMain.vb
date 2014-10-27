@@ -13156,12 +13156,14 @@ doCancel:
                 End If
 
                 If doOpen Then
+                    Dim tmpstring As String = ""
                     For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
                         If Not String.IsNullOrEmpty(sRow.Cells(13).Value.ToString) Then    '  If Not String.IsNullOrEmpty(Master.currMovie.Movie.ID) Then
+                            tmpstring = sRow.Cells(13).Value.ToString.Replace("tt", "")
                             If Not My.Resources.urlIMDB.EndsWith("/") Then
-                                Functions.Launch(My.Resources.urlIMDB & "/title/tt" & sRow.Cells(13).Value.ToString)
+                                Functions.Launch(My.Resources.urlIMDB & "/title/tt" & tmpstring)
                             Else
-                                Functions.Launch(My.Resources.urlIMDB & "title/tt" & sRow.Cells(13).Value.ToString)
+                                Functions.Launch(My.Resources.urlIMDB & "title/tt" & tmpstring)
                             End If
                         End If
                     Next
