@@ -228,23 +228,26 @@ Namespace MoviepilotDE
 
                             'no outline 
                         Else
-                            Plot = tmpHTML.IndexOf("<p>")
+                            If Switch = 0 Then
 
-                            'check if plot exists
-                            If Plot > 0 AndAlso Plot < 7 Then
-                                'check if plot contains any headers and strip them if found
-                                dirt = If(tmpHTML.IndexOf("<strong>") > 0, tmpHTML.IndexOf("<strong>"), 0)
-                                If dirt > 0 Then
-                                    tmpHTML = tmpHTML.Substring(dirt + 8, tmpHTML.IndexOf("</strong>", dirt + 8) - (dirt + 8))
-                                End If
 
                                 Plot = tmpHTML.IndexOf("<p>")
-                                B = tmpHTML.IndexOf("</p>", Plot + 3)
-                                strPlot = Web.HttpUtility.HtmlDecode(tmpHTML.Substring(Plot + 3, B - (Plot + 3)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
 
+                                'check if plot exists
+                                If Plot > -1 AndAlso Plot < 7 Then
+                                    'check if plot contains any headers and strip them if found
+                                    dirt = If(tmpHTML.IndexOf("<strong>") > 0, tmpHTML.IndexOf("<strong>"), 0)
+                                    If dirt > 0 Then
+                                        tmpHTML = tmpHTML.Substring(dirt + 8, tmpHTML.IndexOf("</strong>", dirt + 8) - (dirt + 8))
+                                    End If
+
+                                    Plot = tmpHTML.IndexOf("<p>")
+                                    B = tmpHTML.IndexOf("</p>", Plot + 3)
+                                    strPlot = Web.HttpUtility.HtmlDecode(tmpHTML.Substring(Plot + 3, B - (Plot + 3)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
+
+                                End If
                             End If
                         End If
-
 
                     End If
                 End If
