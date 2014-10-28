@@ -269,29 +269,27 @@ Public Class NFO
                 'Outline
                 If (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso Options.bOutline AndAlso _
                     Not String.IsNullOrEmpty(scrapedmovie.Outline) AndAlso Master.eSettings.MovieScraperOutline AndAlso (Not new_Outline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
-                    'check if brackets should be removed...
-                    If Master.eSettings.MovieScraperCleanPlotOutline Then
-                        DBMovie.Movie.Outline = StringUtils.RemoveBrackets(scrapedmovie.Outline)
-                    Else
-                        DBMovie.Movie.Outline = scrapedmovie.Outline
-                    End If
+                    DBMovie.Movie.Outline = scrapedmovie.Outline
                     new_Outline = True
                 ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOutline AndAlso Not Master.eSettings.MovieLockOutline Then
                     DBMovie.Movie.Outline = String.Empty
+                End If
+                'check if brackets should be removed...
+                If Master.eSettings.MovieScraperCleanPlotOutline Then
+                    DBMovie.Movie.Outline = StringUtils.RemoveBrackets(DBMovie.Movie.Outline)
                 End If
 
                 'Plot
                 If (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot) AndAlso Options.bPlot AndAlso _
                     Not String.IsNullOrEmpty(scrapedmovie.Plot) AndAlso Master.eSettings.MovieScraperPlot AndAlso (Not new_Plot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
-                    'check if brackets should be removed...
-                    If Master.eSettings.MovieScraperCleanPlotOutline Then
-                        DBMovie.Movie.Plot = StringUtils.RemoveBrackets(scrapedmovie.Plot)
-                    Else
-                        DBMovie.Movie.Plot = scrapedmovie.Plot
-                    End If
+                    DBMovie.Movie.Plot = scrapedmovie.Plot
                     new_Plot = True
                 ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperPlot AndAlso Not Master.eSettings.MovieLockPlot Then
                     DBMovie.Movie.Plot = String.Empty
+                End If
+                'check if brackets should be removed...
+                If Master.eSettings.MovieScraperCleanPlotOutline Then
+                    DBMovie.Movie.Plot = StringUtils.RemoveBrackets(DBMovie.Movie.Plot)
                 End If
 
                 'Genre

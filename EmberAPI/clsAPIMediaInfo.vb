@@ -386,28 +386,87 @@ Public Class MediaInfo
     End Sub
 
     Private Function ConvertAFormat(ByVal sFormat As String, Optional ByVal sProfile As String = "") As String
-        Dim tFormat As String = ""
         If Not String.IsNullOrEmpty(sFormat) Then
-            tFormat = sFormat.ToLower
-        ElseIf Not String.IsNullOrEmpty(sProfile) Then
-            tFormat = sProfile.ToLower
-        End If
-
-        If Not String.IsNullOrEmpty(tFormat) Then
+            Select Case sFormat.ToLower
+                Case "dts", "a_dts"
+                    If sProfile.ToUpper.Contains("MA") Then
+                        sFormat = "dtshd_ma" 'Master Audio
+                    ElseIf sProfile.ToUpper.Contains("HRA") Then
+                        sFormat = "dtshd_hra" 'high resolution
+                    End If
+            End Select
+            If sFormat.ToLower.Contains("truehd") Then
+                sFormat = "truehd" 'Dolby TrueHD
+            ElseIf sFormat.ToLower.Contains("vorbis") Then
+                sFormat = "vorbis" 'Vorbis
+            ElseIf sFormat.ToLower.Contains("eac3") Then
+                sFormat = "dolbydigital" 'EAC3
+            ElseIf sFormat.ToLower.Contains("flac") Then
+                sFormat = "flac" 'flac
+            End If
             Dim myconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
             myconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts")
             If Not myconversions Is Nothing Then
+                'if theres more than one "solution" in converttable use mediainfo default value
+                Dim returncodec As String = ""
                 For Each k In myconversions
-                    If Regex.IsMatch(tFormat.ToLower, k.Name) Then
-                        Return k.Value
+                    If Regex.IsMatch(sFormat.ToLower, k.Name) Then
+                        If returncodec = "" Then
+                            returncodec = k.Value
+                            'happens when there's more than one match
+                        Else
+                            returncodec = ""
+                            Exit For
+                        End If
                     End If
                 Next
-                Return tFormat.ToLower
-                'if AudioFormatConvert is not avalaible as complex setting (old)
+                If returncodec <> "" Then
+                    Return returncodec
+                Else
+                    Return sFormat.ToLower
+                End If
             Else
-                Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", tFormat.ToLower), tFormat.ToLower)
+                Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
             End If
-
+            'cocotus, 2013/02 Fix2 for DTS Scan
+        ElseIf Not String.IsNullOrEmpty(sProfile) Then
+            If sProfile.ToUpper.Contains("MA") Then
+                sFormat = "dtshd_ma" 'Master Audio
+            ElseIf sProfile.ToUpper.Contains("HRA") Then
+                sFormat = "dtshd_hra" 'high resolution
+            ElseIf sProfile.ToLower.Contains("truehd") Then
+                sFormat = "truehd" 'Dolby TrueHD
+            ElseIf sFormat.ToLower.Contains("vorbis") Then
+                sFormat = "vorbis" 'Vorbis
+            ElseIf sFormat.ToLower.Contains("eac3") Then
+                sFormat = "dolbydigital" 'EAC3
+            ElseIf sFormat.ToLower.Contains("flac") Then
+                sFormat = "flac" 'flac
+            End If
+            Dim myconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            myconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts")
+            If Not myconversions Is Nothing Then
+                'if theres more than one "solution" in converttable use mediainfo default value
+                Dim returncodec As String = ""
+                For Each k In myconversions
+                    If Regex.IsMatch(sFormat.ToLower, k.Name) Then
+                        If returncodec = "" Then
+                            returncodec = k.Value
+                            'happens when there's more than one match
+                        Else
+                            returncodec = ""
+                            Exit For
+                        End If
+                    End If
+                Next
+                If returncodec <> "" Then
+                    Return returncodec
+                Else
+                    Return sFormat.ToLower
+                End If
+            Else
+                Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
+            End If
         Else
             Return String.Empty
         End If
