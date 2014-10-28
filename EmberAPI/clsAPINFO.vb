@@ -418,6 +418,13 @@ Public Class NFO
                 'TODO Tags
             Next
 
+            'Plot for Outline
+            If String.IsNullOrEmpty(DBMovie.Movie.Outline) AndAlso Master.eSettings.MovieScraperPlotForOutline Then
+                If Not String.IsNullOrEmpty(DBMovie.Movie.Plot) Then
+                    DBMovie.Movie.Outline = StringUtils.ShortenOutline(DBMovie.Movie.Plot, Master.eSettings.MovieScraperOutlineLimit)
+                End If
+            End If
+
             'set ListTitle at the end of merging
             If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
                 Dim tTitle As String = StringUtils.FilterTokens_Movie(DBMovie.Movie.Title)

@@ -958,6 +958,7 @@ Public Class StringUtils
         If String.IsNullOrEmpty(fOutline) OrElse fLimit < 0 Then Return String.Empty
 
         If fLimit >= fOutline.Length Then Return fOutline 'Supplied string is within limits, so just return it
+        If fLimit = 0 Then Return fOutline 'Limit of 0 means full plot for outline
         If fLimit <= 3 Then
             'fLimit is ridiculously small. Fudge it and just return the appropriate number of dots
             Return "...".Substring(0, fLimit)
