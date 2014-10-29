@@ -31,6 +31,7 @@ Namespace MoviepilotDE
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private originaltitle As String
+        Private title As String
         Private _fsk As String
         Private _outline As String
         Private _plot As String
@@ -39,9 +40,10 @@ Namespace MoviepilotDE
 
 #Region "Constructors"
 
-        Public Sub New(ByVal soriginaltitle As String)
+        Public Sub New(ByVal soriginaltitle As String, ByVal stitle As String)
             Clear()
             originaltitle = soriginaltitle
+            title = stitle
             'Main method in this class to retrieve Moviepilot information...
             GetMoviepilotDEDetails()
         End Sub
@@ -99,7 +101,10 @@ Namespace MoviepilotDE
 
             'First step is to retrieve URL for the movie on Moviepilot.de
             Dim sURL As String = GetMoviePilotUrlFromOriginaltitle(originaltitle)
-
+            'if theres no link with originaltitle, try with title
+            If String.IsNullOrEmpty(sURL) Then
+                sURL = GetMoviePilotUrlFromOriginaltitle(title)
+            End If
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
                     'Now download HTML-Code
