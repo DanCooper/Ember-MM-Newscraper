@@ -31,6 +31,7 @@ Namespace MoviepilotDE
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private originaltitle As String
+        Private title As String
         Private _fsk As String
         Private _outline As String
         Private _plot As String
@@ -39,9 +40,10 @@ Namespace MoviepilotDE
 
 #Region "Constructors"
 
-        Public Sub New(ByVal soriginaltitle As String)
+        Public Sub New(ByVal soriginaltitle As String, ByVal stitle As String)
             Clear()
             originaltitle = soriginaltitle
+            title = stitle
             'Main method in this class to retrieve Moviepilot information...
             GetMoviepilotDEDetails()
         End Sub
@@ -99,7 +101,10 @@ Namespace MoviepilotDE
 
             'First step is to retrieve URL for the movie on Moviepilot.de
             Dim sURL As String = GetMoviePilotUrlFromOriginaltitle(originaltitle)
-
+            'if theres no link with originaltitle, try with title
+            If String.IsNullOrEmpty(sURL) Then
+                sURL = GetMoviePilotUrlFromOriginaltitle(title)
+            End If
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
                     'Now download HTML-Code
@@ -228,25 +233,31 @@ Namespace MoviepilotDE
 
                             'no outline 
                         Else
-                            If Switch = 0 Then
+               
 
+                            Plot = tmpHTML.IndexOf("<p>")
+
+                            'check if plot exists
+                            If Plot > -1 AndAlso Plot < 7 Then
+                                'check if plot contains any headers and strip them if found
+                                dirt = If(tmpHTML.IndexOf("<strong>") > 0, tmpHTML.IndexOf("<strong>"), 0)
+                                If dirt > 0 Then
+                                    tmpHTML = tmpHTML.Substring(dirt + 8, tmpHTML.IndexOf("</strong>", dirt + 8) - (dirt + 8))
+                                End If
 
                                 Plot = tmpHTML.IndexOf("<p>")
+                                B = tmpHTML.IndexOf("</p>", Plot + 3)
+                                strPlot = Web.HttpUtility.HtmlDecode(tmpHTML.Substring(Plot + 3, B - (Plot + 3)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
 
-                                'check if plot exists
-                                If Plot > -1 AndAlso Plot < 7 Then
-                                    'check if plot contains any headers and strip them if found
-                                    dirt = If(tmpHTML.IndexOf("<strong>") > 0, tmpHTML.IndexOf("<strong>"), 0)
-                                    If dirt > 0 Then
-                                        tmpHTML = tmpHTML.Substring(dirt + 8, tmpHTML.IndexOf("</strong>", dirt + 8) - (dirt + 8))
-                                    End If
-
-                                    Plot = tmpHTML.IndexOf("<p>")
-                                    B = tmpHTML.IndexOf("</p>", Plot + 3)
-                                    strPlot = Web.HttpUtility.HtmlDecode(tmpHTML.Substring(Plot + 3, B - (Plot + 3)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
-
+                                'If scraped plot is not too long (<350 characters), use it for outline as well!
+                                If Switch = 1 AndAlso strPlot.Length > 350 Then
+                                    Return strOutline
+                                Else
+                                    Return strPlot
                                 End If
+
                             End If
+
                         End If
 
                     End If
