@@ -1569,13 +1569,17 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVASAnyEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
-            For Each Pan In Me.pnlEFImage
-                CType(Pan.Tag, Images).Dispose()
-            Next
-            For Each Pan In Me.pbEFImage
-                CType(Pan.Tag, Images).Dispose()
-                Pan.Image.Dispose()
-            Next
+            If Not IsNothing(Me.pnlEFImage) Then
+                For Each Pan In Me.pnlEFImage
+                    CType(Pan.Tag, Images).Dispose()
+                Next
+            End If
+            If Not IsNothing(Me.pbEFImage) Then
+                For Each Pan In Me.pbEFImage
+                    CType(Pan.Tag, Images).Dispose()
+                    Pan.Image.Dispose()
+                Next
+            End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
