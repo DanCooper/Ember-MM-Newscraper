@@ -20,8 +20,6 @@
 
 Imports System.IO
 Imports EmberAPI
-Imports RestSharp
-Imports WatTmdb
 
 ''' <summary>
 ''' Native Scraper

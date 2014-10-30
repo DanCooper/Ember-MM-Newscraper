@@ -20,8 +20,6 @@
 
 Imports System.IO
 Imports EmberAPI
-Imports RestSharp
-Imports WatTmdb
 
 Public Class IMPA_Image
     Implements Interfaces.ScraperModule_Image_Movie
