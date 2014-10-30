@@ -1409,7 +1409,7 @@ Public Class dlgSettings
 
         If Not Me.chkMovieScraperCert.Checked Then
             Me.cbMovieScraperCertLang.Enabled = False
-            Me.cbMovieScraperCertLang.SelectedIndex = -1
+            Me.cbMovieScraperCertLang.SelectedIndex = 0
             Me.chkMovieScraperCertForMPAA.Enabled = False
             Me.chkMovieScraperCertForMPAA.Checked = False
             Me.chkMovieScraperCertFSK.Enabled = False
@@ -1418,12 +1418,17 @@ Public Class dlgSettings
             Me.chkMovieScraperCertOnlyValue.Checked = False
         Else
             Me.cbMovieScraperCertLang.Enabled = True
-            Me.cbMovieScraperCertLang.SelectedIndex = -1
+            Me.cbMovieScraperCertLang.SelectedIndex = 0
             Me.chkMovieScraperCertForMPAA.Enabled = True
             Me.chkMovieScraperCertFSK.Enabled = True
             Me.chkMovieScraperCertOnlyValue.Enabled = True
         End If
     End Sub
+
+    Private Sub chkMovieScraperMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperMPAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieScraperCertForMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertForMPAA.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1736,7 +1741,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieLockMPAACertification_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockMPAACertification.CheckedChanged
+    Private Sub chkMovieLockCertification_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockCert.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieLockMPAA_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockMPAA.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3311,7 +3320,8 @@ Public Class dlgSettings
                 Me.chkMovieLockGenre.Checked = .MovieLockGenre
                 Me.chkMovieLockLanguageA.Checked = .MovieLockLanguageA
                 Me.chkMovieLockLanguageV.Checked = .MovieLockLanguageV
-                Me.chkMovieLockMPAACertification.Checked = .MovieLockMPAA
+                Me.chkMovieLockCert.Checked = .MovieLockCert
+                Me.chkMovieLockMPAA.Checked = .MovieLockMPAA
                 Me.chkMovieLockOriginalTitle.Checked = .MovieLockOriginalTitle
                 Me.chkMovieLockOutline.Checked = .MovieLockOutline
                 Me.chkMovieLockPlot.Checked = .MovieLockPlot
@@ -3415,6 +3425,7 @@ Public Class dlgSettings
                 Me.chkMovieScraperGenre.Checked = .MovieScraperGenre
                 Me.chkMovieScraperMetaDataIFOScan.Checked = .MovieScraperMetaDataIFOScan
                 Me.chkMovieScraperMetaDataScan.Checked = .MovieScraperMetaDataScan
+                Me.chkMovieScraperMPAA.Checked = .MovieScraperMPAA
                 Me.chkMovieScraperOriginalTitle.Checked = .MovieScraperOriginalTitle
                 Me.chkMovieScraperDetailView.Checked = .MovieScraperUseDetailView
                 Me.chkMovieScraperOutline.Checked = .MovieScraperOutline
@@ -3656,9 +3667,14 @@ Public Class dlgSettings
 
                 Try
                     Me.cbMovieScraperCertLang.Items.Clear()
+                    Me.cbMovieScraperCertLang.Items.Add(Master.eLang.All)
                     Me.cbMovieScraperCertLang.Items.AddRange((From lLang In APIXML.MovieCertLanguagesXML.Language Select lLang.name).ToArray)
                     If Me.cbMovieScraperCertLang.Items.Count > 0 Then
-                        Me.cbMovieScraperCertLang.Text = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang).name
+                        If .MovieScraperCertLang = Master.eLang.All Then
+                            Me.cbMovieScraperCertLang.SelectedIndex = 0
+                        Else
+                            Me.cbMovieScraperCertLang.Text = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang).name
+                        End If
                     End If
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -4912,7 +4928,8 @@ Public Class dlgSettings
                 .MovieLockGenre = Me.chkMovieLockGenre.Checked
                 .MovieLockLanguageA = Me.chkMovieLockLanguageA.Checked
                 .MovieLockLanguageV = Me.chkMovieLockLanguageV.Checked
-                .MovieLockMPAA = Me.chkMovieLockMPAACertification.Checked
+                .MovieLockCert = Me.chkMovieLockCert.Checked
+                .MovieLockMPAA = Me.chkMovieLockMPAA.Checked
                 .MovieLockOutline = Me.chkMovieLockOutline.Checked
                 .MovieLockPlot = Me.chkMovieLockPlot.Checked
                 .MovieLockRating = Me.chkMovieLockRating.Checked
@@ -5014,8 +5031,12 @@ Public Class dlgSettings
                 .MovieScraperCertForMPAA = Me.chkMovieScraperCertForMPAA.Checked
                 .MovieScraperCertFSK = Me.chkMovieScraperCertFSK.Checked
                 .MovieScraperCertOnlyValue = Me.chkMovieScraperCertOnlyValue.Checked
-                If cbMovieScraperCertLang.Text <> String.Empty Then
-                    .MovieScraperCertLang = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbMovieScraperCertLang.Text).abbreviation
+                If Me.cbMovieScraperCertLang.Text <> String.Empty Then
+                    If Me.cbMovieScraperCertLang.SelectedIndex = 0 Then
+                        .MovieScraperCertLang = Master.eLang.All
+                    Else
+                        .MovieScraperCertLang = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbMovieScraperCertLang.Text).abbreviation
+                    End If
                 End If
                 .MovieScraperCleanFields = Me.chkMovieScraperCleanFields.Checked
                 .MovieScraperCleanPlotOutline = Me.chkMovieScraperCleanPlotOutline.Checked
@@ -5032,6 +5053,7 @@ Public Class dlgSettings
                 End If
                 .MovieScraperMetaDataIFOScan = Me.chkMovieScraperMetaDataIFOScan.Checked
                 .MovieScraperMetaDataScan = Me.chkMovieScraperMetaDataScan.Checked
+                .MovieScraperMPAA = Me.chkMovieScraperMPAA.Checked
                 .MovieScraperOriginalTitle = Me.chkMovieScraperOriginalTitle.Checked
                 .MovieScraperOutline = Me.chkMovieScraperOutline.Checked
                 .MovieScraperOutlineForPlot = Me.chkMovieScraperOutlineForPlot.Checked
@@ -5729,30 +5751,6 @@ Public Class dlgSettings
         Me.chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         Me.chkMovieLandscapeCol.Text = Master.eLang.GetString(1071, "Hide Landscape Column")
         Me.chkMovieLevTolerance.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
-        Me.chkMovieLockActors.Text = Master.eLang.GetString(1234, "Lock Actors")
-        Me.chkMovieLockCollectionID.Text = Master.eLang.GetString(1235, "Lock Collection ID")
-        Me.chkMovieLockCollections.Text = Master.eLang.GetString(1265, "Lock Collections")
-        Me.chkMovieLockCountry.Text = Master.eLang.GetString(1236, "Lock Country")
-        Me.chkMovieLockDirector.Text = Master.eLang.GetString(1237, "Lock Director")
-        Me.chkMovieLockReleaseDate.Text = Master.eLang.GetString(1241, "Lock ReleaseDate")
-        Me.chkMovieLockRuntime.Text = Master.eLang.GetString(1242, "Lock Runtime")
-        Me.chkMovieLockTags.Text = Master.eLang.GetString(1243, "Lock Tags")
-        Me.chkMovieLockTop250.Text = Master.eLang.GetString(1244, "Lock TOP250")
-        Me.chkMovieLockVotes.Text = Master.eLang.GetString(1245, "Lock Votes")
-        Me.chkMovieLockCredits.Text = Master.eLang.GetString(1246, "Lock Writers")
-        Me.chkMovieLockYear.Text = Master.eLang.GetString(1247, "Lock Year")
-        Me.chkMovieLockGenre.Text = Master.eLang.GetString(490, "Lock Genre")
-        Me.chkMovieLockLanguageA.Text = Master.eLang.GetString(880, "Lock Language (audio)")
-        Me.chkMovieLockLanguageV.Text = Master.eLang.GetString(879, "Lock Language (video)")
-        Me.chkMovieLockMPAACertification.Text = Master.eLang.GetString(881, "Lock MPAA/Certification")
-        Me.chkMovieLockOutline.Text = Master.eLang.GetString(495, "Lock Outline")
-        Me.chkMovieLockOriginalTitle.Text = Master.eLang.GetString(1240, "Lock Original Title")
-        Me.chkMovieLockPlot.Text = Master.eLang.GetString(496, "Lock Plot")
-        Me.chkMovieLockRating.Text = Master.eLang.GetString(492, "Lock Rating")
-        Me.chkMovieLockStudio.Text = Master.eLang.GetString(491, "Lock Studio")
-        Me.chkMovieLockTagline.Text = Master.eLang.GetString(493, "Lock Tagline")
-        Me.chkMovieLockTitle.Text = Master.eLang.GetString(494, "Lock Title")
-        Me.chkMovieLockTrailer.Text = Master.eLang.GetString(489, "Lock Trailer")
         Me.chkMovieMissingBanner.Text = Master.eLang.GetString(1073, "Check for Banner")
         Me.chkMovieMissingClearArt.Text = Master.eLang.GetString(1112, "Check for ClearArt")
         Me.chkMovieMissingClearLogo.Text = Master.eLang.GetString(1113, "Check for ClearLogo")
@@ -5782,42 +5780,42 @@ Public Class dlgSettings
         Me.chkMovieUseExpert.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieUseNMJ.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
-        Me.chkMovieScraperCast.Text = Master.eLang.GetString(63, "Cast")
+        Me.lblMovieScraperCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         Me.chkMovieScraperCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
-        Me.chkMovieScraperCert.Text = Master.eLang.GetString(722, "MPAA/Certification")
+        Me.lblMovieScraperCertification.Text = Master.eLang.GetString(722, "MPAA/Certification")
         Me.chkMovieScraperCleanFields.Text = Master.eLang.GetString(125, "Cleanup disabled fields")
         Me.chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
-        Me.chkMovieScraperCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
+        Me.lblMovieScraperCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
         Me.chkMovieScraperCollectionsAuto.Text = Master.eLang.GetString(1266, "Add Movie automatically to Collections")
-        Me.chkMovieScraperCountry.Text = Master.eLang.GetString(301, "Country")
+        Me.lblMovieScraperCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
-        Me.chkMovieScraperDirector.Text = Master.eLang.GetString(62, "Director")
+        Me.lblMovieScraperDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkMovieScraperReleaseFormat.Text = Master.eLang.GetString(1272, "Date format Releasedate: yyyy-mm-dd")
-        Me.chkMovieScraperGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkMovieScraperOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
+        Me.lblMovieScraperGenre.Text = Master.eLang.GetString(20, "Genre")
+        Me.lblMovieScraperOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         Me.chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         Me.chkMovieScraperCertOnlyValue.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
-        Me.chkMovieScraperOutline.Text = Master.eLang.GetString(64, "Plot Outline")
+        Me.lblMovieScraperOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkMovieScraperOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Text = Master.eLang.GetString(1005, "Only overwrite english Outline and Plot")
-        Me.chkMovieScraperPlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.lblMovieScraperPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Outline if Outline is Empty")
-        Me.chkMovieScraperRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkMovieScraperRelease.Text = Master.eLang.GetString(57, "Release Date")
-        Me.chkMovieScraperRuntime.Text = Master.eLang.GetString(396, "Runtime")
-        Me.chkMovieScraperStudio.Text = Master.eLang.GetString(395, "Studio")
+        Me.lblMovieScraperRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.lblMovieScraperRelease.Text = Master.eLang.GetString(57, "Release Date")
+        Me.lblMovieScraperRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        Me.lblMovieScraperStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
-        Me.chkMovieScraperTagline.Text = Master.eLang.GetString(397, "Tagline")
-        Me.chkMovieScraperTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkMovieScraperTop250.Text = Master.eLang.GetString(591, "Top 250")
-        Me.chkMovieScraperTrailer.Text = Master.eLang.GetString(151, "Trailer")
+        Me.lblMovieScraperTagline.Text = Master.eLang.GetString(397, "Tagline")
+        Me.lblMovieScraperTitle.Text = Master.eLang.GetString(21, "Title")
+        Me.lblMovieScraperTop250.Text = Master.eLang.GetString(591, "Top 250")
+        Me.lblMovieScraperTrailer.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkMovieScraperCertFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
-        Me.chkMovieScraperVotes.Text = Master.eLang.GetString(399, "Votes")
-        Me.chkMovieScraperCredits.Text = Master.eLang.GetString(394, "Writers")
-        Me.chkMovieScraperYear.Text = Master.eLang.GetString(278, "Year")
+        Me.lblMovieScraperVotes.Text = Master.eLang.GetString(399, "Votes")
+        Me.lblMovieScraperCredits.Text = Master.eLang.GetString(394, "Writers")
+        Me.lblMovieScraperYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         Me.chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         Me.chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack <filename>"), "<", ">")
@@ -5908,7 +5906,7 @@ Public Class dlgSettings
         Me.gbMovieGeneralMissingItemsOpts.Text = Master.eLang.GetString(581, "Missing Items Filter")
         Me.gbMovieImagesOpts.Text = Master.eLang.GetString(497, "Images")
         Me.gbMovieSourcesMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
-        Me.gbMovieScraperCertOpts.Text = Master.eLang.GetString(56, "Certification")
+        Me.gbMovieScraperCertificationOpts.Text = Master.eLang.GetString(56, "Certification")
         Me.gbMovieActorThumbsOpts.Text = Master.eLang.GetString(991, "Actor Thumbs")
         Me.gbMovieBannerOpts.Text = Master.eLang.GetString(838, "Banner")
         Me.gbMovieClearArtOpts.Text = Master.eLang.GetString(1096, "ClearArt")
@@ -5920,8 +5918,7 @@ Public Class dlgSettings
         Me.gbMoviePosterOpts.Text = Master.eLang.GetString(148, "Poster")
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
-        Me.gbMovieScraperFieldsOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
-        Me.gbMovieScraperGlobalLocksOpts.Text = Master.eLang.GetString(488, "Global Locks")
+        Me.gbMovieScraperGlobalOpts.Text = Master.eLang.GetString(488, "Global Locks")
         Me.gbMovieScraperMetaDataOpts.Text = Master.eLang.GetString(59, "Meta Data")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
@@ -5972,8 +5969,6 @@ Public Class dlgSettings
         Me.lblMoviePosterQ.Text = Master.eLang.GetString(478, "Quality:")
         Me.lblMoviePosterSize.Text = Master.eLang.GetString(482, "Preferred Size:")
         Me.lblMoviePosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
-        Me.lblMovieScraperCastLimit.Text = Master.eLang.GetString(578, "Limit:")
-        Me.lblMovieScraperCertLang.Text = Master.eLang.GetString(301, "Country:")
         Me.lblMovieScraperDefFIExt.Text = Master.eLang.GetString(626, "File Type")
         Me.lblMovieScraperDurationRuntimeFormat.Text = Master.eLang.GetString(732, "<h>=Hours <m>=Minutes <s>=Seconds")
         Me.lblMovieSkipLessThan.Text = Master.eLang.GetString(540, "Skip files smaller than:")
@@ -6144,12 +6139,10 @@ Public Class dlgSettings
         Me.lblMovieBannerQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieBannerWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblMovieEFanartsHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblMovieEFanartsLimit.Text = Me.lblMovieScraperCastLimit.Text
         Me.lblMovieEFanartsQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieEFanartsSize.Text = Me.lblMoviePosterSize.Text
         Me.lblMovieEFanartsWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblMovieEThumbsHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblMovieEThumbsLimit.Text = Me.lblMovieScraperCastLimit.Text
         Me.lblMovieEThumbsQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieEThumbsSize.Text = Me.lblMoviePosterSize.Text
         Me.lblMovieEThumbsWidth.Text = Me.lblMoviePosterWidth.Text
@@ -6157,9 +6150,6 @@ Public Class dlgSettings
         Me.lblMovieFanartQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieFanartSize.Text = Me.lblMoviePosterSize.Text
         Me.lblMovieFanartWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblMovieScraperGenreLimit.Text = Me.lblMovieScraperCastLimit.Text
-        Me.lblMovieScraperStudioLimit.Text = Me.lblMovieScraperCastLimit.Text
-        Me.lblMovieScraperOutlineLimit.Text = Me.lblMovieScraperCastLimit.Text
         Me.lblSettingsTopTitle.Text = Me.Text
         Me.lblTVASBannerHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblTVASBannerQ.Text = Me.lblMoviePosterQ.Text
