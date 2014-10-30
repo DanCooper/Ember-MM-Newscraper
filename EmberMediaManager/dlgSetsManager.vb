@@ -769,18 +769,25 @@ Public Class dlgSetsManager
 #End Region 'Nested Types
 
 #Region "Moviesetscraper"
-    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
+    Private Async Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As New Interfaces.ModuleResult
 
         Try
             If currSet.Movies.Count > 0 Then
                 Dim collectionMovie As New Structures.DBMovie
                 collectionMovie = currSet.Movies.Item(0).DBMovie
-                If Not Await ModulesManager.Instance.ScrapeImage_Movie(collectionMovie, Enums.ScraperCapabilities.Poster, aList) Then
+                ret = Await ModulesManager.Instance.ScrapeImage_Movie(collectionMovie, Enums.ScraperCapabilities.Poster, aList)
+                ' return objects
+                ' DBMovie
+                ' ImageList
+                collectionMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                If Not ret.breakChain Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
                         If dlgImgS.ShowDialog(collectionMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -802,7 +809,7 @@ Public Class dlgSetsManager
             End If
 
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     Private Sub btnSetFanartScrape_Click(sender As Object, e As EventArgs) Handles btnSetFanartScrape.Click

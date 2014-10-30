@@ -1801,7 +1801,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub bwMovieScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
+    Private Async Sub bwMovieScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim OldListTitle As String = String.Empty
         Dim NewListTitle As String = String.Empty
@@ -1824,6 +1824,7 @@ Public Class frmMain
         Dim DBScrapeMovie As New Structures.DBMovie
         Dim configpath As String = ""
         Dim formatter As New BinaryFormatter()
+        Dim ret As New Interfaces.ModuleResult
 
         logger.Trace("Starting MOVIE scrape")
 
@@ -1845,7 +1846,9 @@ Public Class frmMain
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
 
                 If Master.GlobalScrapeMod.NFO Then
-                    If Await ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie) Then
+                    ret = Await ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie)
+                    DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                    If ret.Cancelled Then
                         Cancelled = True
                         Exit Try
                     End If

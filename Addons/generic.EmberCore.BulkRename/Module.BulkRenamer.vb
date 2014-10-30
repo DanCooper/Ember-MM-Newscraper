@@ -93,7 +93,12 @@ Public Class BulkRenamerModule
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Async Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByVal _params As List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Structures.DBMovie) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.GenericModule.RunGeneric
+        ' return parameters will add in ReturnObject
+        ' _params
+        '_refparam 
+        '_dbmovie 
+        Dim ret As New Interfaces.ModuleResult
         Select Case mType
             Case Enums.ModuleEventType.MovieScraperRDYtoSave
                 If MySettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(MySettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern)) Then
@@ -112,13 +117,28 @@ Public Class BulkRenamerModule
                 Using dRenameManual As New dlgRenameManual
                     Select Case dRenameManual.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            Return New Interfaces.ModuleResult With {.Cancelled = False, .breakChain = False}
+                            ret.Cancelled = False
+                            ret.breakChain = False
+                            ret.ReturnObj.Add(_params)
+                            ret.ReturnObj.Add(_refparam)
+                            ret.ReturnObj.Add(_dbmovie)
+                            Return ret
                         Case Else
-                            Return New Interfaces.ModuleResult With {.Cancelled = True, .breakChain = False}
+                            ret.Cancelled = True
+                            ret.breakChain = False
+                            ret.ReturnObj.Add(_params)
+                            ret.ReturnObj.Add(_refparam)
+                            ret.ReturnObj.Add(_dbmovie)
+                            Return ret
                     End Select
                 End Using
         End Select
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        ret.Cancelled = False
+        ret.breakChain = False
+        ret.ReturnObj.Add(_params)
+        ret.ReturnObj.Add(_refparam)
+        ret.ReturnObj.Add(_dbmovie)
+        Return ret
     End Function
 
     Private Sub FolderSubMenuItemAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ctxMySubMenu1.Click

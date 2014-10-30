@@ -84,8 +84,15 @@ Public Class OFDB_Data
 #End Region 'Properties
 
 #Region "Methods"
-    Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Async Function GetMovieStudio(ByVal DBMovie As Structures.DBMovie, ByVal studio As List(Of String)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
+        ' return objects
+        ' DBMovie
+        ' studio
+        Dim ret As New Interfaces.ModuleResult
+        ret.breakChain = False
+        ret.ReturnObj.Add(DBMovie)
+        ret.ReturnObj.Add(studio)
+        Return ret
     End Function
 
     Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
@@ -174,16 +181,26 @@ Public Class OFDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper should NOT consider global scraper settings/locks in Ember, just scraper options of module</remarks>
-    Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
-        logger.Trace("Started OFDB Scraper")
-
+    Async Function Scraper(ByVal oDBMovie As Structures.DBMovie, ByVal nMovie As MediaContainers.Movie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Data_Movie.Scraper
+        ' Return Objects are
+        ' oDBMovie
+        ' nMovie
+        ' ScrapeType
+        ' Options         logger.Trace("Started OFDB Scraper")
+        Dim ret As New Interfaces.ModuleResult
+        ret.Cancelled = False
+        ret.breakChain = False
+        ret.ReturnObj.Add(oDBMovie)
+        ret.ReturnObj.Add(nMovie)
+        ret.ReturnObj.Add(ScrapeType)
+        ret.ReturnObj.Add(Options)
 
         Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
 
         'datascraper needs imdb of movie!
         If String.IsNullOrEmpty(oDBMovie.Movie.ID) Then
             logger.Trace("IMDB-ID of movie is needed, but not availaible! Leave OFDB scraper...")
-            Return New Interfaces.ModuleResult With {.breakChain = False}
+            Return ret
         End If
 
         nMovie.Scrapersource = "OFDB"
@@ -264,7 +281,15 @@ Public Class OFDB_Data
         End If
 
         logger.Trace("Finished OFDB Scraper")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        ret.Cancelled = False
+        ret.breakChain = False
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(oDBMovie)
+        ret.ReturnObj.Add(nMovie)
+        ret.ReturnObj.Add(ScrapeType)
+        ret.ReturnObj.Add(Options)
+
+        Return ret
     End Function
 
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged

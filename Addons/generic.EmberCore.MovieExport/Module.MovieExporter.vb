@@ -90,14 +90,22 @@ Public Class MovieExporterModule
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Async Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByVal _params As List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Structures.DBMovie) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.GenericModule.RunGeneric
+        ' return parameters will add in ReturnObject
+        ' _params
+        '_refparam 
+        '_dbmovie 
+        Dim ret As New Interfaces.ModuleResult
         Try
             dlgExportMovies.CLExport(DirectCast(_params(0), String), DirectCast(_params(1), String), DirectCast(_params(2), Int32))
 
         Catch ex As Exception
         End Try
-
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        ret.breakChain = False
+        ret.ReturnObj.Add(_params)
+        ret.ReturnObj.Add(_refparam)
+        ret.ReturnObj.Add(_dbmovie)
+        Return ret
     End Function
 
     Sub Disable()

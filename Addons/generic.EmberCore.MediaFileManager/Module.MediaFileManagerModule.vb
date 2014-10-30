@@ -131,10 +131,17 @@ Public Class FileManagerExternalModule
         Next
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Public Async Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByVal _params As List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Structures.DBMovie) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.GenericModule.RunGeneric
+        ' return parameters will add in ReturnObject
+        ' _params
+        '_refparam 
+        '_dbmovie 
+        Dim ret As New Interfaces.ModuleResult
+        ret.ReturnObj.Add(_params)
+        ret.ReturnObj.Add(_refparam)
+        ret.ReturnObj.Add(_dbmovie)
+        Return ret
     End Function
-
     Public Sub Save()
         Dim Names As String = String.Empty
         Dim Paths As String = String.Empty

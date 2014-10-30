@@ -678,9 +678,11 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Async Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task(Of Boolean)
+    Public Async Function ScrapeData_Movie(ByVal DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' return parameters will add in ReturnObject
+        ' DBMovie
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult
         Dim oMovie As New Structures.DBMovie
         Dim ScrapedList As New List(Of MediaContainers.Movie)
 
@@ -750,7 +752,11 @@ Public Class ModulesManager
                     ScrapeType = CType(ret.ReturnObj(2), Enums.ScrapeType)
                     Options = CType(ret.ReturnObj(3), Structures.ScrapeOptions_Movie)
 
-                    If ret.Cancelled Then Return ret.Cancelled
+                    If ret.Cancelled Then
+                        ret.ReturnObj.Clear()
+                        ret.ReturnObj.Add(DBMovie)
+                        Return ret
+                    End If
 
                     If Not IsNothing(nMovie) Then
                         ScrapedList.Add(nMovie)
@@ -766,7 +772,10 @@ Public Class ModulesManager
             'Merge scraperresults considering global datascraper settings
             DBMovie = NFO.MergeDataScraperResults(DBMovie, ScrapedList, ScrapeType, Options)
         End If
-        Return ret.Cancelled
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(DBMovie)
+        Return ret
+
     End Function
 
     ''' <summary>
@@ -777,7 +786,10 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
-    Public Async Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_MovieSet) As Threading.Tasks.Task(Of Boolean)
+    Public Async Function ScrapeData_MovieSet(ByVal DBMovieSet As Structures.DBMovieSet, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_MovieSet) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' return objects
+        ' DBMovieSet
+
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -815,9 +827,12 @@ Public Class ModulesManager
     ''' <param name="ImageList">List of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Async Function ScrapeImage_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Boolean)
+    Public Async Function ScrapeImage_Movie(ByVal DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByVal ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' return objects
+        ' DBMovie
+        ' ImageList
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_Movie) = externalScrapersModules_Image_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -850,7 +865,10 @@ Public Class ModulesManager
                 End If
             Next
         End If
-        Return ret.Cancelled
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(DBMovie)
+        ret.ReturnObj.Add(ImageList)
+        Return ret
     End Function
     ''' <summary>
     ''' Request that enabled movieset image scrapers perform their functions on the supplied movie
@@ -860,9 +878,12 @@ Public Class ModulesManager
     ''' <param name="ImageList">List of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Async Function ScrapeImage_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Boolean)
+    Public Async Function ScrapeImage_MovieSet(ByVal DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByVal ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' return objects
+        ' DBMovieSet
+        ' ImageList   
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_MovieSet) = externalScrapersModules_Image_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -895,7 +916,10 @@ Public Class ModulesManager
                 End If
             Next
         End If
-        Return ret.Cancelled
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(DBMovieSet)
+        ret.ReturnObj.Add(ImageList)
+        Return ret
     End Function
     ''' <summary>
     ''' Request that enabled movie theme scrapers perform their functions on the supplied movie
@@ -1529,20 +1553,20 @@ Public Class ModulesManager
         Return ret
     End Function
 
-    Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie) As List(Of String)
-        Dim ret As Interfaces.ModuleResult
+    Async Function GetMovieStudio(ByVal DBMovie As Structures.DBMovie, studio As List(Of String)) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        Dim ret As Interfaces.ModuleResult = Nothing
         Dim sStudio As New List(Of String)
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
             Application.DoEvents()
         End While
         For Each _externalScraperModule As _externalScraperModuleClass_Data_Movie In externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Try
-                ret = _externalScraperModule.ProcessorModule.GetMovieStudio(DBMovie, sStudio)
+                ret = Await _externalScraperModule.ProcessorModule.GetMovieStudio(DBMovie, sStudio)
             Catch ex As Exception
             End Try
             If ret.breakChain Then Exit For
         Next
-        Return sStudio
+        Return ret
     End Function
 
     'Function ScraperDownloadTrailer(ByRef DBMovie As Structures.DBMovie) As String

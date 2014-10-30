@@ -172,12 +172,22 @@ Namespace IMDB
         ''' <returns>True: success, false: no success</returns>
         ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper module should NOT use global scraper settings/locks in Ember, just scraper options of module
         ''' Instead of directly saving scraped results into DBMovie we use empty nMovie movie container to store retrieved information of scraper</remarks>
-        Public Async Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As Threading.Tasks.Task(Of Boolean)
+        Public Async Function GetMovieInfo(ByVal strID As String, ByVal nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+            ' return object
+            ' nMovie
+            Dim ret As New Interfaces.ModuleResult
+            'let's default on empty return
+            ret.Cancelled = True
+            ret.breakChain = True
+            ret.ReturnObj.Add(nMovie)
+
             Try
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'clear nMovie from search results
                 nMovie.Clear()
+                ret.ReturnObj.Clear()
+                ret.ReturnObj.Add(nMovie)
 
                 Dim HTML As String
                 intHTTP = New HTTP
@@ -185,7 +195,7 @@ Namespace IMDB
                 intHTTP.Dispose()
                 intHTTP = Nothing
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 Dim PlotHtml As String
                 intHTTP = New HTTP
@@ -196,7 +206,7 @@ Namespace IMDB
                 nMovie.IMDBID = strID
                 nMovie.Scrapersource = "IMDB"
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 Dim scrapedresult As String = ""
 
@@ -226,13 +236,13 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 If GetPoster Then
                     sPoster = Regex.Match(Regex.Match(HTML, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'MOVIE YEAR
                 If Options.bYear Then
@@ -242,7 +252,6 @@ Namespace IMDB
                         nMovie.Year = scrapedresult
                     End If
                 End If
-
 
                 Dim D, W, tempD As Integer
 
@@ -257,7 +266,8 @@ Namespace IMDB
                         nMovie.MPAA = scrapedresult
                     End If
 
-                    If bwIMDB.CancellationPending Then Return Nothing
+                    If bwIMDB.CancellationPending Then Return ret
+
                     ' MOVIE certifications
 
                     'get certifications
@@ -289,7 +299,7 @@ Namespace IMDB
 
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'MOVIE RELEASEDATE
                 If Options.bRelease Then
@@ -305,7 +315,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'MOVIE RATING IMDB
                 If Options.bRating Then
@@ -315,7 +325,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'IMDB trailer
                 If Options.bTrailer Then
@@ -324,7 +334,7 @@ Namespace IMDB
                     nMovie.Trailer = trailers.FirstOrDefault()
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'IMDB Votes
                 If Options.bVotes Then nMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
@@ -342,7 +352,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'IMDB Actors
                 If Options.bCast Then
@@ -380,7 +390,7 @@ Namespace IMDB
 
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 D = 0 : W = 0
 
@@ -398,7 +408,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'MOVIE DIRECTOR
                 If Options.bDirector Then
@@ -419,7 +429,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'MOVIE COUNTRIES
                 'Get countries of the movie
@@ -451,7 +461,7 @@ Namespace IMDB
 
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'MOVIE GENRES
                 'Get genres of the movie
@@ -480,7 +490,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'MOVIE OUTLINE
                 If Options.bOutline Then
@@ -527,7 +537,7 @@ Namespace IMDB
                     End Try
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
 mPlot:          'MOVIE PLOT
                 'Get the full Plot
@@ -544,7 +554,7 @@ mPlot:          'MOVIE PLOT
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'MOVIE DURATION
                 'Get the movie duration
@@ -597,7 +607,7 @@ mPlot:          'MOVIE PLOT
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'MOVIE WRITERS
                 'Get Writers
@@ -620,7 +630,7 @@ mPlot:          'MOVIE PLOT
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+                If bwIMDB.CancellationPending Then Return ret
 
                 'MOVIE OTHER
                 'Get All Other Info
@@ -666,7 +676,7 @@ mPlot:          'MOVIE PLOT
                         Next
                     End If
 
-                    If bwIMDB.CancellationPending Then Return Nothing
+                    If bwIMDB.CancellationPending Then Return ret
 
                     'Special Effects
                     If (Options.bOtherCrew OrElse FullCrew) Then
@@ -685,10 +695,16 @@ mPlot:          'MOVIE PLOT
                     End If
                 End If
 
-                Return True
+                ret.breakChain = False
+                ret.Cancelled = False
+                ret.ReturnObj.Clear()
+                ret.ReturnObj.Add(nMovie)
+
+                Return ret
+
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return False
+                Return ret
             End Try
         End Function
 

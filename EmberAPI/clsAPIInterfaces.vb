@@ -55,7 +55,7 @@ Public Class Interfaces
 
         Function InjectSetup() As Containers.SettingsPanel
 
-        Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByVal _params As List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Structures.DBMovie) As ModuleResult
+        Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByVal _params As List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Structures.DBMovie) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
         ' return parameters will add in ReturnObject
         ' _params
         '_refparam 
@@ -95,8 +95,10 @@ Public Class Interfaces
 
         Sub ScraperOrderChanged()
 
-        Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As ModuleResult
-
+        Function GetMovieStudio(ByVal DBMovie As Structures.DBMovie, ByVal studio As List(Of String)) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' return objects
+        ' DBMovie
+        ' studio
         Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As ModuleResult
 
         Sub Init(ByVal sAssemblyName As String)
@@ -163,7 +165,7 @@ Public Class Interfaces
 
         'MovieSet is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
         'Options is byref to allow field blocking in scraper chain
-        Function Scraper(ByVal DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_MovieSet) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        Function Scraper(ByVal DBMovieSet As Structures.DBMovieSet, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_MovieSet) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
         ' Return Objects are
         ' DBMovieSet
         ' ScrapeType

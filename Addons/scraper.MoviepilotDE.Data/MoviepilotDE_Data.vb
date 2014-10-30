@@ -239,8 +239,15 @@ Public Class MoviepilotDE_Data
         _setup.orderChanged()
     End Sub
 
-    Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Async Function GetMovieStudio(ByVal DBMovie As Structures.DBMovie, ByVal studio As List(Of String)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
+        ' return objects
+        ' DBMovie
+        ' studio
+        Dim ret As New Interfaces.ModuleResult
+        ret.breakChain = False
+        ret.ReturnObj.Add(DBMovie)
+        ret.ReturnObj.Add(studio)
+        Return ret
     End Function
 
     Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID

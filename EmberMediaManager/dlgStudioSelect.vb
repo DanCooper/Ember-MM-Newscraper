@@ -50,12 +50,15 @@ Public Class dlgStudioSelect
         Me.Close()
     End Sub
 
-    Private Sub dlgStudioSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Async Sub dlgStudioSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
         'Dim DBMovie As New Structures.DBMovie
         'DBMovie.Movie = New MediaContainers.Movie
         'DBMovie.Movie.IMDBID = Me._MovieId
-        Dim alStudio As List(Of String) = ModulesManager.Instance.GetMovieStudio(_CurrMovie)
+        Dim alStudio As New List(Of String)
+        Dim ret As Interfaces.ModuleResult = Await ModulesManager.Instance.GetMovieStudio(_CurrMovie, alStudio)
+        _CurrMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+        alStudio = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of String))
         ' If alStudio.Count = 0 Then alStudio.Add(_CurrMovie.Movie.Studio)
         If alStudio.Count = 0 Then alStudio.AddRange(_CurrMovie.Movie.Studios)
         For i As Integer = 0 To alStudio.Count - 1

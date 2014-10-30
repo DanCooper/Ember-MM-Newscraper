@@ -103,12 +103,12 @@ Public Class NotificationsModule
         Return SPanel
     End Function
 
-     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByVal _params As System.Collections.Generic.List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Structures.DBMovie) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+    Public Async Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByVal _params As List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Structures.DBMovie) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.GenericModule.RunGeneric
         ' return parameters will add in ReturnObject
         ' _params
         '_refparam 
         '_dbmovie 
-        Dim RetO As Interfaces.ModuleResult
+        Dim RetO As New Interfaces.ModuleResult
 
         Try
             If mType = Enums.ModuleEventType.Notification Then

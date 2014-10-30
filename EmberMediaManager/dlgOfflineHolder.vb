@@ -1480,7 +1480,7 @@ Public Class dlgOfflineHolder
         txtSlot.Text = String.Empty
     End Sub
 
-    Private Function SearchMovieAsk(ByVal tMovie As Structures.DBMovie) As Structures.DBMovie
+    Private Async Function SearchMovieAsk(ByVal tMovie As Structures.DBMovie) As Threading.Tasks.Task(Of Structures.DBMovie)
         Dim sMovie As Structures.DBMovie
         Dim Banner As New MediaContainers.Image
         Dim ClearArt As New MediaContainers.Image
@@ -1493,6 +1493,7 @@ Public Class dlgOfflineHolder
         Dim aUrlList As New List(Of Trailers)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         sMovie = tMovie
 
@@ -1502,8 +1503,9 @@ Public Class dlgOfflineHolder
             fPath = String.Empty
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
-
-            If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions) Then
+            ret = Await ModulesManager.Instance.ScrapeData_Movie(sMovie, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+            sMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+            If Not ret.Cancelled Then
                 If rbTypeMovieTitle.Checked Then
                     Me.txtFolderNameMovieTitle.Text = String.Format("{0} [OffLine]", sMovie.Movie.Title)
                 End If
@@ -1513,7 +1515,8 @@ Public Class dlgOfflineHolder
                 Poster.Clear()
                 aList.Clear()
                 If Poster.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Poster) Then
-                    If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities.Poster, aList) Then
+                    ret = Await ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities.Poster, aList)
+                    If Not ret.Cancelled Then
                         If aList.Count > 0 AndAlso Images.GetPreferredMoviePoster(aList, Poster) Then
                             If Not String.IsNullOrEmpty(Poster.URL) Then
                                 sMovie.PosterPath = ":" & Poster.URL

@@ -192,7 +192,7 @@ Namespace EmberTests
         End Function
         <UnitTest()>
         <TestMethod()>
-        Public Sub Test_IMDB_Data_GetMovieStudio_NothingDBMovie()
+        Public Async Function Test_IMDB_Data_GetMovieStudio_NothingDBMovie() As Task
             'Arrange
             Dim movie As Structures.DBMovie = Nothing
             Dim studio As List(Of String) = New List(Of String)
@@ -200,17 +200,20 @@ Namespace EmberTests
             Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
-            Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
+            Dim result As Interfaces.ModuleResult = Await provider.GetMovieStudio(movie, studio)
+            movie = result.ReturnObj(0)
+            studio = result.ReturnObj(1)
+
 
             'Assert
             Dim resultOK As Boolean = _
                 result.Cancelled AndAlso _
                 Not result.breakChain
             Assert.IsTrue(resultOK, "Result was Cancelled:<{0}> and breakChain:<{1}>", result.Cancelled, result.breakChain)
-        End Sub
+        End Function
         <UnitTest()>
         <TestMethod()>
-        Public Sub Test_IMDB_Data_GetMovieStudio_NothingMovie()
+        Public Async Function Test_IMDB_Data_GetMovieStudio_NothingMovie() As Task
             'Arrange
             Dim movie As Structures.DBMovie = New Structures.DBMovie()
             'Note that no movie.Movie is not defined
@@ -219,17 +222,17 @@ Namespace EmberTests
             Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
-            Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
+            Dim result As Interfaces.ModuleResult = Await provider.GetMovieStudio(movie, studio)
 
             'Assert
             Dim resultOK As Boolean = _
                 result.Cancelled AndAlso _
                 Not result.breakChain
             Assert.IsTrue(resultOK, "Result was Cancelled:<{0}> and breakChain:<{1}>", result.Cancelled, result.breakChain)
-        End Sub
+        End Function
         <UnitTest()>
         <TestMethod()>
-        Public Sub Test_IMDB_Data_GetMovieStudio_EmptyMovieID()
+        Public Async Function Test_IMDB_Data_GetMovieStudio_EmptyMovieID() As Task
             'Arrange
             Dim movie As Structures.DBMovie = New Structures.DBMovie()
             movie.Movie = New MediaContainers.Movie()
@@ -240,7 +243,7 @@ Namespace EmberTests
             Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
-            Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
+            Dim result As Interfaces.ModuleResult = Await provider.GetMovieStudio(movie, studio)
 
             'Assert
             Dim resultOK As Boolean = _
@@ -250,11 +253,11 @@ Namespace EmberTests
 
             Assert.IsTrue(resultOK, "Result was Cancelled:<{0}> and breakChain:<{1}>", result.Cancelled, result.breakChain)
             Assert.IsTrue(dataOK, "Studios returned were not as expected")
-        End Sub
+        End Function
 
         <UnitTest()>
         <TestMethod()>
-        Public Sub Test_IMDB_Data_GetMovieStudio_NothingStudio()
+        Public Async Function Test_IMDB_Data_GetMovieStudio_NothingStudio() As Task
             'Arrange
             Dim movie As Structures.DBMovie = New Structures.DBMovie()
             movie.Movie = New MediaContainers.Movie()
@@ -264,7 +267,7 @@ Namespace EmberTests
             Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
-            Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
+            Dim result As Interfaces.ModuleResult = Await provider.GetMovieStudio(movie, studio)
 
             'Assert
             Dim resultOK As Boolean = _
@@ -278,11 +281,11 @@ Namespace EmberTests
 
             Assert.IsTrue(resultOK, "Result was Cancelled:<{0}> and breakChain:<{1}>", result.Cancelled, result.breakChain)
             Assert.IsTrue(dataOK, "Studios returned were not as expected")
-        End Sub
+        End Function
 
         <UnitTest()>
         <TestMethod()>
-        Public Sub Test_IMDB_Data_GetMovieStudio_FullStudio()
+        Public Async Function Test_IMDB_Data_GetMovieStudio_FullStudio() As Task
             'Arrange
             Dim movie As Structures.DBMovie = New Structures.DBMovie()
             movie.Movie = New MediaContainers.Movie()
@@ -302,7 +305,7 @@ Namespace EmberTests
             Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
-            Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
+            Dim result As Interfaces.ModuleResult = Await provider.GetMovieStudio(movie, studio)
 
             'Assert
             Dim resultOK As Boolean = _
@@ -316,10 +319,10 @@ Namespace EmberTests
 
             Assert.IsTrue(resultOK, "Result was Cancelled:<{0}> and breakChain:<{1}>", result.Cancelled, result.breakChain)
             Assert.IsTrue(dataOK, "Studios returned were not as expected")
-        End Sub
+        End Function
         <UnitTest()>
         <TestMethod()>
-        Public Sub Test_IMDB_Data_GetMovieStudio_MovieDoesNotExist()
+        Public Async Function Test_IMDB_Data_GetMovieStudio_MovieDoesNotExist() As Task
             'TODO 2013/12/19 Dekker500 - This test should be changed. Wouldn't you expect a non-exsistant movie to generate a "Cancelled"?
             'Arrange
             Dim movie As Structures.DBMovie = New Structures.DBMovie()
@@ -330,7 +333,7 @@ Namespace EmberTests
             Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
-            Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
+            Dim result As Interfaces.ModuleResult = Await provider.GetMovieStudio(movie, studio)
 
             'Assert
             Dim resultOK As Boolean = _
@@ -341,7 +344,7 @@ Namespace EmberTests
 
             Assert.IsTrue(resultOK, "Result was Cancelled:<{0}> and breakChain:<{1}>", result.Cancelled, result.breakChain)
             Assert.IsTrue(dataOK, "Studios returned were not as expected")
-        End Sub
+        End Function
         <UnitTest()>
         <TestMethod()>
         Public Async Function Test_IMDB_Data_Scraper_HappyDay() As Task
