@@ -704,6 +704,7 @@ Public Class Database
 
         _TVDB.IsLockShow = _tmpTVDB.IsLockShow
         _TVDB.IsMarkShow = _tmpTVDB.IsMarkShow
+        _TVDB.ListTitle = _tmpTVDB.ListTitle
         _TVDB.Ordering = _tmpTVDB.Ordering
         _TVDB.ShowBannerPath = _tmpTVDB.ShowBannerPath
         _TVDB.ShowCharacterArtPath = _tmpTVDB.ShowCharacterArtPath

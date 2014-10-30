@@ -1638,6 +1638,11 @@ Public Class frmMain
 
             Master.currShow = Master.DB.LoadTVFullShowFromDB(Args.ID)
 
+            Me.tmpTitle = Master.currShow.ListTitle
+            Me.tmpTVDB = Master.currShow.TVShow.TVDBID
+            Me.tmpLang = Master.currShow.ShowLanguage
+            Me.tmpOrdering = Master.currShow.Ordering
+
             If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
                 Return
