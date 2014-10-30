@@ -147,7 +147,7 @@ Public Class StringUtils
                 If InternalGenreList.TryGetValue(candidate.Key, toAdd) Then
                     rGenres.Add(toAdd)
                 Else
-                    logger.Error( "Unhandled genre encountered: {0}", candidate.Value)
+                    logger.Warn("Unhandled genre encountered: {0}", candidate.Value)
                 End If
             Next
 

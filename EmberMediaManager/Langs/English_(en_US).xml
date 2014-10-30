@@ -720,7 +720,7 @@
   <string id="719"></string>
   <string id="720">No</string>
   <string id="721">Upgrade</string>
-  <string id="722">MPAA/Certification</string>
+  <string id="722">Certification</string>
   <string id="723">Episode Guide URL</string>
   <string id="724">Premiered</string>
   <string id="725">Actors</string>
@@ -879,7 +879,7 @@
   <string id="878">Select Fanart</string>
   <string id="879">Lock Language (video)</string>
   <string id="880">Lock Language (audio)</string>
-  <string id="881">Lock MPAA/Certification</string>
+  <string id="881">Lock Certification</string>
   <string id="882">Use MPAA as Fallback for FSK Rating</string>
   <string id="883">MPDB</string>
   <string id="884">IMDB Mirror:</string>

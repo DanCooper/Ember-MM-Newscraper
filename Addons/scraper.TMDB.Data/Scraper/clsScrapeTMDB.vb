@@ -372,7 +372,7 @@ Namespace TMDB
 
                 Dim Releases As WatTmdb.V3.TmdbMovieReleases = Nothing
 
-                'MPAA/Certification
+                'Certification
                 If Options.bCert Then
                     Releases = _TMDBApi.GetMovieReleases(Movie.id)
                     If Not IsNothing(Releases) AndAlso Not IsNothing(Releases.countries) Then
@@ -389,12 +389,14 @@ Namespace TMDB
                         'only update nMovie if scraped result is not empty/nothing!
                         If Releases.countries.Count > 0 Then
                             For Each Country In Releases.countries
-                                If Country.iso_3166_1.ToLower = CStr(IIf(Master.eSettings.MovieScraperCertLang = "", "us", Master.eSettings.MovieScraperCertLang)) Then
-                                    If Not String.IsNullOrEmpty(Country.certification) Then
-                                        nMovie.MPAA = String.Concat(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Country.iso_3166_1.ToLower).name, ":", Country.certification)
-                                        nMovie.Certification = nMovie.MPAA
-                                    End If
-                                    Exit For
+                                If Not String.IsNullOrEmpty(Country.certification) Then
+                                    Dim tCountry As String = String.Empty
+                                    Try
+                                        tCountry = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Country.iso_3166_1.ToLower).name
+                                        nMovie.Certifications.Add(String.Concat(tCountry, ":", Country.certification))
+                                    Catch ex As Exception
+                                        logger.Warn("Unhandled certification language encountered: {0}", Country.iso_3166_1.ToLower)
+                                    End Try
                                 End If
                             Next
                         End If

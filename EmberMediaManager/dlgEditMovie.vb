@@ -1998,7 +1998,7 @@ Public Class dlgEditMovie
                     .txtTop250.Text = Master.currMovie.Movie.Top250
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Country) Then
+                If Master.currMovie.Movie.Countries.Count > 0 Then
                     .txtCountry.Text = Master.currMovie.Movie.Country
                 End If
 
@@ -2010,11 +2010,11 @@ Public Class dlgEditMovie
                     .txtReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Director) Then
+                If Master.currMovie.Movie.Directors.Count > 0 Then
                     .txtDirector.Text = Master.currMovie.Movie.Director
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.OldCredits) Then
+                If Master.currMovie.Movie.Credits.Count > 0 Then
                     .txtCredits.Text = Master.currMovie.Movie.OldCredits
                 End If
 
@@ -2025,19 +2025,11 @@ Public Class dlgEditMovie
                     .txtVideoSource.Text = Master.currMovie.Movie.VideoSource
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Certification) Then
-                    If Not String.IsNullOrEmpty(Master.eSettings.MovieScraperCertLang) Then
-                        Dim lCert() As String = Master.currMovie.Movie.Certification.Trim.Split(Convert.ToChar("/"))
-                        Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.MovieScraperCertLang), "\:(.*?)"))
-                        If fCert.Count > 0 Then
-                            .txtCerts.Text = fCert(0).ToString.Trim
-                        Else
-                            .txtCerts.Text = Master.currMovie.Movie.Certification
-                        End If
-                    Else
-                        .txtCerts.Text = Master.currMovie.Movie.Certification
-                    End If
+                If Master.currMovie.Movie.Certifications.Count > 0 Then
+                    .txtCerts.Text = Master.currMovie.Movie.Certification
                 End If
+
+                Me.SelectMPAA()
 
                 If String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
                     '.btnPlayTheme.Enabled = False
@@ -2054,21 +2046,17 @@ Public Class dlgEditMovie
 
                 .btnDLTrailer.Enabled = Master.DefaultMovieOptions.bTrailer
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
+                If Master.currMovie.Movie.Studios.Count > 0 Then
                     .txtStudio.Text = Master.currMovie.Movie.Studio
                 End If
-
-                Me.SelectMPAA()
 
                 For i As Integer = 0 To .clbGenre.Items.Count - 1
                     .clbGenre.SetItemChecked(i, False)
                 Next
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Genre) Then
-                    Dim genreArray() As String
-                    genreArray = Strings.Split(Master.currMovie.Movie.Genre, " / ")
-                    For g As Integer = 0 To UBound(genreArray)
-                        If .clbGenre.FindString(genreArray(g).Trim) > 0 Then
-                            .clbGenre.SetItemChecked(.clbGenre.FindString(genreArray(g).Trim), True)
+                If Master.currMovie.Movie.Genres.Count > 0 Then
+                    For g As Integer = 0 To Master.currMovie.Movie.Genres.Count - 1
+                        If .clbGenre.FindString(Master.currMovie.Movie.Genres(g).Trim) > 0 Then
+                            .clbGenre.SetItemChecked(.clbGenre.FindString(Master.currMovie.Movie.Genres(g).Trim), True)
                         End If
                     Next
 
@@ -2920,7 +2908,7 @@ Public Class dlgEditMovie
     Private Sub SelectMPAA()
         If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
             Try
-                If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "us" AndAlso APIXML.RatingXML.movies.FindAll(Function(f) f.country.ToLower = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name.ToLower).Count > 0 Then
+                If Master.eSettings.MovieScraperCertForMPAA AndAlso APIXML.RatingXML.movies.FindAll(Function(f) f.country.ToLower = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name.ToLower).Count > 0 Then
                     If Master.eSettings.MovieScraperCertOnlyValue Then
                         Dim sItem As String = String.Empty
                         For i As Integer = 0 To Me.lbMPAA.Items.Count - 1

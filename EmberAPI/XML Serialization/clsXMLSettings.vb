@@ -139,6 +139,7 @@ Partial Public Class clsXMLSettings
     Private _movielandscapeoverwrite As Boolean
     Private _movielevtolerance As Integer
     Private _movielockactors As Boolean
+    Private _movielockcert As Boolean
     Private _movielockcollectionid As Boolean
     Private _movielockcollections As Boolean
     Private _movielockcountry As Boolean
@@ -207,6 +208,7 @@ Partial Public Class clsXMLSettings
     Private _moviescrapergenrelimit As Integer
     Private _moviescrapermetadataifoscan As Boolean
     Private _moviescrapermetadatascan As Boolean
+    Private _moviescrapermpaa As Boolean
     Private _moviescraperoriginaltitle As Boolean
     Private _moviescrapercertonlyvalue As Boolean
     Private _moviescraperoutline As Boolean
@@ -1618,6 +1620,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieScraperMPAA() As Boolean
+        Get
+            Return Me._moviescrapermpaa
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescrapermpaa = value
+        End Set
+    End Property
+
     Public Property MovieScraperDirector() As Boolean
         Get
             Return Me._moviescraperdirector
@@ -2028,6 +2039,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movielockmpaa = value
+        End Set
+    End Property
+
+    Public Property MovieLockCert() As Boolean
+        Get
+            Return Me._movielockcert
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movielockcert = value
         End Set
     End Property
 

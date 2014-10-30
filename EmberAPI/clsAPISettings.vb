@@ -833,6 +833,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieScraperMPAA() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperMPAA
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperMPAA = value
+        End Set
+    End Property
+
     Public Property MovieScraperDirector() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperDirector
@@ -1246,6 +1255,7 @@ Public Class Settings
             Settings._XMLSettings.MovieLockLanguageA = value
         End Set
     End Property
+
     Public Property MovieLockMPAA() As Boolean
         Get
             Return Settings._XMLSettings.MovieLockMPAA
@@ -1255,6 +1265,14 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieLockCert() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockCert
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockCert = value
+        End Set
+    End Property
 
     Public Property MovieLockRuntime() As Boolean
         Get

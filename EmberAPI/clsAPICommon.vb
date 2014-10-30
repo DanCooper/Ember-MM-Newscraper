@@ -1167,6 +1167,7 @@ Public Class Functions
             .bCountry = Master.eSettings.MovieScraperCountry
             .bDirector = Master.eSettings.MovieScraperDirector
             .bGenre = Master.eSettings.MovieScraperGenre
+            .bMPAA = Master.eSettings.MovieScraperMPAA
             .bOriginalTitle = Master.eSettings.MovieScraperOriginalTitle
             .bOutline = Master.eSettings.MovieScraperOutline
             .bPlot = Master.eSettings.MovieScraperPlot
@@ -1499,7 +1500,6 @@ Public Class Functions
     ''' <returns>Structures.TVScrapeOptions representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
     Public Shared Function TVScrapeOptionsAndAlso(ByVal Options As Structures.TVScrapeOptions, ByVal Options2 As Structures.TVScrapeOptions) As Structures.TVScrapeOptions
-
         Dim filterOptions As New Structures.TVScrapeOptions
         filterOptions.bEpActors = Options.bEpActors AndAlso Options2.bEpActors
         filterOptions.bEpAired = Options.bEpAired AndAlso Options2.bEpAired

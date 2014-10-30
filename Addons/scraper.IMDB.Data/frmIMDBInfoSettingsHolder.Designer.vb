@@ -42,6 +42,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.gbScraperFields = New System.Windows.Forms.GroupBox()
+        Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.gbScraperFieldsCredits = New System.Windows.Forms.GroupBox()
         Me.chkFullCrew = New System.Windows.Forms.CheckBox()
         Me.chkProducers = New System.Windows.Forms.CheckBox()
@@ -65,6 +66,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkRelease = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
+        Me.chkOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraperOptions.SuspendLayout()
@@ -274,6 +276,8 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         'gbScraperFields
         '
+        Me.gbScraperFields.Controls.Add(Me.chkOriginalTitle)
+        Me.gbScraperFields.Controls.Add(Me.chkMPAA)
         Me.gbScraperFields.Controls.Add(Me.gbScraperFieldsCredits)
         Me.gbScraperFields.Controls.Add(Me.chkCertification)
         Me.gbScraperFields.Controls.Add(Me.chkCountry)
@@ -300,6 +304,16 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperFields.TabIndex = 3
         Me.gbScraperFields.TabStop = False
         Me.gbScraperFields.Text = "IMDB"
+        '
+        'chkMPAA
+        '
+        Me.chkMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMPAA.Location = New System.Drawing.Point(436, 19)
+        Me.chkMPAA.Name = "chkMPAA"
+        Me.chkMPAA.Size = New System.Drawing.Size(142, 17)
+        Me.chkMPAA.TabIndex = 80
+        Me.chkMPAA.Text = "MPAA"
+        Me.chkMPAA.UseVisualStyleBackColor = True
         '
         'gbScraperFieldsCredits
         '
@@ -368,7 +382,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkCertification.Name = "chkCertification"
         Me.chkCertification.Size = New System.Drawing.Size(142, 17)
         Me.chkCertification.TabIndex = 3
-        Me.chkCertification.Text = "MPAA/Certification"
+        Me.chkCertification.Text = "Certification"
         Me.chkCertification.UseVisualStyleBackColor = True
         '
         'chkCountry
@@ -396,7 +410,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkWriters.Location = New System.Drawing.Point(260, 36)
         Me.chkWriters.Name = "chkWriters"
-        Me.chkWriters.Size = New System.Drawing.Size(318, 17)
+        Me.chkWriters.Size = New System.Drawing.Size(170, 17)
         Me.chkWriters.TabIndex = 14
         Me.chkWriters.Text = "Credits(Writers)"
         Me.chkWriters.UseVisualStyleBackColor = True
@@ -496,7 +510,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTrailer.Location = New System.Drawing.Point(260, 19)
         Me.chkTrailer.Name = "chkTrailer"
-        Me.chkTrailer.Size = New System.Drawing.Size(318, 17)
+        Me.chkTrailer.Size = New System.Drawing.Size(170, 17)
         Me.chkTrailer.TabIndex = 17
         Me.chkTrailer.Text = "Trailer"
         Me.chkTrailer.UseVisualStyleBackColor = True
@@ -540,6 +554,16 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
+        '
+        'chkOriginalTitle
+        '
+        Me.chkOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkOriginalTitle.Location = New System.Drawing.Point(436, 36)
+        Me.chkOriginalTitle.Name = "chkOriginalTitle"
+        Me.chkOriginalTitle.Size = New System.Drawing.Size(142, 17)
+        Me.chkOriginalTitle.TabIndex = 81
+        Me.chkOriginalTitle.Text = "Original Title"
+        Me.chkOriginalTitle.UseVisualStyleBackColor = True
         '
         'frmIMDBInfoSettingsHolder
         '
@@ -611,5 +635,7 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents lblForceTitleLanguage As System.Windows.Forms.Label
     Friend WithEvents gbScraperFieldsCredits As System.Windows.Forms.GroupBox
     Friend WithEvents chkCountryAbbreviation As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOriginalTitle As System.Windows.Forms.CheckBox
 
 End Class

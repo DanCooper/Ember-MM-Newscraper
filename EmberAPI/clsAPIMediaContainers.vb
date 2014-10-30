@@ -462,7 +462,7 @@ Namespace MediaContainers
         Private _rating As String
         Private _votes As String
         Private _mpaa As String
-        Private _certification As String
+        Private _certifications As New List(Of String)
         Private _genres As New List(Of String)
         Private _studios As New List(Of String)
         Private _directors As New List(Of String)
@@ -688,9 +688,8 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <Obsolete("This property is depreciated. Use 'Movie.Country.Count > 0' instead.")> _
         <XmlIgnore()> _
-        Public ReadOnly Property LCountrySpecified() As Boolean
+        Public ReadOnly Property CountriesSpecified() As Boolean
             Get
                 Return Me._countries.Count > 0
             End Get
@@ -760,20 +759,36 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("certification")> _
+        <Obsolete("This property is depreciated. Use Movie.Certifications [List(Of String)] instead.")> _
+        <XmlIgnore()> _
         Public Property Certification() As String
             Get
-                Return Me._certification
+                Return String.Join(" / ", _certifications.ToArray)
             End Get
             Set(ByVal value As String)
-                Me._certification = value
+                _certifications.Clear()
+                AddCertification(value)
+            End Set
+        End Property
+
+        <XmlElement("certification")> _
+        Public Property Certifications() As List(Of String)
+            Get
+                Return _certifications
+            End Get
+            Set(ByVal value As List(Of String))
+                If IsNothing(value) Then
+                    _certifications.Clear()
+                Else
+                    _certifications = value
+                End If
             End Set
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property CertificationSpecified() As Boolean
+        Public ReadOnly Property CertificationsSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._certification)
+                Return Me._certifications.Count > 0
             End Get
         End Property
 
@@ -802,9 +817,8 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <Obsolete("This property is depreciated. Use 'Movie.Genres.Count > 0' instead.")> _
         <XmlIgnore()> _
-        Public ReadOnly Property LGenreSpecified() As Boolean
+        Public ReadOnly Property GenresSpecified() As Boolean
             Get
                 Return Me._genres.Count > 0
             End Get
@@ -823,7 +837,7 @@ Namespace MediaContainers
         End Property
 
         <Obsolete("This property is depreciated. Use Movie.Studios [List(Of String)] instead.")> _
-       <XmlIgnore()> _
+        <XmlIgnore()> _
         Public Property Studio() As String
             Get
                 Return String.Join(" / ", _studios.ToArray)
@@ -848,11 +862,10 @@ Namespace MediaContainers
             End Set
         End Property
 
-
         <XmlIgnore()> _
-        Public ReadOnly Property StudioSpecified() As Boolean
+        Public ReadOnly Property StudiosSpecified() As Boolean
             Get
-                Return (_studios.Count > 0)
+                Return Me._studios.Count > 0
             End Get
         End Property
 
@@ -882,9 +895,8 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <Obsolete("This property is depreciated. Use 'Movie.Directors.Count > 0' instead.")> _
         <XmlIgnore()> _
-        Public ReadOnly Property DirectorSpecified() As Boolean
+        Public ReadOnly Property DirectorsSpecified() As Boolean
             Get
                 Return Me._directors.Count > 0
             End Get
@@ -916,7 +928,6 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <Obsolete("This property is depreciated. Use 'Movie.Credits.Count > 0' instead.")> _
         <XmlIgnore()> _
         Public ReadOnly Property CreditsSpecified() As Boolean
             Get
@@ -935,7 +946,7 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-    Public Property Scrapersource() As String
+        Public Property Scrapersource() As String
             Get
                 Return Me._scrapersource
             End Get
@@ -1325,6 +1336,24 @@ Namespace MediaContainers
             Sets.Add(New [Set] With {.ID = SetID, .Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty), .TMDBColID = SetTMDBColID})
         End Sub
 
+        Public Sub AddCertification(ByVal value As String)
+            If String.IsNullOrEmpty(value) Then Return
+
+            If value.Contains("/") Then
+                Dim values As String() = value.Split(New [Char]() {"/"c})
+                For Each certification As String In values
+                    certification = certification.Trim
+                    If Not _certifications.Contains(certification) Then
+                        _certifications.Add(certification)
+                    End If
+                Next
+            Else
+                If Not _certifications.Contains(value) Then
+                    _certifications.Add(value.Trim)
+                End If
+            End If
+        End Sub
+
         Public Sub AddGenre(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
 
@@ -1421,7 +1450,7 @@ Namespace MediaContainers
         Public Sub Clear()
             'Me._imdbid = String.Empty
             Me._actors.Clear()
-            Me._certification = String.Empty
+            Me._certifications.Clear()
             Me._countries.Clear()
             Me._credits.Clear()
             Me._dateadded = String.Empty
@@ -1470,7 +1499,7 @@ Namespace MediaContainers
             Me._plot = String.Empty
             Me._tagline = String.Empty
             Me._trailer = String.Empty
-            Me._certification = String.Empty
+            Me._certifications.Clear()
             Me._genres.Clear()
             Me._runtime = String.Empty
             Me._releaseDate = String.Empty
@@ -1513,6 +1542,7 @@ Namespace MediaContainers
         End Sub
 
 #End Region 'Methods
+
     End Class
 
     <Serializable()> _

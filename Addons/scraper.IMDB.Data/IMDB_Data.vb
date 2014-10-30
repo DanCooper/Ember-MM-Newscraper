@@ -126,6 +126,7 @@ Public Class IMDB_Data
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
         _setup.chkTitle.Checked = ConfigOptions.bTitle
+        _setup.chkOriginalTitle.Checked = ConfigOptions.bOriginalTitle
         _setup.chkYear.Checked = ConfigOptions.bYear
         _setup.chkRelease.Checked = ConfigOptions.bRelease
         _setup.chkRuntime.Checked = ConfigOptions.bRuntime
@@ -142,6 +143,7 @@ Public Class IMDB_Data
         _setup.chkGenre.Checked = ConfigOptions.bGenre
         _setup.chkTrailer.Checked = ConfigOptions.bTrailer
         _setup.chkMusicBy.Checked = ConfigOptions.bMusicBy
+        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
         _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
         _setup.chkCountry.Checked = ConfigOptions.bCountry
         _setup.chkTop250.Checked = ConfigOptions.bTop250
@@ -171,6 +173,7 @@ Public Class IMDB_Data
 
     Sub LoadSettings()
         ConfigOptions.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
+        ConfigOptions.bOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True)
         ConfigOptions.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True)
         ConfigOptions.bMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True)
         ConfigOptions.bRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True)
@@ -213,6 +216,7 @@ Public Class IMDB_Data
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoFullCrews", ConfigOptions.bFullCrew)
             settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
+            settings.SetBooleanSetting("DoOriginalTitle", ConfigOptions.bOriginalTitle)
             settings.SetBooleanSetting("DoYear", ConfigOptions.bYear)
             settings.SetBooleanSetting("DoMPAA", ConfigOptions.bMPAA)
             settings.SetBooleanSetting("DoRelease", ConfigOptions.bRelease)
@@ -248,6 +252,7 @@ Public Class IMDB_Data
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
         ConfigOptions.bTitle = _setup.chkTitle.Checked
+        ConfigOptions.bOriginalTitle = _setup.chkOriginalTitle.Checked
         ConfigOptions.bYear = _setup.chkYear.Checked
         ConfigOptions.bMPAA = _setup.chkCertification.Checked
         ConfigOptions.bRelease = _setup.chkRelease.Checked

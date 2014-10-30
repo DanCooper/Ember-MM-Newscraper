@@ -118,27 +118,34 @@ Public Class NFO
                     DBMovie.Movie.Year = String.Empty
                 End If
 
-
-                'MPAA/Certification
+                'MPAA
                 If (String.IsNullOrEmpty(DBMovie.Movie.MPAA) OrElse Not Master.eSettings.MovieLockMPAA) AndAlso Options.bMPAA AndAlso _
-                    Not String.IsNullOrEmpty(scrapedmovie.MPAA) AndAlso Master.eSettings.MovieScraperCert AndAlso Not new_MPAA Then
+                    Not String.IsNullOrEmpty(scrapedmovie.MPAA) AndAlso Master.eSettings.MovieScraperMPAA AndAlso Not new_MPAA Then
                     DBMovie.Movie.MPAA = scrapedmovie.MPAA
                     new_MPAA = True
-                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCert AndAlso Not Master.eSettings.MovieLockMPAA Then
+                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperMPAA AndAlso Not Master.eSettings.MovieLockMPAA Then
                     DBMovie.Movie.MPAA = String.Empty
                 End If
-                If (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) AndAlso Options.bCert AndAlso _
-                    Not String.IsNullOrEmpty(scrapedmovie.Certification) AndAlso Master.eSettings.MovieScraperCert AndAlso Not new_Certification Then
-                    DBMovie.Movie.Certification = scrapedmovie.Certification
-                    new_Certification = True
-                    If Master.eSettings.MovieScraperCertForMPAA AndAlso (Not Master.eSettings.MovieScraperCertLang = "us" OrElse (Master.eSettings.MovieScraperCertLang = "us" AndAlso String.IsNullOrEmpty(DBMovie.Movie.MPAA))) Then
-                        Dim tmpstring As String = ""
-                        tmpstring = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(DBMovie.Movie.Certification), If(Master.eSettings.MovieScraperCertOnlyValue, DBMovie.Movie.Certification.Split(Convert.ToChar(":"))(1), DBMovie.Movie.Certification))
-                        'only update DBMovie if scraped result is not empty/nothing!
-                        If Not String.IsNullOrEmpty(tmpstring) Then
-                            DBMovie.Movie.MPAA = tmpstring
-                        End If
+
+                'Certification
+                If (DBMovie.Movie.Certifications.Count < 1 OrElse Not Master.eSettings.MovieLockCert) AndAlso Options.bCert AndAlso _
+                    scrapedmovie.Certifications.Count > 0 AndAlso Master.eSettings.MovieScraperCert AndAlso Not new_Certification Then
+                    If Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
+                        DBMovie.Movie.Certifications.Clear()
+                        DBMovie.Movie.Certifications.AddRange(scrapedmovie.Certifications)
+                        new_Certification = True
+                    Else
+                        For Each tCert In scrapedmovie.Certifications
+                            If tCert.StartsWith(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name) Then
+                                DBMovie.Movie.Certifications.Clear()
+                                DBMovie.Movie.Certifications.Add(tCert)
+                                new_Certification = True
+                                Exit For
+                            End If
+                        Next
                     End If
+                ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCert AndAlso Not Master.eSettings.MovieLockCert Then
+                    DBMovie.Movie.Certifications.Clear()
                 End If
 
                 'ReleaseDate
@@ -265,7 +272,6 @@ Public Class NFO
                     DBMovie.Movie.Countries.Clear()
                 End If
 
-
                 'Outline
                 If (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso Options.bOutline AndAlso _
                     Not String.IsNullOrEmpty(scrapedmovie.Outline) AndAlso Master.eSettings.MovieScraperOutline AndAlso (Not new_Outline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
@@ -291,27 +297,6 @@ Public Class NFO
                 If Master.eSettings.MovieScraperCleanPlotOutline Then
                     DBMovie.Movie.Plot = StringUtils.RemoveBrackets(DBMovie.Movie.Plot)
                 End If
-
-                'Genre
-                'If (String.IsNullOrEmpty(DBMovie.Movie.Genre) OrElse Not Master.eSettings.MovieLockGenre) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Genre) AndAlso Master.eSettings.MovieScraperGenre Then
-
-                '    If Master.eSettings.MovieScraperGenreLimit > 0 AndAlso Master.eSettings.MovieScraperGenreLimit < scrapedmovie.Genre.Count Then
-                '        If scrapedmovie.Genre.Contains("/") Then
-                '            Dim _genres As New List(Of String)
-                '            Dim values As String() = scrapedmovie.Genre.Split(New [Char]() {"/"c})
-                '            For Each genre As String In values
-                '                genre = genre.Trim
-                '                If Not _genres.Contains(genre) Then
-                '                    _genres.Add(genre)
-                '                End If
-                '            Next
-                '            _genres.RemoveRange(Master.eSettings.MovieScraperGenreLimit, _genres.Count - Master.eSettings.MovieScraperGenreLimit)
-                '            DBMovie.Movie.Genre = String.Join(" / ", _genres.ToArray)
-                '        End If
-                '    Else
-                '        DBMovie.Movie.Genre = scrapedmovie.Genre
-                '    End If
-                'End If
 
                 'Genres
                 If (DBMovie.Movie.Genres.Count < 1 OrElse Not Master.eSettings.MovieLockGenre) AndAlso Options.bGenre AndAlso _
@@ -422,6 +407,16 @@ Public Class NFO
             If String.IsNullOrEmpty(DBMovie.Movie.Outline) AndAlso Master.eSettings.MovieScraperPlotForOutline Then
                 If Not String.IsNullOrEmpty(DBMovie.Movie.Plot) Then
                     DBMovie.Movie.Outline = StringUtils.ShortenOutline(DBMovie.Movie.Plot, Master.eSettings.MovieScraperOutlineLimit)
+                End If
+            End If
+
+            'Certification for MPAA
+            If Master.eSettings.MovieScraperCertForMPAA AndAlso (Not Master.eSettings.MovieScraperCertLang = "us" OrElse (Master.eSettings.MovieScraperCertLang = "us" AndAlso String.IsNullOrEmpty(DBMovie.Movie.MPAA))) Then
+                Dim tmpstring As String = ""
+                tmpstring = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(DBMovie.Movie.Certification), If(Master.eSettings.MovieScraperCertOnlyValue, DBMovie.Movie.Certification.Split(Convert.ToChar(":"))(1), DBMovie.Movie.Certification))
+                'only update DBMovie if scraped result is not empty/nothing!
+                If Not String.IsNullOrEmpty(tmpstring) Then
+                    DBMovie.Movie.MPAA = tmpstring
                 End If
             End If
 

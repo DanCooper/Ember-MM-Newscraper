@@ -65,6 +65,10 @@ Public Class frmIMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMPAA.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkWriters.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
         If Me.chkWriters.Checked = False Then
@@ -166,6 +170,10 @@ Public Class frmIMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkOriginalTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOriginalTitle.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkTop250_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTop250.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -239,6 +247,7 @@ Public Class frmIMDBInfoSettingsHolder
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
+        Me.chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
@@ -248,7 +257,8 @@ Public Class frmIMDBInfoSettingsHolder
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkCertification.Text = Master.eLang.GetString(722, "MPAA/Certification")
+        Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
+        Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
@@ -258,8 +268,8 @@ Public Class frmIMDBInfoSettingsHolder
         Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top250")
         Me.chkCountryAbbreviation.Text = Master.eLang.GetString(1257, "Country-Tag: Save country abbreviation(s) instead of full name(s)")
-
     End Sub
 
 #End Region 'Methods
+
 End Class
