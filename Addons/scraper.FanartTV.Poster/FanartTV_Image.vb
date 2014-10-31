@@ -402,7 +402,12 @@ Public Class FanartTV_Image
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Async Function Scraper(ByVal DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByVal ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements EmberAPI.Interfaces.ScraperModule_Image_Movie.Scraper
+        ' Return Objects are
+        ' DBMovie
+        ' ImageList
+        Dim ret As New Interfaces.ModuleResult
+
         logger.Trace("Started scrape FanartTV")
 
         LoadSettings_Movie()
@@ -425,21 +430,31 @@ Public Class FanartTV_Image
         End If
 
         logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape FanartTV")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        ret.Cancelled = False
+        ret.breakChain = False
+        ret.ReturnObj.Add(DBMovie)
+        ret.ReturnObj.Add(ImageList)
+
+        Return ret
     End Function
 
-    Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
+    Async Function Scraper(ByVal DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByVal ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements EmberAPI.Interfaces.ScraperModule_Image_MovieSet.Scraper
+        ' Return Objects are
+        ' DBMovieSet
+        ' ImageList
+        Dim ret As New Interfaces.ModuleResult
+
         logger.Trace("Started scrape FanartTV")
 
         LoadSettings_MovieSet()
 
-        If String.IsNullOrEmpty(DBMovieset.MovieSet.ID) Then
-            If Not IsNothing(DBMovieset.Movies) AndAlso DBMovieset.Movies.Count > 0 Then
-                DBMovieset.MovieSet.ID = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.Movies.Item(0).Movie.ID)
+        If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
+            If Not IsNothing(DBMovieSet.Movies) AndAlso DBMovieSet.Movies.Count > 0 Then
+                DBMovieSet.MovieSet.ID = ModulesManager.Instance.GetMovieCollectionID(DBMovieSet.Movies.Item(0).Movie.ID)
             End If
         End If
 
-        If Not String.IsNullOrEmpty(DBMovieset.MovieSet.ID) Then
+        If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
             Dim Settings As FanartTVs.Scraper.sMySettings_ForScraper
             Settings.ApiKey = _MySettings_MovieSet.ApiKey
             Settings.ClearArtOnlyHD = _MySettings_MovieSet.ClearArtOnlyHD
@@ -449,11 +464,14 @@ Public Class FanartTV_Image
             Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
             Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
 
-            ImageList = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, Type, Settings)
+            ImageList = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.ID, Type, Settings)
         End If
-
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(DBMovieSet)
+        ret.ReturnObj.Add(ImageList)
         logger.Trace("Finished scrape FanartTV")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+
+        Return ret
     End Function
 
     Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.ScraperModule_Image_Movie.ScraperOrderChanged

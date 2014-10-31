@@ -122,9 +122,15 @@ Public Class TVDB_Data_Poster
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Async Function GetLangs(ByVal sMirror As String, ByRef Langs As clsXMLTVDBLanguages) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.GetLangs
+    Public Async Function GetLangs(ByVal sMirror As String, ByVal Langs As clsXMLTVDBLanguages) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.GetLangs
+        ' Return Objects are
+        ' Langs
+        Dim ret As New Interfaces.ModuleResult
+        ret.breakChain = True
         Langs = Await TVScraper.GetLangs(sMirror)
-        Return New Interfaces.ModuleResult With {.breakChain = True}
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(Langs)
+        Return ret
     End Function
 
     Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.GetSingleEpisode

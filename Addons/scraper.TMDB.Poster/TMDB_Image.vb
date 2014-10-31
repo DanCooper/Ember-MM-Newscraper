@@ -306,7 +306,11 @@ Public Class TMDB_Image
 
     End Function
 
-    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
+    Async Function Scraper(ByVal DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByVal ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements EmberAPI.Interfaces.ScraperModule_Image_MovieSet.Scraper
+        ' Return Objects are
+        ' DBMovieSet
+        ' ImageList
+        Dim ret As New Interfaces.ModuleResult
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()
@@ -330,8 +334,11 @@ Public Class TMDB_Image
             ImageList = _scraper.GetTMDBImages(DBMovieSet.MovieSet.ID, Type, Settings)
         End If
 
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(DBMovieSet)
+        ret.ReturnObj.Add(ImageList)
         logger.Trace("Finished TMDB Scraper")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return ret
     End Function
 
     Sub SaveSettings_Movie()

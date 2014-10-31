@@ -159,7 +159,20 @@ Public Class MoviepilotDE_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper should NOT consider global scraper settings/locks in Ember, just scraper options of module</remarks>
-    Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Async Function Scraper(ByVal oDBMovie As Structures.DBMovie, ByVal nMovie As MediaContainers.Movie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Data_Movie.Scraper
+        ' Return Objects are
+        ' oDBMovie
+        ' nMovie
+        ' ScrapeType
+        ' Options        
+        Dim ret As New Interfaces.ModuleResult
+        ret.Cancelled = False
+        ret.breakChain = False
+        ret.ReturnObj.Add(oDBMovie)
+        ret.ReturnObj.Add(nMovie)
+        ret.ReturnObj.Add(ScrapeType)
+        ret.ReturnObj.Add(Options)
+
         logger.Trace("Started MoviepilotDE Scraper")
 
         Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
@@ -167,7 +180,7 @@ Public Class MoviepilotDE_Data
         'Moviepilot-datascraper needs originaltitle of movie!
         If String.IsNullOrEmpty(oDBMovie.Movie.OriginalTitle) Then
             logger.Trace("Originaltitle of movie is needed, but not availaible! Leave MoviepilotDE scraper...")
-            Return New Interfaces.ModuleResult With {.breakChain = False}
+            Return ret
         End If
 
         'we have the originaltitle -> now we can use scraper methods!
@@ -231,8 +244,13 @@ Public Class MoviepilotDE_Data
             End If
         End If
 
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(oDBMovie)
+        ret.ReturnObj.Add(nMovie)
+        ret.ReturnObj.Add(ScrapeType)
+        ret.ReturnObj.Add(Options)
         logger.Trace("Finished MoviepilotDE Scraper")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return ret
     End Function
 
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged

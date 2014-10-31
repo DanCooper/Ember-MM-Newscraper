@@ -186,7 +186,8 @@ Public Class OFDB_Data
         ' oDBMovie
         ' nMovie
         ' ScrapeType
-        ' Options         logger.Trace("Started OFDB Scraper")
+        ' Options        
+        logger.Trace("Started OFDB Scraper")
         Dim ret As New Interfaces.ModuleResult
         ret.Cancelled = False
         ret.breakChain = False

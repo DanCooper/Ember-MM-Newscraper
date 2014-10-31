@@ -929,9 +929,13 @@ Public Class ModulesManager
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Async Function ScrapeTheme_Movie(ByRef DBMovie As Structures.DBMovie, ByRef URLList As List(Of Themes)) As Threading.Tasks.Task(Of Boolean)
+    Public Async Function ScrapeTheme_Movie(ByVal DBMovie As Structures.DBMovie, ByVal URLList As List(Of Themes)) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' Return Objects are
+        ' DBMovie
+        ' URLList
+
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_Movie) = externalScrapersModules_Theme_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult
         Dim aList As List(Of Themes)
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -960,7 +964,10 @@ Public Class ModulesManager
                 If ret.breakChain Then Exit For
             Next
         End If
-        Return ret.Cancelled
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(DBMovie)
+        ret.ReturnObj.Add(URLList)
+        Return ret
     End Function
     ''' <summary>
     ''' Request that enabled movie trailer scrapers perform their functions on the supplied movie
@@ -971,9 +978,12 @@ Public Class ModulesManager
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Async Function ScrapeTrailer_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Threading.Tasks.Task(Of Boolean)
+    Public Async Function ScrapeTrailer_Movie(ByVal DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByVal URLList As List(Of Trailers)) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' return object
+        ' DBMovie
+        ' URLList
+        Dim ret As New Interfaces.ModuleResult
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer_Movie) = externalScrapersModules_Trailer_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of Trailers)
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1003,7 +1013,10 @@ Public Class ModulesManager
                 If ret.breakChain Then Exit For
             Next
         End If
-        Return ret.Cancelled
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(DBMovie)
+        ret.ReturnObj.Add(URLList)
+        Return ret '.Cancelled
     End Function
     ''' <summary>
     ''' Calls all the generic modules of the supplied type (if one is defined), passing the supplied _params.
@@ -1015,8 +1028,11 @@ Public Class ModulesManager
     ''' <param name="RunOnlyOne">If <c>True</c>, allow only one module to perform the required task.</param>
     ''' <returns></returns>
     ''' <remarks>Note that if any module returns a result of breakChain, no further modules are processed</remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBMovie As Structures.DBMovie = Nothing) As Boolean
-        Dim ret As Interfaces.ModuleResult
+    Public Async Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBMovie As Structures.DBMovie = Nothing) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' return objects
+        ' _Params
+
+        Dim ret As New Interfaces.ModuleResult
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
             Application.DoEvents()
@@ -1030,7 +1046,10 @@ Public Class ModulesManager
                 For Each _externalGenericModule As _externalGenericModuleClass In modules
                     Try
                         logger.Trace("Run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
-                        ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam, DBMovie)
+                        ret = Await _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam, DBMovie)
+                        _params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+                        _refparam = ret.ReturnObj(1)
+                        DBMovie = CType(ret.ReturnObj(2), Structures.DBMovie)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
                     End Try
@@ -1041,7 +1060,7 @@ Public Class ModulesManager
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
-        Return ret.Cancelled
+        Return ret
     End Function
 
     Public Sub SaveSettings()

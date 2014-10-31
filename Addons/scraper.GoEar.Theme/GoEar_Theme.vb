@@ -140,17 +140,22 @@ Public Class GoEar_Theme
         End If
     End Sub
 
-    Function Scraper(ByVal DBMovie As Structures.DBMovie, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
+    Async Function Scraper(ByVal DBMovie As Structures.DBMovie, ByVal URLList As List(Of Themes)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements EmberAPI.Interfaces.ScraperModule_Theme_Movie.Scraper
+        ' Return Objects are
+        ' URLList
+        Dim ret As New Interfaces.ModuleResult
         logger.Trace("Started scrape")
 
         Dim tGoEar As New GoEar.Scraper(DBMovie.Movie.OriginalTitle, DBMovie.ListTitle)
 
         If tGoEar.ThemeList.Count > 0 Then
-            ThemeList = tGoEar.ThemeList
+            URLList = tGoEar.ThemeList
         End If
 
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(URLList)
         logger.Trace("Finished scrape")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return ret
     End Function
 
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Theme_Movie.ScraperOrderChanged

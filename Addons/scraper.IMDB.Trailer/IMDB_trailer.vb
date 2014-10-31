@@ -148,7 +148,12 @@ Public Class IMDB_Trailer
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Async Function Scraper(ByVal DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByVal URLList As List(Of Trailers)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+        ' Return Objects are
+        ' DBMovie
+        ' URLList
+        Dim ret As New Interfaces.ModuleResult
+
         logger.Trace("Started scrape", New StackTrace().ToString())
 
         Dim tIMDBID As String = String.Empty
@@ -162,8 +167,13 @@ Public Class IMDB_Trailer
                 URLList = tIMDBTrailer.TrailerList
             End If
         End If
+
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(DBMovie)
+        ret.ReturnObj.Add(URLList)
+
         logger.Trace("Finished scrape", New StackTrace().ToString())
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return ret
     End Function
 
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Trailer_Movie.ScraperOrderChanged

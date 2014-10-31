@@ -294,7 +294,7 @@ Public Class IMDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Async Function Scraper(ByVal oDBMovie As Structures.DBMovie, ByVal nMovie As MediaContainers.Movie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+    Async Function Scraper(ByVal oDBMovie As Structures.DBMovie, ByVal nMovie As MediaContainers.Movie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements EmberAPI.Interfaces.ScraperModule_Data_Movie.Scraper
         ' Return Objects are
         ' oDBMovie
         ' nMovie

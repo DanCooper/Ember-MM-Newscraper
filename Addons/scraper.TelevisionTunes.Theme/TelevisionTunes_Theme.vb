@@ -139,15 +139,19 @@ Public Class TelevisionTunes_Theme
         End If
     End Sub
 
-    Function Scraper(ByVal DBTV As Structures.DBTV, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
+    Async Function Scraper(ByVal DBTV As Structures.DBTV, ByVal URLList As List(Of Themes)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Theme_TV.Scraper
+        Dim ret As New Interfaces.ModuleResult
+
         logger.Trace("Started scrape")
 
         Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBTV.TVShow.Title)
 
         If tTelevisionTunes.ThemeList.Count > 0 Then
-            ThemeList = tTelevisionTunes.ThemeList
+            URLList = tTelevisionTunes.ThemeList
         End If
 
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(URLList)
         logger.Trace("Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

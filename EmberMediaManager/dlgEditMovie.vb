@@ -478,8 +478,10 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
         Dim ret As New Interfaces.ModuleResult
         Try
-            ret = Await Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Banner, aList)
-            If Not Then
+            ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Banner, aList)
+            Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then

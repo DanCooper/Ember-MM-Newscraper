@@ -542,8 +542,19 @@ Public Class TMDB_Data
         Return ret
     End Function
 
-    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
+    Async Function Scraper(ByVal DBMovieSet As Structures.DBMovieSet, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_MovieSet) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements EmberAPI.Interfaces.ScraperModule_Data_MovieSet.Scraper
+        ' Return Objects are
+        ' DBMovieSet
+        ' ScrapeType
+        ' Options
+
         logger.Trace("Started scrape TMDB")
+        Dim ret As New Interfaces.ModuleResult
+        ret.Cancelled = False
+        ret.breakChain = False
+        ret.ReturnObj.Add(DBMovieSet)
+        ret.ReturnObj.Add(ScrapeType)
+        ret.ReturnObj.Add(Options)
 
         LoadSettings_MovieSet()
 
@@ -566,7 +577,15 @@ Public Class TMDB_Data
                 If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then
                     DBMovieSet.MovieSet = _scraper.GetSearchMovieSetInfo(DBMovieSet.MovieSet.Title, DBMovieSet, ScrapeType, filterOptions)
                 End If
-                If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
+                    ret.Cancelled = True
+                    ret.ReturnObj.Clear()
+                    ret.ReturnObj.Add(DBMovieSet)
+                    ret.ReturnObj.Add(ScrapeType)
+                    ret.ReturnObj.Add(Options)
+
+                    Return ret
+                End If
             End If
         End If
 
@@ -596,7 +615,12 @@ Public Class TMDB_Data
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
-                    Return New Interfaces.ModuleResult With {.breakChain = False}
+                    ret.ReturnObj.Clear()
+                    ret.ReturnObj.Add(DBMovieSet)
+                    ret.ReturnObj.Add(ScrapeType)
+                    ret.ReturnObj.Add(Options)
+
+                    Return ret
             End Select
             If ScrapeType = Enums.ScrapeType.SingleScrape Then
 
@@ -636,7 +660,13 @@ Public Class TMDB_Data
                             _scraper.GetMovieSetInfo(DBMovieSet.MovieSet.ID, DBMovieSet.MovieSet, False, filterOptions, False)
                         End If
                     Else
-                        Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                        ret.Cancelled = True
+                        ret.ReturnObj.Clear()
+                        ret.ReturnObj.Add(DBMovieSet)
+                        ret.ReturnObj.Add(ScrapeType)
+                        ret.ReturnObj.Add(Options)
+
+                        Return ret
                     End If
                 End Using
             End If
@@ -647,8 +677,13 @@ Public Class TMDB_Data
             DBMovieSet.ListTitle = tTitle
         End If
 
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(DBMovieSet)
+        ret.ReturnObj.Add(ScrapeType)
+        ret.ReturnObj.Add(Options)
+
         logger.Trace("Finished TMDB Scraper")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return ret
     End Function
 
     Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged

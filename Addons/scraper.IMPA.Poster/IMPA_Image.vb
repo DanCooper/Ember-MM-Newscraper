@@ -22,11 +22,15 @@ Imports System.IO
 Imports EmberAPI
 Imports RestSharp
 Imports WatTmdb
+Imports NLog
+Imports System.Diagnostics
 
 Public Class IMPA_Image
     Implements Interfaces.ScraperModule_Image_Movie
 
 #Region "Fields"
+
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
@@ -136,13 +140,26 @@ Public Class IMPA_Image
         ConfigScrapeModifier.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
-    Async Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Async Function Scraper(ByVal DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByVal ImageList As List(Of MediaContainers.Image)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements EmberAPI.Interfaces.ScraperModule_Image_Movie.Scraper
+        ' Return Objects are
+        ' DBMovie
+        ' ImageList
+        Dim ret As New Interfaces.ModuleResult
+
+        logger.Trace("Started scrape", New StackTrace().ToString())
 
         LoadSettings()
-
         ImageList = Await IMPA.GetIMPAPosters(DBMovie.Movie.IMDBID)
 
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+
+        logger.Trace("Finished scrape", New StackTrace().ToString())
+
+        ret.Cancelled = False
+        ret.breakChain = False
+        ret.ReturnObj.Add(DBMovie)
+        ret.ReturnObj.Add(ImageList)
+
+        Return ret
     End Function
 
     Sub SaveSettings()

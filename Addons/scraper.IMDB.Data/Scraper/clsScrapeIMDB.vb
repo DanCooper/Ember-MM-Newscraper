@@ -738,7 +738,12 @@ mPlot:          'MOVIE PLOT
             Return alStudio
         End Function
 
-        Public Async Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, ByVal FullCrew As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As Threading.Tasks.Task(Of MediaContainers.Movie)
+        Public Async Function GetSearchMovieInfo(ByVal sMovieName As String, ByVal oDBMovie As Structures.DBMovie, ByVal nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, ByVal FullCrew As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+            ' return object
+            ' oDBMovie
+            ' nMovie
+            Dim ret As New Interfaces.ModuleResult
+
             Dim r As MovieSearchResults = Await SearchMovie(sMovieName)
             Dim b As Boolean = False
 
@@ -752,11 +757,17 @@ mPlot:          'MOVIE PLOT
                     Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
 
                         If r.ExactMatches.Count = 1 Then 'AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count = 0 Then 'redirected to imdb info page
-                            b = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            ret = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = ret.Cancelled
+                            nMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
                         ElseIf r.PopularTitles.Count = 1 AndAlso r.PopularTitles(0).Lev <= 5 Then
-                            b = Await GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            ret = Await GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = ret.Cancelled
+                            nMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
                         ElseIf r.ExactMatches.Count = 1 AndAlso r.ExactMatches(0).Lev <= 5 Then
-                            b = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            ret = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = ret.Cancelled
+                            nMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
                         Else
                             nMovie.Clear()
                             Using dIMDB As New dlgIMDBSearchResults
@@ -764,7 +775,9 @@ mPlot:          'MOVIE PLOT
                                     If String.IsNullOrEmpty(nMovie.IMDBID) Then
                                         b = False
                                     Else
-                                        b = Await GetMovieInfo(nMovie.IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                                        ret = Await GetMovieInfo(nMovie.IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                                        b = ret.Cancelled
+                                        nMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
                                     End If
                                 Else
                                     b = False
@@ -774,7 +787,9 @@ mPlot:          'MOVIE PLOT
 
                     Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.FullSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.MissSkip
                         If r.ExactMatches.Count = 1 Then
-                            b = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            ret = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = ret.Cancelled
+                            nMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
                         End If
 
                     Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.MissAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
@@ -799,28 +814,34 @@ mPlot:          'MOVIE PLOT
                         '    b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options, True)
                         'End If
                         If r.ExactMatches.Count = 1 Then
-                            b = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            ret = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.ExactMatches.Count > 1 AndAlso exactHaveYear >= 0 Then
-                            b = Await GetMovieInfo(r.ExactMatches.Item(exactHaveYear).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            ret = Await GetMovieInfo(r.ExactMatches.Item(exactHaveYear).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.PopularTitles.Count > 0 AndAlso popularHaveYear >= 0 Then
-                            b = Await GetMovieInfo(r.PopularTitles.Item(popularHaveYear).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            ret = Await GetMovieInfo(r.PopularTitles.Item(popularHaveYear).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.ExactMatches.Count > 0 AndAlso (r.ExactMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            b = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            ret = Await GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.PopularTitles.Count > 0 AndAlso (r.PopularTitles(0).Lev <= 5 OrElse useAnyway) Then
-                            b = Await GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            ret = Await GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.PartialMatches.Count > 0 AndAlso (r.PartialMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            b = Await GetMovieInfo(r.PartialMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            ret = Await GetMovieInfo(r.PartialMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         End If
+                        b = ret.Cancelled
+                        nMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
                 End Select
 
+                ret = New Interfaces.ModuleResult
                 If b Then
-                    Return nMovie
+                    ret.ReturnObj.Add(nMovie)
+                    Return ret
                 Else
-                    Return New MediaContainers.Movie
+                    ret.ReturnObj.Add(New MediaContainers.Movie)
+                    Return ret
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return New MediaContainers.Movie
+                ret.ReturnObj.Add(New MediaContainers.Movie)
+                Return ret
             End Try
         End Function
 
