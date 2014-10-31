@@ -194,6 +194,7 @@ Partial Public Class clsXMLSettings
     Private _moviescrapercastlimit As Integer
     Private _moviescrapercastwithimgonly As Boolean
     Private _moviescrapercertformpaa As Boolean
+    Private _moviescrapercertformpaafallback As Boolean
     Private _moviescrapercert As Boolean
     Private _moviescrapercertlang As String
     Private _moviescrapercleanfields As Boolean
@@ -4834,6 +4835,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescrapercertformpaa = value
+        End Set
+    End Property
+
+    Public Property MovieScraperCertForMPAAFallback() As Boolean
+        Get
+            Return Me._moviescrapercertformpaafallback
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescrapercertformpaafallback = value
         End Set
     End Property
 

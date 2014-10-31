@@ -125,37 +125,39 @@ Public Class IMDB_Data
         _setup = New frmIMDBInfoSettingsHolder
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
-        _setup.chkTitle.Checked = ConfigOptions.bTitle
+
+        _setup.chkCast.Checked = ConfigOptions.bCast
+        _setup.chkCertification.Checked = ConfigOptions.bCert
+        _setup.chkCountry.Checked = ConfigOptions.bCountry
+        _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
+        _setup.chkDirector.Checked = ConfigOptions.bDirector
+        _setup.chkFullCrew.Checked = ConfigOptions.bFullCrew
+        _setup.chkGenre.Checked = ConfigOptions.bGenre
+        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
+        _setup.chkMusicBy.Checked = ConfigOptions.bMusicBy
         _setup.chkOriginalTitle.Checked = ConfigOptions.bOriginalTitle
-        _setup.chkYear.Checked = ConfigOptions.bYear
-        _setup.chkRelease.Checked = ConfigOptions.bRelease
-        _setup.chkRuntime.Checked = ConfigOptions.bRuntime
-        _setup.chkRating.Checked = ConfigOptions.bRating
-        _setup.chkVotes.Checked = ConfigOptions.bVotes
-        _setup.chkStudio.Checked = ConfigOptions.bStudio
-        _setup.chkTagline.Checked = ConfigOptions.bTagline
         _setup.chkOutline.Checked = ConfigOptions.bOutline
         _setup.chkPlot.Checked = ConfigOptions.bPlot
-        _setup.chkCast.Checked = ConfigOptions.bCast
-        _setup.chkDirector.Checked = ConfigOptions.bDirector
-        _setup.chkWriters.Checked = ConfigOptions.bWriters
         _setup.chkProducers.Checked = ConfigOptions.bProducers
-        _setup.chkGenre.Checked = ConfigOptions.bGenre
-        _setup.chkTrailer.Checked = ConfigOptions.bTrailer
-        _setup.chkMusicBy.Checked = ConfigOptions.bMusicBy
-        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
-        _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
-        _setup.chkCountry.Checked = ConfigOptions.bCountry
+        _setup.chkRating.Checked = ConfigOptions.bRating
+        _setup.chkRelease.Checked = ConfigOptions.bRelease
+        _setup.chkRuntime.Checked = ConfigOptions.bRuntime
+        _setup.chkStudio.Checked = ConfigOptions.bStudio
+        _setup.chkTagline.Checked = ConfigOptions.bTagline
+        _setup.chkTitle.Checked = ConfigOptions.bTitle
         _setup.chkTop250.Checked = ConfigOptions.bTop250
-        _setup.chkCertification.Checked = ConfigOptions.bCert
-        _setup.chkFullCrew.Checked = ConfigOptions.bFullCrew
-        _setup.chkFallBackworldwide.Checked = _MySettings.FallBackWorldwide
+        _setup.chkTrailer.Checked = ConfigOptions.bTrailer
+        _setup.chkVotes.Checked = ConfigOptions.bVotes
+        _setup.chkWriters.Checked = ConfigOptions.bWriters
+        _setup.chkYear.Checked = ConfigOptions.bYear
+
         _setup.cbForceTitleLanguage.Text = _MySettings.ForceTitleLanguage
+        _setup.chkCountryAbbreviation.Checked = _MySettings.CountryAbbreviation
+        _setup.chkFallBackworldwide.Checked = _MySettings.FallBackWorldwide
         _setup.chkPartialTitles.Checked = _MySettings.SearchPartialTitles
         _setup.chkPopularTitles.Checked = _MySettings.SearchPopularTitles
         _setup.chkTvTitles.Checked = _MySettings.SearchTvTitles
         _setup.chkVideoTitles.Checked = _MySettings.SearchVideoTitles
-        _setup.chkCountryAbbreviation.Checked = _MySettings.CountryAbbreviation
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
@@ -172,117 +174,114 @@ Public Class IMDB_Data
     End Function
 
     Sub LoadSettings()
-        ConfigOptions.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
-        ConfigOptions.bOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True)
-        ConfigOptions.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True)
+        ConfigOptions.bCast = clsAdvancedSettings.GetBooleanSetting("DoCast", True)
+        ConfigOptions.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
+        ConfigOptions.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True)
+        ConfigOptions.bDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True)
+        ConfigOptions.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True)
+        ConfigOptions.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
         ConfigOptions.bMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True)
-        ConfigOptions.bRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True)
-        ConfigOptions.bRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True)
-        ConfigOptions.bRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True)
-        ConfigOptions.bVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True)
-        ConfigOptions.bStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True)
-        ConfigOptions.bTagline = clsAdvancedSettings.GetBooleanSetting("DoTagline", True)
+        ConfigOptions.bMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True)
+        ConfigOptions.bOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True)
+        ConfigOptions.bOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
         ConfigOptions.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
         ConfigOptions.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigOptions.bCast = clsAdvancedSettings.GetBooleanSetting("DoCast", True)
-        ConfigOptions.bDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True)
-        ConfigOptions.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True)
         ConfigOptions.bProducers = clsAdvancedSettings.GetBooleanSetting("DoProducers", True)
-        ConfigOptions.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
-        ConfigOptions.bTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
-        ConfigOptions.bMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True)
-        ConfigOptions.bOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
-        ConfigOptions.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True)
+        ConfigOptions.bRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True)
+        ConfigOptions.bRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True)
+        ConfigOptions.bRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True)
+        ConfigOptions.bStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True)
+        ConfigOptions.bTagline = clsAdvancedSettings.GetBooleanSetting("DoTagline", True)
+        ConfigOptions.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
         ConfigOptions.bTop250 = clsAdvancedSettings.GetBooleanSetting("DoTop250", True)
-        ConfigOptions.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True)
-        ConfigOptions.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
-        ConfigOptions.bFullCrew = clsAdvancedSettings.GetBooleanSetting("FullCrew", True)
+        ConfigOptions.bTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigOptions.bVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True)
+        ConfigOptions.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True)
+        ConfigOptions.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True)
 
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
 
+        _MySettings.CountryAbbreviation = clsAdvancedSettings.GetBooleanSetting("CountryAbbreviation", False)
         _MySettings.FallBackWorldwide = clsAdvancedSettings.GetBooleanSetting("FallBackWorldwide", False)
         _MySettings.ForceTitleLanguage = clsAdvancedSettings.GetSetting("ForceTitleLanguage", "")
         _MySettings.SearchPartialTitles = clsAdvancedSettings.GetBooleanSetting("SearchPartialTitles", True)
         _MySettings.SearchPopularTitles = clsAdvancedSettings.GetBooleanSetting("SearchPopularTitles", True)
         _MySettings.SearchTvTitles = clsAdvancedSettings.GetBooleanSetting("SearchTvTitles", False)
         _MySettings.SearchVideoTitles = clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False)
-        _MySettings.CountryAbbreviation = clsAdvancedSettings.GetBooleanSetting("CountryAbbreviation", False)
-
     End Sub
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
+            settings.SetBooleanSetting("DoCast", ConfigOptions.bCast)
+            settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
+            settings.SetBooleanSetting("DoCountry", ConfigOptions.bCountry)
+            settings.SetBooleanSetting("DoDirector", ConfigOptions.bDirector)
             settings.SetBooleanSetting("DoFullCrews", ConfigOptions.bFullCrew)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
-            settings.SetBooleanSetting("DoOriginalTitle", ConfigOptions.bOriginalTitle)
-            settings.SetBooleanSetting("DoYear", ConfigOptions.bYear)
+            settings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
             settings.SetBooleanSetting("DoMPAA", ConfigOptions.bMPAA)
-            settings.SetBooleanSetting("DoRelease", ConfigOptions.bRelease)
-            settings.SetBooleanSetting("DoRuntime", ConfigOptions.bRuntime)
-            settings.SetBooleanSetting("DoRating", ConfigOptions.bRating)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions.bVotes)
-            settings.SetBooleanSetting("DoStudio", ConfigOptions.bStudio)
-            settings.SetBooleanSetting("DoTagline", ConfigOptions.bTagline)
+            settings.SetBooleanSetting("DoMusic", ConfigOptions.bMusicBy)
+            settings.SetBooleanSetting("DoOriginalTitle", ConfigOptions.bOriginalTitle)
+            settings.SetBooleanSetting("DoOtherCrews", ConfigOptions.bOtherCrew)
             settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
-            settings.SetBooleanSetting("DoCast", ConfigOptions.bCast)
-            settings.SetBooleanSetting("DoDirector", ConfigOptions.bDirector)
-            settings.SetBooleanSetting("DoWriters", ConfigOptions.bWriters)
             settings.SetBooleanSetting("DoProducers", ConfigOptions.bProducers)
-            settings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
-            settings.SetBooleanSetting("DoTrailer", ConfigOptions.bTrailer)
-            settings.SetBooleanSetting("DoMusic", ConfigOptions.bMusicBy)
-            settings.SetBooleanSetting("DoOtherCrews", ConfigOptions.bOtherCrew)
-            settings.SetBooleanSetting("DoCountry", ConfigOptions.bCountry)
+            settings.SetBooleanSetting("DoRating", ConfigOptions.bRating)
+            settings.SetBooleanSetting("DoRelease", ConfigOptions.bRelease)
+            settings.SetBooleanSetting("DoRuntime", ConfigOptions.bRuntime)
+            settings.SetBooleanSetting("DoStudio", ConfigOptions.bStudio)
+            settings.SetBooleanSetting("DoTagline", ConfigOptions.bTagline)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
             settings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
-            settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
-            settings.SetBooleanSetting("FullCrew", ConfigOptions.bFullCrew)
+            settings.SetBooleanSetting("DoTrailer", ConfigOptions.bTrailer)
+            settings.SetBooleanSetting("DoVotes", ConfigOptions.bVotes)
+            settings.SetBooleanSetting("DoWriters", ConfigOptions.bWriters)
+            settings.SetBooleanSetting("DoYear", ConfigOptions.bYear)
 
+            settings.SetBooleanSetting("CountryAbbreviation", _MySettings.CountryAbbreviation)
             settings.SetBooleanSetting("FallBackWorldwide", _MySettings.FallBackWorldwide)
-            settings.SetSetting("ForceTitleLanguage", _MySettings.ForceTitleLanguage)
             settings.SetBooleanSetting("SearchPartialTitles", _MySettings.SearchPartialTitles)
             settings.SetBooleanSetting("SearchPopularTitles", _MySettings.SearchPopularTitles)
             settings.SetBooleanSetting("SearchTvTitles", _MySettings.SearchTvTitles)
             settings.SetBooleanSetting("SearchVideoTitles", _MySettings.SearchVideoTitles)
-            settings.SetBooleanSetting("CountryAbbreviation", _MySettings.CountryAbbreviation)
+            settings.SetSetting("ForceTitleLanguage", _MySettings.ForceTitleLanguage)
         End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
-        ConfigOptions.bTitle = _setup.chkTitle.Checked
+        ConfigOptions.bCast = _setup.chkCast.Checked
+        ConfigOptions.bCert = _setup.chkCertification.Checked
+        ConfigOptions.bCountry = _setup.chkCountry.Checked
+        ConfigOptions.bDirector = _setup.chkDirector.Checked
+        ConfigOptions.bFullCrew = _setup.chkFullCrew.Checked
+        ConfigOptions.bGenre = _setup.chkGenre.Checked
+        ConfigOptions.bMPAA = _setup.chkMPAA.Checked
+        ConfigOptions.bMusicBy = _setup.chkMusicBy.Checked
         ConfigOptions.bOriginalTitle = _setup.chkOriginalTitle.Checked
-        ConfigOptions.bYear = _setup.chkYear.Checked
-        ConfigOptions.bMPAA = _setup.chkCertification.Checked
-        ConfigOptions.bRelease = _setup.chkRelease.Checked
-        ConfigOptions.bRuntime = _setup.chkRuntime.Checked
-        ConfigOptions.bRating = _setup.chkRating.Checked
-        ConfigOptions.bVotes = _setup.chkVotes.Checked
-        ConfigOptions.bStudio = _setup.chkStudio.Checked
-        ConfigOptions.bTagline = _setup.chkTagline.Checked
+        ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
         ConfigOptions.bOutline = _setup.chkOutline.Checked
         ConfigOptions.bPlot = _setup.chkPlot.Checked
-        ConfigOptions.bCast = _setup.chkCast.Checked
-        ConfigOptions.bDirector = _setup.chkDirector.Checked
-        ConfigOptions.bWriters = _setup.chkWriters.Checked
         ConfigOptions.bProducers = _setup.chkProducers.Checked
-        ConfigOptions.bGenre = _setup.chkGenre.Checked
-        ConfigOptions.bTrailer = _setup.chkTrailer.Checked
-        ConfigOptions.bMusicBy = _setup.chkMusicBy.Checked
-        ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
-        ConfigOptions.bCountry = _setup.chkCountry.Checked
+        ConfigOptions.bRating = _setup.chkRating.Checked
+        ConfigOptions.bRelease = _setup.chkRelease.Checked
+        ConfigOptions.bRuntime = _setup.chkRuntime.Checked
+        ConfigOptions.bStudio = _setup.chkStudio.Checked
+        ConfigOptions.bTagline = _setup.chkTagline.Checked
+        ConfigOptions.bTitle = _setup.chkTitle.Checked
         ConfigOptions.bTop250 = _setup.chkTop250.Checked
-        ConfigOptions.bCert = _setup.chkCertification.Checked
-        ConfigOptions.bFullCrew = _setup.chkFullCrew.Checked
+        ConfigOptions.bTrailer = _setup.chkTrailer.Checked
+        ConfigOptions.bVotes = _setup.chkVotes.Checked
+        ConfigOptions.bWriters = _setup.chkWriters.Checked
+        ConfigOptions.bYear = _setup.chkYear.Checked
 
+        _MySettings.CountryAbbreviation = _setup.chkCountryAbbreviation.Checked
         _MySettings.FallBackWorldwide = _setup.chkFallBackworldwide.Checked
         _MySettings.ForceTitleLanguage = _setup.cbForceTitleLanguage.Text
         _MySettings.SearchPartialTitles = _setup.chkPartialTitles.Checked
         _MySettings.SearchPopularTitles = _setup.chkPopularTitles.Checked
         _MySettings.SearchTvTitles = _setup.chkTvTitles.Checked
         _MySettings.SearchVideoTitles = _setup.chkVideoTitles.Checked
-        _MySettings.CountryAbbreviation = _setup.chkCountryAbbreviation.Checked
 
         SaveSettings()
         If DoDispose Then

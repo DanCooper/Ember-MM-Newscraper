@@ -486,7 +486,7 @@
   <string id="485">On Movie Scraped</string>
   <string id="486">On New Episode Added</string>
   <string id="487">Notifications</string>
-  <string id="488">Global Locks</string>
+  <string id="488">Global Scraper Fields</string>
   <string id="489">Lock Trailer</string>
   <string id="490">Lock Genre</string>
   <string id="491">Lock Studio</string>
@@ -1382,4 +1382,5 @@
   <string id="1290">Data Field</string>
   <string id="1291">Is Empty</string>
   <string id="1292">Is Not Empty</string>
+  <string id="1293">Only if no MPAA is found</string>
 </strings>

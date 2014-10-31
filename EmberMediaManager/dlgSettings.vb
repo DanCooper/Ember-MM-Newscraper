@@ -1431,6 +1431,17 @@ Public Class dlgSettings
 
     Private Sub chkMovieScraperCertForMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertForMPAA.CheckedChanged
         Me.SetApplyButton(True)
+
+        If Not Me.chkMovieScraperCertForMPAA.Checked Then
+            Me.chkMovieScraperCertForMPAAFallback.Enabled = False
+            Me.chkMovieScraperCertForMPAAFallback.Checked = False
+        Else
+            Me.chkMovieScraperCertForMPAAFallback.Enabled = True
+        End If
+    End Sub
+
+    Private Sub chkMovieScraperCertForMPAAFallback_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertForMPAAFallback.CheckedChanged
+        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkMovieScraperCertOnlyValue_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertOnlyValue.CheckedChanged
@@ -3414,6 +3425,7 @@ Public Class dlgSettings
                 Me.chkMovieScraperCastWithImg.Checked = .MovieScraperCastWithImgOnly
                 Me.chkMovieScraperCert.Checked = .MovieScraperCert
                 Me.chkMovieScraperCertForMPAA.Checked = .MovieScraperCertForMPAA
+                Me.chkMovieScraperCertForMPAAFallback.Checked = .MovieScraperCertForMPAAFallback
                 Me.chkMovieScraperCertFSK.Checked = .MovieScraperCertFSK
                 Me.chkMovieScraperCertOnlyValue.Checked = .MovieScraperCertOnlyValue
                 Me.chkMovieScraperCleanFields.Checked = .MovieScraperCleanFields
@@ -5029,6 +5041,7 @@ Public Class dlgSettings
                 .MovieScraperCastWithImgOnly = Me.chkMovieScraperCastWithImg.Checked
                 .MovieScraperCert = Me.chkMovieScraperCert.Checked
                 .MovieScraperCertForMPAA = Me.chkMovieScraperCertForMPAA.Checked
+                .MovieScraperCertForMPAAFallback = Me.chkMovieScraperCertForMPAAFallback.Checked
                 .MovieScraperCertFSK = Me.chkMovieScraperCertFSK.Checked
                 .MovieScraperCertOnlyValue = Me.chkMovieScraperCertOnlyValue.Checked
                 If Me.cbMovieScraperCertLang.Text <> String.Empty Then
@@ -5783,6 +5796,7 @@ Public Class dlgSettings
         Me.lblMovieScraperCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         Me.chkMovieScraperCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
+        Me.chkMovieScraperCertForMPAAFallback.Text = Master.eLang.GetString(1293, "Only if no MPAA is found")
         Me.lblMovieScraperCertification.Text = Master.eLang.GetString(722, "MPAA/Certification")
         Me.chkMovieScraperCleanFields.Text = Master.eLang.GetString(125, "Cleanup disabled fields")
         Me.chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
@@ -5918,7 +5932,7 @@ Public Class dlgSettings
         Me.gbMoviePosterOpts.Text = Master.eLang.GetString(148, "Poster")
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
-        Me.gbMovieScraperGlobalOpts.Text = Master.eLang.GetString(488, "Global Locks")
+        Me.gbMovieScraperGlobalOpts.Text = Master.eLang.GetString(488, "Global Scraper Fields")
         Me.gbMovieScraperMetaDataOpts.Text = Master.eLang.GetString(59, "Meta Data")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")

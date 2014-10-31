@@ -4051,6 +4051,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieScraperCertForMPAAFallback() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperCertForMPAAFallback
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperCertForMPAAFallback = value
+        End Set
+    End Property
+
     Public Property MovieScraperUseMDDuration() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperUseMDDuration
