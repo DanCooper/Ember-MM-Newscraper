@@ -2359,7 +2359,7 @@ Public Class frmMain
                         If Not ret.Cancelled Then
                             If tUrlList.Count > 0 Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                    Theme.WebTheme.FromWeb(tUrlList.Item(0).URL, tUrlList.Item(0).WebURL)
+                                    Await Theme.WebTheme.FromWeb(tUrlList.Item(0).URL, tUrlList.Item(0).WebURL)
                                     If Not IsNothing(Theme.WebTheme) Then 'TODO: fix check
                                         tURL = Theme.WebTheme.SaveAsMovieTheme(DBScrapeMovie)
                                         If Not String.IsNullOrEmpty(tURL) Then
@@ -2405,35 +2405,41 @@ Public Class frmMain
                                 logger.Warn("[" & DBScrapeMovie.Movie.Title & "] NO trailers avalaible!")
                             End If
                             If aUrlList.Count > 0 Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.GetPreferredTrailer(aUrlList, Trailer) Then
-
-
-                                    'Cocotus 2014/09/26 After going thourgh GetPreferredTrailers aUrlList is now sorted/filtered - any trailer on this list is ok and can be downloaded!
-                                    For Each _trailer As Trailers In aUrlList
-                                        'trailer URL shoud never be empty at this point anyway, might as well remove check
-                                        If Not String.IsNullOrEmpty(_trailer.URL) Then
-                                            'this will download the trailer and save it temporarly as "dummy.ext"
-                                            Trailer.WebTrailer.FromWeb(_trailer.URL)
-                                            'If trailer was downloaded, Trailer.WebTrailer.URL and Trailer.WebTrailer.Extension are not empty anymore. We use this as a check!
-                                            If Not String.IsNullOrEmpty(Trailer.WebTrailer.URL) Then
-                                                'now rename dummy.ext to trailer and save it in movie folder
-                                                tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
-                                                If Not String.IsNullOrEmpty(tURL) Then
-                                                    DBScrapeMovie.TrailerPath = tURL
-                                                    MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, True)
-                                                    logger.Info("[" & DBScrapeMovie.Movie.Title & "] " & _trailer.Quality & " Downloaded trailer: " & _trailer.URL)
-                                                    'since trailer was downloaded we can leave loop, all good!
-                                                    Exit For
+                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                                    ret = Await Trailers.GetPreferredTrailer(aUrlList, Trailer)
+                                    ' return parameters
+                                    ' UrlList
+                                    ' trlResult
+                                    aUrlList = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Global.EmberAPI.Trailers))
+                                    Trailer = CType(ret.ReturnObj(1), MediaContainers.Trailer)
+                                    If ret.Cancelled Then
+                                        'Cocotus 2014/09/26 After going thourgh GetPreferredTrailers aUrlList is now sorted/filtered - any trailer on this list is ok and can be downloaded!
+                                        For Each _trailer As Trailers In aUrlList
+                                            'trailer URL shoud never be empty at this point anyway, might as well remove check
+                                            If Not String.IsNullOrEmpty(_trailer.URL) Then
+                                                'this will download the trailer and save it temporarly as "dummy.ext"
+                                                Await Trailer.WebTrailer.FromWeb(_trailer.URL)
+                                                'If trailer was downloaded, Trailer.WebTrailer.URL and Trailer.WebTrailer.Extension are not empty anymore. We use this as a check!
+                                                If Not String.IsNullOrEmpty(Trailer.WebTrailer.URL) Then
+                                                    'now rename dummy.ext to trailer and save it in movie folder
+                                                    tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
+                                                    If Not String.IsNullOrEmpty(tURL) Then
+                                                        DBScrapeMovie.TrailerPath = tURL
+                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, True)
+                                                        logger.Info("[" & DBScrapeMovie.Movie.Title & "] " & _trailer.Quality & " Downloaded trailer: " & _trailer.URL)
+                                                        'since trailer was downloaded we can leave loop, all good!
+                                                        Exit For
+                                                    Else
+                                                        logger.Warn("[" & DBScrapeMovie.Movie.Title & "] Saving of downloaded trailer failed: " & _trailer.URL)
+                                                    End If
                                                 Else
-                                                    logger.Warn("[" & DBScrapeMovie.Movie.Title & "] Saving of downloaded trailer failed: " & _trailer.URL)
+                                                    logger.Debug("[" & DBScrapeMovie.Movie.Title & "] Download of trailer failed: " & _trailer.URL)
                                                 End If
                                             Else
-                                                logger.Debug("[" & DBScrapeMovie.Movie.Title & "] Download of trailer failed: " & _trailer.URL)
+                                                logger.Debug("[" & DBScrapeMovie.Movie.Title & "] No trailer link to download!")
                                             End If
-                                        Else
-                                            logger.Debug("[" & DBScrapeMovie.Movie.Title & "] No trailer link to download!")
-                                        End If
-                                    Next
+                                        Next
+                                    End If
                                 End If
                             Else
                                 logger.Warn("[" & DBScrapeMovie.Movie.Title & "] No trailer links scraped!")
@@ -13414,7 +13420,7 @@ doCancel:
                                         pResults.WebImage.FromWeb(pResults.URL)
                                         newImage = pResults.WebImage
                                         newImage.IsEdit = True
-                                        newImage.SaveAsMovieClearArt(Master.currMovie)
+                                        Await newImage.SaveAsMovieClearArt(Master.currMovie)
                                         Cursor = Cursors.Default
                                         Me.SetMovieListItemAfterEdit(ID, indX)
                                         Me.RefreshMovie(ID, False, False, False, False)
@@ -13568,7 +13574,7 @@ doCancel:
                                         pResults.WebImage.FromWeb(pResults.URL)
                                         newImage = pResults.WebImage
                                         newImage.IsEdit = True
-                                        newImage.SaveAsMovieFanart(Master.currMovie)
+                                        Await newImage.SaveAsMovieFanart(Master.currMovie)
                                         Cursor = Cursors.Default
                                         Me.SetMovieListItemAfterEdit(ID, indX)
                                         Me.RefreshMovie(ID, False, False, False, False)
@@ -13674,7 +13680,7 @@ doCancel:
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
-                                    newImage.SaveAsTVASFanart(Master.currShow)
+                                    Await newImage.SaveAsTVASFanart(Master.currShow)
                                     If Me.RefreshSeason(ShowID, Season, False) Then
                                         Me.FillSeasons(ShowID)
                                     End If
@@ -13684,7 +13690,7 @@ doCancel:
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
-                                    newImage.SaveAsTVSeasonFanart(Master.currShow)
+                                    Await newImage.SaveAsTVSeasonFanart(Master.currShow)
                                     If Me.RefreshSeason(ShowID, Season, False) Then
                                         Me.FillSeasons(ShowID)
                                     End If

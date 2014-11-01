@@ -1134,7 +1134,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sSource">Name of source.</param>
     ''' <param name="sPath">Path of source.</param>
-    Public Sub ScanTVSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal sLang As String, ByVal sOrdering As Enums.Ordering, Optional ByVal isInner As Boolean = False)
+    Public Async Function ScanTVSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal sLang As String, ByVal sOrdering As Enums.Ordering, Optional ByVal isInner As Boolean = False) As Threading.Tasks.Task
         If Directory.Exists(sPath) Then
 
             Dim currShowContainer As TVShowContainer
@@ -1169,7 +1169,7 @@ Public Class Scanner
                         Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                     Next
 
-                    LoadTVShow(currShowContainer)
+                    Await LoadTVShow(currShowContainer)
                 Else
                     For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d, True)).OrderBy(Function(d) d.Name)
 
@@ -1209,7 +1209,7 @@ Public Class Scanner
             dInfo = Nothing
             inInfo = Nothing
         End If
-    End Sub
+    End Function
 
     Public Sub Start(ByVal Scan As Structures.Scans, ByVal SourceName As String)
         Me.bwPrelim = New System.ComponentModel.BackgroundWorker

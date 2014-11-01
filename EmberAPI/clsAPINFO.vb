@@ -1085,10 +1085,10 @@ Public Class NFO
         Return New MediaContainers.EpisodeDetails
     End Function
 
-    Public Shared Function LoadTVShowFromNFO(ByVal sPath As String) As MediaContainers.TVShow
+    Public Shared Async Function LoadTVShowFromNFO(ByVal sPath As String) As Threading.Tasks.Task(Of MediaContainers.TVShow)
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlShow As New MediaContainers.TVShow
-
+        Dim ret As Interfaces.ModuleResult
         If Not String.IsNullOrEmpty(sPath) Then
             Try
                 If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
@@ -1114,7 +1114,8 @@ Public Class NFO
             Try
                 Dim params As New List(Of Object)(New Object() {xmlShow})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnTVShowNFORead, params, doContinue, False)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnTVShowNFORead, params, doContinue, False)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
 
             Catch ex As Exception
             End Try

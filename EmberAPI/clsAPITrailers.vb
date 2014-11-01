@@ -332,8 +332,17 @@ Public Class Trailers
     ''' Note: Only one trailerresult will be used for downloading
     ''' 2014/09/26 Cocotus - Modified this method a bit: Now trailer module order set by user will be considered, also do some filtering here (trailerdescription must contain string "trailer" or else the trailer wont be used (no more making ofs...))
     ''' </remarks>
-    Public Shared Function GetPreferredTrailer(ByRef UrlList As List(Of Trailers), ByRef trlResult As MediaContainers.Trailer) As Boolean
-        If UrlList.Count = 0 Then Return False
+    Public Shared Async Function GetPreferredTrailer(ByVal UrlList As List(Of Trailers), ByVal trlResult As MediaContainers.Trailer) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' return parameters
+        ' UrlList
+        ' trlResult
+        Dim ret As New Interfaces.ModuleResult
+
+        If UrlList.Count = 0 Then
+            ret.Cancelled = False
+            Return ret
+        End If
+
         Dim tLink As String = String.Empty
 
         Try
@@ -342,7 +351,7 @@ Public Class Trailers
             For Each aUrl As Trailers In UrlList
                 If Regex.IsMatch(aUrl.URL, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                     Dim YT As New YouTube.Scraper
-                    YT.GetVideoLinks(aUrl.URL)
+                    Await YT.GetVideoLinks(aUrl.URL)
                     If YT.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
                         tLink = YT.VideoLinks(Master.eSettings.MovieTrailerPrefQual).URL
                         aUrl.URL = tLink
@@ -816,11 +825,19 @@ Public Class Trailers
                     End Select
                 End If
             Next
-            Return True
+            ret.ReturnObj.Clear()
+            ret.ReturnObj.Add(UrlList)
+            ret.ReturnObj.Add(trlResult)
+            ret.Cancelled = True
+            Return ret
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return False
+            ret.ReturnObj.Clear()
+            ret.ReturnObj.Add(UrlList)
+            ret.ReturnObj.Add(trlResult)
+            ret.Cancelled = False
+            Return ret
         End Try
     End Function
 

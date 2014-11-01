@@ -574,16 +574,16 @@ Public Class dlgEditEpisode
         EditActor()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Async Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
-            Me.SetInfo()
+            Await Me.SetInfo()
 
             Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
 
             Me.CleanUp()
 
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
