@@ -239,7 +239,14 @@ Public Class dlgEditMovie
     Private Async Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim aUrlList As New List(Of Themes)
         Dim tURL As String = String.Empty
-        If Not Await ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
+        Dim ret As New Interfaces.ModuleResult
+        ret = Await ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList)
+        ' Return Objects are
+        ' DBMovie
+        ' URLList
+        Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+        aUrlList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.Themes))
+        If Not ret.Cancelled Then
             Using dThemeSelect As New dlgThemeSelect()
                 MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
             End Using
@@ -555,9 +562,16 @@ Public Class dlgEditMovie
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As New Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList)
+            ' return objects
+            ' DBMovie
+            ' ImageList
+            Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -631,9 +645,16 @@ Public Class dlgEditMovie
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearLogo, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearLogo, aList)
+            ' return objects
+            ' DBMovie
+            ' ImageList
+            Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -707,9 +728,15 @@ Public Class dlgEditMovie
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
-
+        Dim ret As Interfaces.ModuleResult
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.DiscArt, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.DiscArt, aList)
+            ' return objects
+            ' DBMovie
+            ' ImageList
+            Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -813,9 +840,16 @@ Public Class dlgEditMovie
         Dim pResults As New MediaContainers.Image
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList)
+            ' return objects
+            ' DBMovie
+            ' ImageList
+            Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
@@ -893,9 +927,16 @@ Public Class dlgEditMovie
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList)
+            ' return objects
+            ' DBMovie
+            ' ImageList
+            Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -969,9 +1010,16 @@ Public Class dlgEditMovie
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Poster, aList)
+            ' return objects
+            ' DBMovie
+            ' ImageList
+            Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -1040,6 +1088,9 @@ Public Class dlgEditMovie
         'Dim tResults As New MediaContainers.Theme
         'Dim dlgTheS As dlgThemeSelect
         'Dim tList As New List(Of Themes)
+        Dim ret As Interfaces.ModuleResult
+        Dim aUrlList As New List(Of Themes)
+        Dim tURL As String = String.Empty
 
         Try
             Me.ThemeStop()
@@ -1050,10 +1101,14 @@ Public Class dlgEditMovie
             '        MovieTheme = tResults.WebTheme
             '        ThemeAddToPlayer(MovieTheme)
             '    End If
+            ret = Await ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList)
+            ' Return Objects are
+            ' DBMovie
+            ' URLList
+            Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+            aUrlList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.Themes))
 
-            Dim aUrlList As New List(Of Themes)
-            Dim tURL As String = String.Empty
-            If Not Await ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
+            If Not ret.Cancelled Then
                 Using dThemeSelect As New dlgThemeSelect()
                     If Not IsNothing(dThemeSelect.ShowDialog(Master.currMovie, aUrlList)) Then
                         MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)

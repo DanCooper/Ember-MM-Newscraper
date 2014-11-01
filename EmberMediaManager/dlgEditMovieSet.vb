@@ -329,9 +329,16 @@ Public Class dlgEditMovieSet
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Banner, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Banner, aList)
+            ' return objects
+            ' DBMovieSet
+            ' ImageList  
+            currMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -405,9 +412,16 @@ Public Class dlgEditMovieSet
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearArt, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearArt, aList)
+            ' return objects
+            ' DBMovieSet
+            ' ImageList   
+            currMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -482,9 +496,16 @@ Public Class dlgEditMovieSet
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearLogo, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearLogo, aList)
+            ' return objects
+            ' DBMovieSet
+            ' ImageList      
+            currMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -559,9 +580,16 @@ Public Class dlgEditMovieSet
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.DiscArt, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.DiscArt, aList)
+            ' return objects
+            ' DBMovieSet
+            ' ImageList      
+            currMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -636,9 +664,16 @@ Public Class dlgEditMovieSet
         Dim pResults As New MediaContainers.Image
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Fanart, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Fanart, aList)
+            ' return objects
+            ' DBMovieSet
+            ' ImageList      
+            currMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
@@ -712,9 +747,16 @@ Public Class dlgEditMovieSet
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Landscape, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Landscape, aList)
+            ' return objects
+            ' DBMovieSet
+            ' ImageList      
+            currMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -789,9 +831,16 @@ Public Class dlgEditMovieSet
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim ret As Interfaces.ModuleResult
 
         Try
-            If Not Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Poster, aList) Then
+            ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Poster, aList)
+            ' return objects
+            ' DBMovieSet
+            ' ImageList      
+            currMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+            If Not ret.Cancelled Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then

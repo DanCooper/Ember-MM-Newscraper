@@ -349,10 +349,17 @@ Public Class dlgTrailerSelect
         Me.axVLCTrailer.audio.toggleMute()
     End Sub
 
-    Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
+    Private Async Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Dim ret As Interfaces.ModuleResult
         Try
-            If Not ModulesManager.Instance.ScrapeTrailer_Movie(Master.currMovie, Enums.ScraperCapabilities.Trailer, nList) Then
+            ret = Await ModulesManager.Instance.ScrapeTrailer_Movie(Master.currMovie, Enums.ScraperCapabilities.Trailer, nList)
+            ' return object
+            ' DBMovie
+            ' URLList
+            Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+            nList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.Trailers))
+            If Not ret.Cancelled Then
                 Args.bType = True
             Else
                 Args.bType = False

@@ -1028,9 +1028,10 @@ Public Class ModulesManager
     ''' <param name="RunOnlyOne">If <c>True</c>, allow only one module to perform the required task.</param>
     ''' <returns></returns>
     ''' <remarks>Note that if any module returns a result of breakChain, no further modules are processed</remarks>
-    Public Async Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBMovie As Structures.DBMovie = Nothing) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+    Public Async Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByVal _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByVal DBMovie As Structures.DBMovie = Nothing) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
         ' return objects
         ' _Params
+        ' DBMovie
 
         Dim ret As New Interfaces.ModuleResult
 

@@ -1843,10 +1843,16 @@ Public Class frmMain
                 logger.Trace(String.Concat("Start scraping: ", OldListTitle))
 
                 DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
+                ' return objects
+                ' _Params
+                ' DBMovie
+                DBScrapeMovie = CType(ret.ReturnObj(1), Structures.DBMovie)
 
                 If Master.GlobalScrapeMod.NFO Then
                     ret = Await ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie)
+                    ' return parameters will add in ReturnObject
+                    ' DBMovie
                     DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
                     If ret.Cancelled Then
                         Cancelled = True
@@ -1859,7 +1865,12 @@ Public Class frmMain
                                                                              Master.GlobalScrapeMod.EThumbs Or Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
                                                                              Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer) Then
                         Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
-                        If Await ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, tOpt) Then
+                        ret = Await ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, tOpt)
+                        ' return objects
+                        ' DBMovie
+                        DBScrapeMovie = CType(ret.ReturnObj(1), Structures.DBMovie)
+
+                        If ret.Cancelled Then
                             Exit For
                         End If
                     End If
@@ -1918,7 +1929,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If Poster.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.Poster) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Poster, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Poster, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList
+                        DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMoviePoster(aList, Poster) Then
                                 If Not String.IsNullOrEmpty(Poster.URL) AndAlso IsNothing(Poster.WebImage.Image) Then
                                     Poster.WebImage.FromWeb(Poster.URL)
@@ -1976,7 +1993,13 @@ Public Class frmMain
                     etList.Clear()
                     tURL = String.Empty
                     If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.Fanart) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList
+                        DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieFanart(aList, Fanart) Then
                                 If Not String.IsNullOrEmpty(Fanart.URL) AndAlso IsNothing(Fanart.WebImage.Image) Then
                                     Fanart.WebImage.FromWeb(Fanart.URL)
@@ -2036,7 +2059,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If Banner.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.Banner) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Banner, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Banner, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList
+                        DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Banner) Then 'TODO: Check if we need PreferredBanner
                                 If aList.Count > 0 Then Banner = aList.Item(0)
                                 If Not String.IsNullOrEmpty(Banner.URL) AndAlso IsNothing(Banner.WebImage.Image) Then
@@ -2093,7 +2122,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If Landscape.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.Landscape) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Landscape, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Landscape, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList
+                        DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
                                 If aList.Count > 0 Then Landscape = aList.Item(0)
                                 If Not String.IsNullOrEmpty(Landscape.URL) AndAlso IsNothing(Landscape.WebImage.Image) Then
@@ -2144,7 +2179,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If ClearArt.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.ClearArt) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.ClearArt, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.ClearArt, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList
+                        DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
                                 If aList.Count > 0 Then ClearArt = aList.Item(0)
                                 If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso IsNothing(ClearArt.WebImage.Image) Then
@@ -2195,7 +2236,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If ClearLogo.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.ClearLogo) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.ClearLogo, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.ClearLogo, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList
+                        DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
                                 If aList.Count > 0 Then ClearLogo = aList.Item(0)
                                 If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso IsNothing(ClearLogo.WebImage.Image) Then
@@ -2246,7 +2293,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If DiscArt.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.DiscArt) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.DiscArt, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.DiscArt, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList
+                        DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
                                 If aList.Count > 0 Then DiscArt = aList.Item(0)
                                 If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso IsNothing(DiscArt.WebImage.Image) Then
@@ -2297,7 +2350,13 @@ Public Class frmMain
                     tUrlList.Clear()
                     tURL = String.Empty
                     If Theme.WebTheme.IsAllowedToDownload(DBScrapeMovie) Then
-                        If Not ModulesManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, tUrlList) Then
+                        ret = Await ModulesManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, tUrlList)
+                        ' Return Objects are
+                        ' DBMovie
+                        ' URLList
+                        DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        tUrlList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.Themes))
+                        If Not ret.Cancelled Then
                             If tUrlList.Count > 0 Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                                     Theme.WebTheme.FromWeb(tUrlList.Item(0).URL, tUrlList.Item(0).WebURL)
@@ -2333,7 +2392,13 @@ Public Class frmMain
                     aUrlList.Clear()
                     tURL = String.Empty
                     If Trailer.WebTrailer.IsAllowedToDownload(DBScrapeMovie) Then
-                        If Not ModulesManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
+                        ret = Await ModulesManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList)
+                        ' Return Objects are
+                        ' DBMovie
+                        ' URLList
+                        DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        tUrlList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.Themes))
+                        If Not ret.Cancelled Then
                             If aUrlList.Count > 0 Then
                                 logger.Warn("[" & DBScrapeMovie.Movie.Title & "] Avalaible trailers: " & aUrlList.Count)
                             Else
@@ -2385,7 +2450,13 @@ Public Class frmMain
                         aList.Clear()
                         etList.Clear()
                         If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.EThumbs) Then
-                            If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+                            ret = Await ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList)
+                            ' Return Objects are
+                            ' DBMovie
+                            ' URLList
+                            DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                            If Not ret.Cancelled Then
                                 etList = Images.GetPreferredMovieEThumbs(aList)
                                 If etList.Count > 0 Then
                                     Dim eti As Integer = 0
@@ -2417,7 +2488,13 @@ Public Class frmMain
                         aList.Clear()
                         efList.Clear()
                         If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.EFanarts) Then
-                            If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+                            ret = Await ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList)
+                            ' Return Objects are
+                            ' DBMovie
+                            ' URLList
+                            DBScrapeMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                            aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                            If Not ret.Cancelled Then
                                 efList = Images.GetPreferredMovieEFanarts(aList)
                                 If efList.Count > 0 Then
                                     Dim efi As Integer = 0
@@ -2461,10 +2538,18 @@ Public Class frmMain
                 If bwMovieScraper.CancellationPending Then Exit For
 
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Nothing, False, DBScrapeMovie)
+                    ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Nothing, False, DBScrapeMovie)
+                    ' return objects
+                    ' _Params
+                    ' DBMovie
+                    DBScrapeMovie = CType(ret.ReturnObj(1), Structures.DBMovie)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
+                    ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
+                    ' return objects
+                    ' _Params
+                    ' DBMovie
+                    DBScrapeMovie = CType(ret.ReturnObj(1), Structures.DBMovie)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                     bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
                 End If
@@ -2543,6 +2628,7 @@ Public Class frmMain
         Dim etList As New List(Of String)
         Dim formatter As New BinaryFormatter()
         Dim tURL As String = String.Empty
+        Dim ret As Interfaces.ModuleResult
 
         logger.Trace("Starting MOVIE SET scrape")
 
@@ -2574,7 +2660,11 @@ Public Class frmMain
                 'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
 
                 If Master.GlobalScrapeMod.NFO Then
-                    If Await ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.scrapeType, Args.Options_MovieSet) Then
+                    ret = Await ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.scrapeType, Args.Options_MovieSet)
+                    ' return objects
+                    ' DBMovieSet
+                    DBScrapeMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                    If ret.Cancelled Then
                         Exit Try
                     End If
                 Else
@@ -2584,7 +2674,11 @@ Public Class frmMain
                                                                              Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
                                                                              Master.GlobalScrapeMod.Poster) Then
                         Dim tOpt As New Structures.ScrapeOptions_MovieSet 'all false value not to override any field
-                        If Await ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.scrapeType, tOpt) Then
+                        ret = Await ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.scrapeType, tOpt)
+                        ' return objects
+                        ' DBMovieSet
+                        DBScrapeMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        If ret.Cancelled Then
                             Exit For
                         End If
                     End If
@@ -2671,7 +2765,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If Poster.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.MovieImageType.Poster) Then
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.Poster, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.Poster, aList)
+                        ' return objects
+                        ' DBMovieSet
+                        ' ImageList   
+                        DBScrapeMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetPoster(aList, Poster) Then
                                 If Not String.IsNullOrEmpty(Poster.URL) AndAlso IsNothing(Poster.WebImage.Image) Then
                                     Poster.WebImage.FromWeb(Poster.URL)
@@ -10613,7 +10713,7 @@ doCancel:
                                 sFile.UseFolder = If(isSingle, True, False)
                                 fScanner.GetMovieFolderContents(sFile)
                                 If Not String.IsNullOrEmpty(sFile.Nfo) Then
-                                    Master.currMovie.Movie = Nfo.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
+                                    Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
                                 Else
                                     Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
                                 End If
@@ -18739,5 +18839,5 @@ doCancel:
     End Structure
 
 #End Region 'Nested Types
-   
+
 End Class
