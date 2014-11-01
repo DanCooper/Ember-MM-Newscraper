@@ -679,6 +679,18 @@ Partial Class dlgSettings
         Me.pnlTVImages = New System.Windows.Forms.Panel()
         Me.tcTVImages = New System.Windows.Forms.TabControl()
         Me.tpTVShow = New System.Windows.Forms.TabPage()
+        Me.gbTVShowEFanartsOpts = New System.Windows.Forms.GroupBox()
+        Me.lblTVShowEFanartsLimit = New System.Windows.Forms.Label()
+        Me.txtTVShowEFanartsLimit = New System.Windows.Forms.TextBox()
+        Me.chkTVShowEFanartsPrefOnly = New System.Windows.Forms.CheckBox()
+        Me.txtTVShowEFanartsWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVShowEFanartsHeight = New System.Windows.Forms.TextBox()
+        Me.lblTVShowEFanartsWidth = New System.Windows.Forms.Label()
+        Me.lblTVShowEFanartsHeight = New System.Windows.Forms.Label()
+        Me.chkTVShowEFanartsResize = New System.Windows.Forms.CheckBox()
+        Me.lblTVShowEFanartsSize = New System.Windows.Forms.Label()
+        Me.cbTVShowEFanartsPrefSize = New System.Windows.Forms.ComboBox()
+        Me.chkTVShowEFanartsOverwrite = New System.Windows.Forms.CheckBox()
         Me.gbTVShowCharacterArtOpts = New System.Windows.Forms.GroupBox()
         Me.chkTVShowCharacterArtOverwrite = New System.Windows.Forms.CheckBox()
         Me.gbTVShowClearArtOpts = New System.Windows.Forms.GroupBox()
@@ -1250,6 +1262,7 @@ Partial Class dlgSettings
         Me.pnlTVImages.SuspendLayout
         Me.tcTVImages.SuspendLayout
         Me.tpTVShow.SuspendLayout
+        Me.gbTVShowEFanartsOpts.SuspendLayout
         Me.gbTVShowCharacterArtOpts.SuspendLayout
         Me.gbTVShowClearArtOpts.SuspendLayout
         Me.gbTVShowClearLogoOpts.SuspendLayout
@@ -8364,6 +8377,7 @@ Partial Class dlgSettings
         '
         'tpTVShow
         '
+        Me.tpTVShow.Controls.Add(Me.gbTVShowEFanartsOpts)
         Me.tpTVShow.Controls.Add(Me.gbTVShowCharacterArtOpts)
         Me.tpTVShow.Controls.Add(Me.gbTVShowClearArtOpts)
         Me.tpTVShow.Controls.Add(Me.gbTVShowClearLogoOpts)
@@ -8378,6 +8392,136 @@ Partial Class dlgSettings
         Me.tpTVShow.TabIndex = 0
         Me.tpTVShow.Text = "TV Show"
         Me.tpTVShow.UseVisualStyleBackColor = true
+        '
+        'gbTVShowEFanartsOpts
+        '
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.lblTVShowEFanartsLimit)
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.txtTVShowEFanartsLimit)
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.chkTVShowEFanartsPrefOnly)
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.txtTVShowEFanartsWidth)
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.txtTVShowEFanartsHeight)
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.lblTVShowEFanartsWidth)
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.lblTVShowEFanartsHeight)
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.chkTVShowEFanartsResize)
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.lblTVShowEFanartsSize)
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.cbTVShowEFanartsPrefSize)
+        Me.gbTVShowEFanartsOpts.Controls.Add(Me.chkTVShowEFanartsOverwrite)
+        Me.gbTVShowEFanartsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVShowEFanartsOpts.Location = New System.Drawing.Point(474, 179)
+        Me.gbTVShowEFanartsOpts.Name = "gbTVShowEFanartsOpts"
+        Me.gbTVShowEFanartsOpts.Size = New System.Drawing.Size(228, 181)
+        Me.gbTVShowEFanartsOpts.TabIndex = 14
+        Me.gbTVShowEFanartsOpts.TabStop = false
+        Me.gbTVShowEFanartsOpts.Text = "Extrafanarts"
+        '
+        'lblTVShowEFanartsLimit
+        '
+        Me.lblTVShowEFanartsLimit.AutoSize = true
+        Me.lblTVShowEFanartsLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblTVShowEFanartsLimit.Location = New System.Drawing.Point(3, 25)
+        Me.lblTVShowEFanartsLimit.Name = "lblTVShowEFanartsLimit"
+        Me.lblTVShowEFanartsLimit.Size = New System.Drawing.Size(34, 13)
+        Me.lblTVShowEFanartsLimit.TabIndex = 13
+        Me.lblTVShowEFanartsLimit.Text = "Limit:"
+        '
+        'txtTVShowEFanartsLimit
+        '
+        Me.txtTVShowEFanartsLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVShowEFanartsLimit.Location = New System.Drawing.Point(43, 22)
+        Me.txtTVShowEFanartsLimit.Name = "txtTVShowEFanartsLimit"
+        Me.txtTVShowEFanartsLimit.Size = New System.Drawing.Size(40, 22)
+        Me.txtTVShowEFanartsLimit.TabIndex = 12
+        '
+        'chkTVShowEFanartsPrefOnly
+        '
+        Me.chkTVShowEFanartsPrefOnly.AutoSize = true
+        Me.chkTVShowEFanartsPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowEFanartsPrefOnly.Location = New System.Drawing.Point(163, 86)
+        Me.chkTVShowEFanartsPrefOnly.Name = "chkTVShowEFanartsPrefOnly"
+        Me.chkTVShowEFanartsPrefOnly.Size = New System.Drawing.Size(50, 17)
+        Me.chkTVShowEFanartsPrefOnly.TabIndex = 2
+        Me.chkTVShowEFanartsPrefOnly.Text = "Only"
+        Me.chkTVShowEFanartsPrefOnly.UseVisualStyleBackColor = true
+        '
+        'txtTVShowEFanartsWidth
+        '
+        Me.txtTVShowEFanartsWidth.Enabled = false
+        Me.txtTVShowEFanartsWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVShowEFanartsWidth.Location = New System.Drawing.Point(68, 148)
+        Me.txtTVShowEFanartsWidth.Name = "txtTVShowEFanartsWidth"
+        Me.txtTVShowEFanartsWidth.Size = New System.Drawing.Size(40, 22)
+        Me.txtTVShowEFanartsWidth.TabIndex = 6
+        '
+        'txtTVShowEFanartsHeight
+        '
+        Me.txtTVShowEFanartsHeight.Enabled = false
+        Me.txtTVShowEFanartsHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVShowEFanartsHeight.Location = New System.Drawing.Point(175, 148)
+        Me.txtTVShowEFanartsHeight.Name = "txtTVShowEFanartsHeight"
+        Me.txtTVShowEFanartsHeight.Size = New System.Drawing.Size(40, 22)
+        Me.txtTVShowEFanartsHeight.TabIndex = 8
+        '
+        'lblTVShowEFanartsWidth
+        '
+        Me.lblTVShowEFanartsWidth.AutoSize = true
+        Me.lblTVShowEFanartsWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowEFanartsWidth.Location = New System.Drawing.Point(3, 152)
+        Me.lblTVShowEFanartsWidth.Name = "lblTVShowEFanartsWidth"
+        Me.lblTVShowEFanartsWidth.Size = New System.Drawing.Size(66, 13)
+        Me.lblTVShowEFanartsWidth.TabIndex = 5
+        Me.lblTVShowEFanartsWidth.Text = "Max Width:"
+        '
+        'lblTVShowEFanartsHeight
+        '
+        Me.lblTVShowEFanartsHeight.AutoSize = true
+        Me.lblTVShowEFanartsHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowEFanartsHeight.Location = New System.Drawing.Point(106, 152)
+        Me.lblTVShowEFanartsHeight.Name = "lblTVShowEFanartsHeight"
+        Me.lblTVShowEFanartsHeight.Size = New System.Drawing.Size(69, 13)
+        Me.lblTVShowEFanartsHeight.TabIndex = 7
+        Me.lblTVShowEFanartsHeight.Text = "Max Height:"
+        '
+        'chkTVShowEFanartsResize
+        '
+        Me.chkTVShowEFanartsResize.AutoSize = true
+        Me.chkTVShowEFanartsResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowEFanartsResize.Location = New System.Drawing.Point(6, 130)
+        Me.chkTVShowEFanartsResize.Name = "chkTVShowEFanartsResize"
+        Me.chkTVShowEFanartsResize.Size = New System.Drawing.Size(133, 17)
+        Me.chkTVShowEFanartsResize.TabIndex = 4
+        Me.chkTVShowEFanartsResize.Text = "Automatically Resize:"
+        Me.chkTVShowEFanartsResize.UseVisualStyleBackColor = true
+        '
+        'lblTVShowEFanartsSize
+        '
+        Me.lblTVShowEFanartsSize.AutoSize = true
+        Me.lblTVShowEFanartsSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVShowEFanartsSize.Location = New System.Drawing.Point(4, 66)
+        Me.lblTVShowEFanartsSize.Name = "lblTVShowEFanartsSize"
+        Me.lblTVShowEFanartsSize.Size = New System.Drawing.Size(80, 13)
+        Me.lblTVShowEFanartsSize.TabIndex = 0
+        Me.lblTVShowEFanartsSize.Text = "Preferred Size:"
+        '
+        'cbTVShowEFanartsPrefSize
+        '
+        Me.cbTVShowEFanartsPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVShowEFanartsPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbTVShowEFanartsPrefSize.FormattingEnabled = true
+        Me.cbTVShowEFanartsPrefSize.Location = New System.Drawing.Point(6, 82)
+        Me.cbTVShowEFanartsPrefSize.Name = "cbTVShowEFanartsPrefSize"
+        Me.cbTVShowEFanartsPrefSize.Size = New System.Drawing.Size(148, 21)
+        Me.cbTVShowEFanartsPrefSize.TabIndex = 1
+        '
+        'chkTVShowEFanartsOverwrite
+        '
+        Me.chkTVShowEFanartsOverwrite.AutoSize = true
+        Me.chkTVShowEFanartsOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowEFanartsOverwrite.Location = New System.Drawing.Point(6, 110)
+        Me.chkTVShowEFanartsOverwrite.Name = "chkTVShowEFanartsOverwrite"
+        Me.chkTVShowEFanartsOverwrite.Size = New System.Drawing.Size(119, 17)
+        Me.chkTVShowEFanartsOverwrite.TabIndex = 3
+        Me.chkTVShowEFanartsOverwrite.Text = "Overwrite Existing"
+        Me.chkTVShowEFanartsOverwrite.UseVisualStyleBackColor = true
         '
         'gbTVShowCharacterArtOpts
         '
@@ -12098,7 +12242,7 @@ Partial Class dlgSettings
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperMiscOpts)
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperMetaDataOpts)
         Me.pnlMovieScraper.Controls.Add(Me.gbMovieScraperCertificationOpts)
-        Me.pnlMovieScraper.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMovieScraper.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
         Me.pnlMovieScraper.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieScraper.TabIndex = 14
@@ -13782,6 +13926,8 @@ Partial Class dlgSettings
         Me.pnlTVImages.ResumeLayout(false)
         Me.tcTVImages.ResumeLayout(false)
         Me.tpTVShow.ResumeLayout(false)
+        Me.gbTVShowEFanartsOpts.ResumeLayout(false)
+        Me.gbTVShowEFanartsOpts.PerformLayout
         Me.gbTVShowCharacterArtOpts.ResumeLayout(false)
         Me.gbTVShowCharacterArtOpts.PerformLayout
         Me.gbTVShowClearArtOpts.ResumeLayout(false)
@@ -15020,4 +15166,16 @@ End Sub
     Friend WithEvents chkMovieScraperMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperCertForMPAAFallback As System.Windows.Forms.CheckBox
+    Friend WithEvents gbTVShowEFanartsOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents lblTVShowEFanartsLimit As System.Windows.Forms.Label
+    Friend WithEvents txtTVShowEFanartsLimit As System.Windows.Forms.TextBox
+    Friend WithEvents chkTVShowEFanartsPrefOnly As System.Windows.Forms.CheckBox
+    Friend WithEvents txtTVShowEFanartsWidth As System.Windows.Forms.TextBox
+    Friend WithEvents txtTVShowEFanartsHeight As System.Windows.Forms.TextBox
+    Friend WithEvents lblTVShowEFanartsWidth As System.Windows.Forms.Label
+    Friend WithEvents lblTVShowEFanartsHeight As System.Windows.Forms.Label
+    Friend WithEvents chkTVShowEFanartsResize As System.Windows.Forms.CheckBox
+    Friend WithEvents lblTVShowEFanartsSize As System.Windows.Forms.Label
+    Friend WithEvents cbTVShowEFanartsPrefSize As System.Windows.Forms.ComboBox
+    Friend WithEvents chkTVShowEFanartsOverwrite As System.Windows.Forms.CheckBox
 End Class
