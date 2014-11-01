@@ -443,6 +443,13 @@ Partial Public Class clsXMLSettings
     Private _tvshowclearlogocol As Boolean
     Private _tvshowclearlogooverwrite As Boolean
     Private _tvshowefanartscol As Boolean
+    Private _tvshowefanartslimit As Integer
+    Private _tvshowefanartsoverwrite As Boolean
+    Private _tvshowefanartsprefonly As Boolean
+    Private _tvshowefanartsprefsize As Enums.TVFanartSize
+    Private _tvshowefanartsresize As Boolean
+    Private _tvshowefanartsheight As Integer
+    Private _tvshowefanartswidth As Integer
     Private _tvshowfanartcol As Boolean
     Private _tvshowfanartheight As Integer
     Private _tvshowfanartoverwrite As Boolean
@@ -1432,6 +1439,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowEFanartsHeight() As Integer
+        Get
+            Return Me._tvshowefanartsheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvshowefanartsheight = value
+        End Set
+    End Property
+
     Public Property MovieEFanartsHeight() As Integer
         Get
             Return Me._movieefanartsheight
@@ -1459,6 +1475,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowEFanartsLimit() As Integer
+        Get
+            Return Me._tvshowefanartslimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvshowefanartslimit = value
+        End Set
+    End Property
+
     Public Property MovieEFanartsLimit() As Integer
         Get
             Return Me._movieefanartslimit
@@ -1483,6 +1508,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._moviesetfanartheight = value
+        End Set
+    End Property
+
+    Public Property TVShowEFanartsPrefOnly() As Boolean
+        Get
+            Return Me._tvshowefanartsprefonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowefanartsprefonly = value
         End Set
     End Property
 
@@ -1528,6 +1562,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._moviesetfanartqual = value
+        End Set
+    End Property
+
+    Public Property TVShowEFanartsWidth() As Integer
+        Get
+            Return Me._tvshowefanartswidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvshowefanartswidth = value
         End Set
     End Property
 
@@ -3128,6 +3171,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowEFanartsOverwrite() As Boolean
+        Get
+            Return Me._tvshowefanartsoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowefanartsoverwrite = value
+        End Set
+    End Property
+
     Public Property MovieEFanartsOverwrite() As Boolean
         Get
             Return Me._movieefanartsoverwrite
@@ -3704,6 +3756,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowEFanartsPrefSize() As Enums.TVFanartSize
+        Get
+            Return Me._tvshowefanartsprefsize
+        End Get
+        Set(ByVal value As Enums.TVFanartSize)
+            Me._tvshowefanartsprefsize = value
+        End Set
+    End Property
+
     Public Property TVShowFanartPrefSize() As Enums.TVFanartSize
         Get
             Return Me._tvshowfanartprefsize
@@ -3818,6 +3879,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvepisodeposterresize = value
+        End Set
+    End Property
+
+    Public Property TVShowEFanartsResize() As Boolean
+        Get
+            Return Me._tvshowefanartsresize
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowefanartsresize = value
         End Set
     End Property
 

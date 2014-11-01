@@ -644,6 +644,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowEFanartsHeight() As Integer
+        Get
+            Return Settings._XMLSettings.TVShowEFanartsHeight
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVShowEFanartsHeight = value
+        End Set
+    End Property
+
     Public Property MovieEFanartsHeight() As Integer
         Get
             Return Settings._XMLSettings.MovieEFanartsHeight
@@ -671,6 +680,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowEFanartsLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVShowEFanartsLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVShowEFanartsLimit = value
+        End Set
+    End Property
+
     Public Property MovieEFanartsLimit() As Integer
         Get
             Return Settings._XMLSettings.MovieEFanartsLimit
@@ -695,6 +713,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.MovieSetFanartHeight = value
+        End Set
+    End Property
+
+    Public Property TVShowEFanartsPrefOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowEFanartsPrefOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowEFanartsPrefOnly = value
         End Set
     End Property
 
@@ -740,6 +767,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.MovieSetFanartQual = value
+        End Set
+    End Property
+
+    Public Property TVShowEFanartsWidth() As Integer
+        Get
+            Return Settings._XMLSettings.TVShowEFanartsWidth
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVShowEFanartsWidth = value
         End Set
     End Property
 
@@ -2342,6 +2378,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowEFanartsOverwrite() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowEFanartsOverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowEFanartsOverwrite = value
+        End Set
+    End Property
+
     Public Property MovieEFanartsOverwrite() As Boolean
         Get
             Return Settings._XMLSettings.MovieEFanartsOverwrite
@@ -2917,6 +2962,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowEFanartsPrefSize() As Enums.TVFanartSize
+        Get
+            Return Settings._XMLSettings.TVShowEFanartsPrefSize
+        End Get
+        Set(ByVal value As Enums.TVFanartSize)
+            Settings._XMLSettings.TVShowEFanartsPrefSize = value
+        End Set
+    End Property
+
     Public Property TVShowFanartPrefSize() As Enums.TVFanartSize
         Get
             Return Settings._XMLSettings.TVShowFanartPrefSize
@@ -3031,6 +3085,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVEpisodePosterResize = value
+        End Set
+    End Property
+
+    Public Property TVShowEFanartsResize() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowEFanartsResize
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowEFanartsResize = value
         End Set
     End Property
 
