@@ -2829,7 +2829,13 @@ Public Class frmMain
                     etList.Clear()
                     tURL = String.Empty
                     If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.MovieImageType.Fanart) Then
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.Fanart, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.Fanart, aList)
+                        ' return objects
+                        ' DBMovieSet
+                        ' ImageList   
+                        DBScrapeMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetFanart(aList, Fanart) Then
                                 If Not String.IsNullOrEmpty(Fanart.URL) AndAlso IsNothing(Fanart.WebImage.Image) Then
                                     Fanart.WebImage.FromWeb(Fanart.URL)
@@ -2887,7 +2893,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If Banner.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.MovieImageType.Banner) Then
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.Banner, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.Banner, aList)
+                        ' return objects
+                        ' DBMovieSet
+                        ' ImageList   
+                        DBScrapeMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Banner) Then 'TODO: Check if we need PreferredBanner
                                 If aList.Count > 0 Then Banner = aList.Item(0)
                                 If Not String.IsNullOrEmpty(Banner.URL) AndAlso IsNothing(Banner.WebImage.Image) Then
@@ -2944,7 +2956,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If Landscape.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.MovieImageType.Landscape) Then
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.Landscape, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.Landscape, aList)
+                        ' return objects
+                        ' DBMovieSet
+                        ' ImageList   
+                        DBScrapeMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
                                 If aList.Count > 0 Then Landscape = aList.Item(0)
                                 If Not String.IsNullOrEmpty(Landscape.URL) AndAlso IsNothing(Landscape.WebImage.Image) Then
@@ -2995,7 +3013,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If ClearArt.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.MovieImageType.ClearArt) Then
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.ClearArt, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.ClearArt, aList)
+                        ' return objects
+                        ' DBMovieSet
+                        ' ImageList   
+                        DBScrapeMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
                                 If aList.Count > 0 Then ClearArt = aList.Item(0)
                                 If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso IsNothing(ClearArt.WebImage.Image) Then
@@ -3046,7 +3070,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If ClearLogo.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.MovieImageType.ClearLogo) Then
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.ClearLogo, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.ClearLogo, aList)
+                        ' return objects
+                        ' DBMovieSet
+                        ' ImageList   
+                        DBScrapeMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
                                 If aList.Count > 0 Then ClearLogo = aList.Item(0)
                                 If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso IsNothing(ClearLogo.WebImage.Image) Then
@@ -3097,7 +3127,13 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If DiscArt.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.MovieImageType.DiscArt) Then
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.DiscArt, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities.DiscArt, aList)
+                        ' return objects
+                        ' DBMovieSet
+                        ' ImageList   
+                        DBScrapeMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
                                 If aList.Count > 0 Then DiscArt = aList.Item(0)
                                 If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso IsNothing(DiscArt.WebImage.Image) Then
@@ -13336,7 +13372,9 @@ doCancel:
         DirectCast(sender, PictureBox).Image = GenreImage
     End Sub
 
-    Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearArt.MouseDoubleClick
+    Private Async Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearArt.MouseDoubleClick
+        Dim ret As Interfaces.ModuleResult
+
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If Not IsNothing(Me.pbClearArtCache.Image) Then
@@ -13360,7 +13398,13 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList
+                        Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If aList.Count > 0 Then
                                 dlgImgS = New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = DialogResult.OK Then
@@ -13395,7 +13439,13 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.ClearArt, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.ClearArt, aList)
+                        ' return objects
+                        ' DBMovieSet
+                        ' ImageList  
+                        Master.currMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If aList.Count > 0 Then
                                 dlgImgS = New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = DialogResult.OK Then
@@ -13473,7 +13523,9 @@ doCancel:
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick, pbFanartSmall.MouseDoubleClick
+    Private Async Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick, pbFanartSmall.MouseDoubleClick
+        Dim Ret As Interfaces.ModuleResult
+
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If Not IsNothing(Me.pbFanartCache.Image) Then
@@ -13500,8 +13552,13 @@ doCancel:
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
-
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+                        Ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList  
+                        Master.currMovie = CType(Ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(Ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not Ret.Cancelled Then
                             If aList.Count > 0 Then
                                 dlgImgS = New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
@@ -13536,7 +13593,13 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.Fanart, aList) Then
+                        Ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.Fanart, aList)
+                        ' return objects
+                        ' DBMovieSet
+                        ' ImageList  
+                        Master.currMovieSet = CType(Ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(Ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not Ret.Cancelled Then
                             If aList.Count > 0 Then
                                 dlgImgS = New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
@@ -13666,7 +13729,8 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbPoster.MouseDoubleClick
+    Private Async Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbPoster.MouseDoubleClick
+        Dim ret As Interfaces.ModuleResult
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If Not IsNothing(Me.pbPosterCache.Image) Then
@@ -13690,7 +13754,13 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Poster, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList  
+                        Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If aList.Count > 0 Then
                                 dlgImgS = New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = DialogResult.OK Then
@@ -13725,7 +13795,13 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.Poster, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.Poster, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList  
+                        Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If aList.Count > 0 Then
                                 dlgImgS = New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.MovieImageType.Poster, aList, efList, etList, True) = DialogResult.OK Then
@@ -13854,7 +13930,8 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbLandscape.MouseDoubleClick
+    Private Async Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbLandscape.MouseDoubleClick
+        Dim ret As Interfaces.ModuleResult
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If Not IsNothing(Me.pbLandscapeCache.Image) Then
@@ -13878,7 +13955,13 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList)
+                        ' return objects
+                        ' DBMovie
+                        ' ImageList  
+                        Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If aList.Count > 0 Then
                                 dlgImgS = New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Landscape, aList, efList, etList, True) = DialogResult.OK Then
@@ -13913,7 +13996,13 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.Landscape, aList) Then
+                        ret = Await ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.Landscape, aList)
+                        ' return objects
+                        ' DBMovieSet
+                        ' ImageList  
+                        Master.currMovieSet = CType(ret.ReturnObj(0), Structures.DBMovieSet)
+                        aList = CType(ret.ReturnObj(1), Global.System.Collections.Generic.List(Of Global.EmberAPI.MediaContainers.Image))
+                        If Not ret.Cancelled Then
                             If aList.Count > 0 Then
                                 dlgImgS = New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.MovieImageType.Landscape, aList, efList, etList, True) = DialogResult.OK Then

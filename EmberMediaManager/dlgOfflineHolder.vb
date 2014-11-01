@@ -310,13 +310,13 @@ Public Class dlgOfflineHolder
             CheckConditionsBatch()
         End If
     End Sub
-    Private Sub btnSearchBatch_Click(sender As Object, e As EventArgs) Handles btnSearchBatch.Click
+    Private Async Sub btnSearchBatch_Click(sender As Object, e As EventArgs) Handles btnSearchBatch.Click
         If rbScraperTypeManually.Checked Then
             For index As Integer = 0 To tMovieList.Count - 1
                 Dim ScrapedMovie As New Structures.DBMovie
                 ScrapedMovie = tMovieList.Item(index)
                 ScrapedMovie.Movie.ClearForOfflineHolder()
-                ScrapedMovie = SearchMovieManually(ScrapedMovie)
+                ScrapedMovie = Await SearchMovieManually(ScrapedMovie)
                 tMovieList.Item(index) = ScrapedMovie
             Next
             gbHolderType.Enabled = True
@@ -344,17 +344,17 @@ Public Class dlgOfflineHolder
         End If
     End Sub
 
-    Private Sub btnSearchSingle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearchSingle.Click
+    Private Async Sub btnSearchSingle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearchSingle.Click
 
         If rbTypeMovieTitle.Checked Then
             tMovieList.Item(0).Movie.Clear()
             tMovieList.Item(0).Movie.Title = txtFolderNameMovieTitle.Text
-            tMovieList.Item(0) = SearchMovieManually(tMovieList.Item(0))
+            tMovieList.Item(0) = Await SearchMovieManually(tMovieList.Item(0))
             gbHolderType.Enabled = True
         Else
             tMovieList.Item(0).Movie.Clear()
             tMovieList.Item(0).Movie.Title = tMovieList.Item(0).DVDProfilerTitle
-            tMovieList.Item(0) = SearchMovieManually(tMovieList.Item(0))
+            tMovieList.Item(0) = Await SearchMovieManually(tMovieList.Item(0))
             gbHolderType.Enabled = True
         End If
     End Sub
@@ -1600,7 +1600,7 @@ Public Class dlgOfflineHolder
                 Banner.Clear()
                 aList.Clear()
                 If Banner.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Banner) Then
-                    ret = ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities.Banner, aList)
+                    ret = Await ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities.Banner, aList)
                     ' return objects
                     ' DBMovie
                     ' ImageList

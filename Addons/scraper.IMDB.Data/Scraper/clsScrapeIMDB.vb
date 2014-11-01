@@ -893,6 +893,7 @@ mPlot:          'MOVIE PLOT
 
         Private Async Sub bwIMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwIMDB.DoWork
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Dim ret As Interfaces.ModuleResult
 
             Try
                 Select Case Args.Search
@@ -901,8 +902,11 @@ mPlot:          'MOVIE PLOT
                         e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
 
                     Case SearchType.SearchDetails
-                        Dim s As Boolean = Await GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, True, Args.Options, True, True, "", False)
-                        e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
+                        ret = Await GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, True, Args.Options, True, True, "", False)
+                        ' return object
+                        ' nMovie
+                        Args.IMDBMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
+                        e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = ret.Cancelled}
                 End Select
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)

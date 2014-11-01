@@ -791,7 +791,7 @@ Public Class ModulesManager
         ' DBMovieSet
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
             Application.DoEvents()
@@ -816,8 +816,9 @@ Public Class ModulesManager
                 If ret.breakChain Then Exit For
             Next
         End If
-
-        Return ret.Cancelled
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(DBMovieSet)
+        Return ret
     End Function
     ''' <summary>
     ''' Request that enabled movie image scrapers perform their functions on the supplied movie
