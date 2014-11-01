@@ -2178,152 +2178,150 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub SetInfo()
+    Private Async Sub SetInfo()
         Try
-            With Me
-                Master.currShow.Ordering = DirectCast(.cbOrdering.SelectedIndex, Enums.Ordering)
+            Master.currShow.Ordering = DirectCast(Me.cbOrdering.SelectedIndex, Enums.Ordering)
 
-                Master.currShow.TVShow.Title = .txtTitle.Text.Trim
-                Master.currShow.TVShow.Plot = .txtPlot.Text.Trim
-                Master.currShow.TVShow.Premiered = .txtPremiered.Text.Trim
-                Master.currShow.TVShow.Runtime = .txtRuntime.Text.Trim
-                Master.currShow.TVShow.Status = .txtStatus.Text.Trim
-                Master.currShow.TVShow.Studio = .txtStudio.Text.Trim
+            Master.currShow.TVShow.Title = Me.txtTitle.Text.Trim
+            Master.currShow.TVShow.Plot = Me.txtPlot.Text.Trim
+            Master.currShow.TVShow.Premiered = Me.txtPremiered.Text.Trim
+            Master.currShow.TVShow.Runtime = Me.txtRuntime.Text.Trim
+            Master.currShow.TVShow.Status = Me.txtStatus.Text.Trim
+            Master.currShow.TVShow.Studio = Me.txtStudio.Text.Trim
 
-                If Not String.IsNullOrEmpty(.txtTitle.Text) Then
-                    If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(.txtStatus.Text.Trim) Then
-                        Master.currShow.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens_TV(.txtTitle.Text.Trim), .txtStatus.Text.Trim)
-                    Else
-                        Master.currShow.ListTitle = StringUtils.FilterTokens_TV(.txtTitle.Text.Trim)
-                    End If
-                End If
-
-                If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
-                    Master.currShow.TVShow.MPAA = .lbMPAA.SelectedItem.ToString
-                End If
-
-                Master.currShow.TVShow.Rating = .tmpRating
-
-                If .clbGenre.CheckedItems.Count > 0 Then
-
-                    If .clbGenre.CheckedIndices.Contains(0) Then
-                        Master.currShow.TVShow.Genre = String.Empty
-                    Else
-                        Dim strGenre As String = String.Empty
-                        Dim isFirst As Boolean = True
-                        Dim iChecked = From iCheck In .clbGenre.CheckedItems
-                        strGenre = Strings.Join(iChecked.ToArray, " / ")
-                        Master.currShow.TVShow.Genre = strGenre.Trim
-                    End If
-                End If
-
-                Master.currShow.TVShow.Actors.Clear()
-
-                If .lvActors.Items.Count > 0 Then
-                    For Each lviActor As ListViewItem In .lvActors.Items
-                        Dim addActor As New MediaContainers.Person
-                        addActor.Name = lviActor.Text.Trim
-                        addActor.Role = lviActor.SubItems(1).Text.Trim
-                        addActor.Thumb = lviActor.SubItems(2).Text.Trim
-
-                        Master.currShow.TVShow.Actors.Add(addActor)
-                    Next
-                End If
-
-                'AllSeasonBanner
-                If Not IsNothing(.ASBanner.Image) Then
-                    Master.currShow.SeasonBannerPath = .ASBanner.SaveAsTVASBanner(Master.currShow, "")
+            If Not String.IsNullOrEmpty(Me.txtTitle.Text) Then
+                If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(Me.txtStatus.Text.Trim) Then
+                    Master.currShow.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens_TV(Me.txtTitle.Text.Trim), Me.txtStatus.Text.Trim)
                 Else
-                    .ASBanner.DeleteTVASBanner(Master.currShow)
-                    Master.currShow.SeasonBannerPath = String.Empty
+                    Master.currShow.ListTitle = StringUtils.FilterTokens_TV(Me.txtTitle.Text.Trim)
                 End If
+            End If
 
-                'AllSeason Fanart
-                If Not IsNothing(.ASFanart.Image) Then
-                    Master.currShow.SeasonFanartPath = .ASFanart.SaveAsTVASFanart(Master.currShow, "")
+            If Me.lbMPAA.SelectedIndices.Count > 0 AndAlso Not Me.lbMPAA.SelectedIndex <= 0 Then
+                Master.currShow.TVShow.MPAA = Me.lbMPAA.SelectedItem.ToString
+            End If
+
+            Master.currShow.TVShow.Rating = Me.tmpRating
+
+            If Me.clbGenre.CheckedItems.Count > 0 Then
+
+                If Me.clbGenre.CheckedIndices.Contains(0) Then
+                    Master.currShow.TVShow.Genre = String.Empty
                 Else
-                    .ASFanart.DeleteTVASFanart(Master.currShow)
-                    Master.currShow.SeasonFanartPath = String.Empty
+                    Dim strGenre As String = String.Empty
+                    Dim isFirst As Boolean = True
+                    Dim iChecked = From iCheck In Me.clbGenre.CheckedItems
+                    strGenre = Strings.Join(iChecked.ToArray, " / ")
+                    Master.currShow.TVShow.Genre = strGenre.Trim
                 End If
+            End If
 
-                'AllSeason Landscape
-                If Not IsNothing(.ASLandscape.Image) Then
-                    Master.currShow.SeasonLandscapePath = .ASLandscape.SaveAsTVASLandscape(Master.currShow, "")
-                Else
-                    .ASLandscape.DeleteTVASLandscape(Master.currShow)
-                    Master.currShow.SeasonLandscapePath = String.Empty
-                End If
+            Master.currShow.TVShow.Actors.Clear()
 
-                'AllSeason Poster
-                If Not IsNothing(.ASPoster.Image) Then
-                    Master.currShow.SeasonPosterPath = .ASPoster.SaveAsTVASPoster(Master.currShow, "")
-                Else
-                    .ASPoster.DeleteTVASPoster(Master.currShow)
-                    Master.currShow.SeasonPosterPath = String.Empty
-                End If
+            If Me.lvActors.Items.Count > 0 Then
+                For Each lviActor As ListViewItem In Me.lvActors.Items
+                    Dim addActor As New MediaContainers.Person
+                    addActor.Name = lviActor.Text.Trim
+                    addActor.Role = lviActor.SubItems(1).Text.Trim
+                    addActor.Thumb = lviActor.SubItems(2).Text.Trim
 
-                'Show Banner 
-                If Not IsNothing(.ShowBanner.Image) Then
-                    Master.currShow.ShowBannerPath = .ShowBanner.SaveAsTVShowBanner(Master.currShow, "")
-                Else
-                    .ShowBanner.DeleteTVShowBanner(Master.currShow)
-                    Master.currShow.ShowBannerPath = String.Empty
-                End If
+                    Master.currShow.TVShow.Actors.Add(addActor)
+                Next
+            End If
 
-                'Show CharacterArt 
-                If Not IsNothing(.ShowCharacterArt.Image) Then
-                    Master.currShow.ShowCharacterArtPath = .ShowCharacterArt.SaveAsTVShowCharacterArt(Master.currShow, "")
-                Else
-                    .ShowCharacterArt.DeleteTVShowCharacterArt(Master.currShow)
-                    Master.currShow.ShowCharacterArtPath = String.Empty
-                End If
+            'AllSeasonBanner
+            If Not IsNothing(Me.ASBanner.Image) Then
+                Master.currShow.SeasonBannerPath = Await Me.ASBanner.SaveAsTVASBanner(Master.currShow, "")
+            Else
+                Me.ASBanner.DeleteTVASBanner(Master.currShow)
+                Master.currShow.SeasonBannerPath = String.Empty
+            End If
 
-                'Show ClearArt 
-                If Not IsNothing(.ShowClearArt.Image) Then
-                    Master.currShow.ShowClearArtPath = .ShowClearArt.SaveAsTVShowClearArt(Master.currShow, "")
-                Else
-                    .ShowClearArt.DeleteTVShowClearArt(Master.currShow)
-                    Master.currShow.ShowClearArtPath = String.Empty
-                End If
+            'AllSeason Fanart
+            If Not IsNothing(Me.ASFanart.Image) Then
+                Master.currShow.SeasonFanartPath = Await Me.ASFanart.SaveAsTVASFanart(Master.currShow, "")
+            Else
+                Me.ASFanart.DeleteTVASFanart(Master.currShow)
+                Master.currShow.SeasonFanartPath = String.Empty
+            End If
 
-                'Show ClearLogo 
-                If Not IsNothing(.ShowClearLogo.Image) Then
-                    Master.currShow.ShowClearLogoPath = .ShowClearLogo.SaveAsTVShowClearLogo(Master.currShow, "")
-                Else
-                    .ShowClearLogo.DeleteTVShowClearLogo(Master.currShow)
-                    Master.currShow.ShowClearLogoPath = String.Empty
-                End If
+            'AllSeason Landscape
+            If Not IsNothing(Me.ASLandscape.Image) Then
+                Master.currShow.SeasonLandscapePath = Await Me.ASLandscape.SaveAsTVASLandscape(Master.currShow, "")
+            Else
+                Me.ASLandscape.DeleteTVASLandscape(Master.currShow)
+                Master.currShow.SeasonLandscapePath = String.Empty
+            End If
 
-                'Show Fanart
-                If Not IsNothing(.ShowFanart.Image) Then
-                    Master.currShow.ShowFanartPath = .ShowFanart.SaveAsTVShowFanart(Master.currShow, "")
-                Else
-                    .ShowFanart.DeleteTVShowFanart(Master.currShow)
-                    Master.currShow.ShowFanartPath = String.Empty
-                End If
+            'AllSeason Poster
+            If Not IsNothing(Me.ASPoster.Image) Then
+                Master.currShow.SeasonPosterPath = Await Me.ASPoster.SaveAsTVASPoster(Master.currShow, "")
+            Else
+                Me.ASPoster.DeleteTVASPoster(Master.currShow)
+                Master.currShow.SeasonPosterPath = String.Empty
+            End If
 
-                'Show Landscape
-                If Not IsNothing(.ShowLandscape.Image) Then
-                    Master.currShow.ShowLandscapePath = .ShowLandscape.SaveAsTVShowLandscape(Master.currShow, "")
-                Else
-                    .ShowLandscape.DeleteTVShowLandscape(Master.currShow)
-                    Master.currShow.ShowLandscapePath = String.Empty
-                End If
+            'Show Banner 
+            If Not IsNothing(Me.ShowBanner.Image) Then
+                Master.currShow.ShowBannerPath = Me.ShowBanner.SaveAsTVShowBanner(Master.currShow, "")
+            Else
+                Me.ShowBanner.DeleteTVShowBanner(Master.currShow)
+                Master.currShow.ShowBannerPath = String.Empty
+            End If
 
-                'Show Poster
-                If Not IsNothing(.ShowPoster.Image) Then
-                    Master.currShow.ShowPosterPath = .ShowPoster.SaveAsTVShowPoster(Master.currShow, "")
-                Else
-                    .ShowPoster.DeleteTVShowPosters(Master.currShow)
-                    Master.currShow.ShowPosterPath = String.Empty
-                End If
+            'Show CharacterArt 
+            If Not IsNothing(Me.ShowCharacterArt.Image) Then
+                Master.currShow.ShowCharacterArtPath = Me.ShowCharacterArt.SaveAsTVShowCharacterArt(Master.currShow, "")
+            Else
+                Me.ShowCharacterArt.DeleteTVShowCharacterArt(Master.currShow)
+                Master.currShow.ShowCharacterArtPath = String.Empty
+            End If
 
-                'Show Extrafanarts
-                .SaveEFanartsList()
+            'Show ClearArt 
+            If Not IsNothing(Me.ShowClearArt.Image) Then
+                Master.currShow.ShowClearArtPath = Me.ShowClearArt.SaveAsTVShowClearArt(Master.currShow, "")
+            Else
+                Me.ShowClearArt.DeleteTVShowClearArt(Master.currShow)
+                Master.currShow.ShowClearArtPath = String.Empty
+            End If
 
-            End With
+            'Show ClearLogo 
+            If Not IsNothing(Me.ShowClearLogo.Image) Then
+                Master.currShow.ShowClearLogoPath = Me.ShowClearLogo.SaveAsTVShowClearLogo(Master.currShow, "")
+            Else
+                Me.ShowClearLogo.DeleteTVShowClearLogo(Master.currShow)
+                Master.currShow.ShowClearLogoPath = String.Empty
+            End If
+
+            'Show Fanart
+            If Not IsNothing(Me.ShowFanart.Image) Then
+                Master.currShow.ShowFanartPath = Me.ShowFanart.SaveAsTVShowFanart(Master.currShow, "")
+            Else
+                Me.ShowFanart.DeleteTVShowFanart(Master.currShow)
+                Master.currShow.ShowFanartPath = String.Empty
+            End If
+
+            'Show Landscape
+            If Not IsNothing(Me.ShowLandscape.Image) Then
+                Master.currShow.ShowLandscapePath = Me.ShowLandscape.SaveAsTVShowLandscape(Master.currShow, "")
+            Else
+                Me.ShowLandscape.DeleteTVShowLandscape(Master.currShow)
+                Master.currShow.ShowLandscapePath = String.Empty
+            End If
+
+            'Show Poster
+            If Not IsNothing(Me.ShowPoster.Image) Then
+                Master.currShow.ShowPosterPath = Me.ShowPoster.SaveAsTVShowPoster(Master.currShow, "")
+            Else
+                Me.ShowPoster.DeleteTVShowPosters(Master.currShow)
+                Master.currShow.ShowPosterPath = String.Empty
+            End If
+
+            'Show Extrafanarts
+            Me.SaveEFanartsList()
+
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

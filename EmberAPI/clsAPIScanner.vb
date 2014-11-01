@@ -1392,7 +1392,7 @@ Public Class Scanner
         End If
     End Sub
 
-    Private Sub LoadTVShow(ByVal TVContainer As TVShowContainer)
+    Private Async Function LoadTVShow(ByVal TVContainer As TVShowContainer) As Threading.Tasks.Task
         Dim tmpTVDB As New Structures.DBTV
         Dim toNfo As Boolean = False
         Dim tRes As Object
@@ -1511,14 +1511,14 @@ Public Class Scanner
                                                 If Not String.IsNullOrEmpty(tmpTVDB.TVEp.LocalFile) AndAlso File.Exists(tmpTVDB.TVEp.LocalFile) Then
                                                     tmpTVDB.TVEp.Poster.FromFile(tmpTVDB.TVEp.LocalFile)
                                                     If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
-                                                        tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
+                                                        tmpTVDB.EpPosterPath = Await tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
                                                     End If
                                                 ElseIf Not String.IsNullOrEmpty(tmpTVDB.TVEp.PosterURL) Then
                                                     tmpTVDB.TVEp.Poster.FromWeb(tmpTVDB.TVEp.PosterURL)
                                                     If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
                                                         Directory.CreateDirectory(Directory.GetParent(tmpTVDB.TVEp.LocalFile).FullName)
                                                         tmpTVDB.TVEp.Poster.Save(tmpTVDB.TVEp.LocalFile)
-                                                        tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
+                                                        tmpTVDB.EpPosterPath = Await tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
                                                     End If
                                                 End If
                                             End If
@@ -1560,7 +1560,7 @@ Public Class Scanner
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
+    End Function
 
 #End Region 'Methods
 

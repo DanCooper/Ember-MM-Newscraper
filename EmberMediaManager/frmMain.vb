@@ -1941,7 +1941,7 @@ Public Class frmMain
                                     Poster.WebImage.FromWeb(Poster.URL)
                                 End If
                                 If Not IsNothing(Poster.WebImage.Image) Then
-                                    tURL = Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
+                                    tURL = Await Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.PosterPath = tURL
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.PosterItem, True)
@@ -1963,7 +1963,7 @@ Public Class frmMain
                                                     Poster.WebImage.FromWeb(Poster.URL)
                                                 End If
                                                 If Not IsNothing(Poster.WebImage.Image) Then
-                                                    tURL = Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
+                                                    tURL = Await Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.PosterPath = tURL
                                                         MovieScraperEvent(Enums.ScraperEventType_Movie.PosterItem, True)
@@ -2005,7 +2005,7 @@ Public Class frmMain
                                     Fanart.WebImage.FromWeb(Fanart.URL)
                                 End If
                                 If Not IsNothing(Fanart.WebImage.Image) Then
-                                    tURL = Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
+                                    tURL = Await Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.FanartPath = tURL
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.FanartItem, True)
@@ -2029,7 +2029,7 @@ Public Class frmMain
                                                     Fanart.WebImage.FromWeb(Fanart.URL)
                                                 End If
                                                 If Not IsNothing(Fanart.WebImage.Image) Then
-                                                    tURL = Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
+                                                    tURL = Await Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.FanartPath = tURL
                                                         MovieScraperEvent(Enums.ScraperEventType_Movie.FanartItem, True)
@@ -2072,7 +2072,7 @@ Public Class frmMain
                                     Banner.WebImage.FromWeb(Banner.URL)
                                 End If
                                 If Not IsNothing(Banner.WebImage.Image) Then
-                                    tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
+                                    tURL = Await Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.BannerPath = tURL
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.BannerItem, True)
@@ -2094,7 +2094,7 @@ Public Class frmMain
                                                     Banner.WebImage.FromWeb(Banner.URL)
                                                 End If
                                                 If Not IsNothing(Banner.WebImage.Image) Then
-                                                    tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
+                                                    tURL = Await Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.BannerPath = tURL
                                                         MovieScraperEvent(Enums.ScraperEventType_Movie.BannerItem, True)
@@ -2135,7 +2135,7 @@ Public Class frmMain
                                     Landscape.WebImage.FromWeb(Landscape.URL)
                                 End If
                                 If Not IsNothing(Landscape.WebImage.Image) Then
-                                    tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
+                                    tURL = Await Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.LandscapePath = tURL
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.LandscapeItem, True)
@@ -2154,7 +2154,7 @@ Public Class frmMain
                                                     Landscape.WebImage.FromWeb(Landscape.URL)
                                                 End If
                                                 If Not IsNothing(Landscape.WebImage.Image) Then
-                                                    tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
+                                                    tURL = Await Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.LandscapePath = tURL
                                                         MovieScraperEvent(Enums.ScraperEventType_Movie.LandscapeItem, True)
@@ -2192,7 +2192,7 @@ Public Class frmMain
                                     ClearArt.WebImage.FromWeb(ClearArt.URL)
                                 End If
                                 If Not IsNothing(ClearArt.WebImage.Image) Then
-                                    tURL = ClearArt.WebImage.SaveAsMovieClearArt(DBScrapeMovie)
+                                    tURL = Await ClearArt.WebImage.SaveAsMovieClearArt(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.ClearArtPath = tURL
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.ClearArtItem, True)
@@ -2211,7 +2211,7 @@ Public Class frmMain
                                                     ClearArt.WebImage.FromWeb(ClearArt.URL)
                                                 End If
                                                 If Not IsNothing(ClearArt.WebImage.Image) Then
-                                                    tURL = ClearArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
+                                                    tURL = Await ClearArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.ClearArtPath = tURL
                                                         MovieScraperEvent(Enums.ScraperEventType_Movie.ClearArtItem, True)
@@ -2249,7 +2249,7 @@ Public Class frmMain
                                     ClearLogo.WebImage.FromWeb(ClearLogo.URL)
                                 End If
                                 If Not IsNothing(ClearLogo.WebImage.Image) Then
-                                    tURL = ClearLogo.WebImage.SaveAsMovieClearLogo(DBScrapeMovie)
+                                    tURL = Await ClearLogo.WebImage.SaveAsMovieClearLogo(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.ClearLogoPath = tURL
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.ClearLogoItem, True)
@@ -2268,7 +2268,7 @@ Public Class frmMain
                                                     ClearLogo.WebImage.FromWeb(ClearLogo.URL)
                                                 End If
                                                 If Not IsNothing(ClearLogo.WebImage.Image) Then
-                                                    tURL = ClearLogo.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
+                                                    tURL = Await ClearLogo.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.ClearLogoPath = tURL
                                                         MovieScraperEvent(Enums.ScraperEventType_Movie.ClearLogoItem, True)
@@ -2306,7 +2306,7 @@ Public Class frmMain
                                     DiscArt.WebImage.FromWeb(DiscArt.URL)
                                 End If
                                 If Not IsNothing(DiscArt.WebImage.Image) Then
-                                    tURL = DiscArt.WebImage.SaveAsMovieDiscArt(DBScrapeMovie)
+                                    tURL = Await DiscArt.WebImage.SaveAsMovieDiscArt(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.DiscArtPath = tURL
                                         MovieScraperEvent(Enums.ScraperEventType_Movie.DiscArtItem, True)
@@ -2325,7 +2325,7 @@ Public Class frmMain
                                                     DiscArt.WebImage.FromWeb(DiscArt.URL)
                                                 End If
                                                 If Not IsNothing(DiscArt.WebImage.Image) Then
-                                                    tURL = DiscArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
+                                                    tURL = Await DiscArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.DiscArtPath = tURL
                                                         MovieScraperEvent(Enums.ScraperEventType_Movie.DiscArtItem, True)
@@ -4397,13 +4397,13 @@ doCancel:
         End If
     End Sub
 
-    Private Sub cmnuEpisodeChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeChange.Click
+    Private Async Sub cmnuEpisodeChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeChange.Click
         Me.SetControlsEnabled(False, True)
         Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB, Me.tmpLang)
 
         If Not IsNothing(tEpisode) Then
             Master.currShow.TVEp = tEpisode
-            Master.currShow.EpPosterPath = tEpisode.Poster.SaveAsTVEpisodePoster(Master.currShow)
+            Master.currShow.EpPosterPath = Await tEpisode.Poster.SaveAsTVEpisodePoster(Master.currShow)
 
             Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
 

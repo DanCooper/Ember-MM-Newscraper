@@ -34,7 +34,7 @@ Public Class Images
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 	Private _ms As MemoryStream
-    Private Ret As Byte()
+    Private RetByte As Byte()
     <NonSerialized()> _
     Private sHTTP As HTTP
 	Private _image As Image
@@ -1157,9 +1157,10 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASBanner(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVASBanner(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
         Dim doResize As Boolean = Master.eSettings.TVASBannerResize AndAlso (_image.Width > Master.eSettings.TVASBannerWidth OrElse _image.Height > Master.eSettings.TVASBannerHeight)
+        Dim ret As Interfaces.ModuleResult
 
         Try
             Dim pPath As String = String.Empty
@@ -1172,7 +1173,12 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.AllSeasonsBanner, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ' return objects
+                ' _Params
+                ' DBMovie
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASBannerOverwrite) Then
                         Save(s, Master.eSettings.TVASBannerQual, sURL, doResize)
@@ -1203,10 +1209,10 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVASFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
         Dim doResize As Boolean = Master.eSettings.TVASFanartResize AndAlso (_image.Width > Master.eSettings.TVASFanartWidth OrElse _image.Height > Master.eSettings.TVASFanartHeight)
-
+        Dim ret As Interfaces.ModuleResult
         Try
             Dim pPath As String = String.Empty
             Dim ShowPath As String = mShow.ShowPath
@@ -1218,7 +1224,12 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.AllSeasonsFanart, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ' return objects
+                ' _Params
+                ' DBMovie
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASFanartOverwrite) Then
                         Save(s, Master.eSettings.TVASFanartQual, sURL, doResize)
@@ -1249,10 +1260,10 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVASLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
         Dim doResize As Boolean = False
-
+        Dim ret As Interfaces.ModuleResult
         Try
             Dim pPath As String = String.Empty
             Dim ShowPath As String = mShow.ShowPath
@@ -1260,7 +1271,11 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.AllSeasonsLandscape, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ' return objects
+                ' _Params
+                ' DBMovie
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASLandscapeOverwrite) Then
                         Save(s, 0, sURL, doResize)
@@ -1291,10 +1306,10 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASPoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVASPoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
         Dim doResize As Boolean = Master.eSettings.TVASPosterResize AndAlso (_image.Width > Master.eSettings.TVASPosterWidth OrElse _image.Height > Master.eSettings.TVASPosterHeight)
-
+        Dim ret As Interfaces.ModuleResult
         Try
             Dim pPath As String = String.Empty
             Dim ShowPath As String = mShow.ShowPath
@@ -1306,7 +1321,8 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.AllSeasonsPoster, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASPosterOverwrite) Then
                         Save(s, Master.eSettings.TVASPosterQual, sURL, doResize)
@@ -1337,8 +1353,9 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVEpisodeFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVEpisodeFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
+        Dim ret As Interfaces.ModuleResult
 
         Dim doResize As Boolean = Master.eSettings.TVEpisodeFanartResize AndAlso (_image.Width > Master.eSettings.TVEpisodeFanartWidth OrElse _image.Height > Master.eSettings.TVEpisodeFanartHeight)
 
@@ -1351,7 +1368,8 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.EpisodeFanart, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVEpisodeFanartOverwrite) Then
                         Save(s, Master.eSettings.TVEpisodeFanartQual, sURL, doResize)
@@ -1384,9 +1402,9 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVEpisodePoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVEpisodePoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
-
+        Dim ret As Interfaces.ModuleResult
         Dim doResize As Boolean = Master.eSettings.TVEpisodePosterResize AndAlso (_image.Width > Master.eSettings.TVEpisodePosterWidth OrElse _image.Height > Master.eSettings.TVEpisodePosterHeight)
 
         Try
@@ -1398,7 +1416,8 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.EpisodePoster, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVEpisodePosterOverwrite) Then
                         Save(s, Master.eSettings.TVEpisodePosterQual, sURL, doResize)
@@ -1431,14 +1450,20 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieBanner(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Async Function SaveAsMovieBanner(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
         Dim doResize As Boolean = False
-
+        Dim ret As Interfaces.ModuleResult
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+                ' return objects
+                ' _Params
+                ' DBMovie
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+                _image = CType(ret.ReturnObj(1), Drawing.Image)
+
             Catch ex As Exception
             End Try
 
@@ -1461,14 +1486,16 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieClearArt(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Async Function SaveAsMovieClearArt(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
         Dim doResize As Boolean = False
-
+        Dim ret As Interfaces.ModuleResult
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieClearArtSave, params, _image, False)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieClearArtSave, params, _image, False)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+                _image = CType(ret.ReturnObj(1), Drawing.Image)
             Catch ex As Exception
             End Try
 
@@ -1491,14 +1518,16 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieClearLogo(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Async Function SaveAsMovieClearLogo(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
         Dim doResize As Boolean = False
-
+        Dim ret As Interfaces.ModuleResult
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieClearLogoSave, params, _image, False)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieClearLogoSave, params, _image, False)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+                _image = CType(ret.ReturnObj(1), Drawing.Image)
             Catch ex As Exception
             End Try
 
@@ -1521,14 +1550,16 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieDiscArt(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Async Function SaveAsMovieDiscArt(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
         Dim doResize As Boolean = False
-
+        Dim ret As Interfaces.ModuleResult
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieDiscArtSave, params, _image, False)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieDiscArtSave, params, _image, False)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+                _image = CType(ret.ReturnObj(1), Drawing.Image)
             Catch ex As Exception
             End Try
 
@@ -1552,15 +1583,17 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieFanart(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Async Function SaveAsMovieFanart(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
-
+        Dim ret As Interfaces.ModuleResult
         Dim doResize As Boolean = Master.eSettings.MovieFanartResize AndAlso (_image.Width > Master.eSettings.MovieFanartWidth OrElse _image.Height > Master.eSettings.MovieFanartHeight)
 
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartSave, params, _image, False)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartSave, params, _image, False)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+                _image = CType(ret.ReturnObj(1), Drawing.Image)
             Catch ex As Exception
             End Try
 
@@ -1592,14 +1625,16 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieLandscape(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Async Function SaveAsMovieLandscape(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
         Dim doResize As Boolean = False
-
+        Dim ret As Interfaces.ModuleResult
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieLandscapeSave, params, _image, False)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieLandscapeSave, params, _image, False)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+                _image = CType(ret.ReturnObj(1), Drawing.Image)
             Catch ex As Exception
             End Try
 
@@ -1622,15 +1657,17 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMoviePoster(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Async Function SaveAsMoviePoster(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
-
+        Dim ret As Interfaces.ModuleResult
         Dim doResize As Boolean = Master.eSettings.MoviePosterResize AndAlso (_image.Width > Master.eSettings.MoviePosterWidth OrElse _image.Height > Master.eSettings.MoviePosterHeight)
 
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMoviePosterSave, params, _image, False)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMoviePosterSave, params, _image, False)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+                _image = CType(ret.ReturnObj(1), Drawing.Image)
             Catch ex As Exception
             End Try
 
@@ -1890,9 +1927,9 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVSeasonBanner(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVSeasonBanner(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
-
+        Dim ret As Interfaces.ModuleResult
         Dim doResize As Boolean = Master.eSettings.TVSeasonBannerResize AndAlso (_image.Width > Master.eSettings.TVSeasonBannerWidth OrElse _image.Height > Master.eSettings.TVSeasonBannerHeight)
 
         Try
@@ -1919,7 +1956,10 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.SeasonBanner, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+
+
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonBannerOverwrite) Then
                         Save(s, Master.eSettings.TVSeasonBannerQual, sURL, doResize)

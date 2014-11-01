@@ -908,82 +908,80 @@ Public Class dlgEditEpisode
         End Try
     End Sub
 
-    Private Sub SetInfo()
+    Private Async Function SetInfo() As Threading.Tasks.Task
         Try
-            With Me
 
-                Master.currShow.TVEp.Aired = .txtAired.Text.Trim
-                Master.currShow.TVEp.Credits = .txtCredits.Text.Trim
-                Master.currShow.TVEp.Director = .txtDirector.Text.Trim
-                Master.currShow.TVEp.Episode = Convert.ToInt32(.txtEpisode.Text.Trim)
-                Master.currShow.TVEp.Plot = .txtPlot.Text.Trim
-                Master.currShow.TVEp.Rating = .tmpRating
-                Master.currShow.TVEp.Runtime = .txtRuntime.Text.Trim
-                Master.currShow.TVEp.Season = Convert.ToInt32(.txtSeason.Text.Trim)
-                Master.currShow.TVEp.Title = .txtTitle.Text.Trim
+            Master.currShow.TVEp.Aired = Me.txtAired.Text.Trim
+            Master.currShow.TVEp.Credits = Me.txtCredits.Text.Trim
+            Master.currShow.TVEp.Director = Me.txtDirector.Text.Trim
+            Master.currShow.TVEp.Episode = Convert.ToInt32(Me.txtEpisode.Text.Trim)
+            Master.currShow.TVEp.Plot = Me.txtPlot.Text.Trim
+            Master.currShow.TVEp.Rating = Me.tmpRating
+            Master.currShow.TVEp.Runtime = Me.txtRuntime.Text.Trim
+            Master.currShow.TVEp.Season = Convert.ToInt32(Me.txtSeason.Text.Trim)
+            Master.currShow.TVEp.Title = Me.txtTitle.Text.Trim
 
-                Master.currShow.TVEp.Actors.Clear()
+            Master.currShow.TVEp.Actors.Clear()
 
-                If .lvActors.Items.Count > 0 Then
-                    For Each lviActor As ListViewItem In .lvActors.Items
-                        Dim addActor As New MediaContainers.Person
-                        addActor.Name = lviActor.Text.Trim
-                        addActor.Role = lviActor.SubItems(1).Text.Trim
-                        addActor.Thumb = lviActor.SubItems(2).Text.Trim
+            If Me.lvActors.Items.Count > 0 Then
+                For Each lviActor As ListViewItem In Me.lvActors.Items
+                    Dim addActor As New MediaContainers.Person
+                    addActor.Name = lviActor.Text.Trim
+                    addActor.Role = lviActor.SubItems(1).Text.Trim
+                    addActor.Thumb = lviActor.SubItems(2).Text.Trim
 
-                        Master.currShow.TVEp.Actors.Add(addActor)
-                    Next
+                    Master.currShow.TVEp.Actors.Add(addActor)
+                Next
+            End If
+
+            If chkWatched.Checked Then
+                'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
+                If String.IsNullOrEmpty(Master.currShow.TVEp.Playcount) Or Master.currShow.TVEp.Playcount = "0" Then
+                    Master.currShow.TVEp.Playcount = "1"
                 End If
 
-                If chkWatched.Checked Then
-                    'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                    If String.IsNullOrEmpty(Master.currShow.TVEp.Playcount) Or Master.currShow.TVEp.Playcount = "0" Then
-                        Master.currShow.TVEp.Playcount = "1"
-                    End If
-
-                    'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                    '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
-                    '        If Not File.Exists(a) Then
-                    '            Dim fs As FileStream = File.Create(a)
-                    '            fs.Close()
-                    '        End If
-                    '    Next
-                    'End If
-                Else
-                    'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                    If IsNumeric(Master.currShow.TVEp.Playcount) AndAlso CInt(Master.currShow.TVEp.Playcount) > 0 Then
-                        Master.currShow.TVEp.Playcount = ""
-                    End If
-
-                    'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                    '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
-                    '        If File.Exists(a) Then
-                    '            File.Delete(a)
-                    '        End If
-                    '    Next
-                    'End If
+                'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+                '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
+                '        If Not File.Exists(a) Then
+                '            Dim fs As FileStream = File.Create(a)
+                '            fs.Close()
+                '        End If
+                '    Next
+                'End If
+            Else
+                'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
+                If IsNumeric(Master.currShow.TVEp.Playcount) AndAlso CInt(Master.currShow.TVEp.Playcount) > 0 Then
+                    Master.currShow.TVEp.Playcount = ""
                 End If
 
-                'Episode Fanart
-                If Not IsNothing(.EpisodeFanart.Image) Then
-                    Master.currShow.EpFanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Master.currShow)
-                Else
-                    .EpisodeFanart.DeleteTVEpisodeFanart(Master.currShow)
-                    Master.currShow.EpFanartPath = String.Empty
-                End If
+                'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+                '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
+                '        If File.Exists(a) Then
+                '            File.Delete(a)
+                '        End If
+                '    Next
+                'End If
+            End If
 
-                'Episode Poster
-                If Not IsNothing(.EpisodePoster.Image) Then
-                    Master.currShow.EpPosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Master.currShow)
-                Else
-                    .EpisodePoster.DeleteTVEpisodePosters(Master.currShow)
-                    Master.currShow.EpPosterPath = String.Empty
-                End If
-            End With
+            'Episode Fanart
+            If Not IsNothing(Me.EpisodeFanart.Image) Then
+                Master.currShow.EpFanartPath = Await Me.EpisodeFanart.SaveAsTVEpisodeFanart(Master.currShow)
+            Else
+                Me.EpisodeFanart.DeleteTVEpisodeFanart(Master.currShow)
+                Master.currShow.EpFanartPath = String.Empty
+            End If
+
+            'Episode Poster
+            If Not IsNothing(Me.EpisodePoster.Image) Then
+                Master.currShow.EpPosterPath = Await Me.EpisodePoster.SaveAsTVEpisodePoster(Master.currShow)
+            Else
+                Me.EpisodePoster.DeleteTVEpisodePosters(Master.currShow)
+                Master.currShow.EpPosterPath = String.Empty
+            End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
+    End Function
 
     Private Sub SetUp()
         Dim mTitle As String = String.Empty

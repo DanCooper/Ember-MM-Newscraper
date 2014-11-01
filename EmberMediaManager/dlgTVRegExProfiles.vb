@@ -23,9 +23,9 @@ Public Class dlgTVRegExProfiles
         Me.Close()
     End Sub
 
-    Private Sub dlgTVRegExProfiles_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Async Sub dlgTVRegExProfiles_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SetUp()
-        GetProfiles()
+        Await GetProfiles()
         PopulateList()
     End Sub
     Private Sub lstProfiles_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvProfiles.SelectedIndexChanged

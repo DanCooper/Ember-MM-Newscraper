@@ -775,7 +775,7 @@ Public Class Scraper
             End Try
         End Sub
 
-        Private Sub bwtvDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVDB.DoWork
+        Private Async Sub bwtvDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVDB.DoWork
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
             Try
@@ -789,7 +789,7 @@ Public Class Scraper
                         LoadAllEpisodes(DirectCast(Args.Parameter, Structures.ScrapeInfo).ShowID, 999)
                         e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
                     Case 3 'save
-                        Me.SaveAllTVInfo()
+                        Await Me.SaveAllTVInfo()
                         e.Result = New Results With {.Type = 3}
                     Case 4
                         Dim sInfo As Structures.ScrapeInfo = DirectCast(Args.Parameter, Structures.ScrapeInfo)
@@ -848,7 +848,7 @@ Public Class Scraper
             Return Strings.Join(cString.ToArray, " / ")
         End Function
 
-        Private Sub SaveAllTVInfo()
+        Private Async Function SaveAllTVInfo() As Threading.Tasks.Task
             Dim iEp As Integer = -1
             Dim iSea As Integer = -1
             Dim iProgress As Integer = 1
@@ -888,18 +888,18 @@ Public Class Scraper
                             If Me.bwTVDB.CancellationPending Then Return
 
                             If Episode.TVEp.Season > -1 AndAlso Episode.TVEp.Episode > -1 AndAlso Not Episode.IsLockEp Then
-                                If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsTVEpisodePoster(Episode, Episode.TVEp.PosterURL)
+                                If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Await Episode.TVEp.Poster.SaveAsTVEpisodePoster(Episode, Episode.TVEp.PosterURL)
 
                                 If Me.bwTVDB.CancellationPending Then Return
 
-                                If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
+                                If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Await Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
 
                                 If Me.bwTVDB.CancellationPending Then Return
 
                                 Dim cSea = From cSeason As TVDBSeasonImage In TVDBImages.SeasonImageList Where cSeason.Season = iSea Take 1
                                 If cSea.Count > 0 Then
                                     If Not IsNothing(cSea(0).Poster.Image) Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsTVSeasonPoster(Episode)
-                                    If Not IsNothing(cSea(0).Banner.Image) Then Episode.SeasonBannerPath = cSea(0).Banner.SaveAsTVSeasonBanner(Episode)
+                                    If Not IsNothing(cSea(0).Banner.Image) Then Episode.SeasonBannerPath = Await cSea(0).Banner.SaveAsTVSeasonBanner(Episode)
 
                                     If Me.bwTVDB.CancellationPending Then Return
 
@@ -972,7 +972,7 @@ Public Class Scraper
                 End Try
 
             End Using
-        End Sub
+        End Function
 
         Private Sub SaveToCache(ByVal sID As String, ByVal sURL As String, ByVal sPath As String)
             Dim sImage As New Images

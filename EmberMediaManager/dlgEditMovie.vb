@@ -3036,299 +3036,297 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub SetInfo()
+    Private Async Sub SetInfo()
         Try
-            With Me
 
-                Me.OK_Button.Enabled = False
-                Me.Cancel_Button.Enabled = False
-                Me.btnRescrape.Enabled = False
-                Me.btnChangeMovie.Enabled = False
+            Me.OK_Button.Enabled = False
+            Me.Cancel_Button.Enabled = False
+            Me.btnRescrape.Enabled = False
+            Me.btnChangeMovie.Enabled = False
 
-                Master.currMovie.IsMark = Me.chkMark.Checked
+            Master.currMovie.IsMark = Me.chkMark.Checked
 
-                If Not String.IsNullOrEmpty(.txtTitle.Text) Then
-                    Master.currMovie.Movie.Title = .txtTitle.Text.Trim
+            If Not String.IsNullOrEmpty(Me.txtTitle.Text) Then
+                Master.currMovie.Movie.Title = Me.txtTitle.Text.Trim
 
-                    If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(.mtxtYear.Text.Trim) Then
-                        Master.currMovie.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim), .mtxtYear.Text.Trim)
-                    Else
-                        Master.currMovie.ListTitle = StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim)
-                    End If
-                End If
-
-                Master.currMovie.Movie.OriginalTitle = .txtOriginalTitle.Text.Trim
-
-                If Not String.IsNullOrEmpty(.txtSortTitle.Text) Then
-                    Master.currMovie.Movie.SortTitle = .txtSortTitle.Text.Trim
+                If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(Me.mtxtYear.Text.Trim) Then
+                    Master.currMovie.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens_Movie(Me.txtTitle.Text.Trim), Me.mtxtYear.Text.Trim)
                 Else
-                    Master.currMovie.Movie.SortTitle = StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim)
+                    Master.currMovie.ListTitle = StringUtils.FilterTokens_Movie(Me.txtTitle.Text.Trim)
                 End If
+            End If
 
-                Master.currMovie.Movie.Tagline = .txtTagline.Text.Trim
-                Master.currMovie.Movie.Year = .mtxtYear.Text.Trim
-                Master.currMovie.Movie.Votes = .txtVotes.Text.Trim
-                Master.currMovie.Movie.Outline = .txtOutline.Text.Trim
-                Master.currMovie.Movie.Plot = .txtPlot.Text.Trim
-                Master.currMovie.Movie.Top250 = .txtTop250.Text.Trim
-                Master.currMovie.Movie.Country = .txtCountry.Text.Trim
-                Master.currMovie.Movie.Director = .txtDirector.Text.Trim
+            Master.currMovie.Movie.OriginalTitle = Me.txtOriginalTitle.Text.Trim
 
-                Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
+            If Not String.IsNullOrEmpty(Me.txtSortTitle.Text) Then
+                Master.currMovie.Movie.SortTitle = Me.txtSortTitle.Text.Trim
+            Else
+                Master.currMovie.Movie.SortTitle = StringUtils.FilterTokens_Movie(Me.txtTitle.Text.Trim)
+            End If
 
-                Master.currMovie.VideoSource = .txtVideoSource.Text.Trim
-                Master.currMovie.Movie.VideoSource = .txtVideoSource.Text.Trim
+            Master.currMovie.Movie.Tagline = Me.txtTagline.Text.Trim
+            Master.currMovie.Movie.Year = Me.mtxtYear.Text.Trim
+            Master.currMovie.Movie.Votes = Me.txtVotes.Text.Trim
+            Master.currMovie.Movie.Outline = Me.txtOutline.Text.Trim
+            Master.currMovie.Movie.Plot = Me.txtPlot.Text.Trim
+            Master.currMovie.Movie.Top250 = Me.txtTop250.Text.Trim
+            Master.currMovie.Movie.Country = Me.txtCountry.Text.Trim
+            Master.currMovie.Movie.Director = Me.txtDirector.Text.Trim
 
-                If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
-                    Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.MovieScraperCertForMPAA AndAlso Master.eSettings.MovieScraperCertOnlyValue AndAlso .lbMPAA.SelectedItem.ToString.Contains(":"), .lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), .lbMPAA.SelectedItem.ToString), " ", .txtMPAADesc.Text).Trim
-                Else
-                    If Master.eSettings.MovieScraperCertForMPAA AndAlso (Not Master.eSettings.MovieScraperCertLang = "us" OrElse (Master.eSettings.MovieScraperCertLang = "us" AndAlso .lbMPAA.SelectedIndex = 0)) Then
-                        Dim lCert() As String = .txtCerts.Text.Trim.Split(Convert.ToChar("/"))
-                        Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang.ToLower).name), "\:(.*?)"))
-                        If fCert.Count > 0 Then
-                            Master.currMovie.Movie.MPAA = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(fCert(0).ToString.Trim), If(Master.eSettings.MovieScraperCertOnlyValue, fCert(0).ToString.Trim.Split(Convert.ToChar(":"))(1), fCert(0).ToString.Trim))
-                        Else
-                            Master.currMovie.Movie.MPAA = String.Empty
-                        End If
+            Master.currMovie.Movie.Certification = Me.txtCerts.Text.Trim
+
+            Master.currMovie.VideoSource = Me.txtVideoSource.Text.Trim
+            Master.currMovie.Movie.VideoSource = Me.txtVideoSource.Text.Trim
+
+            If Me.lbMPAA.SelectedIndices.Count > 0 AndAlso Not Me.lbMPAA.SelectedIndex <= 0 Then
+                Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.MovieScraperCertForMPAA AndAlso Master.eSettings.MovieScraperCertOnlyValue AndAlso Me.lbMPAA.SelectedItem.ToString.Contains(":"), Me.lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), Me.lbMPAA.SelectedItem.ToString), " ", Me.txtMPAADesc.Text).Trim
+            Else
+                If Master.eSettings.MovieScraperCertForMPAA AndAlso (Not Master.eSettings.MovieScraperCertLang = "us" OrElse (Master.eSettings.MovieScraperCertLang = "us" AndAlso Me.lbMPAA.SelectedIndex = 0)) Then
+                    Dim lCert() As String = Me.txtCerts.Text.Trim.Split(Convert.ToChar("/"))
+                    Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang.ToLower).name), "\:(me.*?)"))
+                    If fCert.Count > 0 Then
+                        Master.currMovie.Movie.MPAA = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(fCert(0).ToString.Trim), If(Master.eSettings.MovieScraperCertOnlyValue, fCert(0).ToString.Trim.Split(Convert.ToChar(":"))(1), fCert(0).ToString.Trim))
                     Else
                         Master.currMovie.Movie.MPAA = String.Empty
                     End If
-                End If
-
-                If Not .tmpRating.Trim = String.Empty AndAlso .tmpRating.Trim <> "0" Then
-                    Master.currMovie.Movie.Rating = .tmpRating
                 Else
-                    Master.currMovie.Movie.Rating = String.Empty
+                    Master.currMovie.Movie.MPAA = String.Empty
+                End If
+            End If
+
+            If Not Me.tmpRating.Trim = String.Empty AndAlso Me.tmpRating.Trim <> "0" Then
+                Master.currMovie.Movie.Rating = Me.tmpRating
+            Else
+                Master.currMovie.Movie.Rating = String.Empty
+            End If
+
+            Master.currMovie.Movie.Runtime = Me.txtRuntime.Text.Trim
+            Master.currMovie.Movie.ReleaseDate = Me.txtReleaseDate.Text.Trim
+            Master.currMovie.Movie.OldCredits = Me.txtCredits.Text.Trim
+            Master.currMovie.Movie.Studio = Me.txtStudio.Text.Trim
+
+            If Master.eSettings.MovieXBMCTrailerFormat Then
+                Master.currMovie.Movie.Trailer = Replace(Me.txtTrailer.Text.Trim, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                Master.currMovie.Movie.Trailer = Replace(Master.currMovie.Movie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+            Else
+                Master.currMovie.Movie.Trailer = Me.txtTrailer.Text.Trim
+            End If
+
+            'cocotus, 2013/02 Playcount/Watched state support added
+            'if watched-checkbox is checked -> save Playcount=1 in nfo
+            If chkWatched.Checked Then
+                'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
+                If String.IsNullOrEmpty(Master.currMovie.Movie.PlayCount) Or Master.currMovie.Movie.PlayCount = "0" Then
+                    Master.currMovie.Movie.PlayCount = "1"
                 End If
 
-                Master.currMovie.Movie.Runtime = .txtRuntime.Text.Trim
-                Master.currMovie.Movie.ReleaseDate = .txtReleaseDate.Text.Trim
-                Master.currMovie.Movie.OldCredits = .txtCredits.Text.Trim
-                Master.currMovie.Movie.Studio = .txtStudio.Text.Trim
-
-                If Master.eSettings.MovieXBMCTrailerFormat Then
-                    Master.currMovie.Movie.Trailer = Replace(.txtTrailer.Text.Trim, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                    Master.currMovie.Movie.Trailer = Replace(Master.currMovie.Movie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                Else
-                    Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
-                End If
-
-                'cocotus, 2013/02 Playcount/Watched state support added
-                'if watched-checkbox is checked -> save Playcount=1 in nfo
-                If chkWatched.Checked Then
-                    'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                    If String.IsNullOrEmpty(Master.currMovie.Movie.PlayCount) Or Master.currMovie.Movie.PlayCount = "0" Then
-                        Master.currMovie.Movie.PlayCount = "1"
-                    End If
-
-                    If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.WatchedFile)
-                            If Not File.Exists(a) Then
-                                Dim fs As FileStream = File.Create(a)
-                                fs.Close()
-                            End If
-                        Next
-                    End If
-                Else
-                    'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                    If IsNumeric(Master.currMovie.Movie.PlayCount) AndAlso CInt(Master.currMovie.Movie.PlayCount) > 0 Then
-                        Master.currMovie.Movie.PlayCount = ""
-                    End If
-
-                    If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.WatchedFile)
-                            If File.Exists(a) Then
-                                File.Delete(a)
-                            End If
-                        Next
-                    End If
-                End If
-                'cocotus End
-
-                If .clbGenre.CheckedItems.Count > 0 Then
-
-                    If .clbGenre.CheckedIndices.Contains(0) Then
-                        Master.currMovie.Movie.Genre = String.Empty
-                    Else
-                        Dim strGenre As String = String.Empty
-                        Dim isFirst As Boolean = True
-                        Dim iChecked = From iCheck In .clbGenre.CheckedItems
-                        strGenre = Strings.Join(iChecked.ToArray, " / ")
-                        Master.currMovie.Movie.Genre = strGenre.Trim
-                    End If
-                End If
-
-                Master.currMovie.Movie.Actors.Clear()
-
-                If .lvActors.Items.Count > 0 Then
-                    For Each lviActor As ListViewItem In .lvActors.Items
-                        Dim addActor As New MediaContainers.Person
-                        addActor.Name = lviActor.Text.Trim
-                        addActor.Role = lviActor.SubItems(1).Text.Trim
-                        addActor.Thumb = lviActor.SubItems(2).Text.Trim
-
-                        Master.currMovie.Movie.Actors.Add(addActor)
-                    Next
-                End If
-
-                If Master.currMovie.RemoveActorThumbs Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
-                        Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
-                        If Directory.Exists(tmpPath) Then
-                            FileUtils.Delete.DeleteDirectory(tmpPath)
+                If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.WatchedFile)
+                        If Not File.Exists(a) Then
+                            Dim fs As FileStream = File.Create(a)
+                            fs.Close()
                         End If
                     Next
                 End If
-
-                If Master.currMovie.RemoveBanner Then
-                    .MovieBanner.DeleteMovieBanner(Master.currMovie)
+            Else
+                'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
+                If IsNumeric(Master.currMovie.Movie.PlayCount) AndAlso CInt(Master.currMovie.Movie.PlayCount) > 0 Then
+                    Master.currMovie.Movie.PlayCount = ""
                 End If
 
-                If Master.currMovie.RemoveClearArt Then
-                    .MovieClearArt.DeleteMovieClearArt(Master.currMovie)
-                End If
-
-                If Master.currMovie.RemoveClearLogo Then
-                    .MovieClearLogo.DeleteMovieClearLogo(Master.currMovie)
-                End If
-
-                If Master.currMovie.RemoveDiscArt Then
-                    .MovieDiscArt.DeleteMovieDiscArt(Master.currMovie)
-                End If
-
-                If Master.currMovie.RemoveFanart Then
-                    .MovieFanart.DeleteMovieFanart(Master.currMovie)
-                End If
-
-                If Master.currMovie.RemoveLandscape Then
-                    .MovieLandscape.DeleteMovieLandscape(Master.currMovie)
-                End If
-
-                If Master.currMovie.RemovePoster Then
-                    .MoviePoster.DeleteMoviePoster(Master.currMovie)
-                End If
-
-                If Master.currMovie.RemoveTheme Then
-                    .MovieTheme.DeleteMovieTheme(Master.currMovie)
-                End If
-
-                If Master.currMovie.RemoveTrailer Then
-                    .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
-                End If
-
-                If Master.GlobalScrapeMod.ActorThumbs Then
-                    For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
-                        Dim img As New Images
-                        img.FromWeb(act.Thumb)
-                        If Not IsNothing(img.Image) Then
-                            img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
+                If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.WatchedFile)
+                        If File.Exists(a) Then
+                            File.Delete(a)
                         End If
                     Next
                 End If
+            End If
+            'cocotus End
 
-                If Not IsNothing(.MovieBanner.Image) Then
-                    Dim fPath As String = .MovieBanner.SaveAsMovieBanner(Master.currMovie)
-                    Master.currMovie.BannerPath = fPath
+            If Me.clbGenre.CheckedItems.Count > 0 Then
+
+                If Me.clbGenre.CheckedIndices.Contains(0) Then
+                    Master.currMovie.Movie.Genre = String.Empty
                 Else
-                    .MovieBanner.DeleteMovieBanner(Master.currMovie)
-                    Master.currMovie.BannerPath = String.Empty
+                    Dim strGenre As String = String.Empty
+                    Dim isFirst As Boolean = True
+                    Dim iChecked = From iCheck In Me.clbGenre.CheckedItems
+                    strGenre = Strings.Join(iChecked.ToArray, " / ")
+                    Master.currMovie.Movie.Genre = strGenre.Trim
                 End If
+            End If
 
-                If Not IsNothing(.MovieClearArt.Image) Then
-                    Dim fPath As String = .MovieClearArt.SaveAsMovieClearArt(Master.currMovie)
-                    Master.currMovie.ClearArtPath = fPath
-                Else
-                    .MovieClearArt.DeleteMovieClearArt(Master.currMovie)
-                    Master.currMovie.ClearArtPath = String.Empty
-                End If
+            Master.currMovie.Movie.Actors.Clear()
 
-                If Not IsNothing(.MovieClearLogo.Image) Then
-                    Dim fPath As String = .MovieClearLogo.SaveAsMovieClearLogo(Master.currMovie)
-                    Master.currMovie.ClearLogoPath = fPath
-                Else
-                    .MovieClearLogo.DeleteMovieClearLogo(Master.currMovie)
-                    Master.currMovie.ClearLogoPath = String.Empty
-                End If
+            If Me.lvActors.Items.Count > 0 Then
+                For Each lviActor As ListViewItem In Me.lvActors.Items
+                    Dim addActor As New MediaContainers.Person
+                    addActor.Name = lviActor.Text.Trim
+                    addActor.Role = lviActor.SubItems(1).Text.Trim
+                    addActor.Thumb = lviActor.SubItems(2).Text.Trim
 
-                If Not IsNothing(.MovieDiscArt.Image) Then
-                    Dim fPath As String = .MovieDiscArt.SaveAsMovieDiscArt(Master.currMovie)
-                    Master.currMovie.DiscArtPath = fPath
-                Else
-                    .MovieDiscArt.DeleteMovieDiscArt(Master.currMovie)
-                    Master.currMovie.DiscArtPath = String.Empty
-                End If
+                    Master.currMovie.Movie.Actors.Add(addActor)
+                Next
+            End If
 
-                If Not IsNothing(.MovieFanart.Image) Then
-                    Dim fPath As String = .MovieFanart.SaveAsMovieFanart(Master.currMovie)
-                    Master.currMovie.FanartPath = fPath
-                Else
-                    .MovieFanart.DeleteMovieFanart(Master.currMovie)
-                    Master.currMovie.FanartPath = String.Empty
-                End If
-
-                If Not IsNothing(.MovieLandscape.Image) Then
-                    Dim fPath As String = .MovieLandscape.SaveAsMovieLandscape(Master.currMovie)
-                    Master.currMovie.LandscapePath = fPath
-                Else
-                    .MovieLandscape.DeleteMovieLandscape(Master.currMovie)
-                    Master.currMovie.LandscapePath = String.Empty
-                End If
-
-                If Not IsNothing(.MoviePoster.Image) Then
-                    Dim pPath As String = .MoviePoster.SaveAsMoviePoster(Master.currMovie)
-                    Master.currMovie.PosterPath = pPath
-                Else
-                    .MoviePoster.DeleteMoviePoster(Master.currMovie)
-                    Master.currMovie.PosterPath = String.Empty
-                End If
-
-                If Not String.IsNullOrEmpty(.MovieTheme.Extention) AndAlso Not MovieTheme.toRemove Then 'TODO: proper check, extention check is only a woraround
-                    Dim tPath As String = .MovieTheme.SaveAsMovieTheme(Master.currMovie)
-                    Master.currMovie.ThemePath = tPath
-                Else
-                    .MovieTheme.DeleteMovieTheme(Master.currMovie)
-                    Master.currMovie.ThemePath = String.Empty
-                End If
-
-                If Not String.IsNullOrEmpty(.MovieTrailer.Extention) AndAlso Not MovieTrailer.toRemove Then 'TODO: proper check, extention check is only a woraround
-                    If Master.eSettings.MovieTrailerDeleteExisting Then
-                        .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
-                    End If
-                    Dim tPath As String = .MovieTrailer.SaveAsMovieTrailer(Master.currMovie)
-                    Master.currMovie.TrailerPath = tPath
-                Else
-                    .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
-                    Master.currMovie.TrailerPath = String.Empty
-                End If
-
-                If Path.GetExtension(Master.currMovie.Filename) = ".disc" Then
-                    Dim StubFile As String = Master.currMovie.Filename
-                    Dim Title As String = Me.txtMediaStubTitle.Text
-                    Dim Message As String = Me.txtMediaStubMessage.Text
-                    MediaStub.SaveDiscStub(StubFile, Title, Message)
-                End If
-
-                If Not Master.eSettings.MovieNoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
-                If Not Master.eSettings.MovieNoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
-
-                Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
-                For Each Subtitle In Master.currMovie.Subtitles
-                    If Subtitle.toRemove Then
-                        removeSubtitles.Add(Subtitle)
+            If Master.currMovie.RemoveActorThumbs Then
+                For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
+                    Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
+                    If Directory.Exists(tmpPath) Then
+                        FileUtils.Delete.DeleteDirectory(tmpPath)
                     End If
                 Next
-                For Each Subtitle In removeSubtitles
-                    If File.Exists(Subtitle.SubsPath) Then
-                        File.Delete(Subtitle.SubsPath)
+            End If
+
+            If Master.currMovie.RemoveBanner Then
+                Me.MovieBanner.DeleteMovieBanner(Master.currMovie)
+            End If
+
+            If Master.currMovie.RemoveClearArt Then
+                Me.MovieClearArt.DeleteMovieClearArt(Master.currMovie)
+            End If
+
+            If Master.currMovie.RemoveClearLogo Then
+                Me.MovieClearLogo.DeleteMovieClearLogo(Master.currMovie)
+            End If
+
+            If Master.currMovie.RemoveDiscArt Then
+                Me.MovieDiscArt.DeleteMovieDiscArt(Master.currMovie)
+            End If
+
+            If Master.currMovie.RemoveFanart Then
+                Me.MovieFanart.DeleteMovieFanart(Master.currMovie)
+            End If
+
+            If Master.currMovie.RemoveLandscape Then
+                Me.MovieLandscape.DeleteMovieLandscape(Master.currMovie)
+            End If
+
+            If Master.currMovie.RemovePoster Then
+                Me.MoviePoster.DeleteMoviePoster(Master.currMovie)
+            End If
+
+            If Master.currMovie.RemoveTheme Then
+                Me.MovieTheme.DeleteMovieTheme(Master.currMovie)
+            End If
+
+            If Master.currMovie.RemoveTrailer Then
+                Me.MovieTrailer.DeleteMovieTrailer(Master.currMovie)
+            End If
+
+            If Master.GlobalScrapeMod.ActorThumbs Then
+                For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
+                    Dim img As New Images
+                    img.FromWeb(act.Thumb)
+                    If Not IsNothing(img.Image) Then
+                        img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
                     End If
-                    Master.currMovie.Subtitles.Remove(Subtitle)
                 Next
+            End If
 
-                .SaveEThumbsList()
+            If Not IsNothing(Me.MovieBanner.Image) Then
+                Dim fPath As String = Await Me.MovieBanner.SaveAsMovieBanner(Master.currMovie)
+                Master.currMovie.BannerPath = fPath
+            Else
+                Me.MovieBanner.DeleteMovieBanner(Master.currMovie)
+                Master.currMovie.BannerPath = String.Empty
+            End If
 
-                .SaveEFanartsList()
+            If Not IsNothing(Me.MovieClearArt.Image) Then
+                Dim fPath As String = Await Me.MovieClearArt.SaveAsMovieClearArt(Master.currMovie)
+                Master.currMovie.ClearArtPath = fPath
+            Else
+                Me.MovieClearArt.DeleteMovieClearArt(Master.currMovie)
+                Master.currMovie.ClearArtPath = String.Empty
+            End If
 
-            End With
+            If Not IsNothing(Me.MovieClearLogo.Image) Then
+                Dim fPath As String = Await Me.MovieClearLogo.SaveAsMovieClearLogo(Master.currMovie)
+                Master.currMovie.ClearLogoPath = fPath
+            Else
+                Me.MovieClearLogo.DeleteMovieClearLogo(Master.currMovie)
+                Master.currMovie.ClearLogoPath = String.Empty
+            End If
+
+            If Not IsNothing(Me.MovieDiscArt.Image) Then
+                Dim fPath As String = Await Me.MovieDiscArt.SaveAsMovieDiscArt(Master.currMovie)
+                Master.currMovie.DiscArtPath = fPath
+            Else
+                Me.MovieDiscArt.DeleteMovieDiscArt(Master.currMovie)
+                Master.currMovie.DiscArtPath = String.Empty
+            End If
+
+            If Not IsNothing(Me.MovieFanart.Image) Then
+                Dim fPath As String = Await Me.MovieFanart.SaveAsMovieFanart(Master.currMovie)
+                Master.currMovie.FanartPath = fPath
+            Else
+                Me.MovieFanart.DeleteMovieFanart(Master.currMovie)
+                Master.currMovie.FanartPath = String.Empty
+            End If
+
+            If Not IsNothing(Me.MovieLandscape.Image) Then
+                Dim fPath As String = Await Me.MovieLandscape.SaveAsMovieLandscape(Master.currMovie)
+                Master.currMovie.LandscapePath = fPath
+            Else
+                Me.MovieLandscape.DeleteMovieLandscape(Master.currMovie)
+                Master.currMovie.LandscapePath = String.Empty
+            End If
+
+            If Not IsNothing(Me.MoviePoster.Image) Then
+                Dim pPath As String = Await Me.MoviePoster.SaveAsMoviePoster(Master.currMovie)
+                Master.currMovie.PosterPath = pPath
+            Else
+                Me.MoviePoster.DeleteMoviePoster(Master.currMovie)
+                Master.currMovie.PosterPath = String.Empty
+            End If
+
+            If Not String.IsNullOrEmpty(Me.MovieTheme.Extention) AndAlso Not MovieTheme.toRemove Then 'TODO: proper check, extention check is only a woraround
+                Dim tPath As String = Me.MovieTheme.SaveAsMovieTheme(Master.currMovie)
+                Master.currMovie.ThemePath = tPath
+            Else
+                Me.MovieTheme.DeleteMovieTheme(Master.currMovie)
+                Master.currMovie.ThemePath = String.Empty
+            End If
+
+            If Not String.IsNullOrEmpty(Me.MovieTrailer.Extention) AndAlso Not MovieTrailer.toRemove Then 'TODO: proper check, extention check is only a woraround
+                If Master.eSettings.MovieTrailerDeleteExisting Then
+                    Me.MovieTrailer.DeleteMovieTrailer(Master.currMovie)
+                End If
+                Dim tPath As String = Me.MovieTrailer.SaveAsMovieTrailer(Master.currMovie)
+                Master.currMovie.TrailerPath = tPath
+            Else
+                Me.MovieTrailer.DeleteMovieTrailer(Master.currMovie)
+                Master.currMovie.TrailerPath = String.Empty
+            End If
+
+            If Path.GetExtension(Master.currMovie.Filename) = ".disc" Then
+                Dim StubFile As String = Master.currMovie.Filename
+                Dim Title As String = Me.txtMediaStubTitle.Text
+                Dim Message As String = Me.txtMediaStubMessage.Text
+                MediaStub.SaveDiscStub(StubFile, Title, Message)
+            End If
+
+            If Not Master.eSettings.MovieNoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
+            If Not Master.eSettings.MovieNoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
+
+            Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
+            For Each Subtitle In Master.currMovie.Subtitles
+                If Subtitle.toRemove Then
+                    removeSubtitles.Add(Subtitle)
+                End If
+            Next
+            For Each Subtitle In removeSubtitles
+                If File.Exists(Subtitle.SubsPath) Then
+                    File.Delete(Subtitle.SubsPath)
+                End If
+                Master.currMovie.Subtitles.Remove(Subtitle)
+            Next
+
+            Me.SaveEThumbsList()
+
+            Me.SaveEFanartsList()
+
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try

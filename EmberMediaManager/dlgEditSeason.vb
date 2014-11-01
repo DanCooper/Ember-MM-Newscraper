@@ -468,89 +468,86 @@ Public Class dlgEditSeason
         End If
     End Sub
 
-    Private Sub SetInfo()
+    Private Async Sub SetInfo()
         Try
-            With Me
-
-                'Banner
-                If Master.currShow.TVEp.Season = 999 Then
-                    If Not IsNothing(.SeasonBanner.Image) Then
-                        'AllSeasons Banner
-                        Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVASBanner(Master.currShow, "")
-                    Else
-                        .SeasonBanner.DeleteTVASBanner(Master.currShow)
-                        Master.currShow.SeasonBannerPath = String.Empty
-                    End If
+            'Banner
+            If Master.currShow.TVEp.Season = 999 Then
+                If Not IsNothing(Me.SeasonBanner.Image) Then
+                    'AllSeasons Banner
+                    Master.currShow.SeasonBannerPath = Await Me.SeasonBanner.SaveAsTVASBanner(Master.currShow, "")
                 Else
-                    'Season Banner
-                    If Not IsNothing(.SeasonBanner.Image) Then
-                        Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVSeasonBanner(Master.currShow)
-                    Else
-                        .SeasonBanner.DeleteTVSeasonBanner(Master.currShow)
-                        Master.currShow.SeasonBannerPath = String.Empty
-                    End If
+                    Me.SeasonBanner.DeleteTVASBanner(Master.currShow)
+                    Master.currShow.SeasonBannerPath = String.Empty
                 End If
-
-                'Fanart
-                If Master.currShow.TVEp.Season = 999 Then
-                    If Not IsNothing(.SeasonFanart.Image) Then
-                        'AllSeasons Fanart
-                        Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVASFanart(Master.currShow, "")
-                    Else
-                        .SeasonFanart.DeleteTVASFanart(Master.currShow)
-                        Master.currShow.SeasonFanartPath = String.Empty
-                    End If
+            Else
+                'Season Banner
+                If Not IsNothing(Me.SeasonBanner.Image) Then
+                    Master.currShow.SeasonBannerPath = Await Me.SeasonBanner.SaveAsTVSeasonBanner(Master.currShow)
                 Else
-                    'Season Fanart
-                    If Not IsNothing(.SeasonFanart.Image) Then
-                        Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVSeasonFanart(Master.currShow)
-                    Else
-                        .SeasonFanart.DeleteTVSeasonFanart(Master.currShow)
-                        Master.currShow.SeasonFanartPath = String.Empty
-                    End If
+                    Me.SeasonBanner.DeleteTVSeasonBanner(Master.currShow)
+                    Master.currShow.SeasonBannerPath = String.Empty
                 End If
+            End If
 
-                'Landscape
-                If Master.currShow.TVEp.Season = 999 Then
-                    If Not IsNothing(.SeasonLandscape.Image) Then
-                        'AllSeasons Landscape
-                        Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVASLandscape(Master.currShow, "")
-                    Else
-                        .SeasonLandscape.DeleteTVASLandscape(Master.currShow)
-                        Master.currShow.SeasonLandscapePath = String.Empty
-                    End If
+            'Fanart
+            If Master.currShow.TVEp.Season = 999 Then
+                If Not IsNothing(Me.SeasonFanart.Image) Then
+                    'AllSeasons Fanart
+                    Master.currShow.SeasonFanartPath = Await Me.SeasonFanart.SaveAsTVASFanart(Master.currShow, "")
                 Else
-                    'Season Landscape
-                    If Not IsNothing(.SeasonLandscape.Image) Then
-                        Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVSeasonLandscape(Master.currShow)
-                    Else
-                        .SeasonLandscape.DeleteTVSeasonLandscape(Master.currShow)
-                        Master.currShow.SeasonLandscapePath = String.Empty
-                    End If
+                    Me.SeasonFanart.DeleteTVASFanart(Master.currShow)
+                    Master.currShow.SeasonFanartPath = String.Empty
                 End If
-
-                'Poster
-                If Master.currShow.TVEp.Season = 999 Then
-                    If Not IsNothing(.SeasonPoster.Image) Then
-                        'AllSeasons Poster
-                        Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVASPoster(Master.currShow, "")
-                    Else
-                        .SeasonPoster.DeleteTVASPoster(Master.currShow)
-                        Master.currShow.SeasonPosterPath = String.Empty
-                    End If
+            Else
+                'Season Fanart
+                If Not IsNothing(Me.SeasonFanart.Image) Then
+                    Master.currShow.SeasonFanartPath = Me.SeasonFanart.SaveAsTVSeasonFanart(Master.currShow)
                 Else
-                    'Season Poster
-                    If Not IsNothing(.SeasonPoster.Image) Then
-                        Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVSeasonPoster(Master.currShow)
-                    Else
-                        .SeasonPoster.DeleteTVSeasonPoster(Master.currShow)
-                        Master.currShow.SeasonPosterPath = String.Empty
-                    End If
+                    Me.SeasonFanart.DeleteTVSeasonFanart(Master.currShow)
+                    Master.currShow.SeasonFanartPath = String.Empty
                 End If
+            End If
 
-            End With
+            'Landscape
+            If Master.currShow.TVEp.Season = 999 Then
+                If Not IsNothing(Me.SeasonLandscape.Image) Then
+                    'AllSeasons Landscape
+                    Master.currShow.SeasonLandscapePath = Await Me.SeasonLandscape.SaveAsTVASLandscape(Master.currShow, "")
+                Else
+                    Me.SeasonLandscape.DeleteTVASLandscape(Master.currShow)
+                    Master.currShow.SeasonLandscapePath = String.Empty
+                End If
+            Else
+                'Season Landscape
+                If Not IsNothing(Me.SeasonLandscape.Image) Then
+                    Master.currShow.SeasonLandscapePath = Me.SeasonLandscape.SaveAsTVSeasonLandscape(Master.currShow)
+                Else
+                    Me.SeasonLandscape.DeleteTVSeasonLandscape(Master.currShow)
+                    Master.currShow.SeasonLandscapePath = String.Empty
+                End If
+            End If
+
+            'Poster
+            If Master.currShow.TVEp.Season = 999 Then
+                If Not IsNothing(Me.SeasonPoster.Image) Then
+                    'AllSeasons Poster
+                    Master.currShow.SeasonPosterPath = Await Me.SeasonPoster.SaveAsTVASPoster(Master.currShow, "")
+                Else
+                    Me.SeasonPoster.DeleteTVASPoster(Master.currShow)
+                    Master.currShow.SeasonPosterPath = String.Empty
+                End If
+            Else
+                'Season Poster
+                If Not IsNothing(Me.SeasonPoster.Image) Then
+                    Master.currShow.SeasonPosterPath = Me.SeasonPoster.SaveAsTVSeasonPoster(Master.currShow)
+                Else
+                    Me.SeasonPoster.DeleteTVSeasonPoster(Master.currShow)
+                    Master.currShow.SeasonPosterPath = String.Empty
+                End If
+            End If
+
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
