@@ -1159,6 +1159,7 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsTVASBanner(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
+
         Dim doResize As Boolean = Master.eSettings.TVASBannerResize AndAlso (_image.Width > Master.eSettings.TVASBannerWidth OrElse _image.Height > Master.eSettings.TVASBannerHeight)
 
         Try
@@ -1167,6 +1168,8 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVASBannerWidth, Master.eSettings.TVASBannerHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
 
             Try
@@ -1205,6 +1208,7 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsTVASFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
+
         Dim doResize As Boolean = Master.eSettings.TVASFanartResize AndAlso (_image.Width > Master.eSettings.TVASFanartWidth OrElse _image.Height > Master.eSettings.TVASFanartHeight)
 
         Try
@@ -1213,6 +1217,8 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVASFanartWidth, Master.eSettings.TVASFanartHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
 
             Try
@@ -1293,6 +1299,7 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsTVASPoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
+
         Dim doResize As Boolean = Master.eSettings.TVASPosterResize AndAlso (_image.Width > Master.eSettings.TVASPosterWidth OrElse _image.Height > Master.eSettings.TVASPosterHeight)
 
         Try
@@ -1301,6 +1308,8 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVASPosterWidth, Master.eSettings.TVASPosterHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
 
             Try
@@ -1347,7 +1356,10 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVEpisodeFanartWidth, Master.eSettings.TVEpisodeFanartHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
+
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.EpisodeFanart, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
@@ -1394,7 +1406,10 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVEpisodePosterWidth, Master.eSettings.TVEpisodePosterHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
+
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.EpisodePoster, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
@@ -1433,7 +1448,8 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieBanner(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
+
+        Dim doResize As Boolean = Master.eSettings.MovieBannerResize AndAlso (_image.Width > Master.eSettings.MovieBannerWidth OrElse _image.Height > Master.eSettings.MovieBannerHeight)
 
         Try
             Try
@@ -1441,6 +1457,12 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
             Catch ex As Exception
             End Try
+
+            If doResize Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.MovieBannerWidth, Master.eSettings.MovieBannerHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
+            End If
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Banner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieBannerOverwrite) Then
@@ -1544,7 +1566,85 @@ Public Class Images
         End Try
         Return strReturn
     End Function
+    ''' <summary>
+    ''' Save the image as a movie's extrafanart
+    ''' </summary>
+    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="sName"><c>String</c> name of the movie being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieExtrafanart(ByVal mMovie As Structures.DBMovie, ByVal sName As String, Optional sURL As String = "") As String
+        Dim efPath As String = String.Empty
+        Dim iMod As Integer = 0
+        Dim iVal As Integer = 1
 
+        If String.IsNullOrEmpty(mMovie.Filename) Then Return efPath
+
+        Dim doResize As Boolean = Master.eSettings.MovieEFanartsResize AndAlso (_image.Width > Master.eSettings.MovieEFanartsWidth OrElse _image.Height > Master.eSettings.MovieEFanartsHeight)
+
+        Try
+            If doResize Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.MovieEFanartsWidth, Master.eSettings.MovieEFanartsHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
+            End If
+
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.EFanarts)
+                If Not a = String.Empty Then
+                    If Not Directory.Exists(a) Then
+                        Directory.CreateDirectory(a)
+                    End If
+                    efPath = Path.Combine(a, sName)
+                    Save(efPath)
+                End If
+            Next
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Return efPath
+    End Function
+    ''' <summary>
+    ''' Save the image as a movie's extrathumb
+    ''' </summary>
+    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieExtrathumb(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+        Dim etPath As String = String.Empty
+        Dim iMod As Integer = 0
+        Dim iVal As Integer = 1
+
+        If String.IsNullOrEmpty(mMovie.Filename) Then Return etPath
+
+        Dim doResize As Boolean = Master.eSettings.MovieEThumbsResize AndAlso (_image.Width > Master.eSettings.MovieEThumbsWidth OrElse _image.Height > Master.eSettings.MovieEThumbsHeight)
+
+        Try
+            If doResize Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.MovieEThumbsWidth, Master.eSettings.MovieEThumbsHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
+            End If
+
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.EThumbs)
+                If Not a = String.Empty Then
+                    If Not Directory.Exists(a) Then
+                        Directory.CreateDirectory(a)
+                    End If
+                    iMod = Functions.GetExtraModifier(a)
+                    iVal = iMod + 1
+                    etPath = Path.Combine(a, String.Concat("thumb", iVal, ".jpg"))
+                    Save(etPath)
+                End If
+            Next
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Return etPath
+    End Function
     ''' <summary>
     ''' Save the image as a movie fanart
     ''' </summary>
@@ -1566,6 +1666,8 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.MovieFanartWidth, Master.eSettings.MovieFanartHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Fanart)
@@ -1661,7 +1763,8 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieSetBanner(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
+
+        Dim doResize As Boolean = Master.eSettings.MovieSetBannerResize AndAlso (_image.Width > Master.eSettings.MovieSetBannerWidth OrElse _image.Height > Master.eSettings.MovieSetBannerHeight)
 
         Try
             'Try
@@ -1669,6 +1772,12 @@ Public Class Images
             '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
             'Catch ex As Exception
             'End Try
+
+            If doResize Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.MovieSetBannerWidth, Master.eSettings.MovieSetBannerHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
+            End If
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType_Movie.Banner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetBannerOverwrite) Then
@@ -1781,7 +1890,8 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieSetFanart(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
+
+        Dim doResize As Boolean = Master.eSettings.MovieSetFanartResize AndAlso (_image.Width > Master.eSettings.MovieSetFanartWidth OrElse _image.Height > Master.eSettings.MovieSetFanartHeight)
 
         Try
             'Try
@@ -1789,6 +1899,12 @@ Public Class Images
             '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
             'Catch ex As Exception
             'End Try
+
+            If doResize Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.MovieSetFanartWidth, Master.eSettings.MovieSetFanartHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
+            End If
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType_Movie.Fanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetFanartOverwrite) Then
@@ -1841,7 +1957,8 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieSetPoster(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
+
+        Dim doResize As Boolean = Master.eSettings.MovieSetPosterResize AndAlso (_image.Width > Master.eSettings.MovieSetPosterWidth OrElse _image.Height > Master.eSettings.MovieSetPosterHeight)
 
         Try
             'Try
@@ -1849,6 +1966,12 @@ Public Class Images
             '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
             'Catch ex As Exception
             'End Try
+
+            If doResize Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.MovieSetPosterWidth, Master.eSettings.MovieSetPosterHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
+            End If
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType_Movie.Poster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetPosterOverwrite) Then
@@ -1914,6 +2037,8 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVSeasonBannerWidth, Master.eSettings.TVSeasonBannerHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
 
             Try
@@ -1976,6 +2101,8 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVSeasonFanartWidth, Master.eSettings.TVSeasonFanartHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.SeasonFanart, mShow, New List(Of String)})
@@ -2096,6 +2223,8 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVSeasonPosterWidth, Master.eSettings.TVSeasonPosterHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
 
             Try
@@ -2147,6 +2276,8 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVShowBannerWidth, Master.eSettings.TVShowBannerHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
 
             Try
@@ -2326,8 +2457,16 @@ Public Class Images
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return efPath
 
+        Dim doResize As Boolean = Master.eSettings.TVShowEFanartsResize AndAlso (_image.Width > Master.eSettings.TVShowEFanartsWidth OrElse _image.Height > Master.eSettings.TVShowEFanartsHeight)
+
         Try
             Dim ShowPath As String = mShow.ShowPath
+
+            If doResize Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.TVShowEFanartsWidth, Master.eSettings.TVShowEFanartsHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
+            End If
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowEFanarts)
                 If Not a = String.Empty Then
@@ -2336,7 +2475,6 @@ Public Class Images
                     End If
                     efPath = Path.Combine(a, sName)
                     Save(efPath)
-                    Return efPath
                 End If
             Next
         Catch ex As Exception
@@ -2365,6 +2503,8 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVShowFanartWidth, Master.eSettings.TVShowFanartHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
 
             Try
@@ -2461,6 +2601,8 @@ Public Class Images
 
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVShowPosterWidth, Master.eSettings.TVShowPosterHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
             End If
 
             Try
@@ -2489,63 +2631,6 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
-    End Function
-    ''' <summary>
-    ''' Save the image as a movie's extrathumb
-    ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
-    ''' <returns><c>String</c> path to the saved image</returns>
-    ''' <remarks></remarks>
-    Public Function SaveAsMovieExtrathumb(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
-        Dim etPath As String = String.Empty
-        Dim iMod As Integer = 0
-        Dim iVal As Integer = 1
-
-        If String.IsNullOrEmpty(mMovie.Filename) Then Return etPath
-
-        For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.EThumbs)
-            If Not a = String.Empty Then
-                If Not Directory.Exists(a) Then
-                    Directory.CreateDirectory(a)
-                End If
-                iMod = Functions.GetExtraModifier(a)
-                iVal = iMod + 1
-                etPath = Path.Combine(a, String.Concat("thumb", iVal, ".jpg"))
-                Save(etPath)
-                Return etPath
-            End If
-        Next
-
-        Return etPath
-    End Function
-    ''' <summary>
-    ''' Save the image as a movie's extrafanart
-    ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
-    ''' <param name="sName"><c>String</c> name of the movie being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
-    ''' <returns><c>String</c> path to the saved image</returns>
-    ''' <remarks></remarks>
-    Public Function SaveAsMovieExtrafanart(ByVal mMovie As Structures.DBMovie, ByVal sName As String, Optional sURL As String = "") As String
-        Dim efPath As String = String.Empty
-        Dim iMod As Integer = 0
-        Dim iVal As Integer = 1
-
-        If String.IsNullOrEmpty(mMovie.Filename) Then Return efPath
-
-        For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.EFanarts)
-            If Not a = String.Empty Then
-                If Not Directory.Exists(a) Then
-                    Directory.CreateDirectory(a)
-                End If
-                efPath = Path.Combine(a, sName)
-                Save(efPath)
-                Return efPath
-            End If
-        Next
-
-        Return efPath
     End Function
     ''' <summary>
     ''' Determines the <c>ImageCodecInfo</c> from a given <c>ImageFormat</c>
