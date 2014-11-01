@@ -3653,25 +3653,6 @@ Public Class dlgSettings
                 Me.lstMovieSortTokens.Items.AddRange(.MovieSortTokens.ToArray)
                 Me.lstMovieSetSortTokens.Items.AddRange(.MovieSetSortTokens.ToArray)
                 Me.lstTVSortTokens.Items.AddRange(.TVSortTokens.ToArray)
-                Me.tbMovieBannerQual.Value = .MovieBannerQual
-                Me.tbMovieEFanartsQual.Value = .MovieEFanartsQual
-                Me.tbMovieEThumbsQual.Value = .MovieEThumbsQual
-                Me.tbMovieFanartQual.Value = .MovieFanartQual
-                Me.tbMoviePosterQual.Value = .MoviePosterQual
-                Me.tbMovieSetBannerQual.Value = .MovieSetBannerQual
-                Me.tbMovieSetFanartQual.Value = .MovieSetFanartQual
-                Me.tbMovieSetPosterQual.Value = .MovieSetPosterQual
-                Me.tbTVASBannerQual.Value = .TVASBannerQual
-                Me.tbTVASFanartQual.Value = .TVASFanartQual
-                Me.tbTVASPosterQual.Value = .TVASPosterQual
-                Me.tbTVEpisodeFanartQual.Value = .TVEpisodeFanartQual
-                Me.tbTVEpisodePosterQual.Value = .TVEpisodePosterQual
-                Me.tbTVSeasonBannerQual.Value = .TVSeasonBannerQual
-                Me.tbTVSeasonFanartQual.Value = .TVSeasonFanartQual
-                Me.tbTVSeasonPosterQual.Value = .TVSeasonPosterQual
-                Me.tbTVShowBannerQual.Value = .TVShowBannerQual
-                Me.tbTVShowFanartQual.Value = .TVShowFanartQual
-                Me.tbTVShowPosterQual.Value = .TVShowPosterQual
                 Me.tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, Me.tpFileSystemCleanerExpert, Me.tpFileSystemCleanerStandard)
                 Me.txtGeneralDaemonPath.Text = .GeneralDaemonPath.ToString
                 Me.txtMovieBackdropsPath.Text = .MovieBackdropsPath.ToString
@@ -4907,7 +4888,6 @@ Public Class dlgSettings
                 .MovieBannerOverwrite = Me.chkMovieBannerOverwrite.Checked
                 .MovieBannerPrefOnly = Me.chkMovieBannerPrefOnly.Checked
                 .MovieBannerPrefType = DirectCast(Me.cbMovieBannerPrefType.SelectedIndex, Enums.MovieBannerType)
-                .MovieBannerQual = Me.tbMovieBannerQual.Value
                 .MovieBannerResize = Me.chkMovieBannerResize.Checked
                 .MovieBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieBannerWidth.Text), Convert.ToInt32(Me.txtMovieBannerWidth.Text), 0)
                 .MovieCleanDB = Me.chkMovieCleanDB.Checked
@@ -4926,7 +4906,6 @@ Public Class dlgSettings
                 .MovieEFanartsOverwrite = Me.chkMovieEFanartsOverwrite.Checked
                 .MovieEFanartsPrefOnly = Me.chkMovieEFanartsPrefOnly.Checked
                 .MovieEFanartsPrefSize = DirectCast(Me.cbMovieEFanartsPrefSize.SelectedIndex, Enums.FanartSize)
-                .MovieEFanartsQual = Me.tbMovieEFanartsQual.Value
                 .MovieEFanartsResize = Me.chkMovieEFanartsResize.Checked
                 .MovieEFanartsWidth = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsWidth.Text), Convert.ToInt32(Me.txtMovieEFanartsWidth.Text), 0)
                 .MovieEThumbsCol = Me.chkMovieEThumbsCol.Checked
@@ -4935,7 +4914,6 @@ Public Class dlgSettings
                 .MovieEThumbsOverwrite = Me.chkMovieEThumbsOverwrite.Checked
                 .MovieEThumbsPrefOnly = Me.chkMovieEThumbsPrefOnly.Checked
                 .MovieEThumbsPrefSize = DirectCast(Me.cbMovieEThumbsPrefSize.SelectedIndex, Enums.FanartSize)
-                .MovieEThumbsQual = Me.tbMovieEThumbsQual.Value
                 .MovieEThumbsResize = Me.chkMovieEThumbsResize.Checked
                 .MovieEThumbsWidth = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsWidth.Text), Convert.ToInt32(Me.txtMovieEThumbsWidth.Text), 0)
                 .MovieFanartCol = Me.chkMovieFanartCol.Checked
@@ -4943,7 +4921,6 @@ Public Class dlgSettings
                 .MovieFanartOverwrite = Me.chkMovieFanartOverwrite.Checked
                 .MovieFanartPrefOnly = Me.chkMovieFanartPrefOnly.Checked
                 .MovieFanartPrefSize = DirectCast(Me.cbMovieFanartPrefSize.SelectedIndex, Enums.FanartSize)
-                .MovieFanartQual = Me.tbMovieFanartQual.Value
                 .MovieFanartResize = Me.chkMovieFanartResize.Checked
                 .MovieFanartWidth = If(Not String.IsNullOrEmpty(Me.txtMovieFanartWidth.Text), Convert.ToInt32(Me.txtMovieFanartWidth.Text), 0)
                 .MovieFilterCustom.Clear()
@@ -5015,7 +4992,6 @@ Public Class dlgSettings
                 .MoviePosterOverwrite = Me.chkMoviePosterOverwrite.Checked
                 .MoviePosterPrefOnly = Me.chkMoviePosterPrefOnly.Checked
                 .MoviePosterPrefSize = DirectCast(Me.cbMoviePosterPrefSize.SelectedIndex, Enums.PosterSize)
-                .MoviePosterQual = Me.tbMoviePosterQual.Value
                 .MoviePosterResize = Me.chkMoviePosterResize.Checked
                 .MoviePosterWidth = If(Not String.IsNullOrEmpty(Me.txtMoviePosterWidth.Text), Convert.ToInt32(Me.txtMoviePosterWidth.Text), 0)
                 .MovieProperCase = Me.chkMovieProperCase.Checked
@@ -5024,7 +5000,6 @@ Public Class dlgSettings
                 .MovieSetBannerOverwrite = Me.chkMovieSetBannerOverwrite.Checked
                 .MovieSetBannerPrefOnly = Me.chkMovieSetBannerPrefOnly.Checked
                 .MovieSetBannerPrefType = DirectCast(Me.cbMovieSetBannerPrefType.SelectedIndex, Enums.MovieBannerType)
-                .MovieSetBannerQual = Me.tbMovieSetBannerQual.Value
                 .MovieSetBannerResize = Me.chkMovieSetBannerResize.Checked
                 .MovieSetBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetBannerWidth.Text), Convert.ToInt32(Me.txtMovieSetBannerWidth.Text), 0)
                 .MovieSetCleanDB = Me.chkMovieSetCleanDB.Checked
@@ -5042,7 +5017,6 @@ Public Class dlgSettings
                 .MovieSetFanartOverwrite = Me.chkMovieSetFanartOverwrite.Checked
                 .MovieSetFanartPrefOnly = Me.chkMovieSetFanartPrefOnly.Checked
                 .MovieSetFanartPrefSize = DirectCast(Me.cbMovieSetFanartPrefSize.SelectedIndex, Enums.FanartSize)
-                .MovieSetFanartQual = Me.tbMovieSetFanartQual.Value
                 .MovieSetFanartResize = Me.chkMovieSetFanartResize.Checked
                 .MovieSetFanartWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetFanartWidth.Text), Convert.ToInt32(Me.txtMovieSetFanartWidth.Text), 0)
                 .MovieSetLandscapeCol = Me.chkMovieSetLandscapeCol.Checked
@@ -5063,7 +5037,6 @@ Public Class dlgSettings
                 .MovieSetPosterOverwrite = Me.chkMovieSetPosterOverwrite.Checked
                 .MovieSetPosterPrefOnly = Me.chkMovieSetPosterPrefOnly.Checked
                 .MovieSetPosterPrefSize = DirectCast(Me.cbMovieSetPosterPrefSize.SelectedIndex, Enums.PosterSize)
-                .MovieSetPosterQual = Me.tbMovieSetPosterQual.Value
                 .MovieSetPosterResize = Me.chkMovieSetPosterResize.Checked
                 .MovieSetPosterWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetPosterWidth.Text), Convert.ToInt32(Me.txtMovieSetPosterWidth.Text), 0)
                 .MovieSetScraperPlot = Me.chkMovieSetScraperPlot.Checked
@@ -5159,20 +5132,17 @@ Public Class dlgSettings
                 .TVASBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVASBannerHeight.Text), Convert.ToInt32(Me.txtTVASBannerHeight.Text), 0)
                 .TVASBannerOverwrite = Me.chkTVASBannerOverwrite.Checked
                 .TVASBannerPrefType = DirectCast(Me.cbTVASBannerPrefType.SelectedIndex, Enums.TVShowBannerType)
-                .TVASBannerQual = Me.tbTVASBannerQual.Value
                 .TVASBannerResize = Me.chkTVASBannerResize.Checked
                 .TVASBannerWidth = If(Not String.IsNullOrEmpty(Me.txtTVASBannerWidth.Text), Convert.ToInt32(Me.txtTVASBannerWidth.Text), 0)
                 .TVASFanartHeight = If(Not String.IsNullOrEmpty(Me.txtTVASFanartHeight.Text), Convert.ToInt32(Me.txtTVASFanartHeight.Text), 0)
                 .TVASFanartOverwrite = Me.chkTVASFanartOverwrite.Checked
                 .TVASFanartPrefSize = DirectCast(Me.cbTVASFanartPrefSize.SelectedIndex, Enums.TVFanartSize)
-                .TVASFanartQual = Me.tbTVASFanartQual.Value
                 .TVASFanartResize = Me.chkTVASFanartResize.Checked
                 .TVASFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVASFanartWidth.Text), Convert.ToInt32(Me.txtTVASFanartWidth.Text), 0)
                 .TVASLandscapeOverwrite = Me.chkTVASLandscapeOverwrite.Checked
                 .TVASPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVASPosterHeight.Text), Convert.ToInt32(Me.txtTVASPosterHeight.Text), 0)
                 .TVASPosterOverwrite = Me.chkTVASPosterOverwrite.Checked
                 .TVASPosterPrefSize = DirectCast(Me.cbTVASPosterPrefSize.SelectedIndex, Enums.TVPosterSize)
-                .TVASPosterQual = Me.tbTVASPosterQual.Value
                 .TVASPosterResize = Me.chkTVASPosterResize.Checked
                 .TVASPosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVASPosterWidth.Text), Convert.ToInt32(Me.txtTVASPosterWidth.Text), 0)
                 .TVCleanDB = Me.chkTVCleanDB.Checked
@@ -5182,7 +5152,6 @@ Public Class dlgSettings
                 .TVEpisodeFanartHeight = If(Not String.IsNullOrEmpty(Me.txtTVEpisodeFanartHeight.Text), Convert.ToInt32(Me.txtTVEpisodeFanartHeight.Text), 0)
                 .TVEpisodeFanartOverwrite = Me.chkTVEpisodeFanartOverwrite.Checked
                 .TVEpisodeFanartPrefSize = DirectCast(Me.cbTVEpisodeFanartPrefSize.SelectedIndex, Enums.TVFanartSize)
-                .TVEpisodeFanartQual = Me.tbTVEpisodeFanartQual.Value
                 .TVEpisodeFanartResize = Me.chkTVEpisodeFanartResize.Checked
                 .TVEpisodeFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVEpisodeFanartWidth.Text), Convert.ToInt32(Me.txtTVEpisodeFanartWidth.Text), 0)
                 .TVEpisodeFilterCustom.Clear()
@@ -5193,7 +5162,6 @@ Public Class dlgSettings
                 .TVEpisodePosterCol = Me.chkTVEpisodePosterCol.Checked
                 .TVEpisodePosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVEpisodePosterHeight.Text), Convert.ToInt32(Me.txtTVEpisodePosterHeight.Text), 0)
                 .TVEpisodePosterOverwrite = Me.chkTVEpisodePosterOverwrite.Checked
-                .TVEpisodePosterQual = Me.tbTVEpisodePosterQual.Value
                 .TVEpisodePosterResize = Me.chkTVEpisodePosterResize.Checked
                 .TVEpisodePosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVEpisodePosterWidth.Text), Convert.ToInt32(Me.txtTVEpisodePosterWidth.Text), 0)
                 .TVEpisodeProperCase = Me.chkTVEpisodeProperCase.Checked
@@ -5257,14 +5225,12 @@ Public Class dlgSettings
                 .TVSeasonBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonBannerHeight.Text), Convert.ToInt32(Me.txtTVSeasonBannerHeight.Text), 0)
                 .TVSeasonBannerOverwrite = Me.chkTVSeasonBannerOverwrite.Checked
                 .TVSeasonBannerPrefType = DirectCast(Me.cbTVSeasonBannerPrefType.SelectedIndex, Enums.TVSeasonBannerType)
-                .TVSeasonBannerQual = Me.tbTVSeasonBannerQual.Value
                 .TVSeasonBannerResize = Me.chkTVSeasonBannerResize.Checked
                 .TVSeasonBannerWidth = If(Not String.IsNullOrEmpty(Me.txtTVSeasonBannerWidth.Text), Convert.ToInt32(Me.txtTVSeasonBannerWidth.Text), 0)
                 .TVSeasonFanartCol = Me.chkTVSeasonFanartCol.Checked
                 .TVSeasonFanartHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonFanartHeight.Text), Convert.ToInt32(Me.txtTVSeasonFanartHeight.Text), 0)
                 .TVSeasonFanartOverwrite = Me.chkTVSeasonFanartOverwrite.Checked
                 .TVSeasonFanartPrefSize = DirectCast(Me.cbTVSeasonFanartPrefSize.SelectedIndex, Enums.TVFanartSize)
-                .TVSeasonFanartQual = Me.tbTVSeasonFanartQual.Value
                 .TVSeasonFanartResize = Me.chkTVSeasonFanartResize.Checked
                 .TVSeasonFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVSeasonFanartWidth.Text), Convert.ToInt32(Me.txtTVSeasonFanartWidth.Text), 0)
                 .TVSeasonLandscapeCol = Me.chkTVSeasonLandscapeCol.Checked
@@ -5274,14 +5240,12 @@ Public Class dlgSettings
                 .TVSeasonPosterOverwrite = Me.chkTVSeasonPosterOverwrite.Checked
                 .TVSeasonPosterPrefSize = DirectCast(Me.cbTVSeasonPosterPrefSize.SelectedIndex, Enums.TVPosterSize)
                 .TVEpisodePosterPrefSize = DirectCast(Me.cbTVEpisodePosterPrefSize.SelectedIndex, Enums.TVEpisodePosterSize)
-                .TVSeasonPosterQual = Me.tbTVSeasonPosterQual.Value
                 .TVSeasonPosterResize = Me.chkTVSeasonPosterResize.Checked
                 .TVSeasonPosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVSeasonPosterWidth.Text), Convert.ToInt32(Me.txtTVSeasonPosterWidth.Text), 0)
                 .TVShowBannerCol = Me.chkTVShowBannerCol.Checked
                 .TVShowBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVShowBannerHeight.Text), Convert.ToInt32(Me.txtTVShowBannerHeight.Text), 0)
                 .TVShowBannerOverwrite = Me.chkTVShowBannerOverwrite.Checked
                 .TVShowBannerPrefType = DirectCast(Me.cbTVShowBannerPrefType.SelectedIndex, Enums.TVShowBannerType)
-                .TVShowBannerQual = Me.tbTVShowBannerQual.Value
                 .TVShowBannerResize = Me.chkTVShowBannerResize.Checked
                 .TVShowBannerWidth = If(Not String.IsNullOrEmpty(Me.txtTVShowBannerWidth.Text), Convert.ToInt32(Me.txtTVShowBannerWidth.Text), 0)
                 .TVShowCharacterArtCol = Me.chkTVShowCharacterArtCol.Checked
@@ -5302,7 +5266,6 @@ Public Class dlgSettings
                 .TVShowFanartHeight = If(Not String.IsNullOrEmpty(Me.txtTVShowFanartHeight.Text), Convert.ToInt32(Me.txtTVShowFanartHeight.Text), 0)
                 .TVShowFanartOverwrite = Me.chkTVShowFanartOverwrite.Checked
                 .TVShowFanartPrefSize = DirectCast(Me.cbTVShowFanartPrefSize.SelectedIndex, Enums.TVFanartSize)
-                .TVShowFanartQual = Me.tbTVShowFanartQual.Value
                 .TVShowFanartResize = Me.chkTVShowFanartResize.Checked
                 .TVShowFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVShowFanartWidth.Text), Convert.ToInt32(Me.txtTVShowFanartWidth.Text), 0)
                 .TVShowFilterCustom.Clear()
@@ -5325,7 +5288,6 @@ Public Class dlgSettings
                 .TVShowPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVShowPosterHeight.Text), Convert.ToInt32(Me.txtTVShowPosterHeight.Text), 0)
                 .TVShowPosterOverwrite = Me.chkTVShowPosterOverwrite.Checked
                 .TVShowPosterPrefSize = DirectCast(Me.cbTVShowPosterPrefSize.SelectedIndex, Enums.TVPosterSize)
-                .TVShowPosterQual = Me.tbTVShowPosterQual.Value
                 .TVShowPosterResize = Me.chkTVShowPosterResize.Checked
                 .TVShowPosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVShowPosterWidth.Text), Convert.ToInt32(Me.txtTVShowPosterWidth.Text), 0)
                 .TVShowProperCase = Me.chkTVShowProperCase.Checked
@@ -6025,7 +5987,6 @@ Public Class dlgSettings
         Me.lblMovieLanguageOverlay.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
         Me.lblMovieLevTolerance.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
         Me.lblMoviePosterHeight.Text = Master.eLang.GetString(480, "Max Height:")
-        Me.lblMoviePosterQ.Text = Master.eLang.GetString(478, "Quality:")
         Me.lblMoviePosterSize.Text = Master.eLang.GetString(482, "Preferred Size:")
         Me.lblMoviePosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
         Me.lblMovieScraperDefFIExt.Text = Master.eLang.GetString(626, "File Type")
@@ -6222,70 +6183,54 @@ Public Class dlgSettings
         Me.gbTVShowPosterOpts.Text = Me.gbMoviePosterOpts.Text
         Me.gbTVSortTokensOpts.Text = Me.gbMovieSortTokensOpts.Text
         Me.lblMovieBannerHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblMovieBannerQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieBannerWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblMovieEFanartsHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblMovieEFanartsQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieEFanartsSize.Text = Me.lblMoviePosterSize.Text
         Me.lblMovieEFanartsWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblMovieEThumbsHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblMovieEThumbsLimit.Text = Me.lblMovieEFanartsLimit.Text
-        Me.lblMovieEThumbsQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieEThumbsSize.Text = Me.lblMoviePosterSize.Text
         Me.lblMovieEThumbsWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblMovieFanartHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblMovieFanartQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieFanartSize.Text = Me.lblMoviePosterSize.Text
         Me.lblMovieSetBannerHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblMovieSetBannerQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieSetBannerType.Text = Me.lblMovieBannerType.Text
         Me.lblMovieSetBannerWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblMovieSetFanartHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblMovieSetFanartQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieSetFanartSize.Text = Me.lblMoviePosterSize.Text
         Me.lblMovieSetFanartWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblMovieSetPosterHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblMovieSetPosterQ.Text = Me.lblMoviePosterQ.Text
         Me.lblMovieSetPosterSize.Text = Me.lblMoviePosterSize.Text
         Me.lblMovieSetPosterWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblSettingsTopTitle.Text = Me.Text
         Me.lblTVASBannerHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVASBannerQ.Text = Me.lblMoviePosterQ.Text
         Me.lblTVASBannerType.Text = Me.lblMovieBannerType.Text
         Me.lblTVASBannerWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVASFanartHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVASFanartQ.Text = Me.lblMovieFanartQ.Text
         Me.lblTVASFanartSize.Text = Me.lblMoviePosterSize.Text
         Me.lblTVASFanartWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVASPosterHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVASPosterQ.Text = Me.lblMoviePosterQ.Text
         Me.lblTVASPosterSize.Text = Me.lblMoviePosterSize.Text
         Me.lblTVASPosterWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVEpisodeFanartHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVEpisodeFanartQ.Text = Me.lblMovieFanartQ.Text
         Me.lblTVEpisodeFanartSize.Text = Me.lblMoviePosterSize.Text
         Me.lblTVEpisodeFanartWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVEpisodePosterHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVEpisodePosterQ.Text = Me.lblMoviePosterQ.Text
         Me.lblTVEpisodePosterWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVEpisodePosterSize.Text = Me.lblMoviePosterSize.Text
         Me.lblTVEpisodeRetrieve.Text = Me.lblTVSeasonRetrieve.Text
         Me.lblTVLanguageOverlay.Text = Me.lblMovieLanguageOverlay.Text
         Me.lblTVScraperDefFIExt.Text = Me.lblMovieScraperDefFIExt.Text
         Me.lblTVSeasonBannerHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVSeasonBannerQ.Text = Me.lblMoviePosterQ.Text
         Me.lblTVSeasonBannerType.Text = Me.lblMovieBannerType.Text
         Me.lblTVSeasonBannerWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVSeasonFanartHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVSeasonFanartQ.Text = Me.lblMoviePosterQ.Text
         Me.lblTVSeasonFanartSize.Text = Me.lblMoviePosterSize.Text
         Me.lblTVSeasonFanartWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVSeasonPosterHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVSeasonPosterQ.Text = Me.lblMoviePosterQ.Text
         Me.lblTVSeasonPosterSize.Text = Me.lblTVShowPosterSize.Text
         Me.lblTVSeasonPosterWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVShowBannerHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVShowBannerQ.Text = Me.lblMoviePosterQ.Text
         Me.lblTVShowBannerType.Text = Me.lblMovieBannerType.Text
         Me.lblTVShowBannerWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVShowEFanartsHeight.Text = Me.lblMoviePosterHeight.Text
@@ -6293,11 +6238,9 @@ Public Class dlgSettings
         Me.lblTVShowEFanartsSize.Text = Me.lblMoviePosterSize.Text
         Me.lblTVShowEFanartsWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVShowFanartHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVShowFanartQ.Text = Me.lblMoviePosterQ.Text
         Me.lblTVShowFanartSize.Text = Me.lblMoviePosterSize.Text
         Me.lblTVShowFanartWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVShowPosterHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVShowPosterQ.Text = Me.lblMoviePosterQ.Text
         Me.lblTVShowPosterWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVSkipLessThan.Text = Me.lblMovieSkipLessThan.Text
         Me.lblTVSkipLessThanMB.Text = Me.lblMovieSkipLessThanMB.Text
@@ -6324,424 +6267,6 @@ Public Class dlgSettings
         Me.LoadTVPosterSizes()
         Me.LoadTVSeasonBannerTypes()
         Me.LoadTVShowBannerTypes()
-    End Sub
-
-    Private Sub tbTVASBannerQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVASBannerQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVASBannerQual.Text = tbTVASBannerQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVASBannerQual
-            Select Case True
-                Case tbTVASBannerQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVASBannerQual.Value > 95 OrElse tbTVASBannerQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVASBannerQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVASBannerQual.Value, 300 - tbTVASBannerQual.Value, 0)
-                Case tbTVASBannerQual.Value >= 80 AndAlso tbTVASBannerQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVASBannerQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVASBannerQual.Value - 20)), 0)
-                Case tbTVASBannerQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVASBannerQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbTVASPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVASPosterQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVASPosterQual.Text = tbTVASPosterQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVASPosterQual
-            Select Case True
-                Case tbTVASPosterQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVASPosterQual.Value > 95 OrElse tbTVASPosterQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVASPosterQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVASPosterQual.Value, 300 - tbTVASPosterQual.Value, 0)
-                Case tbTVASPosterQual.Value >= 80 AndAlso tbTVASPosterQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVASPosterQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVASPosterQual.Value - 20)), 0)
-                Case tbTVASPosterQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVASPosterQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbTVASFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVASFanartQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVASFanartQual.Text = tbTVASFanartQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVASFanartQual
-            Select Case True
-                Case tbTVASFanartQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVASFanartQual.Value > 95 OrElse tbTVASFanartQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVASFanartQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVASFanartQual.Value, 300 - tbTVASFanartQual.Value, 0)
-                Case tbTVASFanartQual.Value >= 80 AndAlso tbTVASFanartQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVASFanartQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVASFanartQual.Value - 20)), 0)
-                Case tbTVASFanartQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVASFanartQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbTVEpisodeFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVEpisodeFanartQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVEpisodeFanartQual.Text = tbTVEpisodeFanartQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVEpisodeFanartQual
-            Select Case True
-                Case tbTVEpisodeFanartQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVEpisodeFanartQual.Value > 95 OrElse tbTVEpisodeFanartQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVEpisodeFanartQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVEpisodeFanartQual.Value, 300 - tbTVEpisodeFanartQual.Value, 0)
-                Case tbTVEpisodeFanartQual.Value >= 80 AndAlso tbTVEpisodeFanartQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVEpisodeFanartQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVEpisodeFanartQual.Value - 20)), 0)
-                Case tbTVEpisodeFanartQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVEpisodeFanartQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbTVEpisodePosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVEpisodePosterQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVEpisodePosterQual.Text = tbTVEpisodePosterQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVEpisodePosterQual
-            Select Case True
-                Case tbTVEpisodePosterQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVEpisodePosterQual.Value > 95 OrElse tbTVEpisodePosterQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVEpisodePosterQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVEpisodePosterQual.Value, 300 - tbTVEpisodePosterQual.Value, 0)
-                Case tbTVEpisodePosterQual.Value >= 80 AndAlso tbTVEpisodePosterQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVEpisodePosterQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVEpisodePosterQual.Value - 20)), 0)
-                Case tbTVEpisodePosterQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVEpisodePosterQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbMovieBannerQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMovieBannerQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblMovieBannerQual.Text = tbMovieBannerQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblMovieBannerQual
-            Select Case True
-                Case tbMovieBannerQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbMovieBannerQual.Value > 95 OrElse tbMovieBannerQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbMovieBannerQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbMovieBannerQual.Value, 300 - tbMovieBannerQual.Value, 0)
-                Case tbMovieBannerQual.Value >= 80 AndAlso tbMovieBannerQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbMovieBannerQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMovieBannerQual.Value - 20)), 0)
-                Case tbMovieBannerQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMovieBannerQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbMovieEFanartsQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMovieEFanartsQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblMovieEFanartsQual.Text = tbMovieEFanartsQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblMovieEFanartsQual
-            Select Case True
-                Case tbMovieEFanartsQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbMovieEFanartsQual.Value > 95 OrElse tbMovieEFanartsQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbMovieEFanartsQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbMovieEFanartsQual.Value, 300 - tbMovieEFanartsQual.Value, 0)
-                Case tbMovieEFanartsQual.Value >= 80 AndAlso tbMovieEFanartsQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbMovieEFanartsQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMovieEFanartsQual.Value - 20)), 0)
-                Case tbMovieEFanartsQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMovieEFanartsQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbMovieEThumbsQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMovieEThumbsQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblMovieEThumbsQual.Text = tbMovieEThumbsQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblMovieEThumbsQual
-            Select Case True
-                Case tbMovieEThumbsQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbMovieEThumbsQual.Value > 95 OrElse tbMovieEThumbsQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbMovieEThumbsQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbMovieEThumbsQual.Value, 300 - tbMovieEThumbsQual.Value, 0)
-                Case tbMovieEThumbsQual.Value >= 80 AndAlso tbMovieEThumbsQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbMovieEThumbsQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMovieEThumbsQual.Value - 20)), 0)
-                Case tbMovieEThumbsQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMovieEThumbsQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbMovieFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMovieFanartQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblMovieFanartQual.Text = tbMovieFanartQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblMovieFanartQual
-            Select Case True
-                Case tbMovieFanartQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbMovieFanartQual.Value > 95 OrElse tbMovieFanartQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbMovieFanartQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbMovieFanartQual.Value, 300 - tbMovieFanartQual.Value, 0)
-                Case tbMovieFanartQual.Value >= 80 AndAlso tbMovieFanartQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbMovieFanartQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMovieFanartQual.Value - 20)), 0)
-                Case tbMovieFanartQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMovieFanartQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbMoviePosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMoviePosterQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblMoviePosterQual.Text = tbMoviePosterQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblMoviePosterQual
-            Select Case True
-                Case tbMoviePosterQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbMoviePosterQual.Value > 95 OrElse tbMoviePosterQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbMoviePosterQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbMoviePosterQual.Value, 300 - tbMoviePosterQual.Value, 0)
-                Case tbMoviePosterQual.Value >= 80 AndAlso tbMoviePosterQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbMoviePosterQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMoviePosterQual.Value - 20)), 0)
-                Case tbMoviePosterQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMoviePosterQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbMovieSetBannerQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMovieSetBannerQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblMovieSetBannerQual.Text = tbMovieSetBannerQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblMovieSetBannerQual
-            Select Case True
-                Case tbMovieSetBannerQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbMovieSetBannerQual.Value > 95 OrElse tbMovieSetBannerQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbMovieSetBannerQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbMovieSetBannerQual.Value, 300 - tbMovieSetBannerQual.Value, 0)
-                Case tbMovieSetBannerQual.Value >= 80 AndAlso tbMovieSetBannerQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbMovieSetBannerQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMovieSetBannerQual.Value - 20)), 0)
-                Case tbMovieSetBannerQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMovieSetBannerQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbMovieSetFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMovieSetFanartQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblMovieSetFanartQual.Text = tbMovieSetFanartQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblMovieSetFanartQual
-            Select Case True
-                Case tbMovieSetFanartQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbMovieSetFanartQual.Value > 95 OrElse tbMovieSetFanartQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbMovieSetFanartQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbMovieSetFanartQual.Value, 300 - tbMovieSetFanartQual.Value, 0)
-                Case tbMovieSetFanartQual.Value >= 80 AndAlso tbMovieSetFanartQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbMovieSetFanartQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMovieSetFanartQual.Value - 20)), 0)
-                Case tbMovieSetFanartQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMovieSetFanartQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbMovieSetPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMovieSetPosterQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblMovieSetPosterQual.Text = tbMovieSetPosterQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblMovieSetPosterQual
-            Select Case True
-                Case tbMovieSetPosterQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbMovieSetPosterQual.Value > 95 OrElse tbMovieSetPosterQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbMovieSetPosterQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbMovieSetPosterQual.Value, 300 - tbMovieSetPosterQual.Value, 0)
-                Case tbMovieSetPosterQual.Value >= 80 AndAlso tbMovieSetPosterQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbMovieSetPosterQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMovieSetPosterQual.Value - 20)), 0)
-                Case tbMovieSetPosterQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMovieSetPosterQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbTVSeasonBannerQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVSeasonBannerQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVSeasonBannerQual.Text = tbTVSeasonBannerQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVSeasonBannerQual
-            Select Case True
-                Case tbTVSeasonBannerQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVSeasonBannerQual.Value > 95 OrElse tbTVSeasonBannerQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVSeasonBannerQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVSeasonBannerQual.Value, 300 - tbTVSeasonBannerQual.Value, 0)
-                Case tbTVSeasonBannerQual.Value >= 80 AndAlso tbTVSeasonBannerQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVSeasonBannerQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVSeasonBannerQual.Value - 20)), 0)
-                Case tbTVSeasonBannerQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVSeasonBannerQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbTVSeasonFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVSeasonFanartQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVSeasonFanartQual.Text = tbTVSeasonFanartQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVSeasonFanartQual
-            Select Case True
-                Case tbTVSeasonFanartQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVSeasonFanartQual.Value > 95 OrElse tbTVSeasonFanartQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVSeasonFanartQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVSeasonFanartQual.Value, 300 - tbTVSeasonFanartQual.Value, 0)
-                Case tbTVSeasonFanartQual.Value >= 80 AndAlso tbTVSeasonFanartQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVSeasonFanartQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVSeasonFanartQual.Value - 20)), 0)
-                Case tbTVSeasonFanartQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVSeasonFanartQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbTVSeasonPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVSeasonPosterQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVSeasonPosterQual.Text = tbTVSeasonPosterQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVSeasonPosterQual
-            Select Case True
-                Case tbTVSeasonPosterQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVSeasonPosterQual.Value > 95 OrElse tbTVSeasonPosterQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVSeasonPosterQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVSeasonPosterQual.Value, 300 - tbTVSeasonPosterQual.Value, 0)
-                Case tbTVSeasonPosterQual.Value >= 80 AndAlso tbTVSeasonPosterQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVSeasonPosterQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVSeasonPosterQual.Value - 20)), 0)
-                Case tbTVSeasonPosterQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVSeasonPosterQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbTVShowBannerQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVShowBannerQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVShowBannerQual.Text = tbTVShowBannerQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVShowBannerQual
-            Select Case True
-                Case tbTVShowBannerQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVShowBannerQual.Value > 95 OrElse tbTVShowBannerQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVShowBannerQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVShowBannerQual.Value, 300 - tbTVShowBannerQual.Value, 0)
-                Case tbTVShowBannerQual.Value >= 80 AndAlso tbTVShowBannerQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVShowBannerQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVShowBannerQual.Value - 20)), 0)
-                Case tbTVShowBannerQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVShowBannerQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbTVShowFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVShowFanartQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVShowFanartQual.Text = tbTVShowFanartQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVShowFanartQual
-            Select Case True
-                Case tbTVShowFanartQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVShowFanartQual.Value > 95 OrElse tbTVShowFanartQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVShowFanartQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVShowFanartQual.Value, 300 - tbTVShowFanartQual.Value, 0)
-                Case tbTVShowFanartQual.Value >= 80 AndAlso tbTVShowFanartQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVShowFanartQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVShowFanartQual.Value - 20)), 0)
-                Case tbTVShowFanartQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVShowFanartQual.Value - 50))), 255, 0)
-            End Select
-        End With
-    End Sub
-
-    Private Sub tbTVShowPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVShowPosterQual.ValueChanged
-        Me.SetApplyButton(True)
-        Me.lblTVShowPosterQual.Text = tbTVShowPosterQual.Value.ToString
-        'change text color to indicate recommendations
-        With Me.lblTVShowPosterQual
-            Select Case True
-                Case tbTVShowPosterQual.Value = 0
-                    .ForeColor = Color.Black
-                Case tbTVShowPosterQual.Value > 95 OrElse tbTVShowPosterQual.Value < 20
-                    .ForeColor = Color.Red
-                Case tbTVShowPosterQual.Value > 85
-                    .ForeColor = Color.FromArgb(255, 155 + tbTVShowPosterQual.Value, 300 - tbTVShowPosterQual.Value, 0)
-                Case tbTVShowPosterQual.Value >= 80 AndAlso tbTVShowPosterQual.Value <= 85
-                    .ForeColor = Color.Blue
-                Case tbTVShowPosterQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbTVShowPosterQual.Value - 20)), 0)
-                Case tbTVShowPosterQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbTVShowPosterQual.Value - 50))), 255, 0)
-            End Select
-        End With
     End Sub
 
     Private Sub tcFileSystemCleaner_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcFileSystemCleaner.SelectedIndexChanged

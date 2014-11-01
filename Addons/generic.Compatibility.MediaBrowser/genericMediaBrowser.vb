@@ -149,7 +149,7 @@ Public Class genericMediaBrowser
                             Dim fPath As String = Path.Combine(Path.GetDirectoryName(mMovie.Filename), "backdrop.jpg")
                             Dim eimage As New Images
                             eimage = _image
-                            eimage.Save(fPath, Master.eSettings.MovieFanartQual, , False)
+                            eimage.Save(fPath)
                         End If
                 End Select
 

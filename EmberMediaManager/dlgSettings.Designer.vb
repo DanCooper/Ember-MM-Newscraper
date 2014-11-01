@@ -101,9 +101,6 @@ Partial Class dlgSettings
         Me.chkMovieBannerPrefOnly = New System.Windows.Forms.CheckBox()
         Me.txtMovieBannerWidth = New System.Windows.Forms.TextBox()
         Me.txtMovieBannerHeight = New System.Windows.Forms.TextBox()
-        Me.lblMovieBannerQual = New System.Windows.Forms.Label()
-        Me.tbMovieBannerQual = New System.Windows.Forms.TrackBar()
-        Me.lblMovieBannerQ = New System.Windows.Forms.Label()
         Me.lblMovieBannerWidth = New System.Windows.Forms.Label()
         Me.lblMovieBannerHeight = New System.Windows.Forms.Label()
         Me.chkMovieBannerResize = New System.Windows.Forms.CheckBox()
@@ -118,9 +115,6 @@ Partial Class dlgSettings
         Me.chkMovieEFanartsPrefOnly = New System.Windows.Forms.CheckBox()
         Me.txtMovieEFanartsWidth = New System.Windows.Forms.TextBox()
         Me.txtMovieEFanartsHeight = New System.Windows.Forms.TextBox()
-        Me.lblMovieEFanartsQual = New System.Windows.Forms.Label()
-        Me.tbMovieEFanartsQual = New System.Windows.Forms.TrackBar()
-        Me.lblMovieEFanartsQ = New System.Windows.Forms.Label()
         Me.lblMovieEFanartsWidth = New System.Windows.Forms.Label()
         Me.lblMovieEFanartsHeight = New System.Windows.Forms.Label()
         Me.chkMovieEFanartsResize = New System.Windows.Forms.CheckBox()
@@ -133,9 +127,6 @@ Partial Class dlgSettings
         Me.chkMovieEThumbsPrefOnly = New System.Windows.Forms.CheckBox()
         Me.txtMovieEThumbsWidth = New System.Windows.Forms.TextBox()
         Me.txtMovieEThumbsHeight = New System.Windows.Forms.TextBox()
-        Me.lblMovieEThumbsQual = New System.Windows.Forms.Label()
-        Me.tbMovieEThumbsQual = New System.Windows.Forms.TrackBar()
-        Me.lblMovieEThumbsQ = New System.Windows.Forms.Label()
         Me.lblMovieEThumbsWidth = New System.Windows.Forms.Label()
         Me.lblMovieEThumbsHeight = New System.Windows.Forms.Label()
         Me.chkMovieEThumbsResize = New System.Windows.Forms.CheckBox()
@@ -148,9 +139,6 @@ Partial Class dlgSettings
         Me.txtMovieFanartWidth = New System.Windows.Forms.TextBox()
         Me.txtMovieFanartHeight = New System.Windows.Forms.TextBox()
         Me.chkMovieFanartPrefOnly = New System.Windows.Forms.CheckBox()
-        Me.lblMovieFanartQual = New System.Windows.Forms.Label()
-        Me.tbMovieFanartQual = New System.Windows.Forms.TrackBar()
-        Me.lblMovieFanartQ = New System.Windows.Forms.Label()
         Me.lblMovieFanartWidth = New System.Windows.Forms.Label()
         Me.lblMovieFanartHeight = New System.Windows.Forms.Label()
         Me.chkMovieFanartResize = New System.Windows.Forms.CheckBox()
@@ -161,9 +149,6 @@ Partial Class dlgSettings
         Me.chkMoviePosterPrefOnly = New System.Windows.Forms.CheckBox()
         Me.txtMoviePosterWidth = New System.Windows.Forms.TextBox()
         Me.txtMoviePosterHeight = New System.Windows.Forms.TextBox()
-        Me.lblMoviePosterQual = New System.Windows.Forms.Label()
-        Me.tbMoviePosterQual = New System.Windows.Forms.TrackBar()
-        Me.lblMoviePosterQ = New System.Windows.Forms.Label()
         Me.lblMoviePosterWidth = New System.Windows.Forms.Label()
         Me.lblMoviePosterHeight = New System.Windows.Forms.Label()
         Me.chkMoviePosterResize = New System.Windows.Forms.CheckBox()
@@ -702,9 +687,6 @@ Partial Class dlgSettings
         Me.gbTVShowBannerOpts = New System.Windows.Forms.GroupBox()
         Me.txtTVShowBannerWidth = New System.Windows.Forms.TextBox()
         Me.txtTVShowBannerHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVShowBannerQual = New System.Windows.Forms.Label()
-        Me.tbTVShowBannerQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVShowBannerQ = New System.Windows.Forms.Label()
         Me.lblTVShowBannerWidth = New System.Windows.Forms.Label()
         Me.lblTVShowBannerHeight = New System.Windows.Forms.Label()
         Me.chkTVShowBannerResize = New System.Windows.Forms.CheckBox()
@@ -714,9 +696,6 @@ Partial Class dlgSettings
         Me.gbTVShowPosterOpts = New System.Windows.Forms.GroupBox()
         Me.txtTVShowPosterWidth = New System.Windows.Forms.TextBox()
         Me.txtTVShowPosterHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVShowPosterQual = New System.Windows.Forms.Label()
-        Me.tbTVShowPosterQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVShowPosterQ = New System.Windows.Forms.Label()
         Me.lblTVShowPosterWidth = New System.Windows.Forms.Label()
         Me.lblTVShowPosterHeight = New System.Windows.Forms.Label()
         Me.chkTVShowPosterResize = New System.Windows.Forms.CheckBox()
@@ -726,9 +705,6 @@ Partial Class dlgSettings
         Me.gbTVShowFanartOpts = New System.Windows.Forms.GroupBox()
         Me.txtTVShowFanartWidth = New System.Windows.Forms.TextBox()
         Me.txtTVShowFanartHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVShowFanartQual = New System.Windows.Forms.Label()
-        Me.tbTVShowFanartQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVShowFanartQ = New System.Windows.Forms.Label()
         Me.lblTVShowFanartWidth = New System.Windows.Forms.Label()
         Me.lblTVShowFanartHeight = New System.Windows.Forms.Label()
         Me.chkTVShowFanartResize = New System.Windows.Forms.CheckBox()
@@ -741,9 +717,6 @@ Partial Class dlgSettings
         Me.gbTVASFanartOpts = New System.Windows.Forms.GroupBox()
         Me.txtTVASFanartWidth = New System.Windows.Forms.TextBox()
         Me.txtTVASFanartHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVASFanartQual = New System.Windows.Forms.Label()
-        Me.tbTVASFanartQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVASFanartQ = New System.Windows.Forms.Label()
         Me.lblTVASFanartWidth = New System.Windows.Forms.Label()
         Me.lblTVASFanartHeight = New System.Windows.Forms.Label()
         Me.chkTVASFanartResize = New System.Windows.Forms.CheckBox()
@@ -753,9 +726,6 @@ Partial Class dlgSettings
         Me.gbTVASBannerOpts = New System.Windows.Forms.GroupBox()
         Me.txtTVASBannerWidth = New System.Windows.Forms.TextBox()
         Me.txtTVASBannerHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVASBannerQual = New System.Windows.Forms.Label()
-        Me.tbTVASBannerQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVASBannerQ = New System.Windows.Forms.Label()
         Me.lblTVASBannerWidth = New System.Windows.Forms.Label()
         Me.lblTVASBannerHeight = New System.Windows.Forms.Label()
         Me.chkTVASBannerResize = New System.Windows.Forms.CheckBox()
@@ -765,9 +735,6 @@ Partial Class dlgSettings
         Me.gbTVASPosterOpts = New System.Windows.Forms.GroupBox()
         Me.txtTVASPosterWidth = New System.Windows.Forms.TextBox()
         Me.txtTVASPosterHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVASPosterQual = New System.Windows.Forms.Label()
-        Me.tbTVASPosterQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVASPosterQ = New System.Windows.Forms.Label()
         Me.lblTVASPosterWidth = New System.Windows.Forms.Label()
         Me.lblTVASPosterHeight = New System.Windows.Forms.Label()
         Me.chkTVASPosterResize = New System.Windows.Forms.CheckBox()
@@ -780,9 +747,6 @@ Partial Class dlgSettings
         Me.gbTVSeasonBannerOpts = New System.Windows.Forms.GroupBox()
         Me.txtTVSeasonBannerWidth = New System.Windows.Forms.TextBox()
         Me.txtTVSeasonBannerHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVSeasonBannerQual = New System.Windows.Forms.Label()
-        Me.tbTVSeasonBannerQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVSeasonBannerQ = New System.Windows.Forms.Label()
         Me.lblTVSeasonBannerWidth = New System.Windows.Forms.Label()
         Me.lblTVSeasonBannerHeight = New System.Windows.Forms.Label()
         Me.chkTVSeasonBannerResize = New System.Windows.Forms.CheckBox()
@@ -792,9 +756,6 @@ Partial Class dlgSettings
         Me.gbTVSeasonPosterOpts = New System.Windows.Forms.GroupBox()
         Me.txtTVSeasonPosterWidth = New System.Windows.Forms.TextBox()
         Me.txtTVSeasonPosterHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVSeasonPosterQual = New System.Windows.Forms.Label()
-        Me.tbTVSeasonPosterQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVSeasonPosterQ = New System.Windows.Forms.Label()
         Me.lblTVSeasonPosterWidth = New System.Windows.Forms.Label()
         Me.lblTVSeasonPosterHeight = New System.Windows.Forms.Label()
         Me.chkTVSeasonPosterResize = New System.Windows.Forms.CheckBox()
@@ -804,9 +765,6 @@ Partial Class dlgSettings
         Me.gbTVSeasonFanartOpts = New System.Windows.Forms.GroupBox()
         Me.txtTVSeasonFanartWidth = New System.Windows.Forms.TextBox()
         Me.txtTVSeasonFanartHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVSeasonFanartQual = New System.Windows.Forms.Label()
-        Me.tbTVSeasonFanartQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVSeasonFanartQ = New System.Windows.Forms.Label()
         Me.lblTVSeasonFanartWidth = New System.Windows.Forms.Label()
         Me.lblTVSeasonFanartHeight = New System.Windows.Forms.Label()
         Me.chkTVSeasonFanartResize = New System.Windows.Forms.CheckBox()
@@ -819,9 +777,6 @@ Partial Class dlgSettings
         Me.cbTVEpisodePosterPrefSize = New System.Windows.Forms.ComboBox()
         Me.txtTVEpisodePosterWidth = New System.Windows.Forms.TextBox()
         Me.txtTVEpisodePosterHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVEpisodePosterQual = New System.Windows.Forms.Label()
-        Me.tbTVEpisodePosterQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVEpisodePosterQ = New System.Windows.Forms.Label()
         Me.lblTVEpisodePosterWidth = New System.Windows.Forms.Label()
         Me.lblTVEpisodePosterHeight = New System.Windows.Forms.Label()
         Me.chkTVEpisodePosterResize = New System.Windows.Forms.CheckBox()
@@ -829,9 +784,6 @@ Partial Class dlgSettings
         Me.gbTVEpisodeFanartOpts = New System.Windows.Forms.GroupBox()
         Me.txtTVEpisodeFanartWidth = New System.Windows.Forms.TextBox()
         Me.txtTVEpisodeFanartHeight = New System.Windows.Forms.TextBox()
-        Me.lblTVEpisodeFanartQual = New System.Windows.Forms.Label()
-        Me.tbTVEpisodeFanartQual = New System.Windows.Forms.TrackBar()
-        Me.lblTVEpisodeFanartQ = New System.Windows.Forms.Label()
         Me.lblTVEpisodeFanartWidth = New System.Windows.Forms.Label()
         Me.lblTVEpisodeFanartHeight = New System.Windows.Forms.Label()
         Me.chkTVEpisodeFanartResize = New System.Windows.Forms.CheckBox()
@@ -1111,9 +1063,6 @@ Partial Class dlgSettings
         Me.chkMovieSetBannerPrefOnly = New System.Windows.Forms.CheckBox()
         Me.txtMovieSetBannerWidth = New System.Windows.Forms.TextBox()
         Me.txtMovieSetBannerHeight = New System.Windows.Forms.TextBox()
-        Me.lblMovieSetBannerQual = New System.Windows.Forms.Label()
-        Me.tbMovieSetBannerQual = New System.Windows.Forms.TrackBar()
-        Me.lblMovieSetBannerQ = New System.Windows.Forms.Label()
         Me.lblMovieSetBannerWidth = New System.Windows.Forms.Label()
         Me.lblMovieSetBannerHeight = New System.Windows.Forms.Label()
         Me.chkMovieSetBannerResize = New System.Windows.Forms.CheckBox()
@@ -1126,9 +1075,6 @@ Partial Class dlgSettings
         Me.txtMovieSetFanartWidth = New System.Windows.Forms.TextBox()
         Me.txtMovieSetFanartHeight = New System.Windows.Forms.TextBox()
         Me.chkMovieSetFanartPrefOnly = New System.Windows.Forms.CheckBox()
-        Me.lblMovieSetFanartQual = New System.Windows.Forms.Label()
-        Me.tbMovieSetFanartQual = New System.Windows.Forms.TrackBar()
-        Me.lblMovieSetFanartQ = New System.Windows.Forms.Label()
         Me.lblMovieSetFanartWidth = New System.Windows.Forms.Label()
         Me.lblMovieSetFanartHeight = New System.Windows.Forms.Label()
         Me.chkMovieSetFanartResize = New System.Windows.Forms.CheckBox()
@@ -1139,9 +1085,6 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterPrefOnly = New System.Windows.Forms.CheckBox()
         Me.txtMovieSetPosterWidth = New System.Windows.Forms.TextBox()
         Me.txtMovieSetPosterHeight = New System.Windows.Forms.TextBox()
-        Me.lblMovieSetPosterQual = New System.Windows.Forms.Label()
-        Me.tbMovieSetPosterQual = New System.Windows.Forms.TrackBar()
-        Me.lblMovieSetPosterQ = New System.Windows.Forms.Label()
         Me.lblMovieSetPosterWidth = New System.Windows.Forms.Label()
         Me.lblMovieSetPosterHeight = New System.Windows.Forms.Label()
         Me.chkMovieSetPosterResize = New System.Windows.Forms.CheckBox()
@@ -1162,17 +1105,12 @@ Partial Class dlgSettings
         Me.gbMovieClearLogoOpts.SuspendLayout
         Me.gbMovieDiscArtOpts.SuspendLayout
         Me.gbMovieBannerOpts.SuspendLayout
-        CType(Me.tbMovieBannerQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMovieLandscapeOpts.SuspendLayout
         Me.gbMovieEFanartsOpts.SuspendLayout
-        CType(Me.tbMovieEFanartsQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMovieEThumbsOpts.SuspendLayout
-        CType(Me.tbMovieEThumbsQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMovieImagesOpts.SuspendLayout
         Me.gbMovieFanartOpts.SuspendLayout
-        CType(Me.tbMovieFanartQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMoviePosterOpts.SuspendLayout
-        CType(Me.tbMoviePosterQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMovieGeneralMediaListOpts.SuspendLayout
         Me.gbMovieSortTokensOpts.SuspendLayout
         Me.pnlSettingsTop.SuspendLayout
@@ -1268,32 +1206,21 @@ Partial Class dlgSettings
         Me.gbTVShowClearLogoOpts.SuspendLayout
         Me.gbTVShowLandscapeOpts.SuspendLayout
         Me.gbTVShowBannerOpts.SuspendLayout
-        CType(Me.tbTVShowBannerQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbTVShowPosterOpts.SuspendLayout
-        CType(Me.tbTVShowPosterQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbTVShowFanartOpts.SuspendLayout
-        CType(Me.tbTVShowFanartQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.tpTVAllSeasons.SuspendLayout
         Me.gbTVASLandscapeOpts.SuspendLayout
         Me.gbTVASFanartOpts.SuspendLayout
-        CType(Me.tbTVASFanartQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbTVASBannerOpts.SuspendLayout
-        CType(Me.tbTVASBannerQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbTVASPosterOpts.SuspendLayout
-        CType(Me.tbTVASPosterQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.tpTVSeason.SuspendLayout
         Me.gbTVSeasonLandscapeOpts.SuspendLayout
         Me.gbTVSeasonBannerOpts.SuspendLayout
-        CType(Me.tbTVSeasonBannerQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbTVSeasonPosterOpts.SuspendLayout
-        CType(Me.tbTVSeasonPosterQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbTVSeasonFanartOpts.SuspendLayout
-        CType(Me.tbTVSeasonFanartQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.tpTVEpisode.SuspendLayout
         Me.gbTVEpisodePosterOpts.SuspendLayout
-        CType(Me.tbTVEpisodePosterQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbTVEpisodeFanartOpts.SuspendLayout
-        CType(Me.tbTVEpisodeFanartQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlTVScraper.SuspendLayout
         Me.gbTVScraperMiscOpts.SuspendLayout
         Me.gbTVScraperFieldsOpts.SuspendLayout
@@ -1344,12 +1271,9 @@ Partial Class dlgSettings
         Me.gbMovieSetClearLogoOpts.SuspendLayout
         Me.gbMovieSetDiscArtOpts.SuspendLayout
         Me.gbMovieSetBannerOpts.SuspendLayout
-        CType(Me.tbMovieSetBannerQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMovieSetLandscapeOpts.SuspendLayout
         Me.gbMovieSetFanartOpts.SuspendLayout
-        CType(Me.tbMovieSetFanartQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMovieSetPosterOpts.SuspendLayout
-        CType(Me.tbMovieSetPosterQual,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -2114,9 +2038,6 @@ Partial Class dlgSettings
         Me.gbMovieBannerOpts.Controls.Add(Me.chkMovieBannerPrefOnly)
         Me.gbMovieBannerOpts.Controls.Add(Me.txtMovieBannerWidth)
         Me.gbMovieBannerOpts.Controls.Add(Me.txtMovieBannerHeight)
-        Me.gbMovieBannerOpts.Controls.Add(Me.lblMovieBannerQual)
-        Me.gbMovieBannerOpts.Controls.Add(Me.tbMovieBannerQual)
-        Me.gbMovieBannerOpts.Controls.Add(Me.lblMovieBannerQ)
         Me.gbMovieBannerOpts.Controls.Add(Me.lblMovieBannerWidth)
         Me.gbMovieBannerOpts.Controls.Add(Me.lblMovieBannerHeight)
         Me.gbMovieBannerOpts.Controls.Add(Me.chkMovieBannerResize)
@@ -2159,38 +2080,6 @@ Partial Class dlgSettings
         Me.txtMovieBannerHeight.Name = "txtMovieBannerHeight"
         Me.txtMovieBannerHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtMovieBannerHeight.TabIndex = 8
-        '
-        'lblMovieBannerQual
-        '
-        Me.lblMovieBannerQual.AutoSize = true
-        Me.lblMovieBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblMovieBannerQual.Location = New System.Drawing.Point(183, 147)
-        Me.lblMovieBannerQual.Name = "lblMovieBannerQual"
-        Me.lblMovieBannerQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblMovieBannerQual.TabIndex = 11
-        Me.lblMovieBannerQual.Text = "100"
-        '
-        'tbMovieBannerQual
-        '
-        Me.tbMovieBannerQual.AutoSize = false
-        Me.tbMovieBannerQual.LargeChange = 10
-        Me.tbMovieBannerQual.Location = New System.Drawing.Point(7, 139)
-        Me.tbMovieBannerQual.Maximum = 100
-        Me.tbMovieBannerQual.Name = "tbMovieBannerQual"
-        Me.tbMovieBannerQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbMovieBannerQual.TabIndex = 10
-        Me.tbMovieBannerQual.TickFrequency = 10
-        Me.tbMovieBannerQual.Value = 100
-        '
-        'lblMovieBannerQ
-        '
-        Me.lblMovieBannerQ.AutoSize = true
-        Me.lblMovieBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieBannerQ.Location = New System.Drawing.Point(3, 127)
-        Me.lblMovieBannerQ.Name = "lblMovieBannerQ"
-        Me.lblMovieBannerQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblMovieBannerQ.TabIndex = 9
-        Me.lblMovieBannerQ.Text = "Quality:"
         '
         'lblMovieBannerWidth
         '
@@ -2283,9 +2172,6 @@ Partial Class dlgSettings
         Me.gbMovieEFanartsOpts.Controls.Add(Me.chkMovieEFanartsPrefOnly)
         Me.gbMovieEFanartsOpts.Controls.Add(Me.txtMovieEFanartsWidth)
         Me.gbMovieEFanartsOpts.Controls.Add(Me.txtMovieEFanartsHeight)
-        Me.gbMovieEFanartsOpts.Controls.Add(Me.lblMovieEFanartsQual)
-        Me.gbMovieEFanartsOpts.Controls.Add(Me.tbMovieEFanartsQual)
-        Me.gbMovieEFanartsOpts.Controls.Add(Me.lblMovieEFanartsQ)
         Me.gbMovieEFanartsOpts.Controls.Add(Me.lblMovieEFanartsWidth)
         Me.gbMovieEFanartsOpts.Controls.Add(Me.lblMovieEFanartsHeight)
         Me.gbMovieEFanartsOpts.Controls.Add(Me.chkMovieEFanartsResize)
@@ -2346,38 +2232,6 @@ Partial Class dlgSettings
         Me.txtMovieEFanartsHeight.Name = "txtMovieEFanartsHeight"
         Me.txtMovieEFanartsHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtMovieEFanartsHeight.TabIndex = 8
-        '
-        'lblMovieEFanartsQual
-        '
-        Me.lblMovieEFanartsQual.AutoSize = true
-        Me.lblMovieEFanartsQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblMovieEFanartsQual.Location = New System.Drawing.Point(183, 195)
-        Me.lblMovieEFanartsQual.Name = "lblMovieEFanartsQual"
-        Me.lblMovieEFanartsQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblMovieEFanartsQual.TabIndex = 11
-        Me.lblMovieEFanartsQual.Text = "100"
-        '
-        'tbMovieEFanartsQual
-        '
-        Me.tbMovieEFanartsQual.AutoSize = false
-        Me.tbMovieEFanartsQual.LargeChange = 10
-        Me.tbMovieEFanartsQual.Location = New System.Drawing.Point(7, 187)
-        Me.tbMovieEFanartsQual.Maximum = 100
-        Me.tbMovieEFanartsQual.Name = "tbMovieEFanartsQual"
-        Me.tbMovieEFanartsQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbMovieEFanartsQual.TabIndex = 10
-        Me.tbMovieEFanartsQual.TickFrequency = 10
-        Me.tbMovieEFanartsQual.Value = 100
-        '
-        'lblMovieEFanartsQ
-        '
-        Me.lblMovieEFanartsQ.AutoSize = true
-        Me.lblMovieEFanartsQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieEFanartsQ.Location = New System.Drawing.Point(3, 175)
-        Me.lblMovieEFanartsQ.Name = "lblMovieEFanartsQ"
-        Me.lblMovieEFanartsQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblMovieEFanartsQ.TabIndex = 9
-        Me.lblMovieEFanartsQ.Text = "Quality:"
         '
         'lblMovieEFanartsWidth
         '
@@ -2448,9 +2302,6 @@ Partial Class dlgSettings
         Me.gbMovieEThumbsOpts.Controls.Add(Me.chkMovieEThumbsPrefOnly)
         Me.gbMovieEThumbsOpts.Controls.Add(Me.txtMovieEThumbsWidth)
         Me.gbMovieEThumbsOpts.Controls.Add(Me.txtMovieEThumbsHeight)
-        Me.gbMovieEThumbsOpts.Controls.Add(Me.lblMovieEThumbsQual)
-        Me.gbMovieEThumbsOpts.Controls.Add(Me.tbMovieEThumbsQual)
-        Me.gbMovieEThumbsOpts.Controls.Add(Me.lblMovieEThumbsQ)
         Me.gbMovieEThumbsOpts.Controls.Add(Me.lblMovieEThumbsWidth)
         Me.gbMovieEThumbsOpts.Controls.Add(Me.lblMovieEThumbsHeight)
         Me.gbMovieEThumbsOpts.Controls.Add(Me.chkMovieEThumbsResize)
@@ -2511,38 +2362,6 @@ Partial Class dlgSettings
         Me.txtMovieEThumbsHeight.Name = "txtMovieEThumbsHeight"
         Me.txtMovieEThumbsHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtMovieEThumbsHeight.TabIndex = 8
-        '
-        'lblMovieEThumbsQual
-        '
-        Me.lblMovieEThumbsQual.AutoSize = true
-        Me.lblMovieEThumbsQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblMovieEThumbsQual.Location = New System.Drawing.Point(183, 195)
-        Me.lblMovieEThumbsQual.Name = "lblMovieEThumbsQual"
-        Me.lblMovieEThumbsQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblMovieEThumbsQual.TabIndex = 11
-        Me.lblMovieEThumbsQual.Text = "100"
-        '
-        'tbMovieEThumbsQual
-        '
-        Me.tbMovieEThumbsQual.AutoSize = false
-        Me.tbMovieEThumbsQual.LargeChange = 10
-        Me.tbMovieEThumbsQual.Location = New System.Drawing.Point(7, 187)
-        Me.tbMovieEThumbsQual.Maximum = 100
-        Me.tbMovieEThumbsQual.Name = "tbMovieEThumbsQual"
-        Me.tbMovieEThumbsQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbMovieEThumbsQual.TabIndex = 10
-        Me.tbMovieEThumbsQual.TickFrequency = 10
-        Me.tbMovieEThumbsQual.Value = 100
-        '
-        'lblMovieEThumbsQ
-        '
-        Me.lblMovieEThumbsQ.AutoSize = true
-        Me.lblMovieEThumbsQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieEThumbsQ.Location = New System.Drawing.Point(3, 175)
-        Me.lblMovieEThumbsQ.Name = "lblMovieEThumbsQ"
-        Me.lblMovieEThumbsQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblMovieEThumbsQ.TabIndex = 9
-        Me.lblMovieEThumbsQ.Text = "Quality:"
         '
         'lblMovieEThumbsWidth
         '
@@ -2634,9 +2453,6 @@ Partial Class dlgSettings
         Me.gbMovieFanartOpts.Controls.Add(Me.txtMovieFanartWidth)
         Me.gbMovieFanartOpts.Controls.Add(Me.txtMovieFanartHeight)
         Me.gbMovieFanartOpts.Controls.Add(Me.chkMovieFanartPrefOnly)
-        Me.gbMovieFanartOpts.Controls.Add(Me.lblMovieFanartQual)
-        Me.gbMovieFanartOpts.Controls.Add(Me.tbMovieFanartQual)
-        Me.gbMovieFanartOpts.Controls.Add(Me.lblMovieFanartQ)
         Me.gbMovieFanartOpts.Controls.Add(Me.lblMovieFanartWidth)
         Me.gbMovieFanartOpts.Controls.Add(Me.lblMovieFanartHeight)
         Me.gbMovieFanartOpts.Controls.Add(Me.chkMovieFanartResize)
@@ -2679,38 +2495,6 @@ Partial Class dlgSettings
         Me.chkMovieFanartPrefOnly.TabIndex = 2
         Me.chkMovieFanartPrefOnly.Text = "Only"
         Me.chkMovieFanartPrefOnly.UseVisualStyleBackColor = true
-        '
-        'lblMovieFanartQual
-        '
-        Me.lblMovieFanartQual.AutoSize = true
-        Me.lblMovieFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblMovieFanartQual.Location = New System.Drawing.Point(183, 147)
-        Me.lblMovieFanartQual.Name = "lblMovieFanartQual"
-        Me.lblMovieFanartQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblMovieFanartQual.TabIndex = 11
-        Me.lblMovieFanartQual.Text = "100"
-        '
-        'tbMovieFanartQual
-        '
-        Me.tbMovieFanartQual.AutoSize = false
-        Me.tbMovieFanartQual.LargeChange = 10
-        Me.tbMovieFanartQual.Location = New System.Drawing.Point(6, 139)
-        Me.tbMovieFanartQual.Maximum = 100
-        Me.tbMovieFanartQual.Name = "tbMovieFanartQual"
-        Me.tbMovieFanartQual.Size = New System.Drawing.Size(180, 27)
-        Me.tbMovieFanartQual.TabIndex = 10
-        Me.tbMovieFanartQual.TickFrequency = 10
-        Me.tbMovieFanartQual.Value = 100
-        '
-        'lblMovieFanartQ
-        '
-        Me.lblMovieFanartQ.AutoSize = true
-        Me.lblMovieFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieFanartQ.Location = New System.Drawing.Point(3, 127)
-        Me.lblMovieFanartQ.Name = "lblMovieFanartQ"
-        Me.lblMovieFanartQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblMovieFanartQ.TabIndex = 9
-        Me.lblMovieFanartQ.Text = "Quality:"
         '
         'lblMovieFanartWidth
         '
@@ -2779,9 +2563,6 @@ Partial Class dlgSettings
         Me.gbMoviePosterOpts.Controls.Add(Me.chkMoviePosterPrefOnly)
         Me.gbMoviePosterOpts.Controls.Add(Me.txtMoviePosterWidth)
         Me.gbMoviePosterOpts.Controls.Add(Me.txtMoviePosterHeight)
-        Me.gbMoviePosterOpts.Controls.Add(Me.lblMoviePosterQual)
-        Me.gbMoviePosterOpts.Controls.Add(Me.tbMoviePosterQual)
-        Me.gbMoviePosterOpts.Controls.Add(Me.lblMoviePosterQ)
         Me.gbMoviePosterOpts.Controls.Add(Me.lblMoviePosterWidth)
         Me.gbMoviePosterOpts.Controls.Add(Me.lblMoviePosterHeight)
         Me.gbMoviePosterOpts.Controls.Add(Me.chkMoviePosterResize)
@@ -2824,38 +2605,6 @@ Partial Class dlgSettings
         Me.txtMoviePosterHeight.Name = "txtMoviePosterHeight"
         Me.txtMoviePosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtMoviePosterHeight.TabIndex = 8
-        '
-        'lblMoviePosterQual
-        '
-        Me.lblMoviePosterQual.AutoSize = true
-        Me.lblMoviePosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblMoviePosterQual.Location = New System.Drawing.Point(183, 147)
-        Me.lblMoviePosterQual.Name = "lblMoviePosterQual"
-        Me.lblMoviePosterQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblMoviePosterQual.TabIndex = 11
-        Me.lblMoviePosterQual.Text = "100"
-        '
-        'tbMoviePosterQual
-        '
-        Me.tbMoviePosterQual.AutoSize = false
-        Me.tbMoviePosterQual.LargeChange = 10
-        Me.tbMoviePosterQual.Location = New System.Drawing.Point(7, 139)
-        Me.tbMoviePosterQual.Maximum = 100
-        Me.tbMoviePosterQual.Name = "tbMoviePosterQual"
-        Me.tbMoviePosterQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbMoviePosterQual.TabIndex = 10
-        Me.tbMoviePosterQual.TickFrequency = 10
-        Me.tbMoviePosterQual.Value = 100
-        '
-        'lblMoviePosterQ
-        '
-        Me.lblMoviePosterQ.AutoSize = true
-        Me.lblMoviePosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMoviePosterQ.Location = New System.Drawing.Point(3, 127)
-        Me.lblMoviePosterQ.Name = "lblMoviePosterQ"
-        Me.lblMoviePosterQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblMoviePosterQ.TabIndex = 9
-        Me.lblMoviePosterQ.Text = "Quality:"
         '
         'lblMoviePosterWidth
         '
@@ -8615,9 +8364,6 @@ Partial Class dlgSettings
         '
         Me.gbTVShowBannerOpts.Controls.Add(Me.txtTVShowBannerWidth)
         Me.gbTVShowBannerOpts.Controls.Add(Me.txtTVShowBannerHeight)
-        Me.gbTVShowBannerOpts.Controls.Add(Me.lblTVShowBannerQual)
-        Me.gbTVShowBannerOpts.Controls.Add(Me.tbTVShowBannerQual)
-        Me.gbTVShowBannerOpts.Controls.Add(Me.lblTVShowBannerQ)
         Me.gbTVShowBannerOpts.Controls.Add(Me.lblTVShowBannerWidth)
         Me.gbTVShowBannerOpts.Controls.Add(Me.lblTVShowBannerHeight)
         Me.gbTVShowBannerOpts.Controls.Add(Me.chkTVShowBannerResize)
@@ -8649,39 +8395,6 @@ Partial Class dlgSettings
         Me.txtTVShowBannerHeight.Name = "txtTVShowBannerHeight"
         Me.txtTVShowBannerHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVShowBannerHeight.TabIndex = 9
-        '
-        'lblTVShowBannerQual
-        '
-        Me.lblTVShowBannerQual.AutoSize = true
-        Me.lblTVShowBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblTVShowBannerQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVShowBannerQual.Name = "lblTVShowBannerQual"
-        Me.lblTVShowBannerQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVShowBannerQual.TabIndex = 12
-        Me.lblTVShowBannerQual.Text = "100"
-        '
-        'tbTVShowBannerQual
-        '
-        Me.tbTVShowBannerQual.AutoSize = false
-        Me.tbTVShowBannerQual.BackColor = System.Drawing.Color.White
-        Me.tbTVShowBannerQual.LargeChange = 10
-        Me.tbTVShowBannerQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVShowBannerQual.Maximum = 100
-        Me.tbTVShowBannerQual.Name = "tbTVShowBannerQual"
-        Me.tbTVShowBannerQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbTVShowBannerQual.TabIndex = 11
-        Me.tbTVShowBannerQual.TickFrequency = 10
-        Me.tbTVShowBannerQual.Value = 100
-        '
-        'lblTVShowBannerQ
-        '
-        Me.lblTVShowBannerQ.AutoSize = true
-        Me.lblTVShowBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVShowBannerQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVShowBannerQ.Name = "lblTVShowBannerQ"
-        Me.lblTVShowBannerQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVShowBannerQ.TabIndex = 10
-        Me.lblTVShowBannerQ.Text = "Quality:"
         '
         'lblTVShowBannerWidth
         '
@@ -8749,9 +8462,6 @@ Partial Class dlgSettings
         '
         Me.gbTVShowPosterOpts.Controls.Add(Me.txtTVShowPosterWidth)
         Me.gbTVShowPosterOpts.Controls.Add(Me.txtTVShowPosterHeight)
-        Me.gbTVShowPosterOpts.Controls.Add(Me.lblTVShowPosterQual)
-        Me.gbTVShowPosterOpts.Controls.Add(Me.tbTVShowPosterQual)
-        Me.gbTVShowPosterOpts.Controls.Add(Me.lblTVShowPosterQ)
         Me.gbTVShowPosterOpts.Controls.Add(Me.lblTVShowPosterWidth)
         Me.gbTVShowPosterOpts.Controls.Add(Me.lblTVShowPosterHeight)
         Me.gbTVShowPosterOpts.Controls.Add(Me.chkTVShowPosterResize)
@@ -8783,39 +8493,6 @@ Partial Class dlgSettings
         Me.txtTVShowPosterHeight.Name = "txtTVShowPosterHeight"
         Me.txtTVShowPosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVShowPosterHeight.TabIndex = 9
-        '
-        'lblTVShowPosterQual
-        '
-        Me.lblTVShowPosterQual.AutoSize = true
-        Me.lblTVShowPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblTVShowPosterQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVShowPosterQual.Name = "lblTVShowPosterQual"
-        Me.lblTVShowPosterQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVShowPosterQual.TabIndex = 12
-        Me.lblTVShowPosterQual.Text = "100"
-        '
-        'tbTVShowPosterQual
-        '
-        Me.tbTVShowPosterQual.AutoSize = false
-        Me.tbTVShowPosterQual.BackColor = System.Drawing.Color.White
-        Me.tbTVShowPosterQual.LargeChange = 10
-        Me.tbTVShowPosterQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVShowPosterQual.Maximum = 100
-        Me.tbTVShowPosterQual.Name = "tbTVShowPosterQual"
-        Me.tbTVShowPosterQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbTVShowPosterQual.TabIndex = 11
-        Me.tbTVShowPosterQual.TickFrequency = 10
-        Me.tbTVShowPosterQual.Value = 100
-        '
-        'lblTVShowPosterQ
-        '
-        Me.lblTVShowPosterQ.AutoSize = true
-        Me.lblTVShowPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVShowPosterQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVShowPosterQ.Name = "lblTVShowPosterQ"
-        Me.lblTVShowPosterQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVShowPosterQ.TabIndex = 10
-        Me.lblTVShowPosterQ.Text = "Quality:"
         '
         'lblTVShowPosterWidth
         '
@@ -8883,9 +8560,6 @@ Partial Class dlgSettings
         '
         Me.gbTVShowFanartOpts.Controls.Add(Me.txtTVShowFanartWidth)
         Me.gbTVShowFanartOpts.Controls.Add(Me.txtTVShowFanartHeight)
-        Me.gbTVShowFanartOpts.Controls.Add(Me.lblTVShowFanartQual)
-        Me.gbTVShowFanartOpts.Controls.Add(Me.tbTVShowFanartQual)
-        Me.gbTVShowFanartOpts.Controls.Add(Me.lblTVShowFanartQ)
         Me.gbTVShowFanartOpts.Controls.Add(Me.lblTVShowFanartWidth)
         Me.gbTVShowFanartOpts.Controls.Add(Me.lblTVShowFanartHeight)
         Me.gbTVShowFanartOpts.Controls.Add(Me.chkTVShowFanartResize)
@@ -8917,39 +8591,6 @@ Partial Class dlgSettings
         Me.txtTVShowFanartHeight.Name = "txtTVShowFanartHeight"
         Me.txtTVShowFanartHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVShowFanartHeight.TabIndex = 7
-        '
-        'lblTVShowFanartQual
-        '
-        Me.lblTVShowFanartQual.AutoSize = true
-        Me.lblTVShowFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblTVShowFanartQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVShowFanartQual.Name = "lblTVShowFanartQual"
-        Me.lblTVShowFanartQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVShowFanartQual.TabIndex = 10
-        Me.lblTVShowFanartQual.Text = "100"
-        '
-        'tbTVShowFanartQual
-        '
-        Me.tbTVShowFanartQual.AutoSize = false
-        Me.tbTVShowFanartQual.BackColor = System.Drawing.Color.White
-        Me.tbTVShowFanartQual.LargeChange = 10
-        Me.tbTVShowFanartQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVShowFanartQual.Maximum = 100
-        Me.tbTVShowFanartQual.Name = "tbTVShowFanartQual"
-        Me.tbTVShowFanartQual.Size = New System.Drawing.Size(180, 27)
-        Me.tbTVShowFanartQual.TabIndex = 9
-        Me.tbTVShowFanartQual.TickFrequency = 10
-        Me.tbTVShowFanartQual.Value = 100
-        '
-        'lblTVShowFanartQ
-        '
-        Me.lblTVShowFanartQ.AutoSize = true
-        Me.lblTVShowFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVShowFanartQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVShowFanartQ.Name = "lblTVShowFanartQ"
-        Me.lblTVShowFanartQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVShowFanartQ.TabIndex = 8
-        Me.lblTVShowFanartQ.Text = "Quality:"
         '
         'lblTVShowFanartWidth
         '
@@ -9053,9 +8694,6 @@ Partial Class dlgSettings
         '
         Me.gbTVASFanartOpts.Controls.Add(Me.txtTVASFanartWidth)
         Me.gbTVASFanartOpts.Controls.Add(Me.txtTVASFanartHeight)
-        Me.gbTVASFanartOpts.Controls.Add(Me.lblTVASFanartQual)
-        Me.gbTVASFanartOpts.Controls.Add(Me.tbTVASFanartQual)
-        Me.gbTVASFanartOpts.Controls.Add(Me.lblTVASFanartQ)
         Me.gbTVASFanartOpts.Controls.Add(Me.lblTVASFanartWidth)
         Me.gbTVASFanartOpts.Controls.Add(Me.lblTVASFanartHeight)
         Me.gbTVASFanartOpts.Controls.Add(Me.chkTVASFanartResize)
@@ -9087,39 +8725,6 @@ Partial Class dlgSettings
         Me.txtTVASFanartHeight.Name = "txtTVASFanartHeight"
         Me.txtTVASFanartHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVASFanartHeight.TabIndex = 7
-        '
-        'lblTVASFanartQual
-        '
-        Me.lblTVASFanartQual.AutoSize = true
-        Me.lblTVASFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblTVASFanartQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVASFanartQual.Name = "lblTVASFanartQual"
-        Me.lblTVASFanartQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVASFanartQual.TabIndex = 10
-        Me.lblTVASFanartQual.Text = "100"
-        '
-        'tbTVASFanartQual
-        '
-        Me.tbTVASFanartQual.AutoSize = false
-        Me.tbTVASFanartQual.BackColor = System.Drawing.Color.White
-        Me.tbTVASFanartQual.LargeChange = 10
-        Me.tbTVASFanartQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVASFanartQual.Maximum = 100
-        Me.tbTVASFanartQual.Name = "tbTVASFanartQual"
-        Me.tbTVASFanartQual.Size = New System.Drawing.Size(180, 27)
-        Me.tbTVASFanartQual.TabIndex = 9
-        Me.tbTVASFanartQual.TickFrequency = 10
-        Me.tbTVASFanartQual.Value = 100
-        '
-        'lblTVASFanartQ
-        '
-        Me.lblTVASFanartQ.AutoSize = true
-        Me.lblTVASFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVASFanartQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVASFanartQ.Name = "lblTVASFanartQ"
-        Me.lblTVASFanartQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVASFanartQ.TabIndex = 8
-        Me.lblTVASFanartQ.Text = "Quality:"
         '
         'lblTVASFanartWidth
         '
@@ -9187,9 +8792,6 @@ Partial Class dlgSettings
         '
         Me.gbTVASBannerOpts.Controls.Add(Me.txtTVASBannerWidth)
         Me.gbTVASBannerOpts.Controls.Add(Me.txtTVASBannerHeight)
-        Me.gbTVASBannerOpts.Controls.Add(Me.lblTVASBannerQual)
-        Me.gbTVASBannerOpts.Controls.Add(Me.tbTVASBannerQual)
-        Me.gbTVASBannerOpts.Controls.Add(Me.lblTVASBannerQ)
         Me.gbTVASBannerOpts.Controls.Add(Me.lblTVASBannerWidth)
         Me.gbTVASBannerOpts.Controls.Add(Me.lblTVASBannerHeight)
         Me.gbTVASBannerOpts.Controls.Add(Me.chkTVASBannerResize)
@@ -9221,39 +8823,6 @@ Partial Class dlgSettings
         Me.txtTVASBannerHeight.Name = "txtTVASBannerHeight"
         Me.txtTVASBannerHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVASBannerHeight.TabIndex = 9
-        '
-        'lblTVASBannerQual
-        '
-        Me.lblTVASBannerQual.AutoSize = true
-        Me.lblTVASBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblTVASBannerQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVASBannerQual.Name = "lblTVASBannerQual"
-        Me.lblTVASBannerQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVASBannerQual.TabIndex = 12
-        Me.lblTVASBannerQual.Text = "100"
-        '
-        'tbTVASBannerQual
-        '
-        Me.tbTVASBannerQual.AutoSize = false
-        Me.tbTVASBannerQual.BackColor = System.Drawing.Color.White
-        Me.tbTVASBannerQual.LargeChange = 10
-        Me.tbTVASBannerQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVASBannerQual.Maximum = 100
-        Me.tbTVASBannerQual.Name = "tbTVASBannerQual"
-        Me.tbTVASBannerQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbTVASBannerQual.TabIndex = 11
-        Me.tbTVASBannerQual.TickFrequency = 10
-        Me.tbTVASBannerQual.Value = 100
-        '
-        'lblTVASBannerQ
-        '
-        Me.lblTVASBannerQ.AutoSize = true
-        Me.lblTVASBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVASBannerQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVASBannerQ.Name = "lblTVASBannerQ"
-        Me.lblTVASBannerQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVASBannerQ.TabIndex = 10
-        Me.lblTVASBannerQ.Text = "Quality:"
         '
         'lblTVASBannerWidth
         '
@@ -9321,9 +8890,6 @@ Partial Class dlgSettings
         '
         Me.gbTVASPosterOpts.Controls.Add(Me.txtTVASPosterWidth)
         Me.gbTVASPosterOpts.Controls.Add(Me.txtTVASPosterHeight)
-        Me.gbTVASPosterOpts.Controls.Add(Me.lblTVASPosterQual)
-        Me.gbTVASPosterOpts.Controls.Add(Me.tbTVASPosterQual)
-        Me.gbTVASPosterOpts.Controls.Add(Me.lblTVASPosterQ)
         Me.gbTVASPosterOpts.Controls.Add(Me.lblTVASPosterWidth)
         Me.gbTVASPosterOpts.Controls.Add(Me.lblTVASPosterHeight)
         Me.gbTVASPosterOpts.Controls.Add(Me.chkTVASPosterResize)
@@ -9355,39 +8921,6 @@ Partial Class dlgSettings
         Me.txtTVASPosterHeight.Name = "txtTVASPosterHeight"
         Me.txtTVASPosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVASPosterHeight.TabIndex = 9
-        '
-        'lblTVASPosterQual
-        '
-        Me.lblTVASPosterQual.AutoSize = true
-        Me.lblTVASPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblTVASPosterQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVASPosterQual.Name = "lblTVASPosterQual"
-        Me.lblTVASPosterQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVASPosterQual.TabIndex = 12
-        Me.lblTVASPosterQual.Text = "100"
-        '
-        'tbTVASPosterQual
-        '
-        Me.tbTVASPosterQual.AutoSize = false
-        Me.tbTVASPosterQual.BackColor = System.Drawing.Color.White
-        Me.tbTVASPosterQual.LargeChange = 10
-        Me.tbTVASPosterQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVASPosterQual.Maximum = 100
-        Me.tbTVASPosterQual.Name = "tbTVASPosterQual"
-        Me.tbTVASPosterQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbTVASPosterQual.TabIndex = 11
-        Me.tbTVASPosterQual.TickFrequency = 10
-        Me.tbTVASPosterQual.Value = 100
-        '
-        'lblTVASPosterQ
-        '
-        Me.lblTVASPosterQ.AutoSize = true
-        Me.lblTVASPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVASPosterQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVASPosterQ.Name = "lblTVASPosterQ"
-        Me.lblTVASPosterQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVASPosterQ.TabIndex = 10
-        Me.lblTVASPosterQ.Text = "Quality:"
         '
         'lblTVASPosterWidth
         '
@@ -9490,9 +9023,6 @@ Partial Class dlgSettings
         '
         Me.gbTVSeasonBannerOpts.Controls.Add(Me.txtTVSeasonBannerWidth)
         Me.gbTVSeasonBannerOpts.Controls.Add(Me.txtTVSeasonBannerHeight)
-        Me.gbTVSeasonBannerOpts.Controls.Add(Me.lblTVSeasonBannerQual)
-        Me.gbTVSeasonBannerOpts.Controls.Add(Me.tbTVSeasonBannerQual)
-        Me.gbTVSeasonBannerOpts.Controls.Add(Me.lblTVSeasonBannerQ)
         Me.gbTVSeasonBannerOpts.Controls.Add(Me.lblTVSeasonBannerWidth)
         Me.gbTVSeasonBannerOpts.Controls.Add(Me.lblTVSeasonBannerHeight)
         Me.gbTVSeasonBannerOpts.Controls.Add(Me.chkTVSeasonBannerResize)
@@ -9524,39 +9054,6 @@ Partial Class dlgSettings
         Me.txtTVSeasonBannerHeight.Name = "txtTVSeasonBannerHeight"
         Me.txtTVSeasonBannerHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVSeasonBannerHeight.TabIndex = 7
-        '
-        'lblTVSeasonBannerQual
-        '
-        Me.lblTVSeasonBannerQual.AutoSize = true
-        Me.lblTVSeasonBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSeasonBannerQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVSeasonBannerQual.Name = "lblTVSeasonBannerQual"
-        Me.lblTVSeasonBannerQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVSeasonBannerQual.TabIndex = 10
-        Me.lblTVSeasonBannerQual.Text = "100"
-        '
-        'tbTVSeasonBannerQual
-        '
-        Me.tbTVSeasonBannerQual.AutoSize = false
-        Me.tbTVSeasonBannerQual.BackColor = System.Drawing.Color.White
-        Me.tbTVSeasonBannerQual.LargeChange = 10
-        Me.tbTVSeasonBannerQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVSeasonBannerQual.Maximum = 100
-        Me.tbTVSeasonBannerQual.Name = "tbTVSeasonBannerQual"
-        Me.tbTVSeasonBannerQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbTVSeasonBannerQual.TabIndex = 9
-        Me.tbTVSeasonBannerQual.TickFrequency = 10
-        Me.tbTVSeasonBannerQual.Value = 100
-        '
-        'lblTVSeasonBannerQ
-        '
-        Me.lblTVSeasonBannerQ.AutoSize = true
-        Me.lblTVSeasonBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSeasonBannerQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVSeasonBannerQ.Name = "lblTVSeasonBannerQ"
-        Me.lblTVSeasonBannerQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVSeasonBannerQ.TabIndex = 8
-        Me.lblTVSeasonBannerQ.Text = "Quality:"
         '
         'lblTVSeasonBannerWidth
         '
@@ -9624,9 +9121,6 @@ Partial Class dlgSettings
         '
         Me.gbTVSeasonPosterOpts.Controls.Add(Me.txtTVSeasonPosterWidth)
         Me.gbTVSeasonPosterOpts.Controls.Add(Me.txtTVSeasonPosterHeight)
-        Me.gbTVSeasonPosterOpts.Controls.Add(Me.lblTVSeasonPosterQual)
-        Me.gbTVSeasonPosterOpts.Controls.Add(Me.tbTVSeasonPosterQual)
-        Me.gbTVSeasonPosterOpts.Controls.Add(Me.lblTVSeasonPosterQ)
         Me.gbTVSeasonPosterOpts.Controls.Add(Me.lblTVSeasonPosterWidth)
         Me.gbTVSeasonPosterOpts.Controls.Add(Me.lblTVSeasonPosterHeight)
         Me.gbTVSeasonPosterOpts.Controls.Add(Me.chkTVSeasonPosterResize)
@@ -9658,39 +9152,6 @@ Partial Class dlgSettings
         Me.txtTVSeasonPosterHeight.Name = "txtTVSeasonPosterHeight"
         Me.txtTVSeasonPosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVSeasonPosterHeight.TabIndex = 7
-        '
-        'lblTVSeasonPosterQual
-        '
-        Me.lblTVSeasonPosterQual.AutoSize = true
-        Me.lblTVSeasonPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSeasonPosterQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVSeasonPosterQual.Name = "lblTVSeasonPosterQual"
-        Me.lblTVSeasonPosterQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVSeasonPosterQual.TabIndex = 10
-        Me.lblTVSeasonPosterQual.Text = "100"
-        '
-        'tbTVSeasonPosterQual
-        '
-        Me.tbTVSeasonPosterQual.AutoSize = false
-        Me.tbTVSeasonPosterQual.BackColor = System.Drawing.Color.White
-        Me.tbTVSeasonPosterQual.LargeChange = 10
-        Me.tbTVSeasonPosterQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVSeasonPosterQual.Maximum = 100
-        Me.tbTVSeasonPosterQual.Name = "tbTVSeasonPosterQual"
-        Me.tbTVSeasonPosterQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbTVSeasonPosterQual.TabIndex = 9
-        Me.tbTVSeasonPosterQual.TickFrequency = 10
-        Me.tbTVSeasonPosterQual.Value = 100
-        '
-        'lblTVSeasonPosterQ
-        '
-        Me.lblTVSeasonPosterQ.AutoSize = true
-        Me.lblTVSeasonPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSeasonPosterQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVSeasonPosterQ.Name = "lblTVSeasonPosterQ"
-        Me.lblTVSeasonPosterQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVSeasonPosterQ.TabIndex = 8
-        Me.lblTVSeasonPosterQ.Text = "Quality:"
         '
         'lblTVSeasonPosterWidth
         '
@@ -9758,9 +9219,6 @@ Partial Class dlgSettings
         '
         Me.gbTVSeasonFanartOpts.Controls.Add(Me.txtTVSeasonFanartWidth)
         Me.gbTVSeasonFanartOpts.Controls.Add(Me.txtTVSeasonFanartHeight)
-        Me.gbTVSeasonFanartOpts.Controls.Add(Me.lblTVSeasonFanartQual)
-        Me.gbTVSeasonFanartOpts.Controls.Add(Me.tbTVSeasonFanartQual)
-        Me.gbTVSeasonFanartOpts.Controls.Add(Me.lblTVSeasonFanartQ)
         Me.gbTVSeasonFanartOpts.Controls.Add(Me.lblTVSeasonFanartWidth)
         Me.gbTVSeasonFanartOpts.Controls.Add(Me.lblTVSeasonFanartHeight)
         Me.gbTVSeasonFanartOpts.Controls.Add(Me.chkTVSeasonFanartResize)
@@ -9792,39 +9250,6 @@ Partial Class dlgSettings
         Me.txtTVSeasonFanartHeight.Name = "txtTVSeasonFanartHeight"
         Me.txtTVSeasonFanartHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVSeasonFanartHeight.TabIndex = 7
-        '
-        'lblTVSeasonFanartQual
-        '
-        Me.lblTVSeasonFanartQual.AutoSize = true
-        Me.lblTVSeasonFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSeasonFanartQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVSeasonFanartQual.Name = "lblTVSeasonFanartQual"
-        Me.lblTVSeasonFanartQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVSeasonFanartQual.TabIndex = 10
-        Me.lblTVSeasonFanartQual.Text = "100"
-        '
-        'tbTVSeasonFanartQual
-        '
-        Me.tbTVSeasonFanartQual.AutoSize = false
-        Me.tbTVSeasonFanartQual.BackColor = System.Drawing.Color.White
-        Me.tbTVSeasonFanartQual.LargeChange = 10
-        Me.tbTVSeasonFanartQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVSeasonFanartQual.Maximum = 100
-        Me.tbTVSeasonFanartQual.Name = "tbTVSeasonFanartQual"
-        Me.tbTVSeasonFanartQual.Size = New System.Drawing.Size(180, 27)
-        Me.tbTVSeasonFanartQual.TabIndex = 9
-        Me.tbTVSeasonFanartQual.TickFrequency = 10
-        Me.tbTVSeasonFanartQual.Value = 100
-        '
-        'lblTVSeasonFanartQ
-        '
-        Me.lblTVSeasonFanartQ.AutoSize = true
-        Me.lblTVSeasonFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSeasonFanartQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVSeasonFanartQ.Name = "lblTVSeasonFanartQ"
-        Me.lblTVSeasonFanartQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVSeasonFanartQ.TabIndex = 8
-        Me.lblTVSeasonFanartQ.Text = "Quality:"
         '
         'lblTVSeasonFanartWidth
         '
@@ -9906,9 +9331,6 @@ Partial Class dlgSettings
         Me.gbTVEpisodePosterOpts.Controls.Add(Me.cbTVEpisodePosterPrefSize)
         Me.gbTVEpisodePosterOpts.Controls.Add(Me.txtTVEpisodePosterWidth)
         Me.gbTVEpisodePosterOpts.Controls.Add(Me.txtTVEpisodePosterHeight)
-        Me.gbTVEpisodePosterOpts.Controls.Add(Me.lblTVEpisodePosterQual)
-        Me.gbTVEpisodePosterOpts.Controls.Add(Me.tbTVEpisodePosterQual)
-        Me.gbTVEpisodePosterOpts.Controls.Add(Me.lblTVEpisodePosterQ)
         Me.gbTVEpisodePosterOpts.Controls.Add(Me.lblTVEpisodePosterWidth)
         Me.gbTVEpisodePosterOpts.Controls.Add(Me.lblTVEpisodePosterHeight)
         Me.gbTVEpisodePosterOpts.Controls.Add(Me.chkTVEpisodePosterResize)
@@ -9959,39 +9381,6 @@ Partial Class dlgSettings
         Me.txtTVEpisodePosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVEpisodePosterHeight.TabIndex = 5
         '
-        'lblTVEpisodePosterQual
-        '
-        Me.lblTVEpisodePosterQual.AutoSize = true
-        Me.lblTVEpisodePosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblTVEpisodePosterQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVEpisodePosterQual.Name = "lblTVEpisodePosterQual"
-        Me.lblTVEpisodePosterQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVEpisodePosterQual.TabIndex = 8
-        Me.lblTVEpisodePosterQual.Text = "100"
-        '
-        'tbTVEpisodePosterQual
-        '
-        Me.tbTVEpisodePosterQual.AutoSize = false
-        Me.tbTVEpisodePosterQual.BackColor = System.Drawing.Color.White
-        Me.tbTVEpisodePosterQual.LargeChange = 10
-        Me.tbTVEpisodePosterQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVEpisodePosterQual.Maximum = 100
-        Me.tbTVEpisodePosterQual.Name = "tbTVEpisodePosterQual"
-        Me.tbTVEpisodePosterQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbTVEpisodePosterQual.TabIndex = 7
-        Me.tbTVEpisodePosterQual.TickFrequency = 10
-        Me.tbTVEpisodePosterQual.Value = 100
-        '
-        'lblTVEpisodePosterQ
-        '
-        Me.lblTVEpisodePosterQ.AutoSize = true
-        Me.lblTVEpisodePosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVEpisodePosterQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVEpisodePosterQ.Name = "lblTVEpisodePosterQ"
-        Me.lblTVEpisodePosterQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVEpisodePosterQ.TabIndex = 6
-        Me.lblTVEpisodePosterQ.Text = "Quality:"
-        '
         'lblTVEpisodePosterWidth
         '
         Me.lblTVEpisodePosterWidth.AutoSize = true
@@ -10038,9 +9427,6 @@ Partial Class dlgSettings
         '
         Me.gbTVEpisodeFanartOpts.Controls.Add(Me.txtTVEpisodeFanartWidth)
         Me.gbTVEpisodeFanartOpts.Controls.Add(Me.txtTVEpisodeFanartHeight)
-        Me.gbTVEpisodeFanartOpts.Controls.Add(Me.lblTVEpisodeFanartQual)
-        Me.gbTVEpisodeFanartOpts.Controls.Add(Me.tbTVEpisodeFanartQual)
-        Me.gbTVEpisodeFanartOpts.Controls.Add(Me.lblTVEpisodeFanartQ)
         Me.gbTVEpisodeFanartOpts.Controls.Add(Me.lblTVEpisodeFanartWidth)
         Me.gbTVEpisodeFanartOpts.Controls.Add(Me.lblTVEpisodeFanartHeight)
         Me.gbTVEpisodeFanartOpts.Controls.Add(Me.chkTVEpisodeFanartResize)
@@ -10072,39 +9458,6 @@ Partial Class dlgSettings
         Me.txtTVEpisodeFanartHeight.Name = "txtTVEpisodeFanartHeight"
         Me.txtTVEpisodeFanartHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVEpisodeFanartHeight.TabIndex = 7
-        '
-        'lblTVEpisodeFanartQual
-        '
-        Me.lblTVEpisodeFanartQual.AutoSize = true
-        Me.lblTVEpisodeFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblTVEpisodeFanartQual.Location = New System.Drawing.Point(183, 138)
-        Me.lblTVEpisodeFanartQual.Name = "lblTVEpisodeFanartQual"
-        Me.lblTVEpisodeFanartQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblTVEpisodeFanartQual.TabIndex = 10
-        Me.lblTVEpisodeFanartQual.Text = "100"
-        '
-        'tbTVEpisodeFanartQual
-        '
-        Me.tbTVEpisodeFanartQual.AutoSize = false
-        Me.tbTVEpisodeFanartQual.BackColor = System.Drawing.Color.White
-        Me.tbTVEpisodeFanartQual.LargeChange = 10
-        Me.tbTVEpisodeFanartQual.Location = New System.Drawing.Point(7, 131)
-        Me.tbTVEpisodeFanartQual.Maximum = 100
-        Me.tbTVEpisodeFanartQual.Name = "tbTVEpisodeFanartQual"
-        Me.tbTVEpisodeFanartQual.Size = New System.Drawing.Size(180, 27)
-        Me.tbTVEpisodeFanartQual.TabIndex = 9
-        Me.tbTVEpisodeFanartQual.TickFrequency = 10
-        Me.tbTVEpisodeFanartQual.Value = 100
-        '
-        'lblTVEpisodeFanartQ
-        '
-        Me.lblTVEpisodeFanartQ.AutoSize = true
-        Me.lblTVEpisodeFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVEpisodeFanartQ.Location = New System.Drawing.Point(3, 118)
-        Me.lblTVEpisodeFanartQ.Name = "lblTVEpisodeFanartQ"
-        Me.lblTVEpisodeFanartQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblTVEpisodeFanartQ.TabIndex = 8
-        Me.lblTVEpisodeFanartQ.Text = "Quality:"
         '
         'lblTVEpisodeFanartWidth
         '
@@ -13249,9 +12602,6 @@ Partial Class dlgSettings
         Me.gbMovieSetBannerOpts.Controls.Add(Me.chkMovieSetBannerPrefOnly)
         Me.gbMovieSetBannerOpts.Controls.Add(Me.txtMovieSetBannerWidth)
         Me.gbMovieSetBannerOpts.Controls.Add(Me.txtMovieSetBannerHeight)
-        Me.gbMovieSetBannerOpts.Controls.Add(Me.lblMovieSetBannerQual)
-        Me.gbMovieSetBannerOpts.Controls.Add(Me.tbMovieSetBannerQual)
-        Me.gbMovieSetBannerOpts.Controls.Add(Me.lblMovieSetBannerQ)
         Me.gbMovieSetBannerOpts.Controls.Add(Me.lblMovieSetBannerWidth)
         Me.gbMovieSetBannerOpts.Controls.Add(Me.lblMovieSetBannerHeight)
         Me.gbMovieSetBannerOpts.Controls.Add(Me.chkMovieSetBannerResize)
@@ -13294,38 +12644,6 @@ Partial Class dlgSettings
         Me.txtMovieSetBannerHeight.Name = "txtMovieSetBannerHeight"
         Me.txtMovieSetBannerHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtMovieSetBannerHeight.TabIndex = 8
-        '
-        'lblMovieSetBannerQual
-        '
-        Me.lblMovieSetBannerQual.AutoSize = true
-        Me.lblMovieSetBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblMovieSetBannerQual.Location = New System.Drawing.Point(183, 147)
-        Me.lblMovieSetBannerQual.Name = "lblMovieSetBannerQual"
-        Me.lblMovieSetBannerQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblMovieSetBannerQual.TabIndex = 11
-        Me.lblMovieSetBannerQual.Text = "100"
-        '
-        'tbMovieSetBannerQual
-        '
-        Me.tbMovieSetBannerQual.AutoSize = false
-        Me.tbMovieSetBannerQual.LargeChange = 10
-        Me.tbMovieSetBannerQual.Location = New System.Drawing.Point(7, 139)
-        Me.tbMovieSetBannerQual.Maximum = 100
-        Me.tbMovieSetBannerQual.Name = "tbMovieSetBannerQual"
-        Me.tbMovieSetBannerQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbMovieSetBannerQual.TabIndex = 10
-        Me.tbMovieSetBannerQual.TickFrequency = 10
-        Me.tbMovieSetBannerQual.Value = 100
-        '
-        'lblMovieSetBannerQ
-        '
-        Me.lblMovieSetBannerQ.AutoSize = true
-        Me.lblMovieSetBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieSetBannerQ.Location = New System.Drawing.Point(3, 127)
-        Me.lblMovieSetBannerQ.Name = "lblMovieSetBannerQ"
-        Me.lblMovieSetBannerQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblMovieSetBannerQ.TabIndex = 9
-        Me.lblMovieSetBannerQ.Text = "Quality:"
         '
         'lblMovieSetBannerWidth
         '
@@ -13416,9 +12734,6 @@ Partial Class dlgSettings
         Me.gbMovieSetFanartOpts.Controls.Add(Me.txtMovieSetFanartWidth)
         Me.gbMovieSetFanartOpts.Controls.Add(Me.txtMovieSetFanartHeight)
         Me.gbMovieSetFanartOpts.Controls.Add(Me.chkMovieSetFanartPrefOnly)
-        Me.gbMovieSetFanartOpts.Controls.Add(Me.lblMovieSetFanartQual)
-        Me.gbMovieSetFanartOpts.Controls.Add(Me.tbMovieSetFanartQual)
-        Me.gbMovieSetFanartOpts.Controls.Add(Me.lblMovieSetFanartQ)
         Me.gbMovieSetFanartOpts.Controls.Add(Me.lblMovieSetFanartWidth)
         Me.gbMovieSetFanartOpts.Controls.Add(Me.lblMovieSetFanartHeight)
         Me.gbMovieSetFanartOpts.Controls.Add(Me.chkMovieSetFanartResize)
@@ -13461,38 +12776,6 @@ Partial Class dlgSettings
         Me.chkMovieSetFanartPrefOnly.TabIndex = 2
         Me.chkMovieSetFanartPrefOnly.Text = "Only"
         Me.chkMovieSetFanartPrefOnly.UseVisualStyleBackColor = true
-        '
-        'lblMovieSetFanartQual
-        '
-        Me.lblMovieSetFanartQual.AutoSize = true
-        Me.lblMovieSetFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblMovieSetFanartQual.Location = New System.Drawing.Point(183, 147)
-        Me.lblMovieSetFanartQual.Name = "lblMovieSetFanartQual"
-        Me.lblMovieSetFanartQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblMovieSetFanartQual.TabIndex = 11
-        Me.lblMovieSetFanartQual.Text = "100"
-        '
-        'tbMovieSetFanartQual
-        '
-        Me.tbMovieSetFanartQual.AutoSize = false
-        Me.tbMovieSetFanartQual.LargeChange = 10
-        Me.tbMovieSetFanartQual.Location = New System.Drawing.Point(6, 139)
-        Me.tbMovieSetFanartQual.Maximum = 100
-        Me.tbMovieSetFanartQual.Name = "tbMovieSetFanartQual"
-        Me.tbMovieSetFanartQual.Size = New System.Drawing.Size(180, 27)
-        Me.tbMovieSetFanartQual.TabIndex = 10
-        Me.tbMovieSetFanartQual.TickFrequency = 10
-        Me.tbMovieSetFanartQual.Value = 100
-        '
-        'lblMovieSetFanartQ
-        '
-        Me.lblMovieSetFanartQ.AutoSize = true
-        Me.lblMovieSetFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieSetFanartQ.Location = New System.Drawing.Point(3, 127)
-        Me.lblMovieSetFanartQ.Name = "lblMovieSetFanartQ"
-        Me.lblMovieSetFanartQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblMovieSetFanartQ.TabIndex = 9
-        Me.lblMovieSetFanartQ.Text = "Quality:"
         '
         'lblMovieSetFanartWidth
         '
@@ -13561,9 +12844,6 @@ Partial Class dlgSettings
         Me.gbMovieSetPosterOpts.Controls.Add(Me.chkMovieSetPosterPrefOnly)
         Me.gbMovieSetPosterOpts.Controls.Add(Me.txtMovieSetPosterWidth)
         Me.gbMovieSetPosterOpts.Controls.Add(Me.txtMovieSetPosterHeight)
-        Me.gbMovieSetPosterOpts.Controls.Add(Me.lblMovieSetPosterQual)
-        Me.gbMovieSetPosterOpts.Controls.Add(Me.tbMovieSetPosterQual)
-        Me.gbMovieSetPosterOpts.Controls.Add(Me.lblMovieSetPosterQ)
         Me.gbMovieSetPosterOpts.Controls.Add(Me.lblMovieSetPosterWidth)
         Me.gbMovieSetPosterOpts.Controls.Add(Me.lblMovieSetPosterHeight)
         Me.gbMovieSetPosterOpts.Controls.Add(Me.chkMovieSetPosterResize)
@@ -13606,38 +12886,6 @@ Partial Class dlgSettings
         Me.txtMovieSetPosterHeight.Name = "txtMovieSetPosterHeight"
         Me.txtMovieSetPosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtMovieSetPosterHeight.TabIndex = 8
-        '
-        'lblMovieSetPosterQual
-        '
-        Me.lblMovieSetPosterQual.AutoSize = true
-        Me.lblMovieSetPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblMovieSetPosterQual.Location = New System.Drawing.Point(183, 147)
-        Me.lblMovieSetPosterQual.Name = "lblMovieSetPosterQual"
-        Me.lblMovieSetPosterQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblMovieSetPosterQual.TabIndex = 11
-        Me.lblMovieSetPosterQual.Text = "100"
-        '
-        'tbMovieSetPosterQual
-        '
-        Me.tbMovieSetPosterQual.AutoSize = false
-        Me.tbMovieSetPosterQual.LargeChange = 10
-        Me.tbMovieSetPosterQual.Location = New System.Drawing.Point(7, 139)
-        Me.tbMovieSetPosterQual.Maximum = 100
-        Me.tbMovieSetPosterQual.Name = "tbMovieSetPosterQual"
-        Me.tbMovieSetPosterQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbMovieSetPosterQual.TabIndex = 10
-        Me.tbMovieSetPosterQual.TickFrequency = 10
-        Me.tbMovieSetPosterQual.Value = 100
-        '
-        'lblMovieSetPosterQ
-        '
-        Me.lblMovieSetPosterQ.AutoSize = true
-        Me.lblMovieSetPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieSetPosterQ.Location = New System.Drawing.Point(3, 127)
-        Me.lblMovieSetPosterQ.Name = "lblMovieSetPosterQ"
-        Me.lblMovieSetPosterQ.Size = New System.Drawing.Size(46, 13)
-        Me.lblMovieSetPosterQ.TabIndex = 9
-        Me.lblMovieSetPosterQ.Text = "Quality:"
         '
         'lblMovieSetPosterWidth
         '
@@ -13769,22 +13017,17 @@ Partial Class dlgSettings
         Me.gbMovieDiscArtOpts.PerformLayout
         Me.gbMovieBannerOpts.ResumeLayout(false)
         Me.gbMovieBannerOpts.PerformLayout
-        CType(Me.tbMovieBannerQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbMovieLandscapeOpts.ResumeLayout(false)
         Me.gbMovieLandscapeOpts.PerformLayout
         Me.gbMovieEFanartsOpts.ResumeLayout(false)
         Me.gbMovieEFanartsOpts.PerformLayout
-        CType(Me.tbMovieEFanartsQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbMovieEThumbsOpts.ResumeLayout(false)
         Me.gbMovieEThumbsOpts.PerformLayout
-        CType(Me.tbMovieEThumbsQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbMovieImagesOpts.ResumeLayout(false)
         Me.gbMovieFanartOpts.ResumeLayout(false)
         Me.gbMovieFanartOpts.PerformLayout
-        CType(Me.tbMovieFanartQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbMoviePosterOpts.ResumeLayout(false)
         Me.gbMoviePosterOpts.PerformLayout
-        CType(Me.tbMoviePosterQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbMovieGeneralMediaListOpts.ResumeLayout(false)
         Me.gbMovieGeneralMediaListOpts.PerformLayout
         Me.gbMovieSortTokensOpts.ResumeLayout(false)
@@ -13938,44 +13181,33 @@ Partial Class dlgSettings
         Me.gbTVShowLandscapeOpts.PerformLayout
         Me.gbTVShowBannerOpts.ResumeLayout(false)
         Me.gbTVShowBannerOpts.PerformLayout
-        CType(Me.tbTVShowBannerQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbTVShowPosterOpts.ResumeLayout(false)
         Me.gbTVShowPosterOpts.PerformLayout
-        CType(Me.tbTVShowPosterQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbTVShowFanartOpts.ResumeLayout(false)
         Me.gbTVShowFanartOpts.PerformLayout
-        CType(Me.tbTVShowFanartQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.tpTVAllSeasons.ResumeLayout(false)
         Me.gbTVASLandscapeOpts.ResumeLayout(false)
         Me.gbTVASLandscapeOpts.PerformLayout
         Me.gbTVASFanartOpts.ResumeLayout(false)
         Me.gbTVASFanartOpts.PerformLayout
-        CType(Me.tbTVASFanartQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbTVASBannerOpts.ResumeLayout(false)
         Me.gbTVASBannerOpts.PerformLayout
-        CType(Me.tbTVASBannerQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbTVASPosterOpts.ResumeLayout(false)
         Me.gbTVASPosterOpts.PerformLayout
-        CType(Me.tbTVASPosterQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.tpTVSeason.ResumeLayout(false)
         Me.gbTVSeasonLandscapeOpts.ResumeLayout(false)
         Me.gbTVSeasonLandscapeOpts.PerformLayout
         Me.gbTVSeasonBannerOpts.ResumeLayout(false)
         Me.gbTVSeasonBannerOpts.PerformLayout
-        CType(Me.tbTVSeasonBannerQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbTVSeasonPosterOpts.ResumeLayout(false)
         Me.gbTVSeasonPosterOpts.PerformLayout
-        CType(Me.tbTVSeasonPosterQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbTVSeasonFanartOpts.ResumeLayout(false)
         Me.gbTVSeasonFanartOpts.PerformLayout
-        CType(Me.tbTVSeasonFanartQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.tpTVEpisode.ResumeLayout(false)
         Me.gbTVEpisodePosterOpts.ResumeLayout(false)
         Me.gbTVEpisodePosterOpts.PerformLayout
-        CType(Me.tbTVEpisodePosterQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbTVEpisodeFanartOpts.ResumeLayout(false)
         Me.gbTVEpisodeFanartOpts.PerformLayout
-        CType(Me.tbTVEpisodeFanartQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlTVScraper.ResumeLayout(false)
         Me.gbTVScraperMiscOpts.ResumeLayout(false)
         Me.gbTVScraperFieldsOpts.ResumeLayout(false)
@@ -14047,15 +13279,12 @@ Partial Class dlgSettings
         Me.gbMovieSetDiscArtOpts.PerformLayout
         Me.gbMovieSetBannerOpts.ResumeLayout(false)
         Me.gbMovieSetBannerOpts.PerformLayout
-        CType(Me.tbMovieSetBannerQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbMovieSetLandscapeOpts.ResumeLayout(false)
         Me.gbMovieSetLandscapeOpts.PerformLayout
         Me.gbMovieSetFanartOpts.ResumeLayout(false)
         Me.gbMovieSetFanartOpts.PerformLayout
-        CType(Me.tbMovieSetFanartQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbMovieSetPosterOpts.ResumeLayout(false)
         Me.gbMovieSetPosterOpts.PerformLayout
-        CType(Me.tbMovieSetPosterQual,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -14144,12 +13373,6 @@ End Sub
     Friend WithEvents txtMovieSkipLessThan As System.Windows.Forms.TextBox
     Friend WithEvents lblMovieSkipLessThan As System.Windows.Forms.Label
     Friend WithEvents chkMovieSkipStackedSizeCheck As System.Windows.Forms.CheckBox
-    Friend WithEvents lblMoviePosterQual As System.Windows.Forms.Label
-    Friend WithEvents tbMoviePosterQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblMoviePosterQ As System.Windows.Forms.Label
-    Friend WithEvents lblMovieFanartQual As System.Windows.Forms.Label
-    Friend WithEvents tbMovieFanartQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblMovieFanartQ As System.Windows.Forms.Label
     Friend WithEvents chkMovieFanartPrefOnly As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieNoSaveImagesToNfo As System.Windows.Forms.CheckBox
     Friend WithEvents tcFileSystemCleaner As System.Windows.Forms.TabControl
@@ -14269,9 +13492,6 @@ End Sub
     Friend WithEvents gbTVShowFanartOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVShowFanartWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVShowFanartHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVShowFanartQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVShowFanartQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVShowFanartQ As System.Windows.Forms.Label
     Friend WithEvents lblTVShowFanartWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVShowFanartHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVShowFanartResize As System.Windows.Forms.CheckBox
@@ -14281,9 +13501,6 @@ End Sub
     Friend WithEvents gbTVShowPosterOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVShowPosterWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVShowPosterHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVShowPosterQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVShowPosterQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVShowPosterQ As System.Windows.Forms.Label
     Friend WithEvents lblTVShowPosterWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVShowPosterHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVShowPosterResize As System.Windows.Forms.CheckBox
@@ -14310,9 +13527,6 @@ End Sub
     Friend WithEvents gbTVEpisodePosterOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVEpisodePosterWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVEpisodePosterHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVEpisodePosterQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVEpisodePosterQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVEpisodePosterQ As System.Windows.Forms.Label
     Friend WithEvents lblTVEpisodePosterWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVEpisodePosterHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVEpisodePosterResize As System.Windows.Forms.CheckBox
@@ -14320,9 +13534,6 @@ End Sub
     Friend WithEvents gbTVEpisodeFanartOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVEpisodeFanartWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVEpisodeFanartHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVEpisodeFanartQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVEpisodeFanartQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVEpisodeFanartQ As System.Windows.Forms.Label
     Friend WithEvents lblTVEpisodeFanartWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVEpisodeFanartHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVEpisodeFanartResize As System.Windows.Forms.CheckBox
@@ -14372,9 +13583,6 @@ End Sub
     Friend WithEvents gbTVSeasonPosterOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVSeasonPosterWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVSeasonPosterHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVSeasonPosterQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVSeasonPosterQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVSeasonPosterQ As System.Windows.Forms.Label
     Friend WithEvents lblTVSeasonPosterWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVSeasonPosterHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVSeasonPosterResize As System.Windows.Forms.CheckBox
@@ -14384,9 +13592,6 @@ End Sub
     Friend WithEvents gbTVSeasonFanartOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVSeasonFanartWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVSeasonFanartHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVSeasonFanartQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVSeasonFanartQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVSeasonFanartQ As System.Windows.Forms.Label
     Friend WithEvents lblTVSeasonFanartWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVSeasonFanartHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVSeasonFanartResize As System.Windows.Forms.CheckBox
@@ -14540,9 +13745,6 @@ End Sub
     Friend WithEvents chkMovieEFanartsPrefOnly As System.Windows.Forms.CheckBox
     Friend WithEvents txtMovieEFanartsWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtMovieEFanartsHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblMovieEFanartsQual As System.Windows.Forms.Label
-    Friend WithEvents tbMovieEFanartsQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblMovieEFanartsQ As System.Windows.Forms.Label
     Friend WithEvents lblMovieEFanartsWidth As System.Windows.Forms.Label
     Friend WithEvents lblMovieEFanartsHeight As System.Windows.Forms.Label
     Friend WithEvents chkMovieEFanartsResize As System.Windows.Forms.CheckBox
@@ -14553,9 +13755,6 @@ End Sub
     Friend WithEvents chkMovieEThumbsPrefOnly As System.Windows.Forms.CheckBox
     Friend WithEvents txtMovieEThumbsWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtMovieEThumbsHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblMovieEThumbsQual As System.Windows.Forms.Label
-    Friend WithEvents tbMovieEThumbsQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblMovieEThumbsQ As System.Windows.Forms.Label
     Friend WithEvents lblMovieEThumbsWidth As System.Windows.Forms.Label
     Friend WithEvents lblMovieEThumbsHeight As System.Windows.Forms.Label
     Friend WithEvents chkMovieEThumbsResize As System.Windows.Forms.CheckBox
@@ -14722,9 +13921,6 @@ End Sub
     Friend WithEvents gbTVShowBannerOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVShowBannerWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVShowBannerHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVShowBannerQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVShowBannerQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVShowBannerQ As System.Windows.Forms.Label
     Friend WithEvents lblTVShowBannerWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVShowBannerHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVShowBannerResize As System.Windows.Forms.CheckBox
@@ -14734,9 +13930,6 @@ End Sub
     Friend WithEvents gbTVSeasonBannerOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVSeasonBannerWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVSeasonBannerHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVSeasonBannerQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVSeasonBannerQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVSeasonBannerQ As System.Windows.Forms.Label
     Friend WithEvents lblTVSeasonBannerWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVSeasonBannerHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVSeasonBannerResize As System.Windows.Forms.CheckBox
@@ -14749,9 +13942,6 @@ End Sub
     Friend WithEvents gbTVASFanartOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVASFanartWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVASFanartHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVASFanartQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVASFanartQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVASFanartQ As System.Windows.Forms.Label
     Friend WithEvents lblTVASFanartWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVASFanartHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVASFanartResize As System.Windows.Forms.CheckBox
@@ -14761,9 +13951,6 @@ End Sub
     Friend WithEvents gbTVASBannerOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVASBannerWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVASBannerHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVASBannerQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVASBannerQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVASBannerQ As System.Windows.Forms.Label
     Friend WithEvents lblTVASBannerWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVASBannerHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVASBannerResize As System.Windows.Forms.CheckBox
@@ -14773,9 +13960,6 @@ End Sub
     Friend WithEvents gbTVASPosterOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVASPosterWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVASPosterHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVASPosterQual As System.Windows.Forms.Label
-    Friend WithEvents tbTVASPosterQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTVASPosterQ As System.Windows.Forms.Label
     Friend WithEvents lblTVASPosterWidth As System.Windows.Forms.Label
     Friend WithEvents lblTVASPosterHeight As System.Windows.Forms.Label
     Friend WithEvents chkTVASPosterResize As System.Windows.Forms.CheckBox
@@ -14794,9 +13978,6 @@ End Sub
     Friend WithEvents chkMovieBannerPrefOnly As System.Windows.Forms.CheckBox
     Friend WithEvents txtMovieBannerWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtMovieBannerHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblMovieBannerQual As System.Windows.Forms.Label
-    Friend WithEvents tbMovieBannerQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblMovieBannerQ As System.Windows.Forms.Label
     Friend WithEvents lblMovieBannerWidth As System.Windows.Forms.Label
     Friend WithEvents lblMovieBannerHeight As System.Windows.Forms.Label
     Friend WithEvents chkMovieBannerResize As System.Windows.Forms.CheckBox
@@ -14979,9 +14160,6 @@ End Sub
     Friend WithEvents chkMovieSetBannerPrefOnly As System.Windows.Forms.CheckBox
     Friend WithEvents txtMovieSetBannerWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtMovieSetBannerHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblMovieSetBannerQual As System.Windows.Forms.Label
-    Friend WithEvents tbMovieSetBannerQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblMovieSetBannerQ As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetBannerWidth As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetBannerHeight As System.Windows.Forms.Label
     Friend WithEvents chkMovieSetBannerResize As System.Windows.Forms.CheckBox
@@ -14994,9 +14172,6 @@ End Sub
     Friend WithEvents txtMovieSetFanartWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtMovieSetFanartHeight As System.Windows.Forms.TextBox
     Friend WithEvents chkMovieSetFanartPrefOnly As System.Windows.Forms.CheckBox
-    Friend WithEvents lblMovieSetFanartQual As System.Windows.Forms.Label
-    Friend WithEvents tbMovieSetFanartQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblMovieSetFanartQ As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetFanartWidth As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetFanartHeight As System.Windows.Forms.Label
     Friend WithEvents chkMovieSetFanartResize As System.Windows.Forms.CheckBox
@@ -15007,9 +14182,6 @@ End Sub
     Friend WithEvents chkMovieSetPosterPrefOnly As System.Windows.Forms.CheckBox
     Friend WithEvents txtMovieSetPosterWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtMovieSetPosterHeight As System.Windows.Forms.TextBox
-    Friend WithEvents lblMovieSetPosterQual As System.Windows.Forms.Label
-    Friend WithEvents tbMovieSetPosterQual As System.Windows.Forms.TrackBar
-    Friend WithEvents lblMovieSetPosterQ As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetPosterWidth As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetPosterHeight As System.Windows.Forms.Label
     Friend WithEvents chkMovieSetPosterResize As System.Windows.Forms.CheckBox

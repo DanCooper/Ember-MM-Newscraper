@@ -93,60 +93,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieActorThumbsQual() As Integer
-        Get
-            Return Settings._XMLSettings.MovieActorThumbsQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieActorThumbsQual = value
-        End Set
-    End Property
-
-    Public Property TVASPosterQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVASPosterQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVASPosterQual = value
-        End Set
-    End Property
-
-    Public Property TVASBannerQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVASBannerQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVASBannerQual = value
-        End Set
-    End Property
-
-    Public Property TVASFanartQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVASFanartQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVASFanartQual = value
-        End Set
-    End Property
-
-    Public Property TVSeasonBannerQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVSeasonBannerQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVSeasonBannerQual = value
-        End Set
-    End Property
-
-    Public Property TVShowBannerQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVShowBannerQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVShowBannerQual = value
-        End Set
-    End Property
-
     Public Property TVASPosterWidth() As Integer
         Get
             Return Settings._XMLSettings.TVASPosterWidth
@@ -500,15 +446,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVEpisodeFanartQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVEpisodeFanartQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVEpisodeFanartQual = value
-        End Set
-    End Property
-
     Public Property TVEpisodeFanartWidth() As Integer
         Get
             Return Settings._XMLSettings.TVEpisodeFanartWidth
@@ -596,15 +533,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.TVEpisodePosterHeight = value
-        End Set
-    End Property
-
-    Public Property TVEpisodePosterQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVEpisodePosterQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVEpisodePosterQual = value
         End Set
     End Property
 
@@ -749,24 +677,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieFanartPrefOnly = value
-        End Set
-    End Property
-
-    Public Property MovieFanartQual() As Integer
-        Get
-            Return Settings._XMLSettings.MovieFanartQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieFanartQual = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartQual() As Integer
-        Get
-            Return Settings._XMLSettings.MovieSetFanartQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieSetFanartQual = value
         End Set
     End Property
 
@@ -2737,60 +2647,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieBannerQual() As Integer
-        Get
-            Return Settings._XMLSettings.MovieBannerQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieBannerQual = value
-        End Set
-    End Property
-
-    Public Property MovieSetBannerQual() As Integer
-        Get
-            Return Settings._XMLSettings.MovieSetBannerQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieSetBannerQual = value
-        End Set
-    End Property
-
-    Public Property MovieEThumbsQual() As Integer
-        Get
-            Return Settings._XMLSettings.MovieEThumbsQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieEThumbsQual = value
-        End Set
-    End Property
-
-    Public Property MovieEFanartsQual() As Integer
-        Get
-            Return Settings._XMLSettings.MovieEFanartsQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieEFanartsQual = value
-        End Set
-    End Property
-
-    Public Property MoviePosterQual() As Integer
-        Get
-            Return Settings._XMLSettings.MoviePosterQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.MoviePosterQual = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterQual() As Integer
-        Get
-            Return Settings._XMLSettings.MovieSetPosterQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieSetPosterQual = value
-        End Set
-    End Property
-
     Public Property MoviePosterWidth() As Integer
         Get
             Return Settings._XMLSettings.MoviePosterWidth
@@ -3439,15 +3295,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVSeasonFanartQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVSeasonFanartQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVSeasonFanartQual = value
-        End Set
-    End Property
-
     Public Property TVSeasonFanartWidth() As Integer
         Get
             Return Settings._XMLSettings.TVSeasonFanartWidth
@@ -3592,15 +3439,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVSeasonPosterQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVSeasonPosterQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVSeasonPosterQual = value
-        End Set
-    End Property
-
     Public Property TVSeasonPosterWidth() As Integer
         Get
             Return Settings._XMLSettings.TVSeasonPosterWidth
@@ -3652,15 +3490,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.TVShowFanartHeight = value
-        End Set
-    End Property
-
-    Public Property TVShowFanartQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVShowFanartQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVShowFanartQual = value
         End Set
     End Property
 
@@ -3841,15 +3670,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.TVShowPosterHeight = value
-        End Set
-    End Property
-
-    Public Property TVShowPosterQual() As Integer
-        Get
-            Return Settings._XMLSettings.TVShowPosterQual
-        End Get
-        Set(ByVal value As Integer)
-            Settings._XMLSettings.TVShowPosterQual = value
         End Set
     End Property
 

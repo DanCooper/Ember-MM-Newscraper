@@ -1191,7 +1191,7 @@ Public Class dlgNMTMovies
                             Dim im As New Images
                             im.FromFile(_curMovie.Item("FanartPath").ToString)
                             ImageUtils.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
-                            im.Save(Fanartfile, 65)
+                            im.Save(Fanartfile)
                         Else
                             File.Copy(_curMovie.Item("FanartPath").ToString, Fanartfile, True)
                         End If

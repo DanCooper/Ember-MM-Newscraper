@@ -118,7 +118,7 @@ Public Class dlgTVImageSelect
                         Scraper.TVDBImages.AllSeasonsFanart.Image.FromWeb(tSF.URL)
                         If Not IsNothing(Scraper.TVDBImages.AllSeasonsFanart.Image.Image) Then
                             Directory.CreateDirectory(Directory.GetParent(tSF.LocalFile).FullName)
-                            Scraper.TVDBImages.AllSeasonsFanart.Image.Save(tSF.LocalFile, , , False)
+                            Scraper.TVDBImages.AllSeasonsFanart.Image.Save(tSF.LocalFile)
                             Scraper.TVDBImages.AllSeasonsFanart.LocalFile = tSF.LocalFile
                             Scraper.TVDBImages.AllSeasonsFanart.URL = tSF.URL
                         End If
@@ -195,7 +195,7 @@ Public Class dlgTVImageSelect
                         Scraper.TVDBImages.ShowFanart.Image.FromWeb(tSF.URL)
                         If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
                             Directory.CreateDirectory(Directory.GetParent(tSF.LocalFile).FullName)
-                            Scraper.TVDBImages.ShowFanart.Image.Save(tSF.LocalFile, , , False)
+                            Scraper.TVDBImages.ShowFanart.Image.Save(tSF.LocalFile)
                             Scraper.TVDBImages.ShowFanart.LocalFile = tSF.LocalFile
                             Scraper.TVDBImages.ShowFanart.URL = tSF.URL
                         End If
@@ -261,7 +261,7 @@ Public Class dlgTVImageSelect
                                     cSeason.Fanart.Image.FromWeb(tSeaF.URL)
                                     If Not IsNothing(cSeason.Fanart.Image.Image) Then
                                         Directory.CreateDirectory(Directory.GetParent(tSeaF.LocalFile).FullName)
-                                        cSeason.Fanart.Image.Save(tSeaF.LocalFile, , , False)
+                                        cSeason.Fanart.Image.Save(tSeaF.LocalFile)
                                         cSeason.Fanart.LocalFile = tSeaF.LocalFile
                                         cSeason.Fanart.URL = tSeaF.URL
                                     End If
@@ -447,7 +447,7 @@ Public Class dlgTVImageSelect
                     Scraper.TVDBImages.ShowFanart.Image.FromWeb(Scraper.TVDBImages.ShowFanart.URL)
                     If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowFanart.LocalFile).FullName)
-                        Scraper.TVDBImages.ShowFanart.Image.Save(Scraper.TVDBImages.ShowFanart.LocalFile, , , False)
+                        Scraper.TVDBImages.ShowFanart.Image.Save(Scraper.TVDBImages.ShowFanart.LocalFile)
                         Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
                     End If
                 End If
@@ -475,7 +475,7 @@ Public Class dlgTVImageSelect
                     Scraper.TVDBImages.AllSeasonsFanart.Image.FromWeb(Scraper.TVDBImages.AllSeasonsFanart.URL)
                     If Not IsNothing(Scraper.TVDBImages.AllSeasonsFanart.Image.Image) Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.AllSeasonsFanart.LocalFile).FullName)
-                        Scraper.TVDBImages.AllSeasonsFanart.Image.Save(Scraper.TVDBImages.AllSeasonsFanart.LocalFile, , , False)
+                        Scraper.TVDBImages.AllSeasonsFanart.Image.Save(Scraper.TVDBImages.AllSeasonsFanart.LocalFile)
                         Master.currShow.SeasonFanartPath = Scraper.TVDBImages.AllSeasonsFanart.LocalFile
                     End If
                 End If
@@ -501,7 +501,7 @@ Public Class dlgTVImageSelect
                 Scraper.TVDBImages.AllSeasonsFanart.Image.FromWeb(Scraper.TVDBImages.AllSeasonsFanart.URL)
                 If Not IsNothing(Scraper.TVDBImages.AllSeasonsFanart.Image.Image) Then
                     Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.AllSeasonsFanart.LocalFile).FullName)
-                    Scraper.TVDBImages.AllSeasonsFanart.Image.Save(Scraper.TVDBImages.AllSeasonsFanart.LocalFile, , , False)
+                    Scraper.TVDBImages.AllSeasonsFanart.Image.Save(Scraper.TVDBImages.AllSeasonsFanart.LocalFile)
                     Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsFanart.Image.Image
                     Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsFanart.Image
                 End If
@@ -519,7 +519,7 @@ Public Class dlgTVImageSelect
                 Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.FromWeb(Scraper.TVDBImages.SeasonImageList(0).Fanart.URL)
                 If Not IsNothing(Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Image) Then
                     Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile).FullName)
-                    Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Save(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile, , , False)
+                    Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Save(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile)
                     Me.pbCurrent.Image = Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Image
                     Me.pbCurrent.Tag = Scraper.TVDBImages.SeasonImageList(0).Fanart.Image
                 End If
@@ -537,7 +537,7 @@ Public Class dlgTVImageSelect
                 Scraper.TVDBImages.ShowFanart.Image.FromWeb(Scraper.TVDBImages.ShowFanart.URL)
                 If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
                     Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowFanart.LocalFile).FullName)
-                    Scraper.TVDBImages.ShowFanart.Image.Save(Scraper.TVDBImages.ShowFanart.LocalFile, , , False)
+                    Scraper.TVDBImages.ShowFanart.Image.Save(Scraper.TVDBImages.ShowFanart.LocalFile)
                     Me.pbCurrent.Image = Scraper.TVDBImages.ShowFanart.Image.Image
                     Me.pbCurrent.Tag = Scraper.TVDBImages.ShowFanart.Image
                 End If
@@ -913,7 +913,7 @@ Public Class dlgTVImageSelect
                                 Seas.Image.FromWeb(Seas.URL)
                                 If Not IsNothing(Seas.Image.Image) Then
                                     Directory.CreateDirectory(Directory.GetParent(Seas.LocalFile).FullName)
-                                    Seas.Image.Save(Seas.LocalFile, , , False)
+                                    Seas.Image.Save(Seas.LocalFile)
                                     SeasonPosterList.Add(Seas)
                                 End If
                             End If
@@ -943,7 +943,7 @@ Public Class dlgTVImageSelect
                                 Seas.Image.FromWeb(Seas.URL)
                                 If Not IsNothing(Seas.Image.Image) Then
                                     Directory.CreateDirectory(Directory.GetParent(Seas.LocalFile).FullName)
-                                    Seas.Image.Save(Seas.LocalFile, , , False)
+                                    Seas.Image.Save(Seas.LocalFile)
                                     SeasonBannerList.Add(Seas)
                                 End If
                             End If
@@ -973,7 +973,7 @@ Public Class dlgTVImageSelect
                                 SPost.Image.FromWeb(SPost.URL)
                                 If Not IsNothing(SPost.Image.Image) Then
                                     Directory.CreateDirectory(Directory.GetParent(SPost.LocalFile).FullName)
-                                    SPost.Image.Save(SPost.LocalFile, , , False)
+                                    SPost.Image.Save(SPost.LocalFile)
                                     GenericPosterList.Add(SPost)
                                 End If
                             End If
@@ -1003,7 +1003,7 @@ Public Class dlgTVImageSelect
                                 SPost.Image.FromWeb(SPost.URL)
                                 If Not IsNothing(SPost.Image.Image) Then
                                     Directory.CreateDirectory(Directory.GetParent(SPost.LocalFile).FullName)
-                                    SPost.Image.Save(SPost.LocalFile, , , False)
+                                    SPost.Image.Save(SPost.LocalFile)
                                     ShowBannerList.Add(SPost)
                                 End If
                             End If
@@ -1033,7 +1033,7 @@ Public Class dlgTVImageSelect
                                 SFan.Image.FromWeb(SFan.ThumbnailURL)
                                 If Not IsNothing(SFan.Image.Image) Then
                                     Directory.CreateDirectory(Directory.GetParent(SFan.LocalThumb).FullName)
-                                    SFan.Image.Save(SFan.LocalThumb, , , False)
+                                    SFan.Image.Save(SFan.LocalThumb)
                                     GenericFanartList.Add(SFan)
                                 End If
                             End If
@@ -1076,7 +1076,7 @@ Public Class dlgTVImageSelect
             tImage.FromWeb(iTag.URL)
             If Not IsNothing(tImage.Image) Then
                 Directory.CreateDirectory(Directory.GetParent(iTag.Path).FullName)
-                tImage.Save(iTag.Path, , , False)
+                tImage.Save(iTag.Path)
             End If
 
             sHTTP = Nothing

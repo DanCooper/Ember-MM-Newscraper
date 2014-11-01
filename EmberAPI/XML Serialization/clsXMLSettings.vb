@@ -74,7 +74,6 @@ Partial Public Class clsXMLSettings
     Private _generalwindowstate As FormWindowState
     Private _genrefilter As String
     Private _movieactorthumbsoverwrite As Boolean
-    Private _movieactorthumbsqual As Integer
     Private _moviebackdropsauto As Boolean
     Private _moviebackdropspath As String
     Private _moviebannercol As Boolean
@@ -82,7 +81,6 @@ Partial Public Class clsXMLSettings
     Private _moviebanneroverwrite As Boolean
     Private _moviebannerprefonly As Boolean
     Private _moviebannerpreftype As Enums.MovieBannerType
-    Private _moviebannerqual As Integer
     Private _moviebannerresize As Boolean
     Private _moviebannerwidth As Integer
     Private _moviecleandb As Boolean
@@ -101,7 +99,6 @@ Partial Public Class clsXMLSettings
     Private _movieefanartsoverwrite As Boolean
     Private _movieefanartsprefonly As Boolean
     Private _movieefanartsprefsize As Enums.FanartSize
-    Private _movieefanartsqual As Integer
     Private _movieefanartsresize As Boolean
     Private _movieefanartswidth As Integer
     Private _movieethumbscol As Boolean
@@ -110,7 +107,6 @@ Partial Public Class clsXMLSettings
     Private _movieethumbsoverwrite As Boolean
     Private _movieethumbsprefonly As Boolean
     Private _movieethumbsprefsize As Enums.FanartSize
-    Private _movieethumbsqual As Integer
     Private _movieethumbsresize As Boolean
     Private _movieethumbswidth As Integer
     Private _moviefanartcol As Boolean
@@ -118,7 +114,6 @@ Partial Public Class clsXMLSettings
     Private _moviefanartoverwrite As Boolean
     Private _moviefanartprefonly As Boolean
     Private _moviefanartprefsize As Enums.FanartSize
-    Private _moviefanartqual As Integer
     Private _moviefanartresize As Boolean
     Private _moviefanartwidth As Integer
     Private _moviefiltercustom As List(Of String)
@@ -185,7 +180,6 @@ Partial Public Class clsXMLSettings
     Private _movieposteroverwrite As Boolean
     Private _movieposterprefonly As Boolean
     Private _movieposterprefsize As Enums.PosterSize
-    Private _movieposterqual As Integer
     Private _movieposterresize As Boolean
     Private _movieposterwidth As Integer
     Private _moviepropercase As Boolean
@@ -239,7 +233,6 @@ Partial Public Class clsXMLSettings
     Private _moviesetbanneroverwrite As Boolean
     Private _moviesetbannerprefonly As Boolean
     Private _moviesetbannerpreftype As Enums.MovieBannerType
-    Private _moviesetbannerqual As Integer
     Private _moviesetbannerresize As Boolean
     Private _moviesetbannerwidth As Integer
     Private _moviesetcleandb As Boolean
@@ -257,7 +250,6 @@ Partial Public Class clsXMLSettings
     Private _moviesetfanartoverwrite As Boolean
     Private _moviesetfanartprefonly As Boolean
     Private _moviesetfanartprefsize As Enums.FanartSize
-    Private _moviesetfanartqual As Integer
     Private _moviesetfanartresize As Boolean
     Private _moviesetfanartwidth As Integer
     Private _moviesetlandscapecol As Boolean
@@ -278,7 +270,6 @@ Partial Public Class clsXMLSettings
     Private _moviesetposteroverwrite As Boolean
     Private _moviesetposterprefonly As Boolean
     Private _moviesetposterprefsize As Enums.PosterSize
-    Private _moviesetposterqual As Integer
     Private _moviesetposterresize As Boolean
     Private _moviesetposterwidth As Integer
     Private _moviesets As New List(Of String)
@@ -320,20 +311,17 @@ Partial Public Class clsXMLSettings
     Private _tvasbannerheight As Integer
     Private _tvasbanneroverwrite As Boolean
     Private _tvasbannerpreftype As Enums.TVShowBannerType
-    Private _tvasbannerqual As Integer
     Private _tvasbannerresize As Boolean
     Private _tvasbannerwidth As Integer
     Private _tvasfanartheight As Integer
     Private _tvasfanartoverwrite As Boolean
     Private _tvasfanartprefsize As Enums.TVFanartSize
-    Private _tvasfanartqual As Integer
     Private _tvasfanartresize As Boolean
     Private _tvasfanartwidth As Integer
     Private _tvaslandscapeoverwrite As Boolean
     Private _tvasposterheight As Integer
     Private _tvasposteroverwrite As Boolean
     Private _tvasposterprefsize As Enums.TVPosterSize
-    Private _tvasposterqual As Integer
     Private _tvasposterresize As Boolean
     Private _tvasposterwidth As Integer
     Private _tvcleandb As Boolean
@@ -343,7 +331,6 @@ Partial Public Class clsXMLSettings
     Private _tvepisodefanartheight As Integer
     Private _tvepisodefanartoverwrite As Boolean
     Private _tvepisodefanartprefsize As Enums.TVFanartSize
-    Private _tvepisodefanartqual As Integer
     Private _tvepisodefanartresize As Boolean
     Private _tvepisodefanartwidth As Integer
     Private _tvepisodefiltercustom As List(Of String)
@@ -353,7 +340,6 @@ Partial Public Class clsXMLSettings
     Private _tvepisodepostercol As Boolean
     Private _tvepisodeposterheight As Integer
     Private _tvepisodeposteroverwrite As Boolean
-    Private _tvepisodeposterqual As Integer
     Private _tvepisodeposterresize As Boolean
     Private _tvepisodeposterwidth As Integer
     Private _tvepisodepropercase As Boolean
@@ -409,14 +395,12 @@ Partial Public Class clsXMLSettings
     Private _tvseasonbannerheight As Integer
     Private _tvseasonbanneroverwrite As Boolean
     Private _tvseasonbannerpreftype As Enums.TVSeasonBannerType
-    Private _tvseasonbannerqual As Integer
     Private _tvseasonbannerresize As Boolean
     Private _tvseasonbannerwidth As Integer
     Private _tvseasonfanartcol As Boolean
     Private _tvseasonfanartheight As Integer
     Private _tvseasonfanartoverwrite As Boolean
     Private _tvseasonfanartprefsize As Enums.TVFanartSize
-    Private _tvseasonfanartqual As Integer
     Private _tvseasonfanartresize As Boolean
     Private _tvseasonfanartwidth As Integer
     Private _tvseasonlandscapecol As Boolean
@@ -426,14 +410,12 @@ Partial Public Class clsXMLSettings
     Private _tvseasonposteroverwrite As Boolean
     Private _tvseasonposterprefsize As Enums.TVPosterSize
     Private _tvepisodeposterprefsize As Enums.TVEpisodePosterSize
-    Private _tvseasonposterqual As Integer
     Private _tvseasonposterresize As Boolean
     Private _tvseasonposterwidth As Integer
     Private _tvshowbannercol As Boolean
     Private _tvshowbannerheight As Integer
     Private _tvshowbanneroverwrite As Boolean
     Private _tvshowbannerpreftype As Enums.TVShowBannerType
-    Private _tvshowbannerqual As Integer
     Private _tvshowbannerresize As Boolean
     Private _tvshowbannerwidth As Integer
     Private _tvshowcharacterartcol As Boolean
@@ -454,7 +436,6 @@ Partial Public Class clsXMLSettings
     Private _tvshowfanartheight As Integer
     Private _tvshowfanartoverwrite As Boolean
     Private _tvshowfanartprefsize As Enums.TVFanartSize
-    Private _tvshowfanartqual As Integer
     Private _tvshowfanartresize As Boolean
     Private _tvshowfanartwidth As Integer
     Private _tvshowfiltercustom As List(Of String)
@@ -476,7 +457,6 @@ Partial Public Class clsXMLSettings
     Private _tvshowposterheight As Integer
     Private _tvshowposteroverwrite As Boolean
     Private _tvshowposterprefsize As Enums.TVPosterSize
-    Private _tvshowposterqual As Integer
     Private _tvshowposterresize As Boolean
     Private _tvshowposterwidth As Integer
     Private _tvshowpropercase As Boolean
@@ -888,60 +868,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieActorThumbsQual() As Integer
-        Get
-            Return Me._movieactorthumbsqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._movieactorthumbsqual = value
-        End Set
-    End Property
-
-    Public Property TVASPosterQual() As Integer
-        Get
-            Return Me._tvasposterqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvasposterqual = value
-        End Set
-    End Property
-
-    Public Property TVASBannerQual() As Integer
-        Get
-            Return Me._tvasbannerqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvasbannerqual = value
-        End Set
-    End Property
-
-    Public Property TVASFanartQual() As Integer
-        Get
-            Return Me._tvasfanartqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvasfanartqual = value
-        End Set
-    End Property
-
-    Public Property TVSeasonBannerQual() As Integer
-        Get
-            Return Me._tvseasonbannerqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvseasonbannerqual = value
-        End Set
-    End Property
-
-    Public Property TVShowBannerQual() As Integer
-        Get
-            Return Me._tvshowbannerqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvshowbannerqual = value
-        End Set
-    End Property
-
     Public Property TVASPosterWidth() As Integer
         Get
             Return Me._tvasposterwidth
@@ -1295,15 +1221,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVEpisodeFanartQual() As Integer
-        Get
-            Return Me._tvepisodefanartqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvepisodefanartqual = value
-        End Set
-    End Property
-
     Public Property TVEpisodeFanartWidth() As Integer
         Get
             Return Me._tvepisodefanartwidth
@@ -1391,15 +1308,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._tvepisodeposterheight = value
-        End Set
-    End Property
-
-    Public Property TVEpisodePosterQual() As Integer
-        Get
-            Return Me._tvepisodeposterqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvepisodeposterqual = value
         End Set
     End Property
 
@@ -1544,24 +1452,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviefanartprefonly = value
-        End Set
-    End Property
-
-    Public Property MovieFanartQual() As Integer
-        Get
-            Return Me._moviefanartqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._moviefanartqual = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartQual() As Integer
-        Get
-            Return Me._moviesetfanartqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._moviesetfanartqual = value
         End Set
     End Property
 
@@ -3530,60 +3420,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieBannerQual() As Integer
-        Get
-            Return Me._moviebannerqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._moviebannerqual = value
-        End Set
-    End Property
-
-    Public Property MovieSetBannerQual() As Integer
-        Get
-            Return Me._moviesetbannerqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._moviesetbannerqual = value
-        End Set
-    End Property
-
-    Public Property MovieEThumbsQual() As Integer
-        Get
-            Return Me._movieethumbsqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._movieethumbsqual = value
-        End Set
-    End Property
-
-    Public Property MovieEFanartsQual() As Integer
-        Get
-            Return Me._movieefanartsqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._movieefanartsqual = value
-        End Set
-    End Property
-
-    Public Property MoviePosterQual() As Integer
-        Get
-            Return Me._movieposterqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._movieposterqual = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterQual() As Integer
-        Get
-            Return Me._moviesetposterqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._moviesetposterqual = value
-        End Set
-    End Property
-
     Public Property MoviePosterWidth() As Integer
         Get
             Return Me._movieposterwidth
@@ -4233,15 +4069,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVSeasonFanartQual() As Integer
-        Get
-            Return Me._tvseasonfanartqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvseasonfanartqual = value
-        End Set
-    End Property
-
     Public Property TVSeasonFanartWidth() As Integer
         Get
             Return Me._tvseasonfanartwidth
@@ -4386,15 +4213,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVSeasonPosterQual() As Integer
-        Get
-            Return Me._tvseasonposterqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvseasonposterqual = value
-        End Set
-    End Property
-
     Public Property TVSeasonPosterWidth() As Integer
         Get
             Return Me._tvseasonposterwidth
@@ -4446,15 +4264,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._tvshowfanartheight = value
-        End Set
-    End Property
-
-    Public Property TVShowFanartQual() As Integer
-        Get
-            Return Me._tvshowfanartqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvshowfanartqual = value
         End Set
     End Property
 
@@ -4635,15 +4444,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._tvshowposterheight = value
-        End Set
-    End Property
-
-    Public Property TVShowPosterQual() As Integer
-        Get
-            Return Me._tvshowposterqual
-        End Get
-        Set(ByVal value As Integer)
-            Me._tvshowposterqual = value
         End Set
     End Property
 

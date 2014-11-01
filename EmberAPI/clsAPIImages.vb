@@ -1072,11 +1072,11 @@ Public Class Images
     ''' <param name="sUrl">URL of desired image</param>
     ''' <param name="doResize"></param>
     ''' <remarks></remarks>
-    Public Sub Save(ByVal sPath As String, Optional ByVal iQuality As Long = 0, Optional ByVal sUrl As String = "", Optional ByVal doResize As Boolean = False)
+    Public Sub Save(ByVal sPath As String, Optional ByVal sUrl As String = "")
         '2013/11/26 Dekker500 - This method is a swiss army knife. Completely different behaviour based on what parameter is supplied. Break it down a bit for a more logical flow (if I set a path and URL and quality but no resize, it'll happily ignore everything but the path)
         Dim retSave() As Byte
         Try
-            If Not doResize Then
+            If String.IsNullOrEmpty(sUrl) Then
                 'EmberAPI.FileUtils.Common.MoveFileWithStream(sUrl, sPath)
                 retSave = _ms.ToArray
 
@@ -1118,13 +1118,9 @@ Public Class Images
                 Else
                     Using msSave As New MemoryStream
                         Dim ICI As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
-                        Dim EncPars As EncoderParameters = New EncoderParameters(If(iQuality > 0, 2, 1))
+                        Dim EncPars As EncoderParameters = New EncoderParameters(1)
 
                         EncPars.Param(0) = New EncoderParameter(Encoder.RenderMethod, EncoderValue.RenderNonProgressive)
-
-                        If iQuality > 0 Then
-                            EncPars.Param(1) = New EncoderParameter(Encoder.Quality, iQuality)
-                        End If
 
                         _image.Save(msSave, ICI, EncPars)
 
@@ -1178,7 +1174,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASBannerOverwrite) Then
-                        Save(s, Master.eSettings.TVASBannerQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -1188,7 +1184,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASBannerOverwrite) Then
-                    Save(a, Master.eSettings.TVASBannerQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1227,7 +1223,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASFanartOverwrite) Then
-                        Save(s, Master.eSettings.TVASFanartQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -1237,7 +1233,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASFanartOverwrite) Then
-                    Save(a, Master.eSettings.TVASFanartQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1257,7 +1253,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsTVASLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
 
         Try
             Dim pPath As String = String.Empty
@@ -1269,7 +1264,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASLandscapeOverwrite) Then
-                        Save(s, 0, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -1279,7 +1274,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASLandscapeOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1318,7 +1313,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASPosterOverwrite) Then
-                        Save(s, Master.eSettings.TVASPosterQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -1328,7 +1323,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASPosterOverwrite) Then
-                    Save(a, Master.eSettings.TVASPosterQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1366,7 +1361,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVEpisodeFanartOverwrite) Then
-                        Save(s, Master.eSettings.TVEpisodeFanartQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -1379,7 +1374,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModType_TV.EpisodeFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVEpisodeFanartOverwrite) Then
-                    Save(a, Master.eSettings.TVEpisodeFanartQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1416,7 +1411,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVEpisodePosterOverwrite) Then
-                        Save(s, Master.eSettings.TVEpisodePosterQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -1429,7 +1424,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModType_TV.EpisodePoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVEpisodePosterOverwrite) Then
-                    Save(a, Master.eSettings.TVEpisodePosterQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1466,7 +1461,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Banner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieBannerOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1485,7 +1480,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieClearArt(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
 
         Try
             Try
@@ -1496,7 +1490,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.ClearArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieClearArtOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1515,7 +1509,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieClearLogo(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
 
         Try
             Try
@@ -1526,7 +1519,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.ClearLogo)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieClearLogoOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1545,7 +1538,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieDiscArt(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
 
         Try
             Try
@@ -1556,7 +1548,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.DiscArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieDiscArtOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1672,13 +1664,13 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Fanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieFanartOverwrite) Then
-                    Save(a, Master.eSettings.MovieFanartQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
 
             If Master.eSettings.MovieBackdropsAuto AndAlso Directory.Exists(Master.eSettings.MovieBackdropsPath) Then
-                Save(String.Concat(Master.eSettings.MovieBackdropsPath, Path.DirectorySeparatorChar, StringUtils.CleanFileName(mMovie.Movie.OriginalTitle), "_tt", mMovie.Movie.IMDBID, ".jpg"), Master.eSettings.MovieFanartQual, sURL, doResize)
+                Save(String.Concat(Master.eSettings.MovieBackdropsPath, Path.DirectorySeparatorChar, StringUtils.CleanFileName(mMovie.Movie.OriginalTitle), "_tt", mMovie.Movie.IMDBID, ".jpg"), sURL)
             End If
 
         Catch ex As Exception
@@ -1696,7 +1688,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieLandscape(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
 
         Try
             Try
@@ -1707,7 +1698,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Landscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieLandscapeOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1744,7 +1735,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Poster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MoviePosterOverwrite) Then
-                    Save(a, Master.eSettings.MoviePosterQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1781,7 +1772,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType_Movie.Banner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetBannerOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1800,7 +1791,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieSetClearArt(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
 
         Try
             'Try
@@ -1811,7 +1801,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType_Movie.ClearArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearArtOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1830,7 +1820,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieSetClearLogo(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
 
         Try
             'Try
@@ -1841,7 +1830,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType_Movie.ClearLogo)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearLogoOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1860,7 +1849,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieSetDiscArt(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
 
         Try
             'Try
@@ -1871,7 +1859,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType_Movie.DiscArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetDiscArtOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1908,7 +1896,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType_Movie.Fanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetFanartOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1927,7 +1915,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsMovieSetLandscape(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
 
         Try
             'Try
@@ -1938,7 +1925,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType_Movie.Landscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetLandscapeOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -1975,7 +1962,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType_Movie.Poster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetPosterOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2000,7 +1987,7 @@ Public Class Images
         For Each a In FileUtils.GetFilenameList.Movie(aMovie.Filename, aMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
             If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.MovieActorThumbsOverwrite) Then
-                Save(tPath, Master.eSettings.MovieActorThumbsQual)
+                Save(tPath)
             End If
         Next
 
@@ -2047,7 +2034,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonBannerOverwrite) Then
-                        Save(s, Master.eSettings.TVSeasonBannerQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2060,7 +2047,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonBannerOverwrite) Then
-                    Save(a, Master.eSettings.TVSeasonBannerQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2111,7 +2098,7 @@ Public Class Images
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonFanartOverwrite) Then
 
-                        Save(s, Master.eSettings.TVSeasonFanartQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2124,7 +2111,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonFanartOverwrite) Then
-                    Save(a, Master.eSettings.TVSeasonFanartQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2143,7 +2130,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Function SaveAsTVSeasonLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
-        Dim doResize As Boolean = False
 
         Try
             Dim pPath As String = String.Empty
@@ -2169,7 +2155,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonLandscapeOverwrite) Then
-                        Save(s, 0, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2182,7 +2168,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonLandscapeOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2233,7 +2219,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonPosterOverwrite) Then
-                        Save(s, Master.eSettings.TVSeasonPosterQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2246,7 +2232,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonPosterOverwrite) Then
-                    Save(a, Master.eSettings.TVSeasonPosterQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2286,7 +2272,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowBannerOverwrite) Then
-                        Save(s, Master.eSettings.TVShowBannerQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2297,7 +2283,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowBannerOverwrite) Then
-                    Save(a, Master.eSettings.TVShowBannerQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2319,8 +2305,6 @@ Public Class Images
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
-        Dim doResize As Boolean = False
-
         Try
             Dim pPath As String = String.Empty
             Dim ShowPath As String = mShow.ShowPath
@@ -2331,7 +2315,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowCharacterArtOverwrite) Then
-                        Save(s, 0, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2342,7 +2326,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowCharacterArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowCharacterArtOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2364,8 +2348,6 @@ Public Class Images
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
-        Dim doResize As Boolean = False
-
         Try
             Dim pPath As String = String.Empty
             Dim ShowPath As String = mShow.ShowPath
@@ -2376,7 +2358,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowClearArtOverwrite) Then
-                        Save(s, 0, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2387,7 +2369,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowClearArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowClearArtOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2409,8 +2391,6 @@ Public Class Images
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
-        Dim doResize As Boolean = False
-
         Try
             Dim pPath As String = String.Empty
             Dim ShowPath As String = mShow.ShowPath
@@ -2421,7 +2401,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowClearLogoOverwrite) Then
-                        Save(s, 0, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2432,7 +2412,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowClearLogo)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowClearLogoOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2513,7 +2493,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowFanartOverwrite) Then
-                        Save(s, Master.eSettings.TVShowFanartQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2526,7 +2506,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowFanartOverwrite) Then
-                    Save(a, Master.eSettings.TVShowFanartQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2548,8 +2528,6 @@ Public Class Images
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
-        Dim doResize As Boolean = False
-
         Try
             Dim pPath As String = String.Empty
             Dim ShowPath As String = mShow.ShowPath
@@ -2560,7 +2538,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowLandscapeOverwrite) Then
-                        Save(s, 0, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2571,7 +2549,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowLandscapeOverwrite) Then
-                    Save(a, 0, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next
@@ -2611,7 +2589,7 @@ Public Class Images
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowPosterOverwrite) Then
-                        Save(s, Master.eSettings.TVShowPosterQual, sURL, doResize)
+                        Save(s, sURL)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
                 Next
@@ -2622,7 +2600,7 @@ Public Class Images
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowPosterOverwrite) Then
-                    Save(a, Master.eSettings.TVShowPosterQual, sURL, doResize)
+                    Save(a, sURL)
                     strReturn = a
                 End If
             Next

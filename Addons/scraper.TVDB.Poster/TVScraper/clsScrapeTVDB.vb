@@ -492,7 +492,7 @@ Public Class Scraper
                                     RetImage.FromWeb(tmpEp.PosterURL)
                                     If Not IsNothing(RetImage.Image) Then
                                         Directory.CreateDirectory(Directory.GetParent(tmpEp.LocalFile).FullName)
-                                        RetImage.Save(tmpEp.LocalFile, , , False)
+                                        RetImage.Save(tmpEp.LocalFile)
                                     End If
                                 End If
 
@@ -522,7 +522,7 @@ Public Class Scraper
                             RetImage.FromWeb(tmpEp.PosterURL)
                             If Not IsNothing(RetImage.Image) Then
                                 Directory.CreateDirectory(Directory.GetParent(tmpEp.LocalFile).FullName)
-                                RetImage.Save(tmpEp.LocalFile, , , False)
+                                RetImage.Save(tmpEp.LocalFile)
                             End If
                         End If
 
@@ -911,7 +911,7 @@ Public Class Scraper
                                             cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
                                             If Not IsNothing(cSea(0).Fanart.Image.Image) Then
                                                 Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
-                                                cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile, , , False)
+                                                cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile)
                                                 Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
                                             End If
                                         End If
@@ -979,7 +979,7 @@ Public Class Scraper
             sImage.FromWeb(sURL)
 
             If Not IsNothing(sImage.Image) Then
-                sImage.Save(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, sPath.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), , , True)
+                sImage.Save(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, sPath.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
             End If
             sImage = Nothing
         End Sub
