@@ -2055,9 +2055,10 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVSeasonLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVSeasonLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
         Dim doResize As Boolean = False
+        Dim ret As Interfaces.ModuleResult
 
         Try
             Dim pPath As String = String.Empty
@@ -2080,7 +2081,8 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.SeasonLandscape, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonLandscapeOverwrite) Then
                         Save(s, 0, sURL, doResize)
@@ -2272,8 +2274,9 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowClearArt(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVShowClearArt(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
+        Dim ret As Interfaces.ModuleResult
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
@@ -2286,7 +2289,8 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowClearArt, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowClearArtOverwrite) Then
                         Save(s, 0, sURL, doResize)
@@ -2317,9 +2321,9 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowClearLogo(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVShowClearLogo(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
-
+        Dim ret As Interfaces.ModuleResult
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
         Dim doResize As Boolean = False
@@ -2331,7 +2335,8 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowClearLogo, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowClearLogoOverwrite) Then
                         Save(s, 0, sURL, doResize)
@@ -2447,8 +2452,9 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVShowLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
+        Dim ret As Interfaces.ModuleResult
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
@@ -2461,7 +2467,8 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowLandscape, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowLandscapeOverwrite) Then
                         Save(s, 0, sURL, doResize)

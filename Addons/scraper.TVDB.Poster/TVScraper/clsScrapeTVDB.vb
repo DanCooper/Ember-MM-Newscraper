@@ -898,7 +898,7 @@ Public Class Scraper
 
                                 Dim cSea = From cSeason As TVDBSeasonImage In TVDBImages.SeasonImageList Where cSeason.Season = iSea Take 1
                                 If cSea.Count > 0 Then
-                                    If Not IsNothing(cSea(0).Poster.Image) Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsTVSeasonPoster(Episode)
+                                    If Not IsNothing(cSea(0).Poster.Image) Then Episode.SeasonPosterPath = Await cSea(0).Poster.SaveAsTVSeasonPoster(Episode)
                                     If Not IsNothing(cSea(0).Banner.Image) Then Episode.SeasonBannerPath = Await cSea(0).Banner.SaveAsTVSeasonBanner(Episode)
 
                                     If Me.bwTVDB.CancellationPending Then Return
@@ -906,14 +906,14 @@ Public Class Scraper
                                     If Master.eSettings.TVSeasonFanartAnyEnabled Then
                                         If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
                                             cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
-                                            Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
+                                            Episode.SeasonFanartPath = Await cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
                                         ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) Then
                                             cSea(0).Fanart.Image.Clear()
                                             cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
                                             If Not IsNothing(cSea(0).Fanart.Image.Image) Then
                                                 Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
                                                 cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile, , , False)
-                                                Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
+                                                Episode.SeasonFanartPath = Await cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
                                             End If
                                         End If
                                     End If

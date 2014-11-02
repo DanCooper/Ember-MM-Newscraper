@@ -45,7 +45,6 @@ Namespace Apple
             originaltitle = sOriginalTitle
             imdbid = sIMDBID
             GetMovieTrailers()
-
         End Sub
 
 #End Region 'Constructors

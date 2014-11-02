@@ -1404,7 +1404,7 @@ Public Class Scanner
                     GetTVShowFolderContents(TVContainer)
 
                     If Not String.IsNullOrEmpty(TVContainer.ShowNfo) Then
-                        tmpTVDB.TVShow = NFO.LoadTVShowFromNFO(TVContainer.ShowNfo)
+                        tmpTVDB.TVShow = Await NFO.LoadTVShowFromNFO(TVContainer.ShowNfo)
                     Else
                         tmpTVDB.TVShow = New MediaContainers.TVShow
                     End If

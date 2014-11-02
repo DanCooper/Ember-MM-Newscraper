@@ -139,14 +139,14 @@ Public Class dlgEditShow
         Me.EditActor()
     End Sub
 
-    Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
+    Private Async Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
             If dlgManualEdit.ShowDialog(Master.currShow.ShowNfoPath) = Windows.Forms.DialogResult.OK Then
-                Master.currShow.TVShow = NFO.LoadTVShowFromNFO(Master.currShow.ShowNfoPath)
+                Master.currShow.TVShow = Await NFO.LoadTVShowFromNFO(Master.currShow.ShowNfoPath)
                 Me.FillInfo()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2263,7 +2263,7 @@ Public Class dlgEditShow
 
             'Show Banner 
             If Not IsNothing(Me.ShowBanner.Image) Then
-                Master.currShow.ShowBannerPath = Me.ShowBanner.SaveAsTVShowBanner(Master.currShow, "")
+                Master.currShow.ShowBannerPath = Await Me.ShowBanner.SaveAsTVShowBanner(Master.currShow, "")
             Else
                 Me.ShowBanner.DeleteTVShowBanner(Master.currShow)
                 Master.currShow.ShowBannerPath = String.Empty
@@ -2271,7 +2271,7 @@ Public Class dlgEditShow
 
             'Show CharacterArt 
             If Not IsNothing(Me.ShowCharacterArt.Image) Then
-                Master.currShow.ShowCharacterArtPath = Me.ShowCharacterArt.SaveAsTVShowCharacterArt(Master.currShow, "")
+                Master.currShow.ShowCharacterArtPath = Await Me.ShowCharacterArt.SaveAsTVShowCharacterArt(Master.currShow, "")
             Else
                 Me.ShowCharacterArt.DeleteTVShowCharacterArt(Master.currShow)
                 Master.currShow.ShowCharacterArtPath = String.Empty
@@ -2279,7 +2279,7 @@ Public Class dlgEditShow
 
             'Show ClearArt 
             If Not IsNothing(Me.ShowClearArt.Image) Then
-                Master.currShow.ShowClearArtPath = Me.ShowClearArt.SaveAsTVShowClearArt(Master.currShow, "")
+                Master.currShow.ShowClearArtPath = Await Me.ShowClearArt.SaveAsTVShowClearArt(Master.currShow, "")
             Else
                 Me.ShowClearArt.DeleteTVShowClearArt(Master.currShow)
                 Master.currShow.ShowClearArtPath = String.Empty
@@ -2287,7 +2287,7 @@ Public Class dlgEditShow
 
             'Show ClearLogo 
             If Not IsNothing(Me.ShowClearLogo.Image) Then
-                Master.currShow.ShowClearLogoPath = Me.ShowClearLogo.SaveAsTVShowClearLogo(Master.currShow, "")
+                Master.currShow.ShowClearLogoPath = Await Me.ShowClearLogo.SaveAsTVShowClearLogo(Master.currShow, "")
             Else
                 Me.ShowClearLogo.DeleteTVShowClearLogo(Master.currShow)
                 Master.currShow.ShowClearLogoPath = String.Empty
@@ -2303,7 +2303,7 @@ Public Class dlgEditShow
 
             'Show Landscape
             If Not IsNothing(Me.ShowLandscape.Image) Then
-                Master.currShow.ShowLandscapePath = Me.ShowLandscape.SaveAsTVShowLandscape(Master.currShow, "")
+                Master.currShow.ShowLandscapePath = Await Me.ShowLandscape.SaveAsTVShowLandscape(Master.currShow, "")
             Else
                 Me.ShowLandscape.DeleteTVShowLandscape(Master.currShow)
                 Master.currShow.ShowLandscapePath = String.Empty

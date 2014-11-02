@@ -3422,7 +3422,7 @@ doCancel:
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Sub bwRefreshShows_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshShows.DoWork
+    Private Async Sub bwRefreshShows_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshShows.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
         Dim iCount As Integer = 0
@@ -3437,7 +3437,7 @@ doCancel:
                 Try
                     'If Me.bwMovieScraper.CancellationPending Then Return
                     Me.bwRefreshShows.ReportProgress(iCount, KVP.Value)
-                    Me.RefreshShow(KVP.Key, True, False, False, Args.withEpisodes)
+                    Await Me.RefreshShow(KVP.Key, True, False, False, Args.withEpisodes)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
@@ -4593,7 +4593,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuShowEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowEdit.Click
+    Private Async Sub cmnuShowEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowEdit.Click
         Try
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
@@ -4607,7 +4607,7 @@ doCancel:
                 Select Case dEditShow.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
                         Me.SetShowListItemAfterEdit(ID, indX)
-                        If Me.RefreshShow(ID, False, True, False, False) Then
+                        If Await Me.RefreshShow(ID, False, True, False, False) Then
                             Me.FillList(False, False, True)
                         Else
                             Me.SetControlsEnabled(True)
@@ -5904,7 +5904,7 @@ doCancel:
         If doFill Then Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
     End Sub
 
-    Private Sub cmnuShowReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowReload.Click
+    Private Async Sub cmnuShowReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowReload.Click
         Try
             Me.dgvTVShows.Cursor = Cursors.WaitCursor
             Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
@@ -5917,14 +5917,14 @@ doCancel:
             If Me.dgvTVShows.SelectedRows.Count > 1 Then
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                        tFill = Me.RefreshShow(Convert.ToInt64(sRow.Cells(0).Value), True, True, False, True)
+                        tFill = Await Me.RefreshShow(Convert.ToInt64(sRow.Cells(0).Value), True, True, False, True)
                         If tFill Then doFill = True
                     Next
                     SQLtransaction.Commit()
                 End Using
             ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
                 'seperate single refresh so we can have a progress bar
-                tFill = Me.RefreshShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells(0).Value), False, True, False, True)
+                tFill = Await Me.RefreshShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells(0).Value), False, True, False, True)
                 If tFill Then doFill = True
             End If
 
@@ -7857,7 +7857,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub dgvTVShows_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellDoubleClick
+    Private Async Sub dgvTVShows_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellDoubleClick
         Try
 
             If e.RowIndex < 0 Then Exit Sub
@@ -7874,7 +7874,7 @@ doCancel:
                 Select Case dEditShow.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
                         Me.SetShowListItemAfterEdit(ID, indX)
-                        If Me.RefreshShow(ID, False, True, False, False) Then
+                        If Await Me.RefreshShow(ID, False, True, False, False) Then
                             Me.FillList(False, False, True)
                         End If
                 End Select
@@ -8000,7 +8000,7 @@ doCancel:
         If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.S Then txtSearchShows.Focus()
     End Sub
 
-    Private Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
+    Private Async Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
         Try
             If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
@@ -8025,7 +8025,7 @@ doCancel:
                     Select Case dEditShow.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
                             Me.SetShowListItemAfterEdit(ID, indX)
-                            If Me.RefreshShow(ID, False, True, False, False) Then
+                            If Await Me.RefreshShow(ID, False, True, False, False) Then
                                 Me.FillList(False, False, True)
                             End If
                     End Select
@@ -13496,7 +13496,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearArt(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Await Me.RefreshShow(ShowID, False, True, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -13650,7 +13650,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowFanart(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Await Me.RefreshShow(ShowID, False, True, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -13852,7 +13852,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowPoster(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Await Me.RefreshShow(ShowID, False, True, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -14053,7 +14053,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowLandscape(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Await Me.RefreshShow(ShowID, False, True, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -15025,7 +15025,7 @@ doCancel:
         Return False
     End Function
 
-    Private Function RefreshShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal FromNfo As Boolean, ByVal ToNfo As Boolean, ByVal WithEpisodes As Boolean) As Boolean
+    Private Async Function RefreshShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal FromNfo As Boolean, ByVal ToNfo As Boolean, ByVal WithEpisodes As Boolean) As Threading.Tasks.Task(Of Boolean)
         If Not BatchMode Then
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.tspbLoading.Value = 0
@@ -15072,9 +15072,9 @@ doCancel:
                     If String.IsNullOrEmpty(tmpShowDb.ShowNfoPath) Then
                         Dim sNFO As String = NFO.GetShowNfoPath(tmpShowDb.ShowPath)
                         tmpShowDb.ShowNfoPath = sNFO
-                        tmpShow = NFO.LoadTVShowFromNFO(sNFO)
+                        tmpShow = Await NFO.LoadTVShowFromNFO(sNFO)
                     Else
-                        tmpShow = NFO.LoadTVShowFromNFO(tmpShowDb.ShowNfoPath)
+                        tmpShow = Await NFO.LoadTVShowFromNFO(tmpShowDb.ShowNfoPath)
                     End If
                     tmpShowDb.TVShow = tmpShow
                 End If

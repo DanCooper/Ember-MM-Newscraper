@@ -501,7 +501,7 @@ Public Class dlgEditSeason
             Else
                 'Season Fanart
                 If Not IsNothing(Me.SeasonFanart.Image) Then
-                    Master.currShow.SeasonFanartPath = Me.SeasonFanart.SaveAsTVSeasonFanart(Master.currShow)
+                    Master.currShow.SeasonFanartPath = Await Me.SeasonFanart.SaveAsTVSeasonFanart(Master.currShow)
                 Else
                     Me.SeasonFanart.DeleteTVSeasonFanart(Master.currShow)
                     Master.currShow.SeasonFanartPath = String.Empty
@@ -520,7 +520,7 @@ Public Class dlgEditSeason
             Else
                 'Season Landscape
                 If Not IsNothing(Me.SeasonLandscape.Image) Then
-                    Master.currShow.SeasonLandscapePath = Me.SeasonLandscape.SaveAsTVSeasonLandscape(Master.currShow)
+                    Master.currShow.SeasonLandscapePath = Await Me.SeasonLandscape.SaveAsTVSeasonLandscape(Master.currShow)
                 Else
                     Me.SeasonLandscape.DeleteTVSeasonLandscape(Master.currShow)
                     Master.currShow.SeasonLandscapePath = String.Empty
@@ -539,7 +539,7 @@ Public Class dlgEditSeason
             Else
                 'Season Poster
                 If Not IsNothing(Me.SeasonPoster.Image) Then
-                    Master.currShow.SeasonPosterPath = Me.SeasonPoster.SaveAsTVSeasonPoster(Master.currShow)
+                    Master.currShow.SeasonPosterPath = Await Me.SeasonPoster.SaveAsTVSeasonPoster(Master.currShow)
                 Else
                     Me.SeasonPoster.DeleteTVSeasonPoster(Master.currShow)
                     Master.currShow.SeasonPosterPath = String.Empty
