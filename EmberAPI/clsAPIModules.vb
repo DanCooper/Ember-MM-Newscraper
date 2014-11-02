@@ -1044,6 +1044,7 @@ Public Class ModulesManager
             Dim modules As IEnumerable(Of _externalGenericModuleClass) = externalProcessorModules.Where(Function(e) e.ProcessorModule.ModuleType.Contains(mType) AndAlso e.ProcessorModule.Enabled)
             If (modules.Count() <= 0) Then
                 logger.Warn("No generic modules defined <{0}>", mType.ToString)
+                DBMovie = CType(_refparam, Structures.DBMovie)
             Else
                 For Each _externalGenericModule As _externalGenericModuleClass In modules
                     Try
