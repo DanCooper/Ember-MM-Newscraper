@@ -402,8 +402,7 @@ Public Class HTTP
 
                 If Me._cancelRequested Then Return
 
-                Data = Await wClient.DownloadDataTaskAsync(New Uri(Me._URL))
-
+                Data = Await wClient.DownloadDataTaskAsync(New Uri(URL))
 
                 If Me._cancelRequested Then Return
                 Dim temp As String = wClient.ResponseHeaders("Content-Type").ToLower

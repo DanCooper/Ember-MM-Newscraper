@@ -1061,6 +1061,11 @@ Public Class ModulesManager
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(_params)
+        If Not IsNothing(DBMovie) Then
+            ret.ReturnObj.Add(DBMovie)
+        End If
 
         Return ret
     End Function
