@@ -300,7 +300,7 @@ Public Class IMDB_Data
         ' nMovie
         ' ScrapeType
         ' Options 
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         logger.Trace("Started IMDB Scraper")
 

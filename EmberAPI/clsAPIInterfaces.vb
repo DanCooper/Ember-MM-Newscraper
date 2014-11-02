@@ -627,6 +627,12 @@ Public Class Interfaces
 
 #End Region 'Fields
 
+#Region "Constructors"
+        Public Sub New(ByVal bc As Boolean)
+            ReturnObj = New List(Of Object)
+        End Sub
+
+#End Region 'Constructors
     End Structure
 
 #End Region 'Nested Types

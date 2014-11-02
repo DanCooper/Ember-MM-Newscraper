@@ -165,7 +165,7 @@ Public Class MoviepilotDE_Data
         ' nMovie
         ' ScrapeType
         ' Options        
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         ret.Cancelled = False
         ret.breakChain = False
         ret.ReturnObj.Add(oDBMovie)
@@ -262,7 +262,7 @@ Public Class MoviepilotDE_Data
         ' return objects
         ' DBMovie
         ' studio
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         ret.breakChain = False
         ret.ReturnObj.Add(DBMovie)
         ret.ReturnObj.Add(studio)

@@ -140,7 +140,7 @@ Public Class TelevisionTunes_Theme
     End Sub
 
     Async Function Scraper(ByVal DBTV As Structures.DBTV, ByVal URLList As List(Of Themes)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_Theme_TV.Scraper
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         logger.Trace("Started scrape")
 

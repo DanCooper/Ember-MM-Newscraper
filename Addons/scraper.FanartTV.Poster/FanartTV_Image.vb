@@ -406,7 +406,7 @@ Public Class FanartTV_Image
         ' Return Objects are
         ' DBMovie
         ' ImageList
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         logger.Trace("Started scrape FanartTV")
 
@@ -442,7 +442,7 @@ Public Class FanartTV_Image
         ' Return Objects are
         ' DBMovieSet
         ' ImageList
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         logger.Trace("Started scrape FanartTV")
 

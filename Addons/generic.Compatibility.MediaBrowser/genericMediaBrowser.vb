@@ -133,7 +133,7 @@ Public Class genericMediaBrowser
         ' _params
         '_refparam 
         '_dbmovie 
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         Dim doContinue As Boolean
         Dim mMovie As Structures.DBMovie
         Dim _image As Images

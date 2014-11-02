@@ -1824,7 +1824,7 @@ Public Class frmMain
         Dim DBScrapeMovie As New Structures.DBMovie
         Dim configpath As String = ""
         Dim formatter As New BinaryFormatter()
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         logger.Trace("Starting MOVIE scrape")
 

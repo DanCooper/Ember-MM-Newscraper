@@ -98,7 +98,7 @@ Public Class BulkRenamerModule
         ' _params
         '_refparam 
         '_dbmovie 
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         Select Case mType
             Case Enums.ModuleEventType.MovieScraperRDYtoSave
                 If MySettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(MySettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern)) Then

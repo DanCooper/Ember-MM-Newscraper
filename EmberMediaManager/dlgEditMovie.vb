@@ -239,7 +239,7 @@ Public Class dlgEditMovie
     Private Async Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim aUrlList As New List(Of Themes)
         Dim tURL As String = String.Empty
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         ret = Await ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList)
         ' Return Objects are
         ' DBMovie
@@ -483,7 +483,7 @@ Public Class dlgEditMovie
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         Try
             ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Banner, aList)
             Master.currMovie = CType(ret.ReturnObj(0), Structures.DBMovie)
@@ -562,7 +562,7 @@ Public Class dlgEditMovie
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         Try
             ret = Await ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList)

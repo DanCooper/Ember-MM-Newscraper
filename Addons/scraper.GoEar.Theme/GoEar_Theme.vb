@@ -143,7 +143,7 @@ Public Class GoEar_Theme
     Async Function Scraper(ByVal DBMovie As Structures.DBMovie, ByVal URLList As List(Of Themes)) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements EmberAPI.Interfaces.ScraperModule_Theme_Movie.Scraper
         ' Return Objects are
         ' URLList
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         logger.Trace("Started scrape")
 
         Dim tGoEar As New GoEar.Scraper()

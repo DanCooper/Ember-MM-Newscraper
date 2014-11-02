@@ -155,7 +155,7 @@ Public Class Apple_Trailer
         ' Return Objects are
         ' DBMovie
         ' URLList
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         logger.Trace("Started scrape", New StackTrace().ToString())
 

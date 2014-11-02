@@ -81,7 +81,7 @@ Public Class genericMetadataEditor
         ' _params
         '_refparam 
         '_dbmovie 
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         ret.ReturnObj.Add(_params)
         ret.ReturnObj.Add(_refparam)
         ret.ReturnObj.Add(_dbmovie)

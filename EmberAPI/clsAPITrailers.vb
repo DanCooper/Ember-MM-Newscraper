@@ -336,7 +336,7 @@ Public Class Trailers
         ' return parameters
         ' UrlList
         ' trlResult
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         If UrlList.Count = 0 Then
             ret.Cancelled = False

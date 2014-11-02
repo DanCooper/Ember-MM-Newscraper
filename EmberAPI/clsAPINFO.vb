@@ -1142,7 +1142,7 @@ Public Class NFO
         '//
         ' Serialize MediaContainers.Movie to an NFO
         '\\
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {movieToSave})
@@ -1373,7 +1373,7 @@ Public Class NFO
         '//
         ' Serialize MediaContainers.TVShow to an NFO
         '\\
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         Try
             Dim params As New List(Of Object)(New Object() {tvShowToSave})
             Dim doContinue As Boolean = True

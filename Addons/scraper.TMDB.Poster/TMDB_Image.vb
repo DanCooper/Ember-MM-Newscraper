@@ -310,7 +310,7 @@ Public Class TMDB_Image
         ' Return Objects are
         ' DBMovieSet
         ' ImageList
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()

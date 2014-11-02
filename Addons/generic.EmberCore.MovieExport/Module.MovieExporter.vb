@@ -95,7 +95,7 @@ Public Class MovieExporterModule
         ' _params
         '_refparam 
         '_dbmovie 
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         Try
             dlgExportMovies.CLExport(DirectCast(_params(0), String), DirectCast(_params(1), String), DirectCast(_params(2), Int32))
 

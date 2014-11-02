@@ -144,7 +144,7 @@ Public Class IMDB_Image
         ' Return Objects are
         ' DBMovie
         ' ImageList
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         logger.Trace("Started scrape", New StackTrace().ToString())
         LoadSettings()

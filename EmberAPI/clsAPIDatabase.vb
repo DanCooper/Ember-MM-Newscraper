@@ -2703,7 +2703,7 @@ Public Class Database
     Public Async Function SaveTVShowToDB(ByVal _TVShowDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
         ' return objects
         ' _TVShowDB
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing

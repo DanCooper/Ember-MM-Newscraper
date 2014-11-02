@@ -775,7 +775,7 @@ Public Class dlgSetsManager
         Dim aList As New List(Of MediaContainers.Image)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
 
         Try
             If currSet.Movies.Count > 0 Then

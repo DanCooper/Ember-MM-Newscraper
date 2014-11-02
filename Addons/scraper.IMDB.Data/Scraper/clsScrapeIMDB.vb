@@ -175,7 +175,7 @@ Namespace IMDB
         Public Async Function GetMovieInfo(ByVal strID As String, ByVal nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
             ' return object
             ' nMovie
-            Dim ret As New Interfaces.ModuleResult
+            Dim ret As New Interfaces.ModuleResult(True)
             'let's default on empty return
             ret.Cancelled = True
             ret.breakChain = True
@@ -742,7 +742,7 @@ mPlot:          'MOVIE PLOT
             ' return object
             ' oDBMovie
             ' nMovie
-            Dim ret As New Interfaces.ModuleResult
+            Dim ret As New Interfaces.ModuleResult(True)
 
             Dim r As MovieSearchResults = Await SearchMovie(sMovieName)
             Dim b As Boolean = False

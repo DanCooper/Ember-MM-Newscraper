@@ -125,7 +125,7 @@ Public Class TVDB_Data_Poster
     Public Async Function GetLangs(ByVal sMirror As String, ByVal Langs As clsXMLTVDBLanguages) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.GetLangs
         ' Return Objects are
         ' Langs
-        Dim ret As New Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult(True)
         ret.breakChain = True
         Langs = Await TVScraper.GetLangs(sMirror)
         ret.ReturnObj.Clear()
