@@ -39,11 +39,8 @@ Namespace MoviepilotDE
 
 #Region "Constructors"
 
-        Public Sub New(ByVal soriginaltitle As String)
+        Public Sub New()
             Clear()
-            originaltitle = soriginaltitle
-            'Main method in this class to retrieve Moviepilot information...
-            GetMoviepilotDEDetails()
         End Sub
 
 #End Region 'Constructors
@@ -81,6 +78,11 @@ Namespace MoviepilotDE
 #End Region 'Properties
 
 #Region "Methods"
+        Public Async Function Init(ByVal sOriginalTitle As String) As Threading.Tasks.Task
+            originaltitle = sOriginalTitle
+            'Main method in this class to retrieve Moviepilot information...
+            Await GetMoviepilotDEDetails()
+        End Function
 
         Private Sub Clear()
             _fsk = String.Empty

@@ -39,10 +39,8 @@ Namespace TelevisionTunes
 
 #Region "Constructors"
 
-        Public Sub New(ByVal sOriginalTitle As String)
+        Public Sub New()
             Clear()
-            originaltitle = sOriginalTitle
-            GetMovieThemes()
         End Sub
 
 #End Region 'Constructors
@@ -61,6 +59,10 @@ Namespace TelevisionTunes
 #End Region 'Properties
 
 #Region "Methods"
+        Public Async Function Init(ByVal sOriginalTitle As String) As Threading.Tasks.Task
+            originaltitle = sOriginalTitle
+            Await GetMovieThemes()
+        End Function
 
         Private Sub Clear()
             _themelist = New List(Of Themes)

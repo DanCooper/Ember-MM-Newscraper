@@ -36,10 +36,8 @@ Namespace IMDB
 
 #Region "Constructors"
 
-        Public Sub New(ByVal sIMDBID As String)
+        Public Sub New()
             Clear()
-            IMDBID = sIMDBID
-            GetMovieTrailers()
         End Sub
 
 #End Region 'Constructors
@@ -62,6 +60,11 @@ Namespace IMDB
         Private Sub Clear()
             _trailerlist = New List(Of Trailers)
         End Sub
+
+        Public Async Function Init(ByVal sIMDBID As String) As Threading.Tasks.Task
+            IMDBID = sIMDBID
+            Await GetMovieTrailers()
+        End Function
 
         Private Async Function GetMovieTrailers() As Threading.Tasks.Task
 

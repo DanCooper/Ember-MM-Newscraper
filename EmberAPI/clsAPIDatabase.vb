@@ -68,7 +68,7 @@ Public Class Database
     ''' <param name="CleanTV">If <c>True</c>, process the TV files</param>
     ''' <param name="source">Optional. If provided, only process entries from that named source.</param>
     ''' <remarks></remarks>
-    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanMovieSets As Boolean, ByVal CleanTV As Boolean, Optional ByVal source As String = "")
+    Public Async Function Clean(ByVal CleanMovies As Boolean, ByVal CleanMovieSets As Boolean, ByVal CleanTV As Boolean, Optional ByVal source As String = "") As Threading.Tasks.Task
         Dim fInfo As FileInfo
         Dim tPath As String = String.Empty
         Dim sPath As String = String.Empty
@@ -147,7 +147,7 @@ Public Class Database
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLreader.Read
                                 If Convert.ToInt64(SQLreader("Count")) = 0 Then
-                                    Master.DB.DeleteMovieSetFromDB(Convert.ToInt64(SQLreader("ID")), True)
+                                    Await Master.DB.DeleteMovieSetFromDB(Convert.ToInt64(SQLreader("ID")), True)
                                 End If
                             End While
                         End Using
@@ -199,7 +199,7 @@ Public Class Database
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
+    End Function
     ''' <summary>
     ''' Remove from the database the TV seasons for which there are no episodes defined
     ''' </summary>
@@ -411,7 +411,7 @@ Public Class Database
     ''' <param name="ID">ID of the movieset to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteMovieSetFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Async Function DeleteMovieSetFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Threading.Tasks.Task(Of Boolean)
         Try
             'first get a list of all movies in the movieset to remove the movieset information from NFO
             Dim moviesToSave As New List(Of Structures.DBMovie)
@@ -434,7 +434,7 @@ Public Class Database
             If moviesToSave.Count > 0 Then
                 For Each movie In moviesToSave
                     movie.Movie.RemoveSet(ID)
-                    SaveMovieToDB(movie, False, BatchMode, True)
+                    Await SaveMovieToDB(movie, False, BatchMode, True)
                 Next
             End If
 
@@ -1577,7 +1577,7 @@ Public Class Database
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     ''' <returns>Structures.DBMovie object</returns>
-    Public Function SaveMovieToDB(ByVal _movieDB As Structures.DBMovie, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Structures.DBMovie
+    Public Async Function SaveMovieToDB(ByVal _movieDB As Structures.DBMovie, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Threading.Tasks.Task(Of Structures.DBMovie)
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
         Try
@@ -1707,7 +1707,7 @@ Public Class Database
                 End Try
 
                 ' First let's save it to NFO, even because we will need the NFO path
-                If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
+                If ToNfo Then Await NFO.SaveMovieToNFO(_movieDB)
 
                 parMoviePath.Value = _movieDB.Filename
                 parType.Value = _movieDB.IsSingle
@@ -2023,7 +2023,7 @@ Public Class Database
                                                 If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
                                                 If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Set = CStr(SQLreader("SetName"))
                                                 IsNewSet = False
-                                                NFO.SaveMovieToNFO(_movieDB) 'to save the "new" SetName
+                                                Await NFO.SaveMovieToNFO(_movieDB) 'to save the "new" SetName
                                             Else
                                                 IsNewSet = True
                                             End If
@@ -2291,7 +2291,7 @@ Public Class Database
                 If MoviesInSet.Count > 0 Then
                     For Each tMovie In MoviesInSet
                         tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.ID)
-                        Master.DB.SaveMovieToDB(tMovie.DBMovie, False, BatchMode, True)
+                        Await Master.DB.SaveMovieToDB(tMovie.DBMovie, False, BatchMode, True)
                     Next
                 End If
             End If
@@ -2700,7 +2700,7 @@ Public Class Database
     ''' <param name="IsNew">Is this a new show (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    Public Sub SaveTVShowToDB(ByRef _TVShowDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False)
+    Public Async Function SaveTVShowToDB(ByRef _TVShowDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Threading.Tasks.Task
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
@@ -2780,7 +2780,7 @@ Public Class Database
                 End With
 
                 ' First let's save it to NFO, even because we will need the NFO path
-                If ToNfo Then NFO.SaveTVShowToNFO(_TVShowDB)
+                If ToNfo Then Await NFO.SaveTVShowToNFO(_TVShowDB)
 
                 parBannerPath.Value = _TVShowDB.ShowBannerPath
                 parCharacterArtPath.Value = _TVShowDB.ShowCharacterArtPath
@@ -2827,7 +2827,7 @@ Public Class Database
                         Else
                             logger.Error("Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
                             _TVShowDB.ShowID = -1
-                            Exit Sub
+                            Exit Function
                         End If
                     End Using
                 Else
@@ -2865,7 +2865,7 @@ Public Class Database
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
+    End Function
     ''' <summary>
     ''' Load TV Sources from the DB. This populates the Master.TVSources list of TV Sources
     ''' </summary>
@@ -3134,7 +3134,7 @@ Public Class Database
     ''' not using loop here, only do one movie a time (call function repeatedly!)! -> only deliver keypair instead of whole dictionary
     ''' Old-> Public Sub SaveMoviePlayCountInDatabase(ByVal myWatchedMovies As Dictionary(Of String, KeyValuePair(Of String, String)))
     ''' </remarks>
-    Public Sub SaveMoviePlayCountInDatabase(ByVal WatchedMovieData As KeyValuePair(Of String, KeyValuePair(Of String, Integer)))
+    Public Async Function SaveMoviePlayCountInDatabase(ByVal WatchedMovieData As KeyValuePair(Of String, KeyValuePair(Of String, Integer))) As Threading.Tasks.Task
         Try
             Dim PlaycountStored As Boolean = True
             Dim _movieDB As New Structures.DBMovie
@@ -3182,7 +3182,7 @@ Public Class Database
                 'Save to NFO!
                 Dim _movieSavetoNFO As New Structures.DBMovie
                 _movieSavetoNFO = Master.DB.LoadMovieFromDB(_movieDB.ID)
-                Master.DB.SaveMovieToDB(_movieSavetoNFO, False, False, True)
+                Await Master.DB.SaveMovieToDB(_movieSavetoNFO, False, False, True)
                 'create .watched files
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
                     For Each a In FileUtils.GetFilenameList.Movie(_movieSavetoNFO.Filename, False, Enums.ModType_Movie.WatchedFile)
@@ -3198,7 +3198,7 @@ Public Class Database
         Catch ex As Exception
 
         End Try
-    End Sub
+    End Function
     ''' <summary>
     ''' Savethe PlayCount Tag for watched episode into Ember database /NFO if not already set
     ''' </summary>

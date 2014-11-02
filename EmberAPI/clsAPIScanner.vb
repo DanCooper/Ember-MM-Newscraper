@@ -1198,7 +1198,7 @@ Public Class Scanner
                             Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                         Next
 
-                        LoadTVShow(currShowContainer)
+                        Await LoadTVShow(currShowContainer)
                     Next
 
                 End If
@@ -1242,7 +1242,7 @@ Public Class Scanner
         End Try
     End Function
 
-    Private Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
+    Private Async Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
         Try
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Master.DB.ClearNew()
@@ -1348,7 +1348,7 @@ Public Class Scanner
                                     parLastScan.Value = Now
                                     parID.Value = SQLreader("ID")
                                     SQLUpdatecommand.ExecuteNonQuery()
-                                    ScanTVSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, SQLreader("Language").ToString, DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering))
+                                    Await ScanTVSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, SQLreader("Language").ToString, DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering))
                                     If Me.bwPrelim.CancellationPending Then
                                         e.Cancel = True
                                         Return
@@ -1365,7 +1365,7 @@ Public Class Scanner
             If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
                 Me.bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
                 'remove any db entries that no longer exist
-                Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceName)
+                Await Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceName)
             End If
 
         Catch ex As Exception
@@ -1374,15 +1374,16 @@ Public Class Scanner
         End Try
     End Sub
 
-    Private Sub bwPrelim_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwPrelim.ProgressChanged
+    Private Async Sub bwPrelim_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwPrelim.ProgressChanged
         Dim tProgressValue As ProgressValue = DirectCast(e.UserState, ProgressValue)
+        Dim ret As Interfaces.ModuleResult
         RaiseEvent ScannerUpdated(e.ProgressPercentage, tProgressValue.Message)
 
         Select Case tProgressValue.Type
             Case 0
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newmovie", 3, Master.eLang.GetString(817, "New Movie Added"), tProgressValue.Message, Nothing}))
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newmovie", 3, Master.eLang.GetString(817, "New Movie Added"), tProgressValue.Message, Nothing}))
             Case 1
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newep", 4, Master.eLang.GetString(818, "New Episode Added"), tProgressValue.Message, Nothing}))
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newep", 4, Master.eLang.GetString(818, "New Episode Added"), tProgressValue.Message, Nothing}))
         End Select
     End Sub
 

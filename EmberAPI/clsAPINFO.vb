@@ -1136,15 +1136,17 @@ Public Class NFO
         Return xmlShow
     End Function
 
-    Public Shared Sub SaveMovieToNFO(ByRef movieToSave As Structures.DBMovie)
+    Public Shared Async Function SaveMovieToNFO(ByRef movieToSave As Structures.DBMovie) As Threading.Tasks.Task
         '//
         ' Serialize MediaContainers.Movie to an NFO
         '\\
+        Dim ret As Interfaces.ModuleResult
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {movieToSave})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieNFOSave, params, doContinue, False)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieNFOSave, params, doContinue, False)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 If Not doContinue Then Return
             Catch ex As Exception
             End Try
@@ -1192,7 +1194,7 @@ Public Class NFO
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
+    End Function
 
     Public Shared Sub SaveMovieSetToNFO(ByRef moviesetToSave As Structures.DBMovieSet)
         '//
@@ -1356,15 +1358,17 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Sub SaveTVShowToNFO(ByRef tvShowToSave As Structures.DBTV)
+    Public Shared Async Function SaveTVShowToNFO(ByRef tvShowToSave As Structures.DBTV) As Threading.Tasks.Task
         '//
         ' Serialize MediaContainers.TVShow to an NFO
         '\\
-
+        Dim ret As Interfaces.ModuleResult
         Try
             Dim params As New List(Of Object)(New Object() {tvShowToSave})
             Dim doContinue As Boolean = True
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnTVShowNFOSave, params, doContinue, False)
+            ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnTVShowNFOSave, params, doContinue, False)
+            params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
+
             If Not doContinue Then Return
         Catch ex As Exception
         End Try
@@ -1415,7 +1419,7 @@ Public Class NFO
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
+    End Function
 
     Private Shared Sub RenameEpNonConfNfo(ByVal sPath As String, ByVal isChecked As Boolean)
         'test if current nfo is non-conforming... rename per setting

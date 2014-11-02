@@ -2401,9 +2401,9 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVShowFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
-
+        Dim ret As Interfaces.ModuleResult
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
         Dim doResize As Boolean = Master.eSettings.TVShowFanartResize AndAlso (_image.Width > Master.eSettings.TVShowFanartWidth OrElse _image.Height > Master.eSettings.TVShowFanartHeight)
@@ -2419,7 +2419,8 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowFanart, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowFanartOverwrite) Then
                         Save(s, Master.eSettings.TVShowFanartQual, sURL, doResize)
@@ -2499,9 +2500,9 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowPoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Async Function SaveAsTVShowPoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
-
+        Dim ret As Interfaces.ModuleResult
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
         Dim doResize As Boolean = Master.eSettings.TVShowPosterResize AndAlso (_image.Width > Master.eSettings.TVShowPosterWidth OrElse _image.Height > Master.eSettings.TVShowPosterHeight)
@@ -2517,7 +2518,8 @@ Public Class Images
             Try
                 Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowPoster, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
                 For Each s As String In DirectCast(params(2), List(Of String))
                     If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowPosterOverwrite) Then
                         Save(s, Master.eSettings.TVShowPosterQual, sURL, doResize)

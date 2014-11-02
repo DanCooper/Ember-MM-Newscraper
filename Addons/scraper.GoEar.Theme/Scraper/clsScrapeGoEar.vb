@@ -40,11 +40,8 @@ Namespace GoEar
 
 #Region "Constructors"
 
-        Public Sub New(ByVal sOriginalTitle As String, ByVal sListTitle As String)
+        Public Sub New()
             Clear()
-            originaltitle = sOriginalTitle
-            listtitle = sListTitle
-            GetMovieThemes()
         End Sub
 
 #End Region 'Constructors
@@ -63,6 +60,11 @@ Namespace GoEar
 #End Region 'Properties
 
 #Region "Methods"
+        Public Async Function Init(ByVal sOriginalTitle As String, ByVal sListTitle As String) As Threading.Tasks.Task
+            originaltitle = sOriginalTitle
+            listtitle = sListTitle
+            Await GetMovieThemes()
+        End Function
 
         Private Sub Clear()
             _themelist = New List(Of Themes)

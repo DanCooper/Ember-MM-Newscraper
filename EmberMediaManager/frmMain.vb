@@ -2550,7 +2550,7 @@ Public Class frmMain
                     ' DBMovie
                     DBScrapeMovie = CType(ret.ReturnObj(1), Structures.DBMovie)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
-                    Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                    Await Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                     ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
                     ' return objects
                     ' _Params
@@ -13494,7 +13494,7 @@ doCancel:
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
                                 newImage.IsEdit = True
-                                newImage.SaveAsTVShowClearArt(Master.currShow)
+                                Await newImage.SaveAsTVShowClearArt(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
                                 If Await Me.RefreshShow(ShowID, False, True, False, False) Then
                                     Me.FillList(False, False, True)
@@ -13648,7 +13648,7 @@ doCancel:
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
                                 newImage.IsEdit = True
-                                newImage.SaveAsTVShowFanart(Master.currShow)
+                                Await newImage.SaveAsTVShowFanart(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
                                 If Await Me.RefreshShow(ShowID, False, True, False, False) Then
                                     Me.FillList(False, False, True)
@@ -13720,7 +13720,7 @@ doCancel:
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
                                 newImage.IsEdit = True
-                                newImage.SaveAsTVEpisodeFanart(Master.currShow)
+                                Await newImage.SaveAsTVEpisodeFanart(Master.currShow)
                                 If Me.RefreshEpisode(EpisodeID) Then
                                     Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                                 End If
@@ -13776,7 +13776,7 @@ doCancel:
                                         pResults.WebImage.FromWeb(pResults.URL)
                                         newImage = pResults.WebImage
                                         newImage.IsEdit = True
-                                        newImage.SaveAsMoviePoster(Master.currMovie)
+                                        Await newImage.SaveAsMoviePoster(Master.currMovie)
                                         Cursor = Cursors.Default
                                         Me.SetMovieListItemAfterEdit(ID, indX)
                                         Me.RefreshMovie(ID, False, False, False, False)
@@ -13850,7 +13850,7 @@ doCancel:
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
                                 newImage.IsEdit = True
-                                newImage.SaveAsTVShowPoster(Master.currShow)
+                                Await newImage.SaveAsTVShowPoster(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
                                 If Await Me.RefreshShow(ShowID, False, True, False, False) Then
                                     Me.FillList(False, False, True)
@@ -13882,7 +13882,7 @@ doCancel:
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
-                                    newImage.SaveAsTVASPoster(Master.currShow)
+                                    Await newImage.SaveAsTVASPoster(Master.currShow)
                                     If Me.RefreshSeason(ShowID, Season, False) Then
                                         Me.FillSeasons(ShowID)
                                     End If
@@ -13892,7 +13892,7 @@ doCancel:
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
-                                    newImage.SaveAsTVSeasonPoster(Master.currShow)
+                                    Await newImage.SaveAsTVSeasonPoster(Master.currShow)
                                     If Me.RefreshSeason(ShowID, Season, False) Then
                                         Me.FillSeasons(ShowID)
                                     End If
@@ -13921,7 +13921,7 @@ doCancel:
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
                                 newImage.IsEdit = True
-                                newImage.SaveAsTVEpisodePoster(Master.currShow)
+                                Await newImage.SaveAsTVEpisodePoster(Master.currShow)
                                 If Me.RefreshEpisode(EpisodeID) Then
                                     Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                                 End If
@@ -13977,7 +13977,7 @@ doCancel:
                                         pResults.WebImage.FromWeb(pResults.URL)
                                         newImage = pResults.WebImage
                                         newImage.IsEdit = True
-                                        newImage.SaveAsMovieLandscape(Master.currMovie)
+                                        Await newImage.SaveAsMovieLandscape(Master.currMovie)
                                         Cursor = Cursors.Default
                                         Me.SetMovieListItemAfterEdit(ID, indX)
                                         Me.RefreshMovie(ID, False, False, False, False)
@@ -14051,7 +14051,7 @@ doCancel:
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
                                 newImage.IsEdit = True
-                                newImage.SaveAsTVShowLandscape(Master.currShow)
+                                Await newImage.SaveAsTVShowLandscape(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
                                 If Await Me.RefreshShow(ShowID, False, True, False, False) Then
                                     Me.FillList(False, False, True)
@@ -14083,7 +14083,7 @@ doCancel:
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
-                                    newImage.SaveAsTVASLandscape(Master.currShow)
+                                    Await newImage.SaveAsTVASLandscape(Master.currShow)
                                     If Me.RefreshSeason(ShowID, Season, False) Then
                                         Me.FillSeasons(ShowID)
                                     End If
@@ -14093,7 +14093,7 @@ doCancel:
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
-                                    newImage.SaveAsTVSeasonLandscape(Master.currShow)
+                                    Await newImage.SaveAsTVSeasonLandscape(Master.currShow)
                                     If Me.RefreshSeason(ShowID, Season, False) Then
                                         Me.FillSeasons(ShowID)
                                     End If
@@ -15152,7 +15152,7 @@ doCancel:
                     End If
                 End If
 
-                Master.DB.SaveTVShowToDB(tmpShowDb, False, WithEpisodes, ToNfo)
+                Await Master.DB.SaveTVShowToDB(tmpShowDb, False, WithEpisodes, ToNfo)
 
                 ' DanCooper: i'm not shure if this is a proper solution...
                 If Master.eSettings.TVASPosterAnyEnabled Then
@@ -16149,7 +16149,7 @@ doCancel:
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                    Me.RefreshShow(Convert.ToInt64(sRow.Cells(0).Value), True, False, True, False)
+                    Await Me.RefreshShow(Convert.ToInt64(sRow.Cells(0).Value), True, False, True, False)
                 Next
                 SQLtransaction.Commit()
             End Using

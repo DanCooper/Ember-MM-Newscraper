@@ -36,10 +36,8 @@ Namespace HDTrailersNet
 
 #Region "Constructors"
 
-        Public Sub New(ByVal sOriginalTitle As String)
+        Public Sub New()
             Clear()
-            originaltitle = sOriginalTitle
-            GetMovieTrailers()
         End Sub
 
 #End Region 'Constructors
@@ -58,6 +56,10 @@ Namespace HDTrailersNet
 #End Region 'Properties
 
 #Region "Methods"
+        Public Async Function Init(ByVal sOriginalTitle As String) As Threading.Tasks.Task
+            originaltitle = sOriginalTitle
+            Await GetMovieTrailers()
+        End Function
 
         Private Sub Clear()
             _trailerlist = New List(Of Trailers)

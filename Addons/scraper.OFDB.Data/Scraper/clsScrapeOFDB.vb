@@ -41,10 +41,8 @@ Namespace OFDB
 
 #Region "Constructors"
 
-        Public Sub New(ByVal sID As String)
+        Public Sub New()
             Clear()
-            imdbID = sID
-            GetOFDBDetails()
         End Sub
 
 #End Region 'Constructors
@@ -100,6 +98,11 @@ Namespace OFDB
 #End Region 'Properties
 
 #Region "Methods"
+        Public Async Function Init(ByVal sID As String) As Threading.Tasks.Task
+            imdbID = sID
+            Await GetOFDBDetails()
+        End Function
+
 
         Private Function CleanTitle(ByVal sString As String) As String
             Dim CleanString As String = sString
