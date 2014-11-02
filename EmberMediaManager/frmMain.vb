@@ -2361,7 +2361,7 @@ Public Class frmMain
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                                     Await Theme.WebTheme.FromWeb(tUrlList.Item(0).URL, tUrlList.Item(0).WebURL)
                                     If Not IsNothing(Theme.WebTheme) Then 'TODO: fix check
-                                        tURL = Theme.WebTheme.SaveAsMovieTheme(DBScrapeMovie)
+                                        tURL = Await Theme.WebTheme.SaveAsMovieTheme(DBScrapeMovie)
                                         If Not String.IsNullOrEmpty(tURL) Then
                                             DBScrapeMovie.ThemePath = tURL
                                             MovieScraperEvent(Enums.ScraperEventType_Movie.ThemeItem, True)
@@ -2422,7 +2422,7 @@ Public Class frmMain
                                                 'If trailer was downloaded, Trailer.WebTrailer.URL and Trailer.WebTrailer.Extension are not empty anymore. We use this as a check!
                                                 If Not String.IsNullOrEmpty(Trailer.WebTrailer.URL) Then
                                                     'now rename dummy.ext to trailer and save it in movie folder
-                                                    tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
+                                                    tURL = Await Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.TrailerPath = tURL
                                                         MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, True)
@@ -3188,9 +3188,9 @@ Public Class frmMain
 
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                     If Not OldTitle = NewTitle OrElse Not OldTMDBColID = NewTMDBColID Then
-                        Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True, True)
+                        Await Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True, True)
                     Else
-                        Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True)
+                        Await Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True)
                     End If
                     'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovieSet)
                     bwMovieSetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
@@ -16131,7 +16131,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuShowLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageSet.Click
+    Private Async Sub cmnuShowLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageSet.Click
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -18525,7 +18525,7 @@ doCancel:
         Me.LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
     End Sub
 
-    Private Sub TVScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal iProgress As Integer, ByVal Parameter As Object)
+    Private Async Sub TVScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal iProgress As Integer, ByVal Parameter As Object)
         Select Case eType
             Case Enums.ScraperEventType_TV.LoadingEpisodes
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
@@ -18538,7 +18538,7 @@ doCancel:
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case Enums.ScraperEventType_TV.ScraperDone
-                Me.RefreshShow(Master.currShow.ShowID, False, False, False, True)
+                Await Me.RefreshShow(Master.currShow.ShowID, False, False, False, True)
 
                 Me.tspbLoading.Visible = False
                 Me.tslLoading.Visible = False

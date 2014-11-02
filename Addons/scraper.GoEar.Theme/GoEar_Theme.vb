@@ -146,7 +146,8 @@ Public Class GoEar_Theme
         Dim ret As New Interfaces.ModuleResult
         logger.Trace("Started scrape")
 
-        Dim tGoEar As New GoEar.Scraper(DBMovie.Movie.OriginalTitle, DBMovie.ListTitle)
+        Dim tGoEar As New GoEar.Scraper()
+        Await tGoEar.Init(DBMovie.Movie.OriginalTitle, DBMovie.ListTitle)
 
         If tGoEar.ThemeList.Count > 0 Then
             URLList = tGoEar.ThemeList

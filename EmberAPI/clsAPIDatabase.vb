@@ -2171,7 +2171,7 @@ Public Class Database
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     ''' <param name="withMovies">Save the information also to all linked movies?</param>
     ''' <returns>Structures.DBMovieSet object</returns>
-    Public Function SaveMovieSetToDB(ByVal _moviesetDB As Structures.DBMovieSet, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Structures.DBMovieSet
+    Public Async Function SaveMovieSetToDB(ByVal _moviesetDB As Structures.DBMovieSet, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Threading.Tasks.Task(Of Structures.DBMovieSet)
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
         Try
@@ -2700,7 +2700,11 @@ Public Class Database
     ''' <param name="IsNew">Is this a new show (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    Public Async Function SaveTVShowToDB(ByRef _TVShowDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Threading.Tasks.Task
+    Public Async Function SaveTVShowToDB(ByVal _TVShowDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' return objects
+        ' _TVShowDB
+        Dim ret As New Interfaces.ModuleResult
+
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
@@ -2813,8 +2817,6 @@ Public Class Database
                 parLanguage.Value = If(String.IsNullOrEmpty(_TVShowDB.ShowLanguage), Master.DB.GetTVSourceLanguage(_TVShowDB.Source), _TVShowDB.ShowLanguage)
                 parOrdering.Value = _TVShowDB.Ordering
 
-
-
                 If IsNew Then
                     If Master.eSettings.TVGeneralMarkNewShows Then
                         parMark.Value = True
@@ -2827,7 +2829,9 @@ Public Class Database
                         Else
                             logger.Error("Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
                             _TVShowDB.ShowID = -1
-                            Exit Function
+                            ret.ReturnObj.Clear()
+                            ret.ReturnObj.Add(_TVShowDB)
+                            Return ret
                         End If
                     End Using
                 Else
@@ -2861,10 +2865,12 @@ Public Class Database
                 End If
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(_TVShowDB)
+        Return ret
     End Function
     ''' <summary>
     ''' Load TV Sources from the DB. This populates the Master.TVSources list of TV Sources

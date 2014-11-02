@@ -269,7 +269,7 @@ Namespace EmberTests
             Dim message As String = "My Message"
             Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.FatalException(New StackFrame().GetMethod().Name, Me.exception)
+            logger.Fatal(New StackFrame().GetMethod().Name, Me.exception)
             'Assert
             CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Fatal.ToString())
         End Sub

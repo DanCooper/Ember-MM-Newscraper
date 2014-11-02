@@ -144,7 +144,8 @@ Public Class TelevisionTunes_Theme
 
         logger.Trace("Started scrape")
 
-        Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBTV.TVShow.Title)
+        Dim tTelevisionTunes As New TelevisionTunes.Scraper()
+        Await tTelevisionTunes.Init(DBTV.TVShow.Title)
 
         If tTelevisionTunes.ThemeList.Count > 0 Then
             URLList = tTelevisionTunes.ThemeList

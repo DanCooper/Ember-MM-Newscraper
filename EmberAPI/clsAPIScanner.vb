@@ -779,7 +779,7 @@ Public Class Scanner
         Return True 'This is the Else
     End Function
 
-    Public Sub LoadMovie(ByVal mContainer As MovieContainer)
+    Public Async Function LoadMovie(ByVal mContainer As MovieContainer) As Threading.Tasks.Task
         Dim tmpMovieDB As New Structures.DBMovie
         Dim ToNfo As Boolean = False
         Try
@@ -909,9 +909,9 @@ Public Class Scanner
                 tmpMovieDB.IsMark = Master.eSettings.MovieGeneralMarkNew
                 'Do the Save
                 If ToNfo AndAlso Not String.IsNullOrEmpty(tmpMovieDB.NfoPath) Then
-                    tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True, True)
+                    tmpMovieDB = Await Master.DB.SaveMovieToDB(tmpMovieDB, True, True, True)
                 Else
-                    tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
+                    tmpMovieDB = Await Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
                 End If
 
                 Me.bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = tmpMovieDB.Movie.Title})
@@ -919,7 +919,7 @@ Public Class Scanner
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Find all related files in a directory.
@@ -928,7 +928,7 @@ Public Class Scanner
     ''' <param name="sSource">Name of source.</param>
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
-    Public Sub ScanForMovieFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
+    Public Async Function ScanForMovieFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean) As Threading.Tasks.Task
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
         Dim fList As New List(Of String)
@@ -994,7 +994,7 @@ Public Class Scanner
                         Else
                             MoviePaths.Add(StringUtils.CleanStackingMarkers(tFile).ToLower)
                         End If
-                        LoadMovie(New MovieContainer With {.Filename = tFile, .Source = sSource, .isSingle = True, .UseFolder = True})
+                        Await LoadMovie(New MovieContainer With {.Filename = tFile, .Source = sSource, .isSingle = True, .UseFolder = True})
                     End If
 
                 Else
@@ -1028,7 +1028,7 @@ Public Class Scanner
                     End If
 
                     For Each s As String In fList
-                        LoadMovie(New MovieContainer With {.Filename = s, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)})
+                        Await LoadMovie(New MovieContainer With {.Filename = s, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)})
                     Next
                 End If
 
@@ -1040,7 +1040,7 @@ Public Class Scanner
         di = Nothing
         lFi = Nothing
         fList = Nothing
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Find all related files in a directory.
@@ -1070,7 +1070,7 @@ Public Class Scanner
     ''' <param name="bRecur">Scan directory recursively?</param>
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
-    Public Sub ScanMovieSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal doScan As Boolean)
+    Public Async Function ScanMovieSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal doScan As Boolean) As Threading.Tasks.Task
         If Directory.Exists(sPath) Then
             Dim sMoviePath As String = String.Empty
 
@@ -1080,7 +1080,7 @@ Public Class Scanner
             Try
 
                 'check if there are any movies in the parent folder
-                If doScan Then ScanForMovieFiles(sPath, sSource, bUseFolder, bSingle)
+                If doScan Then Await ScanForMovieFiles(sPath, sSource, bUseFolder, bSingle)
 
                 If Master.eSettings.MovieScanOrderModify Then
                     Try
@@ -1097,9 +1097,9 @@ Public Class Scanner
                 For Each inDir As DirectoryInfo In dList
 
                     If Me.bwPrelim.CancellationPending Then Return
-                    ScanForMovieFiles(inDir.FullName, sSource, bUseFolder, bSingle)
+                    Await ScanForMovieFiles(inDir.FullName, sSource, bUseFolder, bSingle)
                     If bRecur Then
-                        ScanMovieSourceDir(sSource, inDir.FullName, bRecur, bUseFolder, bSingle, False)
+                        Await ScanMovieSourceDir(sSource, inDir.FullName, bRecur, bUseFolder, bSingle, False)
                     End If
                 Next
 
@@ -1109,7 +1109,7 @@ Public Class Scanner
 
             dInfo = Nothing
         End If
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Check if a path contains movies.
@@ -1280,7 +1280,7 @@ Public Class Scanner
                                         Catch ex As Exception
                                             logger.Error(New StackFrame().GetMethod().Name, ex)
                                         End Try
-                                        ScanMovieSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), True)
+                                        Await ScanMovieSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), True)
                                     End If
                                     If Me.bwPrelim.CancellationPending Then
                                         e.Cancel = True
@@ -1448,7 +1448,7 @@ Public Class Scanner
                         tmpTVDB.Ordering = TVContainer.Ordering
                         tmpTVDB.ShowLanguage = TVContainer.Language
 
-                        Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
+                        Await Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
                     End If
                 Else
                     tmpTVDB = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(htTVShows.Item(TVContainer.ShowPath.ToLower)))

@@ -1136,18 +1136,24 @@ Public Class NFO
         Return xmlShow
     End Function
 
-    Public Shared Async Function SaveMovieToNFO(ByRef movieToSave As Structures.DBMovie) As Threading.Tasks.Task
+    Public Shared Async Function SaveMovieToNFO(ByVal movieToSave As Structures.DBMovie) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' retunr objects
+        ' movieToSave
         '//
         ' Serialize MediaContainers.Movie to an NFO
         '\\
-        Dim ret As Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {movieToSave})
                 Dim doContinue As Boolean = True
                 ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieNFOSave, params, doContinue, False)
                 params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
-                If Not doContinue Then Return
+                If Not ret.Cancelled Then
+                    ret.ReturnObj.Clear()
+                    ret.ReturnObj.Add(movieToSave)
+                    Return ret
+                End If
             Catch ex As Exception
             End Try
 
@@ -1194,6 +1200,9 @@ Public Class NFO
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(movieToSave)
+        Return ret
     End Function
 
     Public Shared Sub SaveMovieSetToNFO(ByRef moviesetToSave As Structures.DBMovieSet)
@@ -1358,18 +1367,25 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Async Function SaveTVShowToNFO(ByRef tvShowToSave As Structures.DBTV) As Threading.Tasks.Task
+    Public Shared Async Function SaveTVShowToNFO(ByVal tvShowToSave As Structures.DBTV) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' return objects
+        ' tvShowToSave
         '//
         ' Serialize MediaContainers.TVShow to an NFO
         '\\
-        Dim ret As Interfaces.ModuleResult
+        Dim ret As New Interfaces.ModuleResult
         Try
             Dim params As New List(Of Object)(New Object() {tvShowToSave})
             Dim doContinue As Boolean = True
             ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnTVShowNFOSave, params, doContinue, False)
             params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
 
-            If Not doContinue Then Return
+            If ret.Cancelled Then
+                ret.ReturnObj.Clear()
+                ret.ReturnObj.Add(tvShowToSave)
+                Return ret
+            End If
+
         Catch ex As Exception
         End Try
 
@@ -1419,6 +1435,9 @@ Public Class NFO
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+        ret.ReturnObj.Clear()
+        ret.ReturnObj.Add(tvShowToSave)
+        Return ret
     End Function
 
     Private Shared Sub RenameEpNonConfNfo(ByVal sPath As String, ByVal isChecked As Boolean)

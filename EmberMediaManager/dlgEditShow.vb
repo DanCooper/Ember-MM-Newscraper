@@ -2295,7 +2295,7 @@ Public Class dlgEditShow
 
             'Show Fanart
             If Not IsNothing(Me.ShowFanart.Image) Then
-                Master.currShow.ShowFanartPath = Me.ShowFanart.SaveAsTVShowFanart(Master.currShow, "")
+                Master.currShow.ShowFanartPath = Await Me.ShowFanart.SaveAsTVShowFanart(Master.currShow, "")
             Else
                 Me.ShowFanart.DeleteTVShowFanart(Master.currShow)
                 Master.currShow.ShowFanartPath = String.Empty
@@ -2311,7 +2311,7 @@ Public Class dlgEditShow
 
             'Show Poster
             If Not IsNothing(Me.ShowPoster.Image) Then
-                Master.currShow.ShowPosterPath = Me.ShowPoster.SaveAsTVShowPoster(Master.currShow, "")
+                Master.currShow.ShowPosterPath = Await Me.ShowPoster.SaveAsTVShowPoster(Master.currShow, "")
             Else
                 Me.ShowPoster.DeleteTVShowPosters(Master.currShow)
                 Master.currShow.ShowPosterPath = String.Empty

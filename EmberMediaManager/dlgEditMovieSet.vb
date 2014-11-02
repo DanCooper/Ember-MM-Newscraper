@@ -1287,11 +1287,11 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Async Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
             Me.SetInfo()
 
-            Master.currMovieSet = Master.DB.SaveMovieSetToDB(Master.currMovieSet, False, False, True)
+            Master.currMovieSet = Await Master.DB.SaveMovieSetToDB(Master.currMovieSet, False, False, True)
 
             If needsMovieUpdate Then
                 SaveSetToMovies()

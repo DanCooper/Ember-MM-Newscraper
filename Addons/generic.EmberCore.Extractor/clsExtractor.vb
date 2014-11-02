@@ -133,7 +133,7 @@ Public Class ThumbGenerator
         ''' <summary>
         ''' Extract thumbs from a movie file.
         ''' </summary>
-        Private Async Function CreateRandom() As Threading.Tasks.Task
+        Private Async Sub CreateRandom()
             Try
                 Dim pExt As String = Path.GetExtension(_movie.Filename).ToLower
                 Dim eMovieFile As String = String.Empty
@@ -193,12 +193,12 @@ Public Class ThumbGenerator
                         End If
                     Loop While Not d.EndOfStream AndAlso Not isAborting
 
-                    If isAborting Then Exit Function
+                    If isAborting Then Exit Sub
 
                     ffmpeg.WaitForExit()
                     ffmpeg.Close()
 
-                    If isAborting Then Exit Function
+                    If isAborting Then Exit Sub
 
                     'If intSeconds > 0 AndAlso ((Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds / 2 > _thumbcount + 300) OrElse (Not Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds > _thumbcount + 2)) Then
                     '    If Master.eSettings.AutoThumbsNoSpoilers Then
@@ -231,7 +231,7 @@ Public Class ThumbGenerator
                     '    Next
                     'End If
 
-                    If isAborting Then Exit Function
+                    If isAborting Then Exit Sub
 
                     Dim fThumbs As New List(Of String)
                     Try
@@ -257,7 +257,7 @@ Public Class ThumbGenerator
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Function
+        End Sub
 
         #End Region 'Methods
 

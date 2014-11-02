@@ -525,7 +525,7 @@ Public Class Trailers
                     End If
                 ElseIf Regex.IsMatch(aUrl.URL, "https?:\/\/.*imdb.*") Then
                     Dim IMDb As New IMDb.Scraper
-                    IMDb.GetVideoLinks(aUrl.URL)
+                    Await IMDb.GetVideoLinks(aUrl.URL)
                     If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
                         tLink = IMDb.VideoLinks(Master.eSettings.MovieTrailerPrefQual).URL
                         aUrl.URL = tLink
@@ -841,13 +841,14 @@ Public Class Trailers
         End Try
     End Function
 
-    Public Function SaveAsMovieTrailer(ByVal mMovie As Structures.DBMovie) As String
+    Public Async Function SaveAsMovieTrailer(ByVal mMovie As Structures.DBMovie) As Threading.Tasks.Task(Of String)
         Dim strReturn As String = String.Empty
-
+        Dim ret As Interfaces.ModuleResult
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieTrailerSave, params, False)
+                ret = Await ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieTrailerSave, params, False)
+                params = CType(ret.ReturnObj(0), Global.System.Collections.Generic.List(Of Object))
             Catch ex As Exception
             End Try
 
