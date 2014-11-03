@@ -1214,7 +1214,7 @@ Public Class dlgEditMovieSet
                     End If
                 End If
 
-                If String.IsNullOrEmpty(Master.eSettings.MovieMoviesetsPath) Then
+                If String.IsNullOrEmpty(Master.eSettings.MovieSetPathMSAA) Then
                     tcEditMovie.TabPages.Remove(tpBanner)
                     tcEditMovie.TabPages.Remove(tpClearArt)
                     tcEditMovie.TabPages.Remove(tpClearLogo)

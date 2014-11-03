@@ -174,15 +174,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieMoviesetsPath() As String
-        Get
-            Return Settings._XMLSettings.MovieMoviesetsPath
-        End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.MovieMoviesetsPath = value
-        End Set
-    End Property
-
     Public Property MovieScraperCastWithImgOnly() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperCastWithImgOnly
@@ -5131,15 +5122,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetDiscArtMSAA() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetDiscArtMSAA
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetDiscArtMSAA = value
-        End Set
-    End Property
-
     Public Property MovieSetFanartMSAA() As Boolean
         Get
             Return Settings._XMLSettings.MovieSetFanartMSAA
@@ -5167,12 +5149,165 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieSetPathMSAA() As String
+        Get
+            Return Settings._XMLSettings.MovieSetPathMSAA
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetPathMSAA = value
+        End Set
+    End Property
+
     Public Property MovieSetPosterMSAA() As Boolean
         Get
             Return Settings._XMLSettings.MovieSetPosterMSAA
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieSetPosterMSAA = value
+        End Set
+    End Property
+
+    Public Property MovieSetUseExpert() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetUseExpert
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetUseExpert = value
+        End Set
+    End Property
+
+    Public Property MovieSetBannerExpertSingle() As String
+        Get
+            Return Settings._XMLSettings.MovieSetBannerExpertSingle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetBannerExpertSingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtExpertSingle() As String
+        Get
+            Return Settings._XMLSettings.MovieSetClearArtExpertSingle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetClearArtExpertSingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoExpertSingle() As String
+        Get
+            Return Settings._XMLSettings.MovieSetClearLogoExpertSingle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetClearLogoExpertSingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartExpertSingle() As String
+        Get
+            Return Settings._XMLSettings.MovieSetFanartExpertSingle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetFanartExpertSingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeExpertSingle() As String
+        Get
+            Return Settings._XMLSettings.MovieSetLandscapeExpertSingle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetLandscapeExpertSingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetNFOExpertSingle() As String
+        Get
+            Return Settings._XMLSettings.MovieSetNFOExpertSingle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetNFOExpertSingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetPathExpertSingle() As String
+        Get
+            Return Settings._XMLSettings.MovieSetPathExpertSingle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetPathExpertSingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterExpertSingle() As String
+        Get
+            Return Settings._XMLSettings.MovieSetPosterExpertSingle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetPosterExpertSingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetBannerExpertParent() As String
+        Get
+            Return Settings._XMLSettings.MovieSetBannerExpertParent
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetBannerExpertParent = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtExpertParent() As String
+        Get
+            Return Settings._XMLSettings.MovieSetClearArtExpertParent
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetClearArtExpertParent = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoExpertParent() As String
+        Get
+            Return Settings._XMLSettings.MovieSetClearLogoExpertParent
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetClearLogoExpertParent = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartExpertParent() As String
+        Get
+            Return Settings._XMLSettings.MovieSetFanartExpertParent
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetFanartExpertParent = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeExpertParent() As String
+        Get
+            Return Settings._XMLSettings.MovieSetLandscapeExpertParent
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetLandscapeExpertParent = value
+        End Set
+    End Property
+
+    Public Property MovieSetNFOExpertParent() As String
+        Get
+            Return Settings._XMLSettings.MovieSetNFOExpertParent
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetNFOExpertParent = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterExpertParent() As String
+        Get
+            Return Settings._XMLSettings.MovieSetPosterExpertParent
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetPosterExpertParent = value
         End Set
     End Property
 
@@ -5876,27 +6011,32 @@ Public Class Settings
     End Function
 
     Public Function MovieSetBannerAnyEnabled() As Boolean
-        Return MovieSetBannerMSAA
+        Return MovieSetBannerMSAA OrElse _
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetPosterExpertSingle)))
     End Function
 
     Public Function MovieSetClearArtAnyEnabled() As Boolean
-        Return MovieSetClearArtMSAA
+        Return MovieSetClearArtMSAA OrElse _
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearArtExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle)))
     End Function
 
     Public Function MovieSetClearLogoAnyEnabled() As Boolean
-        Return MovieSetClearLogoMSAA
+        Return MovieSetClearLogoMSAA OrElse _
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearLogoExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle)))
     End Function
 
     Public Function MovieSetDiscArtAnyEnabled() As Boolean
-        Return MovieSetDiscArtMSAA
+        Return False
     End Function
 
     Public Function MovieSetFanartAnyEnabled() As Boolean
-        Return MovieSetFanartMSAA
+        Return MovieSetFanartMSAA OrElse _
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetFanartExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetFanartExpertSingle)))
     End Function
 
     Public Function MovieSetLandscapeAnyEnabled() As Boolean
-        Return MovieSetLandscapeMSAA
+        Return MovieSetLandscapeMSAA OrElse _
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetLandscapeExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle)))
     End Function
 
     Public Function MovieSetMissingItemsAnyEnabled() As Boolean
@@ -5905,7 +6045,8 @@ Public Class Settings
     End Function
 
     Public Function MovieSetPosterAnyEnabled() As Boolean
-        Return MovieSetPosterMSAA
+        Return MovieSetPosterMSAA OrElse _
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetPosterExpertSingle)))
     End Function
 
     Public Function TVASAnyEnabled() As Boolean

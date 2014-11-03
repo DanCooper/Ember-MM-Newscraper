@@ -172,7 +172,6 @@ Partial Public Class clsXMLSettings
     Private _moviemissingsubs As Boolean
     Private _moviemissingtheme As Boolean
     Private _moviemissingtrailer As Boolean
-    Private _moviemoviesetspath As String
     Private _movienfocol As Boolean
     Private _movienosaveimagestonfo As Boolean
     Private _moviepostercol As Boolean
@@ -634,11 +633,29 @@ Partial Public Class clsXMLSettings
     Private _moviesetbannermsaa As Boolean
     Private _moviesetclearartmsaa As Boolean
     Private _moviesetclearlogomsaa As Boolean
-    Private _moviesetdiscartmsaa As Boolean
     Private _moviesetfanartmsaa As Boolean
     Private _moviesetlandscapemsaa As Boolean
     Private _moviesetnfomsaa As Boolean
+    Private _moviesetpathmsaa As String
     Private _moviesetpostermsaa As Boolean
+
+    '***************** Expert settings *****************
+    Private _moviesetuseexpert As Boolean
+    Private _moviesetbannerexpertparent As String
+    Private _moviesetbannerexpertsingle As String
+    Private _moviesetclearartexpertparent As String
+    Private _moviesetclearartexpertsingle As String
+    Private _moviesetclearlogoexpertparent As String
+    Private _moviesetclearlogoexpertsingle As String
+    Private _moviesetfanartexpertparent As String
+    Private _moviesetfanartexpertsingle As String
+    Private _moviesetlandscapeexpertparent As String
+    Private _moviesetlandscapeexpertsingle As String
+    Private _moviesetnfoexpertparent As String
+    Private _moviesetnfoexpertsingle As String
+    Private _moviesetpathexpertsingle As String
+    Private _moviesetposterexpertparent As String
+    Private _moviesetposterexpertsingle As String
 
 
     '***************************************************
@@ -946,15 +963,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As String)
             Me._moviebackdropspath = value
-        End Set
-    End Property
-
-    Public Property MovieMoviesetsPath() As String
-        Get
-            Return Me._moviemoviesetspath
-        End Get
-        Set(ByVal value As String)
-            Me._moviemoviesetspath = value
         End Set
     End Property
 
@@ -4915,15 +4923,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieSetDiscArtMSAA() As Boolean
-        Get
-            Return Me._moviesetdiscartmsaa
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesetdiscartmsaa = value
-        End Set
-    End Property
-
     Public Property MovieSetFanartMSAA() As Boolean
         Get
             Return Me._moviesetfanartmsaa
@@ -4951,12 +4950,165 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieSetPathMSAA() As String
+        Get
+            Return Me._moviesetpathmsaa
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetpathmsaa = value
+        End Set
+    End Property
+
     Public Property MovieSetPosterMSAA() As Boolean
         Get
             Return Me._moviesetpostermsaa
         End Get
         Set(ByVal value As Boolean)
             Me._moviesetpostermsaa = value
+        End Set
+    End Property
+
+    Public Property MovieSetUseExpert() As Boolean
+        Get
+            Return Me._moviesetuseexpert
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetuseexpert = value
+        End Set
+    End Property
+
+    Public Property MovieSetBannerExpertSingle() As String
+        Get
+            Return Me._moviesetbannerexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetbannerexpertsingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtExpertSingle() As String
+        Get
+            Return Me._moviesetclearartexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetclearartexpertsingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoExpertSingle() As String
+        Get
+            Return Me._moviesetclearlogoexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetclearlogoexpertsingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartExpertSingle() As String
+        Get
+            Return Me._moviesetfanartexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetfanartexpertsingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeExpertSingle() As String
+        Get
+            Return Me._moviesetlandscapeexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetlandscapeexpertsingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetNFOExpertSingle() As String
+        Get
+            Return Me._moviesetnfoexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetnfoexpertsingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetPathExpertSingle() As String
+        Get
+            Return Me._moviesetpathexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetpathexpertsingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterExpertSingle() As String
+        Get
+            Return Me._moviesetposterexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetposterexpertsingle = value
+        End Set
+    End Property
+
+    Public Property MovieSetBannerExpertParent() As String
+        Get
+            Return Me._moviesetbannerexpertparent
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetbannerexpertparent = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtExpertParent() As String
+        Get
+            Return Me._moviesetclearartexpertparent
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetclearartexpertparent = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoExpertParent() As String
+        Get
+            Return Me._moviesetclearlogoexpertparent
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetclearlogoexpertparent = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartExpertParent() As String
+        Get
+            Return Me._moviesetfanartexpertparent
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetfanartexpertparent = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeExpertParent() As String
+        Get
+            Return Me._moviesetlandscapeexpertparent
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetlandscapeexpertparent = value
+        End Set
+    End Property
+
+    Public Property MovieSetNFOExpertParent() As String
+        Get
+            Return Me._moviesetnfoexpertparent
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetnfoexpertparent = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterExpertParent() As String
+        Get
+            Return Me._moviesetposterexpertparent
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetposterexpertparent = value
         End Set
     End Property
 

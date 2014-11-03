@@ -410,7 +410,7 @@ Public Class Scanner
     ''' <param name="MovieSet">MovieSetContainer object.</param>
     Public Sub GetMovieSetFolderContents(ByRef MovieSet As MovieSetContainer)
         Dim fList As New List(Of String)    'all other files list
-        Dim fPath As String = Master.eSettings.MovieMoviesetsPath
+        Dim fPath As String = Master.eSettings.MovieSetPathMSAA
 
         Try
             'first add files to filelists

@@ -2952,20 +2952,20 @@ Public Class dlgSettings
     Private Sub chkMovieSetUseMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetUseMSAA.CheckedChanged
         Me.SetApplyButton(True)
 
+        Me.btnMovieSetPathMSAABrowse.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetBannerMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetClearArtMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetClearLogoMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
-        Me.chkMovieSetDiscArtMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetFanartMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetLandscapeMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetNFOMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetPosterMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.txtMovieSetPathMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
 
         If Not Me.chkMovieSetUseMSAA.Checked Then
             Me.chkMovieSetBannerMSAA.Checked = False
             Me.chkMovieSetClearArtMSAA.Checked = False
             Me.chkMovieSetClearLogoMSAA.Checked = False
-            Me.chkMovieSetDiscArtMSAA.Checked = False
             Me.chkMovieSetFanartMSAA.Checked = False
             Me.chkMovieSetLandscapeMSAA.Checked = False
             Me.chkMovieSetNFOMSAA.Checked = False
@@ -2974,7 +2974,6 @@ Public Class dlgSettings
             Me.chkMovieSetBannerMSAA.Checked = True
             Me.chkMovieSetClearArtMSAA.Checked = True
             Me.chkMovieSetClearLogoMSAA.Checked = True
-            Me.chkMovieSetDiscArtMSAA.Checked = True
             Me.chkMovieSetFanartMSAA.Checked = True
             Me.chkMovieSetLandscapeMSAA.Checked = True
             Me.chkMovieSetNFOMSAA.Checked = True
@@ -3921,12 +3920,33 @@ Public Class dlgSettings
                 Me.chkMovieSetBannerMSAA.Checked = .MovieSetBannerMSAA
                 Me.chkMovieSetClearArtMSAA.Checked = .MovieSetClearArtMSAA
                 Me.chkMovieSetClearLogoMSAA.Checked = .MovieSetClearLogoMSAA
-                Me.chkMovieSetDiscArtMSAA.Checked = .MovieSetDiscArtMSAA
                 Me.chkMovieSetFanartMSAA.Checked = .MovieSetFanartMSAA
                 Me.chkMovieSetLandscapeMSAA.Checked = .MovieSetLandscapeMSAA
                 Me.chkMovieSetNFOMSAA.Checked = .MovieSetNFOMSAA
+                Me.txtMovieSetPathMSAA.Text = .MovieSetPathMSAA.ToString
                 Me.chkMovieSetPosterMSAA.Checked = .MovieSetPosterMSAA
-                Me.txtMovieSetMSAAPath.Text = .MovieMoviesetsPath.ToString
+
+                '***************** Expert settings *****************
+                Me.chkMovieSetUseExpert.Checked = .MovieSetUseExpert
+
+                '***************** Expert Single ******************
+                Me.txtMovieSetBannerExpertSingle.Text = .MovieSetBannerExpertSingle
+                Me.txtMovieSetClearArtExpertSingle.Text = .MovieSetClearArtExpertSingle
+                Me.txtMovieSetClearLogoExpertSingle.Text = .MovieSetClearLogoExpertSingle
+                Me.txtMovieSetFanartExpertSingle.Text = .MovieSetFanartExpertSingle
+                Me.txtMovieSetLandscapeExpertSingle.Text = .MovieSetLandscapeExpertSingle
+                Me.txtMovieSetNFOExpertSingle.Text = .MovieSetNFOExpertSingle
+                Me.txtMovieSetPathExpertSingle.Text = .MovieSetPathexpertsingle
+                Me.txtMovieSetPosterExpertSingle.Text = .MovieSetPosterExpertSingle
+
+                '***************** Expert Parent ******************
+                Me.txtMovieSetBannerExpertParent.Text = .MovieSetBannerExpertParent
+                Me.txtMovieSetClearArtExpertParent.Text = .MovieSetClearArtExpertParent
+                Me.txtMovieSetClearLogoExpertParent.Text = .MovieSetClearLogoExpertParent
+                Me.txtMovieSetFanartExpertParent.Text = .MovieSetFanartExpertParent
+                Me.txtMovieSetLandscapeExpertParent.Text = .MovieSetLandscapeExpertParent
+                Me.txtMovieSetNFOExpertParent.Text = .MovieSetNFOExpertParent
+                Me.txtMovieSetPosterExpertParent.Text = .MovieSetPosterExpertParent
 
 
                 '***************************************************
@@ -5544,12 +5564,33 @@ Public Class dlgSettings
                 .MovieSetBannerMSAA = Me.chkMovieSetBannerMSAA.Checked
                 .MovieSetClearArtMSAA = Me.chkMovieSetClearArtMSAA.Checked
                 .MovieSetClearLogoMSAA = Me.chkMovieSetClearLogoMSAA.Checked
-                .MovieSetDiscArtMSAA = Me.chkMovieSetDiscArtMSAA.Checked
                 .MovieSetFanartMSAA = Me.chkMovieSetFanartMSAA.Checked
                 .MovieSetLandscapeMSAA = Me.chkMovieSetLandscapeMSAA.Checked
                 .MovieSetNFOMSAA = Me.chkMovieSetNFOMSAA.Checked
+                .MovieSetPathMSAA = Me.txtMovieSetPathMSAA.Text
                 .MovieSetPosterMSAA = Me.chkMovieSetPosterMSAA.Checked
-                .MovieMoviesetsPath = Me.txtMovieSetMSAAPath.Text
+
+                '***************** Expert settings ****************
+                .MovieSetUseExpert = Me.chkMovieSetUseExpert.Checked
+
+                '***************** Expert Single ******************
+                .MovieSetBannerExpertSingle = Me.txtMovieSetBannerExpertSingle.Text
+                .MovieSetClearArtExpertSingle = Me.txtMovieSetClearArtExpertSingle.Text
+                .MovieSetClearLogoExpertSingle = Me.txtMovieSetClearLogoExpertSingle.Text
+                .MovieSetFanartExpertSingle = Me.txtMovieSetFanartExpertSingle.Text
+                .MovieSetLandscapeExpertSingle = Me.txtMovieSetLandscapeExpertSingle.Text
+                .MovieSetNFOExpertSingle = Me.txtMovieSetNFOExpertSingle.Text
+                .MovieSetPathExpertSingle = Me.txtMovieSetPathExpertSingle.Text
+                .MovieSetPosterExpertSingle = Me.txtMovieSetPosterExpertSingle.Text
+
+                '***************** Expert Parent ******************
+                .MovieSetBannerExpertParent = Me.txtMovieSetBannerExpertParent.Text
+                .MovieSetClearArtExpertParent = Me.txtMovieSetClearArtExpertParent.Text
+                .MovieSetClearLogoExpertParent = Me.txtMovieSetClearLogoExpertParent.Text
+                .MovieSetFanartExpertParent = Me.txtMovieSetFanartExpertParent.Text
+                .MovieSetLandscapeExpertParent = Me.txtMovieSetLandscapeExpertParent.Text
+                .MovieSetNFOExpertParent = Me.txtMovieSetNFOExpertParent.Text
+                .MovieSetPosterExpertParent = Me.txtMovieSetPosterExpertParent.Text
 
 
                 '***************************************************
@@ -6751,17 +6792,32 @@ Public Class dlgSettings
         End Function
     End Class
 
-    Private Sub txtMovieMoviesetsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetMSAAPath.TextChanged
+    Private Sub txtMovieSetPathMSAA_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetPathMSAA.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub btnMovieMoviesetsBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieSetMSAAPathBrowse.Click
+    Private Sub btnMovieSetPathMSAABrowse_Click(sender As Object, e As EventArgs) Handles btnMovieSetPathMSAABrowse.Click
         Try
             With Me.fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                        Me.txtMovieSetMSAAPath.Text = .SelectedPath.ToString
+                        Me.txtMovieSetPathMSAA.Text = .SelectedPath.ToString
+                    End If
+                End If
+            End With
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnMovieSetPathExpertSingleBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieSetPathExpertSingleBrowse.Click
+        Try
+            With Me.fbdBrowse
+                fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
+                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                    If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                        Me.txtMovieSetPathExpertSingle.Text = .SelectedPath.ToString
                     End If
                 End If
             End With
@@ -6885,6 +6941,7 @@ Public Class dlgSettings
         Me.txtMovieTrailerExpertSingle.Enabled = Me.chkMovieUseExpert.Checked
         Me.txtMovieTrailerExpertVTS.Enabled = Me.chkMovieUseExpert.Checked
     End Sub
+
     Private Sub chkMovieActorThumbsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsExpertSingle.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -7116,6 +7173,83 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieYAMJCompatibleSets.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetUseExpert.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.btnMovieSetPathExpertSingleBrowse.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetBannerExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetBannerExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetClearArtExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetClearArtExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetClearLogoExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetClearLogoExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetFanartExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetFanartExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetLandscapeExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetLandscapeExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetNFOExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetNFOExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetPathExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetPosterExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetPosterExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+    End Sub
+
+    Private Sub txtMovieSetBannerExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetBannerExpertSingle.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetClearArtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetClearArtExpertSingle.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetClearLogoExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetClearLogoExpertSingle.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetFanartExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetFanartExpertSingle.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetLandscapeExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetLandscapeExpertSingle.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetNFOExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetNFOExpertSingle.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetPosterExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetPosterExpertSingle.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetBannerExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetBannerExpertParent.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetClearArtExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetClearArtExpertParent.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetClearLogoExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetClearLogoExpertParent.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetFanartExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetFanartExpertParent.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetLandscapeExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetLandscapeExpertParent.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetNFOExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetNFOExpertParent.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetPosterExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetPosterExpertParent.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -7384,10 +7518,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieSetClearLogoMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearLogoMSAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetDiscArtMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetDiscArtMSAA.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 

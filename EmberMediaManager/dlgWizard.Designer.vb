@@ -218,6 +218,7 @@ Partial Class dlgWizard
         Me.colRecur = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colFolder = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colSingle = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colExclude = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnMovieRem = New System.Windows.Forms.Button()
         Me.btnMovieAddFolder = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -283,7 +284,6 @@ Partial Class dlgWizard
         Me.btnMovieSetMSAAPathBrowse = New System.Windows.Forms.Button()
         Me.txtMovieSetMSAAPath = New System.Windows.Forms.TextBox()
         Me.gbMovieSetMSAA = New System.Windows.Forms.GroupBox()
-        Me.chkMovieSetDiscArtMSAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetUseMSAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetLandscapeMSAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetBannerMSAA = New System.Windows.Forms.CheckBox()
@@ -293,7 +293,6 @@ Partial Class dlgWizard
         Me.chkMovieSetPosterMSAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetNFOMSAA = New System.Windows.Forms.CheckBox()
         Me.Label48 = New System.Windows.Forms.Label()
-        Me.colExclude = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.gbMovieFileNaming.SuspendLayout()
@@ -2376,6 +2375,10 @@ Partial Class dlgWizard
         '
         Me.colSingle.Text = "Single Video"
         '
+        'colExclude
+        '
+        Me.colExclude.Text = "Exclude"
+        '
         'btnMovieRem
         '
         Me.btnMovieRem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -3061,7 +3064,6 @@ Partial Class dlgWizard
         '
         'gbMovieSetMSAA
         '
-        Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetDiscArtMSAA)
         Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetUseMSAA)
         Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetLandscapeMSAA)
         Me.gbMovieSetMSAA.Controls.Add(Me.chkMovieSetBannerMSAA)
@@ -3077,17 +3079,6 @@ Partial Class dlgWizard
         Me.gbMovieSetMSAA.TabIndex = 0
         Me.gbMovieSetMSAA.TabStop = False
         Me.gbMovieSetMSAA.Text = "Movie Set Artwork Automator"
-        '
-        'chkMovieSetDiscArtMSAA
-        '
-        Me.chkMovieSetDiscArtMSAA.AutoSize = True
-        Me.chkMovieSetDiscArtMSAA.Enabled = False
-        Me.chkMovieSetDiscArtMSAA.Location = New System.Drawing.Point(6, 274)
-        Me.chkMovieSetDiscArtMSAA.Name = "chkMovieSetDiscArtMSAA"
-        Me.chkMovieSetDiscArtMSAA.Size = New System.Drawing.Size(62, 17)
-        Me.chkMovieSetDiscArtMSAA.TabIndex = 11
-        Me.chkMovieSetDiscArtMSAA.Text = "DiscArt"
-        Me.chkMovieSetDiscArtMSAA.UseVisualStyleBackColor = True
         '
         'chkMovieSetUseMSAA
         '
@@ -3185,10 +3176,6 @@ Partial Class dlgWizard
         Me.Label48.TabIndex = 0
         Me.Label48.Text = resources.GetString("Label48.Text")
         Me.Label48.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'colExclude
-        '
-        Me.colExclude.Text = "Exclude"
         '
         'dlgWizard
         '
@@ -3559,7 +3546,6 @@ Partial Class dlgWizard
     Friend WithEvents btnMovieSetMSAAPathBrowse As System.Windows.Forms.Button
     Friend WithEvents txtMovieSetMSAAPath As System.Windows.Forms.TextBox
     Friend WithEvents gbMovieSetMSAA As System.Windows.Forms.GroupBox
-    Friend WithEvents chkMovieSetDiscArtMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetUseMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetLandscapeMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetBannerMSAA As System.Windows.Forms.CheckBox

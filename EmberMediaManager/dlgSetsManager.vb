@@ -606,7 +606,7 @@ Public Class dlgSetsManager
         Me.lblTopDetails.Text = Master.eLang.GetString(371, "Add and configure movie boxed sets.")
         Me.lblTopTitle.Text = Me.Text
 
-        collectionartwork_path = Master.eSettings.MovieMoviesetsPath & "\"
+        collectionartwork_path = Master.eSettings.MovieSetPathMSAA & "\"
         Me.txtSourcePath.Enabled = False
         Me.txtSourcePath.Text = collectionartwork_path
         Me.lblSourcePath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
