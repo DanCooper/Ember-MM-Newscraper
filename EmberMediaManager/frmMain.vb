@@ -43,6 +43,7 @@ Public Class frmMain
     Friend WithEvents bwLoadEpInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadMovieInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadMovieSetInfo As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadMovieSetPosters As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadSeasonInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadShowInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMetaInfo As New System.ComponentModel.BackgroundWorker
@@ -297,12 +298,14 @@ Public Class frmMain
                 If .bwDownloadPic.IsBusy Then .bwDownloadPic.CancelAsync()
                 If .bwLoadMovieInfo.IsBusy Then .bwLoadMovieInfo.CancelAsync()
                 If .bwLoadMovieSetInfo.IsBusy Then .bwLoadMovieSetInfo.CancelAsync()
+                If .bwLoadMovieSetPosters.IsBusy Then .bwLoadMovieSetPosters.CancelAsync()
                 If .bwLoadShowInfo.IsBusy Then .bwLoadShowInfo.CancelAsync()
                 If .bwLoadSeasonInfo.IsBusy Then .bwLoadSeasonInfo.CancelAsync()
                 If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
 
                 While .bwDownloadPic.IsBusy OrElse .bwLoadMovieInfo.IsBusy OrElse .bwLoadMovieSetInfo.IsBusy OrElse _
-                    .bwLoadShowInfo.IsBusy OrElse .bwLoadSeasonInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy
+                    .bwLoadShowInfo.IsBusy OrElse .bwLoadSeasonInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy OrElse _
+                    .bwLoadMovieSetPosters.IsBusy
                     Application.DoEvents()
                     Threading.Thread.Sleep(50)
                 End While
@@ -1560,6 +1563,74 @@ Public Class frmMain
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+    End Sub
+
+    Private Sub bwLoadMovieSetPosters_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMovieSetPosters.DoWork
+        Dim Posters As New List(Of MovieInSetPoster)
+
+        Try
+            If Not IsNothing(Master.currMovieSet.Movies) AndAlso Master.currMovieSet.Movies.Count > 0 Then
+                Try
+                    For Each Movie As Structures.DBMovie In Master.currMovieSet.Movies
+                        If bwLoadMovieSetPosters.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+
+                        Dim ResImg As Image
+                        Dim Poster As New Images
+                        If Not String.IsNullOrEmpty(Movie.PosterPath) Then
+                            Poster.FromFile(Movie.PosterPath)
+                        End If
+                        If Not IsNothing(Poster.Image) Then
+                            ResImg = CType(Poster.Image.Clone(), Image)
+                            ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
+                            Posters.Add(New MovieInSetPoster With {.MovieTitle = Movie.Movie.Title, .MoviePoster = ResImg})
+                        Else
+                            Posters.Add(New MovieInSetPoster With {.MovieTitle = Movie.Movie.Title, .MoviePoster = My.Resources.noposter})
+                        End If
+                    Next
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    e.Result = New Results With {.MovieInSetPosters = Nothing}
+                    e.Cancel = True
+                End Try
+            End If
+
+            e.Result = New Results With {.MovieinSetPosters = Posters}
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            e.Result = New Results With {.MovieInSetPosters = Nothing}
+            e.Cancel = True
+        End Try
+    End Sub
+
+    Private Sub bwLoadMovieSetPosters_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadMovieSetPosters.RunWorkerCompleted
+        Me.lvMoviesInSet.Clear()
+        Me.ilMoviesInSet.Images.Clear()
+        Me.ilMoviesInSet.ImageSize = New Size(59, 88)
+        Me.ilMoviesInSet.ColorDepth = ColorDepth.Depth32Bit
+        Me.lvMoviesInSet.Visible = False
+
+        If Not e.Cancelled Then
+            Try
+                Dim Res As Results = DirectCast(e.Result, Results)
+
+                If Not IsNothing(Res.MovieInSetPosters) AndAlso Res.MovieInSetPosters.Count > 0 Then
+                    Me.lvMoviesInSet.BeginUpdate()
+                    For Each tPoster As MovieInSetPoster In Res.MovieInSetPosters
+                        If Not IsNothing(tPoster) Then
+                            Me.ilMoviesInSet.Images.Add(tPoster.MoviePoster)
+                            Me.lvMoviesInSet.Items.Add(tPoster.MovieTitle, Me.ilMoviesInSet.Images.Count - 1)
+                        End If
+                    Next
+                    Me.lvMoviesInSet.EndUpdate()
+                    Me.lvMoviesInSet.Visible = True
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End If
     End Sub
 
     Private Sub bwLoadSeasonInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadSeasonInfo.DoWork
@@ -7027,7 +7098,7 @@ doCancel:
                 Next
             ElseIf e.KeyChar = Chr(13) Then
                 If Me.fScanner.IsBusy OrElse Me.bwMovieSetInfo.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse _
-                Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
+                Me.bwLoadMovieSetPosters.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
                 Me.bwCleanDB.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
@@ -9368,31 +9439,8 @@ doCancel:
             'End If
 
             If Not IsNothing(Master.currMovieSet.Movies) AndAlso Master.currMovieSet.Movies.Count > 0 Then
-                Me.ilMoviesInSet.Images.Clear()
-                Me.lvMoviesInSet.Items.Clear()
-                Me.ilMoviesInSet.ImageSize = New Size(59, 88)
-                Me.ilMoviesInSet.ColorDepth = ColorDepth.Depth32Bit
-
-                Try
-                    For Each Movie As Structures.DBMovie In Master.currMovieSet.Movies
-                        Dim ResImg As Image
-                        Dim Poster As New Images
-                        If Not String.IsNullOrEmpty(Movie.PosterPath) Then
-                            Poster.FromFile(Movie.PosterPath)
-                        End If
-                        If Not IsNothing(Poster.Image) Then
-                            ResImg = CType(Poster.Image.Clone(), Image)
-                            ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
-                            Me.ilMoviesInSet.Images.Add(ResImg)
-                            Me.lvMoviesInSet.Items.Add(Movie.Movie.Title, Me.ilMoviesInSet.Images.Count - 1)
-                        Else
-                            Me.ilMoviesInSet.Images.Add(My.Resources.noposter)
-                            Me.lvMoviesInSet.Items.Add(Movie.Movie.Title, Me.ilMoviesInSet.Images.Count - 1)
-                        End If
-                    Next
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
+                Me.bwLoadMovieSetPosters.WorkerSupportsCancellation = True
+                Me.bwLoadMovieSetPosters.RunWorkerAsync()
             End If
 
             'If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
@@ -10244,6 +10292,7 @@ doCancel:
             If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
             If Me.bwLoadMovieInfo.IsBusy Then Me.bwLoadMovieInfo.CancelAsync()
             If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
+            If Me.bwLoadMovieSetPosters.IsBusy Then Me.bwLoadMovieSetPosters.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
@@ -10264,7 +10313,7 @@ doCancel:
             OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy _
             OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse Me.bwCleanDB.IsBusy _
             OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy _
-            OrElse ModulesManager.Instance.TVIsBusy
+            OrElse Me.bwLoadMovieSetPosters.IsBusy OrElse ModulesManager.Instance.TVIsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -17773,6 +17822,7 @@ doCancel:
                 If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
                 If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
                 If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
+                If Me.bwLoadMovieSetPosters.IsBusy Then Me.bwLoadMovieSetPosters.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 If Me.dgvMovies.RowCount > 0 Then
                     Me.prevMovieRow = -1
@@ -17840,6 +17890,7 @@ doCancel:
                 Me.ApplyTheme(Theming.ThemeType.Show)
                 If Me.bwLoadMovieInfo.IsBusy Then Me.bwLoadMovieInfo.CancelAsync()
                 If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
+                If Me.bwLoadMovieSetPosters.IsBusy Then Me.bwLoadMovieSetPosters.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 If Me.dgvTVShows.RowCount > 0 Then
                     Me.prevShowRow = -1
@@ -18729,6 +18780,7 @@ doCancel:
         Dim IsTV As Boolean
         Dim Movie As Structures.DBMovie
         Dim MovieSet As Structures.DBMovieSet
+        Dim MovieInSetPosters As List(Of MovieInSetPoster)
         Dim Options As Structures.ScrapeOptions_Movie
         Dim Options_MovieSet As Structures.ScrapeOptions_MovieSet
         Dim Path As String
@@ -18741,6 +18793,53 @@ doCancel:
 #End Region 'Fields
 
     End Structure
+
+    Class MovieInSetPoster
+
+#Region "Fields"
+
+        Private _movietitle As String
+        Private _movieposter As Image
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        Public Property MovieTitle() As String
+            Get
+                Return Me._movietitle
+            End Get
+            Set(ByVal value As String)
+                Me._movietitle = value
+            End Set
+        End Property
+
+        Public Property MoviePoster() As Image
+            Get
+                Return Me._movieposter
+            End Get
+            Set(ByVal value As Image)
+                Me._movieposter = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub New()
+            _movietitle = String.Empty
+            _movieposter = Nothing
+        End Sub
+
+        Public Sub Clear()
+            _movietitle = String.Empty
+            _movieposter = Nothing
+        End Sub
+
+#End Region 'Methods
+
+    End Class
 
 #End Region 'Nested Types
    
