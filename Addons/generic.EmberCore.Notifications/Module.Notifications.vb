@@ -152,9 +152,9 @@ Public Class NotificationsModule
 
     Private Sub LoadSettings()
         eSettings.OnError = clsAdvancedSettings.GetBooleanSetting("NotifyOnError", True)
-        eSettings.OnNewMovie = clsAdvancedSettings.GetBooleanSetting("NotifyOnNewMovie", False)
+        eSettings.OnNewMovie = False 'clsAdvancedSettings.GetBooleanSetting("NotifyOnNewMovie", False)
         eSettings.OnMovieScraped = clsAdvancedSettings.GetBooleanSetting("NotifyOnMovieScraped", True)
-        eSettings.OnNewEp = clsAdvancedSettings.GetBooleanSetting("NotifyOnNewEp", False)
+        eSettings.OnNewEp = False 'clsAdvancedSettings.GetBooleanSetting("NotifyOnNewEp", False)
     End Sub
 
     Private Sub SaveSettings()
@@ -169,9 +169,9 @@ Public Class NotificationsModule
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me._enabled = _setup.chkEnabled.Checked
         eSettings.OnError = _setup.chkOnError.Checked
-        eSettings.OnNewMovie = _setup.chkOnNewMovie.Checked
+        eSettings.OnNewMovie = False '_setup.chkOnNewMovie.Checked
         eSettings.OnMovieScraped = _setup.chkOnMovieScraped.Checked
-        eSettings.OnNewEp = _setup.chkOnNewEp.Checked
+        eSettings.OnNewEp = False '_setup.chkOnNewEp.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
