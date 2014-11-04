@@ -625,6 +625,7 @@ Partial Class dlgSettings
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.gbTVSourcesMiscOpts = New System.Windows.Forms.GroupBox()
         Me.lblTVSkipLessThanMB = New System.Windows.Forms.Label()
         Me.txtTVSkipLessThan = New System.Windows.Forms.TextBox()
@@ -795,6 +796,7 @@ Partial Class dlgSettings
         Me.chkTVScraperUseSRuntimeForEp = New System.Windows.Forms.CheckBox()
         Me.gbTVScraperFieldsOpts = New System.Windows.Forms.GroupBox()
         Me.gbTVScraperFieldsShowOpts = New System.Windows.Forms.GroupBox()
+        Me.chkTVScraperShowVotes = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperShowRuntime = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperShowStatus = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperShowRating = New System.Windows.Forms.CheckBox()
@@ -807,6 +809,7 @@ Partial Class dlgSettings
         Me.chkTVScraperShowGenre = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperShowTitle = New System.Windows.Forms.CheckBox()
         Me.gbTVScraperFieldsEpisodeOpts = New System.Windows.Forms.GroupBox()
+        Me.chkTVScraperEpisodeVotes = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperEpisodeRuntime = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperEpisodeActors = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperEpisodeCredits = New System.Windows.Forms.CheckBox()
@@ -819,11 +822,13 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeSeason = New System.Windows.Forms.CheckBox()
         Me.gbTVScraperGlobalLocksOpts = New System.Windows.Forms.GroupBox()
         Me.gbTVScraperGlobalLocksEpisodeOpts = New System.Windows.Forms.GroupBox()
+        Me.chkTVLockEpisodeVotes = New System.Windows.Forms.CheckBox()
         Me.chkTVLockEpisodeRuntime = New System.Windows.Forms.CheckBox()
         Me.chkTVLockEpisodeTitle = New System.Windows.Forms.CheckBox()
         Me.chkTVLockEpisodeRating = New System.Windows.Forms.CheckBox()
         Me.chkTVLockEpisodePlot = New System.Windows.Forms.CheckBox()
         Me.gbTVScraperGlobalLocksShowOpts = New System.Windows.Forms.GroupBox()
+        Me.chkTVLockShowVotes = New System.Windows.Forms.CheckBox()
         Me.chkTVLockShowRuntime = New System.Windows.Forms.CheckBox()
         Me.chkTVLockShowStatus = New System.Windows.Forms.CheckBox()
         Me.chkTVLockShowPlot = New System.Windows.Forms.CheckBox()
@@ -1127,7 +1132,6 @@ Partial Class dlgSettings
         Me.lblMovieSetPosterSize = New System.Windows.Forms.Label()
         Me.cbMovieSetPosterPrefSize = New System.Windows.Forms.ComboBox()
         Me.chkMovieSetPosterOverwrite = New System.Windows.Forms.CheckBox()
-        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -7778,6 +7782,10 @@ Partial Class dlgSettings
         '
         Me.ColumnHeader5.Text = "Ordering"
         '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Exclude"
+        '
         'gbTVSourcesMiscOpts
         '
         Me.gbTVSourcesMiscOpts.Controls.Add(Me.lblTVSkipLessThanMB)
@@ -9583,7 +9591,7 @@ Partial Class dlgSettings
         '
         Me.gbTVScraperMiscOpts.Controls.Add(Me.chkTVScraperUseSRuntimeForEp)
         Me.gbTVScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbTVScraperMiscOpts.Location = New System.Drawing.Point(3, 398)
+        Me.gbTVScraperMiscOpts.Location = New System.Drawing.Point(3, 439)
         Me.gbTVScraperMiscOpts.Name = "gbTVScraperMiscOpts"
         Me.gbTVScraperMiscOpts.Size = New System.Drawing.Size(403, 49)
         Me.gbTVScraperMiscOpts.TabIndex = 5
@@ -9605,7 +9613,7 @@ Partial Class dlgSettings
         Me.gbTVScraperFieldsOpts.Controls.Add(Me.gbTVScraperFieldsShowOpts)
         Me.gbTVScraperFieldsOpts.Controls.Add(Me.gbTVScraperFieldsEpisodeOpts)
         Me.gbTVScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVScraperFieldsOpts.Location = New System.Drawing.Point(3, 255)
+        Me.gbTVScraperFieldsOpts.Location = New System.Drawing.Point(3, 295)
         Me.gbTVScraperFieldsOpts.Name = "gbTVScraperFieldsOpts"
         Me.gbTVScraperFieldsOpts.Size = New System.Drawing.Size(403, 137)
         Me.gbTVScraperFieldsOpts.TabIndex = 3
@@ -9614,6 +9622,7 @@ Partial Class dlgSettings
         '
         'gbTVScraperFieldsShowOpts
         '
+        Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowVotes)
         Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowRuntime)
         Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowStatus)
         Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowRating)
@@ -9632,6 +9641,16 @@ Partial Class dlgSettings
         Me.gbTVScraperFieldsShowOpts.TabIndex = 0
         Me.gbTVScraperFieldsShowOpts.TabStop = false
         Me.gbTVScraperFieldsShowOpts.Text = "Show"
+        '
+        'chkTVScraperShowVotes
+        '
+        Me.chkTVScraperShowVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowVotes.Location = New System.Drawing.Point(130, 94)
+        Me.chkTVScraperShowVotes.Name = "chkTVScraperShowVotes"
+        Me.chkTVScraperShowVotes.Size = New System.Drawing.Size(78, 17)
+        Me.chkTVScraperShowVotes.TabIndex = 11
+        Me.chkTVScraperShowVotes.Text = "Votes"
+        Me.chkTVScraperShowVotes.UseVisualStyleBackColor = true
         '
         'chkTVScraperShowRuntime
         '
@@ -9745,6 +9764,7 @@ Partial Class dlgSettings
         '
         'gbTVScraperFieldsEpisodeOpts
         '
+        Me.gbTVScraperFieldsEpisodeOpts.Controls.Add(Me.chkTVScraperEpisodeVotes)
         Me.gbTVScraperFieldsEpisodeOpts.Controls.Add(Me.chkTVScraperEpisodeRuntime)
         Me.gbTVScraperFieldsEpisodeOpts.Controls.Add(Me.chkTVScraperEpisodeActors)
         Me.gbTVScraperFieldsEpisodeOpts.Controls.Add(Me.chkTVScraperEpisodeCredits)
@@ -9762,6 +9782,16 @@ Partial Class dlgSettings
         Me.gbTVScraperFieldsEpisodeOpts.TabIndex = 1
         Me.gbTVScraperFieldsEpisodeOpts.TabStop = false
         Me.gbTVScraperFieldsEpisodeOpts.Text = "Episode"
+        '
+        'chkTVScraperEpisodeVotes
+        '
+        Me.chkTVScraperEpisodeVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperEpisodeVotes.Location = New System.Drawing.Point(94, 77)
+        Me.chkTVScraperEpisodeVotes.Name = "chkTVScraperEpisodeVotes"
+        Me.chkTVScraperEpisodeVotes.Size = New System.Drawing.Size(81, 17)
+        Me.chkTVScraperEpisodeVotes.TabIndex = 10
+        Me.chkTVScraperEpisodeVotes.Text = "Votes"
+        Me.chkTVScraperEpisodeVotes.UseVisualStyleBackColor = true
         '
         'chkTVScraperEpisodeRuntime
         '
@@ -9870,24 +9900,35 @@ Partial Class dlgSettings
         Me.gbTVScraperGlobalLocksOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVScraperGlobalLocksOpts.Location = New System.Drawing.Point(208, 6)
         Me.gbTVScraperGlobalLocksOpts.Name = "gbTVScraperGlobalLocksOpts"
-        Me.gbTVScraperGlobalLocksOpts.Size = New System.Drawing.Size(198, 243)
+        Me.gbTVScraperGlobalLocksOpts.Size = New System.Drawing.Size(198, 283)
         Me.gbTVScraperGlobalLocksOpts.TabIndex = 1
         Me.gbTVScraperGlobalLocksOpts.TabStop = false
         Me.gbTVScraperGlobalLocksOpts.Text = "Global Locks"
         '
         'gbTVScraperGlobalLocksEpisodeOpts
         '
+        Me.gbTVScraperGlobalLocksEpisodeOpts.Controls.Add(Me.chkTVLockEpisodeVotes)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Controls.Add(Me.chkTVLockEpisodeRuntime)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Controls.Add(Me.chkTVLockEpisodeTitle)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Controls.Add(Me.chkTVLockEpisodeRating)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Controls.Add(Me.chkTVLockEpisodePlot)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVScraperGlobalLocksEpisodeOpts.Location = New System.Drawing.Point(5, 154)
+        Me.gbTVScraperGlobalLocksEpisodeOpts.Location = New System.Drawing.Point(6, 172)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Name = "gbTVScraperGlobalLocksEpisodeOpts"
-        Me.gbTVScraperGlobalLocksEpisodeOpts.Size = New System.Drawing.Size(181, 83)
+        Me.gbTVScraperGlobalLocksEpisodeOpts.Size = New System.Drawing.Size(181, 105)
         Me.gbTVScraperGlobalLocksEpisodeOpts.TabIndex = 1
         Me.gbTVScraperGlobalLocksEpisodeOpts.TabStop = false
         Me.gbTVScraperGlobalLocksEpisodeOpts.Text = "Episode"
+        '
+        'chkTVLockEpisodeVotes
+        '
+        Me.chkTVLockEpisodeVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockEpisodeVotes.Location = New System.Drawing.Point(6, 79)
+        Me.chkTVLockEpisodeVotes.Name = "chkTVLockEpisodeVotes"
+        Me.chkTVLockEpisodeVotes.Size = New System.Drawing.Size(168, 17)
+        Me.chkTVLockEpisodeVotes.TabIndex = 4
+        Me.chkTVLockEpisodeVotes.Text = "Lock Votes"
+        Me.chkTVLockEpisodeVotes.UseVisualStyleBackColor = true
         '
         'chkTVLockEpisodeRuntime
         '
@@ -9931,6 +9972,7 @@ Partial Class dlgSettings
         '
         'gbTVScraperGlobalLocksShowOpts
         '
+        Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowVotes)
         Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowRuntime)
         Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowStatus)
         Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowPlot)
@@ -9941,10 +9983,20 @@ Partial Class dlgSettings
         Me.gbTVScraperGlobalLocksShowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVScraperGlobalLocksShowOpts.Location = New System.Drawing.Point(5, 13)
         Me.gbTVScraperGlobalLocksShowOpts.Name = "gbTVScraperGlobalLocksShowOpts"
-        Me.gbTVScraperGlobalLocksShowOpts.Size = New System.Drawing.Size(181, 135)
+        Me.gbTVScraperGlobalLocksShowOpts.Size = New System.Drawing.Size(181, 153)
         Me.gbTVScraperGlobalLocksShowOpts.TabIndex = 0
         Me.gbTVScraperGlobalLocksShowOpts.TabStop = false
         Me.gbTVScraperGlobalLocksShowOpts.Text = "Show"
+        '
+        'chkTVLockShowVotes
+        '
+        Me.chkTVLockShowVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockShowVotes.Location = New System.Drawing.Point(6, 128)
+        Me.chkTVLockShowVotes.Name = "chkTVLockShowVotes"
+        Me.chkTVLockShowVotes.Size = New System.Drawing.Size(168, 17)
+        Me.chkTVLockShowVotes.TabIndex = 7
+        Me.chkTVLockShowVotes.Text = "Lock Votes"
+        Me.chkTVLockShowVotes.UseVisualStyleBackColor = true
         '
         'chkTVLockShowRuntime
         '
@@ -13343,10 +13395,6 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterOverwrite.Text = "Overwrite Existing"
         Me.chkMovieSetPosterOverwrite.UseVisualStyleBackColor = true
         '
-        'ColumnHeader6
-        '
-        Me.ColumnHeader6.Text = "Exclude"
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -14793,4 +14841,8 @@ End Sub
     Friend WithEvents btnMovieSetPathExpertSingleBrowse As System.Windows.Forms.Button
     Friend WithEvents txtMovieSetPathExpertSingle As System.Windows.Forms.TextBox
     Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents chkTVScraperShowVotes As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVScraperEpisodeVotes As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVLockEpisodeVotes As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVLockShowVotes As System.Windows.Forms.CheckBox
 End Class

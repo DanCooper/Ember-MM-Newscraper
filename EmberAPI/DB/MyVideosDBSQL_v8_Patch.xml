@@ -5,6 +5,14 @@
       <description>1</description>
       <execute>ALTER TABLE TVSources ADD Exclude BOOL NOT NULL DEFAULT 0;</execute>
     </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>ALTER TABLE TVShows ADD Votes TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>ALTER TABLE TVEps ADD Votes TEXT;</execute>
+    </command>
   </transaction>
   <noTransaction type="">
   </noTransaction>

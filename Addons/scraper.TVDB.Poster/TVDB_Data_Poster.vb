@@ -209,6 +209,7 @@ Public Class TVDB_Data_Poster
         _setup.chkScraperShowStatus.Checked = ConfigOptions.bShowStatus
         _setup.chkScraperShowStudio.Checked = ConfigOptions.bShowStudio
         _setup.chkScraperShowActors.Checked = ConfigOptions.bShowActors
+        _setup.chkScraperShowVotes.Checked = ConfigOptions.bShowVotes
         _setup.chkScraperEpTitle.Checked = ConfigOptions.bEpTitle
         _setup.chkScraperEpSeason.Checked = ConfigOptions.bEpSeason
         _setup.chkScraperEpEpisode.Checked = ConfigOptions.bEpEpisode
@@ -218,6 +219,7 @@ Public Class TVDB_Data_Poster
         _setup.chkScraperEpDirector.Checked = ConfigOptions.bEpDirector
         _setup.chkScraperEpCredits.Checked = ConfigOptions.bEpCredits
         _setup.chkScraperEpActors.Checked = ConfigOptions.bEpActors
+        _setup.chkScraperEpVotes.Checked = ConfigOptions.bEpVotes
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(941, "TVDB")
@@ -273,6 +275,7 @@ Public Class TVDB_Data_Poster
         ConfigOptions.bEpRating = clsAdvancedSettings.GetBooleanSetting("ScraperEpRating", True)
         ConfigOptions.bEpSeason = clsAdvancedSettings.GetBooleanSetting("ScraperEpSeason", True)
         ConfigOptions.bEpTitle = clsAdvancedSettings.GetBooleanSetting("ScraperEpTitle", True)
+        ConfigOptions.bEpVotes = clsAdvancedSettings.GetBooleanSetting("ScraperEpVotes", True)
         ConfigOptions.bShowActors = clsAdvancedSettings.GetBooleanSetting("ScraperShowActors", True)
         ConfigOptions.bShowEpisodeGuide = clsAdvancedSettings.GetBooleanSetting("ScraperShowEGU", False)
         ConfigOptions.bShowGenre = clsAdvancedSettings.GetBooleanSetting("ScraperShowGenre", True)
@@ -284,6 +287,7 @@ Public Class TVDB_Data_Poster
         ConfigOptions.bShowStatus = clsAdvancedSettings.GetBooleanSetting("ScraperShowStatus", True)
         ConfigOptions.bShowStudio = clsAdvancedSettings.GetBooleanSetting("ScraperShowStudio", True)
         ConfigOptions.bShowTitle = clsAdvancedSettings.GetBooleanSetting("ScraperShowTitle", True)
+        ConfigOptions.bShowVotes = clsAdvancedSettings.GetBooleanSetting("ScraperShowVotes", True)
     End Sub
     Public Function PostScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.PosterScraper
     End Function
@@ -345,6 +349,7 @@ Public Class TVDB_Data_Poster
             settings.SetBooleanSetting("ScraperShowStatus", _setup.chkScraperShowStatus.Checked)
             settings.SetBooleanSetting("ScraperShowStudio", _setup.chkScraperShowStudio.Checked)
             settings.SetBooleanSetting("ScraperShowActors", _setup.chkScraperShowActors.Checked)
+            settings.SetBooleanSetting("ScraperShowVotes", _setup.chkScraperShowVotes.Checked)
             settings.SetBooleanSetting("ScraperEpTitle", _setup.chkScraperEpTitle.Checked)
             settings.SetBooleanSetting("ScraperEpSeason", _setup.chkScraperEpSeason.Checked)
             settings.SetBooleanSetting("ScraperEpEpisode", _setup.chkScraperEpEpisode.Checked)
@@ -354,6 +359,7 @@ Public Class TVDB_Data_Poster
             settings.SetBooleanSetting("ScraperEpDirector", _setup.chkScraperEpDirector.Checked)
             settings.SetBooleanSetting("ScraperEpCredits", _setup.chkScraperEpCredits.Checked)
             settings.SetBooleanSetting("ScraperEpActors", _setup.chkScraperEpActors.Checked)
+            settings.SetBooleanSetting("ScraperEpVotes", _setup.chkScraperEpVotes.Checked)
         End Using
 
         If DoDispose Then

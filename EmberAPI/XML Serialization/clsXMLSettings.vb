@@ -353,6 +353,7 @@ Partial Public Class clsXMLSettings
     Private _tvlockepisoderating As Boolean
     Private _tvlockepisoderuntime As Boolean
     Private _tvlockepisodetitle As Boolean
+    Private _tvlockepisodevotes As Boolean
     Private _tvlockshowgenre As Boolean
     Private _tvlockshowplot As Boolean
     Private _tvlockshowrating As Boolean
@@ -360,6 +361,7 @@ Partial Public Class clsXMLSettings
     Private _tvlockshowstatus As Boolean
     Private _tvlockshowstudio As Boolean
     Private _tvlockshowtitle As Boolean
+    Private _tvlockshowvotes As Boolean
     Private _tvmetadataperfiletype As List(Of MetadataPerType)
     Private _tvscanordermodify As Boolean
     Private _tvscraperdurationruntimeformat As String
@@ -373,6 +375,7 @@ Partial Public Class clsXMLSettings
     Private _tvscraperepisoderuntime As Boolean
     Private _tvscraperepisodeseason As Boolean
     Private _tvscraperepisodetitle As Boolean
+    Private _tvscraperepisodevotes As Boolean
     Private _tvscrapermetadatascan As Boolean
     Private _tvscraperoptionsordering As Enums.Ordering
     Private _tvscraperratingregion As String
@@ -387,6 +390,7 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowstatus As Boolean
     Private _tvscrapershowstudio As Boolean
     Private _tvscrapershowtitle As Boolean
+    Private _tvscrapershowvotes As Boolean
     Private _tvscraperupdatetime As Enums.TVScraperUpdateTime
     Private _tvscraperusemdduration As Boolean
     Private _tvscraperusesruntimeforep As Boolean
@@ -1307,6 +1311,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvlockepisodetitle = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeVotes() As Boolean
+        Get
+            Return Me._tvlockepisodevotes
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockepisodevotes = value
         End Set
     End Property
 
@@ -3960,6 +3973,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeVotes() As Boolean
+        Get
+            Return Me._tvscraperepisodevotes
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscraperepisodevotes = value
+        End Set
+    End Property
+
     Public Property TVScraperShowActors() As Boolean
         Get
             Return Me._tvscrapershowactors
@@ -4056,6 +4078,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscrapershowtitle = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowVotes() As Boolean
+        Get
+            Return Me._tvscrapershowvotes
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscrapershowvotes = value
         End Set
     End Property
 
@@ -4362,6 +4393,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvlockshowtitle = value
+        End Set
+    End Property
+
+    Public Property TVLockShowVotes() As Boolean
+        Get
+            Return Me._tvlockshowvotes
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockshowvotes = value
         End Set
     End Property
 

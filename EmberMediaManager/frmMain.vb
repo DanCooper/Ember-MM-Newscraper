@@ -8270,9 +8270,9 @@ doCancel:
         Me.dgvTVEpisodes.Enabled = False
 
         If Season = 999 Then
-            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime FROM TVEps WHERE TVShowID = ", ShowID, " ORDER BY Season, Episode;"))
+            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes FROM TVEps WHERE TVShowID = ", ShowID, " ORDER BY Season, Episode;"))
         Else
-            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
+            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
         End If
 
         If Me.dtEpisodes.Rows.Count > 0 Then
@@ -8419,7 +8419,7 @@ doCancel:
                 Me.bsEpisodes.DataSource = Nothing
                 Me.dgvTVEpisodes.DataSource = Nothing
                 Me.ClearInfo()
-                Master.DB.FillDataTable(Me.dtShows, "SELECT ID, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title FROM TVShows ORDER BY Title COLLATE NOCASE;")
+                Master.DB.FillDataTable(Me.dtShows, "SELECT ID, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes FROM TVShows ORDER BY Title COLLATE NOCASE;")
             End If
 
 
@@ -8845,6 +8845,14 @@ doCancel:
             Me.txtFilePath.Text = Master.currShow.Filename
             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVEp.Aired), "?", Master.currShow.TVEp.Aired))
 
+            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Rating) Then
+                If Not String.IsNullOrEmpty(Master.currShow.TVEp.Votes) Then
+                    Me.lblRating.Text = String.Concat(Master.currShow.TVEp.Rating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVEp.Votes), ")")
+                Else
+                    Me.lblRating.Text = String.Concat(Master.currShow.TVEp.Rating, "/10")
+                End If
+            End If
+
             Me.lblTagline.Text = String.Format(Master.eLang.GetString(648, "Season: {0}, Episode: {1}"), _
                             If(String.IsNullOrEmpty(Master.currShow.TVEp.Season.ToString), "?", Master.currShow.TVEp.Season.ToString), _
                             If(String.IsNullOrEmpty(Master.currShow.TVEp.Episode.ToString), "?", Master.currShow.TVEp.Episode.ToString))
@@ -9088,8 +9096,12 @@ doCancel:
                 Me.lblOriginalTitle.Text = String.Empty
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
-                Me.lblRating.Text = String.Concat(Master.currMovie.Movie.Rating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes), ")")
+            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Rating) Then
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
+                    Me.lblRating.Text = String.Concat(Master.currMovie.Movie.Rating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes), ")")
+                Else
+                    Me.lblRating.Text = String.Concat(Master.currMovie.Movie.Rating, "/10")
+                End If
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Runtime) Then
@@ -9721,6 +9733,14 @@ doCancel:
             Me.txtPlot.Text = Master.currShow.TVShow.Plot
             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
 
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Rating) Then
+                If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then
+                    Me.lblRating.Text = String.Concat(Master.currShow.TVShow.Rating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVShow.Votes), ")")
+                Else
+                    Me.lblRating.Text = String.Concat(Master.currShow.TVShow.Rating, "/10")
+                End If
+            End If
+
             Me.alActors = New List(Of String)
 
             If Master.currShow.TVShow.Actors.Count > 0 Then
@@ -9947,6 +9967,14 @@ doCancel:
             Me.lblOriginalTitle.Text = String.Empty
             Me.txtPlot.Text = Master.currShow.TVShow.Plot
             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
+
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Rating) Then
+                If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then
+                    Me.lblRating.Text = String.Concat(Master.currShow.TVShow.Rating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVShow.Votes), ")")
+                Else
+                    Me.lblRating.Text = String.Concat(Master.currShow.TVShow.Rating, "/10")
+                End If
+            End If
 
             Me.alActors = New List(Of String)
 

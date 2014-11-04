@@ -219,7 +219,8 @@ CREATE TABLE TVShows(
 	HasEFanarts BOOL NOT NULL DEFAULT 0,
 	EFanartsPath TEXT,
 	Runtime TEXT,
-	Title TEXT
+	Title TEXT,
+	Votes TEXT
 	);
 CREATE UNIQUE INDEX UniqueTVShowPath ON TVShows (TVShowPath);
 
@@ -258,7 +259,8 @@ CREATE TABLE TVEps(
 	DisplaySeason INTEGER,
 	DisplayEpisode INTEGER,
 	DateAdd INTEGER,
-	Runtime TEXT
+	Runtime TEXT,
+	Votes TEXT
 	);
 
 CREATE TABLE TVShowActors(

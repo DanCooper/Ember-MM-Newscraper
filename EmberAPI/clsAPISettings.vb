@@ -518,6 +518,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVLockEpisodeVotes() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeVotes
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeVotes = value
+        End Set
+    End Property
+
     Public Property TVEpisodePosterHeight() As Integer
         Get
             Return Settings._XMLSettings.TVEpisodePosterHeight
@@ -3169,6 +3178,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeVotes() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperEpisodeVotes
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperEpisodeVotes = value
+        End Set
+    End Property
+
     Public Property TVScraperShowActors() As Boolean
         Get
             Return Settings._XMLSettings.TVScraperShowActors
@@ -3265,6 +3283,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVScraperShowTitle = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowVotes() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowVotes
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowVotes = value
         End Set
     End Property
 
@@ -3571,6 +3598,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVLockShowTitle = value
+        End Set
+    End Property
+
+    Public Property TVLockShowVotes() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockShowVotes
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockShowVotes = value
         End Set
     End Property
 

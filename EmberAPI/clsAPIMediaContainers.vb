@@ -46,6 +46,7 @@ Namespace MediaContainers
         Private _localfile As String
         Private _playcount As String
         Private _fanart As Images
+        Private _votes As String
         <XmlIgnore()> _
         Public displaySEset As Boolean = False
 
@@ -127,6 +128,23 @@ Namespace MediaContainers
         Public ReadOnly Property RatingSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._rating)
+            End Get
+        End Property
+
+        <XmlElement("votes")> _
+        Public Property Votes() As String
+            Get
+                Return Me._votes
+            End Get
+            Set(ByVal value As String)
+                Me._votes = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property VotesSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._votes)
             End Get
         End Property
 
@@ -386,6 +404,7 @@ Namespace MediaContainers
             Me._localfile = String.Empty
             Me._poster = New Images
             Me._fanart = New Images
+            Me._votes = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -1820,6 +1839,7 @@ Namespace MediaContainers
         Private _actors As New List(Of Person)
         Private _boxeeTvDb As String
         Private _status As String
+        Private _votes As String
 
 #End Region 'Fields
 
@@ -1915,6 +1935,23 @@ Namespace MediaContainers
         Public ReadOnly Property RatingSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._rating)
+            End Get
+        End Property
+
+        <XmlElement("votes")> _
+        Public Property Votes() As String
+            Get
+                Return Me._votes
+            End Get
+            Set(ByVal value As String)
+                Me._votes = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property VotesSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._votes)
             End Get
         End Property
 
@@ -2127,6 +2164,7 @@ Namespace MediaContainers
             _premiered = String.Empty
             _status = String.Empty
             _studio = String.Empty
+            _votes = String.Empty
             _actors.Clear()
         End Sub
 

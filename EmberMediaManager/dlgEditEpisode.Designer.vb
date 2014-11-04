@@ -29,6 +29,8 @@ Partial Class dlgEditEpisode
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditEpisode = New System.Windows.Forms.TabControl()
         Me.tpEpsiodeDetails = New System.Windows.Forms.TabPage()
+        Me.lblRuntime = New System.Windows.Forms.Label()
+        Me.txtRuntime = New System.Windows.Forms.TextBox()
         Me.pbStar10 = New System.Windows.Forms.PictureBox()
         Me.pbStar9 = New System.Windows.Forms.PictureBox()
         Me.pbStar8 = New System.Windows.Forms.PictureBox()
@@ -87,8 +89,8 @@ Partial Class dlgEditEpisode
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.chkWatched = New System.Windows.Forms.CheckBox()
-        Me.lblRuntime = New System.Windows.Forms.Label()
-        Me.txtRuntime = New System.Windows.Forms.TextBox()
+        Me.txtVotes = New System.Windows.Forms.TextBox()
+        Me.lblVotes = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditEpisode.SuspendLayout()
@@ -177,6 +179,8 @@ Partial Class dlgEditEpisode
         '
         'tpEpsiodeDetails
         '
+        Me.tpEpsiodeDetails.Controls.Add(Me.txtVotes)
+        Me.tpEpsiodeDetails.Controls.Add(Me.lblVotes)
         Me.tpEpsiodeDetails.Controls.Add(Me.lblRuntime)
         Me.tpEpsiodeDetails.Controls.Add(Me.txtRuntime)
         Me.tpEpsiodeDetails.Controls.Add(Me.pbStar10)
@@ -219,6 +223,25 @@ Partial Class dlgEditEpisode
         Me.tpEpsiodeDetails.TabIndex = 0
         Me.tpEpsiodeDetails.Text = "Details"
         Me.tpEpsiodeDetails.UseVisualStyleBackColor = True
+        '
+        'lblRuntime
+        '
+        Me.lblRuntime.AutoSize = True
+        Me.lblRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblRuntime.Location = New System.Drawing.Point(645, 139)
+        Me.lblRuntime.Name = "lblRuntime"
+        Me.lblRuntime.Size = New System.Drawing.Size(54, 13)
+        Me.lblRuntime.TabIndex = 83
+        Me.lblRuntime.Text = "Runtime:"
+        '
+        'txtRuntime
+        '
+        Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
+        Me.txtRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtRuntime.Location = New System.Drawing.Point(645, 155)
+        Me.txtRuntime.Name = "txtRuntime"
+        Me.txtRuntime.Size = New System.Drawing.Size(66, 22)
+        Me.txtRuntime.TabIndex = 84
         '
         'pbStar10
         '
@@ -774,24 +797,24 @@ Partial Class dlgEditEpisode
         Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
         '
-        'lblRuntime
+        'txtVotes
         '
-        Me.lblRuntime.AutoSize = True
-        Me.lblRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblRuntime.Location = New System.Drawing.Point(645, 139)
-        Me.lblRuntime.Name = "lblRuntime"
-        Me.lblRuntime.Size = New System.Drawing.Size(54, 13)
-        Me.lblRuntime.TabIndex = 83
-        Me.lblRuntime.Text = "Runtime:"
+        Me.txtVotes.BackColor = System.Drawing.SystemColors.Window
+        Me.txtVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVotes.Location = New System.Drawing.Point(738, 155)
+        Me.txtVotes.Name = "txtVotes"
+        Me.txtVotes.Size = New System.Drawing.Size(66, 22)
+        Me.txtVotes.TabIndex = 86
         '
-        'txtRuntime
+        'lblVotes
         '
-        Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
-        Me.txtRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtRuntime.Location = New System.Drawing.Point(645, 155)
-        Me.txtRuntime.Name = "txtRuntime"
-        Me.txtRuntime.Size = New System.Drawing.Size(66, 22)
-        Me.txtRuntime.TabIndex = 84
+        Me.lblVotes.AutoSize = True
+        Me.lblVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVotes.Location = New System.Drawing.Point(735, 140)
+        Me.lblVotes.Name = "lblVotes"
+        Me.lblVotes.Size = New System.Drawing.Size(38, 13)
+        Me.lblVotes.TabIndex = 85
+        Me.lblVotes.Text = "Votes:"
         '
         'dlgEditEpisode
         '
@@ -906,5 +929,7 @@ Partial Class dlgEditEpisode
     Friend WithEvents pbStar6 As System.Windows.Forms.PictureBox
     Friend WithEvents lblRuntime As System.Windows.Forms.Label
     Friend WithEvents txtRuntime As System.Windows.Forms.TextBox
+    Friend WithEvents txtVotes As System.Windows.Forms.TextBox
+    Friend WithEvents lblVotes As System.Windows.Forms.Label
 
 End Class

@@ -124,6 +124,10 @@ Public Class frmTVInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkScraperEpVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpVotes.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkScraperShowActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowActors.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -165,6 +169,10 @@ Public Class frmTVInfoSettingsHolder
     End Sub
 
     Private Sub chkScraperShowTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowTitle.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowVotes.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -213,6 +221,7 @@ Public Class frmTVInfoSettingsHolder
         Me.chkScraperEpRating.Text = Master.eLang.GetString(400, "Rating")
         Me.chkScraperEpSeason.Text = Master.eLang.GetString(650, "Season")
         Me.chkScraperEpTitle.Text = Master.eLang.GetString(21, "Title")
+        Me.chkScraperEpVotes.Text = Master.eLang.GetString(399, "Votes")
         Me.chkScraperShowActors.Text = Master.eLang.GetString(725, "Actors")
         Me.chkScraperShowEGU.Text = Master.eLang.GetString(723, "Episode Guide URL")
         Me.chkScraperShowGenre.Text = Master.eLang.GetString(20, "Genre")
@@ -224,6 +233,7 @@ Public Class frmTVInfoSettingsHolder
         Me.chkScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
         Me.chkScraperShowStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
+        Me.chkScraperShowVotes.Text = Master.eLang.GetString(399, "Votes")
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
     End Sub

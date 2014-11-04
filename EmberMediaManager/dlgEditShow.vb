@@ -1255,6 +1255,7 @@ Public Class dlgEditShow
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Runtime) Then .txtRuntime.Text = Master.currShow.TVShow.Runtime
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Status) Then .txtStatus.Text = Master.currShow.TVShow.Status
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then .txtStudio.Text = Master.currShow.TVShow.Studio
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then .txtVotes.Text = Master.currShow.TVShow.Votes
 
             For i As Integer = 0 To .clbGenre.Items.Count - 1
                 .clbGenre.SetItemChecked(i, False)
@@ -2193,6 +2194,7 @@ Public Class dlgEditShow
                 Master.currShow.TVShow.Runtime = .txtRuntime.Text.Trim
                 Master.currShow.TVShow.Status = .txtStatus.Text.Trim
                 Master.currShow.TVShow.Studio = .txtStudio.Text.Trim
+                Master.currShow.TVShow.Votes = .txtVotes.Text.Trim
 
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
                     If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(.txtStatus.Text.Trim) Then
@@ -2401,6 +2403,7 @@ Public Class dlgEditShow
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
         Me.lblTopDetails.Text = Master.eLang.GetString(664, "Edit the details for the selected show.")
         Me.lblTopTitle.Text = Master.eLang.GetString(663, "Edit Show")
+        Me.lblVotes.Text = Master.eLang.GetString(244, "Votes:")
         Me.tpASBanner.Text = Master.eLang.GetString(1014, "All Seasons Banner")
         Me.tpASFanart.Text = Master.eLang.GetString(1015, "All Seasons Fanart")
         Me.tpASLandscape.Text = Master.eLang.GetString(1016, "All Seasons Landscape")

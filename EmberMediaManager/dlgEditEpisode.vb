@@ -492,6 +492,7 @@ Public Class dlgEditEpisode
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Runtime) Then .txtRuntime.Text = Master.currShow.TVEp.Runtime
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Season.ToString) Then .txtSeason.Text = Master.currShow.TVEp.Season.ToString
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Title) Then .txtTitle.Text = Master.currShow.TVEp.Title
+            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Votes) Then .txtVotes.Text = Master.currShow.TVEp.Votes
 
             Dim lvItem As ListViewItem
             .lvActors.Items.Clear()
@@ -921,6 +922,7 @@ Public Class dlgEditEpisode
                 Master.currShow.TVEp.Runtime = .txtRuntime.Text.Trim
                 Master.currShow.TVEp.Season = Convert.ToInt32(.txtSeason.Text.Trim)
                 Master.currShow.TVEp.Title = .txtTitle.Text.Trim
+                Master.currShow.TVEp.Votes = .txtVotes.Text.Trim
 
                 Master.currShow.TVEp.Actors.Clear()
 
@@ -1017,6 +1019,7 @@ Public Class dlgEditEpisode
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
         Me.lblTopDetails.Text = Master.eLang.GetString(656, "Edit the details for the selected episode.")
         Me.lblTopTitle.Text = Master.eLang.GetString(657, "Edit Episode")
+        Me.lblVotes.Text = Master.eLang.GetString(244, "Votes:")
         Me.tpEpisodeFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.tpEpisodePoster.Text = Master.eLang.GetString(148, "Poster")
         Me.tpEpsiodeDetails.Text = Master.eLang.GetString(26, "Details")

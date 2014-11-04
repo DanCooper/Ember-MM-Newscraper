@@ -416,6 +416,7 @@ Public Class Scraper
 
                                         .Aired = If(IsNothing(Episode.Element("FirstAired")), String.Empty, Episode.Element("FirstAired").Value)
                                         .Rating = If(IsNothing(Episode.Element("Rating")), String.Empty, Episode.Element("Rating").Value)
+                                        .Votes = If(IsNothing(Episode.Element("RatingCount")), String.Empty, Episode.Element("RatingCount").Value)
                                         .Plot = If(IsNothing(Episode.Element("Overview")), String.Empty, Episode.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
                                         .Director = If(IsNothing(Episode.Element("Director")), String.Empty, Strings.Join(Episode.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                         .Credits = CreditsString(If(IsNothing(Episode.Element("GuestStars")), String.Empty, Episode.Element("GuestStars").Value), If(IsNothing(Episode.Element("Writer")), String.Empty, Episode.Element("Writer").Value))
@@ -1129,6 +1130,7 @@ Public Class Scraper
                                     If sInfo.Options.bShowRuntime AndAlso (String.IsNullOrEmpty(.Runtime) OrElse Not Master.eSettings.TVLockShowRuntime) Then .Runtime = If(IsNothing(xS(0).Element("Runtime")), .Runtime, xS(0).Element("Runtime").Value)
                                     If sInfo.Options.bShowStatus AndAlso (String.IsNullOrEmpty(.Status) OrElse Not Master.eSettings.TVLockShowStatus) Then .Status = If(IsNothing(xS(0).Element("Status")), .Status, xS(0).Element("Status").Value)
                                     If sInfo.Options.bShowStudio AndAlso (String.IsNullOrEmpty(.Studio) OrElse Not Master.eSettings.TVLockShowStudio) Then .Studio = If(IsNothing(xS(0).Element("Network")), .Studio, xS(0).Element("Network").Value)
+                                    If sInfo.Options.bShowVotes AndAlso (String.IsNullOrEmpty(.Votes) OrElse Not Master.eSettings.TVLockShowVotes) Then .Votes = If(IsNothing(xS(0).Element("RatingCount")), .Votes, xS(0).Element("RatingCount").Value)
                                     If sInfo.Options.bShowActors Then .Actors = Actors
                                 End With
                             End If
@@ -1210,6 +1212,7 @@ Public Class Scraper
                                         End If
                                         If sInfo.Options.bEpAired Then .Aired = If(IsNothing(xE.Element("FirstAired")), .Aired, xE.Element("FirstAired").Value)
                                         If sInfo.Options.bEpRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.TVLockEpisodeRating) Then .Rating = If(IsNothing(xE.Element("Rating")), .Rating, xE.Element("Rating").Value)
+                                        If sInfo.Options.bEpVotes AndAlso (String.IsNullOrEmpty(.Votes) OrElse Not Master.eSettings.TVLockEpisodeVotes) Then .Votes = If(IsNothing(xE.Element("RatingCount")), .Votes, xE.Element("RatingCount").Value)
                                         If sInfo.Options.bEpPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) Then .Plot = If(IsNothing(xE.Element("Overview")), .Plot, xE.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
                                         'If sInfo.Options.bEpDirector Then .Director = If(IsNothing(xS(0).Element("Director")), .Director, Strings.Join(xS(0).Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                         If sInfo.Options.bEpDirector Then .Director = If(IsNothing(xE.Element("Director")), .Director, Strings.Join(xE.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))

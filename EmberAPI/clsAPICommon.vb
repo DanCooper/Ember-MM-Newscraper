@@ -1198,8 +1198,10 @@ Public Class Functions
             .bEpEpisode = Master.eSettings.TVScraperEpisodeEpisode
             .bEpPlot = Master.eSettings.TVScraperEpisodePlot
             .bEpRating = Master.eSettings.TVScraperEpisodeRating
+            .bEpRuntime = Master.eSettings.TVScraperEpisodeRuntime
             .bEpSeason = Master.eSettings.TVScraperEpisodeSeason
             .bEpTitle = Master.eSettings.TVScraperEpisodeTitle
+            .bEpVotes = Master.eSettings.TVScraperEpisodeVotes
             .bShowActors = Master.eSettings.TVScraperShowActors
             .bShowEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
             .bShowGenre = Master.eSettings.TVScraperShowGenre
@@ -1211,6 +1213,7 @@ Public Class Functions
             .bShowStatus = Master.eSettings.TVScraperShowStatus
             .bShowStudio = Master.eSettings.TVScraperShowStudio
             .bShowTitle = Master.eSettings.TVScraperShowTitle
+            .bShowVotes = Master.eSettings.TVScraperShowVotes
         End With
     End Sub
     ''' <summary>
@@ -1509,8 +1512,10 @@ Public Class Functions
         filterOptions.bEpEpisode = Options.bEpEpisode AndAlso Options2.bEpEpisode
         filterOptions.bEpPlot = Options.bEpPlot AndAlso Options2.bEpPlot
         filterOptions.bEpRating = Options.bEpRating AndAlso Options2.bEpRating
+        filterOptions.bEpRuntime = Options.bEpRuntime AndAlso Options2.bEpRuntime
         filterOptions.bEpSeason = Options.bEpSeason AndAlso Options2.bEpSeason
         filterOptions.bEpTitle = Options.bEpTitle AndAlso Options2.bEpTitle
+        filterOptions.bEpVotes = Options.bEpVotes AndAlso Options2.bEpVotes
         filterOptions.bShowActors = Options.bShowActors AndAlso Options2.bShowActors
         filterOptions.bShowEpisodeGuide = Options.bShowEpisodeGuide AndAlso Options2.bShowEpisodeGuide
         filterOptions.bShowGenre = Options.bShowGenre AndAlso Options2.bShowGenre
@@ -1522,6 +1527,7 @@ Public Class Functions
         filterOptions.bShowStatus = Options.bShowStatus AndAlso Options2.bShowStatus
         filterOptions.bShowStudio = Options.bShowStudio AndAlso Options2.bShowStudio
         filterOptions.bShowTitle = Options.bShowTitle AndAlso Options2.bShowTitle
+        filterOptions.bShowVotes = Options.bShowVotes AndAlso Options2.bShowVotes
         Return filterOptions
     End Function
     ''' <summary>
@@ -2021,6 +2027,7 @@ Public Class Structures
         Dim bEpRuntime As Boolean
         Dim bEpSeason As Boolean
         Dim bEpTitle As Boolean
+        Dim bEpVotes As Boolean
         Dim bShowActors As Boolean
         Dim bShowEpisodeGuide As Boolean
         Dim bShowGenre As Boolean
@@ -2032,6 +2039,7 @@ Public Class Structures
         Dim bShowStatus As Boolean
         Dim bShowStudio As Boolean
         Dim bShowTitle As Boolean
+        Dim bShowVotes As Boolean
     End Structure
 
     Public Structure ModulesMenus
