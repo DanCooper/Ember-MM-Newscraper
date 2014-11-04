@@ -866,6 +866,7 @@ Public Class Enums
         FilterSkip = 16
         CopyBackdrops = 17
         SingleField = 18
+        SingleAuto = 19
         None = 99
     End Enum
 

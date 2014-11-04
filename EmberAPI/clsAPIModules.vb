@@ -689,7 +689,7 @@ Public Class ModulesManager
         End While
 
         'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
-        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
+        If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso Master.GlobalScrapeMod.DoSearch Then
             DBMovie.RemoveActorThumbs = True
             DBMovie.RemoveBanner = True
             DBMovie.RemoveClearArt = True

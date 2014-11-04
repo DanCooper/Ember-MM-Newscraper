@@ -5992,7 +5992,7 @@ doCancel:
     End Sub
     ''' <summary>
     ''' User has selected "Change Movie" from the context menu. This will re-validate the movie title with the user,
-    ''' and initiate a new scrape of the movie.
+    ''' and initiate a new manually scrape of the movie.
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -6002,6 +6002,19 @@ doCancel:
         Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, True)
         Functions.SetScraperMod(Enums.ModType_Movie.All, True, False)
         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+    End Sub
+    ''' <summary>
+    ''' User has selected "Change Movie" from the context menu. This will re-validate the movie title with the user,
+    ''' and initiate a new auto scrape of the movie.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub cmnuMovieChangeAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieChangeAuto.Click
+        If Me.dgvMovies.SelectedRows.Count <> 1 Then Return 'This method is only valid for when exactly one movie is selected
+        Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, True)
+        Functions.SetScraperMod(Enums.ModType_Movie.All, True, False)
+        Me.MovieScrapeData(True, Enums.ScrapeType.SingleAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
@@ -6403,6 +6416,7 @@ doCancel:
 
                     Me.cmnuMovie.Enabled = True
                     Me.cmnuMovieChange.Visible = False
+                    Me.cmnuMovieChangeAuto.Visible = False
                     Me.cmnuMovieEdit.Visible = False
                     Me.cmnuMovieEditMetaData.Visible = False
                     Me.cmnuMovieReSel.Visible = True
@@ -6450,6 +6464,7 @@ doCancel:
                         Me.cmnuMovieGenresRemove.Enabled = False
                     Else
                         Me.cmnuMovieChange.Visible = True
+                        Me.cmnuMovieChangeAuto.Visible = True
                         Me.cmnuMovieEdit.Visible = True
                         Me.cmnuMovieEditMetaData.Visible = True
                         Me.cmnuMovieReSel.Visible = True
@@ -12734,7 +12749,7 @@ doCancel:
                     Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
                 Case Enums.ScrapeType.FilterAuto
                     Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-                Case Enums.ScrapeType.SingleScrape
+                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
                     Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
             End Select
         Else
@@ -12747,6 +12762,8 @@ doCancel:
                     Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
                 Case Enums.ScrapeType.SingleField
                     Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
             End Select
         End If
 
@@ -17509,6 +17526,7 @@ doCancel:
                 .cmnuMovieBrowseIMDB.Text = Master.eLang.GetString(1281, "Open IMDB-Page")
                 .cmnuMovieBrowseTMDB.Text = Master.eLang.GetString(1282, "Open TMDB-Page")
                 .cmnuMovieChange.Text = Master.eLang.GetString(32, "Change Movie")
+                .cmnuMovieChangeAuto.Text = Master.eLang.GetString(1294, "Change Movie (Auto)")
                 .cmnuMovieEdit.Text = Master.eLang.GetString(25, "Edit Movie")
                 .cmnuMovieEditMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
                 .cmnuMovieGenres.Text = Master.eLang.GetString(20, "Genre")
