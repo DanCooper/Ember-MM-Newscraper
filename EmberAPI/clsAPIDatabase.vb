@@ -316,7 +316,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 8
+        Dim MyVideosDBVersion As Integer = 9
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -2875,7 +2875,7 @@ Public Class Database
         Master.TVSources.Clear()
         Try
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT ID, Name, path, LastScan, Language, Ordering FROM TVSources;"
+                SQLcommand.CommandText = "SELECT ID, Name, path, LastScan, Language, Ordering, Exclude FROM TVSources;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
                         Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
@@ -2885,6 +2885,7 @@ Public Class Database
                             tvsource.Path = SQLreader("Path").ToString
                             tvsource.Language = SQLreader("Language").ToString
                             tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
+                            tvsource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
                             Master.TVSources.Add(tvsource)
                         Catch ex As Exception
                             logger.Error(New StackFrame().GetMethod().Name, ex)

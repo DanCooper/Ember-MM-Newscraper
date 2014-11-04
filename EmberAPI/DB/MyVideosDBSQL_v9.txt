@@ -1,5 +1,6 @@
 CREATE TABLE Sets(
-	SetName TEXT NOT NULL PRIMARY KEY,
+	ID INTEGER PRIMARY KEY AUTOINCREMENT,
+	ListTitle TEXT NOT NULL,
 	HasNfo BOOL NOT NULL DEFAULT 0,
 	NfoPath TEXT,
 	HasPoster BOOL NOT NULL DEFAULT 0,
@@ -15,11 +16,17 @@ CREATE TABLE Sets(
 	HasClearLogo BOOL NOT NULL DEFAULT 0,
 	ClearLogoPath TEXT,
 	HasClearArt BOOL NOT NULL DEFAULT 0,
-	ClearArtPath TEXT
+	ClearArtPath TEXT,
+	TMDBColID TEXT,
+	Plot TEXT,
+	SetName TEXT,
+	New BOOL NOT NULL DEFAULT 0,
+	Mark BOOL NOT NULL DEFAULT 0,
+	Lock BOOL NOT NULL DEFAULT 0
 	);
 
 CREATE TABLE Movies (
-	ID INTEGER PRIMARY KEY,
+	ID INTEGER PRIMARY KEY AUTOINCREMENT,
 	MoviePath TEXT,
 	Type BOOL,
 	ListTitle TEXT,
@@ -64,7 +71,7 @@ CREATE TABLE Movies (
 	FanartURL TEXT,
 	UseFolder BOOL,
 	OutOfTolerance BOOL,
-	FileSource TEXT,
+	VideoSource TEXT,
 	NeedsSave BOOL,
 	SortTitle TEXT,
 	DateAdd INTEGER,
@@ -81,14 +88,21 @@ CREATE TABLE Movies (
 	HasClearLogo BOOL NOT NULL DEFAULT 0,
 	ClearLogoPath TEXT,
 	HasClearArt BOOL NOT NULL DEFAULT 0,
-	ClearArtPath TEXT
+	ClearArtPath TEXT,
+	TMDB TEXT,
+	TMDBColID TEXT,
+	LastScrape TEXT,
+	MarkCustom1 BOOL NOT NULL DEFAULT 0,
+	MarkCustom2 BOOL NOT NULL DEFAULT 0,
+	MarkCustom3 BOOL NOT NULL DEFAULT 0,
+	MarkCustom4 BOOL NOT NULL DEFAULT 0
 	);
 
 CREATE TABLE MoviesSets(
 	MovieID INTEGER NOT NULL,
-	SetName TEXT NOT NULL,
+	SetID INTEGER NOT NULL,
 	SetOrder TEXT NOT NULL,
-	PRIMARY KEY (MovieID,SetName)
+	PRIMARY KEY (MovieID,SetID)
 	);
 
 CREATE TABLE MoviesVStreams(
@@ -103,8 +117,10 @@ CREATE TABLE MoviesVStreams(
 	Video_Language TEXT,
 	Video_LongLanguage TEXT,
     Video_Bitrate TEXT,
-	Video_MultiView TEXT,
+	Video_MultiViewCount TEXT,
 	Video_EncodedSettings TEXT,
+	Video_MultiViewLayout TEXT,
+	Video_StereoMode TEXT,
 	PRIMARY KEY (MovieID,StreamID)
 	);
 
@@ -126,6 +142,7 @@ CREATE TABLE MoviesSubs(
 	Subs_LongLanguage TEXT,
 	Subs_Type TEXT,
 	Subs_Path TEXT,
+	Subs_Forced BOOL NOT NULL DEFAULT 0,
 	PRIMARY KEY (MovieID,StreamID)
 	);
 
@@ -152,17 +169,18 @@ CREATE TABLE MoviesActors(
 CREATE TABLE Sources(
 	ID INTEGER PRIMARY KEY AUTOINCREMENT,
 	Name TEXT NOT NULL,
-	path TEXT NOT NULL,
+	Path TEXT NOT NULL,
 	Recursive BOOL NOT NULL DEFAULT 0,
 	Foldername BOOL NOT NULL DEFAULT 0,
 	Single BOOL NOT NULL DEFAULT 0,
-	LastScan TEXT NOT NULL DEFAULT '1900/01/01'
+	LastScan TEXT NOT NULL DEFAULT '1900/01/01',
+	Exclude BOOL NOT NULL DEFAULT 0
 	);
 CREATE UNIQUE INDEX UniqueSource ON Sources (Path);
 
 CREATE TABLE TVShows(
 	ID INTEGER PRIMARY KEY AUTOINCREMENT,
-	Title TEXT,
+	ListTitle TEXT,
 	HasPoster BOOL NOT NULL DEFAULT 0,
 	HasFanart BOOL NOT NULL DEFAULT 0,
 	HasNfo BOOL NOT NULL DEFAULT 0,
@@ -197,7 +215,11 @@ CREATE TABLE TVShows(
 	HasClearLogo BOOL NOT NULL DEFAULT 0,
 	ClearLogoPath TEXT,
 	HasClearArt BOOL NOT NULL DEFAULT 0,
-	ClearArtPath TEXT
+	ClearArtPath TEXT,
+	HasEFanarts BOOL NOT NULL DEFAULT 0,
+	EFanartsPath TEXT,
+	Runtime TEXT,
+	Title TEXT
 	);
 CREATE UNIQUE INDEX UniqueTVShowPath ON TVShows (TVShowPath);
 
@@ -233,8 +255,10 @@ CREATE TABLE TVEps(
 	Missing BOOL NOT NULL DEFAULT 0,
 	Playcount TEXT,
 	HasWatched BOOL NOT NULL DEFAULT 0,
-	DisplaySeason integer,
-	DisplayEpisode integer
+	DisplaySeason INTEGER,
+	DisplayEpisode INTEGER,
+	DateAdd INTEGER,
+	Runtime TEXT
 	);
 
 CREATE TABLE TVShowActors(
@@ -281,8 +305,10 @@ CREATE TABLE TVVStreams(
 	Video_Language TEXT,
 	Video_LongLanguage TEXT,
     Video_Bitrate TEXT,
-	Video_MultiView TEXT,
+	Video_MultiViewCount TEXT,
 	Video_EncodedSettings TEXT,
+	Video_MultiViewLayout TEXT,
+	Video_StereoMode TEXT,
 	PRIMARY KEY (TVEpID,StreamID)
 	);
 
@@ -302,20 +328,26 @@ CREATE TABLE TVSubs(
 	StreamID INTEGER NOT NULL,
 	Subs_Language TEXT,
 	Subs_LongLanguage TEXT,
+	Subs_Type TEXT,
+	Subs_Path TEXT,
+	Subs_Forced BOOL NOT NULL DEFAULT 0,
 	PRIMARY KEY (TVEpID,StreamID)
 	);
 
 CREATE TABLE TVSources(
 	ID INTEGER PRIMARY KEY AUTOINCREMENT,
 	Name TEXT NOT NULL,
-	path TEXT NOT NULL,
-	LastScan TEXT NOT NULL DEFAULT '1900/01/01'
+	Path TEXT NOT NULL,
+	LastScan TEXT NOT NULL DEFAULT '1900/01/01',
+	Language TEXT NOT NULL DEFAULT en,
+	Ordering INTEGER NOT NULL DEFAULT 0,
+	Exclude BOOL NOT NULL DEFAULT 0
 	);
 CREATE UNIQUE INDEX UniqueTVSource ON TVSources (Path);
 
 CREATE TABLE Actors(
 	Name TEXT PRIMARY KEY,
-	thumb TEXT
+	Thumb TEXT
 	);
 
 CREATE TABLE OrigPaths(

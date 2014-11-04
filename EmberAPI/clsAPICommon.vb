@@ -1782,6 +1782,7 @@ Public Class Structures
         Dim Path As String
         Dim Language As String
         Dim Ordering As Enums.Ordering
+        Dim Exclude As Boolean
     End Structure
     ''' <summary>
     ''' Structure representing a movie in the database

@@ -1328,9 +1328,9 @@ Public Class Scanner
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         If Not String.IsNullOrEmpty(Args.SourceName) Then
-                            SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, LastScan, Language, Ordering FROM TVSources WHERE Name = ""{0}"";", Args.SourceName)
+                            SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude FROM TVSources WHERE Name = ""{0}"";", Args.SourceName)
                         Else
-                            SQLcommand.CommandText = "SELECT ID, Name, Path, LastScan, Language, Ordering FROM TVSources;"
+                            SQLcommand.CommandText = "SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude FROM TVSources WHERE Exclude = 0;"
                         End If
 
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()

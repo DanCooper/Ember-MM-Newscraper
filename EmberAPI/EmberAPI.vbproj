@@ -277,11 +277,18 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="DB\MyVideosDBSQL_v8.txt">
+    <None Include="DB\MyVideosDBSQL_v9.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="DB\MyVideosDBSQL_v7_Patch.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v8_Patch.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v8.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Defaults\DefaultAdvancedSettings - AudioFormatConverts.xml">
@@ -346,7 +353,6 @@
     <None Include="DB\JobsDatabaseSQL_v1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="DB\MediaDatabaseSQL_v1.txt" />
     <None Include="DB\MyVideosDBSQL_v2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

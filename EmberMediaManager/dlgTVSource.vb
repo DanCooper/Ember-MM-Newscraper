@@ -129,7 +129,7 @@ Public Class dlgTVSource
         Try
             If Me._id >= 0 Then
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = String.Concat("SELECT ID, Name, Path, LastScan, Language, Ordering FROM TVSources WHERE ID = ", Me._id, ";")
+                    SQLcommand.CommandText = String.Concat("SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude FROM TVSources WHERE ID = ", Me._id, ";")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         If SQLreader.HasRows() Then
                             SQLreader.Read()
@@ -139,6 +139,7 @@ Public Class dlgTVSource
                                 Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = SQLreader("Language").ToString).name
                             End If
                             Me.cbSourceOrdering.SelectedIndex = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
+                            Me.chkExclude.Checked = Convert.ToBoolean(SQLreader("Exclude"))
                             Me.autoName = False
                         End If
                     End Using
@@ -163,14 +164,15 @@ Public Class dlgTVSource
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Me._id >= 0 Then
-                        SQLcommand.CommandText = String.Concat("UPDATE TVSources SET Name = (?), Path = (?), Language = (?), Ordering = (?) WHERE ID =", Me._id, ";")
+                        SQLcommand.CommandText = String.Concat("UPDATE TVSources SET Name = (?), Path = (?), Language = (?), Ordering = (?), Exclude = (?) WHERE ID =", Me._id, ";")
                     Else
-                        SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (Name, Path, Language, Ordering) VALUES (?,?,?,?);"
+                        SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (Name, Path, Language, Ordering, Exclude) VALUES (?,?,?,?,?);"
                     End If
                     Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "Name")
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "Path")
                     Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
                     Dim parOrdering As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOrdering", DbType.Int16, 0, "Ordering")
+                    Dim parExclude As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExclude", DbType.Boolean, 0, "Exclude")
 
                     parName.Value = txtSourceName.Text.Trim
                     parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
@@ -184,6 +186,7 @@ Public Class dlgTVSource
                     Else
                         parOrdering.Value = Enums.Ordering.Standard
                     End If
+                    parExclude.Value = chkExclude.Checked
 
                     SQLcommand.ExecuteNonQuery()
                 End Using
@@ -202,6 +205,8 @@ Public Class dlgTVSource
         Me.Text = Master.eLang.GetString(705, "TV Source")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
+        Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
         Me.lblSourceLanguage.Text = Master.eLang.GetString(1166, "Default Language:")
         Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
         Me.lblSourceOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")

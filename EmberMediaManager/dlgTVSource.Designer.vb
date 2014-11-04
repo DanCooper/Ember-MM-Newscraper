@@ -41,8 +41,11 @@ Partial Class dlgTVSource
         Me.lblSourceOrdering = New System.Windows.Forms.Label()
         Me.cbSourceOrdering = New System.Windows.Forms.ComboBox()
         Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
+        Me.gbSourceOptions = New System.Windows.Forms.GroupBox()
+        Me.chkExclude = New System.Windows.Forms.CheckBox()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTVSource.SuspendLayout()
+        Me.gbSourceOptions.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -143,6 +146,7 @@ Partial Class dlgTVSource
         'pnlTVSource
         '
         Me.pnlTVSource.BackColor = System.Drawing.Color.White
+        Me.pnlTVSource.Controls.Add(Me.gbSourceOptions)
         Me.pnlTVSource.Controls.Add(Me.lblSourceLanguage)
         Me.pnlTVSource.Controls.Add(Me.lblSourceOrdering)
         Me.pnlTVSource.Controls.Add(Me.cbSourceOrdering)
@@ -198,6 +202,28 @@ Partial Class dlgTVSource
         Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
         Me.cbSourceLanguage.TabIndex = 9
         '
+        'gbSourceOptions
+        '
+        Me.gbSourceOptions.Controls.Add(Me.chkExclude)
+        Me.gbSourceOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSourceOptions.Location = New System.Drawing.Point(169, 8)
+        Me.gbSourceOptions.Name = "gbSourceOptions"
+        Me.gbSourceOptions.Size = New System.Drawing.Size(250, 53)
+        Me.gbSourceOptions.TabIndex = 13
+        Me.gbSourceOptions.TabStop = False
+        Me.gbSourceOptions.Text = "Source Options"
+        '
+        'chkExclude
+        '
+        Me.chkExclude.AutoSize = True
+        Me.chkExclude.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkExclude.Location = New System.Drawing.Point(6, 21)
+        Me.chkExclude.Name = "chkExclude"
+        Me.chkExclude.Size = New System.Drawing.Size(199, 17)
+        Me.chkExclude.TabIndex = 3
+        Me.chkExclude.Text = "Exclude path from library updates"
+        Me.chkExclude.UseVisualStyleBackColor = True
+        '
         'dlgTVSource
         '
         Me.AcceptButton = Me.OK_Button
@@ -220,6 +246,8 @@ Partial Class dlgTVSource
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTVSource.ResumeLayout(False)
         Me.pnlTVSource.PerformLayout()
+        Me.gbSourceOptions.ResumeLayout(False)
+        Me.gbSourceOptions.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -241,5 +269,7 @@ Partial Class dlgTVSource
     Friend WithEvents lblSourceOrdering As System.Windows.Forms.Label
     Friend WithEvents cbSourceOrdering As System.Windows.Forms.ComboBox
     Friend WithEvents lblSourceLanguage As System.Windows.Forms.Label
+    Friend WithEvents gbSourceOptions As System.Windows.Forms.GroupBox
+    Friend WithEvents chkExclude As System.Windows.Forms.CheckBox
 
 End Class
