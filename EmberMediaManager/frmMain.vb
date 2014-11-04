@@ -16502,13 +16502,15 @@ doCancel:
                         mnuItem = Me.cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
                         mnuItem.Tag = String.Empty
                     End If
-                    SQLNewcommand.CommandText = "SELECT Name FROM Sources;"
+                    SQLNewcommand.CommandText = "SELECT Name, Exclude FROM Sources;"
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
                             mnuItem = Me.mnuUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf SourceSubClick))
                             mnuItem.Tag = SQLReader("Name").ToString
+                            mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("Exclude")), Color.Gray, Color.Black)
                             mnuItem = Me.cmnuTrayUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf SourceSubClick))
                             mnuItem.Tag = SQLReader("Name").ToString
+                            mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("Exclude")), Color.Gray, Color.Black)
                         End While
                     End Using
                 End Using
@@ -16523,13 +16525,15 @@ doCancel:
                         mnuItem = Me.cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
                         mnuItem.Tag = String.Empty
                     End If
-                    SQLNewcommand.CommandText = "SELECT Name FROM TVSources;"
+                    SQLNewcommand.CommandText = "SELECT Name, Exclude FROM TVSources;"
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
                             mnuItem = Me.mnuUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
                             mnuItem.Tag = SQLReader("Name").ToString
+                            mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("Exclude")), Color.Gray, Color.Black)
                             mnuItem = Me.cmnuTrayUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
                             mnuItem.Tag = SQLReader("Name").ToString
+                            mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("Exclude")), Color.Gray, Color.Black)
                         End While
                     End Using
                 End Using
