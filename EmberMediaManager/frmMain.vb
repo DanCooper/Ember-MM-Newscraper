@@ -14897,12 +14897,14 @@ doCancel:
 
             If Not IsNothing(dRow(0)) Then
                 If Me.InvokeRequired Then
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 1, StringUtils.FormatSeasonText(Season)})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 9, False})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 10, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonBannerPath), False, True)})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 12, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonLandscapePath), False, True)})
                 Else
+                    DirectCast(dRow(0), DataRow).Item(1) = StringUtils.FormatSeasonText(Season)
                     DirectCast(dRow(0), DataRow).Item(3) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)
                     DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)
                     DirectCast(dRow(0), DataRow).Item(9) = False

@@ -598,7 +598,7 @@ Public Class StringUtils
     ''' For 0, returns equivalent of "Season Specials".
     ''' For less than 0, returns equivalent of "Unknown"</remarks>
     Public Shared Function FormatSeasonText(ByVal sSeason As Integer) As String
-        If sSeason > 0 AndAlso sSeason < 999 Then
+        If sSeason > 0 AndAlso sSeason <> 999 Then
             Return String.Concat(Master.eLang.GetString(650, "Season"), " ", sSeason.ToString.PadLeft(2, Convert.ToChar("0")))
         ElseIf sSeason = 0 Then
             Return Master.eLang.GetString(655, "Season Specials")
