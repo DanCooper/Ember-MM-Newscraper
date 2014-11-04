@@ -29,6 +29,8 @@ Partial Class dlgEditEpisode
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditEpisode = New System.Windows.Forms.TabControl()
         Me.tpEpsiodeDetails = New System.Windows.Forms.TabPage()
+        Me.txtVotes = New System.Windows.Forms.TextBox()
+        Me.lblVotes = New System.Windows.Forms.Label()
         Me.lblRuntime = New System.Windows.Forms.Label()
         Me.txtRuntime = New System.Windows.Forms.TextBox()
         Me.pbStar10 = New System.Windows.Forms.PictureBox()
@@ -89,8 +91,8 @@ Partial Class dlgEditEpisode
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.chkWatched = New System.Windows.Forms.CheckBox()
-        Me.txtVotes = New System.Windows.Forms.TextBox()
-        Me.lblVotes = New System.Windows.Forms.Label()
+        Me.StatusStrip = New System.Windows.Forms.StatusStrip()
+        Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditEpisode.SuspendLayout()
@@ -111,6 +113,7 @@ Partial Class dlgEditEpisode
         CType(Me.pbEpisodeFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFrameExtraction.SuspendLayout()
         Me.tpEpisodeMetaData.SuspendLayout()
+        Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -223,6 +226,25 @@ Partial Class dlgEditEpisode
         Me.tpEpsiodeDetails.TabIndex = 0
         Me.tpEpsiodeDetails.Text = "Details"
         Me.tpEpsiodeDetails.UseVisualStyleBackColor = True
+        '
+        'txtVotes
+        '
+        Me.txtVotes.BackColor = System.Drawing.SystemColors.Window
+        Me.txtVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVotes.Location = New System.Drawing.Point(738, 155)
+        Me.txtVotes.Name = "txtVotes"
+        Me.txtVotes.Size = New System.Drawing.Size(66, 22)
+        Me.txtVotes.TabIndex = 86
+        '
+        'lblVotes
+        '
+        Me.lblVotes.AutoSize = True
+        Me.lblVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVotes.Location = New System.Drawing.Point(735, 140)
+        Me.lblVotes.Name = "lblVotes"
+        Me.lblVotes.Size = New System.Drawing.Size(38, 13)
+        Me.lblVotes.TabIndex = 85
+        Me.lblVotes.Text = "Votes:"
         '
         'lblRuntime
         '
@@ -771,8 +793,9 @@ Partial Class dlgEditEpisode
         '
         'Cancel_Button
         '
+        Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(781, 553)
+        Me.Cancel_Button.Location = New System.Drawing.Point(775, 553)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -780,7 +803,8 @@ Partial Class dlgEditEpisode
         '
         'OK_Button
         '
-        Me.OK_Button.Location = New System.Drawing.Point(708, 553)
+        Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.OK_Button.Location = New System.Drawing.Point(702, 553)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -788,6 +812,7 @@ Partial Class dlgEditEpisode
         '
         'chkWatched
         '
+        Me.chkWatched.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkWatched.AutoSize = True
         Me.chkWatched.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkWatched.Location = New System.Drawing.Point(12, 557)
@@ -797,24 +822,21 @@ Partial Class dlgEditEpisode
         Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
         '
-        'txtVotes
+        'StatusStrip
         '
-        Me.txtVotes.BackColor = System.Drawing.SystemColors.Window
-        Me.txtVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVotes.Location = New System.Drawing.Point(738, 155)
-        Me.txtVotes.Name = "txtVotes"
-        Me.txtVotes.Size = New System.Drawing.Size(66, 22)
-        Me.txtVotes.TabIndex = 86
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsFilename})
+        Me.StatusStrip.Location = New System.Drawing.Point(0, 579)
+        Me.StatusStrip.Name = "StatusStrip"
+        Me.StatusStrip.Size = New System.Drawing.Size(854, 22)
+        Me.StatusStrip.SizingGrip = False
+        Me.StatusStrip.TabIndex = 8
+        Me.StatusStrip.Text = "StatusStrip1"
         '
-        'lblVotes
+        'tsFilename
         '
-        Me.lblVotes.AutoSize = True
-        Me.lblVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVotes.Location = New System.Drawing.Point(735, 140)
-        Me.lblVotes.Name = "lblVotes"
-        Me.lblVotes.Size = New System.Drawing.Size(38, 13)
-        Me.lblVotes.TabIndex = 85
-        Me.lblVotes.Text = "Votes:"
+        Me.tsFilename.Name = "tsFilename"
+        Me.tsFilename.Size = New System.Drawing.Size(55, 17)
+        Me.tsFilename.Text = "Filename"
         '
         'dlgEditEpisode
         '
@@ -822,7 +844,8 @@ Partial Class dlgEditEpisode
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(854, 582)
+        Me.ClientSize = New System.Drawing.Size(854, 601)
+        Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.chkWatched)
         Me.Controls.Add(Me.tcEditEpisode)
         Me.Controls.Add(Me.Cancel_Button)
@@ -859,6 +882,8 @@ Partial Class dlgEditEpisode
         CType(Me.pbEpisodeFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFrameExtraction.ResumeLayout(False)
         Me.tpEpisodeMetaData.ResumeLayout(False)
+        Me.StatusStrip.ResumeLayout(False)
+        Me.StatusStrip.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -931,5 +956,7 @@ Partial Class dlgEditEpisode
     Friend WithEvents txtRuntime As System.Windows.Forms.TextBox
     Friend WithEvents txtVotes As System.Windows.Forms.TextBox
     Friend WithEvents lblVotes As System.Windows.Forms.Label
+    Friend WithEvents StatusStrip As System.Windows.Forms.StatusStrip
+    Friend WithEvents tsFilename As System.Windows.Forms.ToolStripStatusLabel
 
 End Class

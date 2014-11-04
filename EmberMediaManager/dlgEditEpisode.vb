@@ -992,6 +992,7 @@ Public Class dlgEditEpisode
         mTitle = Master.currShow.TVEp.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Me.Text = sTitle
+        Me.tsFilename.Text = Master.currShow.Filename
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
