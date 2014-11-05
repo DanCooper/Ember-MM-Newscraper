@@ -275,6 +275,11 @@ Public Class APIXML
                         aLangFlag.Tag = fiAV.StreamDetails.Audio(i).LongLanguage
                         iReturn(aIcon) = aLangFlag
                         aIcon += 1
+                    Else
+                        Dim aLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
+                        aLangFlag.Tag = Master.eLang.GetString(138, "Unknown")
+                        iReturn(aIcon) = aLangFlag
+                        aIcon += 1
                     End If
                 Next
                 'If there are more than 7 languages ​​a plus icon appears instead of the 7th language.
@@ -284,7 +289,7 @@ Public Class APIXML
                     For i = 7 To fiAV.StreamDetails.Audio.Count - 1
                         pLang = String.Concat(pLang, String.Format("{0}{1}", vbNewLine, fiAV.StreamDetails.Audio(i).LongLanguage))
                     Next
-                    pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Countries", "plus.png"))
+                    pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguageMore.png"))
                     pImage.Tag = pLang
                     iReturn(11) = pImage
                 End If
@@ -299,6 +304,11 @@ Public Class APIXML
                         sLangFlag.Tag = fiAV.StreamDetails.Subtitle(i).LongLanguage
                         iReturn(sIcon) = sLangFlag
                         sIcon += 1
+                    Else
+                        Dim sLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
+                        sLangFlag.Tag = Master.eLang.GetString(138, "Unknown")
+                        iReturn(aIcon) = sLangFlag
+                        aIcon += 1
                     End If
                 Next
                 'If there are more than 7 languages ​​a plus icon appears instead of the 7th language.
@@ -308,7 +318,7 @@ Public Class APIXML
                     For i = 7 To fiAV.StreamDetails.Subtitle.Count - 1
                         pLang = String.Concat(pLang, String.Format("{0}{1}", vbNewLine, fiAV.StreamDetails.Subtitle(i).LongLanguage))
                     Next
-                    pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Countries", "plus.png"))
+                    pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguageMore.png"))
                     pImage.Tag = pLang
                     iReturn(18) = pImage
                 End If
@@ -361,7 +371,7 @@ Public Class APIXML
             End If
         End If
 
-        If IsNothing(imgLanguage) Then imgLanguage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
+        If IsNothing(imgLanguage) Then imgLanguage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
 
         Return imgLanguage
     End Function
