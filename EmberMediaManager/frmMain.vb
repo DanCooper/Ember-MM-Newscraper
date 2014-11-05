@@ -5784,7 +5784,7 @@ doCancel:
                 SQLtransaction.Commit()
             End Using
 
-            Me.FillList(False, True, False)
+            Me.FillList(True, True, False)
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -6315,7 +6315,7 @@ doCancel:
                         logger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try
                 End If
-            ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 62 AndAlso Not bwMovieScraper.IsBusy Then
+            ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 62 AndAlso e.ColumnIndex <> 70 AndAlso Not bwMovieScraper.IsBusy Then
                 Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(0).Value, Int32)
                 Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
@@ -6581,7 +6581,7 @@ doCancel:
             End If
 
             'icons
-            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 61 AndAlso e.RowIndex = -1 Then
+            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 70 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -6605,6 +6605,8 @@ doCancel:
                     Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
                 ElseIf e.ColumnIndex = 61 Then 'ClearArt
                     Me.ilColumnIcons.Draw(e.Graphics, pt, 15)
+                ElseIf e.ColumnIndex = 70 Then 'Inside a Set
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, 17)
                 Else 'Poster/Fanart/NFO/Trailer/Subs/Extrathumbs
                     Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
                 End If
@@ -6646,7 +6648,7 @@ doCancel:
                 End If
             End If
 
-            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 61 AndAlso e.RowIndex >= 0 Then
+            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 70 AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value) Then                  'is locked
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
@@ -6658,7 +6660,7 @@ doCancel:
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
 
-                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 61 Then
+                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 70 Then
                     e.PaintBackground(e.ClipBounds, True)
 
                     Dim pt As Point = e.CellBounds.Location
@@ -8632,8 +8634,8 @@ doCancel:
                             .dgvMovies.Columns(70).Resizable = DataGridViewTriState.False
                             .dgvMovies.Columns(70).ReadOnly = True
                             .dgvMovies.Columns(70).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvMovies.Columns(70).Visible = True 'Not Master.eSettings.MovieClearArtCol
-                            .dgvMovies.Columns(70).ToolTipText = "Inside a Set"
+                            .dgvMovies.Columns(70).Visible = Not Master.eSettings.MovieMoviesetCol
+                            .dgvMovies.Columns(70).ToolTipText = Master.eLang.GetString(1295, "Part of a MovieSet")
 
                             For i As Integer = 71 To .dgvMovies.Columns.Count - 1
                                 .dgvMovies.Columns(i).Visible = False
@@ -14549,6 +14551,7 @@ doCancel:
         Dim hasPoster As Boolean = False
         Dim hasTheme As Boolean = False
         Dim hasTrailer As Boolean = False
+        Dim hasSet As Boolean = False
         Dim hasSubtitles As Boolean = False
         Dim hasWatched As Boolean = False
 
@@ -14665,6 +14668,7 @@ doCancel:
                 hasLandscape = Not String.IsNullOrEmpty(mContainer.Landscape)
                 hasNfo = Not String.IsNullOrEmpty(tmpMovieDB.NfoPath)
                 hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
+                hasSet = tmpMovieDB.Movie.Sets.Count > 0
                 hasSubtitles = mContainer.Subtitles.Count > 0 OrElse tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
                 hasTheme = Not String.IsNullOrEmpty(mContainer.Theme)
                 hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
@@ -14720,6 +14724,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 61, hasClearArt})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 63, tmpMovieDB.Movie.TMDBID})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 64, tmpMovieDB.Movie.TMDBColID})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 70, hasSet})
                     Else
                         selRow.Item(1) = tmpMovieDB.Filename
                         selRow.Item(3) = tmpMovieDB.ListTitle
@@ -14763,6 +14768,7 @@ doCancel:
                         selRow.Item(61) = hasClearArt
                         selRow.Item(63) = tmpMovieDB.Movie.TMDBID
                         selRow.Item(64) = tmpMovieDB.Movie.TMDBColID
+                        selRow.Item(70) = hasSet
                     End If
                 End If
 

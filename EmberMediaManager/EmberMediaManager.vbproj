@@ -772,6 +772,7 @@
     <Content Include="Images\Ratings\uk\uk_R18.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\hasSet.png" />
     <Content Include="Resources\msaa.png" />
     <None Include="Resources\starempty.png" />
     <None Include="Resources\tmdb.png" />

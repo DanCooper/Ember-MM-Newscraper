@@ -172,6 +172,7 @@ Partial Public Class clsXMLSettings
     Private _moviemissingsubs As Boolean
     Private _moviemissingtheme As Boolean
     Private _moviemissingtrailer As Boolean
+    Private _moviemoviesetcol As Boolean
     Private _movienfocol As Boolean
     Private _movienosaveimagestonfo As Boolean
     Private _moviepostercol As Boolean
@@ -2359,6 +2360,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movieclearartcol = value
+        End Set
+    End Property
+
+    Public Property MovieMoviesetCol() As Boolean
+        Get
+            Return Me._moviemoviesetcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviemoviesetcol = value
         End Set
     End Property
 

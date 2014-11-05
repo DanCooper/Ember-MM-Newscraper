@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <transaction name="MyVideosDBSQL_v2_to_v3">
+  <transaction name="MyVideosDBSQL_v8_to_v9">
     <command type="DB">
       <description>1</description>
       <execute>ALTER TABLE TVSources ADD Exclude BOOL NOT NULL DEFAULT 0;</execute>
@@ -12,6 +12,10 @@
     <command type="DB">
       <description>3</description>
       <execute>ALTER TABLE TVEps ADD Votes TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>ALTER TABLE Movies ADD HasSet BOOL NOT NULL DEFAULT 0;</execute>
     </command>
   </transaction>
   <noTransaction type="">

@@ -464,7 +464,7 @@
   <string id="463">Sort Tokens to Ignore</string>
   <string id="464">Display Year in List Title</string>
   <string id="465">Hide Extrathumb Column</string>
-  <string id="466">Hide Sub Column</string>
+  <string id="466">Hide Subtitle Column</string>
   <string id="467">Hide Trailer Column</string>
   <string id="468">Hide NFO Column</string>
   <string id="469">Hide Fanart Column</string>
@@ -1384,4 +1384,6 @@
   <string id="1292">Is Not Empty</string>
   <string id="1293">Only if no MPAA is found</string>
   <string id="1294">Change Movie (Auto)</string>
+  <string id="1295">Part of a MovieSet</string>
+  <string id="1296">Hide MovieSet Column</string>
 </strings>

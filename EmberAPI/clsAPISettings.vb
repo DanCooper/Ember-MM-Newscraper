@@ -1568,6 +1568,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieMoviesetCol() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieMoviesetCol
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieMoviesetCol = value
+        End Set
+    End Property
+
     Public Property MovieClearLogoCol() As Boolean
         Get
             Return Settings._XMLSettings.MovieClearLogoCol

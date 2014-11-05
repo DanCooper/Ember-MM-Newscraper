@@ -1897,6 +1897,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkMovieMoviesetCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMoviesetCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieNFOCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNFOCol.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3401,6 +3405,7 @@ Public Class dlgSettings
                 Me.chkMovieMissingSubs.Checked = .MovieMissingSubs
                 Me.chkMovieMissingTheme.Checked = .MovieMissingTheme
                 Me.chkMovieMissingTrailer.Checked = .MovieMissingTrailer
+                Me.chkMovieMoviesetCol.Checked = .MovieMoviesetCol
                 Me.chkMovieNoSaveImagesToNfo.Checked = .MovieNoSaveImagesToNfo
                 Me.chkMoviePosterCol.Checked = .MoviePosterCol
                 Me.chkMoviePosterOverwrite.Checked = .MoviePosterOverwrite
@@ -5027,6 +5032,7 @@ Public Class dlgSettings
                 .MovieMissingSubs = Me.chkMovieMissingSubs.Checked
                 .MovieMissingTheme = Me.chkMovieMissingTheme.Checked
                 .MovieMissingTrailer = Me.chkMovieMissingTrailer.Checked
+                .MovieMoviesetCol = Me.chkMovieMoviesetCol.Checked
                 .MovieNoSaveImagesToNfo = Me.chkMovieNoSaveImagesToNfo.Checked
                 .MoviePosterCol = Me.chkMoviePosterCol.Checked
                 .MoviePosterHeight = If(Not String.IsNullOrEmpty(Me.txtMoviePosterHeight.Text), Convert.ToInt32(Me.txtMoviePosterHeight.Text), 0)
@@ -5849,6 +5855,7 @@ Public Class dlgSettings
         Me.chkMovieMissingSubs.Text = Master.eLang.GetString(586, "Check for Subs")
         Me.chkMovieMissingTheme.Text = Master.eLang.GetString(1075, "Check for Theme")
         Me.chkMovieMissingTrailer.Text = Master.eLang.GetString(585, "Check for Trailer")
+        Me.chkMovieMoviesetCol.Text = Master.eLang.GetString(1296, "Hide MovieSet Column")
         Me.chkMovieNFOCol.Text = Master.eLang.GetString(468, "Hide NFO Column")
         Me.chkMovieNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save URLs to Nfo")
         Me.chkMoviePosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
@@ -5905,7 +5912,7 @@ Public Class dlgSettings
         Me.chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         Me.chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         Me.chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack <filename>"), "<", ">")
-        Me.chkMovieSubCol.Text = Master.eLang.GetString(466, "Hide Sub Column")
+        Me.chkMovieSubCol.Text = Master.eLang.GetString(466, "Hide Subtitle Column")
         Me.chkMovieThemeCol.Text = Master.eLang.GetString(1072, "Hide Theme Column")
         Me.chkMovieThemeEnable.Text = Master.eLang.GetString(1082, "Enable Theme Support")
         Me.chkMovieThemeOverwrite.Text = Master.eLang.GetString(483, "Overwrite Existing")
