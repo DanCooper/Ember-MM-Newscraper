@@ -142,6 +142,15 @@ Public Class Localization
         End Try
     End Function
 
+    Public Shared Function ISOLangGetCode2ByCode3(ByVal lang As String) As String
+        Try
+            Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = lang))(0).Alpha2
+        Catch ex As Exception
+            'logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return ""
+        End Try
+    End Function
+
     Public Shared Function ISOLangGetCode3ByLang(ByVal lang As String) As String
         Try
             Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha3

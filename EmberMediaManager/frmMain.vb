@@ -412,6 +412,34 @@ Public Class frmMain
                 .pbAudio.Image = Nothing
                 .pbResolution.Image = Nothing
                 .pbChannels.Image = Nothing
+                .pbAudioLang0.Image = Nothing
+                .pbAudioLang1.Image = Nothing
+                .pbAudioLang2.Image = Nothing
+                .pbAudioLang3.Image = Nothing
+                .pbAudioLang4.Image = Nothing
+                .pbAudioLang5.Image = Nothing
+                .pbAudioLang6.Image = Nothing
+                ToolTips.SetToolTip(.pbAudioLang0, "")
+                ToolTips.SetToolTip(.pbAudioLang1, "")
+                ToolTips.SetToolTip(.pbAudioLang2, "")
+                ToolTips.SetToolTip(.pbAudioLang3, "")
+                ToolTips.SetToolTip(.pbAudioLang4, "")
+                ToolTips.SetToolTip(.pbAudioLang5, "")
+                ToolTips.SetToolTip(.pbAudioLang6, "")
+                .pbSubtitleLang0.Image = Nothing
+                .pbSubtitleLang1.Image = Nothing
+                .pbSubtitleLang2.Image = Nothing
+                .pbSubtitleLang3.Image = Nothing
+                .pbSubtitleLang4.Image = Nothing
+                .pbSubtitleLang5.Image = Nothing
+                .pbSubtitleLang6.Image = Nothing
+                ToolTips.SetToolTip(.pbSubtitleLang0, "")
+                ToolTips.SetToolTip(.pbSubtitleLang1, "")
+                ToolTips.SetToolTip(.pbSubtitleLang2, "")
+                ToolTips.SetToolTip(.pbSubtitleLang3, "")
+                ToolTips.SetToolTip(.pbSubtitleLang4, "")
+                ToolTips.SetToolTip(.pbSubtitleLang5, "")
+                ToolTips.SetToolTip(.pbSubtitleLang6, "")
 
                 .txtMetaData.Text = String.Empty
                 .pnlTop.Visible = False
@@ -15933,6 +15961,38 @@ doCancel:
             Me.pbVType.Image = aImage(2)
             Me.pbAudio.Image = aImage(3)
             Me.pbChannels.Image = aImage(4)
+            Me.pbAudioLang0.Image = aImage(5)
+            Me.pbAudioLang1.Image = aImage(6)
+            Me.pbAudioLang2.Image = aImage(7)
+            Me.pbAudioLang3.Image = aImage(8)
+            Me.pbAudioLang4.Image = aImage(9)
+            Me.pbAudioLang5.Image = aImage(10)
+            Me.pbAudioLang6.Image = aImage(11)
+            Me.pbSubtitleLang0.Image = aImage(12)
+            Me.pbSubtitleLang1.Image = aImage(13)
+            Me.pbSubtitleLang2.Image = aImage(14)
+            Me.pbSubtitleLang3.Image = aImage(15)
+            Me.pbSubtitleLang4.Image = aImage(16)
+            Me.pbSubtitleLang5.Image = aImage(17)
+            Me.pbSubtitleLang6.Image = aImage(18)
+
+            Dim aTip As String = String.Concat(Master.eLang.GetString(618, "Audio Stream"), ": ")
+            ToolTips.SetToolTip(Me.pbAudioLang0, If(Not IsNothing(Me.pbAudioLang0.Image), String.Concat(aTip, Me.pbAudioLang0.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbAudioLang1, If(Not IsNothing(Me.pbAudioLang1.Image), String.Concat(aTip, Me.pbAudioLang1.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbAudioLang2, If(Not IsNothing(Me.pbAudioLang2.Image), String.Concat(aTip, Me.pbAudioLang2.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbAudioLang3, If(Not IsNothing(Me.pbAudioLang3.Image), String.Concat(aTip, Me.pbAudioLang3.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbAudioLang4, If(Not IsNothing(Me.pbAudioLang4.Image), String.Concat(aTip, Me.pbAudioLang4.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbAudioLang5, If(Not IsNothing(Me.pbAudioLang5.Image), String.Concat(aTip, Me.pbAudioLang5.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbAudioLang6, If(Not IsNothing(Me.pbAudioLang6.Image), String.Concat(aTip, Me.pbAudioLang6.Image.Tag), String.Empty))
+
+            Dim sTip As String = String.Concat(Master.eLang.GetString(619, "Subtitle Stream"), ": ")
+            ToolTips.SetToolTip(Me.pbSubtitleLang0, If(Not IsNothing(Me.pbSubtitleLang0.Image), String.Concat(sTip, Me.pbSubtitleLang0.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbSubtitleLang1, If(Not IsNothing(Me.pbSubtitleLang1.Image), String.Concat(sTip, Me.pbSubtitleLang1.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbSubtitleLang2, If(Not IsNothing(Me.pbSubtitleLang2.Image), String.Concat(sTip, Me.pbSubtitleLang2.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbSubtitleLang3, If(Not IsNothing(Me.pbSubtitleLang3.Image), String.Concat(sTip, Me.pbSubtitleLang3.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbSubtitleLang4, If(Not IsNothing(Me.pbSubtitleLang4.Image), String.Concat(sTip, Me.pbSubtitleLang4.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbSubtitleLang5, If(Not IsNothing(Me.pbSubtitleLang5.Image), String.Concat(sTip, Me.pbSubtitleLang5.Image.Tag), String.Empty))
+            ToolTips.SetToolTip(Me.pbSubtitleLang6, If(Not IsNothing(Me.pbSubtitleLang6.Image), String.Concat(sTip, Me.pbSubtitleLang6.Image.Tag), String.Empty))
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try

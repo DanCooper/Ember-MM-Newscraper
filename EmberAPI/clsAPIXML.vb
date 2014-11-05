@@ -35,6 +35,7 @@ Public Class APIXML
 
     Public Shared lFlags As New List(Of Flag)
     Public Shared alGenres As New List(Of String)
+    Public Shared dLanguages As New Dictionary(Of String, String)
     Public Shared dStudios As New Dictionary(Of String, String)
     Public Shared GenreXML As New clsXMLGenres
     Public Shared MovieCertLanguagesXML As New clsXMLMovieCertLanguages
@@ -119,6 +120,18 @@ Public Class APIXML
                 End Try
             End If
 
+            Dim lPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Countries", Path.DirectorySeparatorChar, "Countries.xml")
+
+            If Directory.Exists(Directory.GetParent(lPath).FullName) Then
+                Try
+                    'get all images in the main folder
+                    For Each lFile As String In Directory.GetFiles(Directory.GetParent(lPath).FullName, "*.png")
+                        dLanguages.Add(Path.GetFileNameWithoutExtension(lFile).ToLower, lFile)
+                    Next
+                Catch
+                End Try
+            End If
+
             Dim rPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Ratings.xml")
             If File.Exists(rPath) Then
                 objStreamReader = New StreamReader(rPath)
@@ -169,7 +182,7 @@ Public Class APIXML
     End Sub
 
     Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
-        Dim iReturn(5) As Image
+        Dim iReturn(18) As Image
         Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
         Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, ForTV)
 
@@ -252,6 +265,54 @@ Public Class APIXML
                     End If
                 End If
 
+                'Audio Language Flags has range iReturn(5) to iReturn(11)
+                Dim aIcon As Integer = 5
+                Dim hasMoreA As Boolean = fiAV.StreamDetails.Audio.Count > 7
+                For i = 0 To fiAV.StreamDetails.Audio.Count - 1
+                    If If(hasMoreA, aIcon > 10, aIcon > 11) Then Exit For
+                    If fiAV.StreamDetails.Audio(i).LanguageSpecified Then
+                        Dim aLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Audio(i).Language)
+                        aLangFlag.Tag = fiAV.StreamDetails.Audio(i).LongLanguage
+                        iReturn(aIcon) = aLangFlag
+                        aIcon += 1
+                    End If
+                Next
+                'If there are more than 7 languages ​​a plus icon appears instead of the 7th language.
+                If hasMoreA Then
+                    Dim pImage As Image
+                    Dim pLang As String = String.Empty
+                    For i = 7 To fiAV.StreamDetails.Audio.Count - 1
+                        pLang = String.Concat(pLang, String.Format("{0}{1}", vbNewLine, fiAV.StreamDetails.Audio(i).LongLanguage))
+                    Next
+                    pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Countries", "plus.png"))
+                    pImage.Tag = pLang
+                    iReturn(11) = pImage
+                End If
+
+                'Subtitles Language Flags has range iReturn(12) to iReturn(18)
+                Dim sIcon As Integer = 12
+                Dim hasMoreS As Boolean = fiAV.StreamDetails.Subtitle.Count > 7
+                For i = 0 To fiAV.StreamDetails.Subtitle.Count - 1
+                    If If(hasMoreA, sIcon > 17, sIcon > 18) Then Exit For
+                    If fiAV.StreamDetails.Subtitle(i).LanguageSpecified Then
+                        Dim sLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Subtitle(i).Language)
+                        sLangFlag.Tag = fiAV.StreamDetails.Subtitle(i).LongLanguage
+                        iReturn(sIcon) = sLangFlag
+                        sIcon += 1
+                    End If
+                Next
+                'If there are more than 7 languages ​​a plus icon appears instead of the 7th language.
+                If hasMoreS Then
+                    Dim pImage As Image
+                    Dim pLang As String = String.Empty
+                    For i = 7 To fiAV.StreamDetails.Subtitle.Count - 1
+                        pLang = String.Concat(pLang, String.Format("{0}{1}", vbNewLine, fiAV.StreamDetails.Subtitle(i).LongLanguage))
+                    Next
+                    pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Countries", "plus.png"))
+                    pImage.Tag = pLang
+                    iReturn(18) = pImage
+                End If
+
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
@@ -265,9 +326,44 @@ Public Class APIXML
                 iReturn(3) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
             End If
             iReturn(4) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
+            'Audio Language Flags
+            iReturn(5) = Nothing
+            iReturn(6) = Nothing
+            iReturn(7) = Nothing
+            iReturn(8) = Nothing
+            iReturn(9) = Nothing
+            iReturn(10) = Nothing
+            iReturn(11) = Nothing
+            'Subtitle Language Flags
+            iReturn(12) = Nothing
+            iReturn(13) = Nothing
+            iReturn(14) = Nothing
+            iReturn(15) = Nothing
+            iReturn(16) = Nothing
+            iReturn(17) = Nothing
+            iReturn(18) = Nothing
         End If
 
         Return iReturn
+    End Function
+
+    Public Shared Function GetLanguageImage(ByVal strLanguage As String) As Image
+        Dim imgLanguage As Image = Nothing
+        Dim sLang As String = String.Empty
+
+        sLang = Localization.ISOLangGetCode2ByCode3(strLanguage)
+
+        If Not String.IsNullOrEmpty(sLang) Then
+            If dLanguages.ContainsKey(sLang.ToLower) Then
+                Using fsImage As New FileStream(dLanguages.Item(sLang.ToLower).Replace(Convert.ToChar("\"), Path.DirectorySeparatorChar), FileMode.Open, FileAccess.Read)
+                    imgLanguage = Image.FromStream(fsImage)
+                End Using
+            End If
+        End If
+
+        If IsNothing(imgLanguage) Then imgLanguage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
+
+        Return imgLanguage
     End Function
 
     Public Shared Function GetVideoSource(ByVal sPath As String) As String
