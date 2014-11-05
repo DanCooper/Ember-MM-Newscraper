@@ -5852,7 +5852,7 @@ Public Class dlgSettings
         Me.chkMovieMissingLandscape.Text = Master.eLang.GetString(1074, "Check for Landscape")
         Me.chkMovieMissingNFO.Text = Master.eLang.GetString(584, "Check for NFO")
         Me.chkMovieMissingPoster.Text = Master.eLang.GetString(582, "Check for Poster")
-        Me.chkMovieMissingSubs.Text = Master.eLang.GetString(586, "Check for Subs")
+        Me.chkMovieMissingSubs.Text = Master.eLang.GetString(586, "Check for Subtitles")
         Me.chkMovieMissingTheme.Text = Master.eLang.GetString(1075, "Check for Theme")
         Me.chkMovieMissingTrailer.Text = Master.eLang.GetString(585, "Check for Trailer")
         Me.chkMovieMoviesetCol.Text = Master.eLang.GetString(1296, "Hide MovieSet Column")

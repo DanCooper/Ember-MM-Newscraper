@@ -3815,7 +3815,7 @@ Partial Class dlgSettings
         Me.chkMovieMissingSubs.Name = "chkMovieMissingSubs"
         Me.chkMovieMissingSubs.Size = New System.Drawing.Size(174, 17)
         Me.chkMovieMissingSubs.TabIndex = 10
-        Me.chkMovieMissingSubs.Text = "Check for Subs"
+        Me.chkMovieMissingSubs.Text = "Check for Subtitles"
         Me.chkMovieMissingSubs.UseVisualStyleBackColor = true
         '
         'chkMovieMissingFanart

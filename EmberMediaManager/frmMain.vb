@@ -15324,6 +15324,7 @@ doCancel:
                 If(Master.eSettings.MovieDiscArtCol, 0, 20) - _
                 If(Master.eSettings.MovieClearLogoCol, 0, 20) - _
                 If(Master.eSettings.MovieClearArtCol, 0, 20) - _
+                If(Master.eSettings.MovieMoviesetCol, 0, 20) - _
                 If(Me.dgvMovies.DisplayRectangle.Height > Me.dgvMovies.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
