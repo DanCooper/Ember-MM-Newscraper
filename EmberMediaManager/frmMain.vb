@@ -8420,9 +8420,26 @@ doCancel:
                                                                       "WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch_Movies, "%') ORDER BY ListTitle COLLATE NOCASE;"))
                 Else
                     If Me.chkFilterDuplicates_Movies.Checked Then
-                        Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
+                        Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, ", _
+                                                                           "HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, ", _
+                                                                           "Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
+                                                                           "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
+                                                                           "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, ", _
+                                                                           "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
+                                                                           "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, ", _
+                                                                           "TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 ", _
+                                                                           "FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb ", _
+                                                                           "HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;"))
                     Else
-                        Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                        Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, ", _
+                                                                           "HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, ", _
+                                                                           "Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
+                                                                           "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
+                                                                           "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, ", _
+                                                                           "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
+                                                                           "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, ", _
+                                                                           "TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 ", _
+                                                                           "FROM movies ORDER BY ListTitle COLLATE NOCASE;"))
                     End If
                 End If
             End If
@@ -8433,8 +8450,11 @@ doCancel:
                 Me.bsMovieSets.DataSource = Nothing
                 Me.dgvMovieSets.DataSource = Nothing
                 Me.ClearInfo()
-                'Master.DB.FillDataTable(Me.dtMovieSets, "SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM sets ORDER BY ListTitle COLLATE NOCASE;")
-                Master.DB.FillDataTable(Me.dtMovieSets, "SELECT Sets.ID, Sets.ListTitle, Sets.HasNfo, Sets.NfoPath, Sets.HasPoster, Sets.PosterPath, Sets.HasFanart, Sets.FanartPath, Sets.HasBanner, Sets.BannerPath, Sets.HasLandscape, Sets.LandscapePath, Sets.HasDiscArt, Sets.DiscArtPath, Sets.HasClearLogo, Sets.ClearLogoPath, Sets.HasClearArt, Sets.ClearArtPath, Sets.TMDBColID, Sets.Plot, Sets.SetName, Sets.New, Sets.Mark, Sets.Lock, COUNT(MoviesSets.MovieID) AS 'Count' FROM Sets LEFT OUTER JOIN MoviesSets ON Sets.ID = MoviesSets.SetID GROUP BY Sets.ID ORDER BY Sets.ListTitle COLLATE NOCASE;")
+                Master.DB.FillDataTable(Me.dtMovieSets, String.Concat("SELECT Sets.ID, Sets.ListTitle, Sets.HasNfo, Sets.NfoPath, Sets.HasPoster, Sets.PosterPath, Sets.HasFanart, ", _
+                                                                           "Sets.FanartPath, Sets.HasBanner, Sets.BannerPath, Sets.HasLandscape, Sets.LandscapePath, Sets.HasDiscArt, ", _
+                                                                           "Sets.DiscArtPath, Sets.HasClearLogo, Sets.ClearLogoPath, Sets.HasClearArt, Sets.ClearArtPath, Sets.TMDBColID, ", _
+                                                                           "Sets.Plot, Sets.SetName, Sets.New, Sets.Mark, Sets.Lock, COUNT(MoviesSets.MovieID) AS 'Count' FROM Sets ", _
+                                                                           "LEFT OUTER JOIN MoviesSets ON Sets.ID = MoviesSets.SetID GROUP BY Sets.ID ORDER BY Sets.ListTitle COLLATE NOCASE;"))
             End If
 
 
@@ -8447,7 +8467,10 @@ doCancel:
                 Me.bsEpisodes.DataSource = Nothing
                 Me.dgvTVEpisodes.DataSource = Nothing
                 Me.ClearInfo()
-                Master.DB.FillDataTable(Me.dtShows, "SELECT ID, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes FROM TVShows ORDER BY Title COLLATE NOCASE;")
+                Master.DB.FillDataTable(Me.dtShows, String.Concat("SELECT ID, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, ", _
+                                                                           "Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, ", _
+                                                                           "HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, ", _
+                                                                           "HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes FROM TVShows ORDER BY Title COLLATE NOCASE;"))
             End If
 
 
