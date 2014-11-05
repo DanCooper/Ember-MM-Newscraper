@@ -8406,7 +8406,7 @@ doCancel:
                                                                       "VideoSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, ", _
                                                                       "HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
                                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, ", _
-                                                                      "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies WHERE ID IN ", _
+                                                                      "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movies WHERE ID IN ", _
                                                                       "(SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch_Movies, "%') ORDER BY ListTitle COLLATE NOCASE;"))
                 ElseIf Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
                     Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, ", _
@@ -8416,7 +8416,7 @@ doCancel:
                                                                       "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdd, ", _
                                                                       "HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
                                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, ", _
-                                                                      "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies ", _
+                                                                      "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movies ", _
                                                                       "WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch_Movies, "%') ORDER BY ListTitle COLLATE NOCASE;"))
                 Else
                     If Me.chkFilterDuplicates_Movies.Checked Then
@@ -8427,7 +8427,7 @@ doCancel:
                                                                            "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, ", _
                                                                            "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
                                                                            "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, ", _
-                                                                           "TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 ", _
+                                                                           "TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet ", _
                                                                            "FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb ", _
                                                                            "HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;"))
                     Else
@@ -8438,7 +8438,7 @@ doCancel:
                                                                            "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, ", _
                                                                            "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
                                                                            "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, ", _
-                                                                           "TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 ", _
+                                                                           "TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet ", _
                                                                            "FROM movies ORDER BY ListTitle COLLATE NOCASE;"))
                     End If
                 End If
@@ -8620,8 +8620,22 @@ doCancel:
                             .dgvMovies.Columns(61).SortMode = DataGridViewColumnSortMode.Automatic
                             .dgvMovies.Columns(61).Visible = Not Master.eSettings.MovieClearArtCol
                             .dgvMovies.Columns(61).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
+                            .dgvMovies.Columns(62).Visible = False
+                            .dgvMovies.Columns(63).Visible = False
+                            .dgvMovies.Columns(64).Visible = False
+                            .dgvMovies.Columns(65).Visible = False
+                            .dgvMovies.Columns(66).Visible = False
+                            .dgvMovies.Columns(67).Visible = False
+                            .dgvMovies.Columns(68).Visible = False
+                            .dgvMovies.Columns(69).Visible = False
+                            .dgvMovies.Columns(70).Width = 20
+                            .dgvMovies.Columns(70).Resizable = DataGridViewTriState.False
+                            .dgvMovies.Columns(70).ReadOnly = True
+                            .dgvMovies.Columns(70).SortMode = DataGridViewColumnSortMode.Automatic
+                            .dgvMovies.Columns(70).Visible = True 'Not Master.eSettings.MovieClearArtCol
+                            .dgvMovies.Columns(70).ToolTipText = "Inside a Set"
 
-                            For i As Integer = 62 To .dgvMovies.Columns.Count - 1
+                            For i As Integer = 71 To .dgvMovies.Columns.Count - 1
                                 .dgvMovies.Columns(i).Visible = False
                             Next
 
