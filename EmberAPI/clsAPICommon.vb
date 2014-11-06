@@ -795,18 +795,19 @@ Public Class Enums
         Rating = 23
         ReleaseDate = 24
         Runtime = 25
-        SortTitle = 26
-        Studio = 27
-        TMDBColID = 28
-        TMDBID = 29
-        Tagline = 30
-        ThemeItem = 31
-        Title = 32
-        Top250 = 33
-        Trailer = 34
-        TrailerItem = 35
-        Votes = 36
-        Year = 37
+        MovieSet = 26
+        SortTitle = 27
+        Studio = 28
+        TMDBColID = 29
+        TMDBID = 30
+        Tagline = 31
+        ThemeItem = 32
+        Title = 33
+        Top250 = 34
+        Trailer = 35
+        TrailerItem = 36
+        Votes = 37
+        Year = 38
     End Enum
 
     Public Enum ScraperEventType_MovieSet As Integer

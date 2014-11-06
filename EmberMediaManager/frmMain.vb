@@ -2011,6 +2011,8 @@ Public Class frmMain
                     MovieScraperEvent(Enums.ScraperEventType_Movie.Trailer, DBScrapeMovie.Movie.Trailer)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.Votes, DBScrapeMovie.Movie.Votes)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.Year, DBScrapeMovie.Movie.Year)
+                    If (Master.eSettings.MovieScraperCollectionsAuto AndAlso DBScrapeMovie.Movie.Sets.Count > 0) Then _
+                        MovieScraperEvent(Enums.ScraperEventType_Movie.MovieSet, True)
                 End If
 
                 '-----
@@ -6283,7 +6285,7 @@ doCancel:
 
     Private Sub dgvMovies_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellClick
         Try
-            If e.ColumnIndex = 3 OrElse e.ColumnIndex = 34 OrElse Not Master.eSettings.MovieClickScrape Then 'Title
+            If e.ColumnIndex = 3 OrElse e.ColumnIndex = 34 OrElse Not Master.eSettings.MovieClickScrape Then 'Title or Watched Column
                 If Not e.ColumnIndex = 34 Then
                     If Me.dgvMovies.SelectedRows.Count > 0 Then
                         If Me.dgvMovies.RowCount > 0 Then
@@ -6356,6 +6358,20 @@ doCancel:
                         logger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try
                 End If
+
+            ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex = 70 AndAlso Not bwMovieScraper.IsBusy Then
+                Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(0).Value, Int32)
+                Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+
+                Me.dgvMovies.ClearSelection()
+                Me.dgvMovies.Rows(objCell.RowIndex).Selected = True
+                Me.currMovieRow = objCell.RowIndex
+
+                Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
+                cScrapeOptions.bCollectionID = True
+                Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+                MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+
             ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 62 AndAlso e.ColumnIndex <> 70 AndAlso Not bwMovieScraper.IsBusy Then
                 Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(0).Value, Int32)
                 Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
@@ -13216,6 +13232,8 @@ doCancel:
                     dScrapeRow(63) = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.TMDBColID
                     dScrapeRow(64) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.MovieSet
+                    dScrapeRow(70) = DirectCast(Parameter, Boolean)
             End Select
             Me.dgvMovies.Invalidate()
         End If
