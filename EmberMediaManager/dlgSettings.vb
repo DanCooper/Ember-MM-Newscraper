@@ -718,7 +718,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnMovieBackdropsBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieBackdropsBrowse.Click
+    Private Sub btnMovieBackdropsPathBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieBackdropsPathBrowse.Click
         With Me.fbdBrowse
             fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops...")
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -1376,8 +1376,6 @@ Public Class dlgSettings
 
     Private Sub chkMovieBackdropsAuto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieBackdropsAuto.CheckedChanged
         Me.SetApplyButton(True)
-        Me.txtMovieBackdropsPath.Enabled = chkMovieBackdropsAuto.Checked
-        Me.btnMovieBackdropsBrowse.Enabled = chkMovieBackdropsAuto.Checked
     End Sub
 
     Private Sub chkMovieScraperCastWithImg_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCastWithImg.CheckedChanged
@@ -3754,8 +3752,6 @@ Public Class dlgSettings
                     End If
                 End If
 
-                Me.btnMovieBackdropsBrowse.Enabled = .MovieBackdropsAuto
-                Me.txtMovieBackdropsPath.Enabled = .MovieBackdropsAuto
                 Me.chkMovieClickScrapeAsk.Enabled = Me.chkMovieClickScrape.Checked
                 Me.chkMovieSetClickScrapeAsk.Enabled = Me.chkMovieSetClickScrape.Checked
                 Me.txtMovieScraperDurationRuntimeFormat.Enabled = .MovieScraperUseMDDuration
@@ -6427,6 +6423,13 @@ Public Class dlgSettings
 
     Private Sub txtMovieBackdropsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBackdropsPath.TextChanged
         Me.SetApplyButton(True)
+
+        If String.IsNullOrEmpty(Me.txtMovieBackdropsPath.Text) Then
+            Me.chkMovieBackdropsAuto.Checked = False
+            Me.chkMovieBackdropsAuto.Enabled = False
+        Else
+            Me.chkMovieBackdropsAuto.Enabled = True
+        End If
     End Sub
 
     Private Sub txtMovieLevTolerance_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieLevTolerance.KeyPress

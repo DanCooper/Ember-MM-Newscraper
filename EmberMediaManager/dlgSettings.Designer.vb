@@ -302,7 +302,7 @@ Partial Class dlgSettings
         Me.chkProxyEnable = New System.Windows.Forms.CheckBox()
         Me.gbMovieBackdropsFolder = New System.Windows.Forms.GroupBox()
         Me.chkMovieBackdropsAuto = New System.Windows.Forms.CheckBox()
-        Me.btnMovieBackdropsBrowse = New System.Windows.Forms.Button()
+        Me.btnMovieBackdropsPathBrowse = New System.Windows.Forms.Button()
         Me.txtMovieBackdropsPath = New System.Windows.Forms.TextBox()
         Me.lblSettingsCurrent = New System.Windows.Forms.Label()
         Me.pnlSettingsCurrentBGGradient = New System.Windows.Forms.Panel()
@@ -4293,7 +4293,7 @@ Partial Class dlgSettings
         'gbMovieBackdropsFolder
         '
         Me.gbMovieBackdropsFolder.Controls.Add(Me.chkMovieBackdropsAuto)
-        Me.gbMovieBackdropsFolder.Controls.Add(Me.btnMovieBackdropsBrowse)
+        Me.gbMovieBackdropsFolder.Controls.Add(Me.btnMovieBackdropsPathBrowse)
         Me.gbMovieBackdropsFolder.Controls.Add(Me.txtMovieBackdropsPath)
         Me.gbMovieBackdropsFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieBackdropsFolder.Location = New System.Drawing.Point(5, 412)
@@ -4305,23 +4305,24 @@ Partial Class dlgSettings
         '
         'chkMovieBackdropsAuto
         '
-        Me.chkMovieBackdropsAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieBackdropsAuto.Enabled = False
+        Me.chkMovieBackdropsAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieBackdropsAuto.Location = New System.Drawing.Point(6, 49)
         Me.chkMovieBackdropsAuto.Name = "chkMovieBackdropsAuto"
         Me.chkMovieBackdropsAuto.Size = New System.Drawing.Size(200, 33)
         Me.chkMovieBackdropsAuto.TabIndex = 2
         Me.chkMovieBackdropsAuto.Text = "Automatically Save Fanart To Backdrops Folder"
-        Me.chkMovieBackdropsAuto.UseVisualStyleBackColor = true
+        Me.chkMovieBackdropsAuto.UseVisualStyleBackColor = True
         '
-        'btnMovieBackdropsBrowse
+        'btnMovieBackdropsPathBrowse
         '
-        Me.btnMovieBackdropsBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnMovieBackdropsBrowse.Location = New System.Drawing.Point(181, 21)
-        Me.btnMovieBackdropsBrowse.Name = "btnMovieBackdropsBrowse"
-        Me.btnMovieBackdropsBrowse.Size = New System.Drawing.Size(25, 22)
-        Me.btnMovieBackdropsBrowse.TabIndex = 1
-        Me.btnMovieBackdropsBrowse.Text = "..."
-        Me.btnMovieBackdropsBrowse.UseVisualStyleBackColor = true
+        Me.btnMovieBackdropsPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnMovieBackdropsPathBrowse.Location = New System.Drawing.Point(181, 21)
+        Me.btnMovieBackdropsPathBrowse.Name = "btnMovieBackdropsPathBrowse"
+        Me.btnMovieBackdropsPathBrowse.Size = New System.Drawing.Size(25, 22)
+        Me.btnMovieBackdropsPathBrowse.TabIndex = 1
+        Me.btnMovieBackdropsPathBrowse.Text = "..."
+        Me.btnMovieBackdropsPathBrowse.UseVisualStyleBackColor = true
         '
         'txtMovieBackdropsPath
         '
@@ -13828,7 +13829,7 @@ End Sub
     Friend WithEvents chkGeneralCheckUpdates As System.Windows.Forms.CheckBox
     Friend WithEvents gbMovieBackdropsFolder As System.Windows.Forms.GroupBox
     Friend WithEvents txtMovieBackdropsPath As System.Windows.Forms.TextBox
-    Friend WithEvents btnMovieBackdropsBrowse As System.Windows.Forms.Button
+    Friend WithEvents btnMovieBackdropsPathBrowse As System.Windows.Forms.Button
     Friend WithEvents chkMovieBackdropsAuto As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieEThumbsCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSubCol As System.Windows.Forms.CheckBox
