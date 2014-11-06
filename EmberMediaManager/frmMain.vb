@@ -54,6 +54,7 @@ Public Class frmMain
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovieSets As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshShows As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwRewriteMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Private alActors As New List(Of String)
@@ -785,9 +786,10 @@ Public Class frmMain
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
         If Me.bwRefreshMovieSets.IsBusy Then Me.bwRefreshMovieSets.CancelAsync()
         If Me.bwRefreshShows.IsBusy Then Me.bwRefreshShows.CancelAsync()
+        If Me.bwRewriteMovies.IsBusy Then Me.bwRewriteMovies.CancelAsync()
         If Me.bwNonScrape.IsBusy Then Me.bwNonScrape.CancelAsync()
         While Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
-            Me.bwNonScrape.IsBusy OrElse Me.bwRefreshShows.IsBusy
+            Me.bwNonScrape.IsBusy OrElse Me.bwRefreshShows.IsBusy OrElse Me.bwRewriteMovies.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -1510,7 +1512,7 @@ Public Class frmMain
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithMovie()
             Else
-                If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not bwNonScrape.IsBusy Then
+                If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwRewriteMovies.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not bwNonScrape.IsBusy Then
                     Me.SetControlsEnabled(True)
                     Me.EnableFilters_Movies(True)
                 Else
@@ -3318,7 +3320,7 @@ doCancel:
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each KVP As KeyValuePair(Of Long, String) In MovieIDs
                 Try
-                    If Me.bwMovieScraper.CancellationPending Then Return
+                    If Me.bwRefreshMovies.CancellationPending Then Return
                     Me.bwRefreshMovies.ReportProgress(iCount, KVP.Value)
                     Me.RefreshMovie(KVP.Key, True)
                 Catch ex As Exception
@@ -3355,7 +3357,7 @@ doCancel:
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each KVP As KeyValuePair(Of Long, String) In MovieSetIDs
                 Try
-                    If Me.bwMovieScraper.CancellationPending Then Return
+                    If Me.bwRefreshMovieSets.CancellationPending Then Return
                     Me.bwRefreshMovieSets.ReportProgress(iCount, KVP.Value)
                     Me.RefreshMovieSet(KVP.Key, True)
                 Catch ex As Exception
@@ -3394,7 +3396,7 @@ doCancel:
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each KVP As KeyValuePair(Of Long, String) In ShowIDs
                 Try
-                    'If Me.bwMovieScraper.CancellationPending Then Return
+                    If Me.bwRefreshShows.CancellationPending Then Return
                     Me.bwRefreshShows.ReportProgress(iCount, KVP.Value)
                     Me.RefreshShow(KVP.Key, True, False, False, Args.withEpisodes)
                 Catch ex As Exception
@@ -3420,9 +3422,48 @@ doCancel:
         Me.Cursor = Cursors.Default
     End Sub
 
+    Private Sub bwRewriteMovies_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRewriteMovies.DoWork
+        Dim iCount As Integer = 0
+        Dim MovieIDs As New Dictionary(Of Long, String)
+
+        For Each sRow As DataRow In Me.dtMovies.Rows
+            MovieIDs.Add(Convert.ToInt64(sRow.Item(0)), sRow.Item(3).ToString)
+        Next
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each KVP As KeyValuePair(Of Long, String) In MovieIDs
+                Try
+                    If Me.bwRewriteMovies.CancellationPending Then Return
+                    Me.bwRewriteMovies.ReportProgress(iCount, KVP.Value)
+                    Me.RewriteMovie(KVP.Key)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
+                iCount += 1
+            Next
+            SQLtransaction.Commit()
+        End Using
+    End Sub
+
+    Private Sub bwRewriteMovies_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwRewriteMovies.ProgressChanged
+        Me.SetStatus(e.UserState.ToString)
+        Me.tspbLoading.Value = e.ProgressPercentage
+    End Sub
+
+    Private Sub bwRewriteMovies_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRewriteMovies.RunWorkerCompleted
+        Me.tslLoading.Text = String.Empty
+        Me.tslLoading.Visible = False
+        Me.tspbLoading.Visible = False
+        Me.btnCancel.Visible = False
+        Me.lblCanceling.Visible = False
+        Me.prbCanceling.Visible = False
+        Me.pnlCancel.Visible = False
+        Me.SetControlsEnabled(True, True)
+    End Sub
+
     Private Sub cbFilterVideoSource_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterVideoSource_Movies.SelectedIndexChanged
         Try
-            While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+            While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -6369,7 +6410,7 @@ doCancel:
         Try
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
@@ -6701,7 +6742,7 @@ doCancel:
             ElseIf e.KeyChar = Chr(13) Then
                 If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse _
                 Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
-                OrElse Me.bwCleanDB.IsBusy Then Return
+                OrElse Me.bwCleanDB.IsBusy OrElse Me.bwRewriteMovies.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
@@ -6841,7 +6882,7 @@ doCancel:
         Try
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
@@ -7218,7 +7259,8 @@ doCancel:
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy _
+                OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
@@ -14354,7 +14396,7 @@ doCancel:
             Me.tslLoading.Text = Master.eLang.GetString(110, "Refreshing Media:")
             Me.tspbLoading.Visible = True
             Me.tslLoading.Visible = True
-
+            Application.DoEvents()
             Me.bwRefreshMovies.WorkerReportsProgress = True
             Me.bwRefreshMovies.WorkerSupportsCancellation = True
             Me.bwRefreshMovies.RunWorkerAsync()
@@ -14377,7 +14419,7 @@ doCancel:
             Me.tslLoading.Text = Master.eLang.GetString(110, "Refreshing Media:")
             Me.tspbLoading.Visible = True
             Me.tslLoading.Visible = True
-
+            Application.DoEvents()
             Me.bwRefreshMovieSets.WorkerReportsProgress = True
             Me.bwRefreshMovieSets.WorkerSupportsCancellation = True
             Me.bwRefreshMovieSets.RunWorkerAsync()
@@ -14400,10 +14442,39 @@ doCancel:
             Me.tslLoading.Text = Master.eLang.GetString(110, "Refreshing Media:")
             Me.tspbLoading.Visible = True
             Me.tslLoading.Visible = True
-
+            Application.DoEvents()
             Me.bwRefreshShows.WorkerReportsProgress = True
             Me.bwRefreshShows.WorkerSupportsCancellation = True
             Me.bwRefreshShows.RunWorkerAsync(New Arguments With {.withEpisodes = withEpisodes})
+        Else
+            Me.SetControlsEnabled(True)
+        End If
+    End Sub
+
+    Private Sub RewriteAllMovieContent()
+        If Me.dtMovies.Rows.Count > 0 Then
+            Me.SetControlsEnabled(False)
+            Me.tspbLoading.Style = ProgressBarStyle.Continuous
+            Me.EnableFilters_Movies(False)
+            Me.EnableFilters_MovieSets(False)
+            Me.EnableFilters_Shows(False)
+
+            Me.btnCancel.Text = Master.eLang.GetString(1299, "Cancel Rewriting")
+            Me.lblCanceling.Text = Master.eLang.GetString(1300, "Canceling Rewriting...")
+            Me.btnCancel.Visible = True
+            Me.lblCanceling.Visible = False
+            Me.prbCanceling.Visible = False
+            Me.pnlCancel.Visible = True
+
+            Me.tspbLoading.Maximum = Me.dtMovies.Rows.Count + 1
+            Me.tspbLoading.Value = 0
+            Me.tslLoading.Text = Master.eLang.GetString(1297, "Rewriting Media:")
+            Me.tspbLoading.Visible = True
+            Me.tslLoading.Visible = True
+            Application.DoEvents()
+            Me.bwRewriteMovies.WorkerReportsProgress = True
+            Me.bwRewriteMovies.WorkerSupportsCancellation = True
+            Me.bwRewriteMovies.RunWorkerAsync()
         Else
             Me.SetControlsEnabled(True)
         End If
@@ -14415,6 +14486,10 @@ doCancel:
 
     Private Sub mnuMainToolsReloadMovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsReloadMovieSets.Click
         RefreshAllMovieSets()
+    End Sub
+
+    Private Sub mnuMainToolsRewriteMovieContent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteMovieContent.Click
+        RewriteAllMovieContent()
     End Sub
 
     Private Function RefreshEpisode(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
@@ -15259,6 +15334,124 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
+    ''' <summary>
+    ''' Load existing movie content and save it again with all selected filenames
+    ''' </summary>
+    ''' <param name="ID">Movie ID</param>
+    ''' <returns>reload list from database?</returns>
+    ''' <remarks></remarks>
+    Private Function RewriteMovie(ByVal ID As Long) As Boolean
+        Dim tmpMovie As New MediaContainers.Movie
+        Dim tmpMovieDB As New Structures.DBMovie
+        Dim OldTitle As String = String.Empty
+        Dim selRow As DataRow = Nothing
+
+        Dim MovieBanner As New Images With {.IsEdit = True}
+        Dim MovieClearArt As New Images With {.IsEdit = True}
+        Dim MovieClearLogo As New Images With {.IsEdit = True}
+        Dim MovieDiscArt As New Images With {.IsEdit = True}
+        Dim MovieFanart As New Images With {.IsEdit = True}
+        Dim MovieLandscape As New Images With {.IsEdit = True}
+        Dim MoviePoster As New Images With {.IsEdit = True}
+        Dim MovieTrailer As New Trailers
+        Dim MovieTheme As New Themes
+
+        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+
+        Try
+
+            tmpMovieDB = Master.DB.LoadMovieFromDB(ID)
+
+            If Directory.Exists(Directory.GetParent(tmpMovieDB.Filename).FullName) Then
+
+                If Not String.IsNullOrEmpty(tmpMovieDB.BannerPath) Then
+                    MovieBanner.FromFile(tmpMovieDB.BannerPath)
+                End If
+
+                If Not String.IsNullOrEmpty(tmpMovieDB.ClearArtPath) Then
+                    MovieClearArt.FromFile(tmpMovieDB.ClearArtPath)
+                End If
+
+                If Not String.IsNullOrEmpty(tmpMovieDB.ClearLogoPath) Then
+                    MovieClearLogo.FromFile(tmpMovieDB.ClearLogoPath)
+                End If
+
+                If Not String.IsNullOrEmpty(tmpMovieDB.DiscArtPath) Then
+                    MovieDiscArt.FromFile(tmpMovieDB.DiscArtPath)
+                End If
+
+                If Not String.IsNullOrEmpty(tmpMovieDB.FanartPath) Then
+                    MovieFanart.FromFile(tmpMovieDB.FanartPath)
+                End If
+
+                If Not String.IsNullOrEmpty(tmpMovieDB.LandscapePath) Then
+                    MovieLandscape.FromFile(tmpMovieDB.LandscapePath)
+                End If
+
+                If Not String.IsNullOrEmpty(tmpMovieDB.PosterPath) Then
+                    MoviePoster.FromFile(tmpMovieDB.PosterPath)
+                End If
+
+                If Not String.IsNullOrEmpty(tmpMovieDB.ThemePath) Then
+                    MovieTheme.FromFile(tmpMovieDB.ThemePath)
+                End If
+
+                If Not String.IsNullOrEmpty(tmpMovieDB.TrailerPath) Then
+                    MovieTrailer.FromFile(tmpMovieDB.TrailerPath)
+                End If
+
+                If Not IsNothing(MovieBanner.Image) Then
+                    MovieBanner.SaveAsMovieBanner(tmpMovieDB)
+                End If
+
+                If Not IsNothing(MovieClearArt.Image) Then
+                    MovieClearArt.SaveAsMovieClearArt(tmpMovieDB)
+                End If
+
+                If Not IsNothing(MovieClearLogo.Image) Then
+                    MovieClearLogo.SaveAsMovieClearLogo(tmpMovieDB)
+                End If
+
+                If Not IsNothing(MovieDiscArt.Image) Then
+                    MovieDiscArt.SaveAsMovieDiscArt(tmpMovieDB)
+                End If
+
+                If Not IsNothing(MovieFanart.Image) Then
+                    MovieFanart.SaveAsMovieFanart(tmpMovieDB)
+                End If
+
+                If Not IsNothing(MovieLandscape.Image) Then
+                    MovieLandscape.SaveAsMovieLandscape(tmpMovieDB)
+                End If
+
+                If Not IsNothing(MoviePoster.Image) Then
+                    MoviePoster.SaveAsMoviePoster(tmpMovieDB)
+                End If
+
+                If Not String.IsNullOrEmpty(MovieTheme.Extention) Then
+                    MovieTheme.SaveAsMovieTheme(tmpMovieDB)
+                End If
+
+                If Not String.IsNullOrEmpty(MovieTrailer.Extention) Then
+                    If Master.eSettings.MovieTrailerDeleteExisting Then
+                        MovieTrailer.DeleteMovieTrailer(tmpMovieDB)
+                    End If
+                    MovieTrailer.SaveAsMovieTrailer(tmpMovieDB)
+                End If
+
+                If Not String.IsNullOrEmpty(tmpMovieDB.NfoPath) Then
+                    NFO.SaveMovieToNFO(tmpMovieDB)
+                End If
+            Else
+                Return True
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Return False
+    End Function
 
     Private Sub cmnuMovieRemoveFromDatabase_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDB.Click
         Try
@@ -17806,6 +17999,7 @@ doCancel:
                 .mnuMainToolsOfflineHolder.Text = Master.eLang.GetString(524, "&Offline Media Manager")
                 .mnuMainToolsReloadMovies.Text = Master.eLang.GetString(18, "Re&load All Movies")
                 .mnuMainToolsReloadMovieSets.Text = Master.eLang.GetString(1208, "Reload All MovieSets")
+                .mnuMainToolsRewriteMovieContent.Text = Master.eLang.GetString(1298, "Rewrite All Movie Content")
                 .mnuMainToolsSortFiles.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
                 .mnuUpdate.Text = Master.eLang.GetString(82, "Update Library")
                 .mnuUpdateMovies.Text = Master.eLang.GetString(36, "Movies")

@@ -1386,4 +1386,8 @@
   <string id="1294">Change Movie (Auto)</string>
   <string id="1295">Part of a MovieSet</string>
   <string id="1296">Hide MovieSet Column</string>
+  <string id="1297">Rewriting Media:</string>
+  <string id="1298">Rewrite All Movie Content</string>
+  <string id="1299">Cancel Rewriting</string>
+  <string id="1300">Canceling Rewriting...</string>
 </strings>
