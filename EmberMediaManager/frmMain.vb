@@ -6372,7 +6372,7 @@ doCancel:
                 Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
                 MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
 
-            ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 62 AndAlso e.ColumnIndex <> 70 AndAlso Not bwMovieScraper.IsBusy Then
+            ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 70 AndAlso Not bwMovieScraper.IsBusy Then
                 Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(0).Value, Int32)
                 Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
