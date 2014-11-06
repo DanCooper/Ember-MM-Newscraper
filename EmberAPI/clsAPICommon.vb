@@ -2043,8 +2043,15 @@ Public Class Structures
     End Structure
 
     Public Structure ModulesMenus
-        Dim IfNoMovies As Boolean
-        Dim IfNoTVShow As Boolean
+        Dim ForMovies As Boolean
+        Dim ForMovieSets As Boolean
+        Dim ForTVShows As Boolean
+        Dim IfTabMovies As Boolean      'Only if Movies Tab is selected
+        Dim IfTabMovieSets As Boolean   'Only if MovieSets Tab is selected
+        Dim IfTabTVShows As Boolean     'Only if TV Shows Tab is selected
+        Dim IfNoMovies As Boolean       'Show also if the Movies list is empty
+        Dim IfNoMovieSets As Boolean    'Show also if the MovieSets list is empty
+        Dim IfNoTVShows As Boolean      'Show also if the TV Shows list is empty
     End Structure
 
 #End Region 'Nested Types

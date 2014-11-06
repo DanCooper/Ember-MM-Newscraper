@@ -163,7 +163,7 @@ Public Class BulkRenamerModule
         MyMenu.Image = New Bitmap(My.Resources.icon)
         MyMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
+        MyMenu.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True}
         DropDownItemsAdd(MyMenu, tsi)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")

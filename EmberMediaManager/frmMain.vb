@@ -11015,6 +11015,12 @@ doCancel:
                 Me.pnlFilter_MovieSets.Visible = False
                 Me.pnlFilter_Shows.Visible = False
 
+                'MenuItem Tags for better Enable/Disable handling
+                Me.mnuMainToolsOfflineHolder.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfNoMovies = True}
+                Me.mnuMainToolsReloadMovies.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
+                Me.mnuMainToolsReloadMovieSets.Tag = New Structures.ModulesMenus With {.ForMovieSets = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
+                Me.mnuMainToolsRewriteMovieContent.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
+                Me.mnuMainToolsSortFiles.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1165, "Initializing Main Form. Please wait..."))
                 Me.ClearInfo()
@@ -16241,10 +16247,15 @@ doCancel:
             If TypeOf i Is ToolStripMenuItem Then
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
                 If o.Tag Is Nothing Then
-                    o.Enabled = isEnabled AndAlso (Me.dgvMovies.RowCount > 0 OrElse Me.dgvMovieSets.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0) AndAlso tcMain.SelectedIndex = 0
+                    o.Enabled = isEnabled AndAlso ((Me.dgvMovies.RowCount > 0 AndAlso tcMain.SelectedIndex = 0) OrElse (Me.dgvMovieSets.RowCount > 0 AndAlso tcMain.SelectedIndex = 1) OrElse (Me.dgvTVShows.RowCount > 0) AndAlso tcMain.SelectedIndex = 2)
                 ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
                     Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
-                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((Me.dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies) AndAlso tcMain.SelectedIndex = 0) OrElse ((Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow) AndAlso tcMain.SelectedIndex = 2))
+                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((tagmenu.IfTabMovies AndAlso tcMain.SelectedIndex = 0) OrElse _
+                                                                           (tagmenu.IfTabMovieSets AndAlso tcMain.SelectedIndex = 1) OrElse _
+                                                                           (tagmenu.IfTabTVShows AndAlso tcMain.SelectedIndex = 2)) AndAlso _
+                                                                       ((tagmenu.ForMovies AndAlso (Me.dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies)) OrElse _
+                                                                        (tagmenu.ForMovieSets AndAlso (Me.dgvMovieSets.RowCount > 0 OrElse tagmenu.IfNoMovieSets)) OrElse _
+                                                                        (tagmenu.ForTVShows AndAlso (Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShows))))
                 End If
             ElseIf TypeOf i Is ToolStripSeparator Then
                 Dim o As ToolStripSeparator = DirectCast(i, ToolStripSeparator)
@@ -16259,6 +16270,11 @@ doCancel:
                 Me.mnuMainToolsCleanFiles.Enabled = isEnabled AndAlso Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0
             Else
                 Me.mnuMainToolsCleanFiles.Enabled = False
+            End If
+            If Not String.IsNullOrEmpty(.MovieBackdropsPath) AndAlso Me.dgvMovies.RowCount > 0 Then
+                Me.mnuMainToolsBackdrops.Enabled = True
+            Else
+                Me.mnuMainToolsBackdrops.Enabled = False
             End If
         End With
         Me.mnuMainEdit.Enabled = isEnabled
@@ -18183,6 +18199,8 @@ doCancel:
                     Me.dgvMovies.CurrentCell = Me.dgvMovies.Rows(0).Cells(3)
 
                     Me.dgvMovies.Focus()
+                Else
+                    Me.SetControlsEnabled(True)
                 End If
 
             Case 1 'MovieSets list
@@ -18216,6 +18234,8 @@ doCancel:
                     Me.dgvMovieSets.CurrentCell = Me.dgvMovieSets.Rows(0).Cells(1)
 
                     Me.dgvMovieSets.Focus()
+                Else
+                    Me.SetControlsEnabled(True)
                 End If
 
             Case 2 'TV Shows list
@@ -18252,7 +18272,8 @@ doCancel:
                     Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Rows(0).Cells(1)
 
                     Me.dgvTVShows.Focus()
-
+                Else
+                    Me.SetControlsEnabled(True)
                 End If
         End Select
     End Sub

@@ -115,12 +115,12 @@ Public Class NMTExporterModule
         Dim tsi As New ToolStripMenuItem
         MyMenu.Image = New Bitmap(My.Resources.icon)
         MyMenu.Text = Master.eLang.GetString(475, "NMT Jukebox Builder")
-        MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
+        MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShows = True}
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(475, "NMT Jukebox Builder")
-        MyTrayMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
+        MyTrayMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShows = True}
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         If Not tsi Is Nothing Then tsi.DropDownItems.Add(MyTrayMenu)
     End Sub
