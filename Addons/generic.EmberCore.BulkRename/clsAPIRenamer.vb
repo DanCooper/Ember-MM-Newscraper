@@ -289,7 +289,7 @@ Public Class FileFolderRenamer
 
         MovieFile.Country = _tmpMovie.Movie.Country
         MovieFile.Director = _tmpMovie.Movie.Director
-        MovieFile.VideoSource = _tmpMovie.VideoSource
+        MovieFile.VideoSource = _tmpMovie.Movie.VideoSource
         MovieFile.Genre = _tmpMovie.Movie.Genre
         MovieFile.IMDBID = _tmpMovie.Movie.IMDBID
         MovieFile.IsSingle = _tmpMovie.IsSingle
