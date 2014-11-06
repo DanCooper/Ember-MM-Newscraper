@@ -7252,22 +7252,118 @@ doCancel:
     End Sub
 
     Private Sub dgvTVEpisodes_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellClick
-        If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
-            If Me.dgvTVEpisodes.RowCount > 0 Then
-                If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
-                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count))
-                ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
-                    Me.SetStatus(Me.dgvTVEpisodes.SelectedRows(0).Cells(3).Value.ToString)
-                End If
-            End If
+        Try
+            If e.ColumnIndex = 3 OrElse e.ColumnIndex = 24 OrElse Not Master.eSettings.TVEpisodeClickScrape Then 'Title or Watched Column
+                If Not e.ColumnIndex = 24 Then
+                    If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
+                        If Me.dgvTVEpisodes.RowCount > 0 Then
+                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+                                Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count))
+                            ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
+                                Me.SetStatus(Me.dgvTVEpisodes.SelectedRows(0).Cells(3).Value.ToString)
+                            End If
+                        End If
+                        Me.currEpRow = Me.dgvTVEpisodes.SelectedRows(0).Index
+                        If Not Me.currList = 2 Then
+                            Me.currList = 2
+                            Me.prevEpRow = -1
+                            Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
+                        End If
+                    End If
+                Else
+                    'TODO: maybe we can merge this to one sub/function together with "Private Sub cmnuMovieWatched_Click"
+                    Try
+                        Dim setWatched As Boolean = False
+                        If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+                            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                                'if any one item is set as not watched, set menu to watched
+                                'else they are all watched so set menu to not watched
+                                If Not Convert.ToBoolean(sRow.Cells(24).Value) Then
+                                    setWatched = True
+                                    Exit For
+                                End If
+                            Next
+                        End If
 
-            Me.currEpRow = Me.dgvTVEpisodes.SelectedRows(0).Index
-            If Not Me.currList = 2 Then
-                Me.currList = 2
-                Me.prevEpRow = -1
-                Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
+                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                                Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
+                                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                                SQLcommand.CommandText = "UPDATE TVEps SET Playcount = (?) WHERE id = (?);"
+                                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                                    Dim currPlaycount As String = String.Empty
+                                    Dim hasWatched As Boolean = False
+                                    Dim newPlaycount As String = String.Empty
+
+                                    currPlaycount = Convert.ToString(sRow.Cells(23).Value)
+                                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+
+                                    If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
+                                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                    ElseIf Not hasWatched Then
+                                        newPlaycount = "1"
+                                    Else
+                                        newPlaycount = "0"
+                                    End If
+
+                                    parPlaycount.Value = newPlaycount
+                                    parID.Value = sRow.Cells(0).Value
+                                    SQLcommand.ExecuteNonQuery()
+                                    sRow.Cells(23).Value = newPlaycount
+                                    sRow.Cells(24).Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setWatched, Not hasWatched)
+                                Next
+                            End Using
+                            SQLtransaction.Commit()
+
+                        End Using
+
+                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                                Me.RefreshEpisode(Convert.ToInt64(sRow.Cells(0).Value), True, False, True) ', True)
+                            Next
+                            SQLtransaction.Commit()
+                        End Using
+
+                        Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, Me.dgvTVEpisodes.CurrentCell.RowIndex).Value)) ', Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.CurrentCell.RowIndex).Value.ToString, True, False)
+                        Me.dgvMovies.Invalidate()
+
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                    End Try
+                End If
+
+                'ElseIf Master.eSettings.TVEpisodeClickScrape AndAlso e.RowIndex >= 0 Then 'AndAlso Not bwMovieScraper.IsBusy Then
+                '    Dim episode As Int32 = CType(Me.dgvTVEpisodes.Rows(e.RowIndex).Cells(0).Value, Int32)
+                '    Dim objCell As DataGridViewCell = CType(Me.dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+
+                '    'EMM not able to scrape subtitles yet.
+                '    'So don't set status for it, but leave the option open for the future.
+                '    Me.dgvTVEpisodes.ClearSelection()
+                '    Me.dgvTVEpisodes.Rows(objCell.RowIndex).Selected = True
+                '    Me.currEpRow = objCell.RowIndex
+                'If Not Me.currList = 2 Then
+                '    Me.currList = 2
+                '    Me.prevEpRow = -1
+                '    Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
+                'End If
+                '    Select Case e.ColumnIndex
+                '        Case 4 'Poster
+                '            Functions.SetScraperMod(Enums.ModType_Movie.Poster, True)
+                '        Case 5 'Fanart
+                '            Functions.SetScraperMod(Enums.ModType_Movie.Fanart, True)
+                '        Case 6 'Nfo
+                '            Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+                '    End Select
+                '    If Master.eSettings.TVEpisodeClickScrapeAsk Then
+                '        TVEpisodeScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultTVOptions)
+                '    Else
+                '        TVEpisodeScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultTVOptions)
+                '    End If
             End If
-        End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
     End Sub
 
     Private Sub dgvTVEpisodes_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellDoubleClick

@@ -147,6 +147,60 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVEpisodeClickScrape() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeClickScrape
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeClickScrape = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeClickScrapeAsk() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeClickScrapeAsk
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeClickScrapeAsk = value
+        End Set
+    End Property
+
+    Public Property TVSeasonClickScrape() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonClickScrape
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonClickScrape = value
+        End Set
+    End Property
+
+    Public Property TVSeasonClickScrapeAsk() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonClickScrapeAsk
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonClickScrapeAsk = value
+        End Set
+    End Property
+
+    Public Property TVShowClickScrape() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowClickScrape
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowClickScrape = value
+        End Set
+    End Property
+
+    Public Property TVShowClickScrapeAsk() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowClickScrapeAsk
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowClickScrapeAsk = value
+        End Set
+    End Property
+
     Public Property MovieBackdropsAuto() As Boolean
         Get
             Return Settings._XMLSettings.MovieBackdropsAuto

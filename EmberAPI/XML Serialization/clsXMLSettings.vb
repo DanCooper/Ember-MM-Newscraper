@@ -327,6 +327,8 @@ Partial Public Class clsXMLSettings
     Private _tvcleandb As Boolean
     Private _tvdisplaymissingepisodes As Boolean
     Private _tvdisplaystatus As Boolean
+    Private _tvepisodeclickscrape As Boolean
+    Private _tvepisodeclickscrapeask As Boolean
     Private _tvepisodefanartcol As Boolean
     Private _tvepisodefanartheight As Integer
     Private _tvepisodefanartoverwrite As Boolean
@@ -401,6 +403,8 @@ Partial Public Class clsXMLSettings
     Private _tvseasonbannerpreftype As Enums.TVSeasonBannerType
     Private _tvseasonbannerresize As Boolean
     Private _tvseasonbannerwidth As Integer
+    Private _tvseasonclickscrape As Boolean
+    Private _tvseasonclickscrapeask As Boolean
     Private _tvseasonfanartcol As Boolean
     Private _tvseasonfanartheight As Integer
     Private _tvseasonfanartoverwrite As Boolean
@@ -428,6 +432,8 @@ Partial Public Class clsXMLSettings
     Private _tvshowclearartoverwrite As Boolean
     Private _tvshowclearlogocol As Boolean
     Private _tvshowclearlogooverwrite As Boolean
+    Private _tvshowclickscrape As Boolean
+    Private _tvshowclickscrapeask As Boolean
     Private _tvshowefanartscol As Boolean
     Private _tvshowefanartslimit As Integer
     Private _tvshowefanartsoverwrite As Boolean
@@ -941,6 +947,60 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movieclickscrapeask = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeClickScrape() As Boolean
+        Get
+            Return Me._tvepisodeclickscrape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodeclickscrape = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeClickScrapeAsk() As Boolean
+        Get
+            Return Me._tvepisodeclickscrapeask
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodeclickscrapeask = value
+        End Set
+    End Property
+
+    Public Property TVSeasonClickScrape() As Boolean
+        Get
+            Return Me._tvseasonclickscrape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonclickscrape = value
+        End Set
+    End Property
+
+    Public Property TVSeasonClickScrapeAsk() As Boolean
+        Get
+            Return Me._tvseasonclickscrapeask
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonclickscrapeask = value
+        End Set
+    End Property
+
+    Public Property TVShowClickScrape() As Boolean
+        Get
+            Return Me._tvshowclickscrape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowclickscrape = value
+        End Set
+    End Property
+
+    Public Property TVShowClickScrapeAsk() As Boolean
+        Get
+            Return Me._tvshowclickscrapeask
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowclickscrapeask = value
         End Set
     End Property
 
