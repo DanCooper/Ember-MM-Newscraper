@@ -867,7 +867,7 @@ Public Class dlgWizard
             Me.chkMovieSetLandscapeMSAA.Checked = .MovieSetLandscapeMSAA
             Me.chkMovieSetNFOMSAA.Checked = .MovieSetNFOMSAA
             Me.chkMovieSetPosterMSAA.Checked = .MovieSetPosterMSAA
-            Me.txtMovieSetMSAAPath.Text = .MovieSetPathMSAA.ToString
+            Me.txtMovieSetMSAAPath.Text = .MovieSetPathMSAA
 
 
             '***************************************************

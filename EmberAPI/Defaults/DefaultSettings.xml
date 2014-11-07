@@ -612,6 +612,7 @@
   <MovieSetLockPlot>false</MovieSetLockPlot>
   <MovieSetLockTitle>false</MovieSetLockTitle>
   <MovieSetNfoCol>true</MovieSetNfoCol>
+  <MovieSetPathMSAA />
   <MovieSetPosterCol>false</MovieSetPosterCol>
   <MovieSetPosterPrefOnly>false</MovieSetPosterPrefOnly>
   <MovieSetPosterResize>false</MovieSetPosterResize>
