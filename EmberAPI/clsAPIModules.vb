@@ -1644,6 +1644,9 @@ Public Class ModulesManager
         Private _TopMenu As System.Windows.Forms.MenuStrip
         Private _TrayMenu As System.Windows.Forms.ContextMenuStrip
         Private _MediaTabSelected As Integer = 0
+        Private _FilterMovies As String
+        Private _FilterMoviesSearch As String
+        Private _FilterMoviesType As String
 
 #End Region 'Fields
 
@@ -1657,6 +1660,34 @@ Public Class ModulesManager
 #End Region 'Delegates
 
 #Region "Properties"
+
+        Public Property FilterMovies() As String
+            Get
+                Return _FilterMovies
+            End Get
+            Set(ByVal value As String)
+                _FilterMovies = value
+            End Set
+        End Property
+
+        Public Property FilterMoviesSearch() As String
+            Get
+                Return _FilterMoviesSearch
+            End Get
+            Set(ByVal value As String)
+                _FilterMoviesSearch = value
+            End Set
+        End Property
+
+        Public Property FilterMoviesType() As String
+            Get
+                Return _FilterMoviesType
+            End Get
+            Set(ByVal value As String)
+                _FilterMoviesType = value
+            End Set
+        End Property
+
         Public Property MediaTabSelected() As Integer
             Get
                 Return _MediaTabSelected
@@ -1665,6 +1696,7 @@ Public Class ModulesManager
                 _MediaTabSelected = value
             End Set
         End Property
+
         Public Property MainTool() As System.Windows.Forms.ToolStrip
             Get
                 Return _MainTool

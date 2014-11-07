@@ -15711,8 +15711,10 @@ doCancel:
                     End If
 
                     bsMovies.Filter = FilterString
+                    ModulesManager.Instance.RuntimeObjects.FilterMovies = FilterString
                 Else
                     bsMovies.RemoveFilter()
+                    ModulesManager.Instance.RuntimeObjects.FilterMovies = String.Empty
                 End If
 
                 If doFill Then

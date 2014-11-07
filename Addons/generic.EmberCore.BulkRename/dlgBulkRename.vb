@@ -39,6 +39,11 @@ Public Class dlgBulkRenamer
     Private run_once As Boolean = True
     Private _columnsize(9) As Integer
     Private dHelpTips As dlgHelpTips
+
+    Public FilterMovies As String = String.Empty
+    Public FilterMoviesSearch As String = String.Empty
+    Public FilterMoviesType As String = String.Empty
+
 #End Region 'Fields
 
 #Region "Delegates"
@@ -86,13 +91,21 @@ Public Class dlgBulkRenamer
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
-                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
+                If String.IsNullOrEmpty(Me.FilterMovies) Then
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
+                Else
+                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(id) AS mcount FROM movies WHERE {0};", Me.FilterMovies)
+                End If
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
                         Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                     End If
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT NfoPath ,id FROM movies ORDER BY ListTitle ASC;")
+                If String.IsNullOrEmpty(Me.FilterMovies) Then
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM movies ORDER BY ListTitle ASC;")
+                Else
+                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, id FROM movies WHERE {0} ORDER BY ListTitle ASC;", Me.FilterMovies)
+                End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
@@ -258,7 +271,7 @@ Public Class dlgBulkRenamer
                 End Using
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

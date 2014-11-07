@@ -251,6 +251,9 @@ Public Class BulkRenamerModule
         Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected
             Case 0
                 Using dBulkRename As New dlgBulkRenamer
+                    dBulkRename.FilterMovies = ModulesManager.Instance.RuntimeObjects.FilterMovies
+                    dBulkRename.FilterMoviesSearch = ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch
+                    dBulkRename.FilterMoviesType = ModulesManager.Instance.RuntimeObjects.FilterMoviesType
                     dBulkRename.txtFolderPattern.Text = MySettings.FoldersPattern
                     dBulkRename.txtFilePattern.Text = MySettings.FilesPattern
                     Try
