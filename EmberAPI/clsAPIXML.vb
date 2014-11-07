@@ -272,12 +272,20 @@ Public Class APIXML
                     If If(hasMoreA, aIcon > 10, aIcon > 11) Then Exit For
                     If fiAV.StreamDetails.Audio(i).LanguageSpecified Then
                         Dim aLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Audio(i).Language)
-                        aLangFlag.Tag = fiAV.StreamDetails.Audio(i).LongLanguage
+                        aLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(618, "Audio Stream"), i)
+                        aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Audio(i).LongLanguage)
+                        If fiAV.StreamDetails.Audio(i).CodecSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(604, "Codec"), fiAV.StreamDetails.Audio(i).Codec)
+                        If fiAV.StreamDetails.Audio(i).ChannelsSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(611, "Channels"), fiAV.StreamDetails.Audio(i).Channels)
+                        If fiAV.StreamDetails.Audio(i).BitrateSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(1158, "Bitrate"), fiAV.StreamDetails.Audio(i).Bitrate)
                         iReturn(aIcon) = aLangFlag
                         aIcon += 1
                     Else
                         Dim aLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
-                        aLangFlag.Tag = Master.eLang.GetString(138, "Unknown")
+                        aLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(618, "Audio Stream"), i)
+                        aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
+                        If fiAV.StreamDetails.Audio(i).CodecSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(604, "Codec"), fiAV.StreamDetails.Audio(i).Codec)
+                        If fiAV.StreamDetails.Audio(i).ChannelsSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(611, "Channels"), fiAV.StreamDetails.Audio(i).Channels)
+                        If fiAV.StreamDetails.Audio(i).BitrateSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(1158, "Bitrate"), fiAV.StreamDetails.Audio(i).Bitrate)
                         iReturn(aIcon) = aLangFlag
                         aIcon += 1
                     End If
@@ -301,13 +309,19 @@ Public Class APIXML
                     If If(hasMoreA, sIcon > 17, sIcon > 18) Then Exit For
                     If fiAV.StreamDetails.Subtitle(i).LanguageSpecified Then
                         Dim sLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Subtitle(i).Language)
-                        sLangFlag.Tag = fiAV.StreamDetails.Subtitle(i).LongLanguage
+                        sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
+                        sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Subtitle(i).LongLanguage)
+                        sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(1287, "Forced"), _
+                                                      If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                         iReturn(sIcon) = sLangFlag
                         sIcon += 1
                     Else
                         Dim sLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
-                        sLangFlag.Tag = Master.eLang.GetString(138, "Unknown")
-                        iReturn(aIcon) = sLangFlag
+                        sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
+                        sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
+                        sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(1287, "Forced"), _
+                                                      If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                        iReturn(sIcon) = sLangFlag
                         aIcon += 1
                     End If
                 Next
