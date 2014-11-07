@@ -86,25 +86,46 @@ Public Class dlgBulkRenamer
         Try
             Dim MovieFile As New FileFolderRenamer.FileRename
             Dim _curMovie As New Structures.DBMovie
+            Dim hasFilter As Boolean = False
+            Dim dbFilter As String = String.Empty
+
+            If Not String.IsNullOrEmpty(Me.FilterMoviesSearch) AndAlso Not String.IsNullOrEmpty(Me.FilterMoviesType) Then
+                Select Case Me.FilterMoviesType
+                    Case Master.eLang.GetString(100, "Actor")
+                        dbFilter = String.Concat("ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.FilterMoviesSearch, "%')")
+                    Case Master.eLang.GetString(233, "Role")
+                        dbFilter = String.Concat("ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.FilterMoviesSearch, "%')")
+                End Select
+                hasFilter = True
+            End If
+
+            If Not String.IsNullOrEmpty(Me.FilterMovies) Then
+                If hasFilter Then
+                    dbFilter = String.Concat("(", Me.FilterMovies, ") AND ", dbFilter).Trim
+                Else
+                    dbFilter = String.Concat(Me.FilterMovies).Trim
+                    hasFilter = True
+                End If
+            End If
 
             ' Load nfo movies using path from DB
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
-                If String.IsNullOrEmpty(Me.FilterMovies) Then
+                If Not hasFilter Then
                     SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(id) AS mcount FROM movies WHERE {0};", Me.FilterMovies)
+                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(id) AS mcount FROM movies WHERE {0};", dbFilter)
                 End If
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
                         Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                     End If
                 End Using
-                If String.IsNullOrEmpty(Me.FilterMovies) Then
+                If Not hasFilter Then
                     SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM movies ORDER BY ListTitle ASC;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, id FROM movies WHERE {0} ORDER BY ListTitle ASC;", Me.FilterMovies)
+                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, id FROM movies WHERE {0} ORDER BY ListTitle ASC;", dbFilter)
                 End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then

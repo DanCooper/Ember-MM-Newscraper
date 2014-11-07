@@ -15719,6 +15719,8 @@ doCancel:
 
                 If doFill Then
                     Me.FillList(True, False, False)
+                    ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch = Me.txtSearchMovies.Text
+                    ModulesManager.Instance.RuntimeObjects.FilterMoviesType = Me.cbSearchMovies.Text
                 Else
                     Me.txtSearchMovies.Focus()
                 End If
