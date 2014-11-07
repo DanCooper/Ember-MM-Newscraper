@@ -121,8 +121,8 @@ Public Class dlgBulkRenamer
                                             If Not IsNothing(_curMovie.Movie.Director) Then
                                                 MovieFile.Director = _curMovie.Movie.Director
                                             End If
-                                            If Not IsNothing(_curMovie.VideoSource) Then
-                                                MovieFile.VideoSource = _curMovie.VideoSource
+                                            If Not IsNothing(_curMovie.Movie.VideoSource) Then
+                                                MovieFile.VideoSource = _curMovie.Movie.VideoSource
                                             End If
                                             If Not IsNothing(_curMovie.Movie.Genre) Then
                                                 MovieFile.Genre = _curMovie.Movie.Genre
