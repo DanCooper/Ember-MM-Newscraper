@@ -951,10 +951,10 @@ Public Class MediaInfo
             Catch ex As Exception
             End Try
         End If
-        'If no bitrate is read by MediaInfo, then set default 0 - I need value here because of comparing numbers later in HTML/Javascript template!
-        If rawbitrate = "" Then
-            rawbitrate = "0"
-        End If
+        '2014/11/07 Don't set "0" anymore
+        'If rawbitrate = "" Then
+        '    rawbitrate = "0"
+        'End If
         Return rawbitrate
     End Function
 
