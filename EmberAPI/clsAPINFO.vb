@@ -73,7 +73,7 @@ Public Class NFO
         Dim new_Year As Boolean = False
 
         'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
-        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
+        If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
             PreviewDataScraperResults(ScrapedList)
         End If
 
