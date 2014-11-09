@@ -1454,7 +1454,13 @@ Public Class dlgEditMovieSet
                 Me.btnSearchMovie.Enabled = False
                 Me.btnRescrape.Enabled = False
 
-                'it is important that existing images will be deleted before the new name is saved!
+                'it is important that existing NFO and images will be deleted before the new name is saved!
+                If needsMovieUpdate Then
+                    If Not IsNothing(Master.currMovieSet.NfoPath) AndAlso Not String.IsNullOrEmpty(Master.currMovieSet.NfoPath) Then
+                        File.Delete(Master.currMovieSet.NfoPath)
+                    End If
+                End If
+
                 If Master.currMovieSet.RemoveBanner OrElse needsMovieUpdate Then
                     .MovieBanner.DeleteMovieSetBanner(Master.currMovieSet)
                 End If

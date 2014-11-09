@@ -2698,7 +2698,7 @@ Public Class frmMain
                 If bwMovieSetScraper.CancellationPending Then Exit For
 
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-                    'MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.NFOItem, True)
+                    MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.NFOItem, True)
                 End If
 
                 NewListTitle = DBScrapeMovieSet.ListTitle
@@ -14762,7 +14762,7 @@ doCancel:
 
                 If FromNfo Then
                     If String.IsNullOrEmpty(tmpMovieDB.NfoPath) Then
-                        Dim sNFO As String = NFO.GetNfoPath(tmpMovieDB.Filename, tmpMovieDB.IsSingle)
+                        Dim sNFO As String = NFO.GetNfoPath_Movie(tmpMovieDB.Filename, tmpMovieDB.IsSingle)
                         tmpMovieDB.NfoPath = sNFO
                         tmpMovie = NFO.LoadMovieFromNFO(sNFO, tmpMovieDB.IsSingle)
                     Else
@@ -15004,8 +15004,8 @@ doCancel:
     End Function
 
     Private Function RefreshMovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False, Optional ByVal delWatched As Boolean = False) As Boolean
-        'Dim tmpMovieSet As New MediaContainers.Movie
-        Dim tmpMovieSetDb As New Structures.DBMovieSet
+        Dim tmpMovieSet As New MediaContainers.MovieSet
+        Dim tmpMovieSetDB As New Structures.DBMovieSet
         Dim OldTitle As String = String.Empty
         Dim selRow As DataRow = Nothing
 
@@ -15022,27 +15022,38 @@ doCancel:
 
         Try
 
-            tmpMovieSetDb = Master.DB.LoadMovieSetFromDB(ID)
+            tmpMovieSetDB = Master.DB.LoadMovieSetFromDB(ID)
 
-            OldTitle = tmpMovieSetDb.MovieSet.Title
+            OldTitle = tmpMovieSetDB.MovieSet.Title
 
-            Dim tTitle As String = StringUtils.FilterTokens_MovieSet(tmpMovieSetDb.MovieSet.Title)
-            If Not String.IsNullOrEmpty(tTitle) Then
-                tmpMovieSetDb.ListTitle = tTitle
-            Else
-                tmpMovieSetDb.ListTitle = OldTitle
+            If FromNfo Then
+                If String.IsNullOrEmpty(tmpMovieSetDB.NfoPath) Then
+                    Dim sNFO As String = NFO.GetNfoPath_MovieSet(tmpMovieSetDb.MovieSet.Title)
+                    tmpMovieSetDB.NfoPath = sNFO
+                    tmpMovieSet = NFO.LoadMovieSetFromNFO(sNFO)
+                Else
+                    tmpMovieSet = NFO.LoadMovieSetFromNFO(tmpMovieSetDB.NfoPath)
+                End If
+                tmpMovieSetDB.MovieSet = tmpMovieSet
             End If
 
-            Dim mContainer As New Scanner.MovieSetContainer With {.SetName = tmpMovieSetDb.MovieSet.Title}
+            Dim tTitle As String = StringUtils.FilterTokens_MovieSet(tmpMovieSetDB.MovieSet.Title)
+            If Not String.IsNullOrEmpty(tTitle) Then
+                tmpMovieSetDB.ListTitle = tTitle
+            Else
+                tmpMovieSetDB.ListTitle = OldTitle
+            End If
+
+            Dim mContainer As New Scanner.MovieSetContainer With {.SetName = tmpMovieSetDB.MovieSet.Title}
             fScanner.GetMovieSetFolderContents(mContainer)
-            tmpMovieSetDb.BannerPath = mContainer.Banner
-            tmpMovieSetDb.ClearArtPath = mContainer.ClearArt
-            tmpMovieSetDb.ClearLogoPath = mContainer.ClearLogo
-            tmpMovieSetDb.DiscArtPath = mContainer.DiscArt
-            tmpMovieSetDb.FanartPath = mContainer.Fanart
-            tmpMovieSetDb.LandscapePath = mContainer.Landscape
-            tmpMovieSetDb.NfoPath = mContainer.Nfo
-            tmpMovieSetDb.PosterPath = mContainer.Poster
+            tmpMovieSetDB.BannerPath = mContainer.Banner
+            tmpMovieSetDB.ClearArtPath = mContainer.ClearArt
+            tmpMovieSetDB.ClearLogoPath = mContainer.ClearLogo
+            tmpMovieSetDB.DiscArtPath = mContainer.DiscArt
+            tmpMovieSetDB.FanartPath = mContainer.Fanart
+            tmpMovieSetDB.LandscapePath = mContainer.Landscape
+            tmpMovieSetDB.NfoPath = mContainer.Nfo
+            tmpMovieSetDB.PosterPath = mContainer.Poster
 
             hasBanner = Not String.IsNullOrEmpty(mContainer.Banner)
             hasClearArt = Not String.IsNullOrEmpty(mContainer.ClearArt)
@@ -15057,57 +15068,57 @@ doCancel:
 
             If Not IsNothing(dRow(0)) Then
                 selRow = DirectCast(dRow(0), DataRow)
-                tmpMovieSetDb.IsMark = Convert.ToBoolean(selRow.Item(22))
-                tmpMovieSetDb.IsLock = Convert.ToBoolean(selRow.Item(23))
+                tmpMovieSetDB.IsMark = Convert.ToBoolean(selRow.Item(22))
+                tmpMovieSetDB.IsLock = Convert.ToBoolean(selRow.Item(23))
 
                 If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieSetDb.ListTitle})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieSetDB.ListTitle})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 2, hasNfo})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieSetDb.NfoPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieSetDB.NfoPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 4, hasPoster})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 5, tmpMovieSetDb.PosterPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 5, tmpMovieSetDB.PosterPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 6, hasFanart})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 7, tmpMovieSetDb.FanartPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 7, tmpMovieSetDB.FanartPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 8, hasBanner})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 9, tmpMovieSetDb.BannerPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 9, tmpMovieSetDB.BannerPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 10, hasLandscape})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 11, tmpMovieSetDb.LandscapePath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 11, tmpMovieSetDB.LandscapePath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 12, hasDiscArt})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 13, tmpMovieSetDb.DiscArtPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 13, tmpMovieSetDB.DiscArtPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 14, hasClearLogo})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieSetDb.ClearLogoPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieSetDB.ClearLogoPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 16, hasClearArt})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 17, tmpMovieSetDb.ClearArtPath})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 18, tmpMovieSetDb.MovieSet.ID})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 19, tmpMovieSetDb.MovieSet.Plot})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 20, tmpMovieSetDb.MovieSet.Title})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 17, tmpMovieSetDB.ClearArtPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 18, tmpMovieSetDB.MovieSet.ID})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 19, tmpMovieSetDB.MovieSet.Plot})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 20, tmpMovieSetDB.MovieSet.Title})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 20, False})
                 Else
-                    selRow.Item(1) = tmpMovieSetDb.ListTitle
+                    selRow.Item(1) = tmpMovieSetDB.ListTitle
                     selRow.Item(2) = hasNfo
-                    selRow.Item(3) = tmpMovieSetDb.NfoPath
+                    selRow.Item(3) = tmpMovieSetDB.NfoPath
                     selRow.Item(4) = hasPoster
-                    selRow.Item(5) = tmpMovieSetDb.PosterPath
+                    selRow.Item(5) = tmpMovieSetDB.PosterPath
                     selRow.Item(6) = hasFanart
-                    selRow.Item(7) = tmpMovieSetDb.FanartPath
+                    selRow.Item(7) = tmpMovieSetDB.FanartPath
                     selRow.Item(8) = hasBanner
-                    selRow.Item(9) = tmpMovieSetDb.BannerPath
+                    selRow.Item(9) = tmpMovieSetDB.BannerPath
                     selRow.Item(10) = hasLandscape
-                    selRow.Item(11) = tmpMovieSetDb.LandscapePath
+                    selRow.Item(11) = tmpMovieSetDB.LandscapePath
                     selRow.Item(12) = hasDiscArt
-                    selRow.Item(13) = tmpMovieSetDb.DiscArtPath
+                    selRow.Item(13) = tmpMovieSetDB.DiscArtPath
                     selRow.Item(14) = hasClearLogo
-                    selRow.Item(15) = tmpMovieSetDb.ClearLogoPath
+                    selRow.Item(15) = tmpMovieSetDB.ClearLogoPath
                     selRow.Item(16) = hasClearArt
-                    selRow.Item(17) = tmpMovieSetDb.ClearArtPath
-                    selRow.Item(18) = tmpMovieSetDb.MovieSet.ID
-                    selRow.Item(19) = tmpMovieSetDb.MovieSet.Plot
-                    selRow.Item(20) = tmpMovieSetDb.MovieSet.Title
+                    selRow.Item(17) = tmpMovieSetDB.ClearArtPath
+                    selRow.Item(18) = tmpMovieSetDB.MovieSet.ID
+                    selRow.Item(19) = tmpMovieSetDB.MovieSet.Plot
+                    selRow.Item(20) = tmpMovieSetDB.MovieSet.Title
                     selRow.Item(20) = False
                 End If
             End If
 
-            Master.DB.SaveMovieSetToDB(tmpMovieSetDb, False, BatchMode, ToNfo, True)
+            Master.DB.SaveMovieSetToDB(tmpMovieSetDB, False, BatchMode, ToNfo, True)
 
             If Not BatchMode Then
 

@@ -773,7 +773,7 @@ Public Class NFO
         Return tNonConf
     End Function
 
-    Public Shared Function GetNfoPath(ByVal sPath As String, ByVal isSingle As Boolean) As String
+    Public Shared Function GetNfoPath_Movie(ByVal sPath As String, ByVal isSingle As Boolean) As String
         '//
         ' Get the proper path to NFO
         '\\
@@ -790,6 +790,21 @@ Public Class NFO
             'return movie path so we can use it for looking for non-conforming nfos
             Return sPath
         End If
+
+    End Function
+
+    Public Shared Function GetNfoPath_MovieSet(ByVal sPath As String) As String
+        '//
+        ' Get the proper path to NFO
+        '\\
+
+        For Each a In FileUtils.GetFilenameList.MovieSet(sPath, Enums.ModType_Movie.NFO)
+            If File.Exists(a) Then
+                Return a
+            End If
+        Next
+
+        Return String.Empty
 
     End Function
 
@@ -1047,6 +1062,79 @@ Public Class NFO
         Return xmlMov
     End Function
 
+    Public Shared Function LoadMovieSetFromNFO(ByVal sPath As String) As MediaContainers.MovieSet
+        '//
+        ' Deserialze the NFO to pass all the data to a MediaContainers.Movie
+        '\\
+
+        Dim xmlSer As XmlSerializer = Nothing
+        Dim xmlMovSet As New MediaContainers.MovieSet
+
+        If Not String.IsNullOrEmpty(sPath) Then
+            Try
+                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
+                    Using xmlSR As StreamReader = New StreamReader(sPath)
+                        xmlSer = New XmlSerializer(GetType(MediaContainers.MovieSet))
+                        xmlMovSet = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.MovieSet)
+                        xmlMovSet.Plot = xmlMovSet.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                    End Using
+                    'Else
+                    '    If Not String.IsNullOrEmpty(sPath) Then
+                    '        Dim sReturn As New NonConf
+                    '        sReturn = GetIMDBFromNonConf(sPath, isSingle)
+                    '        xmlMov.IMDBID = sReturn.IMDBID
+                    '        Try
+                    '            If Not String.IsNullOrEmpty(sReturn.Text) Then
+                    '                Using xmlSTR As StringReader = New StringReader(sReturn.Text)
+                    '                    xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
+                    '                    xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
+                    '                    xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
+                    '                    xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                    '                    xmlMovSet.Plot = xmlMovSet.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                    '                    xmlMov.IMDBID = sReturn.IMDBID
+                    '                End Using
+                    '            End If
+                    '        Catch
+                    '        End Try
+                    '    End If
+                End If
+
+            Catch
+                xmlMovSet.Clear()
+                'If Not String.IsNullOrEmpty(sPath) Then
+
+                '    'go ahead and rename it now, will still be picked up in getimdbfromnonconf
+                '    If Not Master.eSettings.GeneralOverwriteNfo Then
+                '        RenameNonConfNfo(sPath, True)
+                '    End If
+
+                '    Dim sReturn As New NonConf
+                '    sReturn = GetIMDBFromNonConf(sPath, isSingle)
+                '    xmlMov.IMDBID = sReturn.IMDBID
+                '    Try
+                '        If Not String.IsNullOrEmpty(sReturn.Text) Then
+                '            Using xmlSTR As StringReader = New StringReader(sReturn.Text)
+                '                xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
+                '                xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
+                '                xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
+                '                xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                '                xmlMovSet.Plot = xmlMovSet.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                '                xmlMov.IMDBID = sReturn.IMDBID
+                '            End Using
+                '        End If
+                '    Catch
+                '    End Try
+                'End If
+            End Try
+
+            If Not IsNothing(xmlSer) Then
+                xmlSer = Nothing
+            End If
+        End If
+
+        Return xmlMovSet
+    End Function
+
     Public Shared Function LoadTVEpFromNFO(ByVal sPath As String, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer) As MediaContainers.EpisodeDetails
         Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
         Dim xmlEp As New MediaContainers.EpisodeDetails
@@ -1212,40 +1300,40 @@ Public Class NFO
             'Try
             '    Dim params As New List(Of Object)(New Object() {moviesetToSave})
             '    Dim doContinue As Boolean = True
-            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieNFOSave, params, doContinue, False)
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieSetNFOSave, params, doContinue, False)
             '    If Not doContinue Then Return
             'Catch ex As Exception
             'End Try
 
-            'If Not String.IsNullOrEmpty(moviesetToSave.SetName) Then
-            '    Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
-            '    Dim doesExist As Boolean = False
-            '    Dim fAtt As New FileAttributes
-            '    Dim fAttWritable As Boolean = True
+            If Not String.IsNullOrEmpty(moviesetToSave.MovieSet.Title) Then
+                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MovieSet))
+                Dim doesExist As Boolean = False
+                Dim fAtt As New FileAttributes
+                Dim fAttWritable As Boolean = True
 
-            '    For Each a In FileUtils.GetFilenameList.Movie(moviesetToSave.SetName, moviesetToSave.isSingle, Enums.ModType.NFO)
-            '        If Not Master.eSettings.GeneralOverwriteNfo Then
-            '            RenameNonConfNfo(a, False)
-            '        End If
+                For Each a In FileUtils.GetFilenameList.MovieSet(moviesetToSave.MovieSet.Title, Enums.ModType_Movie.NFO)
+                    'If Not Master.eSettings.GeneralOverwriteNfo Then
+                    '    RenameNonConfNfo(a, False)
+                    'End If
 
-            '        doesExist = File.Exists(a)
-            '        If Not doesExist OrElse (Not CBool(File.GetAttributes(a) And FileAttributes.ReadOnly)) Then
-            '            If doesExist Then
-            '                fAtt = File.GetAttributes(a)
-            '                Try
-            '                    File.SetAttributes(a, FileAttributes.Normal)
-            '                Catch ex As Exception
-            '                    fAttWritable = False
-            '                End Try
-            '            End If
-            '            Using xmlSW As New StreamWriter(a)
-            '                movieToSave.NfoPath = a
-            '                xmlSer.Serialize(xmlSW, movieToSave.Movie)
-            '            End Using
-            '            If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
-            '        End If
-            '    Next
-            'End If
+                    doesExist = File.Exists(a)
+                    If Not doesExist OrElse (Not CBool(File.GetAttributes(a) And FileAttributes.ReadOnly)) Then
+                        If doesExist Then
+                            fAtt = File.GetAttributes(a)
+                            Try
+                                File.SetAttributes(a, FileAttributes.Normal)
+                            Catch ex As Exception
+                                fAttWritable = False
+                            End Try
+                        End If
+                        Using xmlSW As New StreamWriter(a)
+                            moviesetToSave.NfoPath = a
+                            xmlSer.Serialize(xmlSW, moviesetToSave.MovieSet)
+                        End Using
+                        If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
+                    End If
+                Next
+            End If
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)

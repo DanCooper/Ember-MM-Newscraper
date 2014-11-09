@@ -6009,7 +6009,7 @@ Public Class dlgSettings
         Me.gbMoviePosterOpts.Text = Master.eLang.GetString(148, "Poster")
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
-        Me.gbMovieScraperGlobalOpts.Text = Master.eLang.GetString(488, "Global Scraper Fields")
+        Me.gbMovieScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields - Global")
         Me.gbMovieScraperMetaDataOpts.Text = Master.eLang.GetString(59, "Meta Data")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
@@ -6230,6 +6230,7 @@ Public Class dlgSettings
         Me.gbMovieSetGeneralMissingItemsOpts.Text = Me.gbMovieGeneralMissingItemsOpts.Text
         Me.gbMovieSetLandscapeOpts.Text = Me.gbMovieLandscapeOpts.Text
         Me.gbMovieSetPosterOpts.Text = Me.gbMoviePosterOpts.Text
+        Me.gbMovieSetScraperGlobalOpts.Text = Me.gbMovieScraperGlobalOpts.Text
         Me.gbMovieSetSortTokensOpts.Text = Me.gbMovieSortTokensOpts.Text
         Me.gbMovieSetSourceMiscOpts.Text = Me.gbMovieSourcesMiscOpts.Text
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text

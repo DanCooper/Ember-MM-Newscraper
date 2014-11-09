@@ -30,6 +30,9 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.gbGeneralMisc = New System.Windows.Forms.GroupBox()
         Me.chkGeneralSourceFromFolder = New System.Windows.Forms.CheckBox()
         Me.chkGeneralCheckUpdates = New System.Windows.Forms.CheckBox()
@@ -1088,10 +1091,8 @@ Partial Class dlgSettings
         Me.dgvMovieSetScraperTitleRenamer = New System.Windows.Forms.DataGridView()
         Me.tbcMovieSetScrapedTitleRenamerFrom = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.tbcMovieSetScrapedTitleRenamerTo = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.gbMovieSetScraperGlobalLocksOpts = New System.Windows.Forms.GroupBox()
-        Me.chkMovieSetLockPlot = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetLockTitle = New System.Windows.Forms.CheckBox()
-        Me.gbMovieSetScraperFieldsOpts = New System.Windows.Forms.GroupBox()
+        Me.gbMovieSetScraperGlobalOpts = New System.Windows.Forms.GroupBox()
         Me.chkMovieSetScraperPlot = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetScraperTitle = New System.Windows.Forms.CheckBox()
         Me.pnlMovieSetImages = New System.Windows.Forms.Panel()
@@ -1133,6 +1134,12 @@ Partial Class dlgSettings
         Me.lblMovieSetPosterSize = New System.Windows.Forms.Label()
         Me.cbMovieSetPosterPrefSize = New System.Windows.Forms.ComboBox()
         Me.chkMovieSetPosterOverwrite = New System.Windows.Forms.CheckBox()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.lblMovieSetScraperTitle = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.lblMovieSetScraperPlot = New System.Windows.Forms.Label()
+        Me.chkMovieSetLockPlot = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -1311,8 +1318,7 @@ Partial Class dlgSettings
         Me.pnlMovieSetScraper.SuspendLayout
         Me.gbMovieSetScraperTitleRenamerOpts.SuspendLayout
         CType(Me.dgvMovieSetScraperTitleRenamer,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.gbMovieSetScraperGlobalLocksOpts.SuspendLayout
-        Me.gbMovieSetScraperFieldsOpts.SuspendLayout
+        Me.gbMovieSetScraperGlobalOpts.SuspendLayout
         Me.pnlMovieSetImages.SuspendLayout
         Me.gbMovieSetClearArtOpts.SuspendLayout
         Me.gbMovieSetClearLogoOpts.SuspendLayout
@@ -1321,6 +1327,7 @@ Partial Class dlgSettings
         Me.gbMovieSetLandscapeOpts.SuspendLayout
         Me.gbMovieSetFanartOpts.SuspendLayout
         Me.gbMovieSetPosterOpts.SuspendLayout
+        Me.TableLayoutPanel1.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -4305,18 +4312,18 @@ Partial Class dlgSettings
         '
         'chkMovieBackdropsAuto
         '
-        Me.chkMovieBackdropsAuto.Enabled = False
-        Me.chkMovieBackdropsAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieBackdropsAuto.Enabled = false
+        Me.chkMovieBackdropsAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieBackdropsAuto.Location = New System.Drawing.Point(6, 49)
         Me.chkMovieBackdropsAuto.Name = "chkMovieBackdropsAuto"
         Me.chkMovieBackdropsAuto.Size = New System.Drawing.Size(200, 33)
         Me.chkMovieBackdropsAuto.TabIndex = 2
         Me.chkMovieBackdropsAuto.Text = "Automatically Save Fanart To Backdrops Folder"
-        Me.chkMovieBackdropsAuto.UseVisualStyleBackColor = True
+        Me.chkMovieBackdropsAuto.UseVisualStyleBackColor = true
         '
         'btnMovieBackdropsPathBrowse
         '
-        Me.btnMovieBackdropsPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnMovieBackdropsPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.btnMovieBackdropsPathBrowse.Location = New System.Drawing.Point(181, 21)
         Me.btnMovieBackdropsPathBrowse.Name = "btnMovieBackdropsPathBrowse"
         Me.btnMovieBackdropsPathBrowse.Size = New System.Drawing.Size(25, 22)
@@ -10544,7 +10551,7 @@ Partial Class dlgSettings
         Me.gbMovieScraperGlobalOpts.Size = New System.Drawing.Size(280, 490)
         Me.gbMovieScraperGlobalOpts.TabIndex = 1
         Me.gbMovieScraperGlobalOpts.TabStop = false
-        Me.gbMovieScraperGlobalOpts.Text = "Global Scraper Fields"
+        Me.gbMovieScraperGlobalOpts.Text = "Scraper Fields - Global"
         '
         'tblMovieScraperGlobalOpts
         '
@@ -10744,7 +10751,8 @@ Partial Class dlgSettings
         '
         Me.Label3.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Label3.AutoSize = true
-        Me.Label3.Location = New System.Drawing.Point(12, 3)
+        Me.tblMovieScraperGlobalOpts.SetColumnSpan(Me.Label3, 2)
+        Me.Label3.Location = New System.Drawing.Point(23, 3)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(78, 13)
         Me.Label3.TabIndex = 13
@@ -12824,8 +12832,7 @@ Partial Class dlgSettings
         '
         Me.pnlMovieSetScraper.BackColor = System.Drawing.Color.White
         Me.pnlMovieSetScraper.Controls.Add(Me.gbMovieSetScraperTitleRenamerOpts)
-        Me.pnlMovieSetScraper.Controls.Add(Me.gbMovieSetScraperGlobalLocksOpts)
-        Me.pnlMovieSetScraper.Controls.Add(Me.gbMovieSetScraperFieldsOpts)
+        Me.pnlMovieSetScraper.Controls.Add(Me.gbMovieSetScraperGlobalOpts)
         Me.pnlMovieSetScraper.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieSetScraper.Name = "pnlMovieSetScraper"
         Me.pnlMovieSetScraper.Size = New System.Drawing.Size(750, 500)
@@ -12838,7 +12845,7 @@ Partial Class dlgSettings
         Me.gbMovieSetScraperTitleRenamerOpts.Controls.Add(Me.btnMovieSetScraperTitleRenamerAdd)
         Me.gbMovieSetScraperTitleRenamerOpts.Controls.Add(Me.dgvMovieSetScraperTitleRenamer)
         Me.gbMovieSetScraperTitleRenamerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.gbMovieSetScraperTitleRenamerOpts.Location = New System.Drawing.Point(311, 218)
+        Me.gbMovieSetScraperTitleRenamerOpts.Location = New System.Drawing.Point(292, 6)
         Me.gbMovieSetScraperTitleRenamerOpts.Name = "gbMovieSetScraperTitleRenamerOpts"
         Me.gbMovieSetScraperTitleRenamerOpts.Size = New System.Drawing.Size(316, 212)
         Me.gbMovieSetScraperTitleRenamerOpts.TabIndex = 69
@@ -12879,11 +12886,35 @@ Partial Class dlgSettings
         Me.dgvMovieSetScraperTitleRenamer.AllowUserToResizeColumns = false
         Me.dgvMovieSetScraperTitleRenamer.AllowUserToResizeRows = false
         Me.dgvMovieSetScraperTitleRenamer.BackgroundColor = System.Drawing.Color.White
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvMovieSetScraperTitleRenamer.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle10
         Me.dgvMovieSetScraperTitleRenamer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMovieSetScraperTitleRenamer.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.tbcMovieSetScrapedTitleRenamerFrom, Me.tbcMovieSetScrapedTitleRenamerTo})
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvMovieSetScraperTitleRenamer.DefaultCellStyle = DataGridViewCellStyle11
         Me.dgvMovieSetScraperTitleRenamer.Location = New System.Drawing.Point(6, 21)
         Me.dgvMovieSetScraperTitleRenamer.MultiSelect = false
         Me.dgvMovieSetScraperTitleRenamer.Name = "dgvMovieSetScraperTitleRenamer"
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        DataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvMovieSetScraperTitleRenamer.RowHeadersDefaultCellStyle = DataGridViewCellStyle12
         Me.dgvMovieSetScraperTitleRenamer.RowHeadersVisible = false
         Me.dgvMovieSetScraperTitleRenamer.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.dgvMovieSetScraperTitleRenamer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
@@ -12908,70 +12939,48 @@ Partial Class dlgSettings
         Me.tbcMovieSetScrapedTitleRenamerTo.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.tbcMovieSetScrapedTitleRenamerTo.Width = 150
         '
-        'gbMovieSetScraperGlobalLocksOpts
-        '
-        Me.gbMovieSetScraperGlobalLocksOpts.Controls.Add(Me.chkMovieSetLockPlot)
-        Me.gbMovieSetScraperGlobalLocksOpts.Controls.Add(Me.chkMovieSetLockTitle)
-        Me.gbMovieSetScraperGlobalLocksOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbMovieSetScraperGlobalLocksOpts.Location = New System.Drawing.Point(6, 6)
-        Me.gbMovieSetScraperGlobalLocksOpts.Name = "gbMovieSetScraperGlobalLocksOpts"
-        Me.gbMovieSetScraperGlobalLocksOpts.Size = New System.Drawing.Size(156, 206)
-        Me.gbMovieSetScraperGlobalLocksOpts.TabIndex = 1
-        Me.gbMovieSetScraperGlobalLocksOpts.TabStop = false
-        Me.gbMovieSetScraperGlobalLocksOpts.Text = "Global Locks"
-        '
-        'chkMovieSetLockPlot
-        '
-        Me.chkMovieSetLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieSetLockPlot.Location = New System.Drawing.Point(6, 33)
-        Me.chkMovieSetLockPlot.Name = "chkMovieSetLockPlot"
-        Me.chkMovieSetLockPlot.Size = New System.Drawing.Size(129, 17)
-        Me.chkMovieSetLockPlot.TabIndex = 0
-        Me.chkMovieSetLockPlot.Text = "Lock Plot"
-        Me.chkMovieSetLockPlot.UseVisualStyleBackColor = true
-        '
         'chkMovieSetLockTitle
         '
+        Me.chkMovieSetLockTitle.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkMovieSetLockTitle.AutoSize = true
         Me.chkMovieSetLockTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieSetLockTitle.Location = New System.Drawing.Point(6, 16)
+        Me.chkMovieSetLockTitle.Location = New System.Drawing.Point(95, 23)
         Me.chkMovieSetLockTitle.Name = "chkMovieSetLockTitle"
-        Me.chkMovieSetLockTitle.Size = New System.Drawing.Size(129, 17)
+        Me.chkMovieSetLockTitle.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieSetLockTitle.TabIndex = 2
-        Me.chkMovieSetLockTitle.Text = "Lock Title"
         Me.chkMovieSetLockTitle.UseVisualStyleBackColor = true
         '
-        'gbMovieSetScraperFieldsOpts
+        'gbMovieSetScraperGlobalOpts
         '
-        Me.gbMovieSetScraperFieldsOpts.Controls.Add(Me.chkMovieSetScraperPlot)
-        Me.gbMovieSetScraperFieldsOpts.Controls.Add(Me.chkMovieSetScraperTitle)
-        Me.gbMovieSetScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbMovieSetScraperFieldsOpts.Location = New System.Drawing.Point(3, 218)
-        Me.gbMovieSetScraperFieldsOpts.Name = "gbMovieSetScraperFieldsOpts"
-        Me.gbMovieSetScraperFieldsOpts.Size = New System.Drawing.Size(302, 212)
-        Me.gbMovieSetScraperFieldsOpts.TabIndex = 67
-        Me.gbMovieSetScraperFieldsOpts.TabStop = false
-        Me.gbMovieSetScraperFieldsOpts.Text = "Scraper Fields - Global"
+        Me.gbMovieSetScraperGlobalOpts.Controls.Add(Me.TableLayoutPanel1)
+        Me.gbMovieSetScraperGlobalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetScraperGlobalOpts.Location = New System.Drawing.Point(6, 6)
+        Me.gbMovieSetScraperGlobalOpts.Name = "gbMovieSetScraperGlobalOpts"
+        Me.gbMovieSetScraperGlobalOpts.Size = New System.Drawing.Size(280, 490)
+        Me.gbMovieSetScraperGlobalOpts.TabIndex = 67
+        Me.gbMovieSetScraperGlobalOpts.TabStop = false
+        Me.gbMovieSetScraperGlobalOpts.Text = "Scraper Fields - Global"
         '
         'chkMovieSetScraperPlot
         '
+        Me.chkMovieSetScraperPlot.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieSetScraperPlot.AutoSize = true
         Me.chkMovieSetScraperPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieSetScraperPlot.Location = New System.Drawing.Point(6, 42)
+        Me.chkMovieSetScraperPlot.Location = New System.Drawing.Point(51, 43)
         Me.chkMovieSetScraperPlot.Name = "chkMovieSetScraperPlot"
-        Me.chkMovieSetScraperPlot.Size = New System.Drawing.Size(46, 17)
+        Me.chkMovieSetScraperPlot.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieSetScraperPlot.TabIndex = 12
-        Me.chkMovieSetScraperPlot.Text = "Plot"
         Me.chkMovieSetScraperPlot.UseVisualStyleBackColor = true
         '
         'chkMovieSetScraperTitle
         '
+        Me.chkMovieSetScraperTitle.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieSetScraperTitle.AutoSize = true
         Me.chkMovieSetScraperTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieSetScraperTitle.Location = New System.Drawing.Point(6, 19)
+        Me.chkMovieSetScraperTitle.Location = New System.Drawing.Point(51, 23)
         Me.chkMovieSetScraperTitle.Name = "chkMovieSetScraperTitle"
-        Me.chkMovieSetScraperTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkMovieSetScraperTitle.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieSetScraperTitle.TabIndex = 0
-        Me.chkMovieSetScraperTitle.Text = "Title"
         Me.chkMovieSetScraperTitle.UseVisualStyleBackColor = true
         '
         'pnlMovieSetImages
@@ -13409,6 +13418,110 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterOverwrite.Text = "Overwrite Existing"
         Me.chkMovieSetPosterOverwrite.UseVisualStyleBackColor = true
         '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.AutoScroll = true
+        Me.TableLayoutPanel1.ColumnCount = 4
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.Controls.Add(Me.chkMovieSetLockPlot, 2, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.chkMovieSetScraperPlot, 1, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.chkMovieSetLockTitle, 2, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.chkMovieSetScraperTitle, 1, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.Label5, 2, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.lblMovieSetScraperTitle, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.Label9, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.lblMovieSetScraperPlot, 0, 2)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 4
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(274, 469)
+        Me.TableLayoutPanel1.TabIndex = 1
+        '
+        'Label5
+        '
+        Me.Label5.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label5.AutoSize = true
+        Me.Label5.Location = New System.Drawing.Point(87, 3)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(31, 13)
+        Me.Label5.TabIndex = 12
+        Me.Label5.Text = "Lock"
+        '
+        'lblMovieSetScraperTitle
+        '
+        Me.lblMovieSetScraperTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetScraperTitle.AutoSize = true
+        Me.lblMovieSetScraperTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblMovieSetScraperTitle.Location = New System.Drawing.Point(3, 23)
+        Me.lblMovieSetScraperTitle.Name = "lblMovieSetScraperTitle"
+        Me.lblMovieSetScraperTitle.Size = New System.Drawing.Size(28, 13)
+        Me.lblMovieSetScraperTitle.TabIndex = 67
+        Me.lblMovieSetScraperTitle.Text = "Title"
+        '
+        'Label9
+        '
+        Me.Label9.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label9.AutoSize = true
+        Me.TableLayoutPanel1.SetColumnSpan(Me.Label9, 2)
+        Me.Label9.Location = New System.Drawing.Point(3, 3)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(78, 13)
+        Me.Label9.TabIndex = 13
+        Me.Label9.Text = "Scraper Fields"
+        '
+        'lblMovieSetScraperPlot
+        '
+        Me.lblMovieSetScraperPlot.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetScraperPlot.AutoSize = true
+        Me.lblMovieSetScraperPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblMovieSetScraperPlot.Location = New System.Drawing.Point(3, 43)
+        Me.lblMovieSetScraperPlot.Name = "lblMovieSetScraperPlot"
+        Me.lblMovieSetScraperPlot.Size = New System.Drawing.Size(27, 13)
+        Me.lblMovieSetScraperPlot.TabIndex = 68
+        Me.lblMovieSetScraperPlot.Text = "Plot"
+        '
+        'chkMovieSetLockPlot
+        '
+        Me.chkMovieSetLockPlot.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkMovieSetLockPlot.AutoSize = true
+        Me.chkMovieSetLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetLockPlot.Location = New System.Drawing.Point(95, 43)
+        Me.chkMovieSetLockPlot.Name = "chkMovieSetLockPlot"
+        Me.chkMovieSetLockPlot.Size = New System.Drawing.Size(15, 14)
+        Me.chkMovieSetLockPlot.TabIndex = 0
+        Me.chkMovieSetLockPlot.UseVisualStyleBackColor = true
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -13735,9 +13848,7 @@ Partial Class dlgSettings
         Me.pnlMovieSetScraper.ResumeLayout(false)
         Me.gbMovieSetScraperTitleRenamerOpts.ResumeLayout(false)
         CType(Me.dgvMovieSetScraperTitleRenamer,System.ComponentModel.ISupportInitialize).EndInit
-        Me.gbMovieSetScraperGlobalLocksOpts.ResumeLayout(false)
-        Me.gbMovieSetScraperFieldsOpts.ResumeLayout(false)
-        Me.gbMovieSetScraperFieldsOpts.PerformLayout
+        Me.gbMovieSetScraperGlobalOpts.ResumeLayout(false)
         Me.pnlMovieSetImages.ResumeLayout(false)
         Me.gbMovieSetClearArtOpts.ResumeLayout(false)
         Me.gbMovieSetClearArtOpts.PerformLayout
@@ -13753,6 +13864,8 @@ Partial Class dlgSettings
         Me.gbMovieSetFanartOpts.PerformLayout
         Me.gbMovieSetPosterOpts.ResumeLayout(false)
         Me.gbMovieSetPosterOpts.PerformLayout
+        Me.TableLayoutPanel1.ResumeLayout(false)
+        Me.TableLayoutPanel1.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -14611,10 +14724,8 @@ End Sub
     Friend WithEvents pnlMovieSetSources As System.Windows.Forms.Panel
     Friend WithEvents gbMovieSetFileNaming As System.Windows.Forms.GroupBox
     Friend WithEvents pnlMovieSetScraper As System.Windows.Forms.Panel
-    Friend WithEvents gbMovieSetScraperGlobalLocksOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents chkMovieSetLockPlot As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetLockTitle As System.Windows.Forms.CheckBox
-    Friend WithEvents gbMovieSetScraperFieldsOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents gbMovieSetScraperGlobalOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieSetScraperPlot As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetScraperTitle As System.Windows.Forms.CheckBox
     Friend WithEvents pnlMovieSetImages As System.Windows.Forms.Panel
@@ -14860,4 +14971,10 @@ End Sub
     Friend WithEvents chkTVLockEpisodeVotes As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVLockShowVotes As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieMoviesetCol As System.Windows.Forms.CheckBox
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents chkMovieSetLockPlot As System.Windows.Forms.CheckBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetScraperTitle As System.Windows.Forms.Label
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetScraperPlot As System.Windows.Forms.Label
 End Class
