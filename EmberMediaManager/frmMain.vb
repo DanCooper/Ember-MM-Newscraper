@@ -15028,13 +15028,16 @@ doCancel:
 
             If FromNfo Then
                 If String.IsNullOrEmpty(tmpMovieSetDB.NfoPath) Then
-                    Dim sNFO As String = NFO.GetNfoPath_MovieSet(tmpMovieSetDb.MovieSet.Title)
-                    tmpMovieSetDB.NfoPath = sNFO
-                    tmpMovieSet = NFO.LoadMovieSetFromNFO(sNFO)
+                    Dim sNFO As String = NFO.GetNfoPath_MovieSet(tmpMovieSetDB.MovieSet.Title)
+                    If Not String.IsNullOrEmpty(sNFO) Then
+                        tmpMovieSetDB.NfoPath = sNFO
+                        tmpMovieSet = NFO.LoadMovieSetFromNFO(sNFO)
+                        tmpMovieSetDB.MovieSet = tmpMovieSet
+                    End If
                 Else
                     tmpMovieSet = NFO.LoadMovieSetFromNFO(tmpMovieSetDB.NfoPath)
+                    tmpMovieSetDB.MovieSet = tmpMovieSet
                 End If
-                tmpMovieSetDB.MovieSet = tmpMovieSet
             End If
 
             Dim tTitle As String = StringUtils.FilterTokens_MovieSet(tmpMovieSetDB.MovieSet.Title)
