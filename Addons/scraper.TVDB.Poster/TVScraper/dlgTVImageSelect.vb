@@ -599,7 +599,6 @@ Public Class dlgTVImageSelect
             Case Enums.TVImageType.ShowFanart, Enums.TVImageType.EpisodeFanart
                 Scraper.TVDBImages.ShowFanart.Image = CType(Me.pbCurrent.Tag, Images)
             Case Enums.TVImageType.All
-
                 If _withcurrent Then
                     If Master.eSettings.TVShowPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowPosterPath) Then
                         Scraper.TVDBImages.ShowPoster.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowPosterPath)
@@ -708,7 +707,7 @@ Public Class dlgTVImageSelect
                             Me.bwLoadData.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name,ex)
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     Next
                 Else
@@ -730,7 +729,7 @@ Public Class dlgTVImageSelect
                             Me.bwLoadData.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name,ex)
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     Next
                 End If
@@ -1272,8 +1271,10 @@ Public Class dlgTVImageSelect
     End Sub
 
     Private Sub SetImage(ByVal SelTag As ImageTag)
-        Me.pbCurrent.Image = SelTag.ImageObj.Image
-        Me.pbCurrent.Tag = SelTag.ImageObj
+        If Not IsNothing(SelTag.ImageObj) Then
+            Me.pbCurrent.Image = SelTag.ImageObj.Image
+            Me.pbCurrent.Tag = SelTag.ImageObj
+        End If
 
         Me._fanartchanged = True
 
