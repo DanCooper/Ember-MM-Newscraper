@@ -552,7 +552,7 @@ Public Class NFO
     End Function
 
     ''' <summary>
-    ''' Return the "best" audio stream of the videofile
+    ''' Return the "best" or the "prefered language" audio stream of the videofile
     ''' </summary>
     ''' <param name="miFIA"><c>MediaInfo.Fileinfo</c> The Mediafile-container of the videofile</param>
     ''' <returns>The best <c>MediaInfo.Audio</c> stream information of the videofile</returns>
@@ -569,20 +569,45 @@ Public Class NFO
 
         Dim fiaOut As New MediaInfo.Audio
         Try
+            Dim cmiFIA As New MediaInfo.Fileinfo
+
+            Dim getPrefLanguage As Boolean = False
+            Dim hasPrefLanguage As Boolean = False
+            Dim prefLanguage As String = String.Empty
             Dim sinMostChannels As Single = 0
             Dim sinChans As Single = 0
             Dim sinMostBitrate As Single = 0
             Dim sinBitrate As Single = 0
-            Dim sinCodec As String = ""
+            Dim sinCodec As String = String.Empty
             fiaOut.Codec = String.Empty
             fiaOut.Channels = String.Empty
             fiaOut.Language = String.Empty
-
-            'cocotus, 2013/02 Added support for new MediaInfo-fields
+            fiaOut.LongLanguage = String.Empty
             fiaOut.Bitrate = String.Empty
-            'cocotus end
 
-            For Each miAudio As MediaInfo.Audio In miFIA.StreamDetails.Audio
+            If ForTV Then
+                If Not String.IsNullOrEmpty(Master.eSettings.TVGeneralFlagLang) Then
+                    getPrefLanguage = True
+                    prefLanguage = Master.eSettings.TVGeneralFlagLang.ToLower
+                End If
+            Else
+                If Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralFlagLang) Then
+                    getPrefLanguage = True
+                    prefLanguage = Master.eSettings.MovieGeneralFlagLang.ToLower
+                End If
+            End If
+
+            If getPrefLanguage AndAlso miFIA.StreamDetails.Audio.Where(Function(f) f.LongLanguage.ToLower = prefLanguage).Count > 0 Then
+                For Each Stream As MediaInfo.Audio In miFIA.StreamDetails.Audio
+                    If Stream.LongLanguage.ToLower = prefLanguage Then
+                        cmiFIA.StreamDetails.Audio.Add(Stream)
+                    End If
+                Next
+            Else
+                cmiFIA.StreamDetails.Audio.AddRange(miFIA.StreamDetails.Audio)
+            End If
+
+            For Each miAudio As MediaInfo.Audio In cmiFIA.StreamDetails.Audio
                 If Not String.IsNullOrEmpty(miAudio.Channels) Then
                     sinChans = NumUtils.ConvertToSingle(EmberAPI.MediaInfo.FormatAudioChannel(miAudio.Channels))
                     sinBitrate = 0
@@ -594,14 +619,11 @@ Public Class NFO
                             sinMostBitrate = CInt(miAudio.Bitrate)
                         End If
                         sinMostChannels = sinChans
-                        fiaOut.Codec = miAudio.Codec
-                        fiaOut.Channels = sinChans.ToString
-                        fiaOut.Language = miAudio.Language
-
-                        'cocotus, 2013/02 Added support for new MediaInfo-fields
                         fiaOut.Bitrate = miAudio.Bitrate
-                        'cocotus end
-
+                        fiaOut.Channels = sinChans.ToString
+                        fiaOut.Codec = miAudio.Codec
+                        fiaOut.Language = miAudio.Language
+                        fiaOut.LongLanguage = miAudio.LongLanguage
                     End If
                 End If
 
