@@ -284,7 +284,7 @@ Public Class FileFolderRenamer
         End If
 
         If Not IsNothing(_tmpMovie.Movie.Sets) AndAlso _tmpMovie.Movie.Sets.Count > 0 Then
-            MovieFile.Collection = _tmpMovie.Movie.Sets.Item(0).Set
+            MovieFile.Collection = _tmpMovie.Movie.Sets.Item(0).Title
         End If
 
         MovieFile.Country = _tmpMovie.Movie.Country

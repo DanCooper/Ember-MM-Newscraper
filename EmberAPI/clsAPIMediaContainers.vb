@@ -1352,7 +1352,7 @@ Namespace MediaContainers
                 Sets.Remove(iSet(0))
             End If
 
-            Sets.Add(New [Set] With {.ID = SetID, .Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty), .TMDBColID = SetTMDBColID})
+            Sets.Add(New [Set] With {.ID = SetID, .Title = SetName, .Order = If(Order > 0, Order.ToString, String.Empty), .TMDBColID = SetTMDBColID})
         End Sub
 
         Public Sub AddCertification(ByVal value As String)
@@ -1547,7 +1547,7 @@ Namespace MediaContainers
         End Function
 
         Public Sub RemoveSet(ByVal SetName As String)
-            Dim tSet = From bSet As [Set] In Sets Where bSet.Set = SetName
+            Dim tSet = From bSet As [Set] In Sets Where bSet.Title = SetName
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
             End If
@@ -2265,7 +2265,7 @@ Namespace MediaContainers
 
         Private _id As Long
         Private _order As String
-        Private _set As String
+        Private _title As String
         Private _tmdbcolid As String
 
 #End Region 'Fields
@@ -2324,21 +2324,21 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlIgnore()> _
-        Public ReadOnly Property SetSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._set)
-            End Get
-        End Property
-
         <XmlText()> _
-        Public Property [Set]() As String
+        Public Property Title() As String
             Get
-                Return _set
+                Return _title
             End Get
             Set(ByVal value As String)
-                _set = value
+                _title = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._title)
+            End Get
         End Property
 
 #End Region 'Properties
@@ -2347,7 +2347,7 @@ Namespace MediaContainers
 
         Public Sub Clear()
             _id = -1
-            _set = String.Empty
+            _title = String.Empty
             _order = String.Empty
             _tmdbcolid = String.Empty
         End Sub

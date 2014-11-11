@@ -981,7 +981,7 @@ Public Class Database
                         sets = New MediaContainers.Set
                         If Not DBNull.Value.Equals(SQLreader("SetID")) Then sets.ID = Convert.ToInt64(SQLreader("SetID"))
                         If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.Order = SQLreader("SetOrder").ToString
-                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.Set = SQLreader("SetName").ToString
+                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.Title = SQLreader("SetName").ToString
                         _movieDB.Movie.Sets.Add(sets)
                     End While
                 End Using
@@ -1998,7 +1998,7 @@ Public Class Database
 
                     Dim IsNewSet As Boolean
                     For Each s As MediaContainers.Set In _movieDB.Movie.Sets
-                        If s.SetSpecified Then
+                        If s.TitleSpecified Then
                             IsNewSet = Not s.ID > 0
                             If Not IsNewSet Then
                                 Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -2026,7 +2026,7 @@ Public Class Database
                                             If SQLreader.HasRows Then
                                                 SQLreader.Read()
                                                 If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
-                                                If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Set = CStr(SQLreader("SetName"))
+                                                If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Title = CStr(SQLreader("SetName"))
                                                 IsNewSet = False
                                                 NFO.SaveMovieToNFO(_movieDB) 'to save the "new" SetName
                                             Else
@@ -2042,7 +2042,7 @@ Public Class Database
                                         SQLcommandSets.CommandText = String.Concat("SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                                                "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                                                "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                               "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM Sets WHERE SetName LIKE """, s.Set, """;")
+                                                                               "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM Sets WHERE SetName LIKE """, s.Title, """;")
                                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                             If SQLreader.HasRows Then
                                                 SQLreader.Read()
@@ -2103,8 +2103,8 @@ Public Class Database
                                         Dim parSets_Mark As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Mark", DbType.Boolean, 0, "Mark")
                                         Dim parSets_Lock As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Lock", DbType.Boolean, 0, "Lock")
 
-                                        parSets_SetName.Value = s.Set
-                                        parSets_ListTitle.Value = StringUtils.FilterTokens_MovieSet(s.Set)
+                                        parSets_SetName.Value = s.Title
+                                        parSets_ListTitle.Value = StringUtils.FilterTokens_MovieSet(s.Title)
                                         parSets_TMDBColID.Value = s.TMDBColID
                                         parSets_Plot.Value = String.Empty
                                         parSets_BannerPath.Value = String.Empty
@@ -2130,7 +2130,7 @@ Public Class Database
                                     End Using
 
                                     Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName FROM Sets WHERE SetName LIKE """, s.Set, """;")
+                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName FROM Sets WHERE SetName LIKE """, s.Title, """;")
                                         Using rdrSets As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                             If rdrSets.Read Then
                                                 s.ID = Convert.ToInt64(rdrSets(0))

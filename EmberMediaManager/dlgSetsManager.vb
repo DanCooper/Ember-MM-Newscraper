@@ -169,8 +169,8 @@ Public Class dlgSetsManager
 
                                 If tmpMovie.Movie.Sets.Count > 0 Then
                                     For Each mSet As MediaContainers.Set In tmpMovie.Movie.Sets
-                                        If Not alSets.Contains(mSet.Set) AndAlso Not String.IsNullOrEmpty(mSet.Set) Then
-                                            alSets.Add(mSet.Set)
+                                        If Not alSets.Contains(mSet.Title) AndAlso Not String.IsNullOrEmpty(mSet.Title) Then
+                                            alSets.Add(mSet.Title)
                                         End If
                                     Next
                                 End If
@@ -183,7 +183,7 @@ Public Class dlgSetsManager
                 End Using
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -339,7 +339,7 @@ Public Class dlgSetsManager
                 End Using
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -358,7 +358,7 @@ Public Class dlgSetsManager
 
             Me.lbMovies.ResumeLayout()
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -394,7 +394,7 @@ Public Class dlgSetsManager
 
                 For Each tMovie As Movies In lMovies
                     For Each mSet As MediaContainers.Set In tMovie.DBMovie.Movie.Sets
-                        If mSet.Set = Me.currSet.Set Then
+                        If mSet.Title = Me.currSet.Set Then
                             If Not String.IsNullOrEmpty(mSet.Order) Then
                                 tOrder = Convert.ToInt32(mSet.Order)
                             End If
@@ -473,7 +473,7 @@ Public Class dlgSetsManager
             Me.FillMovies()
 
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

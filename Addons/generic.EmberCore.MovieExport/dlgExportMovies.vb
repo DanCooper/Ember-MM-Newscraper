@@ -432,9 +432,9 @@ Public Class dlgExportMovies
             If _curMovie.Movie.Sets.Count > 0 Then
                 For i = 0 To _curMovie.Movie.Sets.Count - 1
                     If i > 0 Then
-                        ReturnString = ReturnString + "|" + _curMovie.Movie.Sets.Item(i).Set
+                        ReturnString = ReturnString + "|" + _curMovie.Movie.Sets.Item(i).Title
                     Else
-                        ReturnString = _curMovie.Movie.Sets.Item(i).Set
+                        ReturnString = _curMovie.Movie.Sets.Item(i).Title
                     End If
 
                 Next

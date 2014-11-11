@@ -391,9 +391,9 @@ Public Class NFO
                     scrapedmovie.Sets.Count > 0 AndAlso Master.eSettings.MovieScraperCollectionsAuto AndAlso Not new_Collections Then
                     DBMovie.Movie.Sets.Clear()
                     For Each movieset In scrapedmovie.Sets
-                        If Not String.IsNullOrEmpty(movieset.Set) Then
+                        If Not String.IsNullOrEmpty(movieset.Title) Then
                             For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
-                                movieset.Set = Replace(movieset.Set, sett.Name.Substring(21), sett.Value)
+                                movieset.Title = Replace(movieset.Title, sett.Name.Substring(21), sett.Value)
                             Next
                         End If
                     Next
@@ -471,6 +471,37 @@ Public Class NFO
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
+
+    Public Shared Function CleanNFO_Movies(ByVal mNFO As MediaContainers.Movie) As MediaContainers.Movie
+        If Not IsNothing(mNFO) Then
+            mNFO = mNFO
+            mNFO.Genre = Strings.Join(mNFO.LGenre.ToArray, " / ")
+            mNFO.Outline = mNFO.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+            mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+            If mNFO.FileInfoSpecified Then
+                If mNFO.FileInfo.StreamDetails.AudioSpecified Then
+                    For Each aStream In mNFO.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                        aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
+                    Next
+                End If
+                If mNFO.FileInfo.StreamDetails.SubtitleSpecified Then
+                    For Each sStream In mNFO.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                        sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
+                    Next
+                End If
+            End If
+            If mNFO.Sets.Count > 0 Then
+                For i = mNFO.Sets.Count - 1 To 0 Step -1
+                    If Not mNFO.Sets(i).TitleSpecified Then
+                        mNFO.Sets.RemoveAt(i)
+                    End If
+                Next
+            End If
+            Return mNFO
+        Else
+            Return mNFO
+        End If
+    End Function
 
     Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal isTV As Boolean) As String
         '//
@@ -1023,21 +1054,29 @@ Public Class NFO
                     Using xmlSR As StreamReader = New StreamReader(sPath)
                         xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                         xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.Movie)
-                        xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                        xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                        xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                        If xmlMov.FileInfoSpecified Then
-                            If xmlMov.FileInfo.StreamDetails.AudioSpecified Then
-                                For Each aStream In xmlMov.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                    aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
-                                Next
-                            End If
-                            If xmlMov.FileInfo.StreamDetails.SubtitleSpecified Then
-                                For Each sStream In xmlMov.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                    sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
-                                Next
-                            End If
-                        End If
+                        xmlMov = CleanNFO_Movies(xmlMov)
+                        'xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
+                        'xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                        'xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                        'If xmlMov.FileInfoSpecified Then
+                        '    If xmlMov.FileInfo.StreamDetails.AudioSpecified Then
+                        '        For Each aStream In xmlMov.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                        '            aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
+                        '        Next
+                        '    End If
+                        '    If xmlMov.FileInfo.StreamDetails.SubtitleSpecified Then
+                        '        For Each sStream In xmlMov.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                        '            sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
+                        '        Next
+                        '    End If
+                        'End If
+                        'If xmlMov.Sets.Count > 0 Then
+                        '    For i = xmlMov.Sets.Count - 1 To 0 Step -1
+                        '        If Not xmlMov.Sets(i).TitleSpecified Then
+                        '            xmlMov.Sets.RemoveAt(i)
+                        '        End If
+                        '    Next
+                        'End If
                     End Using
                 Else
                     If Not String.IsNullOrEmpty(sPath) Then
@@ -1049,22 +1088,23 @@ Public Class NFO
                                 Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                     xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                     xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                    xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                                    xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                                    xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                                    'xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
+                                    'xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                                    'xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
                                     xmlMov.IMDBID = sReturn.IMDBID
-                                    If xmlMov.FileInfoSpecified Then
-                                        If xmlMov.FileInfo.StreamDetails.AudioSpecified Then
-                                            For Each aStream In xmlMov.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                                aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
-                                            Next
-                                        End If
-                                        If xmlMov.FileInfo.StreamDetails.SubtitleSpecified Then
-                                            For Each sStream In xmlMov.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                                sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
-                                            Next
-                                        End If
-                                    End If
+                                    xmlMov = CleanNFO_Movies(xmlMov)
+                                    'If xmlMov.FileInfoSpecified Then
+                                    '    If xmlMov.FileInfo.StreamDetails.AudioSpecified Then
+                                    '        For Each aStream In xmlMov.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                                    '            aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
+                                    '        Next
+                                    '    End If
+                                    '    If xmlMov.FileInfo.StreamDetails.SubtitleSpecified Then
+                                    '        For Each sStream In xmlMov.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                                    '            sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
+                                    '        Next
+                                    '    End If
+                                    'End If
                                 End Using
                             End If
                         Catch
@@ -1089,22 +1129,23 @@ Public Class NFO
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                 xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                 xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                                xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                                xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                                'xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
+                                'xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                                'xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
                                 xmlMov.IMDBID = sReturn.IMDBID
-                                If xmlMov.FileInfoSpecified Then
-                                    If xmlMov.FileInfo.StreamDetails.AudioSpecified Then
-                                        For Each aStream In xmlMov.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                            aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
-                                        Next
-                                    End If
-                                    If xmlMov.FileInfo.StreamDetails.SubtitleSpecified Then
-                                        For Each sStream In xmlMov.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                            sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
-                                        Next
-                                    End If
-                                End If
+                                xmlMov = CleanNFO_Movies(xmlMov)
+                                'If xmlMov.FileInfoSpecified Then
+                                '    If xmlMov.FileInfo.StreamDetails.AudioSpecified Then
+                                '        For Each aStream In xmlMov.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                                '            aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
+                                '        Next
+                                '    End If
+                                '    If xmlMov.FileInfo.StreamDetails.SubtitleSpecified Then
+                                '        For Each sStream In xmlMov.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                                '            sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
+                                '        Next
+                                '    End If
+                                'End If
                             End Using
                         End If
                     Catch

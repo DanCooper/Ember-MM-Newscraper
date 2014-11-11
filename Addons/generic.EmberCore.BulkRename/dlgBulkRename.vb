@@ -150,7 +150,7 @@ Public Class dlgBulkRenamer
                                                 MovieFile.SortTitle = _curMovie.Movie.SortTitle
                                             End If
                                             If Not IsNothing(_curMovie.Movie.Sets) AndAlso _curMovie.Movie.Sets.Count > 0 Then
-                                                MovieFile.Collection = _curMovie.Movie.Sets.Item(0).Set
+                                                MovieFile.Collection = _curMovie.Movie.Sets.Item(0).Title
                                             End If
                                             If Not IsNothing(_curMovie.Movie.Director) Then
                                                 MovieFile.Director = _curMovie.Movie.Director
