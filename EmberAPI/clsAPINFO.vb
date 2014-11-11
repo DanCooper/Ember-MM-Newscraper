@@ -1054,28 +1054,6 @@ Public Class NFO
                         xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                         xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.Movie)
                         xmlMov = CleanNFO_Movies(xmlMov)
-                        'xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                        'xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                        'xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                        'If xmlMov.FileInfoSpecified Then
-                        '    If xmlMov.FileInfo.StreamDetails.AudioSpecified Then
-                        '        For Each aStream In xmlMov.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                        '            aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
-                        '        Next
-                        '    End If
-                        '    If xmlMov.FileInfo.StreamDetails.SubtitleSpecified Then
-                        '        For Each sStream In xmlMov.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                        '            sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
-                        '        Next
-                        '    End If
-                        'End If
-                        'If xmlMov.Sets.Count > 0 Then
-                        '    For i = xmlMov.Sets.Count - 1 To 0 Step -1
-                        '        If Not xmlMov.Sets(i).TitleSpecified Then
-                        '            xmlMov.Sets.RemoveAt(i)
-                        '        End If
-                        '    Next
-                        'End If
                     End Using
                 Else
                     If Not String.IsNullOrEmpty(sPath) Then
@@ -1087,23 +1065,8 @@ Public Class NFO
                                 Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                     xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                     xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                    'xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                                    'xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                                    'xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
                                     xmlMov.IMDBID = sReturn.IMDBID
                                     xmlMov = CleanNFO_Movies(xmlMov)
-                                    'If xmlMov.FileInfoSpecified Then
-                                    '    If xmlMov.FileInfo.StreamDetails.AudioSpecified Then
-                                    '        For Each aStream In xmlMov.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                    '            aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
-                                    '        Next
-                                    '    End If
-                                    '    If xmlMov.FileInfo.StreamDetails.SubtitleSpecified Then
-                                    '        For Each sStream In xmlMov.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                    '            sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
-                                    '        Next
-                                    '    End If
-                                    'End If
                                 End Using
                             End If
                         Catch
@@ -1128,23 +1091,8 @@ Public Class NFO
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                 xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                 xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                'xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                                'xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                                'xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
                                 xmlMov.IMDBID = sReturn.IMDBID
                                 xmlMov = CleanNFO_Movies(xmlMov)
-                                'If xmlMov.FileInfoSpecified Then
-                                '    If xmlMov.FileInfo.StreamDetails.AudioSpecified Then
-                                '        For Each aStream In xmlMov.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                '            aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
-                                '        Next
-                                '    End If
-                                '    If xmlMov.FileInfo.StreamDetails.SubtitleSpecified Then
-                                '        For Each sStream In xmlMov.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                '            sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
-                                '        Next
-                                '    End If
-                                'End If
                             End Using
                         End If
                     Catch
