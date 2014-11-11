@@ -59,12 +59,47 @@ Public Class dlgSettings
         tvSettingsList.Height = Convert.ToInt32(pnlSettingsHelp.Location.Y - (tvSettingsList.Location.Y + 5))
         pnlSettingsMain.Height = Convert.ToInt32(pnlSettingsHelp.Location.Y - (pnlSettingsMain.Location.Y + 5))
         pnlSettingsMain.Width = Convert.ToInt32(Me.Width - (pnlSettingsMain.Location.X + 20))
+
+        If Me.tsSettingsTopMenu.Items.Count > 0 Then
+            Dim ButtonsWidth As Integer = 0
+            Dim ButtonsCount As Integer = 0
+            Dim sLength As Integer = 0
+            Dim sRest As Double = 0
+            Dim sSpacer As String = String.Empty
+
+            'calculate the buttons width and count
+            For Each item As ToolStripItem In Me.tsSettingsTopMenu.Items
+                If TypeOf item Is ToolStripButton Then
+                    ButtonsWidth += item.Width
+                    ButtonsCount += 1
+                End If
+            Next
+
+            sRest = (Me.tsSettingsTopMenu.Width - ButtonsWidth - 1) / (ButtonsCount + 1)
+
+            'formula to calculate the count of spaces to reach the label.width
+            'spaces (x) to width (y) in px: 1 = 10, 2 = 13, 3 = 16, 4 = 19, 5 = 22
+            'x = 10 + ((y - 1) * 3) or
+            'y = (x - 10) / 3 + 1
+            sLength = Convert.ToInt32((sRest - 10) / 3 + 1)
+
+            If Not sRest < 10 Then
+                sSpacer = New String(Convert.ToChar(" "), sLength)
+            Else
+                sSpacer = New String(Convert.ToChar(" "), 1)
+            End If
+
+            For Each item As ToolStripItem In Me.tsSettingsTopMenu.Items
+                If Not IsNothing(item.Tag) AndAlso item.Tag.ToString = "spacer" Then
+                    item.Text = sSpacer
+                End If
+            Next
+        End If
     End Sub
 
     Private Sub AddButtons()
         Dim TSBs As New List(Of ToolStripButton)
         Dim TSB As ToolStripButton
-        Dim ButtonsWidth As Integer = 0
 
         Me.tsSettingsTopMenu.Items.Clear()
 
@@ -120,23 +155,44 @@ Public Class dlgSettings
         TSBs.Add(TSB)
 
         If TSBs.Count > 0 Then
-            Dim spacerMod As Integer = 4
-
-            'calculate the spacer width
-            For Each tsbWidth As ToolStripButton In TSBs
-                ButtonsWidth += tsbWidth.Width
-            Next
-
-            Using g As Graphics = Me.CreateGraphics
-                spacerMod = Convert.ToInt32(4 * (g.DpiX / 100))
-            End Using
-
-            Dim sSpacer As String = New String(Convert.ToChar(" "), Convert.ToInt32(((Me.tsSettingsTopMenu.Width - ButtonsWidth) / (TSBs.Count + 1)) / spacerMod))
+            Dim ButtonsWidth As Integer = 0
+            Dim ButtonsCount As Integer = 0
+            Dim sLength As Integer = 0
+            Dim sRest As Double = 0
+            Dim sSpacer As String = String.Empty
 
             'add it all
             For Each tButton As ToolStripButton In TSBs.OrderBy(Function(b) Convert.ToInt32(b.Tag))
-                If sSpacer.Length > 0 Then Me.tsSettingsTopMenu.Items.Add(New ToolStripLabel With {.Text = sSpacer})
+                Me.tsSettingsTopMenu.Items.Add(New ToolStripLabel With {.Text = String.Empty, .Tag = "spacer"})
                 Me.tsSettingsTopMenu.Items.Add(tButton)
+            Next
+
+            'calculate the buttons width and count
+            For Each item As ToolStripItem In Me.tsSettingsTopMenu.Items
+                If TypeOf item Is ToolStripButton Then
+                    ButtonsWidth += item.Width
+                    ButtonsCount += 1
+                End If
+            Next
+
+            sRest = (Me.tsSettingsTopMenu.Width - ButtonsWidth - 1) / (ButtonsCount + 1)
+
+            'formula to calculate the count of spaces to reach the label.width
+            'spaces (x) to width (y) in px: 1 = 10, 2 = 13, 3 = 16, 4 = 19, 5 = 22
+            'x = 10 + ((y - 1) * 3) or
+            'y = (x - 10) / 3 + 1
+            sLength = Convert.ToInt32((sRest - 10) / 3 + 1)
+
+            If Not sRest < 10 Then
+                sSpacer = New String(Convert.ToChar(" "), sLength)
+            Else
+                sSpacer = New String(Convert.ToChar(" "), 1)
+            End If
+
+            For Each item As ToolStripItem In Me.tsSettingsTopMenu.Items
+                If Not IsNothing(item.Tag) AndAlso item.Tag.ToString = "spacer" Then
+                    item.Text = sSpacer
+                End If
             Next
 
             'set default page
