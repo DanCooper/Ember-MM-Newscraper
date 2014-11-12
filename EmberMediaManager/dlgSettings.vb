@@ -5853,7 +5853,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SetUp()
-        Me.gbScrapers.Text = Master.eLang.GetString(1193, "Scrapers")
+        Me.gbGeneralScrapers.Text = Master.eLang.GetString(1193, "Scrapers")
         Me.chkGeneralResumeScraper.Text = Master.eLang.GetString(1194, "Enable Scraper Resume")
         Me.Text = Master.eLang.GetString(420, "Settings")
         Me.btnApply.Text = Master.eLang.GetString(276, "Apply")
