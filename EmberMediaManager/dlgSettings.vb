@@ -3499,7 +3499,6 @@ Public Class dlgSettings
                 Me.chkMovieSetClickScrape.Checked = .MovieSetClickScrape
                 Me.chkMovieSetClickScrapeAsk.Checked = .MovieSetClickScrapeAsk
                 Me.chkMovieSetDiscArtCol.Checked = .MovieSetDiscArtCol
-                Me.chkMovieSetDiscArtOverwrite.Checked = .MovieSetDiscArtOverwrite
                 Me.chkMovieSetFanartCol.Checked = .MovieSetFanartCol
                 Me.chkMovieSetFanartOverwrite.Checked = .MovieSetFanartOverwrite
                 Me.chkMovieSetFanartPrefOnly.Checked = .MovieSetFanartPrefOnly
@@ -5126,7 +5125,6 @@ Public Class dlgSettings
                 .MovieSetClickScrape = Me.chkMovieSetClickScrape.Checked
                 .MovieSetClickScrapeAsk = Me.chkMovieSetClickScrapeAsk.Checked
                 .MovieSetDiscArtCol = Me.chkMovieSetDiscArtCol.Checked
-                .MovieSetDiscArtOverwrite = Me.chkMovieSetDiscArtOverwrite.Checked
                 .MovieSetFanartCol = Me.chkMovieSetFanartCol.Checked
                 .MovieSetFanartHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetFanartHeight.Text), Convert.ToInt32(Me.txtMovieSetFanartHeight.Text), 0)
                 .MovieSetFanartOverwrite = Me.chkMovieSetFanartOverwrite.Checked
@@ -6207,7 +6205,6 @@ Public Class dlgSettings
         Me.chkMovieSetBannerResize.Text = Me.chkMoviePosterResize.Text
         Me.chkMovieSetClearArtOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieSetClearLogoOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkMovieSetDiscArtOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieSetFanartOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieSetFanartPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkMovieSetFanartResize.Text = Me.chkMoviePosterResize.Text
@@ -6294,7 +6291,6 @@ Public Class dlgSettings
         Me.gbMovieSetImagesBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
         Me.gbMovieSetImagesClearArtOpts.Text = Me.gbMovieImagesClearArtOpts.Text
         Me.gbMovieSetImagesClearLogoOpts.Text = Me.gbMovieImagesClearLogoOpts.Text
-        Me.gbMovieSetImagesDiscArtOpts.Text = Me.gbMovieImagesDiscArtOpts.Text
         Me.gbMovieSetImagesFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
         Me.gbMovieSetFileNaming.Text = Me.gbMovieFileNaming.Text
         Me.gbMovieSetGeneralMediaListOpts.Text = Me.gbMovieGeneralMediaListOpts.Text
@@ -7748,7 +7744,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieSetDiscArtOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetDiscArtOverwrite.CheckedChanged
+    Private Sub chkMovieSetDiscArtOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
