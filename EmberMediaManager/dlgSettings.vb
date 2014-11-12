@@ -6300,7 +6300,7 @@ Public Class dlgSettings
         Me.gbMovieSetImagesPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
         Me.gbMovieSetScraperGlobalOpts.Text = Me.gbMovieScraperGlobalOpts.Text
         Me.gbMovieSetSortTokensOpts.Text = Me.gbMovieSortTokensOpts.Text
-        Me.gbMovieSetSourceMiscOpts.Text = Me.gbMovieSourcesMiscOpts.Text
+        Me.gbMovieSetSourcesMiscOpts.Text = Me.gbMovieSourcesMiscOpts.Text
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
         Me.gbTVASBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
         Me.gbTVASFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
