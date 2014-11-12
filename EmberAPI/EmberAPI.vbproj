@@ -139,6 +139,7 @@
     <Compile Include="clsAdvancedSettings.vb" />
     <Compile Include="clsAPIApple.vb" />
     <Compile Include="clsAPIIMDB.vb" />
+    <Compile Include="clsAPISysInfo.vb" />
     <Compile Include="clsAPIThemes.vb" />
     <Compile Include="clsAPICommon.vb" />
     <Compile Include="clsAPIDatabase.vb" />

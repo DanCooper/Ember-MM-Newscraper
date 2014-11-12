@@ -4105,6 +4105,10 @@ Public Class dlgSettings
             Me.AddButtons()
             Me.AddHelpHandlers(Me, "Core_")
 
+            Dim WorkArea = SysInfo.GetWorkArea()
+            Me.Size = New Size(WorkArea.Right - 100, WorkArea.Bottom - 100)
+            Me.Location = New Point(50, 50)
+
             Dim iBackground As New Bitmap(Me.pnlSettingsTop.Width, Me.pnlSettingsTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
                 g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlSettingsTop.ClientRectangle)
@@ -4116,8 +4120,6 @@ Public Class dlgSettings
                 b.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsCurrent.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlSettingsCurrent.ClientRectangle)
                 Me.pnlSettingsCurrent.BackgroundImage = iBackground
             End Using
-
-            Me.pnlMovieScraper.Dock = DockStyle.Fill
 
             Me.LoadGenreLangs()
             Me.LoadIntLangs()
@@ -6431,6 +6433,7 @@ Public Class dlgSettings
 
         Me.currPanel = Me.SettingsPanels.FirstOrDefault(Function(p) p.Name = tvSettingsList.SelectedNode.Name).Panel
         Me.currPanel.Location = New Point(0, 0)
+        Me.currPanel.Dock = DockStyle.Fill
         Me.pnlSettingsMain.Controls.Add(Me.currPanel)
         Me.currPanel.Visible = True
         Me.pnlSettingsMain.Refresh()
