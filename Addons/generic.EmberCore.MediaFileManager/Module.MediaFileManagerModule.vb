@@ -266,11 +266,11 @@ Public Class FileManagerExternalModule
                                 End If
 
                             Case "COPY"
-                                If MsgBox(String.Format(Master.eLang.GetString(315, "Copy from {0} To {1}"), ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString))), MsgBoxStyle.YesNo, "Copy") = MsgBoxResult.Yes Then
-                                    'TODO:   need to test it better
-                                    DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(317, "Copying Movie"))
-                                    ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
-                                End If
+                                'If MsgBox(String.Format(Master.eLang.GetString(315, "Copy from {0} To {1}"), ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString))), MsgBoxStyle.YesNo, "Copy") = MsgBoxResult.Yes Then
+                                '    'TODO:   need to test it better
+                                DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(317, "Copying Movie"))
+                                'ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
+                                'End If
                         End Select
                     End If
                 Next

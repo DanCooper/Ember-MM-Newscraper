@@ -56,9 +56,21 @@ Public Class dlgSettings
     End Function
 
     Private Sub dlgSettings_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
-        tvSettingsList.Height = Convert.ToInt32(pnlSettingsHelp.Location.Y - (tvSettingsList.Location.Y + 5))
-        pnlSettingsMain.Height = Convert.ToInt32(pnlSettingsHelp.Location.Y - (pnlSettingsMain.Location.Y + 5))
-        pnlSettingsMain.Width = Convert.ToInt32(Me.Width - (pnlSettingsMain.Location.X + 20))
+        'tvSettingsList.Height = Convert.ToInt32(pnlSettingsHelp.Location.Y - (tvSettingsList.Location.Y + 5))
+        'pnlSettingsMain.Height = Convert.ToInt32(pnlSettingsHelp.Location.Y - (pnlSettingsMain.Location.Y + 5))
+        'pnlSettingsMain.Width = Convert.ToInt32(Me.Width - (pnlSettingsMain.Location.X + 20))
+
+        Dim iBackground As New Bitmap(Me.pnlSettingsTop.Width, Me.pnlSettingsTop.Height)
+        Using g As Graphics = Graphics.FromImage(iBackground)
+            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlSettingsTop.ClientRectangle)
+            Me.pnlSettingsTop.BackgroundImage = iBackground
+        End Using
+
+        iBackground = New Bitmap(Me.pnlSettingsCurrent.Width, Me.pnlSettingsCurrent.Height)
+        Using b As Graphics = Graphics.FromImage(iBackground)
+            b.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsCurrent.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlSettingsCurrent.ClientRectangle)
+            Me.pnlSettingsCurrent.BackgroundImage = iBackground
+        End Using
 
         If Me.tsSettingsTopMenu.Items.Count > 0 Then
             Dim ButtonsWidth As Integer = 0
@@ -4099,11 +4111,13 @@ Public Class dlgSettings
                 Me.pnlSettingsTop.BackgroundImage = iBackground
             End Using
 
-            iBackground = New Bitmap(Me.pnlSettingsCurrentBGGradient.Width, Me.pnlSettingsCurrentBGGradient.Height)
+            iBackground = New Bitmap(Me.pnlSettingsCurrent.Width, Me.pnlSettingsCurrent.Height)
             Using b As Graphics = Graphics.FromImage(iBackground)
-                b.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsCurrentBGGradient.ClientRectangle, Color.SteelBlue, Color.FromKnownColor(KnownColor.Control), Drawing2D.LinearGradientMode.Horizontal), pnlSettingsCurrentBGGradient.ClientRectangle)
-                Me.pnlSettingsCurrentBGGradient.BackgroundImage = iBackground
+                b.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsCurrent.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlSettingsCurrent.ClientRectangle)
+                Me.pnlSettingsCurrent.BackgroundImage = iBackground
             End Using
+
+            Me.pnlMovieScraper.Dock = DockStyle.Fill
 
             Me.LoadGenreLangs()
             Me.LoadIntLangs()
