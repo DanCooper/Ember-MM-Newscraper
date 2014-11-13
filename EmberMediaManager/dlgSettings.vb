@@ -636,15 +636,15 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnFileSystemValidExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidExtsAdd.Click
-        If Not String.IsNullOrEmpty(txtFileSystemValidExts.Text) Then
-            If Not Strings.Left(txtFileSystemValidExts.Text, 1) = "." Then txtFileSystemValidExts.Text = String.Concat(".", txtFileSystemValidExts.Text)
-            If Not lstFileSystemValidExts.Items.Contains(txtFileSystemValidExts.Text.ToLower) Then
-                lstFileSystemValidExts.Items.Add(txtFileSystemValidExts.Text.ToLower)
+    Private Sub btnFileSystemValidExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidVideoExtsAdd.Click
+        If Not String.IsNullOrEmpty(txtFileSystemValidVideoExts.Text) Then
+            If Not Strings.Left(txtFileSystemValidVideoExts.Text, 1) = "." Then txtFileSystemValidVideoExts.Text = String.Concat(".", txtFileSystemValidVideoExts.Text)
+            If Not lstFileSystemValidVideoExts.Items.Contains(txtFileSystemValidVideoExts.Text.ToLower) Then
+                lstFileSystemValidVideoExts.Items.Add(txtFileSystemValidVideoExts.Text.ToLower)
                 Me.SetApplyButton(True)
                 Me.sResult.NeedsUpdate = True
-                txtFileSystemValidExts.Text = String.Empty
-                txtFileSystemValidExts.Focus()
+                txtFileSystemValidVideoExts.Text = String.Empty
+                txtFileSystemValidVideoExts.Focus()
             End If
         End If
     End Sub
@@ -1109,7 +1109,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnFileSystemValidExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidExtsReset.Click
+    Private Sub btnFileSystemValidExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
         If MsgBox(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidExts, True)
             Me.RefreshFileSystemValidExts()
@@ -1117,7 +1117,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click, btnFileSystemValidExtsReset.Click
+    Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click, btnFileSystemValidVideoExtsReset.Click
         If MsgBox(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidSubtitleExts, True)
             Me.RefreshFileSystemValidSubtitlesExts()
@@ -1155,7 +1155,7 @@ Public Class dlgSettings
 
     End Sub
 
-    Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidExtsRemove.Click
+    Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidVideoExtsRemove.Click
         Me.RemoveFileSystemValidExts()
     End Sub
 
@@ -4518,7 +4518,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub lstFileSystemValidExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemValidExts.KeyDown
+    Private Sub lstFileSystemValidExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemValidVideoExts.KeyDown
         If e.KeyCode = Keys.Delete Then Me.RemoveFileSystemValidExts()
     End Sub
 
@@ -4705,8 +4705,8 @@ Public Class dlgSettings
     End Sub
 
     Private Sub RefreshFileSystemValidExts()
-        Me.lstFileSystemValidExts.Items.Clear()
-        Me.lstFileSystemValidExts.Items.AddRange(Master.eSettings.FileSystemValidExts.ToArray)
+        Me.lstFileSystemValidVideoExts.Items.Clear()
+        Me.lstFileSystemValidVideoExts.Items.AddRange(Master.eSettings.FileSystemValidExts.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemValidSubtitlesExts()
@@ -4759,9 +4759,9 @@ Public Class dlgSettings
     End Sub
 
     Private Sub RemoveFileSystemValidExts()
-        If lstFileSystemValidExts.Items.Count > 0 AndAlso lstFileSystemValidExts.SelectedItems.Count > 0 Then
-            While Me.lstFileSystemValidExts.SelectedItems.Count > 0
-                Me.lstFileSystemValidExts.Items.Remove(Me.lstFileSystemValidExts.SelectedItems(0))
+        If lstFileSystemValidVideoExts.Items.Count > 0 AndAlso lstFileSystemValidVideoExts.SelectedItems.Count > 0 Then
+            While Me.lstFileSystemValidVideoExts.SelectedItems.Count > 0
+                Me.lstFileSystemValidVideoExts.Items.Remove(Me.lstFileSystemValidVideoExts.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
             Me.sResult.NeedsUpdate = True
@@ -4953,7 +4953,7 @@ Public Class dlgSettings
                 .FileSystemNoStackExts.Clear()
                 .FileSystemNoStackExts.AddRange(lstFileSystemNoStackExts.Items.OfType(Of String).ToList)
                 .FileSystemValidExts.Clear()
-                .FileSystemValidExts.AddRange(lstFileSystemValidExts.Items.OfType(Of String).ToList)
+                .FileSystemValidExts.AddRange(lstFileSystemValidVideoExts.Items.OfType(Of String).ToList)
                 .FileSystemValidSubtitlesExts.Clear()
                 .FileSystemValidSubtitlesExts.AddRange(lstFileSystemValidSubtitlesExts.Items.OfType(Of String).ToList)
                 .FileSystemValidThemeExts.Clear()
@@ -6020,7 +6020,7 @@ Public Class dlgSettings
         Me.gbFileSystemExcludedDirs.Text = Master.eLang.GetString(1273, "Excluded Directories")
         Me.gbFileSystemCleanFiles.Text = Master.eLang.GetString(437, "Clean Files")
         Me.gbFileSystemNoStackExts.Text = Master.eLang.GetString(530, "No Stack Extensions")
-        Me.gbFileSystemValidExts.Text = Master.eLang.GetString(534, "Valid Video Extensions")
+        Me.gbFileSystemValidVideoExts.Text = Master.eLang.GetString(534, "Valid Video Extensions")
         Me.gbFileSystemValidSubtitlesExts.Text = Master.eLang.GetString(1284, "Valid Subtitles Extensions")
         Me.gbFileSystemValidThemeExts.Text = Master.eLang.GetString(1081, "Valid Theme Extensions")
         Me.gbGeneralDaemon.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
