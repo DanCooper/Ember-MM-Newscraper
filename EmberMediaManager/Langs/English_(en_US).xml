@@ -576,7 +576,7 @@
   <string id="575">Generating Extrathumbs:</string>
   <string id="576">Verifying Movie Details:</string>
   <string id="577">Scraper Fields - Global</string>
-  <string id="578">Limit:</string>
+  <string id="578">Limit</string>
   <string id="579">File Source:</string>
   <string id="580">Display only movies from the selected video source.</string>
   <string id="581">Missing Items Filter</string>
@@ -730,7 +730,7 @@
   <string id="729">Credits</string>
   <string id="730">Preferred Type:</string>
   <string id="731">Refreshing Show:</string>
-  <string id="732">&lt;h&gt;=Hours &lt;m&gt;=Minutes &lt;s&gt;=Seconds</string>
+  <string id="732">&lt;h&gt;=Hours{0}&lt;m&gt;=Minutes{0}&lt;s&gt;=Seconds</string>
   <string id="733">Display Missing Episodes</string>
   <string id="734">Build Episode Title Instead of Filtering</string>
   <string id="735">All Seasons Posters</string>

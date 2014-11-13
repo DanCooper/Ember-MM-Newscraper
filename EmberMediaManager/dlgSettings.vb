@@ -5852,6 +5852,170 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SetUp()
+
+        'Cast
+        Dim strCast As String = Master.eLang.GetString(63, "Cast")
+        Me.lblMovieScraperGlobalCast.Text = strCast
+
+        'Certification
+        Dim strCertification As String = Master.eLang.GetString(722, "Certification")
+        Me.gbMovieScraperCertificationOpts.Text = strCertification
+        Me.lblMovieScraperGlobalCertification.Text = strCertification
+
+        'Collection ID
+        Dim strCollectionID As String = Master.eLang.GetString(1135, "Collection ID")
+        Me.lblMovieScraperGlobalCollectionID.Text = strCollectionID
+
+        'Country
+        Dim strCountry As String = Master.eLang.GetString(301, "Country")
+        Me.lblMovieScraperGlobalCountry.Text = strCountry
+
+        'Director
+        Dim strDirector As String = Master.eLang.GetString(62, "Director")
+        Me.lblMovieScraperGlobalDirector.Text = strDirector
+
+        'Duration Format
+        Dim strDurationFormat As String = Master.eLang.GetString(515, "Duration Format")
+        Me.gbMovieScraperDurationFormatOpts.Text = strDurationFormat
+        Me.gbTVScraperDurationFormatOpts.Text = strDurationFormat
+
+        'Genre
+        Dim strGenre As String = Master.eLang.GetString(20, "Genre")
+        Me.lblMovieScraperGlobalGenre.Text = strGenre
+
+        'Limit
+        Dim strLimit As String = Master.eLang.GetString(578, "Limit")
+        Me.lblMovieEFanartsLimit.Text = String.Concat(strLimit, ":")
+        Me.lblMovieEThumbsLimit.Text = String.Concat(strLimit, ":")
+        Me.lblMovieScraperGlobalHeaderLimit.Text = strLimit
+        Me.lblTVShowEFanartsLimit.Text = String.Concat(strLimit, ":")
+
+        'Lock
+        Dim strLock As String = Master.eLang.GetString(24, "Lock")
+        Me.lblMovieScraperGlobalHeaderLock.Text = strLock
+        Me.lblMovieSetScraperGlobalHeaderLock.Text = strLock
+
+        'Max Height:
+        Dim strMaxHeight As String = Master.eLang.GetString(480, "Max Height:")
+        Me.lblMovieBannerHeight.Text = strMaxHeight
+        Me.lblMovieEFanartsHeight.Text = strMaxHeight
+        Me.lblMovieEThumbsHeight.Text = strMaxHeight
+        Me.lblMovieFanartHeight.Text = strMaxHeight
+        Me.lblMoviePosterHeight.Text = strMaxHeight
+        Me.lblMovieSetBannerHeight.Text = strMaxHeight
+        Me.lblMovieSetFanartHeight.Text = strMaxHeight
+        Me.lblMovieSetPosterHeight.Text = strMaxHeight
+        Me.lblTVASBannerHeight.Text = strMaxHeight
+        Me.lblTVASFanartHeight.Text = strMaxHeight
+        Me.lblTVASPosterHeight.Text = strMaxHeight
+        Me.lblTVEpisodeFanartHeight.Text = strMaxHeight
+        Me.lblTVEpisodePosterHeight.Text = strMaxHeight
+        Me.lblTVSeasonBannerHeight.Text = strMaxHeight
+        Me.lblTVSeasonFanartHeight.Text = strMaxHeight
+        Me.lblTVSeasonPosterHeight.Text = strMaxHeight
+        Me.lblTVShowBannerHeight.Text = strMaxHeight
+        Me.lblTVShowEFanartsHeight.Text = strMaxHeight
+        Me.lblTVShowFanartHeight.Text = strMaxHeight
+        Me.lblTVShowPosterHeight.Text = strMaxHeight
+
+        'Max Height:
+        Dim strMaxWidth As String = Master.eLang.GetString(479, "Max Width:")
+        Me.lblMovieBannerWidth.Text = strMaxWidth
+        Me.lblMovieEFanartsWidth.Text = strMaxWidth
+        Me.lblMovieEThumbsWidth.Text = strMaxWidth
+        Me.lblMovieFanartWidth.Text = strMaxWidth
+        Me.lblMoviePosterWidth.Text = strMaxWidth
+        Me.lblMovieSetBannerWidth.Text = strMaxWidth
+        Me.lblMovieSetFanartWidth.Text = strMaxWidth
+        Me.lblMovieSetPosterWidth.Text = strMaxWidth
+        Me.lblTVASBannerWidth.Text = strMaxWidth
+        Me.lblTVASFanartWidth.Text = strMaxWidth
+        Me.lblTVASPosterWidth.Text = strMaxWidth
+        Me.lblTVEpisodeFanartWidth.Text = strMaxWidth
+        Me.lblTVEpisodePosterWidth.Text = strMaxWidth
+        Me.lblTVSeasonBannerWidth.Text = strMaxWidth
+        Me.lblTVSeasonFanartWidth.Text = strMaxWidth
+        Me.lblTVSeasonPosterWidth.Text = strMaxWidth
+        Me.lblTVShowBannerWidth.Text = strMaxWidth
+        Me.lblTVShowEFanartsWidth.Text = strMaxWidth
+        Me.lblTVShowFanartWidth.Text = strMaxWidth
+        Me.lblTVShowPosterWidth.Text = strMaxWidth
+
+        'Meta Data
+        Dim strMetaData As String = Master.eLang.GetString(59, "Meta Data")
+        Me.gbMovieScraperMetaDataOpts.Text = strMetaData
+        Me.gbTVScraperMetaDataOpts.Text = strMetaData
+
+        'Miscellaneous
+        Dim strMiscellaneous As String = Master.eLang.GetString(429, "Miscellaneous")
+        Me.gbGeneralMisc.Text = strMiscellaneous
+        Me.gbMovieScraperMiscOpts.Text = strMiscellaneous
+        Me.gbMovieSetGeneralMiscOpts.Text = strMiscellaneous
+        Me.gbTVGeneralMiscOpts.Text = strMiscellaneous
+
+        'Original Title
+        Dim strOriginalTitle As String = Master.eLang.GetString(302, "Original Title")
+        Me.lblMovieScraperGlobalOriginalTitle.Text = strOriginalTitle
+
+        'Plot
+        Dim strPlot As String = Master.eLang.GetString(65, "Plot")
+        Me.lblMovieScraperGlobalPlot.Text = strPlot
+        Me.lblMovieSetScraperGlobalPlot.Text = strPlot
+
+        'Plot Outline
+        Dim strPlotOutline As String = Master.eLang.GetString(64, "Plot Outline")
+        Me.lblMovieScraperGlobalOutline.Text = strPlotOutline
+
+        'Release Date
+        Dim strReleaseDate As String = Master.eLang.GetString(57, "Release Date")
+        Me.lblMovieScraperGlobalReleaseDate.Text = strReleaseDate
+
+        'Rating
+        Dim strRating As String = Master.eLang.GetString(400, "Rating")
+        Me.lblMovieScraperGlobalRating.Text = strRating
+
+        'Runtime
+        Dim strRuntime As String = Master.eLang.GetString(396, "Runtime")
+        Me.lblMovieScraperGlobalRuntime.Text = strRuntime
+
+        'Scraper Fields - Global
+        Dim strScraperGlobal As String = Master.eLang.GetString(577, "Scraper Fields - Global")
+        Me.gbMovieScraperGlobalOpts.Text = strScraperGlobal
+        Me.gbMovieSetScraperGlobalOpts.Text = strScraperGlobal
+
+        'Studio
+        Dim strStudio As String = Master.eLang.GetString(395, "Studio")
+        Me.lblMovieScraperGlobalStudio.Text = strStudio
+
+        'Tagline
+        Dim strTagline As String = Master.eLang.GetString(397, "Tagline")
+        Me.lblMovieScraperGlobalTagline.Text = strTagline
+
+        'Title
+        Dim strTitle As String = Master.eLang.GetString(21, "Title")
+        Me.lblMovieScraperGlobalTitle.Text = strTitle
+        Me.lblMovieSetScraperGlobalTitle.Text = strTitle
+
+        'Top250
+        Dim strTop250 As String = Master.eLang.GetString(591, "Top 250")
+        Me.lblMovieScraperGlobalTop250.Text = strTop250
+
+        'Trailer
+        Dim strTrailer As String = Master.eLang.GetString(151, "Trailer")
+        Me.lblMovieScraperGlobalTrailer.Text = strTrailer
+
+        'Votes
+        Dim strVotes As String = Master.eLang.GetString(399, "Votes")
+        Me.lblMovieScraperGlobalVotes.Text = strVotes
+
+        'Writers
+        Dim strWriters As String = Master.eLang.GetString(394, "Writers")
+        Me.lblMovieScraperGlobalCredits.Text = strWriters
+
+        'Year
+        Dim strYear As String = Master.eLang.GetString(278, "Year")
+        Me.lblMovieScraperGlobalYear.Text = strYear
+
         Me.gbGeneralScrapers.Text = Master.eLang.GetString(1193, "Scrapers")
         Me.chkGeneralResumeScraper.Text = Master.eLang.GetString(1194, "Enable Scraper Resume")
         Me.Text = Master.eLang.GetString(420, "Settings")
@@ -5914,43 +6078,23 @@ Public Class dlgSettings
         Me.chkMovieUseNMJ.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
         Me.chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
-        Me.lblMovieScraperCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         Me.chkMovieScraperCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
         Me.chkMovieScraperCertForMPAAFallback.Text = Master.eLang.GetString(1293, "Only if no MPAA is found")
-        Me.lblMovieScraperCertification.Text = Master.eLang.GetString(722, "MPAA/Certification")
         Me.chkMovieScraperCleanFields.Text = Master.eLang.GetString(125, "Cleanup disabled fields")
         Me.chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
-        Me.lblMovieScraperCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
         Me.chkMovieScraperCollectionsAuto.Text = Master.eLang.GetString(1266, "Add Movie automatically to Collections")
-        Me.lblMovieScraperCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
-        Me.lblMovieScraperDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkMovieScraperReleaseFormat.Text = Master.eLang.GetString(1272, "Date format Releasedate: yyyy-mm-dd")
-        Me.lblMovieScraperGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.lblMovieScraperOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         Me.chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         Me.chkMovieScraperCertOnlyValue.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
-        Me.lblMovieScraperOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkMovieScraperOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
         Me.chkMovieScraperOutlinePlotEnglishOverwrite.Text = Master.eLang.GetString(1005, "Only overwrite english Outline and Plot")
-        Me.lblMovieScraperPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Outline if Outline is Empty")
-        Me.lblMovieScraperRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.lblMovieScraperRelease.Text = Master.eLang.GetString(57, "Release Date")
-        Me.lblMovieScraperRuntime.Text = Master.eLang.GetString(396, "Runtime")
-        Me.lblMovieScraperStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
-        Me.lblMovieScraperTagline.Text = Master.eLang.GetString(397, "Tagline")
-        Me.lblMovieScraperTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.lblMovieScraperTop250.Text = Master.eLang.GetString(591, "Top 250")
-        Me.lblMovieScraperTrailer.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkMovieScraperCertFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
-        Me.lblMovieScraperVotes.Text = Master.eLang.GetString(399, "Votes")
-        Me.lblMovieScraperCredits.Text = Master.eLang.GetString(394, "Writers")
-        Me.lblMovieScraperYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         Me.chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         Me.chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack <filename>"), "<", ">")
@@ -6026,7 +6170,6 @@ Public Class dlgSettings
         Me.gbGeneralDaemon.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
         Me.gbGeneralInterface.Text = Master.eLang.GetString(795, "Interface")
         Me.gbGeneralMainWindow.Text = Master.eLang.GetString(1152, "Main Window")
-        Me.gbGeneralMisc.Text = Master.eLang.GetString(429, "Miscellaneous")
         Me.gbGeneralThemes.Text = Master.eLang.GetString(629, "GUI Themes")
         Me.gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         Me.gbMovieBackdropsFolder.Text = Master.eLang.GetString(520, "Backdrops Folder")
@@ -6048,9 +6191,6 @@ Public Class dlgSettings
         Me.gbMovieImagesLandscapeOpts.Text = Master.eLang.GetString(1035, "Landscape")
         Me.gbMovieImagesPosterOpts.Text = Master.eLang.GetString(148, "Poster")
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
-        Me.gbMovieScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
-        Me.gbMovieScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields - Global")
-        Me.gbMovieScraperMetaDataOpts.Text = Master.eLang.GetString(59, "Meta Data")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
         Me.gbMovieGeneralSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
@@ -6066,7 +6206,7 @@ Public Class dlgSettings
         Me.gbTVGeneralListSeasonOpts.Text = Master.eLang.GetString(681, "Seasons")
         Me.gbTVGeneralListShowOpts.Text = Master.eLang.GetString(680, "Shows")
         Me.gbTVGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
-        Me.gbTVScraperDurationOpts.Text = Master.eLang.GetString(515, "Duration Format")
+        Me.gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
         Me.gbTVScraperFieldsEpisodeOpts.Text = Master.eLang.GetString(727, "Episode")
         Me.gbTVScraperFieldsOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
         Me.gbTVScraperFieldsShowOpts.Text = Master.eLang.GetString(743, "Show")
@@ -6089,7 +6229,6 @@ Public Class dlgSettings
         Me.lblGeneralTVShowTheme.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
         Me.lblGeneralntLang.Text = Master.eLang.GetString(430, "Interface Language:")
         Me.lblMovieBannerType.Text = Master.eLang.GetString(730, "Preferred Type:")
-        Me.lblMovieEFanartsLimit.Text = Master.eLang.GetString(578, "Limit")
         Me.lblMovieGeneralCustomMarker1.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #1")
         Me.lblMovieGeneralCustomMarker2.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #2")
         Me.lblMovieGeneralCustomMarker3.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #3")
@@ -6097,11 +6236,9 @@ Public Class dlgSettings
         Me.lblMovieIMDBMirror.Text = Master.eLang.GetString(884, "IMDB Mirror:")
         Me.lblMovieLanguageOverlay.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
         Me.lblMovieLevTolerance.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
-        Me.lblMoviePosterHeight.Text = Master.eLang.GetString(480, "Max Height:")
         Me.lblMoviePosterSize.Text = Master.eLang.GetString(482, "Preferred Size:")
-        Me.lblMoviePosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
         Me.lblMovieScraperDefFIExt.Text = Master.eLang.GetString(626, "File Type")
-        Me.lblMovieScraperDurationRuntimeFormat.Text = Master.eLang.GetString(732, "<h>=Hours <m>=Minutes <s>=Seconds")
+        Me.lblMovieScraperDurationRuntimeFormat.Text = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), vbNewLine)
         Me.lblMovieSkipLessThan.Text = Master.eLang.GetString(540, "Skip files smaller than:")
         Me.lblMovieSkipLessThanMB.Text = Master.eLang.GetString(539, "MB")
         Me.lblMovieTrailerDefaultSearch.Text = Master.eLang.GetString(1172, "Default Search Parameter:")
@@ -6201,9 +6338,9 @@ Public Class dlgSettings
         Me.chkTVScanOrderModify.Text = Me.chkMovieScanOrderModify.Text
         Me.chkTVScraperMetaDataScan.Text = Me.chkMovieScraperMetaDataScan.Text
         Me.chkTVScraperEpisodeRuntime.Text = Me.chkMovieScraperRuntime.Text
-        Me.chkTVScraperEpisodeVotes.Text = Me.lblMovieScraperVotes.Text
+        Me.chkTVScraperEpisodeVotes.Text = Me.lblMovieScraperGlobalVotes.Text
         Me.chkTVScraperShowRuntime.Text = Me.chkMovieScraperRuntime.Text
-        Me.chkTVScraperShowVotes.Text = Me.lblMovieScraperVotes.Text
+        Me.chkTVScraperShowVotes.Text = Me.lblMovieScraperGlobalVotes.Text
         Me.chkTVSeasonBannerOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVSeasonBannerResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVSeasonFanartOverwrite.Text = Me.chkMoviePosterOverwrite.Text
@@ -6229,9 +6366,7 @@ Public Class dlgSettings
         Me.gbMovieExpertMultiOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
         Me.gbMovieExpertSingleOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
         Me.gbMovieExpertVTSOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
-        Me.gbMovieGeneralMiscOpts.Text = Me.gbGeneralMisc.Text
         Me.gbMovieNMTOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
-        Me.gbMovieScraperMiscOpts.Text = Me.gbGeneralMisc.Text
         Me.gbMovieSetImagesBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
         Me.gbMovieSetImagesClearArtOpts.Text = Me.gbMovieImagesClearArtOpts.Text
         Me.gbMovieSetImagesClearLogoOpts.Text = Me.gbMovieImagesClearLogoOpts.Text
@@ -6241,7 +6376,6 @@ Public Class dlgSettings
         Me.gbMovieSetGeneralMiscOpts.Text = Me.gbMovieGeneralMiscOpts.Text
         Me.gbMovieSetImagesLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
         Me.gbMovieSetImagesPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
-        Me.gbMovieSetScraperGlobalOpts.Text = Me.gbMovieScraperGlobalOpts.Text
         Me.gbMovieSetGeneralSortTokensOpts.Text = Me.gbMovieGeneralSortTokensOpts.Text
         Me.gbMovieSetSourcesMiscOpts.Text = Me.gbMovieSourcesMiscOpts.Text
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
@@ -6251,10 +6385,8 @@ Public Class dlgSettings
         Me.gbTVASPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
         Me.gbTVEpisodeFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
         Me.gbTVEpisodePosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
-        Me.gbTVGeneralMiscOpts.Text = Me.gbGeneralMisc.Text
         Me.gbTVGeneralMissingShowOpts.Text = Me.gbTVGeneralListShowOpts.Text
         Me.gbTVScraperDefFIExtOpts.Text = Me.gbTVScraperDefFIExtOpts.Text
-        Me.gbTVScraperMetaDataOpts.Text = Me.gbMovieScraperMetaDataOpts.Text
         Me.gbTVSeasonBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
         Me.gbTVSeasonFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
         Me.gbTVSeasonLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
@@ -6267,66 +6399,27 @@ Public Class dlgSettings
         Me.gbTVShowLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
         Me.gbTVShowPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
         Me.gbTVSortTokensOpts.Text = Me.gbMovieGeneralSortTokensOpts.Text
-        Me.lblMovieBannerHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblMovieBannerWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblMovieEFanartsHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblMovieEFanartsSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblMovieEFanartsWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblMovieEThumbsHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblMovieEThumbsLimit.Text = Me.lblMovieEFanartsLimit.Text
         Me.lblMovieEThumbsSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblMovieEThumbsWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblMovieFanartHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblMovieFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblMovieSetBannerHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblMovieSetBannerType.Text = Me.lblMovieBannerType.Text
-        Me.lblMovieSetBannerWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblMovieSetFanartHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblMovieSetFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblMovieSetFanartWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblMovieSetPosterHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblMovieSetPosterSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblMovieSetPosterWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblSettingsTopTitle.Text = Me.Text
-        Me.lblTVASBannerHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblTVASBannerType.Text = Me.lblMovieBannerType.Text
-        Me.lblTVASBannerWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblTVASFanartHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblTVASFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVASFanartWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblTVASPosterHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblTVASPosterSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVASPosterWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblTVEpisodeFanartHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblTVEpisodeFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVEpisodeFanartWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblTVEpisodePosterHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVEpisodePosterWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVEpisodePosterSize.Text = Me.lblMoviePosterSize.Text
         Me.lblTVEpisodeRetrieve.Text = Me.lblTVSeasonRetrieve.Text
         Me.lblTVLanguageOverlay.Text = Me.lblMovieLanguageOverlay.Text
         Me.lblTVScraperDefFIExt.Text = Me.lblMovieScraperDefFIExt.Text
-        Me.lblTVSeasonBannerHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblTVSeasonBannerType.Text = Me.lblMovieBannerType.Text
-        Me.lblTVSeasonBannerWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblTVSeasonFanartHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblTVSeasonFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVSeasonFanartWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblTVSeasonPosterHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblTVSeasonPosterSize.Text = Me.lblTVShowPosterSize.Text
-        Me.lblTVSeasonPosterWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblTVShowBannerHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblTVShowBannerType.Text = Me.lblMovieBannerType.Text
-        Me.lblTVShowBannerWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblTVShowEFanartsHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVShowEFanartsLimit.Text = Me.lblMovieEFanartsLimit.Text
         Me.lblTVShowEFanartsSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVShowEFanartsWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblTVShowFanartHeight.Text = Me.lblMoviePosterHeight.Text
         Me.lblTVShowFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVShowFanartWidth.Text = Me.lblMoviePosterWidth.Text
-        Me.lblTVShowPosterHeight.Text = Me.lblMoviePosterHeight.Text
-        Me.lblTVShowPosterWidth.Text = Me.lblMoviePosterWidth.Text
         Me.lblTVSkipLessThan.Text = Me.lblMovieSkipLessThan.Text
         Me.lblTVSkipLessThanMB.Text = Me.lblMovieSkipLessThanMB.Text
 
