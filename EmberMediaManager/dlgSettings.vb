@@ -6292,7 +6292,7 @@ Public Class dlgSettings
         Me.gbMovieSetImagesClearArtOpts.Text = Me.gbMovieImagesClearArtOpts.Text
         Me.gbMovieSetImagesClearLogoOpts.Text = Me.gbMovieImagesClearLogoOpts.Text
         Me.gbMovieSetImagesFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
-        Me.gbMovieSetFileNaming.Text = Me.gbMovieFileNaming.Text
+        Me.gbMovieSetFileNamingOpts.Text = Me.gbMovieFileNaming.Text
         Me.gbMovieSetGeneralMediaListOpts.Text = Me.gbMovieGeneralMediaListOpts.Text
         Me.gbMovieSetGeneralMiscOpts.Text = Me.gbMovieGeneralMiscOpts.Text
         Me.gbMovieSetGeneralMissingItemsOpts.Text = Me.gbMovieGeneralMissingItemsOpts.Text
@@ -7786,6 +7786,14 @@ Public Class dlgSettings
                 Explorer.Start()
             End Using
         End If
+    End Sub
+
+    Private Sub pbMSAAInfo_MouseEnter(sender As Object, e As EventArgs) Handles pbMSAAInfo.MouseEnter
+        Me.Cursor = Cursors.Hand
+    End Sub
+
+    Private Sub pbMSAAInfo_MouseLeave(sender As Object, e As EventArgs) Handles pbMSAAInfo.MouseLeave
+        Me.Cursor = Cursors.Default
     End Sub
 
     Private Sub btnMovieSetScraperMapperAdd_Click(sender As Object, e As EventArgs) Handles btnMovieSetScraperTitleRenamerAdd.Click
