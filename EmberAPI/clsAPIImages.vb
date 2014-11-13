@@ -902,7 +902,7 @@ Public Class Images
                 Select Case fType
                     Case Enums.MovieImageType.Banner
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.BannerPath) OrElse .MovieBannerOverwrite) AndAlso _
-                            (.MovieBannerEden OrElse .MovieBannerFrodo OrElse .MovieBannerNMJ OrElse .MovieBannerYAMJ OrElse _
+                            (.MovieBannerEden OrElse .MovieBannerAD OrElse .MovieBannerNMJ OrElse .MovieBannerYAMJ OrElse _
                              (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieBannerExpertBDMV) OrElse _
                          Not String.IsNullOrEmpty(.MovieBannerExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieBannerExpertSingle) OrElse _
                          Not String.IsNullOrEmpty(.MovieBannerExpertVTS))))) Then
@@ -912,7 +912,7 @@ Public Class Images
                         End If
                     Case Enums.MovieImageType.ClearArt
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.ClearArtPath) OrElse .MovieClearArtOverwrite) AndAlso _
-                            (.MovieClearArtEden OrElse .MovieClearArtFrodo OrElse _
+                            (.MovieClearArtEden OrElse .MovieClearArtAD OrElse _
                              (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieClearArtExpertBDMV) OrElse _
                          Not String.IsNullOrEmpty(.MovieClearArtExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieClearArtExpertSingle) OrElse _
                          Not String.IsNullOrEmpty(.MovieClearArtExpertVTS))))) Then
@@ -922,7 +922,7 @@ Public Class Images
                         End If
                     Case Enums.MovieImageType.ClearLogo
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.ClearLogoPath) OrElse .MovieClearLogoOverwrite) AndAlso _
-                            (.MovieClearLogoEden OrElse .MovieClearLogoFrodo OrElse _
+                            (.MovieClearLogoEden OrElse .MovieClearLogoAD OrElse _
                              (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieClearLogoExpertBDMV) OrElse _
                          Not String.IsNullOrEmpty(.MovieClearLogoExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieClearLogoExpertSingle) OrElse _
                          Not String.IsNullOrEmpty(.MovieClearLogoExpertVTS))))) Then
@@ -932,7 +932,7 @@ Public Class Images
                         End If
                     Case Enums.MovieImageType.DiscArt
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.DiscArtPath) OrElse .MovieDiscArtOverwrite) AndAlso _
-                            (.MovieDiscArtEden OrElse .MovieDiscArtFrodo OrElse _
+                            (.MovieDiscArtEden OrElse .MovieDiscArtAD OrElse _
                              (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieDiscArtExpertBDMV) OrElse _
                          Not String.IsNullOrEmpty(.MovieDiscArtExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieDiscArtExpertSingle) OrElse _
                          Not String.IsNullOrEmpty(.MovieDiscArtExpertVTS))))) Then
@@ -966,7 +966,7 @@ Public Class Images
                         End If
                     Case Enums.MovieImageType.Landscape
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.LandscapePath) OrElse .MovieLandscapeOverwrite) AndAlso _
-                            (.MovieLandscapeEden OrElse .MovieLandscapeFrodo OrElse _
+                            (.MovieLandscapeEden OrElse .MovieLandscapeAD OrElse _
                              (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieLandscapeExpertBDMV) OrElse _
                          Not String.IsNullOrEmpty(.MovieLandscapeExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieLandscapeExpertSingle) OrElse _
                          Not String.IsNullOrEmpty(.MovieLandscapeExpertVTS))))) Then

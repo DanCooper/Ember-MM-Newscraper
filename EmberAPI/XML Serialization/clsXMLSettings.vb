@@ -489,14 +489,9 @@ Partial Public Class clsXMLSettings
     '*************** XBMC Frodo settings ***************
     Private _movieusefrodo As Boolean
     Private _movieactorthumbsfrodo As Boolean
-    Private _moviebannerfrodo As Boolean
-    Private _movieclearartfrodo As Boolean
-    Private _movieclearlogofrodo As Boolean
-    Private _moviediscartfrodo As Boolean
     Private _movieextrafanartsfrodo As Boolean
     Private _movieextrathumbsfrodo As Boolean
     Private _moviefanartfrodo As Boolean
-    Private _movielandscapefrodo As Boolean
     Private _movienfofrodo As Boolean
     Private _movieposterfrodo As Boolean
     Private _movietrailerfrodo As Boolean
@@ -515,6 +510,13 @@ Partial Public Class clsXMLSettings
     Private _movienfoeden As Boolean
     Private _moviepostereden As Boolean
     Private _movietrailereden As Boolean
+
+    '******** XBMC ArtworkDownloader settings *********
+    Private _moviebannerad As Boolean
+    Private _movieclearartad As Boolean
+    Private _movieclearlogoad As Boolean
+    Private _moviediscartad As Boolean
+    Private _movielandscapead As Boolean
 
     '************* XBMC optional settings *************
     Private _moviexbmctrailerformat As Boolean
@@ -5241,39 +5243,39 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieBannerFrodo() As Boolean
+    Public Property MovieBannerAD() As Boolean
         Get
-            Return Me._moviebannerfrodo
+            Return Me._moviebannerad
         End Get
         Set(ByVal value As Boolean)
-            Me._moviebannerfrodo = value
+            Me._moviebannerad = value
         End Set
     End Property
 
-    Public Property MovieClearArtFrodo() As Boolean
+    Public Property MovieClearArtAD() As Boolean
         Get
-            Return Me._movieclearartfrodo
+            Return Me._movieclearartad
         End Get
         Set(ByVal value As Boolean)
-            Me._movieclearartfrodo = value
+            Me._movieclearartad = value
         End Set
     End Property
 
-    Public Property MovieClearLogoFrodo() As Boolean
+    Public Property MovieClearLogoAD() As Boolean
         Get
-            Return Me._movieclearlogofrodo
+            Return Me._movieclearlogoad
         End Get
         Set(ByVal value As Boolean)
-            Me._movieclearlogofrodo = value
+            Me._movieclearlogoad = value
         End Set
     End Property
 
-    Public Property MovieDiscArtFrodo() As Boolean
+    Public Property MovieDiscArtAD() As Boolean
         Get
-            Return Me._moviediscartfrodo
+            Return Me._moviediscartad
         End Get
         Set(ByVal value As Boolean)
-            Me._moviediscartfrodo = value
+            Me._moviediscartad = value
         End Set
     End Property
 
@@ -5304,12 +5306,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieLandscapeFrodo() As Boolean
+    Public Property MovieLandscapeAD() As Boolean
         Get
-            Return Me._movielandscapefrodo
+            Return Me._movielandscapead
         End Get
         Set(ByVal value As Boolean)
-            Me._movielandscapefrodo = value
+            Me._movielandscapead = value
         End Set
     End Property
 
