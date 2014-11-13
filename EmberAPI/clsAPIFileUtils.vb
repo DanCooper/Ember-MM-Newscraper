@@ -1770,10 +1770,60 @@ Namespace FileUtils
                         RaiseEvent ProgressUpdated((iCount \ lFi.Count), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
                         tmpName = Path.GetFileNameWithoutExtension(sFile.Name)
                         '...clean fanart and trailer decorations...
-                        tmpName = tmpName.Replace(".fanart", String.Empty)
-                        tmpName = tmpName.Replace("-fanart", String.Empty)
-                        tmpName = tmpName.Replace("-trailer", String.Empty)
-                        tmpName = Regex.Replace(tmpName, "\[trailer(\d+)\]", String.Empty)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.Banner)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.CharacterArt)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.ClearArt)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.ClearLogo)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.DiscArt)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.Fanart)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.Landscape)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.NFO)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.Poster)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.Trailer)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        'tmpName = tmpName.Replace(".fanart", String.Empty)
+                        'tmpName = tmpName.Replace("-fanart", String.Empty)
+                        'tmpName = tmpName.Replace("-trailer", String.Empty)
+                        'tmpName = Regex.Replace(tmpName, "\[trailer(\d+)\]", String.Empty)
                         tmpName = StringUtils.CleanStackingMarkers(tmpName)
                         '...determine the best destination path name...
                         tmpPath = Path.Combine(sPath, tmpName)
