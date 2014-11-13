@@ -1460,6 +1460,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieSetGeneralMarkNew() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetGeneralMarkNew
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetGeneralMarkNew = value
+        End Set
+    End Property
+
     Public Property TVGeneralMarkNewEpisodes() As Boolean
         Get
             Return Settings._XMLSettings.TVGeneralMarkNewEpisodes

@@ -2052,12 +2052,9 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-
     Private Sub chkGeneralImagesGlassOverlay_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralImagesGlassOverlay.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
-
-
 
     Private Sub chkMovieScraperOutlineForPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperOutlineForPlot.CheckedChanged
         Me.SetApplyButton(True)
@@ -3507,6 +3504,7 @@ Public Class dlgSettings
                     Me.txtMovieSetFanartHeight.Text = .MovieSetFanartHeight.ToString
                     Me.txtMovieSetFanartWidth.Text = .MovieSetFanartWidth.ToString
                 End If
+                Me.chkMovieSetGeneralMarkNew.Checked = .MovieSetGeneralMarkNew
                 Me.chkMovieSetLandscapeCol.Checked = .MovieSetLandscapeCol
                 Me.chkMovieSetLandscapeOverwrite.Checked = .MovieSetLandscapeOverwrite
                 Me.chkMovieSetLockPlot.Checked = .MovieSetLockPlot
@@ -5132,6 +5130,7 @@ Public Class dlgSettings
                 .MovieSetFanartPrefSize = DirectCast(Me.cbMovieSetFanartPrefSize.SelectedIndex, Enums.FanartSize)
                 .MovieSetFanartResize = Me.chkMovieSetFanartResize.Checked
                 .MovieSetFanartWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetFanartWidth.Text), Convert.ToInt32(Me.txtMovieSetFanartWidth.Text), 0)
+                .MovieSetGeneralMarkNew = Me.chkMovieSetGeneralMarkNew.Checked
                 .MovieSetLandscapeCol = Me.chkMovieSetLandscapeCol.Checked
                 .MovieSetLandscapeOverwrite = Me.chkMovieSetLandscapeOverwrite.Checked
                 .MovieSetLockPlot = Me.chkMovieSetLockPlot.Checked
@@ -5938,6 +5937,7 @@ Public Class dlgSettings
         Me.chkMovieUseExpert.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieUseNMJ.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
+        Me.chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
         Me.lblMovieScraperCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         Me.chkMovieScraperCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
@@ -6295,11 +6295,10 @@ Public Class dlgSettings
         Me.gbMovieSetFileNamingOpts.Text = Me.gbMovieFileNaming.Text
         Me.gbMovieSetGeneralMediaListOpts.Text = Me.gbMovieGeneralMediaListOpts.Text
         Me.gbMovieSetGeneralMiscOpts.Text = Me.gbMovieGeneralMiscOpts.Text
-        Me.gbMovieSetGeneralMissingItemsOpts.Text = Me.gbMovieGeneralMissingItemsOpts.Text
         Me.gbMovieSetImagesLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
         Me.gbMovieSetImagesPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
         Me.gbMovieSetScraperGlobalOpts.Text = Me.gbMovieScraperGlobalOpts.Text
-        Me.gbMovieSetSortTokensOpts.Text = Me.gbMovieSortTokensOpts.Text
+        Me.gbMovieSetGeneralSortTokensOpts.Text = Me.gbMovieSortTokensOpts.Text
         Me.gbMovieSetSourcesMiscOpts.Text = Me.gbMovieSourcesMiscOpts.Text
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
         Me.gbTVASBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
@@ -7616,6 +7615,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtMovieGeneralCustomMarker4_TextChanged(sender As Object, e As EventArgs) Handles txtMovieGeneralCustomMarker4.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetGeneralMarkNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetGeneralMarkNew.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 

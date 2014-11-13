@@ -252,6 +252,7 @@ Partial Public Class clsXMLSettings
     Private _moviesetfanartprefsize As Enums.FanartSize
     Private _moviesetfanartresize As Boolean
     Private _moviesetfanartwidth As Integer
+    Private _moviesetgeneralmarknew As Boolean
     Private _moviesetlandscapecol As Boolean
     Private _moviesetlandscapeoverwrite As Boolean
     Private _moviesetlockplot As Boolean
@@ -2258,6 +2259,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviegeneralmarknew = value
+        End Set
+    End Property
+
+    Public Property MovieSetGeneralMarkNew() As Boolean
+        Get
+            Return Me._moviesetgeneralmarknew
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetgeneralmarknew = value
         End Set
     End Property
 
