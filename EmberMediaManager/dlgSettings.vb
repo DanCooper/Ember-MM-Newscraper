@@ -786,12 +786,12 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnMovieBackdropsPathBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieBackdropsPathBrowse.Click
+    Private Sub btnMovieBackdropsPathBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSourcesBackdropsFolderPathBrowse.Click
         With Me.fbdBrowse
             fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops...")
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                    Me.txtMovieBackdropsPath.Text = .SelectedPath.ToString
+                    Me.txtMovieSourcesBackdropsFolderPath.Text = .SelectedPath.ToString
                 End If
             End If
         End With
@@ -1442,7 +1442,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieBackdropsAuto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieBackdropsAuto.CheckedChanged
+    Private Sub chkMovieBackdropsAuto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSourcesBackdropsAuto.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3382,7 +3382,7 @@ Public Class dlgSettings
                 Me.chkGeneralShowImgNames.Checked = .GeneralShowImgNames
                 Me.chkGeneralSourceFromFolder.Checked = .GeneralSourceFromFolder
                 Me.chkMovieActorThumbsOverwrite.Checked = .MovieActorThumbsOverwrite
-                Me.chkMovieBackdropsAuto.Checked = .MovieBackdropsAuto
+                Me.chkMovieSourcesBackdropsAuto.Checked = .MovieBackdropsAuto
                 Me.chkMovieBannerCol.Checked = .MovieBannerCol
                 Me.chkMovieBannerOverwrite.Checked = .MovieBannerOverwrite
                 Me.chkMovieBannerPrefOnly.Checked = .MovieBannerPrefOnly
@@ -3742,7 +3742,7 @@ Public Class dlgSettings
                 Me.lstTVSortTokens.Items.AddRange(.TVSortTokens.ToArray)
                 Me.tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, Me.tpFileSystemCleanerExpert, Me.tpFileSystemCleanerStandard)
                 Me.txtGeneralDaemonPath.Text = .GeneralDaemonPath.ToString
-                Me.txtMovieBackdropsPath.Text = .MovieBackdropsPath.ToString
+                Me.txtMovieSourcesBackdropsFolderPath.Text = .MovieBackdropsPath.ToString
                 Me.txtMovieEFanartsLimit.Text = .MovieEFanartsLimit.ToString
                 Me.txtMovieEThumbsLimit.Text = .MovieEThumbsLimit.ToString
                 Me.txtMovieGeneralCustomMarker1.Text = .MovieGeneralCustomMarker1Name.ToString
@@ -4988,9 +4988,9 @@ Public Class dlgSettings
                 .GeneralTVShowTheme = Me.cbGeneralTVShowTheme.Text
                 .MovieActorThumbsOverwrite = Me.chkMovieActorThumbsOverwrite.Checked
                 '.MovieActorThumbsQual = Me.tbMovieActorThumbsQual.value
-                .MovieBackdropsPath = Me.txtMovieBackdropsPath.Text
-                If Not String.IsNullOrEmpty(Me.txtMovieBackdropsPath.Text) Then
-                    .MovieBackdropsAuto = Me.chkMovieBackdropsAuto.Checked
+                .MovieBackdropsPath = Me.txtMovieSourcesBackdropsFolderPath.Text
+                If Not String.IsNullOrEmpty(Me.txtMovieSourcesBackdropsFolderPath.Text) Then
+                    .MovieBackdropsAuto = Me.chkMovieSourcesBackdropsAuto.Checked
                 Else
                     .MovieBackdropsAuto = False
                 End If
@@ -6055,7 +6055,7 @@ Public Class dlgSettings
         Me.chkGeneralShowImgDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
         Me.chkGeneralShowImgNames.Text = Master.eLang.GetString(1255, "Display Image Names")
         Me.chkGeneralSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
-        Me.chkMovieBackdropsAuto.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
+        Me.chkMovieSourcesBackdropsAuto.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         Me.chkMovieCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
         Me.chkMovieClickScrape.Text = Master.eLang.GetString(849, "Enable Click Scrape")
         Me.chkMovieClickScrapeAsk.Text = Master.eLang.GetString(852, "Ask On Click Scrape")
@@ -6070,8 +6070,6 @@ Public Class dlgSettings
         Me.chkMovieProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
         Me.chkMovieRecognizeVTSExpertVTS.Text = Master.eLang.GetString(537, "Detect VIDEO_TS folders even if they are not named VIDEO_TS")
         Me.chkMovieScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
-        Me.chkMovieUseFrodo.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkMovieUseEden.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieUseYAMJ.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieUseBoxee.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieUseExpert.Text = Master.eLang.GetString(774, "Enabled")
@@ -6105,7 +6103,7 @@ Public Class dlgSettings
         Me.chkMovieTrailerOverwrite.Text = Master.eLang.GetString(483, "Overwrite Existing")
         Me.chkMovieUnstackExpertMulti.Text = Master.eLang.GetString(1179, "also save unstacked")
         Me.chkMovieUseBaseDirectoryExpertBDMV.Text = Master.eLang.GetString(1180, "Use Base Directory")
-        Me.chkMovieXBMCProtectVTSBDMV.Text = Master.eLang.GetString(1176, "Protect DVD/Bluray structure (no Fanart/Nfo/Poster will be saved inside VIDEO_TS/BDMV folder)")
+        Me.chkMovieXBMCProtectVTSBDMV.Text = Master.eLang.GetString(1176, "Protect DVD/Bluray Structure")
         Me.chkMovieXBMCThemeEnable.Text = Master.eLang.GetString(1082, "Enable Theme Support")
         Me.chkMovieXBMCThemeMovie.Text = Master.eLang.GetString(1258, "Store themes in movie directory")
         Me.chkMovieXBMCThemeCustom.Text = Master.eLang.GetString(1259, "Store themes in a custom path")
@@ -6172,7 +6170,7 @@ Public Class dlgSettings
         Me.gbGeneralMainWindow.Text = Master.eLang.GetString(1152, "Main Window")
         Me.gbGeneralThemes.Text = Master.eLang.GetString(629, "GUI Themes")
         Me.gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
-        Me.gbMovieBackdropsFolder.Text = Master.eLang.GetString(520, "Backdrops Folder")
+        Me.gbMovieSourcesBackdropsFolderOpts.Text = Master.eLang.GetString(520, "Backdrops Folder")
         Me.gbMovieImagesFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
         Me.gbMovieFileNaming.Text = Master.eLang.GetString(471, "File Naming")
         Me.gbMovieGeneralFiltersOpts.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
@@ -6195,8 +6193,8 @@ Public Class dlgSettings
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
         Me.gbMovieGeneralSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         Me.gbMovieTrailerOpts.Text = Master.eLang.GetString(1195, "Trailers")
-        Me.gbMovieXBMCOptionalSettings.Text = Master.eLang.GetString(1175, "Optional Settings")
-        Me.gbMovieXBMCTheme.Text = Master.eLang.GetString(1076, "Theme Settings")
+        Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text = Master.eLang.GetString(1175, "Optional Settings")
+        Me.gbMovieSourcesFileNamingXBMCThemeOpts.Text = Master.eLang.GetString(1076, "Theme Settings")
         Me.gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
         Me.gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
         Me.gbSettingsHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
@@ -6362,11 +6360,11 @@ Public Class dlgSettings
         Me.chkTVShowPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVShowPosterResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVShowProperCase.Text = Me.chkMovieProperCase.Text
-        Me.gbMovieExpertBDMVOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
-        Me.gbMovieExpertMultiOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
-        Me.gbMovieExpertSingleOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
-        Me.gbMovieExpertVTSOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
-        Me.gbMovieNMTOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
+        Me.gbMovieExpertBDMVOptionalSettings.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
+        Me.gbMovieExpertMultiOptionalSettings.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
+        Me.gbMovieExpertSingleOptionalSettings.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
+        Me.gbMovieExpertVTSOptionalSettings.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
+        Me.gbMovieNMTOptionalSettings.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
         Me.gbMovieSetImagesBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
         Me.gbMovieSetImagesClearArtOpts.Text = Me.gbMovieImagesClearArtOpts.Text
         Me.gbMovieSetImagesClearLogoOpts.Text = Me.gbMovieImagesClearLogoOpts.Text
@@ -6526,14 +6524,14 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtMovieBackdropsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBackdropsPath.TextChanged
+    Private Sub txtMovieBackdropsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSourcesBackdropsFolderPath.TextChanged
         Me.SetApplyButton(True)
 
-        If String.IsNullOrEmpty(Me.txtMovieBackdropsPath.Text) Then
-            Me.chkMovieBackdropsAuto.Checked = False
-            Me.chkMovieBackdropsAuto.Enabled = False
+        If String.IsNullOrEmpty(Me.txtMovieSourcesBackdropsFolderPath.Text) Then
+            Me.chkMovieSourcesBackdropsAuto.Checked = False
+            Me.chkMovieSourcesBackdropsAuto.Enabled = False
         Else
-            Me.chkMovieBackdropsAuto.Enabled = True
+            Me.chkMovieSourcesBackdropsAuto.Enabled = True
         End If
     End Sub
 
