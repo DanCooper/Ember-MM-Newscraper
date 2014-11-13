@@ -1183,15 +1183,15 @@ Partial Class dlgSettings
         Me.tblMovieSetGeneralMiscOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.tblMovieSetGeneralMediaListOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblMovieSetGeneralMediaListBanner = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.Label15 = New System.Windows.Forms.Label()
+        Me.lblMovieSetGeneralMediaListClearLogo = New System.Windows.Forms.Label()
+        Me.lblMovieSetGeneralMediaListDiscArt = New System.Windows.Forms.Label()
+        Me.lblMovieSetGeneralMediaListLandscape = New System.Windows.Forms.Label()
+        Me.lblMovieSetGeneralMediaListNFO = New System.Windows.Forms.Label()
+        Me.lblMovieSetGeneralMediaListFanart = New System.Windows.Forms.Label()
+        Me.lblMovieSetGeneralMediaListPoster = New System.Windows.Forms.Label()
+        Me.lblMovieSetGeneralMediaListClearArt = New System.Windows.Forms.Label()
+        Me.lblMovieSetGeneralMediaListHideCol = New System.Windows.Forms.Label()
+        Me.lblMovieSetGeneralMediaListMissingCol = New System.Windows.Forms.Label()
         Me.tblMovieSetGeneralSortTokensOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbGeneralMisc.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
@@ -14773,7 +14773,7 @@ Partial Class dlgSettings
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetMissingLandscape, 2, 7)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetMissingNFO, 2, 8)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetMissingDiscArt, 2, 5)
-        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.Label15, 2, 1)
+        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.lblMovieSetGeneralMediaListMissingCol, 2, 1)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetMissingClearLogo, 2, 4)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetMissingFanart, 2, 6)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetPosterCol, 1, 9)
@@ -14782,19 +14782,19 @@ Partial Class dlgSettings
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetNFOCol, 1, 8)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetMissingBanner, 2, 2)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetDiscArtCol, 1, 5)
-        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.Label12, 0, 9)
+        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.lblMovieSetGeneralMediaListPoster, 0, 9)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetClearLogoCol, 1, 4)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetFanartCol, 1, 6)
-        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.Label13, 0, 3)
+        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.lblMovieSetGeneralMediaListClearArt, 0, 3)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetClearArtCol, 1, 3)
-        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.Label11, 0, 6)
+        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.lblMovieSetGeneralMediaListFanart, 0, 6)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetBannerCol, 1, 2)
-        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.Label8, 0, 7)
-        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.Label10, 0, 8)
-        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.Label7, 0, 5)
-        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.Label6, 0, 4)
+        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.lblMovieSetGeneralMediaListLandscape, 0, 7)
+        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.lblMovieSetGeneralMediaListNFO, 0, 8)
+        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.lblMovieSetGeneralMediaListDiscArt, 0, 5)
+        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.lblMovieSetGeneralMediaListClearLogo, 0, 4)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.lblMovieSetGeneralMediaListBanner, 0, 2)
-        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.Label14, 1, 1)
+        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.lblMovieSetGeneralMediaListHideCol, 1, 1)
         Me.tblMovieSetGeneralMediaListOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSetGeneralMediaListOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieSetGeneralMediaListOpts.Name = "tblMovieSetGeneralMediaListOpts"
@@ -14824,104 +14824,104 @@ Partial Class dlgSettings
         Me.lblMovieSetGeneralMediaListBanner.TabIndex = 0
         Me.lblMovieSetGeneralMediaListBanner.Text = "Banner"
         '
-        'Label6
+        'lblMovieSetGeneralMediaListClearLogo
         '
-        Me.Label6.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label6.Location = New System.Drawing.Point(3, 168)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(59, 13)
-        Me.Label6.TabIndex = 8
-        Me.Label6.Text = "ClearLogo"
+        Me.lblMovieSetGeneralMediaListClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetGeneralMediaListClearLogo.AutoSize = True
+        Me.lblMovieSetGeneralMediaListClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieSetGeneralMediaListClearLogo.Location = New System.Drawing.Point(3, 168)
+        Me.lblMovieSetGeneralMediaListClearLogo.Name = "lblMovieSetGeneralMediaListClearLogo"
+        Me.lblMovieSetGeneralMediaListClearLogo.Size = New System.Drawing.Size(59, 13)
+        Me.lblMovieSetGeneralMediaListClearLogo.TabIndex = 8
+        Me.lblMovieSetGeneralMediaListClearLogo.Text = "ClearLogo"
         '
-        'Label7
+        'lblMovieSetGeneralMediaListDiscArt
         '
-        Me.Label7.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label7.Location = New System.Drawing.Point(3, 188)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(43, 13)
-        Me.Label7.TabIndex = 9
-        Me.Label7.Text = "DiscArt"
+        Me.lblMovieSetGeneralMediaListDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetGeneralMediaListDiscArt.AutoSize = True
+        Me.lblMovieSetGeneralMediaListDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieSetGeneralMediaListDiscArt.Location = New System.Drawing.Point(3, 188)
+        Me.lblMovieSetGeneralMediaListDiscArt.Name = "lblMovieSetGeneralMediaListDiscArt"
+        Me.lblMovieSetGeneralMediaListDiscArt.Size = New System.Drawing.Size(43, 13)
+        Me.lblMovieSetGeneralMediaListDiscArt.TabIndex = 9
+        Me.lblMovieSetGeneralMediaListDiscArt.Text = "DiscArt"
         '
-        'Label8
+        'lblMovieSetGeneralMediaListLandscape
         '
-        Me.Label8.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label8.Location = New System.Drawing.Point(3, 228)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(61, 13)
-        Me.Label8.TabIndex = 10
-        Me.Label8.Text = "Landscape"
+        Me.lblMovieSetGeneralMediaListLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetGeneralMediaListLandscape.AutoSize = True
+        Me.lblMovieSetGeneralMediaListLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieSetGeneralMediaListLandscape.Location = New System.Drawing.Point(3, 228)
+        Me.lblMovieSetGeneralMediaListLandscape.Name = "lblMovieSetGeneralMediaListLandscape"
+        Me.lblMovieSetGeneralMediaListLandscape.Size = New System.Drawing.Size(61, 13)
+        Me.lblMovieSetGeneralMediaListLandscape.TabIndex = 10
+        Me.lblMovieSetGeneralMediaListLandscape.Text = "Landscape"
         '
-        'Label10
+        'lblMovieSetGeneralMediaListNFO
         '
-        Me.Label10.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Label10.AutoSize = True
-        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label10.Location = New System.Drawing.Point(3, 248)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(30, 13)
-        Me.Label10.TabIndex = 11
-        Me.Label10.Text = "NFO"
+        Me.lblMovieSetGeneralMediaListNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetGeneralMediaListNFO.AutoSize = True
+        Me.lblMovieSetGeneralMediaListNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieSetGeneralMediaListNFO.Location = New System.Drawing.Point(3, 248)
+        Me.lblMovieSetGeneralMediaListNFO.Name = "lblMovieSetGeneralMediaListNFO"
+        Me.lblMovieSetGeneralMediaListNFO.Size = New System.Drawing.Size(30, 13)
+        Me.lblMovieSetGeneralMediaListNFO.TabIndex = 11
+        Me.lblMovieSetGeneralMediaListNFO.Text = "NFO"
         '
-        'Label11
+        'lblMovieSetGeneralMediaListFanart
         '
-        Me.Label11.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Label11.AutoSize = True
-        Me.Label11.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label11.Location = New System.Drawing.Point(3, 208)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(40, 13)
-        Me.Label11.TabIndex = 12
-        Me.Label11.Text = "Fanart"
+        Me.lblMovieSetGeneralMediaListFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetGeneralMediaListFanart.AutoSize = True
+        Me.lblMovieSetGeneralMediaListFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieSetGeneralMediaListFanart.Location = New System.Drawing.Point(3, 208)
+        Me.lblMovieSetGeneralMediaListFanart.Name = "lblMovieSetGeneralMediaListFanart"
+        Me.lblMovieSetGeneralMediaListFanart.Size = New System.Drawing.Size(40, 13)
+        Me.lblMovieSetGeneralMediaListFanart.TabIndex = 12
+        Me.lblMovieSetGeneralMediaListFanart.Text = "Fanart"
         '
-        'Label12
+        'lblMovieSetGeneralMediaListPoster
         '
-        Me.Label12.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Label12.AutoSize = True
-        Me.Label12.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label12.Location = New System.Drawing.Point(3, 268)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(39, 13)
-        Me.Label12.TabIndex = 13
-        Me.Label12.Text = "Poster"
+        Me.lblMovieSetGeneralMediaListPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetGeneralMediaListPoster.AutoSize = True
+        Me.lblMovieSetGeneralMediaListPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieSetGeneralMediaListPoster.Location = New System.Drawing.Point(3, 268)
+        Me.lblMovieSetGeneralMediaListPoster.Name = "lblMovieSetGeneralMediaListPoster"
+        Me.lblMovieSetGeneralMediaListPoster.Size = New System.Drawing.Size(39, 13)
+        Me.lblMovieSetGeneralMediaListPoster.TabIndex = 13
+        Me.lblMovieSetGeneralMediaListPoster.Text = "Poster"
         '
-        'Label13
+        'lblMovieSetGeneralMediaListClearArt
         '
-        Me.Label13.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label13.Location = New System.Drawing.Point(3, 148)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(48, 13)
-        Me.Label13.TabIndex = 14
-        Me.Label13.Text = "ClearArt"
+        Me.lblMovieSetGeneralMediaListClearArt.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetGeneralMediaListClearArt.AutoSize = True
+        Me.lblMovieSetGeneralMediaListClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieSetGeneralMediaListClearArt.Location = New System.Drawing.Point(3, 148)
+        Me.lblMovieSetGeneralMediaListClearArt.Name = "lblMovieSetGeneralMediaListClearArt"
+        Me.lblMovieSetGeneralMediaListClearArt.Size = New System.Drawing.Size(48, 13)
+        Me.lblMovieSetGeneralMediaListClearArt.TabIndex = 14
+        Me.lblMovieSetGeneralMediaListClearArt.Text = "ClearArt"
         '
-        'Label14
+        'lblMovieSetGeneralMediaListHideCol
         '
-        Me.Label14.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label14.AutoSize = True
-        Me.Label14.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(70, 108)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(31, 13)
-        Me.Label14.TabIndex = 15
-        Me.Label14.Text = "Hide"
+        Me.lblMovieSetGeneralMediaListHideCol.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblMovieSetGeneralMediaListHideCol.AutoSize = True
+        Me.lblMovieSetGeneralMediaListHideCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSetGeneralMediaListHideCol.Location = New System.Drawing.Point(70, 108)
+        Me.lblMovieSetGeneralMediaListHideCol.Name = "lblMovieSetGeneralMediaListHideCol"
+        Me.lblMovieSetGeneralMediaListHideCol.Size = New System.Drawing.Size(31, 13)
+        Me.lblMovieSetGeneralMediaListHideCol.TabIndex = 15
+        Me.lblMovieSetGeneralMediaListHideCol.Text = "Hide"
         '
-        'Label15
+        'lblMovieSetGeneralMediaListMissingCol
         '
-        Me.Label15.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label15.AutoSize = True
-        Me.Label15.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(107, 108)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(48, 13)
-        Me.Label15.TabIndex = 16
-        Me.Label15.Text = "Missing"
+        Me.lblMovieSetGeneralMediaListMissingCol.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblMovieSetGeneralMediaListMissingCol.AutoSize = True
+        Me.lblMovieSetGeneralMediaListMissingCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSetGeneralMediaListMissingCol.Location = New System.Drawing.Point(107, 108)
+        Me.lblMovieSetGeneralMediaListMissingCol.Name = "lblMovieSetGeneralMediaListMissingCol"
+        Me.lblMovieSetGeneralMediaListMissingCol.Size = New System.Drawing.Size(48, 13)
+        Me.lblMovieSetGeneralMediaListMissingCol.TabIndex = 16
+        Me.lblMovieSetGeneralMediaListMissingCol.Text = "Missing"
         '
         'tblMovieSetGeneralSortTokensOpts
         '
@@ -16544,16 +16544,16 @@ End Sub
     Friend WithEvents tblMovieSetSourcesFileNamingExpertParent As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkMovieSetGeneralMarkNew As System.Windows.Forms.CheckBox
     Friend WithEvents tblMovieSetGeneralMediaListOpts As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents Label15 As System.Windows.Forms.Label
-    Friend WithEvents Label12 As System.Windows.Forms.Label
-    Friend WithEvents Label13 As System.Windows.Forms.Label
-    Friend WithEvents Label11 As System.Windows.Forms.Label
-    Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetGeneralMediaListMissingCol As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetGeneralMediaListPoster As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetGeneralMediaListClearArt As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetGeneralMediaListFanart As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetGeneralMediaListLandscape As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetGeneralMediaListNFO As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetGeneralMediaListDiscArt As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetGeneralMediaListClearLogo As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetGeneralMediaListBanner As System.Windows.Forms.Label
-    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetGeneralMediaListHideCol As System.Windows.Forms.Label
     Friend WithEvents tblMovieSetGeneral As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieSetGeneralMiscOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieSetGeneralSortTokensOpts As System.Windows.Forms.TableLayoutPanel
