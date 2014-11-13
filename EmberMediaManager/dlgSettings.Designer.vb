@@ -1232,6 +1232,8 @@ Partial Class dlgSettings
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
         Me.tblMovieTrailerOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.tblMovieTrailers = New System.Windows.Forms.TableLayoutPanel()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblMovieThemes = New System.Windows.Forms.TableLayoutPanel()
         Me.gbGeneralMisc.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
@@ -1499,6 +1501,8 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.SuspendLayout
         Me.tblMovieTrailerOpts.SuspendLayout
         Me.tblMovieTrailers.SuspendLayout
+        Me.TableLayoutPanel2.SuspendLayout
+        Me.tblMovieThemes.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -13530,7 +13534,7 @@ Partial Class dlgSettings
         'pnlMovieThemes
         '
         Me.pnlMovieThemes.BackColor = System.Drawing.Color.White
-        Me.pnlMovieThemes.Controls.Add(Me.gbMovieThemeOpts)
+        Me.pnlMovieThemes.Controls.Add(Me.tblMovieThemes)
         Me.pnlMovieThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.pnlMovieThemes.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieThemes.Name = "pnlMovieThemes"
@@ -13540,21 +13544,23 @@ Partial Class dlgSettings
         '
         'gbMovieThemeOpts
         '
-        Me.gbMovieThemeOpts.Controls.Add(Me.chkMovieThemeOverwrite)
-        Me.gbMovieThemeOpts.Controls.Add(Me.chkMovieThemeEnable)
-        Me.gbMovieThemeOpts.Location = New System.Drawing.Point(12, 21)
+        Me.gbMovieThemeOpts.AutoSize = true
+        Me.gbMovieThemeOpts.Controls.Add(Me.TableLayoutPanel2)
+        Me.gbMovieThemeOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbMovieThemeOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieThemeOpts.Name = "gbMovieThemeOpts"
-        Me.gbMovieThemeOpts.Size = New System.Drawing.Size(235, 64)
+        Me.gbMovieThemeOpts.Size = New System.Drawing.Size(154, 67)
         Me.gbMovieThemeOpts.TabIndex = 2
         Me.gbMovieThemeOpts.TabStop = false
         Me.gbMovieThemeOpts.Text = "Themes"
         '
         'chkMovieThemeOverwrite
         '
+        Me.chkMovieThemeOverwrite.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieThemeOverwrite.AutoSize = true
         Me.chkMovieThemeOverwrite.Enabled = false
         Me.chkMovieThemeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieThemeOverwrite.Location = New System.Drawing.Point(25, 39)
+        Me.chkMovieThemeOverwrite.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieThemeOverwrite.Name = "chkMovieThemeOverwrite"
         Me.chkMovieThemeOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieThemeOverwrite.TabIndex = 4
@@ -13563,9 +13569,10 @@ Partial Class dlgSettings
         '
         'chkMovieThemeEnable
         '
+        Me.chkMovieThemeEnable.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieThemeEnable.AutoSize = true
         Me.chkMovieThemeEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieThemeEnable.Location = New System.Drawing.Point(12, 16)
+        Me.chkMovieThemeEnable.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieThemeEnable.Name = "chkMovieThemeEnable"
         Me.chkMovieThemeEnable.Size = New System.Drawing.Size(142, 17)
         Me.chkMovieThemeEnable.TabIndex = 0
@@ -15905,6 +15912,41 @@ Partial Class dlgSettings
         Me.tblMovieTrailers.Size = New System.Drawing.Size(750, 500)
         Me.tblMovieTrailers.TabIndex = 2
         '
+        'TableLayoutPanel2
+        '
+        Me.TableLayoutPanel2.AutoSize = true
+        Me.TableLayoutPanel2.ColumnCount = 2
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel2.Controls.Add(Me.chkMovieThemeOverwrite, 0, 1)
+        Me.TableLayoutPanel2.Controls.Add(Me.chkMovieThemeEnable, 0, 0)
+        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        Me.TableLayoutPanel2.RowCount = 3
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(148, 46)
+        Me.TableLayoutPanel2.TabIndex = 3
+        '
+        'tblMovieThemes
+        '
+        Me.tblMovieThemes.AutoScroll = true
+        Me.tblMovieThemes.AutoSize = true
+        Me.tblMovieThemes.ColumnCount = 2
+        Me.tblMovieThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieThemes.Controls.Add(Me.gbMovieThemeOpts, 0, 0)
+        Me.tblMovieThemes.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMovieThemes.Location = New System.Drawing.Point(0, 0)
+        Me.tblMovieThemes.Name = "tblMovieThemes"
+        Me.tblMovieThemes.RowCount = 2
+        Me.tblMovieThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieThemes.Size = New System.Drawing.Size(750, 500)
+        Me.tblMovieThemes.TabIndex = 3
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -15912,6 +15954,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(1008, 729)
+        Me.Controls.Add(Me.pnlMovieThemes)
         Me.Controls.Add(Me.pnlMovieTrailers)
         Me.Controls.Add(Me.pnlProxy)
         Me.Controls.Add(Me.pnlFileSystem)
@@ -15926,7 +15969,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.scSettings)
         Me.Controls.Add(Me.pnlTVGeneral)
         Me.Controls.Add(Me.pnlTVThemes)
-        Me.Controls.Add(Me.pnlMovieThemes)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVSources)
@@ -16288,6 +16330,7 @@ Partial Class dlgSettings
         Me.gbMovieTrailerOpts.ResumeLayout(false)
         Me.gbMovieTrailerOpts.PerformLayout
         Me.pnlMovieThemes.ResumeLayout(false)
+        Me.pnlMovieThemes.PerformLayout
         Me.gbMovieThemeOpts.ResumeLayout(false)
         Me.gbMovieThemeOpts.PerformLayout
         Me.pnlTVThemes.ResumeLayout(false)
@@ -16405,6 +16448,10 @@ Partial Class dlgSettings
         Me.tblMovieTrailerOpts.PerformLayout
         Me.tblMovieTrailers.ResumeLayout(false)
         Me.tblMovieTrailers.PerformLayout
+        Me.TableLayoutPanel2.ResumeLayout(false)
+        Me.TableLayoutPanel2.PerformLayout
+        Me.tblMovieThemes.ResumeLayout(false)
+        Me.tblMovieThemes.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -17610,4 +17657,6 @@ End Sub
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieTrailers As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieTrailerOpts As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblMovieThemes As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
 End Class
