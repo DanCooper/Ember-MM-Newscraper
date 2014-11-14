@@ -5921,9 +5921,15 @@ Public Class dlgSettings
         Dim strCountry As String = Master.eLang.GetString(301, "Country")
         Me.lblMovieScraperGlobalCountry.Text = strCountry
 
+        'Defaults by File Type
+        Dim strDefaultsByFileType As String = Master.eLang.GetString(625, "Defaults by File Type")
+        Me.gbMovieScraperDefFIExtOpts.Text = strDefaultsByFileType
+        Me.gbTVScraperDefFIExtOpts.Text = strDefaultsByFileType
+
         'Director
         Dim strDirector As String = Master.eLang.GetString(62, "Director")
         Me.lblMovieScraperGlobalDirector.Text = strDirector
+        Me.lblTVScraperGlobalDirector.Text = strDirector
 
         'DiscArt
         Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")
@@ -5941,14 +5947,24 @@ Public Class dlgSettings
         Me.gbMovieScraperDurationFormatOpts.Text = strDurationFormat
         Me.gbTVScraperDurationFormatOpts.Text = strDurationFormat
 
+        'Duration Runtime Format
+        Dim strDurationRuntimeFormat As String = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), vbNewLine)
+        Me.lblMovieScraperDurationRuntimeFormat.Text = strDurationRuntimeFormat
+        Me.lblTVScraperDurationRuntimeFormat.Text = strDurationRuntimeFormat
+
         'Enabled
         Dim strEnabled As String = Master.eLang.GetString(774, "Enabled")
         Me.lblMovieSourcesFileNamingNMTDefaultsEnabled.Text = strEnabled
         Me.lblMovieSourcesFileNamingXBMCDefaultsEnabled.Text = strEnabled
 
+        'Episode #
+        Dim strEpisodeNR As String = Master.eLang.GetString(660, "Episode #")
+        Me.lblTVScraperGlobalEpisode.Text = strEpisodeNR
+
         'Episodes
         Dim strEpisodes As String = Master.eLang.GetString(682, "Episodes")
         Me.lblTVGeneralMediaListHeaderSeasons.Text = strEpisodes
+        Me.lblTVScraperGlobalHeaderEpisodes.Text = strEpisodes
 
         'Fanart
         Dim strFanart As String = Master.eLang.GetString(149, "Fanart")
@@ -5963,12 +5979,20 @@ Public Class dlgSettings
         Me.lblMovieSetGeneralMediaListFanart.Text = strFanart
         Me.lblTVGeneralMediaListFanart.Text = strFanart
 
+        'File Type
+        Dim strFileType As String = String.Concat(Master.eLang.GetString(626, "File Type"), ":")
+        Me.lblMovieScraperDefFIExt.Text = strFileType
+        Me.lblTVScraperDefFIExt.Text = strFileType
+
         'Genre
         Dim strGenre As String = Master.eLang.GetString(20, "Genre")
         Me.lblMovieScraperGlobalGenre.Text = strGenre
+        Me.lblTVScraperGlobalGenre.Text = strGenre
 
         'Hide
         Dim strHide As String = Master.eLang.GetString(465, "Hide")
+        Me.lblMovieGeneralMediaListHeaderHide.Text = strHide
+        Me.lblMovieSetGeneralMediaListHeaderHide.Text = strHide
         Me.lblTVGeneralMediaListHeaderEpisodesHide.Text = strHide
         Me.lblTVGeneralMediaListHeaderSeasonsHide.Text = strHide
         Me.lblTVGeneralMediaListHeaderShowsHide.Text = strHide
@@ -5997,6 +6021,8 @@ Public Class dlgSettings
         Dim strLock As String = Master.eLang.GetString(24, "Lock")
         Me.lblMovieScraperGlobalHeaderLock.Text = strLock
         Me.lblMovieSetScraperGlobalHeaderLock.Text = strLock
+        Me.lblTVScraperGlobalHeaderShowsLock.Text = strLock
+        Me.lblTVScraperGlobalHeaderEpisodesLock.Text = strLock
 
         'Max Height:
         Dim strMaxHeight As String = Master.eLang.GetString(480, "Max Height:")
@@ -6055,12 +6081,15 @@ Public Class dlgSettings
         Me.gbMovieScraperMiscOpts.Text = strMiscellaneous
         Me.gbMovieSetGeneralMiscOpts.Text = strMiscellaneous
         Me.gbTVGeneralMiscOpts.Text = strMiscellaneous
+        Me.gbTVScraperMiscOpts.Text = strMiscellaneous
 
         'Missing
         Dim strMissing As String = Master.eLang.GetString(582, "Missing")
-        Me.lblTVGeneralMediaListHeaderEpisodesHide.Text = strMissing
-        Me.lblTVGeneralMediaListHeaderSeasonsHide.Text = strMissing
-        Me.lblTVGeneralMediaListHeaderShowsHide.Text = strMissing
+        Me.lblMovieGeneralMediaListHeaderMissing.Text = strMissing
+        Me.lblMovieSetGeneralMediaListHeaderMissing.Text = strMissing
+        Me.lblTVGeneralMediaListHeaderEpisodesMissing.Text = strMissing
+        Me.lblTVGeneralMediaListHeaderSeasonsMissing.Text = strMissing
+        Me.lblTVGeneralMediaListHeaderShowsMissing.Text = strMissing
 
         'NFO
         Dim strNFO As String = Master.eLang.GetString(150, "NFO")
@@ -6080,6 +6109,7 @@ Public Class dlgSettings
         Dim strPlot As String = Master.eLang.GetString(65, "Plot")
         Me.lblMovieScraperGlobalPlot.Text = strPlot
         Me.lblMovieSetScraperGlobalPlot.Text = strPlot
+        Me.lblTVScraperGlobalPlot.Text = strPlot
 
         'Plot Outline
         Dim strPlotOutline As String = Master.eLang.GetString(64, "Plot Outline")
@@ -6105,15 +6135,22 @@ Public Class dlgSettings
         'Rating
         Dim strRating As String = Master.eLang.GetString(400, "Rating")
         Me.lblMovieScraperGlobalRating.Text = strRating
+        Me.lblTVScraperGlobalRating.Text = strRating
 
         'Runtime
         Dim strRuntime As String = Master.eLang.GetString(396, "Runtime")
         Me.lblMovieScraperGlobalRuntime.Text = strRuntime
+        Me.lblTVScraperGlobalRuntime.Text = strRuntime
 
         'Scraper Fields - Global
         Dim strScraperGlobal As String = Master.eLang.GetString(577, "Scraper Fields - Global")
         Me.gbMovieScraperGlobalOpts.Text = strScraperGlobal
         Me.gbMovieSetScraperGlobalOpts.Text = strScraperGlobal
+        Me.gbTVScraperGlobalOpts.Text = strScraperGlobal
+
+        'Season #
+        Dim strSeasonNR As String = Master.eLang.GetString(659, "Season #")
+        Me.lblTVScraperGlobalSeason.Text = strSeasonNR
 
         'Seasons
         Dim strSeasons As String = Master.eLang.GetString(681, "Seasons")
@@ -6122,10 +6159,12 @@ Public Class dlgSettings
         'Shows
         Dim strShows As String = Master.eLang.GetString(680, "Shows")
         Me.lblTVGeneralMediaListHeaderShows.Text = strShows
+        Me.lblTVScraperGlobalHeaderShows.Text = strShows
 
         'Studio
         Dim strStudio As String = Master.eLang.GetString(395, "Studio")
         Me.lblMovieScraperGlobalStudio.Text = strStudio
+        Me.lblTVScraperGlobalStudio.Text = strStudio
 
         'Tagline
         Dim strTagline As String = Master.eLang.GetString(397, "Tagline")
@@ -6135,6 +6174,7 @@ Public Class dlgSettings
         Dim strTitle As String = Master.eLang.GetString(21, "Title")
         Me.lblMovieScraperGlobalTitle.Text = strTitle
         Me.lblMovieSetScraperGlobalTitle.Text = strTitle
+        Me.lblTVScraperGlobalTitle.Text = strTitle
 
         'Top250
         Dim strTop250 As String = Master.eLang.GetString(591, "Top 250")
@@ -6157,10 +6197,12 @@ Public Class dlgSettings
         'Votes
         Dim strVotes As String = Master.eLang.GetString(399, "Votes")
         Me.lblMovieScraperGlobalVotes.Text = strVotes
+        Me.lblTVScraperGlobalVotes.Text = strVotes
 
         'Writers
         Dim strWriters As String = Master.eLang.GetString(394, "Writers")
         Me.lblMovieScraperGlobalCredits.Text = strWriters
+        Me.lblTVScraperGlobalCredits.Text = strWriters
 
         'Year
         Dim strYear As String = Master.eLang.GetString(278, "Year")
@@ -6265,36 +6307,6 @@ Public Class dlgSettings
         Me.chkTVEpisodeNoFilter.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
         Me.chkTVGeneralMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
         Me.chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
-        Me.chkTVLockEpisodePlot.Text = Master.eLang.GetString(496, "Lock Plot")
-        Me.chkTVLockEpisodeRating.Text = Master.eLang.GetString(492, "Lock Rating")
-        Me.chkTVLockEpisodeTitle.Text = Master.eLang.GetString(494, "Lock Title")
-        Me.chkTVLockEpisodeVotes.Text = Master.eLang.GetString(1245, "Lock Votes")
-        Me.chkTVLockShowGenre.Text = Master.eLang.GetString(490, "Lock Genre")
-        Me.chkTVLockShowPlot.Text = Master.eLang.GetString(496, "Lock Plot")
-        Me.chkTVLockShowRating.Text = Master.eLang.GetString(492, "Lock Rating")
-        Me.chkTVLockShowStatus.Text = Master.eLang.GetString(1047, "Lock Status")
-        Me.chkTVLockShowStudio.Text = Master.eLang.GetString(491, "Lock Studio")
-        Me.chkTVLockShowTitle.Text = Master.eLang.GetString(494, "Lock Title")
-        Me.chkTVLockShowVotes.Text = Master.eLang.GetString(1245, "Lock Votes")
-        Me.chkTVScraperEpisodeActors.Text = Master.eLang.GetString(725, "Actors")
-        Me.chkTVScraperEpisodeAired.Text = Master.eLang.GetString(728, "Aired")
-        Me.chkTVScraperEpisodeCredits.Text = Master.eLang.GetString(729, "Credits")
-        Me.chkTVScraperEpisodeDirector.Text = Master.eLang.GetString(62, "Director")
-        Me.chkTVScraperEpisodeEpisode.Text = Master.eLang.GetString(727, "Episode")
-        Me.chkTVScraperEpisodePlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkTVScraperEpisodeRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkTVScraperEpisodeSeason.Text = Master.eLang.GetString(650, "Season")
-        Me.chkTVScraperEpisodeTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkTVScraperShowActors.Text = Master.eLang.GetString(725, "Actors")
-        Me.chkTVScraperShowEpiGuideURL.Text = Master.eLang.GetString(723, "EpisodeGuideURL")
-        Me.chkTVScraperShowGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkTVScraperShowMPAA.Text = Master.eLang.GetString(401, "MPAA")
-        Me.chkTVScraperShowPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkTVScraperShowPremiered.Text = Master.eLang.GetString(724, "Premiered")
-        Me.chkTVScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkTVScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
-        Me.chkTVScraperShowStudio.Text = Master.eLang.GetString(395, "Studio")
-        Me.chkTVScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkTVScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkTVScraperUseSRuntimeForEp.Text = Master.eLang.GetString(1262, "Use Show Runtime for Episodes if no Episode Runtime can be found")
         Me.chkTVShowExtrafanartsXBMC.Text = Master.eLang.GetString(992, "Extrafanarts")
@@ -6344,13 +6356,7 @@ Public Class dlgSettings
         Me.gbTVGeneralLangOpts.Text = Master.eLang.GetString(1201, "Language Options")
         Me.gbTVGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         Me.gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
-        Me.gbTVScraperFieldsEpisodeOpts.Text = Master.eLang.GetString(727, "Episode")
-        Me.gbTVScraperFieldsOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
-        Me.gbTVScraperFieldsShowOpts.Text = Master.eLang.GetString(743, "Show")
-        Me.gbTVScraperGlobalLocksEpisodeOpts.Text = Master.eLang.GetString(727, "Episode")
-        Me.gbTVScraperGlobalLocksOpts.Text = Master.eLang.GetString(488, "Global Locks")
-        Me.gbTVScraperGlobalLocksShowOpts.Text = Master.eLang.GetString(743, "Show")
-        Me.gbTVScraperOptionsOpts.Text = Master.eLang.GetString(390, "Options")
+        Me.gbTVScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
         Me.gbTVShowCharacterArtOpts.Text = Master.eLang.GetString(1140, "CharacterArt")
         Me.gbTVShowFilterOpts.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
         Me.gbTVShowRegex.Text = Master.eLang.GetString(691, "Show Match Regex")
@@ -6471,10 +6477,6 @@ Public Class dlgSettings
         Me.chkTVLockShowRuntime.Text = Me.chkMovieLockRuntime.Text
         Me.chkTVScanOrderModify.Text = Me.chkMovieScanOrderModify.Text
         Me.chkTVScraperMetaDataScan.Text = Me.chkMovieScraperMetaDataScan.Text
-        Me.chkTVScraperEpisodeRuntime.Text = Me.chkMovieScraperRuntime.Text
-        Me.chkTVScraperEpisodeVotes.Text = Me.lblMovieScraperGlobalVotes.Text
-        Me.chkTVScraperShowRuntime.Text = Me.chkMovieScraperRuntime.Text
-        Me.chkTVScraperShowVotes.Text = Me.lblMovieScraperGlobalVotes.Text
         Me.chkTVSeasonBannerOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVSeasonBannerResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVSeasonFanartOverwrite.Text = Me.chkMoviePosterOverwrite.Text
