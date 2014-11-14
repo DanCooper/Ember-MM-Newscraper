@@ -3171,7 +3171,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieXBMCTrailerFormat_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCTrailerFormat.CheckedChanged
+    Private Sub chkMovieXBMCTrailerFormat_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -3867,7 +3867,7 @@ Public Class dlgSettings
                 Me.chkMovieTrailerEden.Checked = .MovieTrailerEden
 
                 '************* XBMC optional settings **************
-                Me.chkMovieXBMCTrailerFormat.Checked = .MovieXBMCTrailerFormat
+                'Me.chkMovieXBMCTrailerFormat.Checked = .MovieXBMCTrailerFormat
                 Me.chkMovieXBMCProtectVTSBDMV.Checked = .MovieXBMCProtectVTSBDMV
 
                 '*************** XBMC theme settings ***************
@@ -5521,7 +5521,7 @@ Public Class dlgSettings
                 .MovieTrailerEden = Me.chkMovieTrailerEden.Checked
 
                 '************* XBMC optional settings *************
-                .MovieXBMCTrailerFormat = Me.chkMovieXBMCTrailerFormat.Checked
+                '.MovieXBMCTrailerFormat = Me.chkMovieXBMCTrailerFormat.Checked
                 .MovieXBMCProtectVTSBDMV = Me.chkMovieXBMCProtectVTSBDMV.Checked
 
                 '*************** XBMC theme settings ***************
@@ -5930,6 +5930,11 @@ Public Class dlgSettings
         Me.gbMovieScraperDurationFormatOpts.Text = strDurationFormat
         Me.gbTVScraperDurationFormatOpts.Text = strDurationFormat
 
+        'Enabled
+        Dim strEnabled As String = Master.eLang.GetString(774, "Enabled")
+        Me.lblMovieSourcesFileNamingNMTDefaultsEnabled.Text = strEnabled
+        Me.lblMovieSourcesFileNamingXBMCDefaultsEnabled.Text = strEnabled
+
         'Genre
         Dim strGenre As String = Master.eLang.GetString(20, "Genre")
         Me.lblMovieScraperGlobalGenre.Text = strGenre
@@ -6121,10 +6126,7 @@ Public Class dlgSettings
         Me.chkMovieProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
         Me.chkMovieRecognizeVTSExpertVTS.Text = Master.eLang.GetString(537, "Detect VIDEO_TS folders even if they are not named VIDEO_TS")
         Me.chkMovieScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
-        Me.chkMovieUseYAMJ.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkMovieUseBoxee.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieUseExpert.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkMovieUseNMJ.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
         Me.chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
         Me.chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
@@ -6159,7 +6161,7 @@ Public Class dlgSettings
         Me.chkMovieXBMCThemeMovie.Text = Master.eLang.GetString(1258, "Store themes in movie directory")
         Me.chkMovieXBMCThemeCustom.Text = Master.eLang.GetString(1259, "Store themes in a custom path")
         Me.chkMovieXBMCThemeSub.Text = Master.eLang.GetString(1260, "Store themes in sub directorys")
-        Me.chkMovieXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "XBMC Trailer Format")
+        'Me.chkMovieXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "XBMC Trailer Format")
         Me.chkMovieYAMJCompatibleSets.Text = Master.eLang.GetString(561, "YAMJ Compatible Sets")
         Me.chkMovieYAMJWatchedFile.Text = Master.eLang.GetString(1177, "Use .watched Files")
         Me.chkProxyCredsEnable.Text = Master.eLang.GetString(677, "Enable Credentials")
@@ -6223,7 +6225,7 @@ Public Class dlgSettings
         Me.gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         Me.gbMovieSourcesBackdropsFolderOpts.Text = Master.eLang.GetString(520, "Backdrops Folder")
         Me.gbMovieImagesFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
-        Me.gbMovieFileNaming.Text = Master.eLang.GetString(471, "File Naming")
+        Me.gbMovieSourcesFileNaming.Text = Master.eLang.GetString(471, "File Naming")
         Me.gbMovieGeneralFiltersOpts.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
         Me.gbMovieGeneralGenreFilterOpts.Text = Master.eLang.GetString(454, "Genre Language Filter")
         Me.gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
@@ -6349,9 +6351,6 @@ Public Class dlgSettings
         Me.chkMovieStackExpertSingle.Text = Me.chkMovieStackExpertMulti.Text
         Me.chkMovieUnstackExpertSingle.Text = Me.chkMovieUnstackExpertMulti.Text
         Me.chkMovieUseBaseDirectoryExpertVTS.Text = Me.chkMovieUseBaseDirectoryExpertBDMV.Text
-        Me.chkMovieXBMCTrailerFormatExpertBDMV.Text = Me.chkMovieXBMCTrailerFormat.Text
-        Me.chkMovieXBMCTrailerFormatExpertMulti.Text = Me.chkMovieXBMCTrailerFormat.Text
-        Me.chkMovieXBMCTrailerFormatExpertSingle.Text = Me.chkMovieXBMCTrailerFormat.Text
         Me.chkMovieSetBannerOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieSetBannerPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkMovieSetBannerResize.Text = Me.chkMoviePosterResize.Text
@@ -6407,15 +6406,15 @@ Public Class dlgSettings
         Me.chkTVShowPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVShowPosterResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVShowProperCase.Text = Me.chkMovieProperCase.Text
-        Me.gbMovieExpertBDMVOptionalSettings.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
-        Me.gbMovieExpertMultiOptionalSettings.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
-        Me.gbMovieExpertSingleOptionalSettings.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
-        Me.gbMovieExpertVTSOptionalSettings.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
-        Me.gbMovieNMTOptionalSettings.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
+        Me.gbMovieSourcesFileNamingExpertBDMVOptionalOpts.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
+        Me.gbMovieSourcesFileNamingExpertMultiOptionalOpts.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
+        Me.gbMovieSourcesFileNamingExpertSingleOptionalOpts.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
+        Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
+        Me.gbMovieSourcesFileNamingNMTOptionalOpts.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
         Me.gbMovieSetImagesBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
         Me.gbMovieSetImagesClearLogoOpts.Text = Me.gbMovieImagesClearLogoOpts.Text
         Me.gbMovieSetImagesFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
-        Me.gbMovieSetFileNamingOpts.Text = Me.gbMovieFileNaming.Text
+        Me.gbMovieSetFileNamingOpts.Text = Me.gbMovieSourcesFileNaming.Text
         Me.gbMovieSetGeneralMediaListOpts.Text = Me.gbMovieGeneralMediaListOpts.Text
         Me.gbMovieSetGeneralMiscOpts.Text = Me.gbMovieGeneralMiscOpts.Text
         Me.gbMovieSetImagesLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
