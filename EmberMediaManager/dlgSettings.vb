@@ -5862,7 +5862,9 @@ Public Class dlgSettings
         Dim strBanner As String = Master.eLang.GetString(838, "Banner")
         Me.gbMovieImagesBannerOpts.Text = strBanner
         Me.gbMovieSetImagesBannerOpts.Text = strBanner
-        Me.gbTVShowBannerOpts.Text = strBanner
+        Me.gbTVImagesAllSeasonsBannerOpts.Text = strBanner
+        Me.gbTVImagesSeasonBannerOpts.Text = strBanner
+        Me.gbTVImagesShowBannerOpts.Text = strBanner
         Me.lblMovieBannerExpertBDMV.Text = strBanner
         Me.lblMovieBannerExpertMulti.Text = strBanner
         Me.lblMovieBannerExpertSingle.Text = strBanner
@@ -5883,13 +5885,14 @@ Public Class dlgSettings
 
         'CharacterArt
         Dim strCharacterArt As String = Master.eLang.GetString(1140, "CharacterArt")
+        Me.gbTVImagesShowCharacterArtOpts.Text = strCharacterArt
         Me.lblTVGeneralMediaListCharacterArt.Text = strCharacterArt
 
         'ClearArt
         Dim strClearArt As String = Master.eLang.GetString(1096, "ClearArt")
         Me.gbMovieImagesClearArtOpts.Text = strClearArt
         Me.gbMovieSetImagesClearArtOpts.Text = strClearArt
-        Me.gbTVShowClearArtOpts.Text = strClearArt
+        Me.gbTVImagesShowClearArtOpts.Text = strClearArt
         Me.lblMovieClearArtExpertBDMV.Text = strClearArt
         Me.lblMovieClearArtExpertMulti.Text = strClearArt
         Me.lblMovieClearArtExpertSingle.Text = strClearArt
@@ -5903,7 +5906,7 @@ Public Class dlgSettings
         Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
         Me.gbMovieImagesClearLogoOpts.Text = strClearLogo
         Me.gbMovieSetImagesClearLogoOpts.Text = strClearLogo
-        Me.gbTVShowClearLogoOpts.Text = strClearLogo
+        Me.gbTVImagesShowClearLogoOpts.Text = strClearLogo
         Me.lblMovieClearLogoExpertBDMV.Text = strClearLogo
         Me.lblMovieClearLogoExpertMulti.Text = strClearLogo
         Me.lblMovieClearLogoExpertSingle.Text = strClearLogo
@@ -5970,7 +5973,10 @@ Public Class dlgSettings
         Dim strFanart As String = Master.eLang.GetString(149, "Fanart")
         Me.gbMovieImagesFanartOpts.Text = strFanart
         Me.gbMovieSetImagesFanartOpts.Text = strFanart
-        Me.gbTVShowFanartOpts.Text = strFanart
+        Me.gbTVImagesAllSeasonsFanartOpts.Text = strFanart
+        Me.gbTVImagesEpisodeFanartOpts.Text = strFanart
+        Me.gbTVImagesSeasonFanartOpts.Text = strFanart
+        Me.gbTVImagesShowFanartOpts.Text = strFanart
         Me.lblMovieFanartExpertBDMV.Text = strFanart
         Me.lblMovieFanartExpertMulti.Text = strFanart
         Me.lblMovieFanartExpertSingle.Text = strFanart
@@ -6001,7 +6007,9 @@ Public Class dlgSettings
         Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
         Me.gbMovieImagesLandscapeOpts.Text = strLandscape
         Me.gbMovieSetImagesLandscapeOpts.Text = strLandscape
-        Me.gbTVShowLandscapeOpts.Text = strLandscape
+        Me.gbTVImagesAllSeasonsLandscapeOpts.Text = strLandscape
+        Me.gbTVImagesSeasonLandscapeOpts.Text = strLandscape
+        Me.gbTVImagesShowLandscapeOpts.Text = strLandscape
         Me.lblMovieGeneralMediaListLandscape.Text = strLandscape
         Me.lblMovieLandscapeExpertBDMV.Text = strLandscape
         Me.lblMovieLandscapeExpertMulti.Text = strLandscape
@@ -6119,7 +6127,10 @@ Public Class dlgSettings
         Dim strPoster As String = Master.eLang.GetString(148, "Poster")
         Me.gbMovieImagesPosterOpts.Text = strPoster
         Me.gbMovieSetImagesPosterOpts.Text = strPoster
-        Me.gbTVShowPosterOpts.Text = strPoster
+        Me.gbTVImagesAllSeasonsPosterOpts.Text = strPoster
+        Me.gbTVImagesEpisodePosterOpts.Text = strPoster
+        Me.gbTVImagesSeasonPosterOpts.Text = strPoster
+        Me.gbTVImagesShowPosterOpts.Text = strPoster
         Me.lblMovieGeneralMediaListPoster.Text = strPoster
         Me.lblMoviePosterExpertBDMV.Text = strPoster
         Me.lblMoviePosterExpertMulti.Text = strPoster
@@ -6357,7 +6368,7 @@ Public Class dlgSettings
         Me.gbTVGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         Me.gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
         Me.gbTVScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
-        Me.gbTVShowCharacterArtOpts.Text = Master.eLang.GetString(1140, "CharacterArt")
+        Me.gbTVImagesShowCharacterArtOpts.Text = Master.eLang.GetString(1140, "CharacterArt")
         Me.gbTVShowFilterOpts.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
         Me.gbTVShowRegex.Text = Master.eLang.GetString(691, "Show Match Regex")
         Me.gbTVSourcesMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
@@ -6417,10 +6428,10 @@ Public Class dlgSettings
         Me.lvTVSources.Columns(5).Text = Master.eLang.GetString(264, "Exclude")
         Me.tpFileSystemCleanerExpert.Text = Master.eLang.GetString(439, "Expert")
         Me.tpFileSystemCleanerStandard.Text = Master.eLang.GetString(438, "Standard")
-        Me.tpTVAllSeasons.Text = Master.eLang.GetString(1202, "TV All Seasons")
-        Me.tpTVEpisode.Text = Master.eLang.GetString(701, "TV Episode")
-        Me.tpTVSeason.Text = Master.eLang.GetString(744, "TV Season")
-        Me.tpTVShow.Text = Master.eLang.GetString(700, "TV Show")
+        Me.tpTVImagesAllSeasons.Text = Master.eLang.GetString(1202, "TV All Seasons")
+        Me.tpTVImagesEpisode.Text = Master.eLang.GetString(701, "TV Episode")
+        Me.tpTVImagesSeason.Text = Master.eLang.GetString(744, "TV Season")
+        Me.tpTVImagesShow.Text = Master.eLang.GetString(700, "TV Show")
         Me.tpTVSourcesGeneral.Text = Master.eLang.GetString(38, "General")
         Me.tpTVSourcesRegex.Text = Master.eLang.GetString(699, "Regex")
 
@@ -6514,22 +6525,22 @@ Public Class dlgSettings
         Me.gbMovieSetGeneralSortTokensOpts.Text = Me.gbMovieGeneralSortTokensOpts.Text
         Me.gbMovieSetSourcesMiscOpts.Text = Me.gbMovieSourcesMiscOpts.Text
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
-        Me.gbTVASBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
-        Me.gbTVASFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
-        Me.gbTVASLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
-        Me.gbTVASPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
-        Me.gbTVEpisodeFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
-        Me.gbTVEpisodePosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
+        Me.gbTVImagesAllSeasonsBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
+        Me.gbTVImagesAllSeasonsFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
+        Me.gbTVImagesAllSeasonsLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
+        Me.gbTVImagesAllSeasonsPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
+        Me.gbTVImagesEpisodeFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
+        Me.gbTVImagesEpisodePosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
         Me.gbTVScraperDefFIExtOpts.Text = Me.gbTVScraperDefFIExtOpts.Text
-        Me.gbTVSeasonBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
-        Me.gbTVSeasonFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
-        Me.gbTVSeasonLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
-        Me.gbTVSeasonPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
-        Me.gbTVShowBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
-        Me.gbTVShowEFanartsOpts.Text = Me.gbMovieImagesEFanartsOpts.Text
-        Me.gbTVShowFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
-        Me.gbTVShowLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
-        Me.gbTVShowPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
+        Me.gbTVImagesSeasonBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
+        Me.gbTVImagesSeasonFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
+        Me.gbTVImagesSeasonLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
+        Me.gbTVImagesSeasonPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
+        Me.gbTVImagesShowBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
+        Me.gbTVImagesShowEFanartsOpts.Text = Me.gbMovieImagesEFanartsOpts.Text
+        Me.gbTVImagesShowFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
+        Me.gbTVImagesShowLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
+        Me.gbTVImagesShowPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
         Me.gbTVGeneralMediaListSortTokensOpts.Text = Me.gbMovieGeneralSortTokensOpts.Text
         Me.lblMovieEFanartsSize.Text = Me.lblMoviePosterSize.Text
         Me.lblMovieEThumbsSize.Text = Me.lblMoviePosterSize.Text
