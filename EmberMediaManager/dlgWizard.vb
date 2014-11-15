@@ -697,14 +697,14 @@ Public Class dlgWizard
             '*************** XBMC Frodo settings ***************
             Me.chkMovieUseFrodo.Checked = .MovieUseFrodo
             Me.chkMovieActorThumbsFrodo.Checked = .MovieActorThumbsFrodo
-            Me.chkMovieBannerFrodo.Checked = .MovieBannerFrodo
-            Me.chkMovieClearArtFrodo.Checked = .MovieClearArtFrodo
-            Me.chkMovieClearLogoFrodo.Checked = .MovieClearLogoFrodo
-            Me.chkMovieDiscArtFrodo.Checked = .MovieDiscArtFrodo
+            Me.chkMovieBannerFrodo.Checked = .MovieBannerAD
+            Me.chkMovieClearArtFrodo.Checked = .MovieClearArtAD
+            Me.chkMovieClearLogoFrodo.Checked = .MovieClearLogoAD
+            Me.chkMovieDiscArtFrodo.Checked = .MovieDiscArtAD
             Me.chkMovieExtrafanartsFrodo.Checked = .MovieExtrafanartsFrodo
             Me.chkMovieExtrathumbsFrodo.Checked = .MovieExtrathumbsFrodo
             Me.chkMovieFanartFrodo.Checked = .MovieFanartFrodo
-            Me.chkMovieLandscapeFrodo.Checked = .MovieLandscapeFrodo
+            Me.chkMovieLandscapeFrodo.Checked = .MovieLandscapeAD
             Me.chkMovieNFOFrodo.Checked = .MovieNFOFrodo
             Me.chkMoviePosterFrodo.Checked = .MoviePosterFrodo
             Me.chkMovieTrailerFrodo.Checked = .MovieTrailerFrodo
@@ -889,11 +889,11 @@ Public Class dlgWizard
             '*************** XBMC Eden settings ****************
 
             '************* XBMC optional settings **************
-            Me.chkTVSeasonLandscapeXBMC.Checked = .TVSeasonLandscapeXBMC
-            Me.chkTVShowCharacterArtXBMC.Checked = .TVShowCharacterArtXBMC
-            Me.chkTVShowClearArtXBMC.Checked = .TVShowClearArtXBMC
-            Me.chkTVShowClearLogoXBMC.Checked = .TVShowClearLogoXBMC
-            Me.chkTVShowLandscapeXBMC.Checked = .TVShowLandscapeXBMC
+            Me.chkTVSeasonLandscapeXBMC.Checked = .TVSeasonLandscapeAD
+            Me.chkTVShowCharacterArtXBMC.Checked = .TVShowCharacterArtAD
+            Me.chkTVShowClearArtXBMC.Checked = .TVShowClearArtAD
+            Me.chkTVShowClearLogoXBMC.Checked = .TVShowClearLogoAD
+            Me.chkTVShowLandscapeXBMC.Checked = .TVShowLandscapeAD
             Me.chkTVShowTVThemeXBMC.Checked = .TVShowTVThemeXBMC
             Me.txtTVShowTVThemeFolderXBMC.Text = .TVShowTVThemeFolderXBMC
 
@@ -1097,14 +1097,14 @@ Public Class dlgWizard
             '*************** XBMC Frodo settings ***************
             .MovieUseFrodo = Me.chkMovieUseFrodo.Checked
             .MovieActorThumbsFrodo = Me.chkMovieActorThumbsFrodo.Checked
-            .MovieBannerFrodo = Me.chkMovieBannerFrodo.Checked
-            .MovieClearArtFrodo = Me.chkMovieClearArtFrodo.Checked
-            .MovieClearLogoFrodo = Me.chkMovieClearLogoFrodo.Checked
-            .MovieDiscArtFrodo = Me.chkMovieDiscArtFrodo.Checked
+            .MovieBannerAD = Me.chkMovieBannerFrodo.Checked
+            .MovieClearArtAD = Me.chkMovieClearArtFrodo.Checked
+            .MovieClearLogoAD = Me.chkMovieClearLogoFrodo.Checked
+            .MovieDiscArtAD = Me.chkMovieDiscArtFrodo.Checked
             .MovieExtrafanartsFrodo = Me.chkMovieExtrafanartsFrodo.Checked
             .MovieExtrathumbsFrodo = Me.chkMovieExtrathumbsFrodo.Checked
             .MovieFanartFrodo = Me.chkMovieFanartFrodo.Checked
-            .MovieLandscapeFrodo = Me.chkMovieLandscapeFrodo.Checked
+            .MovieLandscapeAD = Me.chkMovieLandscapeFrodo.Checked
             .MovieNFOFrodo = Me.chkMovieNFOFrodo.Checked
             .MoviePosterFrodo = Me.chkMoviePosterFrodo.Checked
             .MovieTrailerFrodo = Me.chkMovieTrailerFrodo.Checked
@@ -1289,11 +1289,11 @@ Public Class dlgWizard
             '*************** XBMC Eden settings ****************
 
             '************* XBMC optional settings **************
-            .TVSeasonLandscapeXBMC = Me.chkTVSeasonLandscapeXBMC.Checked
-            .TVShowCharacterArtXBMC = Me.chkTVShowCharacterArtXBMC.Checked
-            .TVShowClearArtXBMC = Me.chkTVShowClearArtXBMC.Checked
-            .TVShowClearLogoXBMC = Me.chkTVShowClearLogoXBMC.Checked
-            .TVShowLandscapeXBMC = Me.chkTVShowLandscapeXBMC.Checked
+            .TVSeasonLandscapeAD = Me.chkTVSeasonLandscapeXBMC.Checked
+            .TVShowCharacterArtAD = Me.chkTVShowCharacterArtXBMC.Checked
+            .TVShowClearArtAD = Me.chkTVShowClearArtXBMC.Checked
+            .TVShowClearLogoAD = Me.chkTVShowClearLogoXBMC.Checked
+            .TVShowLandscapeAD = Me.chkTVShowLandscapeXBMC.Checked
             .TVShowTVThemeXBMC = Me.chkTVShowTVThemeXBMC.Checked
             .TVShowTVThemeFolderXBMC = Me.txtTVShowTVThemeFolderXBMC.Text
 

@@ -2124,8 +2124,13 @@ Public Class Database
                                         parSets_HasNfo.Value = False
                                         parSets_HasPoster.Value = False
                                         parSets_New.Value = True
-                                        parSets_Mark.Value = False
                                         parSets_Lock.Value = False
+
+                                        If Master.eSettings.MovieSetGeneralMarkNew Then
+                                            parSets_Mark.Value = True
+                                        Else
+                                            parSets_Mark.Value = False
+                                        End If
                                         SQLcommandSets.ExecuteNonQuery()
                                     End Using
 

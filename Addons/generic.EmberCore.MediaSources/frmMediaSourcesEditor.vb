@@ -80,7 +80,7 @@ Public Class frmMediaSources
         btnRemoveSource.Text = Master.eLang.GetString(30, "Remove")
         btnAddByFile.Text = Master.eLang.GetString(28, "Add")
         btnRemoveByFile.Text = Master.eLang.GetString(30, "Remove")
-        btnSetDefaults.Text = Master.eLang.GetString(713, "Set Defaults")
+        btnSetDefaults.Text = Master.eLang.GetString(713, "Defaults")
         Label1.Text = Master.eLang.GetString(602, "Sources")
         Me.dgvSources.Columns(0).HeaderText = Master.eLang.GetString(763, "Search String")
         Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
