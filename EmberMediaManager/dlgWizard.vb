@@ -889,11 +889,11 @@ Public Class dlgWizard
             '*************** XBMC Eden settings ****************
 
             '************* XBMC optional settings **************
-            Me.chkTVSeasonLandscapeXBMC.Checked = .TVSeasonLandscapeXBMC
-            Me.chkTVShowCharacterArtXBMC.Checked = .TVShowCharacterArtXBMC
-            Me.chkTVShowClearArtXBMC.Checked = .TVShowClearArtXBMC
-            Me.chkTVShowClearLogoXBMC.Checked = .TVShowClearLogoXBMC
-            Me.chkTVShowLandscapeXBMC.Checked = .TVShowLandscapeXBMC
+            Me.chkTVSeasonLandscapeXBMC.Checked = .TVSeasonLandscapeAD
+            Me.chkTVShowCharacterArtXBMC.Checked = .TVShowCharacterArtAD
+            Me.chkTVShowClearArtXBMC.Checked = .TVShowClearArtAD
+            Me.chkTVShowClearLogoXBMC.Checked = .TVShowClearLogoAD
+            Me.chkTVShowLandscapeXBMC.Checked = .TVShowLandscapeAD
             Me.chkTVShowTVThemeXBMC.Checked = .TVShowTVThemeXBMC
             Me.txtTVShowTVThemeFolderXBMC.Text = .TVShowTVThemeFolderXBMC
 
@@ -1289,11 +1289,11 @@ Public Class dlgWizard
             '*************** XBMC Eden settings ****************
 
             '************* XBMC optional settings **************
-            .TVSeasonLandscapeXBMC = Me.chkTVSeasonLandscapeXBMC.Checked
-            .TVShowCharacterArtXBMC = Me.chkTVShowCharacterArtXBMC.Checked
-            .TVShowClearArtXBMC = Me.chkTVShowClearArtXBMC.Checked
-            .TVShowClearLogoXBMC = Me.chkTVShowClearLogoXBMC.Checked
-            .TVShowLandscapeXBMC = Me.chkTVShowLandscapeXBMC.Checked
+            .TVSeasonLandscapeAD = Me.chkTVSeasonLandscapeXBMC.Checked
+            .TVShowCharacterArtAD = Me.chkTVShowCharacterArtXBMC.Checked
+            .TVShowClearArtAD = Me.chkTVShowClearArtXBMC.Checked
+            .TVShowClearLogoAD = Me.chkTVShowClearLogoXBMC.Checked
+            .TVShowLandscapeAD = Me.chkTVShowLandscapeXBMC.Checked
             .TVShowTVThemeXBMC = Me.chkTVShowTVThemeXBMC.Checked
             .TVShowTVThemeFolderXBMC = Me.txtTVShowTVThemeFolderXBMC.Text
 

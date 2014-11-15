@@ -18,7 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 1024; 768
+' # Dialog size: 1120; 900
 ' # Panel size: 750; 500
 ' # Enlarge it to see all the panels.
 
@@ -3167,7 +3167,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtMovieXBMCThemeSubDir_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieXBMCThemeSubDir.TextChanged
+    Private Sub txtMovieXBMCThemeSubDir_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieXBMCThemeSubDir.TextChanged, txtTVXBMCThemeSubDir.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3839,14 +3839,9 @@ Public Class dlgSettings
                 '*************** XBMC Frodo settings ***************
                 Me.chkMovieUseFrodo.Checked = .MovieUseFrodo
                 Me.chkMovieActorThumbsFrodo.Checked = .MovieActorThumbsFrodo
-                Me.chkMovieBannerAD.Checked = .MovieBannerAD
-                Me.chkMovieClearArtAD.Checked = .MovieClearArtAD
-                Me.chkMovieClearLogoAD.Checked = .MovieClearLogoAD
-                Me.chkMovieDiscArtAD.Checked = .MovieDiscArtAD
                 Me.chkMovieExtrafanartsFrodo.Checked = .MovieExtrafanartsFrodo
                 Me.chkMovieExtrathumbsFrodo.Checked = .MovieExtrathumbsFrodo
                 Me.chkMovieFanartFrodo.Checked = .MovieFanartFrodo
-                Me.chkMovieLandscapeAD.Checked = .MovieLandscapeAD
                 Me.chkMovieNFOFrodo.Checked = .MovieNFOFrodo
                 Me.chkMoviePosterFrodo.Checked = .MoviePosterFrodo
                 Me.chkMovieTrailerFrodo.Checked = .MovieTrailerFrodo
@@ -3870,7 +3865,14 @@ Public Class dlgSettings
                 'Me.chkMovieXBMCTrailerFormat.Checked = .MovieXBMCTrailerFormat
                 Me.chkMovieXBMCProtectVTSBDMV.Checked = .MovieXBMCProtectVTSBDMV
 
-                '*************** XBMC theme settings ***************
+                '******** XBMC ArtworkDownloader settings **********
+                Me.chkMovieBannerAD.Checked = .MovieBannerAD
+                Me.chkMovieClearArtAD.Checked = .MovieClearArtAD
+                Me.chkMovieClearLogoAD.Checked = .MovieClearLogoAD
+                Me.chkMovieDiscArtAD.Checked = .MovieDiscArtAD
+                Me.chkMovieLandscapeAD.Checked = .MovieLandscapeAD
+
+                '************** XBMC TvTunes settings **************
                 Me.chkMovieXBMCThemeEnable.Checked = .MovieXBMCThemeEnable
                 Me.chkMovieXBMCThemeCustom.Checked = .MovieXBMCThemeCustom
                 Me.chkMovieXBMCThemeMovie.Checked = .MovieXBMCThemeMovie
@@ -4048,20 +4050,22 @@ Public Class dlgSettings
                 Me.chkTVSeasonPosterFrodo.Checked = .TVSeasonPosterFrodo
                 Me.chkTVShowActorThumbsFrodo.Checked = .TVShowActorThumbsFrodo
                 Me.chkTVShowBannerFrodo.Checked = .TVShowBannerFrodo
+                Me.chkTVShowExtrafanartsFrodo.Checked = .TVShowExtrafanartsFrodo
                 Me.chkTVShowFanartFrodo.Checked = .TVShowFanartFrodo
                 Me.chkTVShowPosterFrodo.Checked = .TVShowPosterFrodo
 
                 '*************** XBMC Eden settings ****************
 
-                '************* XBMC optional settings **************
-                Me.chkTVSeasonLandscapeXBMC.Checked = .TVSeasonLandscapeXBMC
-                Me.chkTVShowCharacterArtXBMC.Checked = .TVShowCharacterArtXBMC
-                Me.chkTVShowClearArtXBMC.Checked = .TVShowClearArtXBMC
-                Me.chkTVShowClearLogoXBMC.Checked = .TVShowClearLogoXBMC
-                Me.chkTVShowExtrafanartsXBMC.Checked = .TVShowExtrafanartsXBMC
-                Me.chkTVShowLandscapeXBMC.Checked = .TVShowLandscapeXBMC
-                Me.chkTVShowTVThemeXBMC.Checked = .TVShowTVThemeXBMC
-                Me.txtTVShowTVThemeFolderXBMC.Text = .TVShowTVThemeFolderXBMC
+                '******** XBMC ArtworkDownloader settings **********
+                Me.chkTVSeasonLandscapeAD.Checked = .TVSeasonLandscapeAD
+                Me.chkTVShowCharacterArtAD.Checked = .TVShowCharacterArtAD
+                Me.chkTVShowClearArtAD.Checked = .TVShowClearArtAD
+                Me.chkTVShowClearLogoAD.Checked = .TVShowClearLogoAD
+                Me.chkTVShowLandscapeAD.Checked = .TVShowLandscapeAD
+
+                '************* XBMC TvTunes settings ***************
+                Me.chkTVXBMCThemeEnable.Checked = .TVShowTVThemeXBMC
+                Me.txtTVXBMCThemeCustomPath.Text = .TVShowTVThemeFolderXBMC
 
                 '****************** YAMJ settings ******************
                 Me.chkTVUseYAMJ.Checked = .TVUseYAMJ
@@ -4102,9 +4106,12 @@ Public Class dlgSettings
             Me.AddButtons()
             Me.AddHelpHandlers(Me, "Core_")
 
+            'get optimal panel size
             Dim WorkArea = SysInfo.GetWorkArea()
-            Me.Size = New Size(WorkArea.Right - 100, WorkArea.Bottom - 100)
-            Me.Location = New Point(50, 50)
+            If WorkArea.Right - 100 < 1120 OrElse WorkArea.Bottom - 100 < 900 Then
+                Me.Size = New Size(WorkArea.Right - 100, WorkArea.Bottom - 100)
+                Me.Location = New Point(50, 50)
+            End If
 
             Dim iBackground As New Bitmap(Me.pnlSettingsTop.Width, Me.pnlSettingsTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -5493,14 +5500,9 @@ Public Class dlgSettings
                 '*************** XBMC Frodo settings ***************
                 .MovieUseFrodo = Me.chkMovieUseFrodo.Checked
                 .MovieActorThumbsFrodo = Me.chkMovieActorThumbsFrodo.Checked
-                .MovieBannerAD = Me.chkMovieBannerAD.Checked
-                .MovieClearArtAD = Me.chkMovieClearArtAD.Checked
-                .MovieClearLogoAD = Me.chkMovieClearLogoAD.Checked
-                .MovieDiscArtAD = Me.chkMovieDiscArtAD.Checked
                 .MovieExtrafanartsFrodo = Me.chkMovieExtrafanartsFrodo.Checked
                 .MovieExtrathumbsFrodo = Me.chkMovieExtrathumbsFrodo.Checked
                 .MovieFanartFrodo = Me.chkMovieFanartFrodo.Checked
-                .MovieLandscapeAD = Me.chkMovieLandscapeAD.Checked
                 .MovieNFOFrodo = Me.chkMovieNFOFrodo.Checked
                 .MoviePosterFrodo = Me.chkMoviePosterFrodo.Checked
                 .MovieTrailerFrodo = Me.chkMovieTrailerFrodo.Checked
@@ -5524,7 +5526,14 @@ Public Class dlgSettings
                 '.MovieXBMCTrailerFormat = Me.chkMovieXBMCTrailerFormat.Checked
                 .MovieXBMCProtectVTSBDMV = Me.chkMovieXBMCProtectVTSBDMV.Checked
 
-                '*************** XBMC theme settings ***************
+                '******** XBMC ArtworkDownloader settings **********
+                .MovieBannerAD = Me.chkMovieBannerAD.Checked
+                .MovieClearArtAD = Me.chkMovieClearArtAD.Checked
+                .MovieClearLogoAD = Me.chkMovieClearLogoAD.Checked
+                .MovieDiscArtAD = Me.chkMovieDiscArtAD.Checked
+                .MovieLandscapeAD = Me.chkMovieLandscapeAD.Checked
+
+                '************** XBMC TvTunes settings **************
                 .MovieXBMCThemeCustom = Me.chkMovieXBMCThemeCustom.Checked
                 .MovieXBMCThemeCustomPath = Me.txtMovieXBMCThemeCustomPath.Text
                 .MovieXBMCThemeEnable = Me.chkMovieXBMCThemeEnable.Checked
@@ -5708,14 +5717,14 @@ Public Class dlgSettings
                 '*************** XBMC Eden settings ****************
 
                 '************* XBMC optional settings **************
-                .TVSeasonLandscapeXBMC = Me.chkTVSeasonLandscapeXBMC.Checked
-                .TVShowCharacterArtXBMC = Me.chkTVShowCharacterArtXBMC.Checked
-                .TVShowClearArtXBMC = Me.chkTVShowClearArtXBMC.Checked
-                .TVShowClearLogoXBMC = Me.chkTVShowClearLogoXBMC.Checked
-                .TVShowExtrafanartsXBMC = Me.chkTVShowExtrafanartsXBMC.Checked
-                .TVShowLandscapeXBMC = Me.chkTVShowLandscapeXBMC.Checked
-                .TVShowTVThemeXBMC = Me.chkTVShowTVThemeXBMC.Checked
-                .TVShowTVThemeFolderXBMC = Me.txtTVShowTVThemeFolderXBMC.Text
+                .TVSeasonLandscapeAD = Me.chkTVSeasonLandscapeAD.Checked
+                .TVShowCharacterArtAD = Me.chkTVShowCharacterArtAD.Checked
+                .TVShowClearArtAD = Me.chkTVShowClearArtAD.Checked
+                .TVShowClearLogoAD = Me.chkTVShowClearLogoAD.Checked
+                .TVShowExtrafanartsFrodo = Me.chkTVShowExtrafanartsFrodo.Checked
+                .TVShowLandscapeAD = Me.chkTVShowLandscapeAD.Checked
+                .TVShowTVThemeXBMC = Me.chkTVXBMCThemeEnable.Checked
+                .TVShowTVThemeFolderXBMC = Me.txtTVXBMCThemeCustomPath.Text
 
                 '****************** YAMJ settings ******************
                 .TVUseYAMJ = Me.chkTVUseYAMJ.Checked
@@ -5857,6 +5866,7 @@ Public Class dlgSettings
         Dim strActorThumbs As String = Master.eLang.GetString(991, "Actor Thumbs")
         Me.gbMovieImagesActorThumbsOpts.Text = strActorThumbs
         Me.lblMovieSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
+        Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
 
         'Banner
         Dim strBanner As String = Master.eLang.GetString(838, "Banner")
@@ -5873,6 +5883,7 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingXBMCADBanner.Text = strBanner
         Me.lblMovieSetGeneralMediaListBanner.Text = strBanner
         Me.lblTVGeneralMediaListBanner.Text = strBanner
+        Me.lblTVSourcesFileNamingXBMCDefaultsBanner.Text = strBanner
 
         'Cast
         Dim strCast As String = Master.eLang.GetString(63, "Cast")
@@ -5969,6 +5980,18 @@ Public Class dlgSettings
         Me.lblTVGeneralMediaListHeaderSeasons.Text = strEpisodes
         Me.lblTVScraperGlobalHeaderEpisodes.Text = strEpisodes
 
+        'Extrafanarts
+        Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
+        Me.gbMovieImagesEFanartsOpts.Text = strExtrafanarts
+        Me.gbTVImagesShowEFanartsOpts.Text = strExtrafanarts
+        Me.lblMovieSourcesFileNamingXBMCDefaultsExtrafanarts.Text = strExtrafanarts
+        Me.lblTVSourcesFileNamingXBMCDefaultsExtrafanarts.Text = strExtrafanarts
+
+        'Extrathumbs
+        Dim strExtrathumbs As String = Master.eLang.GetString(153, "Extrathumbs")
+        Me.gbMovieImagesEThumbsOpts.Text = strExtrathumbs
+        Me.lblMovieSourcesFileNamingXBMCDefaultsExtrathumbs.Text = strExtrathumbs
+
         'Fanart
         Dim strFanart As String = Master.eLang.GetString(149, "Fanart")
         Me.gbMovieImagesFanartOpts.Text = strFanart
@@ -5984,6 +6007,7 @@ Public Class dlgSettings
         Me.lblMovieGeneralMediaListFanart.Text = strFanart
         Me.lblMovieSetGeneralMediaListFanart.Text = strFanart
         Me.lblTVGeneralMediaListFanart.Text = strFanart
+        Me.lblTVSourcesFileNamingXBMCDefaultsFanart.Text = strFanart
 
         'File Type
         Dim strFileType As String = String.Concat(Master.eLang.GetString(626, "File Type"), ":")
@@ -6138,6 +6162,7 @@ Public Class dlgSettings
         Me.lblMoviePosterExpertVTS.Text = strPoster
         Me.lblMovieSetGeneralMediaListPoster.Text = strPoster
         Me.lblTVGeneralMediaListPoster.Text = strPoster
+        Me.lblTVSourcesFileNamingXBMCDefaultsPoster.Text = strPoster
 
         'Release Date
         Dim strReleaseDate As String = Master.eLang.GetString(57, "Release Date")
@@ -6320,7 +6345,6 @@ Public Class dlgSettings
         Me.chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         Me.chkTVScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkTVScraperUseSRuntimeForEp.Text = Master.eLang.GetString(1262, "Use Show Runtime for Episodes if no Episode Runtime can be found")
-        Me.chkTVShowExtrafanartsXBMC.Text = Master.eLang.GetString(992, "Extrafanarts")
         Me.colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colPath.Text = Master.eLang.GetString(410, "Path")
@@ -6349,8 +6373,6 @@ Public Class dlgSettings
         Me.gbMovieSourcesMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
         Me.gbMovieScraperCertificationOpts.Text = Master.eLang.GetString(56, "Certification")
         Me.gbMovieImagesDiscArtOpts.Text = Master.eLang.GetString(1098, "DiscArt")
-        Me.gbMovieImagesEFanartsOpts.Text = Master.eLang.GetString(992, "Extrafanarts")
-        Me.gbMovieImagesEThumbsOpts.Text = Master.eLang.GetString(153, "Extrathumbs")
         Me.gbMovieImagesLandscapeOpts.Text = Master.eLang.GetString(1035, "Landscape")
         Me.gbMovieImagesPosterOpts.Text = Master.eLang.GetString(148, "Poster")
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
@@ -6359,7 +6381,7 @@ Public Class dlgSettings
         Me.gbMovieGeneralSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         Me.gbMovieTrailerOpts.Text = Master.eLang.GetString(1195, "Trailers")
         Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text = Master.eLang.GetString(1175, "Optional Settings")
-        Me.gbMovieSourcesFileNamingXBMCThemeOpts.Text = Master.eLang.GetString(1076, "Theme Settings")
+        Me.gbMovieSourcesFileNamingXBMCTvTunesOpts.Text = Master.eLang.GetString(1076, "Theme Settings")
         Me.gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
         Me.gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
         Me.gbSettingsHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
@@ -6370,7 +6392,7 @@ Public Class dlgSettings
         Me.gbTVScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
         Me.gbTVImagesShowCharacterArtOpts.Text = Master.eLang.GetString(1140, "CharacterArt")
         Me.gbTVShowFilterOpts.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
-        Me.gbTVShowRegex.Text = Master.eLang.GetString(691, "Show Match Regex")
+        Me.gbTVSourcesRegexMatch.Text = Master.eLang.GetString(691, "Show Match Regex")
         Me.gbTVSourcesMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
         Me.lblFileSystemCleanerWarning.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
         Me.lblFileSystemCleanerWhitelist.Text = Master.eLang.GetString(441, "Whitelisted Extensions:")
@@ -7592,51 +7614,51 @@ Public Class dlgSettings
         Me.chkTVEpisodePosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVSeasonLandscapeXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVSeasonLandscapeAD.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowCharacterArtXBMC.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowClearArtXBMC.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowClearLogoXBMC.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowExtrafanartsXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowCharacterArtAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowClearArtAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowClearLogoAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowExtrafanartsFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowLandscapeXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowLandscapeAD.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowTVThemeXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVXBMCThemeEnable.Enabled = Me.chkTVUseFrodo.Checked
 
         If Not Me.chkTVUseFrodo.Checked Then
             Me.chkTVEpisodeActorThumbsFrodo.Checked = False
             Me.chkTVEpisodePosterFrodo.Checked = False
             Me.chkTVSeasonBannerFrodo.Checked = False
             Me.chkTVSeasonFanartFrodo.Checked = False
-            Me.chkTVSeasonLandscapeXBMC.Checked = False
+            Me.chkTVSeasonLandscapeAD.Checked = False
             Me.chkTVSeasonPosterFrodo.Checked = False
             Me.chkTVShowActorThumbsFrodo.Checked = False
             Me.chkTVShowBannerFrodo.Checked = False
-            Me.chkTVShowCharacterArtXBMC.Checked = False
-            Me.chkTVShowClearArtXBMC.Checked = False
-            Me.chkTVShowClearLogoXBMC.Checked = False
-            Me.chkTVShowExtrafanartsXBMC.Checked = False
+            Me.chkTVShowCharacterArtAD.Checked = False
+            Me.chkTVShowClearArtAD.Checked = False
+            Me.chkTVShowClearLogoAD.Checked = False
+            Me.chkTVShowExtrafanartsFrodo.Checked = False
             Me.chkTVShowFanartFrodo.Checked = False
-            Me.chkTVShowLandscapeXBMC.Checked = False
+            Me.chkTVShowLandscapeAD.Checked = False
             Me.chkTVShowPosterFrodo.Checked = False
-            Me.chkTVShowTVThemeXBMC.Checked = False
+            Me.chkTVXBMCThemeEnable.Checked = False
         Else
             Me.chkTVEpisodeActorThumbsFrodo.Checked = True
             Me.chkTVEpisodePosterFrodo.Checked = True
             Me.chkTVSeasonBannerFrodo.Checked = True
             Me.chkTVSeasonFanartFrodo.Checked = True
-            Me.chkTVSeasonLandscapeXBMC.Checked = True
+            Me.chkTVSeasonLandscapeAD.Checked = True
             Me.chkTVSeasonPosterFrodo.Checked = True
             Me.chkTVShowActorThumbsFrodo.Checked = True
             Me.chkTVShowBannerFrodo.Checked = True
-            Me.chkTVShowCharacterArtXBMC.Checked = True
-            Me.chkTVShowClearArtXBMC.Checked = True
-            Me.chkTVShowClearLogoXBMC.Checked = True
-            Me.chkTVShowExtrafanartsXBMC.Checked = True
+            Me.chkTVShowCharacterArtAD.Checked = True
+            Me.chkTVShowClearArtAD.Checked = True
+            Me.chkTVShowClearLogoAD.Checked = True
+            Me.chkTVShowExtrafanartsFrodo.Checked = True
             Me.chkTVShowFanartFrodo.Checked = True
-            Me.chkTVShowLandscapeXBMC.Checked = True
+            Me.chkTVShowLandscapeAD.Checked = True
             Me.chkTVShowPosterFrodo.Checked = True
             'Me.chkTVShowTVThemeXBMC.Checked = True
         End If
@@ -7657,7 +7679,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVSeasonLandscapeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonLandscapeXBMC.CheckedChanged
+    Private Sub chkTVSeasonLandscapeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonLandscapeAD.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -7673,19 +7695,19 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVShowCharacterArtXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowCharacterArtXBMC.CheckedChanged
+    Private Sub chkTVShowCharacterArtXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowCharacterArtAD.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVShowClearArtXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearArtXBMC.CheckedChanged
+    Private Sub chkTVShowClearArtXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearArtAD.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVShowClearLogoXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearLogoXBMC.CheckedChanged
+    Private Sub chkTVShowClearLogoXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearLogoAD.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVShowExtrafanartsXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowExtrafanartsXBMC.CheckedChanged
+    Private Sub chkTVShowExtrafanartsXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowExtrafanartsFrodo.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -7693,7 +7715,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVShowLandscapeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowLandscapeXBMC.CheckedChanged
+    Private Sub chkTVShowLandscapeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowLandscapeAD.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -7701,23 +7723,23 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVShowTVThemeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowTVThemeXBMC.CheckedChanged
+    Private Sub chkTVShowTVThemeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVXBMCThemeEnable.CheckedChanged
         Me.SetApplyButton(True)
 
-        Me.btnTVShowTVThemeBrowse.Enabled = Me.chkTVShowTVThemeXBMC.Checked
-        Me.txtTVShowTVThemeFolderXBMC.Enabled = Me.chkTVShowTVThemeXBMC.Checked
+        Me.btnTVXBMCThemeCustomPathBrowse.Enabled = Me.chkTVXBMCThemeEnable.Checked
+        Me.txtTVXBMCThemeCustomPath.Enabled = Me.chkTVXBMCThemeEnable.Checked
     End Sub
 
-    Private Sub txtTVShowTVThemeFolderXBMC_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowTVThemeFolderXBMC.TextChanged
+    Private Sub txtTVShowTVThemeFolderXBMC_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVXBMCThemeCustomPath.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub btnTVShowTVThemeBrowse_Click(sender As Object, e As EventArgs) Handles btnTVShowTVThemeBrowse.Click
+    Private Sub btnTVShowTVThemeBrowse_Click(sender As Object, e As EventArgs) Handles btnTVXBMCThemeCustomPathBrowse.Click
         With Me.fbdBrowse
             fbdBrowse.Description = Master.eLang.GetString(1028, "Select the folder where you wish to store your tv themes...")
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                    Me.txtTVShowTVThemeFolderXBMC.Text = .SelectedPath.ToString
+                    Me.txtTVXBMCThemeCustomPath.Text = .SelectedPath.ToString
                 End If
             End If
         End With
@@ -7978,7 +8000,7 @@ Public Class dlgSettings
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Sub pbADInfo_Click(sender As Object, e As EventArgs) Handles pbADInfo.Click
+    Private Sub pbMovieSourcesADInfo_Click(sender As Object, e As EventArgs) Handles pbMovieSourcesADInfo.Click
         If Master.isWindows Then
             Process.Start("http://kodi.wiki/view/Add-on:Artwork_Downloader#Filenaming")
         Else
@@ -7990,11 +8012,31 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub pbADInfo_MouseEnter(sender As Object, e As EventArgs) Handles pbADInfo.MouseEnter
+    Private Sub pbMovieSourcesADInfo_MouseEnter(sender As Object, e As EventArgs) Handles pbMovieSourcesADInfo.MouseEnter
         Me.Cursor = Cursors.Hand
     End Sub
 
-    Private Sub pbADInfo_MouseLeave(sender As Object, e As EventArgs) Handles pbADInfo.MouseLeave
+    Private Sub pbMovieSourcesADInfo_MouseLeave(sender As Object, e As EventArgs) Handles pbMovieSourcesADInfo.MouseLeave
+        Me.Cursor = Cursors.Default
+    End Sub
+
+    Private Sub pbTVSourcesADInfo_Click(sender As Object, e As EventArgs) Handles pbTVSourcesADInfo.Click
+        If Master.isWindows Then
+            Process.Start("http://kodi.wiki/view/Add-on:Artwork_Downloader#Filenaming")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://kodi.wiki/view/Add-on:Artwork_Downloader#Filenaming"
+                Explorer.Start()
+            End Using
+        End If
+    End Sub
+
+    Private Sub pbTVSourcesADInfo_MouseEnter(sender As Object, e As EventArgs) Handles pbTVSourcesADInfo.MouseEnter
+        Me.Cursor = Cursors.Hand
+    End Sub
+
+    Private Sub pbTVSourcesADInfo_MouseLeave(sender As Object, e As EventArgs) Handles pbTVSourcesADInfo.MouseLeave
         Me.Cursor = Cursors.Default
     End Sub
 

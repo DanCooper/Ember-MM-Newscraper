@@ -5482,12 +5482,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowExtrafanartsXBMC() As Boolean
+    Public Property TVShowExtrafanartsFrodo() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowExtrafanartsXBMC
+            Return Settings._XMLSettings.TVShowExtrafanartsFrodo
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowExtrafanartsXBMC = value
+            Settings._XMLSettings.TVShowExtrafanartsFrodo = value
         End Set
     End Property
 
@@ -5653,30 +5653,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowClearLogoXBMC() As Boolean
+    Public Property TVShowClearLogoAD() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowClearLogoXBMC
+            Return Settings._XMLSettings.TVShowClearLogoAD
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowClearLogoXBMC = value
+            Settings._XMLSettings.TVShowClearLogoAD = value
         End Set
     End Property
 
-    Public Property TVShowClearArtXBMC() As Boolean
+    Public Property TVShowClearArtAD() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowClearArtXBMC
+            Return Settings._XMLSettings.TVShowClearArtAD
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowClearArtXBMC = value
+            Settings._XMLSettings.TVShowClearArtAD = value
         End Set
     End Property
 
-    Public Property TVShowCharacterArtXBMC() As Boolean
+    Public Property TVShowCharacterArtAD() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowCharacterArtXBMC
+            Return Settings._XMLSettings.TVShowCharacterArtAD
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowCharacterArtXBMC = value
+            Settings._XMLSettings.TVShowCharacterArtAD = value
         End Set
     End Property
 
@@ -5698,21 +5698,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowLandscapeXBMC() As Boolean
+    Public Property TVShowLandscapeAD() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowLandscapeXBMC
+            Return Settings._XMLSettings.TVShowLandscapeAD
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowLandscapeXBMC = value
+            Settings._XMLSettings.TVShowLandscapeAD = value
         End Set
     End Property
 
-    Public Property TVSeasonLandscapeXBMC() As Boolean
+    Public Property TVSeasonLandscapeAD() As Boolean
         Get
-            Return Settings._XMLSettings.TVSeasonLandscapeXBMC
+            Return Settings._XMLSettings.TVSeasonLandscapeAD
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonLandscapeXBMC = value
+            Settings._XMLSettings.TVSeasonLandscapeAD = value
         End Set
     End Property
 
@@ -5886,15 +5886,15 @@ Public Class Settings
             Master.eSettings.TVEpisodePosterFrodo = True
             Master.eSettings.TVSeasonBannerFrodo = True
             Master.eSettings.TVSeasonFanartFrodo = True
-            Master.eSettings.TVSeasonLandscapeXBMC = True
+            Master.eSettings.TVSeasonLandscapeAD = True
             Master.eSettings.TVSeasonPosterFrodo = True
             Master.eSettings.TVShowActorThumbsFrodo = True
             Master.eSettings.TVShowBannerFrodo = True
-            Master.eSettings.TVShowCharacterArtXBMC = True
-            Master.eSettings.TVShowClearArtXBMC = True
-            Master.eSettings.TVShowClearLogoXBMC = True
+            Master.eSettings.TVShowCharacterArtAD = True
+            Master.eSettings.TVShowClearArtAD = True
+            Master.eSettings.TVShowClearLogoAD = True
             Master.eSettings.TVShowFanartFrodo = True
-            Master.eSettings.TVShowLandscapeXBMC = True
+            Master.eSettings.TVShowLandscapeAD = True
             Master.eSettings.TVShowPosterFrodo = True
         End If
 
@@ -6170,7 +6170,7 @@ Public Class Settings
     End Function
 
     Public Function TVASLandscapeAnyEnabled() As Boolean
-        Return TVSeasonLandscapeXBMC
+        Return TVSeasonLandscapeAD
     End Function
 
     Public Function TVASPosterAnyEnabled() As Boolean
@@ -6194,7 +6194,7 @@ Public Class Settings
     End Function
 
     Public Function TVSeasonLandscapeAnyEnabled() As Boolean
-        Return TVSeasonLandscapeXBMC
+        Return TVSeasonLandscapeAD
     End Function
 
     Public Function TVSeasonPosterAnyEnabled() As Boolean
@@ -6206,19 +6206,19 @@ Public Class Settings
     End Function
 
     Public Function TVShowCharacterArtAnyEnabled() As Boolean
-        Return TVShowCharacterArtXBMC
+        Return TVShowCharacterArtAD
     End Function
 
     Public Function TVShowClearArtAnyEnabled() As Boolean
-        Return TVShowClearArtXBMC
+        Return TVShowClearArtAD
     End Function
 
     Public Function TVShowClearLogoAnyEnabled() As Boolean
-        Return TVShowClearLogoXBMC
+        Return TVShowClearLogoAD
     End Function
 
     Public Function TVShowEFanartsAnyEnabled() As Boolean
-        Return TVShowExtrafanartsXBMC
+        Return TVShowExtrafanartsFrodo
     End Function
 
     Public Function TVShowFanartAnyEnabled() As Boolean
@@ -6226,7 +6226,7 @@ Public Class Settings
     End Function
 
     Public Function TVShowLandscapeAnyEnabled() As Boolean
-        Return TVShowLandscapeXBMC
+        Return TVShowLandscapeAD
     End Function
 
     Public Function TVShowMissingItemsAnyEnabled() As Boolean

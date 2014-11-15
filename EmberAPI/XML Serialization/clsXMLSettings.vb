@@ -685,19 +685,21 @@ Partial Public Class clsXMLSettings
     Private _tvseasonposterfrodo As Boolean
     Private _tvshowactorthumbsfrodo As Boolean
     Private _tvshowbannerfrodo As Boolean
+    Private _tvshowextrafanartsfrodo As Boolean
     Private _tvshowfanartfrodo As Boolean
     Private _tvshowposterfrodo As Boolean
 
     '*************** XBMC Eden settings ****************
     Private _tvuseeden As Boolean
 
-    '************* XBMC optional settings **************
-    Private _tvseasonlandscapexbmc As Boolean
-    Private _tvshowcharacterartxbmc As Boolean
-    Private _tvshowclearartxbmc As Boolean
-    Private _tvshowclearlogoxbmc As Boolean
-    Private _tvshowextrafanartsxbmc As Boolean
-    Private _tvshowlandscapexbmc As Boolean
+    '******** XBMC ArtworkDownloader settings **********
+    Private _tvseasonlandscapead As Boolean
+    Private _tvshowcharacterartad As Boolean
+    Private _tvshowclearartad As Boolean
+    Private _tvshowclearlogoad As Boolean
+    Private _tvshowlandscapead As Boolean
+
+    '************* XBMC TvTunes settings ***************
     Private _tvshowtvthemefolderxbmc As String
     Private _tvshowtvthemexbmc As Boolean
 
@@ -6287,12 +6289,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowExtrafanartsXBMC() As Boolean
+    Public Property TVShowExtrafanartsFrodo() As Boolean
         Get
-            Return Me._tvshowextrafanartsxbmc
+            Return Me._tvshowextrafanartsfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowextrafanartsxbmc = value
+            Me._tvshowextrafanartsfrodo = value
         End Set
     End Property
 
@@ -6458,30 +6460,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowClearLogoXBMC() As Boolean
+    Public Property TVShowClearLogoAD() As Boolean
         Get
-            Return Me._tvshowclearlogoxbmc
+            Return Me._tvshowclearlogoad
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowclearlogoxbmc = value
+            Me._tvshowclearlogoad = value
         End Set
     End Property
 
-    Public Property TVShowClearArtXBMC() As Boolean
+    Public Property TVShowClearArtAD() As Boolean
         Get
-            Return Me._tvshowclearartxbmc
+            Return Me._tvshowclearartad
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowclearartxbmc = value
+            Me._tvshowclearartad = value
         End Set
     End Property
 
-    Public Property TVShowCharacterArtXBMC() As Boolean
+    Public Property TVShowCharacterArtAD() As Boolean
         Get
-            Return Me._tvshowcharacterartxbmc
+            Return Me._tvshowcharacterartad
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowcharacterartxbmc = value
+            Me._tvshowcharacterartad = value
         End Set
     End Property
 
@@ -6503,21 +6505,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowLandscapeXBMC() As Boolean
+    Public Property TVShowLandscapeAD() As Boolean
         Get
-            Return Me._tvshowlandscapexbmc
+            Return Me._tvshowlandscapead
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowlandscapexbmc = value
+            Me._tvshowlandscapead = value
         End Set
     End Property
 
-    Public Property TVSeasonLandscapeXBMC() As Boolean
+    Public Property TVSeasonLandscapeAD() As Boolean
         Get
-            Return Me._tvseasonlandscapexbmc
+            Return Me._tvseasonlandscapead
         End Get
         Set(ByVal value As Boolean)
-            Me._tvseasonlandscapexbmc = value
+            Me._tvseasonlandscapead = value
         End Set
     End Property
 

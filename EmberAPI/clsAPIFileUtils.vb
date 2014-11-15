@@ -1598,9 +1598,9 @@ Namespace FileUtils
                 Case Enums.ModType_TV.SeasonLandscape
                     With Master.eSettings
                         If mSeason = 0 Then 'season specials
-                            If .TVUseFrodo AndAlso .TVSeasonLandscapeXBMC Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
+                            If .TVUseFrodo AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
                         Else
-                            If .TVUseFrodo AndAlso .TVSeasonLandscapeXBMC Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
+                            If .TVUseFrodo AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
                         End If
                     End With
 
@@ -1647,7 +1647,7 @@ Namespace FileUtils
 
                 Case Enums.ModType_TV.AllSeasonsLandscape
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVSeasonLandscapeXBMC Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
+                        If .TVUseFrodo AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
                     End With
 
                 Case Enums.ModType_TV.AllSeasonsPoster
@@ -1664,23 +1664,23 @@ Namespace FileUtils
 
                 Case Enums.ModType_TV.ShowCharacterArt
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowCharacterArtXBMC Then FilenameList.Add(Path.Combine(fShowPath, "character.png"))
+                        If .TVUseFrodo AndAlso .TVShowCharacterArtAD Then FilenameList.Add(Path.Combine(fShowPath, "character.png"))
                     End With
 
                 Case Enums.ModType_TV.ShowClearArt
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowClearArtXBMC Then FilenameList.Add(Path.Combine(fShowPath, "clearart.png"))
+                        If .TVUseFrodo AndAlso .TVShowClearArtAD Then FilenameList.Add(Path.Combine(fShowPath, "clearart.png"))
                     End With
 
                 Case Enums.ModType_TV.ShowClearLogo
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowClearLogoXBMC Then FilenameList.Add(Path.Combine(fShowPath, "logo.png"))
+                        If .TVUseFrodo AndAlso .TVShowClearLogoAD Then FilenameList.Add(Path.Combine(fShowPath, "logo.png"))
                     End With
 
                 Case Enums.ModType_TV.ShowEFanarts
                     With Master.eSettings
-                        If .TVUseEden AndAlso .TVShowExtrafanartsXBMC Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
-                        If .TVUseFrodo AndAlso .TVShowExtrafanartsXBMC Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
+                        If .TVUseEden AndAlso .TVShowExtrafanartsFrodo Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
+                        If .TVUseFrodo AndAlso .TVShowExtrafanartsFrodo Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
                     End With
 
                 Case Enums.ModType_TV.ShowFanart
@@ -1692,7 +1692,7 @@ Namespace FileUtils
 
                 Case Enums.ModType_TV.ShowLandscape
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowLandscapeXBMC Then FilenameList.Add(Path.Combine(ShowPath, "landscape.jpg"))
+                        If .TVUseFrodo AndAlso .TVShowLandscapeAD Then FilenameList.Add(Path.Combine(ShowPath, "landscape.jpg"))
                     End With
 
                 Case Enums.ModType_TV.ShowNfo
