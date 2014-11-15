@@ -265,7 +265,7 @@
   <string id="264">Exclude</string>
   <string id="265">Change Poster (Download)</string>
   <string id="266">Change Fanart (Download)</string>
-  <string id="267"></string>
+  <string id="267">Optional Images</string>
   <string id="268"></string>
   <string id="269">Size: {0}x{1}</string>
   <string id="270">The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type.</string>
@@ -711,7 +711,7 @@
   <string id="710">Force Title Language:</string>
   <string id="711">Include Folder Name in Source Type Check</string>
   <string id="712">Sort files into folders before each library update</string>
-  <string id="713">Set Defaults</string>
+  <string id="713">Defaults</string>
   <string id="714">Confirm Items To Be Deleted</string>
   <string id="715">Toggle All Files</string>
   <string id="716">Re-Scrape</string>

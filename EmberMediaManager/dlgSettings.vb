@@ -5864,6 +5864,10 @@ Public Class dlgSettings
 
         'Actor Thumbs
         Dim strActorThumbs As String = Master.eLang.GetString(991, "Actor Thumbs")
+        Me.chkMovieActorThumbsExpertBDMV.Text = strActorThumbs
+        Me.chkMovieActorThumbsExpertMulti.Text = strActorThumbs
+        Me.chkMovieActorThumbsExpertSingle.Text = strActorThumbs
+        Me.chkMovieActorThumbsExpertVTS.Text = strActorThumbs
         Me.gbMovieImagesActorThumbsOpts.Text = strActorThumbs
         Me.lblMovieSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
@@ -5875,14 +5879,17 @@ Public Class dlgSettings
         Me.gbTVImagesAllSeasonsBannerOpts.Text = strBanner
         Me.gbTVImagesSeasonBannerOpts.Text = strBanner
         Me.gbTVImagesShowBannerOpts.Text = strBanner
-        Me.lblMovieBannerExpertBDMV.Text = strBanner
-        Me.lblMovieBannerExpertMulti.Text = strBanner
-        Me.lblMovieBannerExpertSingle.Text = strBanner
-        Me.lblMovieBannerExpertVTS.Text = strBanner
         Me.lblMovieGeneralMediaListBanner.Text = strBanner
-        Me.lblMovieSourcesFileNamingXBMCADBanner.Text = strBanner
         Me.lblMovieSetGeneralMediaListBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingExpertBDMVBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingExpertMultiBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingExpertSingleBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingExpertVTSBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingNMTDefaultsBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingXBMCADBanner.Text = strBanner
         Me.lblTVGeneralMediaListBanner.Text = strBanner
+        Me.lblTVSourcesFileNamingBoxeeDefaultsBanner.Text = strBanner
+        Me.lblTVSourcesFileNamingNMTDefaultsBanner.Text = strBanner
         Me.lblTVSourcesFileNamingXBMCDefaultsBanner.Text = strBanner
 
         'Cast
@@ -5935,6 +5942,12 @@ Public Class dlgSettings
         Dim strCountry As String = Master.eLang.GetString(301, "Country")
         Me.lblMovieScraperGlobalCountry.Text = strCountry
 
+        'Defaults
+        Dim strDefaults As String = Master.eLang.GetString(713, "Defaults")
+        Me.gbMovieSourcesFileNamingBoxeeDefaultsOpts.Text = strDefaults
+        Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Text = strDefaults
+        Me.gbMovieSourcesFileNamingXBMCDefaultsOpts.Text = strDefaults
+
         'Defaults by File Type
         Dim strDefaultsByFileType As String = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieScraperDefFIExtOpts.Text = strDefaultsByFileType
@@ -5968,8 +5981,10 @@ Public Class dlgSettings
 
         'Enabled
         Dim strEnabled As String = Master.eLang.GetString(774, "Enabled")
+        Me.lblMovieSourcesFileNamingBoxeeDefaultsEnabled.Text = strEnabled
         Me.lblMovieSourcesFileNamingNMTDefaultsEnabled.Text = strEnabled
         Me.lblMovieSourcesFileNamingXBMCDefaultsEnabled.Text = strEnabled
+        Me.chkMovieUseExpert.Text = strEnabled
 
         'Episode #
         Dim strEpisodeNR As String = Master.eLang.GetString(660, "Episode #")
@@ -5982,6 +5997,9 @@ Public Class dlgSettings
 
         'Extrafanarts
         Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
+        Me.chkMovieExtrafanartsExpertBDMV.Text = strExtrafanarts
+        Me.chkMovieExtrafanartsExpertSingle.Text = strExtrafanarts
+        Me.chkMovieExtrafanartsExpertVTS.Text = strExtrafanarts
         Me.gbMovieImagesEFanartsOpts.Text = strExtrafanarts
         Me.gbTVImagesShowEFanartsOpts.Text = strExtrafanarts
         Me.lblMovieSourcesFileNamingXBMCDefaultsExtrafanarts.Text = strExtrafanarts
@@ -5989,6 +6007,9 @@ Public Class dlgSettings
 
         'Extrathumbs
         Dim strExtrathumbs As String = Master.eLang.GetString(153, "Extrathumbs")
+        Me.chkMovieExtrathumbsExpertBDMV.Text = strExtrathumbs
+        Me.chkMovieExtrathumbsExpertSingle.Text = strExtrathumbs
+        Me.chkMovieExtrathumbsExpertVTS.Text = strExtrathumbs
         Me.gbMovieImagesEThumbsOpts.Text = strExtrathumbs
         Me.lblMovieSourcesFileNamingXBMCDefaultsExtrathumbs.Text = strExtrathumbs
 
@@ -6000,13 +6021,18 @@ Public Class dlgSettings
         Me.gbTVImagesEpisodeFanartOpts.Text = strFanart
         Me.gbTVImagesSeasonFanartOpts.Text = strFanart
         Me.gbTVImagesShowFanartOpts.Text = strFanart
-        Me.lblMovieFanartExpertBDMV.Text = strFanart
-        Me.lblMovieFanartExpertMulti.Text = strFanart
-        Me.lblMovieFanartExpertSingle.Text = strFanart
-        Me.lblMovieFanartExpertVTS.Text = strFanart
         Me.lblMovieGeneralMediaListFanart.Text = strFanart
         Me.lblMovieSetGeneralMediaListFanart.Text = strFanart
+        Me.lblMovieSourcesFileNamingBoxeeDefaultsFanart.Text = strFanart
+        Me.lblMovieSourcesFilenamingExpertBDMVFanart.Text = strFanart
+        Me.lblMovieSourcesFilenamingExpertMultiFanart.Text = strFanart
+        Me.lblMovieSourcesFilenamingExpertSingleFanart.Text = strFanart
+        Me.lblMovieSourcesFilenamingExpertVTSFanart.Text = strFanart
+        Me.lblMovieSourcesFileNamingNMTDefaultsFanart.Text = strFanart
+        Me.lblMovieSourcesFileNamingXBMCDefaultsFanart.Text = strFanart
         Me.lblTVGeneralMediaListFanart.Text = strFanart
+        Me.lblTVSourcesFileNamingBoxeeDefaultsFanart.Text = strFanart
+        Me.lblTVSourcesFileNamingNMTDefaultsFanart.Text = strFanart
         Me.lblTVSourcesFileNamingXBMCDefaultsFanart.Text = strFanart
 
         'File Type
@@ -6035,11 +6061,12 @@ Public Class dlgSettings
         Me.gbTVImagesSeasonLandscapeOpts.Text = strLandscape
         Me.gbTVImagesShowLandscapeOpts.Text = strLandscape
         Me.lblMovieGeneralMediaListLandscape.Text = strLandscape
-        Me.lblMovieLandscapeExpertBDMV.Text = strLandscape
-        Me.lblMovieLandscapeExpertMulti.Text = strLandscape
-        Me.lblMovieLandscapeExpertSingle.Text = strLandscape
-        Me.lblMovieLandscapeExpertVTS.Text = strLandscape
         Me.lblMovieSetGeneralMediaListLandscape.Text = strLandscape
+        Me.lblMovieSourcesFileNamingExpertBDMVLandscape.Text = strLandscape
+        Me.lblMovieSourcesFileNamingExpertMultiLandscape.Text = strLandscape
+        Me.lblMovieSourcesFileNamingExpertSingleLandscape.Text = strLandscape
+        Me.lblMovieSourcesFileNamingExpertVTSLandscape.Text = strLandscape
+        Me.lblMovieSourcesFileNamingXBMCADLandscape.Text = strLandscape
         Me.lblTVGeneralMediaListLandscape.Text = strLandscape
 
         'Limit
@@ -6126,16 +6153,74 @@ Public Class dlgSettings
         'NFO
         Dim strNFO As String = Master.eLang.GetString(150, "NFO")
         Me.lblMovieGeneralMediaListNFO.Text = strNFO
-        Me.lblMovieNFOExpertBDMV.Text = strNFO
-        Me.lblMovieNFOExpertMulti.Text = strNFO
-        Me.lblMovieNFOExpertSingle.Text = strNFO
-        Me.lblMovieNFOExpertVTS.Text = strNFO
         Me.lblMovieSetGeneralMediaListNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingBoxeeDefaultsNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingExpertBDMVNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingExpertMultiNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingExpertSingleNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingExpertVTSNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingNMTDefaultsNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingXBMCDefaultsNFO.Text = strNFO
         Me.lblTVGeneralMediaListNFO.Text = strNFO
+
+        'Optional Images
+        Dim strOptionalImages As String = Master.eLang.GetString(267, "Optional Images")
+        Me.gbMovieSourcesFileNamingExpertBDMVImagesOpts.Text = strOptionalImages
+        Me.gbMovieSourcesFileNamingExpertMultiImagesOpts.Text = strOptionalImages
+        Me.gbMovieSourcesFileNamingExpertSingleImagesOpts.Text = strOptionalImages
+        Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Text = strOptionalImages
+
+        'Optional Settings
+        Dim strOptionalSettings As String = Master.eLang.GetString(1175, "Optional Settings")
+        Me.gbMovieSourcesFileNamingExpertBDMVOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingExpertMultiOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingExpertSingleOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingNMTOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text = strOptionalSettings
 
         'Original Title
         Dim strOriginalTitle As String = Master.eLang.GetString(302, "Original Title")
         Me.lblMovieScraperGlobalOriginalTitle.Text = strOriginalTitle
+
+        'Overwrite existing
+        Dim strOverwriteExisting As String = Master.eLang.GetString(483, "Overwrite Existing")
+        Me.chkMovieActorThumbsOverwrite.Text = strOverwriteExisting
+        Me.chkMovieBannerOverwrite.Text = strOverwriteExisting
+        Me.chkMovieClearArtOverwrite.Text = strOverwriteExisting
+        Me.chkMovieClearLogoOverwrite.Text = strOverwriteExisting
+        Me.chkMovieDiscArtOverwrite.Text = strOverwriteExisting
+        Me.chkMovieEFanartsOverwrite.Text = strOverwriteExisting
+        Me.chkMovieEThumbsOverwrite.Text = strOverwriteExisting
+        Me.chkMovieFanartOverwrite.Text = strOverwriteExisting
+        Me.chkMovieLandscapeOverwrite.Text = strOverwriteExisting
+        Me.chkMoviePosterOverwrite.Text = strOverwriteExisting
+        Me.chkMovieSetBannerOverwrite.Text = strOverwriteExisting
+        Me.chkMovieSetClearArtOverwrite.Text = strOverwriteExisting
+        Me.chkMovieSetClearLogoOverwrite.Text = strOverwriteExisting
+        Me.chkMovieSetFanartOverwrite.Text = strOverwriteExisting
+        Me.chkMovieSetLandscapeOverwrite.Text = strOverwriteExisting
+        Me.chkMovieSetPosterOverwrite.Text = strOverwriteExisting
+        Me.chkMovieThemeOverwrite.Text = strOverwriteExisting
+        Me.chkMovieTrailerOverwrite.Text = strOverwriteExisting
+        Me.chkTVASBannerOverwrite.Text = strOverwriteExisting
+        Me.chkTVASFanartOverwrite.Text = strOverwriteExisting
+        Me.chkTVASLandscapeOverwrite.Text = strOverwriteExisting
+        Me.chkTVASPosterOverwrite.Text = strOverwriteExisting
+        Me.chkTVEpisodeFanartOverwrite.Text = strOverwriteExisting
+        Me.chkTVEpisodePosterOverwrite.Text = strOverwriteExisting
+        Me.chkTVSeasonBannerOverwrite.Text = strOverwriteExisting
+        Me.chkTVSeasonFanartOverwrite.Text = strOverwriteExisting
+        Me.chkTVSeasonLandscapeOverwrite.Text = strOverwriteExisting
+        Me.chkTVSeasonPosterOverwrite.Text = strOverwriteExisting
+        Me.chkTVShowBannerOverwrite.Text = strOverwriteExisting
+        Me.chkTVShowCharacterArtOverwrite.Text = strOverwriteExisting
+        Me.chkTVShowClearArtOverwrite.Text = strOverwriteExisting
+        Me.chkTVShowClearLogoOverwrite.Text = strOverwriteExisting
+        Me.chkTVShowEFanartsOverwrite.Text = strOverwriteExisting
+        Me.chkTVShowFanartOverwrite.Text = strOverwriteExisting
+        Me.chkTVShowLandscapeOverwrite.Text = strOverwriteExisting
+        Me.chkTVShowPosterOverwrite.Text = strOverwriteExisting
 
         'Plot
         Dim strPlot As String = Master.eLang.GetString(65, "Plot")
@@ -6162,7 +6247,12 @@ Public Class dlgSettings
         Me.lblMoviePosterExpertVTS.Text = strPoster
         Me.lblMovieSetGeneralMediaListPoster.Text = strPoster
         Me.lblTVGeneralMediaListPoster.Text = strPoster
+        Me.lblTVSourcesFileNamingBoxeeDefaultsPoster.Text = strPoster
+        Me.lblTVSourcesFileNamingNMTDefaultsPoster.Text = strPoster
         Me.lblTVSourcesFileNamingXBMCDefaultsPoster.Text = strPoster
+        Me.lblMovieSourcesFileNamingBoxeeDefaultsPoster.Text = strPoster
+        Me.lblMovieSourcesFileNamingNMTDefaultsPoster.Text = strPoster
+        Me.lblMovieSourcesFileNamingXBMCDefaultsPoster.Text = strPoster
 
         'Release Date
         Dim strReleaseDate As String = Master.eLang.GetString(57, "Release Date")
@@ -6224,6 +6314,8 @@ Public Class dlgSettings
         Me.lblMovieTrailerExpertMulti.Text = strTrailer
         Me.lblMovieTrailerExpertSingle.Text = strTrailer
         Me.lblMovieTrailerExpertVTS.Text = strTrailer
+        Me.lblMovieSourcesFileNamingNMTDefaultsTrailer.Text = strTrailer
+        Me.lblMovieSourcesFileNamingXBMCDefaultsTrailer.Text = strTrailer
 
         'Watched
         Dim strWatched As String = Master.eLang.GetString(981, "Watched")
@@ -6292,13 +6384,11 @@ Public Class dlgSettings
         Me.chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         Me.chkMovieLevTolerance.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
         Me.chkMovieNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save URLs to Nfo")
-        Me.chkMoviePosterOverwrite.Text = Master.eLang.GetString(483, "Overwrite Existing")
         Me.chkMoviePosterPrefOnly.Text = Master.eLang.GetString(145, "Only")
         Me.chkMoviePosterResize.Text = Master.eLang.GetString(481, "Automatically Resize:")
         Me.chkMovieProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
         Me.chkMovieRecognizeVTSExpertVTS.Text = Master.eLang.GetString(537, "Detect VIDEO_TS folders even if they are not named VIDEO_TS")
         Me.chkMovieScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
-        Me.chkMovieUseExpert.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
         Me.chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
         Me.chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
@@ -6322,10 +6412,8 @@ Public Class dlgSettings
         Me.chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         Me.chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack <filename>"), "<", ">")
         Me.chkMovieThemeEnable.Text = Master.eLang.GetString(1082, "Enable Theme Support")
-        Me.chkMovieThemeOverwrite.Text = Master.eLang.GetString(483, "Overwrite Existing")
         Me.chkMovieTrailerDeleteExisting.Text = Master.eLang.GetString(522, "Delete All Existing")
         Me.chkMovieTrailerEnable.Text = Master.eLang.GetString(529, "Enable Trailer Support")
-        Me.chkMovieTrailerOverwrite.Text = Master.eLang.GetString(483, "Overwrite Existing")
         Me.chkMovieUnstackExpertMulti.Text = Master.eLang.GetString(1179, "also save unstacked")
         Me.chkMovieUseBaseDirectoryExpertBDMV.Text = Master.eLang.GetString(1180, "Use Base Directory")
         Me.chkMovieXBMCProtectVTSBDMV.Text = Master.eLang.GetString(1176, "Protect DVD/Bluray Structure")
@@ -6372,15 +6460,10 @@ Public Class dlgSettings
         Me.gbMovieImagesOpts.Text = Master.eLang.GetString(497, "Images")
         Me.gbMovieSourcesMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
         Me.gbMovieScraperCertificationOpts.Text = Master.eLang.GetString(56, "Certification")
-        Me.gbMovieImagesDiscArtOpts.Text = Master.eLang.GetString(1098, "DiscArt")
-        Me.gbMovieImagesLandscapeOpts.Text = Master.eLang.GetString(1035, "Landscape")
-        Me.gbMovieImagesPosterOpts.Text = Master.eLang.GetString(148, "Poster")
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
         Me.gbMovieGeneralSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
-        Me.gbMovieTrailerOpts.Text = Master.eLang.GetString(1195, "Trailers")
-        Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text = Master.eLang.GetString(1175, "Optional Settings")
         Me.gbMovieSourcesFileNamingXBMCTvTunesOpts.Text = Master.eLang.GetString(1076, "Theme Settings")
         Me.gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
         Me.gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
@@ -6390,7 +6473,6 @@ Public Class dlgSettings
         Me.gbTVGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         Me.gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
         Me.gbTVScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
-        Me.gbTVImagesShowCharacterArtOpts.Text = Master.eLang.GetString(1140, "CharacterArt")
         Me.gbTVShowFilterOpts.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
         Me.gbTVSourcesRegexMatch.Text = Master.eLang.GetString(691, "Show Match Regex")
         Me.gbTVSourcesMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
@@ -6459,50 +6541,29 @@ Public Class dlgSettings
 
         'items with text from other items
         Me.btnTVSourceAdd.Text = Me.btnMovieSourceAdd.Text
-        Me.chkMovieActorThumbsOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkMovieBannerOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieBannerPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkMovieBannerResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieClearArtOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkMovieClearLogoOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkMovieDiscArtOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkMovieEFanartsOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieEFanartsPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkMovieEFanartsResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieEThumbsOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieEThumbsPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkMovieEThumbsResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieFanartOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieFanartPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkMovieFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieLandscapeOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieSetCleanDB.Text = Me.chkMovieCleanDB.Text
         Me.chkMovieStackExpertSingle.Text = Me.chkMovieStackExpertMulti.Text
         Me.chkMovieUnstackExpertSingle.Text = Me.chkMovieUnstackExpertMulti.Text
         Me.chkMovieUseBaseDirectoryExpertVTS.Text = Me.chkMovieUseBaseDirectoryExpertBDMV.Text
-        Me.chkMovieSetBannerOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieSetBannerPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkMovieSetBannerResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieSetClearArtOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkMovieSetClearLogoOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkMovieSetFanartOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieSetFanartPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkMovieSetFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieSetLandscapeOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkMovieSetPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMovieSetPosterPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkMovieSetPosterResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVASBannerOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVASBannerResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVASFanartOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVASFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVASLandscapeOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkTVASPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVASPosterResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVCleanDB.Text = Me.chkMovieCleanDB.Text
-        Me.chkTVEpisodeFanartOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVEpisodeFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVEpisodePosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVEpisodePosterResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVEpisodeProperCase.Text = Me.chkMovieProperCase.Text
         Me.chkTVGeneralIgnoreLastScan.Text = Me.chkMovieGeneralIgnoreLastScan.Text
@@ -6510,32 +6571,15 @@ Public Class dlgSettings
         Me.chkTVLockShowRuntime.Text = Me.chkMovieLockRuntime.Text
         Me.chkTVScanOrderModify.Text = Me.chkMovieScanOrderModify.Text
         Me.chkTVScraperMetaDataScan.Text = Me.chkMovieScraperMetaDataScan.Text
-        Me.chkTVSeasonBannerOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVSeasonBannerResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVSeasonFanartOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVSeasonFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVSeasonLandscapeOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkTVSeasonPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVSeasonPosterResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVShowBannerResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVShowBannerOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkTVShowCharacterArtOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkTVShowClearArtOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkTVShowClearLogoOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkTVShowEFanartsOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVShowEFanartsPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
         Me.chkTVShowEFanartsResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVShowFanartOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVShowFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVShowLandscapeOverwrite.Text = Me.chkMoviePosterOverwrite.Text
-        Me.chkTVShowPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVShowPosterResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVShowProperCase.Text = Me.chkMovieProperCase.Text
-        Me.gbMovieSourcesFileNamingExpertBDMVOptionalOpts.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
-        Me.gbMovieSourcesFileNamingExpertMultiOptionalOpts.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
-        Me.gbMovieSourcesFileNamingExpertSingleOptionalOpts.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
-        Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
-        Me.gbMovieSourcesFileNamingNMTOptionalOpts.Text = Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text
         Me.gbMovieSetImagesBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
         Me.gbMovieSetImagesClearLogoOpts.Text = Me.gbMovieImagesClearLogoOpts.Text
         Me.gbMovieSetImagesFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
