@@ -338,6 +338,9 @@ Partial Public Class clsXMLSettings
     Private _tvepisodefanartwidth As Integer
     Private _tvepisodefiltercustom As List(Of String)
     Private _tvepisodefiltercustomisempty As Boolean
+    Private _tvepisodemissingfanart As Boolean
+    Private _tvepisodemissingnfo As Boolean
+    Private _tvepisodemissingposter As Boolean
     Private _tvepisodenfocol As Boolean
     Private _tvepisodenofilter As Boolean
     Private _tvepisodepostercol As Boolean
@@ -414,6 +417,10 @@ Partial Public Class clsXMLSettings
     Private _tvseasonfanartwidth As Integer
     Private _tvseasonlandscapecol As Boolean
     Private _tvseasonlandscapeoverwrite As Boolean
+    Private _tvseasonmissingbanner As Boolean
+    Private _tvseasonmissingfanart As Boolean
+    Private _tvseasonmissinglandscape As Boolean
+    Private _tvseasonmissingposter As Boolean
     Private _tvseasonpostercol As Boolean
     Private _tvseasonposterheight As Integer
     Private _tvseasonposteroverwrite As Boolean
@@ -6532,6 +6539,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVSeasonMissingBanner() As Boolean
+        Get
+            Return Me._tvseasonmissingbanner
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonmissingbanner = value
+        End Set
+    End Property
+
     Public Property TVShowMissingCharacterArt() As Boolean
         Get
             Return Me._tvshowmissingclearart
@@ -6577,12 +6593,39 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVSeasonMissingFanart() As Boolean
+        Get
+            Return Me._tvseasonmissingfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonmissingfanart = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeMissingFanart() As Boolean
+        Get
+            Return Me._tvepisodemissingfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodemissingfanart = value
+        End Set
+    End Property
+
     Public Property TVShowMissingLandscape() As Boolean
         Get
             Return Me._tvshowmissinglandscape
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowmissinglandscape = value
+        End Set
+    End Property
+
+    Public Property TVSeasonMissingLandscape() As Boolean
+        Get
+            Return Me._tvseasonmissinglandscape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonmissinglandscape = value
         End Set
     End Property
 
@@ -6595,12 +6638,39 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVEpisodeMissingNFO() As Boolean
+        Get
+            Return Me._tvepisodemissingnfo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodemissingnfo = value
+        End Set
+    End Property
+
     Public Property TVShowMissingPoster() As Boolean
         Get
             Return Me._tvshowmissingposter
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowmissingposter = value
+        End Set
+    End Property
+
+    Public Property TVSeasonMissingPoster() As Boolean
+        Get
+            Return Me._tvseasonmissingposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonmissingposter = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeMissingPoster() As Boolean
+        Get
+            Return Me._tvepisodemissingposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodemissingposter = value
         End Set
     End Property
 

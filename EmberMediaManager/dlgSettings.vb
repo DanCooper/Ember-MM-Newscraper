@@ -2247,6 +2247,34 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkTVSeasonMissingBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonMissingBanner.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonMissingFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonMissingFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonMissingLandscape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonMissingLandscape.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonMissingPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonMissingPoster.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVEpisodeMissingFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeMissingFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVEpisodeMissingNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeMissingNFO.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVEpisodeMissingPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeMissingPoster.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieScraperPlotForOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperPlotForOutline.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -3607,6 +3635,8 @@ Public Class dlgSettings
                     Me.txtTVEpisodeFanartHeight.Text = .TVEpisodeFanartHeight.ToString
                     Me.txtTVEpisodeFanartWidth.Text = .TVEpisodeFanartWidth.ToString
                 End If
+                Me.chkTVEpisodeMissingFanart.Checked = .TVEpisodeMissingFanart
+                Me.chkTVEpisodeMissingPoster.Checked = .TVEpisodeMissingPoster
                 Me.chkTVEpisodeNfoCol.Checked = .TVEpisodeNfoCol
                 Me.chkTVEpisodeNoFilter.Checked = .TVEpisodeNoFilter
                 Me.chkTVEpisodePosterCol.Checked = .TVEpisodePosterCol
@@ -3685,6 +3715,10 @@ Public Class dlgSettings
                 End If
                 Me.chkTVSeasonLandscapeCol.Checked = .TVSeasonLandscapeCol
                 Me.chkTVSeasonLandscapeOverwrite.Checked = .TVSeasonLandscapeOverwrite
+                Me.chkTVSeasonMissingBanner.Checked = .TVSeasonMissingBanner
+                Me.chkTVSeasonMissingFanart.Checked = .TVSeasonMissingFanart
+                Me.chkTVSeasonMissingLandscape.Checked = .TVSeasonMissingLandscape
+                Me.chkTVSeasonMissingPoster.Checked = .TVSeasonMissingPoster
                 Me.chkTVSeasonPosterCol.Checked = .TVSeasonPosterCol
                 Me.chkTVSeasonPosterOverwrite.Checked = .TVSeasonPosterOverwrite
                 Me.chkTVSeasonPosterResize.Checked = .TVSeasonPosterResize
@@ -5276,6 +5310,9 @@ Public Class dlgSettings
                 .TVEpisodeFilterCustom.Clear()
                 .TVEpisodeFilterCustom.AddRange(Me.lstTVEpisodeFilter.Items.OfType(Of String).ToList)
                 If .TVEpisodeFilterCustom.Count <= 0 Then .TVEpisodeFilterCustomIsEmpty = True
+                .TVEpisodeMissingFanart = Me.chkTVEpisodeMissingFanart.Checked
+                .TVEpisodeMissingNFO = Me.chkTVEpisodeMissingNFO.Checked
+                .TVEpisodeMissingPoster = Me.chkTVEpisodeMissingPoster.Checked
                 .TVEpisodeNfoCol = Me.chkTVEpisodeNfoCol.Checked
                 .TVEpisodeNoFilter = Me.chkTVEpisodeNoFilter.Checked
                 .TVEpisodePosterCol = Me.chkTVEpisodePosterCol.Checked
@@ -5358,6 +5395,10 @@ Public Class dlgSettings
                 .TVSeasonFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVSeasonFanartWidth.Text), Convert.ToInt32(Me.txtTVSeasonFanartWidth.Text), 0)
                 .TVSeasonLandscapeCol = Me.chkTVSeasonLandscapeCol.Checked
                 .TVSeasonLandscapeOverwrite = Me.chkTVSeasonLandscapeOverwrite.Checked
+                .TVSeasonMissingBanner = Me.chkTVSeasonMissingBanner.Checked
+                .TVSeasonMissingFanart = Me.chkTVSeasonMissingFanart.Checked
+                .TVSeasonMissingLandscape = Me.chkTVSeasonMissingLandscape.Checked
+                .TVSeasonMissingPoster = Me.chkTVSeasonMissingPoster.Checked
                 .TVSeasonPosterCol = Me.chkTVSeasonPosterCol.Checked
                 .TVSeasonPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonPosterHeight.Text), Convert.ToInt32(Me.txtTVSeasonPosterHeight.Text), 0)
                 .TVSeasonPosterOverwrite = Me.chkTVSeasonPosterOverwrite.Checked
@@ -5872,6 +5913,29 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
 
+        'Automatically Resize:
+        Dim strAutomaticallyResize As String = Master.eLang.GetString(481, "Automatically Resize:")
+        Me.chkMoviePosterResize.Text = strAutomaticallyResize
+        Me.chkMovieBannerResize.Text = strAutomaticallyResize
+        Me.chkMovieEFanartsResize.Text = strAutomaticallyResize
+        Me.chkMovieEThumbsResize.Text = strAutomaticallyResize
+        Me.chkMovieFanartResize.Text = strAutomaticallyResize
+        Me.chkMovieSetBannerResize.Text = strAutomaticallyResize
+        Me.chkMovieSetFanartResize.Text = strAutomaticallyResize
+        Me.chkMovieSetPosterResize.Text = strAutomaticallyResize
+        Me.chkTVASBannerResize.Text = strAutomaticallyResize
+        Me.chkTVASFanartResize.Text = strAutomaticallyResize
+        Me.chkTVASPosterResize.Text = strAutomaticallyResize
+        Me.chkTVEpisodeFanartResize.Text = strAutomaticallyResize
+        Me.chkTVEpisodePosterResize.Text = strAutomaticallyResize
+        Me.chkTVSeasonBannerResize.Text = strAutomaticallyResize
+        Me.chkTVSeasonFanartResize.Text = strAutomaticallyResize
+        Me.chkTVSeasonPosterResize.Text = strAutomaticallyResize
+        Me.chkTVShowBannerResize.Text = strAutomaticallyResize
+        Me.chkTVShowEFanartsResize.Text = strAutomaticallyResize
+        Me.chkTVShowFanartResize.Text = strAutomaticallyResize
+        Me.chkTVShowPosterResize.Text = strAutomaticallyResize
+
         'Banner
         Dim strBanner As String = Master.eLang.GetString(838, "Banner")
         Me.gbMovieImagesBannerOpts.Text = strBanner
@@ -5947,6 +6011,7 @@ Public Class dlgSettings
         Me.gbMovieSourcesFileNamingBoxeeDefaultsOpts.Text = strDefaults
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Text = strDefaults
         Me.gbMovieSourcesFileNamingXBMCDefaultsOpts.Text = strDefaults
+        Me.gbTVSourcesDefaultsOpts.Text = strDefaults
 
         'Defaults by File Type
         Dim strDefaultsByFileType As String = Master.eLang.GetString(625, "Defaults by File Type")
@@ -6136,11 +6201,14 @@ Public Class dlgSettings
 
         'Miscellaneous
         Dim strMiscellaneous As String = Master.eLang.GetString(429, "Miscellaneous")
-        Me.gbGeneralMisc.Text = strMiscellaneous
+        Me.gbGeneralMiscOpts.Text = strMiscellaneous
         Me.gbMovieScraperMiscOpts.Text = strMiscellaneous
         Me.gbMovieSetGeneralMiscOpts.Text = strMiscellaneous
+        Me.gbMovieSetSourcesMiscOpts.Text = strMiscellaneous
+        Me.gbMovieSourcesMiscOpts.Text = strMiscellaneous
         Me.gbTVGeneralMiscOpts.Text = strMiscellaneous
         Me.gbTVScraperMiscOpts.Text = strMiscellaneous
+        Me.gbTVSourcesMiscOpts.Text = strMiscellaneous
 
         'Missing
         Dim strMissing As String = Master.eLang.GetString(582, "Missing")
@@ -6162,6 +6230,18 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingNMTDefaultsNFO.Text = strNFO
         Me.lblMovieSourcesFileNamingXBMCDefaultsNFO.Text = strNFO
         Me.lblTVGeneralMediaListNFO.Text = strNFO
+
+        'Only
+        Dim strOnly As String = Master.eLang.GetString(145, "Only")
+        Me.chkMovieBannerPrefOnly.Text = strOnly
+        Me.chkMovieEFanartsPrefOnly.Text = strOnly
+        Me.chkMovieEThumbsPrefOnly.Text = strOnly
+        Me.chkMovieFanartPrefOnly.Text = strOnly
+        Me.chkMoviePosterPrefOnly.Text = strOnly
+        Me.chkMovieSetBannerPrefOnly.Text = strOnly
+        Me.chkMovieSetFanartPrefOnly.Text = strOnly
+        Me.chkMovieSetPosterPrefOnly.Text = strOnly
+        Me.chkTVShowEFanartsPrefOnly.Text = strOnly
 
         'Optional Images
         Dim strOptionalImages As String = Master.eLang.GetString(267, "Optional Images")
@@ -6254,6 +6334,32 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingNMTDefaultsPoster.Text = strPoster
         Me.lblMovieSourcesFileNamingXBMCDefaultsPoster.Text = strPoster
 
+        'Preferred Size:
+        Dim strPreferredSize As String = Master.eLang.GetString(482, "Preferred Size:")
+        Me.lblMovieEFanartsSize.Text = strPreferredSize
+        Me.lblMovieEThumbsSize.Text = strPreferredSize
+        Me.lblMovieFanartSize.Text = strPreferredSize
+        Me.lblMoviePosterSize.Text = strPreferredSize
+        Me.lblMovieSetFanartSize.Text = strPreferredSize
+        Me.lblMovieSetPosterSize.Text = strPreferredSize
+        Me.lblTVASFanartSize.Text = strPreferredSize
+        Me.lblTVASPosterSize.Text = strPreferredSize
+        Me.lblTVEpisodeFanartSize.Text = strPreferredSize
+        Me.lblTVEpisodePosterSize.Text = strPreferredSize
+        Me.lblTVSeasonFanartSize.Text = strPreferredSize
+        Me.lblTVSeasonPosterSize.Text = strPreferredSize
+        Me.lblTVShowEFanartsSize.Text = strPreferredSize
+        Me.lblTVShowFanartSize.Text = strPreferredSize
+        Me.lblTVShowPosterSize.Text = strPreferredSize
+
+        'Preferred Type:
+        Dim strPreferredType As String = Master.eLang.GetString(730, "Preferred Type:")
+        Me.lblMovieBannerType.Text = strPreferredType
+        Me.lblMovieSetBannerType.Text = strPreferredType
+        Me.lblTVASBannerType.Text = strPreferredType
+        Me.lblTVSeasonBannerType.Text = strPreferredType
+        Me.lblTVShowBannerType.Text = strPreferredType
+
         'Release Date
         Dim strReleaseDate As String = Master.eLang.GetString(57, "Release Date")
         Me.lblMovieScraperGlobalReleaseDate.Text = strReleaseDate
@@ -6286,6 +6392,12 @@ Public Class dlgSettings
         Dim strShows As String = Master.eLang.GetString(680, "Shows")
         Me.lblTVGeneralMediaListHeaderShows.Text = strShows
         Me.lblTVScraperGlobalHeaderShows.Text = strShows
+
+        'Sort Tokens to Ignore
+        Dim strSortTokens As String = Master.eLang.GetString(463, "Sort Tokens to Ignore")
+        Me.gbMovieGeneralMediaListSortTokensOpts.Text = strSortTokens
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.Text = strSortTokens
+        Me.gbTVGeneralMediaListSortTokensOpts.Text = strSortTokens
 
         'Studio
         Dim strStudio As String = Master.eLang.GetString(395, "Studio")
@@ -6384,8 +6496,6 @@ Public Class dlgSettings
         Me.chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         Me.chkMovieLevTolerance.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
         Me.chkMovieNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save URLs to Nfo")
-        Me.chkMoviePosterPrefOnly.Text = Master.eLang.GetString(145, "Only")
-        Me.chkMoviePosterResize.Text = Master.eLang.GetString(481, "Automatically Resize:")
         Me.chkMovieProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
         Me.chkMovieRecognizeVTSExpertVTS.Text = Master.eLang.GetString(537, "Detect VIDEO_TS folders even if they are not named VIDEO_TS")
         Me.chkMovieScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
@@ -6410,7 +6520,7 @@ Public Class dlgSettings
         Me.chkMovieScraperCertFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
         Me.chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         Me.chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
-        Me.chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack <filename>"), "<", ">")
+        Me.chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack {0}filename{1}"), "<", ">")
         Me.chkMovieThemeEnable.Text = Master.eLang.GetString(1082, "Enable Theme Support")
         Me.chkMovieTrailerDeleteExisting.Text = Master.eLang.GetString(522, "Delete All Existing")
         Me.chkMovieTrailerEnable.Text = Master.eLang.GetString(529, "Enable Trailer Support")
@@ -6458,24 +6568,20 @@ Public Class dlgSettings
         Me.gbMovieGeneralGenreFilterOpts.Text = Master.eLang.GetString(454, "Genre Language Filter")
         Me.gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         Me.gbMovieImagesOpts.Text = Master.eLang.GetString(497, "Images")
-        Me.gbMovieSourcesMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
         Me.gbMovieScraperCertificationOpts.Text = Master.eLang.GetString(56, "Certification")
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
-        Me.gbMovieGeneralSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         Me.gbMovieSourcesFileNamingXBMCTvTunesOpts.Text = Master.eLang.GetString(1076, "Theme Settings")
         Me.gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
         Me.gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
         Me.gbSettingsHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
         Me.gbTVEpisodeFilterOpts.Text = Master.eLang.GetString(671, "Episode Folder/File Name Filters")
-        Me.gbTVGeneralLangOpts.Text = Master.eLang.GetString(1201, "Language Options")
         Me.gbTVGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         Me.gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
         Me.gbTVScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
         Me.gbTVShowFilterOpts.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
         Me.gbTVSourcesRegexMatch.Text = Master.eLang.GetString(691, "Show Match Regex")
-        Me.gbTVSourcesMiscOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
         Me.lblFileSystemCleanerWarning.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
         Me.lblFileSystemCleanerWhitelist.Text = Master.eLang.GetString(441, "Whitelisted Extensions:")
         Me.lblGeneralDaemonDrive.Text = Master.eLang.GetString(989, "Driveletter")
@@ -6486,7 +6592,6 @@ Public Class dlgSettings
         Me.lblGeneralTVEpisodeTheme.Text = String.Concat(Master.eLang.GetString(667, "Episode Theme"), ":")
         Me.lblGeneralTVShowTheme.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
         Me.lblGeneralntLang.Text = Master.eLang.GetString(430, "Interface Language:")
-        Me.lblMovieBannerType.Text = Master.eLang.GetString(730, "Preferred Type:")
         Me.lblMovieGeneralCustomMarker1.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #1")
         Me.lblMovieGeneralCustomMarker2.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #2")
         Me.lblMovieGeneralCustomMarker3.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #3")
@@ -6494,8 +6599,6 @@ Public Class dlgSettings
         Me.lblMovieIMDBMirror.Text = Master.eLang.GetString(884, "IMDB Mirror:")
         Me.lblMovieLanguageOverlay.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
         Me.lblMovieLevTolerance.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
-        Me.lblMoviePosterSize.Text = Master.eLang.GetString(482, "Preferred Size:")
-        Me.lblMovieScraperDefFIExt.Text = Master.eLang.GetString(626, "File Type")
         Me.lblMovieScraperDurationRuntimeFormat.Text = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), vbNewLine)
         Me.lblMovieSkipLessThan.Text = Master.eLang.GetString(540, "Skip files smaller than:")
         Me.lblMovieSkipLessThanMB.Text = Master.eLang.GetString(539, "MB")
@@ -6509,12 +6612,11 @@ Public Class dlgSettings
         Me.lblProxyUsername.Text = Master.eLang.GetString(425, "Username:")
         Me.lblSettingsTopDetails.Text = Master.eLang.GetString(518, "Configure Ember's appearance and operation.")
         Me.lblTVEpisodeMatch.Text = Master.eLang.GetString(693, "Episode Match Regex:")
-        Me.lblTVScraperOptionsOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
+        Me.lblTVSourcesDefaultsOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
         Me.lblTVScraperRatingRegion.Text = Master.eLang.GetString(679, "TV Rating Region")
         Me.lblTVScraperUpdateTime.Text = Master.eLang.GetString(740, "Re-download Show Information Every:")
         Me.lblTVSeasonMatch.Text = Master.eLang.GetString(692, "Season Match Regex:")
         Me.lblTVSeasonRetrieve.Text = String.Concat(Master.eLang.GetString(694, "Apply To"), ":")
-        Me.lblTVShowPosterSize.Text = Master.eLang.GetString(482, "Preferred Size:")
         Me.lvMovieSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvMovieSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
         Me.lvMovieSources.Columns(3).Text = Master.eLang.GetString(411, "Recursive")
@@ -6541,94 +6643,23 @@ Public Class dlgSettings
 
         'items with text from other items
         Me.btnTVSourceAdd.Text = Me.btnMovieSourceAdd.Text
-        Me.chkMovieBannerPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
-        Me.chkMovieBannerResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieEFanartsPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
-        Me.chkMovieEFanartsResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieEThumbsPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
-        Me.chkMovieEThumbsResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieFanartPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
-        Me.chkMovieFanartResize.Text = Me.chkMoviePosterResize.Text
         Me.chkMovieSetCleanDB.Text = Me.chkMovieCleanDB.Text
         Me.chkMovieStackExpertSingle.Text = Me.chkMovieStackExpertMulti.Text
         Me.chkMovieUnstackExpertSingle.Text = Me.chkMovieUnstackExpertMulti.Text
         Me.chkMovieUseBaseDirectoryExpertVTS.Text = Me.chkMovieUseBaseDirectoryExpertBDMV.Text
-        Me.chkMovieSetBannerPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
-        Me.chkMovieSetBannerResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieSetFanartPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
-        Me.chkMovieSetFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkMovieSetPosterPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
-        Me.chkMovieSetPosterResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVASBannerResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVASFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVASPosterResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVCleanDB.Text = Me.chkMovieCleanDB.Text
-        Me.chkTVEpisodeFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVEpisodePosterResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVEpisodeProperCase.Text = Me.chkMovieProperCase.Text
         Me.chkTVGeneralIgnoreLastScan.Text = Me.chkMovieGeneralIgnoreLastScan.Text
-        Me.chkTVLockEpisodeRuntime.Text = Me.chkMovieLockRuntime.Text
-        Me.chkTVLockShowRuntime.Text = Me.chkMovieLockRuntime.Text
         Me.chkTVScanOrderModify.Text = Me.chkMovieScanOrderModify.Text
         Me.chkTVScraperMetaDataScan.Text = Me.chkMovieScraperMetaDataScan.Text
-        Me.chkTVSeasonBannerResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVSeasonFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVSeasonPosterResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVShowBannerResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVShowEFanartsPrefOnly.Text = Me.chkMoviePosterPrefOnly.Text
-        Me.chkTVShowEFanartsResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVShowFanartResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVShowPosterResize.Text = Me.chkMoviePosterResize.Text
         Me.chkTVShowProperCase.Text = Me.chkMovieProperCase.Text
-        Me.gbMovieSetImagesBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
-        Me.gbMovieSetImagesClearLogoOpts.Text = Me.gbMovieImagesClearLogoOpts.Text
-        Me.gbMovieSetImagesFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
         Me.gbMovieSetFileNamingOpts.Text = Me.gbMovieSourcesFileNaming.Text
         Me.gbMovieSetGeneralMediaListOpts.Text = Me.gbMovieGeneralMediaListOpts.Text
-        Me.gbMovieSetGeneralMiscOpts.Text = Me.gbMovieGeneralMiscOpts.Text
-        Me.gbMovieSetImagesLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
-        Me.gbMovieSetImagesPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
-        Me.gbMovieSetGeneralSortTokensOpts.Text = Me.gbMovieGeneralSortTokensOpts.Text
-        Me.gbMovieSetSourcesMiscOpts.Text = Me.gbMovieSourcesMiscOpts.Text
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
-        Me.gbTVImagesAllSeasonsBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
-        Me.gbTVImagesAllSeasonsFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
-        Me.gbTVImagesAllSeasonsLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
-        Me.gbTVImagesAllSeasonsPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
-        Me.gbTVImagesEpisodeFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
-        Me.gbTVImagesEpisodePosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
         Me.gbTVScraperDefFIExtOpts.Text = Me.gbTVScraperDefFIExtOpts.Text
-        Me.gbTVImagesSeasonBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
-        Me.gbTVImagesSeasonFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
-        Me.gbTVImagesSeasonLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
-        Me.gbTVImagesSeasonPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
-        Me.gbTVImagesShowBannerOpts.Text = Me.gbMovieImagesBannerOpts.Text
-        Me.gbTVImagesShowEFanartsOpts.Text = Me.gbMovieImagesEFanartsOpts.Text
-        Me.gbTVImagesShowFanartOpts.Text = Me.gbMovieImagesFanartOpts.Text
-        Me.gbTVImagesShowLandscapeOpts.Text = Me.gbMovieImagesLandscapeOpts.Text
-        Me.gbTVImagesShowPosterOpts.Text = Me.gbMovieImagesPosterOpts.Text
-        Me.gbTVGeneralMediaListSortTokensOpts.Text = Me.gbMovieGeneralSortTokensOpts.Text
-        Me.lblMovieEFanartsSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblMovieEThumbsSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblMovieFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblMovieSetBannerType.Text = Me.lblMovieBannerType.Text
-        Me.lblMovieSetFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblMovieSetPosterSize.Text = Me.lblMoviePosterSize.Text
         Me.lblSettingsTopTitle.Text = Me.Text
-        Me.lblTVASBannerType.Text = Me.lblMovieBannerType.Text
-        Me.lblTVASFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVASPosterSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVEpisodeFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVEpisodePosterSize.Text = Me.lblMoviePosterSize.Text
         Me.lblTVEpisodeRetrieve.Text = Me.lblTVSeasonRetrieve.Text
         Me.lblTVLanguageOverlay.Text = Me.lblMovieLanguageOverlay.Text
-        Me.lblTVScraperDefFIExt.Text = Me.lblMovieScraperDefFIExt.Text
-        Me.lblTVSeasonBannerType.Text = Me.lblMovieBannerType.Text
-        Me.lblTVSeasonFanartSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVSeasonPosterSize.Text = Me.lblTVShowPosterSize.Text
-        Me.lblTVShowBannerType.Text = Me.lblMovieBannerType.Text
-        Me.lblTVShowEFanartsSize.Text = Me.lblMoviePosterSize.Text
-        Me.lblTVShowFanartSize.Text = Me.lblMoviePosterSize.Text
         Me.lblTVSkipLessThan.Text = Me.lblMovieSkipLessThan.Text
         Me.lblTVSkipLessThanMB.Text = Me.lblMovieSkipLessThanMB.Text
 

@@ -30,7 +30,7 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Me.gbGeneralMisc = New System.Windows.Forms.GroupBox()
+        Me.gbGeneralMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblGeneralMisc = New System.Windows.Forms.TableLayoutPanel()
         Me.chkGeneralSourceFromFolder = New System.Windows.Forms.CheckBox()
         Me.chkGeneralCheckUpdates = New System.Windows.Forms.CheckBox()
@@ -187,7 +187,7 @@ Partial Class dlgSettings
         Me.lblMovieGeneralMediaListExtrafanarts = New System.Windows.Forms.Label()
         Me.lblMovieGeneralMediaListClearLogo = New System.Windows.Forms.Label()
         Me.lblMovieGeneralMediaListClearArt = New System.Windows.Forms.Label()
-        Me.gbMovieGeneralSortTokensOpts = New System.Windows.Forms.GroupBox()
+        Me.gbMovieGeneralMediaListSortTokensOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieGeneralSortTokensOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.btnMovieSortTokenRemove = New System.Windows.Forms.Button()
         Me.lstMovieSortTokens = New System.Windows.Forms.ListBox()
@@ -662,6 +662,13 @@ Partial Class dlgSettings
         Me.lblTVGeneralMediaListPoster = New System.Windows.Forms.Label()
         Me.lblTVGeneralMediaListTheme = New System.Windows.Forms.Label()
         Me.lblTVGeneralMediaListWatched = New System.Windows.Forms.Label()
+        Me.chkTVSeasonMissingBanner = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonMissingFanart = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonMissingLandscape = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonMissingPoster = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodeMissingFanart = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodeMissingNFO = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodeMissingPoster = New System.Windows.Forms.CheckBox()
         Me.chkTVDisplayMissingEpisodes = New System.Windows.Forms.CheckBox()
         Me.chkTVDisplayStatus = New System.Windows.Forms.CheckBox()
         Me.gbTVGeneralMediaListSortTokensOpts = New System.Windows.Forms.GroupBox()
@@ -670,10 +677,6 @@ Partial Class dlgSettings
         Me.lstTVSortTokens = New System.Windows.Forms.ListBox()
         Me.btnTVSortTokenAdd = New System.Windows.Forms.Button()
         Me.txtTVSortToken = New System.Windows.Forms.TextBox()
-        Me.gbTVGeneralLangOpts = New System.Windows.Forms.GroupBox()
-        Me.tblTVGeneralLangOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnTVGeneralLangFetch = New System.Windows.Forms.Button()
-        Me.cbTVGeneralLang = New System.Windows.Forms.ComboBox()
         Me.gbTVEpisodeFilterOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVEpisodeFilterOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.btnTVEpisodeFilterRemove = New System.Windows.Forms.Button()
@@ -695,6 +698,13 @@ Partial Class dlgSettings
         Me.lstTVShowFilter = New System.Windows.Forms.ListBox()
         Me.btnTVShowFilterAdd = New System.Windows.Forms.Button()
         Me.txtTVShowFilter = New System.Windows.Forms.TextBox()
+        Me.gbTVSourcesDefaultsOpts = New System.Windows.Forms.GroupBox()
+        Me.tblTVSourcesDefaultsOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnTVGeneralLangFetch = New System.Windows.Forms.Button()
+        Me.cbTVGeneralLang = New System.Windows.Forms.ComboBox()
+        Me.lblTVSourcesDefaultsOrdering = New System.Windows.Forms.Label()
+        Me.cbTVScraperOptionsOrdering = New System.Windows.Forms.ComboBox()
+        Me.lblTVSourcesDefaultsLanguage = New System.Windows.Forms.Label()
         Me.pnlTVSources = New System.Windows.Forms.Panel()
         Me.tblTVSources = New System.Windows.Forms.TableLayoutPanel()
         Me.tcTVSources = New System.Windows.Forms.TabControl()
@@ -760,8 +770,6 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingNMT = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVSourcesFileNamingNMTDefaultsOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesFileNamingNMTDefaultsOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkTVUseNMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVUseYAMJ = New System.Windows.Forms.CheckBox()
         Me.chkTVShowPosterNMJ = New System.Windows.Forms.CheckBox()
         Me.chkTVShowFanartNMJ = New System.Windows.Forms.CheckBox()
         Me.chkTVShowBannerNMJ = New System.Windows.Forms.CheckBox()
@@ -778,21 +786,22 @@ Partial Class dlgSettings
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
         Me.chkTVShowFanartYAMJ = New System.Windows.Forms.CheckBox()
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode = New System.Windows.Forms.Label()
         Me.chkTVShowPosterYAMJ = New System.Windows.Forms.CheckBox()
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow = New System.Windows.Forms.Label()
-        Me.Label10 = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingNMTDefaultsBanner = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingNMTDefaultsFanart = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingNMTDefaultsPoster = New System.Windows.Forms.Label()
+        Me.chkTVUseYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVUseNMJ = New System.Windows.Forms.CheckBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
         Me.tpTVSourcesFileNamingBoxee = New System.Windows.Forms.TabPage()
         Me.tblTVSourcesFileNamingBoxee = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVSourcesFileNamingBoxeeDefaultsOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkTVUseBoxee = New System.Windows.Forms.CheckBox()
         Me.chkTVEpisodePosterBoxee = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonPosterBoxee = New System.Windows.Forms.CheckBox()
         Me.Label14 = New System.Windows.Forms.Label()
@@ -802,10 +811,11 @@ Partial Class dlgSettings
         Me.chkTVShowFanartBoxee = New System.Windows.Forms.CheckBox()
         Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeShow = New System.Windows.Forms.Label()
         Me.chkTVShowPosterBoxee = New System.Windows.Forms.CheckBox()
-        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingBoxeeDefaultsBanner = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingBoxeeDefaultsFanart = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingBoxeeDefaultsPoster = New System.Windows.Forms.Label()
+        Me.chkTVUseBoxee = New System.Windows.Forms.CheckBox()
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee = New System.Windows.Forms.Label()
         Me.tpTVSourcesFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.gbTVSourcesMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesMiscOpts = New System.Windows.Forms.TableLayoutPanel()
@@ -1083,8 +1093,6 @@ Partial Class dlgSettings
         Me.lblTVScraperRatingRegion = New System.Windows.Forms.Label()
         Me.chkTVScraperUseSRuntimeForEp = New System.Windows.Forms.CheckBox()
         Me.lblTVScraperUpdateTime = New System.Windows.Forms.Label()
-        Me.cbTVScraperOptionsOrdering = New System.Windows.Forms.ComboBox()
-        Me.lblTVScraperOptionsOrdering = New System.Windows.Forms.Label()
         Me.cbTVScraperUpdateTime = New System.Windows.Forms.ComboBox()
         Me.cbMovieScraperCertLang = New System.Windows.Forms.ComboBox()
         Me.lblMovieScraperOutlineLimit = New System.Windows.Forms.Label()
@@ -1240,7 +1248,7 @@ Partial Class dlgSettings
         Me.tblMovieSetGeneral = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieSetGeneralMediaListOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSetGeneralMediaListOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbMovieSetGeneralSortTokensOpts = New System.Windows.Forms.GroupBox()
+        Me.gbMovieSetGeneralMediaListSortTokensOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSetGeneralSortTokensOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.btnMovieSetSortTokenRemove = New System.Windows.Forms.Button()
         Me.lstMovieSetSortTokens = New System.Windows.Forms.ListBox()
@@ -1407,7 +1415,7 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbGeneralMisc.SuspendLayout
+        Me.gbGeneralMiscOpts.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.tblGeneralDaemon.SuspendLayout
@@ -1445,7 +1453,7 @@ Partial Class dlgSettings
         Me.tblMovieImagesFanartOpts.SuspendLayout
         Me.gbMovieGeneralMediaListOpts.SuspendLayout
         Me.tblMovieGeneralMediaListOpts.SuspendLayout
-        Me.gbMovieGeneralSortTokensOpts.SuspendLayout
+        Me.gbMovieGeneralMediaListSortTokensOpts.SuspendLayout
         Me.tblMovieGeneralSortTokensOpts.SuspendLayout
         Me.pnlSettingsTop.SuspendLayout
         CType(Me.pbSettingsTopLogo,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1562,12 +1570,12 @@ Partial Class dlgSettings
         Me.tblTVGeneralMediaList.SuspendLayout
         Me.gbTVGeneralMediaListSortTokensOpts.SuspendLayout
         Me.tblTVGeneralMediaListSortTokensOpts.SuspendLayout
-        Me.gbTVGeneralLangOpts.SuspendLayout
-        Me.tblTVGeneralLangOpts.SuspendLayout
         Me.gbTVEpisodeFilterOpts.SuspendLayout
         Me.tblTVEpisodeFilterOpts.SuspendLayout
         Me.gbTVShowFilterOpts.SuspendLayout
         Me.tblTVShowFilterOpts.SuspendLayout
+        Me.gbTVSourcesDefaultsOpts.SuspendLayout
+        Me.tblTVSourcesDefaultsOpts.SuspendLayout
         Me.pnlTVSources.SuspendLayout
         Me.tblTVSources.SuspendLayout
         Me.tcTVSources.SuspendLayout
@@ -1687,7 +1695,7 @@ Partial Class dlgSettings
         Me.tblMovieSetGeneral.SuspendLayout
         Me.gbMovieSetGeneralMediaListOpts.SuspendLayout
         Me.tblMovieSetGeneralMediaListOpts.SuspendLayout
-        Me.gbMovieSetGeneralSortTokensOpts.SuspendLayout
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.SuspendLayout
         Me.tblMovieSetGeneralSortTokensOpts.SuspendLayout
         Me.gbMovieSetGeneralMiscOpts.SuspendLayout
         Me.tblMovieSetGeneralMiscOpts.SuspendLayout
@@ -1749,19 +1757,19 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.SuspendLayout
         Me.SuspendLayout
         '
-        'gbGeneralMisc
+        'gbGeneralMiscOpts
         '
-        Me.gbGeneralMisc.AutoSize = true
-        Me.gbGeneralMisc.Controls.Add(Me.tblGeneralMisc)
-        Me.gbGeneralMisc.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbGeneralMisc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbGeneralMisc.Location = New System.Drawing.Point(247, 292)
-        Me.gbGeneralMisc.Name = "gbGeneralMisc"
-        Me.tblGeneral.SetRowSpan(Me.gbGeneralMisc, 2)
-        Me.gbGeneralMisc.Size = New System.Drawing.Size(359, 121)
-        Me.gbGeneralMisc.TabIndex = 1
-        Me.gbGeneralMisc.TabStop = false
-        Me.gbGeneralMisc.Text = "Miscellaneous"
+        Me.gbGeneralMiscOpts.AutoSize = true
+        Me.gbGeneralMiscOpts.Controls.Add(Me.tblGeneralMisc)
+        Me.gbGeneralMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbGeneralMiscOpts.Location = New System.Drawing.Point(247, 292)
+        Me.gbGeneralMiscOpts.Name = "gbGeneralMiscOpts"
+        Me.tblGeneral.SetRowSpan(Me.gbGeneralMiscOpts, 2)
+        Me.gbGeneralMiscOpts.Size = New System.Drawing.Size(359, 121)
+        Me.gbGeneralMiscOpts.TabIndex = 1
+        Me.gbGeneralMiscOpts.TabStop = false
+        Me.gbGeneralMiscOpts.Text = "Miscellaneous"
         '
         'tblGeneralMisc
         '
@@ -3671,7 +3679,7 @@ Partial Class dlgSettings
         Me.tblMovieGeneralMediaListOpts.Controls.Add(Me.lblMovieGeneralMediaListExtrafanarts, 0, 9)
         Me.tblMovieGeneralMediaListOpts.Controls.Add(Me.lblMovieGeneralMediaListClearLogo, 0, 7)
         Me.tblMovieGeneralMediaListOpts.Controls.Add(Me.lblMovieGeneralMediaListClearArt, 0, 6)
-        Me.tblMovieGeneralMediaListOpts.Controls.Add(Me.gbMovieGeneralSortTokensOpts, 0, 3)
+        Me.tblMovieGeneralMediaListOpts.Controls.Add(Me.gbMovieGeneralMediaListSortTokensOpts, 0, 3)
         Me.tblMovieGeneralMediaListOpts.Controls.Add(Me.lblMovieGeneralMediaListBanner, 0, 5)
         Me.tblMovieGeneralMediaListOpts.Controls.Add(Me.chkMovieMissingTrailer, 2, 18)
         Me.tblMovieGeneralMediaListOpts.Controls.Add(Me.chkMovieMissingTheme, 2, 17)
@@ -3879,18 +3887,18 @@ Partial Class dlgSettings
         Me.lblMovieGeneralMediaListClearArt.TabIndex = 11
         Me.lblMovieGeneralMediaListClearArt.Text = "ClearArt"
         '
-        'gbMovieGeneralSortTokensOpts
+        'gbMovieGeneralMediaListSortTokensOpts
         '
-        Me.gbMovieGeneralSortTokensOpts.AutoSize = true
-        Me.tblMovieGeneralMediaListOpts.SetColumnSpan(Me.gbMovieGeneralSortTokensOpts, 4)
-        Me.gbMovieGeneralSortTokensOpts.Controls.Add(Me.tblMovieGeneralSortTokensOpts)
-        Me.gbMovieGeneralSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbMovieGeneralSortTokensOpts.Location = New System.Drawing.Point(3, 77)
-        Me.gbMovieGeneralSortTokensOpts.Name = "gbMovieGeneralSortTokensOpts"
-        Me.gbMovieGeneralSortTokensOpts.Size = New System.Drawing.Size(192, 99)
-        Me.gbMovieGeneralSortTokensOpts.TabIndex = 71
-        Me.gbMovieGeneralSortTokensOpts.TabStop = false
-        Me.gbMovieGeneralSortTokensOpts.Text = "Sort Tokens to Ignore"
+        Me.gbMovieGeneralMediaListSortTokensOpts.AutoSize = true
+        Me.tblMovieGeneralMediaListOpts.SetColumnSpan(Me.gbMovieGeneralMediaListSortTokensOpts, 4)
+        Me.gbMovieGeneralMediaListSortTokensOpts.Controls.Add(Me.tblMovieGeneralSortTokensOpts)
+        Me.gbMovieGeneralMediaListSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieGeneralMediaListSortTokensOpts.Location = New System.Drawing.Point(3, 77)
+        Me.gbMovieGeneralMediaListSortTokensOpts.Name = "gbMovieGeneralMediaListSortTokensOpts"
+        Me.gbMovieGeneralMediaListSortTokensOpts.Size = New System.Drawing.Size(192, 99)
+        Me.gbMovieGeneralMediaListSortTokensOpts.TabIndex = 71
+        Me.gbMovieGeneralMediaListSortTokensOpts.TabStop = false
+        Me.gbMovieGeneralMediaListSortTokensOpts.Text = "Sort Tokens to Ignore"
         '
         'tblMovieGeneralSortTokensOpts
         '
@@ -4570,7 +4578,7 @@ Partial Class dlgSettings
         Me.tblGeneral.Controls.Add(Me.gbGeneralInterface, 0, 0)
         Me.tblGeneral.Controls.Add(Me.gbGeneralDateAdded, 0, 2)
         Me.tblGeneral.Controls.Add(Me.gbGeneralMainWindow, 1, 0)
-        Me.tblGeneral.Controls.Add(Me.gbGeneralMisc, 1, 1)
+        Me.tblGeneral.Controls.Add(Me.gbGeneralMiscOpts, 1, 1)
         Me.tblGeneral.Controls.Add(Me.gbGeneralScrapers, 0, 1)
         Me.tblGeneral.Controls.Add(Me.gbGeneralDaemon, 0, 3)
         Me.tblGeneral.Dock = System.Windows.Forms.DockStyle.Fill
@@ -9231,7 +9239,6 @@ Partial Class dlgSettings
         Me.tblTVGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVGeneral.Controls.Add(Me.gbTVGeneralMiscOpts, 0, 0)
         Me.tblTVGeneral.Controls.Add(Me.gbTVGeneralMediaListOpts, 0, 1)
-        Me.tblTVGeneral.Controls.Add(Me.gbTVGeneralLangOpts, 1, 0)
         Me.tblTVGeneral.Controls.Add(Me.gbTVEpisodeFilterOpts, 2, 2)
         Me.tblTVGeneral.Controls.Add(Me.gbTVShowFilterOpts, 2, 1)
         Me.tblTVGeneral.Dock = System.Windows.Forms.DockStyle.Fill
@@ -9254,7 +9261,7 @@ Partial Class dlgSettings
         Me.gbTVGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVGeneralMiscOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbTVGeneralMiscOpts.Name = "gbTVGeneralMiscOpts"
-        Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(139, 77)
+        Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(139, 67)
         Me.gbTVGeneralMiscOpts.TabIndex = 0
         Me.gbTVGeneralMiscOpts.TabStop = false
         Me.gbTVGeneralMiscOpts.Text = "Miscellaneous"
@@ -9274,7 +9281,7 @@ Partial Class dlgSettings
         Me.tblTVGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralMiscOpts.Size = New System.Drawing.Size(133, 56)
+        Me.tblTVGeneralMiscOpts.Size = New System.Drawing.Size(133, 46)
         Me.tblTVGeneralMiscOpts.TabIndex = 74
         '
         'chkTVGeneralMarkNewEpisodes
@@ -9308,7 +9315,7 @@ Partial Class dlgSettings
         Me.gbTVGeneralMediaListOpts.Controls.Add(Me.tblTVGeneralMediaListOpts)
         Me.gbTVGeneralMediaListOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVGeneralMediaListOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVGeneralMediaListOpts.Location = New System.Drawing.Point(3, 86)
+        Me.gbTVGeneralMediaListOpts.Location = New System.Drawing.Point(3, 76)
         Me.gbTVGeneralMediaListOpts.Name = "gbTVGeneralMediaListOpts"
         Me.tblTVGeneral.SetRowSpan(Me.gbTVGeneralMediaListOpts, 3)
         Me.gbTVGeneralMediaListOpts.Size = New System.Drawing.Size(362, 438)
@@ -9400,6 +9407,13 @@ Partial Class dlgSettings
         Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListPoster, 0, 10)
         Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListTheme, 0, 11)
         Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListWatched, 0, 12)
+        Me.tblTVGeneralMediaList.Controls.Add(Me.chkTVSeasonMissingBanner, 4, 2)
+        Me.tblTVGeneralMediaList.Controls.Add(Me.chkTVSeasonMissingFanart, 4, 7)
+        Me.tblTVGeneralMediaList.Controls.Add(Me.chkTVSeasonMissingLandscape, 4, 8)
+        Me.tblTVGeneralMediaList.Controls.Add(Me.chkTVSeasonMissingPoster, 4, 10)
+        Me.tblTVGeneralMediaList.Controls.Add(Me.chkTVEpisodeMissingFanart, 6, 7)
+        Me.tblTVGeneralMediaList.Controls.Add(Me.chkTVEpisodeMissingNFO, 6, 9)
+        Me.tblTVGeneralMediaList.Controls.Add(Me.chkTVEpisodeMissingPoster, 6, 10)
         Me.tblTVGeneralMediaList.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVGeneralMediaList.Location = New System.Drawing.Point(3, 154)
         Me.tblTVGeneralMediaList.Name = "tblTVGeneralMediaList"
@@ -9946,6 +9960,83 @@ Partial Class dlgSettings
         Me.lblTVGeneralMediaListWatched.TabIndex = 82
         Me.lblTVGeneralMediaListWatched.Text = "Watched"
         '
+        'chkTVSeasonMissingBanner
+        '
+        Me.chkTVSeasonMissingBanner.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVSeasonMissingBanner.AutoSize = true
+        Me.chkTVSeasonMissingBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonMissingBanner.Location = New System.Drawing.Point(224, 43)
+        Me.chkTVSeasonMissingBanner.Name = "chkTVSeasonMissingBanner"
+        Me.chkTVSeasonMissingBanner.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVSeasonMissingBanner.TabIndex = 11
+        Me.chkTVSeasonMissingBanner.UseVisualStyleBackColor = true
+        '
+        'chkTVSeasonMissingFanart
+        '
+        Me.chkTVSeasonMissingFanart.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVSeasonMissingFanart.AutoSize = true
+        Me.chkTVSeasonMissingFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonMissingFanart.Location = New System.Drawing.Point(224, 143)
+        Me.chkTVSeasonMissingFanart.Name = "chkTVSeasonMissingFanart"
+        Me.chkTVSeasonMissingFanart.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVSeasonMissingFanart.TabIndex = 11
+        Me.chkTVSeasonMissingFanart.UseVisualStyleBackColor = true
+        '
+        'chkTVSeasonMissingLandscape
+        '
+        Me.chkTVSeasonMissingLandscape.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVSeasonMissingLandscape.AutoSize = true
+        Me.chkTVSeasonMissingLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonMissingLandscape.Location = New System.Drawing.Point(224, 163)
+        Me.chkTVSeasonMissingLandscape.Name = "chkTVSeasonMissingLandscape"
+        Me.chkTVSeasonMissingLandscape.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVSeasonMissingLandscape.TabIndex = 11
+        Me.chkTVSeasonMissingLandscape.UseVisualStyleBackColor = true
+        '
+        'chkTVSeasonMissingPoster
+        '
+        Me.chkTVSeasonMissingPoster.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVSeasonMissingPoster.AutoSize = true
+        Me.chkTVSeasonMissingPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonMissingPoster.Location = New System.Drawing.Point(224, 203)
+        Me.chkTVSeasonMissingPoster.Name = "chkTVSeasonMissingPoster"
+        Me.chkTVSeasonMissingPoster.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVSeasonMissingPoster.TabIndex = 11
+        Me.chkTVSeasonMissingPoster.UseVisualStyleBackColor = true
+        '
+        'chkTVEpisodeMissingFanart
+        '
+        Me.chkTVEpisodeMissingFanart.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVEpisodeMissingFanart.AutoSize = true
+        Me.chkTVEpisodeMissingFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodeMissingFanart.Location = New System.Drawing.Point(315, 143)
+        Me.chkTVEpisodeMissingFanart.Name = "chkTVEpisodeMissingFanart"
+        Me.chkTVEpisodeMissingFanart.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVEpisodeMissingFanart.TabIndex = 11
+        Me.chkTVEpisodeMissingFanart.UseVisualStyleBackColor = true
+        '
+        'chkTVEpisodeMissingNFO
+        '
+        Me.chkTVEpisodeMissingNFO.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVEpisodeMissingNFO.AutoSize = true
+        Me.chkTVEpisodeMissingNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodeMissingNFO.Location = New System.Drawing.Point(315, 183)
+        Me.chkTVEpisodeMissingNFO.Name = "chkTVEpisodeMissingNFO"
+        Me.chkTVEpisodeMissingNFO.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVEpisodeMissingNFO.TabIndex = 11
+        Me.chkTVEpisodeMissingNFO.UseVisualStyleBackColor = true
+        '
+        'chkTVEpisodeMissingPoster
+        '
+        Me.chkTVEpisodeMissingPoster.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVEpisodeMissingPoster.AutoSize = true
+        Me.chkTVEpisodeMissingPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodeMissingPoster.Location = New System.Drawing.Point(315, 203)
+        Me.chkTVEpisodeMissingPoster.Name = "chkTVEpisodeMissingPoster"
+        Me.chkTVEpisodeMissingPoster.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVEpisodeMissingPoster.TabIndex = 11
+        Me.chkTVEpisodeMissingPoster.UseVisualStyleBackColor = true
+        '
         'chkTVDisplayMissingEpisodes
         '
         Me.chkTVDisplayMissingEpisodes.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -10048,67 +10139,13 @@ Partial Class dlgSettings
         Me.txtTVSortToken.Size = New System.Drawing.Size(90, 22)
         Me.txtTVSortToken.TabIndex = 1
         '
-        'gbTVGeneralLangOpts
-        '
-        Me.gbTVGeneralLangOpts.AutoSize = true
-        Me.gbTVGeneralLangOpts.Controls.Add(Me.tblTVGeneralLangOpts)
-        Me.gbTVGeneralLangOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbTVGeneralLangOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbTVGeneralLangOpts.Location = New System.Drawing.Point(148, 3)
-        Me.gbTVGeneralLangOpts.Name = "gbTVGeneralLangOpts"
-        Me.gbTVGeneralLangOpts.Size = New System.Drawing.Size(217, 77)
-        Me.gbTVGeneralLangOpts.TabIndex = 4
-        Me.gbTVGeneralLangOpts.TabStop = false
-        Me.gbTVGeneralLangOpts.Text = "Language Options"
-        '
-        'tblTVGeneralLangOpts
-        '
-        Me.tblTVGeneralLangOpts.AutoSize = true
-        Me.tblTVGeneralLangOpts.ColumnCount = 2
-        Me.tblTVGeneralLangOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralLangOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralLangOpts.Controls.Add(Me.btnTVGeneralLangFetch, 0, 1)
-        Me.tblTVGeneralLangOpts.Controls.Add(Me.cbTVGeneralLang, 0, 0)
-        Me.tblTVGeneralLangOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVGeneralLangOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblTVGeneralLangOpts.Name = "tblTVGeneralLangOpts"
-        Me.tblTVGeneralLangOpts.RowCount = 3
-        Me.tblTVGeneralLangOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralLangOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralLangOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralLangOpts.Size = New System.Drawing.Size(211, 56)
-        Me.tblTVGeneralLangOpts.TabIndex = 5
-        '
-        'btnTVGeneralLangFetch
-        '
-        Me.btnTVGeneralLangFetch.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.tblTVGeneralLangOpts.SetColumnSpan(Me.btnTVGeneralLangFetch, 2)
-        Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(25, 30)
-        Me.btnTVGeneralLangFetch.Name = "btnTVGeneralLangFetch"
-        Me.btnTVGeneralLangFetch.Size = New System.Drawing.Size(160, 23)
-        Me.btnTVGeneralLangFetch.TabIndex = 10
-        Me.btnTVGeneralLangFetch.Text = "Fetch Available Languages"
-        Me.btnTVGeneralLangFetch.UseVisualStyleBackColor = true
-        '
-        'cbTVGeneralLang
-        '
-        Me.cbTVGeneralLang.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.tblTVGeneralLangOpts.SetColumnSpan(Me.cbTVGeneralLang, 2)
-        Me.cbTVGeneralLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVGeneralLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVGeneralLang.Location = New System.Drawing.Point(25, 3)
-        Me.cbTVGeneralLang.Name = "cbTVGeneralLang"
-        Me.cbTVGeneralLang.Size = New System.Drawing.Size(160, 21)
-        Me.cbTVGeneralLang.TabIndex = 11
-        '
         'gbTVEpisodeFilterOpts
         '
         Me.gbTVEpisodeFilterOpts.AutoSize = true
         Me.gbTVEpisodeFilterOpts.Controls.Add(Me.tblTVEpisodeFilterOpts)
         Me.gbTVEpisodeFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVEpisodeFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVEpisodeFilterOpts.Location = New System.Drawing.Point(371, 272)
+        Me.gbTVEpisodeFilterOpts.Location = New System.Drawing.Point(371, 262)
         Me.gbTVEpisodeFilterOpts.Name = "gbTVEpisodeFilterOpts"
         Me.gbTVEpisodeFilterOpts.Size = New System.Drawing.Size(326, 203)
         Me.gbTVEpisodeFilterOpts.TabIndex = 3
@@ -10251,7 +10288,7 @@ Partial Class dlgSettings
         Me.gbTVShowFilterOpts.Controls.Add(Me.tblTVShowFilterOpts)
         Me.gbTVShowFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVShowFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVShowFilterOpts.Location = New System.Drawing.Point(371, 86)
+        Me.gbTVShowFilterOpts.Location = New System.Drawing.Point(371, 76)
         Me.gbTVShowFilterOpts.Name = "gbTVShowFilterOpts"
         Me.gbTVShowFilterOpts.Size = New System.Drawing.Size(326, 180)
         Me.gbTVShowFilterOpts.TabIndex = 2
@@ -10371,6 +10408,100 @@ Partial Class dlgSettings
         Me.txtTVShowFilter.Size = New System.Drawing.Size(195, 22)
         Me.txtTVShowFilter.TabIndex = 3
         '
+        'gbTVSourcesDefaultsOpts
+        '
+        Me.gbTVSourcesDefaultsOpts.AutoSize = true
+        Me.tblTVSourcesGeneral.SetColumnSpan(Me.gbTVSourcesDefaultsOpts, 3)
+        Me.gbTVSourcesDefaultsOpts.Controls.Add(Me.tblTVSourcesDefaultsOpts)
+        Me.gbTVSourcesDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbTVSourcesDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVSourcesDefaultsOpts.Location = New System.Drawing.Point(541, 114)
+        Me.gbTVSourcesDefaultsOpts.Name = "gbTVSourcesDefaultsOpts"
+        Me.gbTVSourcesDefaultsOpts.Size = New System.Drawing.Size(278, 144)
+        Me.gbTVSourcesDefaultsOpts.TabIndex = 4
+        Me.gbTVSourcesDefaultsOpts.TabStop = false
+        Me.gbTVSourcesDefaultsOpts.Text = "Defaults"
+        '
+        'tblTVSourcesDefaultsOpts
+        '
+        Me.tblTVSourcesDefaultsOpts.AutoSize = true
+        Me.tblTVSourcesDefaultsOpts.ColumnCount = 2
+        Me.tblTVSourcesDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.btnTVGeneralLangFetch, 0, 2)
+        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.cbTVGeneralLang, 0, 1)
+        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.lblTVSourcesDefaultsOrdering, 0, 3)
+        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.cbTVScraperOptionsOrdering, 0, 4)
+        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.lblTVSourcesDefaultsLanguage, 0, 0)
+        Me.tblTVSourcesDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTVSourcesDefaultsOpts.Location = New System.Drawing.Point(3, 18)
+        Me.tblTVSourcesDefaultsOpts.Name = "tblTVSourcesDefaultsOpts"
+        Me.tblTVSourcesDefaultsOpts.RowCount = 6
+        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesDefaultsOpts.Size = New System.Drawing.Size(272, 123)
+        Me.tblTVSourcesDefaultsOpts.TabIndex = 5
+        '
+        'btnTVGeneralLangFetch
+        '
+        Me.btnTVGeneralLangFetch.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(3, 50)
+        Me.btnTVGeneralLangFetch.Name = "btnTVGeneralLangFetch"
+        Me.btnTVGeneralLangFetch.Size = New System.Drawing.Size(160, 23)
+        Me.btnTVGeneralLangFetch.TabIndex = 10
+        Me.btnTVGeneralLangFetch.Text = "Fetch Available Languages"
+        Me.btnTVGeneralLangFetch.UseVisualStyleBackColor = true
+        '
+        'cbTVGeneralLang
+        '
+        Me.cbTVGeneralLang.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbTVGeneralLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVGeneralLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbTVGeneralLang.Location = New System.Drawing.Point(3, 23)
+        Me.cbTVGeneralLang.Name = "cbTVGeneralLang"
+        Me.cbTVGeneralLang.Size = New System.Drawing.Size(160, 21)
+        Me.cbTVGeneralLang.TabIndex = 11
+        '
+        'lblTVSourcesDefaultsOrdering
+        '
+        Me.lblTVSourcesDefaultsOrdering.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesDefaultsOrdering.AutoSize = true
+        Me.lblTVSourcesDefaultsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVSourcesDefaultsOrdering.Location = New System.Drawing.Point(3, 79)
+        Me.lblTVSourcesDefaultsOrdering.Name = "lblTVSourcesDefaultsOrdering"
+        Me.lblTVSourcesDefaultsOrdering.Size = New System.Drawing.Size(142, 13)
+        Me.lblTVSourcesDefaultsOrdering.TabIndex = 7
+        Me.lblTVSourcesDefaultsOrdering.Text = "Default Episode Ordering:"
+        Me.lblTVSourcesDefaultsOrdering.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'cbTVScraperOptionsOrdering
+        '
+        Me.cbTVScraperOptionsOrdering.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbTVScraperOptionsOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVScraperOptionsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbTVScraperOptionsOrdering.FormattingEnabled = true
+        Me.cbTVScraperOptionsOrdering.Location = New System.Drawing.Point(3, 99)
+        Me.cbTVScraperOptionsOrdering.Name = "cbTVScraperOptionsOrdering"
+        Me.cbTVScraperOptionsOrdering.Size = New System.Drawing.Size(160, 21)
+        Me.cbTVScraperOptionsOrdering.TabIndex = 8
+        '
+        'lblTVSourcesDefaultsLanguage
+        '
+        Me.lblTVSourcesDefaultsLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesDefaultsLanguage.AutoSize = true
+        Me.lblTVSourcesDefaultsLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVSourcesDefaultsLanguage.Location = New System.Drawing.Point(3, 3)
+        Me.lblTVSourcesDefaultsLanguage.Name = "lblTVSourcesDefaultsLanguage"
+        Me.lblTVSourcesDefaultsLanguage.Size = New System.Drawing.Size(102, 13)
+        Me.lblTVSourcesDefaultsLanguage.TabIndex = 7
+        Me.lblTVSourcesDefaultsLanguage.Text = "Default Language:"
+        Me.lblTVSourcesDefaultsLanguage.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
         'pnlTVSources
         '
         Me.pnlTVSources.AutoSize = true
@@ -10378,7 +10509,7 @@ Partial Class dlgSettings
         Me.pnlTVSources.Controls.Add(Me.tblTVSources)
         Me.pnlTVSources.Location = New System.Drawing.Point(900, 900)
         Me.pnlTVSources.Name = "pnlTVSources"
-        Me.pnlTVSources.Size = New System.Drawing.Size(826, 556)
+        Me.pnlTVSources.Size = New System.Drawing.Size(836, 506)
         Me.pnlTVSources.TabIndex = 11
         Me.pnlTVSources.Visible = false
         '
@@ -10396,7 +10527,7 @@ Partial Class dlgSettings
         Me.tblTVSources.RowCount = 2
         Me.tblTVSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSources.Size = New System.Drawing.Size(826, 556)
+        Me.tblTVSources.Size = New System.Drawing.Size(836, 506)
         Me.tblTVSources.TabIndex = 1
         '
         'tcTVSources
@@ -10408,7 +10539,7 @@ Partial Class dlgSettings
         Me.tcTVSources.Location = New System.Drawing.Point(3, 3)
         Me.tcTVSources.Name = "tcTVSources"
         Me.tcTVSources.SelectedIndex = 0
-        Me.tcTVSources.Size = New System.Drawing.Size(820, 550)
+        Me.tcTVSources.Size = New System.Drawing.Size(830, 500)
         Me.tcTVSources.TabIndex = 0
         '
         'tpTVSourcesGeneral
@@ -10416,8 +10547,7 @@ Partial Class dlgSettings
         Me.tpTVSourcesGeneral.Controls.Add(Me.tblTVSourcesGeneral)
         Me.tpTVSourcesGeneral.Location = New System.Drawing.Point(4, 22)
         Me.tpTVSourcesGeneral.Name = "tpTVSourcesGeneral"
-        Me.tpTVSourcesGeneral.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpTVSourcesGeneral.Size = New System.Drawing.Size(812, 524)
+        Me.tpTVSourcesGeneral.Size = New System.Drawing.Size(822, 474)
         Me.tpTVSourcesGeneral.TabIndex = 0
         Me.tpTVSourcesGeneral.Text = "General"
         Me.tpTVSourcesGeneral.UseVisualStyleBackColor = true
@@ -10430,23 +10560,26 @@ Partial Class dlgSettings
         Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVSourcesGeneral.Controls.Add(Me.lvTVSources, 0, 0)
         Me.tblTVSourcesGeneral.Controls.Add(Me.gbTVSourcesFileNaming, 0, 3)
-        Me.tblTVSourcesGeneral.Controls.Add(Me.gbTVSourcesMiscOpts, 1, 3)
+        Me.tblTVSourcesGeneral.Controls.Add(Me.gbTVSourcesMiscOpts, 1, 4)
         Me.tblTVSourcesGeneral.Controls.Add(Me.btnRemTVSource, 2, 2)
         Me.tblTVSourcesGeneral.Controls.Add(Me.btnTVSourceEdit, 2, 1)
         Me.tblTVSourcesGeneral.Controls.Add(Me.btnTVSourceAdd, 2, 0)
+        Me.tblTVSourcesGeneral.Controls.Add(Me.gbTVSourcesDefaultsOpts, 1, 3)
         Me.tblTVSourcesGeneral.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVSourcesGeneral.Location = New System.Drawing.Point(3, 3)
+        Me.tblTVSourcesGeneral.Location = New System.Drawing.Point(0, 0)
         Me.tblTVSourcesGeneral.Name = "tblTVSourcesGeneral"
-        Me.tblTVSourcesGeneral.RowCount = 6
+        Me.tblTVSourcesGeneral.RowCount = 7
         Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesGeneral.Size = New System.Drawing.Size(806, 518)
+        Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesGeneral.Size = New System.Drawing.Size(822, 474)
         Me.tblTVSourcesGeneral.TabIndex = 7
         '
         'lvTVSources
@@ -10500,7 +10633,7 @@ Partial Class dlgSettings
         Me.gbTVSourcesFileNaming.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFileNaming.Location = New System.Drawing.Point(3, 114)
         Me.gbTVSourcesFileNaming.Name = "gbTVSourcesFileNaming"
-        Me.tblTVSourcesGeneral.SetRowSpan(Me.gbTVSourcesFileNaming, 2)
+        Me.tblTVSourcesGeneral.SetRowSpan(Me.gbTVSourcesFileNaming, 3)
         Me.gbTVSourcesFileNaming.Size = New System.Drawing.Size(532, 379)
         Me.gbTVSourcesFileNaming.TabIndex = 6
         Me.gbTVSourcesFileNaming.TabStop = false
@@ -10591,7 +10724,7 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingXBMCDefaultsFanart, 0, 6)
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingXBMCDefaultsPoster, 0, 7)
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingXBMCDefaultsEnabled, 0, 1)
-        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Controls.Add(Me.chkTVUseFrodo, 1, 1)
+        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Controls.Add(Me.chkTVUseFrodo, 2, 1)
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Name = "tblTVSourcesFileNamingXBMCDefaultsOpts"
@@ -10831,8 +10964,7 @@ Partial Class dlgSettings
         '
         Me.chkTVUseFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVUseFrodo.AutoSize = true
-        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.SetColumnSpan(Me.chkTVUseFrodo, 3)
-        Me.chkTVUseFrodo.Location = New System.Drawing.Point(148, 23)
+        Me.chkTVUseFrodo.Location = New System.Drawing.Point(154, 23)
         Me.chkTVUseFrodo.Name = "chkTVUseFrodo"
         Me.chkTVUseFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVUseFrodo.TabIndex = 10
@@ -11195,18 +11327,18 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode, 1, 2)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason, 2, 2)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow, 3, 2)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.Label9, 1, 0)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowFanartYAMJ, 3, 4)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode, 4, 2)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowPosterYAMJ, 3, 5)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason, 5, 2)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVUseNMJ, 4, 1)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVUseYAMJ, 1, 1)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow, 6, 2)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.Label10, 4, 0)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsBanner, 0, 3)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsFanart, 0, 4)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsPoster, 0, 5)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVUseYAMJ, 2, 1)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVUseNMJ, 5, 1)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.Label9, 2, 0)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.Label10, 5, 0)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Name = "tblTVSourcesFileNamingNMTDefaultsOpts"
@@ -11220,29 +11352,6 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(347, 120)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.TabIndex = 20
-        '
-        'chkTVUseNMJ
-        '
-        Me.chkTVUseNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVUseNMJ.AutoSize = true
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.SetColumnSpan(Me.chkTVUseNMJ, 3)
-        Me.chkTVUseNMJ.Enabled = false
-        Me.chkTVUseNMJ.Location = New System.Drawing.Point(266, 23)
-        Me.chkTVUseNMJ.Name = "chkTVUseNMJ"
-        Me.chkTVUseNMJ.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVUseNMJ.TabIndex = 16
-        Me.chkTVUseNMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVUseYAMJ
-        '
-        Me.chkTVUseYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVUseYAMJ.AutoSize = true
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.SetColumnSpan(Me.chkTVUseYAMJ, 3)
-        Me.chkTVUseYAMJ.Location = New System.Drawing.Point(120, 23)
-        Me.chkTVUseYAMJ.Name = "chkTVUseYAMJ"
-        Me.chkTVUseYAMJ.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVUseYAMJ.TabIndex = 16
-        Me.chkTVUseYAMJ.UseVisualStyleBackColor = true
         '
         'chkTVShowPosterNMJ
         '
@@ -11417,18 +11526,6 @@ Partial Class dlgSettings
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow.TabIndex = 4
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow.Text = "Show"
         '
-        'Label9
-        '
-        Me.Label9.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label9.AutoSize = true
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.SetColumnSpan(Me.Label9, 3)
-        Me.Label9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Label9.Location = New System.Drawing.Point(109, 3)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(37, 13)
-        Me.Label9.TabIndex = 0
-        Me.Label9.Text = "YAMJ"
-        '
         'chkTVShowFanartYAMJ
         '
         Me.chkTVShowFanartYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
@@ -11481,18 +11578,6 @@ Partial Class dlgSettings
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow.TabIndex = 4
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow.Text = "Show"
         '
-        'Label10
-        '
-        Me.Label10.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label10.AutoSize = true
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.SetColumnSpan(Me.Label10, 3)
-        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Label10.Location = New System.Drawing.Point(258, 3)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(32, 13)
-        Me.Label10.TabIndex = 0
-        Me.Label10.Text = "NMJ"
-        '
         'lblTVSourcesFileNamingNMTDefaultsBanner
         '
         Me.lblTVSourcesFileNamingNMTDefaultsBanner.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -11525,6 +11610,49 @@ Partial Class dlgSettings
         Me.lblTVSourcesFileNamingNMTDefaultsPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblTVSourcesFileNamingNMTDefaultsPoster.TabIndex = 6
         Me.lblTVSourcesFileNamingNMTDefaultsPoster.Text = "Poster"
+        '
+        'chkTVUseYAMJ
+        '
+        Me.chkTVUseYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVUseYAMJ.AutoSize = true
+        Me.chkTVUseYAMJ.Location = New System.Drawing.Point(126, 23)
+        Me.chkTVUseYAMJ.Name = "chkTVUseYAMJ"
+        Me.chkTVUseYAMJ.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVUseYAMJ.TabIndex = 16
+        Me.chkTVUseYAMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVUseNMJ
+        '
+        Me.chkTVUseNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVUseNMJ.AutoSize = true
+        Me.chkTVUseNMJ.Enabled = false
+        Me.chkTVUseNMJ.Location = New System.Drawing.Point(272, 23)
+        Me.chkTVUseNMJ.Name = "chkTVUseNMJ"
+        Me.chkTVUseNMJ.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVUseNMJ.TabIndex = 16
+        Me.chkTVUseNMJ.UseVisualStyleBackColor = true
+        '
+        'Label9
+        '
+        Me.Label9.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label9.AutoSize = true
+        Me.Label9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label9.Location = New System.Drawing.Point(115, 3)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(37, 13)
+        Me.Label9.TabIndex = 0
+        Me.Label9.Text = "YAMJ"
+        '
+        'Label10
+        '
+        Me.Label10.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label10.AutoSize = true
+        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label10.Location = New System.Drawing.Point(264, 3)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(32, 13)
+        Me.Label10.TabIndex = 0
+        Me.Label10.Text = "NMJ"
         '
         'tpTVSourcesFileNamingBoxee
         '
@@ -11583,11 +11711,11 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Controls.Add(Me.chkTVShowFanartBoxee, 3, 4)
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeShow, 3, 2)
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Controls.Add(Me.chkTVShowPosterBoxee, 3, 5)
-        Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee, 1, 0)
-        Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Controls.Add(Me.chkTVUseBoxee, 1, 1)
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingBoxeeDefaultsBanner, 0, 3)
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingBoxeeDefaultsFanart, 0, 4)
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingBoxeeDefaultsPoster, 0, 5)
+        Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Controls.Add(Me.chkTVUseBoxee, 2, 1)
+        Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee, 2, 0)
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Name = "tblTVSourcesFileNamingBoxeeDefaultsOpts"
@@ -11602,17 +11730,6 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.Size = New System.Drawing.Size(201, 120)
         Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.TabIndex = 20
-        '
-        'chkTVUseBoxee
-        '
-        Me.chkTVUseBoxee.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVUseBoxee.AutoSize = true
-        Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.SetColumnSpan(Me.chkTVUseBoxee, 3)
-        Me.chkTVUseBoxee.Location = New System.Drawing.Point(120, 23)
-        Me.chkTVUseBoxee.Name = "chkTVUseBoxee"
-        Me.chkTVUseBoxee.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVUseBoxee.TabIndex = 16
-        Me.chkTVUseBoxee.UseVisualStyleBackColor = true
         '
         'chkTVEpisodePosterBoxee
         '
@@ -11710,18 +11827,6 @@ Partial Class dlgSettings
         Me.chkTVShowPosterBoxee.TabIndex = 17
         Me.chkTVShowPosterBoxee.UseVisualStyleBackColor = true
         '
-        'lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee
-        '
-        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.AutoSize = true
-        Me.tblTVSourcesFileNamingBoxeeDefaultsOpts.SetColumnSpan(Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee, 3)
-        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Location = New System.Drawing.Point(108, 3)
-        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Name = "lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee"
-        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Size = New System.Drawing.Size(39, 13)
-        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.TabIndex = 0
-        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Text = "Boxee"
-        '
         'lblTVSourcesFileNamingBoxeeDefaultsBanner
         '
         Me.lblTVSourcesFileNamingBoxeeDefaultsBanner.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -11755,6 +11860,27 @@ Partial Class dlgSettings
         Me.lblTVSourcesFileNamingBoxeeDefaultsPoster.TabIndex = 6
         Me.lblTVSourcesFileNamingBoxeeDefaultsPoster.Text = "Poster"
         '
+        'chkTVUseBoxee
+        '
+        Me.chkTVUseBoxee.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVUseBoxee.AutoSize = true
+        Me.chkTVUseBoxee.Location = New System.Drawing.Point(126, 23)
+        Me.chkTVUseBoxee.Name = "chkTVUseBoxee"
+        Me.chkTVUseBoxee.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVUseBoxee.TabIndex = 16
+        Me.chkTVUseBoxee.UseVisualStyleBackColor = true
+        '
+        'lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee
+        '
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.AutoSize = true
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Location = New System.Drawing.Point(114, 3)
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Name = "lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee"
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Size = New System.Drawing.Size(39, 13)
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.TabIndex = 0
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee.Text = "Boxee"
+        '
         'tpTVSourcesFileNamingExpert
         '
         Me.tpTVSourcesFileNamingExpert.Location = New System.Drawing.Point(4, 22)
@@ -11767,13 +11893,13 @@ Partial Class dlgSettings
         'gbTVSourcesMiscOpts
         '
         Me.gbTVSourcesMiscOpts.AutoSize = true
-        Me.tblTVSourcesGeneral.SetColumnSpan(Me.gbTVSourcesMiscOpts, 2)
+        Me.tblTVSourcesGeneral.SetColumnSpan(Me.gbTVSourcesMiscOpts, 3)
         Me.gbTVSourcesMiscOpts.Controls.Add(Me.tblTVSourcesMiscOpts)
         Me.gbTVSourcesMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(541, 114)
+        Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(541, 264)
         Me.gbTVSourcesMiscOpts.Name = "gbTVSourcesMiscOpts"
-        Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(262, 118)
+        Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(278, 118)
         Me.gbTVSourcesMiscOpts.TabIndex = 4
         Me.gbTVSourcesMiscOpts.TabStop = false
         Me.gbTVSourcesMiscOpts.Text = "Miscellaneous Options"
@@ -11801,7 +11927,7 @@ Partial Class dlgSettings
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesMiscOpts.Size = New System.Drawing.Size(256, 97)
+        Me.tblTVSourcesMiscOpts.Size = New System.Drawing.Size(272, 97)
         Me.tblTVSourcesMiscOpts.TabIndex = 7
         '
         'chkTVCleanDB
@@ -11809,7 +11935,7 @@ Partial Class dlgSettings
         Me.chkTVCleanDB.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTVCleanDB.AutoSize = true
         Me.chkTVCleanDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.tblTVSourcesMiscOpts.SetColumnSpan(Me.chkTVCleanDB, 4)
+        Me.tblTVSourcesMiscOpts.SetColumnSpan(Me.chkTVCleanDB, 3)
         Me.chkTVCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkTVCleanDB.Location = New System.Drawing.Point(3, 77)
         Me.chkTVCleanDB.Name = "chkTVCleanDB"
@@ -11824,7 +11950,7 @@ Partial Class dlgSettings
         Me.chkTVScanOrderModify.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTVScanOrderModify.AutoSize = true
         Me.chkTVScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.tblTVSourcesMiscOpts.SetColumnSpan(Me.chkTVScanOrderModify, 4)
+        Me.tblTVSourcesMiscOpts.SetColumnSpan(Me.chkTVScanOrderModify, 3)
         Me.chkTVScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkTVScanOrderModify.Location = New System.Drawing.Point(3, 54)
         Me.chkTVScanOrderModify.Name = "chkTVScanOrderModify"
@@ -11850,7 +11976,7 @@ Partial Class dlgSettings
         Me.chkTVGeneralIgnoreLastScan.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTVGeneralIgnoreLastScan.AutoSize = true
         Me.chkTVGeneralIgnoreLastScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.tblTVSourcesMiscOpts.SetColumnSpan(Me.chkTVGeneralIgnoreLastScan, 4)
+        Me.tblTVSourcesMiscOpts.SetColumnSpan(Me.chkTVGeneralIgnoreLastScan, 3)
         Me.chkTVGeneralIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkTVGeneralIgnoreLastScan.Location = New System.Drawing.Point(3, 31)
         Me.chkTVGeneralIgnoreLastScan.Name = "chkTVGeneralIgnoreLastScan"
@@ -11925,8 +12051,7 @@ Partial Class dlgSettings
         Me.tpTVSourcesRegex.Controls.Add(Me.tblTVSourcesRegex)
         Me.tpTVSourcesRegex.Location = New System.Drawing.Point(4, 22)
         Me.tpTVSourcesRegex.Name = "tpTVSourcesRegex"
-        Me.tpTVSourcesRegex.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpTVSourcesRegex.Size = New System.Drawing.Size(812, 524)
+        Me.tpTVSourcesRegex.Size = New System.Drawing.Size(822, 474)
         Me.tpTVSourcesRegex.TabIndex = 1
         Me.tpTVSourcesRegex.Text = "Regex"
         Me.tpTVSourcesRegex.UseVisualStyleBackColor = true
@@ -11953,7 +12078,7 @@ Partial Class dlgSettings
         Me.tblTVSourcesRegex.Controls.Add(Me.btnTVShowRegexRemove, 5, 2)
         Me.tblTVSourcesRegex.Controls.Add(Me.btnTVShowRegexGet, 6, 0)
         Me.tblTVSourcesRegex.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVSourcesRegex.Location = New System.Drawing.Point(3, 3)
+        Me.tblTVSourcesRegex.Location = New System.Drawing.Point(0, 0)
         Me.tblTVSourcesRegex.Name = "tblTVSourcesRegex"
         Me.tblTVSourcesRegex.RowCount = 5
         Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -11961,7 +12086,7 @@ Partial Class dlgSettings
         Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesRegex.Size = New System.Drawing.Size(806, 518)
+        Me.tblTVSourcesRegex.Size = New System.Drawing.Size(822, 474)
         Me.tblTVSourcesRegex.TabIndex = 8
         '
         'lvTVShowRegex
@@ -15340,7 +15465,7 @@ Partial Class dlgSettings
         Me.gbTVScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbTVScraperMiscOpts.Location = New System.Drawing.Point(237, 220)
         Me.gbTVScraperMiscOpts.Name = "gbTVScraperMiscOpts"
-        Me.gbTVScraperMiscOpts.Size = New System.Drawing.Size(446, 125)
+        Me.gbTVScraperMiscOpts.Size = New System.Drawing.Size(446, 98)
         Me.gbTVScraperMiscOpts.TabIndex = 5
         Me.gbTVScraperMiscOpts.TabStop = false
         Me.gbTVScraperMiscOpts.Text = "Miscellaneous"
@@ -15352,23 +15477,21 @@ Partial Class dlgSettings
         Me.tblTVScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVScraperMiscOpts.Controls.Add(Me.cbTVScraperRatingRegion, 1, 3)
-        Me.tblTVScraperMiscOpts.Controls.Add(Me.lblTVScraperRatingRegion, 0, 3)
+        Me.tblTVScraperMiscOpts.Controls.Add(Me.cbTVScraperRatingRegion, 1, 2)
+        Me.tblTVScraperMiscOpts.Controls.Add(Me.lblTVScraperRatingRegion, 0, 2)
         Me.tblTVScraperMiscOpts.Controls.Add(Me.chkTVScraperUseSRuntimeForEp, 0, 0)
         Me.tblTVScraperMiscOpts.Controls.Add(Me.lblTVScraperUpdateTime, 0, 1)
-        Me.tblTVScraperMiscOpts.Controls.Add(Me.cbTVScraperOptionsOrdering, 1, 2)
-        Me.tblTVScraperMiscOpts.Controls.Add(Me.lblTVScraperOptionsOrdering, 0, 2)
         Me.tblTVScraperMiscOpts.Controls.Add(Me.cbTVScraperUpdateTime, 1, 1)
         Me.tblTVScraperMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVScraperMiscOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVScraperMiscOpts.Name = "tblTVScraperMiscOpts"
-        Me.tblTVScraperMiscOpts.RowCount = 5
+        Me.tblTVScraperMiscOpts.RowCount = 4
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraperMiscOpts.Size = New System.Drawing.Size(440, 104)
+        Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblTVScraperMiscOpts.Size = New System.Drawing.Size(440, 77)
         Me.tblTVScraperMiscOpts.TabIndex = 6
         '
         'cbTVScraperRatingRegion
@@ -15377,7 +15500,7 @@ Partial Class dlgSettings
         Me.cbTVScraperRatingRegion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbTVScraperRatingRegion.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.cbTVScraperRatingRegion.FormattingEnabled = true
-        Me.cbTVScraperRatingRegion.Location = New System.Drawing.Point(214, 80)
+        Me.cbTVScraperRatingRegion.Location = New System.Drawing.Point(214, 53)
         Me.cbTVScraperRatingRegion.Name = "cbTVScraperRatingRegion"
         Me.cbTVScraperRatingRegion.Size = New System.Drawing.Size(160, 21)
         Me.cbTVScraperRatingRegion.TabIndex = 6
@@ -15387,7 +15510,7 @@ Partial Class dlgSettings
         Me.lblTVScraperRatingRegion.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVScraperRatingRegion.AutoSize = true
         Me.lblTVScraperRatingRegion.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVScraperRatingRegion.Location = New System.Drawing.Point(3, 84)
+        Me.lblTVScraperRatingRegion.Location = New System.Drawing.Point(3, 57)
         Me.lblTVScraperRatingRegion.Name = "lblTVScraperRatingRegion"
         Me.lblTVScraperRatingRegion.Size = New System.Drawing.Size(99, 13)
         Me.lblTVScraperRatingRegion.TabIndex = 5
@@ -15417,29 +15540,6 @@ Partial Class dlgSettings
         Me.lblTVScraperUpdateTime.TabIndex = 5
         Me.lblTVScraperUpdateTime.Text = "Re-download Show Information Every:"
         Me.lblTVScraperUpdateTime.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        '
-        'cbTVScraperOptionsOrdering
-        '
-        Me.cbTVScraperOptionsOrdering.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbTVScraperOptionsOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVScraperOptionsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVScraperOptionsOrdering.FormattingEnabled = true
-        Me.cbTVScraperOptionsOrdering.Location = New System.Drawing.Point(214, 53)
-        Me.cbTVScraperOptionsOrdering.Name = "cbTVScraperOptionsOrdering"
-        Me.cbTVScraperOptionsOrdering.Size = New System.Drawing.Size(160, 21)
-        Me.cbTVScraperOptionsOrdering.TabIndex = 8
-        '
-        'lblTVScraperOptionsOrdering
-        '
-        Me.lblTVScraperOptionsOrdering.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVScraperOptionsOrdering.AutoSize = true
-        Me.lblTVScraperOptionsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblTVScraperOptionsOrdering.Location = New System.Drawing.Point(3, 57)
-        Me.lblTVScraperOptionsOrdering.Name = "lblTVScraperOptionsOrdering"
-        Me.lblTVScraperOptionsOrdering.Size = New System.Drawing.Size(142, 13)
-        Me.lblTVScraperOptionsOrdering.TabIndex = 7
-        Me.lblTVScraperOptionsOrdering.Text = "Default Episode Ordering:"
-        Me.lblTVScraperOptionsOrdering.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'cbTVScraperUpdateTime
         '
@@ -17433,7 +17533,7 @@ Partial Class dlgSettings
         Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.gbMovieSetGeneralSortTokensOpts, 0, 0)
+        Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.gbMovieSetGeneralMediaListSortTokensOpts, 0, 0)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetMissingPoster, 2, 9)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetMissingLandscape, 2, 7)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetMissingNFO, 2, 8)
@@ -17478,19 +17578,19 @@ Partial Class dlgSettings
         Me.tblMovieSetGeneralMediaListOpts.Size = New System.Drawing.Size(198, 285)
         Me.tblMovieSetGeneralMediaListOpts.TabIndex = 7
         '
-        'gbMovieSetGeneralSortTokensOpts
+        'gbMovieSetGeneralMediaListSortTokensOpts
         '
-        Me.gbMovieSetGeneralSortTokensOpts.AutoSize = true
-        Me.tblMovieSetGeneralMediaListOpts.SetColumnSpan(Me.gbMovieSetGeneralSortTokensOpts, 4)
-        Me.gbMovieSetGeneralSortTokensOpts.Controls.Add(Me.tblMovieSetGeneralSortTokensOpts)
-        Me.gbMovieSetGeneralSortTokensOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSetGeneralSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbMovieSetGeneralSortTokensOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbMovieSetGeneralSortTokensOpts.Name = "gbMovieSetGeneralSortTokensOpts"
-        Me.gbMovieSetGeneralSortTokensOpts.Size = New System.Drawing.Size(192, 99)
-        Me.gbMovieSetGeneralSortTokensOpts.TabIndex = 83
-        Me.gbMovieSetGeneralSortTokensOpts.TabStop = false
-        Me.gbMovieSetGeneralSortTokensOpts.Text = "Sort Tokens to Ignore"
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.AutoSize = true
+        Me.tblMovieSetGeneralMediaListOpts.SetColumnSpan(Me.gbMovieSetGeneralMediaListSortTokensOpts, 4)
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.Controls.Add(Me.tblMovieSetGeneralSortTokensOpts)
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.Location = New System.Drawing.Point(3, 3)
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.Name = "gbMovieSetGeneralMediaListSortTokensOpts"
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.Size = New System.Drawing.Size(192, 99)
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.TabIndex = 83
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.TabStop = false
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.Text = "Sort Tokens to Ignore"
         '
         'tblMovieSetGeneralSortTokensOpts
         '
@@ -19676,8 +19776,8 @@ Partial Class dlgSettings
         Me.Name = "dlgSettings"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Settings"
-        Me.gbGeneralMisc.ResumeLayout(false)
-        Me.gbGeneralMisc.PerformLayout
+        Me.gbGeneralMiscOpts.ResumeLayout(false)
+        Me.gbGeneralMiscOpts.PerformLayout
         Me.tblGeneralMisc.ResumeLayout(false)
         Me.tblGeneralMisc.PerformLayout
         Me.gbGeneralDaemon.ResumeLayout(false)
@@ -19750,8 +19850,8 @@ Partial Class dlgSettings
         Me.gbMovieGeneralMediaListOpts.PerformLayout
         Me.tblMovieGeneralMediaListOpts.ResumeLayout(false)
         Me.tblMovieGeneralMediaListOpts.PerformLayout
-        Me.gbMovieGeneralSortTokensOpts.ResumeLayout(false)
-        Me.gbMovieGeneralSortTokensOpts.PerformLayout
+        Me.gbMovieGeneralMediaListSortTokensOpts.ResumeLayout(false)
+        Me.gbMovieGeneralMediaListSortTokensOpts.PerformLayout
         Me.tblMovieGeneralSortTokensOpts.ResumeLayout(false)
         Me.tblMovieGeneralSortTokensOpts.PerformLayout
         Me.pnlSettingsTop.ResumeLayout(false)
@@ -19976,9 +20076,6 @@ Partial Class dlgSettings
         Me.gbTVGeneralMediaListSortTokensOpts.PerformLayout
         Me.tblTVGeneralMediaListSortTokensOpts.ResumeLayout(false)
         Me.tblTVGeneralMediaListSortTokensOpts.PerformLayout
-        Me.gbTVGeneralLangOpts.ResumeLayout(false)
-        Me.gbTVGeneralLangOpts.PerformLayout
-        Me.tblTVGeneralLangOpts.ResumeLayout(false)
         Me.gbTVEpisodeFilterOpts.ResumeLayout(false)
         Me.gbTVEpisodeFilterOpts.PerformLayout
         Me.tblTVEpisodeFilterOpts.ResumeLayout(false)
@@ -19987,6 +20084,10 @@ Partial Class dlgSettings
         Me.gbTVShowFilterOpts.PerformLayout
         Me.tblTVShowFilterOpts.ResumeLayout(false)
         Me.tblTVShowFilterOpts.PerformLayout
+        Me.gbTVSourcesDefaultsOpts.ResumeLayout(false)
+        Me.gbTVSourcesDefaultsOpts.PerformLayout
+        Me.tblTVSourcesDefaultsOpts.ResumeLayout(false)
+        Me.tblTVSourcesDefaultsOpts.PerformLayout
         Me.pnlTVSources.ResumeLayout(false)
         Me.pnlTVSources.PerformLayout
         Me.tblTVSources.ResumeLayout(false)
@@ -20215,8 +20316,8 @@ Partial Class dlgSettings
         Me.gbMovieSetGeneralMediaListOpts.PerformLayout
         Me.tblMovieSetGeneralMediaListOpts.ResumeLayout(false)
         Me.tblMovieSetGeneralMediaListOpts.PerformLayout
-        Me.gbMovieSetGeneralSortTokensOpts.ResumeLayout(false)
-        Me.gbMovieSetGeneralSortTokensOpts.PerformLayout
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.ResumeLayout(false)
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.PerformLayout
         Me.tblMovieSetGeneralSortTokensOpts.ResumeLayout(false)
         Me.tblMovieSetGeneralSortTokensOpts.PerformLayout
         Me.gbMovieSetGeneralMiscOpts.ResumeLayout(false)
@@ -20335,7 +20436,7 @@ End Sub
     Friend WithEvents chkCleanMovieNFOb As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanMovieNFO As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanMovieFanartJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents gbGeneralMisc As System.Windows.Forms.GroupBox
+    Friend WithEvents gbGeneralMiscOpts As System.Windows.Forms.GroupBox
     Friend WithEvents lblGeneralOverwriteNfo As System.Windows.Forms.Label
     Friend WithEvents chkGeneralOverwriteNfo As System.Windows.Forms.CheckBox
     Friend WithEvents lvMovieSources As System.Windows.Forms.ListView
@@ -20432,7 +20533,7 @@ End Sub
     Friend WithEvents btnMovieSourceEdit As System.Windows.Forms.Button
     Friend WithEvents chkGeneralShowGenresText As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieDisplayYear As System.Windows.Forms.CheckBox
-    Friend WithEvents gbMovieGeneralSortTokensOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents gbMovieGeneralMediaListSortTokensOpts As System.Windows.Forms.GroupBox
     Friend WithEvents btnMovieSortTokenRemove As System.Windows.Forms.Button
     Friend WithEvents btnMovieSortTokenAdd As System.Windows.Forms.Button
     Friend WithEvents txtMovieSortToken As System.Windows.Forms.TextBox
@@ -20680,7 +20781,7 @@ End Sub
     Friend WithEvents chkTVGeneralMarkNewEpisodes As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperCertOnlyValue As System.Windows.Forms.CheckBox
     Friend WithEvents cbTVScraperOptionsOrdering As System.Windows.Forms.ComboBox
-    Friend WithEvents lblTVScraperOptionsOrdering As System.Windows.Forms.Label
+    Friend WithEvents lblTVSourcesDefaultsOrdering As System.Windows.Forms.Label
     Friend WithEvents btnTVShowFilterReset As System.Windows.Forms.Button
     Friend WithEvents btnTVEpisodeFilterReset As System.Windows.Forms.Button
     Friend WithEvents btnMovieFilterReset As System.Windows.Forms.Button
@@ -21075,7 +21176,7 @@ End Sub
     Friend WithEvents chkMovieFanartBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkMoviePosterBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieNFOBoxee As System.Windows.Forms.CheckBox
-    Friend WithEvents gbTVGeneralLangOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents gbTVSourcesDefaultsOpts As System.Windows.Forms.GroupBox
     Friend WithEvents btnTVGeneralLangFetch As System.Windows.Forms.Button
     Friend WithEvents cbTVGeneralLang As System.Windows.Forms.ComboBox
     Friend WithEvents tpTVSourcesFileNamingBoxee As System.Windows.Forms.TabPage
@@ -21205,7 +21306,7 @@ End Sub
     Friend WithEvents chkMovieSetPosterMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetNFOMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents pbMSAAInfo As System.Windows.Forms.PictureBox
-    Friend WithEvents gbMovieSetGeneralSortTokensOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents gbMovieSetGeneralMediaListSortTokensOpts As System.Windows.Forms.GroupBox
     Friend WithEvents btnMovieSetSortTokenRemove As System.Windows.Forms.Button
     Friend WithEvents btnMovieSetSortTokenAdd As System.Windows.Forms.Button
     Friend WithEvents txtMovieSetSortToken As System.Windows.Forms.TextBox
@@ -21589,7 +21690,7 @@ End Sub
     Friend WithEvents lblTVGeneralMediaListPoster As System.Windows.Forms.Label
     Friend WithEvents lblTVGeneralMediaListTheme As System.Windows.Forms.Label
     Friend WithEvents lblTVGeneralMediaListWatched As System.Windows.Forms.Label
-    Friend WithEvents tblTVGeneralLangOpts As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblTVSourcesDefaultsOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblTVEpisodeFilterOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblTVShowFilterOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblTVGeneral As System.Windows.Forms.TableLayoutPanel
@@ -21697,4 +21798,12 @@ End Sub
     Friend WithEvents lblTVSourcesFileNamingBoxeeDefaultsBanner As System.Windows.Forms.Label
     Friend WithEvents lblTVSourcesFileNamingBoxeeDefaultsFanart As System.Windows.Forms.Label
     Friend WithEvents lblTVSourcesFileNamingBoxeeDefaultsPoster As System.Windows.Forms.Label
+    Friend WithEvents chkTVSeasonMissingBanner As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVSeasonMissingFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVSeasonMissingLandscape As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVSeasonMissingPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVEpisodeMissingFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVEpisodeMissingNFO As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVEpisodeMissingPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents lblTVSourcesDefaultsLanguage As System.Windows.Forms.Label
 End Class

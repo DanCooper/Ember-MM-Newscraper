@@ -5725,6 +5725,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVSeasonMissingBanner() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonMissingBanner
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonMissingBanner = value
+        End Set
+    End Property
+
     Public Property TVShowMissingCharacterArt() As Boolean
         Get
             Return Settings._XMLSettings.TVShowMissingCharacterArt
@@ -5770,12 +5779,39 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVSeasonMissingFanart() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonMissingFanart
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonMissingFanart = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeMissingFanart() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeMissingFanart
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeMissingFanart = value
+        End Set
+    End Property
+
     Public Property TVShowMissingLandscape() As Boolean
         Get
             Return Settings._XMLSettings.TVShowMissingLandscape
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVShowMissingLandscape = value
+        End Set
+    End Property
+
+    Public Property TVSeasonMissingLandscape() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonMissingLandscape
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonMissingLandscape = value
         End Set
     End Property
 
@@ -5788,12 +5824,39 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVEpisodeMissingNFO() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeMissingNFO
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeMissingNFO = value
+        End Set
+    End Property
+
     Public Property TVShowMissingPoster() As Boolean
         Get
             Return Settings._XMLSettings.TVShowMissingPoster
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVShowMissingPoster = value
+        End Set
+    End Property
+
+    Public Property TVSeasonMissingPoster() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonMissingPoster
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonMissingPoster = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeMissingPoster() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeMissingPoster
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeMissingPoster = value
         End Set
     End Property
 
