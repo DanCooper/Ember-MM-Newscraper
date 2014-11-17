@@ -227,6 +227,7 @@ Partial Public Class clsXMLSettings
     Private _moviescrapercertfsk As Boolean
     Private _moviescrapervotes As Boolean
     Private _moviescrapercredits As Boolean
+    Private _moviescraperxbmctrailerformat As Boolean
     Private _moviescraperyear As Boolean
     Private _moviesetbannercol As Boolean
     Private _moviesetbannerheight As Integer
@@ -526,7 +527,6 @@ Partial Public Class clsXMLSettings
     Private _movielandscapead As Boolean
 
     '************* XBMC optional settings *************
-    Private _moviexbmctrailerformat As Boolean
     Private _moviexbmcprotectvtsbdmv As Boolean
 
     '*************** XBMC theme settings ***************
@@ -5522,12 +5522,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieXBMCTrailerFormat() As Boolean
+    Public Property MovieScraperXBMCTrailerFormat() As Boolean
         Get
-            Return Me._moviexbmctrailerformat
+            Return Me._moviescraperxbmctrailerformat
         End Get
         Set(ByVal value As Boolean)
-            Me._moviexbmctrailerformat = value
+            Me._moviescraperxbmctrailerformat = value
         End Set
     End Property
 

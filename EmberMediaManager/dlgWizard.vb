@@ -725,7 +725,7 @@ Public Class dlgWizard
             Me.chkMovieTrailerEden.Checked = .MovieTrailerEden
 
             '************* XBMC optional settings *************
-            Me.chkMovieXBMCTrailerFormat.Checked = .MovieXBMCTrailerFormat
+            Me.chkMovieXBMCTrailerFormat.Checked = .MovieScraperXBMCTrailerFormat
             Me.chkMovieXBMCProtectVTSBDMV.Checked = .MovieXBMCProtectVTSBDMV
 
             '*************** XBMC theme settings ***************
@@ -1125,7 +1125,7 @@ Public Class dlgWizard
             .MovieTrailerEden = Me.chkMovieTrailerEden.Checked
 
             '************* XBMC optional settings *************
-            .MovieXBMCTrailerFormat = Me.chkMovieXBMCTrailerFormat.Checked
+            .MovieScraperXBMCTrailerFormat = Me.chkMovieXBMCTrailerFormat.Checked
             .MovieXBMCProtectVTSBDMV = Me.chkMovieXBMCProtectVTSBDMV.Checked
 
             '*************** XBMC theme settings ***************

@@ -4483,12 +4483,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieXBMCTrailerFormat() As Boolean
+    Public Property MovieScraperXBMCTrailerFormat() As Boolean
         Get
-            Return Settings._XMLSettings.MovieXBMCTrailerFormat
+            Return Settings._XMLSettings.MovieScraperXBMCTrailerFormat
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieXBMCTrailerFormat = value
+            Settings._XMLSettings.MovieScraperXBMCTrailerFormat = value
         End Set
     End Property
 
@@ -5939,7 +5939,7 @@ Public Class Settings
             Master.eSettings.MovieXBMCThemeEnable = True
             Master.eSettings.MovieXBMCThemeMovie = True
             Master.eSettings.MovieTrailerFrodo = True
-            Master.eSettings.MovieXBMCTrailerFormat = True
+            Master.eSettings.MovieScraperXBMCTrailerFormat = True
         End If
 
         ' Fix added to avoid to have no tv show NFO saved

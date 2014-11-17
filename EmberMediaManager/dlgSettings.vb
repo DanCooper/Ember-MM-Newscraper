@@ -2822,45 +2822,18 @@ Public Class dlgSettings
     Private Sub chkMovieUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseBoxee.CheckedChanged
         Me.SetApplyButton(True)
 
-        'Me.chkActorThumbsBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkMovieBannerBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkClearArtBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkClearLogoBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkExtrafanartBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkExtrathumbsBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkDiscArtBoxee.Enabled = Me.chkMovieUseBoxee.Checked
         Me.chkMovieFanartBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkLandscapeBoxee.Enabled = Me.chkMovieUseBoxee.Checked
         Me.chkMovieNFOBoxee.Enabled = Me.chkMovieUseBoxee.Checked
         Me.chkMoviePosterBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkMovieTrailerBoxee.Enabled = Me.chkMovieUseBoxee.Checked
 
         If Not Me.chkMovieUseBoxee.Checked Then
-            ' Me.chkActorThumbsBoxee.Checked = False
-            'Me.chkMovieBannerBoxee.Checked = False
-            'Me.chkClearArtBoxee.Checked = False
-            'Me.chkClearLogoBoxee.Checked = False
-            'Me.chkDiscArtBoxee.Checked = False
-            'Me.chkExtrafanartBoxee.Checked = False
-            'Me.chkExtrathumbsBoxee.Checked = False
             Me.chkMovieFanartBoxee.Checked = False
-            'Me.chkLandscapeBoxee.Checked = False
             Me.chkMovieNFOBoxee.Checked = False
             Me.chkMoviePosterBoxee.Checked = False
-            'Me.chkMovieTrailerBoxee.Checked = False
         Else
-            'Me.chkActorThumbsBoxee.Checked = True
-            'Me.chkMovieBannerBoxee.Checked = True
-            'Me.chkClearArtBoxee.Checked = True
-            'Me.chkClearLogoBoxee.Checked = True
-            'Me.chkDiscArtBoxee.Checked = True
-            'Me.chkExtrafanartBoxee.Checked = True
-            'Me.chkExtrathumbsBoxee.Checked = True
             Me.chkMovieFanartBoxee.Checked = True
-            'Me.chkLandscapeBoxee.Checked = True
             Me.chkMovieNFOBoxee.Checked = True
             Me.chkMoviePosterBoxee.Checked = True
-            'Me.chkMovieTrailerBoxee.Checked = True
         End If
     End Sub
 
@@ -2920,14 +2893,9 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
 
         Me.chkMovieActorThumbsEden.Enabled = Me.chkMovieUseEden.Checked
-        'Me.chkBannerEden.Enabled = Me.chkMovieUseEden.Checked
-        'Me.chkClearArtEden.Enabled = Me.chkMovieUseEden.Checked
-        'Me.chkClearLogoEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieExtrafanartsEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieExtrathumbsEden.Enabled = Me.chkMovieUseEden.Checked
-        'Me.chkDiscArtEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieFanartEden.Enabled = Me.chkMovieUseEden.Checked
-        'Me.chkLandscapeEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieNFOEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMoviePosterEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieTrailerEden.Enabled = Me.chkMovieUseEden.Checked
@@ -2936,27 +2904,17 @@ Public Class dlgSettings
 
         If Not Me.chkMovieUseEden.Checked Then
             Me.chkMovieActorThumbsEden.Checked = False
-            'Me.chkBannerEden.Checked = False
-            'Me.chkClearArtEden.Checked = False
-            'Me.chkClearLogoEden.Checked = False
-            'Me.chkDiscArtEden.Checked = False
             Me.chkMovieExtrafanartsEden.Checked = False
             Me.chkMovieExtrathumbsEden.Checked = False
             Me.chkMovieFanartEden.Checked = False
-            'Me.chkLandscapeEden.Checked = False
             Me.chkMovieNFOEden.Checked = False
             Me.chkMoviePosterEden.Checked = False
             Me.chkMovieTrailerEden.Checked = False
         Else
             Me.chkMovieActorThumbsEden.Checked = True
-            'Me.chkBannerEden.Checked = True
-            'Me.chkClearArtEden.Checked = True
-            'Me.chkClearLogoEden.Checked = True
-            'Me.chkDiscArtEden.Checked = True
             Me.chkMovieExtrafanartsEden.Checked = True
             Me.chkMovieExtrathumbsEden.Checked = True
             Me.chkMovieFanartEden.Checked = True
-            'Me.chkLandscapeEden.Checked = True
             Me.chkMovieNFOEden.Checked = True
             Me.chkMoviePosterEden.Checked = True
             Me.chkMovieTrailerEden.Checked = True
@@ -2971,44 +2929,23 @@ Public Class dlgSettings
     Private Sub chkMovieUseYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseYAMJ.CheckedChanged
         Me.SetApplyButton(True)
 
-        'Me.chkActorThumbsYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
         Me.chkMovieBannerYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
-        'Me.chkClearArtYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
-        'Me.chkClearLogoYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
-        'Me.chkExtrafanartYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
-        'Me.chkExtrathumbsYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
-        'Me.chkDiscArtYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
         Me.chkMovieFanartYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
-        'Me.chkLandscapeYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
         Me.chkMovieNFOYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
         Me.chkMoviePosterYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
         Me.chkMovieTrailerYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
         Me.chkMovieYAMJWatchedFile.Enabled = Me.chkMovieUseYAMJ.Checked
 
         If Not Me.chkMovieUseYAMJ.Checked Then
-            ' Me.chkActorThumbsYAMJ.Checked = False
             Me.chkMovieBannerYAMJ.Checked = False
-            'Me.chkClearArtYAMJ.Checked = False
-            'Me.chkClearLogoYAMJ.Checked = False
-            'Me.chkDiscArtYAMJ.Checked = False
-            'Me.chkExtrafanartYAMJ.Checked = False
-            'Me.chkExtrathumbsYAMJ.Checked = False
             Me.chkMovieFanartYAMJ.Checked = False
-            'Me.chkLandscapeYAMJ.Checked = False
             Me.chkMovieNFOYAMJ.Checked = False
             Me.chkMoviePosterYAMJ.Checked = False
             Me.chkMovieTrailerYAMJ.Checked = False
             Me.chkMovieYAMJWatchedFile.Checked = False
         Else
-            'Me.chkActorThumbsYAMJ.Checked = True
             Me.chkMovieBannerYAMJ.Checked = True
-            'Me.chkClearArtYAMJ.Checked = True
-            'Me.chkClearLogoYAMJ.Checked = True
-            'Me.chkDiscArtYAMJ.Checked = True
-            'Me.chkExtrafanartYAMJ.Checked = True
-            'Me.chkExtrathumbsYAMJ.Checked = True
             Me.chkMovieFanartYAMJ.Checked = True
-            'Me.chkLandscapeYAMJ.Checked = True
             Me.chkMovieNFOYAMJ.Checked = True
             Me.chkMoviePosterYAMJ.Checked = True
             Me.chkMovieTrailerYAMJ.Checked = True
@@ -3018,42 +2955,21 @@ Public Class dlgSettings
     Private Sub chkMovieUseNMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseNMJ.CheckedChanged
         Me.SetApplyButton(True)
 
-        'Me.chkActorThumbsNMJ.Enabled = Me.chkMovieUseNMJ.Checked
         Me.chkMovieBannerNMJ.Enabled = Me.chkMovieUseNMJ.Checked
-        'Me.chkClearArtNMJ.Enabled = Me.chkMovieUseNMJ.Checked
-        'Me.chkClearLogoNMJ.Enabled = Me.chkMovieUseNMJ.Checked
-        'Me.chkExtrafanartNMJ.Enabled = Me.chkMovieUseNMJ.Checked
-        'Me.chkExtrathumbsNMJ.Enabled = Me.chkMovieUseNMJ.Checked
-        'Me.chkDiscArtNMJ.Enabled = Me.chkMovieUseNMJ.Checked
         Me.chkMovieFanartNMJ.Enabled = Me.chkMovieUseNMJ.Checked
-        'Me.chkLandscapeNMJ.Enabled = Me.chkMovieUseNMJ.Checked
         Me.chkMovieNFONMJ.Enabled = Me.chkMovieUseNMJ.Checked
         Me.chkMoviePosterNMJ.Enabled = Me.chkMovieUseNMJ.Checked
         Me.chkMovieTrailerNMJ.Enabled = Me.chkMovieUseNMJ.Checked
 
         If Not Me.chkMovieUseNMJ.Checked Then
-            ' Me.chkActorThumbsNMJ.Checked = False
             Me.chkMovieBannerNMJ.Checked = False
-            'Me.chkClearArtNMJ.Checked = False
-            'Me.chkClearLogoNMJ.Checked = False
-            'Me.chkDiscArtNMJ.Checked = False
-            'Me.chkExtrafanartNMJ.Checked = False
-            'Me.chkExtrathumbsNMJ.Checked = False
             Me.chkMovieFanartNMJ.Checked = False
-            'Me.chkLandscapeNMJ.Checked = False
             Me.chkMovieNFONMJ.Checked = False
             Me.chkMoviePosterNMJ.Checked = False
             Me.chkMovieTrailerNMJ.Checked = False
         Else
-            'Me.chkActorThumbsNMJ.Checked = True
             Me.chkMovieBannerNMJ.Checked = True
-            'Me.chkClearArtNMJ.Checked = True
-            'Me.chkClearLogoNMJ.Checked = True
-            'Me.chkDiscArtNMJ.Checked = True
-            'Me.chkExtrafanartNMJ.Checked = True
-            'Me.chkExtrathumbsNMJ.Checked = True
             Me.chkMovieFanartNMJ.Checked = True
-            'Me.chkLandscapeNMJ.Checked = True
             Me.chkMovieNFONMJ.Checked = True
             Me.chkMoviePosterNMJ.Checked = True
             Me.chkMovieTrailerNMJ.Checked = True
@@ -3199,7 +3115,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieXBMCTrailerFormat_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub chkMovieXBMCTrailerFormat_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperXBMCTrailerFormat.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3594,6 +3510,7 @@ Public Class dlgSettings
                 Me.chkMovieScraperUseMDDuration.Checked = .MovieScraperUseMDDuration
                 Me.chkMovieScraperVotes.Checked = .MovieScraperVotes
                 Me.chkMovieScraperCredits.Checked = .MovieScraperCredits
+                Me.chkMovieScraperXBMCTrailerFormat.Checked = .MovieScraperXBMCTrailerFormat
                 Me.chkMovieScraperYear.Checked = .MovieScraperYear
                 Me.chkMovieSkipStackedSizeCheck.Checked = .MovieSkipStackedSizeCheck
                 Me.chkMovieSortBeforeScan.Checked = .MovieSortBeforeScan
@@ -3883,20 +3800,14 @@ Public Class dlgSettings
                 '*************** XBMC Eden settings ****************
                 Me.chkMovieUseEden.Checked = .MovieUseEden
                 Me.chkMovieActorThumbsEden.Checked = .MovieActorThumbsEden
-                'Me.chkBannerEden.Checked = .MovieBannerEden
-                'Me.chkClearArtEden.Checked = .MovieClearArtEden
-                'Me.chkClearLogoEden.Checked = .MovieClearLogoEden
-                'Me.chkDiscArtEden.Checked = .MovieDiscArtEden
                 Me.chkMovieExtrafanartsEden.Checked = .MovieExtrafanartsEden
                 Me.chkMovieExtrathumbsEden.Checked = .MovieExtrathumbsEden
                 Me.chkMovieFanartEden.Checked = .MovieFanartEden
-                'Me.chkLandscapeEden.Checked = .MovieLandscapeEden
                 Me.chkMovieNFOEden.Checked = .MovieNFOEden
                 Me.chkMoviePosterEden.Checked = .MoviePosterEden
                 Me.chkMovieTrailerEden.Checked = .MovieTrailerEden
 
                 '************* XBMC optional settings **************
-                'Me.chkMovieXBMCTrailerFormat.Checked = .MovieXBMCTrailerFormat
                 Me.chkMovieXBMCProtectVTSBDMV.Checked = .MovieXBMCProtectVTSBDMV
 
                 '******** XBMC ArtworkDownloader settings **********
@@ -3916,30 +3827,16 @@ Public Class dlgSettings
 
                 '****************** YAMJ settings ******************
                 Me.chkMovieUseYAMJ.Checked = .MovieUseYAMJ
-                'Me.chkActorThumbsYAMJ.Checked = .MovieActorThumbsYAMJ
                 Me.chkMovieBannerYAMJ.Checked = .MovieBannerYAMJ
-                'Me.chkClearArtYAMJ.Checked = .MovieClearArtYAMJ
-                'Me.chkClearLogoYAMJ.Checked = .MovieClearLogoYAMJ
-                'Me.chkDiscArtYAMJ.Checked = .MovieDiscArtYAMJ
-                'Me.chkExtrafanartYAMJ.Checked = .MovieExtrafanartYAMJ
-                'Me.chkExtrathumbsYAMJ.Checked = .MovieExtrathumbsYAMJ
                 Me.chkMovieFanartYAMJ.Checked = .MovieFanartYAMJ
-                'Me.chkLandscapeYAMJ.Checked = .MovieLandscapeYAMJ
                 Me.chkMovieNFOYAMJ.Checked = .MovieNFOYAMJ
                 Me.chkMoviePosterYAMJ.Checked = .MoviePosterYAMJ
                 Me.chkMovieTrailerYAMJ.Checked = .MovieTrailerYAMJ
 
                 '****************** NMJ settings ******************
                 Me.chkMovieUseNMJ.Checked = .MovieUseNMJ
-                'Me.chkActorThumbsNMJ.Checked = .MovieActorThumbsNMJ
                 Me.chkMovieBannerNMJ.Checked = .MovieBannerNMJ
-                'Me.chkClearArtNMJ.Checked = .MovieClearArtNMJ
-                'Me.chkClearLogoNMJ.Checked = .MovieClearLogoNMJ
-                'Me.chkDiscArtNMJ.Checked = .MovieDiscArtNMJ
-                'Me.chkExtrafanartNMJ.Checked = .MovieExtrafanartNMJ
-                'Me.chkExtrathumbsNMJ.Checked = .MovieExtrathumbsNMJ
                 Me.chkMovieFanartNMJ.Checked = .MovieFanartNMJ
-                'Me.chkLandscapeNMJ.Checked = .MovieLandscapeNMJ
                 Me.chkMovieNFONMJ.Checked = .MovieNFONMJ
                 Me.chkMoviePosterNMJ.Checked = .MoviePosterNMJ
                 Me.chkMovieTrailerNMJ.Checked = .MovieTrailerNMJ
@@ -3951,18 +3848,9 @@ Public Class dlgSettings
 
                 '***************** Boxee settings ******************
                 Me.chkMovieUseBoxee.Checked = .MovieUseBoxee
-                'Me.chkActorThumbsBoxee.Checked = .MovieActorThumbsBoxee
-                'Me.chkMovieBannerBoxee.Checked = .MovieBannerBoxee
-                'Me.chkClearArtBoxee.Checked = .MovieClearArtBoxee
-                'Me.chkClearLogoBoxee.Checked = .MovieClearLogoBoxee
-                'Me.chkDiscArtBoxee.Checked = .MovieDiscArtBoxee
-                'Me.chkExtrafanartBoxee.Checked = .MovieExtrafanartBoxee
-                'Me.chkExtrathumbsBoxee.Checked = .MovieExtrathumbsBoxee
                 Me.chkMovieFanartBoxee.Checked = .MovieFanartBoxee
-                'Me.chkLandscapeBoxee.Checked = .MovieLandscapeBoxee
                 Me.chkMovieNFOBoxee.Checked = .MovieNFOBoxee
                 Me.chkMoviePosterBoxee.Checked = .MoviePosterBoxee
-                'Me.chkMovieTrailerBoxee.Checked = .MovieTrailerBoxee
 
                 '***************** Expert settings *****************
                 Me.chkMovieUseExpert.Checked = .MovieUseExpert
@@ -5260,6 +5148,7 @@ Public Class dlgSettings
                 .MovieScraperUseMDDuration = Me.chkMovieScraperUseMDDuration.Checked
                 .MovieScraperVotes = Me.chkMovieScraperVotes.Checked
                 .MovieScraperCredits = Me.chkMovieScraperCredits.Checked
+                .MovieScraperXBMCTrailerFormat = Me.chkMovieScraperXBMCTrailerFormat.Checked
                 .MovieScraperYear = Me.chkMovieScraperYear.Checked
                 .MovieSkipLessThan = Convert.ToInt32(Me.txtMovieSkipLessThan.Text)
                 .MovieSkipStackedSizeCheck = Me.chkMovieSkipStackedSizeCheck.Checked
@@ -5551,20 +5440,14 @@ Public Class dlgSettings
                 '*************** XBMC Eden settings ***************
                 .MovieUseEden = Me.chkMovieUseEden.Checked
                 .MovieActorThumbsEden = Me.chkMovieActorThumbsEden.Checked
-                '.MovieBannerEden = Me.chkBannerEden.Checked
-                '.MovieClearArtEden = Me.chkClearArtEden.Checked
-                '.MovieClearLogoEden = Me.chkClearLogoEden.Checked
-                '.MovieDiscArtEden = Me.chkDiscArtEden.Checked
                 .MovieExtrafanartsEden = Me.chkMovieExtrafanartsEden.Checked
                 .MovieExtrathumbsEden = Me.chkMovieExtrathumbsEden.Checked
                 .MovieFanartEden = Me.chkMovieFanartEden.Checked
-                '.MovieLandscapeEden = Me.chkLandscapeEden.Checked
                 .MovieNFOEden = Me.chkMovieNFOEden.Checked
                 .MoviePosterEden = Me.chkMoviePosterEden.Checked
                 .MovieTrailerEden = Me.chkMovieTrailerEden.Checked
 
                 '************* XBMC optional settings *************
-                '.MovieXBMCTrailerFormat = Me.chkMovieXBMCTrailerFormat.Checked
                 .MovieXBMCProtectVTSBDMV = Me.chkMovieXBMCProtectVTSBDMV.Checked
 
                 '******** XBMC ArtworkDownloader settings **********
@@ -5584,30 +5467,16 @@ Public Class dlgSettings
 
                 '****************** YAMJ settings *****************
                 .MovieUseYAMJ = Me.chkMovieUseYAMJ.Checked
-                '.MovieActorThumbsYAMJ = Me.chkActorThumbsYAMJ.Checked
                 .MovieBannerYAMJ = Me.chkMovieBannerYAMJ.Checked
-                '.MovieClearArtYAMJ = Me.chkClearArtYAMJ.Checked
-                '.MovieClearLogoYAMJ = Me.chkClearLogoYAMJ.Checked
-                '.MovieDiscArtYAMJ = Me.chkDiscArtYAMJ.Checked
-                '.MovieExtrafanartYAMJ = Me.chkExtrafanartYAMJ.Checked
-                '.MovieExtrathumbsYAMJ = Me.chkExtrathumbsYAMJ.Checked
                 .MovieFanartYAMJ = Me.chkMovieFanartYAMJ.Checked
-                '.MovieLandscapeYAMJ = Me.chkLandscapeYAMJ.Checked
                 .MovieNFOYAMJ = Me.chkMovieNFOYAMJ.Checked
                 .MoviePosterYAMJ = Me.chkMoviePosterYAMJ.Checked
                 .MovieTrailerYAMJ = Me.chkMovieTrailerYAMJ.Checked
 
                 '****************** NMJ settings *****************
                 .MovieUseNMJ = Me.chkMovieUseNMJ.Checked
-                '.MovieActorThumbsNMJ = Me.chkActorThumbsNMJ.Checked
                 .MovieBannerNMJ = Me.chkMovieBannerNMJ.Checked
-                '.MovieClearArtNMJ = Me.chkClearArtNMJ.Checked
-                '.MovieClearLogoNMJ = Me.chkClearLogoNMJ.Checked
-                '.MovieDiscArtNMJ = Me.chkDiscArtNMJ.Checked
-                '.MovieExtrafanartNMJ = Me.chkExtrafanartNMJ.Checked
-                '.MovieExtrathumbsNMJ = Me.chkExtrathumbsNMJ.Checked
                 .MovieFanartNMJ = Me.chkMovieFanartNMJ.Checked
-                '.MovieLandscapeNMJ = Me.chkLandscapeNMJ.Checked
                 .MovieNFONMJ = Me.chkMovieNFONMJ.Checked
                 .MoviePosterNMJ = Me.chkMoviePosterNMJ.Checked
                 .MovieTrailerNMJ = Me.chkMovieTrailerNMJ.Checked
@@ -5619,18 +5488,9 @@ Public Class dlgSettings
 
                 '***************** Boxee settings *****************
                 .MovieUseBoxee = Me.chkMovieUseBoxee.Checked
-                '.MovieActorThumbsBoxee = Me.chkActorThumbsBoxee.Checked
-                '.MovieBannerBoxee = Me.chkMovieBannerBoxee.Checked
-                '.MovieClearArtBoxee = Me.chkClearArtBoxee.Checked
-                '.MovieClearLogoBoxee = Me.chkClearLogoBoxee.Checked
-                '.MovieDiscArtBoxee = Me.chkDiscArtBoxee.Checked
-                '.MovieExtrafanartBoxee = Me.chkExtrafanartBoxee.Checked
-                '.MovieExtrathumbsBoxee = Me.chkExtrathumbsBoxee.Checked
                 .MovieFanartBoxee = Me.chkMovieFanartBoxee.Checked
-                '.MovieLandscapeBoxee = Me.chkLandscapeBoxee.Checked
                 .MovieNFOBoxee = Me.chkMovieNFOBoxee.Checked
                 .MoviePosterBoxee = Me.chkMoviePosterBoxee.Checked
-                '.MovieTrailerBoxee = Me.chkMovieTrailerBoxee.Checked
 
                 '***************** Expert settings ****************
                 .MovieUseExpert = Me.chkMovieUseExpert.Checked
@@ -6518,6 +6378,8 @@ Public Class dlgSettings
         Me.chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
         Me.chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkMovieScraperCertFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
+        Me.chkMovieScraperXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "Save YouTube-Trailer-Links in XBMC compatible format")
+        Me.chkMovieYAMJCompatibleSets.Text = Master.eLang.GetString(561, "YAMJ Compatible Sets")
         Me.chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         Me.chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         Me.chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack {0}filename{1}"), "<", ">")
@@ -6531,8 +6393,6 @@ Public Class dlgSettings
         Me.chkMovieXBMCThemeMovie.Text = Master.eLang.GetString(1258, "Store themes in movie directory")
         Me.chkMovieXBMCThemeCustom.Text = Master.eLang.GetString(1259, "Store themes in a custom path")
         Me.chkMovieXBMCThemeSub.Text = Master.eLang.GetString(1260, "Store themes in sub directorys")
-        'Me.chkMovieXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "XBMC Trailer Format")
-        Me.chkMovieYAMJCompatibleSets.Text = Master.eLang.GetString(561, "YAMJ Compatible Sets")
         Me.chkMovieYAMJWatchedFile.Text = Master.eLang.GetString(1177, "Use .watched Files")
         Me.chkProxyCredsEnable.Text = Master.eLang.GetString(677, "Enable Credentials")
         Me.chkProxyEnable.Text = Master.eLang.GetString(673, "Enable Proxy")
