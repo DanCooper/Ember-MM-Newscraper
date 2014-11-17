@@ -120,8 +120,6 @@ Public Class FanartTV_Image
         Select Case cap
             Case Enums.ScraperCapabilities.Banner
                 Return ConfigScrapeModifier_Movie.Banner
-            Case Enums.ScraperCapabilities.CharacterArt
-                Return ConfigScrapeModifier_Movie.CharacterArt
             Case Enums.ScraperCapabilities.ClearArt
                 Return ConfigScrapeModifier_Movie.ClearArt
             Case Enums.ScraperCapabilities.ClearLogo
@@ -141,8 +139,6 @@ Public Class FanartTV_Image
         Select Case cap
             Case Enums.ScraperCapabilities.Banner
                 Return ConfigScrapeModifier_MovieSet.Banner
-            Case Enums.ScraperCapabilities.CharacterArt
-                Return ConfigScrapeModifier_MovieSet.CharacterArt
             Case Enums.ScraperCapabilities.ClearArt
                 Return ConfigScrapeModifier_MovieSet.ClearArt
             Case Enums.ScraperCapabilities.ClearLogo
@@ -199,14 +195,13 @@ Public Class FanartTV_Image
         Dim Spanel As New Containers.SettingsPanel
         _setup_Movie = New frmFanartTVMediaSettingsHolder_Movie
         LoadSettings_Movie()
-        _setup_Movie.cbEnabled.Checked = _ScraperEnabled_Movie
+        _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
         _setup_Movie.chkGetBlankImages.Checked = _MySettings_Movie.GetBlankImages
         _setup_Movie.chkGetEnglishImages.Checked = _MySettings_Movie.GetEnglishImages
         _setup_Movie.chkPrefLanguageOnly.Checked = _MySettings_Movie.PrefLanguageOnly
         _setup_Movie.chkScrapePoster.Checked = ConfigScrapeModifier_Movie.Poster
         _setup_Movie.chkScrapeFanart.Checked = ConfigScrapeModifier_Movie.Fanart
         _setup_Movie.chkScrapeBanner.Checked = ConfigScrapeModifier_Movie.Banner
-        _setup_Movie.chkScrapeCharacterArt.Checked = ConfigScrapeModifier_Movie.CharacterArt
         _setup_Movie.chkScrapeClearArt.Checked = ConfigScrapeModifier_Movie.ClearArt
         _setup_Movie.chkScrapeClearArtOnlyHD.Checked = _MySettings_Movie.ClearArtOnlyHD
         _setup_Movie.chkScrapeClearLogo.Checked = ConfigScrapeModifier_Movie.ClearLogo
@@ -236,14 +231,13 @@ Public Class FanartTV_Image
         Dim Spanel As New Containers.SettingsPanel
         _setup_MovieSet = New frmFanartTVMediaSettingsHolder_MovieSet
         LoadSettings_MovieSet()
-        _setup_MovieSet.cbEnabled.Checked = _ScraperEnabled_MovieSet
+        _setup_MovieSet.chkEnabled.Checked = _ScraperEnabled_MovieSet
         _setup_MovieSet.chkGetBlankImages.Checked = _MySettings_MovieSet.GetBlankImages
         _setup_MovieSet.chkGetEnglishImages.Checked = _MySettings_MovieSet.GetEnglishImages
         _setup_MovieSet.chkPrefLanguageOnly.Checked = _MySettings_MovieSet.PrefLanguageOnly
         _setup_MovieSet.chkScrapePoster.Checked = ConfigScrapeModifier_MovieSet.Poster
         _setup_MovieSet.chkScrapeFanart.Checked = ConfigScrapeModifier_MovieSet.Fanart
         _setup_MovieSet.chkScrapeBanner.Checked = ConfigScrapeModifier_MovieSet.Banner
-        _setup_MovieSet.chkScrapeCharacterArt.Checked = ConfigScrapeModifier_MovieSet.CharacterArt
         _setup_MovieSet.chkScrapeClearArt.Checked = ConfigScrapeModifier_MovieSet.ClearArt
         _setup_MovieSet.chkScrapeClearArtOnlyHD.Checked = _MySettings_MovieSet.ClearArtOnlyHD
         _setup_MovieSet.chkScrapeClearLogo.Checked = ConfigScrapeModifier_MovieSet.ClearLogo
@@ -282,7 +276,6 @@ Public Class FanartTV_Image
         ConfigScrapeModifier_Movie.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.Movie)
         ConfigScrapeModifier_Movie.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.Movie)
         ConfigScrapeModifier_Movie.Banner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.Content_Type.Movie)
-        ConfigScrapeModifier_Movie.CharacterArt = clsAdvancedSettings.GetBooleanSetting("DoCharacterArt", True, , Enums.Content_Type.Movie)
         ConfigScrapeModifier_Movie.ClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.Content_Type.Movie)
         ConfigScrapeModifier_Movie.ClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.Content_Type.Movie)
         ConfigScrapeModifier_Movie.DiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.Content_Type.Movie)
@@ -303,7 +296,6 @@ Public Class FanartTV_Image
         ConfigScrapeModifier_MovieSet.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.MovieSet)
         ConfigScrapeModifier_MovieSet.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.MovieSet)
         ConfigScrapeModifier_MovieSet.Banner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.Content_Type.MovieSet)
-        ConfigScrapeModifier_MovieSet.CharacterArt = clsAdvancedSettings.GetBooleanSetting("DoCharacterArt", True, , Enums.Content_Type.MovieSet)
         ConfigScrapeModifier_MovieSet.ClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.Content_Type.MovieSet)
         ConfigScrapeModifier_MovieSet.ClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.Content_Type.MovieSet)
         ConfigScrapeModifier_MovieSet.DiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.Content_Type.MovieSet)
@@ -319,7 +311,6 @@ Public Class FanartTV_Image
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.Poster, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.Fanart, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoBanner", ConfigScrapeModifier_Movie.Banner, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoCharacterArt", ConfigScrapeModifier_Movie.CharacterArt, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoClearArt", ConfigScrapeModifier_Movie.ClearArt, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoClearLogo", ConfigScrapeModifier_Movie.ClearLogo, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoDiscArt", ConfigScrapeModifier_Movie.DiscArt, , , Enums.Content_Type.Movie)
@@ -340,7 +331,6 @@ Public Class FanartTV_Image
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_MovieSet.Poster, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_MovieSet.Fanart, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("DoBanner", ConfigScrapeModifier_MovieSet.Banner, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("DoCharacterArt", ConfigScrapeModifier_MovieSet.CharacterArt, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("DoClearArt", ConfigScrapeModifier_MovieSet.ClearArt, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("DoClearLogo", ConfigScrapeModifier_MovieSet.ClearLogo, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("DoDiscArt", ConfigScrapeModifier_MovieSet.DiscArt, , , Enums.Content_Type.MovieSet)
@@ -364,7 +354,6 @@ Public Class FanartTV_Image
         ConfigScrapeModifier_Movie.Poster = _setup_Movie.chkScrapePoster.Checked
         ConfigScrapeModifier_Movie.Fanart = _setup_Movie.chkScrapeFanart.Checked
         ConfigScrapeModifier_Movie.Banner = _setup_Movie.chkScrapeBanner.Checked
-        ConfigScrapeModifier_Movie.CharacterArt = _setup_Movie.chkScrapeCharacterArt.Checked
         ConfigScrapeModifier_Movie.ClearArt = _setup_Movie.chkScrapeClearArt.Checked
         ConfigScrapeModifier_Movie.ClearLogo = _setup_Movie.chkScrapeClearLogo.Checked
         ConfigScrapeModifier_Movie.DiscArt = _setup_Movie.chkScrapeDiscArt.Checked
@@ -388,7 +377,6 @@ Public Class FanartTV_Image
         ConfigScrapeModifier_MovieSet.Poster = _setup_MovieSet.chkScrapePoster.Checked
         ConfigScrapeModifier_MovieSet.Fanart = _setup_MovieSet.chkScrapeFanart.Checked
         ConfigScrapeModifier_MovieSet.Banner = _setup_MovieSet.chkScrapeBanner.Checked
-        ConfigScrapeModifier_MovieSet.CharacterArt = _setup_MovieSet.chkScrapeCharacterArt.Checked
         ConfigScrapeModifier_MovieSet.ClearArt = _setup_MovieSet.chkScrapeClearArt.Checked
         ConfigScrapeModifier_MovieSet.ClearLogo = _setup_MovieSet.chkScrapeClearLogo.Checked
         ConfigScrapeModifier_MovieSet.DiscArt = _setup_MovieSet.chkScrapeDiscArt.Checked

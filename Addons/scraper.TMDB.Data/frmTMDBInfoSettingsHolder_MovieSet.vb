@@ -100,7 +100,7 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
         If order < ModulesManager.Instance.externalScrapersModules_Data_MovieSet.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_MovieSet.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_MovieSet.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
@@ -110,7 +110,7 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_MovieSet.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_MovieSet.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
@@ -121,8 +121,8 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
         Me.txtApiKey.Visible = True
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
     Private Sub chkGetAdult_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGetAdultItems.CheckedChanged
@@ -163,18 +163,18 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
 
     Private Sub SetUp()
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
         Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.gbGlobalOpts.Text = Master.eLang.GetString(937, "TMDB")
-        Me.gbScraperOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
-        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         Me.lblApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods

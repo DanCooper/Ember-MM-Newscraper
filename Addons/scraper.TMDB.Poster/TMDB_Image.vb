@@ -180,7 +180,7 @@ Public Class TMDB_Image
         Dim Spanel As New Containers.SettingsPanel
         _setup_Movie = New frmTMDBMediaSettingsHolder_Movie
         LoadSettings_Movie()
-        _setup_Movie.cbEnabled.Checked = _ScraperEnabled_Movie
+        _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
         _setup_Movie.chkScrapePoster.Checked = ConfigScrapeModifier_Movie.Poster
         _setup_Movie.chkScrapeFanart.Checked = ConfigScrapeModifier_Movie.Fanart
         _setup_Movie.txtApiKey.Text = strPrivateAPIKey
@@ -212,7 +212,7 @@ Public Class TMDB_Image
         Dim Spanel As New Containers.SettingsPanel
         _setup_MovieSet = New frmTMDBMediaSettingsHolder_MovieSet
         LoadSettings_MovieSet()
-        _setup_MovieSet.cbEnabled.Checked = _ScraperEnabled_MovieSet
+        _setup_MovieSet.chkEnabled.Checked = _ScraperEnabled_MovieSet
         _setup_MovieSet.chkScrapePoster.Checked = ConfigScrapeModifier_MovieSet.Poster
         _setup_MovieSet.chkScrapeFanart.Checked = ConfigScrapeModifier_MovieSet.Fanart
         _setup_MovieSet.txtApiKey.Text = strPrivateAPIKey

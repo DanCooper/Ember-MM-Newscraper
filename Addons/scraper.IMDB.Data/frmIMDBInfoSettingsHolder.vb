@@ -38,7 +38,7 @@ Public Class frmIMDBInfoSettingsHolder
         If order < ModulesManager.Instance.externalScrapersModules_Data_Movie.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
@@ -48,13 +48,13 @@ Public Class frmIMDBInfoSettingsHolder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
     Private Sub chkCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCast.CheckedChanged
@@ -237,37 +237,38 @@ Public Class frmIMDBInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.gbScraperOptions.Text = Master.eLang.GetString(1186, "Scraper Options")
-        Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
-        Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By")
-        Me.chkProducers.Text = Master.eLang.GetString(393, "Producers")
-        Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
-        Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
-        Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
-        Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
-        Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
-        Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
-        Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
-        Me.chkVotes.Text = Master.eLang.GetString(1252, "IMDB Votes")
-        Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
+        Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
+        Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
+        Me.chkCountryAbbreviation.Text = Master.eLang.GetString(1257, "Country-Tag: Save country abbreviation(s) instead of full name(s)")
+        Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
+        Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkFallBackworldwide.Text = Master.eLang.GetString(984, "Worldwide title as fallback")
+        Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
+        Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
+        Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
+        Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By")
+        Me.chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
+        Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
+        Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.chkProducers.Text = Master.eLang.GetString(393, "Producers")
         Me.chkRating.Text = Master.eLang.GetString(1239, "IMDB Rating")
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
-        Me.chkYear.Text = Master.eLang.GetString(278, "Year")
+        Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
+        Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
-        Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
-        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
-        Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
-        Me.chkFallBackworldwide.Text = Master.eLang.GetString(984, "Worldwide title as fallback")
-        Me.lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")
-        Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top250")
-        Me.chkCountryAbbreviation.Text = Master.eLang.GetString(1257, "Country-Tag: Save country abbreviation(s) instead of full name(s)")
+        Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
+        Me.chkVotes.Text = Master.eLang.GetString(1252, "IMDB Votes")
+        Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
+        Me.chkYear.Text = Master.eLang.GetString(278, "Year")
+        Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
+        Me.lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods

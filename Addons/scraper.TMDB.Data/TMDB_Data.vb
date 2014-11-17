@@ -157,7 +157,7 @@ Public Class TMDB_Data
         LoadSettings_Movie()
         _setup_Movie.API = _setup_Movie.txtApiKey.Text
         _setup_Movie.Lang = _setup_Movie.cbPrefLanguage.Text
-        _setup_Movie.cbEnabled.Checked = _ScraperEnabled_Movie
+        _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
         _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.PrefLanguage
         _setup_Movie.chkCast.Checked = ConfigOptions_Movie.bCast
         _setup_Movie.chkCollectionID.Checked = ConfigOptions_Movie.bCollectionID
@@ -166,7 +166,7 @@ Public Class TMDB_Data
         _setup_Movie.chkFallBackEng.Checked = _MySettings_Movie.FallBackEng
         _setup_Movie.chkGenre.Checked = ConfigOptions_Movie.bGenre
         _setup_Movie.chkGetAdultItems.Checked = _MySettings_Movie.GetAdultItems
-        _setup_Movie.chkMPAA.Checked = ConfigOptions_Movie.bMPAA
+        _setup_Movie.chkCertification.Checked = ConfigOptions_Movie.bMPAA
         _setup_Movie.chkOriginalTitle.Checked = ConfigOptions_Movie.bOriginalTitle
         _setup_Movie.chkPlot.Checked = ConfigOptions_Movie.bPlot
         _setup_Movie.chkRating.Checked = ConfigOptions_Movie.bRating
@@ -204,7 +204,7 @@ Public Class TMDB_Data
         LoadSettings_MovieSet()
         _setup_MovieSet.API = _setup_MovieSet.txtApiKey.Text
         _setup_MovieSet.Lang = _setup_MovieSet.cbPrefLanguage.Text
-        _setup_MovieSet.cbEnabled.Checked = _ScraperEnabled_MovieSet
+        _setup_MovieSet.chkEnabled.Checked = _ScraperEnabled_MovieSet
         _setup_MovieSet.cbPrefLanguage.Text = _MySettings_MovieSet.PrefLanguage
         _setup_MovieSet.chkFallBackEng.Checked = _MySettings_MovieSet.FallBackEng
         _setup_MovieSet.chkPlot.Checked = ConfigOptions_MovieSet.bPlot
@@ -328,13 +328,13 @@ Public Class TMDB_Data
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
         ConfigOptions_Movie.bCast = _setup_Movie.chkCast.Checked
-        ConfigOptions_Movie.bCert = _setup_Movie.chkMPAA.Checked
+        ConfigOptions_Movie.bCert = _setup_Movie.chkCertification.Checked
         ConfigOptions_Movie.bCollectionID = _setup_Movie.chkCollectionID.Checked
         ConfigOptions_Movie.bCountry = _setup_Movie.chkCountry.Checked
         ConfigOptions_Movie.bDirector = _setup_Movie.chkDirector.Checked
         ConfigOptions_Movie.bFullCrew = True
         ConfigOptions_Movie.bGenre = _setup_Movie.chkGenre.Checked
-        ConfigOptions_Movie.bMPAA = _setup_Movie.chkMPAA.Checked
+        ConfigOptions_Movie.bMPAA = _setup_Movie.chkCertification.Checked
         ConfigOptions_Movie.bOriginalTitle = _setup_Movie.chkOriginalTitle.Checked
         ConfigOptions_Movie.bMusicBy = False
         ConfigOptions_Movie.bOtherCrew = False

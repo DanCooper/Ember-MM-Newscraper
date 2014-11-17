@@ -38,7 +38,7 @@ Public Class frmMoviepilotDEInfoSettingsHolder
         If order < ModulesManager.Instance.externalScrapersModules_Data_Movie.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = MoviepilotDE_Data._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
@@ -48,31 +48,30 @@ Public Class frmMoviepilotDEInfoSettingsHolder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = MoviepilotDE_Data._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
 
-    Private Sub bEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    Private Sub bEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
     Private Sub chkMoviepilotGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkMoviepilotOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviepilotOutline.CheckedChanged
+    Private Sub chkMoviepilotOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOutline.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkMoviepilotPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviepilotPlot.CheckedChanged
+    Private Sub chkMoviepilotPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkkMoviepilotRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviepilotRating.CheckedChanged
+    Private Sub chkkMoviepilotRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCertification.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
-
 
     Public Sub New()
         InitializeComponent()
@@ -91,13 +90,15 @@ Public Class frmMoviepilotDEInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.chkMoviepilotPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkMoviepilotOutline.Text = Master.eLang.GetString(64, "Outline")
-        Me.chkMoviepilotRating.Text = Master.eLang.GetString(722, "MPAA/Certification")
-        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
+        Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods
+
 End Class

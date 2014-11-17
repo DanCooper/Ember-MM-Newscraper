@@ -120,7 +120,7 @@ Public Class IMDB_Image
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmIMDBMediaSettingsHolder
         LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(885, "IMDB")

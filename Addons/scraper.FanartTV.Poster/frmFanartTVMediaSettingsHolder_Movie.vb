@@ -75,7 +75,7 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
         If order < ModulesManager.Instance.externalScrapersModules_Image_Movie.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Image_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Image_Movie.FirstOrDefault(Function(p) p.AssemblyName = FanartTV_Image._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
@@ -85,13 +85,13 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Image_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Image_Movie.FirstOrDefault(Function(p) p.AssemblyName = FanartTV_Image._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
     Private Sub chkGetBlankImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetBlankImages.CheckedChanged
@@ -115,10 +115,6 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
     End Sub
 
     Private Sub chkScrapeBanner_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeBanner.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScrapeCharacterArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeCharacterArt.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -178,14 +174,11 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
     End Sub
 
     Sub SetUp()
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
-        Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkGetBlankImages.Text = Master.eLang.GetString(1207, "Also Get Blank Images")
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
         Me.chkPrefLanguageOnly.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
         Me.chkScrapeBanner.Text = Master.eLang.GetString(1051, "Get Banner")
-        Me.chkScrapeCharacterArt.Text = Master.eLang.GetString(1052, "Get CharacterArt")
         Me.chkScrapeClearArt.Text = Master.eLang.GetString(1053, "Get ClearArt")
         Me.chkScrapeClearArtOnlyHD.Text = Master.eLang.GetString(1105, "Only HD")
         Me.chkScrapeClearLogo.Text = Master.eLang.GetString(1054, "Get ClearLogo")
@@ -194,11 +187,13 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
         Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
         Me.chkScrapeLandscape.Text = Master.eLang.GetString(1056, "Get Landscape")
         Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Poster")
-        Me.gbImages.Text = Master.eLang.GetString(497, "Images")
-        Me.gbScraper.Text = Master.eLang.GetString(788, "Fanart.tv")
+        Me.gbScraperImagesOpts.Text = Master.eLang.GetString(268, "Images - Scraper specific")
+        Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         Me.lblAPIHint.Text = Master.eLang.GetString(1248, "Using a Personal API Key reduces the time you have to wait for new images to show up from 7 days to 48 hours.")
-        Me.lblAPIKey.Text = Master.eLang.GetString(789, "Fanart.tv Personal API Key:")
+        Me.lblAPIKey.Text = String.Concat(Master.eLang.GetString(789, "Fanart.tv Personal API Key"), ":")
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
     Private Sub txtApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
@@ -224,4 +219,22 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
 
 #End Region 'Methods
 
+    Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As Object, e As EventArgs)
+
+    End Sub
+    Private Sub pbTMDBApiKeyInfo_Click(sender As Object, e As EventArgs)
+
+    End Sub
+    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
+
+    End Sub
+    Private Sub chkGetAdult_CheckedChanged(sender As Object, e As EventArgs)
+
+    End Sub
+    Private Sub chkFallBackEng_CheckedChanged(sender As Object, e As EventArgs)
+
+    End Sub
+    Private Sub txtTMDBApiKey_TextEnter(sender As Object, e As EventArgs)
+
+    End Sub
 End Class

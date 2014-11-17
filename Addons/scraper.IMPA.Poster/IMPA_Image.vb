@@ -114,7 +114,7 @@ Public Class IMPA_Image
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmIMPAMediaSettingsHolder
         LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkEnabled.Checked = _ScraperEnabled
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(876, "IMPA")

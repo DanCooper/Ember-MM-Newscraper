@@ -75,7 +75,7 @@ Public Class frmTMDBMediaSettingsHolder_MovieSet
         If order < ModulesManager.Instance.externalScrapersModules_Image_MovieSet.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Image_MovieSet.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Image_MovieSet.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Image._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
@@ -85,13 +85,13 @@ Public Class frmTMDBMediaSettingsHolder_MovieSet
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Image_MovieSet.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Image_MovieSet.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Image._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
     Private Sub chkScrapeFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScrapeFanart.CheckedChanged
@@ -114,20 +114,20 @@ Public Class frmTMDBMediaSettingsHolder_MovieSet
     End Sub
 
     Sub SetUp()
-        Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Posters")
-        Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
-        Me.lblAPIKey.Text = Master.eLang.GetString(870, "TMDB API Key")
-        Me.gbScraper.Text = Master.eLang.GetString(937, "TMDB")
-        Me.gbImages.Text = Master.eLang.GetString(497, "Images")
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkGetBlankImages.Text = Master.eLang.GetString(1207, "Also Get Blank Images")
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
         Me.chkPrefLanguageOnly.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
-        Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
-        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+        Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
+        Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Posters")
+        Me.gbScraperImagesOpts.Text = Master.eLang.GetString(268, "Images - Scraper specific")
+        Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
+        Me.lblAPIKey.Text = String.Concat(Master.eLang.GetString(870, "TMDB API Key"), ":")
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click

@@ -100,7 +100,7 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         If order < ModulesManager.Instance.externalScrapersModules_Data_Movie.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
@@ -110,7 +110,7 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
@@ -118,11 +118,10 @@ Public Class frmTMDBInfoSettingsHolder_Movie
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
         Me.lblEMMAPI.Visible = False
         Me.txtApiKey.Enabled = True
-        Me.txtApiKey.Visible = True
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
     Private Sub chkWriters_CheckedChanged(sender As Object, e As EventArgs) Handles chkWriters.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
@@ -147,7 +146,7 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMPAA.CheckedChanged
+    Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCertification.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -225,17 +224,15 @@ Public Class frmTMDBInfoSettingsHolder_Movie
 
     Private Sub SetUp()
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
+        Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
         Me.chkCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
         Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
         Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
         Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
-        Me.chkMPAA.Text = Master.eLang.GetString(722, "MPAA/Certification")
         Me.chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkRating.Text = Master.eLang.GetString(1250, "TMDB Rating")
@@ -248,12 +245,13 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         Me.chkVotes.Text = Master.eLang.GetString(1251, "TMDB Votes")
         Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
-        Me.gbGlobalOpts.Text = Master.eLang.GetString(937, "TMDB")
+        Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
-        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.lblApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
+        Me.lblApiKey.Text = String.Concat(Master.eLang.GetString(870, "TMDB API Key"), ":")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
-
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods

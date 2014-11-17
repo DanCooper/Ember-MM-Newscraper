@@ -266,7 +266,7 @@
   <string id="265">Change Poster (Download)</string>
   <string id="266">Change Fanart (Download)</string>
   <string id="267">Optional Images</string>
-  <string id="268"></string>
+  <string id="268">Images - Scraper specific</string>
   <string id="269">Size: {0}x{1}</string>
   <string id="270">The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type.</string>
   <string id="271">Error Playing Trailer</string>
@@ -787,7 +787,7 @@
   <string id="786"></string>
   <string id="787">Get your API Key from fanart.tv</string>
   <string id="788">Fanart.tv</string>
-  <string id="789">Fanart.tv Personal API Key:</string>
+  <string id="789">Fanart.tv Personal API Key</string>
   <string id="790">These settings are specific to this module.{0}Please refer to the global settings for more options.</string>
   <string id="791">Scraper Fields - Scraper specific</string>
   <string id="792"></string>
@@ -1278,7 +1278,7 @@
   <string id="1186">Scraper Options</string>
   <string id="1187">Save YouTube-Trailer-Links in XBMC compatible format</string>
   <string id="1188">Use my own API key</string>
-  <string id="1189">Ember Media Manager API key</string>
+  <string id="1189">Ember Media Manager Embedded API Key</string>
   <string id="1190">Custom Marker</string>
   <string id="1191">Custom</string>
   <string id="1192">Mark as</string>

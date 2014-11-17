@@ -110,12 +110,12 @@ Public Class OFDB_Data
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmOFDBInfoSettingsHolder
         LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.chkTitle.Checked = ConfigOptions.bTitle
         _setup.chkOutline.Checked = ConfigOptions.bOutline
         _setup.chkPlot.Checked = ConfigOptions.bPlot
         _setup.chkGenre.Checked = ConfigOptions.bGenre
-        _setup.chkRating.Checked = ConfigOptions.bCert
+        _setup.chkCertification.Checked = ConfigOptions.bCert
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(895, "OFDB")
@@ -154,7 +154,7 @@ Public Class OFDB_Data
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
-        ConfigOptions.bCert = _setup.chkRating.Checked
+        ConfigOptions.bCert = _setup.chkCertification.Checked
         ConfigOptions.bTitle = _setup.chkTitle.Checked
         ConfigOptions.bOutline = _setup.chkOutline.Checked
         ConfigOptions.bPlot = _setup.chkPlot.Checked

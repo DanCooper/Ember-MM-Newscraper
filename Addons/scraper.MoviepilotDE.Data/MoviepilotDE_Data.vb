@@ -102,10 +102,10 @@ Public Class MoviepilotDE_Data
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmMoviepilotDEInfoSettingsHolder
         LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
-        _setup.chkMoviepilotRating.Checked = ConfigOptions.bCert
-        _setup.chkMoviepilotOutline.Checked = ConfigOptions.bOutline
-        _setup.chkMoviepilotPlot.Checked = ConfigOptions.bPlot
+        _setup.chkEnabled.Checked = _ScraperEnabled
+        _setup.chkCertification.Checked = ConfigOptions.bCert
+        _setup.chkOutline.Checked = ConfigOptions.bOutline
+        _setup.chkPlot.Checked = ConfigOptions.bPlot
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
@@ -141,9 +141,9 @@ Public Class MoviepilotDE_Data
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
-        ConfigOptions.bCert = _setup.chkMoviepilotRating.Checked
-        ConfigOptions.bOutline = _setup.chkMoviepilotOutline.Checked
-        ConfigOptions.bPlot = _setup.chkMoviepilotPlot.Checked
+        ConfigOptions.bCert = _setup.chkCertification.Checked
+        ConfigOptions.bOutline = _setup.chkOutline.Checked
+        ConfigOptions.bPlot = _setup.chkPlot.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged

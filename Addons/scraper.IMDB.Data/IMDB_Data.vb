@@ -124,7 +124,7 @@ Public Class IMDB_Data
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmIMDBInfoSettingsHolder
         LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkEnabled.Checked = _ScraperEnabled
 
         _setup.chkCast.Checked = ConfigOptions.bCast
         _setup.chkCertification.Checked = ConfigOptions.bCert
