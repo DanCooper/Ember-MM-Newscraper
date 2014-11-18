@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -77,7 +77,10 @@ Partial Class frmMain
         Me.lblFilterCountriesClose_Movies = New System.Windows.Forms.Label()
         Me.lblFilterCountries_Movies = New System.Windows.Forms.Label()
         Me.pnlFilterGenres_Movies = New System.Windows.Forms.Panel()
+        Me.pnlFilterGenresMain_Movies = New System.Windows.Forms.Panel()
         Me.clbFilterGenres_Movies = New System.Windows.Forms.CheckedListBox()
+        Me.pnlFilterGenresTop_Movies = New System.Windows.Forms.Panel()
+        Me.tblFilterGenresTop_Movies = New System.Windows.Forms.TableLayoutPanel()
         Me.lblFilterGenresClose_Movies = New System.Windows.Forms.Label()
         Me.lblFilterGenres_Movies = New System.Windows.Forms.Label()
         Me.pnlFilterGenres_Shows = New System.Windows.Forms.Panel()
@@ -1013,10 +1016,21 @@ Partial Class frmMain
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
-        Me.pnlFilterGenresTop_Movies = New System.Windows.Forms.Panel()
-        Me.tblFilterGenresTop_Movies = New System.Windows.Forms.TableLayoutPanel()
-        Me.pnlFilterGenresMain_Movies = New System.Windows.Forms.Panel()
-        Me.tblFilterGenresMain_Movies = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlFilterCountriesTop_Movies = New System.Windows.Forms.Panel()
+        Me.tblFilterCountriesTop_Movies = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlFilterCountriesMain_Movies = New System.Windows.Forms.Panel()
+        Me.pnlFilterSourcesTop_Movies = New System.Windows.Forms.Panel()
+        Me.tblFilterSourcesTop_Movies = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlFilterSourcesMain_Movies = New System.Windows.Forms.Panel()
+        Me.pnlFilterDataFieldsTop_Movies = New System.Windows.Forms.Panel()
+        Me.tblFilterDataFieldsTop_Movies = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlFilterDataFieldsMain_Movies = New System.Windows.Forms.Panel()
+        Me.pnlFilterGenresTop_Shows = New System.Windows.Forms.Panel()
+        Me.tblFilterGenresTop_Shows = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlFilterGenresMain_Shows = New System.Windows.Forms.Panel()
+        Me.pnlFilterSourcesTop_Shows = New System.Windows.Forms.Panel()
+        Me.tblFilterSourcesTop_Shows = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlFilterSourcesMain_Shows = New System.Windows.Forms.Panel()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1025,6 +1039,9 @@ Partial Class frmMain
         Me.scMain.SuspendLayout
         Me.pnlFilterCountries_Movies.SuspendLayout
         Me.pnlFilterGenres_Movies.SuspendLayout
+        Me.pnlFilterGenresMain_Movies.SuspendLayout
+        Me.pnlFilterGenresTop_Movies.SuspendLayout
+        Me.tblFilterGenresTop_Movies.SuspendLayout
         Me.pnlFilterGenres_Shows.SuspendLayout
         Me.pnlFilterDataFields_Movies.SuspendLayout
         Me.pnlFilterSources_Movies.SuspendLayout
@@ -1159,10 +1176,21 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.SuspendLayout
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlLoadSettings.SuspendLayout
-        Me.pnlFilterGenresTop_Movies.SuspendLayout
-        Me.tblFilterGenresTop_Movies.SuspendLayout
-        Me.pnlFilterGenresMain_Movies.SuspendLayout
-        Me.tblFilterGenresMain_Movies.SuspendLayout
+        Me.pnlFilterCountriesTop_Movies.SuspendLayout
+        Me.tblFilterCountriesTop_Movies.SuspendLayout
+        Me.pnlFilterCountriesMain_Movies.SuspendLayout
+        Me.pnlFilterSourcesTop_Movies.SuspendLayout
+        Me.tblFilterSourcesTop_Movies.SuspendLayout
+        Me.pnlFilterSourcesMain_Movies.SuspendLayout
+        Me.pnlFilterDataFieldsTop_Movies.SuspendLayout
+        Me.tblFilterDataFieldsTop_Movies.SuspendLayout
+        Me.pnlFilterDataFieldsMain_Movies.SuspendLayout
+        Me.pnlFilterGenresTop_Shows.SuspendLayout
+        Me.tblFilterGenresTop_Shows.SuspendLayout
+        Me.pnlFilterGenresMain_Shows.SuspendLayout
+        Me.pnlFilterSourcesTop_Shows.SuspendLayout
+        Me.tblFilterSourcesTop_Shows.SuspendLayout
+        Me.pnlFilterSourcesMain_Shows.SuspendLayout
         Me.SuspendLayout
         '
         'BottomToolStripPanel
@@ -1540,35 +1568,37 @@ Partial Class frmMain
         '
         'pnlFilterCountries_Movies
         '
-        Me.pnlFilterCountries_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilterCountries_Movies.Controls.Add(Me.clbFilterCountries_Movies)
-        Me.pnlFilterCountries_Movies.Controls.Add(Me.lblFilterCountriesClose_Movies)
-        Me.pnlFilterCountries_Movies.Controls.Add(Me.lblFilterCountries_Movies)
-        Me.pnlFilterCountries_Movies.Location = New System.Drawing.Point(50, 714)
+        Me.pnlFilterCountries_Movies.Controls.Add(Me.pnlFilterCountriesMain_Movies)
+        Me.pnlFilterCountries_Movies.Controls.Add(Me.pnlFilterCountriesTop_Movies)
+        Me.pnlFilterCountries_Movies.Location = New System.Drawing.Point(200, 0)
         Me.pnlFilterCountries_Movies.Name = "pnlFilterCountries_Movies"
-        Me.pnlFilterCountries_Movies.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterCountries_Movies.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterCountries_Movies.TabIndex = 25
         Me.pnlFilterCountries_Movies.Visible = false
         '
         'clbFilterCountries_Movies
         '
+        Me.clbFilterCountries_Movies.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.clbFilterCountries_Movies.CheckOnClick = true
+        Me.clbFilterCountries_Movies.Dock = System.Windows.Forms.DockStyle.Fill
         Me.clbFilterCountries_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.clbFilterCountries_Movies.FormattingEnabled = true
-        Me.clbFilterCountries_Movies.Location = New System.Drawing.Point(1, 20)
+        Me.clbFilterCountries_Movies.Location = New System.Drawing.Point(0, 0)
+        Me.clbFilterCountries_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.clbFilterCountries_Movies.Name = "clbFilterCountries_Movies"
-        Me.clbFilterCountries_Movies.Size = New System.Drawing.Size(162, 123)
+        Me.clbFilterCountries_Movies.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterCountries_Movies.TabIndex = 8
         Me.clbFilterCountries_Movies.TabStop = false
         '
         'lblFilterCountriesClose_Movies
         '
+        Me.lblFilterCountriesClose_Movies.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblFilterCountriesClose_Movies.AutoSize = true
-        Me.lblFilterCountriesClose_Movies.BackColor = System.Drawing.Color.DimGray
+        Me.lblFilterCountriesClose_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterCountriesClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblFilterCountriesClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterCountriesClose_Movies.ForeColor = System.Drawing.Color.White
-        Me.lblFilterCountriesClose_Movies.Location = New System.Drawing.Point(130, 2)
+        Me.lblFilterCountriesClose_Movies.Location = New System.Drawing.Point(151, 3)
         Me.lblFilterCountriesClose_Movies.Name = "lblFilterCountriesClose_Movies"
         Me.lblFilterCountriesClose_Movies.Size = New System.Drawing.Size(35, 13)
         Me.lblFilterCountriesClose_Movies.TabIndex = 24
@@ -1576,15 +1606,14 @@ Partial Class frmMain
         '
         'lblFilterCountries_Movies
         '
-        Me.lblFilterCountries_Movies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblFilterCountries_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilterCountries_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterCountries_Movies.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblFilterCountries_Movies.AutoSize = true
+        Me.lblFilterCountries_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterCountries_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterCountries_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilterCountries_Movies.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterCountries_Movies.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterCountries_Movies.Name = "lblFilterCountries_Movies"
-        Me.lblFilterCountries_Movies.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterCountries_Movies.Size = New System.Drawing.Size(57, 13)
         Me.lblFilterCountries_Movies.TabIndex = 23
         Me.lblFilterCountries_Movies.Text = "Countries"
         Me.lblFilterCountries_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1596,9 +1625,22 @@ Partial Class frmMain
         Me.pnlFilterGenres_Movies.Controls.Add(Me.pnlFilterGenresTop_Movies)
         Me.pnlFilterGenres_Movies.Location = New System.Drawing.Point(0, 0)
         Me.pnlFilterGenres_Movies.Name = "pnlFilterGenres_Movies"
-        Me.pnlFilterGenres_Movies.Size = New System.Drawing.Size(190, 194)
+        Me.pnlFilterGenres_Movies.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterGenres_Movies.TabIndex = 15
         Me.pnlFilterGenres_Movies.Visible = false
+        '
+        'pnlFilterGenresMain_Movies
+        '
+        Me.pnlFilterGenresMain_Movies.AutoSize = true
+        Me.pnlFilterGenresMain_Movies.BackColor = System.Drawing.Color.Transparent
+        Me.pnlFilterGenresMain_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterGenresMain_Movies.Controls.Add(Me.clbFilterGenres_Movies)
+        Me.pnlFilterGenresMain_Movies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFilterGenresMain_Movies.Location = New System.Drawing.Point(0, 20)
+        Me.pnlFilterGenresMain_Movies.Margin = New System.Windows.Forms.Padding(0)
+        Me.pnlFilterGenresMain_Movies.Name = "pnlFilterGenresMain_Movies"
+        Me.pnlFilterGenresMain_Movies.Size = New System.Drawing.Size(189, 172)
+        Me.pnlFilterGenresMain_Movies.TabIndex = 26
         '
         'clbFilterGenres_Movies
         '
@@ -1607,12 +1649,41 @@ Partial Class frmMain
         Me.clbFilterGenres_Movies.Dock = System.Windows.Forms.DockStyle.Fill
         Me.clbFilterGenres_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.clbFilterGenres_Movies.FormattingEnabled = true
-        Me.clbFilterGenres_Movies.Location = New System.Drawing.Point(1, 1)
+        Me.clbFilterGenres_Movies.Location = New System.Drawing.Point(0, 0)
         Me.clbFilterGenres_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.clbFilterGenres_Movies.Name = "clbFilterGenres_Movies"
-        Me.clbFilterGenres_Movies.Size = New System.Drawing.Size(188, 172)
+        Me.clbFilterGenres_Movies.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterGenres_Movies.TabIndex = 8
         Me.clbFilterGenres_Movies.TabStop = false
+        '
+        'pnlFilterGenresTop_Movies
+        '
+        Me.pnlFilterGenresTop_Movies.AutoSize = true
+        Me.pnlFilterGenresTop_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.pnlFilterGenresTop_Movies.Controls.Add(Me.tblFilterGenresTop_Movies)
+        Me.pnlFilterGenresTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlFilterGenresTop_Movies.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFilterGenresTop_Movies.Name = "pnlFilterGenresTop_Movies"
+        Me.pnlFilterGenresTop_Movies.Size = New System.Drawing.Size(189, 20)
+        Me.pnlFilterGenresTop_Movies.TabIndex = 25
+        '
+        'tblFilterGenresTop_Movies
+        '
+        Me.tblFilterGenresTop_Movies.AutoSize = true
+        Me.tblFilterGenresTop_Movies.ColumnCount = 3
+        Me.tblFilterGenresTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterGenresTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.tblFilterGenresTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterGenresTop_Movies.Controls.Add(Me.lblFilterGenresClose_Movies, 2, 0)
+        Me.tblFilterGenresTop_Movies.Controls.Add(Me.lblFilterGenres_Movies, 0, 0)
+        Me.tblFilterGenresTop_Movies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterGenresTop_Movies.Location = New System.Drawing.Point(0, 0)
+        Me.tblFilterGenresTop_Movies.Name = "tblFilterGenresTop_Movies"
+        Me.tblFilterGenresTop_Movies.RowCount = 2
+        Me.tblFilterGenresTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterGenresTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterGenresTop_Movies.Size = New System.Drawing.Size(189, 20)
+        Me.tblFilterGenresTop_Movies.TabIndex = 0
         '
         'lblFilterGenresClose_Movies
         '
@@ -1622,7 +1693,7 @@ Partial Class frmMain
         Me.lblFilterGenresClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblFilterGenresClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterGenresClose_Movies.ForeColor = System.Drawing.Color.White
-        Me.lblFilterGenresClose_Movies.Location = New System.Drawing.Point(152, 3)
+        Me.lblFilterGenresClose_Movies.Location = New System.Drawing.Point(151, 3)
         Me.lblFilterGenresClose_Movies.Name = "lblFilterGenresClose_Movies"
         Me.lblFilterGenresClose_Movies.Size = New System.Drawing.Size(35, 13)
         Me.lblFilterGenresClose_Movies.TabIndex = 24
@@ -1645,35 +1716,38 @@ Partial Class frmMain
         '
         'pnlFilterGenres_Shows
         '
-        Me.pnlFilterGenres_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilterGenres_Shows.Controls.Add(Me.clbFilterGenres_Shows)
-        Me.pnlFilterGenres_Shows.Controls.Add(Me.lblFilterGenresClose_Shows)
-        Me.pnlFilterGenres_Shows.Controls.Add(Me.lblFilterGenres_Shows)
-        Me.pnlFilterGenres_Shows.Location = New System.Drawing.Point(730, 714)
+        Me.pnlFilterGenres_Shows.BackColor = System.Drawing.Color.Transparent
+        Me.pnlFilterGenres_Shows.Controls.Add(Me.pnlFilterGenresMain_Shows)
+        Me.pnlFilterGenres_Shows.Controls.Add(Me.pnlFilterGenresTop_Shows)
+        Me.pnlFilterGenres_Shows.Location = New System.Drawing.Point(200, 200)
         Me.pnlFilterGenres_Shows.Name = "pnlFilterGenres_Shows"
-        Me.pnlFilterGenres_Shows.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterGenres_Shows.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterGenres_Shows.TabIndex = 16
         Me.pnlFilterGenres_Shows.Visible = false
         '
         'clbFilterGenres_Shows
         '
+        Me.clbFilterGenres_Shows.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.clbFilterGenres_Shows.CheckOnClick = true
+        Me.clbFilterGenres_Shows.Dock = System.Windows.Forms.DockStyle.Fill
         Me.clbFilterGenres_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.clbFilterGenres_Shows.FormattingEnabled = true
-        Me.clbFilterGenres_Shows.Location = New System.Drawing.Point(1, 20)
+        Me.clbFilterGenres_Shows.Location = New System.Drawing.Point(0, 0)
+        Me.clbFilterGenres_Shows.Margin = New System.Windows.Forms.Padding(0)
         Me.clbFilterGenres_Shows.Name = "clbFilterGenres_Shows"
-        Me.clbFilterGenres_Shows.Size = New System.Drawing.Size(162, 123)
+        Me.clbFilterGenres_Shows.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterGenres_Shows.TabIndex = 8
         Me.clbFilterGenres_Shows.TabStop = false
         '
         'lblFilterGenresClose_Shows
         '
+        Me.lblFilterGenresClose_Shows.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblFilterGenresClose_Shows.AutoSize = true
-        Me.lblFilterGenresClose_Shows.BackColor = System.Drawing.Color.DimGray
+        Me.lblFilterGenresClose_Shows.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterGenresClose_Shows.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblFilterGenresClose_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterGenresClose_Shows.ForeColor = System.Drawing.Color.White
-        Me.lblFilterGenresClose_Shows.Location = New System.Drawing.Point(130, 2)
+        Me.lblFilterGenresClose_Shows.Location = New System.Drawing.Point(151, 3)
         Me.lblFilterGenresClose_Shows.Name = "lblFilterGenresClose_Shows"
         Me.lblFilterGenresClose_Shows.Size = New System.Drawing.Size(35, 13)
         Me.lblFilterGenresClose_Shows.TabIndex = 24
@@ -1681,50 +1755,52 @@ Partial Class frmMain
         '
         'lblFilterGenres_Shows
         '
-        Me.lblFilterGenres_Shows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblFilterGenres_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilterGenres_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterGenres_Shows.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblFilterGenres_Shows.AutoSize = true
+        Me.lblFilterGenres_Shows.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterGenres_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterGenres_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilterGenres_Shows.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterGenres_Shows.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterGenres_Shows.Name = "lblFilterGenres_Shows"
-        Me.lblFilterGenres_Shows.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterGenres_Shows.Size = New System.Drawing.Size(43, 13)
         Me.lblFilterGenres_Shows.TabIndex = 23
         Me.lblFilterGenres_Shows.Text = "Genres"
         Me.lblFilterGenres_Shows.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'pnlFilterDataFields_Movies
         '
-        Me.pnlFilterDataFields_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilterDataFields_Movies.Controls.Add(Me.clbFilterDataFields_Movies)
-        Me.pnlFilterDataFields_Movies.Controls.Add(Me.lblFilterDataFieldsClose_Movies)
-        Me.pnlFilterDataFields_Movies.Controls.Add(Me.lblFilterDataFields_Movies)
-        Me.pnlFilterDataFields_Movies.Location = New System.Drawing.Point(900, 714)
+        Me.pnlFilterDataFields_Movies.BackColor = System.Drawing.Color.Transparent
+        Me.pnlFilterDataFields_Movies.Controls.Add(Me.pnlFilterDataFieldsMain_Movies)
+        Me.pnlFilterDataFields_Movies.Controls.Add(Me.pnlFilterDataFieldsTop_Movies)
+        Me.pnlFilterDataFields_Movies.Location = New System.Drawing.Point(0, 200)
         Me.pnlFilterDataFields_Movies.Name = "pnlFilterDataFields_Movies"
-        Me.pnlFilterDataFields_Movies.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterDataFields_Movies.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterDataFields_Movies.TabIndex = 26
         Me.pnlFilterDataFields_Movies.Visible = false
         '
         'clbFilterDataFields_Movies
         '
+        Me.clbFilterDataFields_Movies.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.clbFilterDataFields_Movies.CheckOnClick = true
+        Me.clbFilterDataFields_Movies.Dock = System.Windows.Forms.DockStyle.Fill
         Me.clbFilterDataFields_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.clbFilterDataFields_Movies.FormattingEnabled = true
-        Me.clbFilterDataFields_Movies.Location = New System.Drawing.Point(1, 20)
+        Me.clbFilterDataFields_Movies.Location = New System.Drawing.Point(0, 0)
+        Me.clbFilterDataFields_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.clbFilterDataFields_Movies.Name = "clbFilterDataFields_Movies"
-        Me.clbFilterDataFields_Movies.Size = New System.Drawing.Size(162, 123)
+        Me.clbFilterDataFields_Movies.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterDataFields_Movies.TabIndex = 8
         Me.clbFilterDataFields_Movies.TabStop = false
         '
         'lblFilterDataFieldsClose_Movies
         '
+        Me.lblFilterDataFieldsClose_Movies.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblFilterDataFieldsClose_Movies.AutoSize = true
-        Me.lblFilterDataFieldsClose_Movies.BackColor = System.Drawing.Color.DimGray
+        Me.lblFilterDataFieldsClose_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterDataFieldsClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblFilterDataFieldsClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterDataFieldsClose_Movies.ForeColor = System.Drawing.Color.White
-        Me.lblFilterDataFieldsClose_Movies.Location = New System.Drawing.Point(130, 2)
+        Me.lblFilterDataFieldsClose_Movies.Location = New System.Drawing.Point(151, 3)
         Me.lblFilterDataFieldsClose_Movies.Name = "lblFilterDataFieldsClose_Movies"
         Me.lblFilterDataFieldsClose_Movies.Size = New System.Drawing.Size(35, 13)
         Me.lblFilterDataFieldsClose_Movies.TabIndex = 24
@@ -1732,39 +1808,37 @@ Partial Class frmMain
         '
         'lblFilterDataFields_Movies
         '
-        Me.lblFilterDataFields_Movies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblFilterDataFields_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilterDataFields_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterDataFields_Movies.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblFilterDataFields_Movies.AutoSize = true
+        Me.lblFilterDataFields_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterDataFields_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterDataFields_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilterDataFields_Movies.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterDataFields_Movies.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterDataFields_Movies.Name = "lblFilterDataFields_Movies"
-        Me.lblFilterDataFields_Movies.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterDataFields_Movies.Size = New System.Drawing.Size(64, 13)
         Me.lblFilterDataFields_Movies.TabIndex = 23
         Me.lblFilterDataFields_Movies.Text = "Data Fields"
         Me.lblFilterDataFields_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'pnlFilterSources_Movies
         '
-        Me.pnlFilterSources_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilterSources_Movies.Controls.Add(Me.lblFilterSourcesClose_Movies)
-        Me.pnlFilterSources_Movies.Controls.Add(Me.lblFilterSources_Movies)
-        Me.pnlFilterSources_Movies.Controls.Add(Me.clbFilterSources_Movies)
-        Me.pnlFilterSources_Movies.Location = New System.Drawing.Point(220, 714)
+        Me.pnlFilterSources_Movies.Controls.Add(Me.pnlFilterSourcesMain_Movies)
+        Me.pnlFilterSources_Movies.Controls.Add(Me.pnlFilterSourcesTop_Movies)
+        Me.pnlFilterSources_Movies.Location = New System.Drawing.Point(400, 0)
         Me.pnlFilterSources_Movies.Name = "pnlFilterSources_Movies"
-        Me.pnlFilterSources_Movies.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterSources_Movies.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterSources_Movies.TabIndex = 16
         Me.pnlFilterSources_Movies.Visible = false
         '
         'lblFilterSourcesClose_Movies
         '
+        Me.lblFilterSourcesClose_Movies.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblFilterSourcesClose_Movies.AutoSize = true
-        Me.lblFilterSourcesClose_Movies.BackColor = System.Drawing.Color.DimGray
+        Me.lblFilterSourcesClose_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterSourcesClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblFilterSourcesClose_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblFilterSourcesClose_Movies.ForeColor = System.Drawing.Color.White
-        Me.lblFilterSourcesClose_Movies.Location = New System.Drawing.Point(130, 2)
+        Me.lblFilterSourcesClose_Movies.Location = New System.Drawing.Point(153, 3)
         Me.lblFilterSourcesClose_Movies.Name = "lblFilterSourcesClose_Movies"
         Me.lblFilterSourcesClose_Movies.Size = New System.Drawing.Size(33, 13)
         Me.lblFilterSourcesClose_Movies.TabIndex = 24
@@ -1772,50 +1846,51 @@ Partial Class frmMain
         '
         'lblFilterSources_Movies
         '
-        Me.lblFilterSources_Movies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblFilterSources_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilterSources_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterSources_Movies.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblFilterSources_Movies.AutoSize = true
+        Me.lblFilterSources_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterSources_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblFilterSources_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilterSources_Movies.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterSources_Movies.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterSources_Movies.Name = "lblFilterSources_Movies"
-        Me.lblFilterSources_Movies.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterSources_Movies.Size = New System.Drawing.Size(53, 13)
         Me.lblFilterSources_Movies.TabIndex = 23
         Me.lblFilterSources_Movies.Text = "Sources"
         Me.lblFilterSources_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'clbFilterSources_Movies
         '
+        Me.clbFilterSources_Movies.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.clbFilterSources_Movies.CheckOnClick = true
+        Me.clbFilterSources_Movies.Dock = System.Windows.Forms.DockStyle.Fill
         Me.clbFilterSources_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.clbFilterSources_Movies.FormattingEnabled = true
-        Me.clbFilterSources_Movies.Location = New System.Drawing.Point(1, 20)
+        Me.clbFilterSources_Movies.Location = New System.Drawing.Point(0, 0)
         Me.clbFilterSources_Movies.Name = "clbFilterSources_Movies"
-        Me.clbFilterSources_Movies.Size = New System.Drawing.Size(162, 123)
+        Me.clbFilterSources_Movies.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterSources_Movies.TabIndex = 8
         Me.clbFilterSources_Movies.TabStop = false
         '
         'pnlFilterSources_Shows
         '
-        Me.pnlFilterSources_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilterSources_Shows.Controls.Add(Me.lblFilterSourcesClose_Shows)
-        Me.pnlFilterSources_Shows.Controls.Add(Me.lblFilterSources_Shows)
-        Me.pnlFilterSources_Shows.Controls.Add(Me.clbFilterSource_Shows)
-        Me.pnlFilterSources_Shows.Location = New System.Drawing.Point(560, 714)
+        Me.pnlFilterSources_Shows.BackColor = System.Drawing.Color.Transparent
+        Me.pnlFilterSources_Shows.Controls.Add(Me.pnlFilterSourcesMain_Shows)
+        Me.pnlFilterSources_Shows.Controls.Add(Me.pnlFilterSourcesTop_Shows)
+        Me.pnlFilterSources_Shows.Location = New System.Drawing.Point(400, 200)
         Me.pnlFilterSources_Shows.Name = "pnlFilterSources_Shows"
-        Me.pnlFilterSources_Shows.Size = New System.Drawing.Size(166, 146)
+        Me.pnlFilterSources_Shows.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterSources_Shows.TabIndex = 34
         Me.pnlFilterSources_Shows.Visible = false
         '
         'lblFilterSourcesClose_Shows
         '
+        Me.lblFilterSourcesClose_Shows.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblFilterSourcesClose_Shows.AutoSize = true
-        Me.lblFilterSourcesClose_Shows.BackColor = System.Drawing.Color.DimGray
+        Me.lblFilterSourcesClose_Shows.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterSourcesClose_Shows.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblFilterSourcesClose_Shows.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblFilterSourcesClose_Shows.ForeColor = System.Drawing.Color.White
-        Me.lblFilterSourcesClose_Shows.Location = New System.Drawing.Point(130, 2)
+        Me.lblFilterSourcesClose_Shows.Location = New System.Drawing.Point(153, 3)
         Me.lblFilterSourcesClose_Shows.Name = "lblFilterSourcesClose_Shows"
         Me.lblFilterSourcesClose_Shows.Size = New System.Drawing.Size(33, 13)
         Me.lblFilterSourcesClose_Shows.TabIndex = 24
@@ -1823,27 +1898,29 @@ Partial Class frmMain
         '
         'lblFilterSources_Shows
         '
-        Me.lblFilterSources_Shows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblFilterSources_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilterSources_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilterSources_Shows.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblFilterSources_Shows.AutoSize = true
+        Me.lblFilterSources_Shows.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterSources_Shows.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblFilterSources_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilterSources_Shows.Location = New System.Drawing.Point(1, 1)
+        Me.lblFilterSources_Shows.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterSources_Shows.Name = "lblFilterSources_Shows"
-        Me.lblFilterSources_Shows.Size = New System.Drawing.Size(162, 17)
+        Me.lblFilterSources_Shows.Size = New System.Drawing.Size(53, 13)
         Me.lblFilterSources_Shows.TabIndex = 23
         Me.lblFilterSources_Shows.Text = "Sources"
         Me.lblFilterSources_Shows.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'clbFilterSource_Shows
         '
+        Me.clbFilterSource_Shows.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.clbFilterSource_Shows.CheckOnClick = true
+        Me.clbFilterSource_Shows.Dock = System.Windows.Forms.DockStyle.Fill
         Me.clbFilterSource_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.clbFilterSource_Shows.FormattingEnabled = true
-        Me.clbFilterSource_Shows.Location = New System.Drawing.Point(1, 20)
+        Me.clbFilterSource_Shows.Location = New System.Drawing.Point(0, 0)
+        Me.clbFilterSource_Shows.Margin = New System.Windows.Forms.Padding(0)
         Me.clbFilterSource_Shows.Name = "clbFilterSource_Shows"
-        Me.clbFilterSource_Shows.Size = New System.Drawing.Size(162, 123)
+        Me.clbFilterSource_Shows.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterSource_Shows.TabIndex = 8
         Me.clbFilterSource_Shows.TabStop = false
         '
@@ -1852,8 +1929,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = false
         Me.dgvMovies.AllowUserToDeleteRows = false
         Me.dgvMovies.AllowUserToResizeRows = false
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2459,8 +2536,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = false
         Me.dgvMovieSets.AllowUserToDeleteRows = false
         Me.dgvMovieSets.AllowUserToResizeRows = false
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2593,8 +2670,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = false
         Me.dgvTVShows.AllowUserToDeleteRows = false
         Me.dgvTVShows.AllowUserToResizeRows = false
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2795,8 +2872,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = false
         Me.dgvTVSeasons.AllowUserToDeleteRows = false
         Me.dgvTVSeasons.AllowUserToResizeRows = false
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2941,8 +3018,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = false
         Me.dgvTVEpisodes.AllowUserToDeleteRows = false
         Me.dgvTVEpisodes.AllowUserToResizeRows = false
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -9588,66 +9665,210 @@ Partial Class frmMain
         '
         Me.tmrSearch_Shows.Interval = 250
         '
-        'pnlFilterGenresTop_Movies
+        'pnlFilterCountriesTop_Movies
         '
-        Me.pnlFilterGenresTop_Movies.AutoSize = true
-        Me.pnlFilterGenresTop_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.pnlFilterGenresTop_Movies.Controls.Add(Me.tblFilterGenresTop_Movies)
-        Me.pnlFilterGenresTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
-        Me.pnlFilterGenresTop_Movies.Location = New System.Drawing.Point(0, 0)
-        Me.pnlFilterGenresTop_Movies.Margin = New System.Windows.Forms.Padding(0)
-        Me.pnlFilterGenresTop_Movies.Name = "pnlFilterGenresTop_Movies"
-        Me.pnlFilterGenresTop_Movies.Size = New System.Drawing.Size(190, 20)
-        Me.pnlFilterGenresTop_Movies.TabIndex = 25
+        Me.pnlFilterCountriesTop_Movies.AutoSize = true
+        Me.pnlFilterCountriesTop_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.pnlFilterCountriesTop_Movies.Controls.Add(Me.tblFilterCountriesTop_Movies)
+        Me.pnlFilterCountriesTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlFilterCountriesTop_Movies.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFilterCountriesTop_Movies.Name = "pnlFilterCountriesTop_Movies"
+        Me.pnlFilterCountriesTop_Movies.Size = New System.Drawing.Size(189, 20)
+        Me.pnlFilterCountriesTop_Movies.TabIndex = 25
         '
-        'tblFilterGenresTop_Movies
+        'tblFilterCountriesTop_Movies
         '
-        Me.tblFilterGenresTop_Movies.AutoSize = true
-        Me.tblFilterGenresTop_Movies.ColumnCount = 3
-        Me.tblFilterGenresTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterGenresTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
-        Me.tblFilterGenresTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterGenresTop_Movies.Controls.Add(Me.lblFilterGenresClose_Movies, 2, 0)
-        Me.tblFilterGenresTop_Movies.Controls.Add(Me.lblFilterGenres_Movies, 0, 0)
-        Me.tblFilterGenresTop_Movies.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblFilterGenresTop_Movies.Location = New System.Drawing.Point(0, 0)
-        Me.tblFilterGenresTop_Movies.Name = "tblFilterGenresTop_Movies"
-        Me.tblFilterGenresTop_Movies.RowCount = 2
-        Me.tblFilterGenresTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblFilterGenresTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterGenresTop_Movies.Size = New System.Drawing.Size(190, 20)
-        Me.tblFilterGenresTop_Movies.TabIndex = 0
+        Me.tblFilterCountriesTop_Movies.AutoSize = true
+        Me.tblFilterCountriesTop_Movies.ColumnCount = 3
+        Me.tblFilterCountriesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterCountriesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.tblFilterCountriesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterCountriesTop_Movies.Controls.Add(Me.lblFilterCountries_Movies, 0, 0)
+        Me.tblFilterCountriesTop_Movies.Controls.Add(Me.lblFilterCountriesClose_Movies, 2, 0)
+        Me.tblFilterCountriesTop_Movies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterCountriesTop_Movies.Location = New System.Drawing.Point(0, 0)
+        Me.tblFilterCountriesTop_Movies.Name = "tblFilterCountriesTop_Movies"
+        Me.tblFilterCountriesTop_Movies.RowCount = 2
+        Me.tblFilterCountriesTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterCountriesTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterCountriesTop_Movies.Size = New System.Drawing.Size(189, 20)
+        Me.tblFilterCountriesTop_Movies.TabIndex = 0
         '
-        'pnlFilterGenresMain_Movies
+        'pnlFilterCountriesMain_Movies
         '
-        Me.pnlFilterGenresMain_Movies.AutoSize = true
-        Me.pnlFilterGenresMain_Movies.BackColor = System.Drawing.Color.Transparent
-        Me.pnlFilterGenresMain_Movies.Controls.Add(Me.tblFilterGenresMain_Movies)
-        Me.pnlFilterGenresMain_Movies.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlFilterGenresMain_Movies.Location = New System.Drawing.Point(0, 20)
-        Me.pnlFilterGenresMain_Movies.Margin = New System.Windows.Forms.Padding(0)
-        Me.pnlFilterGenresMain_Movies.Name = "pnlFilterGenresMain_Movies"
-        Me.pnlFilterGenresMain_Movies.Size = New System.Drawing.Size(190, 174)
-        Me.pnlFilterGenresMain_Movies.TabIndex = 26
+        Me.pnlFilterCountriesMain_Movies.AutoSize = true
+        Me.pnlFilterCountriesMain_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterCountriesMain_Movies.Controls.Add(Me.clbFilterCountries_Movies)
+        Me.pnlFilterCountriesMain_Movies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFilterCountriesMain_Movies.Location = New System.Drawing.Point(0, 20)
+        Me.pnlFilterCountriesMain_Movies.Margin = New System.Windows.Forms.Padding(0)
+        Me.pnlFilterCountriesMain_Movies.Name = "pnlFilterCountriesMain_Movies"
+        Me.pnlFilterCountriesMain_Movies.Size = New System.Drawing.Size(189, 172)
+        Me.pnlFilterCountriesMain_Movies.TabIndex = 26
         '
-        'tblFilterGenresMain_Movies
+        'pnlFilterSourcesTop_Movies
         '
-        Me.tblFilterGenresMain_Movies.AutoSize = true
-        Me.tblFilterGenresMain_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.tblFilterGenresMain_Movies.ColumnCount = 1
-        Me.tblFilterGenresMain_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterGenresMain_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblFilterGenresMain_Movies.Controls.Add(Me.clbFilterGenres_Movies, 0, 0)
-        Me.tblFilterGenresMain_Movies.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblFilterGenresMain_Movies.Location = New System.Drawing.Point(0, 0)
-        Me.tblFilterGenresMain_Movies.Margin = New System.Windows.Forms.Padding(0)
-        Me.tblFilterGenresMain_Movies.Name = "tblFilterGenresMain_Movies"
-        Me.tblFilterGenresMain_Movies.Padding = New System.Windows.Forms.Padding(1)
-        Me.tblFilterGenresMain_Movies.RowCount = 1
-        Me.tblFilterGenresMain_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterGenresMain_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblFilterGenresMain_Movies.Size = New System.Drawing.Size(190, 174)
-        Me.tblFilterGenresMain_Movies.TabIndex = 9
+        Me.pnlFilterSourcesTop_Movies.AutoSize = true
+        Me.pnlFilterSourcesTop_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.pnlFilterSourcesTop_Movies.Controls.Add(Me.tblFilterSourcesTop_Movies)
+        Me.pnlFilterSourcesTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlFilterSourcesTop_Movies.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFilterSourcesTop_Movies.Name = "pnlFilterSourcesTop_Movies"
+        Me.pnlFilterSourcesTop_Movies.Size = New System.Drawing.Size(189, 20)
+        Me.pnlFilterSourcesTop_Movies.TabIndex = 25
+        '
+        'tblFilterSourcesTop_Movies
+        '
+        Me.tblFilterSourcesTop_Movies.AutoSize = true
+        Me.tblFilterSourcesTop_Movies.ColumnCount = 3
+        Me.tblFilterSourcesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterSourcesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.tblFilterSourcesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterSourcesTop_Movies.Controls.Add(Me.lblFilterSources_Movies, 0, 0)
+        Me.tblFilterSourcesTop_Movies.Controls.Add(Me.lblFilterSourcesClose_Movies, 2, 0)
+        Me.tblFilterSourcesTop_Movies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterSourcesTop_Movies.Location = New System.Drawing.Point(0, 0)
+        Me.tblFilterSourcesTop_Movies.Name = "tblFilterSourcesTop_Movies"
+        Me.tblFilterSourcesTop_Movies.RowCount = 2
+        Me.tblFilterSourcesTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterSourcesTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterSourcesTop_Movies.Size = New System.Drawing.Size(189, 20)
+        Me.tblFilterSourcesTop_Movies.TabIndex = 0
+        '
+        'pnlFilterSourcesMain_Movies
+        '
+        Me.pnlFilterSourcesMain_Movies.AutoSize = true
+        Me.pnlFilterSourcesMain_Movies.BackColor = System.Drawing.Color.Transparent
+        Me.pnlFilterSourcesMain_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterSourcesMain_Movies.Controls.Add(Me.clbFilterSources_Movies)
+        Me.pnlFilterSourcesMain_Movies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFilterSourcesMain_Movies.Location = New System.Drawing.Point(0, 20)
+        Me.pnlFilterSourcesMain_Movies.Name = "pnlFilterSourcesMain_Movies"
+        Me.pnlFilterSourcesMain_Movies.Size = New System.Drawing.Size(189, 172)
+        Me.pnlFilterSourcesMain_Movies.TabIndex = 26
+        '
+        'pnlFilterDataFieldsTop_Movies
+        '
+        Me.pnlFilterDataFieldsTop_Movies.AutoSize = true
+        Me.pnlFilterDataFieldsTop_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.pnlFilterDataFieldsTop_Movies.Controls.Add(Me.tblFilterDataFieldsTop_Movies)
+        Me.pnlFilterDataFieldsTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlFilterDataFieldsTop_Movies.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFilterDataFieldsTop_Movies.Name = "pnlFilterDataFieldsTop_Movies"
+        Me.pnlFilterDataFieldsTop_Movies.Size = New System.Drawing.Size(189, 20)
+        Me.pnlFilterDataFieldsTop_Movies.TabIndex = 25
+        '
+        'tblFilterDataFieldsTop_Movies
+        '
+        Me.tblFilterDataFieldsTop_Movies.AutoSize = true
+        Me.tblFilterDataFieldsTop_Movies.ColumnCount = 3
+        Me.tblFilterDataFieldsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterDataFieldsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.tblFilterDataFieldsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterDataFieldsTop_Movies.Controls.Add(Me.lblFilterDataFields_Movies, 0, 0)
+        Me.tblFilterDataFieldsTop_Movies.Controls.Add(Me.lblFilterDataFieldsClose_Movies, 2, 0)
+        Me.tblFilterDataFieldsTop_Movies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterDataFieldsTop_Movies.Location = New System.Drawing.Point(0, 0)
+        Me.tblFilterDataFieldsTop_Movies.Name = "tblFilterDataFieldsTop_Movies"
+        Me.tblFilterDataFieldsTop_Movies.RowCount = 2
+        Me.tblFilterDataFieldsTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterDataFieldsTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterDataFieldsTop_Movies.Size = New System.Drawing.Size(189, 20)
+        Me.tblFilterDataFieldsTop_Movies.TabIndex = 26
+        '
+        'pnlFilterDataFieldsMain_Movies
+        '
+        Me.pnlFilterDataFieldsMain_Movies.AutoSize = true
+        Me.pnlFilterDataFieldsMain_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterDataFieldsMain_Movies.Controls.Add(Me.clbFilterDataFields_Movies)
+        Me.pnlFilterDataFieldsMain_Movies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFilterDataFieldsMain_Movies.Location = New System.Drawing.Point(0, 20)
+        Me.pnlFilterDataFieldsMain_Movies.Margin = New System.Windows.Forms.Padding(0)
+        Me.pnlFilterDataFieldsMain_Movies.Name = "pnlFilterDataFieldsMain_Movies"
+        Me.pnlFilterDataFieldsMain_Movies.Size = New System.Drawing.Size(189, 172)
+        Me.pnlFilterDataFieldsMain_Movies.TabIndex = 26
+        '
+        'pnlFilterGenresTop_Shows
+        '
+        Me.pnlFilterGenresTop_Shows.AutoSize = true
+        Me.pnlFilterGenresTop_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.pnlFilterGenresTop_Shows.Controls.Add(Me.tblFilterGenresTop_Shows)
+        Me.pnlFilterGenresTop_Shows.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlFilterGenresTop_Shows.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFilterGenresTop_Shows.Name = "pnlFilterGenresTop_Shows"
+        Me.pnlFilterGenresTop_Shows.Size = New System.Drawing.Size(189, 20)
+        Me.pnlFilterGenresTop_Shows.TabIndex = 25
+        '
+        'tblFilterGenresTop_Shows
+        '
+        Me.tblFilterGenresTop_Shows.AutoSize = true
+        Me.tblFilterGenresTop_Shows.ColumnCount = 3
+        Me.tblFilterGenresTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterGenresTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.tblFilterGenresTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterGenresTop_Shows.Controls.Add(Me.lblFilterGenres_Shows, 0, 0)
+        Me.tblFilterGenresTop_Shows.Controls.Add(Me.lblFilterGenresClose_Shows, 2, 0)
+        Me.tblFilterGenresTop_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterGenresTop_Shows.Location = New System.Drawing.Point(0, 0)
+        Me.tblFilterGenresTop_Shows.Name = "tblFilterGenresTop_Shows"
+        Me.tblFilterGenresTop_Shows.RowCount = 2
+        Me.tblFilterGenresTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterGenresTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterGenresTop_Shows.Size = New System.Drawing.Size(189, 20)
+        Me.tblFilterGenresTop_Shows.TabIndex = 0
+        '
+        'pnlFilterGenresMain_Shows
+        '
+        Me.pnlFilterGenresMain_Shows.AutoSize = true
+        Me.pnlFilterGenresMain_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterGenresMain_Shows.Controls.Add(Me.clbFilterGenres_Shows)
+        Me.pnlFilterGenresMain_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFilterGenresMain_Shows.Location = New System.Drawing.Point(0, 20)
+        Me.pnlFilterGenresMain_Shows.Margin = New System.Windows.Forms.Padding(0)
+        Me.pnlFilterGenresMain_Shows.Name = "pnlFilterGenresMain_Shows"
+        Me.pnlFilterGenresMain_Shows.Size = New System.Drawing.Size(189, 172)
+        Me.pnlFilterGenresMain_Shows.TabIndex = 26
+        '
+        'pnlFilterSourcesTop_Shows
+        '
+        Me.pnlFilterSourcesTop_Shows.AutoSize = true
+        Me.pnlFilterSourcesTop_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.pnlFilterSourcesTop_Shows.Controls.Add(Me.tblFilterSourcesTop_Shows)
+        Me.pnlFilterSourcesTop_Shows.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlFilterSourcesTop_Shows.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFilterSourcesTop_Shows.Name = "pnlFilterSourcesTop_Shows"
+        Me.pnlFilterSourcesTop_Shows.Size = New System.Drawing.Size(189, 20)
+        Me.pnlFilterSourcesTop_Shows.TabIndex = 25
+        '
+        'tblFilterSourcesTop_Shows
+        '
+        Me.tblFilterSourcesTop_Shows.AutoSize = true
+        Me.tblFilterSourcesTop_Shows.ColumnCount = 3
+        Me.tblFilterSourcesTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterSourcesTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.tblFilterSourcesTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterSourcesTop_Shows.Controls.Add(Me.lblFilterSources_Shows, 0, 0)
+        Me.tblFilterSourcesTop_Shows.Controls.Add(Me.lblFilterSourcesClose_Shows, 2, 0)
+        Me.tblFilterSourcesTop_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterSourcesTop_Shows.Location = New System.Drawing.Point(0, 0)
+        Me.tblFilterSourcesTop_Shows.Name = "tblFilterSourcesTop_Shows"
+        Me.tblFilterSourcesTop_Shows.RowCount = 2
+        Me.tblFilterSourcesTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterSourcesTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterSourcesTop_Shows.Size = New System.Drawing.Size(189, 20)
+        Me.tblFilterSourcesTop_Shows.TabIndex = 0
+        '
+        'pnlFilterSourcesMain_Shows
+        '
+        Me.pnlFilterSourcesMain_Shows.AutoSize = true
+        Me.pnlFilterSourcesMain_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterSourcesMain_Shows.Controls.Add(Me.clbFilterSource_Shows)
+        Me.pnlFilterSourcesMain_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFilterSourcesMain_Shows.Location = New System.Drawing.Point(0, 20)
+        Me.pnlFilterSourcesMain_Shows.Margin = New System.Windows.Forms.Padding(0)
+        Me.pnlFilterSourcesMain_Shows.Name = "pnlFilterSourcesMain_Shows"
+        Me.pnlFilterSourcesMain_Shows.Size = New System.Drawing.Size(189, 172)
+        Me.pnlFilterSourcesMain_Shows.TabIndex = 26
         '
         'frmMain
         '
@@ -9680,6 +9901,11 @@ Partial Class frmMain
         Me.pnlFilterCountries_Movies.PerformLayout
         Me.pnlFilterGenres_Movies.ResumeLayout(false)
         Me.pnlFilterGenres_Movies.PerformLayout
+        Me.pnlFilterGenresMain_Movies.ResumeLayout(false)
+        Me.pnlFilterGenresTop_Movies.ResumeLayout(false)
+        Me.pnlFilterGenresTop_Movies.PerformLayout
+        Me.tblFilterGenresTop_Movies.ResumeLayout(false)
+        Me.tblFilterGenresTop_Movies.PerformLayout
         Me.pnlFilterGenres_Shows.ResumeLayout(false)
         Me.pnlFilterGenres_Shows.PerformLayout
         Me.pnlFilterDataFields_Movies.ResumeLayout(false)
@@ -9863,13 +10089,31 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.ResumeLayout(false)
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlLoadSettings.ResumeLayout(false)
-        Me.pnlFilterGenresTop_Movies.ResumeLayout(false)
-        Me.pnlFilterGenresTop_Movies.PerformLayout
-        Me.tblFilterGenresTop_Movies.ResumeLayout(false)
-        Me.tblFilterGenresTop_Movies.PerformLayout
-        Me.pnlFilterGenresMain_Movies.ResumeLayout(false)
-        Me.pnlFilterGenresMain_Movies.PerformLayout
-        Me.tblFilterGenresMain_Movies.ResumeLayout(false)
+        Me.pnlFilterCountriesTop_Movies.ResumeLayout(false)
+        Me.pnlFilterCountriesTop_Movies.PerformLayout
+        Me.tblFilterCountriesTop_Movies.ResumeLayout(false)
+        Me.tblFilterCountriesTop_Movies.PerformLayout
+        Me.pnlFilterCountriesMain_Movies.ResumeLayout(false)
+        Me.pnlFilterSourcesTop_Movies.ResumeLayout(false)
+        Me.pnlFilterSourcesTop_Movies.PerformLayout
+        Me.tblFilterSourcesTop_Movies.ResumeLayout(false)
+        Me.tblFilterSourcesTop_Movies.PerformLayout
+        Me.pnlFilterSourcesMain_Movies.ResumeLayout(false)
+        Me.pnlFilterDataFieldsTop_Movies.ResumeLayout(false)
+        Me.pnlFilterDataFieldsTop_Movies.PerformLayout
+        Me.tblFilterDataFieldsTop_Movies.ResumeLayout(false)
+        Me.tblFilterDataFieldsTop_Movies.PerformLayout
+        Me.pnlFilterDataFieldsMain_Movies.ResumeLayout(false)
+        Me.pnlFilterGenresTop_Shows.ResumeLayout(false)
+        Me.pnlFilterGenresTop_Shows.PerformLayout
+        Me.tblFilterGenresTop_Shows.ResumeLayout(false)
+        Me.tblFilterGenresTop_Shows.PerformLayout
+        Me.pnlFilterGenresMain_Shows.ResumeLayout(false)
+        Me.pnlFilterSourcesTop_Shows.ResumeLayout(false)
+        Me.pnlFilterSourcesTop_Shows.PerformLayout
+        Me.tblFilterSourcesTop_Shows.ResumeLayout(false)
+        Me.tblFilterSourcesTop_Shows.PerformLayout
+        Me.pnlFilterSourcesMain_Shows.ResumeLayout(false)
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -10862,5 +11106,19 @@ End Sub
     Friend WithEvents pnlFilterGenresMain_Movies As System.Windows.Forms.Panel
     Friend WithEvents pnlFilterGenresTop_Movies As System.Windows.Forms.Panel
     Friend WithEvents tblFilterGenresTop_Movies As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents tblFilterGenresMain_Movies As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlFilterCountriesTop_Movies As System.Windows.Forms.Panel
+    Friend WithEvents tblFilterCountriesTop_Movies As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlFilterCountriesMain_Movies As System.Windows.Forms.Panel
+    Friend WithEvents pnlFilterSourcesMain_Movies As System.Windows.Forms.Panel
+    Friend WithEvents pnlFilterSourcesTop_Movies As System.Windows.Forms.Panel
+    Friend WithEvents tblFilterSourcesTop_Movies As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlFilterDataFieldsMain_Movies As System.Windows.Forms.Panel
+    Friend WithEvents pnlFilterDataFieldsTop_Movies As System.Windows.Forms.Panel
+    Friend WithEvents tblFilterDataFieldsTop_Movies As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlFilterGenresMain_Shows As System.Windows.Forms.Panel
+    Friend WithEvents pnlFilterGenresTop_Shows As System.Windows.Forms.Panel
+    Friend WithEvents tblFilterGenresTop_Shows As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlFilterSourcesTop_Shows As System.Windows.Forms.Panel
+    Friend WithEvents tblFilterSourcesTop_Shows As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlFilterSourcesMain_Shows As System.Windows.Forms.Panel
 End Class

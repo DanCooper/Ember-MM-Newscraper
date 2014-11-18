@@ -18956,7 +18956,9 @@ doCancel:
     End Sub
 
     Private Sub txtFilterGenre_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterGenre_Shows.Click
-        Me.pnlFilterGenres_Shows.Location = New Point(Me.gbFilterSpecific_Shows.Left + Me.txtFilterGenre_Shows.Left, (Me.pnlFilter_Shows.Top + Me.txtFilterGenre_Shows.Top + Me.gbFilterSpecific_Shows.Top) - Me.pnlFilterGenres_Shows.Height)
+        Me.pnlFilterGenres_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterGenre_Shows.Left + 1, _
+                                                       (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterSpecific_Shows.Top + Me.tblFilterSpecific_Shows.Top + Me.tblFilterSpecificData_Shows.Top + Me.txtFilterGenre_Shows.Top) - Me.pnlFilterGenres_Shows.Height)
+        Me.pnlFilterGenres_Shows.Width = Me.txtFilterGenre_Shows.Width
         If Me.pnlFilterGenres_Shows.Visible Then
             Me.pnlFilterGenres_Shows.Visible = False
         ElseIf Not Me.pnlFilterGenres_Shows.Tag.ToString = "NO" Then
@@ -18969,7 +18971,9 @@ doCancel:
     End Sub
 
     Private Sub txtFilterCountry_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterCountry_Movies.Click
-        Me.pnlFilterCountries_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterCountry_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterCountry_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterCountries_Movies.Height)
+        Me.pnlFilterCountries_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterCountry_Movies.Left + 1, _
+                                                       (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterCountry_Movies.Top) - Me.pnlFilterCountries_Movies.Height)
+        Me.pnlFilterCountries_Movies.Width = Me.txtFilterCountry_Movies.Width
         If Me.pnlFilterCountries_Movies.Visible Then
             Me.pnlFilterCountries_Movies.Visible = False
         ElseIf Not Me.pnlFilterCountries_Movies.Tag.ToString = "NO" Then
@@ -18982,7 +18986,9 @@ doCancel:
     End Sub
 
     Private Sub txtFilterDataField_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterDataField_Movies.Click
-        Me.pnlFilterDataFields_Movies.Location = New Point(Me.gbFilterSpecific_Shows.Left + Me.gbFilterDataField_Movies.Left + Me.txtFilterDataField_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterDataField_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.gbFilterDataField_Movies.Top) - Me.pnlFilterDataFields_Movies.Height)
+        Me.pnlFilterDataFields_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.gbFilterDataField_Movies.Left + Me.tblFilterDataField_Movies.Left + Me.txtFilterDataField_Movies.Left + 1, _
+                                                        (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.gbFilterDataField_Movies.Top + Me.tblFilterDataField_Movies.Top + Me.txtFilterDataField_Movies.Top) - Me.pnlFilterDataFields_Movies.Height)
+        Me.pnlFilterDataFields_Movies.Width = Me.txtFilterDataField_Movies.Width
         If Me.pnlFilterDataFields_Movies.Visible Then
             Me.pnlFilterDataFields_Movies.Visible = False
         ElseIf Not Me.pnlFilterDataFields_Movies.Tag.ToString = "NO" Then
@@ -18995,7 +19001,9 @@ doCancel:
     End Sub
 
     Private Sub txtFilterSource_Movies_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource_Movies.Click
-        Me.pnlFilterSources_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterSource_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterSource_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterSources_Movies.Height)
+        Me.pnlFilterSources_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterSource_Movies.Left + 1, _
+                                                       (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterSource_Movies.Top) - Me.pnlFilterSources_Movies.Height)
+        Me.pnlFilterSources_Movies.Width = Me.txtFilterSource_Movies.Width
         If Me.pnlFilterSources_Movies.Visible Then
             Me.pnlFilterSources_Movies.Visible = False
         ElseIf Not Me.pnlFilterSources_Movies.Tag.ToString = "NO" Then
@@ -19008,7 +19016,9 @@ doCancel:
     End Sub
 
     Private Sub txtFilterSource_Shows_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource_Shows.Click
-        Me.pnlFilterSources_Shows.Location = New Point(Me.gbFilterSpecific_Shows.Left + Me.txtFilterSource_Shows.Left, (Me.pnlFilter_Shows.Top + Me.txtFilterSource_Shows.Top + Me.gbFilterSpecific_Shows.Top) - Me.pnlFilterSources_Shows.Height)
+        Me.pnlFilterSources_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterSource_Shows.Left + 1, _
+                                                       (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterSpecific_Shows.Top + Me.tblFilterSpecific_Shows.Top + Me.tblFilterSpecificData_Shows.Top + Me.txtFilterSource_Shows.Top) - Me.pnlFilterSources_Shows.Height)
+        Me.pnlFilterSources_Shows.Width = Me.txtFilterSource_Shows.Width
         If Me.pnlFilterSources_Shows.Visible Then
             Me.pnlFilterSources_Shows.Visible = False
         ElseIf Not Me.pnlFilterSources_Shows.Tag.ToString = "NO" Then
