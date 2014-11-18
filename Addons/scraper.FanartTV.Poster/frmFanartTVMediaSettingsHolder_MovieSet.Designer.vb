@@ -39,14 +39,14 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.chkScrapeClearLogo = New System.Windows.Forms.CheckBox()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblAPIHint = New System.Windows.Forms.Label()
         Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
-        Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
+        Me.lblAPIHint = New System.Windows.Forms.Label()
         Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
-        Me.lblAPIKey = New System.Windows.Forms.Label()
+        Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
+        Me.lblAPIKey = New System.Windows.Forms.Label()
         Me.lblPrefLanguage = New System.Windows.Forms.Label()
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.pbFANARTTV = New System.Windows.Forms.PictureBox()
@@ -322,19 +322,6 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.tblScraperOpts.Size = New System.Drawing.Size(426, 162)
         Me.tblScraperOpts.TabIndex = 98
         '
-        'lblAPIHint
-        '
-        Me.lblAPIHint.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.lblAPIHint, 4)
-        Me.lblAPIHint.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblAPIHint.Location = New System.Drawing.Point(3, 49)
-        Me.lblAPIHint.MaximumSize = New System.Drawing.Size(430, 0)
-        Me.lblAPIHint.Name = "lblAPIHint"
-        Me.lblAPIHint.Size = New System.Drawing.Size(407, 26)
-        Me.lblAPIHint.TabIndex = 23
-        Me.lblAPIHint.Text = "Using a Personal API Key reduces the time you have to wait for new images to show" & _
-    " up from 7 days to 48 hours."
-        '
         'chkGetBlankImages
         '
         Me.chkGetBlankImages.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -350,18 +337,18 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.chkGetBlankImages.Text = "Also Get Blank Images"
         Me.chkGetBlankImages.UseVisualStyleBackColor = True
         '
-        'chkPrefLanguageOnly
+        'lblAPIHint
         '
-        Me.chkPrefLanguageOnly.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkPrefLanguageOnly.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkPrefLanguageOnly, 2)
-        Me.chkPrefLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPrefLanguageOnly.Location = New System.Drawing.Point(171, 94)
-        Me.chkPrefLanguageOnly.Name = "chkPrefLanguageOnly"
-        Me.chkPrefLanguageOnly.Size = New System.Drawing.Size(248, 17)
-        Me.chkPrefLanguageOnly.TabIndex = 21
-        Me.chkPrefLanguageOnly.Text = "Only Get Images for the Selected Language"
-        Me.chkPrefLanguageOnly.UseVisualStyleBackColor = True
+        Me.lblAPIHint.AutoSize = True
+        Me.tblScraperOpts.SetColumnSpan(Me.lblAPIHint, 4)
+        Me.lblAPIHint.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblAPIHint.Location = New System.Drawing.Point(3, 49)
+        Me.lblAPIHint.MaximumSize = New System.Drawing.Size(430, 0)
+        Me.lblAPIHint.Name = "lblAPIHint"
+        Me.lblAPIHint.Size = New System.Drawing.Size(407, 26)
+        Me.lblAPIHint.TabIndex = 23
+        Me.lblAPIHint.Text = "Using a Personal API Key reduces the time you have to wait for new images to show" & _
+    " up from 7 days to 48 hours."
         '
         'chkGetEnglishImages
         '
@@ -378,17 +365,18 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.chkGetEnglishImages.Text = "Also Get English Images"
         Me.chkGetEnglishImages.UseVisualStyleBackColor = True
         '
-        'lblAPIKey
+        'chkPrefLanguageOnly
         '
-        Me.lblAPIKey.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblAPIKey.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.lblAPIKey, 2)
-        Me.lblAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblAPIKey.Location = New System.Drawing.Point(3, 3)
-        Me.lblAPIKey.Name = "lblAPIKey"
-        Me.lblAPIKey.Size = New System.Drawing.Size(141, 13)
-        Me.lblAPIKey.TabIndex = 0
-        Me.lblAPIKey.Text = "Fanart.tv Personal API Key:"
+        Me.chkPrefLanguageOnly.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkPrefLanguageOnly.AutoSize = True
+        Me.tblScraperOpts.SetColumnSpan(Me.chkPrefLanguageOnly, 2)
+        Me.chkPrefLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPrefLanguageOnly.Location = New System.Drawing.Point(171, 94)
+        Me.chkPrefLanguageOnly.Name = "chkPrefLanguageOnly"
+        Me.chkPrefLanguageOnly.Size = New System.Drawing.Size(248, 17)
+        Me.chkPrefLanguageOnly.TabIndex = 21
+        Me.chkPrefLanguageOnly.Text = "Only Get Images for the Selected Language"
+        Me.chkPrefLanguageOnly.UseVisualStyleBackColor = True
         '
         'btnUnlockAPI
         '
@@ -424,6 +412,18 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.cbPrefLanguage.Name = "cbPrefLanguage"
         Me.cbPrefLanguage.Size = New System.Drawing.Size(45, 21)
         Me.cbPrefLanguage.TabIndex = 8
+        '
+        'lblAPIKey
+        '
+        Me.lblAPIKey.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblAPIKey.AutoSize = True
+        Me.tblScraperOpts.SetColumnSpan(Me.lblAPIKey, 2)
+        Me.lblAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAPIKey.Location = New System.Drawing.Point(3, 3)
+        Me.lblAPIKey.Name = "lblAPIKey"
+        Me.lblAPIKey.Size = New System.Drawing.Size(141, 13)
+        Me.lblAPIKey.TabIndex = 0
+        Me.lblAPIKey.Text = "Fanart.tv Personal API Key:"
         '
         'lblPrefLanguage
         '
@@ -535,6 +535,7 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.tblSettingsTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsTop.Name = "tblSettingsTop"
+        Me.tblSettingsTop.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
         Me.tblSettingsTop.RowCount = 2
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -576,7 +577,7 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         '
         Me.chkEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkEnabled.AutoSize = True
-        Me.chkEnabled.Location = New System.Drawing.Point(3, 6)
+        Me.chkEnabled.Location = New System.Drawing.Point(8, 6)
         Me.chkEnabled.Name = "chkEnabled"
         Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
         Me.chkEnabled.TabIndex = 0

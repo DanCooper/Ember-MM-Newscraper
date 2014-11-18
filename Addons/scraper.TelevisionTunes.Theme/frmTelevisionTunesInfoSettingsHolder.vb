@@ -38,7 +38,7 @@ Public Class frmTelevisionTunesInfoSettingsHolder
         If order < ModulesManager.Instance.externalScrapersModules_Theme_TV.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.AssemblyName = TelevisionTunes_Theme._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
@@ -48,13 +48,13 @@ Public Class frmTelevisionTunesInfoSettingsHolder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.AssemblyName = TelevisionTunes_Theme._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
     Public Sub New()
@@ -74,9 +74,9 @@ Public Class frmTelevisionTunesInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
 
 #End Region 'Methods

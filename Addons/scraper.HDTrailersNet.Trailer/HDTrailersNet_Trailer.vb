@@ -110,7 +110,7 @@ Public Class HDTrailerdNet_Trailer
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmHDTrailersNetTrailerSettingsHolder
         LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkEnabled.Checked = _ScraperEnabled
         SPanel.Text = "HD-trailers.net"
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Prefix = "HDTrailersNetTrailer_"

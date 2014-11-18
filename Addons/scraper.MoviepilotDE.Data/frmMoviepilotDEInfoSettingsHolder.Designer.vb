@@ -128,7 +128,7 @@ Partial Class frmMoviepilotDEInfoSettingsHolder
         Me.chkEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkEnabled.AutoSize = True
         Me.chkEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEnabled.Location = New System.Drawing.Point(3, 6)
+        Me.chkEnabled.Location = New System.Drawing.Point(8, 6)
         Me.chkEnabled.Name = "chkEnabled"
         Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
         Me.chkEnabled.TabIndex = 0
@@ -162,6 +162,7 @@ Partial Class frmMoviepilotDEInfoSettingsHolder
         Me.tblSettingsTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsTop.Name = "tblSettingsTop"
+        Me.tblSettingsTop.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
         Me.tblSettingsTop.RowCount = 2
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())

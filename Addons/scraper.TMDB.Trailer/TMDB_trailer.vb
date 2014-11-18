@@ -109,7 +109,7 @@ Public Class TMDB_Trailer
         Dim Spanel As New Containers.SettingsPanel
         _setup = New frmTMDBTrailerSettingsHolder
         LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.txtTMDBApiKey.Text = strPrivateAPIKey
         _setup.cbTMDBPrefLanguage.Text = _MySettings.PrefLanguage
         _setup.chkFallBackEng.Checked = _MySettings.FallBackEng

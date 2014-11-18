@@ -24,26 +24,26 @@ Partial Class frmTelevisionTunesInfoSettingsHolder
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTelevisionTunesInfoSettingsHolder))
         Me.lblVersion = New System.Windows.Forms.Label()
-        Me.cbEnabled = New System.Windows.Forms.CheckBox()
+        Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.btnDown = New System.Windows.Forms.Button()
+        Me.lblScraperOrder = New System.Windows.Forms.Label()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.pnlSettings = New System.Windows.Forms.Panel()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
-        Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
-        Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
+        Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.pbIconBottom = New System.Windows.Forms.PictureBox()
+        Me.lblInfoBottom = New System.Windows.Forms.Label()
         Me.pnlSettingsTop.SuspendLayout()
+        Me.tblSettingsTop.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlSettingsMain.SuspendLayout()
         Me.pnlSettingsBottom.SuspendLayout()
         Me.tblSettingsBottom.SuspendLayout()
-        Me.tblSettingsTop.SuspendLayout()
-        Me.pnlSettingsMain.SuspendLayout()
+        CType(Me.pbIconBottom, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'lblVersion
@@ -54,17 +54,17 @@ Partial Class frmTelevisionTunesInfoSettingsHolder
         Me.lblVersion.TabIndex = 74
         Me.lblVersion.Text = "Version:"
         '
-        'cbEnabled
+        'chkEnabled
         '
-        Me.cbEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbEnabled.AutoSize = True
-        Me.cbEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbEnabled.Location = New System.Drawing.Point(3, 6)
-        Me.cbEnabled.Name = "cbEnabled"
-        Me.cbEnabled.Size = New System.Drawing.Size(68, 17)
-        Me.cbEnabled.TabIndex = 0
-        Me.cbEnabled.Text = "Enabled"
-        Me.cbEnabled.UseVisualStyleBackColor = True
+        Me.chkEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkEnabled.AutoSize = True
+        Me.chkEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEnabled.Location = New System.Drawing.Point(8, 6)
+        Me.chkEnabled.Name = "chkEnabled"
+        Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
+        Me.chkEnabled.TabIndex = 0
+        Me.chkEnabled.Text = "Enabled"
+        Me.chkEnabled.UseVisualStyleBackColor = True
         '
         'pnlSettingsTop
         '
@@ -77,16 +77,28 @@ Partial Class frmTelevisionTunesInfoSettingsHolder
         Me.pnlSettingsTop.Size = New System.Drawing.Size(384, 29)
         Me.pnlSettingsTop.TabIndex = 0
         '
-        'Label2
+        'tblSettingsTop
         '
-        Me.Label2.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(265, 8)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(58, 12)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Scraper order"
+        Me.tblSettingsTop.AutoSize = True
+        Me.tblSettingsTop.ColumnCount = 5
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsTop.Controls.Add(Me.btnDown, 4, 0)
+        Me.tblSettingsTop.Controls.Add(Me.lblScraperOrder, 2, 0)
+        Me.tblSettingsTop.Controls.Add(Me.btnUp, 3, 0)
+        Me.tblSettingsTop.Controls.Add(Me.chkEnabled, 0, 0)
+        Me.tblSettingsTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettingsTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettingsTop.Name = "tblSettingsTop"
+        Me.tblSettingsTop.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
+        Me.tblSettingsTop.RowCount = 2
+        Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsTop.Size = New System.Drawing.Size(384, 29)
+        Me.tblSettingsTop.TabIndex = 98
         '
         'btnDown
         '
@@ -97,6 +109,17 @@ Partial Class frmTelevisionTunesInfoSettingsHolder
         Me.btnDown.Size = New System.Drawing.Size(23, 23)
         Me.btnDown.TabIndex = 3
         Me.btnDown.UseVisualStyleBackColor = True
+        '
+        'lblScraperOrder
+        '
+        Me.lblScraperOrder.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblScraperOrder.AutoSize = True
+        Me.lblScraperOrder.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblScraperOrder.Location = New System.Drawing.Point(265, 8)
+        Me.lblScraperOrder.Name = "lblScraperOrder"
+        Me.lblScraperOrder.Size = New System.Drawing.Size(58, 12)
+        Me.lblScraperOrder.TabIndex = 1
+        Me.lblScraperOrder.Text = "Scraper order"
         '
         'btnUp
         '
@@ -119,81 +142,6 @@ Partial Class frmTelevisionTunesInfoSettingsHolder
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(384, 261)
         Me.pnlSettings.TabIndex = 0
-        '
-        'Label1
-        '
-        Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.Blue
-        Me.Label1.Location = New System.Drawing.Point(39, 6)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(205, 24)
-        Me.Label1.TabIndex = 4
-        Me.Label1.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
-    "for more options."
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(3, 3)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 96
-        Me.PictureBox1.TabStop = False
-        '
-        'pnlSettingsBottom
-        '
-        Me.pnlSettingsBottom.AutoSize = True
-        Me.pnlSettingsBottom.Controls.Add(Me.tblSettingsBottom)
-        Me.pnlSettingsBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlSettingsBottom.Location = New System.Drawing.Point(0, 224)
-        Me.pnlSettingsBottom.Name = "pnlSettingsBottom"
-        Me.pnlSettingsBottom.Size = New System.Drawing.Size(384, 37)
-        Me.pnlSettingsBottom.TabIndex = 97
-        '
-        'tblSettingsBottom
-        '
-        Me.tblSettingsBottom.AutoSize = True
-        Me.tblSettingsBottom.ColumnCount = 3
-        Me.tblSettingsBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsBottom.Controls.Add(Me.PictureBox1, 0, 0)
-        Me.tblSettingsBottom.Controls.Add(Me.Label1, 1, 0)
-        Me.tblSettingsBottom.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblSettingsBottom.Location = New System.Drawing.Point(0, 0)
-        Me.tblSettingsBottom.Name = "tblSettingsBottom"
-        Me.tblSettingsBottom.RowCount = 2
-        Me.tblSettingsBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsBottom.Size = New System.Drawing.Size(384, 37)
-        Me.tblSettingsBottom.TabIndex = 0
-        '
-        'tblSettingsTop
-        '
-        Me.tblSettingsTop.AutoSize = True
-        Me.tblSettingsTop.ColumnCount = 5
-        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsTop.Controls.Add(Me.btnDown, 4, 0)
-        Me.tblSettingsTop.Controls.Add(Me.Label2, 2, 0)
-        Me.tblSettingsTop.Controls.Add(Me.btnUp, 3, 0)
-        Me.tblSettingsTop.Controls.Add(Me.cbEnabled, 0, 0)
-        Me.tblSettingsTop.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblSettingsTop.Location = New System.Drawing.Point(0, 0)
-        Me.tblSettingsTop.Name = "tblSettingsTop"
-        Me.tblSettingsTop.RowCount = 2
-        Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsTop.Size = New System.Drawing.Size(384, 29)
-        Me.tblSettingsTop.TabIndex = 98
         '
         'pnlSettingsMain
         '
@@ -221,6 +169,59 @@ Partial Class frmTelevisionTunesInfoSettingsHolder
         Me.tblSettingsMain.Size = New System.Drawing.Size(384, 195)
         Me.tblSettingsMain.TabIndex = 0
         '
+        'pnlSettingsBottom
+        '
+        Me.pnlSettingsBottom.AutoSize = True
+        Me.pnlSettingsBottom.Controls.Add(Me.tblSettingsBottom)
+        Me.pnlSettingsBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlSettingsBottom.Location = New System.Drawing.Point(0, 224)
+        Me.pnlSettingsBottom.Name = "pnlSettingsBottom"
+        Me.pnlSettingsBottom.Size = New System.Drawing.Size(384, 37)
+        Me.pnlSettingsBottom.TabIndex = 97
+        '
+        'tblSettingsBottom
+        '
+        Me.tblSettingsBottom.AutoSize = True
+        Me.tblSettingsBottom.ColumnCount = 3
+        Me.tblSettingsBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsBottom.Controls.Add(Me.pbIconBottom, 0, 0)
+        Me.tblSettingsBottom.Controls.Add(Me.lblInfoBottom, 1, 0)
+        Me.tblSettingsBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettingsBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettingsBottom.Name = "tblSettingsBottom"
+        Me.tblSettingsBottom.RowCount = 2
+        Me.tblSettingsBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsBottom.Size = New System.Drawing.Size(384, 37)
+        Me.tblSettingsBottom.TabIndex = 0
+        '
+        'pbIconBottom
+        '
+        Me.pbIconBottom.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.pbIconBottom.Image = CType(resources.GetObject("pbIconBottom.Image"), System.Drawing.Image)
+        Me.pbIconBottom.Location = New System.Drawing.Point(3, 3)
+        Me.pbIconBottom.Name = "pbIconBottom"
+        Me.pbIconBottom.Size = New System.Drawing.Size(30, 31)
+        Me.pbIconBottom.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbIconBottom.TabIndex = 96
+        Me.pbIconBottom.TabStop = False
+        '
+        'lblInfoBottom
+        '
+        Me.lblInfoBottom.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblInfoBottom.AutoSize = True
+        Me.lblInfoBottom.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblInfoBottom.ForeColor = System.Drawing.Color.Blue
+        Me.lblInfoBottom.Location = New System.Drawing.Point(39, 6)
+        Me.lblInfoBottom.Name = "lblInfoBottom"
+        Me.lblInfoBottom.Size = New System.Drawing.Size(205, 24)
+        Me.lblInfoBottom.TabIndex = 4
+        Me.lblInfoBottom.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
+    "for more options."
+        Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'frmTelevisionTunesInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -240,30 +241,30 @@ Partial Class frmTelevisionTunesInfoSettingsHolder
         Me.Text = "Scraper Setup"
         Me.pnlSettingsTop.ResumeLayout(False)
         Me.pnlSettingsTop.PerformLayout()
+        Me.tblSettingsTop.ResumeLayout(False)
+        Me.tblSettingsTop.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
         Me.pnlSettings.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlSettingsMain.ResumeLayout(False)
+        Me.pnlSettingsMain.PerformLayout()
         Me.pnlSettingsBottom.ResumeLayout(False)
         Me.pnlSettingsBottom.PerformLayout()
         Me.tblSettingsBottom.ResumeLayout(False)
         Me.tblSettingsBottom.PerformLayout()
-        Me.tblSettingsTop.ResumeLayout(False)
-        Me.tblSettingsTop.PerformLayout()
-        Me.pnlSettingsMain.ResumeLayout(False)
-        Me.pnlSettingsMain.PerformLayout()
+        CType(Me.pbIconBottom, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
     Friend WithEvents lblVersion As System.Windows.Forms.Label
-    Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSettingsTop As System.Windows.Forms.Panel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents lblScraperOrder As System.Windows.Forms.Label
+    Friend WithEvents lblInfoBottom As System.Windows.Forms.Label
+    Friend WithEvents pbIconBottom As System.Windows.Forms.PictureBox
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel

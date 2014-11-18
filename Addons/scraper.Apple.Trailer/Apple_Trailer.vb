@@ -110,7 +110,7 @@ Public Class Apple_Trailer
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmAppleTrailerSettingsHolder
         LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.cbTrailerPrefQual.Text = _MySettings.TrailerPrefQual
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")

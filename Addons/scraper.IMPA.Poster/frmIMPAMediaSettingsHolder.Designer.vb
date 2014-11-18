@@ -24,25 +24,25 @@ Partial Class frmIMPAMediaSettingsHolder
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmIMPAMediaSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel()
+        Me.pnlSettingsMain = New System.Windows.Forms.Panel()
+        Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.lblInfoBottom = New System.Windows.Forms.Label()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
-        Me.lblScraperOrder = New System.Windows.Forms.Label()
+        Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.btnDown = New System.Windows.Forms.Button()
+        Me.lblScraperOrder = New System.Windows.Forms.Label()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
-        Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
-        Me.pnlSettingsMain = New System.Windows.Forms.Panel()
-        Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlSettings.SuspendLayout()
+        Me.pnlSettingsMain.SuspendLayout()
         Me.pnlSettingsBottom.SuspendLayout()
         Me.tblSettingsBottom.SuspendLayout()
         CType(Me.pbIconBottom, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
-        Me.pnlSettingsMain.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -56,6 +56,32 @@ Partial Class frmIMPAMediaSettingsHolder
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(384, 261)
         Me.pnlSettings.TabIndex = 0
+        '
+        'pnlSettingsMain
+        '
+        Me.pnlSettingsMain.AutoSize = True
+        Me.pnlSettingsMain.Controls.Add(Me.tblSettingsMain)
+        Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 29)
+        Me.pnlSettingsMain.Name = "pnlSettingsMain"
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(384, 195)
+        Me.pnlSettingsMain.TabIndex = 96
+        '
+        'tblSettingsMain
+        '
+        Me.tblSettingsMain.AutoScroll = True
+        Me.tblSettingsMain.AutoSize = True
+        Me.tblSettingsMain.ColumnCount = 2
+        Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettingsMain.Name = "tblSettingsMain"
+        Me.tblSettingsMain.RowCount = 2
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblSettingsMain.Size = New System.Drawing.Size(384, 195)
+        Me.tblSettingsMain.TabIndex = 0
         '
         'pnlSettingsBottom
         '
@@ -121,48 +147,6 @@ Partial Class frmIMPAMediaSettingsHolder
         Me.pnlSettingsTop.Size = New System.Drawing.Size(384, 29)
         Me.pnlSettingsTop.TabIndex = 0
         '
-        'lblScraperOrder
-        '
-        Me.lblScraperOrder.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblScraperOrder.AutoSize = True
-        Me.lblScraperOrder.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblScraperOrder.Location = New System.Drawing.Point(265, 8)
-        Me.lblScraperOrder.Name = "lblScraperOrder"
-        Me.lblScraperOrder.Size = New System.Drawing.Size(58, 12)
-        Me.lblScraperOrder.TabIndex = 1
-        Me.lblScraperOrder.Text = "Scraper order"
-        '
-        'btnDown
-        '
-        Me.btnDown.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
-        Me.btnDown.Location = New System.Drawing.Point(358, 3)
-        Me.btnDown.Name = "btnDown"
-        Me.btnDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnDown.TabIndex = 3
-        Me.btnDown.UseVisualStyleBackColor = True
-        '
-        'btnUp
-        '
-        Me.btnUp.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
-        Me.btnUp.Location = New System.Drawing.Point(329, 3)
-        Me.btnUp.Name = "btnUp"
-        Me.btnUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnUp.TabIndex = 2
-        Me.btnUp.UseVisualStyleBackColor = True
-        '
-        'chkEnabled
-        '
-        Me.chkEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkEnabled.AutoSize = True
-        Me.chkEnabled.Location = New System.Drawing.Point(3, 6)
-        Me.chkEnabled.Name = "chkEnabled"
-        Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
-        Me.chkEnabled.TabIndex = 0
-        Me.chkEnabled.Text = "Enabled"
-        Me.chkEnabled.UseVisualStyleBackColor = True
-        '
         'tblSettingsTop
         '
         Me.tblSettingsTop.AutoSize = True
@@ -179,37 +163,54 @@ Partial Class frmIMPAMediaSettingsHolder
         Me.tblSettingsTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsTop.Name = "tblSettingsTop"
+        Me.tblSettingsTop.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
         Me.tblSettingsTop.RowCount = 2
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.Size = New System.Drawing.Size(384, 29)
         Me.tblSettingsTop.TabIndex = 96
         '
-        'pnlSettingsMain
+        'btnDown
         '
-        Me.pnlSettingsMain.AutoSize = True
-        Me.pnlSettingsMain.Controls.Add(Me.tblSettingsMain)
-        Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 29)
-        Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(384, 195)
-        Me.pnlSettingsMain.TabIndex = 96
+        Me.btnDown.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
+        Me.btnDown.Location = New System.Drawing.Point(358, 3)
+        Me.btnDown.Name = "btnDown"
+        Me.btnDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnDown.TabIndex = 3
+        Me.btnDown.UseVisualStyleBackColor = True
         '
-        'tblSettingsMain
+        'lblScraperOrder
         '
-        Me.tblSettingsMain.AutoScroll = True
-        Me.tblSettingsMain.AutoSize = True
-        Me.tblSettingsMain.ColumnCount = 2
-        Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
-        Me.tblSettingsMain.Name = "tblSettingsMain"
-        Me.tblSettingsMain.RowCount = 2
-        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblSettingsMain.Size = New System.Drawing.Size(384, 195)
-        Me.tblSettingsMain.TabIndex = 0
+        Me.lblScraperOrder.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblScraperOrder.AutoSize = True
+        Me.lblScraperOrder.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblScraperOrder.Location = New System.Drawing.Point(265, 8)
+        Me.lblScraperOrder.Name = "lblScraperOrder"
+        Me.lblScraperOrder.Size = New System.Drawing.Size(58, 12)
+        Me.lblScraperOrder.TabIndex = 1
+        Me.lblScraperOrder.Text = "Scraper order"
+        '
+        'btnUp
+        '
+        Me.btnUp.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
+        Me.btnUp.Location = New System.Drawing.Point(329, 3)
+        Me.btnUp.Name = "btnUp"
+        Me.btnUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnUp.TabIndex = 2
+        Me.btnUp.UseVisualStyleBackColor = True
+        '
+        'chkEnabled
+        '
+        Me.chkEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkEnabled.AutoSize = True
+        Me.chkEnabled.Location = New System.Drawing.Point(8, 6)
+        Me.chkEnabled.Name = "chkEnabled"
+        Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
+        Me.chkEnabled.TabIndex = 0
+        Me.chkEnabled.Text = "Enabled"
+        Me.chkEnabled.UseVisualStyleBackColor = True
         '
         'frmIMPAMediaSettingsHolder
         '
@@ -229,6 +230,8 @@ Partial Class frmIMPAMediaSettingsHolder
         Me.Text = "Scraper Setup"
         Me.pnlSettings.ResumeLayout(False)
         Me.pnlSettings.PerformLayout()
+        Me.pnlSettingsMain.ResumeLayout(False)
+        Me.pnlSettingsMain.PerformLayout()
         Me.pnlSettingsBottom.ResumeLayout(False)
         Me.pnlSettingsBottom.PerformLayout()
         Me.tblSettingsBottom.ResumeLayout(False)
@@ -238,8 +241,6 @@ Partial Class frmIMPAMediaSettingsHolder
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)
         Me.tblSettingsTop.PerformLayout()
-        Me.pnlSettingsMain.ResumeLayout(False)
-        Me.pnlSettingsMain.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

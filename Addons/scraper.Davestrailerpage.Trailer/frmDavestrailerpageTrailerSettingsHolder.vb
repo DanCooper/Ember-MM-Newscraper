@@ -40,7 +40,7 @@ Public Class frmDavestrailerpageTrailerSettingsHolder
         If order < ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Davestrailerpage_Trailer._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
@@ -50,13 +50,13 @@ Public Class frmDavestrailerpageTrailerSettingsHolder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Davestrailerpage_Trailer._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
+            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
     Private Sub cbTrailerPrefQual_SelectedIndexChanged(sender As Object, e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
@@ -80,9 +80,9 @@ Public Class frmDavestrailerpageTrailerSettingsHolder
     End Sub
 
     Sub SetUp()
-        Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
 
 #End Region 'Methods

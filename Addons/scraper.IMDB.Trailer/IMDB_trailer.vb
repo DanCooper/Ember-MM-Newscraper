@@ -111,7 +111,7 @@ Public Class IMDB_Trailer
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmIMDBTrailerSettingsHolder
         LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkEnabled.Checked = _ScraperEnabled
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(885, "IMDB")

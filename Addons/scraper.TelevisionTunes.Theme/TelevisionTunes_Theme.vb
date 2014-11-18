@@ -104,7 +104,7 @@ Public Class TelevisionTunes_Theme
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmTelevisionTunesInfoSettingsHolder
         LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkEnabled.Checked = _ScraperEnabled
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
