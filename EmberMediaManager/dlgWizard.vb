@@ -18,7 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 720; 570
+' # Dialog size: 750; 570
 ' # Enlarge it to see all the panels.
 
 Imports System.IO
@@ -39,13 +39,13 @@ Public Class dlgWizard
 
     Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
         Select Case True
-            Case Me.pnlMovieSource.Visible
+            Case Me.pnlMovieSources.Visible
                 Me.btnBack.Enabled = False
-                Me.pnlMovieSource.Visible = False
+                Me.pnlMovieSources.Visible = False
                 Me.pnlWelcome.Visible = True
             Case Me.pnlMovieSettings.Visible
                 Me.pnlMovieSettings.Visible = False
-                Me.pnlMovieSource.Visible = True
+                Me.pnlMovieSources.Visible = True
             Case Me.pnlMovieSetSettings.Visible
                 Me.pnlMovieSetSettings.Visible = False
                 Me.pnlMovieSettings.Visible = True
@@ -90,9 +90,9 @@ Public Class dlgWizard
             Case Me.pnlWelcome.Visible
                 Me.btnBack.Enabled = True
                 Me.pnlWelcome.Visible = False
-                Me.pnlMovieSource.Visible = True
-            Case Me.pnlMovieSource.Visible
-                Me.pnlMovieSource.Visible = False
+                Me.pnlMovieSources.Visible = True
+            Case Me.pnlMovieSources.Visible
+                Me.pnlMovieSources.Visible = False
                 Me.pnlMovieSettings.Visible = True
             Case Me.pnlMovieSettings.Visible
                 Me.pnlMovieSettings.Visible = False
@@ -123,18 +123,18 @@ Public Class dlgWizard
         Me.RemoveTVSource()
     End Sub
 
-    Private Sub btnMovieMoviesetsBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieSetMSAAPathBrowse.Click
+    Private Sub btnMovieSetPathMSAABrowse_Click(sender As Object, e As EventArgs) Handles btnMovieSetPathMSAABrowse.Click
         Try
             With Me.fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                        Me.txtMovieSetMSAAPath.Text = .SelectedPath.ToString
+                        Me.txtMovieSetPathMSAA.Text = .SelectedPath.ToString
                     End If
                 End If
             End With
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -160,59 +160,32 @@ Public Class dlgWizard
 
     Private Sub chkMovieUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseBoxee.CheckedChanged
 
-        'Me.chkActorThumbsBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkMovieBannerBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkClearArtBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkClearLogoBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkExtrafanartBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkExtrathumbsBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkDiscArtBoxee.Enabled = Me.chkMovieUseBoxee.Checked
         Me.chkMovieFanartBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkLandscapeBoxee.Enabled = Me.chkMovieUseBoxee.Checked
         Me.chkMovieNFOBoxee.Enabled = Me.chkMovieUseBoxee.Checked
         Me.chkMoviePosterBoxee.Enabled = Me.chkMovieUseBoxee.Checked
-        'Me.chkMovieTrailerBoxee.Enabled = Me.chkMovieUseBoxee.Checked
 
         If Not Me.chkMovieUseBoxee.Checked Then
-            ' Me.chkActorThumbsBoxee.Checked = False
-            'Me.chkMovieBannerBoxee.Checked = False
-            'Me.chkClearArtBoxee.Checked = False
-            'Me.chkClearLogoBoxee.Checked = False
-            'Me.chkDiscArtBoxee.Checked = False
-            'Me.chkExtrafanartBoxee.Checked = False
-            'Me.chkExtrathumbsBoxee.Checked = False
             Me.chkMovieFanartBoxee.Checked = False
-            'Me.chkLandscapeBoxee.Checked = False
             Me.chkMovieNFOBoxee.Checked = False
             Me.chkMoviePosterBoxee.Checked = False
-            'Me.chkMovieTrailerBoxee.Checked = False
         Else
-            'Me.chkActorThumbsBoxee.Checked = True
-            'Me.chkMovieBannerBoxee.Checked = True
-            'Me.chkClearArtBoxee.Checked = True
-            'Me.chkClearLogoBoxee.Checked = True
-            'Me.chkDiscArtBoxee.Checked = True
-            'Me.chkExtrafanartBoxee.Checked = True
-            'Me.chkExtrathumbsBoxee.Checked = True
             Me.chkMovieFanartBoxee.Checked = True
-            'Me.chkLandscapeBoxee.Checked = True
             Me.chkMovieNFOBoxee.Checked = True
             Me.chkMoviePosterBoxee.Checked = True
-            'Me.chkMovieTrailerBoxee.Checked = True
         End If
     End Sub
 
     Private Sub chkMovieUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseFrodo.CheckedChanged
 
         Me.chkMovieActorThumbsFrodo.Enabled = Me.chkMovieUseFrodo.Checked
-        Me.chkMovieBannerFrodo.Enabled = Me.chkMovieUseFrodo.Checked
-        Me.chkMovieClearArtFrodo.Enabled = Me.chkMovieUseFrodo.Checked
-        Me.chkMovieClearLogoFrodo.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieBannerAD.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieClearArtAD.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieClearLogoAD.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieExtrafanartsFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieExtrathumbsFrodo.Enabled = Me.chkMovieUseFrodo.Checked
-        Me.chkMovieDiscArtFrodo.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieDiscArtAD.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieFanartFrodo.Enabled = Me.chkMovieUseFrodo.Checked
-        Me.chkMovieLandscapeFrodo.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieLandscapeAD.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieNFOFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMoviePosterFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieTrailerFrodo.Enabled = Me.chkMovieUseFrodo.Checked
@@ -221,28 +194,28 @@ Public Class dlgWizard
 
         If Not Me.chkMovieUseFrodo.Checked Then
             Me.chkMovieActorThumbsFrodo.Checked = False
-            Me.chkMovieBannerFrodo.Checked = False
-            Me.chkMovieClearArtFrodo.Checked = False
-            Me.chkMovieClearLogoFrodo.Checked = False
-            Me.chkMovieDiscArtFrodo.Checked = False
+            Me.chkMovieBannerAD.Checked = False
+            Me.chkMovieClearArtAD.Checked = False
+            Me.chkMovieClearLogoAD.Checked = False
+            Me.chkMovieDiscArtAD.Checked = False
             Me.chkMovieExtrafanartsFrodo.Checked = False
             Me.chkMovieExtrathumbsFrodo.Checked = False
             Me.chkMovieFanartFrodo.Checked = False
-            Me.chkMovieLandscapeFrodo.Checked = False
+            Me.chkMovieLandscapeAD.Checked = False
             Me.chkMovieNFOFrodo.Checked = False
             Me.chkMoviePosterFrodo.Checked = False
             Me.chkMovieTrailerFrodo.Checked = False
             Me.chkMovieXBMCProtectVTSBDMV.Checked = False
         Else
             Me.chkMovieActorThumbsFrodo.Checked = True
-            Me.chkMovieBannerFrodo.Checked = True
-            Me.chkMovieClearArtFrodo.Checked = True
-            Me.chkMovieClearLogoFrodo.Checked = True
-            Me.chkMovieDiscArtFrodo.Checked = True
+            Me.chkMovieBannerAD.Checked = True
+            Me.chkMovieClearArtAD.Checked = True
+            Me.chkMovieClearLogoAD.Checked = True
+            Me.chkMovieDiscArtAD.Checked = True
             Me.chkMovieExtrafanartsFrodo.Checked = True
             Me.chkMovieExtrathumbsFrodo.Checked = True
             Me.chkMovieFanartFrodo.Checked = True
-            Me.chkMovieLandscapeFrodo.Checked = True
+            Me.chkMovieLandscapeAD.Checked = True
             Me.chkMovieNFOFrodo.Checked = True
             Me.chkMoviePosterFrodo.Checked = True
             Me.chkMovieTrailerFrodo.Checked = True
@@ -256,14 +229,9 @@ Public Class dlgWizard
     Private Sub chkMovieUseEden_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseEden.CheckedChanged
 
         Me.chkMovieActorThumbsEden.Enabled = Me.chkMovieUseEden.Checked
-        'Me.chkBannerEden.Enabled = Me.chkUseEden.Checked
-        'Me.chkClearArtEden.Enabled = Me.chkUseEden.Checked
-        'Me.chkClearLogoEden.Enabled = Me.chkUseEden.Checked
         Me.chkMovieExtrafanartsEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieExtrathumbsEden.Enabled = Me.chkMovieUseEden.Checked
-        'Me.chkDiscArtEden.Enabled = Me.chkUseEden.Checked
         Me.chkMovieFanartEden.Enabled = Me.chkMovieUseEden.Checked
-        'Me.chkLandscapeEden.Enabled = Me.chkUseEden.Checked
         Me.chkMovieNFOEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMoviePosterEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieTrailerEden.Enabled = Me.chkMovieUseEden.Checked
@@ -272,27 +240,17 @@ Public Class dlgWizard
 
         If Not Me.chkMovieUseEden.Checked Then
             Me.chkMovieActorThumbsEden.Checked = False
-            'Me.chkBannerEden.Checked = False
-            'Me.chkClearArtEden.Checked = False
-            'Me.chkClearLogoEden.Checked = False
-            'Me.chkDiscArtEden.Checked = False
             Me.chkMovieExtrafanartsEden.Checked = False
             Me.chkMovieExtrathumbsEden.Checked = False
             Me.chkMovieFanartEden.Checked = False
-            'Me.chkLandscapeEden.Checked = False
             Me.chkMovieNFOEden.Checked = False
             Me.chkMoviePosterEden.Checked = False
             Me.chkMovieTrailerEden.Checked = False
         Else
             Me.chkMovieActorThumbsEden.Checked = True
-            'Me.chkBannerEden.Checked = True
-            'Me.chkClearArtEden.Checked = True
-            'Me.chkClearLogoEden.Checked = True
-            'Me.chkDiscArtEden.Checked = True
             Me.chkMovieExtrafanartsEden.Checked = True
             Me.chkMovieExtrathumbsEden.Checked = True
             Me.chkMovieFanartEden.Checked = True
-            'Me.chkLandscapeEden.Checked = True
             Me.chkMovieNFOEden.Checked = True
             Me.chkMoviePosterEden.Checked = True
             Me.chkMovieTrailerEden.Checked = True
@@ -306,95 +264,53 @@ Public Class dlgWizard
 
     Private Sub chkMovieUseYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseYAMJ.CheckedChanged
 
-        'Me.chkActorThumbsYAMJ.Enabled = Me.chkUseYAMJ.Checked
         Me.chkMovieBannerYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
-        'Me.chkClearArtYAMJ.Enabled = Me.chkUseYAMJ.Checked
-        'Me.chkClearLogoYAMJ.Enabled = Me.chkUseYAMJ.Checked
-        'Me.chkExtrafanartYAMJ.Enabled = Me.chkUseYAMJ.Checked
-        'Me.chkExtrathumbsYAMJ.Enabled = Me.chkUseYAMJ.Checked
-        'Me.chkDiscArtYAMJ.Enabled = Me.chkUseYAMJ.Checked
         Me.chkMovieFanartYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
-        'Me.chkLandscapeYAMJ.Enabled = Me.chkUseYAMJ.Checked
         Me.chkMovieNFOYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
         Me.chkMoviePosterYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
         Me.chkMovieTrailerYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
         Me.chkMovieYAMJWatchedFile.Enabled = Me.chkMovieUseYAMJ.Checked
 
         If Not Me.chkMovieUseYAMJ.Checked Then
-            ' Me.chkActorThumbsYAMJ.Checked = False
             Me.chkMovieBannerYAMJ.Checked = False
-            'Me.chkClearArtYAMJ.Checked = False
-            'Me.chkClearLogoYAMJ.Checked = False
-            'Me.chkDiscArtYAMJ.Checked = False
-            'Me.chkExtrafanartYAMJ.Checked = False
-            'Me.chkExtrathumbsYAMJ.Checked = False
             Me.chkMovieFanartYAMJ.Checked = False
-            'Me.chkLandscapeYAMJ.Checked = False
             Me.chkMovieNFOYAMJ.Checked = False
             Me.chkMoviePosterYAMJ.Checked = False
             Me.chkMovieTrailerYAMJ.Checked = False
             Me.chkMovieYAMJWatchedFile.Checked = False
         Else
-            'Me.chkActorThumbsYAMJ.Checked = True
             Me.chkMovieBannerYAMJ.Checked = True
-            'Me.chkClearArtYAMJ.Checked = True
-            'Me.chkClearLogoYAMJ.Checked = True
-            'Me.chkDiscArtYAMJ.Checked = True
-            'Me.chkExtrafanartYAMJ.Checked = True
-            'Me.chkExtrathumbsYAMJ.Checked = True
             Me.chkMovieFanartYAMJ.Checked = True
-            'Me.chkLandscapeYAMJ.Checked = True
             Me.chkMovieNFOYAMJ.Checked = True
             Me.chkMoviePosterYAMJ.Checked = True
             Me.chkMovieTrailerYAMJ.Checked = True
         End If
     End Sub
 
-    Private Sub chkMovieUseNMJCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseNMJ.CheckedChanged
+    Private Sub chkMovieUseNMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseNMJ.CheckedChanged
 
-        'Me.chkActorThumbsNMJ.Enabled = Me.chkUseNMJ.Checked
         Me.chkMovieBannerNMJ.Enabled = Me.chkMovieUseNMJ.Checked
-        'Me.chkClearArtNMJ.Enabled = Me.chkUseNMJ.Checked
-        'Me.chkClearLogoNMJ.Enabled = Me.chkUseNMJ.Checked
-        'Me.chkExtrafanartNMJ.Enabled = Me.chkUseNMJ.Checked
-        'Me.chkExtrathumbsNMJ.Enabled = Me.chkUseNMJ.Checked
-        'Me.chkDiscArtNMJ.Enabled = Me.chkUseNMJ.Checked
         Me.chkMovieFanartNMJ.Enabled = Me.chkMovieUseNMJ.Checked
-        'Me.chkLandscapeNMJ.Enabled = Me.chkUseNMJ.Checked
         Me.chkMovieNFONMJ.Enabled = Me.chkMovieUseNMJ.Checked
         Me.chkMoviePosterNMJ.Enabled = Me.chkMovieUseNMJ.Checked
         Me.chkMovieTrailerNMJ.Enabled = Me.chkMovieUseNMJ.Checked
 
         If Not Me.chkMovieUseNMJ.Checked Then
-            ' Me.chkActorThumbsNMJ.Checked = False
             Me.chkMovieBannerNMJ.Checked = False
-            'Me.chkClearArtNMJ.Checked = False
-            'Me.chkClearLogoNMJ.Checked = False
-            'Me.chkDiscArtNMJ.Checked = False
-            'Me.chkExtrafanartNMJ.Checked = False
-            'Me.chkExtrathumbsNMJ.Checked = False
             Me.chkMovieFanartNMJ.Checked = False
-            'Me.chkLandscapeNMJ.Checked = False
             Me.chkMovieNFONMJ.Checked = False
             Me.chkMoviePosterNMJ.Checked = False
             Me.chkMovieTrailerNMJ.Checked = False
         Else
-            'Me.chkActorThumbsNMJ.Checked = True
             Me.chkMovieBannerNMJ.Checked = True
-            'Me.chkClearArtNMJ.Checked = True
-            'Me.chkClearLogoNMJ.Checked = True
-            'Me.chkDiscArtNMJ.Checked = True
-            'Me.chkExtrafanartNMJ.Checked = True
-            'Me.chkExtrathumbsNMJ.Checked = True
             Me.chkMovieFanartNMJ.Checked = True
-            'Me.chkLandscapeNMJ.Checked = True
             Me.chkMovieNFONMJ.Checked = True
             Me.chkMoviePosterNMJ.Checked = True
             Me.chkMovieTrailerNMJ.Checked = True
         End If
     End Sub
 
-    Private Sub chkMovieXBMCThemeCustomPath_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeCustom.CheckedChanged
+    Private Sub chkMovieXBMCThemeCustom_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeCustom.CheckedChanged
 
         Me.txtMovieXBMCThemeCustomPath.Enabled = Me.chkMovieXBMCThemeCustom.Checked
         Me.btnMovieXBMCThemeCustomPathBrowse.Enabled = Me.chkMovieXBMCThemeCustom.Checked
@@ -442,7 +358,7 @@ Public Class dlgWizard
         End If
     End Sub
 
-    Private Sub chkMovieXBMCThemeSubPath_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeSub.CheckedChanged
+    Private Sub chkMovieXBMCThemeSub_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeSub.CheckedChanged
 
         Me.txtMovieXBMCThemeSubDir.Enabled = Me.chkMovieXBMCThemeSub.Checked
 
@@ -472,8 +388,41 @@ Public Class dlgWizard
         Me.chkMovieUnstackExpertMulti.Enabled = Me.chkMovieStackExpertMulti.Checked AndAlso Me.chkMovieStackExpertMulti.Enabled
     End Sub
 
-    Private Sub chkMovieUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseExpert.CheckedChanged
+    Private Sub chkMovieSetUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetUseExpert.CheckedChanged
+        Me.btnMovieSetPathExpertSingleBrowse.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetBannerExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetBannerExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetClearArtExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetClearArtExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetClearLogoExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetClearLogoExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetFanartExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetFanartExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetLandscapeExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetLandscapeExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetNFOExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetNFOExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetPathExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetPosterExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetPosterExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+    End Sub
 
+    Private Sub btnMovieSetPathExpertSingleBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieSetPathExpertSingleBrowse.Click
+        Try
+            With Me.fbdBrowse
+                fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
+                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                    If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                        Me.txtMovieSetPathExpertSingle.Text = .SelectedPath.ToString
+                    End If
+                End If
+            End With
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub chkMovieUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseExpert.CheckedChanged
         Me.chkMovieActorThumbsExpertBDMV.Enabled = Me.chkMovieUseExpert.Checked
         Me.chkMovieActorThumbsExpertMulti.Enabled = Me.chkMovieUseExpert.Checked
         Me.chkMovieActorThumbsExpertSingle.Enabled = Me.chkMovieUseExpert.Checked
@@ -534,7 +483,7 @@ Public Class dlgWizard
     End Sub
 
     Private Sub chkMovieSetUseMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetUseMSAA.CheckedChanged
-
+        Me.btnMovieSetPathMSAABrowse.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetBannerMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetClearArtMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetClearLogoMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
@@ -542,6 +491,7 @@ Public Class dlgWizard
         Me.chkMovieSetLandscapeMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetNFOMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
         Me.chkMovieSetPosterMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.txtMovieSetPathMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
 
         If Not Me.chkMovieSetUseMSAA.Checked Then
             Me.chkMovieSetBannerMSAA.Checked = False
@@ -562,24 +512,38 @@ Public Class dlgWizard
         End If
     End Sub
 
-    Private Sub chkTVShowTVThemeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowTVThemeXBMC.CheckedChanged
-        Me.btnTVShowTVThemeBrowse.Enabled = Me.chkTVShowTVThemeXBMC.Checked
-        Me.txtTVShowTVThemeFolderXBMC.Enabled = Me.chkTVShowTVThemeXBMC.Checked
+    Private Sub chkTVXBMCThemeEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVXBMCThemeEnable.CheckedChanged
+        Me.btnTVXBMCThemeCustomPathBrowse.Enabled = Me.chkTVXBMCThemeEnable.Checked
+        Me.txtTVXBMCThemeCustomPath.Enabled = Me.chkTVXBMCThemeEnable.Checked
     End Sub
 
-    Private Sub btnTVShowTVThemeBrowse_Click(sender As Object, e As EventArgs) Handles btnTVShowTVThemeBrowse.Click
+    Private Sub btnTVXBMCThemeCustomPathBrowse_Click(sender As Object, e As EventArgs) Handles btnTVXBMCThemeCustomPathBrowse.Click
         With Me.fbdBrowse
             fbdBrowse.Description = Master.eLang.GetString(1028, "Select the folder where you wish to store your tv themes...")
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                    Me.txtTVShowTVThemeFolderXBMC.Text = .SelectedPath.ToString
+                    Me.txtTVXBMCThemeCustomPath.Text = .SelectedPath.ToString
                 End If
             End If
         End With
     End Sub
 
-    Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseBoxee.CheckedChanged
+    Private Sub btnMovieXBMCThemeCustomPathBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieXBMCThemeCustomPathBrowse.Click
+        Try
+            With Me.fbdBrowse
+                fbdBrowse.Description = Master.eLang.GetString(1077, "Select the folder where you wish to store your themes...")
+                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                    If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                        Me.txtMovieXBMCThemeCustomPath.Text = .SelectedPath.ToString
+                    End If
+                End If
+            End With
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
 
+    Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseBoxee.CheckedChanged
         Me.chkTVEpisodePosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
         Me.chkTVSeasonPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
         Me.chkTVShowBannerBoxee.Enabled = Me.chkTVUseBoxee.Checked
@@ -601,56 +565,85 @@ Public Class dlgWizard
         End If
     End Sub
 
-    Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseFrodo.CheckedChanged
-
+    Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseFrodo.CheckedChanged  
         Me.chkTVEpisodeActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVEpisodePosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVSeasonLandscapeXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVSeasonLandscapeAD.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowCharacterArtXBMC.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowClearArtXBMC.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowClearLogoXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowCharacterArtAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowClearArtAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowClearLogoAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowExtrafanartsFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowLandscapeXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowLandscapeAD.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowTVThemeXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVXBMCThemeEnable.Enabled = Me.chkTVUseFrodo.Checked
 
         If Not Me.chkTVUseFrodo.Checked Then
             Me.chkTVEpisodeActorThumbsFrodo.Checked = False
             Me.chkTVEpisodePosterFrodo.Checked = False
             Me.chkTVSeasonBannerFrodo.Checked = False
             Me.chkTVSeasonFanartFrodo.Checked = False
-            Me.chkTVSeasonLandscapeXBMC.Checked = False
+            Me.chkTVSeasonLandscapeAD.Checked = False
             Me.chkTVSeasonPosterFrodo.Checked = False
             Me.chkTVShowActorThumbsFrodo.Checked = False
             Me.chkTVShowBannerFrodo.Checked = False
-            Me.chkTVShowCharacterArtXBMC.Checked = False
-            Me.chkTVShowClearArtXBMC.Checked = False
-            Me.chkTVShowClearLogoXBMC.Checked = False
+            Me.chkTVShowCharacterArtAD.Checked = False
+            Me.chkTVShowClearArtAD.Checked = False
+            Me.chkTVShowClearLogoAD.Checked = False
+            Me.chkTVShowExtrafanartsFrodo.Checked = False
             Me.chkTVShowFanartFrodo.Checked = False
-            Me.chkTVShowLandscapeXBMC.Checked = False
+            Me.chkTVShowLandscapeAD.Checked = False
             Me.chkTVShowPosterFrodo.Checked = False
-            Me.chkTVShowTVThemeXBMC.Checked = False
+            Me.chkTVXBMCThemeEnable.Checked = False
         Else
             Me.chkTVEpisodeActorThumbsFrodo.Checked = True
             Me.chkTVEpisodePosterFrodo.Checked = True
             Me.chkTVSeasonBannerFrodo.Checked = True
             Me.chkTVSeasonFanartFrodo.Checked = True
-            Me.chkTVSeasonLandscapeXBMC.Checked = True
+            Me.chkTVSeasonLandscapeAD.Checked = True
             Me.chkTVSeasonPosterFrodo.Checked = True
             Me.chkTVShowActorThumbsFrodo.Checked = True
             Me.chkTVShowBannerFrodo.Checked = True
-            Me.chkTVShowCharacterArtXBMC.Checked = True
-            Me.chkTVShowClearArtXBMC.Checked = True
-            Me.chkTVShowClearLogoXBMC.Checked = True
+            Me.chkTVShowCharacterArtAD.Checked = True
+            Me.chkTVShowClearArtAD.Checked = True
+            Me.chkTVShowClearLogoAD.Checked = True
+            Me.chkTVShowExtrafanartsFrodo.Checked = True
             Me.chkTVShowFanartFrodo.Checked = True
-            Me.chkTVShowLandscapeXBMC.Checked = True
+            Me.chkTVShowLandscapeAD.Checked = True
             Me.chkTVShowPosterFrodo.Checked = True
-            'Me.chkTVShowTVThemeXBMC.Checked = True
+        End If
+    End Sub
+
+    Private Sub chkTVUseYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseYAMJ.CheckedChanged
+        Me.chkTVEpisodePosterYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVSeasonBannerYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVSeasonFanartYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVSeasonPosterYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVShowBannerYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVShowFanartYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVShowPosterYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+
+        If Not Me.chkTVUseYAMJ.Checked Then
+            Me.chkTVEpisodePosterYAMJ.Checked = False
+            Me.chkTVSeasonBannerYAMJ.Checked = False
+            Me.chkTVSeasonFanartYAMJ.Checked = False
+            Me.chkTVSeasonPosterYAMJ.Checked = False
+            Me.chkTVShowBannerYAMJ.Checked = False
+            Me.chkTVShowFanartYAMJ.Checked = False
+            Me.chkTVShowPosterYAMJ.Checked = False
+        Else
+            Me.chkTVEpisodePosterYAMJ.Checked = True
+            Me.chkTVSeasonBannerYAMJ.Checked = True
+            Me.chkTVSeasonFanartYAMJ.Checked = True
+            Me.chkTVSeasonPosterYAMJ.Checked = True
+            Me.chkTVShowBannerYAMJ.Checked = True
+            Me.chkTVShowFanartYAMJ.Checked = True
+            Me.chkTVShowPosterYAMJ.Checked = True
         End If
     End Sub
 
@@ -689,6 +682,7 @@ Public Class dlgWizard
                 Me.cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage).name
             End If
 
+            
 
             '***************************************************
             '******************* Movie Part ********************
@@ -697,38 +691,34 @@ Public Class dlgWizard
             '*************** XBMC Frodo settings ***************
             Me.chkMovieUseFrodo.Checked = .MovieUseFrodo
             Me.chkMovieActorThumbsFrodo.Checked = .MovieActorThumbsFrodo
-            Me.chkMovieBannerFrodo.Checked = .MovieBannerAD
-            Me.chkMovieClearArtFrodo.Checked = .MovieClearArtAD
-            Me.chkMovieClearLogoFrodo.Checked = .MovieClearLogoAD
-            Me.chkMovieDiscArtFrodo.Checked = .MovieDiscArtAD
             Me.chkMovieExtrafanartsFrodo.Checked = .MovieExtrafanartsFrodo
             Me.chkMovieExtrathumbsFrodo.Checked = .MovieExtrathumbsFrodo
             Me.chkMovieFanartFrodo.Checked = .MovieFanartFrodo
-            Me.chkMovieLandscapeFrodo.Checked = .MovieLandscapeAD
             Me.chkMovieNFOFrodo.Checked = .MovieNFOFrodo
             Me.chkMoviePosterFrodo.Checked = .MoviePosterFrodo
             Me.chkMovieTrailerFrodo.Checked = .MovieTrailerFrodo
 
-            '*************** XBMC Eden settings ***************
+            '*************** XBMC Eden settings ****************
             Me.chkMovieUseEden.Checked = .MovieUseEden
             Me.chkMovieActorThumbsEden.Checked = .MovieActorThumbsEden
-            'Me.chkBannerEden.Checked = .MovieBannerEden
-            'Me.chkClearArtEden.Checked = .MovieClearArtEden
-            'Me.chkClearLogoEden.Checked = .MovieClearLogoEden
-            'Me.chkDiscArtEden.Checked = .MovieDiscArtEden
             Me.chkMovieExtrafanartsEden.Checked = .MovieExtrafanartsEden
             Me.chkMovieExtrathumbsEden.Checked = .MovieExtrathumbsEden
             Me.chkMovieFanartEden.Checked = .MovieFanartEden
-            'Me.chkLandscapeEden.Checked = .MovieLandscapeEden
             Me.chkMovieNFOEden.Checked = .MovieNFOEden
             Me.chkMoviePosterEden.Checked = .MoviePosterEden
             Me.chkMovieTrailerEden.Checked = .MovieTrailerEden
 
-            '************* XBMC optional settings *************
-            Me.chkMovieXBMCTrailerFormat.Checked = .MovieScraperXBMCTrailerFormat
+            '************* XBMC optional settings **************
             Me.chkMovieXBMCProtectVTSBDMV.Checked = .MovieXBMCProtectVTSBDMV
 
-            '*************** XBMC theme settings ***************
+            '******** XBMC ArtworkDownloader settings **********
+            Me.chkMovieBannerAD.Checked = .MovieBannerAD
+            Me.chkMovieClearArtAD.Checked = .MovieClearArtAD
+            Me.chkMovieClearLogoAD.Checked = .MovieClearLogoAD
+            Me.chkMovieDiscArtAD.Checked = .MovieDiscArtAD
+            Me.chkMovieLandscapeAD.Checked = .MovieLandscapeAD
+
+            '************** XBMC TvTunes settings **************
             Me.chkMovieXBMCThemeEnable.Checked = .MovieXBMCThemeEnable
             Me.chkMovieXBMCThemeCustom.Checked = .MovieXBMCThemeCustom
             Me.chkMovieXBMCThemeMovie.Checked = .MovieXBMCThemeMovie
@@ -736,59 +726,37 @@ Public Class dlgWizard
             Me.txtMovieXBMCThemeCustomPath.Text = .MovieXBMCThemeCustomPath
             Me.txtMovieXBMCThemeSubDir.Text = .MovieXBMCThemeSubDir
 
-            '****************** YAMJ settings *****************
+            '****************** YAMJ settings ******************
             Me.chkMovieUseYAMJ.Checked = .MovieUseYAMJ
-            'Me.chkActorThumbsYAMJ.Checked = .MovieActorThumbsYAMJ
             Me.chkMovieBannerYAMJ.Checked = .MovieBannerYAMJ
-            'Me.chkClearArtYAMJ.Checked = .MovieClearArtYAMJ
-            'Me.chkClearLogoYAMJ.Checked = .MovieClearLogoYAMJ
-            'Me.chkDiscArtYAMJ.Checked = .MovieDiscArtYAMJ
-            'Me.chkExtrafanartYAMJ.Checked = .MovieExtrafanartYAMJ
-            'Me.chkExtrathumbsYAMJ.Checked = .MovieExtrathumbsYAMJ
             Me.chkMovieFanartYAMJ.Checked = .MovieFanartYAMJ
-            'Me.chkLandscapeYAMJ.Checked = .MovieLandscapeYAMJ
             Me.chkMovieNFOYAMJ.Checked = .MovieNFOYAMJ
             Me.chkMoviePosterYAMJ.Checked = .MoviePosterYAMJ
             Me.chkMovieTrailerYAMJ.Checked = .MovieTrailerYAMJ
 
             '****************** NMJ settings ******************
             Me.chkMovieUseNMJ.Checked = .MovieUseNMJ
-            'Me.chkActorThumbsNMJ.Checked = .MovieActorThumbsNMJ
             Me.chkMovieBannerNMJ.Checked = .MovieBannerNMJ
-            'Me.chkClearArtNMJ.Checked = .MovieClearArtNMJ
-            'Me.chkClearLogoNMJ.Checked = .MovieClearLogoNMJ
-            'Me.chkDiscArtNMJ.Checked = .MovieDiscArtNMJ
-            'Me.chkExtrafanartNMJ.Checked = .MovieExtrafanartNMJ
-            'Me.chkExtrathumbsNMJ.Checked = .MovieExtrathumbsNMJ
             Me.chkMovieFanartNMJ.Checked = .MovieFanartNMJ
-            'Me.chkLandscapeNMJ.Checked = .MovieLandscapeNMJ
             Me.chkMovieNFONMJ.Checked = .MovieNFONMJ
             Me.chkMoviePosterNMJ.Checked = .MoviePosterNMJ
             Me.chkMovieTrailerNMJ.Checked = .MovieTrailerNMJ
 
-            '************** NMJ optional settings *************
+            '************** NMT optional settings **************
+            Me.chkMovieYAMJCompatibleSets.Checked = .MovieYAMJCompatibleSets
             Me.chkMovieYAMJWatchedFile.Checked = .MovieYAMJWatchedFile
             Me.txtMovieYAMJWatchedFolder.Text = .MovieYAMJWatchedFolder
 
             '***************** Boxee settings ******************
             Me.chkMovieUseBoxee.Checked = .MovieUseBoxee
-            'Me.chkActorThumbsBoxee.Checked = .MovieActorThumbsBoxee
-            'Me.chkMovieBannerBoxee.Checked = .MovieBannerBoxee
-            'Me.chkClearArtBoxee.Checked = .MovieClearArtBoxee
-            'Me.chkClearLogoBoxee.Checked = .MovieClearLogoBoxee
-            'Me.chkDiscArtBoxee.Checked = .MovieDiscArtBoxee
-            'Me.chkExtrafanartBoxee.Checked = .MovieExtrafanartBoxee
-            'Me.chkExtrathumbsBoxee.Checked = .MovieExtrathumbsBoxee
             Me.chkMovieFanartBoxee.Checked = .MovieFanartBoxee
-            'Me.chkLandscapeBoxee.Checked = .MovieLandscapeBoxee
             Me.chkMovieNFOBoxee.Checked = .MovieNFOBoxee
             Me.chkMoviePosterBoxee.Checked = .MoviePosterBoxee
-            'Me.chkMovieTrailerBoxee.Checked = .MovieTrailerBoxee
 
-            '***************** Expert settings ****************
+            '***************** Expert settings *****************
             Me.chkMovieUseExpert.Checked = .MovieUseExpert
 
-            '***************** Expert Single ******************
+            '***************** Expert Single *******************
             Me.chkMovieActorThumbsExpertSingle.Checked = .MovieActorThumbsExpertSingle
             Me.txtMovieActorThumbsExtExpertSingle.Text = .MovieActorThumbsExtExpertSingle
             Me.txtMovieBannerExpertSingle.Text = .MovieBannerExpertSingle
@@ -805,7 +773,7 @@ Public Class dlgWizard
             Me.txtMovieTrailerExpertSingle.Text = .MovieTrailerExpertSingle
             Me.chkMovieUnstackExpertSingle.Checked = .MovieUnstackExpertSingle
 
-            '***************** Expert Multi ******************
+            '******************* Expert Multi ******************
             Me.chkMovieActorThumbsExpertMulti.Checked = .MovieActorThumbsExpertMulti
             Me.txtMovieActorThumbsExtExpertMulti.Text = .MovieActorThumbsExtExpertMulti
             Me.txtMovieBannerExpertMulti.Text = .MovieBannerExpertMulti
@@ -820,7 +788,7 @@ Public Class dlgWizard
             Me.txtMovieTrailerExpertMulti.Text = .MovieTrailerExpertMulti
             Me.chkMovieUnstackExpertMulti.Checked = .MovieUnstackExpertMulti
 
-            '***************** Expert VTS ******************
+            '******************* Expert VTS *******************
             Me.chkMovieActorThumbsExpertVTS.Checked = .MovieActorThumbsExpertVTS
             Me.txtMovieActorThumbsExtExpertVTS.Text = .MovieActorThumbsExtExpertVTS
             Me.txtMovieBannerExpertVTS.Text = .MovieBannerExpertVTS
@@ -837,7 +805,7 @@ Public Class dlgWizard
             Me.txtMovieTrailerExpertVTS.Text = .MovieTrailerExpertVTS
             Me.chkMovieUseBaseDirectoryExpertVTS.Checked = .MovieUseBaseDirectoryExpertVTS
 
-            '***************** Expert BDMV ******************
+            '******************* Expert BDMV *******************
             Me.chkMovieActorThumbsExpertBDMV.Checked = .MovieActorThumbsExpertBDMV
             Me.txtMovieActorThumbsExtExpertBDMV.Text = .MovieActorThumbsExtExpertBDMV
             Me.txtMovieBannerExpertBDMV.Text = .MovieBannerExpertBDMV
@@ -866,8 +834,30 @@ Public Class dlgWizard
             Me.chkMovieSetFanartMSAA.Checked = .MovieSetFanartMSAA
             Me.chkMovieSetLandscapeMSAA.Checked = .MovieSetLandscapeMSAA
             Me.chkMovieSetNFOMSAA.Checked = .MovieSetNFOMSAA
+            Me.txtMovieSetPathMSAA.Text = .MovieSetPathMSAA.ToString
             Me.chkMovieSetPosterMSAA.Checked = .MovieSetPosterMSAA
-            Me.txtMovieSetMSAAPath.Text = .MovieSetPathMSAA
+
+            '***************** Expert settings *****************
+            Me.chkMovieSetUseExpert.Checked = .MovieSetUseExpert
+
+            '***************** Expert Single ******************
+            Me.txtMovieSetBannerExpertSingle.Text = .MovieSetBannerExpertSingle
+            Me.txtMovieSetClearArtExpertSingle.Text = .MovieSetClearArtExpertSingle
+            Me.txtMovieSetClearLogoExpertSingle.Text = .MovieSetClearLogoExpertSingle
+            Me.txtMovieSetFanartExpertSingle.Text = .MovieSetFanartExpertSingle
+            Me.txtMovieSetLandscapeExpertSingle.Text = .MovieSetLandscapeExpertSingle
+            Me.txtMovieSetNFOExpertSingle.Text = .MovieSetNFOExpertSingle
+            Me.txtMovieSetPathExpertSingle.Text = .MovieSetPathExpertSingle
+            Me.txtMovieSetPosterExpertSingle.Text = .MovieSetPosterExpertSingle
+
+            '***************** Expert Parent ******************
+            Me.txtMovieSetBannerExpertParent.Text = .MovieSetBannerExpertParent
+            Me.txtMovieSetClearArtExpertParent.Text = .MovieSetClearArtExpertParent
+            Me.txtMovieSetClearLogoExpertParent.Text = .MovieSetClearLogoExpertParent
+            Me.txtMovieSetFanartExpertParent.Text = .MovieSetFanartExpertParent
+            Me.txtMovieSetLandscapeExpertParent.Text = .MovieSetLandscapeExpertParent
+            Me.txtMovieSetNFOExpertParent.Text = .MovieSetNFOExpertParent
+            Me.txtMovieSetPosterExpertParent.Text = .MovieSetPosterExpertParent
 
 
             '***************************************************
@@ -883,21 +873,32 @@ Public Class dlgWizard
             Me.chkTVSeasonPosterFrodo.Checked = .TVSeasonPosterFrodo
             Me.chkTVShowActorThumbsFrodo.Checked = .TVShowActorThumbsFrodo
             Me.chkTVShowBannerFrodo.Checked = .TVShowBannerFrodo
+            Me.chkTVShowExtrafanartsFrodo.Checked = .TVShowExtrafanartsFrodo
             Me.chkTVShowFanartFrodo.Checked = .TVShowFanartFrodo
             Me.chkTVShowPosterFrodo.Checked = .TVShowPosterFrodo
 
             '*************** XBMC Eden settings ****************
 
-            '************* XBMC optional settings **************
-            Me.chkTVSeasonLandscapeXBMC.Checked = .TVSeasonLandscapeAD
-            Me.chkTVShowCharacterArtXBMC.Checked = .TVShowCharacterArtAD
-            Me.chkTVShowClearArtXBMC.Checked = .TVShowClearArtAD
-            Me.chkTVShowClearLogoXBMC.Checked = .TVShowClearLogoAD
-            Me.chkTVShowLandscapeXBMC.Checked = .TVShowLandscapeAD
-            Me.chkTVShowTVThemeXBMC.Checked = .TVShowTVThemeXBMC
-            Me.txtTVShowTVThemeFolderXBMC.Text = .TVShowTVThemeFolderXBMC
+            '******** XBMC ArtworkDownloader settings **********
+            Me.chkTVSeasonLandscapeAD.Checked = .TVSeasonLandscapeAD
+            Me.chkTVShowCharacterArtAD.Checked = .TVShowCharacterArtAD
+            Me.chkTVShowClearArtAD.Checked = .TVShowClearArtAD
+            Me.chkTVShowClearLogoAD.Checked = .TVShowClearLogoAD
+            Me.chkTVShowLandscapeAD.Checked = .TVShowLandscapeAD
+
+            '************* XBMC TvTunes settings ***************
+            Me.chkTVXBMCThemeEnable.Checked = .TVShowTVThemeXBMC
+            Me.txtTVXBMCThemeCustomPath.Text = .TVShowTVThemeFolderXBMC
 
             '****************** YAMJ settings ******************
+            Me.chkTVUseYAMJ.Checked = .TVUseYAMJ
+            Me.chkTVEpisodePosterYAMJ.Checked = .TVEpisodePosterYAMJ
+            Me.chkTVSeasonBannerYAMJ.Checked = .TVSeasonBannerYAMJ
+            Me.chkTVSeasonFanartYAMJ.Checked = .TVSeasonFanartYAMJ
+            Me.chkTVSeasonPosterYAMJ.Checked = .TVSeasonPosterYAMJ
+            Me.chkTVShowBannerYAMJ.Checked = .TVShowBannerYAMJ
+            Me.chkTVShowFanartYAMJ.Checked = .TVShowFanartYAMJ
+            Me.chkTVShowPosterYAMJ.Checked = .TVShowPosterYAMJ
 
             '****************** NMJ settings *******************
 
@@ -1097,14 +1098,9 @@ Public Class dlgWizard
             '*************** XBMC Frodo settings ***************
             .MovieUseFrodo = Me.chkMovieUseFrodo.Checked
             .MovieActorThumbsFrodo = Me.chkMovieActorThumbsFrodo.Checked
-            .MovieBannerAD = Me.chkMovieBannerFrodo.Checked
-            .MovieClearArtAD = Me.chkMovieClearArtFrodo.Checked
-            .MovieClearLogoAD = Me.chkMovieClearLogoFrodo.Checked
-            .MovieDiscArtAD = Me.chkMovieDiscArtFrodo.Checked
             .MovieExtrafanartsFrodo = Me.chkMovieExtrafanartsFrodo.Checked
             .MovieExtrathumbsFrodo = Me.chkMovieExtrathumbsFrodo.Checked
             .MovieFanartFrodo = Me.chkMovieFanartFrodo.Checked
-            .MovieLandscapeAD = Me.chkMovieLandscapeFrodo.Checked
             .MovieNFOFrodo = Me.chkMovieNFOFrodo.Checked
             .MoviePosterFrodo = Me.chkMoviePosterFrodo.Checked
             .MovieTrailerFrodo = Me.chkMovieTrailerFrodo.Checked
@@ -1112,23 +1108,24 @@ Public Class dlgWizard
             '*************** XBMC Eden settings ***************
             .MovieUseEden = Me.chkMovieUseEden.Checked
             .MovieActorThumbsEden = Me.chkMovieActorThumbsEden.Checked
-            '.MovieBannerEden = Me.chkBannerEden.Checked
-            '.MovieClearArtEden = Me.chkClearArtEden.Checked
-            '.MovieClearLogoEden = Me.chkClearLogoEden.Checked
-            '.MovieDiscArtEden = Me.chkDiscArtEden.Checked
             .MovieExtrafanartsEden = Me.chkMovieExtrafanartsEden.Checked
             .MovieExtrathumbsEden = Me.chkMovieExtrathumbsEden.Checked
             .MovieFanartEden = Me.chkMovieFanartEden.Checked
-            '.MovieLandscapeEden = Me.chkLandscapeEden.Checked
             .MovieNFOEden = Me.chkMovieNFOEden.Checked
             .MoviePosterEden = Me.chkMoviePosterEden.Checked
             .MovieTrailerEden = Me.chkMovieTrailerEden.Checked
 
             '************* XBMC optional settings *************
-            .MovieScraperXBMCTrailerFormat = Me.chkMovieXBMCTrailerFormat.Checked
             .MovieXBMCProtectVTSBDMV = Me.chkMovieXBMCProtectVTSBDMV.Checked
 
-            '*************** XBMC theme settings ***************
+            '******** XBMC ArtworkDownloader settings **********
+            .MovieBannerAD = Me.chkMovieBannerAD.Checked
+            .MovieClearArtAD = Me.chkMovieClearArtAD.Checked
+            .MovieClearLogoAD = Me.chkMovieClearLogoAD.Checked
+            .MovieDiscArtAD = Me.chkMovieDiscArtAD.Checked
+            .MovieLandscapeAD = Me.chkMovieLandscapeAD.Checked
+
+            '************** XBMC TvTunes settings **************
             .MovieXBMCThemeCustom = Me.chkMovieXBMCThemeCustom.Checked
             .MovieXBMCThemeCustomPath = Me.txtMovieXBMCThemeCustomPath.Text
             .MovieXBMCThemeEnable = Me.chkMovieXBMCThemeEnable.Checked
@@ -1138,52 +1135,30 @@ Public Class dlgWizard
 
             '****************** YAMJ settings *****************
             .MovieUseYAMJ = Me.chkMovieUseYAMJ.Checked
-            '.MovieActorThumbsYAMJ = Me.chkActorThumbsYAMJ.Checked
             .MovieBannerYAMJ = Me.chkMovieBannerYAMJ.Checked
-            '.MovieClearArtYAMJ = Me.chkClearArtYAMJ.Checked
-            '.MovieClearLogoYAMJ = Me.chkClearLogoYAMJ.Checked
-            '.MovieDiscArtYAMJ = Me.chkDiscArtYAMJ.Checked
-            '.MovieExtrafanartYAMJ = Me.chkExtrafanartYAMJ.Checked
-            '.MovieExtrathumbsYAMJ = Me.chkExtrathumbsYAMJ.Checked
             .MovieFanartYAMJ = Me.chkMovieFanartYAMJ.Checked
-            '.MovieLandscapeYAMJ = Me.chkLandscapeYAMJ.Checked
             .MovieNFOYAMJ = Me.chkMovieNFOYAMJ.Checked
             .MoviePosterYAMJ = Me.chkMoviePosterYAMJ.Checked
             .MovieTrailerYAMJ = Me.chkMovieTrailerYAMJ.Checked
 
             '****************** NMJ settings *****************
             .MovieUseNMJ = Me.chkMovieUseNMJ.Checked
-            '.MovieActorThumbsNMJ = Me.chkActorThumbsNMJ.Checked
             .MovieBannerNMJ = Me.chkMovieBannerNMJ.Checked
-            '.MovieClearArtNMJ = Me.chkClearArtNMJ.Checked
-            '.MovieClearLogoNMJ = Me.chkClearLogoNMJ.Checked
-            '.MovieDiscArtNMJ = Me.chkDiscArtNMJ.Checked
-            '.MovieExtrafanartNMJ = Me.chkExtrafanartNMJ.Checked
-            '.MovieExtrathumbsNMJ = Me.chkExtrathumbsNMJ.Checked
             .MovieFanartNMJ = Me.chkMovieFanartNMJ.Checked
-            '.MovieLandscapeNMJ = Me.chkLandscapeNMJ.Checked
             .MovieNFONMJ = Me.chkMovieNFONMJ.Checked
             .MoviePosterNMJ = Me.chkMoviePosterNMJ.Checked
             .MovieTrailerNMJ = Me.chkMovieTrailerNMJ.Checked
 
             '************** NMJ optional settings *************
+            .MovieYAMJCompatibleSets = Me.chkMovieYAMJCompatibleSets.Checked
             .MovieYAMJWatchedFile = Me.chkMovieYAMJWatchedFile.Checked
             .MovieYAMJWatchedFolder = Me.txtMovieYAMJWatchedFolder.Text
 
             '***************** Boxee settings *****************
             .MovieUseBoxee = Me.chkMovieUseBoxee.Checked
-            '.MovieActorThumbsBoxee = Me.chkActorThumbsBoxee.Checked
-            '.MovieBannerBoxee = Me.chkMovieBannerBoxee.Checked
-            '.MovieClearArtBoxee = Me.chkClearArtBoxee.Checked
-            '.MovieClearLogoBoxee = Me.chkClearLogoBoxee.Checked
-            '.MovieDiscArtBoxee = Me.chkDiscArtBoxee.Checked
-            '.MovieExtrafanartBoxee = Me.chkExtrafanartBoxee.Checked
-            '.MovieExtrathumbsBoxee = Me.chkExtrathumbsBoxee.Checked
             .MovieFanartBoxee = Me.chkMovieFanartBoxee.Checked
-            '.MovieLandscapeBoxee = Me.chkLandscapeBoxee.Checked
             .MovieNFOBoxee = Me.chkMovieNFOBoxee.Checked
             .MoviePosterBoxee = Me.chkMoviePosterBoxee.Checked
-            '.MovieTrailerBoxee = Me.chkMovieTrailerBoxee.Checked
 
             '***************** Expert settings ****************
             .MovieUseExpert = Me.chkMovieUseExpert.Checked
@@ -1266,8 +1241,30 @@ Public Class dlgWizard
             .MovieSetFanartMSAA = Me.chkMovieSetFanartMSAA.Checked
             .MovieSetLandscapeMSAA = Me.chkMovieSetLandscapeMSAA.Checked
             .MovieSetNFOMSAA = Me.chkMovieSetNFOMSAA.Checked
+            .MovieSetPathMSAA = Me.txtMovieSetPathMSAA.Text
             .MovieSetPosterMSAA = Me.chkMovieSetPosterMSAA.Checked
-            .MovieSetPathMSAA = Me.txtMovieSetMSAAPath.Text
+
+            '***************** Expert settings ****************
+            .MovieSetUseExpert = Me.chkMovieSetUseExpert.Checked
+
+            '***************** Expert Single ******************
+            .MovieSetBannerExpertSingle = Me.txtMovieSetBannerExpertSingle.Text
+            .MovieSetClearArtExpertSingle = Me.txtMovieSetClearArtExpertSingle.Text
+            .MovieSetClearLogoExpertSingle = Me.txtMovieSetClearLogoExpertSingle.Text
+            .MovieSetFanartExpertSingle = Me.txtMovieSetFanartExpertSingle.Text
+            .MovieSetLandscapeExpertSingle = Me.txtMovieSetLandscapeExpertSingle.Text
+            .MovieSetNFOExpertSingle = Me.txtMovieSetNFOExpertSingle.Text
+            .MovieSetPathExpertSingle = Me.txtMovieSetPathExpertSingle.Text
+            .MovieSetPosterExpertSingle = Me.txtMovieSetPosterExpertSingle.Text
+
+            '***************** Expert Parent ******************
+            .MovieSetBannerExpertParent = Me.txtMovieSetBannerExpertParent.Text
+            .MovieSetClearArtExpertParent = Me.txtMovieSetClearArtExpertParent.Text
+            .MovieSetClearLogoExpertParent = Me.txtMovieSetClearLogoExpertParent.Text
+            .MovieSetFanartExpertParent = Me.txtMovieSetFanartExpertParent.Text
+            .MovieSetLandscapeExpertParent = Me.txtMovieSetLandscapeExpertParent.Text
+            .MovieSetNFOExpertParent = Me.txtMovieSetNFOExpertParent.Text
+            .MovieSetPosterExpertParent = Me.txtMovieSetPosterExpertParent.Text
 
 
             '***************************************************
@@ -1289,15 +1286,24 @@ Public Class dlgWizard
             '*************** XBMC Eden settings ****************
 
             '************* XBMC optional settings **************
-            .TVSeasonLandscapeAD = Me.chkTVSeasonLandscapeXBMC.Checked
-            .TVShowCharacterArtAD = Me.chkTVShowCharacterArtXBMC.Checked
-            .TVShowClearArtAD = Me.chkTVShowClearArtXBMC.Checked
-            .TVShowClearLogoAD = Me.chkTVShowClearLogoXBMC.Checked
-            .TVShowLandscapeAD = Me.chkTVShowLandscapeXBMC.Checked
-            .TVShowTVThemeXBMC = Me.chkTVShowTVThemeXBMC.Checked
-            .TVShowTVThemeFolderXBMC = Me.txtTVShowTVThemeFolderXBMC.Text
+            .TVSeasonLandscapeAD = Me.chkTVSeasonLandscapeAD.Checked
+            .TVShowCharacterArtAD = Me.chkTVShowCharacterArtAD.Checked
+            .TVShowClearArtAD = Me.chkTVShowClearArtAD.Checked
+            .TVShowClearLogoAD = Me.chkTVShowClearLogoAD.Checked
+            .TVShowExtrafanartsFrodo = Me.chkTVShowExtrafanartsFrodo.Checked
+            .TVShowLandscapeAD = Me.chkTVShowLandscapeAD.Checked
+            .TVShowTVThemeXBMC = Me.chkTVXBMCThemeEnable.Checked
+            .TVShowTVThemeFolderXBMC = Me.txtTVXBMCThemeCustomPath.Text
 
             '****************** YAMJ settings ******************
+            .TVUseYAMJ = Me.chkTVUseYAMJ.Checked
+            .TVEpisodePosterYAMJ = Me.chkTVEpisodePosterYAMJ.Checked
+            .TVSeasonBannerYAMJ = Me.chkTVSeasonBannerYAMJ.Checked
+            .TVSeasonFanartYAMJ = Me.chkTVSeasonFanartYAMJ.Checked
+            .TVSeasonPosterYAMJ = Me.chkTVSeasonPosterYAMJ.Checked
+            .TVShowBannerYAMJ = Me.chkTVShowBannerYAMJ.Checked
+            .TVShowFanartYAMJ = Me.chkTVShowFanartYAMJ.Checked
+            .TVShowPosterYAMJ = Me.chkTVShowPosterYAMJ.Checked
 
             '****************** NMJ settings *******************
 
@@ -1318,6 +1324,150 @@ Public Class dlgWizard
     End Sub
 
     Private Sub SetUp()
+
+        'Actor Thumbs
+        Dim strActorThumbs As String = Master.eLang.GetString(991, "Actor Thumbs")
+        Me.chkMovieActorThumbsExpertBDMV.Text = strActorThumbs
+        Me.chkMovieActorThumbsExpertMulti.Text = strActorThumbs
+        Me.chkMovieActorThumbsExpertSingle.Text = strActorThumbs
+        Me.chkMovieActorThumbsExpertVTS.Text = strActorThumbs
+        Me.lblMovieSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
+        Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
+
+        'Banner
+        Dim strBanner As String = Master.eLang.GetString(838, "Banner")
+        Me.lblMovieSourcesFileNamingExpertBDMVBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingExpertMultiBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingExpertSingleBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingExpertVTSBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingNMTDefaultsBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingXBMCADBanner.Text = strBanner
+        Me.lblTVSourcesFileNamingBoxeeDefaultsBanner.Text = strBanner
+        Me.lblTVSourcesFileNamingNMTDefaultsBanner.Text = strBanner
+        Me.lblTVSourcesFileNamingXBMCDefaultsBanner.Text = strBanner
+
+        'ClearArt
+        Dim strClearArt As String = Master.eLang.GetString(1096, "ClearArt")
+        Me.lblMovieClearArtExpertBDMV.Text = strClearArt
+        Me.lblMovieClearArtExpertMulti.Text = strClearArt
+        Me.lblMovieClearArtExpertSingle.Text = strClearArt
+        Me.lblMovieClearArtExpertVTS.Text = strClearArt
+        Me.lblMovieSourcesFileNamingXBMCADClearArt.Text = strClearArt
+
+        'ClearLogo
+        Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
+        Me.lblMovieClearLogoExpertBDMV.Text = strClearLogo
+        Me.lblMovieClearLogoExpertMulti.Text = strClearLogo
+        Me.lblMovieClearLogoExpertSingle.Text = strClearLogo
+        Me.lblMovieClearLogoExpertVTS.Text = strClearLogo
+        Me.lblMovieSourcesFileNamingXBMCADClearLogo.Text = strClearLogo
+
+        'Defaults
+        Dim strDefaults As String = Master.eLang.GetString(713, "Defaults")
+        Me.gbMovieSourcesFileNamingBoxeeDefaultsOpts.Text = strDefaults
+        Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Text = strDefaults
+        Me.gbMovieSourcesFileNamingXBMCDefaultsOpts.Text = strDefaults
+
+        'DiscArt
+        Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")
+        Me.lblMovieDiscArtExpertBDMV.Text = strDiscArt
+        Me.lblMovieDiscArtExpertMulti.Text = strDiscArt
+        Me.lblMovieDiscArtExpertSingle.Text = strDiscArt
+        Me.lblMovieDiscArtExpertVTS.Text = strDiscArt
+        Me.lblMovieSourcesFileNamingXBMCADDiscArt.Text = strDiscArt
+
+        'Enabled
+        Dim strEnabled As String = Master.eLang.GetString(774, "Enabled")
+        Me.lblMovieSourcesFileNamingBoxeeDefaultsEnabled.Text = strEnabled
+        Me.lblMovieSourcesFileNamingNMTDefaultsEnabled.Text = strEnabled
+        Me.lblMovieSourcesFileNamingXBMCDefaultsEnabled.Text = strEnabled
+        Me.chkMovieUseExpert.Text = strEnabled
+
+        'Extrafanarts
+        Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
+        Me.chkMovieExtrafanartsExpertBDMV.Text = strExtrafanarts
+        Me.chkMovieExtrafanartsExpertSingle.Text = strExtrafanarts
+        Me.chkMovieExtrafanartsExpertVTS.Text = strExtrafanarts
+        Me.lblMovieSourcesFileNamingXBMCDefaultsExtrafanarts.Text = strExtrafanarts
+        Me.lblTVSourcesFileNamingXBMCDefaultsExtrafanarts.Text = strExtrafanarts
+
+        'Extrathumbs
+        Dim strExtrathumbs As String = Master.eLang.GetString(153, "Extrathumbs")
+        Me.chkMovieExtrathumbsExpertBDMV.Text = strExtrathumbs
+        Me.chkMovieExtrathumbsExpertSingle.Text = strExtrathumbs
+        Me.chkMovieExtrathumbsExpertVTS.Text = strExtrathumbs
+        Me.lblMovieSourcesFileNamingXBMCDefaultsExtrathumbs.Text = strExtrathumbs
+
+        'Fanart
+        Dim strFanart As String = Master.eLang.GetString(149, "Fanart")
+        Me.lblMovieSourcesFileNamingBoxeeDefaultsFanart.Text = strFanart
+        Me.lblMovieSourcesFilenamingExpertBDMVFanart.Text = strFanart
+        Me.lblMovieSourcesFilenamingExpertMultiFanart.Text = strFanart
+        Me.lblMovieSourcesFilenamingExpertSingleFanart.Text = strFanart
+        Me.lblMovieSourcesFilenamingExpertVTSFanart.Text = strFanart
+        Me.lblMovieSourcesFileNamingNMTDefaultsFanart.Text = strFanart
+        Me.lblMovieSourcesFileNamingXBMCDefaultsFanart.Text = strFanart
+        Me.lblTVSourcesFileNamingBoxeeDefaultsFanart.Text = strFanart
+        Me.lblTVSourcesFileNamingNMTDefaultsFanart.Text = strFanart
+        Me.lblTVSourcesFileNamingXBMCDefaultsFanart.Text = strFanart
+
+        'Landscape
+        Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
+        Me.lblMovieSourcesFileNamingExpertBDMVLandscape.Text = strLandscape
+        Me.lblMovieSourcesFileNamingExpertMultiLandscape.Text = strLandscape
+        Me.lblMovieSourcesFileNamingExpertSingleLandscape.Text = strLandscape
+        Me.lblMovieSourcesFileNamingExpertVTSLandscape.Text = strLandscape
+        Me.lblMovieSourcesFileNamingXBMCADLandscape.Text = strLandscape
+
+        'NFO
+        Dim strNFO As String = Master.eLang.GetString(150, "NFO")
+        Me.lblMovieSourcesFileNamingBoxeeDefaultsNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingExpertBDMVNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingExpertMultiNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingExpertSingleNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingExpertVTSNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingNMTDefaultsNFO.Text = strNFO
+        Me.lblMovieSourcesFileNamingXBMCDefaultsNFO.Text = strNFO
+
+        'Optional Images
+        Dim strOptionalImages As String = Master.eLang.GetString(267, "Optional Images")
+        Me.gbMovieSourcesFileNamingExpertBDMVImagesOpts.Text = strOptionalImages
+        Me.gbMovieSourcesFileNamingExpertMultiImagesOpts.Text = strOptionalImages
+        Me.gbMovieSourcesFileNamingExpertSingleImagesOpts.Text = strOptionalImages
+        Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Text = strOptionalImages
+
+        'Optional Settings
+        Dim strOptionalSettings As String = Master.eLang.GetString(1175, "Optional Settings")
+        Me.gbMovieSourcesFileNamingExpertBDMVOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingExpertMultiOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingExpertSingleOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingNMTOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text = strOptionalSettings
+
+        'Poster
+        Dim strPoster As String = Master.eLang.GetString(148, "Poster")
+        Me.lblMoviePosterExpertBDMV.Text = strPoster
+        Me.lblMoviePosterExpertMulti.Text = strPoster
+        Me.lblMoviePosterExpertSingle.Text = strPoster
+        Me.lblMoviePosterExpertVTS.Text = strPoster
+        Me.lblTVSourcesFileNamingBoxeeDefaultsPoster.Text = strPoster
+        Me.lblTVSourcesFileNamingNMTDefaultsPoster.Text = strPoster
+        Me.lblTVSourcesFileNamingXBMCDefaultsPoster.Text = strPoster
+        Me.lblMovieSourcesFileNamingBoxeeDefaultsPoster.Text = strPoster
+        Me.lblMovieSourcesFileNamingNMTDefaultsPoster.Text = strPoster
+        Me.lblMovieSourcesFileNamingXBMCDefaultsPoster.Text = strPoster
+
+        'Trailer
+        Dim strTrailer As String = Master.eLang.GetString(151, "Trailer")
+        Me.lblMovieTrailerExpertBDMV.Text = strTrailer
+        Me.lblMovieTrailerExpertMulti.Text = strTrailer
+        Me.lblMovieTrailerExpertSingle.Text = strTrailer
+        Me.lblMovieTrailerExpertVTS.Text = strTrailer
+        Me.lblMovieSourcesFileNamingNMTDefaultsTrailer.Text = strTrailer
+        Me.lblMovieSourcesFileNamingXBMCDefaultsTrailer.Text = strTrailer
+
+
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.Label1.Text = Master.eLang.GetString(405, "Welcome to Ember Media Manager")
         Me.Label10.Text = Master.eLang.GetString(113, "Now select the default language you would like Ember to look for when scraping TV Show items.")
@@ -1325,7 +1475,7 @@ Public Class dlgWizard
         Me.Label2.Text = String.Format(Master.eLang.GetString(415, "This is either your first time running Ember Media Manager or you have upgraded to a newer version.  There are a few things Ember Media Manager needs to know to work properly.  This wizard will walk you through configuring Ember Media Manager to work for your set up.{0}{0}Only a handful of settings will be covered in this wizard. You can change these or any other setting at any time by selecting ""Settings..."" from the ""Edit"" menu."), vbNewLine)
         Me.Label3.Text = Master.eLang.GetString(414, "First, let's tell Ember Media Manager where to locate all your movies. You can add as many sources as you wish.")
         Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
-        Me.Label4.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
+        Me.lblMovieSettings.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
         Me.Label48.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
         Me.Label6.Text = Master.eLang.GetString(408, "That wasn't so hard was it?  As mentioned earlier, you can change these or any other options in the Settings dialog.")
         Me.Label7.Text = String.Format(Master.eLang.GetString(409, "That's it!{0}Ember Media Manager is Ready!"), vbNewLine)
@@ -1352,13 +1502,13 @@ Public Class dlgWizard
         Me.lvTVSources.Columns(4).Text = Master.eLang.GetString(1167, "Ordering")
         Me.pnlWelcome.Location = New Point(166, 7)
         Me.pnlWelcome.Visible = True
-        Me.pnlMovieSource.Visible = False
+        Me.pnlMovieSources.Visible = False
         Me.pnlMovieSettings.Visible = False
         Me.pnlMovieSetSettings.Visible = False
         Me.pnlTVShowSource.Visible = False
         Me.pnlTVShowSettings.Visible = False
         Me.pnlDone.Visible = False
-        Me.pnlMovieSource.Location = New Point(166, 7)
+        Me.pnlMovieSources.Location = New Point(166, 7)
         Me.pnlMovieSettings.Location = New Point(166, 7)
         Me.pnlMovieSetSettings.Location = New Point(166, 7)
         Me.pnlTVShowSource.Location = New Point(166, 7)

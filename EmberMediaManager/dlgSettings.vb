@@ -7595,7 +7595,6 @@ Public Class dlgSettings
             Me.chkTVShowFanartFrodo.Checked = True
             Me.chkTVShowLandscapeAD.Checked = True
             Me.chkTVShowPosterFrodo.Checked = True
-            'Me.chkTVShowTVThemeXBMC.Checked = True
         End If
     End Sub
     Private Sub chkTVEpisodeActorThumbsFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeActorThumbsFrodo.CheckedChanged
