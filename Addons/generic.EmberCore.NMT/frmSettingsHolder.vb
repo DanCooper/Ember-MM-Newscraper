@@ -42,8 +42,8 @@ Public Class frmSettingsHolder
 
 #Region "Methods"
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent ModuleEnabledChanged(cbEnabled.Checked)
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
     End Sub
 
     Public Sub New()
@@ -128,7 +128,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Using
         If Not conf Is Nothing Then
@@ -157,7 +157,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Using
         Return readme
@@ -193,7 +193,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return False
             End Try
         End Using
@@ -201,7 +201,7 @@ Public Class frmSettingsHolder
     End Function
 
     Private Sub SetUp()
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.lstTemplates.Columns(0).Text = Master.eLang.GetString(334, "Template")
         Me.lstTemplates.Columns(1).Text = Master.eLang.GetString(422, "Version")
         Me.lstTemplates.Columns(2).Text = Master.eLang.GetString(423, "Author")
@@ -209,7 +209,7 @@ Public Class frmSettingsHolder
         Me.btnInstall.Text = Master.eLang.GetString(427, "Install")
         Me.btnRemove.Text = Master.eLang.GetString(428, "Remove")
         Me.GroupBox1.Text = Master.eLang.GetString(26, "Details")
-	End Sub
+    End Sub
 
     Sub RemoveTemplate()
         If lstTemplates.SelectedItems.Count > 0 Then

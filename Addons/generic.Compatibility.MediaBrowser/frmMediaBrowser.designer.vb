@@ -27,23 +27,27 @@ Partial Class frmMediaBrowser
         Me.chkVideoTSParent = New System.Windows.Forms.CheckBox()
         Me.chkBackdrop = New System.Windows.Forms.CheckBox()
         Me.chkMyMovies = New System.Windows.Forms.CheckBox()
-        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
+        Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlSettings.SuspendLayout()
-        Me.Panel1.SuspendLayout()
+        Me.pnlSettingsTop.SuspendLayout()
+        Me.tblSettingsTop.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
+        Me.pnlSettings.AutoSize = True
         Me.pnlSettings.BackColor = System.Drawing.Color.White
         Me.pnlSettings.Controls.Add(Me.lblInfo)
         Me.pnlSettings.Controls.Add(Me.chkVideoTSParent)
         Me.pnlSettings.Controls.Add(Me.chkBackdrop)
         Me.pnlSettings.Controls.Add(Me.chkMyMovies)
-        Me.pnlSettings.Controls.Add(Me.Panel1)
-        Me.pnlSettings.Location = New System.Drawing.Point(13, 15)
+        Me.pnlSettings.Controls.Add(Me.pnlSettingsTop)
+        Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
+        Me.pnlSettings.Size = New System.Drawing.Size(643, 356)
         Me.pnlSettings.TabIndex = 0
         '
         'lblInfo
@@ -92,30 +96,50 @@ Partial Class frmMediaBrowser
         Me.chkMyMovies.Text = "Media Browser mymovies.xml"
         Me.chkMyMovies.UseVisualStyleBackColor = True
         '
-        'Panel1
+        'pnlSettingsTop
         '
-        Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.Panel1.Controls.Add(Me.chkEnabled)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Panel1.Location = New System.Drawing.Point(0, 0)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(617, 25)
-        Me.Panel1.TabIndex = 0
+        Me.pnlSettingsTop.AutoSize = True
+        Me.pnlSettingsTop.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.pnlSettingsTop.Controls.Add(Me.tblSettingsTop)
+        Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
+        Me.pnlSettingsTop.Name = "pnlSettingsTop"
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(643, 23)
+        Me.pnlSettingsTop.TabIndex = 0
         '
         'chkEnabled
         '
+        Me.chkEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkEnabled.AutoSize = True
-        Me.chkEnabled.Location = New System.Drawing.Point(10, 5)
+        Me.chkEnabled.Location = New System.Drawing.Point(8, 3)
         Me.chkEnabled.Name = "chkEnabled"
         Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
         Me.chkEnabled.TabIndex = 0
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'tblSettingsTop
+        '
+        Me.tblSettingsTop.AutoSize = True
+        Me.tblSettingsTop.ColumnCount = 2
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsTop.Controls.Add(Me.chkEnabled, 0, 0)
+        Me.tblSettingsTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettingsTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettingsTop.Name = "tblSettingsTop"
+        Me.tblSettingsTop.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
+        Me.tblSettingsTop.RowCount = 2
+        Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsTop.Size = New System.Drawing.Size(643, 23)
+        Me.tblSettingsTop.TabIndex = 5
+        '
         'frmMediaBrowser
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(643, 356)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -123,16 +147,20 @@ Partial Class frmMediaBrowser
         Me.Text = "frmSettingsHolder"
         Me.pnlSettings.ResumeLayout(False)
         Me.pnlSettings.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
+        Me.pnlSettingsTop.ResumeLayout(False)
+        Me.pnlSettingsTop.PerformLayout()
+        Me.tblSettingsTop.ResumeLayout(False)
+        Me.tblSettingsTop.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents pnlSettingsTop As System.Windows.Forms.Panel
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents chkBackdrop As System.Windows.Forms.CheckBox
     Friend WithEvents chkMyMovies As System.Windows.Forms.CheckBox
     Friend WithEvents chkVideoTSParent As System.Windows.Forms.CheckBox
     Friend WithEvents lblInfo As System.Windows.Forms.Label
+    Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel
 End Class

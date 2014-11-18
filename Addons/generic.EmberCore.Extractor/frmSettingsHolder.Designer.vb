@@ -22,66 +22,93 @@ Partial Class frmSettingsHolder
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
-		Me.Panel1 = New System.Windows.Forms.Panel()
-		Me.cbEnabled = New System.Windows.Forms.CheckBox()
-		Me.pnlSettings = New System.Windows.Forms.Panel()
-		Me.Panel1.SuspendLayout()
-		Me.pnlSettings.SuspendLayout()
-		Me.SuspendLayout()
-		'
-		'Panel1
-		'
-		Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
-		Me.Panel1.Controls.Add(Me.cbEnabled)
-		Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
-		Me.Panel1.Location = New System.Drawing.Point(0, 0)
-		Me.Panel1.Name = "Panel1"
-		Me.Panel1.Size = New System.Drawing.Size(617, 25)
-		Me.Panel1.TabIndex = 0
-		'
-		'cbEnabled
-		'
-		Me.cbEnabled.AutoSize = True
-		Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
-		Me.cbEnabled.Name = "cbEnabled"
-		Me.cbEnabled.Size = New System.Drawing.Size(68, 17)
-		Me.cbEnabled.TabIndex = 0
-		Me.cbEnabled.Text = "Enabled"
-		Me.cbEnabled.UseVisualStyleBackColor = True
-		'
-		'pnlSettings
-		'
-		Me.pnlSettings.Controls.Add(Me.Panel1)
-		Me.pnlSettings.Location = New System.Drawing.Point(13, 15)
-		Me.pnlSettings.Name = "pnlSettings"
-		Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
-		Me.pnlSettings.TabIndex = 0
-		'
-		'frmSettingsHolder
-		'
-		Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
-		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-		Me.BackColor = System.Drawing.Color.White
-		Me.ClientSize = New System.Drawing.Size(653, 366)
-		Me.Controls.Add(Me.pnlSettings)
-		Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-		Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-		Me.MaximizeBox = False
-		Me.MinimizeBox = False
-		Me.Name = "frmSettingsHolder"
-		Me.ShowInTaskbar = False
-		Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-		Me.Text = "frmSettingsHolder"
-		Me.Panel1.ResumeLayout(False)
-		Me.Panel1.PerformLayout()
-		Me.pnlSettings.ResumeLayout(False)
-		Me.ResumeLayout(False)
+        Me.pnlSettingsTop = New System.Windows.Forms.Panel()
+        Me.cbEnabled = New System.Windows.Forms.CheckBox()
+        Me.pnlSettings = New System.Windows.Forms.Panel()
+        Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlSettingsTop.SuspendLayout()
+        Me.pnlSettings.SuspendLayout()
+        Me.tblSettingsTop.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'pnlSettingsTop
+        '
+        Me.pnlSettingsTop.AutoSize = True
+        Me.pnlSettingsTop.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.pnlSettingsTop.Controls.Add(Me.tblSettingsTop)
+        Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
+        Me.pnlSettingsTop.Name = "pnlSettingsTop"
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(384, 23)
+        Me.pnlSettingsTop.TabIndex = 0
+        '
+        'cbEnabled
+        '
+        Me.cbEnabled.AutoSize = True
+        Me.cbEnabled.Location = New System.Drawing.Point(8, 3)
+        Me.cbEnabled.Name = "cbEnabled"
+        Me.cbEnabled.Size = New System.Drawing.Size(68, 17)
+        Me.cbEnabled.TabIndex = 0
+        Me.cbEnabled.Text = "Enabled"
+        Me.cbEnabled.UseVisualStyleBackColor = True
+        '
+        'pnlSettings
+        '
+        Me.pnlSettings.AutoSize = True
+        Me.pnlSettings.Controls.Add(Me.pnlSettingsTop)
+        Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
+        Me.pnlSettings.Name = "pnlSettings"
+        Me.pnlSettings.Size = New System.Drawing.Size(384, 261)
+        Me.pnlSettings.TabIndex = 0
+        '
+        'tblSettingsTop
+        '
+        Me.tblSettingsTop.AutoScroll = True
+        Me.tblSettingsTop.AutoSize = True
+        Me.tblSettingsTop.ColumnCount = 2
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsTop.Controls.Add(Me.cbEnabled, 0, 0)
+        Me.tblSettingsTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettingsTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettingsTop.Name = "tblSettingsTop"
+        Me.tblSettingsTop.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
+        Me.tblSettingsTop.RowCount = 2
+        Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsTop.Size = New System.Drawing.Size(384, 23)
+        Me.tblSettingsTop.TabIndex = 1
+        '
+        'frmSettingsHolder
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSize = True
+        Me.BackColor = System.Drawing.Color.White
+        Me.ClientSize = New System.Drawing.Size(384, 261)
+        Me.Controls.Add(Me.pnlSettings)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
+        Me.Name = "frmSettingsHolder"
+        Me.ShowInTaskbar = False
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        Me.Text = "frmSettingsHolder"
+        Me.pnlSettingsTop.ResumeLayout(False)
+        Me.pnlSettingsTop.PerformLayout()
+        Me.pnlSettings.ResumeLayout(False)
+        Me.pnlSettings.PerformLayout()
+        Me.tblSettingsTop.ResumeLayout(False)
+        Me.tblSettingsTop.PerformLayout()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
 
-	End Sub
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    End Sub
+    Friend WithEvents pnlSettingsTop As System.Windows.Forms.Panel
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
+    Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel
 
 End Class

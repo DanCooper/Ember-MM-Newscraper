@@ -44,14 +44,14 @@ Public Class frmSettingsHolder
     Private Sub SetUp()
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkExportTVShows.Text = Master.eLang.GetString(993, "Export TV Shows")
-        Me.lbl_exportmoviefiltergenerate.Text = Master.eLang.GetString(993, "Generate Filter")
+        Me.lblFilter.Text = Master.eLang.GetString(994, "Generate Filter")
         Me.txt_exportmoviepath.Text = Master.eLang.GetString(995, "Export Path")
-        Me.lbl_exportmoviefanart.Text = Master.eLang.GetString(996, "Fanart Width [px]")
-        Me.lbl_exportmovieposter.Text = Master.eLang.GetString(997, "Poster Height [px]")
-        Me.lbl_exportmoviequality.Text = Master.eLang.GetString(478, "Quality:")
-        Me.gpb_ExportFilterSettings.Text = Master.eLang.GetString(998, "Filter Settings")
-        Me.gpb_ExportImage.Text = Master.eLang.GetString(999, "Image Settings")
-        Me.gpb_ExportGeneralSettings.Text = Master.eLang.GetString(38, "General Settings")
+        Me.lblImageFanartWidth.Text = Master.eLang.GetString(996, "Fanart Width [px]")
+        Me.lblImagePosterHeight.Text = Master.eLang.GetString(997, "Poster Height [px]")
+        Me.lblImageQuality.Text = Master.eLang.GetString(478, "Quality:")
+        Me.gbFilterOpts.Text = Master.eLang.GetString(998, "Filter Settings")
+        Me.gbImageOpts.Text = Master.eLang.GetString(999, "Image Settings")
+        Me.gbGeneralOpts.Text = Master.eLang.GetString(38, "General Settings")
         Me.btn_Apply.Text = Master.eLang.GetString(1001, "Save Filter")
         Me.btn_Reset.Text = Master.eLang.GetString(1002, "Reset Filter")
         Me.lblIn.Text = Master.eLang.GetString(331, "in")
@@ -61,8 +61,6 @@ Public Class frmSettingsHolder
             lstSources.Items.Add(s.Name)
         Next
     End Sub
-
-
 
     Private Sub txt_exportmoviepath_TextChanged(sender As Object, e As EventArgs) Handles txt_exportmoviepath.TextChanged
         RaiseEvent ModuleSettingsChanged()
@@ -113,6 +111,7 @@ Public Class frmSettingsHolder
             txtSearch.ReadOnly = False
         End If
     End Sub
+
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
         If txtSearch.Text <> "" AndAlso cbSearch.Text <> "" Then
             btn_Apply.Enabled = True
@@ -120,9 +119,6 @@ Public Class frmSettingsHolder
             btn_Apply.Enabled = False
         End If
     End Sub
-
-#End Region 'Methods
-
 
     Private Sub btn_Apply_Click(sender As Object, e As EventArgs) Handles btn_Apply.Click
         Dim sFilter As String = String.Empty
@@ -171,7 +167,6 @@ Public Class frmSettingsHolder
         End Using
     End Sub
 
-
     Private Sub btn_Reset_Click(sender As Object, e As EventArgs) Handles btn_Reset.Click
         If cbo_exportmoviefilter.Text = "Filter 1" Then
             lbl_exportmoviefilter1saved.Text = "-"
@@ -183,5 +178,6 @@ Public Class frmSettingsHolder
         txtSearch.Text = ""
     End Sub
 
+#End Region 'Methods
 
 End Class

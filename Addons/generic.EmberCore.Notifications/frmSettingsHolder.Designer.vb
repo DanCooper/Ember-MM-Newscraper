@@ -27,30 +27,35 @@ Partial Class frmSettingsHolder
         Me.chkOnMovieScraped = New System.Windows.Forms.CheckBox()
         Me.chkOnNewMovie = New System.Windows.Forms.CheckBox()
         Me.chkOnError = New System.Windows.Forms.CheckBox()
-        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
+        Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlSettingsMain = New System.Windows.Forms.Panel()
+        Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlSettings.SuspendLayout()
-        Me.Panel1.SuspendLayout()
+        Me.pnlSettingsTop.SuspendLayout()
+        Me.tblSettingsTop.SuspendLayout()
+        Me.pnlSettingsMain.SuspendLayout()
+        Me.tblSettingsMain.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
+        Me.pnlSettings.AutoSize = True
         Me.pnlSettings.BackColor = System.Drawing.Color.White
-        Me.pnlSettings.Controls.Add(Me.chkOnNewEp)
-        Me.pnlSettings.Controls.Add(Me.chkOnMovieScraped)
-        Me.pnlSettings.Controls.Add(Me.chkOnNewMovie)
-        Me.pnlSettings.Controls.Add(Me.chkOnError)
-        Me.pnlSettings.Controls.Add(Me.Panel1)
-        Me.pnlSettings.Location = New System.Drawing.Point(13, 15)
+        Me.pnlSettings.Controls.Add(Me.pnlSettingsMain)
+        Me.pnlSettings.Controls.Add(Me.pnlSettingsTop)
+        Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
+        Me.pnlSettings.Size = New System.Drawing.Size(384, 261)
         Me.pnlSettings.TabIndex = 0
         '
         'chkOnNewEp
         '
         Me.chkOnNewEp.AutoSize = True
         Me.chkOnNewEp.Enabled = False
-        Me.chkOnNewEp.Location = New System.Drawing.Point(10, 114)
+        Me.chkOnNewEp.Location = New System.Drawing.Point(3, 72)
         Me.chkOnNewEp.Name = "chkOnNewEp"
         Me.chkOnNewEp.Size = New System.Drawing.Size(149, 17)
         Me.chkOnNewEp.TabIndex = 4
@@ -60,7 +65,7 @@ Partial Class frmSettingsHolder
         'chkOnMovieScraped
         '
         Me.chkOnMovieScraped.AutoSize = True
-        Me.chkOnMovieScraped.Location = New System.Drawing.Point(10, 91)
+        Me.chkOnMovieScraped.Location = New System.Drawing.Point(3, 49)
         Me.chkOnMovieScraped.Name = "chkOnMovieScraped"
         Me.chkOnMovieScraped.Size = New System.Drawing.Size(120, 17)
         Me.chkOnMovieScraped.TabIndex = 3
@@ -71,7 +76,7 @@ Partial Class frmSettingsHolder
         '
         Me.chkOnNewMovie.AutoSize = True
         Me.chkOnNewMovie.Enabled = False
-        Me.chkOnNewMovie.Location = New System.Drawing.Point(10, 68)
+        Me.chkOnNewMovie.Location = New System.Drawing.Point(3, 26)
         Me.chkOnNewMovie.Name = "chkOnNewMovie"
         Me.chkOnNewMovie.Size = New System.Drawing.Size(139, 17)
         Me.chkOnNewMovie.TabIndex = 2
@@ -81,54 +86,117 @@ Partial Class frmSettingsHolder
         'chkOnError
         '
         Me.chkOnError.AutoSize = True
-        Me.chkOnError.Location = New System.Drawing.Point(10, 45)
+        Me.chkOnError.Location = New System.Drawing.Point(3, 3)
         Me.chkOnError.Name = "chkOnError"
         Me.chkOnError.Size = New System.Drawing.Size(70, 17)
         Me.chkOnError.TabIndex = 1
         Me.chkOnError.Text = "On Error"
         Me.chkOnError.UseVisualStyleBackColor = True
         '
-        'Panel1
+        'pnlSettingsTop
         '
-        Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.Panel1.Controls.Add(Me.chkEnabled)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Panel1.Location = New System.Drawing.Point(0, 0)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(617, 25)
-        Me.Panel1.TabIndex = 0
+        Me.pnlSettingsTop.AutoSize = True
+        Me.pnlSettingsTop.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.pnlSettingsTop.Controls.Add(Me.tblSettingsTop)
+        Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
+        Me.pnlSettingsTop.Name = "pnlSettingsTop"
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(384, 23)
+        Me.pnlSettingsTop.TabIndex = 0
         '
         'chkEnabled
         '
         Me.chkEnabled.AutoSize = True
-        Me.chkEnabled.Location = New System.Drawing.Point(10, 5)
+        Me.chkEnabled.Location = New System.Drawing.Point(8, 3)
         Me.chkEnabled.Name = "chkEnabled"
         Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
         Me.chkEnabled.TabIndex = 0
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'tblSettingsTop
+        '
+        Me.tblSettingsTop.AutoSize = True
+        Me.tblSettingsTop.ColumnCount = 2
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsTop.Controls.Add(Me.chkEnabled, 0, 0)
+        Me.tblSettingsTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettingsTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettingsTop.Name = "tblSettingsTop"
+        Me.tblSettingsTop.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
+        Me.tblSettingsTop.RowCount = 2
+        Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsTop.Size = New System.Drawing.Size(384, 23)
+        Me.tblSettingsTop.TabIndex = 5
+        '
+        'pnlSettingsMain
+        '
+        Me.pnlSettingsMain.AutoSize = True
+        Me.pnlSettingsMain.Controls.Add(Me.tblSettingsMain)
+        Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 23)
+        Me.pnlSettingsMain.Name = "pnlSettingsMain"
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(384, 238)
+        Me.pnlSettingsMain.TabIndex = 5
+        '
+        'tblSettingsMain
+        '
+        Me.tblSettingsMain.AutoScroll = True
+        Me.tblSettingsMain.AutoSize = True
+        Me.tblSettingsMain.ColumnCount = 2
+        Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettingsMain.Controls.Add(Me.chkOnError, 0, 0)
+        Me.tblSettingsMain.Controls.Add(Me.chkOnNewMovie, 0, 1)
+        Me.tblSettingsMain.Controls.Add(Me.chkOnNewEp, 0, 3)
+        Me.tblSettingsMain.Controls.Add(Me.chkOnMovieScraped, 0, 2)
+        Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettingsMain.Name = "tblSettingsMain"
+        Me.tblSettingsMain.RowCount = 5
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettingsMain.Size = New System.Drawing.Size(384, 238)
+        Me.tblSettingsMain.TabIndex = 6
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(643, 356)
+        Me.AutoSize = True
+        Me.ClientSize = New System.Drawing.Size(384, 261)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmSettingsHolder"
         Me.Text = "frmSettingsHolder"
         Me.pnlSettings.ResumeLayout(False)
         Me.pnlSettings.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
+        Me.pnlSettingsTop.ResumeLayout(False)
+        Me.pnlSettingsTop.PerformLayout()
+        Me.tblSettingsTop.ResumeLayout(False)
+        Me.tblSettingsTop.PerformLayout()
+        Me.pnlSettingsMain.ResumeLayout(False)
+        Me.pnlSettingsMain.PerformLayout()
+        Me.tblSettingsMain.ResumeLayout(False)
+        Me.tblSettingsMain.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents pnlSettingsTop As System.Windows.Forms.Panel
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnError As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnMovieScraped As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnNewMovie As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnNewEp As System.Windows.Forms.CheckBox
+    Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
+    Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
 End Class

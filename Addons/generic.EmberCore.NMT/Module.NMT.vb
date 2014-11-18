@@ -151,7 +151,7 @@ Public Class NMTExporterModule
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Me._setup = New frmSettingsHolder
-        Me._setup.cbEnabled.Checked = Me._enabled
+        Me._setup.chkEnabled.Checked = Me._enabled
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
         SPanel.Text = Master.eLang.GetString(475, "NMT Jukebox Builder")
@@ -176,7 +176,7 @@ Public Class NMTExporterModule
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me.Enabled = Me._setup.cbEnabled.Checked
+        Me.Enabled = Me._setup.chkEnabled.Checked
     End Sub
 
 #End Region 'Methods
