@@ -52,7 +52,6 @@ Partial Public Class clsXMLSettings
     Private _generalhidelandscape As Boolean
     Private _generalhideposter As Boolean
     Private _generalimagesglassoverlay As Boolean
-    Private _generalinfopanelanim As Boolean
     Private _generallanguage As String
     Private _generalmainsplitterpanelstate As Integer
     Private _generalmovieinfopanelstate As Integer
@@ -1915,15 +1914,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviegeneralignorelastscan = value
-        End Set
-    End Property
-
-    Public Property GeneralInfoPanelAnim() As Boolean
-        Get
-            Return Me._generalinfopanelanim
-        End Get
-        Set(ByVal value As Boolean)
-            Me._generalinfopanelanim = value
         End Set
     End Property
 

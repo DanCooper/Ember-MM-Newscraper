@@ -1087,15 +1087,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GeneralInfoPanelAnim() As Boolean
-        Get
-            Return Settings._XMLSettings.GeneralInfoPanelAnim
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralInfoPanelAnim = value
-        End Set
-    End Property
-
     Public Property GeneralMovieInfoPanelState() As Integer
         Get
             Return Settings._XMLSettings.GeneralMovieInfoPanelState

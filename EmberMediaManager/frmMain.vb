@@ -58,9 +58,9 @@ Public Class frmMain
     Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Private alActors As New List(Of String)
-    Private aniFilterRaise_Movies As Boolean = False
-    Private aniFilterRaise_MovieSets As Boolean = False
-    Private aniFilterRaise_Shows As Boolean = False
+    Private FilterRaise_Movies As Boolean = False
+    Private FilterRaise_MovieSets As Boolean = False
+    Private FilterRaise_Shows As Boolean = False
     Private aniRaise As Boolean = False
     Private aniMovieType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private aniMovieSetType As Integer = 0 '0 = down, 1 = mid, 2 = up
@@ -825,51 +825,34 @@ Public Class frmMain
     End Sub
 
     Private Sub btnFilterDown_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterDown_Movies.Click
-        '//
-        ' Begin animation to lower panel all the way down
-        '\\
-        Me.aniFilterRaise_Movies = False
-        Me.tmrFilterAni_Movies.Start()
+        Me.FilterRaise_Movies = False
+        FilterMovement_Movies()
     End Sub
 
     Private Sub btnFilterDown_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterDown_MovieSets.Click
-        '//
-        ' Begin animation to lower panel all the way down
-        '\\
-        Me.aniFilterRaise_MovieSets = False
-        Me.tmrFilterAni_MovieSets.Start()
+        Me.FilterRaise_MovieSets = False
+        FilterMovement_MovieSets()
     End Sub
 
     Private Sub btnFilterDown_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterDown_Shows.Click
-        '//
-        ' Begin animation to lower panel all the way down
-        '\\
-        Me.aniFilterRaise_Shows = False
-        Me.tmrFilterAni_Shows.Start()
+        Me.FilterRaise_Shows = False
+        FilterMovement_Shows()
     End Sub
 
     Private Sub btnFilterUp_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp_Movies.Click
-        '//
-        ' Begin animation to raise panel all the way up
-        '\\
-        Me.aniFilterRaise_Movies = True
-        Me.tmrFilterAni_Movies.Start()
+        Me.FilterRaise_Movies = True
+        FilterMovement_Movies()
     End Sub
 
     Private Sub btnFilterUp_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp_MovieSets.Click
-        '//
-        ' Begin animation to raise panel all the way up
-        '\\
-        Me.aniFilterRaise_MovieSets = True
-        Me.tmrFilterAni_MovieSets.Start()
+       
+        Me.FilterRaise_MovieSets = True
+        FilterMovement_MovieSets()
     End Sub
 
     Private Sub btnFilterUp_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp_Shows.Click
-        '//
-        ' Begin animation to raise panel all the way up
-        '\\
-        Me.aniFilterRaise_Shows = True
-        Me.tmrFilterAni_Shows.Start()
+        Me.FilterRaise_Shows = True
+        FilterMovement_Shows()
     End Sub
 
 
@@ -10595,9 +10578,9 @@ doCancel:
                 Master.eSettings.GeneralMovieInfoPanelState = Me.aniMovieType
                 Master.eSettings.GeneralMovieSetInfoPanelState = Me.aniMovieSetType
                 Master.eSettings.GeneralTVShowInfoPanelState = Me.aniShowType
-                Master.eSettings.GeneralFilterPanelStateMovie = Me.aniFilterRaise_Movies
-                Master.eSettings.GeneralFilterPanelStateMovieSet = Me.aniFilterRaise_MovieSets
-                Master.eSettings.GeneralFilterPanelStateShow = Me.aniFilterRaise_Shows
+                Master.eSettings.GeneralFilterPanelStateMovie = Me.FilterRaise_Movies
+                Master.eSettings.GeneralFilterPanelStateMovieSet = Me.FilterRaise_MovieSets
+                Master.eSettings.GeneralFilterPanelStateShow = Me.FilterRaise_Shows
                 Master.eSettings.GeneralMainSplitterPanelState = Me.scMain.SplitterDistance
                 Me.pnlFilter_Movies.Visible = False
                 Me.pnlFilter_MovieSets.Visible = False
@@ -11083,35 +11066,44 @@ doCancel:
 
                 Me.aniShowType = Master.eSettings.GeneralTVShowInfoPanelState
 
-                Me.aniFilterRaise_Movies = Master.eSettings.GeneralFilterPanelStateMovie
-                If Me.aniFilterRaise_Movies Then
-                    Me.pnlFilter_Movies.Height = Functions.Quantize(Me.gbFilterSpecific_Movies.Height + Me.lblFilter_Movies.Height + 15, 5)
+                Me.FilterRaise_Movies = Master.eSettings.GeneralFilterPanelStateMovie
+                If Me.FilterRaise_Movies Then
+                    'Me.pnlFilter_Movies.Height = Functions.Quantize(Me.gbFilterSpecific_Movies.Height + Me.lblFilter_Movies.Height + 15, 5)
+                    Me.pnlFilter_Movies.AutoSize = True
                     Me.btnFilterDown_Movies.Enabled = True
                     Me.btnFilterUp_Movies.Enabled = False
                 Else
-                    Me.pnlFilter_Movies.Height = 25
+                    'Me.pnlFilter_Movies.Height = 25
+                    Me.pnlFilter_Movies.AutoSize = False
+                    Me.pnlFilter_Movies.Height = Me.pnlFilterTop_Movies.Height
                     Me.btnFilterDown_Movies.Enabled = False
                     Me.btnFilterUp_Movies.Enabled = True
                 End If
 
-                Me.aniFilterRaise_MovieSets = Master.eSettings.GeneralFilterPanelStateMovieSet
-                If Me.aniFilterRaise_MovieSets Then
-                    Me.pnlFilter_MovieSets.Height = Functions.Quantize(Me.gbFilterSpecific_MovieSets.Height + Me.lblFilter_MovieSets.Height + 15, 5)
+                Me.FilterRaise_MovieSets = Master.eSettings.GeneralFilterPanelStateMovieSet
+                If Me.FilterRaise_MovieSets Then
+                    'Me.pnlFilter_MovieSets.Height = Functions.Quantize(Me.gbFilterSpecific_MovieSets.Height + Me.lblFilter_MovieSets.Height + 15, 5)
+                    Me.pnlFilter_MovieSets.AutoSize = True
                     Me.btnFilterDown_MovieSets.Enabled = True
                     Me.btnFilterUp_MovieSets.Enabled = False
                 Else
-                    Me.pnlFilter_MovieSets.Height = 25
+                    'Me.pnlFilter_MovieSets.Height = 25
+                    Me.pnlFilter_MovieSets.AutoSize = False
+                    Me.pnlFilter_MovieSets.Height = Me.pnlFilterTop_MovieSets.Height
                     Me.btnFilterDown_MovieSets.Enabled = False
                     Me.btnFilterUp_MovieSets.Enabled = True
                 End If
 
-                Me.aniFilterRaise_Shows = Master.eSettings.GeneralFilterPanelStateShow
-                If Me.aniFilterRaise_Shows Then
-                    Me.pnlFilter_Shows.Height = Functions.Quantize(Me.gbFilterSpecific_Shows.Height + Me.lblFilter_Shows.Height + 15, 5)
+                Me.FilterRaise_Shows = Master.eSettings.GeneralFilterPanelStateShow
+                If Me.FilterRaise_Shows Then
+                    'Me.pnlFilter_Shows.Height = Functions.Quantize(Me.gbFilterSpecific_Shows.Height + Me.lblFilter_Shows.Height + 15, 5)
+                    Me.pnlFilter_Shows.AutoSize = True
                     Me.btnFilterDown_Shows.Enabled = True
                     Me.btnFilterUp_Shows.Enabled = False
                 Else
-                    Me.pnlFilter_Shows.Height = 25
+                    'Me.pnlFilter_Shows.Height = 25
+                    Me.pnlFilter_Shows.AutoSize = False
+                    Me.pnlFilter_Shows.Height = Me.pnlFilterTop_Shows.Height
                     Me.btnFilterDown_Shows.Enabled = False
                     Me.btnFilterUp_Shows.Enabled = True
                 End If
@@ -18086,8 +18078,6 @@ doCancel:
                 .gbFilterSpecific_MovieSets.Text = .gbFilterSpecific_Movies.Text
                 .gbFilterSpecific_Shows.Text = .gbFilterSpecific_Movies.Text
                 .gbFilterSorting_Movies.Text = Master.eLang.GetString(600, "Extra Sorting")
-                .gbFilterSorting_MovieSets.Text = .gbFilterSorting_Movies.Text
-                .gbFilterSorting_Shows.Text = .gbFilterSorting_Movies.Text
                 .lblActorsHeader.Text = Master.eLang.GetString(63, "Cast")
                 .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
                 .lblCertsHeader.Text = Master.eLang.GetString(56, "Certification(s)")
@@ -18407,33 +18397,19 @@ doCancel:
                 End If
         End Select
     End Sub
-    ''' <summary>
-    ''' Just some crappy animation to make the GUI slightly more interesting
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
     Private Sub tmrAni_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrAni.Tick
         Try
-            If Master.eSettings.GeneralInfoPanelAnim Then
-                If Me.aniRaise Then
-                    Me.pnlInfoPanel.Height += 5
-                Else
-                    Me.pnlInfoPanel.Height -= 5
-                End If
-            Else
-                Select Case If(Me.tcMain.SelectedIndex = 0, Me.aniMovieType, If(Me.tcMain.SelectedIndex = 1, Me.aniMovieSetType, Me.aniShowType))
-                    Case 0
-                        Me.pnlInfoPanel.Height = 25
+            Select Case If(Me.tcMain.SelectedIndex = 0, Me.aniMovieType, If(Me.tcMain.SelectedIndex = 1, Me.aniMovieSetType, Me.aniShowType))
+                Case 0
+                    Me.pnlInfoPanel.Height = 25
 
-                    Case 1
-                        Me.pnlInfoPanel.Height = Me.IPMid
+                Case 1
+                    Me.pnlInfoPanel.Height = Me.IPMid
 
-                    Case 2
-                        Me.pnlInfoPanel.Height = Me.IPUp
-
-                End Select
-            End If
+                Case 2
+                    Me.pnlInfoPanel.Height = Me.IPUp
+            End Select
 
             Me.MoveGenres()
             Me.MoveMPAA()
@@ -18467,37 +18443,20 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
-    ''' <summary>
-    ''' Just some crappy animation to make the GUI slightly more interesting
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub tmrFilterAni_Movies_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrFilterAni_Movies.Tick
+
+    Private Sub FilterMovement_Movies()
         Try
-
-            Dim pHeight As Integer = Functions.Quantize(Me.gbFilterSpecific_Movies.Height + Me.lblFilter_Movies.Height + 15, 5)
-
-            If Master.eSettings.GeneralInfoPanelAnim Then
-                If Me.aniFilterRaise_Movies Then
-                    Me.pnlFilter_Movies.Height += 5
-                Else
-                    Me.pnlFilter_Movies.Height -= 5
-                End If
+            If Me.FilterRaise_Movies Then
+                Me.pnlFilter_Movies.AutoSize = True
             Else
-                If Me.aniFilterRaise_Movies Then
-                    Me.pnlFilter_Movies.Height = pHeight
-                Else
-                    Me.pnlFilter_Movies.Height = 25
-                End If
+                Me.pnlFilter_Movies.AutoSize = False
+                Me.pnlFilter_Movies.Height = Me.pnlFilterTop_Movies.Height
             End If
 
-            If Me.pnlFilter_Movies.Height = 25 Then
-                Me.tmrFilterAni_Movies.Stop()
+            If Me.pnlFilter_Movies.Height = Me.pnlFilterTop_Movies.Height Then
                 Me.btnFilterUp_Movies.Enabled = True
                 Me.btnFilterDown_Movies.Enabled = False
-            ElseIf Me.pnlFilter_Movies.Height = pHeight Then
-                Me.tmrFilterAni_Movies.Stop()
+            ElseIf Me.pnlFilter_Movies.AutoSize Then
                 Me.btnFilterUp_Movies.Enabled = False
                 Me.btnFilterDown_Movies.Enabled = True
             End If
@@ -18508,37 +18467,20 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
-    ''' <summary>
-    ''' Just some crappy animation to make the GUI slightly more interesting
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub tmrFilterAni_MovieSets_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrFilterAni_MovieSets.Tick
+
+    Private Sub FilterMovement_MovieSets()
         Try
-
-            Dim pHeight As Integer = Functions.Quantize(Me.gbFilterSpecific_MovieSets.Height + Me.lblFilter_MovieSets.Height + 15, 5)
-
-            If Master.eSettings.GeneralInfoPanelAnim Then
-                If Me.aniFilterRaise_MovieSets Then
-                    Me.pnlFilter_MovieSets.Height += 5
-                Else
-                    Me.pnlFilter_MovieSets.Height -= 5
-                End If
+            If Me.FilterRaise_MovieSets Then
+                Me.pnlFilter_MovieSets.AutoSize = True
             Else
-                If Me.aniFilterRaise_MovieSets Then
-                    Me.pnlFilter_MovieSets.Height = pHeight
-                Else
-                    Me.pnlFilter_MovieSets.Height = 25
-                End If
+                Me.pnlFilter_MovieSets.AutoSize = False
+                Me.pnlFilter_MovieSets.Height = Me.pnlFilterTop_MovieSets.Height
             End If
 
-            If Me.pnlFilter_MovieSets.Height = 25 Then
-                Me.tmrFilterAni_MovieSets.Stop()
+            If Me.pnlFilter_MovieSets.Height = Me.pnlFilterTop_MovieSets.Height Then
                 Me.btnFilterUp_MovieSets.Enabled = True
                 Me.btnFilterDown_MovieSets.Enabled = False
-            ElseIf Me.pnlFilter_MovieSets.Height = pHeight Then
-                Me.tmrFilterAni_MovieSets.Stop()
+            ElseIf Me.pnlFilter_MovieSets.AutoSize Then
                 Me.btnFilterUp_MovieSets.Enabled = False
                 Me.btnFilterDown_MovieSets.Enabled = True
             End If
@@ -18549,37 +18491,20 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
-    ''' <summary>
-    ''' Just some crappy animation to make the GUI slightly more interesting
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub tmrFilterAni_Shows_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrFilterAni_Shows.Tick
+
+    Private Sub FilterMovement_Shows()
         Try
-
-            Dim pHeight As Integer = Functions.Quantize(Me.gbFilterSpecific_Shows.Height + Me.lblFilter_Shows.Height + 15, 5)
-
-            If Master.eSettings.GeneralInfoPanelAnim Then
-                If Me.aniFilterRaise_Shows Then
-                    Me.pnlFilter_Shows.Height += 5
-                Else
-                    Me.pnlFilter_Shows.Height -= 5
-                End If
+            If Me.FilterRaise_Shows Then
+                Me.pnlFilter_Shows.AutoSize = True
             Else
-                If Me.aniFilterRaise_Shows Then
-                    Me.pnlFilter_Shows.Height = pHeight
-                Else
-                    Me.pnlFilter_Shows.Height = 25
-                End If
+                Me.pnlFilter_Shows.AutoSize = False
+                Me.pnlFilter_Shows.Height = Me.pnlFilterTop_Shows.Height
             End If
 
-            If Me.pnlFilter_Shows.Height = 25 Then
-                Me.tmrFilterAni_Shows.Stop()
+            If Me.pnlFilter_Shows.Height = Me.pnlFilterTop_Shows.Height Then
                 Me.btnFilterUp_Shows.Enabled = True
                 Me.btnFilterDown_Shows.Enabled = False
-            ElseIf Me.pnlFilter_Shows.Height = pHeight Then
-                Me.tmrFilterAni_Shows.Stop()
+            ElseIf Me.pnlFilter_Shows.AutoSize Then
                 Me.btnFilterUp_Shows.Enabled = False
                 Me.btnFilterDown_Shows.Enabled = True
             End If
@@ -19016,7 +18941,9 @@ doCancel:
     End Sub
 
     Private Sub txtFilterGenre_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterGenre_Movies.Click
-        Me.pnlFilterGenres_Movies.Location = New Point(Me.gbFilterSpecific_Movies.Left + Me.txtFilterGenre_Movies.Left, (Me.pnlFilter_Movies.Top + Me.txtFilterGenre_Movies.Top + Me.gbFilterSpecific_Movies.Top) - Me.pnlFilterGenres_Movies.Height)
+        Me.pnlFilterGenres_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterGenre_Movies.Left + 1, _
+                                                       (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterGenre_Movies.Top) - Me.pnlFilterGenres_Movies.Height)
+        Me.pnlFilterGenres_Movies.Width = Me.txtFilterGenre_Movies.Width
         If Me.pnlFilterGenres_Movies.Visible Then
             Me.pnlFilterGenres_Movies.Visible = False
         ElseIf Not Me.pnlFilterGenres_Movies.Tag.ToString = "NO" Then

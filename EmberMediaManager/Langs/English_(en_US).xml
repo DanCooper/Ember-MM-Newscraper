@@ -429,7 +429,7 @@
   <string id="428">Removes</string>
   <string id="429">Miscellaneous</string>
   <string id="430">Interface Language:</string>
-  <string id="431">Enable Panel Animation</string>
+  <string id="431"></string>
   <string id="432">Check for Updates</string>
   <string id="433">Overwrite Non-conforming nfos</string>
   <string id="434">(If unchecked, non-conforming nfos will be renamed to &lt;filename&gt;.info)</string>

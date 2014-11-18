@@ -1762,7 +1762,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkGeneralInfoPanelAnim_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralInfoPanelAnim.CheckedChanged
+    Private Sub chkGeneralInfoPanelAnim_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -3319,7 +3319,6 @@ Public Class dlgSettings
                 Me.chkGeneralHideLandscape.Checked = .GeneralHideLandscape
                 Me.chkGeneralHidePoster.Checked = .GeneralHidePoster
                 Me.chkGeneralImagesGlassOverlay.Checked = .GeneralImagesGlassOverlay
-                Me.chkGeneralInfoPanelAnim.Checked = .GeneralInfoPanelAnim
                 Me.chkGeneralOverwriteNfo.Checked = .GeneralOverwriteNfo
                 Me.chkGeneralShowGenresText.Checked = .GeneralShowGenresText
                 Me.chkGeneralShowImgDims.Checked = .GeneralShowImgDims
@@ -4904,7 +4903,6 @@ Public Class dlgSettings
                 .GeneralHideLandscape = Me.chkGeneralHideLandscape.Checked
                 .GeneralHidePoster = Me.chkGeneralHidePoster.Checked
                 .GeneralImagesGlassOverlay = Me.chkGeneralImagesGlassOverlay.Checked
-                .GeneralInfoPanelAnim = chkGeneralInfoPanelAnim.Checked
                 .GeneralLanguage = Me.cbGeneralLanguage.Text
                 .GeneralMovieTheme = Me.cbGeneralMovieTheme.Text
                 .GeneralMovieSetTheme = Me.cbGeneralMovieSetTheme.Text
@@ -6341,7 +6339,6 @@ Public Class dlgSettings
         Me.chkGeneralHideLandscape.Text = Master.eLang.GetString(1151, "Do Not Display Landscape")
         Me.chkGeneralHidePoster.Text = Master.eLang.GetString(456, "Do Not Display Poster")
         Me.chkGeneralImagesGlassOverlay.Text = Master.eLang.GetString(966, "Enable Images Glass Overlay")
-        Me.chkGeneralInfoPanelAnim.Text = Master.eLang.GetString(431, "Enable Panel Animation")
         Me.chkGeneralOverwriteNfo.Text = Master.eLang.GetString(433, "Overwrite Non-conforming nfos")
         Me.chkGeneralShowGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
         Me.chkGeneralShowImgDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
