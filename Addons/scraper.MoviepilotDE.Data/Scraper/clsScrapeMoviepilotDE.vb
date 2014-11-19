@@ -29,257 +29,45 @@ Namespace MoviepilotDE
     Public Class Scraper
 
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-        Private originaltitle As String
-        Private title As String
-        Private _fsk As String
-        Private _outline As String
-        Private _plot As String
 
 #End Region 'Fields
 
-#Region "Constructors"
-
-        Public Sub New(ByVal soriginaltitle As String, ByVal stitle As String)
-            Clear()
-            originaltitle = soriginaltitle
-            title = stitle
-            'Main method in this class to retrieve Moviepilot information...
-            GetMoviepilotDEDetails()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property FSK() As String
-            Get
-                Return _fsk
-            End Get
-            Set(ByVal value As String)
-                _fsk = value
-            End Set
-        End Property
-
-        Public Property Outline() As String
-            Get
-                Return _outline
-            End Get
-            Set(ByVal value As String)
-                _outline = value
-            End Set
-        End Property
-
-        Public Property Plot() As String
-            Get
-                Return _plot
-            End Get
-            Set(ByVal value As String)
-                _plot = value
-            End Set
-        End Property
-
-
-#End Region 'Properties
-
 #Region "Methods"
-
-        Private Sub Clear()
-            _fsk = String.Empty
-            _outline = String.Empty
-            _plot = String.Empty
-        End Sub
-
         ''' <summary>
-        ''' Scrape MovieDetails from Moviepilot.de (German site)
-        ''' </summary> 
-        ''' <remarks>Main method to retrieve Moviepilot information - from here all other class methods gets called
-        ''' 
-        ''' 2013/12/21 Cocotus - First implementation
-        ''' </remarks>
-        Private Sub GetMoviepilotDEDetails()
-
-            'First step is to retrieve URL for the movie on Moviepilot.de
-            Dim sURL As String = GetMoviePilotUrlFromOriginaltitle(originaltitle)
-            'if theres no link with originaltitle, try with title
-            If String.IsNullOrEmpty(sURL) Then
-                sURL = GetMoviePilotUrlFromOriginaltitle(title)
-            End If
-            Try
-                If Not String.IsNullOrEmpty(sURL) Then
-                    'Now download HTML-Code
-                    Dim sHTTP As New HTTP
-                    Dim HTML As String = sHTTP.DownloadData(sURL)
-                    sHTTP = Nothing
-
-                    '....and use result to get the wanted information
-                    If Not String.IsNullOrEmpty(HTML) Then
-
-                        'outline
-                        _outline = GetPlotAndOutline(HTML, 1)
-
-
-                        'full plot         
-                        _plot = GetPlotAndOutline(HTML, 0)
-
-
-                        'fsk       
-                        _fsk = GetFSK(HTML)
-
-
-                    End If
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        End Sub
-
-
-        ''' <summary>
-        ''' Retrieve the URL for a specific movie on MoviePilot.de (German site)
+        ''' Removes all URLs and HTML tags
         ''' </summary>
-        ''' <param name="originaltitle"><c>String</c> which contains the originaltitle of the movie</param>
-        ''' <returns><c>String</c> which is URL of the movie on Moviepilot.de (or empty string if nothing was found)</returns>
-        ''' <remarks>Retrieve the URL on Moviepilot.de here and use it to download the HTML source later on!
-        ''' 
-        ''' 2013/12/21 Cocotus - First implementation
-        ''' </remarks>
-        Private Function GetMoviePilotUrlFromOriginaltitle(ByVal originaltitle As String) As String
-            Dim MoviePilotURL As String = String.Empty
+        ''' <param name="strPlotOutline"></param>
+        ''' <remarks></remarks>
+        Private Function CleanPlotOutline(ByRef strPlotOutline As String) As String
+            Dim strResult As String = String.Empty
             Try
-
-                Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.moviepilot.de/suche?q=", originaltitle, "&type=movie&sourceid=mozilla-search"))
-                sHTTP = Nothing
-                'Example:
-                '    http://www.moviepilot.de/suche?q=Machete+Kills&type=movie
-                If Not String.IsNullOrEmpty(HTML) Then
-                    'Result is the search result page - now we need to get the correct URL!
-                    'Example from HTML-SearchPage: <a href="/movies/machete-kills" class="h3">
-                    Dim mcMoviePilotURL As MatchCollection = Regex.Matches(HTML, "<a href=""/movies/([^<]+)"" class=")
-                    If mcMoviePilotURL.Count > 0 Then
-                        'just use the first one if more are found
-                        '  MoviePilotURL = String.Concat("http://www.moviepilot.de/", Regex.Match(mcMoviePilotURL(0).Value.ToString, """(movies/([^<]+))""").Groups(1).Value.ToString)
-                        MoviePilotURL = String.Concat("http://www.moviepilot.de/movies/", mcMoviePilotURL(0).Value.ToString.Substring(17, mcMoviePilotURL(0).Value.ToString.IndexOf(" class") - 18))
-
-                    End If
-                End If
+                Dim cleanPattern As String = "<a.*?>(?<TEXT>.*?)<\/a>"
+                Dim cResult As MatchCollection = Regex.Matches(strPlotOutline, cleanPattern, RegexOptions.Singleline)
+                For ctr As Integer = 0 To cResult.Count - 1
+                    strPlotOutline = strPlotOutline.Replace(cResult.Item(ctr).Value, cResult.Item(ctr).Groups(1).Value)
+                Next
+                strPlotOutline = strPlotOutline.Replace("<p>", String.Empty)
+                strPlotOutline = strPlotOutline.Replace("</p>", String.Empty)
+                strPlotOutline = strPlotOutline.Replace("<strong>", String.Empty)
+                strPlotOutline = strPlotOutline.Replace("</strong>", String.Empty)
+                strPlotOutline = strPlotOutline.Replace(vbCrLf, " ")
+                strPlotOutline = strPlotOutline.Replace(vbLf, " ")
+                strResult = strPlotOutline.Trim()
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-
-            Return MoviePilotURL
+            Return strResult
         End Function
-
-
-        ''' <summary>
-        ''' Scrapes either plot or outline for one given movie from MoviePilot.de (German site)
-        ''' </summary>
-        ''' <param name="HTML"><c>String</c> which contains downloaded HTMLcode of moviesite</param>
-        ''' <param name="Switch"><c>Integer</c> used as switch to scrape/return either Plot (=0) or Outline(=1)</param>
-        ''' <returns><c>String</c> that contains either Plot or Outline (or empty string if nothing was found)</returns>
-        ''' <remarks>One method to scrape either plot or outline
-        ''' 
-        ''' 2013/12/21 Cocotus - First implementation
-        ''' </remarks>
-        Private Function GetPlotAndOutline(ByVal HTML As String, ByVal Switch As Integer) As String
-            Dim strPlot As String = ""
-            Dim strOutline As String = ""
-
-            Try
-                If Not String.IsNullOrEmpty(HTML) Then
-                    Dim tempD As Integer
-                    Dim tmpHTML As String
-                    Dim Outline, Plot, B, dirt As Integer
-
-                    tempD = If(HTML.IndexOf("<div class='expander' itemprop='description'>") > 0, HTML.IndexOf("<div class='expander' itemprop='description'>"), 0)
-                    'Check if site contains any movie descriptions
-                    If tempD > 0 Then
-                        Dim L As Integer = HTML.Length
-                        tmpHTML = HTML.Substring(tempD + 45, L - (tempD + 45)).Trim
-                        Outline = tmpHTML.IndexOf("<p><strong>")
-
-                        'check if outline exists
-                        If Outline = 0 Then
-                            B = tmpHTML.IndexOf("</strong>", Outline + 11)
-
-                            If B > 11 Then
-
-                                'Return Outline if Parameter is set
-                                If Switch = 1 Then
-                                    strOutline = Web.HttpUtility.HtmlDecode(tmpHTML.Substring(Outline + 11, B - (Outline + 11)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
-                                    Return strOutline
-                                End If
-
-                                L = tmpHTML.Length
-                                tmpHTML = tmpHTML.Substring(tmpHTML.IndexOf("</strong>") + 9, L - (tmpHTML.IndexOf("</strong>") + 9)).Trim
-                                Plot = tmpHTML.IndexOf("<p>")
-
-                                'check if plot exists
-                                If Plot > 0 AndAlso Plot < 7 Then
-                                    'check if plot contains any headers and strip them if found
-                                    dirt = If(tmpHTML.IndexOf("<strong>") > 0, tmpHTML.IndexOf("<strong>"), 0)
-                                    If dirt > 0 AndAlso dirt < 100 Then
-                                        tmpHTML = tmpHTML.Substring(dirt + 8, tmpHTML.IndexOf("</strong>", dirt + 8) - (dirt + 8))
-                                    End If
-                                    Plot = tmpHTML.IndexOf("<p>")
-                                    B = tmpHTML.IndexOf("</p>", Plot + 3)
-                                    strPlot = Web.HttpUtility.HtmlDecode(tmpHTML.Substring(Plot + 3, B - (Plot + 3)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
-
-                                End If
-
-                            End If
-
-
-                            'no outline 
-                        Else
-               
-
-                            Plot = tmpHTML.IndexOf("<p>")
-
-                            'check if plot exists
-                            If Plot > -1 AndAlso Plot < 7 Then
-                                'check if plot contains any headers and strip them if found
-                                dirt = If(tmpHTML.IndexOf("<strong>") > 0, tmpHTML.IndexOf("<strong>"), 0)
-                                If dirt > 0 Then
-                                    tmpHTML = tmpHTML.Substring(dirt + 8, tmpHTML.IndexOf("</strong>", dirt + 8) - (dirt + 8))
-                                End If
-
-                                Plot = tmpHTML.IndexOf("<p>")
-                                B = tmpHTML.IndexOf("</p>", Plot + 3)
-                                strPlot = Web.HttpUtility.HtmlDecode(tmpHTML.Substring(Plot + 3, B - (Plot + 3)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
-
-                                'If scraped plot is not too long (<350 characters), use it for outline as well!
-                                If Switch = 1 AndAlso strPlot.Length > 350 Then
-                                    Return strOutline
-                                Else
-                                    Return strPlot
-                                End If
-
-                            End If
-
-                        End If
-
-                    End If
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-            Return strPlot
-        End Function
-
-
         ''' <summary>
         ''' Scrapes FSK rating for one given movie from MoviePilot.de (German site)
         ''' </summary>
         ''' <param name="HTML"><c>String</c> which contains downloaded HTMLcode of moviesite</param>  
         ''' <returns><c>String</c> that contains FSK number (or empty string if nothing was found)</returns>
-        ''' <remarks>This one is used for scraping the FSK rating from Moviepilot.de - Moviepilot is a great source for that
-        ''' 
-        ''' 2013/12/21 Cocotus - First implementation
-        ''' </remarks>
+        ''' <remarks>This one is used for scraping the FSK rating from Moviepilot.de - Moviepilot is a great source for that</remarks>
         Private Function GetFSK(ByVal HTML As String) As String
-            Dim FSK As String = ""
+            Dim FSK As String = String.Empty
             Try
                 If Not String.IsNullOrEmpty(HTML) Then
                     Dim tempD As Integer
@@ -287,8 +75,10 @@ Namespace MoviepilotDE
                     tempD = If(HTML.IndexOf(" FSK ") > 0, HTML.IndexOf(" FSK "), 0)
                     If tempD > 0 Then
                         FSK = Web.HttpUtility.HtmlDecode((HTML.Substring(tempD + 5, tempD + 2 - tempD))).Replace(",", "")
-                        If IsNumeric(FSK) = False Then
-                            FSK = ""
+                        If Not IsNumeric(FSK) Then
+                            FSK = String.Empty
+                        Else
+                            FSK = String.Concat("Germany:", FSK)
                         End If
                     End If
                 End If
@@ -298,7 +88,183 @@ Namespace MoviepilotDE
             Return FSK
         End Function
 
+        Public Function GetMovieInfo(ByVal strOriginalTitle As String, ByVal strTitle As String, ByVal strYear As String, ByRef nMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions_Movie) As Boolean
+            Try
+                nMovie.Clear()
+                nMovie.Scrapersource = "MOVIEPILOT"
+
+                Dim sURL As String = SearchMovie(strOriginalTitle, strYear)
+                'if theres no link with originaltitle, try with title
+                If String.IsNullOrEmpty(sURL) AndAlso Not strOriginalTitle = strTitle Then
+                    sURL = SearchMovie(strTitle, strYear)
+                End If
+
+                If Not String.IsNullOrEmpty(sURL) Then
+                    'Now download HTML-Code
+                    Dim sHTTP As New HTTP
+                    Dim HTML As String = sHTTP.DownloadData(sURL)
+                    sHTTP = Nothing
+
+                    '....and use result to get the wanted information
+                    If Not String.IsNullOrEmpty(HTML) Then
+
+                        If Options.bCert Then
+                            nMovie.Certifications.Add(GetFSK(HTML))
+                        End If
+
+                        If Options.bOutline OrElse Options.bPlot Then
+                            Dim aResult As Results = GetPlotAndOutline(HTML)
+                            If Options.bOutline Then
+                                nMovie.Outline = aResult.strOutline
+                            End If
+                            If Options.bPlot Then
+                                nMovie.Plot = aResult.strPlot
+                            End If
+                        End If
+                    End If
+                End If
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End Function
+        ''' <summary>
+        ''' Scrapes either plot or outline for one given movie from MoviePilot.de (German site)
+        ''' </summary>
+        ''' <param name="HTML"><c>String</c> which contains downloaded HTMLcode of moviesite</param>
+        ''' <param name="Switch"><c>Integer</c> used as switch to scrape/return either Plot (=0) or Outline(=1)</param>
+        ''' <returns><c>String</c> that contains either Plot or Outline (or empty string if nothing was found)</returns>
+        ''' <remarks></remarks>
+        Private Function GetPlotAndOutline(ByVal HTML As String) As Results
+            Dim aResults As Results
+            Dim strPlot As String = String.Empty
+            Dim strOutline As String = String.Empty
+
+            Try
+                If Not String.IsNullOrEmpty(HTML) Then
+                    Dim strDescription As String = String.Empty
+
+                    'Get the entire description
+                    Dim descPattern As String = "<div class='expander' itemprop='description'>(?<DESCRIPTION>.*?)<\/div>"
+                    Dim descResult As MatchCollection = Regex.Matches(HTML, descPattern, RegexOptions.Singleline)
+
+                    If descResult.Count > 0 Then
+                        strDescription = descResult.Item(0).Groups(1).Value.Trim
+                    End If
+
+                    If Not String.IsNullOrEmpty(strDescription) Then
+                        'vPattern if website has Outline, heading title like "Handlung von..." and Plot
+                        'like http://www.moviepilot.de/movies/james-bond-casino-royale
+                        Dim vPattern As String = "<p><strong>(?<OUTLINE>.*?)<\/strong><\/p>.<p><strong>(?<HEADER>.*?)<\/strong><br \/>.(?<PLOT>.*?)<p><strong>"
+                        Dim vResult As MatchCollection = Regex.Matches(strDescription, vPattern, RegexOptions.Singleline)
+
+                        If vResult.Count > 0 Then
+                            strOutline = Web.HttpUtility.HtmlDecode(vResult.Item(0).Groups(1).Value)
+                            strPlot = Web.HttpUtility.HtmlDecode(vResult.Item(0).Groups(3).Value)
+                        Else
+                            'mPattern if website has Outline and Plot
+                            'like http://www.moviepilot.de/movies/hellboy-ii-die-goldene-armee
+                            Dim mPattern As String = "<p><strong>(?<OUTLINE>.*?)<\/strong><\/p>.<p>(?<PLOT>.*?)<\/p>"
+                            Dim mResult As MatchCollection = Regex.Matches(strDescription, mPattern, RegexOptions.Singleline)
+
+                            If mResult.Count > 0 Then
+                                strOutline = Web.HttpUtility.HtmlDecode(mResult.Item(0).Groups(1).Value)
+                                strPlot = Web.HttpUtility.HtmlDecode(mResult.Item(0).Groups(2).Value)
+                            Else
+                                'sPattern if website has only Plot
+                                'like http://www.moviepilot.de/movies/mission-impossible
+                                Dim sPattern As String = "<p>(?<PLOT>.*?)<\/p>"
+                                Dim sResult As MatchCollection = Regex.Matches(strDescription, sPattern, RegexOptions.Singleline)
+
+                                If sResult.Count > 0 Then
+                                    strPlot = Web.HttpUtility.HtmlDecode(sResult.Item(0).Groups(1).Value)
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            aResults.strOutline = CleanPlotOutline(strOutline)
+            aResults.strPlot = CleanPlotOutline(strPlot)
+
+            Return aResults
+        End Function
+        ''' <summary>
+        ''' Retrieve the URL for a specific movie on MoviePilot.de (German site)
+        ''' </summary>
+        ''' <param name="strTitle"><c>String</c> which contains the originaltitle or title of the movie</param>
+        ''' <param name="strYear"><c>String</c> which contains the movie year</param>
+        ''' <returns><c>String</c> which is URL of the movie on Moviepilot.de (or empty string if nothing was found)</returns>
+        ''' <remarks>Retrieve the URL on Moviepilot.de here and use it to download the HTML source later on!</remarks>
+        Private Function SearchMovie(ByVal strTitle As String, ByVal strYear As String) As String
+            Dim strURL As String = String.Empty
+            Try
+                If Not String.IsNullOrEmpty(strTitle) Then
+
+                    'search movie on website
+                    'like http://www.moviepilot.de/suche?q=Machete+Kills&type=movie
+                    Dim sHTTP As New HTTP
+                    Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.moviepilot.de/suche?q=", strTitle, "&type=movie&sourceid=mozilla-search"))
+                    sHTTP = Nothing
+
+                    If Not String.IsNullOrEmpty(HTML) Then
+                        Dim strSearchResults As String = String.Empty
+
+                        'reduce HTML to search results only
+                        Dim filterPattern As String = "<\/h2>.<ul>(?<RESULTS>.*?)<\/ul>"
+                        Dim filterResult As MatchCollection = Regex.Matches(HTML, filterPattern, RegexOptions.Singleline)
+
+                        If filterResult.Count = 1 Then
+                            strSearchResults = filterResult.Item(0).Groups(1).Value
+                        End If
+
+                        If Not String.IsNullOrEmpty(strSearchResults) Then
+                            'get search results
+                            Dim resPattern As String = "<div class='trackable' data-track-position=.*?<\/span>.<a href=""(?<URL>.*?)"".*?>(?<TITLE>.*?)<\/a>.*?(?<YEAR>\d{4}).*?<\/li>"
+                            Dim resResult As MatchCollection = Regex.Matches(strSearchResults, resPattern, RegexOptions.Singleline)
+
+                            'Only one search result or no Year to filter
+                            If resResult.Count = 1 OrElse (filterResult.Count > 0 AndAlso String.IsNullOrEmpty(strYear)) Then
+                                strURL = String.Concat("http://www.moviepilot.de", resResult.Item(0).Groups(1).Value).Trim
+                            ElseIf resResult.Count > 0 Then
+                                ' Try to find a search result with same Year
+                                For ctr As Integer = 0 To resResult.Count - 1
+                                    If resResult.Item(ctr).Groups(3).Value = strYear Then
+                                        strURL = String.Concat("http://www.moviepilot.de", resResult.Item(ctr).Groups(1).Value).Trim
+                                        Return strURL
+                                    End If
+                                Next
+                                'no match found -> use first search result
+                                strURL = String.Concat("http://www.moviepilot.de", resResult.Item(0).Groups(1).Value).Trim
+                            End If
+                        End If
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Return strURL
+        End Function
+
 #End Region 'Methods
+
+#Region "Nested Types"
+
+        Private Structure Results
+
+#Region "Fields"
+
+            Dim strOutline As String
+            Dim strPlot As String
+
+#End Region 'Fields
+        End Structure
+
+#End Region 'Nested Types
 
     End Class
 

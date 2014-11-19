@@ -33,12 +33,8 @@ Public Class MoviepilotDE_Data
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
-    ''' <summary>
-    ''' Scraping Here
-    ''' </summary>
-    ''' <remarks></remarks>
-    'Private IMDB As New IMDB.Scraper
     Private _Name As String = "MoviepilotDE_Data"
+    Private _scraper As New MoviepilotDE.Scraper
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmMoviepilotDEInfoSettingsHolder
 
@@ -108,6 +104,7 @@ Public Class MoviepilotDE_Data
         _setup.chkPlot.Checked = ConfigOptions.bPlot
 
         _setup.orderChanged()
+
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = "Moviepilot"
         SPanel.Prefix = "MoviepilotDEMovieInfo_"
@@ -116,16 +113,16 @@ Public Class MoviepilotDE_Data
         SPanel.Type = Master.eLang.GetString(36, "Movies")
         SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
         SPanel.Panel = _setup.pnlSettings
+
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
     Sub LoadSettings()
-        ' Only the ones we can get
-        ConfigOptions.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", False)
-        ConfigOptions.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", False)
-        ConfigOptions.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", False)
+        ConfigOptions.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
+        ConfigOptions.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigOptions.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
     End Sub
 
     Sub SaveSettings()
@@ -158,77 +155,16 @@ Public Class MoviepilotDE_Data
     ''' <param name="nMovie">New scraped movie data</param>
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
-    ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper should NOT consider global scraper settings/locks in Ember, just scraper options of module</remarks>
+    ''' <remarks></remarks>
     Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
         logger.Trace("Started MoviepilotDE Scraper")
 
+        LoadSettings()
+
         Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
 
-        'Moviepilot-datascraper needs originaltitle of movie!
-        If String.IsNullOrEmpty(oDBMovie.Movie.OriginalTitle) Then
-            logger.Trace("Originaltitle of movie is needed, but not availaible! Leave MoviepilotDE scraper...")
-            Return New Interfaces.ModuleResult With {.breakChain = False}
-        End If
-
-        'we have the originaltitle -> now we can use scraper methods!
-        Dim _scraper As New MoviepilotDE.Scraper(oDBMovie.Movie.OriginalTitle, oDBMovie.Movie.Title)
-
-        'Use Moviepilot FSK?
-        If filterOptions.bCert Then
-            If Not String.IsNullOrEmpty(_scraper.FSK) Then
-                Select Case CInt(_scraper.FSK)
-                    Case 0
-                        nMovie.Certification = "Germany:0"
-                        If Master.eSettings.MovieScraperCertOnlyValue = False Then
-                            nMovie.MPAA = "Germany:0"
-                        Else
-                            nMovie.MPAA = "0"
-                        End If
-                    Case 6
-                        nMovie.Certification = "Germany:6"
-                        If Master.eSettings.MovieScraperCertOnlyValue = False Then
-                            nMovie.MPAA = "Germany:6"
-                        Else
-                            nMovie.MPAA = "6"
-                        End If
-                    Case 16
-                        nMovie.Certification = "Germany:16"
-                        If Master.eSettings.MovieScraperCertOnlyValue = False Then
-                            nMovie.MPAA = "Germany:16"
-                        Else
-                            nMovie.MPAA = "16"
-                        End If
-                    Case 12
-                        nMovie.Certification = "Germany:12"
-                        If Master.eSettings.MovieScraperCertOnlyValue = False Then
-                            nMovie.MPAA = "Germany:12"
-                        Else
-                            nMovie.MPAA = "12"
-                        End If
-                    Case 18
-                        nMovie.Certification = "Germany:18"
-                        If Master.eSettings.MovieScraperCertOnlyValue = False Then
-                            nMovie.MPAA = "Germany:18"
-                        Else
-                            nMovie.MPAA = "18"
-                        End If
-                End Select
-            End If
-        End If
-        nMovie.Scrapersource = "MOVIEPILOT"
-
-        'Use Moviepilot Outline?
-        If filterOptions.bOutline Then
-            If Not String.IsNullOrEmpty(_scraper.Outline) Then
-                nMovie.Outline = _scraper.Outline
-            End If
-        End If
-
-        'Use Moviepilot Plot?
-        If filterOptions.bPlot Then
-            If Not String.IsNullOrEmpty(_scraper.Plot) Then
-                nMovie.Plot = _scraper.Plot
-            End If
+        If Master.GlobalScrapeMod.NFO Then
+            _scraper.GetMovieInfo(oDBMovie.Movie.OriginalTitle, oDBMovie.Movie.Title, oDBMovie.Movie.Year, nMovie, filterOptions)
         End If
 
         logger.Trace("Finished MoviepilotDE Scraper")
