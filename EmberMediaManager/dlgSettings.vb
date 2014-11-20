@@ -56,10 +56,6 @@ Public Class dlgSettings
     End Function
 
     Private Sub dlgSettings_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
-        'tvSettingsList.Height = Convert.ToInt32(pnlSettingsHelp.Location.Y - (tvSettingsList.Location.Y + 5))
-        'pnlSettingsMain.Height = Convert.ToInt32(pnlSettingsHelp.Location.Y - (pnlSettingsMain.Location.Y + 5))
-        'pnlSettingsMain.Width = Convert.ToInt32(Me.Width - (pnlSettingsMain.Location.X + 20))
-
         Dim iBackground As New Bitmap(Me.pnlSettingsTop.Width, Me.pnlSettingsTop.Height)
         Using g As Graphics = Graphics.FromImage(iBackground)
             g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlSettingsTop.ClientRectangle)
@@ -4028,11 +4024,20 @@ Public Class dlgSettings
             Me.AddHelpHandlers(Me, "Core_")
 
             'get optimal panel size
-            Dim WorkArea = SysInfo.GetWorkArea()
-            If WorkArea.Right - 100 < 1120 OrElse WorkArea.Bottom - 100 < 900 Then
-                Me.Size = New Size(WorkArea.Right - 100, WorkArea.Bottom - 100)
-                Me.Location = New Point(50, 50)
+            Dim pWidth As Integer = CInt(Me.Width)
+            Dim pHeight As Integer = CInt(Me.Height)
+            If My.Computer.Screen.WorkingArea.Width < 1120 Then
+                pWidth = CInt(My.Computer.Screen.WorkingArea.Width)
             End If
+            If My.Computer.Screen.WorkingArea.Height < 900 Then
+                pHeight = CInt(My.Computer.Screen.WorkingArea.Height)
+            End If
+            Me.Size = New Size(pWidth, pHeight)
+            Dim pLeft As Integer
+            Dim pTop As Integer
+            pLeft = CInt((My.Computer.Screen.WorkingArea.Width - pWidth) / 2)
+            pTop = CInt((My.Computer.Screen.WorkingArea.Height - pHeight) / 2)
+            Me.Location = New Point(pLeft, pTop)
 
             Dim iBackground As New Bitmap(Me.pnlSettingsTop.Width, Me.pnlSettingsTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
