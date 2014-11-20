@@ -36,31 +36,6 @@ Namespace MoviepilotDE
 
 #Region "Methods"
         ''' <summary>
-        ''' Removes all URLs and HTML tags
-        ''' </summary>
-        ''' <param name="strPlotOutline"></param>
-        ''' <remarks></remarks>
-        Private Function CleanPlotOutline(ByRef strPlotOutline As String) As String
-            Dim strResult As String = String.Empty
-            Try
-                Dim cleanPattern As String = "<a.*?>(?<TEXT>.*?)<\/a>"
-                Dim cResult As MatchCollection = Regex.Matches(strPlotOutline, cleanPattern, RegexOptions.Singleline)
-                For ctr As Integer = 0 To cResult.Count - 1
-                    strPlotOutline = strPlotOutline.Replace(cResult.Item(ctr).Value, cResult.Item(ctr).Groups(1).Value)
-                Next
-                strPlotOutline = strPlotOutline.Replace("<p>", String.Empty)
-                strPlotOutline = strPlotOutline.Replace("</p>", String.Empty)
-                strPlotOutline = strPlotOutline.Replace("<strong>", String.Empty)
-                strPlotOutline = strPlotOutline.Replace("</strong>", String.Empty)
-                strPlotOutline = strPlotOutline.Replace(vbCrLf, " ")
-                strPlotOutline = strPlotOutline.Replace(vbLf, " ")
-                strResult = strPlotOutline.Trim()
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-            Return strResult
-        End Function
-        ''' <summary>
         ''' Scrapes FSK rating for one given movie from MoviePilot.de (German site)
         ''' </summary>
         ''' <param name="HTML"><c>String</c> which contains downloaded HTMLcode of moviesite</param>  
@@ -68,18 +43,16 @@ Namespace MoviepilotDE
         ''' <remarks>This one is used for scraping the FSK rating from Moviepilot.de - Moviepilot is a great source for that</remarks>
         Private Function GetCertification(ByVal HTML As String) As String
             Dim FSK As String = String.Empty
+
             Try
                 If Not String.IsNullOrEmpty(HTML) Then
-                    Dim tempD As Integer
+                    Dim strFSKPattern As String = "FSK (?<FSK>\d?\d)"
+                    FSK = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strFSKPattern, RegexOptions.Singleline).Groups(1).Value).Trim
 
-                    tempD = If(HTML.IndexOf(" FSK ") > 0, HTML.IndexOf(" FSK "), 0)
-                    If tempD > 0 Then
-                        FSK = Web.HttpUtility.HtmlDecode((HTML.Substring(tempD + 5, tempD + 2 - tempD))).Replace(",", "")
-                        If Not IsNumeric(FSK) Then
-                            FSK = String.Empty
-                        Else
-                            FSK = String.Concat("Germany:", FSK)
-                        End If
+                    If Not IsNumeric(FSK) Then
+                        FSK = String.Empty
+                    Else
+                        FSK = String.Concat("Germany:", FSK)
                     End If
                 End If
             Catch ex As Exception
@@ -186,8 +159,8 @@ Namespace MoviepilotDE
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            aResults.strOutline = CleanPlotOutline(strOutline)
-            aResults.strPlot = CleanPlotOutline(strPlot)
+            aResults.strOutline = StringUtils.CleanPlotOutline(strOutline)
+            aResults.strPlot = StringUtils.CleanPlotOutline(strPlot)
 
             Return aResults
         End Function
