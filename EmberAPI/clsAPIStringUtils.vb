@@ -198,6 +198,37 @@ Public Class StringUtils
         Return sReturn.Trim
     End Function
     ''' <summary>
+    ''' Removes all URLs and HTML tags
+    ''' </summary>
+    ''' <param name="strPlotOutline"></param>
+    ''' <remarks></remarks>
+    Public Shared Function CleanPlotOutline(ByRef strPlotOutline As String) As String
+        Dim strResult As String = String.Empty
+        Try
+            If Not String.IsNullOrEmpty(strPlotOutline) Then
+                Dim cleanPattern As String = "<a.*?>(?<TEXT>.*?)<\/a>"
+                Dim cResult As MatchCollection = Regex.Matches(strPlotOutline, cleanPattern, RegexOptions.Singleline)
+                For ctr As Integer = 0 To cResult.Count - 1
+                    strPlotOutline = strPlotOutline.Replace(cResult.Item(ctr).Value, cResult.Item(ctr).Groups(1).Value)
+                Next
+                strPlotOutline = strPlotOutline.Replace("<b>", String.Empty)
+                strPlotOutline = strPlotOutline.Replace("</b>", String.Empty)
+                strPlotOutline = strPlotOutline.Replace("<br />", String.Empty)
+                strPlotOutline = strPlotOutline.Replace("<p>", String.Empty)
+                strPlotOutline = strPlotOutline.Replace("</p>", String.Empty)
+                strPlotOutline = strPlotOutline.Replace("<strong>", String.Empty)
+                strPlotOutline = strPlotOutline.Replace("</strong>", String.Empty)
+                strPlotOutline = strPlotOutline.Replace(vbCrLf, " ")
+                strPlotOutline = strPlotOutline.Replace(vbLf, " ")
+                strPlotOutline = strPlotOutline.Replace("  ", " ")
+                strResult = strPlotOutline.Trim()
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+        Return strResult
+    End Function
+    ''' <summary>
     ''' 
     ''' </summary>
     ''' <param name="sURL"></param>
