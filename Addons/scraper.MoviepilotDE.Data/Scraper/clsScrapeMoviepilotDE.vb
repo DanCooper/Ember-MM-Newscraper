@@ -66,7 +66,7 @@ Namespace MoviepilotDE
         ''' <param name="HTML"><c>String</c> which contains downloaded HTMLcode of moviesite</param>  
         ''' <returns><c>String</c> that contains FSK number (or empty string if nothing was found)</returns>
         ''' <remarks>This one is used for scraping the FSK rating from Moviepilot.de - Moviepilot is a great source for that</remarks>
-        Private Function GetFSK(ByVal HTML As String) As String
+        Private Function GetCertification(ByVal HTML As String) As String
             Dim FSK As String = String.Empty
             Try
                 If Not String.IsNullOrEmpty(HTML) Then
@@ -107,9 +107,8 @@ Namespace MoviepilotDE
 
                     '....and use result to get the wanted information
                     If Not String.IsNullOrEmpty(HTML) Then
-
                         If Options.bCert Then
-                            nMovie.Certifications.Add(GetFSK(HTML))
+                            nMovie.Certifications.Add(GetCertification(HTML))
                         End If
 
                         If Options.bOutline OrElse Options.bPlot Then

@@ -93,7 +93,6 @@ Public Class MoviepilotDE_Data
         LoadSettings()
     End Sub
 
-
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmMoviepilotDEInfoSettingsHolder

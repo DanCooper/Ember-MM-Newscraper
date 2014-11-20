@@ -29,75 +29,10 @@ Namespace OFDB
     Public Class Scraper
 
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-        Private imdbID As String
-        Private _genre As String
-        Private _outline As String
-        Private _plot As String
-        Private _title As String
-        Private _fsk As String
 #End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New(ByVal sID As String)
-            Clear()
-            imdbID = sID
-            GetOFDBDetails()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Genre() As String
-            Get
-                Return _genre
-            End Get
-            Set(ByVal value As String)
-                _genre = value
-            End Set
-        End Property
-
-        Public Property Outline() As String
-            Get
-                Return _outline
-            End Get
-            Set(ByVal value As String)
-                _outline = value
-            End Set
-        End Property
-
-        Public Property Plot() As String
-            Get
-                Return _plot
-            End Get
-            Set(ByVal value As String)
-                _plot = value
-            End Set
-        End Property
-
-        Public Property Title() As String
-            Get
-                Return _title
-            End Get
-            Set(ByVal value As String)
-                _title = value
-            End Set
-        End Property
-
-
-        Public Property FSK() As String
-            Get
-                Return _fsk
-            End Get
-            Set(ByVal value As String)
-                _fsk = value
-            End Set
-        End Property
-
-#End Region 'Properties
 
 #Region "Methods"
 
@@ -108,19 +43,111 @@ Namespace OFDB
                 If sString.StartsWith("""") Then CleanString = sString.Remove(0, 1)
 
                 If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
+
+                If sString.EndsWith(", Der") Then
+                    CleanString = String.Concat("Der ", sString.Replace(", Der", " ")).Trim
+                ElseIf sString.EndsWith(", Die") Then
+                    CleanString = String.Concat("Die ", sString.Replace(", Die", " ")).Trim
+                ElseIf sString.EndsWith(", Das") Then
+                    CleanString = String.Concat("Das ", sString.Replace(", Das", " ")).Trim
+                ElseIf sString.EndsWith(", The") Then
+                    CleanString = String.Concat("The ", sString.Replace(", The", " ")).Trim
+                ElseIf sString.EndsWith(", Ein") Then
+                    CleanString = String.Concat("Ein ", sString.Replace(", Ein", " ")).Trim
+                ElseIf sString.EndsWith(", Eine") Then
+                    CleanString = String.Concat("Eine ", sString.Replace(", Eine", " ")).Trim
+                Else
+                    CleanString = sString
+                End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
             Return CleanString
         End Function
+        ''' <summary>
+        ''' Scrapes FSK rating for one given movie from ODFB
+        ''' </summary>
+        ''' <param name="HTML"><c>String</c> which contains downloaded HTMLcode of moviesite</param>  
+        ''' <returns><c>String</c> that contains FSK number (or empty string if nothing was found)</returns>
+        ''' <remarks>This one is used for scraping the FSK rating from ODFB
+        ''' 
+        ''' 2014/06/23 Cocotus - First implementation
+        ''' </remarks>
+        Private Function GetCertification(ByVal HTML As String) As String
+            Dim FSK As String = ""
+            Try
+                If Not String.IsNullOrEmpty(HTML) Then
+                    Dim tempD As Integer
 
-        Private Sub Clear()
-            _title = String.Empty
-            _outline = String.Empty
-            _plot = String.Empty
-            _genre = String.Empty
-            _fsk = String.Empty
-        End Sub
+                    tempD = If(HTML.IndexOf(" FSK ") > 0, HTML.IndexOf(" FSK "), 0)
+                    If tempD > 0 Then
+                        Dim fskstring As String = ""
+                        fskstring = HTML.Substring(tempD + 5, HTML.Length - (tempD + 5))
+                        Dim fskpos As Integer = 0
+                        fskpos = fskstring.IndexOf(Chr(34))
+                        If fskpos > 0 Then
+                            FSK = Web.HttpUtility.HtmlDecode((HTML.Substring(tempD + 5, fskpos))).Replace(",", "")
+                        End If
+                        If FSK.Contains("18") Then
+                            FSK = "18"
+                        ElseIf FSK.Contains("o.A") Then
+                            FSK = "0"
+                        End If
+                        If IsNumeric(FSK) = False Then
+                            FSK = ""
+                        End If
+
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+            Return FSK
+        End Function
+
+        Public Function GetMovieInfo(ByVal strIMDBID As String, ByRef nMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions_Movie) As Boolean
+            Try
+                nMovie.Clear()
+                nMovie.Scrapersource = "OFDB"
+
+                Dim sURL As String = SearchMovie(strIMDBID)
+
+                If Not String.IsNullOrEmpty(sURL) Then
+                    Dim sHTTP As New HTTP
+                    Dim HTML As String = sHTTP.DownloadData(sURL)
+                    sHTTP = Nothing
+
+                    If Not String.IsNullOrEmpty(HTML) Then
+
+                        'Certification
+                        If Options.bCert Then
+                            nMovie.Certifications.Add(GetCertification(HTML))
+                        End If
+
+                        'Original Title
+                        If Options.bOriginalTitle Then
+                            Dim strOriginalTitlePattern As String = "Originaltitel:.*?<b>(?<OTITLE>.*?)<\/b>"
+                            nMovie.OriginalTitle = Regex.Match(HTML, strOriginalTitlePattern).Groups(1).Value.ToString.Trim
+                        End If
+
+                        'Outline
+                        If Options.bOutline Then
+                            Dim strOutlinePattern As String = "Inhalt:.*?"">(?<OUTLINE>.*?)<a"
+                            nMovie.Title = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strOutlinePattern).Groups(1).Value.ToString)
+                        End If
+
+                        'Title
+                        If Options.bTitle Then
+                            Dim strTitlePattern As String = "<td width=""99\%""><h1 itemprop=""name""><font face=""Arial,Helvetica,sans-serif"" size=""3""><b>([^<]+)</b></font></h1></td>"
+                            nMovie.Title = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strTitlePattern).Groups(1).Value.ToString))
+                        End If
+                    End If
+                End If
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End Function
 
         Private Function GetFullPlot(ByVal sURL As String) As String
             Dim FullPlot As String = String.Empty
@@ -159,7 +186,7 @@ Namespace OFDB
         End Function
 
         Private Sub GetOFDBDetails()
-            Dim sURL As String = GetOFDBUrlFromIMDBID()
+            Dim sURL As String = SearchMovie()
 
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
@@ -276,70 +303,41 @@ Namespace OFDB
             End Try
         End Sub
 
-        Private Function GetOFDBUrlFromIMDBID() As String
-            Dim ofdbURL As String = String.Empty
+        Private Function SearchMovie(ByVal strIMDBID As String) As String
+            Dim strURL As String = String.Empty
             Try
+                If Not String.IsNullOrEmpty(strIMDBID) Then
+                    Dim sHTTP As New HTTP
+                    Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", strIMDBID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
+                    sHTTP = Nothing
 
-                Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
-                sHTTP = Nothing
+                    If Not String.IsNullOrEmpty(HTML) Then
+                        Dim resPattern As String = "<a href=""(?<URL>film.*?)"
+                        Dim resResult As MatchCollection = Regex.Matches(HTML, resPattern, RegexOptions.Singleline)
 
-
-                If Not String.IsNullOrEmpty(HTML) Then
-                    Dim mcOFDBURL As MatchCollection = Regex.Matches(HTML, "<a href=""film/([^<]+)"" onmouseover")
-                    If mcOFDBURL.Count > 0 Then
-                        'just use the first one if more are found
-                        ofdbURL = String.Concat("http://www.ofdb.de/", Regex.Match(mcOFDBURL(0).Value.ToString, """(film/([^<]+))""").Groups(1).Value.ToString)
+                        'use first search result
+                        If resResult.Count > 0 Then
+                            strURL = String.Concat("http://www.ofdb.de/", resResult.Item(0).Groups(1).Value).Trim
+                        End If
+                    Else
+                        logger.Warn("OFDB Query returned no results for ID of <{0}>", strIMDBID)
                     End If
-                Else
-                    logger.Warn("OFDB Query returned no results for ID of <{0}>", imdbID)
                 End If
+
+                'If Not String.IsNullOrEmpty(HTML) Then
+                '    Dim mcOFDBURL As MatchCollection = Regex.Matches(HTML, "<a href=""film/([^<]+)"" onmouseover")
+                '    If mcOFDBURL.Count > 0 Then
+                '        'just use the first one if more are found
+                '        strURL = String.Concat("http://www.ofdb.de/", Regex.Match(mcOFDBURL(0).Value.ToString, """(film/([^<]+))""").Groups(1).Value.ToString)
+                '    End If
+                'Else
+                '    logger.Warn("OFDB Query returned no results for ID of <{0}>", imdbID)
+                'End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping ODFB (too many connections?):" & imdbID, ex)
             End Try
 
-            Return ofdbURL
-        End Function
-
-        ''' <summary>
-        ''' Scrapes FSK rating for one given movie from ODFB
-        ''' </summary>
-        ''' <param name="HTML"><c>String</c> which contains downloaded HTMLcode of moviesite</param>  
-        ''' <returns><c>String</c> that contains FSK number (or empty string if nothing was found)</returns>
-        ''' <remarks>This one is used for scraping the FSK rating from ODFB
-        ''' 
-        ''' 2014/06/23 Cocotus - First implementation
-        ''' </remarks>
-        Private Function GetFSK(ByVal HTML As String) As String
-            Dim FSK As String = ""
-            Try
-                If Not String.IsNullOrEmpty(HTML) Then
-                    Dim tempD As Integer
-
-                    tempD = If(HTML.IndexOf(" FSK ") > 0, HTML.IndexOf(" FSK "), 0)
-                    If tempD > 0 Then
-                        Dim fskstring As String = ""
-                        fskstring = HTML.Substring(tempD + 5, HTML.Length - (tempD + 5))
-                        Dim fskpos As Integer = 0
-                        fskpos = fskstring.IndexOf(Chr(34))
-                        If fskpos > 0 Then
-                            FSK = Web.HttpUtility.HtmlDecode((HTML.Substring(tempD + 5, fskpos))).Replace(",", "")
-                        End If
-                        If FSK.Contains("18") Then
-                            FSK = "18"
-                        ElseIf FSK.Contains("o.A") Then
-                            FSK = "0"
-                        End If
-                        If IsNumeric(FSK) = False Then
-                            FSK = ""
-                        End If
-
-                    End If
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-            Return FSK
+            Return strURL
         End Function
 
 #End Region 'Methods
