@@ -220,10 +220,10 @@ Public Class BulkRenamerModule
         Me._setup.chkEnabled.Checked = Me._enabled
         Me._setup.txtFolderPattern.Text = MySettings.FoldersPattern
         Me._setup.txtFilePattern.Text = MySettings.FilesPattern
-        _setup.chkRenameMulti.Checked = MySettings.AutoRenameMulti
-        _setup.chkRenameSingle.Checked = MySettings.AutoRenameSingle
-        _setup.chkGenericModule.Checked = MySettings.GenericModule
-        _setup.chkBulkRenamer.Checked = MySettings.BulkRenamer
+        Me._setup.chkRenameMulti.Checked = MySettings.AutoRenameMulti
+        Me._setup.chkRenameSingle.Checked = MySettings.AutoRenameSingle
+        Me._setup.chkGenericModule.Checked = MySettings.GenericModule
+        Me._setup.chkBulkRenamer.Checked = MySettings.BulkRenamer
         SPanel.Name = Me._Name
         SPanel.Text = Master.eLang.GetString(295, "Renamer")
         SPanel.Prefix = "Renamer_"
@@ -274,13 +274,13 @@ Public Class BulkRenamerModule
     End Sub
 
     Sub SaveEmberExternalModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me._enabled = _setup.chkEnabled.Checked
-        MySettings.FoldersPattern = _setup.txtFolderPattern.Text
-        MySettings.FilesPattern = _setup.txtFilePattern.Text
-        MySettings.AutoRenameMulti = _setup.chkRenameMulti.Checked
-        MySettings.AutoRenameSingle = _setup.chkRenameSingle.Checked
-        MySettings.GenericModule = _setup.chkGenericModule.Checked
-        MySettings.BulkRenamer = _setup.chkBulkRenamer.Checked
+        Me._enabled = Me._setup.chkEnabled.Checked
+        MySettings.FoldersPattern = Me._setup.txtFolderPattern.Text
+        MySettings.FilesPattern = Me._setup.txtFilePattern.Text
+        MySettings.AutoRenameMulti = Me._setup.chkRenameMulti.Checked
+        MySettings.AutoRenameSingle = Me._setup.chkRenameSingle.Checked
+        MySettings.GenericModule = Me._setup.chkGenericModule.Checked
+        MySettings.BulkRenamer = Me._setup.chkBulkRenamer.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
