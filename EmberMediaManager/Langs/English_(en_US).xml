@@ -312,8 +312,8 @@
   <string id="311">Media File Manager</string>
   <string id="312">Move To</string>
   <string id="313">Copy To</string>
-  <string id="314">Move from {0} To {1}</string>
-  <string id="315">Copy from {0} To {1}</string>
+  <string id="314">Move {0} Movie(s) To {1}</string>
+  <string id="315">Copy {0} Movie(s) To {1}</string>
   <string id="316">Moving movie</string>
   <string id="317">Copying movie</string>
   <string id="318">Source Folder</string>
@@ -330,13 +330,13 @@
   <string id="329">Reset</string>
   <string id="330">Filter</string>
   <string id="331">in</string>
-  <string id="332"></string>
-  <string id="333"></string>
+  <string id="332">Use TeraCopy to copy/move files</string>
+  <string id="333">Path to TeraCopy:</string>
   <string id="334">Template</string>
   <string id="335">Movie List Exporter</string>
   <string id="336">Export Movie List</string>
   <string id="337">Please Choose/Install a Template First</string>
-  <string id="338"></string>
+  <string id="338">Select path</string>
   <string id="339">Choose a template</string>
   <string id="340">Jukebox Builder</string>
   <string id="341">Output Folder</string>
@@ -396,7 +396,7 @@
   <string id="395">Studio</string>
   <string id="396">Runtime</string>
   <string id="397">Tagline</string>
-  <string id="398"></string>
+  <string id="398">TeraCopy.exe not found</string>
   <string id="399">Votes</string>
   <string id="400">Rating</string>
   <string id="401">MPAA</string>
