@@ -2103,7 +2103,6 @@ Public Class dlgEditMovie
                 If tRating > 0 Then .BuildStars(tRating)
 
                 If DoAll Then
-
                     Dim pExt As String = Path.GetExtension(Master.currMovie.Filename).ToLower
                     If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
                     pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse _
@@ -2332,6 +2331,16 @@ Public Class dlgEditMovie
         End If
     End Sub
 
+    Private Sub lbMPAA_DoubleClick(sender As Object, e As EventArgs) Handles lbMPAA.DoubleClick
+        If Me.lbMPAA.SelectedItems.Count = 1 Then
+            If Me.lbMPAA.SelectedIndex = 0 Then
+                Me.txtMPAA.Text = String.Empty
+            Else
+                Me.txtMPAA.Text = Me.lbMPAA.SelectedItem.ToString
+            End If
+        End If
+    End Sub
+
     Private Sub LoadGenres()
         '//
         ' Read all the genres from the xml and load into the list
@@ -2343,12 +2352,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub LoadRatings()
-        '//
-        ' Read all the ratings from the xml and load into the list
-        '\\
-
         Me.lbMPAA.Items.Add(Master.eLang.None)
-
         Me.lbMPAA.Items.AddRange(APIXML.GetRatingList)
     End Sub
 
@@ -2920,9 +2924,26 @@ Public Class dlgEditMovie
                             End If
                         Next
                     Else
-                        Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.Movie.MPAA))
+                        Dim l As Integer = 0
+                        For ctr As Integer = 0 To Me.lbMPAA.Items.Count - 1
+                            If Master.currMovie.Movie.MPAA.ToLower.StartsWith(Me.lbMPAA.Items.Item(ctr).ToString.ToLower) Then
+                                l = ctr
+                                Exit For
+                            End If
+                        Next
                         Me.lbMPAA.SelectedIndex = l
                         Me.lbMPAA.TopIndex = l
+
+                        Dim strMPAA As String = String.Empty
+                        Dim strMPAADesc As String = String.Empty
+                        If l > 0 Then
+                            strMPAA = Me.lbMPAA.Items.Item(l).ToString
+                            strMPAADesc = Master.currMovie.Movie.MPAA.Replace(strMPAA, String.Empty).Trim
+                            Me.txtMPAA.Text = strMPAA
+                            Me.txtMPAADesc.Text = strMPAADesc
+                        Else
+                            Me.txtMPAA.Text = Master.currMovie.Movie.MPAA
+                        End If
                     End If
 
                     If Me.lbMPAA.SelectedItems.Count = 0 Then
@@ -2930,7 +2951,6 @@ Public Class dlgEditMovie
                         Me.lbMPAA.TopIndex = 0
                     End If
 
-                    txtMPAADesc.Enabled = False
                 ElseIf Me.lbMPAA.Items.Count >= 6 Then
                     Dim strMPAA As String = Master.currMovie.Movie.MPAA
                     If strMPAA.ToLower.StartsWith("rated g") Then
@@ -2954,6 +2974,7 @@ Public Class dlgEditMovie
                         If Not String.IsNullOrEmpty(strMPAADesc) Then strMPAADesc = Strings.Replace(strMPAADesc, "rated pg", String.Empty, 1, -1, CompareMethod.Text).Trim
                         If Not String.IsNullOrEmpty(strMPAADesc) Then strMPAADesc = Strings.Replace(strMPAADesc, "rated r", String.Empty, 1, -1, CompareMethod.Text).Trim
                         If Not String.IsNullOrEmpty(strMPAADesc) Then strMPAADesc = Strings.Replace(strMPAADesc, "rated nc-17", String.Empty, 1, -1, CompareMethod.Text).Trim
+                        txtMPAA.Text = ""
                         txtMPAADesc.Text = strMPAADesc
                     End If
                 End If
@@ -3005,25 +3026,10 @@ Public Class dlgEditMovie
                 Master.currMovie.Movie.Director = .txtDirector.Text.Trim
 
                 Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
+                Master.currMovie.Movie.MPAA = String.Concat(.txtMPAA.Text, " ", .txtMPAADesc.Text).Trim
 
                 Master.currMovie.VideoSource = .txtVideoSource.Text.Trim
                 Master.currMovie.Movie.VideoSource = .txtVideoSource.Text.Trim
-
-                If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
-                    Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.MovieScraperCertForMPAA AndAlso Master.eSettings.MovieScraperCertOnlyValue AndAlso .lbMPAA.SelectedItem.ToString.Contains(":"), .lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), .lbMPAA.SelectedItem.ToString), " ", .txtMPAADesc.Text).Trim
-                Else
-                    If Master.eSettings.MovieScraperCertForMPAA AndAlso (Not Master.eSettings.MovieScraperCertLang = "us" OrElse (Master.eSettings.MovieScraperCertLang = "us" AndAlso .lbMPAA.SelectedIndex = 0)) Then
-                        Dim lCert() As String = .txtCerts.Text.Trim.Split(Convert.ToChar("/"))
-                        Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang.ToLower).name), "\:(.*?)"))
-                        If fCert.Count > 0 Then
-                            Master.currMovie.Movie.MPAA = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(fCert(0).ToString.Trim), If(Master.eSettings.MovieScraperCertOnlyValue, fCert(0).ToString.Trim.Split(Convert.ToChar(":"))(1), fCert(0).ToString.Trim))
-                        Else
-                            Master.currMovie.Movie.MPAA = String.Empty
-                        End If
-                    Else
-                        Master.currMovie.Movie.MPAA = String.Empty
-                    End If
-                End If
 
                 If Not .tmpRating.Trim = String.Empty AndAlso .tmpRating.Trim <> "0" Then
                     Master.currMovie.Movie.Rating = .tmpRating
