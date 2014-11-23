@@ -312,6 +312,9 @@ Public Class IMDB_Data
             If Not String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
                 ret = Await _scraper.GetMovieInfo(oDBMovie.Movie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage, _MySettings.CountryAbbreviation)
+                ' return object
+                ' nMovie
+                nMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first!
                 Await _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie, nMovie, ScrapeType, filterOptions, filterOptions.bFullCrew, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage, _MySettings.CountryAbbreviation)

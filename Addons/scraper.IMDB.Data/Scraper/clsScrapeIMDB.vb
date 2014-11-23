@@ -25,6 +25,7 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
+Imports EmberAPI.Interfaces
 
 Namespace IMDB
 
@@ -37,7 +38,6 @@ Namespace IMDB
         Private _PopularTitles As New List(Of MediaContainers.Movie)
         Private _TvTitles As New List(Of MediaContainers.Movie)
         Private _VideoTitles As New List(Of MediaContainers.Movie)
-
 #End Region 'Fields
 
 #Region "Properties"
@@ -95,7 +95,8 @@ Namespace IMDB
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-        Friend WithEvents bwIMDB As New System.ComponentModel.BackgroundWorker
+        'Friend WithEvents bwIMDB As New System.ComponentModel.BackgroundWorker
+        Private _Cancelled As Boolean
 
         Private Const LINK_PATTERN As String = "<a[\s]+[^>]*?href[\s]?=[\s\""\']*(?<url>.*?)[\""\']*.*?>(?<name>[^<]+|.*?)?<\/a>"
 
@@ -145,17 +146,18 @@ Namespace IMDB
 
         Public Sub CancelAsync()
 
-            If bwIMDB.IsBusy Then
-                If Not IsNothing(intHTTP) Then
-                    intHTTP.Cancel()
-                End If
-                bwIMDB.CancelAsync()
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
             End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
 
-            While bwIMDB.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
         End Sub
 
         ''' <summary>
@@ -182,7 +184,7 @@ Namespace IMDB
             ret.ReturnObj.Add(nMovie)
 
             Try
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'clear nMovie from search results
                 nMovie.Clear()
@@ -195,7 +197,7 @@ Namespace IMDB
                 intHTTP.Dispose()
                 intHTTP = Nothing
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 Dim PlotHtml As String
                 intHTTP = New HTTP
@@ -206,12 +208,11 @@ Namespace IMDB
                 nMovie.IMDBID = strID
                 nMovie.Scrapersource = "IMDB"
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 Dim scrapedresult As String = ""
 
                 Dim OriginalTitle As String = Regex.Match(HTML, MOVIE_TITLE_PATTERN).ToString
-
 
                 If Options.bTitle Then
                     'MOVIE ORIGINALTITLE
@@ -236,13 +237,13 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 If GetPoster Then
                     sPoster = Regex.Match(Regex.Match(HTML, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'MOVIE YEAR
                 If Options.bYear Then
@@ -266,7 +267,7 @@ Namespace IMDB
                         nMovie.MPAA = scrapedresult
                     End If
 
-                    If bwIMDB.CancellationPending Then Return ret
+                    If _Cancelled Then Return ret
 
                     ' MOVIE certifications
 
@@ -299,7 +300,7 @@ Namespace IMDB
 
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'MOVIE RELEASEDATE
                 If Options.bRelease Then
@@ -315,7 +316,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'MOVIE RATING IMDB
                 If Options.bRating Then
@@ -325,7 +326,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'IMDB trailer
                 If Options.bTrailer Then
@@ -334,7 +335,7 @@ Namespace IMDB
                     nMovie.Trailer = trailers.FirstOrDefault()
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'IMDB Votes
                 If Options.bVotes Then nMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
@@ -352,7 +353,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'IMDB Actors
                 If Options.bCast Then
@@ -390,7 +391,7 @@ Namespace IMDB
 
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 D = 0 : W = 0
 
@@ -408,7 +409,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'MOVIE DIRECTOR
                 If Options.bDirector Then
@@ -429,7 +430,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'MOVIE COUNTRIES
                 'Get countries of the movie
@@ -461,7 +462,7 @@ Namespace IMDB
 
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'MOVIE GENRES
                 'Get genres of the movie
@@ -490,7 +491,7 @@ Namespace IMDB
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'MOVIE OUTLINE
                 If Options.bOutline Then
@@ -537,7 +538,7 @@ Namespace IMDB
                     End Try
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
 mPlot:          'MOVIE PLOT
                 'Get the full Plot
@@ -554,7 +555,7 @@ mPlot:          'MOVIE PLOT
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'MOVIE DURATION
                 'Get the movie duration
@@ -607,7 +608,7 @@ mPlot:          'MOVIE PLOT
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'MOVIE WRITERS
                 'Get Writers
@@ -630,7 +631,7 @@ mPlot:          'MOVIE PLOT
                     End If
                 End If
 
-                If bwIMDB.CancellationPending Then Return ret
+                If _Cancelled Then Return ret
 
                 'MOVIE OTHER
                 'Get All Other Info
@@ -644,7 +645,7 @@ mPlot:          'MOVIE PLOT
 
                         For Each M As Match In qTables
 
-                            If bwIMDB.CancellationPending Then Return Nothing
+                            If _Cancelled Then Return ret
 
                             'Producers
                             If (Options.bProducers OrElse FullCrew) AndAlso M.ToString.Contains("Produced by</a></h5>") Then
@@ -676,7 +677,7 @@ mPlot:          'MOVIE PLOT
                         Next
                     End If
 
-                    If bwIMDB.CancellationPending Then Return ret
+                    If _Cancelled Then Return ret
 
                     'Special Effects
                     If (Options.bOtherCrew OrElse FullCrew) Then
@@ -720,6 +721,8 @@ mPlot:          'MOVIE PLOT
             intHTTP.Dispose()
             intHTTP = Nothing
 
+            If _Cancelled Then Return alStudio
+
             If (String.IsNullOrEmpty(HTML)) Then
                 logger.Warn("IMDB Query returned no results for ID of <{0}>", strID)
                 Return alStudio
@@ -744,10 +747,10 @@ mPlot:          'MOVIE PLOT
             ' nMovie
             Dim ret As New Interfaces.ModuleResult(True)
 
-            Dim r As MovieSearchResults = Await SearchMovie(sMovieName)
+            Dim r As MovieSearchResults
             Dim b As Boolean = False
 
-
+            r = Await SearchMovie(sMovieName)
             'r.PopularTitles.Sort()
             'r.ExactMatches.Sort()
             'r.PartialMatches.Sort()
@@ -866,69 +869,36 @@ mPlot:          'MOVIE PLOT
             Return ret
         End Function
 
-        Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions_Movie)
+        Public Async Function GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task
             Try
-                If Not bwIMDB.IsBusy Then
-                    bwIMDB.WorkerReportsProgress = False
-                    bwIMDB.WorkerSupportsCancellation = True
-                    bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails, _
-                                           .Parameter = imdbID, .IMDBMovie = IMDBMovie, .Options = Options})
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        End Sub
-
-        Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions_Movie)
-            Try
-                If Not bwIMDB.IsBusy Then
-                    bwIMDB.WorkerReportsProgress = False
-                    bwIMDB.WorkerSupportsCancellation = True
-                    bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, .Parameter = sMovie, .Options = filterOptions})
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        End Sub
-
-        Private Async Sub bwIMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwIMDB.DoWork
-            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-            Dim ret As Interfaces.ModuleResult
-
-            Try
-                Select Case Args.Search
+                _Cancelled = False
+                Select Case SearchType.SearchDetails
                     Case SearchType.Movies
-                        Dim r As MovieSearchResults = Await SearchMovie(Args.Parameter)
-                        e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
+                        Dim r As MovieSearchResults = Await SearchMovie(imdbID)
+                        RaiseEvent SearchResultsDownloaded(r)
 
                     Case SearchType.SearchDetails
-                        ret = Await GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, True, Args.Options, True, True, "", False)
+                        Dim ret As New ModuleResult
+                        ret = Await GetMovieInfo(imdbID, IMDBMovie, False, True, Options, True, True, "", False)
                         ' return object
                         ' nMovie
-                        Args.IMDBMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
-                        e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = ret.Cancelled}
+                        IMDBMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
+                        RaiseEvent SearchMovieInfoDownloaded(sPoster, ret.Cancelled)
                 End Select
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
-        Private Sub bwIMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwIMDB.RunWorkerCompleted
-            Dim Res As Results = DirectCast(e.Result, Results)
-
+        Public Async Function SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task
             Try
-                Select Case Res.ResultType
-                    Case SearchType.Movies
-                        RaiseEvent SearchResultsDownloaded(DirectCast(Res.Result, MovieSearchResults))
-
-                    Case SearchType.SearchDetails
-                        Dim movieInfo As MovieSearchResults = DirectCast(Res.Result, MovieSearchResults)
-                        RaiseEvent SearchMovieInfoDownloaded(sPoster, Res.Success)
-                End Select
+                Dim r As MovieSearchResults = Await SearchMovie(sMovie)
+                RaiseEvent SearchResultsDownloaded(r)
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
+
 
         Private Function CleanTitle(ByVal sString As String) As String
             Dim CleanString As String = sString
@@ -947,13 +917,13 @@ mPlot:          'MOVIE PLOT
             Dim fTitle As String = oTitle
 
             Try
-                If bwIMDB.CancellationPending Then Return Nothing
                 Dim HTML As String
                 intHTTP = New HTTP
                 HTML = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/releaseinfo#akas"))
                 intHTTP.Dispose()
                 intHTTP = Nothing
 
+                If _Cancelled Then Return Nothing
 
                 Dim D, W As Integer
 
@@ -1004,20 +974,26 @@ mPlot:          'MOVIE PLOT
 
                 intHTTP = New HTTP
                 HTML = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft"))
+                If _Cancelled Then Return R
                 HTMLe = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&exact=true&ref_=fn_tt_ex"))
+                If _Cancelled Then Return R
                 rUri = intHTTP.ResponseUri
 
                 If clsAdvancedSettings.GetBooleanSetting("SearchTvTitles", False) Then
                     HTMLt = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=tv_movie"))
+                    If _Cancelled Then Return R
                 End If
                 If clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False) Then
                     HTMLv = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=video"))
+                    If _Cancelled Then Return R
                 End If
                 If clsAdvancedSettings.GetBooleanSetting("SearchPartialTitles", True) Then
                     HTMLm = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
+                    If _Cancelled Then Return R
                 End If
                 If clsAdvancedSettings.GetBooleanSetting("SearchPopularTitles", True) Then
                     HTMLp = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
+                    If _Cancelled Then Return R
                 End If
                 intHTTP.Dispose()
                 intHTTP = Nothing
@@ -1119,6 +1095,7 @@ mResult:
             Dim _ImdbTrailerPage As String = String.Empty
 
             _ImdbTrailerPage = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", imdbID, "/videogallery/content_type-Trailer"))
+            If _Cancelled Then Return TrailerList
             If _ImdbTrailerPage.ToLower.Contains("page not found") Then
                 _ImdbTrailerPage = String.Empty
             End If
@@ -1135,6 +1112,7 @@ mResult:
                         For i As Integer = 1 To currPage
                             If Not i = 1 Then
                                 _ImdbTrailerPage = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", imdbID, "/videogallery/content_type-Trailer?page=", i))
+                                If _Cancelled Then Return TrailerList
                             End If
 
                             Links = Regex.Matches(_ImdbTrailerPage, "screenplay/(vi[0-9]+)/")
@@ -1146,6 +1124,7 @@ mResult:
                             For Each value As String In linksCollection
                                 If value.Contains("screenplay") Then
                                     trailerPage = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/video/", value, "player"))
+                                    If _Cancelled Then Return TrailerList
                                     trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+mp4").Value)
                                     If Not String.IsNullOrEmpty(trailerUrl) AndAlso intHTTP.IsValidURL(trailerUrl) Then
                                         TrailerList.Add(trailerUrl)

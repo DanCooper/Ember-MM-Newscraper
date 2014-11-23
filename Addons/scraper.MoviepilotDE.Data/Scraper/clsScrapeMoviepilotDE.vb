@@ -34,7 +34,8 @@ Namespace MoviepilotDE
         Private _fsk As String
         Private _outline As String
         Private _plot As String
-
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 #End Region 'Fields
 
 #Region "Constructors"
@@ -81,6 +82,7 @@ Namespace MoviepilotDE
         Public Async Function Init(ByVal sOriginalTitle As String) As Threading.Tasks.Task
             originaltitle = sOriginalTitle
             'Main method in this class to retrieve Moviepilot information...
+            _Cancelled = False
             Await GetMoviepilotDEDetails()
         End Function
 
@@ -88,6 +90,22 @@ Namespace MoviepilotDE
             _fsk = String.Empty
             _outline = String.Empty
             _plot = String.Empty
+        End Sub
+
+        Public Sub CancelAsync()
+
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
         End Sub
 
         ''' <summary>
@@ -105,9 +123,9 @@ Namespace MoviepilotDE
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
                     'Now download HTML-Code
-                    Dim sHTTP As New HTTP
-                    Dim HTML As String = Await sHTTP.DownloadData(sURL)
-                    sHTTP = Nothing
+                    Dim HTML As String = Await intHTTP.DownloadData(sURL)
+                    intHTTP = Nothing
+                    If _Cancelled Then Return
 
                     '....and use result to get the wanted information
                     If Not String.IsNullOrEmpty(HTML) Then
@@ -145,9 +163,9 @@ Namespace MoviepilotDE
             Dim MoviePilotURL As String = String.Empty
             Try
 
-                Dim sHTTP As New HTTP
-                Dim HTML As String = Await sHTTP.DownloadData(String.Concat("http://www.moviepilot.de/suche?q=", originaltitle, "&type=movie&sourceid=mozilla-search"))
-                sHTTP = Nothing
+                Dim HTML As String = Await intHTTP.DownloadData(String.Concat("http://www.moviepilot.de/suche?q=", originaltitle, "&type=movie&sourceid=mozilla-search"))
+                intHTTP = Nothing
+                If _Cancelled Then Return MoviePilotURL
                 'Example:
                 '    http://www.moviepilot.de/suche?q=Machete+Kills&type=movie
                 If Not String.IsNullOrEmpty(HTML) Then

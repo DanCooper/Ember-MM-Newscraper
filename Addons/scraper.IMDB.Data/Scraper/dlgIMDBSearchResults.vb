@@ -106,13 +106,13 @@ Public Class dlgIMDBSearchResults
         End If
     End Sub
 
-    Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
+    Private Async Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
         Dim pOpt As New Structures.ScrapeOptions_Movie
         pOpt = SetPreviewOptions()
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
             Me.pnlLoading.Visible = True
             IMDB.CancelAsync()
-            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), _nMovie, pOpt)
+            Await IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), _nMovie, pOpt)
         Else
             MsgBox(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
         End If
@@ -151,9 +151,9 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        If IMDB.bwIMDB.IsBusy Then
-            IMDB.CancelAsync()
-        End If
+        'If IMDB.bwIMDB.IsBusy Then
+        IMDB.CancelAsync()
+        ' End If
 
         _nMovie.Clear()
 
@@ -467,7 +467,7 @@ Public Class dlgIMDBSearchResults
         Me.Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
     End Sub
 
-    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
+    Private Async Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
         Dim pOpt As New Structures.ScrapeOptions_Movie
         pOpt = SetPreviewOptions()
 
@@ -476,7 +476,7 @@ Public Class dlgIMDBSearchResults
         Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovie, pOpt)
+        Await IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovie, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
