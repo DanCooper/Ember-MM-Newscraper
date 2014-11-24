@@ -3979,6 +3979,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieGeneralMediaListSorting() As List(Of ListSorting)
+        Get
+            Return Settings._XMLSettings.MovieGeneralMediaListSorting
+        End Get
+        Set(ByVal value As List(Of ListSorting))
+            Settings._XMLSettings.MovieGeneralMediaListSorting = value
+        End Set
+    End Property
+
     Public Property GeneralTVShowTheme() As String
         Get
             Return Settings._XMLSettings.GeneralTVShowTheme
@@ -6105,6 +6114,26 @@ Public Class Settings
             Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 4, .SeasonRegex = "^(s(eason)?)?[\W_]*(?<season>[0-9]+)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^a-zA-Z]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
             Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 5, .SeasonRegex = "[^\w]s(eason)?[\W_]*(?<season>[0-9]+)", .SeasonFromDirectory = True, .EpisodeRegex = "[^a-zA-Z]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
         End If
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieListSorting) AndAlso (Force OrElse Master.eSettings.MovieGeneralMediaListSorting.Count <= 0) Then
+            Master.eSettings.MovieGeneralMediaListSorting.Clear()
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Missing = False, .Column = "ListTitle", .Label = Master.eLang.GetString(21, "Title")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Missing = False, .Column = "HasNfo", .Label = Master.eLang.GetString(150, "NFO")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = False, .Missing = False, .Column = "HasBanner", .Label = Master.eLang.GetString(838, "Banner")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Missing = False, .Column = "HasClearArt", .Label = Master.eLang.GetString(1096, "ClearArt")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Missing = False, .Column = "HasClearLogo", .Label = Master.eLang.GetString(1097, "ClearLogo")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Missing = False, .Column = "HasDiscArt", .Label = Master.eLang.GetString(1098, "DiscArt")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Missing = False, .Column = "HasEFanarts", .Label = Master.eLang.GetString(992, "Extrafanarts")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Missing = False, .Column = "HasEThumbs", .Label = Master.eLang.GetString(153, "Extrathumbs")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Missing = False, .Column = "HasFanart", .Label = Master.eLang.GetString(149, "Fanart")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Missing = False, .Column = "HasLandscape", .Label = Master.eLang.GetString(1035, "Landscape")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Missing = False, .Column = "HasPoster", .Label = Master.eLang.GetString(148, "Poster")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Missing = False, .Column = "HasSub", .Label = Master.eLang.GetString(152, "Subtitles")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Missing = False, .Column = "HasTheme", .Label = Master.eLang.GetString(1118, "Theme")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Missing = False, .Column = "HasTrailer", .Label = Master.eLang.GetString(151, "Trailer")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Missing = False, .Column = "HasWatched", .Label = Master.eLang.GetString(981, "Watched")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Missing = False, .Column = "HasSet", .Label = Master.eLang.GetString(1295, "Part of a MovieSet")})
+        End If
     End Sub
 
     Public Function MovieActorThumbsAnyEnabled() As Boolean
@@ -6431,6 +6460,88 @@ Public Class Settings
         Public Sub Clear()
             Me._filetype = String.Empty
             Me._metadata = New MediaInfo.Fileinfo
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class ListSorting
+
+#Region "Fields"
+
+        Private _column As String
+        Private _displayindex As Integer
+        Private _hide As Boolean
+        Private _label As String
+        Private _missing As Boolean
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Column() As String
+            Get
+                Return Me._column
+            End Get
+            Set(ByVal value As String)
+                Me._column = value
+            End Set
+        End Property
+
+        Public Property DisplayIndex() As Integer
+            Get
+                Return _displayindex
+            End Get
+            Set(ByVal value As Integer)
+                _displayindex = value
+            End Set
+        End Property
+
+        Public Property Hide() As Boolean
+            Get
+                Return Me._hide
+            End Get
+            Set(ByVal value As Boolean)
+                Me._hide = value
+            End Set
+        End Property
+        Public Property Label() As String
+            Get
+                Return Me._label
+            End Get
+            Set(ByVal value As String)
+                Me._label = value
+            End Set
+        End Property
+
+        Public Property Missing() As Boolean
+            Get
+                Return Me._missing
+            End Get
+            Set(ByVal value As Boolean)
+                Me._missing = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._column = String.Empty
+            Me._displayindex = -1
+            Me._hide = False
+            Me._label = String.Empty
+            Me._missing = False
         End Sub
 
 #End Region 'Methods

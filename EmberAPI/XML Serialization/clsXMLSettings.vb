@@ -128,6 +128,7 @@ Partial Public Class clsXMLSettings
     Private _moviegeneralflaglang As String
     Private _moviegeneralignorelastscan As Boolean
     Private _moviegeneralmarknew As Boolean
+    Private _moviegeneralmedialistsorting As List(Of ListSorting)
     Private _movieimdburl As String
     Private _movielandscapecol As Boolean
     Private _movielandscapeoverwrite As Boolean
@@ -4789,6 +4790,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As List(Of TVShowRegEx))
             Me._tvshowregexes = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralMediaListSorting() As List(Of ListSorting)
+        Get
+            Return Me._moviegeneralmedialistsorting
+        End Get
+        Set(ByVal value As List(Of ListSorting))
+            Me._moviegeneralmedialistsorting = value
         End Set
     End Property
 

@@ -38,6 +38,7 @@ Public Class dlgSettings
     Private dHelp As New Dictionary(Of String, String)
     Private didApply As Boolean = False
     Private MovieMeta As New List(Of Settings.MetadataPerType)
+    Private MovieGeneralMediaListSorting As New List(Of Settings.ListSorting)
     Private NoUpdate As Boolean = True
     Private SettingsPanels As New List(Of Containers.SettingsPanel)
     Private TVShowRegex As New List(Of Settings.TVShowRegEx)
@@ -1081,6 +1082,60 @@ Public Class dlgSettings
         End Try
     End Sub
 
+    Private Sub btnMovieGeneralMediaListSortingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieGeneralMediaListSortingUp.Click
+        Try
+            If Me.lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not Me.lvMovieGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
+                Dim selItem As Settings.ListSorting = Me.MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
+
+                If Not IsNothing(selItem) Then
+                    Me.lvMovieGeneralMediaListSorting.SuspendLayout()
+                    Dim iIndex As Integer = Me.MovieGeneralMediaListSorting.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvMovieGeneralMediaListSorting.SelectedIndices(0)
+                    Me.MovieGeneralMediaListSorting.Remove(selItem)
+                    Me.MovieGeneralMediaListSorting.Insert(iIndex - 1, selItem)
+
+                    Me.RenumberMovieGeneralMediaListSorting()
+                    Me.LoadMovieGeneralMediaListSorting()
+
+                    Me.lvMovieGeneralMediaListSorting.Items(selIndex - 1).Selected = True
+                    Me.lvMovieGeneralMediaListSorting.ResumeLayout()
+                End If
+
+                Me.SetApplyButton(True)
+                Me.lvMovieGeneralMediaListSorting.Focus()
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnMovieGeneralMediaListSortingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieGeneralMediaListSortingDown.Click
+        Try
+            If Me.lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Me.lvMovieGeneralMediaListSorting.SelectedItems(0).Index < (Me.lvMovieGeneralMediaListSorting.Items.Count - 1) Then
+                Dim selItem As Settings.ListSorting = Me.MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
+
+                If Not IsNothing(selItem) Then
+                    Me.lvMovieGeneralMediaListSorting.SuspendLayout()
+                    Dim iIndex As Integer = Me.MovieGeneralMediaListSorting.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvMovieGeneralMediaListSorting.SelectedIndices(0)
+                    Me.MovieGeneralMediaListSorting.Remove(selItem)
+                    Me.MovieGeneralMediaListSorting.Insert(iIndex + 1, selItem)
+
+                    Me.RenumberMovieGeneralMediaListSorting()
+                    Me.LoadMovieGeneralMediaListSorting()
+
+                    Me.lvMovieGeneralMediaListSorting.Items(selIndex + 1).Selected = True
+                    Me.lvMovieGeneralMediaListSorting.ResumeLayout()
+                End If
+
+                Me.SetApplyButton(True)
+                Me.lvMovieGeneralMediaListSorting.Focus()
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub btnTVShowFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterReset.Click
         If MsgBox(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
@@ -1148,7 +1203,14 @@ Public Class dlgSettings
             Me.LoadTVShowRegex()
             Me.SetApplyButton(True)
         End If
+    End Sub
 
+    Private Sub btnMovieGeneralMediaListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieGeneralMediaListSortingReset.Click
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieListSorting, True)
+        Me.MovieGeneralMediaListSorting.Clear()
+        Me.MovieGeneralMediaListSorting.AddRange(Master.eSettings.MovieGeneralMediaListSorting)
+        Me.LoadMovieGeneralMediaListSorting()
+        Me.SetApplyButton(True)
     End Sub
 
     Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidVideoExtsRemove.Click
@@ -3719,6 +3781,9 @@ Public Class dlgSettings
                 Me.MovieMeta.AddRange(.MovieMetadataPerFileType)
                 Me.LoadMovieMetadata()
 
+                Me.MovieGeneralMediaListSorting.AddRange(.MovieGeneralMediaListSorting)
+                Me.LoadMovieGeneralMediaListSorting()
+
                 Me.TVMeta.AddRange(.TVMetadataPerFileType)
                 Me.LoadTVMetadata()
 
@@ -4193,6 +4258,18 @@ Public Class dlgSettings
         Me.cbMovieLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
         Me.cbTVLanguageOverlay.Items.Add(Master.eLang.Disabled)
         Me.cbTVLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
+    End Sub
+
+    Private Sub LoadMovieGeneralMediaListSorting()
+        Dim lvItem As ListViewItem
+        Me.lvMovieGeneralMediaListSorting.Items.Clear()
+        Me.lvMovieGeneralMediaListSorting.Sorting = SortOrder.None
+        For Each rColumn As Settings.ListSorting In Me.MovieGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
+            lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
+            lvItem.SubItems.Add(rColumn.Column)
+            lvItem.SubItems.Add(rColumn.Label)
+            Me.lvMovieGeneralMediaListSorting.Items.Add(lvItem)
+        Next
     End Sub
 
     Private Sub LoadMovieMetadata()
@@ -4880,6 +4957,12 @@ Public Class dlgSettings
         Next
     End Sub
 
+    Private Sub RenumberMovieGeneralMediaListSorting()
+        For i As Integer = 0 To Me.MovieGeneralMediaListSorting.Count - 1
+            Me.MovieGeneralMediaListSorting(i).DisplayIndex = i
+        Next
+    End Sub
+
     Private Sub SaveSettings(ByVal isApply As Boolean)
         Try
             With Master.eSettings
@@ -4980,6 +5063,8 @@ Public Class dlgSettings
                 .MovieGeneralFlagLang = If(Me.cbMovieLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cbMovieLanguageOverlay.Text)
                 .MovieGeneralIgnoreLastScan = Me.chkMovieGeneralIgnoreLastScan.Checked
                 .MovieGeneralMarkNew = Me.chkMovieGeneralMarkNew.Checked
+                .MovieGeneralMediaListSorting.Clear()
+                .MovieGeneralMediaListSorting.AddRange(Me.MovieGeneralMediaListSorting)
                 If Not String.IsNullOrEmpty(Me.txtMovieIMDBURL.Text) Then
                     .MovieIMDBURL = Strings.Replace(Me.txtMovieIMDBURL.Text, "http://", String.Empty)
                 Else

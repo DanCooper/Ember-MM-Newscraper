@@ -638,6 +638,7 @@ Public Class Enums
         TrailerCodec = 6
         ValidThemeExts = 7
         ValidSubtitleExts = 8
+        MovieListSorting = 9
     End Enum
 
     Public Enum DelType As Integer

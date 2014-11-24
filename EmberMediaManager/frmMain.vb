@@ -8781,6 +8781,12 @@ doCancel:
 
                         End With
                     End If
+
+                    If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
+                            Me.dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
                 End If
 
                 If doMovieSets Then
