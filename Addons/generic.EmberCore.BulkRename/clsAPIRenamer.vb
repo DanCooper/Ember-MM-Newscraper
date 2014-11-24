@@ -294,7 +294,7 @@ Public Class FileFolderRenamer
         MovieFile.IMDBID = _tmpMovie.Movie.IMDBID
         MovieFile.IsSingle = _tmpMovie.IsSingle
         MovieFile.ListTitle = _tmpMovie.ListTitle
-        MovieFile.OriginalTitle = _tmpMovie.Movie.OriginalTitle
+        MovieFile.OriginalTitle = If(_tmpMovie.Movie.OriginalTitle <> _tmpMovie.Movie.Title, _tmpMovie.Movie.OriginalTitle, String.Empty)
         MovieFile.Rating = _tmpMovie.Movie.Rating
         MovieFile.SortTitle = If(Not String.IsNullOrEmpty(_tmpMovie.Movie.SortTitle), _tmpMovie.Movie.SortTitle, _tmpMovie.ListTitle)
         MovieFile.Title = _tmpMovie.Movie.Title

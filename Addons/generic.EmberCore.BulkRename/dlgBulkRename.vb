@@ -177,7 +177,7 @@ Public Class dlgBulkRenamer
                                                 MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_curMovie.Movie)
                                             End If
                                             If Not IsNothing(_curMovie.Movie.OriginalTitle) Then
-                                                MovieFile.OriginalTitle = _curMovie.Movie.OriginalTitle
+                                                MovieFile.OriginalTitle = If(_curMovie.Movie.OriginalTitle <> _curMovie.Movie.Title, _curMovie.Movie.OriginalTitle, String.Empty)
                                             End If
                                             If Not IsNothing(_curMovie.Movie.Rating) Then
                                                 MovieFile.Rating = _curMovie.Movie.Rating
