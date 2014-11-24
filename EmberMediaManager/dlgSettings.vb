@@ -4263,7 +4263,6 @@ Public Class dlgSettings
     Private Sub LoadMovieGeneralMediaListSorting()
         Dim lvItem As ListViewItem
         Me.lvMovieGeneralMediaListSorting.Items.Clear()
-        Me.lvMovieGeneralMediaListSorting.Sorting = SortOrder.None
         For Each rColumn As Settings.ListSorting In Me.MovieGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)

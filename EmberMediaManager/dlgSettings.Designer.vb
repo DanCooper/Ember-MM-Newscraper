@@ -5349,7 +5349,6 @@ Partial Class dlgSettings
         Me.lvMovieGeneralMediaListSorting.Location = New System.Drawing.Point(3, 3)
         Me.lvMovieGeneralMediaListSorting.Name = "lvMovieGeneralMediaListSorting"
         Me.lvMovieGeneralMediaListSorting.Size = New System.Drawing.Size(220, 135)
-        Me.lvMovieGeneralMediaListSorting.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvMovieGeneralMediaListSorting.TabIndex = 10
         Me.lvMovieGeneralMediaListSorting.UseCompatibleStateImageBehavior = False
         Me.lvMovieGeneralMediaListSorting.View = System.Windows.Forms.View.Details
