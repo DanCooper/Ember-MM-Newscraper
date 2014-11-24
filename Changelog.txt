@@ -1,3 +1,61 @@
+Changelog 1.4.0.7 Beta (2014-11-24)
+
+[Main]
+added: MovieList custom sorting (beta)
+added: TV Show Extrafanarts settings
+added: backgroundworker for movie posters in moviesets
+added: expert settings for moviesets
+added: "Change Movie (Auto)" (scrapes all images images automatically after movie change)
+added: "Exclude TV Source from library update"
+added: votes count for tv shows and episodes
+added: filenames in Edit Movie and Episode dialog
+added: Audio and Subtitle languages flags with full stream informations in main window
+added: "Part of a MovieSet" column in main window
+added: "Rewrite all Movie Content"
+added: change Episode watched state by clicking watched column
+added: "Detailed Scraper preview" support while single field scraping
+added: MovieSet NFO support (not yet supportet by MovieSetArtworkAutomator)
+fixed: image resizing
+fixed: some data scraper issues
+fixed: MPAA/Certification handling
+fixed: error while closing "Edit TV Show" dialog
+fixed: TV Show MPAA can't set to empty
+fixed: season text if used year as season number
+fixed: titles in YouTube trailer search results
+fixed: Fanart Backdrops settings
+fixed: Bitrate "0" issue
+fixed: crash after deleting images in tv image select dialog
+fixed: icon shifting in settings dialog
+fixed: FileSorter do not use setted filenames
+fixed: Settings dialog size on small displays
+fixed: Title/OriginalTitle handling in main windows
+fixed: Playcount/Watched state is not writen to NFO after change with context menu
+changed: completely revised Setting dialog for better sizing, scrolling and prevent label overlapping 
+changed: "Excluded" sources now are gray in update database submenu
+changed: temporarily disabled "New Movie" and "New Episode" notifications to prevent crash
+changed: Tools menu items handling
+changed: display best audio of selected language in main window (if this option is enabled in settings)
+changed: revised all main filter panels
+removed: all fixed audio and video codec conversion
+removed: quality settings for images
+
+[MediaFileManager]
+added: TeraCopy support to copy and move movies (beta)
+
+[Renamer]
+fixed: VideoSource bug
+fixed: Renamer fills OriginalTitle even if it the same like title
+changed: BulkRenamer use MovieList filter
+
+[MoviePilot]
+fixed: some issues
+changed: completely revised for faster scraping
+
+[OFDB]
+fixed: some issues
+changed: completely revised for faster scraping
+
+
 Changelog 1.4.0.6 Beta (2014-10-26)
 
 [Main]
