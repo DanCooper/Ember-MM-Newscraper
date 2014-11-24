@@ -415,7 +415,7 @@ Public Class NFO
                 (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (String.IsNullOrEmpty(DBMovie.Movie.MPAA) OrElse Not Master.eSettings.MovieLockMPAA) OrElse _
                  Not new_MPAA AndAlso (String.IsNullOrEmpty(DBMovie.Movie.MPAA) OrElse Not Master.eSettings.MovieLockMPAA)) Then
 
-                Dim tmpstring As String = ""
+                Dim tmpstring As String = String.Empty
                 tmpstring = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(DBMovie.Movie.Certification), If(Master.eSettings.MovieScraperCertOnlyValue, DBMovie.Movie.Certification.Split(Convert.ToChar(":"))(1), DBMovie.Movie.Certification))
                 'only update DBMovie if scraped result is not empty/nothing!
                 If Not String.IsNullOrEmpty(tmpstring) Then

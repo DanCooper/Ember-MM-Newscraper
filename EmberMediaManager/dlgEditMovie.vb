@@ -2910,81 +2910,51 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SelectMPAA()
-        If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
-            Try
-                If Master.eSettings.MovieScraperCertForMPAA AndAlso APIXML.RatingXML.movies.FindAll(Function(f) f.country.ToLower = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name.ToLower).Count > 0 Then
-                    If Master.eSettings.MovieScraperCertOnlyValue Then
-                        Dim sItem As String = String.Empty
-                        For i As Integer = 0 To Me.lbMPAA.Items.Count - 1
-                            sItem = Me.lbMPAA.Items(i).ToString
-                            If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = Master.currMovie.Movie.MPAA Then
-                                Me.lbMPAA.SelectedIndex = i
-                                Me.lbMPAA.TopIndex = i
-                                Exit For
-                            End If
-                        Next
-                    Else
-                        Dim l As Integer = 0
-                        For ctr As Integer = 0 To Me.lbMPAA.Items.Count - 1
-                            If Master.currMovie.Movie.MPAA.ToLower.StartsWith(Me.lbMPAA.Items.Item(ctr).ToString.ToLower) Then
-                                l = ctr
-                                Exit For
-                            End If
-                        Next
-                        Me.lbMPAA.SelectedIndex = l
-                        Me.lbMPAA.TopIndex = l
-
-                        Dim strMPAA As String = String.Empty
-                        Dim strMPAADesc As String = String.Empty
-                        If l > 0 Then
-                            strMPAA = Me.lbMPAA.Items.Item(l).ToString
-                            strMPAADesc = Master.currMovie.Movie.MPAA.Replace(strMPAA, String.Empty).Trim
-                            Me.txtMPAA.Text = strMPAA
-                            Me.txtMPAADesc.Text = strMPAADesc
-                        Else
-                            Me.txtMPAA.Text = Master.currMovie.Movie.MPAA
+        Try
+            If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
+                If Master.eSettings.MovieScraperCertOnlyValue Then
+                    Dim sItem As String = String.Empty
+                    For i As Integer = 0 To Me.lbMPAA.Items.Count - 1
+                        sItem = Me.lbMPAA.Items(i).ToString
+                        If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = Master.currMovie.Movie.MPAA Then
+                            Me.lbMPAA.SelectedIndex = i
+                            Me.lbMPAA.TopIndex = i
+                            Exit For
                         End If
-                    End If
+                    Next
+                Else
+                    Dim i As Integer = 0
+                    'Descending to get "Rated PG-13" before "Rated PG"
+                    For ctr As Integer = Me.lbMPAA.Items.Count - 1 To 0 Step -1
+                        If Master.currMovie.Movie.MPAA.ToLower.StartsWith(Me.lbMPAA.Items.Item(ctr).ToString.ToLower) Then
+                            i = ctr
+                            Exit For
+                        End If
+                    Next
+                    Me.lbMPAA.SelectedIndex = i
+                    Me.lbMPAA.TopIndex = i
 
-                    If Me.lbMPAA.SelectedItems.Count = 0 Then
-                        Me.lbMPAA.SelectedIndex = 0
-                        Me.lbMPAA.TopIndex = 0
-                    End If
-
-                ElseIf Me.lbMPAA.Items.Count >= 6 Then
-                    Dim strMPAA As String = Master.currMovie.Movie.MPAA
-                    If strMPAA.ToLower.StartsWith("rated g") Then
-                        Me.lbMPAA.SelectedIndex = 1
-                    ElseIf strMPAA.ToLower.StartsWith("rated pg-13") Then
-                        Me.lbMPAA.SelectedIndex = 3
-                    ElseIf strMPAA.ToLower.StartsWith("rated pg") Then
-                        Me.lbMPAA.SelectedIndex = 2
-                    ElseIf strMPAA.ToLower.StartsWith("rated r") Then
-                        Me.lbMPAA.SelectedIndex = 4
-                    ElseIf strMPAA.ToLower.StartsWith("rated nc-17") Then
-                        Me.lbMPAA.SelectedIndex = 5
+                    Dim strMPAA As String = String.Empty
+                    Dim strMPAADesc As String = String.Empty
+                    If i > 0 Then
+                        strMPAA = Me.lbMPAA.Items.Item(i).ToString
+                        strMPAADesc = Master.currMovie.Movie.MPAA.Replace(strMPAA, String.Empty).Trim
+                        Me.txtMPAA.Text = strMPAA
+                        Me.txtMPAADesc.Text = strMPAADesc
                     Else
-                        Me.lbMPAA.SelectedIndex = 0
-                    End If
-
-                    If Me.lbMPAA.SelectedIndex > 0 AndAlso Not String.IsNullOrEmpty(strMPAA) Then
-                        Dim strMPAADesc As String = strMPAA
-                        strMPAADesc = Strings.Replace(strMPAADesc, "rated g", String.Empty, 1, -1, CompareMethod.Text).Trim
-                        If Not String.IsNullOrEmpty(strMPAADesc) Then strMPAADesc = Strings.Replace(strMPAADesc, "rated pg-13", String.Empty, 1, -1, CompareMethod.Text).Trim
-                        If Not String.IsNullOrEmpty(strMPAADesc) Then strMPAADesc = Strings.Replace(strMPAADesc, "rated pg", String.Empty, 1, -1, CompareMethod.Text).Trim
-                        If Not String.IsNullOrEmpty(strMPAADesc) Then strMPAADesc = Strings.Replace(strMPAADesc, "rated r", String.Empty, 1, -1, CompareMethod.Text).Trim
-                        If Not String.IsNullOrEmpty(strMPAADesc) Then strMPAADesc = Strings.Replace(strMPAADesc, "rated nc-17", String.Empty, 1, -1, CompareMethod.Text).Trim
-                        txtMPAA.Text = ""
-                        txtMPAADesc.Text = strMPAADesc
+                        Me.txtMPAA.Text = Master.currMovie.Movie.MPAA
                     End If
                 End If
+            End If
 
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        Else
-            Me.lbMPAA.SelectedIndex = 0
-        End If
+            If Me.lbMPAA.SelectedItems.Count = 0 Then
+                Me.lbMPAA.SelectedIndex = 0
+                Me.lbMPAA.TopIndex = 0
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     Private Sub SetInfo()

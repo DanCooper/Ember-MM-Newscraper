@@ -57,12 +57,12 @@
       <country>uk</country>
       <icon>uk/uk_pg.png</icon>
     </name>
-    <name searchstring="UK:12A">
-      <icon>uk/uk_12A.png</icon>
-      <country>uk</country>
-    </name>
     <name searchstring="UK:12">
       <icon>uk/uk_12.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:12A">
+      <icon>uk/uk_12A.png</icon>
       <country>uk</country>
     </name>
     <name searchstring="UK:15">
@@ -143,12 +143,12 @@
       <country>uk</country>
       <icon>uk/uk_pg.png</icon>
     </name>
-    <name searchstring="UK:12A">
-      <icon>uk/uk_12A.png</icon>
-      <country>uk</country>
-    </name>
     <name searchstring="UK:12">
       <icon>uk/uk_12.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:12A">
+      <icon>uk/uk_12A.png</icon>
       <country>uk</country>
     </name>
     <name searchstring="UK:15">
