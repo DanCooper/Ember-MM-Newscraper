@@ -4646,14 +4646,9 @@ doCancel:
         Try
             Dim setWatched As Boolean = False
             If Me.dgvMovies.SelectedRows.Count > 1 Then
-                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                    'if any one item is set as not watched, set menu to watched
-                    'else they are all watched so set menu to not watched
-                    If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
-                        setWatched = True
-                        Exit For
-                    End If
-                Next
+                If Me.cmnuMovieWatched.Text = Master.eLang.GetString(981, "Watched") Then
+                    setWatched = True
+                End If
             End If
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -4712,60 +4707,109 @@ doCancel:
 
     Private Sub cmnuEpisodeWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeWatched.Click
         Try
-            Dim setHasWatched As Boolean = False
+            Dim setWatched As Boolean = False
             If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
-                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    'if any one item is set as unmarked, set menu to mark
-                    'else they are all marked, so set menu to unmark
-                    If Not Convert.ToBoolean(sRow.Cells(24).Value) Then
-                        setHasWatched = True
-                        Exit For
-                    End If
-                Next
+                If Me.cmnuEpisodeWatched.Text = Master.eLang.GetString(981, "Watched") Then
+                    setWatched = True
+                End If
             End If
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    Dim parHasWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasWatched", DbType.Boolean, 0, "HasWatched")
+                    Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE TVEps SET HasWatched = (?) WHERE id = (?);"
+                    SQLcommand.CommandText = "UPDATE TVEps SET Playcount = (?) WHERE id = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        parHasWatched.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setHasWatched, Not Convert.ToBoolean(sRow.Cells(24).Value))
+                        Dim currPlaycount As String = String.Empty
+                        Dim hasWatched As Boolean = False
+                        Dim newPlaycount As String = String.Empty
+
+                        currPlaycount = Convert.ToString(sRow.Cells(23).Value)
+                        hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+
+                        If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
+                            newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                        ElseIf Not hasWatched Then
+                            newPlaycount = "1"
+                        Else
+                            newPlaycount = "0"
+                        End If
+
+                        parPlaycount.Value = newPlaycount
                         parID.Value = sRow.Cells(0).Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(24).Value = parHasWatched.Value
+                        sRow.Cells(23).Value = newPlaycount
+                        sRow.Cells(24).Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setWatched, Not hasWatched)
                     Next
                 End Using
+                SQLtransaction.Commit()
 
-                ''now check the status of all episodes in the season so we can update the season mark flag if needed
-                'Dim MarkCount As Integer = 0
-                'Dim NotMarkCount As Integer = 0
-                'For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                '    If Convert.ToBoolean(sRow.Cells(8).Value) Then
-                '        MarkCount += 1
-                '    Else
-                '        NotMarkCount += 1
-                '    End If
-                'Next
+            End Using
 
-                'If MarkCount = 0 OrElse NotMarkCount = 0 Then
-                '    Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                '        Dim parSeaMark As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "Mark")
-                '        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
-                '        Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                '        SQLSeacommand.CommandText = "UPDATE TVSeason SET Mark = (?) WHERE TVShowID = (?) AND Season = (?);"
-                '        If MarkCount = 0 Then
-                '            parSeaMark.Value = False
-                '        ElseIf NotMarkCount = 0 Then
-                '            parSeaMark.Value = True
-                '        End If
-                '        parSeaID.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value)
-                '        parSeason.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value)
-                '        SQLSeacommand.ExecuteNonQuery()
-                '        Me.dgvTVSeasons.SelectedRows(0).Cells(8).Value = parSeaMark.Value
-                '    End Using
-                'End If
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    Me.RefreshEpisode(Convert.ToInt64(sRow.Cells(0).Value), True, False, True)
+                Next
+                SQLtransaction.Commit()
+            End Using
 
+            Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, Me.dgvTVEpisodes.CurrentCell.RowIndex).Value)) ', Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.CurrentCell.RowIndex).Value.ToString, True, False)
+
+            'If Me.chkFilterLock.Checked Then
+            '    Me.dgvTVEpisodes.ClearSelection()
+            '    Me.dgvTVEpisodes.CurrentCell = Nothing
+            '    If Me.dgvTVEpisodes.RowCount <= 0 Then Me.ClearInfo()
+            'End If
+
+            Me.dgvTVEpisodes.Invalidate()
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub cmnuHasWatchedSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonWatched.Click
+        Try
+            Dim setHasWatched As Boolean = False
+            'If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
+            '    For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+            '        If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
+            '            setHasWatched = True
+            '            Exit For
+            '        End If
+            '    Next
+            'End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    Dim parHasWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "TVShowID")
+                    Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
+                    SQLcommand.CommandText = "UPDATE TVSeason SET mark = (?) WHERE TVShowID = (?) AND Season = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                        parHasWatched.Value = setHasWatched
+                        'parMark.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setHasWatched, Not Convert.ToBoolean(sRow.Cells(8).Value))
+                        'parID.Value = sRow.Cells(0).Value
+                        'parSeason.Value = sRow.Cells(2).Value
+                        'SQLcommand.ExecuteNonQuery()
+                        'sRow.Cells(8).Value = parMark.Value
+
+                        Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            Dim parEHasWatched As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parHasWatched", DbType.Boolean, 0, "HasWatched")
+                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
+                            Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int32, 0, "Season")
+                            SQLECommand.CommandText = "UPDATE TVEps SET HasWatched = (?) WHERE TVShowID = (?) AND Season = (?);"
+                            parEHasWatched.Value = parHasWatched.Value
+                            parEID.Value = parID.Value
+                            parESeason.Value = parSeason.Value
+                            SQLECommand.ExecuteNonQuery()
+
+                            For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
+                                eRow.Cells(24).Value = parHasWatched.Value
+                            Next
+                        End Using
+                    Next
+                End Using
                 SQLtransaction.Commit()
             End Using
 
@@ -4776,58 +4820,6 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
-
-    'Private Sub cmnuHasWatchedSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuHasWatchedSeason.Click
-    '    Try
-    '        Dim setMark As Boolean = False
-    '        If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
-    '            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-    '                If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
-    '                    setMark = True
-    '                    Exit For
-    '                End If
-    '            Next
-    '        End If
-
-    '        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-    '            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-    '                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "TVShowID")
-    '                Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-    '                SQLcommand.CommandText = "UPDATE TVSeason SET mark = (?) WHERE TVShowID = (?) AND Season = (?);"
-    '                For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-    '                    parMark.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(8).Value))
-    '                    parID.Value = sRow.Cells(0).Value
-    '                    parSeason.Value = sRow.Cells(2).Value
-    '                    SQLcommand.ExecuteNonQuery()
-    '                    sRow.Cells(8).Value = parMark.Value
-
-    '                    Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                        Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
-    '                        Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
-    '                        Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int32, 0, "Season")
-    '                        SQLECommand.CommandText = "UPDATE TVEps SET mark = (?) WHERE TVShowID = (?) AND Season = (?);"
-    '                        parEMark.Value = parMark.Value
-    '                        parEID.Value = parID.Value
-    '                        parESeason.Value = parSeason.Value
-    '                        SQLECommand.ExecuteNonQuery()
-
-    '                        For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-    '                            eRow.Cells(8).Value = parMark.Value
-    '                        Next
-    '                    End Using
-    '                Next
-    '            End Using
-    '            SQLtransaction.Commit()
-    '        End Using
-
-    '        Me.dgvTVSeasons.Invalidate()
-    '        Me.dgvTVEpisodes.Invalidate()
-
-    '    Catch ex As Exception
-    '        logger.Error(New StackFrame().GetMethod().Name, ex)
-    '    End Try
-    'End Sub
 
     'Private Sub cmnuHasWatchedShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuHasWatchedShow.Click
     '    Try
@@ -7598,19 +7590,19 @@ doCancel:
                                 'else they are all marked, so set menu to unmark
                                 If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
                                     setMark = True
-                                    If setLock Then Exit For
+                                    If setLock AndAlso setWatched Then Exit For
                                 End If
                                 'if any one item is set as unlocked, set menu to lock
                                 'else they are all locked so set menu to unlock
                                 If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
                                     setLock = True
-                                    If setMark Then Exit For
+                                    If setMark AndAlso setWatched Then Exit For
                                 End If
                                 'if any one item is set as unwatched, set menu to watched
                                 'else they are all watched so set menu to not watched
                                 If Not Convert.ToBoolean(sRow.Cells(24).Value) Then
                                     setWatched = True
-                                    If setWatched Then Exit For
+                                    If setLock AndAlso setMark Then Exit For
                                 End If
                             Next
 
@@ -14683,6 +14675,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 5, hasFanart})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 7, False})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 23, tmpShowDb.TVEp.Playcount})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 24, hasWatched})
                     Else
                         DirectCast(dRow(0), DataRow).Item(3) = tmpShowDb.TVEp.Title
@@ -14690,6 +14683,7 @@ doCancel:
                         DirectCast(dRow(0), DataRow).Item(5) = hasFanart
                         DirectCast(dRow(0), DataRow).Item(6) = If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)
                         DirectCast(dRow(0), DataRow).Item(7) = False
+                        DirectCast(dRow(0), DataRow).Item(23) = tmpShowDb.TVEp.Playcount
                         DirectCast(dRow(0), DataRow).Item(24) = hasWatched
                     End If
                 End If
