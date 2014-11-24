@@ -9294,7 +9294,7 @@ doCancel:
                 Me.lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), Master.currMovie.Movie.Year)
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title) Then
+            If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> Master.currMovie.Movie.Title Then
                 Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Master.currMovie.Movie.OriginalTitle)
             Else
                 Me.lblOriginalTitle.Text = String.Empty
@@ -9621,7 +9621,7 @@ doCancel:
 
             Me.txtPlot.Text = Master.currMovieSet.MovieSet.Plot
 
-            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens(Master.currMovie.Movie.Title) Then
+            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> Master.currMovie.Movie.Title Then
             '    Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Master.currMovie.Movie.OriginalTitle)
             'Else
             '    Me.lblOriginalTitle.Text = String.Empty
