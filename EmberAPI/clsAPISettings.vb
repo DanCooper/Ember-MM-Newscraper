@@ -6122,8 +6122,8 @@ Public Class Settings
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Missing = False, .Column = "HasSub", .Label = Master.eLang.GetString(152, "Subtitles")})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Missing = False, .Column = "HasTheme", .Label = Master.eLang.GetString(1118, "Theme")})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Missing = False, .Column = "HasTrailer", .Label = Master.eLang.GetString(151, "Trailer")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Missing = False, .Column = "HasWatched", .Label = Master.eLang.GetString(981, "Watched")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Missing = False, .Column = "HasSet", .Label = Master.eLang.GetString(1295, "Part of a MovieSet")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Missing = False, .Column = "HasSet", .Label = Master.eLang.GetString(1295, "Part of a MovieSet")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Missing = False, .Column = "HasWatched", .Label = Master.eLang.GetString(981, "Watched")})
         End If
     End Sub
 
