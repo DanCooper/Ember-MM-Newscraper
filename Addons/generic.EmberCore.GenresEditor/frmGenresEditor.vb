@@ -200,6 +200,7 @@ Public Class frmGenresEditor
         Dim s As String = InputBox(Master.eLang.GetString(640, "Enter the new Language"), Master.eLang.GetString(641, "New Language"))
         Dim i As Integer = dgvLang.Rows.Add(New Object() {False, s})
         dgvLang.CurrentCell = dgvLang.Rows(i).Cells(1)
+        xmlGenres.listOfLanguages.Add(s)
         dgvLang.BeginEdit(True)
         RaiseEvent ModuleSettingsChanged()
     End Sub
