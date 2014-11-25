@@ -5,9 +5,12 @@ Imports EmberAPI
 Imports NLog
 
 Public Class frmGenresEditor
+
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private xmlGenres As xGenres
+
 #End Region 'Fields
 
     Public Event ModuleSettingsChanged()
@@ -49,7 +52,6 @@ Public Class frmGenresEditor
         ' APIXML.GenreXML = XDocument.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
     End Sub
 
-
     Private Sub GetLanguages()
         Try
             cbLangs.Items.Clear()
@@ -62,7 +64,7 @@ Public Class frmGenresEditor
             Next
             dgvLang.ClearSelection()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -145,9 +147,8 @@ Public Class frmGenresEditor
                 ClearLangSelection()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-
     End Sub
 
     Private Sub dgvLang_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvLang.CurrentCellDirtyStateChanged
@@ -205,6 +206,7 @@ Public Class frmGenresEditor
     Private Sub btnRemoveGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveGenre.Click
         If dgvGenres.SelectedCells.Count > 0 Then
             dgvGenres.Rows.RemoveAt(dgvGenres.SelectedCells(0).RowIndex)
+            xmlGenres.listOfGenres.RemoveAt(dgvGenres.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
