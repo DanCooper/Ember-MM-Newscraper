@@ -5987,6 +5987,9 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingBoxeeDefaultsEnabled.Text = strEnabled
         Me.lblMovieSourcesFileNamingNMTDefaultsEnabled.Text = strEnabled
         Me.lblMovieSourcesFileNamingXBMCDefaultsEnabled.Text = strEnabled
+        Me.lblTVSourcesFileNamingBoxeeDefaultsEnabled.Text = strEnabled
+        Me.lblTVSourcesFileNamingNMTDefaultsEnabled.Text = strEnabled
+        Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.Text = strEnabled
         Me.chkMovieUseExpert.Text = strEnabled
 
         'Episode #

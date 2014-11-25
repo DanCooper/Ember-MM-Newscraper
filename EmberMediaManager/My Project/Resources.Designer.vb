@@ -93,6 +93,16 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property de() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("de", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property desc() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("desc", resourceCulture)
@@ -116,6 +126,16 @@ Namespace My.Resources
         Friend ReadOnly Property EmberSplashScreen() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("EmberSplashScreen", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property en() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("en", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -793,6 +813,24 @@ Namespace My.Resources
         Friend ReadOnly Property urlFfmpeg() As String
             Get
                 Return ResourceManager.GetString("urlFfmpeg", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die http://forum.kodi.tv/forumdisplay.php?fid=195 ähnelt.
+        '''</summary>
+        Friend ReadOnly Property urlForumEng() As String
+            Get
+                Return ResourceManager.GetString("urlForumEng", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.kodinerds.net/index.php?page=Board&amp;boardID=102 ähnelt.
+        '''</summary>
+        Friend ReadOnly Property urlForumGer() As String
+            Get
+                Return ResourceManager.GetString("urlForumGer", resourceCulture)
             End Get
         End Property
         

@@ -19090,8 +19090,16 @@ doCancel:
         ModulesManager.Instance.GetVersions()
     End Sub
 
-    Private Sub WikiStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpWiki.Click
+    Private Sub mnuMainHelpWiki_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpWiki.Click
         Functions.Launch(My.Resources.urlEmberWiki)
+    End Sub
+
+    Private Sub mnuMainHelpForumEng_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpForumEng.Click
+        Functions.Launch(My.Resources.urlForumEng)
+    End Sub
+
+    Private Sub mnuMainHelpForumGer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpForumGer.Click
+        Functions.Launch(My.Resources.urlForumGer)
     End Sub
 
     Private Sub tmrAppExit_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrAppExit.Tick
