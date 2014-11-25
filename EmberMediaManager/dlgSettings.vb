@@ -5940,6 +5940,10 @@ Public Class dlgSettings
         Dim strCollectionID As String = Master.eLang.GetString(1135, "Collection ID")
         Me.lblMovieScraperGlobalCollectionID.Text = strCollectionID
 
+        'Collections
+        Dim strCollections As String = Master.eLang.GetString(424, "Collections")
+        Me.lblMovieScraperGlobalCollections.Text = strCollections
+
         'Country
         Dim strCountry As String = Master.eLang.GetString(301, "Country")
         Me.lblMovieScraperGlobalCountry.Text = strCountry
@@ -5950,6 +5954,9 @@ Public Class dlgSettings
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Text = strDefaults
         Me.gbMovieSourcesFileNamingXBMCDefaultsOpts.Text = strDefaults
         Me.gbTVSourcesDefaultsOpts.Text = strDefaults
+        Me.gbTVSourcesFileNamingBoxeeDefaultsOpts.Text = strDefaults
+        Me.gbTVSourcesFileNamingNMTDefaultsOpts.Text = strDefaults
+        Me.gbTVSourcesFileNamingXBMCDefaultsOpts.Text = strDefaults
 
         'Defaults by File Type
         Dim strDefaultsByFileType As String = Master.eLang.GetString(625, "Defaults by File Type")
@@ -5998,7 +6005,7 @@ Public Class dlgSettings
 
         'Episodes
         Dim strEpisodes As String = Master.eLang.GetString(682, "Episodes")
-        Me.lblTVGeneralMediaListHeaderSeasons.Text = strEpisodes
+        Me.lblTVGeneralMediaListHeaderEpisodes.Text = strEpisodes
         Me.lblTVScraperGlobalHeaderEpisodes.Text = strEpisodes
 
         'Extrafanarts
@@ -6008,7 +6015,9 @@ Public Class dlgSettings
         Me.chkMovieExtrafanartsExpertVTS.Text = strExtrafanarts
         Me.gbMovieImagesEFanartsOpts.Text = strExtrafanarts
         Me.gbTVImagesShowEFanartsOpts.Text = strExtrafanarts
+        Me.lblMovieGeneralMediaListExtrafanarts.Text = strExtrafanarts
         Me.lblMovieSourcesFileNamingXBMCDefaultsExtrafanarts.Text = strExtrafanarts
+        Me.lblTVGeneralMediaListExtrafanarts.Text = strExtrafanarts
         Me.lblTVSourcesFileNamingXBMCDefaultsExtrafanarts.Text = strExtrafanarts
 
         'Extrathumbs
@@ -6017,6 +6026,7 @@ Public Class dlgSettings
         Me.chkMovieExtrathumbsExpertSingle.Text = strExtrathumbs
         Me.chkMovieExtrathumbsExpertVTS.Text = strExtrathumbs
         Me.gbMovieImagesEThumbsOpts.Text = strExtrathumbs
+        Me.lblMovieGeneralMediaListExtrathumbs.Text = strExtrathumbs
         Me.lblMovieSourcesFileNamingXBMCDefaultsExtrathumbs.Text = strExtrathumbs
 
         'Fanart
@@ -6075,11 +6085,20 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingXBMCADLandscape.Text = strLandscape
         Me.lblTVGeneralMediaListLandscape.Text = strLandscape
 
+        'Language (Audio)
+        Dim strLanguageAudio As String = Master.eLang.GetString(431, "Language (Audio)")
+        Me.lblMovieScraperGlobalLanguageA.Text = strLanguageAudio
+
+        'Language (Video)
+        Dim strLanguageVideo As String = Master.eLang.GetString(435, "Language (Video)")
+        Me.lblMovieScraperGlobalLanguageV.Text = strLanguageVideo
+
         'Limit
         Dim strLimit As String = Master.eLang.GetString(578, "Limit")
         Me.lblMovieEFanartsLimit.Text = String.Concat(strLimit, ":")
         Me.lblMovieEThumbsLimit.Text = String.Concat(strLimit, ":")
         Me.lblMovieScraperGlobalHeaderLimit.Text = strLimit
+        Me.lblMovieScraperOutlineLimit.Text = String.Concat(strLimit, ":")
         Me.lblTVShowEFanartsLimit.Text = String.Concat(strLimit, ":")
 
         'Lock
@@ -6143,6 +6162,7 @@ Public Class dlgSettings
         'Miscellaneous
         Dim strMiscellaneous As String = Master.eLang.GetString(429, "Miscellaneous")
         Me.gbGeneralMiscOpts.Text = strMiscellaneous
+        Me.gbMovieGeneralMiscOpts.Text = strMiscellaneous
         Me.gbMovieScraperMiscOpts.Text = strMiscellaneous
         Me.gbMovieSetGeneralMiscOpts.Text = strMiscellaneous
         Me.gbMovieSetSourcesMiscOpts.Text = strMiscellaneous
@@ -6158,6 +6178,10 @@ Public Class dlgSettings
         Me.lblTVGeneralMediaListHeaderEpisodesMissing.Text = strMissing
         Me.lblTVGeneralMediaListHeaderSeasonsMissing.Text = strMissing
         Me.lblTVGeneralMediaListHeaderShowsMissing.Text = strMissing
+
+        'MPAA
+        Dim strMPAA As String = Master.eLang.GetString(401, "MPAA")
+        Me.lblMovieScraperGlobalMPAA.Text = strMPAA
 
         'NFO
         Dim strNFO As String = Master.eLang.GetString(150, "NFO")
@@ -6242,6 +6266,10 @@ Public Class dlgSettings
         Me.chkTVShowFanartOverwrite.Text = strOverwriteExisting
         Me.chkTVShowLandscapeOverwrite.Text = strOverwriteExisting
         Me.chkTVShowPosterOverwrite.Text = strOverwriteExisting
+
+        'Part of a MovieSet
+        Dim strPartOfAMovieSet As String = Master.eLang.GetString(1295, "Part of a MovieSet")
+        Me.lblMovieGeneralMediaListMovieSet.Text = strPartOfAMovieSet
 
         'Plot
         Dim strPlot As String = Master.eLang.GetString(65, "Plot")
@@ -6345,9 +6373,18 @@ Public Class dlgSettings
         Me.lblMovieScraperGlobalStudio.Text = strStudio
         Me.lblTVScraperGlobalStudio.Text = strStudio
 
+        'Subtitles
+        Dim strSubtitles As String = Master.eLang.GetString(152, "Subtitles")
+        Me.lblMovieGeneralMediaListSubtitles.Text = strSubtitles
+
         'Tagline
         Dim strTagline As String = Master.eLang.GetString(397, "Tagline")
         Me.lblMovieScraperGlobalTagline.Text = strTagline
+
+        'Theme
+        Dim strTheme As String = Master.eLang.GetString(1118, "Theme")
+        Me.lblMovieGeneralMediaListTheme.Text = strTheme
+        Me.lblTVGeneralMediaListTheme.Text = strTheme
 
         'Title
         Dim strTitle As String = Master.eLang.GetString(21, "Title")

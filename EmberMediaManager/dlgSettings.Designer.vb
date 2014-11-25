@@ -663,7 +663,7 @@ Partial Class dlgSettings
         Me.lblTVGeneralMediaListCharacterArt = New System.Windows.Forms.Label()
         Me.lblTVGeneralMediaListClearArt = New System.Windows.Forms.Label()
         Me.lblTVGeneralMediaListClearLogo = New System.Windows.Forms.Label()
-        Me.lblTVGeneralMediaListExtrafanart = New System.Windows.Forms.Label()
+        Me.lblTVGeneralMediaListExtrafanarts = New System.Windows.Forms.Label()
         Me.lblTVGeneralMediaListFanart = New System.Windows.Forms.Label()
         Me.lblTVGeneralMediaListLandscape = New System.Windows.Forms.Label()
         Me.lblTVGeneralMediaListNFO = New System.Windows.Forms.Label()
@@ -9494,7 +9494,7 @@ Partial Class dlgSettings
         Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListCharacterArt, 0, 3)
         Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListClearArt, 0, 4)
         Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListClearLogo, 0, 5)
-        Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListExtrafanart, 0, 6)
+        Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListExtrafanarts, 0, 6)
         Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListFanart, 0, 7)
         Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListLandscape, 0, 8)
         Me.tblTVGeneralMediaList.Controls.Add(Me.lblTVGeneralMediaListNFO, 0, 9)
@@ -9979,14 +9979,14 @@ Partial Class dlgSettings
         '
         'lblTVGeneralMediaListExtrafanart
         '
-        Me.lblTVGeneralMediaListExtrafanart.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVGeneralMediaListExtrafanart.AutoSize = true
-        Me.lblTVGeneralMediaListExtrafanart.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblTVGeneralMediaListExtrafanart.Location = New System.Drawing.Point(3, 123)
-        Me.lblTVGeneralMediaListExtrafanart.Name = "lblTVGeneralMediaListExtrafanart"
-        Me.lblTVGeneralMediaListExtrafanart.Size = New System.Drawing.Size(63, 13)
-        Me.lblTVGeneralMediaListExtrafanart.TabIndex = 82
-        Me.lblTVGeneralMediaListExtrafanart.Text = "Extrafanart"
+        Me.lblTVGeneralMediaListExtrafanarts.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVGeneralMediaListExtrafanarts.AutoSize = true
+        Me.lblTVGeneralMediaListExtrafanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblTVGeneralMediaListExtrafanarts.Location = New System.Drawing.Point(3, 123)
+        Me.lblTVGeneralMediaListExtrafanarts.Name = "lblTVGeneralMediaListExtrafanart"
+        Me.lblTVGeneralMediaListExtrafanarts.Size = New System.Drawing.Size(63, 13)
+        Me.lblTVGeneralMediaListExtrafanarts.TabIndex = 82
+        Me.lblTVGeneralMediaListExtrafanarts.Text = "Extrafanart"
         '
         'lblTVGeneralMediaListFanart
         '
@@ -21778,7 +21778,7 @@ End Sub
     Friend WithEvents lblTVGeneralMediaListCharacterArt As System.Windows.Forms.Label
     Friend WithEvents lblTVGeneralMediaListClearArt As System.Windows.Forms.Label
     Friend WithEvents lblTVGeneralMediaListClearLogo As System.Windows.Forms.Label
-    Friend WithEvents lblTVGeneralMediaListExtrafanart As System.Windows.Forms.Label
+    Friend WithEvents lblTVGeneralMediaListExtrafanarts As System.Windows.Forms.Label
     Friend WithEvents lblTVGeneralMediaListFanart As System.Windows.Forms.Label
     Friend WithEvents lblTVGeneralMediaListLandscape As System.Windows.Forms.Label
     Friend WithEvents lblTVGeneralMediaListNFO As System.Windows.Forms.Label
