@@ -2279,15 +2279,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperOutlineForPlot() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieScraperOutlineForPlot
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieScraperOutlineForPlot = value
-        End Set
-    End Property
-
     Public Property MovieScraperOutlinePlotEnglishOverwrite() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperOutlinePlotEnglishOverwrite
