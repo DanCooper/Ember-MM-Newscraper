@@ -60,6 +60,7 @@ Public Class Scraper
     Public Shared tEpisodes As New List(Of MediaContainers.EpisodeDetails)
     Public Shared tmpTVDBShow As New TVDBShow
     Public Shared TVDBImages As New TVImages
+    Public Shared onlyScrapeSeason As Integer
 
 #End Region 'Fields
 
@@ -787,6 +788,7 @@ Public Class Scraper
                         e.Result = New Results With {.Type = 1}
                     Case 2 'load episodes
                         LoadAllEpisodes(DirectCast(Args.Parameter, Structures.ScrapeInfo).ShowID, 999)
+                        onlyScrapeSeason = 999
                         e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
                     Case 3 'save
                         Me.SaveAllTVInfo()
@@ -794,6 +796,7 @@ Public Class Scraper
                     Case 4
                         Dim sInfo As Structures.ScrapeInfo = DirectCast(Args.Parameter, Structures.ScrapeInfo)
                         LoadAllEpisodes(sInfo.ShowID, sInfo.iSeason)
+                        onlyScrapeSeason = sInfo.iSeason
                         e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
                 End Select
             Catch ex As Exception
@@ -862,7 +865,11 @@ Public Class Scraper
                 If Master.eSettings.TVDisplayMissingEpisodes Then
                     'clear old missing episode from db
                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND TVShowID = ", Master.currShow.ShowID, ";")
+                        If Not IsNothing(onlyScrapeSeason) AndAlso onlyScrapeSeason <> 999 Then
+                            SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND Season = ", onlyScrapeSeason, " AND TVShowID = ", Master.currShow.ShowID, ";")
+                        Else
+                            SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND TVShowID = ", Master.currShow.ShowID, ";")
+                        End If
                         SQLCommand.ExecuteNonQuery()
                     End Using
                 End If
