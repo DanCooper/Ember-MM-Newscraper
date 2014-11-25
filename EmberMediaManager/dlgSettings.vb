@@ -1097,6 +1097,9 @@ Public Class dlgSettings
                     Me.RenumberMovieGeneralMediaListSorting()
                     Me.LoadMovieGeneralMediaListSorting()
 
+                    If Not selIndex - 3 < 0 Then
+                        Me.lvMovieGeneralMediaListSorting.TopItem = Me.lvMovieGeneralMediaListSorting.Items(selIndex - 3)
+                    End If
                     Me.lvMovieGeneralMediaListSorting.Items(selIndex - 1).Selected = True
                     Me.lvMovieGeneralMediaListSorting.ResumeLayout()
                 End If
@@ -1124,6 +1127,9 @@ Public Class dlgSettings
                     Me.RenumberMovieGeneralMediaListSorting()
                     Me.LoadMovieGeneralMediaListSorting()
 
+                    If Not selIndex - 2 < 0 Then
+                        Me.lvMovieGeneralMediaListSorting.TopItem = Me.lvMovieGeneralMediaListSorting.Items(selIndex - 2)
+                    End If
                     Me.lvMovieGeneralMediaListSorting.Items(selIndex + 1).Selected = True
                     Me.lvMovieGeneralMediaListSorting.ResumeLayout()
                 End If
