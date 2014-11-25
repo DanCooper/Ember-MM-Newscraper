@@ -9049,9 +9049,9 @@ doCancel:
 
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Rating) Then
                 If Not String.IsNullOrEmpty(Master.currShow.TVEp.Votes) Then
-                    Me.lblRating.Text = String.Concat(Master.currShow.TVEp.Rating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVEp.Votes), ")")
+                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVEp.Rating)), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVEp.Votes), ")")
                 Else
-                    Me.lblRating.Text = String.Concat(Master.currShow.TVEp.Rating, "/10")
+                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVEp.Rating)), "/10")
                 End If
             End If
 
@@ -9300,9 +9300,9 @@ doCancel:
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Rating) Then
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
-                    Me.lblRating.Text = String.Concat(Master.currMovie.Movie.Rating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes), ")")
+                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currMovie.Movie.Rating)), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes), ")")
                 Else
-                    Me.lblRating.Text = String.Concat(Master.currMovie.Movie.Rating, "/10")
+                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currMovie.Movie.Rating)), "/10")
                 End If
             End If
 
@@ -9937,9 +9937,9 @@ doCancel:
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Rating) Then
                 If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then
-                    Me.lblRating.Text = String.Concat(Master.currShow.TVShow.Rating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVShow.Votes), ")")
+                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVShow.Rating)), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVShow.Votes), ")")
                 Else
-                    Me.lblRating.Text = String.Concat(Master.currShow.TVShow.Rating, "/10")
+                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVShow.Rating)), "/10")
                 End If
             End If
 
@@ -10172,9 +10172,9 @@ doCancel:
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Rating) Then
                 If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then
-                    Me.lblRating.Text = String.Concat(Master.currShow.TVShow.Rating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVShow.Votes), ")")
+                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVShow.Rating)), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVShow.Votes), ")")
                 Else
-                    Me.lblRating.Text = String.Concat(Master.currShow.TVShow.Rating, "/10")
+                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVShow.Rating)), "/10")
                 End If
             End If
 
