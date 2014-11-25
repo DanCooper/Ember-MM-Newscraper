@@ -502,6 +502,26 @@ Public Class NFO
         End If
     End Function
 
+    Public Shared Function CleanNFO_TVEpisodes(ByVal eNFO As MediaContainers.EpisodeDetails) As MediaContainers.EpisodeDetails
+        If Not IsNothing(eNFO) Then
+            If eNFO.FileInfoSpecified Then
+                If eNFO.FileInfo.StreamDetails.AudioSpecified Then
+                    For Each aStream In eNFO.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                        aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
+                    Next
+                End If
+                If eNFO.FileInfo.StreamDetails.SubtitleSpecified Then
+                    For Each sStream In eNFO.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                        sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
+                    Next
+                End If
+            End If
+            Return eNFO
+        Else
+            Return eNFO
+        End If
+    End Function
+
     Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal isTV As Boolean) As String
         '//
         ' Convert Fileinfo into a string to be displayed in the GUI
@@ -1196,6 +1216,7 @@ Public Class NFO
                             'only one episodedetail... assume it's the proper one
                             Using xmlRead As StringReader = New StringReader(rMatches(0).Value)
                                 xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
+                                xmlEp = CleanNFO_TVEpisodes(xmlEp)
                                 xmlSer = Nothing
                                 If xmlEp.FileInfoSpecified Then
                                     If xmlEp.FileInfo.StreamDetails.AudioSpecified Then
@@ -1215,18 +1236,7 @@ Public Class NFO
                             For Each xmlReg As Match In rMatches
                                 Using xmlRead As StringReader = New StringReader(xmlReg.Value)
                                     xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
-                                    If xmlEp.FileInfoSpecified Then
-                                        If xmlEp.FileInfo.StreamDetails.AudioSpecified Then
-                                            For Each aStream In xmlEp.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                                aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
-                                            Next
-                                        End If
-                                        If xmlEp.FileInfo.StreamDetails.SubtitleSpecified Then
-                                            For Each sStream In xmlEp.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                                                sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
-                                            Next
-                                        End If
-                                    End If
+                                    xmlEp = CleanNFO_TVEpisodes(xmlEp)
                                     If xmlEp.Episode = EpisodeNumber AndAlso xmlEp.Season = SeasonNumber Then
                                         xmlSer = Nothing
                                         Return xmlEp

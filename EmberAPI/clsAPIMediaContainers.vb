@@ -405,6 +405,9 @@ Namespace MediaContainers
             Me._poster = New Images
             Me._fanart = New Images
             Me._votes = String.Empty
+            Me._displayseason = -999
+            Me._displayepisode = -999
+            Me._playcount = String.Empty
         End Sub
 
 #End Region 'Methods
