@@ -22,10 +22,12 @@ Partial Class frmAVCodecEditor
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAVCodecEditor))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAVCodecEditor))
         Me.pnlGenres = New System.Windows.Forms.Panel()
+        Me.btnSetDefaultsVideo = New System.Windows.Forms.Button()
+        Me.btnSetDefaultsAudio = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.btnRemoveVideo = New System.Windows.Forms.Button()
@@ -38,8 +40,6 @@ Partial Class frmAVCodecEditor
         Me.dgvAudio = New System.Windows.Forms.DataGridView()
         Me.Codec = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewComboBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnSetDefaultsAudio = New System.Windows.Forms.Button()
-        Me.btnSetDefaultsVideo = New System.Windows.Forms.Button()
         Me.pnlGenres.SuspendLayout()
         CType(Me.dgvVideo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvAudio, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -61,6 +61,32 @@ Partial Class frmAVCodecEditor
         Me.pnlGenres.Name = "pnlGenres"
         Me.pnlGenres.Size = New System.Drawing.Size(634, 366)
         Me.pnlGenres.TabIndex = 0
+        '
+        'btnSetDefaultsVideo
+        '
+        Me.btnSetDefaultsVideo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetDefaultsVideo.Image = CType(resources.GetObject("btnSetDefaultsVideo.Image"), System.Drawing.Image)
+        Me.btnSetDefaultsVideo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSetDefaultsVideo.Location = New System.Drawing.Point(332, 261)
+        Me.btnSetDefaultsVideo.Name = "btnSetDefaultsVideo"
+        Me.btnSetDefaultsVideo.Size = New System.Drawing.Size(105, 23)
+        Me.btnSetDefaultsVideo.TabIndex = 9
+        Me.btnSetDefaultsVideo.Text = "Defaults"
+        Me.btnSetDefaultsVideo.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSetDefaultsVideo.UseVisualStyleBackColor = True
+        '
+        'btnSetDefaultsAudio
+        '
+        Me.btnSetDefaultsAudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetDefaultsAudio.Image = CType(resources.GetObject("btnSetDefaultsAudio.Image"), System.Drawing.Image)
+        Me.btnSetDefaultsAudio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSetDefaultsAudio.Location = New System.Drawing.Point(16, 261)
+        Me.btnSetDefaultsAudio.Name = "btnSetDefaultsAudio"
+        Me.btnSetDefaultsAudio.Size = New System.Drawing.Size(105, 23)
+        Me.btnSetDefaultsAudio.TabIndex = 8
+        Me.btnSetDefaultsAudio.Text = "Defaults"
+        Me.btnSetDefaultsAudio.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSetDefaultsAudio.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -209,32 +235,6 @@ Partial Class frmAVCodecEditor
         Me.DataGridViewComboBoxColumn1.Name = "DataGridViewComboBoxColumn1"
         Me.DataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DataGridViewComboBoxColumn1.Width = 150
-        '
-        'btnSetDefaultsAudio
-        '
-        Me.btnSetDefaultsAudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetDefaultsAudio.Image = CType(resources.GetObject("btnSetDefaultsAudio.Image"), System.Drawing.Image)
-        Me.btnSetDefaultsAudio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSetDefaultsAudio.Location = New System.Drawing.Point(16, 261)
-        Me.btnSetDefaultsAudio.Name = "btnSetDefaultsAudio"
-        Me.btnSetDefaultsAudio.Size = New System.Drawing.Size(105, 23)
-        Me.btnSetDefaultsAudio.TabIndex = 8
-        Me.btnSetDefaultsAudio.Text = "Set Defaults"
-        Me.btnSetDefaultsAudio.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnSetDefaultsAudio.UseVisualStyleBackColor = True
-        '
-        'btnSetDefaultsVideo
-        '
-        Me.btnSetDefaultsVideo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetDefaultsVideo.Image = CType(resources.GetObject("btnSetDefaultsVideo.Image"), System.Drawing.Image)
-        Me.btnSetDefaultsVideo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSetDefaultsVideo.Location = New System.Drawing.Point(332, 261)
-        Me.btnSetDefaultsVideo.Name = "btnSetDefaultsVideo"
-        Me.btnSetDefaultsVideo.Size = New System.Drawing.Size(105, 23)
-        Me.btnSetDefaultsVideo.TabIndex = 9
-        Me.btnSetDefaultsVideo.Text = "Set Defaults"
-        Me.btnSetDefaultsVideo.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnSetDefaultsVideo.UseVisualStyleBackColor = True
         '
         'frmAVCodecEditor
         '

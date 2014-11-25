@@ -130,6 +130,8 @@ Public Class frmAVCodecEditor
         btnAddVideo.Text = Master.eLang.GetString(28, "Add")
         btnRemoveAudio.Text = Master.eLang.GetString(30, "Remove")
         btnRemoveVideo.Text = Master.eLang.GetString(30, "Remove")
+        btnSetDefaultsAudio.Text = Master.eLang.GetString(713, "Defaults")
+        btnSetDefaultsVideo.Text = Master.eLang.GetString(713, "Defaults")
         Label1.Text = Master.eLang.GetString(634, "Audio")
         Label2.Text = Master.eLang.GetString(636, "Video")
         Me.dgvAudio.Columns(0).HeaderText = Master.eLang.GetString(637, "Mediainfo Codec")
