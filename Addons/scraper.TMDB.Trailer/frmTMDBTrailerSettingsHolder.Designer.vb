@@ -28,14 +28,14 @@ Partial Class frmTMDBTrailerSettingsHolder
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
         Me.gbScraperTrailerOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperTrailerOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblEMMAPI = New System.Windows.Forms.Label()
-        Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
-        Me.lblApiKey = New System.Windows.Forms.Label()
-        Me.pbTMDB = New System.Windows.Forms.PictureBox()
-        Me.cbTMDBPrefLanguage = New System.Windows.Forms.ComboBox()
+        Me.pbApiKeyInfo = New System.Windows.Forms.PictureBox()
+        Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
+        Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.lblPrefLanguage = New System.Windows.Forms.Label()
-        Me.txtTMDBApiKey = New System.Windows.Forms.TextBox()
+        Me.lblApiKey = New System.Windows.Forms.Label()
+        Me.btnUnlockAPI = New System.Windows.Forms.Button()
+        Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
@@ -51,7 +51,7 @@ Partial Class frmTMDBTrailerSettingsHolder
         Me.tblSettingsMain.SuspendLayout()
         Me.gbScraperTrailerOpts.SuspendLayout()
         Me.tblScraperTrailerOpts.SuspendLayout()
-        CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsBottom.SuspendLayout()
         Me.tblSettingsBottom.SuspendLayout()
         CType(Me.pbIconBottom, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -121,13 +121,13 @@ Partial Class frmTMDBTrailerSettingsHolder
         Me.tblScraperTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperTrailerOpts.Controls.Add(Me.chkFallBackEng, 2, 2)
-        Me.tblScraperTrailerOpts.Controls.Add(Me.pbTMDB, 3, 1)
-        Me.tblScraperTrailerOpts.Controls.Add(Me.cbTMDBPrefLanguage, 1, 2)
+        Me.tblScraperTrailerOpts.Controls.Add(Me.pbApiKeyInfo, 3, 1)
+        Me.tblScraperTrailerOpts.Controls.Add(Me.cbPrefLanguage, 1, 2)
         Me.tblScraperTrailerOpts.Controls.Add(Me.lblEMMAPI, 2, 0)
         Me.tblScraperTrailerOpts.Controls.Add(Me.lblPrefLanguage, 0, 2)
         Me.tblScraperTrailerOpts.Controls.Add(Me.lblApiKey, 0, 0)
         Me.tblScraperTrailerOpts.Controls.Add(Me.btnUnlockAPI, 0, 1)
-        Me.tblScraperTrailerOpts.Controls.Add(Me.txtTMDBApiKey, 2, 1)
+        Me.tblScraperTrailerOpts.Controls.Add(Me.txtApiKey, 2, 1)
         Me.tblScraperTrailerOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperTrailerOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperTrailerOpts.Name = "tblScraperTrailerOpts"
@@ -138,29 +138,6 @@ Partial Class frmTMDBTrailerSettingsHolder
         Me.tblScraperTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperTrailerOpts.Size = New System.Drawing.Size(426, 76)
         Me.tblScraperTrailerOpts.TabIndex = 99
-        '
-        'lblEMMAPI
-        '
-        Me.lblEMMAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblEMMAPI.AutoSize = True
-        Me.tblScraperTrailerOpts.SetColumnSpan(Me.lblEMMAPI, 2)
-        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblEMMAPI.Location = New System.Drawing.Point(171, 3)
-        Me.lblEMMAPI.Name = "lblEMMAPI"
-        Me.lblEMMAPI.Size = New System.Drawing.Size(220, 13)
-        Me.lblEMMAPI.TabIndex = 16
-        Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
-        '
-        'btnUnlockAPI
-        '
-        Me.btnUnlockAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblScraperTrailerOpts.SetColumnSpan(Me.btnUnlockAPI, 2)
-        Me.btnUnlockAPI.Location = New System.Drawing.Point(3, 23)
-        Me.btnUnlockAPI.Name = "btnUnlockAPI"
-        Me.btnUnlockAPI.Size = New System.Drawing.Size(162, 23)
-        Me.btnUnlockAPI.TabIndex = 15
-        Me.btnUnlockAPI.Text = "Use my own API key"
-        Me.btnUnlockAPI.UseVisualStyleBackColor = True
         '
         'chkFallBackEng
         '
@@ -175,39 +152,39 @@ Partial Class frmTMDBTrailerSettingsHolder
         Me.chkFallBackEng.Text = "Fall back on english"
         Me.chkFallBackEng.UseVisualStyleBackColor = True
         '
-        'lblApiKey
+        'pbTMDBApiKeyInfo
         '
-        Me.lblApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblApiKey.AutoSize = True
-        Me.tblScraperTrailerOpts.SetColumnSpan(Me.lblApiKey, 2)
-        Me.lblApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblApiKey.Location = New System.Drawing.Point(3, 3)
-        Me.lblApiKey.Name = "lblApiKey"
-        Me.lblApiKey.Size = New System.Drawing.Size(79, 13)
-        Me.lblApiKey.TabIndex = 0
-        Me.lblApiKey.Text = "TMDB API Key:"
+        Me.pbApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbApiKeyInfo.Image = CType(resources.GetObject("pbTMDBApiKeyInfo.Image"), System.Drawing.Image)
+        Me.pbApiKeyInfo.Location = New System.Drawing.Point(407, 26)
+        Me.pbApiKeyInfo.Name = "pbTMDBApiKeyInfo"
+        Me.pbApiKeyInfo.Size = New System.Drawing.Size(16, 16)
+        Me.pbApiKeyInfo.TabIndex = 5
+        Me.pbApiKeyInfo.TabStop = False
         '
-        'pbTMDB
+        'cbPrefLanguage
         '
-        Me.pbTMDB.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pbTMDB.Image = CType(resources.GetObject("pbTMDB.Image"), System.Drawing.Image)
-        Me.pbTMDB.Location = New System.Drawing.Point(407, 26)
-        Me.pbTMDB.Name = "pbTMDB"
-        Me.pbTMDB.Size = New System.Drawing.Size(16, 16)
-        Me.pbTMDB.TabIndex = 5
-        Me.pbTMDB.TabStop = False
+        Me.cbPrefLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbPrefLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.cbPrefLanguage.FormattingEnabled = True
+        Me.cbPrefLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
+        Me.cbPrefLanguage.Location = New System.Drawing.Point(120, 52)
+        Me.cbPrefLanguage.Name = "cbPrefLanguage"
+        Me.cbPrefLanguage.Size = New System.Drawing.Size(45, 21)
+        Me.cbPrefLanguage.TabIndex = 3
         '
-        'cbTMDBPrefLanguage
+        'lblEMMAPI
         '
-        Me.cbTMDBPrefLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbTMDBPrefLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTMDBPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.cbTMDBPrefLanguage.FormattingEnabled = True
-        Me.cbTMDBPrefLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
-        Me.cbTMDBPrefLanguage.Location = New System.Drawing.Point(120, 52)
-        Me.cbTMDBPrefLanguage.Name = "cbTMDBPrefLanguage"
-        Me.cbTMDBPrefLanguage.Size = New System.Drawing.Size(45, 21)
-        Me.cbTMDBPrefLanguage.TabIndex = 3
+        Me.lblEMMAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblEMMAPI.AutoSize = True
+        Me.tblScraperTrailerOpts.SetColumnSpan(Me.lblEMMAPI, 2)
+        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblEMMAPI.Location = New System.Drawing.Point(171, 3)
+        Me.lblEMMAPI.Name = "lblEMMAPI"
+        Me.lblEMMAPI.Size = New System.Drawing.Size(220, 13)
+        Me.lblEMMAPI.TabIndex = 16
+        Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
         '
         'lblPrefLanguage
         '
@@ -220,16 +197,38 @@ Partial Class frmTMDBTrailerSettingsHolder
         Me.lblPrefLanguage.TabIndex = 2
         Me.lblPrefLanguage.Text = "Preferred Language:"
         '
-        'txtTMDBApiKey
+        'lblApiKey
         '
-        Me.txtTMDBApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtTMDBApiKey.Enabled = False
-        Me.txtTMDBApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTMDBApiKey.Location = New System.Drawing.Point(171, 23)
-        Me.txtTMDBApiKey.Name = "txtTMDBApiKey"
-        Me.txtTMDBApiKey.Size = New System.Drawing.Size(230, 22)
-        Me.txtTMDBApiKey.TabIndex = 1
-        Me.txtTMDBApiKey.Visible = False
+        Me.lblApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblApiKey.AutoSize = True
+        Me.tblScraperTrailerOpts.SetColumnSpan(Me.lblApiKey, 2)
+        Me.lblApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblApiKey.Location = New System.Drawing.Point(3, 3)
+        Me.lblApiKey.Name = "lblApiKey"
+        Me.lblApiKey.Size = New System.Drawing.Size(79, 13)
+        Me.lblApiKey.TabIndex = 0
+        Me.lblApiKey.Text = "TMDB API Key:"
+        '
+        'btnUnlockAPI
+        '
+        Me.btnUnlockAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tblScraperTrailerOpts.SetColumnSpan(Me.btnUnlockAPI, 2)
+        Me.btnUnlockAPI.Location = New System.Drawing.Point(3, 23)
+        Me.btnUnlockAPI.Name = "btnUnlockAPI"
+        Me.btnUnlockAPI.Size = New System.Drawing.Size(162, 23)
+        Me.btnUnlockAPI.TabIndex = 15
+        Me.btnUnlockAPI.Text = "Use my own API key"
+        Me.btnUnlockAPI.UseVisualStyleBackColor = True
+        '
+        'txtApiKey
+        '
+        Me.txtApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtApiKey.Enabled = False
+        Me.txtApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtApiKey.Location = New System.Drawing.Point(171, 23)
+        Me.txtApiKey.Name = "txtApiKey"
+        Me.txtApiKey.Size = New System.Drawing.Size(230, 22)
+        Me.txtApiKey.TabIndex = 1
         '
         'pnlSettingsBottom
         '
@@ -386,7 +385,7 @@ Partial Class frmTMDBTrailerSettingsHolder
         Me.gbScraperTrailerOpts.PerformLayout()
         Me.tblScraperTrailerOpts.ResumeLayout(False)
         Me.tblScraperTrailerOpts.PerformLayout()
-        CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlSettingsBottom.ResumeLayout(False)
         Me.pnlSettingsBottom.PerformLayout()
         Me.tblSettingsBottom.ResumeLayout(False)
@@ -409,12 +408,12 @@ Partial Class frmTMDBTrailerSettingsHolder
     Friend WithEvents lblInfoBottom As System.Windows.Forms.Label
     Friend WithEvents pbIconBottom As System.Windows.Forms.PictureBox
     Friend WithEvents gbScraperTrailerOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents pbTMDB As System.Windows.Forms.PictureBox
+    Friend WithEvents pbApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkFallBackEng As System.Windows.Forms.CheckBox
-    Friend WithEvents cbTMDBPrefLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents cbPrefLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label
     Friend WithEvents lblApiKey As System.Windows.Forms.Label
-    Friend WithEvents txtTMDBApiKey As System.Windows.Forms.TextBox
+    Friend WithEvents txtApiKey As System.Windows.Forms.TextBox
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
     Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel

@@ -26,11 +26,11 @@ Partial Class frmTMDBInfoSettingsHolder_MovieSet
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnUnlockAPI = New System.Windows.Forms.Button()
-        Me.chkGetAdultItems = New System.Windows.Forms.CheckBox()
-        Me.lblApiKey = New System.Windows.Forms.Label()
         Me.pbTMDBApiKeyInfo = New System.Windows.Forms.PictureBox()
+        Me.chkGetAdultItems = New System.Windows.Forms.CheckBox()
         Me.txtApiKey = New System.Windows.Forms.TextBox()
+        Me.btnUnlockAPI = New System.Windows.Forms.Button()
+        Me.lblApiKey = New System.Windows.Forms.Label()
         Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
@@ -118,16 +118,15 @@ Partial Class frmTMDBInfoSettingsHolder_MovieSet
         Me.tblScraperOpts.Size = New System.Drawing.Size(443, 99)
         Me.tblScraperOpts.TabIndex = 99
         '
-        'btnUnlockAPI
+        'pbTMDBApiKeyInfo
         '
-        Me.btnUnlockAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblScraperOpts.SetColumnSpan(Me.btnUnlockAPI, 2)
-        Me.btnUnlockAPI.Location = New System.Drawing.Point(3, 23)
-        Me.btnUnlockAPI.Name = "btnUnlockAPI"
-        Me.btnUnlockAPI.Size = New System.Drawing.Size(179, 23)
-        Me.btnUnlockAPI.TabIndex = 11
-        Me.btnUnlockAPI.Text = "Use my own API key"
-        Me.btnUnlockAPI.UseVisualStyleBackColor = True
+        Me.pbTMDBApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbTMDBApiKeyInfo.Image = CType(resources.GetObject("pbTMDBApiKeyInfo.Image"), System.Drawing.Image)
+        Me.pbTMDBApiKeyInfo.Location = New System.Drawing.Point(424, 26)
+        Me.pbTMDBApiKeyInfo.Name = "pbTMDBApiKeyInfo"
+        Me.pbTMDBApiKeyInfo.Size = New System.Drawing.Size(16, 16)
+        Me.pbTMDBApiKeyInfo.TabIndex = 5
+        Me.pbTMDBApiKeyInfo.TabStop = False
         '
         'chkGetAdultItems
         '
@@ -142,6 +141,27 @@ Partial Class frmTMDBInfoSettingsHolder_MovieSet
         Me.chkGetAdultItems.Text = "Include Adult Items"
         Me.chkGetAdultItems.UseVisualStyleBackColor = True
         '
+        'txtApiKey
+        '
+        Me.txtApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtApiKey.Enabled = False
+        Me.txtApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtApiKey.Location = New System.Drawing.Point(188, 23)
+        Me.txtApiKey.Name = "txtApiKey"
+        Me.txtApiKey.Size = New System.Drawing.Size(230, 22)
+        Me.txtApiKey.TabIndex = 1
+        '
+        'btnUnlockAPI
+        '
+        Me.btnUnlockAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tblScraperOpts.SetColumnSpan(Me.btnUnlockAPI, 2)
+        Me.btnUnlockAPI.Location = New System.Drawing.Point(3, 23)
+        Me.btnUnlockAPI.Name = "btnUnlockAPI"
+        Me.btnUnlockAPI.Size = New System.Drawing.Size(179, 23)
+        Me.btnUnlockAPI.TabIndex = 11
+        Me.btnUnlockAPI.Text = "Use my own API key"
+        Me.btnUnlockAPI.UseVisualStyleBackColor = True
+        '
         'lblApiKey
         '
         Me.lblApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -153,27 +173,6 @@ Partial Class frmTMDBInfoSettingsHolder_MovieSet
         Me.lblApiKey.Size = New System.Drawing.Size(79, 13)
         Me.lblApiKey.TabIndex = 0
         Me.lblApiKey.Text = "TMDB API Key:"
-        '
-        'pbTMDBApiKeyInfo
-        '
-        Me.pbTMDBApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pbTMDBApiKeyInfo.Image = CType(resources.GetObject("pbTMDBApiKeyInfo.Image"), System.Drawing.Image)
-        Me.pbTMDBApiKeyInfo.Location = New System.Drawing.Point(424, 26)
-        Me.pbTMDBApiKeyInfo.Name = "pbTMDBApiKeyInfo"
-        Me.pbTMDBApiKeyInfo.Size = New System.Drawing.Size(16, 16)
-        Me.pbTMDBApiKeyInfo.TabIndex = 5
-        Me.pbTMDBApiKeyInfo.TabStop = False
-        '
-        'txtApiKey
-        '
-        Me.txtApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtApiKey.Enabled = False
-        Me.txtApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtApiKey.Location = New System.Drawing.Point(188, 23)
-        Me.txtApiKey.Name = "txtApiKey"
-        Me.txtApiKey.Size = New System.Drawing.Size(230, 22)
-        Me.txtApiKey.TabIndex = 1
-        Me.txtApiKey.Visible = False
         '
         'chkFallBackEng
         '

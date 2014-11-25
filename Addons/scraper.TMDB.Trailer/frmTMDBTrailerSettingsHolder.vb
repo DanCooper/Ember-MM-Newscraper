@@ -102,6 +102,10 @@ Public Class frmTMDBTrailerSettingsHolder
         End If
     End Sub
 
+    Private Sub pbApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbApiKeyInfo.Click
+        Functions.Launch(My.Resources.urlAPIKey)
+    End Sub
+
     Sub SetUp()
         Me.lblApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
         Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
@@ -114,12 +118,12 @@ Public Class frmTMDBTrailerSettingsHolder
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
-    Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.Enter
-        _api = txtTMDBApiKey.Text
+    Private Sub txtApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
+        _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbTMDBPrefLanguage.SelectedIndexChanged
+    Private Sub cbPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -128,9 +132,16 @@ Public Class frmTMDBTrailerSettingsHolder
     End Sub
 
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
-        Me.lblEMMAPI.Visible = False
-        Me.txtTMDBApiKey.Enabled = True
-        Me.txtTMDBApiKey.Visible = True
+        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            Me.lblEMMAPI.Visible = False
+            Me.txtApiKey.Enabled = True
+        Else
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+            Me.lblEMMAPI.Visible = True
+            Me.txtApiKey.Enabled = False
+            Me.txtApiKey.Text = String.Empty
+        End If
     End Sub
 
 #End Region 'Methods

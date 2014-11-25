@@ -83,16 +83,8 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         Me.SetUp()
     End Sub
 
-    Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles pbTMDBApiKeyInfo.Click
-        If Master.isWindows Then
-            Process.Start("http://docs.themoviedb.apiary.io/")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://docs.themoviedb.apiary.io/"
-                Explorer.Start()
-            End Using
-        End If
+    Private Sub pbTMDBApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbTMDBApiKeyInfo.Click
+        Functions.Launch(My.Resources.urlAPIKey)
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
@@ -116,8 +108,16 @@ Public Class frmTMDBInfoSettingsHolder_Movie
     End Sub
 
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
-        Me.lblEMMAPI.Visible = False
-        Me.txtApiKey.Enabled = True
+        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            Me.lblEMMAPI.Visible = False
+            Me.txtApiKey.Enabled = True
+        Else
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+            Me.lblEMMAPI.Visible = True
+            Me.txtApiKey.Enabled = False
+            Me.txtApiKey.Text = String.Empty
+        End If
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged

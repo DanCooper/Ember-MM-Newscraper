@@ -90,6 +90,19 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
         End If
     End Sub
 
+    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
+        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            Me.lblEMMAPI.Visible = False
+            Me.txtApiKey.Enabled = True
+        Else
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+            Me.lblEMMAPI.Visible = True
+            Me.txtApiKey.Enabled = False
+            Me.txtApiKey.Text = String.Empty
+        End If
+    End Sub
+
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
@@ -205,36 +218,10 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub pbFANARTTV_Click(sender As System.Object, e As System.EventArgs) Handles pbFANARTTV.Click
-        If Master.isWindows Then
-            Process.Start("http://fanart.tv/get-an-api-key/")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://fanart.tv/get-an-api-key/"
-                Explorer.Start()
-            End Using
-        End If
+    Private Sub pbApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbApiKeyInfo.Click
+        Functions.Launch(My.Resources.urlAPIKey)
     End Sub
 
 #End Region 'Methods
 
-    Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As Object, e As EventArgs)
-
-    End Sub
-    Private Sub pbTMDBApiKeyInfo_Click(sender As Object, e As EventArgs)
-
-    End Sub
-    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
-
-    End Sub
-    Private Sub chkGetAdult_CheckedChanged(sender As Object, e As EventArgs)
-
-    End Sub
-    Private Sub chkFallBackEng_CheckedChanged(sender As Object, e As EventArgs)
-
-    End Sub
-    Private Sub txtTMDBApiKey_TextEnter(sender As Object, e As EventArgs)
-
-    End Sub
 End Class

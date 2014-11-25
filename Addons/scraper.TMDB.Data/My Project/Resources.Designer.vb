@@ -59,5 +59,14 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die http://docs.themoviedb.apiary.io/ ähnelt.
+        '''</summary>
+        Friend ReadOnly Property urlAPIKey() As String
+            Get
+                Return ResourceManager.GetString("urlAPIKey", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

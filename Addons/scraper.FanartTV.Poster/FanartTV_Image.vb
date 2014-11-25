@@ -211,7 +211,14 @@ Public Class FanartTV_Image
         _setup_Movie.txtApiKey.Text = _MySettings_Movie.ApiKey
         _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.PrefLanguage
 
+        If Not String.IsNullOrEmpty(_MySettings_Movie.ApiKey) Then
+            _setup_Movie.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            _setup_Movie.lblEMMAPI.Visible = False
+            _setup_Movie.txtApiKey.Enabled = True
+        End If
+
         _setup_Movie.orderChanged()
+
         Spanel.Name = String.Concat(Me._Name, "_Movie")
         Spanel.Text = Master.eLang.GetString(788, "FanartTV")
         Spanel.Prefix = "FanartTVMovieMedia_"
@@ -246,6 +253,12 @@ Public Class FanartTV_Image
         _setup_MovieSet.chkScrapeLandscape.Checked = ConfigScrapeModifier_MovieSet.Landscape
         _setup_MovieSet.txtApiKey.Text = _MySettings_MovieSet.ApiKey
         _setup_MovieSet.cbPrefLanguage.Text = _MySettings_MovieSet.PrefLanguage
+
+        If Not String.IsNullOrEmpty(_MySettings_MovieSet.ApiKey) Then
+            _setup_MovieSet.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            _setup_MovieSet.lblEMMAPI.Visible = False
+            _setup_MovieSet.txtApiKey.Enabled = True
+        End If
 
         _setup_MovieSet.orderChanged()
 

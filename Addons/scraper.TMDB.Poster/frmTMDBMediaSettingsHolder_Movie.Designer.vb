@@ -33,15 +33,15 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
-        Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
-        Me.lblEMMAPI = New System.Windows.Forms.Label()
-        Me.btnUnlockAPI = New System.Windows.Forms.Button()
-        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.lblAPIKey = New System.Windows.Forms.Label()
-        Me.pbTMDB = New System.Windows.Forms.PictureBox()
+        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
+        Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
+        Me.btnUnlockAPI = New System.Windows.Forms.Button()
+        Me.pbApiKeyInfo = New System.Windows.Forms.PictureBox()
         Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.lblPrefLanguage = New System.Windows.Forms.Label()
+        Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
@@ -59,7 +59,7 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.tblScraperImagesOpts.SuspendLayout()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
-        CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsBottom.SuspendLayout()
         Me.tblSettingsBottom.SuspendLayout()
         CType(Me.pbIconBottom, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -192,7 +192,7 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.tblScraperOpts.Controls.Add(Me.chkGetEnglishImages, 2, 3)
         Me.tblScraperOpts.Controls.Add(Me.chkPrefLanguageOnly, 2, 2)
         Me.tblScraperOpts.Controls.Add(Me.btnUnlockAPI, 0, 1)
-        Me.tblScraperOpts.Controls.Add(Me.pbTMDB, 3, 1)
+        Me.tblScraperOpts.Controls.Add(Me.pbApiKeyInfo, 3, 1)
         Me.tblScraperOpts.Controls.Add(Me.cbPrefLanguage, 1, 2)
         Me.tblScraperOpts.Controls.Add(Me.txtApiKey, 2, 1)
         Me.tblScraperOpts.Controls.Add(Me.lblPrefLanguage, 0, 2)
@@ -225,41 +225,17 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.chkGetBlankImages.Text = "Also Get Blank Images"
         Me.chkGetBlankImages.UseVisualStyleBackColor = True
         '
-        'chkPrefLanguageOnly
+        'lblAPIKey
         '
-        Me.chkPrefLanguageOnly.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkPrefLanguageOnly.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkPrefLanguageOnly, 2)
-        Me.chkPrefLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPrefLanguageOnly.Location = New System.Drawing.Point(171, 54)
-        Me.chkPrefLanguageOnly.Name = "chkPrefLanguageOnly"
-        Me.chkPrefLanguageOnly.Size = New System.Drawing.Size(248, 17)
-        Me.chkPrefLanguageOnly.TabIndex = 15
-        Me.chkPrefLanguageOnly.Text = "Only Get Images for the Selected Language"
-        Me.chkPrefLanguageOnly.UseVisualStyleBackColor = True
-        '
-        'lblEMMAPI
-        '
-        Me.lblEMMAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblEMMAPI.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.lblEMMAPI, 2)
-        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblEMMAPI.Location = New System.Drawing.Point(171, 3)
-        Me.lblEMMAPI.Name = "lblEMMAPI"
-        Me.lblEMMAPI.Size = New System.Drawing.Size(162, 13)
-        Me.lblEMMAPI.TabIndex = 14
-        Me.lblEMMAPI.Text = "Ember Media Manager API key"
-        '
-        'btnUnlockAPI
-        '
-        Me.btnUnlockAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblScraperOpts.SetColumnSpan(Me.btnUnlockAPI, 2)
-        Me.btnUnlockAPI.Location = New System.Drawing.Point(3, 23)
-        Me.btnUnlockAPI.Name = "btnUnlockAPI"
-        Me.btnUnlockAPI.Size = New System.Drawing.Size(162, 23)
-        Me.btnUnlockAPI.TabIndex = 13
-        Me.btnUnlockAPI.Text = "Use my own API key"
-        Me.btnUnlockAPI.UseVisualStyleBackColor = True
+        Me.lblAPIKey.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblAPIKey.AutoSize = True
+        Me.tblScraperOpts.SetColumnSpan(Me.lblAPIKey, 2)
+        Me.lblAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAPIKey.Location = New System.Drawing.Point(3, 3)
+        Me.lblAPIKey.Name = "lblAPIKey"
+        Me.lblAPIKey.Size = New System.Drawing.Size(79, 13)
+        Me.lblAPIKey.TabIndex = 0
+        Me.lblAPIKey.Text = "TMDB API Key:"
         '
         'chkGetEnglishImages
         '
@@ -276,27 +252,39 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.chkGetEnglishImages.Text = "Also Get English Images"
         Me.chkGetEnglishImages.UseVisualStyleBackColor = True
         '
-        'lblAPIKey
+        'chkPrefLanguageOnly
         '
-        Me.lblAPIKey.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblAPIKey.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.lblAPIKey, 2)
-        Me.lblAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblAPIKey.Location = New System.Drawing.Point(3, 3)
-        Me.lblAPIKey.Name = "lblAPIKey"
-        Me.lblAPIKey.Size = New System.Drawing.Size(79, 13)
-        Me.lblAPIKey.TabIndex = 0
-        Me.lblAPIKey.Text = "TMDB API Key:"
+        Me.chkPrefLanguageOnly.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkPrefLanguageOnly.AutoSize = True
+        Me.tblScraperOpts.SetColumnSpan(Me.chkPrefLanguageOnly, 2)
+        Me.chkPrefLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPrefLanguageOnly.Location = New System.Drawing.Point(171, 54)
+        Me.chkPrefLanguageOnly.Name = "chkPrefLanguageOnly"
+        Me.chkPrefLanguageOnly.Size = New System.Drawing.Size(248, 17)
+        Me.chkPrefLanguageOnly.TabIndex = 15
+        Me.chkPrefLanguageOnly.Text = "Only Get Images for the Selected Language"
+        Me.chkPrefLanguageOnly.UseVisualStyleBackColor = True
         '
-        'pbTMDB
+        'btnUnlockAPI
         '
-        Me.pbTMDB.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pbTMDB.Image = CType(resources.GetObject("pbTMDB.Image"), System.Drawing.Image)
-        Me.pbTMDB.Location = New System.Drawing.Point(407, 26)
-        Me.pbTMDB.Name = "pbTMDB"
-        Me.pbTMDB.Size = New System.Drawing.Size(16, 16)
-        Me.pbTMDB.TabIndex = 5
-        Me.pbTMDB.TabStop = False
+        Me.btnUnlockAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tblScraperOpts.SetColumnSpan(Me.btnUnlockAPI, 2)
+        Me.btnUnlockAPI.Location = New System.Drawing.Point(3, 23)
+        Me.btnUnlockAPI.Name = "btnUnlockAPI"
+        Me.btnUnlockAPI.Size = New System.Drawing.Size(162, 23)
+        Me.btnUnlockAPI.TabIndex = 13
+        Me.btnUnlockAPI.Text = "Use my own API key"
+        Me.btnUnlockAPI.UseVisualStyleBackColor = True
+        '
+        'pbTMDBApiKeyInfo
+        '
+        Me.pbApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbApiKeyInfo.Image = CType(resources.GetObject("pbTMDBApiKeyInfo.Image"), System.Drawing.Image)
+        Me.pbApiKeyInfo.Location = New System.Drawing.Point(407, 26)
+        Me.pbApiKeyInfo.Name = "pbTMDBApiKeyInfo"
+        Me.pbApiKeyInfo.Size = New System.Drawing.Size(16, 16)
+        Me.pbApiKeyInfo.TabIndex = 5
+        Me.pbApiKeyInfo.TabStop = False
         '
         'cbPrefLanguage
         '
@@ -319,7 +307,6 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.txtApiKey.Name = "txtApiKey"
         Me.txtApiKey.Size = New System.Drawing.Size(230, 22)
         Me.txtApiKey.TabIndex = 1
-        Me.txtApiKey.Visible = False
         '
         'lblPrefLanguage
         '
@@ -331,6 +318,18 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.lblPrefLanguage.Size = New System.Drawing.Size(111, 13)
         Me.lblPrefLanguage.TabIndex = 2
         Me.lblPrefLanguage.Text = "Preferred Language:"
+        '
+        'lblEMMAPI
+        '
+        Me.lblEMMAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblEMMAPI.AutoSize = True
+        Me.tblScraperOpts.SetColumnSpan(Me.lblEMMAPI, 2)
+        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblEMMAPI.Location = New System.Drawing.Point(171, 3)
+        Me.lblEMMAPI.Name = "lblEMMAPI"
+        Me.lblEMMAPI.Size = New System.Drawing.Size(162, 13)
+        Me.lblEMMAPI.TabIndex = 14
+        Me.lblEMMAPI.Text = "Ember Media Manager API key"
         '
         'pnlSettingsBottom
         '
@@ -491,7 +490,7 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.gbScraperOpts.PerformLayout()
         Me.tblScraperOpts.ResumeLayout(False)
         Me.tblScraperOpts.PerformLayout()
-        CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlSettingsBottom.ResumeLayout(False)
         Me.pnlSettingsBottom.PerformLayout()
         Me.tblSettingsBottom.ResumeLayout(False)
@@ -517,7 +516,7 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
     Friend WithEvents lblInfoBottom As System.Windows.Forms.Label
     Friend WithEvents pbIconBottom As System.Windows.Forms.PictureBox
     Friend WithEvents gbScraperOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents pbTMDB As System.Windows.Forms.PictureBox
+    Friend WithEvents pbApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents cbPrefLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label

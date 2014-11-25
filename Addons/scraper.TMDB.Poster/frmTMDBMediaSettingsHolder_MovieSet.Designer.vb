@@ -37,7 +37,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
-        Me.pbTMDB = New System.Windows.Forms.PictureBox()
+        Me.pbApiKeyInfo = New System.Windows.Forms.PictureBox()
         Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.lblPrefLanguage = New System.Windows.Forms.Label()
@@ -59,7 +59,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.tblScraperImagesOpts.SuspendLayout()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
-        CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsBottom.SuspendLayout()
         Me.tblSettingsBottom.SuspendLayout()
         CType(Me.pbIconBottom, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -191,7 +191,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.tblScraperOpts.Controls.Add(Me.chkGetEnglishImages, 2, 3)
         Me.tblScraperOpts.Controls.Add(Me.chkPrefLanguageOnly, 2, 2)
         Me.tblScraperOpts.Controls.Add(Me.lblEMMAPI, 2, 0)
-        Me.tblScraperOpts.Controls.Add(Me.pbTMDB, 3, 1)
+        Me.tblScraperOpts.Controls.Add(Me.pbApiKeyInfo, 3, 1)
         Me.tblScraperOpts.Controls.Add(Me.cbPrefLanguage, 1, 2)
         Me.tblScraperOpts.Controls.Add(Me.btnUnlockAPI, 0, 1)
         Me.tblScraperOpts.Controls.Add(Me.lblPrefLanguage, 0, 2)
@@ -276,15 +276,15 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.lblEMMAPI.TabIndex = 14
         Me.lblEMMAPI.Text = "Ember Media Manager API key"
         '
-        'pbTMDB
+        'pbTMDBApiKeyInfo
         '
-        Me.pbTMDB.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pbTMDB.Image = CType(resources.GetObject("pbTMDB.Image"), System.Drawing.Image)
-        Me.pbTMDB.Location = New System.Drawing.Point(407, 26)
-        Me.pbTMDB.Name = "pbTMDB"
-        Me.pbTMDB.Size = New System.Drawing.Size(16, 16)
-        Me.pbTMDB.TabIndex = 5
-        Me.pbTMDB.TabStop = False
+        Me.pbApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbApiKeyInfo.Image = CType(resources.GetObject("pbTMDBApiKeyInfo.Image"), System.Drawing.Image)
+        Me.pbApiKeyInfo.Location = New System.Drawing.Point(407, 26)
+        Me.pbApiKeyInfo.Name = "pbTMDBApiKeyInfo"
+        Me.pbApiKeyInfo.Size = New System.Drawing.Size(16, 16)
+        Me.pbApiKeyInfo.TabIndex = 5
+        Me.pbApiKeyInfo.TabStop = False
         '
         'cbPrefLanguage
         '
@@ -329,7 +329,6 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.txtApiKey.Name = "txtApiKey"
         Me.txtApiKey.Size = New System.Drawing.Size(230, 22)
         Me.txtApiKey.TabIndex = 1
-        Me.txtApiKey.Visible = False
         '
         'pnlSettingsBottom
         '
@@ -489,7 +488,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.gbScraperOpts.PerformLayout()
         Me.tblScraperOpts.ResumeLayout(False)
         Me.tblScraperOpts.PerformLayout()
-        CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlSettingsBottom.ResumeLayout(False)
         Me.pnlSettingsBottom.PerformLayout()
         Me.tblSettingsBottom.ResumeLayout(False)
@@ -515,7 +514,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
     Friend WithEvents lblInfoBottom As System.Windows.Forms.Label
     Friend WithEvents pbIconBottom As System.Windows.Forms.PictureBox
     Friend WithEvents gbScraperOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents pbTMDB As System.Windows.Forms.PictureBox
+    Friend WithEvents pbApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents cbPrefLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label

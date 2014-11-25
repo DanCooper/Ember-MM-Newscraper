@@ -191,6 +191,12 @@ Public Class TMDB_Image
         _setup_Movie.Lang = _setup_Movie.cbPrefLanguage.Text
         _setup_Movie.API = _setup_Movie.txtApiKey.Text
 
+        If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
+            _setup_Movie.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            _setup_Movie.lblEMMAPI.Visible = False
+            _setup_Movie.txtApiKey.Enabled = True
+        End If
+
         _setup_Movie.orderChanged()
 
         Spanel.Name = String.Concat(Me._Name, "_Movie")
@@ -222,6 +228,12 @@ Public Class TMDB_Image
         _setup_MovieSet.chkPrefLanguageOnly.Checked = _MySettings_MovieSet.PrefLanguageOnly
         _setup_MovieSet.Lang = _setup_MovieSet.cbPrefLanguage.Text
         _setup_MovieSet.API = _setup_MovieSet.txtApiKey.Text
+
+        If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
+            _setup_MovieSet.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            _setup_MovieSet.lblEMMAPI.Visible = False
+            _setup_MovieSet.txtApiKey.Enabled = True
+        End If
 
         _setup_MovieSet.orderChanged()
 

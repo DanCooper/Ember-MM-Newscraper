@@ -181,6 +181,12 @@ Public Class TMDB_Data
         _setup_Movie.chkYear.Checked = ConfigOptions_Movie.bYear
         _setup_Movie.txtApiKey.Text = strPrivateAPIKey
 
+        If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
+            _setup_Movie.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            _setup_Movie.lblEMMAPI.Visible = False
+            _setup_Movie.txtApiKey.Enabled = True
+        End If
+
         _setup_Movie.orderChanged()
 
         SPanel.Name = String.Concat(Me._Name, "_Movie")
@@ -210,6 +216,12 @@ Public Class TMDB_Data
         _setup_MovieSet.chkPlot.Checked = ConfigOptions_MovieSet.bPlot
         _setup_MovieSet.chkTitle.Checked = ConfigOptions_MovieSet.bTitle
         _setup_MovieSet.txtApiKey.Text = strPrivateAPIKey
+
+        If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
+            _setup_MovieSet.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            _setup_MovieSet.lblEMMAPI.Visible = False
+            _setup_MovieSet.txtApiKey.Enabled = True
+        End If
 
         _setup_MovieSet.orderChanged()
 

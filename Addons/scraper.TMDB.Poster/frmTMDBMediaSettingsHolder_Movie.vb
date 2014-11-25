@@ -131,9 +131,16 @@ Public Class frmTMDBMediaSettingsHolder_Movie
     End Sub
 
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
-        Me.lblEMMAPI.Visible = False
-        Me.txtApiKey.Enabled = True
-        Me.txtApiKey.Visible = True
+        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            Me.lblEMMAPI.Visible = False
+            Me.txtApiKey.Enabled = True
+        Else
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+            Me.lblEMMAPI.Visible = True
+            Me.txtApiKey.Enabled = False
+            Me.txtApiKey.Text = String.Empty
+        End If
     End Sub
 
     Private Sub txtApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
@@ -165,16 +172,8 @@ Public Class frmTMDBMediaSettingsHolder_Movie
         End If
     End Sub
 
-    Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles pbTMDB.Click
-        If Master.isWindows Then
-            Process.Start("http://docs.themoviedb.apiary.io/")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://docs.themoviedb.apiary.io/"
-                Explorer.Start()
-            End Using
-        End If
+    Private Sub pbApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbApiKeyInfo.Click
+        Functions.Launch(My.Resources.urlAPIKey)
     End Sub
 
 #End Region 'Methods

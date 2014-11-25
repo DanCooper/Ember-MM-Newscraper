@@ -41,7 +41,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblAPIHint = New System.Windows.Forms.Label()
         Me.lblAPIKey = New System.Windows.Forms.Label()
-        Me.pbFANARTTV = New System.Windows.Forms.PictureBox()
+        Me.pbApiKeyInfo = New System.Windows.Forms.PictureBox()
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
@@ -67,7 +67,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.tblScraperImagesOpts.SuspendLayout()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
-        CType(Me.pbFANARTTV, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsBottom.SuspendLayout()
         Me.tblSettingsBottom.SuspendLayout()
         CType(Me.pbIconBottom, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -300,7 +300,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperOpts.Controls.Add(Me.lblAPIHint, 0, 2)
         Me.tblScraperOpts.Controls.Add(Me.lblAPIKey, 0, 0)
-        Me.tblScraperOpts.Controls.Add(Me.pbFANARTTV, 3, 1)
+        Me.tblScraperOpts.Controls.Add(Me.pbApiKeyInfo, 3, 1)
         Me.tblScraperOpts.Controls.Add(Me.txtApiKey, 2, 1)
         Me.tblScraperOpts.Controls.Add(Me.btnUnlockAPI, 0, 1)
         Me.tblScraperOpts.Controls.Add(Me.lblEMMAPI, 2, 0)
@@ -348,19 +348,20 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.lblAPIKey.TabIndex = 0
         Me.lblAPIKey.Text = "Fanart.tv Personal API Key:"
         '
-        'pbFANARTTV
+        'pbApiKeyInfo
         '
-        Me.pbFANARTTV.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pbFANARTTV.Image = CType(resources.GetObject("pbFANARTTV.Image"), System.Drawing.Image)
-        Me.pbFANARTTV.Location = New System.Drawing.Point(407, 26)
-        Me.pbFANARTTV.Name = "pbFANARTTV"
-        Me.pbFANARTTV.Size = New System.Drawing.Size(16, 16)
-        Me.pbFANARTTV.TabIndex = 6
-        Me.pbFANARTTV.TabStop = False
+        Me.pbApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbApiKeyInfo.Image = CType(resources.GetObject("pbApiKeyInfo.Image"), System.Drawing.Image)
+        Me.pbApiKeyInfo.Location = New System.Drawing.Point(407, 26)
+        Me.pbApiKeyInfo.Name = "pbApiKeyInfo"
+        Me.pbApiKeyInfo.Size = New System.Drawing.Size(16, 16)
+        Me.pbApiKeyInfo.TabIndex = 6
+        Me.pbApiKeyInfo.TabStop = False
         '
         'txtApiKey
         '
         Me.txtApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtApiKey.Enabled = False
         Me.txtApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtApiKey.Location = New System.Drawing.Point(171, 23)
         Me.txtApiKey.Name = "txtApiKey"
@@ -615,7 +616,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
         Me.gbScraperOpts.PerformLayout()
         Me.tblScraperOpts.ResumeLayout(False)
         Me.tblScraperOpts.PerformLayout()
-        CType(Me.pbFANARTTV, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlSettingsBottom.ResumeLayout(False)
         Me.pnlSettingsBottom.PerformLayout()
         Me.tblSettingsBottom.ResumeLayout(False)
@@ -638,7 +639,7 @@ Partial Class frmFanartTVMediaSettingsHolder_Movie
     Friend WithEvents lblInfoBottom As System.Windows.Forms.Label
     Friend WithEvents pbIconBottom As System.Windows.Forms.PictureBox
     Friend WithEvents gbScraperOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents pbFANARTTV As System.Windows.Forms.PictureBox
+    Friend WithEvents pbApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents lblAPIKey As System.Windows.Forms.Label
     Friend WithEvents txtApiKey As System.Windows.Forms.TextBox
     Friend WithEvents gbScraperImagesOpts As System.Windows.Forms.GroupBox
