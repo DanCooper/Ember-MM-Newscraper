@@ -162,7 +162,7 @@ Public Class dlgBulkRenamer
                                                 MovieFile.Genre = _curMovie.Movie.Genre
                                             End If
                                             If Not IsNothing(_curMovie.Movie.IMDBID) Then
-                                                MovieFile.IMDBID = If(Not String.IsNullOrEmpty(_curMovie.Movie.IMDBID), String.Concat("tt", _curMovie.Movie.IMDBID), String.Empty)
+                                                MovieFile.IMDBID = _curMovie.Movie.IMDBID
                                             End If
                                             If Not IsNothing(_curMovie.IsLock) Then
                                                 MovieFile.IsLocked = _curMovie.IsLock
