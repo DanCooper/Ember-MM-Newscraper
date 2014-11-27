@@ -32,7 +32,7 @@ Public Class dlgRenameManual
 #Region "Methods"
 
     Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
-        FileFolderRenamer.RenameSingle(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True, True)
+        FileFolderRenamer.RenameSingle_Movie(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True, True)
     End Sub
 
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted

@@ -1637,8 +1637,11 @@ Public Class ModulesManager
         Private _LoadMedia As LoadMedia
         Private _MainTool As System.Windows.Forms.ToolStrip
         Private _MediaList As System.Windows.Forms.DataGridView
+        Private _MediaListEpisodes As System.Windows.Forms.DataGridView
         Private _MenuMovieList As System.Windows.Forms.ContextMenuStrip
         Private _MenuMovieSetList As System.Windows.Forms.ContextMenuStrip
+        Private _MenuTVEpisodeList As System.Windows.Forms.ContextMenuStrip
+        Private _MenuTVSeasonList As System.Windows.Forms.ContextMenuStrip
         Private _MenuTVShowList As System.Windows.Forms.ContextMenuStrip
         Private _OpenImageViewer As OpenImageViewer
         Private _TopMenu As System.Windows.Forms.MenuStrip
@@ -1715,6 +1718,15 @@ Public Class ModulesManager
             End Set
         End Property
 
+        Public Property MediaListEpisodes() As System.Windows.Forms.DataGridView
+            Get
+                Return _MediaListEpisodes
+            End Get
+            Set(ByVal value As System.Windows.Forms.DataGridView)
+                _MediaListEpisodes = value
+            End Set
+        End Property
+
         Public Property MenuMovieList() As System.Windows.Forms.ContextMenuStrip
             Get
                 Return _MenuMovieList
@@ -1730,6 +1742,24 @@ Public Class ModulesManager
             End Get
             Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
                 _MenuMovieSetList = value
+            End Set
+        End Property
+
+        Public Property MenuTVEpisodeList() As System.Windows.Forms.ContextMenuStrip
+            Get
+                Return _MenuTVEpisodeList
+            End Get
+            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
+                _MenuTVEpisodeList = value
+            End Set
+        End Property
+
+        Public Property MenuTVSeasonList() As System.Windows.Forms.ContextMenuStrip
+            Get
+                Return _MenuTVSeasonList
+            End Get
+            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
+                _MenuTVSeasonList = value
             End Set
         End Property
 

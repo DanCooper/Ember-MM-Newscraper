@@ -662,6 +662,9 @@ Public Class Enums
         MovieSet = 3
         TV = 4
         Music = 5
+        Episode = 6
+        Season = 7
+        Show = 8
     End Enum
     ''' <summary>
     ''' Enum representing possible scrape data types
@@ -767,6 +770,8 @@ Public Class Enums
         OnMovieDiscArtSave = 27
         OnMovieThemeSave = 28
         OnMovieTrailerSave = 29
+        TVEpisodeScraperRDYtoSave = 30
+        RenameEpisode = 31
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer

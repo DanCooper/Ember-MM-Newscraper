@@ -110,11 +110,15 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "N", f.Collection)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
+                    strCond = ApplyPattern(strCond, "Q", String.Format("{00}", CStr(f.Episode)))
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
                     strCond = ApplyPattern(strCond, "S", f.VideoSource)
                     strCond = ApplyPattern(strCond, "T", f.Title)
                     strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
+                    strCond = ApplyPattern(strCond, "W", String.Format("{00}", CStr(f.Season)))
+                    '                                X   
                     strCond = ApplyPattern(strCond, "Y", f.Year)
+                    strCond = ApplyPattern(strCond, "Z", f.ShowTitle)
                     joinIndex = strCond.IndexOf("$G")
                     If Not joinIndex = -1 Then
                         If strCond.Length > joinIndex + 2 Then
@@ -171,11 +175,15 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "N", f.Collection)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
+            pattern = ApplyPattern(pattern, "Q", String.Format("{0:00}", f.Episode))
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "S", f.VideoSource)
             pattern = ApplyPattern(pattern, "T", f.Title)
             pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
+            pattern = ApplyPattern(pattern, "W", String.Format("{0:00}", f.Season))
+            '                                X   
             pattern = ApplyPattern(pattern, "Y", f.Year)
+            pattern = ApplyPattern(pattern, "Z", f.ShowTitle)
             nextC = pattern.IndexOf("$G")
             If Not nextC = -1 Then
                 If pattern.Length > nextC + 2 Then
@@ -249,7 +257,153 @@ Public Class FileFolderRenamer
         End Try
     End Function
 
-    Public Shared Sub RenameSingle(ByRef _tmpMovie As Structures.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+    Public Shared Sub RenameSingle_Episode(ByRef _tmpTV As Structures.DBTV, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+        Dim EpisodeFile As New FileRename
+
+        If Not IsNothing(_tmpTV.TVEp.FileInfo) Then
+            Try
+                If _tmpTV.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
+                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpTV.TVEp.FileInfo)
+                    Dim tRes As String = NFO.GetResFromDimensions(tVid)
+                    EpisodeFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
+                End If
+
+                If _tmpTV.TVEp.FileInfo.StreamDetails.Audio.Count > 0 Then
+                    Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpTV.TVEp.FileInfo, False)
+
+                    If tAud.ChannelsSpecified Then
+                        EpisodeFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
+                    End If
+
+                    If tAud.CodecSpecified Then
+                        EpisodeFile.AudioCodec = tAud.Codec
+                    End If
+                    'MovieFile.AudioChannels = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
+                End If
+
+                If _tmpTV.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
+                    If Not String.IsNullOrEmpty(_tmpTV.TVEp.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpTV.TVEp.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+                        EpisodeFile.MultiViewCount = "3D"
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End If
+
+        'EpisodeFile.Country = _tmpTV.Movie.Country
+        'EpisodeFile.Director = _tmpTV.Movie.Director
+        EpisodeFile.Episode = _tmpTV.TVEp.Episode
+        'EpisodeFile.VideoSource = _tmpTV.TVEp.VideoSource
+        'EpisodeFile.Genre = _tmpTV.Movie.Genre
+        'EpisodeFile.IMDBID = _tmpTV.Movie.IMDBID
+        'EpisodeFile.IsSingle = _tmpTV.IsSingle
+        'EpisodeFile.ListTitle = _tmpTV.ListTitle
+        'EpisodeFile.OriginalTitle = If(_tmpTV.TVEp.OriginalTitle <> _tmpTV.Movie.Title, _tmpTV.Movie.OriginalTitle, String.Empty)
+        EpisodeFile.Rating = _tmpTV.TVEp.Rating
+        EpisodeFile.Season = _tmpTV.TVEp.Season
+        EpisodeFile.ShowTitle = _tmpTV.TVShow.Title
+        EpisodeFile.SortTitle = _tmpTV.TVShow.Title 'If(Not String.IsNullOrEmpty(_tmpTV.Movie.SortTitle), _tmpTV.Movie.SortTitle, _tmpTV.ListTitle)
+        EpisodeFile.Title = _tmpTV.TVEp.Title
+        'EpisodeFile.Year = _tmpTV.Movie.Year
+        Dim mFolders As New List(Of String)
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLNewcommand.CommandText = String.Concat("SELECT Path FROM TVSources;")
+            Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                While SQLReader.Read
+                    mFolders.Add(SQLReader("Path").ToString)
+                End While
+            End Using
+        End Using
+        mFolders.Sort()
+
+        Dim tPath As String = String.Empty
+        For Each i As String In mFolders
+            If _tmpTV.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
+                EpisodeFile.BasePath = i
+                If FileUtils.Common.isVideoTS(_tmpTV.Filename) Then
+                    EpisodeFile.Parent = Directory.GetParent(Directory.GetParent(_tmpTV.Filename).FullName).Name
+                    If EpisodeFile.BasePath = Directory.GetParent(Directory.GetParent(_tmpTV.Filename).FullName).FullName Then
+                        EpisodeFile.OldPath = String.Empty
+                        EpisodeFile.BasePath = Directory.GetParent(EpisodeFile.BasePath).FullName
+                    Else
+                        EpisodeFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpTV.Filename).FullName).FullName).FullName.Replace(i, String.Empty)
+                    End If
+                    EpisodeFile.IsVideo_TS = True
+                ElseIf FileUtils.Common.isBDRip(_tmpTV.Filename) Then
+                    EpisodeFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpTV.Filename).FullName).FullName).Name
+                    If EpisodeFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpTV.Filename).FullName).FullName).FullName Then
+                        EpisodeFile.OldPath = String.Empty
+                        EpisodeFile.BasePath = Directory.GetParent(EpisodeFile.BasePath).FullName
+                    Else
+                        EpisodeFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpTV.Filename).FullName).FullName).FullName).FullName.Replace(i, String.Empty)
+                    End If
+                    EpisodeFile.IsBDMV = True
+                Else
+                    EpisodeFile.Parent = Directory.GetParent(_tmpTV.Filename).Name
+                    If EpisodeFile.BasePath = Directory.GetParent(_tmpTV.Filename).FullName Then
+                        EpisodeFile.OldPath = String.Empty
+                        EpisodeFile.BasePath = Directory.GetParent(EpisodeFile.BasePath).FullName
+                    Else
+                        EpisodeFile.OldPath = Directory.GetParent(Directory.GetParent(_tmpTV.Filename).FullName).FullName.Replace(i, String.Empty)
+                    End If
+                End If
+            End If
+        Next
+
+        EpisodeFile.Path = Path.Combine(EpisodeFile.OldPath, EpisodeFile.Parent)
+        EpisodeFile.Path = If(EpisodeFile.Path.StartsWith(Path.DirectorySeparatorChar), EpisodeFile.Path.Substring(1), EpisodeFile.Path)
+
+        If Not EpisodeFile.IsVideo_TS AndAlso Not EpisodeFile.IsBDMV Then
+            If Path.GetFileName(_tmpTV.Filename.ToLower) = "video_ts.ifo" Then
+                EpisodeFile.FileName = "VIDEO_TS"
+                EpisodeFile.NewFileName = EpisodeFile.FileName
+            Else
+                EpisodeFile.FileName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_tmpTV.Filename))
+                Dim stackMark As String = Path.GetFileNameWithoutExtension(_tmpTV.Filename).Replace(EpisodeFile.FileName, String.Empty).ToLower
+                If Not stackMark = String.Empty AndAlso _tmpTV.TVEp.Title.ToLower.EndsWith(stackMark) Then
+                    EpisodeFile.FileName = Path.GetFileNameWithoutExtension(_tmpTV.Filename)
+                End If
+                EpisodeFile.NewFileName = ProccessPattern(EpisodeFile, filePattern, False).Trim
+            End If
+        ElseIf EpisodeFile.IsBDMV Then
+            EpisodeFile.FileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
+            EpisodeFile.NewFileName = EpisodeFile.FileName
+        Else
+            EpisodeFile.FileName = "VIDEO_TS"
+            EpisodeFile.NewFileName = EpisodeFile.FileName
+        End If
+
+        'If HaveBase(folderPattern) Then
+        '    EpisodeFile.NewPath = ProccessPattern(EpisodeFile, folderPattern, True).Trim
+        'Else
+        'EpisodeFile.NewPath = Path.Combine(EpisodeFile.OldPath, ProccessPattern(EpisodeFile, folderPattern, True).Trim)
+        'End If
+        EpisodeFile.NewPath = If(EpisodeFile.NewPath.StartsWith(Path.DirectorySeparatorChar), EpisodeFile.NewPath.Substring(1), EpisodeFile.NewPath)
+
+        ' removes all dots at the end of the foldername (dots are not allowed)
+        While EpisodeFile.NewPath.Last = "."
+            EpisodeFile.NewPath = EpisodeFile.NewPath.Remove(EpisodeFile.NewPath.Length - 1)
+        End While
+
+        ' removes all dots at the end of the filename (for accord with foldername)
+        While EpisodeFile.NewPath.Last = "."
+            EpisodeFile.NewPath = EpisodeFile.NewPath.Remove(EpisodeFile.NewPath.Length - 1)
+        End While
+
+        EpisodeFile.FileExist = File.Exists(Path.Combine(EpisodeFile.BasePath, Path.Combine(EpisodeFile.NewPath, EpisodeFile.NewFileName))) AndAlso Not (EpisodeFile.FileName = EpisodeFile.NewFileName)
+        EpisodeFile.DirExist = File.Exists(Path.Combine(EpisodeFile.BasePath, EpisodeFile.NewPath)) AndAlso Not (EpisodeFile.Path = EpisodeFile.NewPath)
+
+        If Not EpisodeFile.NewPath = EpisodeFile.Path OrElse Not EpisodeFile.NewFileName = EpisodeFile.FileName Then
+            DoRenameSingle_Episode(EpisodeFile, _tmpTV, BatchMode, toNfo, ShowError, toDB)
+        Else
+            If toDB Then
+                Master.DB.SaveTVEpToDB(_tmpTV, False, True, Not String.IsNullOrEmpty(_tmpTV.TVShow.TVDBID))
+            End If
+        End If
+    End Sub
+
+    Public Shared Sub RenameSingle_Movie(ByRef _tmpMovie As Structures.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim MovieFile As New FileRename
 
         If Not IsNothing(_tmpMovie.Movie.FileInfo) Then
@@ -380,15 +534,15 @@ Public Class FileFolderRenamer
         End While
 
         ' removes all dots at the end of the filename (for accord with foldername)
-        While MovieFile.NewPath.Last = "."
-            MovieFile.NewPath = MovieFile.NewPath.Remove(MovieFile.NewPath.Length - 1)
+        While MovieFile.NewFileName.Last = "."
+            MovieFile.NewFileName = MovieFile.NewFileName.Remove(MovieFile.NewFileName.Length - 1)
         End While
 
         MovieFile.FileExist = File.Exists(Path.Combine(MovieFile.BasePath, Path.Combine(MovieFile.NewPath, MovieFile.NewFileName))) AndAlso Not (MovieFile.FileName = MovieFile.NewFileName)
         MovieFile.DirExist = File.Exists(Path.Combine(MovieFile.BasePath, MovieFile.NewPath)) AndAlso Not (MovieFile.Path = MovieFile.NewPath)
 
         If Not MovieFile.NewPath = MovieFile.Path OrElse Not MovieFile.NewFileName = MovieFile.FileName Then
-            DoRenameSingle(MovieFile, _tmpMovie, BatchMode, toNfo, ShowError, toDB)
+            DoRenameSingle_Movie(MovieFile, _tmpMovie, BatchMode, toNfo, ShowError, toDB)
         Else
             If toDB Then
                 Master.DB.SaveMovieToDB(_tmpMovie, False, True, Not String.IsNullOrEmpty(_tmpMovie.Movie.IMDBID))
@@ -450,14 +604,6 @@ Public Class FileFolderRenamer
                     If Not f.IsLocked Then
                         Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
                         Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
-
-                        'If f.IsVideo_TS Then
-                        '    srcDir = Path.Combine(srcDir, "VIDEO_TS")
-                        '    destDir = Path.Combine(destDir, "VIDEO_TS")
-                        'ElseIf f.IsBDMV Then
-                        '    srcDir = Path.Combine(srcDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
-                        '    destDir = Path.Combine(destDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
-                        'End If
 
                         If Not f.ID = -1 Then
                             _movieDB = Master.DB.LoadMovieFromDB(f.ID)
@@ -544,7 +690,7 @@ Public Class FileFolderRenamer
                         End If
 
                         If DoDB AndAlso DoUpdate Then
-                            UpdateFaSPaths(_movieDB, srcDir, destDir, f.FileName, f.NewFileName)
+                            UpdatePaths_Movie(_movieDB, srcDir, destDir, f.FileName, f.NewFileName)
                             Master.DB.SaveMovieToDB(_movieDB, False)
                             If Not f.IsSingle Then
                                 Dim fileCount As Integer = 0
@@ -703,7 +849,127 @@ Public Class FileFolderRenamer
         Return pattern
     End Function
 
-    Private Shared Sub DoRenameSingle(ByVal _frename As FileRename, ByRef _movie As Structures.DBMovie, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+    Private Shared Sub DoRenameSingle_Episode(ByVal _frename As FileRename, ByRef _tv As Structures.DBTV, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+        Try
+            If Not _tv.IsLockEp Then
+                Dim srcDir As String = Path.Combine(_frename.BasePath, _frename.Path)
+                Dim destDir As String = Path.Combine(_frename.BasePath, _frename.NewPath)
+
+                'If _frename.IsVideo_TS Then
+                '    srcDir = Path.Combine(srcDir, "VIDEO_TS")
+                '    destDir = Path.Combine(destDir, "VIDEO_TS")
+
+                'ElseIf _frename.IsBDMV Then
+                '    srcDir = Path.Combine(srcDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
+                '    destDir = Path.Combine(destDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
+                'End If
+
+                'Rename Directory
+                'If Not srcDir = destDir Then
+                '    Try
+                '        'If Not _tv.IsSingle Then
+                '        '    Directory.CreateDirectory(destDir)
+                '        'Else
+                '        If srcDir.ToLower = destDir.ToLower Then
+                '            Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
+                '            Directory.Move(String.Concat(destDir, ".$emm"), destDir)
+                '        Else
+                '            If Not Directory.Exists(Directory.GetParent(destDir).FullName) Then Directory.CreateDirectory(Directory.GetParent(destDir).FullName)
+                '            Directory.Move(srcDir, destDir)
+                '        End If
+                '        'End If
+                '    Catch ex As Exception
+                '        If ShowError Then
+                '            MsgBox(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(165, "Unable to Rename Directory"))
+                '        Else
+                '            logger.Error("Dir: <{0}> - <{1}>", srcDir, destDir)
+                '        End If
+                '    End Try
+
+                'End If
+
+                'Rename Files
+                If Not _frename.IsVideo_TS AndAlso Not _frename.IsBDMV Then
+                    If (Not _frename.NewFileName = _frename.FileName) OrElse (_frename.Path = String.Empty AndAlso Not _frename.NewPath = String.Empty) Then 'OrElse Not _tv.IsSingle Then
+                        Dim di As DirectoryInfo
+
+                        If _frename.IsSingle Then
+                            di = New DirectoryInfo(destDir)
+                        Else
+                            di = New DirectoryInfo(srcDir)
+                        End If
+
+                        Dim lFi As New List(Of FileInfo)
+                        Try
+                            lFi.AddRange(di.GetFiles())
+                        Catch
+                        End Try
+                        If lFi.Count > 0 Then
+                            Dim srcFile As String
+                            Dim dstFile As String
+                            For Each lFile As FileInfo In lFi.OrderBy(Function(s) s.Name)
+                                srcFile = lFile.FullName
+                                dstFile = Path.Combine(destDir, lFile.Name.Replace(_frename.FileName.Trim, _frename.NewFileName.Trim))
+                                If Not srcFile = dstFile Then
+                                    Try
+                                        If srcFile.ToLower = dstFile.ToLower Then
+                                            File.Move(srcFile, String.Concat(dstFile, ".$emm$"))
+                                            File.Move(String.Concat(dstFile, ".$emm$"), dstFile)
+                                        Else
+                                            If lFile.Name.StartsWith(_frename.FileName, StringComparison.OrdinalIgnoreCase) Then
+                                                File.Move(srcFile, dstFile)
+                                            End If
+                                        End If
+
+                                    Catch ex As Exception
+                                        If ShowError Then
+                                            MsgBox(String.Format(Master.eLang.GetString(166, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(171, "Unable to Rename File"))
+                                        Else
+                                            logger.Error("File <{0}> - <{1}>", srcFile, dstFile)
+                                        End If
+                                    End Try
+                                End If
+                            Next
+                        End If
+                    End If
+                End If
+
+                UpdatePaths_Episode(_tv, srcDir, destDir, _frename.FileName, _frename.NewFileName)
+
+                If toDB Then
+                    Master.DB.SaveTVEpToDB(_tv, False, BatchMode, toNfo)
+                End If
+
+                If Not _frename.IsSingle Then
+                    Dim fileCount As Integer = 0
+                    Dim dirCount As Integer = 0
+
+                    If Directory.Exists(srcDir) Then
+                        Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
+
+                        Try
+                            fileCount = di.GetFiles().Count
+                        Catch
+                        End Try
+
+                        Try
+                            dirCount = di.GetDirectories().Count
+                        Catch
+                        End Try
+
+                        If fileCount = 0 AndAlso dirCount = 0 Then
+                            di.Delete()
+                        End If
+                    End If
+                End If
+
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Shared Sub DoRenameSingle_Movie(ByVal _frename As FileRename, ByRef _movie As Structures.DBMovie, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Try
             If Not _movie.IsLock Then
                 Dim srcDir As String = Path.Combine(_frename.BasePath, _frename.Path)
@@ -787,7 +1053,7 @@ Public Class FileFolderRenamer
                     End If
                 End If
 
-                UpdateFaSPaths(_movie, srcDir, destDir, _frename.FileName, _frename.NewFileName)
+                UpdatePaths_Movie(_movie, srcDir, destDir, _frename.FileName, _frename.NewFileName)
 
                 If toDB Then
                     Master.DB.SaveMovieToDB(_movie, False, BatchMode, toNfo)
@@ -822,7 +1088,29 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Private Shared Sub UpdateFaSPaths(ByRef _DBM As Structures.DBMovie, ByVal oldPath As String, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
+    Private Shared Sub UpdatePaths_Episode(ByRef _DBE As Structures.DBTV, ByVal oldPath As String, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
+        'If Not String.IsNullOrEmpty(_DBE.BannerPath) Then _DBE.BannerPath = Path.Combine(Directory.GetParent(_DBE.BannerPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.BannerPath).Replace(oldFile, newFile))
+        'If Not String.IsNullOrEmpty(_DBE.ClearArtPath) Then _DBE.ClearArtPath = Path.Combine(Directory.GetParent(_DBE.ClearArtPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.ClearArtPath).Replace(oldFile, newFile))
+        'If Not String.IsNullOrEmpty(_DBE.ClearLogoPath) Then _DBE.ClearLogoPath = Path.Combine(Directory.GetParent(_DBE.ClearLogoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.ClearLogoPath).Replace(oldFile, newFile))
+        'If Not String.IsNullOrEmpty(_DBE.DiscArtPath) Then _DBE.DiscArtPath = Path.Combine(Directory.GetParent(_DBE.DiscArtPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.DiscArtPath).Replace(oldFile, newFile))
+        'If Not String.IsNullOrEmpty(_DBE.EFanartsPath) Then _DBE.EFanartsPath = Path.Combine(Directory.GetParent(_DBE.EFanartsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.EFanartsPath).Replace(oldFile, newFile))
+        'If Not String.IsNullOrEmpty(_DBE.EThumbsPath) Then _DBE.EThumbsPath = Path.Combine(Directory.GetParent(_DBE.EThumbsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.EThumbsPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBE.EpFanartPath) Then _DBE.EpFanartPath = Path.Combine(Directory.GetParent(_DBE.EpFanartPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.EpFanartPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBE.Filename) Then _DBE.Filename = Path.Combine(Directory.GetParent(_DBE.Filename).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.Filename).Replace(oldFile, newFile))
+        'If Not String.IsNullOrEmpty(_DBE.LandscapePath) Then _DBE.LandscapePath = Path.Combine(Directory.GetParent(_DBE.LandscapePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.LandscapePath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBE.EpNfoPath) Then _DBE.EpNfoPath = Path.Combine(Directory.GetParent(_DBE.EpNfoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.EpNfoPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBE.EpPosterPath) Then _DBE.EpPosterPath = Path.Combine(Directory.GetParent(_DBE.EpPosterPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.EpPosterPath).Replace(oldFile, newFile))
+        'If Not String.IsNullOrEmpty(_DBE.SubPath) Then _DBE.SubPath = Path.Combine(Directory.GetParent(_DBE.SubPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.SubPath).Replace(oldFile, newFile))
+        'If Not String.IsNullOrEmpty(_DBE.ThemePath) Then _DBE.ThemePath = Path.Combine(Directory.GetParent(_DBE.ThemePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.ThemePath).Replace(oldFile, newFile))
+        'If Not String.IsNullOrEmpty(_DBE.TrailerPath) Then _DBE.TrailerPath = Path.Combine(Directory.GetParent(_DBE.TrailerPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.TrailerPath).Replace(oldFile, newFile))
+        If _DBE.EpSubtitles.Count > 0 Then
+            For Each subtitle In _DBE.EpSubtitles
+                subtitle.SubsPath = Path.Combine(Directory.GetParent(subtitle.SubsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(subtitle.SubsPath).Replace(oldFile, newFile))
+            Next
+        End If
+    End Sub
+
+    Private Shared Sub UpdatePaths_Movie(ByRef _DBM As Structures.DBMovie, ByVal oldPath As String, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
         If Not String.IsNullOrEmpty(_DBM.BannerPath) Then _DBM.BannerPath = Path.Combine(Directory.GetParent(_DBM.BannerPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.BannerPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.ClearArtPath) Then _DBM.ClearArtPath = Path.Combine(Directory.GetParent(_DBM.ClearArtPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ClearArtPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.ClearLogoPath) Then _DBM.ClearLogoPath = Path.Combine(Directory.GetParent(_DBM.ClearLogoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ClearLogoPath).Replace(oldFile, newFile))
@@ -856,14 +1144,19 @@ Public Class FileFolderRenamer
         Private _audiocodec As String
         Private _basePath As String
         Private _collection As String
+        Private _country As String
         Private _dirExist As Boolean
+        Private _director As String
+        Private _episode As Integer
         Private _fileExist As Boolean
         Private _fileName As String
+        Private _genre As String
         Private _id As Integer
-        Private _isbdmv As Boolean
-        Private _islocked As Boolean
+        Private _imdbid As String
         Private _isRenamed As Boolean
         Private _isSingle As Boolean
+        Private _isbdmv As Boolean
+        Private _islocked As Boolean
         Private _isvideo_ts As Boolean
         Private _listtitle As String
         Private _mpaarate As String
@@ -877,15 +1170,13 @@ Public Class FileFolderRenamer
         Private _path As String
         Private _rating As String
         Private _resolution As String
-        Private _title As String
-        Private _year As String
-        Private _country As String
+        Private _season As Integer
+        Private _showtitle As String
         Private _sorttitle As String
-        Private _imdbid As String
-        Private _genre As String
-        Private _director As String
-        Private _videosource As String
+        Private _title As String
         Private _videocodec As String
+        Private _videosource As String
+        Private _year As String
 
 #End Region 'Fields
 
@@ -933,6 +1224,15 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As Boolean)
                 Me._dirExist = value
+            End Set
+        End Property
+
+        Public Property Episode() As Integer
+            Get
+                Return Me._episode
+            End Get
+            Set(ByVal value As Integer)
+                Me._episode = value
             End Set
         End Property
 
@@ -1134,6 +1434,24 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+        Public Property ShowTitle() As String
+            Get
+                Return Me._showtitle
+            End Get
+            Set(ByVal value As String)
+                Me._showtitle = value.Trim
+            End Set
+        End Property
+
         Public Property SortTitle() As String
             Get
                 Return Me._sorttitle
@@ -1209,6 +1527,7 @@ Public Class FileFolderRenamer
             _country = String.Empty
             _dirExist = False
             _director = String.Empty
+            _episode = -1
             _fileExist = False
             _fileName = String.Empty
             _videosource = String.Empty
@@ -1232,6 +1551,8 @@ Public Class FileFolderRenamer
             _path = String.Empty
             _rating = String.Empty
             _resolution = String.Empty
+            _season = -1
+            _showtitle = String.Empty
             _sorttitle = String.Empty
             _title = String.Empty
             _videocodec = String.Empty
@@ -1246,6 +1567,7 @@ Public Class FileFolderRenamer
             _country = String.Empty
             _dirExist = False
             _director = String.Empty
+            _episode = -1
             _fileExist = False
             _fileName = String.Empty
             _videosource = String.Empty
@@ -1269,6 +1591,8 @@ Public Class FileFolderRenamer
             _path = String.Empty
             _rating = String.Empty
             _resolution = String.Empty
+            _season = -1
+            _showtitle = String.Empty
             _sorttitle = String.Empty
             _title = String.Empty
             _videocodec = String.Empty
