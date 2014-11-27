@@ -3991,7 +3991,7 @@ Public Class dlgSettings
                 Me.chkMovieSetFanartMSAA.Checked = .MovieSetFanartMSAA
                 Me.chkMovieSetLandscapeMSAA.Checked = .MovieSetLandscapeMSAA
                 Me.chkMovieSetNFOMSAA.Checked = .MovieSetNFOMSAA
-                Me.txtMovieSetPathMSAA.Text = .MovieSetPathMSAA.ToString
+                Me.txtMovieSetPathMSAA.Text = .MovieSetPathMSAA
                 Me.chkMovieSetPosterMSAA.Checked = .MovieSetPosterMSAA
 
                 '***************** Expert settings *****************
