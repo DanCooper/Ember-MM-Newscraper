@@ -63,8 +63,8 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkCountryAbbreviation = New System.Windows.Forms.CheckBox()
-        Me.chkFallBackworldwide = New System.Windows.Forms.CheckBox()
         Me.chkPopularTitles = New System.Windows.Forms.CheckBox()
+        Me.chkFallBackworldwide = New System.Windows.Forms.CheckBox()
         Me.lblForceTitleLanguage = New System.Windows.Forms.Label()
         Me.cbForceTitleLanguage = New System.Windows.Forms.ComboBox()
         Me.chkPartialTitles = New System.Windows.Forms.CheckBox()
@@ -649,6 +649,18 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkCountryAbbreviation.Text = "Country-Tag: Save country abbreviation(s) instead of full name(s)"
         Me.chkCountryAbbreviation.UseVisualStyleBackColor = True
         '
+        'chkPopularTitles
+        '
+        Me.chkPopularTitles.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkPopularTitles.AutoSize = True
+        Me.chkPopularTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPopularTitles.Location = New System.Drawing.Point(3, 5)
+        Me.chkPopularTitles.Name = "chkPopularTitles"
+        Me.chkPopularTitles.Size = New System.Drawing.Size(95, 17)
+        Me.chkPopularTitles.TabIndex = 0
+        Me.chkPopularTitles.Text = "Popular Titles"
+        Me.chkPopularTitles.UseVisualStyleBackColor = True
+        '
         'chkFallBackworldwide
         '
         Me.chkFallBackworldwide.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -662,18 +674,6 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkFallBackworldwide.TabIndex = 78
         Me.chkFallBackworldwide.Text = "Fall back on worldwide title"
         Me.chkFallBackworldwide.UseVisualStyleBackColor = True
-        '
-        'chkPopularTitles
-        '
-        Me.chkPopularTitles.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkPopularTitles.AutoSize = True
-        Me.chkPopularTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPopularTitles.Location = New System.Drawing.Point(3, 5)
-        Me.chkPopularTitles.Name = "chkPopularTitles"
-        Me.chkPopularTitles.Size = New System.Drawing.Size(95, 17)
-        Me.chkPopularTitles.TabIndex = 0
-        Me.chkPopularTitles.Text = "Popular Titles"
-        Me.chkPopularTitles.UseVisualStyleBackColor = True
         '
         'lblForceTitleLanguage
         '
@@ -692,7 +692,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.cbForceTitleLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbForceTitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbForceTitleLanguage.FormattingEnabled = True
-        Me.cbForceTitleLanguage.Items.AddRange(New Object() {"", "Argentina", "Australia", "Belgium", "Brazil", "Canada: English title", "Canada: French title", "Denmark", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Italy", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
+        Me.cbForceTitleLanguage.Items.AddRange(New Object() {"", "Argentina", "Australia", "Azerbaijan", "Belgium", "Brazil", "Bulgaria (Bulgarian title)", "Canada (English title)", "Canada (French title)", "Chile", "China (Mandarin title)", "Colombia", "Croatia", "Czech Republic", "Denmark", "Estonia", "Finland", "Finland (Swedish title)", "France", "Georgia", "Germany", "Greece", "Hong Kong", "Hong Kong (Cantonese title)", "Hong Kong (Mandarin title)", "Hungary", "Iceland", "India (Hindi title)", "Ireland", "Israel (Hebrew title)", "Italy", "Japan", "Japan (English title)", "Latvia", "Lithuania", "Mexico", "Netherlands", "New Zealand", "Panama", "Peru", "Poland", "Portugal", "Romania", "Russia", "Serbia", "Singapore", "Slovakia", "Slovenia", "South Korea", "Spain", "Sweden", "Switzerland", "Taiwan", "Turkey (Turkish title)", "UK", "Ukraine", "Uruguay", "USA", "Venezuela", "Vietnam"})
         Me.cbForceTitleLanguage.Location = New System.Drawing.Point(226, 3)
         Me.cbForceTitleLanguage.Name = "cbForceTitleLanguage"
         Me.cbForceTitleLanguage.Size = New System.Drawing.Size(131, 21)
