@@ -3443,7 +3443,8 @@ doCancel:
         Me.lblCanceling.Visible = False
         Me.prbCanceling.Visible = False
         Me.pnlCancel.Visible = False
-        Me.SetControlsEnabled(True, True)
+
+        Me.FillList(True, True, True)
     End Sub
 
     Private Sub cbFilterVideoSource_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterVideoSource_Movies.SelectedIndexChanged
