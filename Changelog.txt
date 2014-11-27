@@ -1,4 +1,4 @@
-Changelog 1.4.0.7 Beta (2014-11-24)
+Changelog 1.4.0.7 Beta (2014-11-27)
 
 [Main]
 added: MovieList custom sorting (beta)
@@ -15,6 +15,7 @@ added: "Rewrite all Movie Content"
 added: change Episode watched state by clicking watched column
 added: "Detailed Scraper preview" support while single field scraping
 added: MovieSet NFO support (not yet supportet by MovieSetArtworkAutomator)
+added: English and German Forum links to Help menu
 fixed: image resizing
 fixed: some data scraper issues
 fixed: MPAA/Certification handling
@@ -30,6 +31,9 @@ fixed: FileSorter do not use setted filenames
 fixed: Settings dialog size on small displays
 fixed: Title/OriginalTitle handling in main windows
 fixed: Playcount/Watched state is not writen to NFO after change with context menu
+fixed: Ratings in main window are not rounded
+fixed: "Missing Episodes" are gone after rescraping a single season (partially fixed, still does not work with "*All Seasons" entry
+fixed: Genre settings are not saved
 changed: completely revised Setting dialog for better sizing, scrolling and prevent label overlapping 
 changed: "Excluded" sources now are gray in update database submenu
 changed: temporarily disabled "New Movie" and "New Episode" notifications to prevent crash
@@ -38,18 +42,24 @@ changed: display best audio of selected language in main window (if this option 
 changed: revised all main filter panels
 removed: all fixed audio and video codec conversion
 removed: quality settings for images
+removed: option "Use Outline for Plot if Plot is empty"
 
 [MediaFileManager]
 added: TeraCopy support to copy and move movies (beta)
 
 [Renamer]
 fixed: VideoSource bug
+fixed: Subtitles paths are not updated after renaming
 fixed: Renamer fills OriginalTitle even if it the same like title
+fixed: BulkRenamer adds too many "tt" to IMDB-ID
 changed: BulkRenamer use MovieList filter
 
 [MoviePilot]
 fixed: some issues
 changed: completely revised for faster scraping
+
+[IMDB]
+added: more "Force Title Languages"
 
 [OFDB]
 fixed: some issues
