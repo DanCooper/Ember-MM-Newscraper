@@ -1488,6 +1488,7 @@ Public Class Scanner
                                     toNfo = False
 
                                     tmpTVDB.Filename = Episode.Filename
+                                    tmpTVDB.FilenameID = Episode.FilenameID
 
                                     If Not String.IsNullOrEmpty(Episode.Nfo) Then
                                         tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Nfo, sSeasons.Season, i)
@@ -1594,6 +1595,7 @@ Public Class Scanner
 
         Private _fanart As String
         Private _filename As String
+        Private _filenameid As Long
         Private _nfo As String
         Private _poster As String
         Private _source As String
@@ -1626,6 +1628,15 @@ Public Class Scanner
             End Get
             Set(ByVal value As String)
                 _filename = value
+            End Set
+        End Property
+
+        Public Property FilenameID() As Long
+            Get
+                Return _filenameid
+            End Get
+            Set(ByVal value As Long)
+                _filenameid = value
             End Set
         End Property
 
@@ -1671,6 +1682,7 @@ Public Class Scanner
 
         Public Sub Clear()
             _filename = String.Empty
+            _filenameid = -1
             _source = String.Empty
             _subtiles.Clear()
             _poster = String.Empty

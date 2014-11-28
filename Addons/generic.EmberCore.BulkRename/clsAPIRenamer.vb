@@ -110,12 +110,12 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "N", f.Collection)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
-                    'strCond = ApplyPattern(strCond, "Q", String.Format("{00}", CStr(f.Episode)))
+
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
                     strCond = ApplyPattern(strCond, "S", f.VideoSource)
                     strCond = ApplyPattern(strCond, "T", f.Title)
                     strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
-                    'strCond = ApplyPattern(strCond, "W", String.Format("{00}", CStr(f.Season)))
+                    '                                W   SeasonEpisode
                     '                                X   
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     strCond = ApplyPattern(strCond, "Z", f.ShowTitle)
@@ -175,12 +175,12 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "N", f.Collection)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
-            'pattern = ApplyPattern(pattern, "Q", String.Format("{0:00}", f.Episode))
+
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "S", f.VideoSource)
             pattern = ApplyPattern(pattern, "T", f.Title)
             pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
-            'pattern = ApplyPattern(pattern, "W", String.Format("{0:00}", f.Season))
+            '                                W   SeasonEpisode
             '                                X   
             pattern = ApplyPattern(pattern, "Y", f.Year)
             pattern = ApplyPattern(pattern, "Z", f.ShowTitle)
@@ -189,37 +189,41 @@ Public Class FileFolderRenamer
             nextC = pattern.IndexOf("$W")
             If Not nextC = -1 Then
                 If pattern.Length > nextC + 2 Then
-                    Dim sSeparator As String = String.Empty
-                    Dim eSeparator As String = String.Empty
-                    Dim sPrefix As String = String.Empty
-                    Dim ePrefix As String = String.Empty
                     Dim ePattern As String = String.Empty
-                    Dim sPattern As String = String.Empty
+                    Dim ePrefix As String = String.Empty
+                    Dim eSeparator As String = String.Empty
                     Dim fPattern As String = String.Empty
+                    Dim sPattern As String = String.Empty
+                    Dim sPrefix As String = String.Empty
+                    Dim sSeparator As String = String.Empty
+                    Dim seString As String = String.Empty
 
                     strBase = pattern.Substring(nextC)
                     nextIB = strBase.IndexOf("?")
                     If nextIB > -1 Then
-                        nextEB = strBase.Substring(nextIB + 1).IndexOf("?")
+                        nextEB = strBase.IndexOf("?", nextIB + 1)
                         If nextEB > -1 Then
-                            sPattern = strBase.Substring(2, nextIB)
-                            ePattern = strBase.Substring(nextIB + 1, nextEB)
-                            fPattern = strBase.Substring(1, 1)
+                            sPattern = strBase.Substring(2, nextIB - 2)
+                            ePattern = strBase.Substring(nextIB + 1, nextEB - nextIB - 1)
+                            fPattern = strBase.Substring(0, nextEB + 1)
                         End If
                     End If
 
-                    If sPattern.StartsWith(".") OrElse sPattern.StartsWith("_") OrElse sPattern.StartsWith("x") Then
+                    If sPattern.StartsWith(".") OrElse sPattern.StartsWith("_") Then
                         sSeparator = sPattern.Substring(0, 1)
                         sPrefix = sPattern.Remove(0, 1)
+                    Else
+                        sPrefix = sPattern
                     End If
 
                     
                     If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
                         eSeparator = ePattern.Substring(0, 1)
                         ePrefix = ePattern.Remove(0, 1)
+                    Else
+                        ePrefix = ePattern
                     End If
 
-                    Dim seString As String = String.Empty
                     For Each season As SeasonsEpisodes In f.SeasonsEpisodes
                         seString = String.Concat(seString, sSeparator, sPrefix, String.Format("{0:00}", season.Season))
                         For Each episode In season.Episodes
@@ -227,14 +231,13 @@ Public Class FileFolderRenamer
                         Next
                     Next
 
-                    If seString.StartsWith(sSeparator) Then seString = seString.Remove(0, 1)
+                    If Not String.IsNullOrEmpty(sSeparator) AndAlso seString.StartsWith(sSeparator) Then seString = seString.Remove(0, 1)
 
                     pattern = pattern.Replace(fPattern, seString)
                 Else
                     'pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
                 End If
             End If
-
 
             nextC = pattern.IndexOf("$G")
             If Not nextC = -1 Then
@@ -249,6 +252,7 @@ Public Class FileFolderRenamer
                     pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
                 End If
             End If
+
             nextC = pattern.IndexOf("$U")
             If Not nextC = -1 Then
                 If pattern.Length > nextC + 2 Then
@@ -262,12 +266,14 @@ Public Class FileFolderRenamer
                     pattern = ApplyPattern(pattern, "U", f.Country.Replace(" / ", " "))
                 End If
             End If
+
             nextC = pattern.IndexOf("$X")
             If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
                 strCond = pattern.Substring(nextC + 2, 1)
                 pattern = pattern.Replace(String.Concat("$X", strCond), "")
                 pattern = pattern.Replace(" ", strCond)
             End If
+
             nextC = pattern.IndexOf("$?")
             Dim strmore As String = String.Empty
             While nextC > -1
@@ -378,7 +384,6 @@ Public Class FileFolderRenamer
 
         'EpisodeFile.Country = _tmpTV.Movie.Country
         'EpisodeFile.Director = _tmpTV.Movie.Director
-        EpisodeFile.Episode = _tmpTV.TVEp.Episode
         'EpisodeFile.VideoSource = _tmpTV.TVEp.VideoSource
         'EpisodeFile.Genre = _tmpTV.Movie.Genre
         'EpisodeFile.IMDBID = _tmpTV.Movie.IMDBID
@@ -386,7 +391,6 @@ Public Class FileFolderRenamer
         'EpisodeFile.ListTitle = _tmpTV.ListTitle
         'EpisodeFile.OriginalTitle = If(_tmpTV.TVEp.OriginalTitle <> _tmpTV.Movie.Title, _tmpTV.Movie.OriginalTitle, String.Empty)
         EpisodeFile.Rating = _tmpTV.TVEp.Rating
-        EpisodeFile.Season = _tmpTV.TVEp.Season
         EpisodeFile.ShowTitle = _tmpTV.TVShow.Title
         EpisodeFile.SortTitle = _tmpTV.TVShow.Title 'If(Not String.IsNullOrEmpty(_tmpTV.Movie.SortTitle), _tmpTV.Movie.SortTitle, _tmpTV.ListTitle)
         EpisodeFile.Title = _tmpTV.TVEp.Title
@@ -1233,7 +1237,6 @@ Public Class FileFolderRenamer
         Private _country As String
         Private _dirExist As Boolean
         Private _director As String
-        Private _episode As Integer
         Private _fileExist As Boolean
         Private _fileName As String
         Private _genre As String
@@ -1256,7 +1259,6 @@ Public Class FileFolderRenamer
         Private _path As String
         Private _rating As String
         Private _resolution As String
-        Private _season As Integer
         Private _seasonsepisodes As List(Of SeasonsEpisodes)
         Private _showtitle As String
         Private _sorttitle As String
@@ -1311,15 +1313,6 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As Boolean)
                 Me._dirExist = value
-            End Set
-        End Property
-
-        Public Property Episode() As Integer
-            Get
-                Return Me._episode
-            End Get
-            Set(ByVal value As Integer)
-                Me._episode = value
             End Set
         End Property
 
@@ -1521,15 +1514,6 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property Season() As Integer
-            Get
-                Return Me._season
-            End Get
-            Set(ByVal value As Integer)
-                Me._season = value
-            End Set
-        End Property
-
         Public Property SeasonsEpisodes() As List(Of SeasonsEpisodes)
             Get
                 Return Me._seasonsepisodes
@@ -1623,7 +1607,6 @@ Public Class FileFolderRenamer
             _country = String.Empty
             _dirExist = False
             _director = String.Empty
-            _episode = -1
             _fileExist = False
             _fileName = String.Empty
             _videosource = String.Empty
@@ -1647,7 +1630,6 @@ Public Class FileFolderRenamer
             _path = String.Empty
             _rating = String.Empty
             _resolution = String.Empty
-            _season = -1
             _seasonsepisodes = New List(Of SeasonsEpisodes)
             _showtitle = String.Empty
             _sorttitle = String.Empty
@@ -1664,7 +1646,6 @@ Public Class FileFolderRenamer
             _country = String.Empty
             _dirExist = False
             _director = String.Empty
-            _episode = -1
             _fileExist = False
             _fileName = String.Empty
             _videosource = String.Empty
@@ -1688,7 +1669,6 @@ Public Class FileFolderRenamer
             _path = String.Empty
             _rating = String.Empty
             _resolution = String.Empty
-            _season = -1
             _seasonsepisodes.Clear()
             _showtitle = String.Empty
             _sorttitle = String.Empty

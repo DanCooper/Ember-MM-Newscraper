@@ -2343,28 +2343,41 @@ Public Class Database
             End If
 
             If Not String.IsNullOrEmpty(_TVEpDB.Filename) Then
-                Using SQLpathcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLpathcommand.CommandText = "SELECT ID FROM TVEpPaths WHERE TVEpPath = (?);"
+                If _TVEpDB.FilenameID > -1 Then
+                    Using SQLpathcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                        SQLpathcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVEpPaths (ID, TVEpPath) VALUES (?,?);")
 
-                    Dim parPath As SQLite.SQLiteParameter = SQLpathcommand.Parameters.Add("parPath", DbType.String, 0, "TVEpPath")
-                    parPath.Value = _TVEpDB.Filename
-
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
-                        If SQLreader.HasRows Then
-                            SQLreader.Read()
-                            PathID = Convert.ToInt64(SQLreader("ID"))
-                        Else
-                            Using SQLpcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                SQLpcommand.CommandText = String.Concat("INSERT INTO TVEpPaths (", _
-                                     "TVEpPath) VALUES (?); SELECT LAST_INSERT_ROWID() FROM TVEpPaths;")
-                                Dim parEpPath As SQLite.SQLiteParameter = SQLpcommand.Parameters.Add("parEpPath", DbType.String, 0, "TVEpPath")
-                                parEpPath.Value = _TVEpDB.Filename
-
-                                PathID = Convert.ToInt64(SQLpcommand.ExecuteScalar)
-                            End Using
-                        End If
+                        Dim parID As SQLite.SQLiteParameter = SQLpathcommand.Parameters.Add("parID", DbType.UInt64, 0, "ID")
+                        Dim parTVEpPath As SQLite.SQLiteParameter = SQLpathcommand.Parameters.Add("parTVEpPath", DbType.String, 0, "TVEpPath")
+                        parID.Value = _TVEpDB.FilenameID
+                        parTVEpPath.Value = _TVEpDB.Filename
+                        PathID = _TVEpDB.FilenameID
+                        SQLpathcommand.ExecuteNonQuery()
                     End Using
-                End Using
+                Else
+                    Using SQLpathcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                        SQLpathcommand.CommandText = "SELECT ID FROM TVEpPaths WHERE TVEpPath = (?);"
+
+                        Dim parPath As SQLite.SQLiteParameter = SQLpathcommand.Parameters.Add("parPath", DbType.String, 0, "TVEpPath")
+                        parPath.Value = _TVEpDB.Filename
+
+                        Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
+                            If SQLreader.HasRows Then
+                                SQLreader.Read()
+                                PathID = Convert.ToInt64(SQLreader("ID"))
+                            Else
+                                Using SQLpcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                    SQLpcommand.CommandText = String.Concat("INSERT INTO TVEpPaths (", _
+                                         "TVEpPath) VALUES (?); SELECT LAST_INSERT_ROWID() FROM TVEpPaths;")
+                                    Dim parEpPath As SQLite.SQLiteParameter = SQLpcommand.Parameters.Add("parEpPath", DbType.String, 0, "TVEpPath")
+                                    parEpPath.Value = _TVEpDB.Filename
+
+                                    PathID = Convert.ToInt64(SQLpcommand.ExecuteScalar)
+                                End Using
+                            End If
+                        End Using
+                    End Using
+                End If
             End If
 
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
