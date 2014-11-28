@@ -698,4 +698,5 @@ Public Class dlgBulkRenamer
         LoadHelpTips()
     End Sub
 #End Region 'Methods
+
 End Class

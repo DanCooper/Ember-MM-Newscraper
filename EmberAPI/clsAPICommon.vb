@@ -1897,6 +1897,7 @@ Public Class Structures
         Dim EpPosterPath As String
         Dim EpSubtitles As List(Of MediaInfo.Subtitle)
         Dim Filename As String
+        Dim FilenameID As Long
         Dim IsLockEp As Boolean
         Dim IsLockSeason As Boolean
         Dim IsLockShow As Boolean

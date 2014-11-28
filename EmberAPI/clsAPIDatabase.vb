@@ -1161,6 +1161,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("TVShowID")) Then _TVDB.ShowID = Convert.ToInt64(SQLreader("TVShowID"))
                         If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then _TVDB.DateAdd = Convert.ToInt64(SQLreader("DateAdd"))
                         PathID = Convert.ToInt64(SQLreader("TVEpPathid"))
+                        _TVDB.FilenameID = PathID
                         _TVDB.IsMarkEp = Convert.ToBoolean(SQLreader("Mark"))
                         _TVDB.IsLockEp = Convert.ToBoolean(SQLreader("Lock"))
                         _TVDB.EpNeedsSave = Convert.ToBoolean(SQLreader("NeedsSave"))

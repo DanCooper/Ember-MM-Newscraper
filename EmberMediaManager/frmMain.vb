@@ -11233,6 +11233,16 @@ doCancel:
                     Case Else
                         Me.Activate()
                 End Select
+            Case Enums.ModuleEventType.RenameEpisode
+                Try
+                    'Me.SetMovieListItemAfterEdit(Convert.ToInt16(_params(0)), Convert.ToInt16(_params(1)))
+                    If Me.RefreshEpisode(Convert.ToInt16(_params(0))) Then
+                        Me.FillList(False, False, True)
+                    End If
+                    Me.SetStatus(Master.currShow.TVEp.Title)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
             Case Enums.ModuleEventType.RenameMovie
                 Try
                     Me.SetMovieListItemAfterEdit(Convert.ToInt16(_params(0)), Convert.ToInt16(_params(1)))

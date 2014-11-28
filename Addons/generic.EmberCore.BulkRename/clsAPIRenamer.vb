@@ -110,12 +110,12 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "N", f.Collection)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
-                    strCond = ApplyPattern(strCond, "Q", String.Format("{00}", CStr(f.Episode)))
+                    'strCond = ApplyPattern(strCond, "Q", String.Format("{00}", CStr(f.Episode)))
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
                     strCond = ApplyPattern(strCond, "S", f.VideoSource)
                     strCond = ApplyPattern(strCond, "T", f.Title)
                     strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
-                    strCond = ApplyPattern(strCond, "W", String.Format("{00}", CStr(f.Season)))
+                    'strCond = ApplyPattern(strCond, "W", String.Format("{00}", CStr(f.Season)))
                     '                                X   
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     strCond = ApplyPattern(strCond, "Z", f.ShowTitle)
@@ -145,7 +145,7 @@ Public Class FileFolderRenamer
                             strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
                         End If
                     End If
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMNORSTVY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMNORSTVWY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
                     Else
@@ -175,15 +175,67 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "N", f.Collection)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
-            pattern = ApplyPattern(pattern, "Q", String.Format("{0:00}", f.Episode))
+            'pattern = ApplyPattern(pattern, "Q", String.Format("{0:00}", f.Episode))
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "S", f.VideoSource)
             pattern = ApplyPattern(pattern, "T", f.Title)
             pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
-            pattern = ApplyPattern(pattern, "W", String.Format("{0:00}", f.Season))
+            'pattern = ApplyPattern(pattern, "W", String.Format("{0:00}", f.Season))
             '                                X   
             pattern = ApplyPattern(pattern, "Y", f.Year)
             pattern = ApplyPattern(pattern, "Z", f.ShowTitle)
+
+
+            nextC = pattern.IndexOf("$W")
+            If Not nextC = -1 Then
+                If pattern.Length > nextC + 2 Then
+                    Dim sSeparator As String = String.Empty
+                    Dim eSeparator As String = String.Empty
+                    Dim sPrefix As String = String.Empty
+                    Dim ePrefix As String = String.Empty
+                    Dim ePattern As String = String.Empty
+                    Dim sPattern As String = String.Empty
+                    Dim fPattern As String = String.Empty
+
+                    strBase = pattern.Substring(nextC)
+                    nextIB = strBase.IndexOf("?")
+                    If nextIB > -1 Then
+                        nextEB = strBase.Substring(nextIB + 1).IndexOf("?")
+                        If nextEB > -1 Then
+                            sPattern = strBase.Substring(2, nextIB)
+                            ePattern = strBase.Substring(nextIB + 1, nextEB)
+                            fPattern = strBase.Substring(1, 1)
+                        End If
+                    End If
+
+                    If sPattern.StartsWith(".") OrElse sPattern.StartsWith("_") OrElse sPattern.StartsWith("x") Then
+                        sSeparator = sPattern.Substring(0, 1)
+                        sPrefix = sPattern.Remove(0, 1)
+                    End If
+
+                    
+                    If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
+                        eSeparator = ePattern.Substring(0, 1)
+                        ePrefix = ePattern.Remove(0, 1)
+                    End If
+
+                    Dim seString As String = String.Empty
+                    For Each season As SeasonsEpisodes In f.SeasonsEpisodes
+                        seString = String.Concat(seString, sSeparator, sPrefix, String.Format("{0:00}", season.Season))
+                        For Each episode In season.Episodes
+                            seString = String.Concat(seString, eSeparator, ePrefix, String.Format("{0:00}", episode))
+                        Next
+                    Next
+
+                    If seString.StartsWith(sSeparator) Then seString = seString.Remove(0, 1)
+
+                    pattern = pattern.Replace(fPattern, seString)
+                Else
+                    'pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
+                End If
+            End If
+
+
             nextC = pattern.IndexOf("$G")
             If Not nextC = -1 Then
                 If pattern.Length > nextC + 2 Then
@@ -291,6 +343,39 @@ Public Class FileFolderRenamer
             End Try
         End If
 
+        'get list of all episodes for multi-episode files
+        Dim aSeasonsEpisodes As New List(Of SeasonsEpisodes)
+
+        'first step: get a list of all seasons
+        Dim aSeasonsList As New List(Of Integer)
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLNewcommand.CommandText = String.Concat("SELECT Season FROM TVEps WHERE TVEpPathID = ", _tmpTV.FilenameID, ";")
+            Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                While SQLReader.Read
+                    If Not aSeasonsList.Contains(Convert.ToInt32(SQLReader("Season"))) Then aSeasonsList.Add(Convert.ToInt32(SQLReader("Season")))
+                End While
+            End Using
+            aSeasonsList.Sort()
+        End Using
+
+        'second step: get all episodes per season
+        For Each aSeason As Integer In aSeasonsList
+            Dim aEpisodesList As New List(Of Integer)
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLNewcommand.CommandText = String.Concat("SELECT Episode FROM TVEps WHERE TVEpPathID = ", _tmpTV.FilenameID, " AND Season = ", aSeason, ";")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    While SQLReader.Read
+                        aEpisodesList.Add(Convert.ToInt32(SQLReader("Episode")))
+                    End While
+                End Using
+                aEpisodesList.Sort()
+            End Using
+            Dim aSeasonEpisodesList As New SeasonsEpisodes With {.Season = aSeason, .Episodes = aEpisodesList}
+            aSeasonsEpisodes.Add(aSeasonEpisodesList)
+        Next
+
+        EpisodeFile.SeasonsEpisodes.AddRange(aSeasonsEpisodes)
+
         'EpisodeFile.Country = _tmpTV.Movie.Country
         'EpisodeFile.Director = _tmpTV.Movie.Director
         EpisodeFile.Episode = _tmpTV.TVEp.Episode
@@ -306,19 +391,20 @@ Public Class FileFolderRenamer
         EpisodeFile.SortTitle = _tmpTV.TVShow.Title 'If(Not String.IsNullOrEmpty(_tmpTV.Movie.SortTitle), _tmpTV.Movie.SortTitle, _tmpTV.ListTitle)
         EpisodeFile.Title = _tmpTV.TVEp.Title
         'EpisodeFile.Year = _tmpTV.Movie.Year
-        Dim mFolders As New List(Of String)
+
+        Dim eFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM TVSources;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
-                    mFolders.Add(SQLReader("Path").ToString)
+                    eFolders.Add(SQLReader("Path").ToString)
                 End While
             End Using
         End Using
-        mFolders.Sort()
+        eFolders.Sort()
 
         Dim tPath As String = String.Empty
-        For Each i As String In mFolders
+        For Each i As String In eFolders
             If _tmpTV.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
                 EpisodeFile.BasePath = i
                 If FileUtils.Common.isVideoTS(_tmpTV.Filename) Then
@@ -379,7 +465,7 @@ Public Class FileFolderRenamer
         'Else
         'EpisodeFile.NewPath = Path.Combine(EpisodeFile.OldPath, ProccessPattern(EpisodeFile, folderPattern, True).Trim)
         'End If
-        EpisodeFile.NewPath = If(EpisodeFile.NewPath.StartsWith(Path.DirectorySeparatorChar), EpisodeFile.NewPath.Substring(1), EpisodeFile.NewPath)
+        EpisodeFile.NewPath = EpisodeFile.Path 'If(EpisodeFile.NewPath.StartsWith(Path.DirectorySeparatorChar), EpisodeFile.NewPath.Substring(1), EpisodeFile.NewPath)
 
         ' removes all dots at the end of the foldername (dots are not allowed)
         While EpisodeFile.NewPath.Last = "."
@@ -392,7 +478,7 @@ Public Class FileFolderRenamer
         End While
 
         EpisodeFile.FileExist = File.Exists(Path.Combine(EpisodeFile.BasePath, Path.Combine(EpisodeFile.NewPath, EpisodeFile.NewFileName))) AndAlso Not (EpisodeFile.FileName = EpisodeFile.NewFileName)
-        EpisodeFile.DirExist = File.Exists(Path.Combine(EpisodeFile.BasePath, EpisodeFile.NewPath)) AndAlso Not (EpisodeFile.Path = EpisodeFile.NewPath)
+        EpisodeFile.DirExist = Directory.Exists(Path.Combine(EpisodeFile.BasePath, EpisodeFile.NewPath)) AndAlso Not (EpisodeFile.Path = EpisodeFile.NewPath)
 
         If Not EpisodeFile.NewPath = EpisodeFile.Path OrElse Not EpisodeFile.NewFileName = EpisodeFile.FileName Then
             DoRenameSingle_Episode(EpisodeFile, _tmpTV, BatchMode, toNfo, ShowError, toDB)
@@ -539,7 +625,7 @@ Public Class FileFolderRenamer
         End While
 
         MovieFile.FileExist = File.Exists(Path.Combine(MovieFile.BasePath, Path.Combine(MovieFile.NewPath, MovieFile.NewFileName))) AndAlso Not (MovieFile.FileName = MovieFile.NewFileName)
-        MovieFile.DirExist = File.Exists(Path.Combine(MovieFile.BasePath, MovieFile.NewPath)) AndAlso Not (MovieFile.Path = MovieFile.NewPath)
+        MovieFile.DirExist = Directory.Exists(Path.Combine(MovieFile.BasePath, MovieFile.NewPath)) AndAlso Not (MovieFile.Path = MovieFile.NewPath)
 
         If Not MovieFile.NewPath = MovieFile.Path OrElse Not MovieFile.NewFileName = MovieFile.FileName Then
             DoRenameSingle_Movie(MovieFile, _tmpMovie, BatchMode, toNfo, ShowError, toDB)
@@ -1171,6 +1257,7 @@ Public Class FileFolderRenamer
         Private _rating As String
         Private _resolution As String
         Private _season As Integer
+        Private _seasonsepisodes As List(Of SeasonsEpisodes)
         Private _showtitle As String
         Private _sorttitle As String
         Private _title As String
@@ -1443,6 +1530,15 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property SeasonsEpisodes() As List(Of SeasonsEpisodes)
+            Get
+                Return Me._seasonsepisodes
+            End Get
+            Set(ByVal value As List(Of SeasonsEpisodes))
+                Me._seasonsepisodes = value
+            End Set
+        End Property
+
         Public Property ShowTitle() As String
             Get
                 Return Me._showtitle
@@ -1552,6 +1648,7 @@ Public Class FileFolderRenamer
             _rating = String.Empty
             _resolution = String.Empty
             _season = -1
+            _seasonsepisodes = New List(Of SeasonsEpisodes)
             _showtitle = String.Empty
             _sorttitle = String.Empty
             _title = String.Empty
@@ -1592,11 +1689,59 @@ Public Class FileFolderRenamer
             _rating = String.Empty
             _resolution = String.Empty
             _season = -1
+            _seasonsepisodes.Clear()
             _showtitle = String.Empty
             _sorttitle = String.Empty
             _title = String.Empty
             _videocodec = String.Empty
             _year = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Class SeasonsEpisodes
+
+#Region "Fields"
+
+        Private _season As Integer
+        Private _episodes As List(Of Integer)
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+        Public Property Episodes() As List(Of Integer)
+            Get
+                Return Me._episodes
+            End Get
+            Set(ByVal value As List(Of Integer))
+                Me._episodes = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub New()
+            _season = -1
+            _episodes = New List(Of Integer)
+        End Sub
+
+        Public Sub Clear()
+            _season = -1
+            _episodes.Clear()
         End Sub
 
 #End Region 'Methods
