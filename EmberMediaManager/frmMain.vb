@@ -9048,13 +9048,18 @@ doCancel:
             Me.txtFilePath.Text = Master.currShow.Filename
             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVEp.Aired), "?", Master.currShow.TVEp.Aired))
 
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Rating) Then
-                If Not String.IsNullOrEmpty(Master.currShow.TVEp.Votes) Then
-                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVEp.Rating)), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVEp.Votes), ")")
-                Else
-                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVEp.Rating)), "/10")
+            Try
+                If Not String.IsNullOrEmpty(Master.currShow.TVEp.Rating) Then
+                    If Not String.IsNullOrEmpty(Master.currShow.TVEp.Votes) Then
+                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVEp.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), CDbl(Master.currShow.TVEp.Votes).ToString("N0", Globalization.CultureInfo.CurrentCulture)), ")")
+                    Else
+                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVEp.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10")
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Master.currShow.TVEp.Rating, " / ", Master.currShow.TVEp.Votes, ")"))
+                Me.lblRating.Text = "Error: Please rescrape Rating and Votes"
+            End Try
 
             Me.lblTagline.Text = String.Format(Master.eLang.GetString(648, "Season: {0}, Episode: {1}"), _
                             If(String.IsNullOrEmpty(Master.currShow.TVEp.Season.ToString), "?", Master.currShow.TVEp.Season.ToString), _
@@ -9299,13 +9304,18 @@ doCancel:
                 Me.lblOriginalTitle.Text = String.Empty
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Rating) Then
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
-                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currMovie.Movie.Rating)), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes), ")")
-                Else
-                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currMovie.Movie.Rating)), "/10")
+            Try
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Rating) Then
+                    If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
+                        Me.lblRating.Text = String.Concat(CDbl(Master.currMovie.Movie.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), CDbl(Master.currMovie.Movie.Votes).ToString("N0", Globalization.CultureInfo.CurrentCulture)), ")")
+                    Else
+                        Me.lblRating.Text = String.Concat(CDbl(Master.currMovie.Movie.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10")
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Master.currMovie.Movie.Rating, " / ", Master.currMovie.Movie.Votes, ")"))
+                Me.lblRating.Text = "Error: Please rescrape Rating and Votes"
+            End Try
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Runtime) Then
                 Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(Master.currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(Master.currMovie.Movie.Runtime, Master.currMovie.Movie.Runtime.IndexOf("|")), Master.currMovie.Movie.Runtime)).Trim
@@ -9936,13 +9946,18 @@ doCancel:
             Me.txtPlot.Text = Master.currShow.TVShow.Plot
             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
 
-            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Rating) Then
-                If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then
-                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVShow.Rating)), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVShow.Votes), ")")
-                Else
-                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVShow.Rating)), "/10")
+            Try
+                If Not String.IsNullOrEmpty(Master.currShow.TVShow.Rating) Then
+                    If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then
+                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVShow.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), CDbl(Master.currShow.TVShow.Votes).ToString("N0", Globalization.CultureInfo.CurrentCulture)), ")")
+                    Else
+                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVShow.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10")
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Master.currShow.TVShow.Rating, " / ", Master.currShow.TVShow.Votes, ")"))
+                Me.lblRating.Text = "Error: Please rescrape Rating and Votes"
+            End Try
 
             Me.alActors = New List(Of String)
 
@@ -10171,13 +10186,18 @@ doCancel:
             Me.txtPlot.Text = Master.currShow.TVShow.Plot
             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
 
-            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Rating) Then
-                If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then
-                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVShow.Rating)), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currShow.TVShow.Votes), ")")
-                Else
-                    Me.lblRating.Text = String.Concat(String.Format("{0:0.0}", CDbl(Master.currShow.TVShow.Rating)), "/10")
+            Try
+                If Not String.IsNullOrEmpty(Master.currShow.TVShow.Rating) Then
+                    If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then
+                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVShow.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), CDbl(Master.currShow.TVShow.Votes).ToString("N0", Globalization.CultureInfo.CurrentCulture)), ")")
+                    Else
+                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVShow.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10")
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Master.currShow.TVShow.Rating, " / ", Master.currShow.TVShow.Votes, ")"))
+                Me.lblRating.Text = "Error: Please rescrape Rating and Votes"
+            End Try
 
             Me.alActors = New List(Of String)
 
