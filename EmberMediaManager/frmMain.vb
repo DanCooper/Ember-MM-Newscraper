@@ -4509,7 +4509,7 @@ doCancel:
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                 Select Case dEditEpisode.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
                         If Me.RefreshEpisode(ID) Then
                             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                         End If
@@ -7359,7 +7359,7 @@ doCancel:
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                 Select Case dEditEpisode.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
                         If Me.RefreshEpisode(ID) Then
                             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                         End If
@@ -7499,7 +7499,7 @@ doCancel:
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                     Select Case dEditEpisode.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
                             If Me.RefreshEpisode(ID) Then
                                 Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                             End If

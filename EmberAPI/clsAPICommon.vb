@@ -775,6 +775,8 @@ Public Class Enums
         ShowTVShow = 32                     ' Called after displaying TVShow (not in place yet)
         SyncModuleSettings = 33
         TVImageNaming = 34
+        AfterEdit_Movie = 35
+        AfterEdit_TVEpisode = 36
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer

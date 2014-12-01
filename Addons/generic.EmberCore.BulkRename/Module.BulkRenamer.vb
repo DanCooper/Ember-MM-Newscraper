@@ -62,9 +62,9 @@ Public Class BulkRenamerModule
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.RenameAuto_Movie, Enums.ModuleEventType.RenameEdit_Movie, _
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.RenameAuto_Movie, Enums.ModuleEventType.AfterEdit_Movie, _
                                                                                     Enums.ModuleEventType.RenameManual_Movie, Enums.ModuleEventType.ScraperRDYtoSave_Movie, _
-                                                                                   Enums.ModuleEventType.RenameAuto_TVEpisode, Enums.ModuleEventType.RenameEdit_TVEpisode, _
+                                                                                   Enums.ModuleEventType.RenameAuto_TVEpisode, Enums.ModuleEventType.AfterEdit_TVEpisode, _
                                                                                     Enums.ModuleEventType.RenameManual_TVEpisode, Enums.ModuleEventType.ScraperRDYtoSave_TVEpisode})
         End Get
     End Property
@@ -129,7 +129,7 @@ Public Class BulkRenamerModule
                     'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
                     FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FilesPattern_Episodes, False, False, False, False)
                 End If
-            Case Enums.ModuleEventType.RenameEdit_TVEpisode
+            Case Enums.ModuleEventType.AfterEdit_TVEpisode
                 If MySettings.AutoRenameEdit_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
                     Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
                     Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
