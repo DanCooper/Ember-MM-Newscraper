@@ -391,7 +391,7 @@ Public Class FileFolderRenamer
             DoRenameSingle(MovieFile, _tmpMovie, BatchMode, toNfo, ShowError, toDB)
         Else
             If toDB Then
-                Master.DB.SaveMovieToDB(_tmpMovie, False, True, Not String.IsNullOrEmpty(_tmpMovie.Movie.IMDBID))
+                Master.DB.SaveMovieToDB(_tmpMovie, False, True, toNfo)
             End If
         End If
     End Sub
