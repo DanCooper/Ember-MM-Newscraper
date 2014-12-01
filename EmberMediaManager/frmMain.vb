@@ -9051,9 +9051,12 @@ doCancel:
             Try
                 If Not String.IsNullOrEmpty(Master.currShow.TVEp.Rating) Then
                     If Not String.IsNullOrEmpty(Master.currShow.TVEp.Votes) Then
-                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVEp.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), CDbl(Master.currShow.TVEp.Votes).ToString("N0", Globalization.CultureInfo.CurrentCulture)), ")")
+                        Dim strRating As String = Double.Parse(Master.currShow.TVEp.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strVotes As String = Double.Parse(Master.currShow.TVEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVEp.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10")
+                        Dim strRating As String = Double.Parse(Master.currShow.TVEp.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
             Catch ex As Exception
@@ -9307,9 +9310,12 @@ doCancel:
             Try
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Rating) Then
                     If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
-                        Me.lblRating.Text = String.Concat(CDbl(Master.currMovie.Movie.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), CDbl(Master.currMovie.Movie.Votes).ToString("N0", Globalization.CultureInfo.CurrentCulture)), ")")
+                        Dim strRating As String = Double.Parse(Master.currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strVotes As String = Double.Parse(Master.currMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Me.lblRating.Text = String.Concat(CDbl(Master.currMovie.Movie.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10")
+                        Dim strRating As String = Double.Parse(Master.currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
             Catch ex As Exception
@@ -9949,9 +9955,12 @@ doCancel:
             Try
                 If Not String.IsNullOrEmpty(Master.currShow.TVShow.Rating) Then
                     If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then
-                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVShow.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), CDbl(Master.currShow.TVShow.Votes).ToString("N0", Globalization.CultureInfo.CurrentCulture)), ")")
+                        Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strVotes As String = Double.Parse(Master.currShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVShow.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10")
+                        Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
             Catch ex As Exception
@@ -10189,9 +10198,12 @@ doCancel:
             Try
                 If Not String.IsNullOrEmpty(Master.currShow.TVShow.Rating) Then
                     If Not String.IsNullOrEmpty(Master.currShow.TVShow.Votes) Then
-                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVShow.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), CDbl(Master.currShow.TVShow.Votes).ToString("N0", Globalization.CultureInfo.CurrentCulture)), ")")
+                        Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strVotes As String = Double.Parse(Master.currShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Me.lblRating.Text = String.Concat(CDbl(Master.currShow.TVShow.Rating).ToString("N1", Globalization.CultureInfo.CurrentCulture), "/10")
+                        Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
             Catch ex As Exception
