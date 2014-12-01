@@ -48,7 +48,19 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkRenameEditMovies_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameEditMovies.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkRenameEditShows_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameEditShows.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkRenameMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameMultiMovies.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkRenameMultiShows_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameMultiShows.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -56,7 +68,12 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkRenameSingleShows_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameSingleShows.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Sub SetUp()
+        Me.chkRenameEditMovies.Text = Master.eLang.GetString(466, "Automatically Rename Files After Edit")
         Me.chkRenameMultiMovies.Text = Master.eLang.GetString(281, "Automatically Rename Files During Multi-Scraper")
         Me.chkRenameSingleMovies.Text = Master.eLang.GetString(282, "Automatically Rename Files During Single-Scraper")
         Me.gbRenamerPatternsMovies.Text = Master.eLang.GetString(285, "Default Renaming Patterns")

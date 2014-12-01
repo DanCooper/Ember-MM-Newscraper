@@ -1293,7 +1293,7 @@ Public Class NFO
             Try
                 Dim params As New List(Of Object)(New Object() {xmlShow})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnTVShowNFORead, params, doContinue, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFORead_TVShow, params, doContinue, False)
 
             Catch ex As Exception
             End Try
@@ -1322,7 +1322,7 @@ Public Class NFO
             Try
                 Dim params As New List(Of Object)(New Object() {movieToSave})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieNFOSave, params, doContinue, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_Movie, params, doContinue, False)
                 If Not doContinue Then Return
             Catch ex As Exception
             End Try
@@ -1542,7 +1542,7 @@ Public Class NFO
         Try
             Dim params As New List(Of Object)(New Object() {tvShowToSave})
             Dim doContinue As Boolean = True
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnTVShowNFOSave, params, doContinue, False)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_TVShow, params, doContinue, False)
             If Not doContinue Then Return
         Catch ex As Exception
         End Try

@@ -1449,7 +1449,7 @@ Public Class Images
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnBannerSave_Movie, params, _image, False)
             Catch ex As Exception
             End Try
 
@@ -1484,7 +1484,7 @@ Public Class Images
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieClearArtSave, params, _image, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnClearArtSave_Movie, params, _image, False)
             Catch ex As Exception
             End Try
 
@@ -1513,7 +1513,7 @@ Public Class Images
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieClearLogoSave, params, _image, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnClearLogoSave_Movie, params, _image, False)
             Catch ex As Exception
             End Try
 
@@ -1542,7 +1542,7 @@ Public Class Images
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieDiscArtSave, params, _image, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnDiscArtSave_Movie, params, _image, False)
             Catch ex As Exception
             End Try
 
@@ -1652,7 +1652,7 @@ Public Class Images
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartSave, params, _image, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnFanartSave_Movie, params, _image, False)
             Catch ex As Exception
             End Try
 
@@ -1692,7 +1692,7 @@ Public Class Images
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieLandscapeSave, params, _image, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnLandscapeSave_Movie, params, _image, False)
             Catch ex As Exception
             End Try
 
@@ -1723,7 +1723,7 @@ Public Class Images
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMoviePosterSave, params, _image, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnPosterSave_Movie, params, _image, False)
             Catch ex As Exception
             End Try
 

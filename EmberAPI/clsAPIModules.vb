@@ -973,7 +973,7 @@ Public Class ModulesManager
     ''' <param name="RunOnlyOne">If <c>True</c>, allow only one module to perform the required task.</param>
     ''' <returns></returns>
     ''' <remarks>Note that if any module returns a result of breakChain, no further modules are processed</remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBMovie As Structures.DBMovie = Nothing) As Boolean
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBMovie As Structures.DBMovie = Nothing, Optional ByRef DBTV As Structures.DBTV = Nothing) As Boolean
         Dim ret As Interfaces.ModuleResult
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -988,7 +988,7 @@ Public Class ModulesManager
                 For Each _externalGenericModule As _externalGenericModuleClass In modules
                     Try
                         logger.Trace("Run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
-                        ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam, DBMovie)
+                        ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam, DBMovie, DBTV)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
                     End Try

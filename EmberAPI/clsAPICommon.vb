@@ -740,38 +740,41 @@ Public Class Enums
     End Enum
 
     Public Enum ModuleEventType As Integer
-        Generic = 0
-        Notification = 1
-        MovieScraperRDYtoSave = 2       ' Called when scraper finishs but before save
-        RenameMovie = 3                 ' Called when need to rename a Movie ... from several places
-        RenameMovieManual = 4           ' Will call only First Register Module (use Master.currMovie)
-        MovieFrameExtrator = 5
-        TVFrameExtrator = 6
-        RandomFrameExtrator = 7
-        CommandLine = 8                 ' Command Line Module Call
-        MovieSync = 9
-        ShowMovie = 10                  ' Called after displaying Movie  (not in place yet)
-        ShowTVShow = 11                 ' Called after displaying TVShow (not in place yet)
-        BeforeEditMovie = 12            ' Called when Manual editing or reading from nfo
-        OnMovieNFOSave = 13
-        OnMoviePosterSave = 14
-        OnMovieFanartSave = 15
-        OnMoviePosterDelete = 16
-        OnMovieFanartDelete = 17
-        TVImageNaming = 18
-        MovieImageNaming = 19
-        SyncModuleSettings = 20
-        OnTVShowNFOSave = 21
-        OnTVShowNFORead = 22
-        OnMovieLandscapeSave = 23
-        OnMovieBannerSave = 24
-        OnMovieClearArtSave = 25
-        OnMovieClearLogoSave = 26
-        OnMovieDiscArtSave = 27
-        OnMovieThemeSave = 28
-        OnMovieTrailerSave = 29
-        TVEpisodeScraperRDYtoSave = 30
-        RenameEpisode = 31
+        BeforeEdit_Movie = 0                ' Called when Manual editing or reading from nfo
+        CommandLine = 1                     ' Command Line Module Call
+        FrameExtrator_Movie = 2
+        FrameExtrator_TVEpisode = 3
+        Generic = 4
+        MovieImageNaming = 5
+        MovieSync = 6
+        Notification = 7
+        OnBannerSave_Movie = 8
+        OnClearArtSave_Movie = 9
+        OnClearLogoSave_Movie = 10
+        OnDiscArtSave_Movie = 11
+        OnFanartDelete_Movie = 12
+        OnFanartSave_Movie = 13
+        OnLandscapeSave_Movie = 14
+        OnNFORead_TVShow = 15
+        OnNFOSave_Movie = 16
+        OnNFOSave_TVShow = 17
+        OnPosterDelete_Movie = 18
+        OnPosterSave_Movie = 19
+        OnThemeSave_Movie = 20
+        OnTrailerSave_Movie = 21
+        RandomFrameExtrator = 22
+        RenameAuto_Movie = 23               ' Called after autoscraping
+        RenameAuto_TVEpisode = 24           ' Called after autoscraping
+        RenameEdit_Movie = 25               ' Called after edit movie
+        RenameEdit_TVEpisode = 26           ' Called after edit episode
+        RenameManual_Movie = 27             ' Called after manual/single scraping
+        RenameManual_TVEpisode = 28         ' Called after manual/single scraping
+        ScraperRDYtoSave_Movie = 29         ' Called when scraper finishs but before save
+        ScraperRDYtoSave_TVEpisode = 30     ' Called when scraper finishs but before save
+        ShowMovie = 31                      ' Called after displaying Movie  (not in place yet)
+        ShowTVShow = 32                     ' Called after displaying TVShow (not in place yet)
+        SyncModuleSettings = 33
+        TVImageNaming = 34
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer

@@ -1878,7 +1878,7 @@ Public Class dlgEditMovie
             Me.pbMoviePoster.AllowDrop = True
 
             Me.SetUp()
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, Master.currMovie)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Master.currMovie)
             Me.lvwActorSorter = New ListViewColumnSorter()
             Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
             'Me.lvwEThumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
@@ -1906,7 +1906,7 @@ Public Class dlgEditMovie
             Me.LoadGenres()
             Me.LoadRatings()
             Dim params As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieFrameExtrator, params, Nothing, True)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, params, Nothing, True)
             pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
             If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
                 tcEditMovie.TabPages.Remove(tpFrameExtraction)
@@ -3352,7 +3352,7 @@ Public Class dlgEditMovie
     End Sub
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If mType = Enums.ModuleEventType.MovieFrameExtrator AndAlso Not IsNothing(_params) Then
+        If mType = Enums.ModuleEventType.FrameExtrator_Movie AndAlso Not IsNothing(_params) Then
             If _params(0).ToString = "FanartToSave" Then
                 MovieFanart.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
                 If Not IsNothing(MovieFanart.Image) Then

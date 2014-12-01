@@ -57,7 +57,7 @@ Public Class genericMediaBrowser
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.OnMovieFanartSave, Enums.ModuleEventType.OnMovieNFOSave})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.OnFanartSave_Movie, Enums.ModuleEventType.OnNFOSave_Movie})
         End Get
     End Property
 
@@ -128,21 +128,21 @@ Public Class genericMediaBrowser
         End Using
     End Sub
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
         Dim doContinue As Boolean
         Dim mMovie As Structures.DBMovie
         Dim _image As Images
         If Enabled Then
             Try
                 Select Case mType
-                    Case Enums.ModuleEventType.OnMovieNFOSave
+                    Case Enums.ModuleEventType.OnNFOSave_Movie
                         If clsAdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False) Then
                             mMovie = DirectCast(_params(0), Structures.DBMovie)
                             doContinue = DirectCast(_refparam, Boolean)
                             XMLmymovies.SaveMovieDB(mMovie)
                             _refparam = doContinue
                         End If
-                    Case Enums.ModuleEventType.OnMovieFanartSave
+                    Case Enums.ModuleEventType.OnFanartSave_Movie
                         If clsAdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False) Then
                             mMovie = DirectCast(_params(0), Structures.DBMovie)
                             _image = DirectCast(_refparam, Images)
@@ -669,5 +669,6 @@ Public Class genericMediaBrowser
 
 
 #End Region 'Nested Types
+
 End Class
 

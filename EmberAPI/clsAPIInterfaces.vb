@@ -55,7 +55,7 @@ Public Class Interfaces
 
         Function InjectSetup() As Containers.SettingsPanel
 
-        Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie) As ModuleResult
+        Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As ModuleResult
 
         Sub SaveSetup(ByVal DoDispose As Boolean)
 
