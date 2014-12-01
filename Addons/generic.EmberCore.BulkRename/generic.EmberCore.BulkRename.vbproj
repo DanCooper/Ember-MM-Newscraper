@@ -138,10 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsAPIRenamer.vb" />
-    <Compile Include="dlgBulkRename.designer.vb">
-      <DependentUpon>dlgBulkRename.vb</DependentUpon>
+    <Compile Include="dlgBulkRename_Movie.designer.vb">
+      <DependentUpon>dlgBulkRename_Movie.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgBulkRename.vb">
+    <Compile Include="dlgBulkRename_Movie.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgHelpTips.Designer.vb">
@@ -156,10 +156,10 @@
     <Compile Include="dlgRenameManual.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgTVBulkRename.Designer.vb">
-      <DependentUpon>dlgTVBulkRename.vb</DependentUpon>
+    <Compile Include="dlgBulkRename_TV.Designer.vb">
+      <DependentUpon>dlgBulkRename_TV.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgTVBulkRename.vb">
+    <Compile Include="dlgBulkRename_TV.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSettingsHolder.Designer.vb">
@@ -186,8 +186,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="dlgBulkRename.resx">
-      <DependentUpon>dlgBulkRename.vb</DependentUpon>
+    <EmbeddedResource Include="dlgBulkRename_Movie.resx">
+      <DependentUpon>dlgBulkRename_Movie.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgHelpTips.resx">
@@ -198,8 +198,8 @@
       <DependentUpon>dlgRenameManual.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgTVBulkRename.resx">
-      <DependentUpon>dlgTVBulkRename.vb</DependentUpon>
+    <EmbeddedResource Include="dlgBulkRename_TV.resx">
+      <DependentUpon>dlgBulkRename_TV.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsHolder.resx">

@@ -18912,6 +18912,7 @@ doCancel:
                         Using dEditEp As New dlgEditEpisode
                             AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEp.GenericRunCallBack
                             If dEditEp.ShowDialog = Windows.Forms.DialogResult.OK Then
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperSingle_TVEpisode, Nothing, Nothing, False, , Master.currShow)
                                 Me.RefreshEpisode(Master.currShow.EpID)
                             End If
                             RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEp.GenericRunCallBack

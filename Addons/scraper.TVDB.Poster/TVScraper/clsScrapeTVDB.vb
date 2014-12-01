@@ -930,6 +930,8 @@ Public Class Scraper
 
                                 If Master.eSettings.TVScraperMetaDataScan Then MediaInfo.UpdateTVMediaInfo(Episode)
 
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, , Episode)
+
                                 Master.DB.SaveTVEpToDB(Episode, False, True, True, True)
 
                                 If Me.bwTVDB.CancellationPending Then Return

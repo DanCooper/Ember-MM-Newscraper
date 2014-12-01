@@ -65,7 +65,8 @@ Public Class BulkRenamerModule
             Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.RenameAuto_Movie, Enums.ModuleEventType.AfterEdit_Movie, _
                                                                                     Enums.ModuleEventType.RenameManual_Movie, Enums.ModuleEventType.ScraperRDYtoSave_Movie, _
                                                                                    Enums.ModuleEventType.RenameAuto_TVEpisode, Enums.ModuleEventType.AfterEdit_TVEpisode, _
-                                                                                    Enums.ModuleEventType.RenameManual_TVEpisode, Enums.ModuleEventType.ScraperRDYtoSave_TVEpisode})
+                                                                                    Enums.ModuleEventType.RenameManual_TVEpisode, Enums.ModuleEventType.ScraperMulti_TVEpisode, _
+                                                                                   Enums.ModuleEventType.ScraperSingle_TVEpisode})
         End Get
     End Property
 
@@ -124,10 +125,15 @@ Public Class BulkRenamerModule
                             Return New Interfaces.ModuleResult With {.Cancelled = True, .breakChain = False}
                     End Select
                 End Using
-            Case Enums.ModuleEventType.ScraperRDYtoSave_TVEpisode
-                If MySettings.AutoRenameMulti_Shows AndAlso Master.GlobalScrapeMod.NFO AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
+            Case Enums.ModuleEventType.ScraperMulti_TVEpisode
+                If MySettings.AutoRenameMulti_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
                     'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
                     FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FilesPattern_Episodes, False, False, False, False)
+                End If
+            Case Enums.ModuleEventType.ScraperSingle_TVEpisode
+                If MySettings.AutoRenameSingle_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
+                    'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
+                    FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FilesPattern_Episodes, False, False, False, True)
                 End If
             Case Enums.ModuleEventType.AfterEdit_TVEpisode
                 If MySettings.AutoRenameEdit_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
@@ -320,7 +326,7 @@ Public Class BulkRenamerModule
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
         Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected
             Case 0
-                Using dBulkRename As New dlgBulkRenamer
+                Using dBulkRename As New dlgBulkRenamer_Movie
                     dBulkRename.FilterMovies = ModulesManager.Instance.RuntimeObjects.FilterMovies
                     dBulkRename.FilterMoviesSearch = ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch
                     dBulkRename.FilterMoviesType = ModulesManager.Instance.RuntimeObjects.FilterMoviesType

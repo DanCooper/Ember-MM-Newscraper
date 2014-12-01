@@ -1,7 +1,7 @@
 ﻿Imports System.Windows.Forms
 Imports EmberAPI
 
-Public Class dlgTVBulkRenamer
+Public Class dlgBulkRenamer_TV
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.DialogResult = System.Windows.Forms.DialogResult.OK

@@ -1,14 +1,14 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated> _
-Partial Class dlgBulkRenamer
+Partial Class dlgBulkRenamer_Movie
     Inherits System.Windows.Forms.Form
 
-    #Region "Fields"
+#Region "Fields"
 
-    Friend  WithEvents btnCancel As System.Windows.Forms.Button
-    Friend  WithEvents chkRenamedOnly As System.Windows.Forms.CheckBox
-    Friend  WithEvents Close_Button As System.Windows.Forms.Button
-    Friend  WithEvents cmsMovieList As System.Windows.Forms.ContextMenuStrip
-    Friend  WithEvents dgvMoviesList As System.Windows.Forms.DataGridView
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents chkRenamedOnly As System.Windows.Forms.CheckBox
+    Friend WithEvents Close_Button As System.Windows.Forms.Button
+    Friend WithEvents cmsMovieList As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents dgvMoviesList As System.Windows.Forms.DataGridView
     Friend WithEvents lblFolderPatternNotSingle As System.Windows.Forms.Label
     Friend WithEvents lblTopDetails As System.Windows.Forms.Label
     Friend WithEvents lblTopTitle As System.Windows.Forms.Label
@@ -57,7 +57,7 @@ Partial Class dlgBulkRenamer
     <System.Diagnostics.DebuggerStepThrough> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgBulkRenamer))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgBulkRenamer_Movie))
         Me.Close_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
