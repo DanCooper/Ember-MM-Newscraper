@@ -1744,6 +1744,7 @@ Public Class FileFolderRenamer
     End Class
 
     Class Episode
+        Implements IComparable(Of Episode)
 
 #Region "Fields"
 
@@ -1785,6 +1786,11 @@ Public Class FileFolderRenamer
             _id = -1
             _episode = -1
         End Sub
+
+        Public Function CompareTo(ByVal obj As Episode) As Integer Implements System.IComparable(Of Episode).CompareTo
+            Dim c1 As Integer = Me.Episode.CompareTo(obj.Episode)
+            If c1 <> 0 Then Return c1
+        End Function
 
 #End Region 'Methods
 
