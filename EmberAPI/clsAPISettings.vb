@@ -6002,6 +6002,7 @@ Public Class Settings
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]ntsc.*")
             Master.eSettings.MovieFilterCustom.Add("[\W_]PAL[\W_]?.*")
             Master.eSettings.MovieFilterCustom.Add("\.[->] ")
+            Master.eSettings.MovieFilterCustom.Add("_[->] ")
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowFilters) AndAlso (Force OrElse (Master.eSettings.TVShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVShowFilterCustomIsEmpty)) Then
