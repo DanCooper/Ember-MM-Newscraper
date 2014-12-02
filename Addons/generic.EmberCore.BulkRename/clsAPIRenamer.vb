@@ -94,7 +94,7 @@ Public Class FileFolderRenamer
                     strCond = pattern.Substring(nextIB, nextEB - nextIB + 1)
                     strNoFlags = strCond
                     strBase = strCond
-                    strCond = ApplyPattern(strCond, "1", f.SortTitle.Substring(0, 1))
+                    strCond = ApplyPattern(strCond, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
                     strCond = ApplyPattern(strCond, "A", f.AudioChannels)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
                     strCond = ApplyPattern(strCond, "C", f.Director)
@@ -159,7 +159,7 @@ Public Class FileFolderRenamer
                 nextIB = pattern.IndexOf("{")
                 nextEB = pattern.IndexOf("}")
             End While
-            pattern = ApplyPattern(pattern, "1", f.SortTitle.Substring(0, 1))
+            pattern = ApplyPattern(pattern, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
             pattern = ApplyPattern(pattern, "A", f.AudioChannels)
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
             pattern = ApplyPattern(pattern, "C", f.Director)

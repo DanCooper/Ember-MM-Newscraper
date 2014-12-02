@@ -52,6 +52,12 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
+        Me.gbPreview = New System.Windows.Forms.GroupBox()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblSingleEpisodeFile = New System.Windows.Forms.Label()
+        Me.txtSingleEpisodeFile = New System.Windows.Forms.TextBox()
+        Me.lblMultiEpisodeFile = New System.Windows.Forms.Label()
+        Me.txtMultiEpisodeFile = New System.Windows.Forms.TextBox()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.tblSettingsMain.SuspendLayout()
@@ -61,6 +67,8 @@ Partial Class frmSettingsHolder
         Me.tblRenamerPatterns.SuspendLayout()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
+        Me.gbPreview.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -72,7 +80,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(353, 557)
+        Me.pnlSettings.Size = New System.Drawing.Size(616, 580)
         Me.pnlSettings.TabIndex = 84
         '
         'pnlSettingsMain
@@ -82,7 +90,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 23)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(353, 534)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(616, 557)
         Me.pnlSettingsMain.TabIndex = 5
         '
         'tblSettingsMain
@@ -98,17 +106,18 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.Controls.Add(Me.chkGenericModule, 0, 1)
         Me.tblSettingsMain.Controls.Add(Me.gbRenamerPatternsMovies, 0, 2)
         Me.tblSettingsMain.Controls.Add(Me.lblTips, 1, 0)
+        Me.tblSettingsMain.Controls.Add(Me.gbPreview, 1, 4)
         Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsMain.Name = "tblSettingsMain"
-        Me.tblSettingsMain.RowCount = 5
+        Me.tblSettingsMain.RowCount = 6
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsMain.Size = New System.Drawing.Size(353, 534)
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsMain.Size = New System.Drawing.Size(616, 557)
         Me.tblSettingsMain.TabIndex = 6
         '
         'gbRenamerPatternsShows
@@ -118,6 +127,7 @@ Partial Class frmSettingsHolder
         Me.gbRenamerPatternsShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbRenamerPatternsShows.Location = New System.Drawing.Point(3, 241)
         Me.gbRenamerPatternsShows.Name = "gbRenamerPatternsShows"
+        Me.tblSettingsMain.SetRowSpan(Me.gbRenamerPatternsShows, 2)
         Me.gbRenamerPatternsShows.Size = New System.Drawing.Size(293, 257)
         Me.gbRenamerPatternsShows.TabIndex = 5
         Me.gbRenamerPatternsShows.TabStop = False
@@ -425,9 +435,9 @@ Partial Class frmSettingsHolder
         Me.lblTips.MaximumSize = New System.Drawing.Size(475, 360)
         Me.lblTips.Name = "lblTips"
         Me.tblSettingsMain.SetRowSpan(Me.lblTips, 4)
-        Me.lblTips.Size = New System.Drawing.Size(42, 15)
+        Me.lblTips.Size = New System.Drawing.Size(49, 15)
         Me.lblTips.TabIndex = 4
-        Me.lblTips.Text = "Label1"
+        Me.lblTips.Text = "Tips List"
         '
         'pnlSettingsTop
         '
@@ -437,7 +447,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsTop.Name = "pnlSettingsTop"
-        Me.pnlSettingsTop.Size = New System.Drawing.Size(353, 23)
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(616, 23)
         Me.pnlSettingsTop.TabIndex = 0
         '
         'tblSettingsTop
@@ -454,7 +464,7 @@ Partial Class frmSettingsHolder
         Me.tblSettingsTop.RowCount = 2
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsTop.Size = New System.Drawing.Size(353, 23)
+        Me.tblSettingsTop.Size = New System.Drawing.Size(616, 23)
         Me.tblSettingsTop.TabIndex = 5
         '
         'chkEnabled
@@ -467,12 +477,82 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'gbPreview
+        '
+        Me.gbPreview.AutoSize = True
+        Me.gbPreview.Controls.Add(Me.TableLayoutPanel1)
+        Me.gbPreview.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbPreview.Location = New System.Drawing.Point(302, 381)
+        Me.gbPreview.Name = "gbPreview"
+        Me.gbPreview.Size = New System.Drawing.Size(262, 117)
+        Me.gbPreview.TabIndex = 6
+        Me.gbPreview.TabStop = False
+        Me.gbPreview.Text = "Preview"
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.AutoSize = True
+        Me.TableLayoutPanel1.ColumnCount = 2
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.Controls.Add(Me.lblSingleEpisodeFile, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.txtSingleEpisodeFile, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.lblMultiEpisodeFile, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.txtMultiEpisodeFile, 0, 3)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 5
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(256, 96)
+        Me.TableLayoutPanel1.TabIndex = 0
+        '
+        'lblSingleEpisodeFile
+        '
+        Me.lblSingleEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblSingleEpisodeFile.AutoSize = True
+        Me.lblSingleEpisodeFile.Location = New System.Drawing.Point(3, 3)
+        Me.lblSingleEpisodeFile.Name = "lblSingleEpisodeFile"
+        Me.lblSingleEpisodeFile.Size = New System.Drawing.Size(107, 13)
+        Me.lblSingleEpisodeFile.TabIndex = 0
+        Me.lblSingleEpisodeFile.Text = "Single Episode File:"
+        '
+        'txtSingleEpisodeFile
+        '
+        Me.txtSingleEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtSingleEpisodeFile.Location = New System.Drawing.Point(3, 23)
+        Me.txtSingleEpisodeFile.Name = "txtSingleEpisodeFile"
+        Me.txtSingleEpisodeFile.Size = New System.Drawing.Size(250, 22)
+        Me.txtSingleEpisodeFile.TabIndex = 1
+        '
+        'lblMultiEpisodeFile
+        '
+        Me.lblMultiEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMultiEpisodeFile.AutoSize = True
+        Me.lblMultiEpisodeFile.Location = New System.Drawing.Point(3, 51)
+        Me.lblMultiEpisodeFile.Name = "lblMultiEpisodeFile"
+        Me.lblMultiEpisodeFile.Size = New System.Drawing.Size(102, 13)
+        Me.lblMultiEpisodeFile.TabIndex = 2
+        Me.lblMultiEpisodeFile.Text = "Multi Episode File:"
+        '
+        'txtMultiEpisodeFile
+        '
+        Me.txtMultiEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtMultiEpisodeFile.Location = New System.Drawing.Point(3, 71)
+        Me.txtMultiEpisodeFile.Name = "txtMultiEpisodeFile"
+        Me.txtMultiEpisodeFile.Size = New System.Drawing.Size(250, 22)
+        Me.txtMultiEpisodeFile.TabIndex = 3
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(353, 557)
+        Me.ClientSize = New System.Drawing.Size(616, 580)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmSettingsHolder"
@@ -495,6 +575,10 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)
         Me.tblSettingsTop.PerformLayout()
+        Me.gbPreview.ResumeLayout(False)
+        Me.gbPreview.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -529,4 +613,10 @@ Partial Class frmSettingsHolder
     Friend WithEvents chkRenameEditMovies As System.Windows.Forms.CheckBox
     Friend WithEvents chkRenameEditEpisodes As System.Windows.Forms.CheckBox
     Friend WithEvents chkRenameUpdateEpisodes As System.Windows.Forms.CheckBox
+    Friend WithEvents gbPreview As System.Windows.Forms.GroupBox
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblSingleEpisodeFile As System.Windows.Forms.Label
+    Friend WithEvents txtSingleEpisodeFile As System.Windows.Forms.TextBox
+    Friend WithEvents lblMultiEpisodeFile As System.Windows.Forms.Label
+    Friend WithEvents txtMultiEpisodeFile As System.Windows.Forms.TextBox
 End Class

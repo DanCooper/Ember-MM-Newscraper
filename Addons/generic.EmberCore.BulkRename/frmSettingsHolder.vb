@@ -99,6 +99,23 @@ Public Class frmSettingsHolder
     Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternMovies.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
+    Private Sub txtFilePatternEpisodes_TextChanged(sender As Object, e As EventArgs) Handles txtFilePatternEpisodes.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+        Dim fDummy As New FileFolderRenamer.FileRename
+        fDummy.MPAARate = "TV-14"
+        fDummy.Rating = "8.9"
+        fDummy.Resolution = "480p"
+        fDummy.ShowTitle = "The Big Bang Theory"
+        fDummy.ListTitle = StringUtils.FilterTokens_Movie(fDummy.ShowTitle)
+        fDummy.Title = "Pilot"
+        fDummy.VideoCodec = "divx"
+        fDummy.VideoSource = "dvd"
+        Dim dEpisode As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1}
+        Dim dEpisodeList As New List(Of FileFolderRenamer.Episode)
+        dEpisodeList.Add(dEpisode)
+        fDummy.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dEpisodeList})
+        txtSingleEpisodeFile.Text = FileFolderRenamer.ProccessPattern(fDummy, txtFilePatternEpisodes.Text, False, False)
+    End Sub
 
     Public Sub New()
         InitializeComponent()
