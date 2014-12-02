@@ -110,7 +110,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "N", f.Collection)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
-
+                    '                                Q   Episode
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
                     strCond = ApplyPattern(strCond, "S", f.VideoSource)
                     strCond = ApplyPattern(strCond, "T", f.Title)
@@ -145,7 +145,7 @@ Public Class FileFolderRenamer
                             strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
                         End If
                     End If
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMNORSTVWY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMNOPQRSTVWY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
                     Else
@@ -175,7 +175,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "N", f.Collection)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
-
+            '                                Q   Episode
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "S", f.VideoSource)
             pattern = ApplyPattern(pattern, "T", f.Title)
@@ -216,7 +216,6 @@ Public Class FileFolderRenamer
                         sPrefix = sPattern
                     End If
 
-
                     If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
                         eSeparator = ePattern.Substring(0, 1)
                         ePrefix = ePattern.Remove(0, 1)
@@ -234,8 +233,41 @@ Public Class FileFolderRenamer
                     If Not String.IsNullOrEmpty(sSeparator) AndAlso seString.StartsWith(sSeparator) Then seString = seString.Remove(0, 1)
 
                     pattern = pattern.Replace(fPattern, seString)
-                Else
-                    'pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
+                End If
+            End If
+
+            nextC = pattern.IndexOf("$Q")
+            If Not nextC = -1 Then
+                If pattern.Length > nextC + 2 Then
+                    Dim ePattern As String = String.Empty
+                    Dim ePrefix As String = String.Empty
+                    Dim eSeparator As String = String.Empty
+                    Dim fPattern As String = String.Empty
+                    Dim seString As String = String.Empty
+
+                    strBase = pattern.Substring(nextC)
+                    nextIB = strBase.IndexOf("?")
+                    If nextIB > -1 Then
+                        ePattern = strBase.Substring(2, nextIB - 2)
+                        fPattern = strBase.Substring(0, nextIB + 1)
+                    End If
+
+                    If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
+                        eSeparator = ePattern.Substring(0, 1)
+                        ePrefix = ePattern.Remove(0, 1)
+                    Else
+                        ePrefix = ePattern
+                    End If
+
+                    For Each season As SeasonsEpisodes In f.SeasonsEpisodes
+                        For Each episode In season.Episodes
+                            seString = String.Concat(seString, eSeparator, ePrefix, String.Format("{0:00}", episode.Episode))
+                        Next
+                    Next
+
+                    If Not String.IsNullOrEmpty(eSeparator) AndAlso seString.StartsWith(eSeparator) Then seString = seString.Remove(0, 1)
+
+                    pattern = pattern.Replace(fPattern, seString)
                 End If
             End If
 
