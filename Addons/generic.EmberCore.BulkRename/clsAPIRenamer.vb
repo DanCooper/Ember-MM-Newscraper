@@ -75,7 +75,7 @@ Public Class FileFolderRenamer
         End If
     End Function
 
-    Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String, ByVal isPath As Boolean) As String
+    Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String, ByVal isPath As Boolean, Optional isMultiEpisode As Boolean = False) As String
         Try
             Dim pattern As String = opattern
             'Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
@@ -216,7 +216,7 @@ Public Class FileFolderRenamer
                         sPrefix = sPattern
                     End If
 
-                    
+
                     If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
                         eSeparator = ePattern.Substring(0, 1)
                         ePrefix = ePattern.Remove(0, 1)
@@ -227,7 +227,7 @@ Public Class FileFolderRenamer
                     For Each season As SeasonsEpisodes In f.SeasonsEpisodes
                         seString = String.Concat(seString, sSeparator, sPrefix, String.Format("{0:00}", season.Season))
                         For Each episode In season.Episodes
-                            seString = String.Concat(seString, eSeparator, ePrefix, String.Format("{0:00}", episode))
+                            seString = String.Concat(seString, eSeparator, ePrefix, String.Format("{0:00}", episode.Episode))
                         Next
                     Next
 
@@ -317,6 +317,7 @@ Public Class FileFolderRenamer
 
     Public Shared Sub RenameSingle_Episode(ByRef _tmpTV As Structures.DBTV, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim EpisodeFile As New FileRename
+        Dim isMultiEpisode As Boolean = False
 
         If Not IsNothing(_tmpTV.TVEp.FileInfo) Then
             Try
@@ -366,12 +367,15 @@ Public Class FileFolderRenamer
 
         'second step: get all episodes per season
         For Each aSeason As Integer In aSeasonsList
-            Dim aEpisodesList As New List(Of Integer)
+            Dim aEpisodesList As New List(Of Episode)
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLNewcommand.CommandText = String.Concat("SELECT Episode FROM TVEps WHERE TVEpPathID = ", _tmpTV.FilenameID, " AND Season = ", aSeason, ";")
+                SQLNewcommand.CommandText = String.Concat("SELECT ID, Episode FROM TVEps WHERE TVEpPathID = ", _tmpTV.FilenameID, " AND Season = ", aSeason, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     While SQLReader.Read
-                        aEpisodesList.Add(Convert.ToInt32(SQLReader("Episode")))
+                        Dim aEpisode As New Episode
+                        aEpisode.ID = Convert.ToInt32(SQLReader("ID"))
+                        aEpisode.Episode = Convert.ToInt32(SQLReader("Episode"))
+                        aEpisodesList.Add(aEpisode)
                     End While
                 End Using
                 aEpisodesList.Sort()
@@ -382,6 +386,17 @@ Public Class FileFolderRenamer
 
         EpisodeFile.SeasonsEpisodes.AddRange(aSeasonsEpisodes)
 
+        If EpisodeFile.SeasonsEpisodes.Count > 1 Then
+            isMultiEpisode = True
+        Else
+            For Each se In EpisodeFile.SeasonsEpisodes
+                If se.Episodes.Count > 1 Then
+                    isMultiEpisode = True
+                    Exit For
+                End If
+            Next
+        End If
+
         'EpisodeFile.Country = _tmpTV.Movie.Country
         'EpisodeFile.Director = _tmpTV.Movie.Director
         'EpisodeFile.VideoSource = _tmpTV.TVEp.VideoSource
@@ -390,10 +405,10 @@ Public Class FileFolderRenamer
         'EpisodeFile.IsSingle = _tmpTV.IsSingle
         'EpisodeFile.ListTitle = _tmpTV.ListTitle
         'EpisodeFile.OriginalTitle = If(_tmpTV.TVEp.OriginalTitle <> _tmpTV.Movie.Title, _tmpTV.Movie.OriginalTitle, String.Empty)
-        EpisodeFile.Rating = _tmpTV.TVEp.Rating
+        EpisodeFile.Rating = If(Not isMultiEpisode, _tmpTV.TVEp.Rating, String.Empty)
         EpisodeFile.ShowTitle = _tmpTV.TVShow.Title
         EpisodeFile.SortTitle = _tmpTV.TVShow.Title 'If(Not String.IsNullOrEmpty(_tmpTV.Movie.SortTitle), _tmpTV.Movie.SortTitle, _tmpTV.ListTitle)
-        EpisodeFile.Title = _tmpTV.TVEp.Title
+        EpisodeFile.Title = If(Not isMultiEpisode, _tmpTV.TVEp.Title, String.Empty)
         'EpisodeFile.Year = _tmpTV.Movie.Year
 
         Dim eFolders As New List(Of String)
@@ -454,7 +469,7 @@ Public Class FileFolderRenamer
                 If Not stackMark = String.Empty AndAlso _tmpTV.TVEp.Title.ToLower.EndsWith(stackMark) Then
                     EpisodeFile.FileName = Path.GetFileNameWithoutExtension(_tmpTV.Filename)
                 End If
-                EpisodeFile.NewFileName = ProccessPattern(EpisodeFile, filePattern, False).Trim
+                EpisodeFile.NewFileName = ProccessPattern(EpisodeFile, filePattern, False, isMultiEpisode).Trim
             End If
         ElseIf EpisodeFile.IsBDMV Then
             EpisodeFile.FileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
@@ -1686,7 +1701,7 @@ Public Class FileFolderRenamer
 #Region "Fields"
 
         Private _season As Integer
-        Private _episodes As List(Of Integer)
+        Private _episodes As List(Of Episode)
 
 #End Region 'Fields
 
@@ -1701,11 +1716,11 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property Episodes() As List(Of Integer)
+        Public Property Episodes() As List(Of Episode)
             Get
                 Return Me._episodes
             End Get
-            Set(ByVal value As List(Of Integer))
+            Set(ByVal value As List(Of Episode))
                 Me._episodes = value
             End Set
         End Property
@@ -1716,12 +1731,59 @@ Public Class FileFolderRenamer
 
         Public Sub New()
             _season = -1
-            _episodes = New List(Of Integer)
+            _episodes = New List(Of Episode)
         End Sub
 
         Public Sub Clear()
             _season = -1
             _episodes.Clear()
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Class Episode
+
+#Region "Fields"
+
+        Private _id As Integer
+        Private _episode As Integer
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        Public Property ID() As Integer
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As Integer)
+                Me._id = value
+            End Set
+        End Property
+
+        Public Property Episode() As Integer
+            Get
+                Return Me._episode
+            End Get
+            Set(ByVal value As Integer)
+                Me._episode = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub New()
+            _id = -1
+            _episode = -1
+        End Sub
+
+        Public Sub Clear()
+            _id = -1
+            _episode = -1
         End Sub
 
 #End Region 'Methods

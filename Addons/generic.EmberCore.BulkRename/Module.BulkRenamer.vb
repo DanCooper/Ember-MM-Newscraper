@@ -125,6 +125,14 @@ Public Class BulkRenamerModule
                             Return New Interfaces.ModuleResult With {.Cancelled = True, .breakChain = False}
                     End Select
                 End Using
+            Case Enums.ModuleEventType.AfterEdit_TVEpisode
+                If MySettings.AutoRenameEdit_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
+                    Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
+                    Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
+                    Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
+                    Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
+                    FileFolderRenamer.RenameSingle_Episode(tDBTV, MySettings.FilesPattern_Episodes, BatchMode, ToNFO, ShowErrors, True)
+                End If
             Case Enums.ModuleEventType.ScraperMulti_TVEpisode
                 If MySettings.AutoRenameMulti_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
                     'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
@@ -134,14 +142,6 @@ Public Class BulkRenamerModule
                 If MySettings.AutoRenameSingle_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
                     'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
                     FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FilesPattern_Episodes, False, False, False, True)
-                End If
-            Case Enums.ModuleEventType.AfterEdit_TVEpisode
-                If MySettings.AutoRenameEdit_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
-                    Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
-                    Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
-                    Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
-                    FileFolderRenamer.RenameSingle_Episode(tDBTV, MySettings.FilesPattern_Episodes, BatchMode, ToNFO, ShowErrors, True)
                 End If
         End Select
         Return New Interfaces.ModuleResult With {.breakChain = False}
