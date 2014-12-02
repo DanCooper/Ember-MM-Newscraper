@@ -9055,7 +9055,7 @@ doCancel:
                         Dim strVotes As String = Double.Parse(Master.currShow.TVEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Dim strRating As String = Double.Parse(Master.currShow.TVEp.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Dim strRating As String = Double.Parse(Master.currShow.TVEp.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
@@ -9314,7 +9314,7 @@ doCancel:
                         Dim strVotes As String = Double.Parse(Master.currMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Dim strRating As String = Double.Parse(Master.currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Dim strRating As String = Double.Parse(Master.currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
@@ -9959,7 +9959,7 @@ doCancel:
                         Dim strVotes As String = Double.Parse(Master.currShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
@@ -10202,7 +10202,7 @@ doCancel:
                         Dim strVotes As String = Double.Parse(Master.currShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
