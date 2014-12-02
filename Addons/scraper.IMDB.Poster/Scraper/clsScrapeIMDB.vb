@@ -32,6 +32,8 @@ Namespace IMDB
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 #End Region 'Fields
 
 #Region "Events"
@@ -40,18 +42,35 @@ Namespace IMDB
 #End Region 'Events
 
 #Region "Methods"
+        Public Sub CancelAsync()
+
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
+        End Sub
 
         Public Async Function GetIMDBPosters(ByVal imdbID As String) As Threading.Tasks.Task(Of List(Of MediaContainers.Image))
             Dim alPoster As New List(Of MediaContainers.Image)
             Dim aParentID As String = String.Empty
-
+            _Cancelled = False
             Try
-                Dim sHTTP As New HTTP
                 Dim aStr As String = String.Empty
                 Dim aPar As String()
                 Dim aPar2 As String()
-                Dim HTML As String = Await sHTTP.DownloadData(String.Concat("http://www.imdb.com/title/tt", imdbID, ""))
-                sHTTP = Nothing
+                intHTTP = New HTTP
+                Dim HTML As String = Await intHTTP.DownloadData(String.Concat("http://www.imdb.com/title/tt", imdbID, ""))
+                intHTTP.Dispose()
+                intHTTP = Nothing
+                If _Cancelled Then Return alPoster
 
                 ' check existence of a line like this
                 '      <a href="/media/rm2995297536/tt0089218?ref_=tt_ov_i" > <img height="317"

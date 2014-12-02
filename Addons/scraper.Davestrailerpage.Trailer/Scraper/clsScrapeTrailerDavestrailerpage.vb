@@ -32,7 +32,8 @@ Namespace Davestrailerpage
         Private originaltitle As String
         Private _trailerlist As New List(Of Trailers)
         Private imdbid As String
-
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 #End Region 'Fields
 
 #Region "Constructors"
@@ -60,6 +61,7 @@ Namespace Davestrailerpage
         Public Async Function Init(ByVal sOriginalTitle As String, ByVal sIMDBID As String) As Threading.Tasks.Task
             originaltitle = sOriginalTitle
             imdbid = sIMDBID
+            _Cancelled = False
             Await GetMovieTrailers()
         End Function
 
@@ -67,6 +69,21 @@ Namespace Davestrailerpage
             _trailerlist = New List(Of Trailers)
         End Sub
 
+        Public Sub CancelAsync()
+
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
+        End Sub
 
         ''' <summary>
         ''' Scrapes avalaible trailerlinks from http://www.davestrailerpage.co.uk/
@@ -87,8 +104,6 @@ Namespace Davestrailerpage
                     Dim BaseURL As String = ""
                     'dynamic URL-part of query
                     Dim SearchURL As String = ""
-                    'webrequest-object of Ember used to scrape Webpages
-                    Dim sHTTP As New HTTP
                     'retrieved JSON string
                     Dim sjson As String = ""
                     'downloaded HTML of a webpage
@@ -120,10 +135,12 @@ Namespace Davestrailerpage
                     BaseURL = "http://www.davestrailerpage.co.uk/trailers_"
                     SearchURL = String.Concat(BaseURL, searchtitle)
                     'download HTML
-                    sHTTP = New HTTP
                     sHtml = ""
-                    sHtml = Await sHTTP.DownloadData(SearchURL)
-                    sHTTP = Nothing
+                    intHTTP = New HTTP
+                    sHtml = Await intHTTP.DownloadData(SearchURL)
+                    intHTTP.Dispose()
+                    intHTTP = Nothing
+                    If _Cancelled Then Return
 
                     'Step 2: Extract moviesection on downloaded HTML
                     If sHtml <> "" Then

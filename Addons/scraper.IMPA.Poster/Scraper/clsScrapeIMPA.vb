@@ -33,6 +33,8 @@ Namespace IMPA
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 #End Region 'Fields
 
 #Region "Events"
@@ -40,6 +42,21 @@ Namespace IMPA
 #End Region 'Events
 
 #Region "Methods"
+        Public Sub CancelAsync()
+
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
+        End Sub
 
         Public Async Function GetIMPAPosters(ByVal imdbID As String) As Threading.Tasks.Task(Of List(Of MediaContainers.Image))
             Dim alPoster As New List(Of MediaContainers.Image)
@@ -47,20 +64,25 @@ Namespace IMPA
             Dim oV As String = String.Empty
 
             Try
+                _Cancelled = False
                 Dim sURL As String = Await GetLink(imdbID)
 
                 If Not String.IsNullOrEmpty(sURL) Then
-
-                    Dim sHTTP As New HTTP
-                    Dim HTML As String = Await sHTTP.DownloadData(sURL)
+                    intHTTP = New HTTP
+                    Dim HTML As String = Await intHTTP.DownloadData(sURL)
+                    intHTTP.Dispose()
+                    intHTTP = Nothing
+                    If _Cancelled Then Return alPoster
 
                     If HTML.Contains("equiv=""REFRESH""") Then
                         Dim newURL As String = Regex.Match(HTML, "URL=..*html").ToString
                         sURL = String.Concat("http://www.impawards.com", newURL.Replace("URL=..", String.Empty))
-                        HTML = Await sHTTP.DownloadData(sURL)
+                        intHTTP = New HTTP
+                        HTML = Await intHTTP.DownloadData(sURL)
+                        intHTTP.Dispose()
+                        intHTTP = Nothing
+                        If _Cancelled Then Return alPoster
                     End If
-
-                    sHTTP = Nothing
 
                     Dim mcPoster As MatchCollection = Regex.Matches(HTML, "(thumbs/imp_([^>]*ver[^>]*.jpg))|(thumbs/imp_([^>]*.jpg))")
 
@@ -95,12 +117,14 @@ Namespace IMPA
         Private Async Function GetLink(ByVal IMDBID As String) As Threading.Tasks.Task(Of String)
             Try
 
-                Dim sHTTP As New HTTP
-                Dim sPoster As String
+                Dim sPoster As String = String.Empty
                 Dim sURLRequest As HttpWebRequest
 
-                Dim HTML As String = Await sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", IMDBID, "/posters"))
-                sHTTP = Nothing
+                intHTTP = New HTTP
+                Dim HTML As String = Await intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", IMDBID, "/posters"))
+                intHTTP.Dispose()
+                intHTTP = Nothing
+                If _Cancelled Then Return sPoster
 
                 Dim mcIMPA As MatchCollection = Regex.Matches(HTML, "/offsite.*impawards.*""")
                 If mcIMPA.Count > 0 Then

@@ -30,6 +30,8 @@ Namespace OFDB
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 
         Private imdbID As String
         Private _genre As String
@@ -100,9 +102,27 @@ Namespace OFDB
 #Region "Methods"
         Public Async Function Init(ByVal sID As String) As Threading.Tasks.Task
             imdbID = sID
+            _Cancelled = False
+
             Await GetOFDBDetails()
+            If _Cancelled Then Clear()
         End Function
 
+        Public Sub CancelAsync()
+
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
+        End Sub
 
         Private Function CleanTitle(ByVal sString As String) As String
             Dim CleanString As String = sString
@@ -130,9 +150,11 @@ Namespace OFDB
 
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
-                    Dim sHTTP As New HTTP
-                    Dim HTML As String = Await sHTTP.DownloadData(sURL)
-                    sHTTP = Nothing
+                    intHTTP = New HTTP
+                    Dim HTML As String = Await intHTTP.DownloadData(sURL)
+                    intHTTP.Dispose()
+                    intHTTP = Nothing
+                    If _Cancelled Then Return FullPlot
 
                     Dim D, W, Wq, Wqq, B As Integer
                     Dim tmpHTML As String
@@ -166,9 +188,11 @@ Namespace OFDB
 
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
-                    Dim sHTTP As New HTTP
-                    Dim HTML As String = Await sHTTP.DownloadData(sURL)
-                    sHTTP = Nothing
+                    intHTTP = New HTTP
+                    Dim HTML As String = Await intHTTP.DownloadData(sURL)
+                    intHTTP.Dispose()
+                    intHTTP = Nothing
+                    If _Cancelled Then Return
 
                     If Not String.IsNullOrEmpty(HTML) Then
                         'title
@@ -282,11 +306,11 @@ Namespace OFDB
         Private Async Function GetOFDBUrlFromIMDBID() As Threading.Tasks.Task(Of String)
             Dim ofdbURL As String = String.Empty
             Try
-
-                Dim sHTTP As New HTTP
-                Dim HTML As String = Await sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
-                sHTTP = Nothing
-
+                intHTTP = New HTTP
+                Dim HTML As String = Await intHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
+                intHTTP.Dispose()
+                intHTTP = Nothing
+                If _Cancelled Then Return ofdbURL
 
                 If Not String.IsNullOrEmpty(HTML) Then
                     Dim mcOFDBURL As MatchCollection = Regex.Matches(HTML, "<a href=""film/([^<]+)"" onmouseover")

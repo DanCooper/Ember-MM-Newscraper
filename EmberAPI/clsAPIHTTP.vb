@@ -388,7 +388,7 @@ Public Class HTTP
     ''' store it in <see cref="_image"/>
     ''' </summary>
     ''' <remarks>This method is intended to be called in its own thread</remarks>
-    Public Async Sub DownloadImage(ByVal URL As String)
+    Public Async Function DownloadImage(ByVal URL As String) As Threading.Tasks.Task
         Dim Data As Byte()
         Try
             Me.Clear()
@@ -427,7 +427,7 @@ Public Class HTTP
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & Me._URL & ">", ex)
         End Try
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Convenience flag to indicate whether the thread is in fact still doing something

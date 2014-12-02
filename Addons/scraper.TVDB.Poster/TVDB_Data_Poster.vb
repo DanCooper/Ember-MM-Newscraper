@@ -63,7 +63,7 @@ Public Class TVDB_Data_Poster
 
     Public ReadOnly Property IsBusy() As Boolean Implements Interfaces.ScraperModule_TV.IsBusy
         Get
-            Return TVScraper.IsBusy
+            Return False
         End Get
     End Property
 
@@ -117,9 +117,11 @@ Public Class TVDB_Data_Poster
         TVScraper.CancelAsync()
     End Sub
 
-    Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String, ByRef epDet As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.ChangeEpisode
-        epDet = TVScraper.ChangeEpisode(ShowID, TVDBID, Lang)
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Public Async Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String, ByVal epDet As MediaContainers.EpisodeDetails) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.ChangeEpisode
+        epDet = Await TVScraper.ChangeEpisode(ShowID, TVDBID, Lang)
+        Dim ret As New Interfaces.ModuleResult With {.breakChain = False}
+        ret.ReturnObj.Add(epDet)
+        Return ret
     End Function
 
     Public Async Function GetLangs(ByVal sMirror As String, ByVal Langs As clsXMLTVDBLanguages) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.GetLangs
@@ -133,14 +135,22 @@ Public Class TVDB_Data_Poster
         Return ret
     End Function
 
-    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.GetSingleEpisode
-        epDetails = TVScraper.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Lang, Ordering, Options)
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Public Async Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal epDetails As MediaContainers.EpisodeDetails) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.GetSingleEpisode
+        Dim ret As New Interfaces.ModuleResult
+        epDetails = Await TVScraper.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Lang, Ordering, Options)
+        ret.breakChain = True
+        ret.ReturnObj.Add(epDetails)
+        Return ret
     End Function
 
-    Public Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef Image As Images) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.GetSingleImage
-        TVScraper.GetSingleImage(Title, ShowID, TVDBID, Type, Season, Episode, Lang, Ordering, CurrentImage, Image)
-        Return New Interfaces.ModuleResult With {.breakChain = True}
+    Public Async Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByVal Image As Images) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.GetSingleImage
+        Dim ret As New Interfaces.ModuleResult
+        ret = Await TVScraper.GetSingleImage(Title, ShowID, TVDBID, Type, Season, Episode, Lang, Ordering, CurrentImage, Image)
+        Image = CType(ret.ReturnObj(0), Images)
+        ret = New Interfaces.ModuleResult
+        ret.breakChain = True
+        ret.ReturnObj.Add(Image)
+        Return ret
     End Function
 
     Public Sub Handler_ScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal iProgress As Integer, ByVal Parameter As Object)

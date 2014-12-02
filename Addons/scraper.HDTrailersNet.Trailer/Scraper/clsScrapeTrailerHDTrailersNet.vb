@@ -31,7 +31,8 @@ Namespace HDTrailersNet
 
         Private originaltitle As String
         Private _trailerlist As New List(Of Trailers)
-
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 #End Region 'Fields
 
 #Region "Constructors"
@@ -58,11 +59,28 @@ Namespace HDTrailersNet
 #Region "Methods"
         Public Async Function Init(ByVal sOriginalTitle As String) As Threading.Tasks.Task
             originaltitle = sOriginalTitle
+            _Cancelled = False
             Await GetMovieTrailers()
         End Function
 
         Private Sub Clear()
             _trailerlist = New List(Of Trailers)
+        End Sub
+
+        Public Sub CancelAsync()
+
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
         End Sub
 
 
@@ -92,10 +110,14 @@ Namespace HDTrailersNet
                     'originaltitle may contain not supported characters which must be filtered/cleaned first!
                     Dim searchtitle As String = ""
                     searchtitle = StringUtils.RemovePunctuation(originaltitle).Replace("+", "-").Replace(" ", "-")
-                    Dim sHTTP As New HTTP
                     Dim sHtml As String = ""
-                    sHtml = Await sHTTP.DownloadData("http://www.hd-trailers.net/movie/" & searchtitle & "/")
-                    sHTTP = Nothing
+                    sHtml = ""
+                    intHTTP = New HTTP
+                    sHtml = Await intHTTP.DownloadData("http://www.hd-trailers.net/movie/" & searchtitle & "/")
+                    intHTTP.Dispose()
+                    intHTTP = Nothing
+                    If _Cancelled Then Return
+
                     'Step 2: If trailerlink was found -> ok, else use Google to search for trailer on hd-trailer.net
                     If sHtml <> "" Then
                         TrailerWEBPageURL = "http://www.hd-trailers.net/movie/" & searchtitle & "/"
@@ -110,9 +132,12 @@ Namespace HDTrailersNet
                         SearchURL = String.Concat(BaseURL, searchTerm)
                         '--> i.e "
                         'performing google search to find avalaible links on hd-trailers.net
-                        sHTTP = New HTTP
-                        sHtml = Await sHTTP.DownloadData(SearchURL)
-                        sHTTP = Nothing
+                        intHTTP = New HTTP
+                        sHtml = Await intHTTP.DownloadData(SearchURL)
+                        intHTTP.Dispose()
+                        intHTTP = Nothing
+                        If _Cancelled Then Return
+
                         If sHtml <> "" Then
                             'Now extract links from googleresults
                             Dim trailerWEBURLResults As MatchCollection = Nothing
@@ -155,10 +180,11 @@ Namespace HDTrailersNet
                     If Not String.IsNullOrEmpty(TrailerWEBPageURL) Then
                         logger.Info("[" & originaltitle & "] HD-Trailer.net - Movie found! Download URL: " & TrailerWEBPageURL)
                         'find avalaible links on hd-trailers.net movie site
-                        sHTTP = New HTTP
-                        sHtml = ""
-                        sHtml = Await sHTTP.DownloadData(TrailerWEBPageURL)
-                        sHTTP = Nothing
+                        intHTTP = New HTTP
+                        sHtml = Await intHTTP.DownloadData(TrailerWEBPageURL)
+                        intHTTP.Dispose()
+                        intHTTP = Nothing
+                        If _Cancelled Then Return
                         'looking for trailerlinks
                         Dim trailerlinkPattern As String = "<a href=""(?<URL>.*?)"".*?title=""(?<TITLE>.*?)"""
                         Dim trailerURLResults As MatchCollection = Regex.Matches(sHtml, trailerlinkPattern, RegexOptions.Singleline)

@@ -34,7 +34,8 @@ Namespace TelevisionTunes
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private originaltitle As String
         Private _themelist As New List(Of Themes)
-
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 #End Region 'Fields
 
 #Region "Constructors"
@@ -61,11 +62,28 @@ Namespace TelevisionTunes
 #Region "Methods"
         Public Async Function Init(ByVal sOriginalTitle As String) As Threading.Tasks.Task
             originaltitle = sOriginalTitle
+            _Cancelled = False
             Await GetMovieThemes()
         End Function
 
         Private Sub Clear()
             _themelist = New List(Of Themes)
+        End Sub
+
+        Public Sub CancelAsync()
+
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
         End Sub
 
         Private Async Function GetMovieThemes() As Threading.Tasks.Task
@@ -91,9 +109,11 @@ Namespace TelevisionTunes
                     Dim tLength As String = String.Empty
                     Dim tBitrate As String = String.Empty
 
-                    Dim sHTTP As New HTTP
-                    Dim Html As String = Await sHTTP.DownloadData(SearchURL)
-                    sHTTP = Nothing
+                    intHTTP = New HTTP
+                    Dim HTML As String = Await intHTTP.DownloadData(SearchURL)
+                    intHTTP.Dispose()
+                    intHTTP = Nothing
+                    If _Cancelled Then Return
 
                     Dim rPattern As String = "1.&nbsp;(?<RESULTS>.*?)</b>"
                     Dim sPattern As String = "<a href=""(?<URL>.*?)"">(?<TITLE>.*?)</a>"

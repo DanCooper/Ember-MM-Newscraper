@@ -60,6 +60,8 @@ Public Class Scraper
     Public Shared tEpisodes As New List(Of MediaContainers.EpisodeDetails)
     Public Shared tmpTVDBShow As New TVDBShow
     Public Shared TVDBImages As New TVImages
+    Private _Cancelled As Boolean
+    Private intHTTP As HTTP = Nothing
 
 #End Region 'Fields
 
@@ -83,18 +85,30 @@ Public Class Scraper
 
     Public Sub CancelAsync()
         sObject.CancelAsync()
+
+        'If bwIMDB.IsBusy Then
+        If Not IsNothing(intHTTP) Then
+            intHTTP.Cancel()
+        End If
+        _Cancelled = True
+
     End Sub
 
-    Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
-        Return sObject.ChangeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .ShowLang = Lang, .iSeason = -999})
+    Public Async Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As Threading.Tasks.Task(Of MediaContainers.EpisodeDetails)
+        Dim episode As MediaContainers.EpisodeDetails
+        episode = Await sObject.ChangeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .ShowLang = Lang, .iSeason = -999})
+        Return episode
     End Function
 
     Public Async Function GetLangs(ByVal sMirror As String) As Threading.Tasks.Task(Of clsXMLTVDBLanguages)
-        Dim sHTTP As New HTTP
         Dim aTVDBLang As New clsXMLTVDBLanguages
 
-        Dim apiXML As String = Await sHTTP.DownloadData(String.Format("http://{0}/api/{1}/languages.xml", sMirror, APIKey))
-        sHTTP = Nothing
+        intHTTP = New HTTP
+        Dim apiXML As String = Await intHTTP.DownloadData(String.Format("http://{0}/api/{1}/languages.xml", sMirror, APIKey))
+        intHTTP.Dispose()
+        intHTTP = Nothing
+        If _Cancelled Then Return aTVDBLang
+
         Using reader As StringReader = New StringReader(apiXML)
             Dim xTVDBLang As New XmlSerializer(aTVDBLang.GetType)
             aTVDBLang = CType(xTVDBLang.Deserialize(reader), clsXMLTVDBLanguages)
@@ -103,37 +117,36 @@ Public Class Scraper
         Return aTVDBLang
     End Function
 
-    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
-        Return sObject.GetSingleEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .Options = Options})
+    Public Async Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Threading.Tasks.Task(Of MediaContainers.EpisodeDetails)
+        Return Await sObject.GetSingleEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .Options = Options})
     End Function
 
-    Public Sub GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef RetImage As Images)
-        sObject.GetSingleImage(New Structures.ScrapeInfo With {.ShowTitle = Title, .ShowID = ShowID, .TVDBID = TVDBID, .ImageType = Type, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .CurrentImage = CurrentImage}, RetImage)
-    End Sub
+    Public Async Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByVal RetImage As Images) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        Dim ret As New Interfaces.ModuleResult
+        RetImage = Await sObject.GetSingleImage(New Structures.ScrapeInfo With {.ShowTitle = Title, .ShowID = ShowID, .TVDBID = TVDBID, .ImageType = Type, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .CurrentImage = CurrentImage}, RetImage)
+        ret.ReturnObj.Add(RetImage)
+        Return ret
+    End Function
 
     Public Sub InnerEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal iProgress As Integer, ByVal Parameter As Object)
         RaiseEvent ScraperEvent(eType, iProgress, Parameter)
     End Sub
 
-    Public Function IsBusy() As Boolean
-        Return sObject.IsBusy
+    Public Async Function SaveImages() As Threading.Tasks.Task
+        Await sObject.SaveImages()
     End Function
 
-    Public Sub SaveImages()
-        sObject.SaveImages()
-    End Sub
+    Public Async Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Threading.Tasks.Task
+        Await sObject.ScrapeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
+    End Function
 
-    Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions)
-        sObject.ScrapeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
-    End Sub
+    Public Async Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Threading.Tasks.Task
+        Await sObject.ScrapeSeason(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iSeason = iSeason, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
+    End Function
 
-    Public Sub ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions)
-        sObject.ScrapeSeason(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iSeason = iSeason, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
-    End Sub
-
-    Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean)
-        sObject.SingleScrape(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .ShowLang = ShowLang, .SourceLang = SourceLang, .Ordering = Ordering, .Options = Options, .ScrapeType = ScrapeType, .WithCurrent = WithCurrent, .iSeason = -999})
-    End Sub
+    Public Async Function SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As Threading.Tasks.Task
+        Await sObject.SingleScrape(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .ShowLang = ShowLang, .SourceLang = SourceLang, .Ordering = Ordering, .Options = Options, .ScrapeType = ScrapeType, .WithCurrent = WithCurrent, .iSeason = -999})
+    End Function
 
 #End Region 'Methods
 
@@ -180,11 +193,12 @@ Public Class Scraper
 
 #Region "Fields"
 
-        Friend WithEvents bwTVDB As New System.ComponentModel.BackgroundWorker
-
         Private aXML As String = String.Empty
         Private bXML As String = String.Empty
         Private sXML As String = String.Empty
+
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 
 #End Region 'Fields
 
@@ -237,12 +251,17 @@ Public Class Scraper
         End Sub
 
         Public Sub CancelAsync()
-            If bwTVDB.IsBusy Then bwTVDB.CancelAsync()
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
         End Sub
 
-        Public Function ChangeEpisode(ByVal sInfo As Structures.ScrapeInfo) As MediaContainers.EpisodeDetails
+        Public Async Function ChangeEpisode(ByVal sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task(Of MediaContainers.EpisodeDetails)
             Try
-                Dim tEpisodes As List(Of MediaContainers.EpisodeDetails) = Me.GetListOfKnownEpisodes(sInfo)
+                Dim tEpisodes As List(Of MediaContainers.EpisodeDetails)
+                tEpisodes = Await GetListOfKnownEpisodes(sInfo)
                 If tEpisodes.Count > 0 Then
                     Using dChangeEp As New dlgTVChangeEp
                         Return dChangeEp.ShowDialog(tEpisodes)
@@ -257,7 +276,7 @@ Public Class Scraper
             Return Nothing
         End Function
 
-        Public Sub DownloadSeries(ByVal sInfo As Structures.ScrapeInfo, Optional ByVal ImagesOnly As Boolean = False)
+        Public Async Function DownloadSeries(ByVal sInfo As Structures.ScrapeInfo, Optional ByVal ImagesOnly As Boolean = False) As Threading.Tasks.Task
             Try
                 Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.ShowLang, ".zip"))
                 Dim fExists As Boolean = File.Exists(fPath)
@@ -277,21 +296,24 @@ Public Class Scraper
                 End Select
 
                 If doDownload OrElse Not fExists Then
-                    Using sHTTP As New HTTP
-                        sHTTP.DownloadFile(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.ShowLang), "", False, "other")
-                        Dim xZip As Byte() = sHTTP.ms.ToArray
+                    intHTTP = New HTTP
+                    Await intHTTP.DownloadFile(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.ShowLang), "", False, "other")
+                    intHTTP.Dispose()
+                    intHTTP = Nothing
+                    If _Cancelled Then Return
+                    Dim xZip As Byte() = intHTTP.ms.ToArray
 
-                        If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
-                            'save it to the temp dir
-                            Directory.CreateDirectory(Directory.GetParent(fPath).FullName)
-                            Using fStream As FileStream = New FileStream(fPath, FileMode.Create, FileAccess.Write)
-                                fStream.Write(xZip, 0, xZip.Length)
-                            End Using
+                    If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
+                        'save it to the temp dir
+                        Directory.CreateDirectory(Directory.GetParent(fPath).FullName)
+                        Using fStream As FileStream = New FileStream(fPath, FileMode.Create, FileAccess.Write)
+                            fStream.Write(xZip, 0, xZip.Length)
+                        End Using
 
-                            Me.ProcessTVDBZip(xZip, sInfo)
-                            Me.ShowFromXML(sInfo, ImagesOnly)
-                        End If
-                    End Using
+                        Me.ProcessTVDBZip(xZip, sInfo)
+                        Me.ShowFromXML(sInfo, ImagesOnly)
+                    End If
+
                 Else
                     Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
                         Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
@@ -303,21 +325,17 @@ Public Class Scraper
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
-        Public Sub DownloadSeriesAsync(ByVal sInfo As Structures.ScrapeInfo)
+        End Function
+        Public Async Function DownloadSeriesAsync(ByVal sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task
             Try
-                If Not bwTVDB.IsBusy Then
-                    RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.StartingDownload, 0, Nothing)
-                    bwTVDB.WorkerReportsProgress = True
-                    bwTVDB.WorkerSupportsCancellation = True
-                    bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = sInfo})
-                End If
+                Await DownloadSeries(sInfo)
+                RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ShowDownloaded, 0, Nothing)
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
-        Public Function GetListOfKnownEpisodes(ByVal sInfo As Structures.ScrapeInfo) As List(Of MediaContainers.EpisodeDetails)
+        Public Async Function GetListOfKnownEpisodes(ByVal sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task(Of List(Of MediaContainers.EpisodeDetails))
             Dim Actors As New List(Of MediaContainers.Person)
             Dim tEpisodes As New List(Of MediaContainers.EpisodeDetails)
             Dim tEpisode As New MediaContainers.EpisodeDetails
@@ -332,7 +350,7 @@ Public Class Scraper
                     'This is usefull for non english users because TVDB can has much "not yet translated" information if the file is to old
                     Dim fileInfo As New FileInfo(fPath)
                     If fileInfo.LastWriteTime < DateTime.Now.AddHours(-12) Then
-                        DownloadSeries(sInfo)
+                        Await DownloadSeries(sInfo)
                     End If
 
                     Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
@@ -439,29 +457,29 @@ Public Class Scraper
             Return tEpisodes
         End Function
 
-        Public Sub GetSearchResultsAsync(ByVal sInfo As Structures.ScrapeInfo)
+        Public Async Function GetSearchResultsAsync(ByVal sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task
             Try
-                If Not bwTVDB.IsBusy Then
-                    bwTVDB.WorkerReportsProgress = True
-                    bwTVDB.WorkerSupportsCancellation = True
-                    bwTVDB.RunWorkerAsync(New Arguments With {.Type = 0, .Parameter = sInfo})
-                End If
+                Dim tvdbResults As New List(Of TVSearchResults)
+                tvdbResults = Await SearchSeries(sInfo)
+                RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SearchResultsDownloaded, 0, tvdbResults)
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
-        Public Function GetSingleEpisode(ByVal sInfo As Structures.ScrapeInfo) As MediaContainers.EpisodeDetails
+        Public Async Function GetSingleEpisode(ByVal sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task(Of MediaContainers.EpisodeDetails)
             Dim tEp As New MediaContainers.EpisodeDetails
+            Dim EpList As List(Of MediaContainers.EpisodeDetails)
             Try
-
-                tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
+                EpList = Await Me.GetListOfKnownEpisodes(sInfo)
+                tEp = EpList.FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
 
                 If Not IsNothing(tEp) Then
                     Return tEp
                 Else
-                    DownloadSeries(sInfo)
-                    tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
+                    Await DownloadSeries(sInfo)
+                    EpList = Await Me.GetListOfKnownEpisodes(sInfo)
+                    tEp = EpList.FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
                     If Not IsNothing(tEp) Then
                         Return tEp
                     End If
@@ -473,7 +491,9 @@ Public Class Scraper
             Return New MediaContainers.EpisodeDetails
         End Function
 
-        Public Sub GetSingleImage(ByVal sInfo As Structures.ScrapeInfo, ByRef RetImage As Images)
+        Public Async Function GetSingleImage(ByVal sInfo As Structures.ScrapeInfo, ByVal RetImage As Images) As Threading.Tasks.Task(Of Images)
+            Dim EpList As List(Of MediaContainers.EpisodeDetails)
+            Dim tmpEp As MediaContainers.EpisodeDetails
             tmpTVDBShow = New TVDBShow
 
             If sInfo.ImageType = Enums.TVImageType.EpisodePoster Then
@@ -484,13 +504,14 @@ Public Class Scraper
                         If Not String.IsNullOrEmpty(sInfo.TVDBID) Then
                             Master.currShow.TVShow.ID = sInfo.TVDBID
 
-                            Dim tmpEp As MediaContainers.EpisodeDetails = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Episode = sInfo.iEpisode AndAlso e.Season = sInfo.iSeason)
+                            EpList = Await GetListOfKnownEpisodes(sInfo)
+                            tmpEp = EpList.FirstOrDefault(Function(e) e.Episode = sInfo.iEpisode AndAlso e.Season = sInfo.iSeason)
                             If Not IsNothing(tmpEp) Then
 
                                 If File.Exists(tmpEp.LocalFile) Then
                                     RetImage.FromFile(tmpEp.LocalFile)
                                 Else
-                                    RetImage.FromWeb(tmpEp.PosterURL)
+                                    Await RetImage.FromWeb(tmpEp.PosterURL)
                                     If Not IsNothing(RetImage.Image) Then
                                         Directory.CreateDirectory(Directory.GetParent(tmpEp.LocalFile).FullName)
                                         RetImage.Save(tmpEp.LocalFile, , , False)
@@ -515,12 +536,13 @@ Public Class Scraper
                         End If
                     End Using
                 Else
-                    Dim tmpEp As MediaContainers.EpisodeDetails = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Episode = sInfo.iEpisode AndAlso e.Season = sInfo.iSeason)
+                    EpList = Await GetListOfKnownEpisodes(sInfo)
+                    tmpEp = EpList.FirstOrDefault(Function(e) e.Episode = sInfo.iEpisode AndAlso e.Season = sInfo.iSeason)
                     If Not IsNothing(tmpEp) Then
                         If File.Exists(tmpEp.LocalFile) Then
                             RetImage.FromFile(tmpEp.LocalFile)
                         Else
-                            RetImage.FromWeb(tmpEp.PosterURL)
+                            Await RetImage.FromWeb(tmpEp.PosterURL)
                             If Not IsNothing(RetImage.Image) Then
                                 Directory.CreateDirectory(Directory.GetParent(tmpEp.LocalFile).FullName)
                                 RetImage.Save(tmpEp.LocalFile, , , False)
@@ -547,7 +569,7 @@ Public Class Scraper
                         sInfo = dTVDBSearch.ShowDialog(sInfo, True)
                         If Not String.IsNullOrEmpty(sInfo.TVDBID) Then
                             Master.currShow.TVShow.ID = sInfo.TVDBID
-                            Me.DownloadSeries(sInfo, True)
+                            Await Me.DownloadSeries(sInfo, True)
                             Using dImageSelect As New dlgTVImageSelect
                                 RetImage = dImageSelect.ShowDialog(sInfo.ShowID, sInfo.ImageType, sInfo.iSeason, sInfo.CurrentImage)
                             End Using
@@ -556,17 +578,15 @@ Public Class Scraper
                         End If
                     End Using
                 Else
-                    Me.DownloadSeries(sInfo, True)
+                    Await Me.DownloadSeries(sInfo, True)
                     Using dImageSelect As New dlgTVImageSelect
                         RetImage = dImageSelect.ShowDialog(sInfo.ShowID, sInfo.ImageType, sInfo.iSeason, sInfo.CurrentImage)
                     End Using
                 End If
             End If
-        End Sub
-
-        Public Function IsBusy() As Boolean
-            Return bwTVDB.IsBusy
+            Return RetImage
         End Function
+
 
         Public Sub PassEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal iProgress As Integer, ByVal Parameter As Object)
             RaiseEvent ScraperEvent(eType, iProgress, Parameter)
@@ -601,15 +621,12 @@ Public Class Scraper
             End Try
         End Sub
 
-        Public Sub SaveImages()
+        Public Async Function SaveImages() As Threading.Tasks.Task
             RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SavingStarted, 0, Nothing)
-            Me.bwTVDB = New System.ComponentModel.BackgroundWorker
-            Me.bwTVDB.WorkerReportsProgress = True
-            Me.bwTVDB.WorkerSupportsCancellation = True
-            Me.bwTVDB.RunWorkerAsync(New Arguments With {.Type = 3})
-        End Sub
+            Await SaveAllTVInfo()
+        End Function
 
-        Public Sub ScrapeEpisode(ByVal sInfo As Structures.ScrapeInfo)
+        Public Async Function ScrapeEpisode(ByVal sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task
             Try
                 tmpTVDBShow = New TVDBShow
                 tmpTVDBShow.Episodes.Add(Master.currShow)
@@ -637,11 +654,11 @@ Public Class Scraper
                         End If
                     End Using
                 Else
-                    DownloadSeries(sInfo)
+                    Await DownloadSeries(sInfo)
                     If tmpTVDBShow.Episodes(0).TVShow.ID.Length > 0 Then
                         Master.currShow = tmpTVDBShow.Episodes(0)
                         If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso Not File.Exists(Master.currShow.TVEp.LocalFile) Then
-                            Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
+                            Await Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
                             If Not IsNothing(Master.currShow.TVEp.Poster.Image) Then
                                 Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
                                 Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
@@ -659,7 +676,7 @@ Public Class Scraper
                             If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                 Master.currShow = tmpTVDBShow.Episodes(0)
                                 If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso Not File.Exists(Master.currShow.TVEp.LocalFile) Then
-                                    Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
+                                    Await Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
                                     If Not IsNothing(Master.currShow.TVEp.Poster) Then
                                         Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
                                         Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
@@ -681,27 +698,25 @@ Public Class Scraper
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
-        Public Sub ScrapeSeason(ByVal sInfo As Structures.ScrapeInfo)
+        Public Async Function ScrapeSeason(ByVal sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task
             RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.LoadingEpisodes, 0, Nothing)
-            bwTVDB.WorkerReportsProgress = True
-            bwTVDB.WorkerSupportsCancellation = True
-            bwTVDB.RunWorkerAsync(New Arguments With {.Type = 4, .Parameter = sInfo})
-        End Sub
+            LoadAllEpisodes(sInfo.ShowID, sInfo.iSeason)
+            If Not _Cancelled Then
+                Await StartSingleScraper(sInfo)
+            Else
+                RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ScraperDone, 0, Nothing)
+            End If
+        End Function
 
-        Public Sub SingleScrape(ByVal sInfo As Structures.ScrapeInfo)
+        Public Async Function SingleScrape(ByVal sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task
             RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.LoadingEpisodes, 0, Nothing)
-            bwTVDB.WorkerReportsProgress = False
-            bwTVDB.WorkerSupportsCancellation = True
-            bwTVDB.RunWorkerAsync(New Arguments With {.Type = 2, .Parameter = sInfo})
-            While bwTVDB.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
-        End Sub
+            Await Me.DownloadSeries(sInfo)
+            RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ShowDownloaded, 0, Nothing)
+        End Function
 
-        Public Sub StartSingleScraper(ByVal sInfo As Structures.ScrapeInfo)
+        Public Async Function StartSingleScraper(ByVal sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task
             Try
                 If String.IsNullOrEmpty(sInfo.TVDBID) AndAlso sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
                     RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Searching, 0, Nothing)
@@ -712,7 +727,7 @@ Public Class Scraper
                             Using dTVImageSel As New dlgTVImageSelect
                                 If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
                                     If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
-                                        Me.SaveImages()
+                                        Await Me.SaveImages()
                                     Else
                                         RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Verifying, 0, Nothing)
                                     End If
@@ -725,14 +740,14 @@ Public Class Scraper
                         End If
                     End Using
                 Else
-                    DownloadSeries(sInfo)
+                    Await DownloadSeries(sInfo)
                     If tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
                         Master.currShow = tmpTVDBShow.Show
                         RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
                         Using dTVImageSel As New dlgTVImageSelect
                             If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
                                 If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
-                                    Me.SaveImages()
+                                    Await Me.SaveImages()
                                 Else
                                     If sInfo.ScrapeType = Enums.ScrapeType.FullAuto Then
                                         RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SaveAuto, 0, Nothing)
@@ -753,7 +768,7 @@ Public Class Scraper
                                 Using dTVImageSel As New dlgTVImageSelect
                                     If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
                                         If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
-                                            Me.SaveImages()
+                                            Await Me.SaveImages()
                                         Else
                                             RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Verifying, 0, Nothing)
                                         End If
@@ -773,60 +788,7 @@ Public Class Scraper
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
-
-        Private Async Sub bwtvDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVDB.DoWork
-            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-
-            Try
-                Select Case Args.Type
-                    Case 0 'search
-                        e.Result = New Results With {.Type = 0, .Result = SearchSeries(DirectCast(Args.Parameter, Structures.ScrapeInfo))}
-                    Case 1 'show download
-                        Me.DownloadSeries(DirectCast(Args.Parameter, Structures.ScrapeInfo))
-                        e.Result = New Results With {.Type = 1}
-                    Case 2 'load episodes
-                        LoadAllEpisodes(DirectCast(Args.Parameter, Structures.ScrapeInfo).ShowID, 999)
-                        e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
-                    Case 3 'save
-                        Await Me.SaveAllTVInfo()
-                        e.Result = New Results With {.Type = 3}
-                    Case 4
-                        Dim sInfo As Structures.ScrapeInfo = DirectCast(Args.Parameter, Structures.ScrapeInfo)
-                        LoadAllEpisodes(sInfo.ShowID, sInfo.iSeason)
-                        e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
-                End Select
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        End Sub
-
-        Private Sub bwTVDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVDB.ProgressChanged
-            RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Progress, e.ProgressPercentage, e.UserState.ToString)
-        End Sub
-
-        Private Sub bwTVDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVDB.RunWorkerCompleted
-            Dim Res As Results = DirectCast(e.Result, Results)
-
-            Try
-                Select Case Res.Type
-                    Case 0 'search
-                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SearchResultsDownloaded, 0, DirectCast(Res.Result, List(Of TVSearchResults)))
-                    Case 1 'show download
-                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ShowDownloaded, 0, Nothing)
-                    Case 2 'load episodes
-                        If Not e.Cancelled Then
-                            StartSingleScraper(DirectCast(Res.Result, Structures.ScrapeInfo))
-                        Else
-                            RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ScraperDone, 0, Nothing)
-                        End If
-                    Case 3 'save
-                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ScraperDone, 0, Nothing)
-                End Select
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        End Sub
+        End Function
 
         Private Function CreditsString(ByVal sGStars As String, ByVal sWriters As String) As String
             Dim cString As New List(Of String)
@@ -856,8 +818,6 @@ Public Class Scraper
             Dim tShow As New Structures.DBTV
             Dim tEpisode As New MediaContainers.EpisodeDetails
 
-            Me.bwTVDB.ReportProgress(tmpTVDBShow.Episodes.Count, "max")
-
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 If Master.eSettings.TVDisplayMissingEpisodes Then
                     'clear old missing episode from db
@@ -871,7 +831,7 @@ Public Class Scraper
                     For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
                         Try
-                            If Me.bwTVDB.CancellationPending Then Return
+                            If _Cancelled Then Return
 
                             Episode.ShowID = Master.currShow.ShowID
 
@@ -885,23 +845,23 @@ Public Class Scraper
                                 tShow = Episode
                             End If
 
-                            If Me.bwTVDB.CancellationPending Then Return
+                            If _Cancelled Then Return
 
                             If Episode.TVEp.Season > -1 AndAlso Episode.TVEp.Episode > -1 AndAlso Not Episode.IsLockEp Then
                                 If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Await Episode.TVEp.Poster.SaveAsTVEpisodePoster(Episode, Episode.TVEp.PosterURL)
 
-                                If Me.bwTVDB.CancellationPending Then Return
+                                If _Cancelled Then Return
 
                                 If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Await Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
 
-                                If Me.bwTVDB.CancellationPending Then Return
+                                If _Cancelled Then Return
 
                                 Dim cSea = From cSeason As TVDBSeasonImage In TVDBImages.SeasonImageList Where cSeason.Season = iSea Take 1
                                 If cSea.Count > 0 Then
                                     If Not IsNothing(cSea(0).Poster.Image) Then Episode.SeasonPosterPath = Await cSea(0).Poster.SaveAsTVSeasonPoster(Episode)
                                     If Not IsNothing(cSea(0).Banner.Image) Then Episode.SeasonBannerPath = Await cSea(0).Banner.SaveAsTVSeasonBanner(Episode)
 
-                                    If Me.bwTVDB.CancellationPending Then Return
+                                    If _Cancelled Then Return
 
                                     If Master.eSettings.TVSeasonFanartAnyEnabled Then
                                         If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
@@ -919,15 +879,14 @@ Public Class Scraper
                                     End If
                                 End If
 
-                                If Me.bwTVDB.CancellationPending Then Return
+                                If _Cancelled Then Return
 
                                 If Master.eSettings.TVScraperMetaDataScan Then MediaInfo.UpdateTVMediaInfo(Episode)
 
                                 Master.DB.SaveTVEpToDB(Episode, False, True, True, True)
 
-                                If Me.bwTVDB.CancellationPending Then Return
+                                If _Cancelled Then Return
                             End If
-                            Me.bwTVDB.ReportProgress(iProgress, "progress")
 
                             'If AdvancedSettings.GetBooleanSetting("ScrapeActorsThumbs", False) Then 
                             'For Each act As MediaContainers.Person In Episode.TVEp.Actors
@@ -963,7 +922,7 @@ Public Class Scraper
                         End If
                     End If
 
-                    If Me.bwTVDB.CancellationPending Then Return
+                    If _Cancelled Then Return
 
                     SQLTrans.Commit()
 
@@ -1079,7 +1038,7 @@ Public Class Scraper
             Return tvdbResults
         End Function
 
-        Private Sub ShowFromXML(ByVal sInfo As Structures.ScrapeInfo, ByVal ImagesOnly As Boolean)
+        Private Async Function ShowFromXML(ByVal sInfo As Structures.ScrapeInfo, ByVal ImagesOnly As Boolean) As Threading.Tasks.Task
             Dim Actors As New List(Of MediaContainers.Person)
             Dim sID As String = String.Empty
             Dim iEp As Integer = -1
@@ -1091,7 +1050,7 @@ Public Class Scraper
             Dim tOrdering As Enums.Ordering = Enums.Ordering.Standard
 
             If Not ImagesOnly Then
-                If Master.eSettings.TVDisplayMissingEpisodes Then tEpisodes = Me.GetListOfKnownEpisodes(sInfo)
+                If Master.eSettings.TVDisplayMissingEpisodes Then tEpisodes = Await Me.GetListOfKnownEpisodes(sInfo)
 
                 'get the actors first
                 Try
@@ -1284,7 +1243,7 @@ Public Class Scraper
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End Sub
+        End Function
 
         Private Function StringToSeasonPosterType(ByVal sType As String) As Enums.TVSeasonPosterType
             Select Case sType.ToLower

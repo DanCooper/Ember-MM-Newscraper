@@ -220,8 +220,8 @@ Public Class dlgEditShow
         Me.DeleteActors()
     End Sub
 
-    Private Sub btnSetASBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASBannerScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASBanner, Images))
+    Private Async Sub btnSetASBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASBannerScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASBanner, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ASBanner = tImage
@@ -249,7 +249,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -270,12 +270,12 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetASFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASFanartScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASFanart, Images))
+    Private Async Sub btnSetASFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASFanartScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASFanart, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ASFanart = tImage
@@ -303,7 +303,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -324,12 +324,12 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetASLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASLandscapeScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASLandscape, Images))
+    Private Async Sub btnSetASLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASLandscapeScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASLandscape, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ASLandscape = tImage
@@ -357,7 +357,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -378,12 +378,12 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetASPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASPosterScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASPoster, Images))
+    Private Async Sub btnSetASPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASPosterScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASPoster, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ASPoster = tImage
@@ -411,7 +411,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -432,12 +432,12 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetShowBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowBanner, Images))
+    Private Async Sub btnSetShowBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowBanner, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ShowBanner = tImage
@@ -465,7 +465,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -486,12 +486,12 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetShowCharacterArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowCharacterArtScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowCharacterArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowCharacterArt, Images))
+    Private Async Sub btnSetShowCharacterArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowCharacterArtScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowCharacterArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowCharacterArt, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ShowCharacterArt = tImage
@@ -561,12 +561,12 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetShowClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearArtScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowClearArt, Images))
+    Private Async Sub btnSetShowClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearArtScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowClearArt, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ShowClearArt = tImage
@@ -619,8 +619,8 @@ Public Class dlgEditShow
         End Try
     End Sub
 
-    Private Sub btnSetShowClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearLogoScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowClearLogo, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowClearLogo, Images))
+    Private Async Sub btnSetShowClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearLogoScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowClearLogo, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowClearLogo, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ShowClearLogo = tImage
@@ -673,8 +673,8 @@ Public Class dlgEditShow
         End Try
     End Sub
 
-    Private Sub btnSetShowFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowFanart, Images))
+    Private Async Sub btnSetShowFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowFanart, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ShowFanart = tImage
@@ -705,12 +705,12 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetShowLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowLandscape, Images))
+    Private Async Sub btnSetShowLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowLandscape, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ShowLandscape = tImage
@@ -738,7 +738,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -759,7 +759,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -780,12 +780,12 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetShowPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowPoster, Images))
+    Private Async Sub btnSetShowPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowPoster, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ShowPoster = tImage

@@ -152,9 +152,7 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        If TMDB.bwTMDB.IsBusy Then
-            TMDB.CancelAsync()
-        End If
+        TMDB.CancelAsync()
         _nMovie.Clear()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel

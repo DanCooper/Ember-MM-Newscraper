@@ -4405,7 +4405,7 @@ doCancel:
 
     Private Async Sub cmnuEpisodeChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeChange.Click
         Me.SetControlsEnabled(False, True)
-        Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB, Me.tmpLang)
+        Dim tEpisode As MediaContainers.EpisodeDetails = Await ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB, Me.tmpLang)
 
         If Not IsNothing(tEpisode) Then
             Master.currShow.TVEp = tEpisode
@@ -13489,7 +13489,7 @@ doCancel:
                                 oldImage.FromFile(Master.currShow.ShowClearArtPath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
@@ -13643,7 +13643,7 @@ doCancel:
                                 oldImage.FromFile(Master.currShow.ShowFanartPath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
@@ -13676,7 +13676,7 @@ doCancel:
                             Dim tImage As New Images
 
                             If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                tImage = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
@@ -13686,7 +13686,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                tImage = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
@@ -13715,7 +13715,7 @@ doCancel:
                                 oldImage.FromFile(Master.currShow.EpFanartPath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
@@ -13845,7 +13845,7 @@ doCancel:
                                 oldImage.FromFile(Master.currShow.ShowPosterPath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
@@ -13878,7 +13878,7 @@ doCancel:
                             Dim tImage As New Images
 
                             If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                tImage = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
@@ -13888,7 +13888,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                tImage = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
@@ -13916,7 +13916,7 @@ doCancel:
                                 oldImage.FromFile(Master.currShow.EpPosterPath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
@@ -14046,7 +14046,7 @@ doCancel:
                                 oldImage.FromFile(Master.currShow.ShowLandscapePath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
                             If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                 newImage = tImage
@@ -14079,7 +14079,7 @@ doCancel:
                             Dim tImage As New Images
 
                             If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                tImage = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True
@@ -14089,7 +14089,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                tImage = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
                                 If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
                                     newImage = tImage
                                     newImage.IsEdit = True

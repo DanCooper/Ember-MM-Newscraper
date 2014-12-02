@@ -1497,7 +1497,7 @@ Public Class Scanner
                                         End If
                                     Else
                                         If Not String.IsNullOrEmpty(tmpTVDB.TVShow.ID) AndAlso tmpTVDB.ShowID >= 0 Then
-                                            tmpTVDB.TVEp = ModulesManager.Instance.GetSingleEpisode(Convert.ToInt32(tmpTVDB.ShowID), tmpTVDB.TVShow.ID, sSeasons.Season, i, tmpTVDB.ShowLanguage, tmpTVDB.Ordering, Master.DefaultTVOptions)
+                                            tmpTVDB.TVEp = Await ModulesManager.Instance.GetSingleEpisode(Convert.ToInt32(tmpTVDB.ShowID), tmpTVDB.TVShow.ID, sSeasons.Season, i, tmpTVDB.ShowLanguage, tmpTVDB.Ordering, Master.DefaultTVOptions)
 
                                             If Not String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
                                                 toNfo = True

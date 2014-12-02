@@ -110,9 +110,8 @@ Public Class dlgEditEpisode
         Me.DeleteActors()
     End Sub
 
-    Private Sub btnSetEpisodeFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodeFanartScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodeFanart, Images))
-
+    Private Async Sub btnSetEpisodeFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodeFanartScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodeFanart, Images))
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             EpisodeFanart = tImage
             Me.pbEpisodeFanart.Image = tImage.Image
@@ -123,8 +122,8 @@ Public Class dlgEditEpisode
         End If
     End Sub
 
-    Private Sub btnSetEpisodePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodePosterScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodePoster, Images))
+    Private Async Sub btnSetEpisodePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodePosterScrape.Click
+        Dim tImage As Images = Await ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodePoster, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             EpisodePoster = tImage

@@ -84,6 +84,7 @@ Namespace MoviepilotDE
             'Main method in this class to retrieve Moviepilot information...
             _Cancelled = False
             Await GetMoviepilotDEDetails()
+            If _Cancelled Then Clear()
         End Function
 
         Private Sub Clear()
@@ -123,7 +124,9 @@ Namespace MoviepilotDE
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
                     'Now download HTML-Code
+                    intHTTP = New HTTP
                     Dim HTML As String = Await intHTTP.DownloadData(sURL)
+                    intHTTP.Dispose()
                     intHTTP = Nothing
                     If _Cancelled Then Return
 
@@ -162,8 +165,9 @@ Namespace MoviepilotDE
         Private Async Function GetMoviePilotUrlFromOriginaltitle(ByVal originaltitle As String) As Threading.Tasks.Task(Of String)
             Dim MoviePilotURL As String = String.Empty
             Try
-
+                intHTTP = New HTTP
                 Dim HTML As String = Await intHTTP.DownloadData(String.Concat("http://www.moviepilot.de/suche?q=", originaltitle, "&type=movie&sourceid=mozilla-search"))
+                intHTTP.Dispose()
                 intHTTP = Nothing
                 If _Cancelled Then Return MoviePilotURL
                 'Example:

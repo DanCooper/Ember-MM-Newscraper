@@ -853,15 +853,11 @@ Public Class Images
     ''' </summary>
     ''' <param name="sURL">URL to the image file</param>
     ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sURL As String)
+    Public Async Function FromWeb(ByVal sURL As String) As Threading.Tasks.Task
         If String.IsNullOrEmpty(sURL) Then Return
 
         Try
-            sHTTP.DownloadImage(sURL)
-            While sHTTP.IsDownloading
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
+            Await sHTTP.DownloadImage(sURL)
 
             If Not IsNothing(sHTTP.Image) Then
                 If Not IsNothing(Me._ms) Then
@@ -885,7 +881,7 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
         End Try
-    End Sub
+    End Function
     ''' <summary>
     ''' 
     ''' </summary>

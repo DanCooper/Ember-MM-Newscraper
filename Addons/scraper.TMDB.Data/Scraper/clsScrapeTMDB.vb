@@ -82,6 +82,8 @@ Namespace TMDB
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Private _Cancelled As Boolean
+        Private intHTTP As EmberAPI.HTTP = Nothing
 
         Private _TMDBConf As V3.TmdbConfiguration
         Private _TMDBConfE As V3.TmdbConfiguration
@@ -91,8 +93,6 @@ Namespace TMDB
         Private _TMDBApiA As V3.Tmdb 'all languages
         Private _MySettings As sMySettings_ForScraper
         Private strPrivateAPIKey As String = String.Empty
-
-        Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
 
         Private _sPoster As String
 
@@ -157,12 +157,10 @@ Namespace TMDB
         End Sub
 
         Public Sub CancelAsync()
-            If bwTMDB.IsBusy Then bwTMDB.CancelAsync()
-
-            While bwTMDB.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
         End Sub
 
         Public Sub GetMovieID(ByRef DBMovie As Structures.DBMovie)
@@ -170,7 +168,7 @@ Namespace TMDB
                 Dim Movie As WatTmdb.V3.TmdbMovie
                 Dim MovieE As WatTmdb.V3.TmdbMovie
 
-                If bwTMDB.CancellationPending Then Return
+                If _Cancelled Then Return
 
                 Movie = _TMDBApi.GetMovieByIMDB(DBMovie.Movie.ID, _MySettings.PrefLanguage)
                 MovieE = _TMDBApiE.GetMovieByIMDB(DBMovie.Movie.ID)
@@ -190,7 +188,7 @@ Namespace TMDB
                 Dim Movie As WatTmdb.V3.TmdbMovie
                 Dim MovieE As WatTmdb.V3.TmdbMovie
 
-                If bwTMDB.CancellationPending Then Return String.Empty
+                If _Cancelled Then Return String.Empty
 
                 Movie = _TMDBApi.GetMovieByIMDB(IMDBID, _MySettings.PrefLanguage)
                 MovieE = _TMDBApiE.GetMovieByIMDB(IMDBID)
@@ -209,7 +207,8 @@ Namespace TMDB
         Public Function GetMovieCollectionID(ByVal IMDBID As String) As String
             Try
                 Dim Movie As WatTmdb.V3.TmdbMovie
-                If bwTMDB.CancellationPending Then Return ""
+
+                If _Cancelled Then Return String.Empty
 
                 Movie = _TMDBApiE.GetMovieByIMDB(IMDBID)
                 If IsNothing(Movie) Then
@@ -250,7 +249,7 @@ Namespace TMDB
                 'clear nMovie from search results
                 nMovie.Clear()
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 If Strings.Left(strID.ToLower(), 2) = "tt" Then
                     Movie = _TMDBApi.GetMovieByIMDB(strID)
@@ -267,7 +266,7 @@ Namespace TMDB
                 nMovie.ID = CStr(IIf(String.IsNullOrEmpty(Movie.imdb_id) AndAlso _MySettings.FallBackEng, MovieE.imdb_id, Movie.imdb_id))
                 nMovie.TMDBID = CStr(IIf(String.IsNullOrEmpty(Movie.id.ToString) AndAlso _MySettings.FallBackEng, MovieE.id.ToString, Movie.id.ToString))
 
-                If bwTMDB.CancellationPending Or IsNothing(Movie) Then Return Nothing
+                If _Cancelled Or IsNothing(Movie) Then Return Nothing
 
                 Dim Keywords As WatTmdb.V3.TmdbMovieKeywords
                 Keywords = _TMDBApi.GetMovieKeywords(Movie.id)
@@ -301,7 +300,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'OriginalTitle
                 If Options.bOriginalTitle Then
@@ -316,7 +315,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Collection ID
                 If Options.bCollectionID Then
@@ -334,7 +333,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Posters (only for SearchResult dialog)
                 If GetPoster Then
@@ -357,7 +356,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Year
                 If Options.bYear Then
@@ -368,7 +367,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 Dim Releases As WatTmdb.V3.TmdbMovieReleases = Nothing
 
@@ -401,7 +400,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'ReleaseDate
                 If Options.bRelease Then
@@ -421,7 +420,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Rating
                 If Options.bRating Then
@@ -432,7 +431,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Trailer
                 If Options.bTrailer Then
@@ -455,7 +454,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Votes
                 If Options.bVotes Then
@@ -466,7 +465,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Actors
                 Dim aCast As WatTmdb.V3.TmdbMovieCast = Nothing
@@ -501,7 +500,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Tagline
                 If Options.bTagline Then
@@ -516,7 +515,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Countries
                 If Options.bCountry Then
@@ -528,7 +527,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Genres
                 If Options.bGenre Then
@@ -547,7 +546,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Plot
                 If Options.bPlot Then
@@ -562,7 +561,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Runtime
                 If Options.bRuntime Then
@@ -601,7 +600,7 @@ Namespace TMDB
                     'End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Use TMDB other infos?
                 If FullCrew Or Options.bWriters Or Options.bDirector Then
@@ -636,7 +635,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 Return True
             Catch ex As Exception
@@ -651,7 +650,7 @@ Namespace TMDB
                 Dim MovieSetE As WatTmdb.V3.TmdbCollection
                 Dim scrapedresult As String = ""
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 MovieSet = _TMDBApi.GetCollectionInfo(CInt(strID))
                 MovieSetE = _TMDBApiE.GetCollectionInfo(CInt(strID))
@@ -662,7 +661,7 @@ Namespace TMDB
 
                 DBMovieSet.ID = CStr(IIf(Not MovieSet.id > 0 AndAlso _MySettings.FallBackEng, MovieSetE.id.ToString, MovieSet.id.ToString))
 
-                If bwTMDB.CancellationPending Or IsNothing(MovieSet) Then Return Nothing
+                If _Cancelled Or IsNothing(MovieSet) Then Return Nothing
 
                 'title
                 If Options.bTitle Then
@@ -686,7 +685,7 @@ Namespace TMDB
                     Next
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Posters (only for SearchResult dialog)
                 If GetPoster Then
@@ -709,7 +708,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 'Plot
                 If Options.bPlot Then
@@ -726,7 +725,7 @@ Namespace TMDB
                     End If
                 End If
 
-                If bwTMDB.CancellationPending Then Return Nothing
+                If _Cancelled Then Return Nothing
 
                 Return True
             Catch ex As Exception
@@ -865,12 +864,9 @@ Namespace TMDB
         Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions_Movie)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
-                If Not bwTMDB.IsBusy Then
-                    bwTMDB.WorkerReportsProgress = False
-                    bwTMDB.WorkerSupportsCancellation = True
-                    bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails, _
-                      .Parameter = imdbID, .Movie = IMDBMovie, .Options_Movie = Options})
-                End If
+                Dim s As Boolean = GetMovieInfo(imdbID, IMDBMovie, False, True, Options, True)
+                RaiseEvent SearchInfoDownloaded_Movie(_sPoster, s)
+
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
@@ -879,12 +875,8 @@ Namespace TMDB
         Public Sub GetSearchMovieSetInfoAsync(ByVal tmdbColID As String, ByVal IMDBMovieSet As MediaContainers.MovieSet, ByVal Options As Structures.ScrapeOptions_MovieSet)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
-                If Not bwTMDB.IsBusy Then
-                    bwTMDB.WorkerReportsProgress = False
-                    bwTMDB.WorkerSupportsCancellation = True
-                    bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails_MovieSet, _
-                      .Parameter = tmdbColID, .MovieSet = IMDBMovieSet, .Options_movieset = Options})
-                End If
+                Dim s As Boolean = GetMovieSetInfo(tmdbColID, IMDBMovieSet, True, Options, True)
+                RaiseEvent SearchInfoDownloaded_MovieSet(_sPoster, s)
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
@@ -893,12 +885,8 @@ Namespace TMDB
         Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions_Movie, Optional ByVal sYear As Integer = 0)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
-                If Not bwTMDB.IsBusy Then
-                    bwTMDB.WorkerReportsProgress = False
-                    bwTMDB.WorkerSupportsCancellation = True
-                    bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, _
-                      .Parameter = sMovie, .Options_Movie = filterOptions, .Year = CInt(sYear)})
-                End If
+                Dim r As SearchResults_Movie = SearchMovie(sMovie, sYear)
+                RaiseEvent SearchResultsDownloaded_Movie(r)
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
@@ -907,66 +895,63 @@ Namespace TMDB
         Public Sub SearchMovieSetAsync(ByVal sMovieSet As String, ByVal filterOptions As Structures.ScrapeOptions_MovieSet)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
-                If Not bwTMDB.IsBusy Then
-                    bwTMDB.WorkerReportsProgress = False
-                    bwTMDB.WorkerSupportsCancellation = True
-                    bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.MovieSets, _
-                      .Parameter = sMovieSet, .Options_MovieSet = filterOptions})
-                End If
+                Dim r As SearchResults_MovieSet
+                r = SearchMovieSet(sMovieSet)
+                RaiseEvent SearchResultsDownloaded_MovieSet(r)
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
-        Private Sub bwTMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork
-            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-            '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-            Try
-                Select Case Args.Search
-                    Case SearchType.Movies
-                        Dim r As SearchResults_Movie = SearchMovie(Args.Parameter, Args.Year)
-                        e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
+        'Private Sub bwTMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork
+        '    Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        '    '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
+        '    Try
+        '        Select Case Args.Search
+        '            Case SearchType.Movies
+        '                Dim r As SearchResults_Movie = SearchMovie(Args.Parameter, Args.Year)
+        '                e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
 
-                    Case SearchType.SearchDetails
-                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.Movie, False, True, Args.Options_Movie, True)
-                        e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
+        '            Case SearchType.SearchDetails
+        '                Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.Movie, False, True, Args.Options_Movie, True)
+        '                e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
 
-                    Case SearchType.MovieSets
-                        Dim r As SearchResults_MovieSet = SearchMovieSet(Args.Parameter)
-                        e.Result = New Results With {.ResultType = SearchType.MovieSets, .Result = r}
+        '            Case SearchType.MovieSets
+        '                Dim r As SearchResults_MovieSet = SearchMovieSet(Args.Parameter)
+        '                e.Result = New Results With {.ResultType = SearchType.MovieSets, .Result = r}
 
-                    Case SearchType.SearchDetails_MovieSet
-                        Dim s As Boolean = GetMovieSetInfo(Args.Parameter, Args.MovieSet, True, Args.Options_MovieSet, True)
-                        e.Result = New Results With {.ResultType = SearchType.SearchDetails_MovieSet, .Success = s}
-                End Select
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        End Sub
+        '            Case SearchType.SearchDetails_MovieSet
+        '                Dim s As Boolean = GetMovieSetInfo(Args.Parameter, Args.MovieSet, True, Args.Options_MovieSet, True)
+        '                e.Result = New Results With {.ResultType = SearchType.SearchDetails_MovieSet, .Success = s}
+        '        End Select
+        '    Catch ex As Exception
+        '        logger.Error(New StackFrame().GetMethod().Name, ex)
+        '    End Try
+        'End Sub
 
-        Private Sub bwTMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
-            Dim Res As Results = DirectCast(e.Result, Results)
+        'Private Sub bwTMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
+        '    Dim Res As Results = DirectCast(e.Result, Results)
 
-            Try
-                Select Case Res.ResultType
-                    Case SearchType.Movies
-                        RaiseEvent SearchResultsDownloaded_Movie(DirectCast(Res.Result, SearchResults_Movie))
+        '    Try
+        '        Select Case Res.ResultType
+        '            Case SearchType.Movies
+        '                RaiseEvent SearchResultsDownloaded_Movie(DirectCast(Res.Result, SearchResults_Movie))
 
-                    Case SearchType.SearchDetails
-                        Dim movieInfo As SearchResults_Movie = DirectCast(Res.Result, SearchResults_Movie)
-                        RaiseEvent SearchInfoDownloaded_Movie(_sPoster, Res.Success)
+        '            Case SearchType.SearchDetails
+        '                Dim movieInfo As SearchResults_Movie = DirectCast(Res.Result, SearchResults_Movie)
+        '                RaiseEvent SearchInfoDownloaded_Movie(_sPoster, Res.Success)
 
-                    Case SearchType.MovieSets
-                        RaiseEvent SearchResultsDownloaded_MovieSet(DirectCast(Res.Result, SearchResults_MovieSet))
+        '            Case SearchType.MovieSets
+        '                RaiseEvent SearchResultsDownloaded_MovieSet(DirectCast(Res.Result, SearchResults_MovieSet))
 
-                    Case SearchType.SearchDetails_MovieSet
-                        Dim moviesetInfo As SearchResults_MovieSet = DirectCast(Res.Result, SearchResults_MovieSet)
-                        RaiseEvent SearchInfoDownloaded_MovieSet(_sPoster, Res.Success)
-                End Select
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        End Sub
+        '            Case SearchType.SearchDetails_MovieSet
+        '                Dim moviesetInfo As SearchResults_MovieSet = DirectCast(Res.Result, SearchResults_MovieSet)
+        '                RaiseEvent SearchInfoDownloaded_MovieSet(_sPoster, Res.Success)
+        '        End Select
+        '    Catch ex As Exception
+        '        logger.Error(New StackFrame().GetMethod().Name, ex)
+        '    End Try
+        'End Sub
 
         Private Function CleanTitle(ByVal sString As String) As String
             Dim CleanString As String = sString

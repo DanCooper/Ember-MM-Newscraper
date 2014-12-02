@@ -32,6 +32,8 @@ Namespace MPDB
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 #End Region 'Fields
 
 #Region "Events"
@@ -39,14 +41,33 @@ Namespace MPDB
 #End Region 'Events
 
 #Region "Methods"
+        Public Sub CancelAsync()
+
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
+        End Sub
 
         Public Async Function GetMPDBPosters(ByVal imdbID As String) As Threading.Tasks.Task(Of List(Of MediaContainers.Image))
             Dim alPosters As New List(Of MediaContainers.Image)
+            _Cancelled = False
 
             Try
-                Dim sHTTP As New HTTP
-                Dim HTML As String = Await sHTTP.DownloadData(String.Concat("http://www.movieposterdb.com/movie/", imdbID))
-                sHTTP = Nothing
+                intHTTP = New HTTP
+                Dim HTML As String = Await intHTTP.DownloadData(String.Concat("http://www.movieposterdb.com/movie/", imdbID))
+                intHTTP.Dispose()
+                intHTTP = Nothing
+                If _Cancelled Then Return alPosters
+
                 ' is a string match so we have not to use the alias IMDB
                 If Regex.IsMatch(HTML, String.Concat("http://www.imdb.com/title/tt", imdbID), RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline) Then
                     Dim mcPoster As MatchCollection = Regex.Matches(HTML, "http://www.movieposterdb.com/posters/[0-9_](.*?)/[0-9](.*?)/[0-9](.*?)/[a-z0-9_](.*?).jpg")

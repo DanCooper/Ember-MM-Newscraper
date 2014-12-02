@@ -35,7 +35,8 @@ Namespace Apple
         Private originaltitle As String
         Private _trailerlist As New List(Of Trailers)
         Private imdbid As String
-
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 #End Region 'Fields
 
 #Region "Constructors"
@@ -66,12 +67,25 @@ Namespace Apple
             Await GetMovieTrailers()
         End Function
 
-
         Private Sub Clear()
             _trailerlist = New List(Of Trailers)
         End Sub
 
+        Public Sub CancelAsync()
 
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
+        End Sub
         ''' <summary>
         ''' Scrapes avalaible trailerlinks from Apple
         ''' </summary>
@@ -94,8 +108,6 @@ Namespace Apple
                     Dim BaseURL As String = ""
                     'dynamic URL-part of query
                     Dim SearchURL As String = ""
-                    'webrequest-object of Ember used to scrape Webpages
-                    Dim sHTTP As New HTTP
                     'retrieved JSON string
                     Dim sjson As String = ""
                     'downloaded HTML of a webpage
@@ -110,8 +122,11 @@ Namespace Apple
                     ' Step 1: Use Apple quicksearch which will return json response!
                     BaseURL = "http://trailers.apple.com/trailers/home/scripts/quickfind.php?q="
                     SearchURL = String.Concat(BaseURL, searchtitle)
-                    sjson = Await sHTTP.DownloadData(SearchURL)
-                    sHTTP = Nothing
+                    intHTTP = New HTTP
+                    sjson = Await intHTTP.DownloadData(SearchURL)
+                    intHTTP.Dispose()
+                    intHTTP = Nothing
+                    If _Cancelled Then Return
 
                     ' Step 2: If json returned -> parse Json response and get Url to moviepage, else use google to search for trailer on Apple
                     If sjson = "" OrElse sjson.Length < 50 Then
@@ -123,10 +138,12 @@ Namespace Apple
                         searchtitle = Web.HttpUtility.UrlEncode(originaltitle)
                         SearchURL = String.Concat(BaseURL, searchtitle)
                         'performing google search to find avalaible links on apple trailers
-                        sHTTP = New HTTP
                         sHtml = ""
-                        sHtml = Await sHTTP.DownloadData(SearchURL)
-                        sHTTP = Nothing
+                        intHTTP = New HTTP
+                        sjson = Await intHTTP.DownloadData(SearchURL)
+                        intHTTP.Dispose()
+                        intHTTP = Nothing
+                        If _Cancelled Then Return
                         If sHtml <> "" Then
                             'Now extract links from googleresults
                             Dim trailerWEBURLResults As MatchCollection = Nothing
@@ -164,7 +181,6 @@ Namespace Apple
                         Else
                             logger.Debug("[" & originaltitle & "] Apple Trailer - Movie NOT found on http://trailers.apple.com/ using google! URL: " & SearchURL)
                         End If
-
                     Else
                         Dim serializer = New JavaScriptSerializer
                         Dim jsonresult = serializer.Deserialize(Of AppleTrailerQuery)(sjson)
@@ -203,10 +219,12 @@ Namespace Apple
                         'i.e http://trailers.apple.com/trailers/paramount/transformersageofextinction/includes/large.html
 
                         'find avalaible links on apple movie site
-                        sHTTP = New HTTP
                         sHtml = ""
-                        sHtml = Await sHTTP.DownloadData(TrailerSiteURL)
-                        sHTTP = Nothing
+                        intHTTP = New HTTP
+                        sjson = Await intHTTP.DownloadData(TrailerSiteURL)
+                        intHTTP.Dispose()
+                        intHTTP = Nothing
+                        If _Cancelled Then Return
 
                         'looking for trailerlinks
                         ' Dim tPattern As String = "<a href=""(?<URL>.*?)"">(?<TITLE>.*?)</a>"
@@ -227,9 +245,11 @@ Namespace Apple
                                 Dim TrailerSiteLink As String = String.Concat(TrailerWEBPageURL, trailer.URL)
                                 'i.e http://trailers.apple.com/trailers/wb/wrathofthetitans/includes/kronosfeature/large.html
 
-                                sHTTP = New HTTP
-                                Dim zHtml As String = Await sHTTP.DownloadData(TrailerSiteLink)
-                                sHTTP = Nothing
+                                intHTTP = New HTTP
+                                Dim zHtml As String = Await intHTTP.DownloadData(TrailerSiteLink)
+                                intHTTP.Dispose()
+                                intHTTP = Nothing
+                                If _Cancelled Then Return
 
                                 Dim yResult As MatchCollection = Regex.Matches(zHtml, uPattern, RegexOptions.Singleline)
 

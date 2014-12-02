@@ -35,6 +35,8 @@ Namespace GoEar
         Private originaltitle As String
         Private listtitle As String
         Private _themelist As New List(Of Themes)
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 
 #End Region 'Fields
 
@@ -63,8 +65,25 @@ Namespace GoEar
         Public Async Function Init(ByVal sOriginalTitle As String, ByVal sListTitle As String) As Threading.Tasks.Task
             originaltitle = sOriginalTitle
             listtitle = sListTitle
+            _Cancelled = False
             Await GetMovieThemes()
         End Function
+
+        Public Sub CancelAsync()
+
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
+        End Sub
 
         Private Sub Clear()
             _themelist = New List(Of Themes)
@@ -96,9 +115,11 @@ Namespace GoEar
                     Dim tLength As String = String.Empty
                     Dim tBitrate As String = String.Empty
 
-                    Dim sHTTP As New HTTP
-                    Dim Html As String = Await sHTTP.DownloadData(SearchURL)
-                    sHTTP = Nothing
+                    intHTTP = New HTTP
+                    Dim HTML As String = Await intHTTP.DownloadData(SearchURL)
+                    intHTTP.Dispose()
+                    intHTTP = Nothing
+                    If _Cancelled Then Return
 
                     Dim rPattern As String = "<div class=""board search_board"">(?<RESULTS>.*?)</ol>"
                     Dim sPattern As String = "<a title=""escuchar.*?href=""(?<URL>.*?)"">(?<TITLE>.*?)</a>.*?""description""><.*?>(?<DESCRIPTION>.*?)</a>.*?""length"".*?>(?<LENGTH>.*?)</li>.*?""kbps"".*?>(?<BITRATE>.*?) <abbr"

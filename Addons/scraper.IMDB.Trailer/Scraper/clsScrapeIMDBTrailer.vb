@@ -31,7 +31,8 @@ Namespace IMDB
 
         Private IMDBID As String
         Private _trailerlist As New List(Of Trailers)
-
+        Private _Cancelled As Boolean
+        Private intHTTP As HTTP = Nothing
 #End Region 'Fields
 
 #Region "Constructors"
@@ -63,8 +64,25 @@ Namespace IMDB
 
         Public Async Function Init(ByVal sIMDBID As String) As Threading.Tasks.Task
             IMDBID = sIMDBID
+            _Cancelled = False
             Await GetMovieTrailers()
         End Function
+
+        Public Sub CancelAsync()
+
+            'If bwIMDB.IsBusy Then
+            If Not IsNothing(intHTTP) Then
+                intHTTP.Cancel()
+            End If
+            _Cancelled = True
+            'bwIMDB.CancelAsync()
+            'End If
+
+            'While bwIMDB.IsBusy
+            'Application.DoEvents()
+            'Threading.Thread.Sleep(50)
+            'End While
+        End Sub
 
         Private Async Function GetMovieTrailers() As Threading.Tasks.Task
 
@@ -78,7 +96,6 @@ Namespace IMDB
             Dim Link As Match
             Dim currPage As Integer = 0
             Dim _ImdbTrailerPage As String = String.Empty
-            Dim sHTTP As New HTTP
 
             Try
                 If Not String.IsNullOrEmpty(IMDBID) Then
@@ -90,8 +107,11 @@ Namespace IMDB
                     SearchURL = String.Concat(BaseURL, "/title/tt", IMDBID, "/videogallery/content_type-Trailer") 'IMDb trailer website of a specific movie, filtered by trailers only
 
                     'download trailer website
-                    _ImdbTrailerPage = Await sHTTP.DownloadData(SearchURL)
-                    sHTTP = Nothing
+                    intHTTP = New HTTP
+                    _ImdbTrailerPage = Await intHTTP.DownloadData(SearchURL)
+                    intHTTP.Dispose()
+                    intHTTP = Nothing
+                    If _Cancelled Then Return
 
                     If _ImdbTrailerPage.ToLower.Contains("page not found") Then
                         _ImdbTrailerPage = String.Empty
@@ -109,9 +129,11 @@ Namespace IMDB
 
                                 For i As Integer = 1 To currPage
                                     If Not i = 1 Then
-                                        sHTTP = New HTTP
-                                        _ImdbTrailerPage = Await sHTTP.DownloadData(String.Concat(SearchURL, "?page=", i))
-                                        sHTTP = Nothing
+                                        intHTTP = New HTTP
+                                        _ImdbTrailerPage = Await intHTTP.DownloadData(String.Concat(SearchURL, "?page=", i))
+                                        intHTTP.Dispose()
+                                        intHTTP = Nothing
+                                        If _Cancelled Then Return
                                     End If
 
                                     'search all trailer on trailer website
@@ -121,9 +143,11 @@ Namespace IMDB
                                     For Each trailer As String In linksCollection
                                         'go to specific trailer website
                                         Dim Website As String = String.Concat(BaseURL, "/video/", trailer)
-                                        sHTTP = New HTTP
-                                        TrailerPage = Await sHTTP.DownloadData(Website)
-                                        sHTTP = Nothing
+                                        intHTTP = New HTTP
+                                        TrailerPage = Await intHTTP.DownloadData(Website)
+                                        intHTTP.Dispose()
+                                        intHTTP = Nothing
+                                        If _Cancelled Then Return
                                         TrailerTitle = Regex.Match(TrailerPage, nPattern).Groups(1).Value.ToString.Trim
                                         If String.IsNullOrEmpty(TrailerTitle) Then
                                             TrailerTitle = Regex.Match(TrailerPage, mPattern).Groups(1).Value.ToString.Trim
@@ -131,8 +155,11 @@ Namespace IMDB
                                         End If
                                         'try to get playtime
                                         Dim Details As String = String.Concat(Website, "imdb/single?format=480p")
-                                        sHTTP = New HTTP
-                                        Dim DetailsPage As String = Await sHTTP.DownloadData(Details)
+                                        intHTTP = New HTTP
+                                        Dim DetailsPage As String = Await intHTTP.DownloadData(Details)
+                                        intHTTP.Dispose()
+                                        intHTTP = Nothing
+                                        If _Cancelled Then Return
                                         Dim trailerLenght As String = Regex.Match(DetailsPage, "duration title-hover"">\((?<LENGHT>.*?)\)</span>").Groups(1).Value.ToString
                                         _trailerlist.Add(New Trailers With {.URL = Website, .Description = TrailerTitle, .WebURL = Website, .Duration = trailerLenght, .Source = "IMDB"})
                                     Next

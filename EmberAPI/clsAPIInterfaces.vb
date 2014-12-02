@@ -398,15 +398,21 @@ Public Class Interfaces
 
         Sub CancelAsync()
 
-        Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String, ByRef epDet As MediaContainers.EpisodeDetails) As ModuleResult
+        Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String, ByVal epDet As MediaContainers.EpisodeDetails) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' Return Objects are
+        ' epDet
 
         Function GetLangs(ByVal sMirror As String, ByVal Langs As clsXMLTVDBLanguages) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
         ' Return Objects are
         ' Langs
 
-        Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As ModuleResult
+        Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByVal Image As Images) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' Return Objects are
+        ' Image 
 
-        Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef Image As Images) As ModuleResult
+        Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal epDetails As MediaContainers.EpisodeDetails) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+        ' Return Objects are
+        ' epDetails
 
         Sub Init(ByVal sAssemblyName As String)
 
