@@ -339,7 +339,8 @@ Public Class IMDB_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape Then
             If String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) AndAlso String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
                 Using dSearch As New dlgIMDBSearchResults
-                    If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Filename, filterOptions) = Windows.Forms.DialogResult.OK Then
+                    If Await dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Filename, filterOptions) = Windows.Forms.DialogResult.OK Then
+                        nMovie = dSearch._nMovie
                         ret = Await _scraper.GetMovieInfo(nMovie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage, _MySettings.CountryAbbreviation)
                         ' return object
                         ' nMovie

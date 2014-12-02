@@ -22,14 +22,15 @@ Imports System.Text.RegularExpressions
 Imports System.IO
 Imports EmberAPI
 Imports NLog
+Imports EmberAPI.Interfaces
 
 Public Class dlgIMDBSearchResults
 
-    #Region "Fields"
+#Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
-    Friend  WithEvents tmrLoad As New System.Windows.Forms.Timer
-    Friend  WithEvents tmrWait As New System.Windows.Forms.Timer
+    Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
+    Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
     Private IMDB As New IMDB.Scraper
     Private sHTTP As New HTTP
@@ -44,13 +45,13 @@ Public Class dlgIMDBSearchResults
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
     Private _filterOptions As Structures.ScrapeOptions_Movie
 
-    Private _nMovie As MediaContainers.Movie
+    Public _nMovie As MediaContainers.Movie
 
 #End Region 'Fields
 
 #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Windows.Forms.DialogResult
+    Public Overloads Async Function ShowDialog(ByVal nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task(Of Windows.Forms.DialogResult)
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -68,7 +69,7 @@ Public Class dlgIMDBSearchResults
         'chkManual.Enabled = False
         chkManual.Enabled = True
 
-        IMDB.SearchMovieAsync(sMovieTitle, _filterOptions)
+        Await IMDB.SearchMovieAsync(sMovieTitle, _filterOptions)
 
         Return MyBase.ShowDialog()
     End Function
@@ -89,7 +90,7 @@ Public Class dlgIMDBSearchResults
         Return MyBase.ShowDialog()
     End Function
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Async Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
         If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
             Me.OK_Button.Enabled = False
             pnlPicStatus.Visible = False
@@ -102,17 +103,21 @@ Public Class dlgIMDBSearchResults
             chkManual.Enabled = False
 
             IMDB.CancelAsync()
-            IMDB.SearchMovieAsync(Me.txtSearch.Text, _filterOptions)
+            Await IMDB.SearchMovieAsync(Me.txtSearch.Text, _filterOptions)
         End If
     End Sub
 
     Private Async Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
         Dim pOpt As New Structures.ScrapeOptions_Movie
+        Dim ret As New ModuleResult
         pOpt = SetPreviewOptions()
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
             Me.pnlLoading.Visible = True
             IMDB.CancelAsync()
-            Await IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), _nMovie, pOpt)
+            ret = Await IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), _nMovie, pOpt)
+            ' return object
+            ' nMovie
+            _nMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
         Else
             MsgBox(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
         End If
@@ -469,6 +474,7 @@ Public Class dlgIMDBSearchResults
 
     Private Async Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
         Dim pOpt As New Structures.ScrapeOptions_Movie
+        Dim ret As New ModuleResult
         pOpt = SetPreviewOptions()
 
         Me.tmrWait.Stop()
@@ -476,7 +482,8 @@ Public Class dlgIMDBSearchResults
         Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        Await IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovie, pOpt)
+        ret = Await IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovie, pOpt)
+        _nMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
@@ -555,30 +562,30 @@ Public Class dlgIMDBSearchResults
 
 #End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Private Structure Arguments
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim pURL As String
         Dim IMDBId As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
     Private Structure Results
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim Result As Image
         Dim IMDBId As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class

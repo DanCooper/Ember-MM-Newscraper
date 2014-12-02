@@ -869,25 +869,28 @@ mPlot:          'MOVIE PLOT
             Return ret
         End Function
 
-        Public Async Function GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task
+        Public Async Function GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task(Of Interfaces.ModuleResult)
+            Dim ret As New ModuleResult
             Try
                 _Cancelled = False
                 Select Case SearchType.SearchDetails
                     Case SearchType.Movies
                         Dim r As MovieSearchResults = Await SearchMovie(imdbID)
                         RaiseEvent SearchResultsDownloaded(r)
-
+                        Return Nothing
                     Case SearchType.SearchDetails
-                        Dim ret As New ModuleResult
                         ret = Await GetMovieInfo(imdbID, IMDBMovie, False, True, Options, True, True, "", False)
                         ' return object
                         ' nMovie
-                        IMDBMovie = CType(ret.ReturnObj(0), MediaContainers.Movie)
                         RaiseEvent SearchMovieInfoDownloaded(sPoster, ret.Cancelled)
+                        Return ret
                 End Select
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
+            ret.breakChain = True
+            ret.ReturnObj.Add(IMDBMovie)
+            Return ret
         End Function
 
         Public Async Function SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task

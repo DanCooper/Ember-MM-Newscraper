@@ -338,7 +338,7 @@ Public Class frmTrakt
     ''' <param name="traktID">Username</param>
     ''' <param name="traktPW">password</param>
     ''' <returns>3 values in dictionary: IMDBID (ex: tt0114746), Title, Playcount/Plays</returns>
-    Public Shared Function GetWatchedMoviesFromTrakt(ByVal traktID As String, ByVal traktPW As String) As Dictionary(Of String, KeyValuePair(Of String, Integer))
+    Public Shared Async Function GetWatchedMoviesFromTrakt(ByVal traktID As String, ByVal traktPW As String) As Threading.Tasks.Task(Of Dictionary(Of String, KeyValuePair(Of String, Integer)))
 
         Dim wc As New Net.WebClient
         Try
