@@ -385,36 +385,40 @@ Public Class FileFolderRenamer
         'get list of all episodes for multi-episode files
         Dim aSeasonsEpisodes As New List(Of SeasonsEpisodes)
 
-        'first step: get a list of all seasons
-        Dim aSeasonsList As New List(Of Integer)
-        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLNewcommand.CommandText = String.Concat("SELECT Season FROM TVEps WHERE TVEpPathID = ", _tmpTV.FilenameID, ";")
-            Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                While SQLReader.Read
-                    If Not aSeasonsList.Contains(Convert.ToInt32(SQLReader("Season"))) Then aSeasonsList.Add(Convert.ToInt32(SQLReader("Season")))
-                End While
-            End Using
-            aSeasonsList.Sort()
-        End Using
+        If Not _tmpTV.FilenameID = -1 Then
 
-        'second step: get all episodes per season
-        For Each aSeason As Integer In aSeasonsList
-            Dim aEpisodesList As New List(Of Episode)
+            'first step: get a list of all seasons
+            Dim aSeasonsList As New List(Of Integer)
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLNewcommand.CommandText = String.Concat("SELECT ID, Episode FROM TVEps WHERE TVEpPathID = ", _tmpTV.FilenameID, " AND Season = ", aSeason, ";")
+                SQLNewcommand.CommandText = String.Concat("SELECT Season FROM TVEps WHERE TVEpPathID = ", _tmpTV.FilenameID, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     While SQLReader.Read
-                        Dim aEpisode As New Episode
-                        aEpisode.ID = Convert.ToInt32(SQLReader("ID"))
-                        aEpisode.Episode = Convert.ToInt32(SQLReader("Episode"))
-                        aEpisodesList.Add(aEpisode)
+                        If Not aSeasonsList.Contains(Convert.ToInt32(SQLReader("Season"))) Then aSeasonsList.Add(Convert.ToInt32(SQLReader("Season")))
                     End While
                 End Using
-                aEpisodesList.Sort()
+                aSeasonsList.Sort()
             End Using
-            Dim aSeasonEpisodesList As New SeasonsEpisodes With {.Season = aSeason, .Episodes = aEpisodesList}
-            aSeasonsEpisodes.Add(aSeasonEpisodesList)
-        Next
+
+            'second step: get all episodes per season
+            For Each aSeason As Integer In aSeasonsList
+                Dim aEpisodesList As New List(Of Episode)
+                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLNewcommand.CommandText = String.Concat("SELECT ID, Episode, Title FROM TVEps WHERE TVEpPathID = ", _tmpTV.FilenameID, " AND Season = ", aSeason, ";")
+                    Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                        While SQLReader.Read
+                            Dim aEpisode As New Episode
+                            aEpisode.ID = Convert.ToInt32(SQLReader("ID"))
+                            aEpisode.Episode = Convert.ToInt32(SQLReader("Episode"))
+                            aEpisode.Title = SQLReader("Title").ToString
+                            aEpisodesList.Add(aEpisode)
+                        End While
+                    End Using
+                    aEpisodesList.Sort()
+                End Using
+                Dim aSeasonEpisodesList As New SeasonsEpisodes With {.Season = aSeason, .Episodes = aEpisodesList}
+                aSeasonsEpisodes.Add(aSeasonEpisodesList)
+            Next
+        End If
 
         EpisodeFile.SeasonsEpisodes.AddRange(aSeasonsEpisodes)
 
@@ -540,56 +544,111 @@ Public Class FileFolderRenamer
         End If
     End Sub
 
+    Public Shared Function GetInfo_Movie(ByVal _tmpMovie As Structures.DBMovie) As FileFolderRenamer.FileRename
+        Dim MovieFile As New FileFolderRenamer.FileRename
+
+        Try
+            MovieFile.ID = CInt(_tmpMovie.ID)
+
+            If String.IsNullOrEmpty(_tmpMovie.Movie.Title) Then
+                MovieFile.Title = _tmpMovie.ListTitle
+            Else
+                MovieFile.Title = _tmpMovie.Movie.Title
+            End If
+            If String.IsNullOrEmpty(_tmpMovie.Movie.SortTitle) Then
+                MovieFile.SortTitle = _tmpMovie.ListTitle
+            Else
+                MovieFile.SortTitle = _tmpMovie.Movie.SortTitle
+            End If
+            If Not IsNothing(_tmpMovie.Movie.Sets) AndAlso _tmpMovie.Movie.Sets.Count > 0 Then
+                MovieFile.Collection = _tmpMovie.Movie.Sets.Item(0).Title
+            End If
+            If Not IsNothing(_tmpMovie.Movie.Director) Then
+                MovieFile.Director = _tmpMovie.Movie.Director
+            End If
+            If Not IsNothing(_tmpMovie.Movie.VideoSource) Then
+                MovieFile.VideoSource = _tmpMovie.Movie.VideoSource
+            End If
+            If Not IsNothing(_tmpMovie.Movie.Genre) Then
+                MovieFile.Genre = _tmpMovie.Movie.Genre
+            End If
+            If Not IsNothing(_tmpMovie.Movie.IMDBID) Then
+                MovieFile.IMDBID = _tmpMovie.Movie.IMDBID
+            End If
+            If Not IsNothing(_tmpMovie.IsLock) Then
+                MovieFile.IsLocked = _tmpMovie.IsLock
+            End If
+            If Not IsNothing(_tmpMovie.IsSingle) Then
+                MovieFile.IsSingle = _tmpMovie.IsSingle
+            End If
+            If Not IsNothing(_tmpMovie.ListTitle) Then
+                MovieFile.ListTitle = _tmpMovie.ListTitle
+            End If
+            If Not IsNothing(_tmpMovie.Movie.MPAA) Then
+                MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_tmpMovie.Movie)
+            End If
+            If Not IsNothing(_tmpMovie.Movie.OriginalTitle) Then
+                MovieFile.OriginalTitle = If(_tmpMovie.Movie.OriginalTitle <> _tmpMovie.Movie.Title, _tmpMovie.Movie.OriginalTitle, String.Empty)
+            End If
+            If Not IsNothing(_tmpMovie.Movie.Rating) Then
+                MovieFile.Rating = _tmpMovie.Movie.Rating
+            End If
+            If Not IsNothing(_tmpMovie.Movie.Year) Then
+                MovieFile.Year = _tmpMovie.Movie.Year
+            End If
+
+            If Not IsNothing(_tmpMovie.Movie.Sets) AndAlso _tmpMovie.Movie.Sets.Count > 0 Then
+                MovieFile.Collection = _tmpMovie.Movie.Sets.Item(0).Title
+            End If
+
+            If Not IsNothing(_tmpMovie.Movie.FileInfo) Then
+                Try
+                    If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                        Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpMovie.Movie.FileInfo)
+                        Dim tRes As String = NFO.GetResFromDimensions(tVid)
+                        MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
+                    End If
+
+                    If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
+                        Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False)
+
+                        If tAud.ChannelsSpecified Then
+                            MovieFile.AudioChannels = tAud.Channels
+                        End If
+
+                        If tAud.CodecSpecified Then
+                            MovieFile.AudioCodec = tAud.Codec
+                        End If
+                    End If
+
+                    If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                        If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+                            MovieFile.MultiViewCount = "3D"
+                        End If
+                    End If
+
+                    If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                        If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).CodecSpecified Then
+                            MovieFile.VideoCodec = _tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).Codec
+                        End If
+                    End If
+
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Return MovieFile
+    End Function
+
     Public Shared Sub RenameSingle_Movie(ByRef _tmpMovie As Structures.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim MovieFile As New FileRename
 
-        If Not IsNothing(_tmpMovie.Movie.FileInfo) Then
-            Try
-                If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpMovie.Movie.FileInfo)
-                    Dim tRes As String = NFO.GetResFromDimensions(tVid)
-                    MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
-                End If
+        MovieFile = GetInfo_Movie(_tmpMovie)
 
-                If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                    Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False)
-
-                    If tAud.ChannelsSpecified Then
-                        MovieFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
-                    End If
-
-                    If tAud.CodecSpecified Then
-                        MovieFile.AudioCodec = tAud.Codec
-                    End If
-                    'MovieFile.AudioChannels = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
-                End If
-
-                If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                    If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
-                        MovieFile.MultiViewCount = "3D"
-                    End If
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        End If
-
-        If Not IsNothing(_tmpMovie.Movie.Sets) AndAlso _tmpMovie.Movie.Sets.Count > 0 Then
-            MovieFile.Collection = _tmpMovie.Movie.Sets.Item(0).Title
-        End If
-
-        MovieFile.Country = _tmpMovie.Movie.Country
-        MovieFile.Director = _tmpMovie.Movie.Director
-        MovieFile.VideoSource = _tmpMovie.Movie.VideoSource
-        MovieFile.Genre = _tmpMovie.Movie.Genre
-        MovieFile.IMDBID = _tmpMovie.Movie.IMDBID
-        MovieFile.IsSingle = _tmpMovie.IsSingle
-        MovieFile.ListTitle = _tmpMovie.ListTitle
-        MovieFile.OriginalTitle = If(_tmpMovie.Movie.OriginalTitle <> _tmpMovie.Movie.Title, _tmpMovie.Movie.OriginalTitle, String.Empty)
-        MovieFile.Rating = _tmpMovie.Movie.Rating
-        MovieFile.SortTitle = If(Not String.IsNullOrEmpty(_tmpMovie.Movie.SortTitle), _tmpMovie.Movie.SortTitle, _tmpMovie.ListTitle)
-        MovieFile.Title = _tmpMovie.Movie.Title
-        MovieFile.Year = _tmpMovie.Movie.Year
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
@@ -1782,6 +1841,7 @@ Public Class FileFolderRenamer
 
         Private _id As Integer
         Private _episode As Integer
+        Private _title As String
 
 #End Region 'Fields
 
@@ -1805,6 +1865,15 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property Title() As String
+            Get
+                Return Me._title
+            End Get
+            Set(ByVal value As String)
+                Me._title = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -1812,11 +1881,13 @@ Public Class FileFolderRenamer
         Public Sub New()
             _id = -1
             _episode = -1
+            _title = String.Empty
         End Sub
 
         Public Sub Clear()
             _id = -1
             _episode = -1
+            _title = String.Empty
         End Sub
 
         Public Function CompareTo(ByVal obj As Episode) As Integer Implements System.IComparable(Of Episode).CompareTo

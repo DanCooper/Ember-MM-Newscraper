@@ -80,9 +80,6 @@ Public Class dlgBulkRenamer_Movie
     End Sub
 
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
-        '//
-        ' Thread to load movieinformation (from nfo)
-        '\\
         Try
             Dim MovieFile As New FileFolderRenamer.FileRename
             Dim _curMovie As New Structures.DBMovie
@@ -108,7 +105,7 @@ Public Class dlgBulkRenamer_Movie
                 End If
             End If
 
-            ' Load nfo movies using path from DB
+            ' Load movies using path from DB
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
@@ -136,93 +133,10 @@ Public Class dlgBulkRenamer_Movie
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
 
                                         MovieFile = New FileFolderRenamer.FileRename
-                                        MovieFile.ID = Convert.ToInt32(SQLreader("id"))
-                                        _curMovie = Master.DB.LoadMovieFromDB(MovieFile.ID)
+                                        _curMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("id")))
+
                                         If Not _curMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_curMovie.Filename) Then
-                                            If String.IsNullOrEmpty(_curMovie.Movie.Title) Then
-                                                MovieFile.Title = _curMovie.ListTitle
-                                            Else
-                                                MovieFile.Title = _curMovie.Movie.Title
-                                            End If
-                                            If String.IsNullOrEmpty(_curMovie.Movie.SortTitle) Then
-                                                MovieFile.SortTitle = _curMovie.ListTitle
-                                            Else
-                                                MovieFile.SortTitle = _curMovie.Movie.SortTitle
-                                            End If
-                                            If Not IsNothing(_curMovie.Movie.Sets) AndAlso _curMovie.Movie.Sets.Count > 0 Then
-                                                MovieFile.Collection = _curMovie.Movie.Sets.Item(0).Title
-                                            End If
-                                            If Not IsNothing(_curMovie.Movie.Director) Then
-                                                MovieFile.Director = _curMovie.Movie.Director
-                                            End If
-                                            If Not IsNothing(_curMovie.Movie.VideoSource) Then
-                                                MovieFile.VideoSource = _curMovie.Movie.VideoSource
-                                            End If
-                                            If Not IsNothing(_curMovie.Movie.Genre) Then
-                                                MovieFile.Genre = _curMovie.Movie.Genre
-                                            End If
-                                            If Not IsNothing(_curMovie.Movie.IMDBID) Then
-                                                MovieFile.IMDBID = _curMovie.Movie.IMDBID
-                                            End If
-                                            If Not IsNothing(_curMovie.IsLock) Then
-                                                MovieFile.IsLocked = _curMovie.IsLock
-                                            End If
-                                            If Not IsNothing(_curMovie.IsSingle) Then
-                                                MovieFile.IsSingle = _curMovie.IsSingle
-                                            End If
-                                            If Not IsNothing(_curMovie.ListTitle) Then
-                                                MovieFile.ListTitle = _curMovie.ListTitle
-                                            End If
-                                            If Not IsNothing(_curMovie.Movie.MPAA) Then
-                                                MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_curMovie.Movie)
-                                            End If
-                                            If Not IsNothing(_curMovie.Movie.OriginalTitle) Then
-                                                MovieFile.OriginalTitle = If(_curMovie.Movie.OriginalTitle <> _curMovie.Movie.Title, _curMovie.Movie.OriginalTitle, String.Empty)
-                                            End If
-                                            If Not IsNothing(_curMovie.Movie.Rating) Then
-                                                MovieFile.Rating = _curMovie.Movie.Rating
-                                            End If
-                                            If Not IsNothing(_curMovie.Movie.Year) Then
-                                                MovieFile.Year = _curMovie.Movie.Year
-                                            End If
-
-                                            If Not IsNothing(_curMovie.Movie.FileInfo) Then
-                                                Try
-                                                    If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                                        Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
-                                                        Dim tRes As String = NFO.GetResFromDimensions(tVid)
-                                                        MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
-                                                    End If
-
-                                                    If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                                                        Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
-
-                                                        If tAud.ChannelsSpecified Then
-                                                            MovieFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
-                                                        End If
-
-                                                        If tAud.CodecSpecified Then
-                                                            MovieFile.AudioCodec = tAud.Codec
-                                                        End If
-                                                        'MovieFile.AudioChannels = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
-                                                    End If
-
-                                                    If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                                        If Not String.IsNullOrEmpty(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
-                                                            MovieFile.MultiViewCount = "3D"
-                                                        End If
-                                                    End If
-
-                                                    If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                                        If _curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).CodecSpecified Then
-                                                            MovieFile.VideoCodec = _curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).Codec
-                                                        End If
-                                                    End If
-
-                                                Catch ex As Exception
-                                                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                                                End Try
-                                            End If
+                                            MovieFile = FileFolderRenamer.GetInfo_Movie(_curMovie)
 
                                             For Each i As String In FFRenamer.MovieFolders
                                                 If _curMovie.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
@@ -306,9 +220,6 @@ Public Class dlgBulkRenamer_Movie
     End Sub
 
     Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadInfo.RunWorkerCompleted
-        '//
-        ' Thread finished: display it if not cancelled
-        '\\
         Try
             If Not e.Cancelled Then
                 Rename_Button.Enabled = True
@@ -671,6 +582,7 @@ Public Class dlgBulkRenamer_Movie
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
+
     Sub LoadHelpTips()
         If dHelpTips Is Nothing OrElse dHelpTips.IsDisposed Then
             dHelpTips = New dlgHelpTips
@@ -687,16 +599,19 @@ Public Class dlgBulkRenamer_Movie
             dHelpTips.Show(Me)
         End If
     End Sub
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFolderPatternHelp.Click
-        LoadHelpTips()
-    End Sub
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFolderPatternNotSingleHelp.Click
+
+    Private Sub btnFolderPatternHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFolderPatternHelp.Click
         LoadHelpTips()
     End Sub
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilePatternHelp.Click
+    Private Sub btnFolderPatternNotSingleHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFolderPatternNotSingleHelp.Click
         LoadHelpTips()
     End Sub
+
+    Private Sub btnFilePatternHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilePatternHelp.Click
+        LoadHelpTips()
+    End Sub
+
 #End Region 'Methods
 
 End Class

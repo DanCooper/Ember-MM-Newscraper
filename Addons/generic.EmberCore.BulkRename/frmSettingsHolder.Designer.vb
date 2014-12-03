@@ -49,15 +49,19 @@ Partial Class frmSettingsHolder
         Me.lblFilePatternMovies = New System.Windows.Forms.Label()
         Me.chkRenameEditMovies = New System.Windows.Forms.CheckBox()
         Me.lblTips = New System.Windows.Forms.Label()
-        Me.pnlSettingsTop = New System.Windows.Forms.Panel()
-        Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.gbPreview = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.lblSingleEpisodeFile = New System.Windows.Forms.Label()
         Me.txtSingleEpisodeFile = New System.Windows.Forms.TextBox()
         Me.lblMultiEpisodeFile = New System.Windows.Forms.Label()
         Me.txtMultiEpisodeFile = New System.Windows.Forms.TextBox()
+        Me.lblSingleMovieFile = New System.Windows.Forms.Label()
+        Me.txtSingleMovieFile = New System.Windows.Forms.TextBox()
+        Me.lblMultiSeasonFile = New System.Windows.Forms.Label()
+        Me.txtMultiSeasonFile = New System.Windows.Forms.TextBox()
+        Me.pnlSettingsTop = New System.Windows.Forms.Panel()
+        Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.tblSettingsMain.SuspendLayout()
@@ -65,10 +69,10 @@ Partial Class frmSettingsHolder
         Me.tblRenamerPatternsShows.SuspendLayout()
         Me.gbRenamerPatternsMovies.SuspendLayout()
         Me.tblRenamerPatterns.SuspendLayout()
-        Me.pnlSettingsTop.SuspendLayout()
-        Me.tblSettingsTop.SuspendLayout()
         Me.gbPreview.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
+        Me.pnlSettingsTop.SuspendLayout()
+        Me.tblSettingsTop.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -439,6 +443,120 @@ Partial Class frmSettingsHolder
         Me.lblTips.TabIndex = 4
         Me.lblTips.Text = "Tips List"
         '
+        'gbPreview
+        '
+        Me.gbPreview.AutoSize = True
+        Me.gbPreview.Controls.Add(Me.TableLayoutPanel1)
+        Me.gbPreview.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbPreview.Location = New System.Drawing.Point(302, 285)
+        Me.gbPreview.Name = "gbPreview"
+        Me.gbPreview.Size = New System.Drawing.Size(362, 213)
+        Me.gbPreview.TabIndex = 6
+        Me.gbPreview.TabStop = False
+        Me.gbPreview.Text = "Preview"
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.AutoSize = True
+        Me.TableLayoutPanel1.ColumnCount = 2
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.Controls.Add(Me.lblSingleEpisodeFile, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.txtSingleEpisodeFile, 0, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.lblMultiEpisodeFile, 0, 4)
+        Me.TableLayoutPanel1.Controls.Add(Me.txtMultiEpisodeFile, 0, 5)
+        Me.TableLayoutPanel1.Controls.Add(Me.lblSingleMovieFile, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.txtSingleMovieFile, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.lblMultiSeasonFile, 0, 6)
+        Me.TableLayoutPanel1.Controls.Add(Me.txtMultiSeasonFile, 0, 7)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 9
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(356, 192)
+        Me.TableLayoutPanel1.TabIndex = 0
+        '
+        'lblSingleEpisodeFile
+        '
+        Me.lblSingleEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblSingleEpisodeFile.AutoSize = True
+        Me.lblSingleEpisodeFile.Location = New System.Drawing.Point(3, 51)
+        Me.lblSingleEpisodeFile.Name = "lblSingleEpisodeFile"
+        Me.lblSingleEpisodeFile.Size = New System.Drawing.Size(107, 13)
+        Me.lblSingleEpisodeFile.TabIndex = 0
+        Me.lblSingleEpisodeFile.Text = "Single Episode File:"
+        '
+        'txtSingleEpisodeFile
+        '
+        Me.txtSingleEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtSingleEpisodeFile.Location = New System.Drawing.Point(3, 71)
+        Me.txtSingleEpisodeFile.Name = "txtSingleEpisodeFile"
+        Me.txtSingleEpisodeFile.Size = New System.Drawing.Size(350, 22)
+        Me.txtSingleEpisodeFile.TabIndex = 1
+        '
+        'lblMultiEpisodeFile
+        '
+        Me.lblMultiEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMultiEpisodeFile.AutoSize = True
+        Me.lblMultiEpisodeFile.Location = New System.Drawing.Point(3, 99)
+        Me.lblMultiEpisodeFile.Name = "lblMultiEpisodeFile"
+        Me.lblMultiEpisodeFile.Size = New System.Drawing.Size(102, 13)
+        Me.lblMultiEpisodeFile.TabIndex = 2
+        Me.lblMultiEpisodeFile.Text = "Multi Episode File:"
+        '
+        'txtMultiEpisodeFile
+        '
+        Me.txtMultiEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtMultiEpisodeFile.Location = New System.Drawing.Point(3, 119)
+        Me.txtMultiEpisodeFile.Name = "txtMultiEpisodeFile"
+        Me.txtMultiEpisodeFile.Size = New System.Drawing.Size(350, 22)
+        Me.txtMultiEpisodeFile.TabIndex = 3
+        '
+        'lblSingleMovieFile
+        '
+        Me.lblSingleMovieFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblSingleMovieFile.AutoSize = True
+        Me.lblSingleMovieFile.Location = New System.Drawing.Point(3, 3)
+        Me.lblSingleMovieFile.Name = "lblSingleMovieFile"
+        Me.lblSingleMovieFile.Size = New System.Drawing.Size(97, 13)
+        Me.lblSingleMovieFile.TabIndex = 0
+        Me.lblSingleMovieFile.Text = "Single Movie File:"
+        '
+        'txtSingleMovieFile
+        '
+        Me.txtSingleMovieFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtSingleMovieFile.Location = New System.Drawing.Point(3, 23)
+        Me.txtSingleMovieFile.Name = "txtSingleMovieFile"
+        Me.txtSingleMovieFile.Size = New System.Drawing.Size(350, 22)
+        Me.txtSingleMovieFile.TabIndex = 4
+        '
+        'lblMultiSeasonFile
+        '
+        Me.lblMultiSeasonFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMultiSeasonFile.AutoSize = True
+        Me.lblMultiSeasonFile.Location = New System.Drawing.Point(3, 147)
+        Me.lblMultiSeasonFile.Name = "lblMultiSeasonFile"
+        Me.lblMultiSeasonFile.Size = New System.Drawing.Size(98, 13)
+        Me.lblMultiSeasonFile.TabIndex = 2
+        Me.lblMultiSeasonFile.Text = "Multi Season File:"
+        '
+        'txtMultiSeasonFile
+        '
+        Me.txtMultiSeasonFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtMultiSeasonFile.Location = New System.Drawing.Point(3, 167)
+        Me.txtMultiSeasonFile.Name = "txtMultiSeasonFile"
+        Me.txtMultiSeasonFile.Size = New System.Drawing.Size(350, 22)
+        Me.txtMultiSeasonFile.TabIndex = 3
+        '
         'pnlSettingsTop
         '
         Me.pnlSettingsTop.AutoSize = True
@@ -477,76 +595,6 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
-        'gbPreview
-        '
-        Me.gbPreview.AutoSize = True
-        Me.gbPreview.Controls.Add(Me.TableLayoutPanel1)
-        Me.gbPreview.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbPreview.Location = New System.Drawing.Point(302, 381)
-        Me.gbPreview.Name = "gbPreview"
-        Me.gbPreview.Size = New System.Drawing.Size(262, 117)
-        Me.gbPreview.TabIndex = 6
-        Me.gbPreview.TabStop = False
-        Me.gbPreview.Text = "Preview"
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.AutoSize = True
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.Controls.Add(Me.lblSingleEpisodeFile, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.txtSingleEpisodeFile, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.lblMultiEpisodeFile, 0, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.txtMultiEpisodeFile, 0, 3)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 5
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(256, 96)
-        Me.TableLayoutPanel1.TabIndex = 0
-        '
-        'lblSingleEpisodeFile
-        '
-        Me.lblSingleEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblSingleEpisodeFile.AutoSize = True
-        Me.lblSingleEpisodeFile.Location = New System.Drawing.Point(3, 3)
-        Me.lblSingleEpisodeFile.Name = "lblSingleEpisodeFile"
-        Me.lblSingleEpisodeFile.Size = New System.Drawing.Size(107, 13)
-        Me.lblSingleEpisodeFile.TabIndex = 0
-        Me.lblSingleEpisodeFile.Text = "Single Episode File:"
-        '
-        'txtSingleEpisodeFile
-        '
-        Me.txtSingleEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtSingleEpisodeFile.Location = New System.Drawing.Point(3, 23)
-        Me.txtSingleEpisodeFile.Name = "txtSingleEpisodeFile"
-        Me.txtSingleEpisodeFile.Size = New System.Drawing.Size(250, 22)
-        Me.txtSingleEpisodeFile.TabIndex = 1
-        '
-        'lblMultiEpisodeFile
-        '
-        Me.lblMultiEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMultiEpisodeFile.AutoSize = True
-        Me.lblMultiEpisodeFile.Location = New System.Drawing.Point(3, 51)
-        Me.lblMultiEpisodeFile.Name = "lblMultiEpisodeFile"
-        Me.lblMultiEpisodeFile.Size = New System.Drawing.Size(102, 13)
-        Me.lblMultiEpisodeFile.TabIndex = 2
-        Me.lblMultiEpisodeFile.Text = "Multi Episode File:"
-        '
-        'txtMultiEpisodeFile
-        '
-        Me.txtMultiEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMultiEpisodeFile.Location = New System.Drawing.Point(3, 71)
-        Me.txtMultiEpisodeFile.Name = "txtMultiEpisodeFile"
-        Me.txtMultiEpisodeFile.Size = New System.Drawing.Size(250, 22)
-        Me.txtMultiEpisodeFile.TabIndex = 3
-        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -571,14 +619,14 @@ Partial Class frmSettingsHolder
         Me.gbRenamerPatternsMovies.PerformLayout()
         Me.tblRenamerPatterns.ResumeLayout(False)
         Me.tblRenamerPatterns.PerformLayout()
-        Me.pnlSettingsTop.ResumeLayout(False)
-        Me.pnlSettingsTop.PerformLayout()
-        Me.tblSettingsTop.ResumeLayout(False)
-        Me.tblSettingsTop.PerformLayout()
         Me.gbPreview.ResumeLayout(False)
         Me.gbPreview.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel1.PerformLayout()
+        Me.pnlSettingsTop.ResumeLayout(False)
+        Me.pnlSettingsTop.PerformLayout()
+        Me.tblSettingsTop.ResumeLayout(False)
+        Me.tblSettingsTop.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -619,4 +667,8 @@ Partial Class frmSettingsHolder
     Friend WithEvents txtSingleEpisodeFile As System.Windows.Forms.TextBox
     Friend WithEvents lblMultiEpisodeFile As System.Windows.Forms.Label
     Friend WithEvents txtMultiEpisodeFile As System.Windows.Forms.TextBox
+    Friend WithEvents lblSingleMovieFile As System.Windows.Forms.Label
+    Friend WithEvents txtSingleMovieFile As System.Windows.Forms.TextBox
+    Friend WithEvents lblMultiSeasonFile As System.Windows.Forms.Label
+    Friend WithEvents txtMultiSeasonFile As System.Windows.Forms.TextBox
 End Class
