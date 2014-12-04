@@ -213,7 +213,6 @@ Partial Class frmSettingsHolder
         'txtFolderPatternShows
         '
         Me.txtFolderPatternShows.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtFolderPatternShows.Enabled = False
         Me.txtFolderPatternShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtFolderPatternShows.Location = New System.Drawing.Point(3, 23)
         Me.txtFolderPatternShows.Name = "txtFolderPatternShows"
@@ -254,7 +253,6 @@ Partial Class frmSettingsHolder
         'txtFolderPatternSeasons
         '
         Me.txtFolderPatternSeasons.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtFolderPatternSeasons.Enabled = False
         Me.txtFolderPatternSeasons.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtFolderPatternSeasons.Location = New System.Drawing.Point(3, 71)
         Me.txtFolderPatternSeasons.Name = "txtFolderPatternSeasons"

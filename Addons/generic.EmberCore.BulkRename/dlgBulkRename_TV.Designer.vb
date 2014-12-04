@@ -24,22 +24,22 @@ Partial Class dlgBulkRenamer_TV
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgBulkRenamer_TV))
-        Me.tsmUnlockMovie = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tsmUnlockEpisode = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.chkRenamedOnly = New System.Windows.Forms.CheckBox()
-        Me.txtFolder = New System.Windows.Forms.TextBox()
+        Me.txtFolderPatternShows = New System.Windows.Forms.TextBox()
         Me.tsmLockAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.lblFolderPattern = New System.Windows.Forms.Label()
-        Me.lblFilePattern = New System.Windows.Forms.Label()
+        Me.lblFolderPatternShows = New System.Windows.Forms.Label()
+        Me.lblFilePatternEpisodes = New System.Windows.Forms.Label()
         Me.tsmUnlockAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.txtFile = New System.Windows.Forms.TextBox()
-        Me.tsmLockMovie = New System.Windows.Forms.ToolStripMenuItem()
-        Me.dgvMoviesList = New System.Windows.Forms.DataGridView()
-        Me.cmsMovieList = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.txtFilePatternEpisodes = New System.Windows.Forms.TextBox()
+        Me.tsmLockEpisode = New System.Windows.Forms.ToolStripMenuItem()
+        Me.dgvEpisodesList = New System.Windows.Forms.DataGridView()
+        Me.cmsEpisodeList = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.lblTopDetails = New System.Windows.Forms.Label()
         Me.pnlTop = New System.Windows.Forms.Panel()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.lblTopTitle = New System.Windows.Forms.Label()
+        Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.Close_Button = New System.Windows.Forms.Button()
         Me.pnlCancel = New System.Windows.Forms.Panel()
         Me.pbCompile = New System.Windows.Forms.ProgressBar()
@@ -49,20 +49,22 @@ Partial Class dlgBulkRenamer_TV
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.tmrSimul = New System.Windows.Forms.Timer(Me.components)
         Me.Rename_Button = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
-        Me.Button1 = New System.Windows.Forms.Button()
-        CType(Me.dgvMoviesList, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmsMovieList.SuspendLayout()
+        Me.btnFilePatternHelp = New System.Windows.Forms.Button()
+        Me.btnFolderPatternHelp = New System.Windows.Forms.Button()
+        Me.lblFolderPatternSeasons = New System.Windows.Forms.Label()
+        Me.txtFolderPatternSeasons = New System.Windows.Forms.TextBox()
+        CType(Me.dgvEpisodesList, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.cmsEpisodeList.SuspendLayout()
         Me.pnlTop.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlCancel.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsmUnlockMovie
         '
-        Me.tsmUnlockMovie.Name = "tsmUnlockMovie"
-        Me.tsmUnlockMovie.Size = New System.Drawing.Size(173, 22)
-        Me.tsmUnlockMovie.Text = "Unlock TV Show(s)"
+        Me.tsmUnlockEpisode.Name = "tsmUnlockMovie"
+        Me.tsmUnlockEpisode.Size = New System.Drawing.Size(173, 22)
+        Me.tsmUnlockEpisode.Text = "Unlock TV Show(s)"
         '
         'ToolStripSeparator1
         '
@@ -71,6 +73,7 @@ Partial Class dlgBulkRenamer_TV
         '
         'chkRenamedOnly
         '
+        Me.chkRenamedOnly.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkRenamedOnly.AutoSize = True
         Me.chkRenamedOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkRenamedOnly.Location = New System.Drawing.Point(668, 442)
@@ -80,14 +83,15 @@ Partial Class dlgBulkRenamer_TV
         Me.chkRenamedOnly.Text = "Display Only Files That Will Be Renamed"
         Me.chkRenamedOnly.UseVisualStyleBackColor = True
         '
-        'txtFolder
+        'txtFolderPatternShows
         '
-        Me.txtFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtFolder.Location = New System.Drawing.Point(316, 416)
-        Me.txtFolder.Name = "txtFolder"
-        Me.txtFolder.Size = New System.Drawing.Size(200, 22)
-        Me.txtFolder.TabIndex = 6
-        Me.txtFolder.Text = "$T ($Y)"
+        Me.txtFolderPatternShows.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.txtFolderPatternShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtFolderPatternShows.Location = New System.Drawing.Point(316, 416)
+        Me.txtFolderPatternShows.Name = "txtFolderPatternShows"
+        Me.txtFolderPatternShows.Size = New System.Drawing.Size(200, 22)
+        Me.txtFolderPatternShows.TabIndex = 6
+        Me.txtFolderPatternShows.Text = "$T ($Y)"
         '
         'tsmLockAll
         '
@@ -95,25 +99,27 @@ Partial Class dlgBulkRenamer_TV
         Me.tsmLockAll.Size = New System.Drawing.Size(173, 22)
         Me.tsmLockAll.Text = "Lock All"
         '
-        'lblFolderPattern
+        'lblFolderPatternShows
         '
-        Me.lblFolderPattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFolderPattern.Location = New System.Drawing.Point(12, 419)
-        Me.lblFolderPattern.Name = "lblFolderPattern"
-        Me.lblFolderPattern.Size = New System.Drawing.Size(298, 13)
-        Me.lblFolderPattern.TabIndex = 5
-        Me.lblFolderPattern.Text = "Folder Pattern"
-        Me.lblFolderPattern.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblFolderPatternShows.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblFolderPatternShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFolderPatternShows.Location = New System.Drawing.Point(12, 419)
+        Me.lblFolderPatternShows.Name = "lblFolderPatternShows"
+        Me.lblFolderPatternShows.Size = New System.Drawing.Size(298, 13)
+        Me.lblFolderPatternShows.TabIndex = 5
+        Me.lblFolderPatternShows.Text = "Show Folders Pattern"
+        Me.lblFolderPatternShows.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'lblFilePattern
+        'lblFilePatternEpisodes
         '
-        Me.lblFilePattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilePattern.Location = New System.Drawing.Point(522, 419)
-        Me.lblFilePattern.Name = "lblFilePattern"
-        Me.lblFilePattern.Size = New System.Drawing.Size(140, 13)
-        Me.lblFilePattern.TabIndex = 8
-        Me.lblFilePattern.Text = "File Pattern"
-        Me.lblFilePattern.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblFilePatternEpisodes.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblFilePatternEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilePatternEpisodes.Location = New System.Drawing.Point(522, 419)
+        Me.lblFilePatternEpisodes.Name = "lblFilePatternEpisodes"
+        Me.lblFilePatternEpisodes.Size = New System.Drawing.Size(140, 13)
+        Me.lblFilePatternEpisodes.TabIndex = 8
+        Me.lblFilePatternEpisodes.Text = "Episode Files Pattern"
+        Me.lblFilePatternEpisodes.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'tsmUnlockAll
         '
@@ -121,96 +127,98 @@ Partial Class dlgBulkRenamer_TV
         Me.tsmUnlockAll.Size = New System.Drawing.Size(173, 22)
         Me.tsmUnlockAll.Text = "Unlock All"
         '
-        'txtFile
+        'txtFilePatternEpisodes
         '
-        Me.txtFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtFile.Location = New System.Drawing.Point(668, 416)
-        Me.txtFile.Name = "txtFile"
-        Me.txtFile.Size = New System.Drawing.Size(224, 22)
-        Me.txtFile.TabIndex = 9
-        Me.txtFile.Text = "$T"
+        Me.txtFilePatternEpisodes.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.txtFilePatternEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtFilePatternEpisodes.Location = New System.Drawing.Point(668, 416)
+        Me.txtFilePatternEpisodes.Name = "txtFilePatternEpisodes"
+        Me.txtFilePatternEpisodes.Size = New System.Drawing.Size(224, 22)
+        Me.txtFilePatternEpisodes.TabIndex = 9
+        Me.txtFilePatternEpisodes.Text = "$T"
         '
         'tsmLockMovie
         '
-        Me.tsmLockMovie.Name = "tsmLockMovie"
-        Me.tsmLockMovie.Size = New System.Drawing.Size(173, 22)
-        Me.tsmLockMovie.Text = "Lock TV Show(s)"
+        Me.tsmLockEpisode.Name = "tsmLockMovie"
+        Me.tsmLockEpisode.Size = New System.Drawing.Size(173, 22)
+        Me.tsmLockEpisode.Text = "Lock TV Show(s)"
         '
-        'dgvMoviesList
+        'dgvEpisodesList
         '
-        Me.dgvMoviesList.AllowUserToAddRows = False
-        Me.dgvMoviesList.AllowUserToDeleteRows = False
-        Me.dgvMoviesList.AllowUserToResizeRows = False
-        Me.dgvMoviesList.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                  Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgvMoviesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvMoviesList.ContextMenuStrip = Me.cmsMovieList
-        Me.dgvMoviesList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
-        Me.dgvMoviesList.Location = New System.Drawing.Point(12, 94)
-        Me.dgvMoviesList.Name = "dgvMoviesList"
-        Me.dgvMoviesList.RowHeadersVisible = False
-        Me.dgvMoviesList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvMoviesList.ShowEditingIcon = False
-        Me.dgvMoviesList.Size = New System.Drawing.Size(966, 316)
-        Me.dgvMoviesList.TabIndex = 3
+        Me.dgvEpisodesList.AllowUserToAddRows = False
+        Me.dgvEpisodesList.AllowUserToDeleteRows = False
+        Me.dgvEpisodesList.AllowUserToResizeRows = False
+        Me.dgvEpisodesList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgvEpisodesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvEpisodesList.ContextMenuStrip = Me.cmsEpisodeList
+        Me.dgvEpisodesList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
+        Me.dgvEpisodesList.Location = New System.Drawing.Point(12, 94)
+        Me.dgvEpisodesList.Name = "dgvEpisodesList"
+        Me.dgvEpisodesList.RowHeadersVisible = False
+        Me.dgvEpisodesList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvEpisodesList.ShowEditingIcon = False
+        Me.dgvEpisodesList.Size = New System.Drawing.Size(966, 316)
+        Me.dgvEpisodesList.TabIndex = 3
         '
-        'cmsMovieList
+        'cmsEpisodeList
         '
-        Me.cmsMovieList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmLockMovie, Me.tsmUnlockMovie, Me.ToolStripSeparator1, Me.tsmLockAll, Me.tsmUnlockAll})
-        Me.cmsMovieList.Name = "cmsMovieList"
-        Me.cmsMovieList.Size = New System.Drawing.Size(174, 98)
+        Me.cmsEpisodeList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmLockEpisode, Me.tsmUnlockEpisode, Me.ToolStripSeparator1, Me.tsmLockAll, Me.tsmUnlockAll})
+        Me.cmsEpisodeList.Name = "cmsMovieList"
+        Me.cmsEpisodeList.Size = New System.Drawing.Size(174, 120)
         '
-        'Label2
+        'lblTopDetails
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(64, 38)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(149, 13)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Rename TV Shows and files"
+        Me.lblTopDetails.AutoSize = True
+        Me.lblTopDetails.BackColor = System.Drawing.Color.Transparent
+        Me.lblTopDetails.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTopDetails.ForeColor = System.Drawing.Color.White
+        Me.lblTopDetails.Location = New System.Drawing.Point(64, 38)
+        Me.lblTopDetails.Name = "lblTopDetails"
+        Me.lblTopDetails.Size = New System.Drawing.Size(149, 13)
+        Me.lblTopDetails.TabIndex = 1
+        Me.lblTopDetails.Text = "Rename TV Shows and files"
         '
         'pnlTop
         '
         Me.pnlTop.BackColor = System.Drawing.Color.SteelBlue
         Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTop.Controls.Add(Me.Label2)
-        Me.pnlTop.Controls.Add(Me.Label4)
-        Me.pnlTop.Controls.Add(Me.PictureBox1)
+        Me.pnlTop.Controls.Add(Me.lblTopDetails)
+        Me.pnlTop.Controls.Add(Me.lblTopTitle)
+        Me.pnlTop.Controls.Add(Me.pbTopLogo)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
         Me.pnlTop.Size = New System.Drawing.Size(1000, 64)
         Me.pnlTop.TabIndex = 2
         '
-        'Label4
+        'lblTopTitle
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.White
-        Me.Label4.Location = New System.Drawing.Point(61, 3)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(211, 32)
-        Me.Label4.TabIndex = 0
-        Me.Label4.Text = "TV Bulk Renamer"
+        Me.lblTopTitle.AutoSize = True
+        Me.lblTopTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblTopTitle.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTopTitle.ForeColor = System.Drawing.Color.White
+        Me.lblTopTitle.Location = New System.Drawing.Point(61, 3)
+        Me.lblTopTitle.Name = "lblTopTitle"
+        Me.lblTopTitle.Size = New System.Drawing.Size(211, 32)
+        Me.lblTopTitle.TabIndex = 0
+        Me.lblTopTitle.Text = "TV Bulk Renamer"
         '
-        'PictureBox1
+        'pbTopLogo
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(12, 7)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(48, 48)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = False
+        Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
+        Me.pbTopLogo.Image = CType(resources.GetObject("pbTopLogo.Image"), System.Drawing.Image)
+        Me.pbTopLogo.Location = New System.Drawing.Point(12, 7)
+        Me.pbTopLogo.Name = "pbTopLogo"
+        Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
+        Me.pbTopLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.pbTopLogo.TabIndex = 0
+        Me.pbTopLogo.TabStop = False
         '
         'Close_Button
         '
-        Me.Close_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Close_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Close_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Close_Button.Location = New System.Drawing.Point(898, 463)
@@ -293,7 +301,7 @@ Partial Class dlgBulkRenamer_TV
         '
         'Rename_Button
         '
-        Me.Rename_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Rename_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Rename_Button.Enabled = False
         Me.Rename_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Rename_Button.Location = New System.Drawing.Point(812, 463)
@@ -302,77 +310,101 @@ Partial Class dlgBulkRenamer_TV
         Me.Rename_Button.TabIndex = 1
         Me.Rename_Button.Text = "Rename"
         '
-        'Button2
+        'btnFilePatternHelp
         '
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(895, 416)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(17, 19)
-        Me.Button2.TabIndex = 10
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.btnFilePatternHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnFilePatternHelp.Image = CType(resources.GetObject("btnFilePatternHelp.Image"), System.Drawing.Image)
+        Me.btnFilePatternHelp.Location = New System.Drawing.Point(895, 416)
+        Me.btnFilePatternHelp.Name = "btnFilePatternHelp"
+        Me.btnFilePatternHelp.Size = New System.Drawing.Size(17, 19)
+        Me.btnFilePatternHelp.TabIndex = 10
+        Me.btnFilePatternHelp.UseVisualStyleBackColor = True
         '
-        'Button1
+        'btnFolderPatternHelp
         '
-        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(517, 418)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(17, 19)
-        Me.Button1.TabIndex = 7
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnFolderPatternHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnFolderPatternHelp.Image = CType(resources.GetObject("btnFolderPatternHelp.Image"), System.Drawing.Image)
+        Me.btnFolderPatternHelp.Location = New System.Drawing.Point(517, 418)
+        Me.btnFolderPatternHelp.Name = "btnFolderPatternHelp"
+        Me.btnFolderPatternHelp.Size = New System.Drawing.Size(17, 19)
+        Me.btnFolderPatternHelp.TabIndex = 7
+        Me.btnFolderPatternHelp.UseVisualStyleBackColor = True
         '
-        'dlgTVBulkRenamer
+        'lblFolderPatternSeasons
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.lblFolderPatternSeasons.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblFolderPatternSeasons.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFolderPatternSeasons.Location = New System.Drawing.Point(12, 447)
+        Me.lblFolderPatternSeasons.Name = "lblFolderPatternSeasons"
+        Me.lblFolderPatternSeasons.Size = New System.Drawing.Size(298, 13)
+        Me.lblFolderPatternSeasons.TabIndex = 5
+        Me.lblFolderPatternSeasons.Text = "Season Folders Pattern"
+        Me.lblFolderPatternSeasons.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'txtFolderPatternSeasons
+        '
+        Me.txtFolderPatternSeasons.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.txtFolderPatternSeasons.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtFolderPatternSeasons.Location = New System.Drawing.Point(316, 444)
+        Me.txtFolderPatternSeasons.Name = "txtFolderPatternSeasons"
+        Me.txtFolderPatternSeasons.Size = New System.Drawing.Size(200, 22)
+        Me.txtFolderPatternSeasons.TabIndex = 6
+        Me.txtFolderPatternSeasons.Text = "$T ($Y)"
+        '
+        'dlgBulkRenamer_TV
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(1000, 505)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.btnFilePatternHelp)
+        Me.Controls.Add(Me.btnFolderPatternHelp)
         Me.Controls.Add(Me.chkRenamedOnly)
-        Me.Controls.Add(Me.txtFolder)
-        Me.Controls.Add(Me.lblFolderPattern)
-        Me.Controls.Add(Me.lblFilePattern)
-        Me.Controls.Add(Me.txtFile)
+        Me.Controls.Add(Me.txtFolderPatternSeasons)
+        Me.Controls.Add(Me.lblFolderPatternSeasons)
+        Me.Controls.Add(Me.txtFolderPatternShows)
+        Me.Controls.Add(Me.lblFolderPatternShows)
+        Me.Controls.Add(Me.lblFilePatternEpisodes)
+        Me.Controls.Add(Me.txtFilePatternEpisodes)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.Close_Button)
         Me.Controls.Add(Me.pnlCancel)
         Me.Controls.Add(Me.Rename_Button)
-        Me.Controls.Add(Me.dgvMoviesList)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Controls.Add(Me.dgvEpisodesList)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgTVBulkRenamer"
+        Me.Name = "dlgBulkRenamer_TV"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "TV BulkRename"
-        CType(Me.dgvMoviesList, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.cmsMovieList.ResumeLayout(False)
+        Me.Text = "TV Bulk Renamer"
+        CType(Me.dgvEpisodesList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cmsEpisodeList.ResumeLayout(False)
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlCancel.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents tsmUnlockMovie As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents btnFilePatternHelp As System.Windows.Forms.Button
+    Friend WithEvents btnFolderPatternHelp As System.Windows.Forms.Button
+    Friend WithEvents tsmUnlockEpisode As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents chkRenamedOnly As System.Windows.Forms.CheckBox
-    Friend WithEvents txtFolder As System.Windows.Forms.TextBox
+    Friend WithEvents txtFolderPatternShows As System.Windows.Forms.TextBox
     Friend WithEvents tsmLockAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents lblFolderPattern As System.Windows.Forms.Label
-    Friend WithEvents lblFilePattern As System.Windows.Forms.Label
+    Friend WithEvents lblFolderPatternShows As System.Windows.Forms.Label
+    Friend WithEvents lblFilePatternEpisodes As System.Windows.Forms.Label
     Friend WithEvents tsmUnlockAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents txtFile As System.Windows.Forms.TextBox
-    Friend WithEvents tsmLockMovie As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents dgvMoviesList As System.Windows.Forms.DataGridView
-    Friend WithEvents cmsMovieList As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents txtFilePatternEpisodes As System.Windows.Forms.TextBox
+    Friend WithEvents tsmLockEpisode As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents dgvEpisodesList As System.Windows.Forms.DataGridView
+    Friend WithEvents cmsEpisodeList As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents lblTopDetails As System.Windows.Forms.Label
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents lblTopTitle As System.Windows.Forms.Label
+    Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
     Friend WithEvents Close_Button As System.Windows.Forms.Button
     Friend WithEvents pnlCancel As System.Windows.Forms.Panel
     Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
@@ -382,5 +414,7 @@ Partial Class dlgBulkRenamer_TV
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents tmrSimul As System.Windows.Forms.Timer
     Friend WithEvents Rename_Button As System.Windows.Forms.Button
+    Friend WithEvents lblFolderPatternSeasons As System.Windows.Forms.Label
+    Friend WithEvents txtFolderPatternSeasons As System.Windows.Forms.TextBox
 
 End Class

@@ -71,7 +71,7 @@ Public Class dlgBulkRenamer_Movie
     End Sub
 
     Private Sub bwDoRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
-        FFRenamer.DoRename(AddressOf ShowProgressRename)
+        FFRenamer.DoRename_Movie(AddressOf ShowProgressRename)
     End Sub
 
     Private Sub bwDoRename_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDoRename.ProgressChanged
@@ -82,7 +82,7 @@ Public Class dlgBulkRenamer_Movie
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         Try
             Dim MovieFile As New FileFolderRenamer.FileRename
-            Dim _curMovie As New Structures.DBMovie
+            Dim _currMovie As New Structures.DBMovie
             Dim hasFilter As Boolean = False
             Dim dbFilter As String = String.Empty
 
@@ -133,49 +133,49 @@ Public Class dlgBulkRenamer_Movie
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
 
                                         MovieFile = New FileFolderRenamer.FileRename
-                                        _curMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("id")))
+                                        _currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("id")))
 
-                                        If Not _curMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_curMovie.Filename) Then
-                                            MovieFile = FileFolderRenamer.GetInfo_Movie(_curMovie)
+                                        If Not _currMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_currMovie.Filename) Then
+                                            MovieFile = FileFolderRenamer.GetInfo_Movie(_currMovie)
 
                                             For Each i As String In FFRenamer.MovieFolders
-                                                If _curMovie.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
+                                                If _currMovie.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
                                                     MovieFile.BasePath = If(i.EndsWith(Path.DirectorySeparatorChar.ToString), i.Substring(0, i.Length - 1), i)
-                                                    If FileUtils.Common.isVideoTS(_curMovie.Filename) Then
-                                                        MovieFile.Parent = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).Name
-                                                        If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName Then
+                                                    If FileUtils.Common.isVideoTS(_currMovie.Filename) Then
+                                                        MovieFile.Parent = Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).Name
+                                                        If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName Then
                                                             MovieFile.OldPath = String.Empty
                                                             MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
                                                         Else
-                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
                                                         End If
                                                         MovieFile.IsVideo_TS = True
-                                                    ElseIf FileUtils.Common.isBDRip(_curMovie.Filename) Then
-                                                        MovieFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).Name
-                                                        If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName Then
+                                                    ElseIf FileUtils.Common.isBDRip(_currMovie.Filename) Then
+                                                        MovieFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName).Name
+                                                        If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName).FullName Then
                                                             MovieFile.OldPath = String.Empty
                                                             MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
                                                         Else
-                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
                                                         End If
                                                         MovieFile.IsBDMV = True
                                                     Else
-                                                        MovieFile.Parent = Directory.GetParent(_curMovie.Filename).Name
-                                                        If MovieFile.BasePath = Directory.GetParent(_curMovie.Filename).FullName Then
+                                                        MovieFile.Parent = Directory.GetParent(_currMovie.Filename).Name
+                                                        If MovieFile.BasePath = Directory.GetParent(_currMovie.Filename).FullName Then
                                                             MovieFile.OldPath = String.Empty
                                                             MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
                                                         Else
-                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
                                                         End If
                                                     End If
                                                 End If
                                             Next
 
                                             If Not MovieFile.IsVideo_TS AndAlso Not MovieFile.IsBDMV Then
-                                                MovieFile.FileName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_curMovie.Filename))
-                                                Dim stackMark As String = Path.GetFileNameWithoutExtension(_curMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
-                                                If Not stackMark = String.Empty AndAlso _curMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
-                                                    MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
+                                                MovieFile.FileName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_currMovie.Filename))
+                                                Dim stackMark As String = Path.GetFileNameWithoutExtension(_currMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
+                                                If Not stackMark = String.Empty AndAlso _currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
+                                                    MovieFile.FileName = Path.GetFileNameWithoutExtension(_currMovie.Filename)
                                                 End If
                                             ElseIf MovieFile.IsBDMV Then
                                                 MovieFile.FileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
@@ -185,7 +185,7 @@ Public Class dlgBulkRenamer_Movie
 
                                             FFRenamer.AddMovie(MovieFile)
 
-                                            Me.bwLoadInfo.ReportProgress(iProg, _curMovie.ListTitle)
+                                            Me.bwLoadInfo.ReportProgress(iProg, _currMovie.ListTitle)
                                         End If
                                     End If
                                 End If
@@ -252,8 +252,8 @@ Public Class dlgBulkRenamer_Movie
     End Sub
 
     Private Sub cmsMovieList_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsMovieList.Opening
-        Dim count As Integer = FFRenamer.GetCount
-        Dim lockcount As Integer = FFRenamer.GetCountLocked
+        Dim count As Integer = FFRenamer.GetCount_Movies
+        Dim lockcount As Integer = FFRenamer.GetCountLocked_Movies
         If count > 0 Then
             If lockcount > 0 Then
                 tsmUnlockAll.Visible = True
@@ -387,7 +387,7 @@ Public Class dlgBulkRenamer_Movie
         Dim Sta As MyStart = New MyStart(AddressOf Start)
         Dim Fin As MyFinish = New MyFinish(AddressOf Finish)
         Me.Invoke(Sta)
-        FFRenamer.ProccessFiles(txtFolderPattern.Text, txtFilePattern.Text, txtFolderPatternNotSingle.Text)
+        FFRenamer.ProccessFiles_Movies(txtFolderPattern.Text, txtFilePattern.Text, txtFolderPatternNotSingle.Text)
         Me.Invoke(Fin)
     End Sub
 

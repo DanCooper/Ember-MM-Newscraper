@@ -220,7 +220,7 @@ Public Class BulkRenamerModule
         MyMenu.Image = New Bitmap(My.Resources.icon)
         MyMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        MyMenu.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True}
+        MyMenu.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
         DropDownItemsAdd(MyMenu, tsi)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
@@ -319,9 +319,9 @@ Public Class BulkRenamerModule
 
     Sub LoadSettings()
         MySettings.FoldersPattern_Movies = clsAdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}", , Enums.Content_Type.Movie)
-        MySettings.FoldersPattern_Seasons = clsAdvancedSettings.GetSetting("FoldersPattern", "", , Enums.Content_Type.Season)
-        MySettings.FoldersPattern_Shows = clsAdvancedSettings.GetSetting("FoldersPattern", "", , Enums.Content_Type.Show)
-        MySettings.FilesPattern_Episodes = clsAdvancedSettings.GetSetting("FilesPattern", "$Z - $W.S?.E?{ - $T}", , Enums.Content_Type.Episode)
+        MySettings.FoldersPattern_Seasons = clsAdvancedSettings.GetSetting("FoldersPattern", "Season $K?", , Enums.Content_Type.Season)
+        MySettings.FoldersPattern_Shows = clsAdvancedSettings.GetSetting("FoldersPattern", "$Z", , Enums.Content_Type.Show)
+        MySettings.FilesPattern_Episodes = clsAdvancedSettings.GetSetting("FilesPattern", "$Z - $WS?E?{ - $T}", , Enums.Content_Type.Episode)
         MySettings.FilesPattern_Movies = clsAdvancedSettings.GetSetting("FilesPattern", "$T{.$S}", , Enums.Content_Type.Movie)
         MySettings.RenameEdit_Movies = clsAdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.Content_Type.Movie)
         MySettings.RenameEdit_Episodes = clsAdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.Content_Type.Show)
@@ -343,8 +343,8 @@ Public Class BulkRenamerModule
                     dBulkRename.FilterMovies = ModulesManager.Instance.RuntimeObjects.FilterMovies
                     dBulkRename.FilterMoviesSearch = ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch
                     dBulkRename.FilterMoviesType = ModulesManager.Instance.RuntimeObjects.FilterMoviesType
-                    dBulkRename.txtFolderPattern.Text = MySettings.FoldersPattern_Movies
                     dBulkRename.txtFilePattern.Text = MySettings.FilesPattern_Movies
+                    dBulkRename.txtFolderPattern.Text = MySettings.FoldersPattern_Movies
                     Try
                         If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
                             ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
@@ -352,12 +352,21 @@ Public Class BulkRenamerModule
                     Catch ex As Exception
                     End Try
                 End Using
-            Case 1
-                MsgBox("Not implemented yet", MsgBoxStyle.OkOnly, "Info")
-                'Using dTVBulkRename As New dlgtvBulkRenamer
-                'If dTVBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                'End If
-                'End Using
+            Case 2
+                Using dBulkRename As New dlgBulkRenamer_TV
+                    dBulkRename.FilterShows = ModulesManager.Instance.RuntimeObjects.FilterShows
+                    dBulkRename.FilterShowsSearch = ModulesManager.Instance.RuntimeObjects.FilterShowsSearch
+                    dBulkRename.FilterShowsType = ModulesManager.Instance.RuntimeObjects.FilterShowsType
+                    dBulkRename.txtFilePatternEpisodes.Text = MySettings.FilesPattern_Episodes
+                    dBulkRename.txtFolderPatternSeasons.Text = MySettings.FoldersPattern_Seasons
+                    dBulkRename.txtFolderPatternShows.Text = MySettings.FoldersPattern_Shows
+                    Try
+                        If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                            ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.TV = True}, String.Empty)
+                        End If
+                    Catch ex As Exception
+                    End Try
+                End Using
         End Select
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub

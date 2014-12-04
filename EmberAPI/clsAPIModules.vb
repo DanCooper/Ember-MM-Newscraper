@@ -1650,6 +1650,10 @@ Public Class ModulesManager
         Private _FilterMovies As String
         Private _FilterMoviesSearch As String
         Private _FilterMoviesType As String
+        Private _FilterShows As String
+        Private _FilterShowsSearch As String
+        Private _FilterShowsType As String
+
 
 #End Region 'Fields
 
@@ -1688,6 +1692,32 @@ Public Class ModulesManager
             End Get
             Set(ByVal value As String)
                 _FilterMoviesType = value
+            End Set
+        End Property
+        Public Property FilterShows() As String
+            Get
+                Return _FilterShows
+            End Get
+            Set(ByVal value As String)
+                _FilterShows = value
+            End Set
+        End Property
+
+        Public Property FilterShowsSearch() As String
+            Get
+                Return _FilterShowsSearch
+            End Get
+            Set(ByVal value As String)
+                _FilterShowsSearch = value
+            End Set
+        End Property
+
+        Public Property FilterShowsType() As String
+            Get
+                Return _FilterShowsType
+            End Get
+            Set(ByVal value As String)
+                _FilterShowsType = value
             End Set
         End Property
 

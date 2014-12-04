@@ -218,10 +218,22 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.Year = "2012"
     End Sub
 
+    Private Sub CreatePreview_SingleEpisode()
+        If Not String.IsNullOrEmpty(txtFilePatternEpisodes.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternShows.Text) Then
+            Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFilePatternEpisodes.Text, False, False)
+            Dim dSeasonPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFolderPatternSeasons.Text, True, False)
+            Dim dShowPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFolderPatternShows.Text, True, False)
+
+            txtSingleEpisodeFile.Text = Path.Combine(dShowPath, dSeasonPath, dFilename)
+        Else
+            txtSingleEpisodeFile.Text = String.Empty
+        End If
+    End Sub
+
     Private Sub CreatePreview_Movie()
         If Not String.IsNullOrEmpty(txtFilePatternMovies.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternMovies.Text) Then
-            Dim dPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleMovie, txtFolderPatternMovies.Text, True, False)
             Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummySingleMovie, txtFilePatternMovies.Text, False, False)
+            Dim dPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleMovie, txtFolderPatternMovies.Text, True, False)
 
             txtSingleMovieFile.Text = Path.Combine(dPath, dFilename)
         Else
@@ -295,14 +307,25 @@ Public Class frmSettingsHolder
         CreatePreview_Movie()
     End Sub
 
-    Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternMovies.TextChanged
+    Private Sub txtFolderPatternMovies_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternMovies.TextChanged
         RaiseEvent ModuleSettingsChanged()
         CreatePreview_Movie()
     End Sub
+
+    Private Sub txtFolderPatternSeasons_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternSeasons.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+        CreatePreview_SingleEpisode()
+    End Sub
+
+    Private Sub txtFolderPatternShows_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternShows.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+        CreatePreview_SingleEpisode()
+    End Sub
+
     Private Sub txtFilePatternEpisodes_TextChanged(sender As Object, e As EventArgs) Handles txtFilePatternEpisodes.TextChanged
         RaiseEvent ModuleSettingsChanged()
-
-        txtSingleEpisodeFile.Text = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFilePatternEpisodes.Text, False, False)
+        CreatePreview_SingleEpisode()
+        'txtSingleEpisodeFile.Text = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFilePatternEpisodes.Text, False, False)
         txtMultiEpisodeFile.Text = FileFolderRenamer.ProccessPattern(_fDummyMultiEpisode, txtFilePatternEpisodes.Text, False, False)
         txtMultiSeasonFile.Text = FileFolderRenamer.ProccessPattern(_fDummyMultiSeason, txtFilePatternEpisodes.Text, False, False)
     End Sub

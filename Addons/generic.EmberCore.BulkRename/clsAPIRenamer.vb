@@ -29,7 +29,9 @@ Public Class FileFolderRenamer
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public MovieFolders As New List(Of String)
+    Public TVShowFolders As New List(Of String)
 
+    Private _episodes As New List(Of FileRename)
     Private _movies As New List(Of FileRename)
 
 #End Region 'Fields
@@ -55,6 +57,24 @@ Public Class FileFolderRenamer
         'Source 2 = C:/Movies/BluRay
         'stupid to add sources this way, but possible
         MovieFolders.Sort()
+
+        _episodes.Clear()
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLNewcommand.CommandText = String.Concat("SELECT Path FROM TVSources;")
+            Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                While SQLReader.Read
+                    TVShowFolders.Add(If(SQLReader("Path").ToString.EndsWith(Path.DirectorySeparatorChar), SQLReader("Path").ToString, String.Concat(SQLReader("Path").ToString, Path.DirectorySeparatorChar)))
+                End While
+            End Using
+        End Using
+
+        'put them in order so when we're checking for basepath the last one used will be the longest one
+        'case:
+        'Source 1 = C:/Movies/BluRay/FullRips
+        'Source 2 = C:/Movies/BluRay
+        'stupid to add sources this way, but possible
+        MovieFolders.Sort()
+        TVShowFolders.Sort()
     End Sub
 
 #End Region 'Constructors
@@ -77,270 +97,309 @@ Public Class FileFolderRenamer
 
     Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String, ByVal isPath As Boolean, Optional isMultiEpisode As Boolean = False) As String
         Try
-            Dim pattern As String = opattern
-            'Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
+            If Not String.IsNullOrEmpty(opattern) Then
+                Dim pattern As String = opattern
+                'Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
 
-            'pattern = "$T{($S.$S)}"
-            Dim joinIndex As Integer
-            Dim nextC = pattern.IndexOf("$")
-            Dim nextIB = pattern.IndexOf("{")
-            Dim nextEB = pattern.IndexOf("}")
-            Dim strCond As String
-            Dim strBase As String
-            Dim strNoFlags As String
-            Dim strJoin As String
-            While Not nextC = -1
-                If nextC > nextIB AndAlso nextC < nextEB AndAlso Not nextC = -1 AndAlso Not nextIB = -1 AndAlso Not nextEB = -1 Then
-                    strCond = pattern.Substring(nextIB, nextEB - nextIB + 1)
-                    strNoFlags = strCond
-                    strBase = strCond
-                    strCond = ApplyPattern(strCond, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
-                    strCond = ApplyPattern(strCond, "A", f.AudioChannels)
-                    strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
-                    strCond = ApplyPattern(strCond, "C", f.Director)
-                    strCond = ApplyPattern(strCond, "D", f.Parent) '.Replace("\", String.Empty))
-                    strCond = ApplyPattern(strCond, "E", f.SortTitle)
-                    strCond = ApplyPattern(strCond, "F", f.FileName.Replace("\", String.Empty))
-                    '                                G   Genres
-                    strCond = ApplyPattern(strCond, "H", f.VideoCodec)
-                    strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
-                    strCond = ApplyPattern(strCond, "J", f.AudioCodec)
-                    strCond = ApplyPattern(strCond, "L", f.ListTitle)
-                    strCond = ApplyPattern(strCond, "M", f.MPAA)
-                    strCond = ApplyPattern(strCond, "N", f.Collection)
-                    strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
-                    strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
-                    '                                Q   Episode
-                    strCond = ApplyPattern(strCond, "R", f.Resolution)
-                    strCond = ApplyPattern(strCond, "S", f.VideoSource)
-                    strCond = ApplyPattern(strCond, "T", f.Title)
-                    strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
-                    '                                W   SeasonEpisode
-                    '                                X   
-                    strCond = ApplyPattern(strCond, "Y", f.Year)
-                    strCond = ApplyPattern(strCond, "Z", f.ShowTitle)
-                    joinIndex = strCond.IndexOf("$G")
-                    If Not joinIndex = -1 Then
-                        If strCond.Length > joinIndex + 2 Then
-                            strJoin = strCond.Substring(joinIndex + 2, 1)
-                            If Not ". -".IndexOf(strJoin) = -1 Then
-                                strCond = ApplyPattern(strCond, String.Concat("G", strJoin), f.Genre.Replace(" / ", strJoin))
+                'pattern = "$T{($S.$S)}"
+                Dim joinIndex As Integer
+                Dim nextC = pattern.IndexOf("$")
+                Dim nextIB = pattern.IndexOf("{")
+                Dim nextEB = pattern.IndexOf("}")
+                Dim strCond As String
+                Dim strBase As String
+                Dim strNoFlags As String
+                Dim strJoin As String
+                While Not nextC = -1
+                    If nextC > nextIB AndAlso nextC < nextEB AndAlso Not nextC = -1 AndAlso Not nextIB = -1 AndAlso Not nextEB = -1 Then
+                        strCond = pattern.Substring(nextIB, nextEB - nextIB + 1)
+                        strNoFlags = strCond
+                        strBase = strCond
+                        strCond = ApplyPattern(strCond, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
+                        strCond = ApplyPattern(strCond, "A", f.AudioChannels)
+                        strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
+                        strCond = ApplyPattern(strCond, "C", f.Director)
+                        strCond = ApplyPattern(strCond, "D", f.Parent) '.Replace("\", String.Empty))
+                        strCond = ApplyPattern(strCond, "E", f.SortTitle)
+                        strCond = ApplyPattern(strCond, "F", f.FileName.Replace("\", String.Empty))
+                        '                                G   Genres
+                        strCond = ApplyPattern(strCond, "H", f.VideoCodec)
+                        strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
+                        strCond = ApplyPattern(strCond, "J", f.AudioCodec)
+                        '                                K   Season
+                        strCond = ApplyPattern(strCond, "L", f.ListTitle)
+                        strCond = ApplyPattern(strCond, "M", f.MPAA)
+                        strCond = ApplyPattern(strCond, "N", f.Collection)
+                        strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
+                        strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
+                        '                                Q   Episode
+                        strCond = ApplyPattern(strCond, "R", f.Resolution)
+                        strCond = ApplyPattern(strCond, "S", f.VideoSource)
+                        strCond = ApplyPattern(strCond, "T", f.Title)
+                        strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
+                        '                                W   SeasonEpisode
+                        '                                X   
+                        strCond = ApplyPattern(strCond, "Y", f.Year)
+                        strCond = ApplyPattern(strCond, "Z", f.ShowTitle)
+                        joinIndex = strCond.IndexOf("$G")
+                        If Not joinIndex = -1 Then
+                            If strCond.Length > joinIndex + 2 Then
+                                strJoin = strCond.Substring(joinIndex + 2, 1)
+                                If Not ". -".IndexOf(strJoin) = -1 Then
+                                    strCond = ApplyPattern(strCond, String.Concat("G", strJoin), f.Genre.Replace(" / ", strJoin))
+                                Else
+                                    strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
+                                End If
                             Else
                                 strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
                             End If
-                        Else
-                            strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
                         End If
-                    End If
-                    joinIndex = strCond.IndexOf("$U")
-                    If Not joinIndex = -1 Then
-                        If strCond.Length > joinIndex + 2 Then
-                            strJoin = strCond.Substring(joinIndex + 2, 1)
-                            If Not ". -".IndexOf(strJoin) = -1 Then
-                                strCond = ApplyPattern(strCond, String.Concat("U", strJoin), f.Country.Replace(" / ", strJoin))
+                        joinIndex = strCond.IndexOf("$U")
+                        If Not joinIndex = -1 Then
+                            If strCond.Length > joinIndex + 2 Then
+                                strJoin = strCond.Substring(joinIndex + 2, 1)
+                                If Not ". -".IndexOf(strJoin) = -1 Then
+                                    strCond = ApplyPattern(strCond, String.Concat("U", strJoin), f.Country.Replace(" / ", strJoin))
+                                Else
+                                    strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
+                                End If
                             Else
                                 strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
                             End If
+                        End If
+                        strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJKLMNOPQRSTVWY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                        If strCond.Trim = strNoFlags.Trim Then
+                            strCond = String.Empty
                         Else
-                            strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
+                            strCond = strCond.Substring(1, strCond.Length - 2)
                         End If
-                    End If
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMNOPQRSTVWY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
-                    If strCond.Trim = strNoFlags.Trim Then
-                        strCond = String.Empty
+                        pattern = pattern.Replace(strBase, strCond)
+                        nextC = pattern.IndexOf("$")
                     Else
-                        strCond = strCond.Substring(1, strCond.Length - 2)
+                        nextC = pattern.IndexOf("$", nextC + 1)
                     End If
-                    pattern = pattern.Replace(strBase, strCond)
-                    nextC = pattern.IndexOf("$")
-                Else
-                    nextC = pattern.IndexOf("$", nextC + 1)
+                    nextIB = pattern.IndexOf("{")
+                    nextEB = pattern.IndexOf("}")
+                End While
+                pattern = ApplyPattern(pattern, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
+                pattern = ApplyPattern(pattern, "A", f.AudioChannels)
+                pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
+                pattern = ApplyPattern(pattern, "C", f.Director)
+                pattern = ApplyPattern(pattern, "D", f.Parent) '.Replace("\", String.Empty))
+                pattern = ApplyPattern(pattern, "E", f.SortTitle)
+                pattern = ApplyPattern(pattern, "F", f.FileName.Replace("\", String.Empty))
+                '                                G   Genres
+                pattern = ApplyPattern(pattern, "H", f.VideoCodec)
+                pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
+                pattern = ApplyPattern(pattern, "J", f.AudioCodec)
+                '                                K   Season
+                pattern = ApplyPattern(pattern, "L", f.ListTitle)
+                pattern = ApplyPattern(pattern, "M", f.MPAA)
+                pattern = ApplyPattern(pattern, "N", f.Collection)
+                pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
+                pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
+                '                                Q   Episode
+                pattern = ApplyPattern(pattern, "R", f.Resolution)
+                pattern = ApplyPattern(pattern, "S", f.VideoSource)
+                pattern = ApplyPattern(pattern, "T", f.Title)
+                pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
+                '                                W   SeasonEpisode
+                '                                X   
+                pattern = ApplyPattern(pattern, "Y", f.Year)
+                pattern = ApplyPattern(pattern, "Z", f.ShowTitle)
+
+
+                nextC = pattern.IndexOf("$W")
+                If Not nextC = -1 Then
+                    If pattern.Length > nextC + 2 Then
+                        Dim ePattern As String = String.Empty
+                        Dim ePrefix As String = String.Empty
+                        Dim eSeparator As String = String.Empty
+                        Dim fPattern As String = String.Empty
+                        Dim sPattern As String = String.Empty
+                        Dim sPrefix As String = String.Empty
+                        Dim sSeparator As String = String.Empty
+                        Dim seString As String = String.Empty
+
+                        strBase = pattern.Substring(nextC)
+                        nextIB = strBase.IndexOf("?")
+                        If nextIB > -1 Then
+                            nextEB = strBase.IndexOf("?", nextIB + 1)
+                            If nextEB > -1 Then
+                                sPattern = strBase.Substring(2, nextIB - 2)
+                                ePattern = strBase.Substring(nextIB + 1, nextEB - nextIB - 1)
+                                fPattern = strBase.Substring(0, nextEB + 1)
+                            End If
+                        End If
+
+                        If sPattern.StartsWith(".") OrElse sPattern.StartsWith("_") Then
+                            sSeparator = sPattern.Substring(0, 1)
+                            sPrefix = sPattern.Remove(0, 1)
+                        Else
+                            sPrefix = sPattern
+                        End If
+
+                        If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
+                            eSeparator = ePattern.Substring(0, 1)
+                            ePrefix = ePattern.Remove(0, 1)
+                        Else
+                            ePrefix = ePattern
+                        End If
+
+                        For Each season As SeasonsEpisodes In f.SeasonsEpisodes
+                            seString = String.Concat(seString, sSeparator, sPrefix, String.Format("{0:00}", season.Season))
+                            For Each episode In season.Episodes
+                                seString = String.Concat(seString, eSeparator, ePrefix, String.Format("{0:00}", episode.Episode))
+                            Next
+                        Next
+
+                        If Not String.IsNullOrEmpty(sSeparator) AndAlso seString.StartsWith(sSeparator) Then seString = seString.Remove(0, 1)
+
+                        pattern = pattern.Replace(fPattern, seString)
+                    End If
                 End If
-                nextIB = pattern.IndexOf("{")
-                nextEB = pattern.IndexOf("}")
-            End While
-            pattern = ApplyPattern(pattern, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
-            pattern = ApplyPattern(pattern, "A", f.AudioChannels)
-            pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
-            pattern = ApplyPattern(pattern, "C", f.Director)
-            pattern = ApplyPattern(pattern, "D", f.Parent) '.Replace("\", String.Empty))
-            pattern = ApplyPattern(pattern, "E", f.SortTitle)
-            pattern = ApplyPattern(pattern, "F", f.FileName.Replace("\", String.Empty))
-            '                                G   Genres
-            pattern = ApplyPattern(pattern, "H", f.VideoCodec)
-            pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
-            pattern = ApplyPattern(pattern, "J", f.AudioCodec)
-            pattern = ApplyPattern(pattern, "L", f.ListTitle)
-            pattern = ApplyPattern(pattern, "M", f.MPAA)
-            pattern = ApplyPattern(pattern, "N", f.Collection)
-            pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
-            pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
-            '                                Q   Episode
-            pattern = ApplyPattern(pattern, "R", f.Resolution)
-            pattern = ApplyPattern(pattern, "S", f.VideoSource)
-            pattern = ApplyPattern(pattern, "T", f.Title)
-            pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
-            '                                W   SeasonEpisode
-            '                                X   
-            pattern = ApplyPattern(pattern, "Y", f.Year)
-            pattern = ApplyPattern(pattern, "Z", f.ShowTitle)
 
+                nextC = pattern.IndexOf("$K")
+                If Not nextC = -1 Then
+                    If pattern.Length > nextC + 1 Then
+                        Dim sPattern As String = String.Empty
+                        Dim sPrefix As String = String.Empty
+                        Dim sSeparator As String = String.Empty
+                        Dim fPattern As String = String.Empty
+                        Dim sString As String = String.Empty
 
-            nextC = pattern.IndexOf("$W")
-            If Not nextC = -1 Then
-                If pattern.Length > nextC + 2 Then
-                    Dim ePattern As String = String.Empty
-                    Dim ePrefix As String = String.Empty
-                    Dim eSeparator As String = String.Empty
-                    Dim fPattern As String = String.Empty
-                    Dim sPattern As String = String.Empty
-                    Dim sPrefix As String = String.Empty
-                    Dim sSeparator As String = String.Empty
-                    Dim seString As String = String.Empty
-
-                    strBase = pattern.Substring(nextC)
-                    nextIB = strBase.IndexOf("?")
-                    If nextIB > -1 Then
-                        nextEB = strBase.IndexOf("?", nextIB + 1)
-                        If nextEB > -1 Then
+                        strBase = pattern.Substring(nextC)
+                        nextIB = strBase.IndexOf("?")
+                        If nextIB > -1 Then
                             sPattern = strBase.Substring(2, nextIB - 2)
-                            ePattern = strBase.Substring(nextIB + 1, nextEB - nextIB - 1)
-                            fPattern = strBase.Substring(0, nextEB + 1)
+                            fPattern = strBase.Substring(0, nextIB + 1)
                         End If
-                    End If
 
-                    If sPattern.StartsWith(".") OrElse sPattern.StartsWith("_") Then
-                        sSeparator = sPattern.Substring(0, 1)
-                        sPrefix = sPattern.Remove(0, 1)
-                    Else
-                        sPrefix = sPattern
-                    End If
+                        If sPattern.StartsWith(".") OrElse sPattern.StartsWith("_") OrElse sPattern.StartsWith("x") Then
+                            sSeparator = sPattern.Substring(0, 1)
+                            sPrefix = sPattern.Remove(0, 1)
+                        Else
+                            sPrefix = sPattern
+                        End If
 
-                    If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
-                        eSeparator = ePattern.Substring(0, 1)
-                        ePrefix = ePattern.Remove(0, 1)
-                    Else
-                        ePrefix = ePattern
-                    End If
-
-                    For Each season As SeasonsEpisodes In f.SeasonsEpisodes
-                        seString = String.Concat(seString, sSeparator, sPrefix, String.Format("{0:00}", season.Season))
-                        For Each episode In season.Episodes
-                            seString = String.Concat(seString, eSeparator, ePrefix, String.Format("{0:00}", episode.Episode))
+                        For Each season As SeasonsEpisodes In f.SeasonsEpisodes
+                            sString = String.Concat(sString, sSeparator, sPrefix, String.Format("{0:00}", season.Season))
                         Next
-                    Next
 
-                    If Not String.IsNullOrEmpty(sSeparator) AndAlso seString.StartsWith(sSeparator) Then seString = seString.Remove(0, 1)
+                        If Not String.IsNullOrEmpty(sSeparator) AndAlso sString.StartsWith(sSeparator) Then sString = sString.Remove(0, 1)
 
-                    pattern = pattern.Replace(fPattern, seString)
+                        pattern = pattern.Replace(fPattern, sString)
+                    End If
                 End If
-            End If
 
-            nextC = pattern.IndexOf("$Q")
-            If Not nextC = -1 Then
-                If pattern.Length > nextC + 2 Then
-                    Dim ePattern As String = String.Empty
-                    Dim ePrefix As String = String.Empty
-                    Dim eSeparator As String = String.Empty
-                    Dim fPattern As String = String.Empty
-                    Dim seString As String = String.Empty
+                nextC = pattern.IndexOf("$Q")
+                If Not nextC = -1 Then
+                    If pattern.Length > nextC + 2 Then
+                        Dim ePattern As String = String.Empty
+                        Dim ePrefix As String = String.Empty
+                        Dim eSeparator As String = String.Empty
+                        Dim fPattern As String = String.Empty
+                        Dim eString As String = String.Empty
 
-                    strBase = pattern.Substring(nextC)
-                    nextIB = strBase.IndexOf("?")
-                    If nextIB > -1 Then
-                        ePattern = strBase.Substring(2, nextIB - 2)
-                        fPattern = strBase.Substring(0, nextIB + 1)
-                    End If
+                        strBase = pattern.Substring(nextC)
+                        nextIB = strBase.IndexOf("?")
+                        If nextIB > -1 Then
+                            ePattern = strBase.Substring(2, nextIB - 2)
+                            fPattern = strBase.Substring(0, nextIB + 1)
+                        End If
 
-                    If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
-                        eSeparator = ePattern.Substring(0, 1)
-                        ePrefix = ePattern.Remove(0, 1)
-                    Else
-                        ePrefix = ePattern
-                    End If
+                        If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
+                            eSeparator = ePattern.Substring(0, 1)
+                            ePrefix = ePattern.Remove(0, 1)
+                        Else
+                            ePrefix = ePattern
+                        End If
 
-                    For Each season As SeasonsEpisodes In f.SeasonsEpisodes
-                        For Each episode In season.Episodes
-                            seString = String.Concat(seString, eSeparator, ePrefix, String.Format("{0:00}", episode.Episode))
+                        For Each season As SeasonsEpisodes In f.SeasonsEpisodes
+                            For Each episode In season.Episodes
+                                eString = String.Concat(eString, eSeparator, ePrefix, String.Format("{0:00}", episode.Episode))
+                            Next
                         Next
-                    Next
 
-                    If Not String.IsNullOrEmpty(eSeparator) AndAlso seString.StartsWith(eSeparator) Then seString = seString.Remove(0, 1)
+                        If Not String.IsNullOrEmpty(eSeparator) AndAlso eString.StartsWith(eSeparator) Then eString = eString.Remove(0, 1)
 
-                    pattern = pattern.Replace(fPattern, seString)
+                        pattern = pattern.Replace(fPattern, eString)
+                    End If
                 End If
-            End If
 
-            nextC = pattern.IndexOf("$G")
-            If Not nextC = -1 Then
-                If pattern.Length > nextC + 2 Then
-                    strCond = pattern.Substring(nextC + 2, 1)
-                    If Not ". -".IndexOf(strCond) = -1 Then
-                        pattern = ApplyPattern(pattern, String.Concat("G", strCond), f.Genre.Replace(" / ", strCond))
+                nextC = pattern.IndexOf("$G")
+                If Not nextC = -1 Then
+                    If pattern.Length > nextC + 2 Then
+                        strCond = pattern.Substring(nextC + 2, 1)
+                        If Not ". -".IndexOf(strCond) = -1 Then
+                            pattern = ApplyPattern(pattern, String.Concat("G", strCond), f.Genre.Replace(" / ", strCond))
+                        Else
+                            pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
+                        End If
                     Else
                         pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
                     End If
-                Else
-                    pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
                 End If
-            End If
 
-            nextC = pattern.IndexOf("$U")
-            If Not nextC = -1 Then
-                If pattern.Length > nextC + 2 Then
-                    strCond = pattern.Substring(nextC + 2, 1)
-                    If Not ". -".IndexOf(strCond) = -1 Then
-                        pattern = ApplyPattern(pattern, String.Concat("U", strCond), f.Country.Replace(" / ", strCond))
+                nextC = pattern.IndexOf("$U")
+                If Not nextC = -1 Then
+                    If pattern.Length > nextC + 2 Then
+                        strCond = pattern.Substring(nextC + 2, 1)
+                        If Not ". -".IndexOf(strCond) = -1 Then
+                            pattern = ApplyPattern(pattern, String.Concat("U", strCond), f.Country.Replace(" / ", strCond))
+                        Else
+                            pattern = ApplyPattern(pattern, "U", f.Country.Replace(" / ", " "))
+                        End If
                     Else
                         pattern = ApplyPattern(pattern, "U", f.Country.Replace(" / ", " "))
                     End If
-                Else
-                    pattern = ApplyPattern(pattern, "U", f.Country.Replace(" / ", " "))
                 End If
-            End If
 
-            nextC = pattern.IndexOf("$X")
-            If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
-                strCond = pattern.Substring(nextC + 2, 1)
-                pattern = pattern.Replace(String.Concat("$X", strCond), "")
-                pattern = pattern.Replace(" ", strCond)
-            End If
+                nextC = pattern.IndexOf("$X")
+                If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
+                    strCond = pattern.Substring(nextC + 2, 1)
+                    pattern = pattern.Replace(String.Concat("$X", strCond), "")
+                    pattern = pattern.Replace(" ", strCond)
+                End If
 
-            nextC = pattern.IndexOf("$?")
-            Dim strmore As String = String.Empty
-            While nextC > -1
-                'If nextC > -1 Then
-                strBase = pattern.Substring(nextC + 2)
-                pattern = pattern.Substring(0, nextC)
-                If Not strBase = String.Empty Then
-                    nextIB = strBase.IndexOf("?")
-                    If nextIB > -1 Then
-                        nextEB = strBase.Substring(nextIB + 1).IndexOf("?")
-                        If nextEB > -1 Then
-                            strCond = strBase.Substring(nextIB + 1, nextEB)
-                            strmore = strBase.Substring(nextIB + nextEB + 2)
-                            strBase = strBase.Substring(0, nextIB)
-                            If Not strBase = String.Empty Then pattern = pattern.Replace(strBase, strCond)
+                nextC = pattern.IndexOf("$?")
+                Dim strmore As String = String.Empty
+                While nextC > -1
+                    'If nextC > -1 Then
+                    strBase = pattern.Substring(nextC + 2)
+                    pattern = pattern.Substring(0, nextC)
+                    If Not strBase = String.Empty Then
+                        nextIB = strBase.IndexOf("?")
+                        If nextIB > -1 Then
+                            nextEB = strBase.Substring(nextIB + 1).IndexOf("?")
+                            If nextEB > -1 Then
+                                strCond = strBase.Substring(nextIB + 1, nextEB)
+                                strmore = strBase.Substring(nextIB + nextEB + 2)
+                                strBase = strBase.Substring(0, nextIB)
+                                If Not strBase = String.Empty Then pattern = pattern.Replace(strBase, strCond)
+                            End If
                         End If
                     End If
+                    'End If
+                    pattern = String.Concat(pattern, strmore)
+                    nextC = pattern.IndexOf("$?")
+                End While
+
+                If isPath Then
+                    pattern = StringUtils.CleanPath(pattern)
+                Else
+                    pattern = StringUtils.CleanFileName(pattern)
                 End If
-                'End If
-                pattern = String.Concat(pattern, strmore)
-                nextC = pattern.IndexOf("$?")
-            End While
 
-            If isPath Then
-                pattern = StringUtils.CleanPath(pattern)
+                ' removes all dots at the end of the name (dots are not allowed)
+                While pattern.Last = "."
+                    pattern = pattern.Remove(pattern.Length - 1)
+                End While
+
+                Return pattern.Trim
             Else
-                pattern = StringUtils.CleanFileName(pattern)
+                Return String.Empty
             End If
-
-            ' removes all dots at the end of the name (dots are not allowed)
-            While pattern.Last = "."
-                pattern = pattern.Remove(pattern.Length - 1)
-            End While
-
-            Return pattern.Trim
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             Return String.Empty
@@ -543,6 +602,113 @@ Public Class FileFolderRenamer
             End If
         End If
     End Sub
+
+    Public Shared Function GetInfo_Episode(ByVal _tmpTV As Structures.DBTV) As FileFolderRenamer.FileRename
+        Dim EpisodeFile As New FileFolderRenamer.FileRename
+        Dim isMultiEpisode As Boolean = False
+
+        Try
+            If Not IsNothing(_tmpTV.TVEp.FileInfo) Then
+                Try
+                    If _tmpTV.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
+                        Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpTV.TVEp.FileInfo)
+                        Dim tRes As String = NFO.GetResFromDimensions(tVid)
+                        EpisodeFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
+                    End If
+
+                    If _tmpTV.TVEp.FileInfo.StreamDetails.Audio.Count > 0 Then
+                        Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpTV.TVEp.FileInfo, False)
+
+                        If tAud.ChannelsSpecified Then
+                            EpisodeFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
+                        End If
+
+                        If tAud.CodecSpecified Then
+                            EpisodeFile.AudioCodec = tAud.Codec
+                        End If
+                        'MovieFile.AudioChannels = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
+                    End If
+
+                    If _tmpTV.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
+                        If Not String.IsNullOrEmpty(_tmpTV.TVEp.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpTV.TVEp.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+                            EpisodeFile.MultiViewCount = "3D"
+                        End If
+                    End If
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
+            End If
+
+            'get list of all episodes for multi-episode files
+            Dim aSeasonsEpisodes As New List(Of SeasonsEpisodes)
+
+            If Not _tmpTV.FilenameID = -1 Then
+
+                'first step: get a list of all seasons
+                Dim aSeasonsList As New List(Of Integer)
+                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLNewcommand.CommandText = String.Concat("SELECT Season FROM TVEps WHERE TVEpPathID = ", _tmpTV.FilenameID, ";")
+                    Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                        While SQLReader.Read
+                            If Not aSeasonsList.Contains(Convert.ToInt32(SQLReader("Season"))) Then aSeasonsList.Add(Convert.ToInt32(SQLReader("Season")))
+                        End While
+                    End Using
+                    aSeasonsList.Sort()
+                End Using
+
+                'second step: get all episodes per season
+                For Each aSeason As Integer In aSeasonsList
+                    Dim aEpisodesList As New List(Of Episode)
+                    Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLNewcommand.CommandText = String.Concat("SELECT ID, Episode, Title FROM TVEps WHERE TVEpPathID = ", _tmpTV.FilenameID, " AND Season = ", aSeason, ";")
+                        Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                            While SQLReader.Read
+                                Dim aEpisode As New Episode
+                                aEpisode.ID = Convert.ToInt32(SQLReader("ID"))
+                                aEpisode.Episode = Convert.ToInt32(SQLReader("Episode"))
+                                aEpisode.Title = SQLReader("Title").ToString
+                                aEpisodesList.Add(aEpisode)
+                            End While
+                        End Using
+                        aEpisodesList.Sort()
+                    End Using
+                    Dim aSeasonEpisodesList As New SeasonsEpisodes With {.Season = aSeason, .Episodes = aEpisodesList}
+                    aSeasonsEpisodes.Add(aSeasonEpisodesList)
+                Next
+            End If
+
+            EpisodeFile.SeasonsEpisodes.AddRange(aSeasonsEpisodes)
+
+            If EpisodeFile.SeasonsEpisodes.Count > 1 Then
+                isMultiEpisode = True
+            Else
+                For Each se In EpisodeFile.SeasonsEpisodes
+                    If se.Episodes.Count > 1 Then
+                        isMultiEpisode = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            'EpisodeFile.Country = _tmpTV.Movie.Country
+            'EpisodeFile.Director = _tmpTV.Movie.Director
+            'EpisodeFile.VideoSource = _tmpTV.TVEp.VideoSource
+            'EpisodeFile.Genre = _tmpTV.Movie.Genre
+            'EpisodeFile.IMDBID = _tmpTV.Movie.IMDBID
+            'EpisodeFile.IsSingle = _tmpTV.IsSingle
+            'EpisodeFile.ListTitle = _tmpTV.ListTitle
+            'EpisodeFile.OriginalTitle = If(_tmpTV.TVEp.OriginalTitle <> _tmpTV.Movie.Title, _tmpTV.Movie.OriginalTitle, String.Empty)
+            EpisodeFile.Rating = If(Not isMultiEpisode, _tmpTV.TVEp.Rating, String.Empty)
+            EpisodeFile.ShowTitle = _tmpTV.TVShow.Title
+            EpisodeFile.SortTitle = _tmpTV.TVShow.Title 'If(Not String.IsNullOrEmpty(_tmpTV.Movie.SortTitle), _tmpTV.Movie.SortTitle, _tmpTV.ListTitle)
+            EpisodeFile.Title = If(Not isMultiEpisode, _tmpTV.TVEp.Title, String.Empty)
+            'EpisodeFile.Year = _tmpTV.Movie.Year
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Return EpisodeFile
+    End Function
 
     Public Shared Function GetInfo_Movie(ByVal _tmpMovie As Structures.DBMovie) As FileFolderRenamer.FileRename
         Dim MovieFile As New FileFolderRenamer.FileRename
@@ -782,11 +948,147 @@ Public Class FileFolderRenamer
         Return String.Empty
     End Function
 
+    Public Sub AddEpisode(ByVal _episode As FileRename)
+        _episodes.Add(_episode)
+    End Sub
+
     Public Sub AddMovie(ByVal _movie As FileRename)
         _movies.Add(_movie)
     End Sub
 
-    Public Sub DoRename(Optional ByVal sfunction As ShowProgress = Nothing)
+    Public Sub DoRename_Episode(Optional ByVal sfunction As ShowProgress = Nothing)
+        Dim DoDB As Boolean
+        Dim DoUpdate As Boolean
+        Dim _tvDB As Structures.DBTV = Nothing
+        Dim iProg As Integer = 0
+        Try
+            For Each f As FileFolderRenamer.FileRename In _episodes
+                If f.IsRenamed Then
+                    iProg += 1
+                    DoUpdate = False
+
+                    If Not f.IsLocked Then
+                        Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
+                        Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
+
+                        If Not f.ID = -1 Then
+                            _tvDB = Master.DB.LoadTVEpFromDB(f.ID, True)
+                            DoDB = True
+                        Else
+                            _tvDB = Nothing
+                            DoDB = False
+                        End If
+                        'Rename Directory
+                        If Not srcDir = destDir Then
+
+                            If Not sfunction Is Nothing Then
+                                If Not sfunction(f.NewPath, iProg) Then Return
+                            End If
+
+                            Try
+                                If Not f.IsSingle Then
+                                    Directory.CreateDirectory(destDir)
+                                Else
+                                    If srcDir.ToLower = destDir.ToLower Then
+                                        Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
+                                        Directory.Move(String.Concat(destDir, ".$emm"), destDir)
+                                    Else
+                                        If Not Directory.Exists(Directory.GetParent(destDir).FullName) Then Directory.CreateDirectory(Directory.GetParent(destDir).FullName)
+                                        Directory.Move(srcDir, destDir)
+                                    End If
+                                End If
+                                DoUpdate = True
+                            Catch ex As Exception
+                                logger.Error(New StackFrame().GetMethod().Name & vbTab & "Dir: " & srcDir & " " & destDir, ex)
+                                'Need to make some type of failure log
+                                Continue For
+                            End Try
+
+                        End If
+                        'Rename Files
+                        If Not f.IsVideo_TS AndAlso Not f.IsBDMV Then
+                            If (Not f.NewFileName = f.FileName) OrElse (f.Path = String.Empty AndAlso Not f.NewPath = String.Empty) OrElse Not f.IsSingle Then
+                                Dim tmpList As New List(Of String)
+                                Dim di As DirectoryInfo
+
+                                If f.IsSingle Then
+                                    di = New DirectoryInfo(destDir)
+                                Else
+                                    di = New DirectoryInfo(srcDir)
+                                End If
+
+                                Dim lFi As New List(Of FileInfo)
+                                If Not sfunction Is Nothing Then
+                                    If Not sfunction(f.NewFileName, iProg) Then Return
+                                End If
+                                Try
+                                    lFi.AddRange(di.GetFiles())
+                                Catch
+                                End Try
+                                If lFi.Count > 0 Then
+                                    Dim srcFile As String
+                                    Dim dstFile As String
+                                    For Each lFile As FileInfo In lFi.OrderBy(Function(s) s.Name)
+                                        srcFile = lFile.FullName
+                                        dstFile = Path.Combine(destDir, lFile.Name.Replace(f.FileName.Trim, f.NewFileName.Trim))
+
+                                        If Not srcFile = dstFile Then
+                                            Try
+                                                If srcFile.ToLower = dstFile.ToLower Then
+                                                    File.Move(srcFile, String.Concat(dstFile, ".$emm$"))
+                                                    File.Move(String.Concat(dstFile, ".$emm$"), dstFile)
+                                                Else
+                                                    If lFile.Name.StartsWith(f.FileName, StringComparison.OrdinalIgnoreCase) Then
+                                                        File.Move(srcFile, dstFile)
+                                                    End If
+                                                End If
+
+                                                DoUpdate = True
+                                            Catch ex As Exception
+                                                logger.Error(New StackFrame().GetMethod().Name & vbTab & "File " & srcFile & " " & dstFile, ex)
+                                                'Need to make some type of failure log
+                                            End Try
+                                        End If
+                                    Next
+                                End If
+                            End If
+                        End If
+
+                        If DoDB AndAlso DoUpdate Then
+                            UpdatePaths_Episode(_tvDB, srcDir, destDir, f.FileName, f.NewFileName)
+                            Master.DB.SaveTVEpToDB(_tvDB, False, False)
+                            If Not f.IsSingle Then
+                                Dim fileCount As Integer = 0
+                                Dim dirCount As Integer = 0
+
+                                If Directory.Exists(srcDir) Then
+                                    Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
+
+                                    Try
+                                        fileCount = di.GetFiles().Count
+                                    Catch
+                                    End Try
+
+                                    Try
+                                        dirCount = di.GetDirectories().Count
+                                    Catch
+                                    End Try
+
+                                    If fileCount = 0 AndAlso dirCount = 0 Then
+                                        di.Delete()
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            Next
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Public Sub DoRename_Movie(Optional ByVal sfunction As ShowProgress = Nothing)
         Dim DoDB As Boolean
         Dim DoUpdate As Boolean
         Dim _movieDB As Structures.DBMovie = Nothing
@@ -919,16 +1221,51 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Public Function GetCount() As Integer
+    Public Function GetCount_Episodes() As Integer
+        Return _episodes.Count
+    End Function
+
+    Public Function GetCount_Movies() As Integer
         Return _movies.Count
     End Function
 
-    Public Function GetCountLocked() As Integer
+    Public Function GetCountLocked_Episodes() As Integer
+        Dim c As Integer = c
+        For Each f As FileRename In _episodes
+            If f.IsLocked Then c += 1
+        Next
+        Return c
+    End Function
+
+    Public Function GetCountLocked_Movies() As Integer
         Dim c As Integer = c
         For Each f As FileRename In _movies
             If f.IsLocked Then c += 1
         Next
         Return c
+    End Function
+
+    Public Function GetEpisodes() As DataTable
+        Dim dtEpisodes As New DataTable
+
+        dtEpisodes.Columns.Add(Master.eLang.GetString(21, "Title"), GetType(String))
+        dtEpisodes.Columns.Add(Master.eLang.GetString(410, "Path"), GetType(String))
+        dtEpisodes.Columns.Add(Master.eLang.GetString(15, "File Name"), GetType(String))
+        dtEpisodes.Columns.Add(Master.eLang.GetString(141, "New Path"), GetType(String))
+        dtEpisodes.Columns.Add(Master.eLang.GetString(142, "New File Name"), GetType(String))
+        dtEpisodes.Columns.Add("IsLocked", GetType(Boolean))
+        dtEpisodes.Columns.Add("DirExist", GetType(Boolean))
+        dtEpisodes.Columns.Add("FileExist", GetType(Boolean))
+        dtEpisodes.Columns.Add("IsSingle", GetType(Boolean))
+        dtEpisodes.Columns.Add("IsRenamed", GetType(Boolean))
+
+        For Each dtRow As FileRename In _movies
+            dtEpisodes.Rows.Add(dtRow.Title, dtRow.Path, dtRow.FileName, dtRow.NewPath, _
+                              dtRow.NewFileName, dtRow.IsLocked, dtRow.DirExist, _
+                              dtRow.FileExist, dtRow.IsSingle, dtRow.IsRenamed)
+        Next
+
+        Return dtEpisodes
     End Function
 
     Public Function GetMovies() As DataTable
@@ -954,21 +1291,26 @@ Public Class FileFolderRenamer
         Return dtMovies
     End Function
 
+    Public Function GetEpisodesCount() As Integer
+        Dim Renamed = From rList In _episodes Where rList.IsRenamed = True
+        Return Renamed.Count
+    End Function
+
     Public Function GetMoviesCount() As Integer
         Dim Renamed = From rList In _movies Where rList.IsRenamed = True
         Return Renamed.Count
     End Function
 
-    Public Sub ProccessFiles(ByVal folderPattern As String, ByVal filePattern As String, Optional ByVal folderPatternIsNotSingle As String = "$D")
+    Public Sub ProccessFiles_Episodes(ByVal folderPatternSeasons As String, ByVal folderPatternShows As String, ByVal filePatternEpisodes As String)
         Try
-            Dim localFolderPattern As String
-            For Each f As FileRename In _movies
+            'Dim localFolderPattern As String
+            For Each f As FileRename In _episodes
 
-                If f.IsSingle Then
-                    localFolderPattern = folderPattern
-                Else
-                    localFolderPattern = folderPatternIsNotSingle
-                End If
+                'If f.IsSingle Then
+                '    localFolderPattern = folderPatternSeasons
+                'Else
+                '    localFolderPattern = folderPatternIsNotSingle
+                'End If
 
                 f.Path = Path.Combine(f.OldPath, f.Parent)
                 f.Path = If(f.Path.StartsWith(Path.DirectorySeparatorChar), f.Path.Substring(1), f.Path)
@@ -981,10 +1323,46 @@ Public Class FileFolderRenamer
                     If Path.GetFileName(f.FileName.ToLower) = "video_ts" Then
                         f.NewFileName = "VIDEO_TS"
                     Else
-                        f.NewFileName = ProccessPattern(f, filePattern, False).Trim
+                        f.NewFileName = ProccessPattern(f, filePatternEpisodes, False).Trim
                     End If
                 End If
 
+                Dim pSeason As String = ProccessPattern(f, folderPatternSeasons, True).Trim
+                Dim pShow As String = ProccessPattern(f, folderPatternShows, True).Trim
+                Dim nPath As String = Path.Combine(pShow, pSeason)
+                
+                f.NewPath = If(nPath.StartsWith(Path.DirectorySeparatorChar), nPath.Substring(1), nPath)
+                f.FileExist = File.Exists(Path.Combine(f.BasePath, Path.Combine(f.NewPath, f.NewFileName))) AndAlso Not (f.FileName = f.NewFileName)
+                f.DirExist = Directory.Exists(Path.Combine(f.BasePath, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
+                f.IsRenamed = Not f.NewPath = f.Path OrElse Not f.NewFileName = f.FileName
+            Next
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Public Sub ProccessFiles_Movies(ByVal folderPattern As String, ByVal filePattern As String, Optional ByVal folderPatternIsNotSingle As String = "$D")
+        Try
+            Dim localFolderPattern As String
+            For Each f As FileRename In _movies
+                If f.IsSingle Then
+                    localFolderPattern = folderPattern
+                Else
+                    localFolderPattern = folderPatternIsNotSingle
+                End If
+                f.Path = Path.Combine(f.OldPath, f.Parent)
+                f.Path = If(f.Path.StartsWith(Path.DirectorySeparatorChar), f.Path.Substring(1), f.Path)
+                If f.IsVideo_TS Then
+                    f.NewFileName = "VIDEO_TS"
+                ElseIf f.IsBDMV Then
+                    f.NewFileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
+                Else
+                    If Path.GetFileName(f.FileName.ToLower) = "video_ts" Then
+                        f.NewFileName = "VIDEO_TS"
+                    Else
+                        f.NewFileName = ProccessPattern(f, filePattern, False).Trim
+                    End If
+                End If
                 If HaveBase(localFolderPattern) Then
                     f.NewPath = ProccessPattern(f, localFolderPattern, True).Trim
                 Else
@@ -992,8 +1370,7 @@ Public Class FileFolderRenamer
                 End If
                 f.NewPath = If(f.NewPath.StartsWith(Path.DirectorySeparatorChar), f.NewPath.Substring(1), f.NewPath)
                 f.FileExist = File.Exists(Path.Combine(f.BasePath, Path.Combine(f.NewPath, f.NewFileName))) AndAlso Not (f.FileName = f.NewFileName)
-                f.DirExist = File.Exists(Path.Combine(f.BasePath, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
-
+                f.DirExist = Directory.Exists(Path.Combine(f.BasePath, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
                 f.IsRenamed = Not f.NewPath = f.Path OrElse Not f.NewFileName = f.FileName
             Next
         Catch ex As Exception
