@@ -283,7 +283,7 @@
   <string id="282">Automatically Rename Files During Single-Scraper</string>
   <string id="283">Trailers - Scraper specific</string>
   <string id="284">Canceled</string>
-  <string id="285">Default Renaming Patterns</string>
+  <string id="285">Default Movie Renaming Patterns</string>
   <string id="286">Files Pattern</string>
   <string id="287">Folders Pattern</string>
   <string id="288">Enable Generic Rename Module</string>
@@ -468,7 +468,7 @@
   <string id="467">Automatically Rename Files After Edit Episodes</string>
   <string id="468">Automatically Rename Files During DB Update</string>
   <string id="469">Episode Files Pattern</string>
-  <string id="470"></string>
+  <string id="470">Default TV Renaming Patterns</string>
   <string id="471">File Naming</string>
   <string id="472">Use &lt;movie&gt; Only for Folders with Multiple Movies</string>
   <string id="473">YAMJ Compatible VIDEO_TS File Placement/Naming</string>

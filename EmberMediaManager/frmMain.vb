@@ -557,6 +557,23 @@ Public Class frmMain
         End Try
     End Sub
 
+    Public Sub SetEpisodeListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
+        Try
+            Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
+
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT Mark, Title FROM TVEps WHERE ID = ", iID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    SQLreader.Read()
+                    DirectCast(dRow(0), DataRow).Item(8) = Convert.ToBoolean(SQLreader("mark"))
+                    If Not DBNull.Value.Equals(SQLreader("Title")) Then DirectCast(dRow(0), DataRow).Item(3) = SQLreader("Title").ToString
+                End Using
+            End Using
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub AboutToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpAbout.Click
         Using dAbout As New dlgAbout
             dAbout.ShowDialog()
@@ -4390,6 +4407,9 @@ doCancel:
     End Sub
 
     Private Sub cmnuEpisodeChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeChange.Click
+        Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+
         Me.SetControlsEnabled(False, True)
         Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB, Me.tmpLang)
 
@@ -4399,7 +4419,13 @@ doCancel:
 
             Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
 
-            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
+            Me.SetEpisodeListItemAfterEdit(ID, indX)
+            If Me.RefreshEpisode(ID) Then
+                Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
+            End If
+
+            'Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
         End If
 
         Me.SetControlsEnabled(True)
@@ -12836,7 +12862,7 @@ doCancel:
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameManual_Movie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperSingle_Movie, Nothing, Nothing, False, Master.currMovie)
                             Me.SetMovieListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(True, True, False)

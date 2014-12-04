@@ -106,7 +106,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
                     strCond = ApplyPattern(strCond, "J", f.AudioCodec)
                     strCond = ApplyPattern(strCond, "L", f.ListTitle)
-                    strCond = ApplyPattern(strCond, "M", f.MPAARate)
+                    strCond = ApplyPattern(strCond, "M", f.MPAA)
                     strCond = ApplyPattern(strCond, "N", f.Collection)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
@@ -171,7 +171,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
             pattern = ApplyPattern(pattern, "J", f.AudioCodec)
             pattern = ApplyPattern(pattern, "L", f.ListTitle)
-            pattern = ApplyPattern(pattern, "M", f.MPAARate)
+            pattern = ApplyPattern(pattern, "M", f.MPAA)
             pattern = ApplyPattern(pattern, "N", f.Collection)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
@@ -585,7 +585,7 @@ Public Class FileFolderRenamer
                 MovieFile.ListTitle = _tmpMovie.ListTitle
             End If
             If Not IsNothing(_tmpMovie.Movie.MPAA) Then
-                MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_tmpMovie.Movie)
+                MovieFile.MPAA = FileFolderRenamer.SelectMPAA(_tmpMovie.Movie)
             End If
             If Not IsNothing(_tmpMovie.Movie.OriginalTitle) Then
                 MovieFile.OriginalTitle = If(_tmpMovie.Movie.OriginalTitle <> _tmpMovie.Movie.Title, _tmpMovie.Movie.OriginalTitle, String.Empty)
@@ -1354,7 +1354,7 @@ Public Class FileFolderRenamer
         Private _islocked As Boolean
         Private _isvideo_ts As Boolean
         Private _listtitle As String
-        Private _mpaarate As String
+        Private _mpaa As String
         Private _multiviewcount As String
         Private _multiviewlayout As String
         Private _newFileName As String
@@ -1369,6 +1369,7 @@ Public Class FileFolderRenamer
         Private _showtitle As String
         Private _sorttitle As String
         Private _title As String
+        Private _tvdbid As String
         Private _videocodec As String
         Private _videosource As String
         Private _year As String
@@ -1503,12 +1504,12 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property MPAARate() As String
+        Public Property MPAA() As String
             Get
-                Return Me._mpaarate
+                Return Me._mpaa
             End Get
             Set(ByVal value As String)
-                Me._mpaarate = value
+                Me._mpaa = value
             End Set
         End Property
 
@@ -1620,6 +1621,15 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property TVDBID() As String
+            Get
+                Return Me._tvdbid
+            End Get
+            Set(ByVal value As String)
+                Me._tvdbid = value.Trim
+            End Set
+        End Property
+
         Public Property SeasonsEpisodes() As List(Of SeasonsEpisodes)
             Get
                 Return Me._seasonsepisodes
@@ -1725,7 +1735,7 @@ Public Class FileFolderRenamer
             _islocked = False
             _isvideo_ts = False
             _listtitle = String.Empty
-            _mpaarate = String.Empty
+            _mpaa = String.Empty
             _multiviewcount = String.Empty
             _multiviewlayout = String.Empty
             _newFileName = String.Empty
@@ -1740,6 +1750,7 @@ Public Class FileFolderRenamer
             _showtitle = String.Empty
             _sorttitle = String.Empty
             _title = String.Empty
+            _tvdbid = String.Empty
             _videocodec = String.Empty
             _year = String.Empty
         End Sub
@@ -1764,7 +1775,7 @@ Public Class FileFolderRenamer
             _islocked = False
             _isvideo_ts = False
             _listtitle = String.Empty
-            _mpaarate = String.Empty
+            _mpaa = String.Empty
             _multiviewcount = String.Empty
             _multiviewlayout = String.Empty
             _newFileName = String.Empty
@@ -1779,6 +1790,7 @@ Public Class FileFolderRenamer
             _showtitle = String.Empty
             _sorttitle = String.Empty
             _title = String.Empty
+            _tvdbid = String.Empty
             _videocodec = String.Empty
             _year = String.Empty
         End Sub

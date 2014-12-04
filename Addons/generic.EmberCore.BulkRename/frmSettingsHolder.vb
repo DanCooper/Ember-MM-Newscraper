@@ -1,4 +1,5 @@
 ﻿Imports EmberAPI
+Imports System.IO
 
 ' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
@@ -43,8 +44,8 @@ Public Class frmSettingsHolder
 
     Private Sub CreateDummies()
         _fDummyMultiEpisode.Clear()
-        _fDummyMultiEpisode.AudioChannels = ""
-        _fDummyMultiEpisode.AudioCodec = ""
+        _fDummyMultiEpisode.AudioChannels = "2"
+        _fDummyMultiEpisode.AudioCodec = "mp3"
         _fDummyMultiEpisode.BasePath = ""
         _fDummyMultiEpisode.Collection = ""
         _fDummyMultiEpisode.Country = ""
@@ -52,7 +53,7 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.DirExist = False
         _fDummyMultiEpisode.FileExist = False
         _fDummyMultiEpisode.FileName = ""
-        _fDummyMultiEpisode.Genre = ""
+        _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
         _fDummyMultiEpisode.ID = -1
         _fDummyMultiEpisode.IMDBID = ""
         _fDummyMultiEpisode.IsBDMV = False
@@ -60,9 +61,9 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.IsRenamed = False
         _fDummyMultiEpisode.IsSingle = True
         _fDummyMultiEpisode.IsVideo_TS = False
-        _fDummyMultiEpisode.ListTitle = ""
-        _fDummyMultiEpisode.MPAARate = ""
-        _fDummyMultiEpisode.MultiViewCount = ""
+        _fDummyMultiEpisode.ListTitle = "Big Bang Theory, The"
+        _fDummyMultiEpisode.MPAA = "TV-14"
+        _fDummyMultiEpisode.MultiViewCount = "2"
         _fDummyMultiEpisode.MultiViewLayout = ""
         _fDummyMultiEpisode.NewFileName = ""
         _fDummyMultiEpisode.NewPath = ""
@@ -70,14 +71,113 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.OriginalTitle = ""
         _fDummyMultiEpisode.Parent = ""
         _fDummyMultiEpisode.Path = ""
-        _fDummyMultiEpisode.Rating = ""
-        _fDummyMultiEpisode.Resolution = ""
-        _fDummyMultiEpisode.ShowTitle = ""
-        _fDummyMultiEpisode.SortTitle = ""
-        _fDummyMultiEpisode.Title = ""
-        _fDummyMultiEpisode.VideoCodec = ""
-        _fDummyMultiEpisode.VideoSource = ""
+        _fDummyMultiEpisode.Rating = "7.3"
+        _fDummyMultiEpisode.Resolution = "720p"
+        _fDummyMultiEpisode.ShowTitle = "The Big Bang Theory"
+        _fDummyMultiEpisode.SortTitle = "Big Bang Theory"
+        _fDummyMultiEpisode.Title = "Pilot"
+        _fDummyMultiEpisode.TVDBID = "58056"
+        _fDummyMultiEpisode.VideoCodec = "xvid"
+        _fDummyMultiEpisode.VideoSource = "dvd"
         _fDummyMultiEpisode.Year = ""
+        Dim dMEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
+        Dim dMEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "The Big Bran Hypothesis"}
+        Dim dMEpisodeList As New List(Of FileFolderRenamer.Episode)
+        dMEpisodeList.Add(dMEpisode1)
+        dMEpisodeList.Add(dMEpisode2)
+        _fDummyMultiEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dMEpisodeList})
+
+        _fDummyMultiSeason.Clear()
+        _fDummyMultiSeason.AudioChannels = "2"
+        _fDummyMultiSeason.AudioCodec = "mp3"
+        _fDummyMultiSeason.BasePath = ""
+        _fDummyMultiSeason.Collection = ""
+        _fDummyMultiSeason.Country = ""
+        _fDummyMultiSeason.Director = ""
+        _fDummyMultiSeason.DirExist = False
+        _fDummyMultiSeason.FileExist = False
+        _fDummyMultiSeason.FileName = ""
+        _fDummyMultiSeason.Genre = "Comedy / Lovestory"
+        _fDummyMultiSeason.ID = -1
+        _fDummyMultiSeason.IMDBID = ""
+        _fDummyMultiSeason.IsBDMV = False
+        _fDummyMultiSeason.IsLocked = False
+        _fDummyMultiSeason.IsRenamed = False
+        _fDummyMultiSeason.IsSingle = True
+        _fDummyMultiSeason.IsVideo_TS = False
+        _fDummyMultiSeason.ListTitle = "Big Bang Theory, The"
+        _fDummyMultiSeason.MPAA = "TV-14"
+        _fDummyMultiSeason.MultiViewCount = "2"
+        _fDummyMultiSeason.MultiViewLayout = ""
+        _fDummyMultiSeason.NewFileName = ""
+        _fDummyMultiSeason.NewPath = ""
+        _fDummyMultiSeason.OldPath = ""
+        _fDummyMultiSeason.OriginalTitle = ""
+        _fDummyMultiSeason.Parent = ""
+        _fDummyMultiSeason.Path = ""
+        _fDummyMultiSeason.Rating = "7.3"
+        _fDummyMultiSeason.Resolution = "720p"
+        _fDummyMultiSeason.ShowTitle = "The Big Bang Theory"
+        _fDummyMultiSeason.SortTitle = "Big Bang Theory"
+        _fDummyMultiSeason.Title = "Pilot"
+        _fDummyMultiSeason.TVDBID = "58056"
+        _fDummyMultiSeason.VideoCodec = "xvid"
+        _fDummyMultiSeason.VideoSource = "dvd"
+        _fDummyMultiSeason.Year = ""
+        Dim dMSEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
+        Dim dMSEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "The Big Bran Hypothesis"}
+        Dim dMSEpisode3 As New FileFolderRenamer.Episode With {.ID = 3, .Episode = 1, .Title = "The Bad Fish Paradigm"}
+        Dim dMSEpisode4 As New FileFolderRenamer.Episode With {.ID = 4, .Episode = 2, .Title = "The Codpiece Topology"}
+        Dim dMSEpisodeList1 As New List(Of FileFolderRenamer.Episode)
+        Dim dMSEpisodeList2 As New List(Of FileFolderRenamer.Episode)
+        dMSEpisodeList1.Add(dMSEpisode1)
+        dMSEpisodeList1.Add(dMSEpisode2)
+        dMSEpisodeList2.Add(dMSEpisode3)
+        dMSEpisodeList2.Add(dMSEpisode4)
+        _fDummyMultiSeason.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dMSEpisodeList1})
+        _fDummyMultiSeason.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 2, .Episodes = dMSEpisodeList2})
+
+        _fDummySingleEpisode.Clear()
+        _fDummySingleEpisode.AudioChannels = "2"
+        _fDummySingleEpisode.AudioCodec = "mp3"
+        _fDummySingleEpisode.BasePath = ""
+        _fDummySingleEpisode.Collection = ""
+        _fDummySingleEpisode.Country = ""
+        _fDummySingleEpisode.Director = ""
+        _fDummySingleEpisode.DirExist = False
+        _fDummySingleEpisode.FileExist = False
+        _fDummySingleEpisode.FileName = ""
+        _fDummySingleEpisode.Genre = "Comedy / Lovestory"
+        _fDummySingleEpisode.ID = -1
+        _fDummySingleEpisode.IMDBID = ""
+        _fDummySingleEpisode.IsBDMV = False
+        _fDummySingleEpisode.IsLocked = False
+        _fDummySingleEpisode.IsRenamed = False
+        _fDummySingleEpisode.IsSingle = True
+        _fDummySingleEpisode.IsVideo_TS = False
+        _fDummySingleEpisode.ListTitle = "Big Bang Theory, The"
+        _fDummySingleEpisode.MPAA = "TV-14"
+        _fDummySingleEpisode.MultiViewCount = "2"
+        _fDummySingleEpisode.MultiViewLayout = ""
+        _fDummySingleEpisode.NewFileName = ""
+        _fDummySingleEpisode.NewPath = ""
+        _fDummySingleEpisode.OldPath = ""
+        _fDummySingleEpisode.OriginalTitle = ""
+        _fDummySingleEpisode.Parent = ""
+        _fDummySingleEpisode.Path = ""
+        _fDummySingleEpisode.Rating = "7.3"
+        _fDummySingleEpisode.Resolution = "720p"
+        _fDummySingleEpisode.ShowTitle = "The Big Bang Theory"
+        _fDummySingleEpisode.SortTitle = "Big Bang Theory"
+        _fDummySingleEpisode.Title = "Pilot"
+        _fDummySingleEpisode.TVDBID = "58056"
+        _fDummySingleEpisode.VideoCodec = "xvid"
+        _fDummySingleEpisode.VideoSource = "dvd"
+        _fDummySingleEpisode.Year = ""
+        Dim dSEpisode As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
+        Dim dSEpisodeList As New List(Of FileFolderRenamer.Episode)
+        dSEpisodeList.Add(dSEpisode)
+        _fDummySingleEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dSEpisodeList})
 
         _fDummySingleMovie.Clear()
         _fDummySingleMovie.AudioChannels = "6"
@@ -98,7 +198,7 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.IsSingle = True
         _fDummySingleMovie.IsVideo_TS = False
         _fDummySingleMovie.ListTitle = "Avengers, The"
-        _fDummySingleMovie.MPAARate = "13"
+        _fDummySingleMovie.MPAA = "13"
         _fDummySingleMovie.MultiViewCount = "2"
         _fDummySingleMovie.MultiViewLayout = ""
         _fDummySingleMovie.NewFileName = ""
@@ -112,10 +212,21 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.ShowTitle = ""
         _fDummySingleMovie.SortTitle = "Avengers"
         _fDummySingleMovie.Title = "The Avengers"
+        _fDummySingleMovie.TVDBID = ""
         _fDummySingleMovie.VideoCodec = "h264"
         _fDummySingleMovie.VideoSource = "bluray"
         _fDummySingleMovie.Year = "2012"
+    End Sub
 
+    Private Sub CreatePreview_Movie()
+        If Not String.IsNullOrEmpty(txtFilePatternMovies.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternMovies.Text) Then
+            Dim dPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleMovie, txtFolderPatternMovies.Text, True, False)
+            Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummySingleMovie, txtFilePatternMovies.Text, False, False)
+
+            txtSingleMovieFile.Text = Path.Combine(dPath, dFilename)
+        Else
+            txtSingleMovieFile.Text = String.Empty
+        End If
     End Sub
 
     Private Sub chkBulRenamer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkBulkRenamer.CheckedChanged
@@ -168,7 +279,8 @@ Public Class frmSettingsHolder
         Me.chkRenameMultiMovies.Text = Master.eLang.GetString(281, "Automatically Rename Files During Multi-Scraper")
         Me.chkRenameSingleMovies.Text = Master.eLang.GetString(282, "Automatically Rename Files During Single-Scraper")
         Me.chkRenameUpdateEpisodes.Text = Master.eLang.GetString(468, "Automatically Rename Files During DB Update")
-        Me.gbRenamerPatternsMovies.Text = Master.eLang.GetString(285, "Default Renaming Patterns")
+        Me.gbRenamerPatternsMovie.Text = Master.eLang.GetString(285, "Default Movie Renaming Patterns")
+        Me.gbRenamerPatternsTV.Text = Master.eLang.GetString(470, "Default TV Renaming Patterns")
         Me.lblFilePatternEpisodes.Text = Master.eLang.GetString(469, "Episode Files Pattern")
         Me.lblFilePatternMovies.Text = Master.eLang.GetString(286, "Files Pattern")
         Me.lblFolderPatternMovies.Text = Master.eLang.GetString(287, "Folders Pattern")
@@ -180,73 +292,18 @@ Public Class frmSettingsHolder
 
     Private Sub txtFilePatternMovies_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePatternMovies.TextChanged
         RaiseEvent ModuleSettingsChanged()
-
-        txtSingleMovieFile.Text = FileFolderRenamer.ProccessPattern(_fDummySingleMovie, txtFilePatternMovies.Text, False, False)
+        CreatePreview_Movie()
     End Sub
 
     Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternMovies.TextChanged
         RaiseEvent ModuleSettingsChanged()
+        CreatePreview_Movie()
     End Sub
     Private Sub txtFilePatternEpisodes_TextChanged(sender As Object, e As EventArgs) Handles txtFilePatternEpisodes.TextChanged
         RaiseEvent ModuleSettingsChanged()
-        Dim fDummySingleEpisode As New FileFolderRenamer.FileRename
-        fDummySingleEpisode.MPAARate = "TV-14"
-        fDummySingleEpisode.Rating = "8.9"
-        fDummySingleEpisode.Resolution = "480p"
-        fDummySingleEpisode.ShowTitle = "The Big Bang Theory"
-        fDummySingleEpisode.ListTitle = StringUtils.FilterTokens_TV("The Big Bang Theory")
-        fDummySingleEpisode.Title = "Pilot"
-        fDummySingleEpisode.VideoCodec = "divx"
-        fDummySingleEpisode.VideoSource = "dvd"
-        Dim dSEpisode As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
-        Dim dSEpisodeList As New List(Of FileFolderRenamer.Episode)
-        dSEpisodeList.Add(dSEpisode)
-        fDummySingleEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dSEpisodeList})
 
         txtSingleEpisodeFile.Text = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFilePatternEpisodes.Text, False, False)
-
-
-        Dim fDummyMultiEpisode As New FileFolderRenamer.FileRename
-        fDummyMultiEpisode.MPAARate = "TV-14"
-        fDummyMultiEpisode.Rating = "8.9"
-        fDummyMultiEpisode.Resolution = "480p"
-        fDummyMultiEpisode.ShowTitle = "The Big Bang Theory"
-        fDummyMultiEpisode.ListTitle = StringUtils.FilterTokens_TV("The Big Bang Theory")
-        fDummyMultiEpisode.Title = "Pilot"
-        fDummyMultiEpisode.VideoCodec = "divx"
-        fDummyMultiEpisode.VideoSource = "dvd"
-        Dim dMEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
-        Dim dMEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "The Big Bran Hypothesis"}
-        Dim dMEpisodeList As New List(Of FileFolderRenamer.Episode)
-        dMEpisodeList.Add(dMEpisode1)
-        dMEpisodeList.Add(dMEpisode2)
-        fDummyMultiEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dMEpisodeList})
-
         txtMultiEpisodeFile.Text = FileFolderRenamer.ProccessPattern(_fDummyMultiEpisode, txtFilePatternEpisodes.Text, False, False)
-
-
-        Dim fDummyMultiSeason As New FileFolderRenamer.FileRename
-        fDummyMultiSeason.MPAARate = "TV-14"
-        fDummyMultiSeason.Rating = "8.9"
-        fDummyMultiSeason.Resolution = "480p"
-        fDummyMultiSeason.ShowTitle = "The Big Bang Theory"
-        fDummyMultiSeason.ListTitle = StringUtils.FilterTokens_TV("The Big Bang Theory")
-        fDummyMultiSeason.Title = "Pilot"
-        fDummyMultiSeason.VideoCodec = "divx"
-        fDummyMultiSeason.VideoSource = "dvd"
-        Dim dMSEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
-        Dim dMSEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "The Big Bran Hypothesis"}
-        Dim dMSEpisode3 As New FileFolderRenamer.Episode With {.ID = 3, .Episode = 1, .Title = "The Bad Fish Paradigm"}
-        Dim dMSEpisode4 As New FileFolderRenamer.Episode With {.ID = 4, .Episode = 2, .Title = "The Codpiece Topology"}
-        Dim dMSEpisodeList1 As New List(Of FileFolderRenamer.Episode)
-        Dim dMSEpisodeList2 As New List(Of FileFolderRenamer.Episode)
-        dMSEpisodeList1.Add(dMSEpisode1)
-        dMSEpisodeList1.Add(dMSEpisode2)
-        dMSEpisodeList2.Add(dMSEpisode3)
-        dMSEpisodeList2.Add(dMSEpisode4)
-        fDummyMultiSeason.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dMSEpisodeList1})
-        fDummyMultiSeason.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 2, .Episodes = dMSEpisodeList2})
-
         txtMultiSeasonFile.Text = FileFolderRenamer.ProccessPattern(_fDummyMultiSeason, txtFilePatternEpisodes.Text, False, False)
     End Sub
 

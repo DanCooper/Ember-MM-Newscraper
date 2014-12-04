@@ -64,6 +64,7 @@ Public Class BulkRenamerModule
         Get
             Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.RenameAuto_Movie, Enums.ModuleEventType.AfterEdit_Movie, _
                                                                                     Enums.ModuleEventType.RenameManual_Movie, Enums.ModuleEventType.ScraperRDYtoSave_Movie, _
+                                                                                   Enums.ModuleEventType.ScraperSingle_Movie, _
                                                                                    Enums.ModuleEventType.RenameAuto_TVEpisode, Enums.ModuleEventType.AfterEdit_TVEpisode, _
                                                                                     Enums.ModuleEventType.RenameManual_TVEpisode, Enums.ModuleEventType.ScraperMulti_TVEpisode, _
                                                                                    Enums.ModuleEventType.ScraperSingle_TVEpisode, Enums.ModuleEventType.Update_TVEpisode})
@@ -107,6 +108,11 @@ Public Class BulkRenamerModule
                 If MySettings.RenameMulti_Movies AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies)) Then
                     'Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
                     FileFolderRenamer.RenameSingle_Movie(_dbmovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, False, False, False)
+                End If
+            Case Enums.ModuleEventType.ScraperSingle_Movie
+                If MySettings.RenameSingle_Movies AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies)) Then
+                    'Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
+                    FileFolderRenamer.RenameSingle_Movie(_dbmovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, False, False, True)
                 End If
             Case Enums.ModuleEventType.RenameAuto_Movie
                 If MySettings.RenameSingle_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
