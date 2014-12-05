@@ -85,15 +85,15 @@ Public Class dlgBulkRenamer_TV
             Dim hasFilter As Boolean = False
             Dim dbFilter As String = String.Empty
 
-            If Not String.IsNullOrEmpty(Me.FilterShowsSearch) AndAlso Not String.IsNullOrEmpty(Me.FilterShowsType) Then
-                Select Case Me.FilterShowsType
-                    Case Master.eLang.GetString(100, "Actor")
-                        dbFilter = String.Concat("ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.FilterShowsSearch, "%')")
-                    Case Master.eLang.GetString(233, "Role")
-                        dbFilter = String.Concat("ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.FilterShowsSearch, "%')")
-                End Select
-                hasFilter = True
-            End If
+            'If Not String.IsNullOrEmpty(Me.FilterShowsSearch) AndAlso Not String.IsNullOrEmpty(Me.FilterShowsType) Then
+            '    Select Case Me.FilterShowsType
+            '        Case Master.eLang.GetString(100, "Actor")
+            '            dbFilter = String.Concat("ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.FilterShowsSearch, "%')")
+            '        Case Master.eLang.GetString(233, "Role")
+            '            dbFilter = String.Concat("ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.FilterShowsSearch, "%')")
+            '    End Select
+            '    hasFilter = True
+            'End If
 
             If Not String.IsNullOrEmpty(Me.FilterShows) Then
                 If hasFilter Then
@@ -181,6 +181,8 @@ Public Class dlgBulkRenamer_TV
                                             Else
                                                 EpisodeFile.FileName = "VIDEO_TS"
                                             End If
+
+                                            EpisodeFile.Extension = Path.GetExtension(_currShow.Filename)
 
                                             FFRenamer.AddEpisode(EpisodeFile)
 

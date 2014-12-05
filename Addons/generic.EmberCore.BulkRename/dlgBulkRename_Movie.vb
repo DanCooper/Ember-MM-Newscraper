@@ -183,6 +183,8 @@ Public Class dlgBulkRenamer_Movie
                                                 MovieFile.FileName = "VIDEO_TS"
                                             End If
 
+                                            MovieFile.Extension = Path.GetExtension(_currMovie.Filename)
+
                                             FFRenamer.AddMovie(MovieFile)
 
                                             Me.bwLoadInfo.ReportProgress(iProg, _currMovie.ListTitle)

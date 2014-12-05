@@ -4244,6 +4244,8 @@ doCancel:
             AddHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
 
             If Reload Then Me.FillList(True, False, False)
+
+            ModulesManager.Instance.RuntimeObjects.FilterMovies = String.Empty
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -4376,6 +4378,8 @@ doCancel:
             'AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
 
             If Reload Then Me.FillList(False, False, True)
+
+            ModulesManager.Instance.RuntimeObjects.FilterShows = String.Empty
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -15853,12 +15857,16 @@ doCancel:
                     End If
 
                     bsShows.Filter = FilterString
+                    ModulesManager.Instance.RuntimeObjects.FilterShows = FilterString
                 Else
                     bsShows.RemoveFilter()
+                    ModulesManager.Instance.RuntimeObjects.FilterShows = String.Empty
                 End If
 
                 If doFill Then
                     Me.FillList(False, False, True)
+                    ModulesManager.Instance.RuntimeObjects.FilterShowsSearch = Me.txtSearchShows.Text
+                    ModulesManager.Instance.RuntimeObjects.FilterShowsType = Me.cbSearchShows.Text
                 Else
                     Me.txtSearchShows.Focus()
                 End If
