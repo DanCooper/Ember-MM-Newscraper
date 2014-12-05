@@ -71,7 +71,7 @@ Public Class dlgBulkRenamer_Movie
     End Sub
 
     Private Sub bwDoRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
-        FFRenamer.DoRename_Movie(AddressOf ShowProgressRename)
+        FFRenamer.DoRename_Movies(AddressOf ShowProgressRename)
     End Sub
 
     Private Sub bwDoRename_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDoRename.ProgressChanged

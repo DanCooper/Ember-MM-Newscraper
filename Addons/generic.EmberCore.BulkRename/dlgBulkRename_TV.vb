@@ -70,7 +70,7 @@ Public Class dlgBulkRenamer_TV
     End Sub
 
     Private Sub bwDoRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
-        FFRenamer.DoRename_Episode(AddressOf ShowProgressRename)
+        FFRenamer.DoRename_Episodes(AddressOf ShowProgressRename)
     End Sub
 
     Private Sub bwDoRename_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDoRename.ProgressChanged
