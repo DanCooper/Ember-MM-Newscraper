@@ -206,7 +206,7 @@ Public Class BulkRenamerModule
         Cursor.Current = Cursors.WaitCursor
         Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
-        FileFolderRenamer.RenameSingle_Show(Master.currShow, MySettings.FoldersPattern_Shows, False, True, True, True)
+        FileFolderRenamer.RenameSingle_Show(Master.currShow, MySettings.FoldersPattern_Shows, False, False, True, True)
         RaiseEvent GenericEvent(Enums.ModuleEventType.RenameAuto_TVShow, New List(Of Object)(New Object() {ID, indX}))
         Cursor.Current = Cursors.Default
     End Sub
