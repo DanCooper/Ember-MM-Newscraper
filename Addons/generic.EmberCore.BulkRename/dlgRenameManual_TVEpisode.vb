@@ -21,7 +21,7 @@
 Imports System.IO
 Imports EmberAPI
 
-Public Class dlgRenameManual
+Public Class dlgRenameManual_TVEpisode
 
 #Region "Fields"
 

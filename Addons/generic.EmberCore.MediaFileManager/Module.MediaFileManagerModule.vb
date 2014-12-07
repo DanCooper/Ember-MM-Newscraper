@@ -272,7 +272,7 @@ Public Class FileManagerExternalModule
             Dim mTeraCopy As New TeraCopy.Filelist(_MySettings.TeraCopyPath, dstPath, doMove)
 
             If Not String.IsNullOrEmpty(dstPath) Then
-                For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaList.SelectedRows
+                For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
                     MovieId = Convert.ToInt64(sRow.Cells(0).Value)
                     If Not MoviesToWork.Contains(MovieId) Then
                         MoviesToWork.Add(MovieId)

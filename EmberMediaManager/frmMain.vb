@@ -10682,8 +10682,9 @@ doCancel:
             ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList = Me.cmnuEpisode
             ModulesManager.Instance.RuntimeObjects.MenuTVSeasonList = Me.cmnuSeason
             ModulesManager.Instance.RuntimeObjects.MenuTVShowList = Me.cmnuShow
-            ModulesManager.Instance.RuntimeObjects.MediaList = Me.dgvMovies
             ModulesManager.Instance.RuntimeObjects.MediaListEpisodes = Me.dgvTVEpisodes
+            ModulesManager.Instance.RuntimeObjects.MediaListMovies = Me.dgvMovies
+            ModulesManager.Instance.RuntimeObjects.MediaListShows = Me.dgvTVShows
             ModulesManager.Instance.RuntimeObjects.TopMenu = Me.mnuMain
             ModulesManager.Instance.RuntimeObjects.MainTool = Me.tsMain
             ModulesManager.Instance.RuntimeObjects.TrayMenu = Me.cmnuTray

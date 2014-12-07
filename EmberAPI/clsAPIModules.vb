@@ -1636,8 +1636,9 @@ Public Class ModulesManager
 
         Private _LoadMedia As LoadMedia
         Private _MainTool As System.Windows.Forms.ToolStrip
-        Private _MediaList As System.Windows.Forms.DataGridView
+        Private _MediaListMovies As System.Windows.Forms.DataGridView
         Private _MediaListEpisodes As System.Windows.Forms.DataGridView
+        Private _MediaListShows As System.Windows.Forms.DataGridView
         Private _MenuMovieList As System.Windows.Forms.ContextMenuStrip
         Private _MenuMovieSetList As System.Windows.Forms.ContextMenuStrip
         Private _MenuTVEpisodeList As System.Windows.Forms.ContextMenuStrip
@@ -1739,21 +1740,30 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property MediaList() As System.Windows.Forms.DataGridView
-            Get
-                Return _MediaList
-            End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
-                _MediaList = value
-            End Set
-        End Property
-
         Public Property MediaListEpisodes() As System.Windows.Forms.DataGridView
             Get
                 Return _MediaListEpisodes
             End Get
             Set(ByVal value As System.Windows.Forms.DataGridView)
                 _MediaListEpisodes = value
+            End Set
+        End Property
+
+        Public Property MediaListMovies() As System.Windows.Forms.DataGridView
+            Get
+                Return _MediaListMovies
+            End Get
+            Set(ByVal value As System.Windows.Forms.DataGridView)
+                _MediaListMovies = value
+            End Set
+        End Property
+
+        Public Property MediaListShows() As System.Windows.Forms.DataGridView
+            Get
+                Return _MediaListShows
+            End Get
+            Set(ByVal value As System.Windows.Forms.DataGridView)
+                _MediaListShows = value
             End Set
         End Property
 

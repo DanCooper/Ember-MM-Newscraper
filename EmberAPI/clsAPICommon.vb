@@ -781,6 +781,8 @@ Public Class Enums
         ScraperMulti_TVEpisode = 38
         Update_TVEpisode = 39
         ScraperSingle_Movie = 40
+        RenameAuto_TVShow = 41
+        RenameManual_TVShow = 42
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer

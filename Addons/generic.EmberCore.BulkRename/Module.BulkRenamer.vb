@@ -31,21 +31,25 @@ Public Class BulkRenamerModule
 
 #Region "Fields"
 
-    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuMainToolsRenamer As New System.Windows.Forms.ToolStripMenuItem
     Private MySettings As New _MySettings
-    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsRenamer As New System.Windows.Forms.ToolStripMenuItem
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
     Private _Name As String = "Renamer"
     Private _setup As frmSettingsHolder
-    Private ctxMyMenu_Movies As New System.Windows.Forms.ToolStripMenuItem
-    Private ctxMyMenu_Episodes As New System.Windows.Forms.ToolStripMenuItem
-    Private MyMenuSep_Movies As New System.Windows.Forms.ToolStripSeparator
-    Private MyMenuSep_Episodes As New System.Windows.Forms.ToolStripSeparator
-    Private WithEvents ctxMySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents ctxMySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents ctxMySubMenu3 As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents ctxMySubMenu4 As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuRenamer_Movies As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuRenamer_Episodes As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuRenamer_Shows As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuSep_Movies As New System.Windows.Forms.ToolStripSeparator
+    Private cmnuSep_Episodes As New System.Windows.Forms.ToolStripSeparator
+    Private cmnuSep_Shows As New System.Windows.Forms.ToolStripSeparator
+    Private WithEvents cmnuRenamerAuto_Movies As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuRenamerManual_Movies As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuRenamerAuto_Episodes As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuRenamerManual_Episodes As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuRenamerAuto_Shows As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuRenamerManual_Shows As New System.Windows.Forms.ToolStripMenuItem
 #End Region 'Fields
 
 #Region "Events"
@@ -123,7 +127,7 @@ Public Class BulkRenamerModule
                     FileFolderRenamer.RenameSingle_Movie(tDBMovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, BatchMode, ToNFO, ShowErrors, True)
                 End If
             Case Enums.ModuleEventType.RenameManual_Movie
-                Using dRenameManual As New dlgRenameManual
+                Using dRenameManual As New dlgRenameManual_Movie
                     Select Case dRenameManual.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
                             Return New Interfaces.ModuleResult With {.Cancelled = False, .breakChain = False}
@@ -158,26 +162,7 @@ Public Class BulkRenamerModule
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Private Sub FolderSubMenuItemAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ctxMySubMenu1.Click
-        Cursor.Current = Cursors.WaitCursor
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaList.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaList.Item(0, indX).Value)
-        FileFolderRenamer.RenameSingle_Movie(Master.currMovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, True, True, True)
-        RaiseEvent GenericEvent(Enums.ModuleEventType.RenameAuto_Movie, New List(Of Object)(New Object() {ID, indX}))
-        Cursor.Current = Cursors.Default
-    End Sub
-    Private Sub FolderSubMenuItemManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ctxMySubMenu2.Click
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaList.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaList.Item(0, indX).Value)
-        Using dRenameManual As New dlgRenameManual
-            Select Case dRenameManual.ShowDialog()
-                Case Windows.Forms.DialogResult.OK
-                    RaiseEvent GenericEvent(Enums.ModuleEventType.RenameAuto_Movie, New List(Of Object)(New Object() {ID, indX}))
-            End Select
-        End Using
-    End Sub
-
-    Private Sub FolderSubMenuItemAutoEpisodes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ctxMySubMenu3.Click
+    Private Sub cmnuRenamerAuto_Episodes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_Episodes.Click
         Cursor.Current = Cursors.WaitCursor
         Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.Item(0, indX).Value)
@@ -186,17 +171,72 @@ Public Class BulkRenamerModule
         Cursor.Current = Cursors.Default
     End Sub
 
+    Private Sub cmnuRenamerManual_Episodes_Shows_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_Episodes.Click
+        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.Item(0, indX).Value)
+        Using dRenameManual As New dlgRenameManual_TVEpisode
+            Select Case dRenameManual.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    RaiseEvent GenericEvent(Enums.ModuleEventType.RenameAuto_TVEpisode, New List(Of Object)(New Object() {ID, indX}))
+            End Select
+        End Using
+    End Sub
+
+    Private Sub cmnuRenamerAuto_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_Movies.Click
+        Cursor.Current = Cursors.WaitCursor
+        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovies.Item(0, indX).Value)
+        FileFolderRenamer.RenameSingle_Movie(Master.currMovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, True, True, True)
+        RaiseEvent GenericEvent(Enums.ModuleEventType.RenameAuto_Movie, New List(Of Object)(New Object() {ID, indX}))
+        Cursor.Current = Cursors.Default
+    End Sub
+
+    Private Sub cmnuRenamerManual_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_Movies.Click
+        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovies.Item(0, indX).Value)
+        Using dRenameManual As New dlgRenameManual_Movie
+            Select Case dRenameManual.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    RaiseEvent GenericEvent(Enums.ModuleEventType.RenameAuto_Movie, New List(Of Object)(New Object() {ID, indX}))
+            End Select
+        End Using
+    End Sub
+
+    Private Sub cmnuRenamerAuto_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_Shows.Click
+        Cursor.Current = Cursors.WaitCursor
+        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
+        FileFolderRenamer.RenameSingle_Show(Master.currShow, MySettings.FoldersPattern_Shows, False, True, True, True)
+        RaiseEvent GenericEvent(Enums.ModuleEventType.RenameAuto_TVShow, New List(Of Object)(New Object() {ID, indX}))
+        Cursor.Current = Cursors.Default
+    End Sub
+
+    Private Sub cmnuRenamerManual_Shows_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_Shows.Click
+        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
+        Using dRenameManual As New dlgRenameManual_TVShow
+            Select Case dRenameManual.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    RaiseEvent GenericEvent(Enums.ModuleEventType.RenameAuto_TVShow, New List(Of Object)(New Object() {ID, indX}))
+            End Select
+        End Using
+    End Sub
+
     Sub Disable()
         Dim tsi As New ToolStripMenuItem
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Remove(MyMenu)
+        tsi.DropDownItems.Remove(mnuMainToolsRenamer)
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Remove(MyTrayMenu)
-        RemoveToolsStripItem_Movies(MyMenuSep_Movies)
-        RemoveToolsStripItem_Movies(ctxMyMenu_Movies)
-        'Episodes
-        RemoveToolsStripItem_Movies(MyMenuSep_Movies)
-        RemoveToolsStripItem_Movies(ctxMyMenu_Episodes)
+        tsi.DropDownItems.Remove(cmnuTrayToolsRenamer)
+        'cmnuMovies
+        RemoveToolsStripItem_Movies(cmnuSep_Movies)
+        RemoveToolsStripItem_Movies(cmnuRenamer_Movies)
+        'cmnuEpisodes
+        RemoveToolsStripItem_Episodes(cmnuSep_Episodes)
+        RemoveToolsStripItem_Episodes(cmnuRenamer_Episodes)
+        'cmnuShows
+        RemoveToolsStripItem_Shows(cmnuSep_Shows)
+        RemoveToolsStripItem_Shows(cmnuRenamer_Shows)
     End Sub
 
     Public Sub RemoveToolsStripItem_Episodes(value As System.Windows.Forms.ToolStripItem)
@@ -215,40 +255,61 @@ Public Class BulkRenamerModule
         ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Remove(value)
     End Sub
 
+    Public Sub RemoveToolsStripItem_Shows(value As System.Windows.Forms.ToolStripItem)
+        If (ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Shows), New Object() {value})
+            Exit Sub
+        End If
+        ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Remove(value)
+    End Sub
+
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
-        MyMenu.Image = New Bitmap(My.Resources.icon)
-        MyMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
+        mnuMainToolsRenamer.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsRenamer.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        MyMenu.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
-        DropDownItemsAdd(MyMenu, tsi)
-        MyTrayMenu.Image = New Bitmap(My.Resources.icon)
-        MyTrayMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
+        mnuMainToolsRenamer.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
+        DropDownItemsAdd(mnuMainToolsRenamer, tsi)
+        cmnuTrayToolsRenamer.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsRenamer.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Add(MyTrayMenu)
+        tsi.DropDownItems.Add(cmnuTrayToolsRenamer)
 
-        ctxMyMenu_Movies.Image = New Bitmap(My.Resources.icon)
-        ctxMyMenu_Movies.Text = Master.eLang.GetString(257, "Rename")
-        ctxMyMenu_Movies.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        ctxMySubMenu1.Text = Master.eLang.GetString(293, "Auto")
-        ctxMySubMenu2.Text = Master.eLang.GetString(294, "Manual")
-        ctxMyMenu_Movies.DropDownItems.Add(ctxMySubMenu1)
-        ctxMyMenu_Movies.DropDownItems.Add(ctxMySubMenu2)
+        'cmnuMovies
+        cmnuRenamer_Movies.Image = New Bitmap(My.Resources.icon)
+        cmnuRenamer_Movies.Text = Master.eLang.GetString(257, "Rename")
+        cmnuRenamer_Movies.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        cmnuRenamerAuto_Movies.Text = Master.eLang.GetString(293, "Auto")
+        cmnuRenamerManual_Movies.Text = Master.eLang.GetString(294, "Manual")
+        cmnuRenamer_Movies.DropDownItems.Add(cmnuRenamerAuto_Movies)
+        cmnuRenamer_Movies.DropDownItems.Add(cmnuRenamerManual_Movies)
 
-        SetToolsStripItem_Movies(MyMenuSep_Movies)
-        SetToolsStripItem_Movies(ctxMyMenu_Movies)
+        SetToolsStripItem_Movies(cmnuSep_Movies)
+        SetToolsStripItem_Movies(cmnuRenamer_Movies)
 
-        'Episodes
-        ctxMyMenu_Episodes.Image = New Bitmap(My.Resources.icon)
-        ctxMyMenu_Episodes.Text = Master.eLang.GetString(257, "Rename")
-        ctxMyMenu_Episodes.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        ctxMySubMenu3.Text = Master.eLang.GetString(293, "Auto")
-        ctxMySubMenu4.Text = Master.eLang.GetString(294, "Manual")
-        ctxMyMenu_Episodes.DropDownItems.Add(ctxMySubMenu3)
-        ctxMyMenu_Episodes.DropDownItems.Add(ctxMySubMenu4)
+        'cmnuEpisodes
+        cmnuRenamer_Episodes.Image = New Bitmap(My.Resources.icon)
+        cmnuRenamer_Episodes.Text = Master.eLang.GetString(257, "Rename")
+        cmnuRenamer_Episodes.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        cmnuRenamerAuto_Episodes.Text = Master.eLang.GetString(293, "Auto")
+        cmnuRenamerManual_Episodes.Text = Master.eLang.GetString(294, "Manual")
+        cmnuRenamer_Episodes.DropDownItems.Add(cmnuRenamerAuto_Episodes)
+        cmnuRenamer_Episodes.DropDownItems.Add(cmnuRenamerManual_Episodes)
 
-        SetToolsStripItem_Episodes(MyMenuSep_Episodes)
-        SetToolsStripItem_Episodes(ctxMyMenu_Episodes)
+        SetToolsStripItem_Episodes(cmnuSep_Episodes)
+        SetToolsStripItem_Episodes(cmnuRenamer_Episodes)
+
+        'cmnuShows
+        cmnuRenamer_Shows.Image = New Bitmap(My.Resources.icon)
+        cmnuRenamer_Shows.Text = Master.eLang.GetString(257, "Rename")
+        cmnuRenamer_Shows.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        cmnuRenamerAuto_Shows.Text = Master.eLang.GetString(293, "Auto")
+        cmnuRenamerManual_Shows.Text = Master.eLang.GetString(294, "Manual")
+        cmnuRenamer_Shows.DropDownItems.Add(cmnuRenamerAuto_Shows)
+        cmnuRenamer_Shows.DropDownItems.Add(cmnuRenamerManual_Shows)
+
+        SetToolsStripItem_Shows(cmnuSep_Shows)
+        SetToolsStripItem_Shows(cmnuRenamer_Shows)
     End Sub
 
     Public Sub DropDownItemsAdd(value As System.Windows.Forms.ToolStripMenuItem, tsi As System.Windows.Forms.ToolStripMenuItem)
@@ -256,7 +317,7 @@ Public Class BulkRenamerModule
             tsi.Owner.Invoke(New Delegate_DropDownItemsAdd(AddressOf DropDownItemsAdd), New Object() {value, tsi})
             Exit Sub
         End If
-        tsi.DropDownItems.Add(MyMenu)
+        tsi.DropDownItems.Add(mnuMainToolsRenamer)
     End Sub
 
     Public Sub SetToolsStripItem_Episodes(value As System.Windows.Forms.ToolStripItem)
@@ -274,6 +335,15 @@ Public Class BulkRenamerModule
         End If
         ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Add(value)
     End Sub
+
+    Public Sub SetToolsStripItem_Shows(value As System.Windows.Forms.ToolStripItem)
+        If (ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Shows), New Object() {value})
+            Exit Sub
+        End If
+        ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Add(value)
+    End Sub
+
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -334,7 +404,7 @@ Public Class BulkRenamerModule
         MySettings.GenericModule = clsAdvancedSettings.GetBooleanSetting("GenericModule", True)
     End Sub
 
-    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click, MyTrayMenu.Click
+    Private Sub mnuMainToolsRenamer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRenamer.Click, cmnuTrayToolsRenamer.Click
 
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
         Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected

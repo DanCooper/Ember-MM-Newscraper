@@ -150,10 +150,22 @@
     <Compile Include="dlgHelpTips.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgRenameManual.Designer.vb">
-      <DependentUpon>dlgRenameManual.vb</DependentUpon>
+    <Compile Include="dlgRenameManual_TVShow.Designer.vb">
+      <DependentUpon>dlgRenameManual_TVShow.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgRenameManual.vb">
+    <Compile Include="dlgRenameManual_TVShow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgRenameManual_TVEpisode.Designer.vb">
+      <DependentUpon>dlgRenameManual_TVEpisode.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgRenameManual_TVEpisode.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgRenameManual_Movie.Designer.vb">
+      <DependentUpon>dlgRenameManual_Movie.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgRenameManual_Movie.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgBulkRename_TV.Designer.vb">
@@ -194,8 +206,16 @@
       <DependentUpon>dlgHelpTips.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgRenameManual.resx">
-      <DependentUpon>dlgRenameManual.vb</DependentUpon>
+    <EmbeddedResource Include="dlgRenameManual_TVShow.resx">
+      <DependentUpon>dlgRenameManual_TVShow.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgRenameManual_TVEpisode.resx">
+      <DependentUpon>dlgRenameManual_TVEpisode.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgRenameManual_Movie.resx">
+      <DependentUpon>dlgRenameManual_Movie.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgBulkRename_TV.resx">
