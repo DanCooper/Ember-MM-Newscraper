@@ -32,7 +32,7 @@ Public Class dlgRenameManual_TVEpisode
 #Region "Methods"
 
     Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
-        FileFolderRenamer.RenameSingle_Movie(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True, True)
+        FileFolderRenamer.RenameSingle_Episode(Master.currShow, txtFolder.Text, txtFile.Text, False, False, True, True)
     End Sub
 
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
@@ -48,17 +48,17 @@ Public Class dlgRenameManual_TVEpisode
 
     Private Sub dlgRenameManual_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
-        If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+        If FileUtils.Common.isVideoTS(Master.currShow.Filename) Then
             txtFile.Text = "$F"
             txtFile.Visible = False
-            txtFolder.Text = Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).Name
-        ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+            txtFolder.Text = Directory.GetParent(Directory.GetParent(Master.currShow.Filename).FullName).Name
+        ElseIf FileUtils.Common.isBDRip(Master.currShow.Filename) Then
             txtFile.Text = "$F"
             txtFile.Visible = False
-            txtFolder.Text = Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).Name
+            txtFolder.Text = Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currShow.Filename).FullName).FullName).Name
         Else
-            Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currMovie.Filename))
-            Dim stackMark As String = Path.GetFileNameWithoutExtension(Master.currMovie.Filename).Replace(FileName, String.Empty).ToLower
+            Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currShow.Filename))
+            Dim stackMark As String = Path.GetFileNameWithoutExtension(Master.currShow.Filename).Replace(FileName, String.Empty).ToLower
             If Not FileName.ToLower = "video_ts" Then
                 If Not stackMark = String.Empty AndAlso Master.currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
                     FileName = Path.GetFileNameWithoutExtension(Master.currMovie.Filename)

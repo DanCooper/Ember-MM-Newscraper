@@ -137,53 +137,6 @@ Public Class dlgBulkRenamer_TV
                                         If Not _currShow.EpID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
                                             EpisodeFile = FileFolderRenamer.GetInfo_Episode(_currShow)
 
-                                            For Each i As String In FFRenamer.TVShowFolders
-                                                If _currShow.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
-                                                    EpisodeFile.BasePath = If(i.EndsWith(Path.DirectorySeparatorChar.ToString), i.Substring(0, i.Length - 1), i)
-                                                    If FileUtils.Common.isVideoTS(_currShow.Filename) Then
-                                                        EpisodeFile.Parent = Directory.GetParent(Directory.GetParent(_currShow.Filename).FullName).Name
-                                                        If EpisodeFile.BasePath = Directory.GetParent(Directory.GetParent(_currShow.Filename).FullName).FullName Then
-                                                            EpisodeFile.OldPath = String.Empty
-                                                            EpisodeFile.BasePath = Directory.GetParent(EpisodeFile.BasePath).FullName
-                                                        Else
-                                                            EpisodeFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_currShow.Filename).FullName).FullName).FullName.Replace(EpisodeFile.BasePath, String.Empty)
-                                                        End If
-                                                        EpisodeFile.IsVideo_TS = True
-                                                    ElseIf FileUtils.Common.isBDRip(_currShow.Filename) Then
-                                                        EpisodeFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_currShow.Filename).FullName).FullName).Name
-                                                        If EpisodeFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_currShow.Filename).FullName).FullName).FullName Then
-                                                            EpisodeFile.OldPath = String.Empty
-                                                            EpisodeFile.BasePath = Directory.GetParent(EpisodeFile.BasePath).FullName
-                                                        Else
-                                                            EpisodeFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(_currShow.Filename).FullName).FullName).FullName).FullName.Replace(EpisodeFile.BasePath, String.Empty)
-                                                        End If
-                                                        EpisodeFile.IsBDMV = True
-                                                    Else
-                                                        EpisodeFile.Parent = Directory.GetParent(_currShow.Filename).Name
-                                                        If EpisodeFile.BasePath = Directory.GetParent(_currShow.Filename).FullName Then
-                                                            EpisodeFile.OldPath = String.Empty
-                                                            EpisodeFile.BasePath = Directory.GetParent(EpisodeFile.BasePath).FullName
-                                                        Else
-                                                            EpisodeFile.OldPath = Directory.GetParent(Directory.GetParent(_currShow.Filename).FullName).FullName.Replace(EpisodeFile.BasePath, String.Empty)
-                                                        End If
-                                                    End If
-                                                End If
-                                            Next
-
-                                            If Not EpisodeFile.IsVideo_TS AndAlso Not EpisodeFile.IsBDMV Then
-                                                EpisodeFile.FileName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_currShow.Filename))
-                                                Dim stackMark As String = Path.GetFileNameWithoutExtension(_currShow.Filename).Replace(EpisodeFile.FileName, String.Empty).ToLower
-                                                If Not stackMark = String.Empty AndAlso _currShow.TVEp.Title.ToLower.EndsWith(stackMark) Then
-                                                    EpisodeFile.FileName = Path.GetFileNameWithoutExtension(_currShow.Filename)
-                                                End If
-                                            ElseIf EpisodeFile.IsBDMV Then
-                                                EpisodeFile.FileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
-                                            Else
-                                                EpisodeFile.FileName = "VIDEO_TS"
-                                            End If
-
-                                            EpisodeFile.Extension = Path.GetExtension(_currShow.Filename)
-
                                             FFRenamer.AddEpisode(EpisodeFile)
 
                                             Me.bwLoadInfo.ReportProgress(iProg, _currShow.TVEp.Title)

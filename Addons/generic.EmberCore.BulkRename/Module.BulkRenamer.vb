@@ -141,22 +141,22 @@ Public Class BulkRenamerModule
                     Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
                     Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
                     Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
-                    FileFolderRenamer.RenameSingle_Episode(tDBTV, MySettings.FoldersPattern_Seasons, MySettings.FoldersPattern_Shows, MySettings.FilesPattern_Episodes, BatchMode, ToNFO, ShowErrors, True)
+                    FileFolderRenamer.RenameSingle_Episode(tDBTV, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, BatchMode, ToNFO, ShowErrors, True)
                 End If
             Case Enums.ModuleEventType.ScraperMulti_TVEpisode
                 If MySettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
                     'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
-                    FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FoldersPattern_Seasons, MySettings.FoldersPattern_Shows, MySettings.FilesPattern_Episodes, True, False, False, False)
+                    FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False, False)
                 End If
             Case Enums.ModuleEventType.ScraperSingle_TVEpisode
                 If MySettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
                     'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
-                    FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FoldersPattern_Seasons, MySettings.FoldersPattern_Shows, MySettings.FilesPattern_Episodes, False, False, False, True)
+                    FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False, True)
                 End If
             Case Enums.ModuleEventType.Update_TVEpisode
                 If MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
                     'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
-                    FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FoldersPattern_Seasons, MySettings.FoldersPattern_Shows, MySettings.FilesPattern_Episodes, True, False, False, False)
+                    FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False, False)
                 End If
         End Select
         Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -166,7 +166,7 @@ Public Class BulkRenamerModule
         Cursor.Current = Cursors.WaitCursor
         Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.Item(0, indX).Value)
-        FileFolderRenamer.RenameSingle_Episode(Master.currShow, MySettings.FoldersPattern_Seasons, MySettings.FoldersPattern_Shows, MySettings.FilesPattern_Episodes, True, True, True, True)
+        FileFolderRenamer.RenameSingle_Episode(Master.currShow, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, True, True, True)
         RaiseEvent GenericEvent(Enums.ModuleEventType.RenameAuto_TVEpisode, New List(Of Object)(New Object() {ID, indX}))
         Cursor.Current = Cursors.Default
     End Sub
