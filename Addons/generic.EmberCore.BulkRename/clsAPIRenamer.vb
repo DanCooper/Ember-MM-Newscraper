@@ -401,13 +401,14 @@ Public Class FileFolderRenamer
 
     Private Shared Sub DoRenameSingle_Episode(ByVal _frename As FileRename, ByRef _tv As Structures.DBTV, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Try
-            If Not _tv.IsLockEp AndAlso Not _frename.FileExist Then
+            If Not _frename.IsLocked AndAlso Not _frename.FileExist Then
+                Dim getError As Boolean = False
                 Dim srcDir As String = Path.Combine(_frename.BasePath, _frename.Path)
                 Dim destDir As String = Path.Combine(_frename.BasePath, _frename.NewPath)
                 Dim srcFilenamePath As String = Path.Combine(_frename.BasePath, _frename.Path, _frename.FileName)
                 Dim dstFilenamePath As String = Path.Combine(_frename.BasePath, _frename.NewPath, _frename.NewFileName)
 
-                'Rename Directory
+                'Rename/Create Directory
                 If Not srcDir = destDir Then
                     Try
                         If srcDir.ToLower = destDir.ToLower Then
@@ -422,6 +423,7 @@ Public Class FileFolderRenamer
                         Else
                             logger.Error("Dir: <{0}> - <{1}>", srcDir, destDir)
                         End If
+                        getError = True
                     End Try
                 End If
 
@@ -460,6 +462,7 @@ Public Class FileFolderRenamer
                                         Else
                                             logger.Error("File <{0}> - <{1}>", srcFile, dstFile)
                                         End If
+                                        getError = True
                                     End Try
                                 End If
                             Next
@@ -467,30 +470,32 @@ Public Class FileFolderRenamer
                     End If
                 End If
 
-                UpdatePaths_Episode(_tv, srcDir, destDir, _frename.FileName, _frename.NewFileName)
+                If Not getError Then
+                    UpdatePaths_Episode(_tv, srcDir, destDir, _frename.FileName, _frename.NewFileName)
 
-                If toDB Then
-                    Master.DB.SaveTVEpToDB(_tv, False, BatchMode, toNfo)
-                End If
+                    If toDB Then
+                        Master.DB.SaveTVEpToDB(_tv, False, BatchMode, toNfo)
+                    End If
 
-                Dim fileCount As Integer = 0
-                Dim dirCount As Integer = 0
+                    Dim fileCount As Integer = 0
+                    Dim dirCount As Integer = 0
 
-                If Directory.Exists(srcDir) Then
-                    Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
+                    If Directory.Exists(srcDir) Then
+                        Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
 
-                    Try
-                        fileCount = di.GetFiles().Count
-                    Catch
-                    End Try
+                        Try
+                            fileCount = di.GetFiles().Count
+                        Catch
+                        End Try
 
-                    Try
-                        dirCount = di.GetDirectories().Count
-                    Catch
-                    End Try
+                        Try
+                            dirCount = di.GetDirectories().Count
+                        Catch
+                        End Try
 
-                    If fileCount = 0 AndAlso dirCount = 0 Then
-                        di.Delete()
+                        If fileCount = 0 AndAlso dirCount = 0 Then
+                            di.Delete()
+                        End If
                     End If
                 End If
             Else
