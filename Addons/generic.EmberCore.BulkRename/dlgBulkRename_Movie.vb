@@ -138,53 +138,6 @@ Public Class dlgBulkRenamer_Movie
                                         If Not _currMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_currMovie.Filename) Then
                                             MovieFile = FileFolderRenamer.GetInfo_Movie(_currMovie)
 
-                                            For Each i As String In FFRenamer.MovieFolders
-                                                If _currMovie.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
-                                                    MovieFile.BasePath = If(i.EndsWith(Path.DirectorySeparatorChar.ToString), i.Substring(0, i.Length - 1), i)
-                                                    If FileUtils.Common.isVideoTS(_currMovie.Filename) Then
-                                                        MovieFile.Parent = Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).Name
-                                                        If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName Then
-                                                            MovieFile.OldPath = String.Empty
-                                                            MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
-                                                        Else
-                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
-                                                        End If
-                                                        MovieFile.IsVideo_TS = True
-                                                    ElseIf FileUtils.Common.isBDRip(_currMovie.Filename) Then
-                                                        MovieFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName).Name
-                                                        If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName).FullName Then
-                                                            MovieFile.OldPath = String.Empty
-                                                            MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
-                                                        Else
-                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
-                                                        End If
-                                                        MovieFile.IsBDMV = True
-                                                    Else
-                                                        MovieFile.Parent = Directory.GetParent(_currMovie.Filename).Name
-                                                        If MovieFile.BasePath = Directory.GetParent(_currMovie.Filename).FullName Then
-                                                            MovieFile.OldPath = String.Empty
-                                                            MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
-                                                        Else
-                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(_currMovie.Filename).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
-                                                        End If
-                                                    End If
-                                                End If
-                                            Next
-
-                                            If Not MovieFile.IsVideo_TS AndAlso Not MovieFile.IsBDMV Then
-                                                MovieFile.FileName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_currMovie.Filename))
-                                                Dim stackMark As String = Path.GetFileNameWithoutExtension(_currMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
-                                                If Not stackMark = String.Empty AndAlso _currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
-                                                    MovieFile.FileName = Path.GetFileNameWithoutExtension(_currMovie.Filename)
-                                                End If
-                                            ElseIf MovieFile.IsBDMV Then
-                                                MovieFile.FileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
-                                            Else
-                                                MovieFile.FileName = "VIDEO_TS"
-                                            End If
-
-                                            MovieFile.Extension = Path.GetExtension(_currMovie.Filename)
-
                                             FFRenamer.AddMovie(MovieFile)
 
                                             Me.bwLoadInfo.ReportProgress(iProg, _currMovie.ListTitle)
