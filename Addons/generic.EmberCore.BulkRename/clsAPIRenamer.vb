@@ -816,7 +816,13 @@ Public Class FileFolderRenamer
                     EpisodeFile.Title = _tmpTVEpisode.TVEp.Title
                 End If
             Else
-                'ToDo
+                Dim lTitles As New List(Of String)
+                For Each lSeason In EpisodeFile.SeasonsEpisodes
+                    For Each lEpisode In lSeason.Episodes
+                        lTitles.Add(lEpisode.Title)
+                    Next
+                Next
+                EpisodeFile.Title = String.Join(" - ", lTitles)
             End If
 
             'Show Title
