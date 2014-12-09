@@ -317,7 +317,7 @@ Public Class FileFolderRenamer
                 If Not srcDir = destDir Then
                     Try
                         If Not sfunction Is Nothing Then
-                            If Not sfunction(_frename.NewFileName, iProg) Then Return
+                            If Not sfunction(_frename.NewPath, iProg) Then Return
                         End If
 
                         If Not _movie.IsSingle Then
@@ -343,7 +343,7 @@ Public Class FileFolderRenamer
                 End If
                 'Rename Files
                 If Not _frename.IsVideo_TS AndAlso Not _frename.IsBDMV Then
-                    If (Not srcFilenamePath = dstFilenamePath) OrElse (_frename.Path = String.Empty AndAlso Not _frename.NewPath = String.Empty) OrElse Not _movie.IsSingle Then
+                    If (Not _frename.NewFileName = _frename.FileName) OrElse (_frename.Path = String.Empty AndAlso Not _frename.NewPath = String.Empty) OrElse Not _movie.IsSingle Then
                         Dim di As DirectoryInfo
 
                         If _frename.IsSingle Then
