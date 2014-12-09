@@ -341,6 +341,7 @@ Public Class FileFolderRenamer
                     End Try
 
                 End If
+
                 'Rename Files
                 If Not _frename.IsVideo_TS AndAlso Not _frename.IsBDMV Then
                     If (Not _frename.NewFileName = _frename.FileName) OrElse (_frename.Path = String.Empty AndAlso Not _frename.NewPath = String.Empty) OrElse Not _movie.IsSingle Then
