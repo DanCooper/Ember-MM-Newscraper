@@ -119,9 +119,9 @@ Public Class dlgBulkRenamer_TV
                     End If
                 End Using
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 ORDER BY Title ASC;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 ORDER BY TVShowID ASC, Season ASC, Episode ASC;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 AND {0} ORDER BY Title ASC;", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 AND {0} ORDER BY TVShowID ASC, Season ASC, Episode ASC;", dbFilter)
                 End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
@@ -135,11 +135,9 @@ Public Class dlgBulkRenamer_TV
                                         _currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(SQLreader("id")), True)
 
                                         If Not _currShow.EpID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
+                                            Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))
                                             EpisodeFile = FileFolderRenamer.GetInfo_Episode(_currShow)
-
                                             FFRenamer.AddEpisode(EpisodeFile)
-
-                                            Me.bwLoadInfo.ReportProgress(iProg, _currShow.TVEp.Title)
                                         End If
                                     End If
                                 End If

@@ -58,6 +58,7 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.IMDBID = ""
         _fDummyMultiEpisode.IsBDMV = False
         _fDummyMultiEpisode.IsLocked = False
+        _fDummyMultiEpisode.IsMultiEpisode = True
         _fDummyMultiEpisode.IsRenamed = False
         _fDummyMultiEpisode.IsSingle = True
         _fDummyMultiEpisode.IsVideo_TS = False
@@ -102,6 +103,7 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.IMDBID = ""
         _fDummyMultiSeason.IsBDMV = False
         _fDummyMultiSeason.IsLocked = False
+        _fDummyMultiSeason.IsMultiEpisode = True
         _fDummyMultiSeason.IsRenamed = False
         _fDummyMultiSeason.IsSingle = True
         _fDummyMultiSeason.IsVideo_TS = False
@@ -152,6 +154,7 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.IMDBID = ""
         _fDummySingleEpisode.IsBDMV = False
         _fDummySingleEpisode.IsLocked = False
+        _fDummySingleEpisode.IsMultiEpisode = False
         _fDummySingleEpisode.IsRenamed = False
         _fDummySingleEpisode.IsSingle = True
         _fDummySingleEpisode.IsVideo_TS = False
@@ -194,6 +197,7 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.IMDBID = "0848228"
         _fDummySingleMovie.IsBDMV = False
         _fDummySingleMovie.IsLocked = False
+        _fDummySingleMovie.IsMultiEpisode = False
         _fDummySingleMovie.IsRenamed = False
         _fDummySingleMovie.IsSingle = True
         _fDummySingleMovie.IsVideo_TS = False
