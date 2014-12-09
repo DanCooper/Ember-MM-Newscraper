@@ -109,9 +109,9 @@ Public Class dlgBulkRenamer_TV
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(id) AS mcount FROM TVEps WHERE {0};", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0 AND {0};", dbFilter)
                 End If
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
@@ -119,9 +119,9 @@ Public Class dlgBulkRenamer_TV
                     End If
                 End Using
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps ORDER BY Title ASC;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 ORDER BY Title ASC;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, id FROM TVEps WHERE {0} ORDER BY Title ASC;", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 AND {0} ORDER BY Title ASC;", dbFilter)
                 End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then

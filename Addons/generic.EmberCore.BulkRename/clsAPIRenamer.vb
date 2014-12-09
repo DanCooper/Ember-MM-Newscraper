@@ -134,8 +134,6 @@ Public Class FileFolderRenamer
     End Function
 
     Public Sub DoRename_Episodes(Optional ByVal sfunction As ShowProgress = Nothing)
-        Dim DoDB As Boolean
-        Dim DoUpdate As Boolean
         Dim _tvDB As Structures.DBTV = Nothing
         Dim iProg As Integer = 0
         Try
@@ -143,118 +141,15 @@ Public Class FileFolderRenamer
                 For Each f As FileFolderRenamer.FileRename In _episodes
                     If f.IsRenamed AndAlso Not f.FileExist Then
                         iProg += 1
-                        DoUpdate = False
-
                         If Not f.IsLocked Then
-                            Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
-                            Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
-
                             If Not f.ID = -1 Then
                                 _tvDB = Master.DB.LoadTVEpFromDB(f.ID, True)
-                                DoDB = True
                             Else
                                 _tvDB = Nothing
-                                DoDB = False
                             End If
 
-                            'Rename Directory
-                            If Not srcDir = destDir Then
-                                If Not sfunction Is Nothing Then
-                                    If Not sfunction(f.NewPath, iProg) Then Return
-                                End If
-
-                                Try
-                                    If Not f.IsSingle Then
-                                        Directory.CreateDirectory(destDir)
-                                    Else
-                                        If srcDir.ToLower = destDir.ToLower Then
-                                            Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
-                                            Directory.Move(String.Concat(destDir, ".$emm"), destDir)
-                                        Else
-                                            If Not Directory.Exists(Directory.GetParent(destDir).FullName) Then Directory.CreateDirectory(Directory.GetParent(destDir).FullName)
-                                            Directory.Move(srcDir, destDir)
-                                        End If
-                                    End If
-                                    DoUpdate = True
-                                Catch ex As Exception
-                                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Dir: " & srcDir & " " & destDir, ex)
-                                    'Need to make some type of failure log
-                                    Continue For
-                                End Try
-                            End If
-
-                            'Rename Files
-                            If Not f.IsVideo_TS AndAlso Not f.IsBDMV Then
-                                If (Not f.NewFileName = f.FileName) OrElse (f.Path = String.Empty AndAlso Not f.NewPath = String.Empty) OrElse Not f.IsSingle Then
-                                    Dim tmpList As New List(Of String)
-                                    Dim di As DirectoryInfo
-
-                                    If f.IsSingle Then
-                                        di = New DirectoryInfo(destDir)
-                                    Else
-                                        di = New DirectoryInfo(srcDir)
-                                    End If
-
-                                    Dim lFi As New List(Of FileInfo)
-                                    If Not sfunction Is Nothing Then
-                                        If Not sfunction(f.NewFileName, iProg) Then Return
-                                    End If
-                                    Try
-                                        lFi.AddRange(di.GetFiles())
-                                    Catch
-                                    End Try
-                                    If lFi.Count > 0 Then
-                                        Dim srcFile As String
-                                        Dim dstFile As String
-                                        For Each lFile As FileInfo In lFi.OrderBy(Function(s) s.Name)
-                                            srcFile = lFile.FullName
-                                            dstFile = Path.Combine(destDir, lFile.Name.Replace(f.FileName.Trim, f.NewFileName.Trim))
-
-                                            If Not srcFile = dstFile Then
-                                                Try
-                                                    If srcFile.ToLower = dstFile.ToLower Then
-                                                        File.Move(srcFile, String.Concat(dstFile, ".$emm$"))
-                                                        File.Move(String.Concat(dstFile, ".$emm$"), dstFile)
-                                                    Else
-                                                        If lFile.Name.StartsWith(f.FileName, StringComparison.OrdinalIgnoreCase) Then
-                                                            File.Move(srcFile, dstFile)
-                                                        End If
-                                                    End If
-
-                                                    DoUpdate = True
-                                                Catch ex As Exception
-                                                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "File " & srcFile & " " & dstFile, ex)
-                                                    'Need to make some type of failure log
-                                                End Try
-                                            End If
-                                        Next
-                                    End If
-                                End If
-                            End If
-
-                            If DoDB AndAlso DoUpdate Then
-                                UpdatePaths_Episode(_tvDB, srcDir, destDir, f.FileName, f.NewFileName)
-                                Master.DB.SaveTVEpToDB(_tvDB, False, False, True)
-                                Dim fileCount As Integer = 0
-                                Dim dirCount As Integer = 0
-
-                                If Directory.Exists(srcDir) Then
-                                    Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
-
-                                    Try
-                                        fileCount = di.GetFiles().Count
-                                    Catch
-                                    End Try
-
-                                    Try
-                                        dirCount = di.GetDirectories().Count
-                                    Catch
-                                    End Try
-
-                                    If fileCount = 0 AndAlso dirCount = 0 Then
-                                        di.Delete()
-                                    End If
-                                End If
+                            If Not IsNothing(_tvDB) Then
+                                DoRenameSingle_Episode(f, _tvDB, True, False, False, False, sfunction, iProg)
                             End If
                         End If
                     End If
@@ -399,7 +294,7 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Private Shared Sub DoRenameSingle_Episode(ByVal _frename As FileRename, ByRef _tv As Structures.DBTV, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+    Private Shared Sub DoRenameSingle_Episode(ByVal _frename As FileRename, ByRef _tv As Structures.DBTV, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean, Optional ByVal sfunction As ShowProgress = Nothing, Optional ByVal iProg As Integer = 0)
         Try
             If Not _frename.IsLocked AndAlso Not _frename.FileExist Then
                 Dim getError As Boolean = False
@@ -411,6 +306,10 @@ Public Class FileFolderRenamer
                 'Rename/Create Directory
                 If Not srcDir = destDir Then
                     Try
+                        If Not sfunction Is Nothing Then
+                            If Not sfunction(_frename.NewPath, iProg) Then Return
+                        End If
+
                         If srcDir.ToLower = destDir.ToLower Then
                             Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
                             Directory.Move(String.Concat(destDir, ".$emm"), destDir)
@@ -435,6 +334,9 @@ Public Class FileFolderRenamer
                         di = New DirectoryInfo(srcDir)
 
                         Dim lFi As New List(Of FileInfo)
+                        If Not sfunction Is Nothing Then
+                            If Not sfunction(_frename.NewFileName, iProg) Then Return
+                        End If
                         Try
                             lFi.AddRange(di.GetFiles())
                         Catch
