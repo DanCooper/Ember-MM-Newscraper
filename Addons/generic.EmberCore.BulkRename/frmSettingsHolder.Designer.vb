@@ -281,9 +281,9 @@ Partial Class frmSettingsHolder
         Me.chkRenameUpdateEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkRenameUpdateEpisodes.Location = New System.Drawing.Point(3, 193)
         Me.chkRenameUpdateEpisodes.Name = "chkRenameUpdateEpisodes"
-        Me.chkRenameUpdateEpisodes.Size = New System.Drawing.Size(263, 17)
+        Me.chkRenameUpdateEpisodes.Size = New System.Drawing.Size(252, 17)
         Me.chkRenameUpdateEpisodes.TabIndex = 5
-        Me.chkRenameUpdateEpisodes.Text = "Automatically Rename Files During DB Update"
+        Me.chkRenameUpdateEpisodes.Text = "Automatically Rename Files After DB Update"
         Me.chkRenameUpdateEpisodes.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkRenameUpdateEpisodes.UseVisualStyleBackColor = True
         '

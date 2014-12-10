@@ -763,12 +763,6 @@ Public Class Enums
         OnThemeSave_Movie = 20
         OnTrailerSave_Movie = 21
         RandomFrameExtrator = 22
-        RenameAuto_Movie = 23               ' Called after autoscraping
-        RenameAuto_TVEpisode = 24           ' Called after autoscraping
-        RenameEdit_Movie = 25               ' Called after edit movie
-        RenameEdit_TVEpisode = 26           ' Called after edit episode
-        RenameManual_Movie = 27             ' Called after manual/single scraping
-        RenameManual_TVEpisode = 28         ' Called after manual/single scraping
         ScraperRDYtoSave_Movie = 29         ' Called when scraper finishs but before save
         ScraperRDYtoSave_TVEpisode = 30     ' Called when scraper finishs but before save
         ShowMovie = 31                      ' Called after displaying Movie  (not in place yet)
