@@ -1549,7 +1549,6 @@ Public Class FileFolderRenamer
                 Else
                     SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0 AND New = 1 AND Source = '", tvSource, "';")
                 End If
-                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0 AND New = 1;")
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
                         'Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
