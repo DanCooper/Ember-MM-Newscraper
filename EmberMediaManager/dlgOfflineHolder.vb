@@ -1132,12 +1132,7 @@ Public Class dlgOfflineHolder
         Using dEditMovie As New dlgEditMovie
             Select Case dEditMovie.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperRDYtoSave_Movie, Nothing, Master.currMovie)
-                    'Me.SetListItemAfterEdit(ID, indX)
-                    'If Me.RefreshMovie(ID) Then
-                    '    Me.FillList(0)
-                    'End If
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Master.currMovie)
                 Case Windows.Forms.DialogResult.Retry
                     Master.currMovie.RemoveActorThumbs = False
                     Master.currMovie.RemoveBanner = False

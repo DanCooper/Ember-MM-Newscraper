@@ -1388,6 +1388,8 @@ Public Class Scanner
 
     Private Sub bwPrelim_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwPrelim.RunWorkerCompleted
         If Not e.Cancelled Then
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_Movie, Nothing, Nothing)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_TV, Nothing, Nothing)
             RaiseEvent ScanningCompleted()
         End If
     End Sub
