@@ -662,6 +662,9 @@ Public Class Enums
         MovieSet = 3
         TV = 4
         Music = 5
+        Episode = 6
+        Season = 7
+        Show = 8
     End Enum
     ''' <summary>
     ''' Enum representing possible scrape data types
@@ -737,36 +740,43 @@ Public Class Enums
     End Enum
 
     Public Enum ModuleEventType As Integer
-        Generic = 0
-        Notification = 1
-        MovieScraperRDYtoSave = 2       ' Called when scraper finishs but before save
-        RenameMovie = 3                 ' Called when need to rename a Movie ... from several places
-        RenameMovieManual = 4           ' Will call only First Register Module (use Master.currMovie)
-        MovieFrameExtrator = 5
-        TVFrameExtrator = 6
-        RandomFrameExtrator = 7
-        CommandLine = 8                 ' Command Line Module Call
-        MovieSync = 9
-        ShowMovie = 10                  ' Called after displaying Movie  (not in place yet)
-        ShowTVShow = 11                 ' Called after displaying TVShow (not in place yet)
-        BeforeEditMovie = 12            ' Called when Manual editing or reading from nfo
-        OnMovieNFOSave = 13
-        OnMoviePosterSave = 14
-        OnMovieFanartSave = 15
-        OnMoviePosterDelete = 16
-        OnMovieFanartDelete = 17
-        TVImageNaming = 18
-        MovieImageNaming = 19
-        SyncModuleSettings = 20
-        OnTVShowNFOSave = 21
-        OnTVShowNFORead = 22
-        OnMovieLandscapeSave = 23
-        OnMovieBannerSave = 24
-        OnMovieClearArtSave = 25
-        OnMovieClearLogoSave = 26
-        OnMovieDiscArtSave = 27
-        OnMovieThemeSave = 28
-        OnMovieTrailerSave = 29
+        AfterEdit_Movie = 0                 ' Called after edit movie, movie is already saved to DB
+        AfterEdit_TVEpisode = 1             ' Called after edit episode, episode is already saved to DB
+        AfterEdit_TVSeason = 2              ' Called after edit season, season is already saved to DB
+        AfterEdit_TVShow = 3                ' Called after edit show, show is already saved to DB
+        AfterUpdateDB_TV = 4                ' Called after update DB process
+        AfterUpdateDB_Movie = 5             ' Called after update DB process
+        BeforeEdit_Movie = 6                ' Called when Manual editing or reading from nfo
+        CommandLine = 7                     ' Command Line Module Call
+        FrameExtrator_Movie = 8
+        FrameExtrator_TVEpisode = 9
+        Generic = 10
+        MovieImageNaming = 11
+        Notification = 12
+        OnBannerSave_Movie = 13
+        OnClearArtSave_Movie = 14
+        OnClearLogoSave_Movie = 15
+        OnDiscArtSave_Movie = 16
+        OnFanartDelete_Movie = 17
+        OnFanartSave_Movie = 18
+        OnLandscapeSave_Movie = 19
+        OnNFORead_TVShow = 20
+        OnNFOSave_Movie = 21
+        OnNFOSave_TVShow = 22
+        OnPosterDelete_Movie = 23
+        OnPosterSave_Movie = 24
+        OnThemeSave_Movie = 25
+        OnTrailerSave_Movie = 26
+        RandomFrameExtrator = 27
+        ScraperMulti_Movie = 28             ' Called when scraper finishs but before save to DB
+        ScraperMulti_TVEpisode = 29         ' Called when scraper finishs but before save to DB
+        ScraperSingle_Movie = 30
+        ScraperSingle_TVEpisode = 31
+        ShowMovie = 32                      ' Called after displaying Movie  (not in place yet)
+        ShowTVShow = 33                     ' Called after displaying TVShow (not in place yet)
+        SyncModuleSettings = 34
+        Sync_Movie = 35
+        TVImageNaming = 36
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer
@@ -1892,6 +1902,7 @@ Public Class Structures
         Dim EpPosterPath As String
         Dim EpSubtitles As List(Of MediaInfo.Subtitle)
         Dim Filename As String
+        Dim FilenameID As Long
         Dim IsLockEp As Boolean
         Dim IsLockSeason As Boolean
         Dim IsLockShow As Boolean

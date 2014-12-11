@@ -52,7 +52,7 @@ Public Class NMTExporterModule
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.MovieSync})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.Sync_Movie})
         End Get
     End Property
 
@@ -87,11 +87,11 @@ Public Class NMTExporterModule
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Try
             Dim movie As New Structures.DBMovie
             Select Case mType
-                Case Enums.ModuleEventType.MovieSync
+                Case Enums.ModuleEventType.Sync_Movie
                     movie = DirectCast(_refparam, Structures.DBMovie)
                     dlgNMTMovies.dtMovieMedia = Nothing
                     ' TODO

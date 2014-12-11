@@ -557,6 +557,23 @@ Public Class frmMain
         End Try
     End Sub
 
+    Public Sub SetEpisodeListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
+        Try
+            Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
+
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT Mark, Title FROM TVEps WHERE ID = ", iID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    SQLreader.Read()
+                    DirectCast(dRow(0), DataRow).Item(8) = Convert.ToBoolean(SQLreader("mark"))
+                    If Not DBNull.Value.Equals(SQLreader("Title")) Then DirectCast(dRow(0), DataRow).Item(3) = SQLreader("Title").ToString
+                End Using
+            End Using
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub AboutToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpAbout.Click
         Using dAbout As New dlgAbout
             dAbout.ShowDialog()
@@ -1931,7 +1948,7 @@ Public Class frmMain
                 logger.Trace(String.Concat("Start scraping: ", OldListTitle))
 
                 DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
                 If Master.GlobalScrapeMod.NFO Then
                     If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie) Then
@@ -2549,10 +2566,10 @@ Public Class frmMain
                 If bwMovieScraper.CancellationPending Then Exit For
 
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Nothing, False, DBScrapeMovie)
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_Movie, Nothing, Nothing, False, DBScrapeMovie)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
-                    Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, True)
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
+                    Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, DBScrapeMovie)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                     bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
                 End If
@@ -4227,6 +4244,8 @@ doCancel:
             AddHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
 
             If Reload Then Me.FillList(True, False, False)
+
+            ModulesManager.Instance.RuntimeObjects.FilterMovies = String.Empty
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -4359,6 +4378,8 @@ doCancel:
             'AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
 
             If Reload Then Me.FillList(False, False, True)
+
+            ModulesManager.Instance.RuntimeObjects.FilterShows = String.Empty
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -4390,6 +4411,9 @@ doCancel:
     End Sub
 
     Private Sub cmnuEpisodeChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeChange.Click
+        Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+
         Me.SetControlsEnabled(False, True)
         Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB, Me.tmpLang)
 
@@ -4399,7 +4423,13 @@ doCancel:
 
             Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
 
-            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
+            Me.SetEpisodeListItemAfterEdit(ID, indX)
+            If Me.RefreshEpisode(ID) Then
+                Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
+            End If
+
+            'Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
         End If
 
         Me.SetControlsEnabled(True)
@@ -4509,6 +4539,7 @@ doCancel:
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                 Select Case dEditEpisode.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
                         If Me.RefreshEpisode(ID) Then
                             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                         End If
@@ -4537,7 +4568,7 @@ doCancel:
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
                         Me.SetMovieListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(True, True, False)
@@ -4545,7 +4576,7 @@ doCancel:
                             Me.FillList(False, True, False)
                             Me.SetControlsEnabled(True)
                         End If
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
                         Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
@@ -6414,14 +6445,14 @@ doCancel:
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
                         Me.SetMovieListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(True, True, False)
                         Else
                             Me.FillList(False, True, False)
                         End If
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
                         Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
@@ -6745,14 +6776,14 @@ doCancel:
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
                             Me.SetMovieListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(True, True, False)
                             Else
                                 Me.FillList(False, True, False)
                             End If
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
                             Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
@@ -7358,6 +7389,7 @@ doCancel:
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                 Select Case dEditEpisode.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
                         If Me.RefreshEpisode(ID) Then
                             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                         End If
@@ -7497,6 +7529,7 @@ doCancel:
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                     Select Case dEditEpisode.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
                             If Me.RefreshEpisode(ID) Then
                                 Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                             End If
@@ -10678,8 +10711,12 @@ doCancel:
             'ExternalModulesManager = New ModulesManager
             ModulesManager.Instance.RuntimeObjects.MenuMovieList = Me.cmnuMovie
             ModulesManager.Instance.RuntimeObjects.MenuMovieSetList = Me.cmnuMovieSet
+            ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList = Me.cmnuEpisode
+            ModulesManager.Instance.RuntimeObjects.MenuTVSeasonList = Me.cmnuSeason
             ModulesManager.Instance.RuntimeObjects.MenuTVShowList = Me.cmnuShow
-            ModulesManager.Instance.RuntimeObjects.MediaList = Me.dgvMovies
+            ModulesManager.Instance.RuntimeObjects.MediaListEpisodes = Me.dgvTVEpisodes
+            ModulesManager.Instance.RuntimeObjects.MediaListMovies = Me.dgvMovies
+            ModulesManager.Instance.RuntimeObjects.MediaListShows = Me.dgvTVShows
             ModulesManager.Instance.RuntimeObjects.TopMenu = Me.mnuMain
             ModulesManager.Instance.RuntimeObjects.MainTool = Me.tsMain
             ModulesManager.Instance.RuntimeObjects.TrayMenu = Me.cmnuTray
@@ -10895,7 +10932,7 @@ doCancel:
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
                 Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = ModuleName)
                 If Not IsNothing(gModule) Then
-                    gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing, Nothing)
+                    gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing, Nothing, Nothing)
                 End If
             End If
             If clExport = True Then
@@ -11262,7 +11299,7 @@ doCancel:
                     Case Else
                         Me.Activate()
                 End Select
-            Case Enums.ModuleEventType.RenameMovie
+            Case Enums.ModuleEventType.AfterEdit_Movie
                 Try
                     Me.SetMovieListItemAfterEdit(Convert.ToInt16(_params(0)), Convert.ToInt16(_params(1)))
                     If Me.RefreshMovie(Convert.ToInt16(_params(0))) Then
@@ -11272,13 +11309,12 @@ doCancel:
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
-            Case Enums.ModuleEventType.RenameMovieManual
+            Case Enums.ModuleEventType.AfterEdit_TVEpisode
                 Try
-                    Me.SetMovieListItemAfterEdit(Convert.ToInt16(_params(0)), Convert.ToInt16(_params(1)))
-                    If Me.RefreshMovie(Convert.ToInt16(_params(0))) Then
-                        Me.FillList(True, True, False)
+                    If Me.RefreshEpisode(Convert.ToInt16(_params(0))) Then
+                        Me.FillList(False, False, True)
                     End If
-                    Me.SetStatus(Master.currMovie.Filename)
+                    Me.SetStatus(Master.currShow.TVEp.Title)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
@@ -12853,14 +12889,14 @@ doCancel:
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperSingle_Movie, Nothing, Nothing, False, Master.currMovie)
                             Me.SetMovieListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(True, True, False)
                             Else
                                 Me.FillList(False, True, False)
                             End If
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
                             Master.currMovie.RemoveActorThumbs = False
                             Master.currMovie.RemoveBanner = False
@@ -15844,12 +15880,16 @@ doCancel:
                     End If
 
                     bsShows.Filter = FilterString
+                    ModulesManager.Instance.RuntimeObjects.FilterShows = FilterString
                 Else
                     bsShows.RemoveFilter()
+                    ModulesManager.Instance.RuntimeObjects.FilterShows = String.Empty
                 End If
 
                 If doFill Then
                     Me.FillList(False, False, True)
+                    ModulesManager.Instance.RuntimeObjects.FilterShowsSearch = Me.txtSearchShows.Text
+                    ModulesManager.Instance.RuntimeObjects.FilterShowsType = Me.cbSearchShows.Text
                 Else
                     Me.txtSearchShows.Focus()
                 End If
@@ -18929,6 +18969,7 @@ doCancel:
                         Using dEditEp As New dlgEditEpisode
                             AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEp.GenericRunCallBack
                             If dEditEp.ShowDialog = Windows.Forms.DialogResult.OK Then
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperSingle_TVEpisode, Nothing, Nothing, False, , Master.currShow)
                                 Me.RefreshEpisode(Master.currShow.EpID)
                             End If
                             RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEp.GenericRunCallBack

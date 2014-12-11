@@ -137,7 +137,7 @@ Public Class FileManagerExternalModule
         _MySettings.TeraCopyPath = clsAdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -272,7 +272,7 @@ Public Class FileManagerExternalModule
             Dim mTeraCopy As New TeraCopy.Filelist(_MySettings.TeraCopyPath, dstPath, doMove)
 
             If Not String.IsNullOrEmpty(dstPath) Then
-                For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaList.SelectedRows
+                For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
                     MovieId = Convert.ToInt64(sRow.Cells(0).Value)
                     If Not MoviesToWork.Contains(MovieId) Then
                         MoviesToWork.Add(MovieId)

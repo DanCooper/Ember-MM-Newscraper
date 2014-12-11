@@ -177,10 +177,10 @@ Public Class frmMovieExtractor
             exImage.Dispose()
             exImage = Nothing
 
-            RaiseEvent GenericEvent(Enums.ModuleEventType.MovieFrameExtrator, New List(Of Object)(New Object() {"EFanartToSave", sPath}))
+            RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"EFanartToSave", sPath}))
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         btnFrameSaveAsEFanart.Enabled = False
@@ -202,10 +202,10 @@ Public Class frmMovieExtractor
             exImage.Dispose()
             exImage = Nothing
 
-            RaiseEvent GenericEvent(Enums.ModuleEventType.MovieFrameExtrator, New List(Of Object)(New Object() {"EThumbToSave", sPath}))
+            RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"EThumbToSave", sPath}))
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         btnFrameSaveAsEThumb.Enabled = False
@@ -214,10 +214,10 @@ Public Class frmMovieExtractor
     Private Sub btnFrameSaveAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsFanart.Click
         Try
             If Not IsNothing(pbFrame.Image) Then
-                RaiseEvent GenericEvent(Enums.ModuleEventType.MovieFrameExtrator, New List(Of Object)(New Object() {"FanartToSave"}))
+                RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"FanartToSave"}))
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         btnFrameSaveAsFanart.Enabled = False

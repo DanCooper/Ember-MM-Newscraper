@@ -75,7 +75,7 @@ Public Class FrameExtrator
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MovieFrameExtrator, Enums.ModuleEventType.TVFrameExtrator, Enums.ModuleEventType.RandomFrameExtrator})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.FrameExtrator_Movie, Enums.ModuleEventType.FrameExtrator_TVEpisode, Enums.ModuleEventType.RandomFrameExtrator})
         End Get
     End Property
 
@@ -110,13 +110,13 @@ Public Class FrameExtrator
         Return SPanel
     End Function
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
         Select Case mType
-            Case Enums.ModuleEventType.MovieFrameExtrator
+            Case Enums.ModuleEventType.FrameExtrator_Movie
                 frmMovie = New frmMovieExtractor
                 _params(0) = frmMovie.pnlExtrator
                 AddHandler frmMovie.GenericEvent, AddressOf Handle_GenericEvent
-            Case Enums.ModuleEventType.TVFrameExtrator
+            Case Enums.ModuleEventType.FrameExtrator_TVEpisode
                 frmTV = New frmTVExtrator
                 AddHandler frmTV.GenericEvent, AddressOf Handle_GenericEvent
                 _params(0) = frmTV.pnlExtrator

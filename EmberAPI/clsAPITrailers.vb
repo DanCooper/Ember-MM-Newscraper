@@ -830,7 +830,7 @@ Public Class Trailers
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieTrailerSave, params, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnTrailerSave_Movie, params, False)
             Catch ex As Exception
             End Try
 

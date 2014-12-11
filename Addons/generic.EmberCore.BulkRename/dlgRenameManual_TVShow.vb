@@ -21,7 +21,7 @@
 Imports System.IO
 Imports EmberAPI
 
-Public Class dlgRenameManual
+Public Class dlgRenameManual_TVShow
 
 #Region "Fields"
 
@@ -32,7 +32,7 @@ Public Class dlgRenameManual
 #Region "Methods"
 
     Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
-        FileFolderRenamer.RenameSingle(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True, True)
+        FileFolderRenamer.RenameSingle_Show(Master.currShow, txtFolder.Text, False, False, True, True)
     End Sub
 
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
@@ -48,34 +48,13 @@ Public Class dlgRenameManual
 
     Private Sub dlgRenameManual_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
-        If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-            txtFile.Text = "$F"
-            txtFile.Visible = False
-            txtFolder.Text = Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).Name
-        ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-            txtFile.Text = "$F"
-            txtFile.Visible = False
-            txtFolder.Text = Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).Name
+        Dim tFolder As String = String.Empty
+        If Not String.IsNullOrEmpty(Master.currShow.ShowPath) Then
+            tFolder = Path.GetFileName(Master.currShow.ShowPath)
         Else
-            Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currMovie.Filename))
-            Dim stackMark As String = Path.GetFileNameWithoutExtension(Master.currMovie.Filename).Replace(FileName, String.Empty).ToLower
-            If Not FileName.ToLower = "video_ts" Then
-                If Not stackMark = String.Empty AndAlso Master.currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
-                    FileName = Path.GetFileNameWithoutExtension(Master.currMovie.Filename)
-                End If
-                If Master.currMovie.IsSingle Then
-                    txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
-                Else
-                    txtFolder.Text = "$D"
-                    txtFolder.Visible = False
-                End If
-                txtFile.Text = FileName
-            Else
-                txtFile.Text = "$F"
-                txtFile.Visible = False
-                txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
-            End If
+            tFolder = Master.currShow.TVShow.Title
         End If
+        txtFolder.Text = tFolder.Trim
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -83,7 +62,6 @@ Public Class dlgRenameManual
         OK_Button.Enabled = False
         Cancel_Button.Enabled = False
         txtFolder.Enabled = False
-        txtFile.Enabled = False
         pnlStatus.Visible = True
         Application.DoEvents()
         Me.bwRename = New System.ComponentModel.BackgroundWorker
@@ -91,26 +69,17 @@ Public Class dlgRenameManual
     End Sub
 
     Sub SetUp()
-        Me.Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", Master.currMovie.Movie.Title)
-        Me.Label1.Text = Master.eLang.GetString(13, "Folder Name")
-        Me.Label2.Text = Master.eLang.GetString(15, "File Name")
+        Me.Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", Master.currShow.TVShow.Title)
+        Me.lblFolder.Text = Master.eLang.GetString(13, "Folder Name")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.Label3.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
-        Me.txtTitle.Text = Master.currMovie.Movie.Title
-    End Sub
-
-    Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFile.TextChanged
-        If Not String.IsNullOrEmpty(txtFolder.Text) AndAlso Not String.IsNullOrEmpty(txtFile.Text) Then
-            OK_Button.Enabled = True
-        Else
-            OK_Button.Enabled = False
-        End If
+        Me.lblStatus.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
+        Me.txtTitle.Text = Master.currShow.TVShow.Title
     End Sub
 
     Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
-        If Not String.IsNullOrEmpty(txtFolder.Text) AndAlso Not String.IsNullOrEmpty(txtFile.Text) Then
+        If Not String.IsNullOrEmpty(txtFolder.Text) Then
             OK_Button.Enabled = True
         Else
             OK_Button.Enabled = False

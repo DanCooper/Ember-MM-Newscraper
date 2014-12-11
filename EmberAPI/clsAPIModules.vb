@@ -973,7 +973,7 @@ Public Class ModulesManager
     ''' <param name="RunOnlyOne">If <c>True</c>, allow only one module to perform the required task.</param>
     ''' <returns></returns>
     ''' <remarks>Note that if any module returns a result of breakChain, no further modules are processed</remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBMovie As Structures.DBMovie = Nothing) As Boolean
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBMovie As Structures.DBMovie = Nothing, Optional ByRef DBTV As Structures.DBTV = Nothing) As Boolean
         Dim ret As Interfaces.ModuleResult
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -988,7 +988,7 @@ Public Class ModulesManager
                 For Each _externalGenericModule As _externalGenericModuleClass In modules
                     Try
                         logger.Trace("Run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
-                        ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam, DBMovie)
+                        ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam, DBMovie, DBTV)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
                     End Try
@@ -1636,9 +1636,13 @@ Public Class ModulesManager
 
         Private _LoadMedia As LoadMedia
         Private _MainTool As System.Windows.Forms.ToolStrip
-        Private _MediaList As System.Windows.Forms.DataGridView
+        Private _MediaListMovies As System.Windows.Forms.DataGridView
+        Private _MediaListEpisodes As System.Windows.Forms.DataGridView
+        Private _MediaListShows As System.Windows.Forms.DataGridView
         Private _MenuMovieList As System.Windows.Forms.ContextMenuStrip
         Private _MenuMovieSetList As System.Windows.Forms.ContextMenuStrip
+        Private _MenuTVEpisodeList As System.Windows.Forms.ContextMenuStrip
+        Private _MenuTVSeasonList As System.Windows.Forms.ContextMenuStrip
         Private _MenuTVShowList As System.Windows.Forms.ContextMenuStrip
         Private _OpenImageViewer As OpenImageViewer
         Private _TopMenu As System.Windows.Forms.MenuStrip
@@ -1647,6 +1651,10 @@ Public Class ModulesManager
         Private _FilterMovies As String
         Private _FilterMoviesSearch As String
         Private _FilterMoviesType As String
+        Private _FilterShows As String
+        Private _FilterShowsSearch As String
+        Private _FilterShowsType As String
+
 
 #End Region 'Fields
 
@@ -1687,6 +1695,32 @@ Public Class ModulesManager
                 _FilterMoviesType = value
             End Set
         End Property
+        Public Property FilterShows() As String
+            Get
+                Return _FilterShows
+            End Get
+            Set(ByVal value As String)
+                _FilterShows = value
+            End Set
+        End Property
+
+        Public Property FilterShowsSearch() As String
+            Get
+                Return _FilterShowsSearch
+            End Get
+            Set(ByVal value As String)
+                _FilterShowsSearch = value
+            End Set
+        End Property
+
+        Public Property FilterShowsType() As String
+            Get
+                Return _FilterShowsType
+            End Get
+            Set(ByVal value As String)
+                _FilterShowsType = value
+            End Set
+        End Property
 
         Public Property MediaTabSelected() As Integer
             Get
@@ -1706,12 +1740,30 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property MediaList() As System.Windows.Forms.DataGridView
+        Public Property MediaListEpisodes() As System.Windows.Forms.DataGridView
             Get
-                Return _MediaList
+                Return _MediaListEpisodes
             End Get
             Set(ByVal value As System.Windows.Forms.DataGridView)
-                _MediaList = value
+                _MediaListEpisodes = value
+            End Set
+        End Property
+
+        Public Property MediaListMovies() As System.Windows.Forms.DataGridView
+            Get
+                Return _MediaListMovies
+            End Get
+            Set(ByVal value As System.Windows.Forms.DataGridView)
+                _MediaListMovies = value
+            End Set
+        End Property
+
+        Public Property MediaListShows() As System.Windows.Forms.DataGridView
+            Get
+                Return _MediaListShows
+            End Get
+            Set(ByVal value As System.Windows.Forms.DataGridView)
+                _MediaListShows = value
             End Set
         End Property
 
@@ -1730,6 +1782,24 @@ Public Class ModulesManager
             End Get
             Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
                 _MenuMovieSetList = value
+            End Set
+        End Property
+
+        Public Property MenuTVEpisodeList() As System.Windows.Forms.ContextMenuStrip
+            Get
+                Return _MenuTVEpisodeList
+            End Get
+            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
+                _MenuTVEpisodeList = value
+            End Set
+        End Property
+
+        Public Property MenuTVSeasonList() As System.Windows.Forms.ContextMenuStrip
+            Get
+                Return _MenuTVSeasonList
+            End Get
+            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
+                _MenuTVSeasonList = value
             End Set
         End Property
 

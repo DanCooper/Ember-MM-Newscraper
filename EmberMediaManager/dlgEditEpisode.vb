@@ -451,7 +451,7 @@ Public Class dlgEditEpisode
         dFileInfoEdit.Show(True)
 
         Dim params As New List(Of Object)(New Object() {New Panel})
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVFrameExtrator, params, Nothing, True)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_TVEpisode, params, Nothing, True)
         pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
         If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
             tcEditEpisode.TabPages.Remove(tpFrameExtraction)
@@ -478,7 +478,7 @@ Public Class dlgEditEpisode
                 eActor = Nothing
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -567,7 +567,7 @@ Public Class dlgEditEpisode
             ' Perform the sort with these new sort options.
             Me.lvActors.Sort()
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -584,7 +584,7 @@ Public Class dlgEditEpisode
             Me.CleanUp()
 
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -983,7 +983,7 @@ Public Class dlgEditEpisode
                 End If
             End With
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1037,7 +1037,7 @@ Public Class dlgEditEpisode
     End Sub
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If mType = Enums.ModuleEventType.TVFrameExtrator Then
+        If mType = Enums.ModuleEventType.FrameExtrator_TVEpisode Then
             EpisodePoster.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
             If Not IsNothing(EpisodePoster.Image) Then
                 Me.pbEpisodePoster.Image = EpisodePoster.Image

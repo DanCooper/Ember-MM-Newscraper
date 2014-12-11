@@ -875,10 +875,13 @@ Public Class Scraper
                 End If
 
                 Try
-                    For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
+                    'For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
+                    For i As Integer = 0 To tmpTVDBShow.Episodes.Count - 1
                         Try
                             If Me.bwTVDB.CancellationPending Then Return
+
+                            Dim Episode As Structures.DBTV = tmpTVDBShow.Episodes.Item(i)
 
                             Episode.ShowID = Master.currShow.ShowID
 
@@ -930,7 +933,23 @@ Public Class Scraper
 
                                 If Master.eSettings.TVScraperMetaDataScan Then MediaInfo.UpdateTVMediaInfo(Episode)
 
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, , Episode)
+
                                 Master.DB.SaveTVEpToDB(Episode, False, True, True, True)
+
+                                'fix/workaround for multi-episode files after renaming
+                                For e As Integer = 0 To tmpTVDBShow.Episodes.Count - 1
+                                    If tmpTVDBShow.Episodes.Item(e).FilenameID = Episode.FilenameID AndAlso Not tmpTVDBShow.Episodes.Item(e).EpID = Episode.EpID Then
+                                        Dim newEpDetails As New Structures.DBTV
+                                        newEpDetails = tmpTVDBShow.Episodes.Item(e)
+                                        newEpDetails.EpFanartPath = Episode.EpFanartPath
+                                        newEpDetails.EpNfoPath = Episode.EpNfoPath
+                                        newEpDetails.EpPosterPath = Episode.EpPosterPath
+                                        newEpDetails.EpSubtitles = Episode.EpSubtitles
+                                        newEpDetails.Filename = Episode.Filename
+                                        tmpTVDBShow.Episodes.Item(e) = newEpDetails
+                                    End If
+                                Next
 
                                 If Me.bwTVDB.CancellationPending Then Return
                             End If
