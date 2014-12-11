@@ -133,8 +133,13 @@ Public Class BulkRenamerModule
                 End If
             Case Enums.ModuleEventType.AfterUpdateDB_TV
                 If MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
+                    Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
+                    Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
+                    Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
+                    Dim ToDB As Boolean = DirectCast(_params(3), Boolean)
+                    Dim Source As String = DirectCast(_params(4), String)
                     Dim FFRenamer As New FileFolderRenamer
-                    FFRenamer.RenameAfterUpdateDB_TV(MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False, True)
+                    FFRenamer.RenameAfterUpdateDB_TV(Source, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, BatchMode, ToNFO, ShowErrors, ToDB)
                 End If
             Case Enums.ModuleEventType.ScraperMulti_TVEpisode
                 If MySettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then

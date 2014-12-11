@@ -1535,7 +1535,7 @@ Public Class FileFolderRenamer
     End Function
 
 
-    Public Sub RenameAfterUpdateDB_TV(ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+    Public Sub RenameAfterUpdateDB_TV(ByVal tvSource As String, ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Try
             Dim EpisodeFile As New FileFolderRenamer.FileRename
             Dim _currShow As New Structures.DBTV
@@ -1544,13 +1544,22 @@ Public Class FileFolderRenamer
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
+                If String.IsNullOrEmpty(tvSource) Then
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0 AND New = 1;")
+                Else
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0 AND New = 1 AND Source = '", tvSource, "';")
+                End If
                 SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0 AND New = 1;")
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
                         'Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                     End If
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 AND New = 1 ORDER BY TVShowID ASC, Season ASC, Episode ASC;")
+                If String.IsNullOrEmpty(tvSource) Then
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 AND New = 1 ORDER BY TVShowID ASC, Season ASC, Episode ASC;")
+                Else
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 AND New = 1 AND Source = '", tvSource, "' ORDER BY TVShowID ASC, Season ASC, Episode ASC;")
+                End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
