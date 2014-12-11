@@ -339,7 +339,7 @@ Public Class dlgBulkRenamer_TV
         Dim Sta As MyStart = New MyStart(AddressOf Start)
         Dim Fin As MyFinish = New MyFinish(AddressOf Finish)
         Me.Invoke(Sta)
-        FFRenamer.ProccessFiles_Episodes(txtFolderPatternSeasons.Text, txtFolderPatternShows.Text, txtFilePatternEpisodes.Text)
+        FFRenamer.ProccessFiles_Episodes(txtFolderPatternSeasons.Text, txtFilePatternEpisodes.Text)
         Me.Invoke(Fin)
     End Sub
 

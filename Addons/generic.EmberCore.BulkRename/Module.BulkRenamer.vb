@@ -133,8 +133,8 @@ Public Class BulkRenamerModule
                 End If
             Case Enums.ModuleEventType.AfterUpdateDB_TV
                 If MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
-                    FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False, False)
+                    Dim FFRenamer As New FileFolderRenamer
+                    FFRenamer.RenameAfterUpdateDB_TV(MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False, True)
                 End If
             Case Enums.ModuleEventType.ScraperMulti_TVEpisode
                 If MySettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then

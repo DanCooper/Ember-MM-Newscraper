@@ -1201,7 +1201,7 @@ Public Class FileFolderRenamer
         End If
     End Function
 
-    Public Sub ProccessFiles_Episodes(ByVal folderPatternSeasons As String, ByVal folderPatternShows As String, ByVal filePatternEpisodes As String)
+    Public Sub ProccessFiles_Episodes(ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String)
         Try
             For Each f As FileRename In _episodes
                 Process_Episode(f, folderPatternSeasons, filePatternEpisodes)
@@ -1533,6 +1533,58 @@ Public Class FileFolderRenamer
             Return String.Empty
         End Try
     End Function
+
+
+    Public Sub RenameAfterUpdateDB_TV(ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+        Try
+            Dim EpisodeFile As New FileFolderRenamer.FileRename
+            Dim _currShow As New Structures.DBTV
+
+            ' Load new episodes using path from DB
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                Dim _tmpPath As String = String.Empty
+                Dim iProg As Integer = 0
+                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0 AND New = 1;")
+                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    If SQLcount.HasRows AndAlso SQLcount.Read() Then
+                        'Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
+                    End If
+                End Using
+                SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 AND New = 1 ORDER BY TVShowID ASC, Season ASC, Episode ASC;")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    If SQLreader.HasRows Then
+                        While SQLreader.Read()
+                            Try
+                                If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("id")) Then
+                                    _tmpPath = SQLreader("NfoPath").ToString
+                                    If Not String.IsNullOrEmpty(_tmpPath) Then
+
+                                        EpisodeFile = New FileFolderRenamer.FileRename
+                                        _currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(SQLreader("id")), True)
+
+                                        If Not _currShow.EpID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
+                                            'Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))
+                                            EpisodeFile = FileFolderRenamer.GetInfo_Episode(_currShow)
+                                            AddEpisode(EpisodeFile)
+                                        End If
+                                    End If
+                                End If
+                            Catch ex As Exception
+                                logger.Error(New StackFrame().GetMethod().Name, ex)
+                            End Try
+                            iProg += 1
+                        End While
+                    End If
+                End Using
+            End Using
+
+            ProccessFiles_Episodes(folderPatternSeasons, filePatternEpisodes)
+            DoRename_Episodes()
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
 
     Public Shared Sub RenameSingle_Episode(ByRef _tmpEpisode As Structures.DBTV, ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim EpisodeFile As New FileRename
