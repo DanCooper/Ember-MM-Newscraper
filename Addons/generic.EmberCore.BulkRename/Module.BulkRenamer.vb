@@ -105,6 +105,14 @@ Public Class BulkRenamerModule
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Select Case mType
+            Case Enums.ModuleEventType.AfterEdit_Movie
+                If MySettings.RenameEdit_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
+                    Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
+                    Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
+                    Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
+                    Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
+                    FileFolderRenamer.RenameSingle_Movie(tDBMovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, BatchMode, ToNFO, ShowErrors, True)
+                End If
             Case Enums.ModuleEventType.ScraperMulti_Movie
                 If MySettings.RenameMulti_Movies AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies)) Then
                     'Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
@@ -115,23 +123,6 @@ Public Class BulkRenamerModule
                     'Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
                     FileFolderRenamer.RenameSingle_Movie(_dbmovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, False, False, True)
                 End If
-                'Case Enums.ModuleEventType.RenameAuto_Movie
-                '    If MySettings.RenameSingle_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
-                '        Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
-                '        Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
-                '        Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
-                '        Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
-                '        FileFolderRenamer.RenameSingle_Movie(tDBMovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, BatchMode, ToNFO, ShowErrors, True)
-                '    End If
-                'Case Enums.ModuleEventType.RenameManual_Movie
-                '    Using dRenameManual As New dlgRenameManual_Movie
-                '        Select Case dRenameManual.ShowDialog()
-                '            Case Windows.Forms.DialogResult.OK
-                '                Return New Interfaces.ModuleResult With {.Cancelled = False, .breakChain = False}
-                '            Case Else
-                '                Return New Interfaces.ModuleResult With {.Cancelled = True, .breakChain = False}
-                '        End Select
-                '    End Using
             Case Enums.ModuleEventType.AfterEdit_TVEpisode
                 If MySettings.RenameEdit_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
                     Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
