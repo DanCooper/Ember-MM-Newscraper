@@ -485,7 +485,7 @@ Public Class dlgEditEpisode
     Private Sub FillInfo()
         With Me
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Aired) Then .txtAired.Text = Master.currShow.TVEp.Aired
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Credits) Then .txtCredits.Text = Master.currShow.TVEp.Credits
+            If Not String.IsNullOrEmpty(Master.currShow.TVEp.OldCredits) Then .txtCredits.Text = Master.currShow.TVEp.OldCredits
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Director) Then .txtDirector.Text = Master.currShow.TVEp.Director
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Episode.ToString) Then .txtEpisode.Text = Master.currShow.TVEp.Episode.ToString
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Plot) Then .txtPlot.Text = Master.currShow.TVEp.Plot
@@ -920,7 +920,7 @@ Public Class dlgEditEpisode
             With Me
 
                 Master.currShow.TVEp.Aired = .txtAired.Text.Trim
-                Master.currShow.TVEp.Credits = .txtCredits.Text.Trim
+                Master.currShow.TVEp.OldCredits = .txtCredits.Text.Trim
                 Master.currShow.TVEp.Director = .txtDirector.Text.Trim
                 Master.currShow.TVEp.Episode = Convert.ToInt32(.txtEpisode.Text.Trim)
                 Master.currShow.TVEp.Plot = .txtPlot.Text.Trim

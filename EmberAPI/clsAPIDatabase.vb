@@ -1184,7 +1184,7 @@ Public Class Database
                             If Not DBNull.Value.Equals(SQLreader("Rating")) Then .Rating = SQLreader("Rating").ToString
                             If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
                             If Not DBNull.Value.Equals(SQLreader("Director")) Then .Director = SQLreader("Director").ToString
-                            If Not DBNull.Value.Equals(SQLreader("Credits")) Then .Credits = SQLreader("Credits").ToString
+                            If Not DBNull.Value.Equals(SQLreader("Credits")) Then .OldCredits = SQLreader("Credits").ToString
                             If Not DBNull.Value.Equals(SQLreader("Playcount")) Then .Playcount = SQLreader("Playcount").ToString
                             If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdd"))).ToString("yyyy-MM-d HH:mm:ss")
                             If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime").ToString
@@ -2492,7 +2492,7 @@ Public Class Database
                     parPlot.Value = .Plot
                     parAired.Value = .Aired
                     parDirector.Value = .Director
-                    parCredits.Value = .Credits
+                    parCredits.Value = .OldCredits
                     parPlaycount.Value = .Playcount
                     parRuntime.Value = .Runtime
                     parVotes.Value = .Votes

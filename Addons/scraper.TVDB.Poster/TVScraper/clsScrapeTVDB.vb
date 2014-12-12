@@ -414,13 +414,12 @@ Public Class Scraper
                                             .displaySEset = True
                                         End If
 
-
                                         .Aired = If(IsNothing(Episode.Element("FirstAired")), String.Empty, Episode.Element("FirstAired").Value)
                                         .Rating = If(IsNothing(Episode.Element("Rating")), String.Empty, Episode.Element("Rating").Value)
                                         .Votes = If(IsNothing(Episode.Element("RatingCount")), String.Empty, Episode.Element("RatingCount").Value)
                                         .Plot = If(IsNothing(Episode.Element("Overview")), String.Empty, Episode.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
                                         .Director = If(IsNothing(Episode.Element("Director")), String.Empty, Strings.Join(Episode.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
-                                        .Credits = CreditsString(If(IsNothing(Episode.Element("GuestStars")), String.Empty, Episode.Element("GuestStars").Value), If(IsNothing(Episode.Element("Writer")), String.Empty, Episode.Element("Writer").Value))
+                                        .OldCredits = If(IsNothing(Episode.Element("Writer")), String.Empty, Strings.Join(Episode.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                         .Actors = Actors
                                         .PosterURL = If(IsNothing(Episode.Element("filename")), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Episode.Element("filename").Value))
                                         .LocalFile = If(IsNothing(Episode.Element("filename")), String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, Episode.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
@@ -831,26 +830,6 @@ Public Class Scraper
             End Try
         End Sub
 
-        Private Function CreditsString(ByVal sGStars As String, ByVal sWriters As String) As String
-            Dim cString As New List(Of String)
-            Dim gString As String = Master.eLang.GetString(947, "Guest Star")
-            Dim wString As String = Master.eLang.GetString(777, "Writer")
-
-            If Not String.IsNullOrEmpty(sGStars) Then
-                For Each gStar In sGStars.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))
-                    If Not String.IsNullOrEmpty(gStar) Then cString.Add(String.Concat(gStar, String.Format(" ({0})", gString)))
-                Next
-            End If
-
-            If Not String.IsNullOrEmpty(sWriters) Then
-                For Each Writer In sWriters.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))
-                    If Not String.IsNullOrEmpty(Writer) Then cString.Add(String.Concat(Writer, String.Format(" ({0})", wString)))
-                Next
-            End If
-
-            Return Strings.Join(cString.ToArray, " / ")
-        End Function
-
         Private Sub SaveAllTVInfo()
             Dim iEp As Integer = -1
             Dim iSea As Integer = -1
@@ -1240,9 +1219,8 @@ Public Class Scraper
                                         If sInfo.Options.bEpRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.TVLockEpisodeRating) Then .Rating = If(IsNothing(xE.Element("Rating")), .Rating, xE.Element("Rating").Value)
                                         If sInfo.Options.bEpVotes AndAlso (String.IsNullOrEmpty(.Votes) OrElse Not Master.eSettings.TVLockEpisodeVotes) Then .Votes = If(IsNothing(xE.Element("RatingCount")), .Votes, xE.Element("RatingCount").Value)
                                         If sInfo.Options.bEpPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) Then .Plot = If(IsNothing(xE.Element("Overview")), .Plot, xE.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
-                                        'If sInfo.Options.bEpDirector Then .Director = If(IsNothing(xS(0).Element("Director")), .Director, Strings.Join(xS(0).Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                         If sInfo.Options.bEpDirector Then .Director = If(IsNothing(xE.Element("Director")), .Director, Strings.Join(xE.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
-                                        If sInfo.Options.bEpCredits Then .Credits = CreditsString(If(IsNothing(xE.Element("GuestStars")), String.Empty, xE.Element("GuestStars").Value), If(IsNothing(xE.Element("Writer")), String.Empty, xE.Element("Writer").Value))
+                                        If sInfo.Options.bEpCredits Then .OldCredits = If(IsNothing(xE.Element("Writer")), .OldCredits, Strings.Join(xE.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                         If sInfo.Options.bEpActors Then .Actors = Actors
                                         .PosterURL = If(IsNothing(xE.Element("filename")) OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, xE.Element("filename").Value))
                                         .LocalFile = If(IsNothing(xE.Element("filename")) OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, xE.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
