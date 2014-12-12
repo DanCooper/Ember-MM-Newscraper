@@ -46,6 +46,7 @@ Namespace MediaContainers
         Private _localfile As String
         Private _playcount As String
         Private _fanart As Images
+        Private _videosource As String
         Private _votes As String
         <XmlIgnore()> _
         Public displaySEset As Boolean = False
@@ -128,6 +129,23 @@ Namespace MediaContainers
         Public ReadOnly Property RatingSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._rating)
+            End Get
+        End Property
+
+        <XmlElement("videosource")> _
+        Public Property VideoSource() As String
+            Get
+                Return Me._videosource
+            End Get
+            Set(ByVal value As String)
+                Me._videosource = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property VideoSourceSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._videosource)
             End Get
         End Property
 
@@ -381,8 +399,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-
-
 #End Region 'Properties
 
 #Region "Methods"
@@ -404,6 +420,7 @@ Namespace MediaContainers
             Me._localfile = String.Empty
             Me._poster = New Images
             Me._fanart = New Images
+            Me._videosource = String.Empty
             Me._votes = String.Empty
             Me._displayseason = -999
             Me._displayepisode = -999

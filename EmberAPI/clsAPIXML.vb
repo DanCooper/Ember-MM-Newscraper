@@ -390,7 +390,7 @@ Public Class APIXML
         Return imgLanguage
     End Function
 
-    Public Shared Function GetVideoSource(ByVal sPath As String) As String
+    Public Shared Function GetVideoSource(ByVal sPath As String, ByVal isTV As Boolean) As String
         Dim sourceCheck As String = String.Empty
 
         Try
@@ -401,7 +401,11 @@ Public Class APIXML
             ElseIf Path.GetFileName(sPath).ToLower = "video_ts.ifo" Then
                 Return "dvd"
             Else
-                sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
+                If isTV Then
+                    sourceCheck = Path.GetFileName(sPath).ToLower
+                Else
+                    sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
+                End If
                 Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
                 mySources = clsAdvancedSettings.GetComplexSetting("MovieSources")
                 If Not mySources Is Nothing Then

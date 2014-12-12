@@ -316,7 +316,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 9
+        Dim MyVideosDBVersion As Integer = 10
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -1150,7 +1150,7 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, ", _
                                                        "Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, ", _
-                                                       "HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes FROM TVEps WHERE id = ", EpID, ";")
+                                                       "HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes, VideoSource FROM TVEps WHERE id = ", EpID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
@@ -1160,6 +1160,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Source")) Then _TVDB.Source = SQLreader("Source").ToString
                         If Not DBNull.Value.Equals(SQLreader("TVShowID")) Then _TVDB.ShowID = Convert.ToInt64(SQLreader("TVShowID"))
                         If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then _TVDB.DateAdd = Convert.ToInt64(SQLreader("DateAdd"))
+                        If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _TVDB.VideoSource = SQLreader("VideoSource").ToString
                         PathID = Convert.ToInt64(SQLreader("TVEpPathid"))
                         _TVDB.FilenameID = PathID
                         _TVDB.IsMarkEp = Convert.ToBoolean(SQLreader("Mark"))
@@ -1188,6 +1189,7 @@ Public Class Database
                             If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdd"))).ToString("yyyy-MM-d HH:mm:ss")
                             If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime").ToString
                             If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes").ToString
+                            If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
                         End With
                     End If
                 End Using
@@ -2385,15 +2387,15 @@ Public Class Database
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVEps (", _
                      "TVShowID, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
                      "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount,", _
-                     "HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVEps;")
+                     "HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes, VideoSource", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVEps;")
 
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVEps (", _
                      "ID, TVShowID, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
                      "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount,", _
-                     "HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVEps;")
+                     "HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes, VideoSource", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVEps;")
 
                     Dim parTVEpID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpID", DbType.UInt64, 0, "ID")
                     parTVEpID.Value = _TVEpDB.EpID
@@ -2428,6 +2430,7 @@ Public Class Database
                 Dim parDateAdd As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdd", DbType.Int32, 0, "DateAdd")
                 Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
                 Dim parVotes As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVotes", DbType.String, 0, "Votes")
+                Dim parVideoSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideoSource", DbType.String, 0, "VideoSource")
 
                 Try
                     If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_TVEpDB.TVEp.DateAdded) Then
@@ -2479,6 +2482,7 @@ Public Class Database
                 parSource.Value = _TVEpDB.Source
                 parNeedsSave.Value = _TVEpDB.EpNeedsSave
                 parTVEpMissing.Value = PathID < 0
+                parVideoSource.Value = _TVEpDB.VideoSource
 
                 With _TVEpDB.TVEp
                     parTitle.Value = .Title

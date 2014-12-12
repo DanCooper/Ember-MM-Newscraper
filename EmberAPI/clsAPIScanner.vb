@@ -895,7 +895,7 @@ Public Class Scanner
                 tmpMovieDB.TrailerPath = mContainer.Trailer
                 tmpMovieDB.UseFolder = mContainer.UseFolder
                 tmpMovieDB.IsSingle = mContainer.isSingle
-                Dim vSource As String = APIXML.GetVideoSource(mContainer.Filename)
+                Dim vSource As String = APIXML.GetVideoSource(mContainer.Filename, False)
                 If Not String.IsNullOrEmpty(vSource) Then
                     tmpMovieDB.VideoSource = vSource
                     tmpMovieDB.Movie.VideoSource = tmpMovieDB.VideoSource
@@ -1554,6 +1554,17 @@ Public Class Scanner
                                     End If
 
                                     Me.GetTVSeasonImages(tmpTVDB, tmpTVDB.TVEp.Season)
+
+                                    Dim vSource As String = APIXML.GetVideoSource(Episode.Filename, True)
+                                    If Not String.IsNullOrEmpty(vSource) Then
+                                        tmpTVDB.VideoSource = vSource
+                                        tmpTVDB.TVEp.VideoSource = tmpTVDB.VideoSource
+                                    ElseIf String.IsNullOrEmpty(tmpTVDB.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                                        tmpTVDB.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpTVDB.Filename)), String.Empty, "*EmberAPP")
+                                        tmpTVDB.TVEp.VideoSource = tmpTVDB.VideoSource
+                                    ElseIf Not String.IsNullOrEmpty(tmpTVDB.TVEp.VideoSource) Then
+                                        tmpTVDB.VideoSource = tmpTVDB.TVEp.VideoSource
+                                    End If
 
                                     'Do the Save
                                     Master.DB.SaveTVEpToDB(tmpTVDB, True, True, True, toNfo)

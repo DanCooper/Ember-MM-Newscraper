@@ -93,6 +93,8 @@ Partial Class dlgEditEpisode
         Me.chkWatched = New System.Windows.Forms.CheckBox()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.txtVideoSource = New System.Windows.Forms.TextBox()
+        Me.lblVideoSource = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditEpisode.SuspendLayout()
@@ -182,6 +184,8 @@ Partial Class dlgEditEpisode
         '
         'tpEpsiodeDetails
         '
+        Me.tpEpsiodeDetails.Controls.Add(Me.txtVideoSource)
+        Me.tpEpsiodeDetails.Controls.Add(Me.lblVideoSource)
         Me.tpEpsiodeDetails.Controls.Add(Me.txtVotes)
         Me.tpEpsiodeDetails.Controls.Add(Me.lblVotes)
         Me.tpEpsiodeDetails.Controls.Add(Me.lblRuntime)
@@ -838,6 +842,25 @@ Partial Class dlgEditEpisode
         Me.tsFilename.Size = New System.Drawing.Size(55, 17)
         Me.tsFilename.Text = "Filename"
         '
+        'txtVideoSource
+        '
+        Me.txtVideoSource.BackColor = System.Drawing.SystemColors.Window
+        Me.txtVideoSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoSource.Location = New System.Drawing.Point(645, 395)
+        Me.txtVideoSource.Name = "txtVideoSource"
+        Me.txtVideoSource.Size = New System.Drawing.Size(183, 22)
+        Me.txtVideoSource.TabIndex = 88
+        '
+        'lblVideoSource
+        '
+        Me.lblVideoSource.AutoSize = True
+        Me.lblVideoSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoSource.Location = New System.Drawing.Point(643, 380)
+        Me.lblVideoSource.Name = "lblVideoSource"
+        Me.lblVideoSource.Size = New System.Drawing.Size(78, 13)
+        Me.lblVideoSource.TabIndex = 87
+        Me.lblVideoSource.Text = "Video Source:"
+        '
         'dlgEditEpisode
         '
         Me.AcceptButton = Me.OK_Button
@@ -958,5 +981,7 @@ Partial Class dlgEditEpisode
     Friend WithEvents lblVotes As System.Windows.Forms.Label
     Friend WithEvents StatusStrip As System.Windows.Forms.StatusStrip
     Friend WithEvents tsFilename As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents txtVideoSource As System.Windows.Forms.TextBox
+    Friend WithEvents lblVideoSource As System.Windows.Forms.Label
 
 End Class

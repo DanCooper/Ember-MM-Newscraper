@@ -831,9 +831,9 @@ Public Class FileFolderRenamer
             End If
 
             'VideoSource
-            'If Not IsNothing(_tmpTVEpisode.TVEp.VideoSource) Then
-            '    EpisodeFile.VideoSource = _tmpTVEpisode.TVEp.VideoSource
-            'End If
+            If Not IsNothing(_tmpTVEpisode.TVEp.VideoSource) Then
+                EpisodeFile.VideoSource = _tmpTVEpisode.TVEp.VideoSource
+            End If
 
             If Not IsNothing(_tmpTVEpisode.TVEp.FileInfo) Then
                 Try

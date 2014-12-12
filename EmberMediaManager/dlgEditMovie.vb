@@ -2018,7 +2018,6 @@ Public Class dlgEditMovie
                     .txtCredits.Text = Master.currMovie.Movie.OldCredits
                 End If
 
-
                 If Not String.IsNullOrEmpty(Master.currMovie.VideoSource) Then
                     .txtVideoSource.Text = Master.currMovie.VideoSource
                 ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.VideoSource) Then
@@ -2076,7 +2075,7 @@ Public Class dlgEditMovie
                 Next
 
                 If Not Master.currMovie.Filename = String.Empty AndAlso Master.currMovie.Movie.VideoSource = "" Then
-                    Dim vSource As String = APIXML.GetVideoSource(Master.currMovie.Filename)
+                    Dim vSource As String = APIXML.GetVideoSource(Master.currMovie.Filename, False)
                     If Not String.IsNullOrEmpty(vSource) Then
                         Master.currMovie.VideoSource = vSource
                         Master.currMovie.Movie.VideoSource = Master.currMovie.VideoSource

@@ -8463,9 +8463,9 @@ doCancel:
         Me.dgvTVEpisodes.Enabled = False
 
         If Season = 999 Then
-            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes FROM TVEps WHERE TVShowID = ", ShowID, " ORDER BY Season, Episode;"))
+            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes, VideoSource FROM TVEps WHERE TVShowID = ", ShowID, " ORDER BY Season, Episode;"))
         Else
-            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
+            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes, VideoSource FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
         End If
 
         If Me.dtEpisodes.Rows.Count > 0 Then
@@ -9153,7 +9153,8 @@ doCancel:
                 lblStudio.Text = pbStudio.Tag.ToString
             End If
             If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) Then
-                Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename, True, APIXML.GetVideoSource(Master.currShow.Filename)))
+                'Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename, True, APIXML.GetVideoSource(Master.currShow.Filename, True)))
+                Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename, True, Master.currShow.TVEp.VideoSource))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -14715,6 +14716,17 @@ doCancel:
                     tmpShowDb.TVEp.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(tmpShowDb.Filename), tmpShowDb.TVShow.Title, False)
                 End If
 
+                Dim fromFile As String = APIXML.GetVideoSource(tmpShowDb.Filename, False)
+                If Not String.IsNullOrEmpty(fromFile) Then
+                    tmpShowDb.VideoSource = fromFile
+                    tmpShowDb.TVEp.VideoSource = tmpShowDb.VideoSource
+                ElseIf String.IsNullOrEmpty(tmpShowDb.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                    tmpShowDb.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpShowDb.Filename)), String.Empty, "*EmberAPP")
+                    tmpShowDb.TVEp.VideoSource = tmpShowDb.VideoSource
+                ElseIf Not String.IsNullOrEmpty(tmpShowDb.TVEp.VideoSource) Then
+                    tmpShowDb.VideoSource = tmpShowDb.TVEp.VideoSource
+                End If
+
                 Dim eContainer As New Scanner.EpisodeContainer With {.Filename = tmpShowDb.Filename}
                 fScanner.GetTVEpisodeFolderContents(eContainer)
                 tmpShowDb.EpPosterPath = eContainer.Poster
@@ -14752,6 +14764,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 7, False})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 23, tmpShowDb.TVEp.Playcount})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 24, hasWatched})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 30, tmpShowDb.VideoSource})
                     Else
                         DirectCast(dRow(0), DataRow).Item(3) = tmpShowDb.TVEp.Title
                         DirectCast(dRow(0), DataRow).Item(4) = hasPoster
@@ -14760,6 +14773,7 @@ doCancel:
                         DirectCast(dRow(0), DataRow).Item(7) = False
                         DirectCast(dRow(0), DataRow).Item(23) = tmpShowDb.TVEp.Playcount
                         DirectCast(dRow(0), DataRow).Item(24) = hasWatched
+                        DirectCast(dRow(0), DataRow).Item(30) = tmpShowDb.VideoSource
                     End If
                 End If
 
@@ -14870,7 +14884,7 @@ doCancel:
                     End If
                 End If
 
-                Dim fromFile As String = APIXML.GetVideoSource(tmpMovieDB.Filename)
+                Dim fromFile As String = APIXML.GetVideoSource(tmpMovieDB.Filename, False)
                 If Not String.IsNullOrEmpty(fromFile) Then
                     tmpMovieDB.VideoSource = fromFile
                     tmpMovieDB.Movie.VideoSource = tmpMovieDB.VideoSource

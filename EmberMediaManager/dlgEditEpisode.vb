@@ -494,6 +494,12 @@ Public Class dlgEditEpisode
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Title) Then .txtTitle.Text = Master.currShow.TVEp.Title
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Votes) Then .txtVotes.Text = Master.currShow.TVEp.Votes
 
+            If Not String.IsNullOrEmpty(Master.currShow.VideoSource) Then
+                .txtVideoSource.Text = Master.currShow.VideoSource
+            ElseIf Not String.IsNullOrEmpty(Master.currShow.TVEp.VideoSource) Then
+                .txtVideoSource.Text = Master.currShow.TVEp.VideoSource
+            End If
+
             Dim lvItem As ListViewItem
             .lvActors.Items.Clear()
             For Each imdbAct As MediaContainers.Person In Master.currShow.TVEp.Actors
@@ -923,6 +929,8 @@ Public Class dlgEditEpisode
                 Master.currShow.TVEp.Season = Convert.ToInt32(.txtSeason.Text.Trim)
                 Master.currShow.TVEp.Title = .txtTitle.Text.Trim
                 Master.currShow.TVEp.Votes = .txtVotes.Text.Trim
+                Master.currShow.TVEp.VideoSource = .txtVideoSource.Text.Trim
+                Master.currShow.VideoSource = .txtVideoSource.Text.Trim
 
                 Master.currShow.TVEp.Actors.Clear()
 
@@ -1020,6 +1028,7 @@ Public Class dlgEditEpisode
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
         Me.lblTopDetails.Text = Master.eLang.GetString(656, "Edit the details for the selected episode.")
         Me.lblTopTitle.Text = Master.eLang.GetString(657, "Edit Episode")
+        Me.lblVideoSource.Text = Master.eLang.GetString(824, "Video Source:")
         Me.lblVotes.Text = Master.eLang.GetString(244, "Votes:")
         Me.tpEpisodeFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.tpEpisodePoster.Text = Master.eLang.GetString(148, "Poster")
