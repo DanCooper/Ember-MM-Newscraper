@@ -3529,6 +3529,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralShowLangFlags() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralShowLangFlags
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralShowLangFlags = value
+        End Set
+    End Property
+
     Public Property GeneralShowImgDims() As Boolean
         Get
             Return Settings._XMLSettings.GeneralShowImgDims

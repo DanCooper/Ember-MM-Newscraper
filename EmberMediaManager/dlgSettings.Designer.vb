@@ -256,7 +256,6 @@ Partial Class dlgSettings
         Me.cbGeneralDateTime = New System.Windows.Forms.ComboBox()
         Me.gbGeneralMainWindow = New System.Windows.Forms.GroupBox()
         Me.tblGeneralMainWindow = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkGeneralHideLandscape = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHideDiscArt = New System.Windows.Forms.CheckBox()
         Me.chkGeneralShowImgNames = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHideClearArt = New System.Windows.Forms.CheckBox()
@@ -264,6 +263,8 @@ Partial Class dlgSettings
         Me.chkGeneralHideClearLogo = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHideBanner = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHideCharacterArt = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralShowLangFlags = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideLandscape = New System.Windows.Forms.CheckBox()
         Me.gbGeneralScrapers = New System.Windows.Forms.GroupBox()
         Me.tblGeneralScrapers = New System.Windows.Forms.TableLayoutPanel()
         Me.chkGeneralResumeScraper = New System.Windows.Forms.CheckBox()
@@ -1972,7 +1973,7 @@ Partial Class dlgSettings
         Me.chkGeneralHideFanartSmall.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralHideFanartSmall.AutoSize = true
         Me.chkGeneralHideFanartSmall.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideFanartSmall.Location = New System.Drawing.Point(179, 95)
+        Me.chkGeneralHideFanartSmall.Location = New System.Drawing.Point(179, 118)
         Me.chkGeneralHideFanartSmall.Name = "chkGeneralHideFanartSmall"
         Me.chkGeneralHideFanartSmall.Size = New System.Drawing.Size(169, 17)
         Me.chkGeneralHideFanartSmall.TabIndex = 11
@@ -1996,7 +1997,7 @@ Partial Class dlgSettings
         Me.chkGeneralHideFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralHideFanart.AutoSize = true
         Me.chkGeneralHideFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideFanart.Location = New System.Drawing.Point(179, 72)
+        Me.chkGeneralHideFanart.Location = New System.Drawing.Point(179, 95)
         Me.chkGeneralHideFanart.Name = "chkGeneralHideFanart"
         Me.chkGeneralHideFanart.Size = New System.Drawing.Size(139, 17)
         Me.chkGeneralHideFanart.TabIndex = 7
@@ -2008,7 +2009,7 @@ Partial Class dlgSettings
         Me.chkGeneralHidePoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralHidePoster.AutoSize = true
         Me.chkGeneralHidePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHidePoster.Location = New System.Drawing.Point(179, 141)
+        Me.chkGeneralHidePoster.Location = New System.Drawing.Point(179, 164)
         Me.chkGeneralHidePoster.Name = "chkGeneralHidePoster"
         Me.chkGeneralHidePoster.Size = New System.Drawing.Size(138, 17)
         Me.chkGeneralHidePoster.TabIndex = 6
@@ -4686,24 +4687,25 @@ Partial Class dlgSettings
         Me.tblGeneralMainWindow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneralMainWindow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneralMainWindow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHidePoster, 1, 6)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideLandscape, 1, 5)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralShowImgDims, 0, 2)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideFanartSmall, 1, 4)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideDiscArt, 0, 7)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideFanartSmall, 1, 5)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideDiscArt, 0, 8)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralShowImgNames, 1, 2)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideFanart, 1, 3)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearArt, 0, 5)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideFanart, 1, 4)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearArt, 0, 6)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDoubleClickScrape, 0, 0)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearLogo, 0, 6)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideBanner, 0, 3)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearLogo, 0, 7)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideBanner, 0, 4)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralImagesGlassOverlay, 1, 1)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideCharacterArt, 0, 4)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideCharacterArt, 0, 5)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralShowGenresText, 0, 1)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralShowLangFlags, 0, 3)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHideLandscape, 1, 6)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralHidePoster, 1, 7)
         Me.tblGeneralMainWindow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGeneralMainWindow.Location = New System.Drawing.Point(3, 18)
         Me.tblGeneralMainWindow.Name = "tblGeneralMainWindow"
-        Me.tblGeneralMainWindow.RowCount = 9
+        Me.tblGeneralMainWindow.RowCount = 10
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -4713,28 +4715,16 @@ Partial Class dlgSettings
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.Size = New System.Drawing.Size(353, 262)
         Me.tblGeneralMainWindow.TabIndex = 17
-        '
-        'chkGeneralHideLandscape
-        '
-        Me.chkGeneralHideLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGeneralHideLandscape.AutoSize = true
-        Me.chkGeneralHideLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideLandscape.Location = New System.Drawing.Point(179, 118)
-        Me.chkGeneralHideLandscape.Name = "chkGeneralHideLandscape"
-        Me.chkGeneralHideLandscape.Size = New System.Drawing.Size(160, 17)
-        Me.chkGeneralHideLandscape.TabIndex = 18
-        Me.chkGeneralHideLandscape.Text = "Do Not Display Landscape"
-        Me.chkGeneralHideLandscape.UseVisualStyleBackColor = true
         '
         'chkGeneralHideDiscArt
         '
         Me.chkGeneralHideDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralHideDiscArt.AutoSize = true
         Me.chkGeneralHideDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideDiscArt.Location = New System.Drawing.Point(3, 164)
+        Me.chkGeneralHideDiscArt.Location = New System.Drawing.Point(3, 187)
         Me.chkGeneralHideDiscArt.Name = "chkGeneralHideDiscArt"
         Me.chkGeneralHideDiscArt.Size = New System.Drawing.Size(142, 17)
         Me.chkGeneralHideDiscArt.TabIndex = 17
@@ -4758,7 +4748,7 @@ Partial Class dlgSettings
         Me.chkGeneralHideClearArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralHideClearArt.AutoSize = true
         Me.chkGeneralHideClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideClearArt.Location = New System.Drawing.Point(3, 118)
+        Me.chkGeneralHideClearArt.Location = New System.Drawing.Point(3, 141)
         Me.chkGeneralHideClearArt.Name = "chkGeneralHideClearArt"
         Me.chkGeneralHideClearArt.Size = New System.Drawing.Size(147, 17)
         Me.chkGeneralHideClearArt.TabIndex = 14
@@ -4783,7 +4773,7 @@ Partial Class dlgSettings
         Me.chkGeneralHideClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralHideClearLogo.AutoSize = true
         Me.chkGeneralHideClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideClearLogo.Location = New System.Drawing.Point(3, 141)
+        Me.chkGeneralHideClearLogo.Location = New System.Drawing.Point(3, 164)
         Me.chkGeneralHideClearLogo.Name = "chkGeneralHideClearLogo"
         Me.chkGeneralHideClearLogo.Size = New System.Drawing.Size(158, 17)
         Me.chkGeneralHideClearLogo.TabIndex = 16
@@ -4795,7 +4785,7 @@ Partial Class dlgSettings
         Me.chkGeneralHideBanner.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralHideBanner.AutoSize = true
         Me.chkGeneralHideBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideBanner.Location = New System.Drawing.Point(3, 72)
+        Me.chkGeneralHideBanner.Location = New System.Drawing.Point(3, 95)
         Me.chkGeneralHideBanner.Name = "chkGeneralHideBanner"
         Me.chkGeneralHideBanner.Size = New System.Drawing.Size(143, 17)
         Me.chkGeneralHideBanner.TabIndex = 13
@@ -4807,12 +4797,36 @@ Partial Class dlgSettings
         Me.chkGeneralHideCharacterArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralHideCharacterArt.AutoSize = true
         Me.chkGeneralHideCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideCharacterArt.Location = New System.Drawing.Point(3, 95)
+        Me.chkGeneralHideCharacterArt.Location = New System.Drawing.Point(3, 118)
         Me.chkGeneralHideCharacterArt.Name = "chkGeneralHideCharacterArt"
         Me.chkGeneralHideCharacterArt.Size = New System.Drawing.Size(170, 17)
         Me.chkGeneralHideCharacterArt.TabIndex = 15
         Me.chkGeneralHideCharacterArt.Text = "Do Not Display CharacterArt"
         Me.chkGeneralHideCharacterArt.UseVisualStyleBackColor = true
+        '
+        'chkGeneralShowLangFlags
+        '
+        Me.chkGeneralShowLangFlags.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkGeneralShowLangFlags.AutoSize = true
+        Me.chkGeneralShowLangFlags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralShowLangFlags.Location = New System.Drawing.Point(3, 72)
+        Me.chkGeneralShowLangFlags.Name = "chkGeneralShowLangFlags"
+        Me.chkGeneralShowLangFlags.Size = New System.Drawing.Size(147, 17)
+        Me.chkGeneralShowLangFlags.TabIndex = 8
+        Me.chkGeneralShowLangFlags.Text = "Display Language Flags"
+        Me.chkGeneralShowLangFlags.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideLandscape
+        '
+        Me.chkGeneralHideLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkGeneralHideLandscape.AutoSize = true
+        Me.chkGeneralHideLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideLandscape.Location = New System.Drawing.Point(179, 141)
+        Me.chkGeneralHideLandscape.Name = "chkGeneralHideLandscape"
+        Me.chkGeneralHideLandscape.Size = New System.Drawing.Size(160, 17)
+        Me.chkGeneralHideLandscape.TabIndex = 18
+        Me.chkGeneralHideLandscape.Text = "Do Not Display Landscape"
+        Me.chkGeneralHideLandscape.UseVisualStyleBackColor = true
         '
         'gbGeneralScrapers
         '
@@ -9977,13 +9991,13 @@ Partial Class dlgSettings
         Me.lblTVGeneralMediaListClearLogo.TabIndex = 82
         Me.lblTVGeneralMediaListClearLogo.Text = "ClearLogo"
         '
-        'lblTVGeneralMediaListExtrafanart
+        'lblTVGeneralMediaListExtrafanarts
         '
         Me.lblTVGeneralMediaListExtrafanarts.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVGeneralMediaListExtrafanarts.AutoSize = true
         Me.lblTVGeneralMediaListExtrafanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVGeneralMediaListExtrafanarts.Location = New System.Drawing.Point(3, 123)
-        Me.lblTVGeneralMediaListExtrafanarts.Name = "lblTVGeneralMediaListExtrafanart"
+        Me.lblTVGeneralMediaListExtrafanarts.Name = "lblTVGeneralMediaListExtrafanarts"
         Me.lblTVGeneralMediaListExtrafanarts.Size = New System.Drawing.Size(63, 13)
         Me.lblTVGeneralMediaListExtrafanarts.TabIndex = 82
         Me.lblTVGeneralMediaListExtrafanarts.Text = "Extrafanart"
@@ -10605,12 +10619,12 @@ Partial Class dlgSettings
         Me.pnlTVSources.Name = "pnlTVSources"
         Me.pnlTVSources.Size = New System.Drawing.Size(836, 506)
         Me.pnlTVSources.TabIndex = 11
-        Me.pnlTVSources.Visible = False
+        Me.pnlTVSources.Visible = false
         '
         'tblTVSources
         '
-        Me.tblTVSources.AutoScroll = True
-        Me.tblTVSources.AutoSize = True
+        Me.tblTVSources.AutoScroll = true
+        Me.tblTVSources.AutoSize = true
         Me.tblTVSources.ColumnCount = 2
         Me.tblTVSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -10629,7 +10643,7 @@ Partial Class dlgSettings
         Me.tcTVSources.Controls.Add(Me.tpTVSourcesGeneral)
         Me.tcTVSources.Controls.Add(Me.tpTVSourcesRegex)
         Me.tcTVSources.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tcTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.tcTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.tcTVSources.Location = New System.Drawing.Point(3, 3)
         Me.tcTVSources.Name = "tcTVSources"
         Me.tcTVSources.SelectedIndex = 0
@@ -10644,17 +10658,17 @@ Partial Class dlgSettings
         Me.tpTVSourcesGeneral.Size = New System.Drawing.Size(822, 474)
         Me.tpTVSourcesGeneral.TabIndex = 0
         Me.tpTVSourcesGeneral.Text = "General"
-        Me.tpTVSourcesGeneral.UseVisualStyleBackColor = True
+        Me.tpTVSourcesGeneral.UseVisualStyleBackColor = true
         '
         'tblTVSourcesGeneral
         '
-        Me.tblTVSourcesGeneral.AutoSize = True
+        Me.tblTVSourcesGeneral.AutoSize = true
         Me.tblTVSourcesGeneral.ColumnCount = 4
         Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVSourcesGeneral.Controls.Add(Me.lvTVSources, 0, 0)
         Me.tblTVSourcesGeneral.Controls.Add(Me.gbTVSourcesFileNaming, 0, 3)
         Me.tblTVSourcesGeneral.Controls.Add(Me.gbTVSourcesMiscOpts, 1, 4)
@@ -10681,16 +10695,16 @@ Partial Class dlgSettings
         Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6})
         Me.tblTVSourcesGeneral.SetColumnSpan(Me.lvTVSources, 2)
         Me.lvTVSources.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lvTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lvTVSources.FullRowSelect = True
-        Me.lvTVSources.HideSelection = False
+        Me.lvTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lvTVSources.FullRowSelect = true
+        Me.lvTVSources.HideSelection = false
         Me.lvTVSources.Location = New System.Drawing.Point(3, 3)
         Me.lvTVSources.Name = "lvTVSources"
         Me.tblTVSourcesGeneral.SetRowSpan(Me.lvTVSources, 3)
         Me.lvTVSources.Size = New System.Drawing.Size(690, 105)
         Me.lvTVSources.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvTVSources.TabIndex = 0
-        Me.lvTVSources.UseCompatibleStateImageBehavior = False
+        Me.lvTVSources.UseCompatibleStateImageBehavior = false
         Me.lvTVSources.View = System.Windows.Forms.View.Details
         '
         'ColumnHeader1
@@ -10722,7 +10736,7 @@ Partial Class dlgSettings
         '
         'gbTVSourcesFileNaming
         '
-        Me.gbTVSourcesFileNaming.AutoSize = True
+        Me.gbTVSourcesFileNaming.AutoSize = true
         Me.gbTVSourcesFileNaming.Controls.Add(Me.tcTVSourcesFileNaming)
         Me.gbTVSourcesFileNaming.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFileNaming.Location = New System.Drawing.Point(3, 114)
@@ -10730,7 +10744,7 @@ Partial Class dlgSettings
         Me.tblTVSourcesGeneral.SetRowSpan(Me.gbTVSourcesFileNaming, 3)
         Me.gbTVSourcesFileNaming.Size = New System.Drawing.Size(532, 379)
         Me.gbTVSourcesFileNaming.TabIndex = 6
-        Me.gbTVSourcesFileNaming.TabStop = False
+        Me.gbTVSourcesFileNaming.TabStop = false
         Me.gbTVSourcesFileNaming.Text = "File Naming"
         '
         'tcTVSourcesFileNaming
@@ -10753,11 +10767,11 @@ Partial Class dlgSettings
         Me.tpTVSourcesFileNamingXBMC.Size = New System.Drawing.Size(512, 314)
         Me.tpTVSourcesFileNamingXBMC.TabIndex = 0
         Me.tpTVSourcesFileNamingXBMC.Text = "XBMC"
-        Me.tpTVSourcesFileNamingXBMC.UseVisualStyleBackColor = True
+        Me.tpTVSourcesFileNamingXBMC.UseVisualStyleBackColor = true
         '
         'tblTVSourcesFileNamingXBMC
         '
-        Me.tblTVSourcesFileNamingXBMC.AutoSize = True
+        Me.tblTVSourcesFileNamingXBMC.AutoSize = true
         Me.tblTVSourcesFileNamingXBMC.ColumnCount = 3
         Me.tblTVSourcesFileNamingXBMC.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingXBMC.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -10778,21 +10792,21 @@ Partial Class dlgSettings
         '
         'gbTVSourcesFileNamingXBMCDefaultsOpts
         '
-        Me.gbTVSourcesFileNamingXBMCDefaultsOpts.AutoSize = True
+        Me.gbTVSourcesFileNamingXBMCDefaultsOpts.AutoSize = true
         Me.gbTVSourcesFileNamingXBMCDefaultsOpts.Controls.Add(Me.tblTVSourcesFileNamingXBMCDefaultsOpts)
         Me.gbTVSourcesFileNamingXBMCDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbTVSourcesFileNamingXBMCDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbTVSourcesFileNamingXBMCDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbTVSourcesFileNamingXBMCDefaultsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbTVSourcesFileNamingXBMCDefaultsOpts.Name = "gbTVSourcesFileNamingXBMCDefaultsOpts"
         Me.tblTVSourcesFileNamingXBMC.SetRowSpan(Me.gbTVSourcesFileNamingXBMCDefaultsOpts, 2)
         Me.gbTVSourcesFileNamingXBMCDefaultsOpts.Size = New System.Drawing.Size(235, 208)
         Me.gbTVSourcesFileNamingXBMCDefaultsOpts.TabIndex = 1
-        Me.gbTVSourcesFileNamingXBMCDefaultsOpts.TabStop = False
+        Me.gbTVSourcesFileNamingXBMCDefaultsOpts.TabStop = false
         Me.gbTVSourcesFileNamingXBMCDefaultsOpts.Text = "Defaults"
         '
         'tblTVSourcesFileNamingXBMCDefaultsOpts
         '
-        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.AutoSize = True
+        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.AutoSize = true
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.ColumnCount = 4
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -10823,69 +10837,69 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Name = "tblTVSourcesFileNamingXBMCDefaultsOpts"
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowCount = 9
-        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesFileNamingXBMCDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.Size = New System.Drawing.Size(229, 187)
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.TabIndex = 4
         '
         'chkTVShowFanartFrodo
         '
         Me.chkTVShowFanartFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowFanartFrodo.AutoSize = True
-        Me.chkTVShowFanartFrodo.Enabled = False
+        Me.chkTVShowFanartFrodo.AutoSize = true
+        Me.chkTVShowFanartFrodo.Enabled = false
         Me.chkTVShowFanartFrodo.Location = New System.Drawing.Point(200, 123)
         Me.chkTVShowFanartFrodo.Name = "chkTVShowFanartFrodo"
         Me.chkTVShowFanartFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowFanartFrodo.TabIndex = 2
-        Me.chkTVShowFanartFrodo.UseVisualStyleBackColor = True
+        Me.chkTVShowFanartFrodo.UseVisualStyleBackColor = true
         '
         'chkTVShowActorThumbsFrodo
         '
         Me.chkTVShowActorThumbsFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowActorThumbsFrodo.AutoSize = True
-        Me.chkTVShowActorThumbsFrodo.Enabled = False
+        Me.chkTVShowActorThumbsFrodo.AutoSize = true
+        Me.chkTVShowActorThumbsFrodo.Enabled = false
         Me.chkTVShowActorThumbsFrodo.Location = New System.Drawing.Point(200, 63)
         Me.chkTVShowActorThumbsFrodo.Name = "chkTVShowActorThumbsFrodo"
         Me.chkTVShowActorThumbsFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowActorThumbsFrodo.TabIndex = 4
-        Me.chkTVShowActorThumbsFrodo.UseVisualStyleBackColor = True
+        Me.chkTVShowActorThumbsFrodo.UseVisualStyleBackColor = true
         '
         'chkTVShowBannerFrodo
         '
         Me.chkTVShowBannerFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowBannerFrodo.AutoSize = True
-        Me.chkTVShowBannerFrodo.Enabled = False
+        Me.chkTVShowBannerFrodo.AutoSize = true
+        Me.chkTVShowBannerFrodo.Enabled = false
         Me.chkTVShowBannerFrodo.Location = New System.Drawing.Point(200, 83)
         Me.chkTVShowBannerFrodo.Name = "chkTVShowBannerFrodo"
         Me.chkTVShowBannerFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowBannerFrodo.TabIndex = 11
-        Me.chkTVShowBannerFrodo.UseVisualStyleBackColor = True
+        Me.chkTVShowBannerFrodo.UseVisualStyleBackColor = true
         '
         'chkTVShowExtrafanartsFrodo
         '
         Me.chkTVShowExtrafanartsFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowExtrafanartsFrodo.AutoSize = True
-        Me.chkTVShowExtrafanartsFrodo.Enabled = False
+        Me.chkTVShowExtrafanartsFrodo.AutoSize = true
+        Me.chkTVShowExtrafanartsFrodo.Enabled = false
         Me.chkTVShowExtrafanartsFrodo.Location = New System.Drawing.Point(200, 103)
         Me.chkTVShowExtrafanartsFrodo.Name = "chkTVShowExtrafanartsFrodo"
         Me.chkTVShowExtrafanartsFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowExtrafanartsFrodo.TabIndex = 8
-        Me.chkTVShowExtrafanartsFrodo.UseVisualStyleBackColor = True
+        Me.chkTVShowExtrafanartsFrodo.UseVisualStyleBackColor = true
         '
         'lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix
         '
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix.AutoSize = true
         Me.tblTVSourcesFileNamingXBMCDefaultsOpts.SetColumnSpan(Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix, 3)
-        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix.Location = New System.Drawing.Point(118, 3)
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix.Name = "lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix"
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelix.Size = New System.Drawing.Size(75, 13)
@@ -10895,40 +10909,40 @@ Partial Class dlgSettings
         'chkTVSeasonPosterFrodo
         '
         Me.chkTVSeasonPosterFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonPosterFrodo.AutoSize = True
-        Me.chkTVSeasonPosterFrodo.Enabled = False
+        Me.chkTVSeasonPosterFrodo.AutoSize = true
+        Me.chkTVSeasonPosterFrodo.Enabled = false
         Me.chkTVSeasonPosterFrodo.Location = New System.Drawing.Point(154, 143)
         Me.chkTVSeasonPosterFrodo.Name = "chkTVSeasonPosterFrodo"
         Me.chkTVSeasonPosterFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonPosterFrodo.TabIndex = 12
-        Me.chkTVSeasonPosterFrodo.UseVisualStyleBackColor = True
+        Me.chkTVSeasonPosterFrodo.UseVisualStyleBackColor = true
         '
         'chkTVSeasonBannerFrodo
         '
         Me.chkTVSeasonBannerFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonBannerFrodo.AutoSize = True
-        Me.chkTVSeasonBannerFrodo.Enabled = False
+        Me.chkTVSeasonBannerFrodo.AutoSize = true
+        Me.chkTVSeasonBannerFrodo.Enabled = false
         Me.chkTVSeasonBannerFrodo.Location = New System.Drawing.Point(154, 83)
         Me.chkTVSeasonBannerFrodo.Name = "chkTVSeasonBannerFrodo"
         Me.chkTVSeasonBannerFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonBannerFrodo.TabIndex = 8
-        Me.chkTVSeasonBannerFrodo.UseVisualStyleBackColor = True
+        Me.chkTVSeasonBannerFrodo.UseVisualStyleBackColor = true
         '
         'chkTVSeasonFanartFrodo
         '
         Me.chkTVSeasonFanartFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonFanartFrodo.AutoSize = True
-        Me.chkTVSeasonFanartFrodo.Enabled = False
+        Me.chkTVSeasonFanartFrodo.AutoSize = true
+        Me.chkTVSeasonFanartFrodo.Enabled = false
         Me.chkTVSeasonFanartFrodo.Location = New System.Drawing.Point(154, 123)
         Me.chkTVSeasonFanartFrodo.Name = "chkTVSeasonFanartFrodo"
         Me.chkTVSeasonFanartFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonFanartFrodo.TabIndex = 3
-        Me.chkTVSeasonFanartFrodo.UseVisualStyleBackColor = True
+        Me.chkTVSeasonFanartFrodo.UseVisualStyleBackColor = true
         '
         'lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixShow
         '
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixShow.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixShow.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixShow.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixShow.Location = New System.Drawing.Point(190, 43)
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixShow.Name = "lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixShow"
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixShow.Size = New System.Drawing.Size(36, 13)
@@ -10938,29 +10952,29 @@ Partial Class dlgSettings
         'chkTVEpisodeActorThumbsFrodo
         '
         Me.chkTVEpisodeActorThumbsFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVEpisodeActorThumbsFrodo.AutoSize = True
-        Me.chkTVEpisodeActorThumbsFrodo.Enabled = False
+        Me.chkTVEpisodeActorThumbsFrodo.AutoSize = true
+        Me.chkTVEpisodeActorThumbsFrodo.Enabled = false
         Me.chkTVEpisodeActorThumbsFrodo.Location = New System.Drawing.Point(102, 63)
         Me.chkTVEpisodeActorThumbsFrodo.Name = "chkTVEpisodeActorThumbsFrodo"
         Me.chkTVEpisodeActorThumbsFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVEpisodeActorThumbsFrodo.TabIndex = 9
-        Me.chkTVEpisodeActorThumbsFrodo.UseVisualStyleBackColor = True
+        Me.chkTVEpisodeActorThumbsFrodo.UseVisualStyleBackColor = true
         '
         'chkTVEpisodePosterFrodo
         '
         Me.chkTVEpisodePosterFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVEpisodePosterFrodo.AutoSize = True
-        Me.chkTVEpisodePosterFrodo.Enabled = False
+        Me.chkTVEpisodePosterFrodo.AutoSize = true
+        Me.chkTVEpisodePosterFrodo.Enabled = false
         Me.chkTVEpisodePosterFrodo.Location = New System.Drawing.Point(102, 143)
         Me.chkTVEpisodePosterFrodo.Name = "chkTVEpisodePosterFrodo"
         Me.chkTVEpisodePosterFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVEpisodePosterFrodo.TabIndex = 5
-        Me.chkTVEpisodePosterFrodo.UseVisualStyleBackColor = True
+        Me.chkTVEpisodePosterFrodo.UseVisualStyleBackColor = true
         '
         'lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason
         '
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason.Location = New System.Drawing.Point(140, 43)
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason.Name = "lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason"
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason.Size = New System.Drawing.Size(44, 13)
@@ -10970,7 +10984,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode
         '
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode.Location = New System.Drawing.Point(86, 43)
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode.Name = "lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode"
         Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode.Size = New System.Drawing.Size(48, 13)
@@ -10980,7 +10994,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingXBMCDefaultsActorThumbs
         '
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Location = New System.Drawing.Point(3, 63)
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Name = "lblTVSourcesFileNamingXBMCDefaultsActorThumbs"
@@ -10991,18 +11005,18 @@ Partial Class dlgSettings
         'chkTVShowPosterFrodo
         '
         Me.chkTVShowPosterFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowPosterFrodo.AutoSize = True
-        Me.chkTVShowPosterFrodo.Enabled = False
+        Me.chkTVShowPosterFrodo.AutoSize = true
+        Me.chkTVShowPosterFrodo.Enabled = false
         Me.chkTVShowPosterFrodo.Location = New System.Drawing.Point(200, 143)
         Me.chkTVShowPosterFrodo.Name = "chkTVShowPosterFrodo"
         Me.chkTVShowPosterFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowPosterFrodo.TabIndex = 1
-        Me.chkTVShowPosterFrodo.UseVisualStyleBackColor = True
+        Me.chkTVShowPosterFrodo.UseVisualStyleBackColor = true
         '
         'lblTVSourcesFileNamingXBMCDefaultsBanner
         '
         Me.lblTVSourcesFileNamingXBMCDefaultsBanner.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCDefaultsBanner.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCDefaultsBanner.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCDefaultsBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingXBMCDefaultsBanner.Location = New System.Drawing.Point(3, 83)
         Me.lblTVSourcesFileNamingXBMCDefaultsBanner.Name = "lblTVSourcesFileNamingXBMCDefaultsBanner"
@@ -11013,7 +11027,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingXBMCDefaultsExtrafanarts
         '
         Me.lblTVSourcesFileNamingXBMCDefaultsExtrafanarts.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCDefaultsExtrafanarts.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCDefaultsExtrafanarts.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCDefaultsExtrafanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingXBMCDefaultsExtrafanarts.Location = New System.Drawing.Point(3, 103)
         Me.lblTVSourcesFileNamingXBMCDefaultsExtrafanarts.Name = "lblTVSourcesFileNamingXBMCDefaultsExtrafanarts"
@@ -11024,7 +11038,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingXBMCDefaultsFanart
         '
         Me.lblTVSourcesFileNamingXBMCDefaultsFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCDefaultsFanart.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCDefaultsFanart.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCDefaultsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingXBMCDefaultsFanart.Location = New System.Drawing.Point(3, 123)
         Me.lblTVSourcesFileNamingXBMCDefaultsFanart.Name = "lblTVSourcesFileNamingXBMCDefaultsFanart"
@@ -11035,7 +11049,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingXBMCDefaultsPoster
         '
         Me.lblTVSourcesFileNamingXBMCDefaultsPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCDefaultsPoster.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCDefaultsPoster.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCDefaultsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingXBMCDefaultsPoster.Location = New System.Drawing.Point(3, 143)
         Me.lblTVSourcesFileNamingXBMCDefaultsPoster.Name = "lblTVSourcesFileNamingXBMCDefaultsPoster"
@@ -11046,8 +11060,8 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingXBMCDefaultsEnabled
         '
         Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.AutoSize = True
-        Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.AutoSize = true
+        Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.Location = New System.Drawing.Point(3, 23)
         Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.Name = "lblTVSourcesFileNamingXBMCDefaultsEnabled"
         Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.Size = New System.Drawing.Size(49, 13)
@@ -11057,16 +11071,16 @@ Partial Class dlgSettings
         'chkTVUseFrodo
         '
         Me.chkTVUseFrodo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVUseFrodo.AutoSize = True
+        Me.chkTVUseFrodo.AutoSize = true
         Me.chkTVUseFrodo.Location = New System.Drawing.Point(154, 23)
         Me.chkTVUseFrodo.Name = "chkTVUseFrodo"
         Me.chkTVUseFrodo.Size = New System.Drawing.Size(15, 14)
         Me.chkTVUseFrodo.TabIndex = 10
-        Me.chkTVUseFrodo.UseVisualStyleBackColor = True
+        Me.chkTVUseFrodo.UseVisualStyleBackColor = true
         '
         'gbTVSourcesFileNamingXBMCTvTunesOpts
         '
-        Me.gbTVSourcesFileNamingXBMCTvTunesOpts.AutoSize = True
+        Me.gbTVSourcesFileNamingXBMCTvTunesOpts.AutoSize = true
         Me.gbTVSourcesFileNamingXBMCTvTunesOpts.Controls.Add(Me.tblTVSourcesFileNamingXBMCTvTunesOpts)
         Me.gbTVSourcesFileNamingXBMCTvTunesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFileNamingXBMCTvTunesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
@@ -11075,12 +11089,12 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingXBMC.SetRowSpan(Me.gbTVSourcesFileNamingXBMCTvTunesOpts, 2)
         Me.gbTVSourcesFileNamingXBMCTvTunesOpts.Size = New System.Drawing.Size(243, 169)
         Me.gbTVSourcesFileNamingXBMCTvTunesOpts.TabIndex = 3
-        Me.gbTVSourcesFileNamingXBMCTvTunesOpts.TabStop = False
+        Me.gbTVSourcesFileNamingXBMCTvTunesOpts.TabStop = false
         Me.gbTVSourcesFileNamingXBMCTvTunesOpts.Text = "TvTunes Addon"
         '
         'tblTVSourcesFileNamingXBMCTvTunesOpts
         '
-        Me.tblTVSourcesFileNamingXBMCTvTunesOpts.AutoSize = True
+        Me.tblTVSourcesFileNamingXBMCTvTunesOpts.AutoSize = true
         Me.tblTVSourcesFileNamingXBMCTvTunesOpts.ColumnCount = 3
         Me.tblTVSourcesFileNamingXBMCTvTunesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingXBMCTvTunesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -11109,7 +11123,7 @@ Partial Class dlgSettings
         'txtTVXBMCThemeSubDir
         '
         Me.txtTVXBMCThemeSubDir.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtTVXBMCThemeSubDir.Enabled = False
+        Me.txtTVXBMCThemeSubDir.Enabled = false
         Me.txtTVXBMCThemeSubDir.Location = New System.Drawing.Point(3, 123)
         Me.txtTVXBMCThemeSubDir.Name = "txtTVXBMCThemeSubDir"
         Me.txtTVXBMCThemeSubDir.Size = New System.Drawing.Size(200, 22)
@@ -11118,29 +11132,29 @@ Partial Class dlgSettings
         'chkTVXBMCThemeMovie
         '
         Me.chkTVXBMCThemeMovie.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVXBMCThemeMovie.AutoSize = True
-        Me.chkTVXBMCThemeMovie.Enabled = False
+        Me.chkTVXBMCThemeMovie.AutoSize = true
+        Me.chkTVXBMCThemeMovie.Enabled = false
         Me.chkTVXBMCThemeMovie.Location = New System.Drawing.Point(3, 26)
         Me.chkTVXBMCThemeMovie.Name = "chkTVXBMCThemeMovie"
         Me.chkTVXBMCThemeMovie.Size = New System.Drawing.Size(185, 17)
         Me.chkTVXBMCThemeMovie.TabIndex = 8
         Me.chkTVXBMCThemeMovie.Text = "Store themes in show directory"
-        Me.chkTVXBMCThemeMovie.UseVisualStyleBackColor = True
+        Me.chkTVXBMCThemeMovie.UseVisualStyleBackColor = true
         '
         'btnTVXBMCThemeCustomPathBrowse
         '
-        Me.btnTVXBMCThemeCustomPathBrowse.Enabled = False
-        Me.btnTVXBMCThemeCustomPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVXBMCThemeCustomPathBrowse.Enabled = false
+        Me.btnTVXBMCThemeCustomPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.btnTVXBMCThemeCustomPathBrowse.Location = New System.Drawing.Point(209, 72)
         Me.btnTVXBMCThemeCustomPathBrowse.Name = "btnTVXBMCThemeCustomPathBrowse"
         Me.btnTVXBMCThemeCustomPathBrowse.Size = New System.Drawing.Size(25, 22)
         Me.btnTVXBMCThemeCustomPathBrowse.TabIndex = 7
         Me.btnTVXBMCThemeCustomPathBrowse.Text = "..."
-        Me.btnTVXBMCThemeCustomPathBrowse.UseVisualStyleBackColor = True
+        Me.btnTVXBMCThemeCustomPathBrowse.UseVisualStyleBackColor = true
         '
         'txtTVXBMCThemeCustomPath
         '
-        Me.txtTVXBMCThemeCustomPath.Enabled = False
+        Me.txtTVXBMCThemeCustomPath.Enabled = false
         Me.txtTVXBMCThemeCustomPath.Location = New System.Drawing.Point(3, 72)
         Me.txtTVXBMCThemeCustomPath.Name = "txtTVXBMCThemeCustomPath"
         Me.txtTVXBMCThemeCustomPath.Size = New System.Drawing.Size(200, 22)
@@ -11148,44 +11162,44 @@ Partial Class dlgSettings
         '
         'chkTVXBMCThemeEnable
         '
-        Me.chkTVXBMCThemeEnable.AutoSize = True
-        Me.chkTVXBMCThemeEnable.Enabled = False
+        Me.chkTVXBMCThemeEnable.AutoSize = true
+        Me.chkTVXBMCThemeEnable.Enabled = false
         Me.chkTVXBMCThemeEnable.Location = New System.Drawing.Point(3, 3)
         Me.chkTVXBMCThemeEnable.Name = "chkTVXBMCThemeEnable"
         Me.chkTVXBMCThemeEnable.Size = New System.Drawing.Size(74, 17)
         Me.chkTVXBMCThemeEnable.TabIndex = 5
         Me.chkTVXBMCThemeEnable.Text = "TV Theme"
-        Me.chkTVXBMCThemeEnable.UseVisualStyleBackColor = True
+        Me.chkTVXBMCThemeEnable.UseVisualStyleBackColor = true
         '
         'chkTVXBMCThemeCustom
         '
         Me.chkTVXBMCThemeCustom.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVXBMCThemeCustom.AutoSize = True
+        Me.chkTVXBMCThemeCustom.AutoSize = true
         Me.tblTVSourcesFileNamingXBMCTvTunesOpts.SetColumnSpan(Me.chkTVXBMCThemeCustom, 2)
-        Me.chkTVXBMCThemeCustom.Enabled = False
+        Me.chkTVXBMCThemeCustom.Enabled = false
         Me.chkTVXBMCThemeCustom.Location = New System.Drawing.Point(3, 49)
         Me.chkTVXBMCThemeCustom.Name = "chkTVXBMCThemeCustom"
         Me.chkTVXBMCThemeCustom.Size = New System.Drawing.Size(182, 17)
         Me.chkTVXBMCThemeCustom.TabIndex = 9
         Me.chkTVXBMCThemeCustom.Text = "Store themes in a custom path"
-        Me.chkTVXBMCThemeCustom.UseVisualStyleBackColor = True
+        Me.chkTVXBMCThemeCustom.UseVisualStyleBackColor = true
         '
         'chkTVXBMCThemeSub
         '
         Me.chkTVXBMCThemeSub.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVXBMCThemeSub.AutoSize = True
+        Me.chkTVXBMCThemeSub.AutoSize = true
         Me.tblTVSourcesFileNamingXBMCTvTunesOpts.SetColumnSpan(Me.chkTVXBMCThemeSub, 2)
-        Me.chkTVXBMCThemeSub.Enabled = False
+        Me.chkTVXBMCThemeSub.Enabled = false
         Me.chkTVXBMCThemeSub.Location = New System.Drawing.Point(3, 100)
         Me.chkTVXBMCThemeSub.Name = "chkTVXBMCThemeSub"
         Me.chkTVXBMCThemeSub.Size = New System.Drawing.Size(181, 17)
         Me.chkTVXBMCThemeSub.TabIndex = 10
         Me.chkTVXBMCThemeSub.Text = "Store themes in sub directorys"
-        Me.chkTVXBMCThemeSub.UseVisualStyleBackColor = True
+        Me.chkTVXBMCThemeSub.UseVisualStyleBackColor = true
         '
         'gbTVSourcesFileNamingXBMCADOpts
         '
-        Me.gbTVSourcesFileNamingXBMCADOpts.AutoSize = True
+        Me.gbTVSourcesFileNamingXBMCADOpts.AutoSize = true
         Me.gbTVSourcesFileNamingXBMCADOpts.Controls.Add(Me.tblTVSourcesFileNamingXBMCADOpts)
         Me.gbTVSourcesFileNamingXBMCADOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFileNamingXBMCADOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
@@ -11193,12 +11207,12 @@ Partial Class dlgSettings
         Me.gbTVSourcesFileNamingXBMCADOpts.Name = "gbTVSourcesFileNamingXBMCADOpts"
         Me.gbTVSourcesFileNamingXBMCADOpts.Size = New System.Drawing.Size(243, 121)
         Me.gbTVSourcesFileNamingXBMCADOpts.TabIndex = 2
-        Me.gbTVSourcesFileNamingXBMCADOpts.TabStop = False
+        Me.gbTVSourcesFileNamingXBMCADOpts.TabStop = false
         Me.gbTVSourcesFileNamingXBMCADOpts.Text = "ArtworkDownloader Addon"
         '
         'tblTVSourcesFileNamingXBMCADOpts
         '
-        Me.tblTVSourcesFileNamingXBMCADOpts.AutoSize = True
+        Me.tblTVSourcesFileNamingXBMCADOpts.AutoSize = true
         Me.tblTVSourcesFileNamingXBMCADOpts.ColumnCount = 3
         Me.tblTVSourcesFileNamingXBMCADOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingXBMCADOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -11237,60 +11251,60 @@ Partial Class dlgSettings
         Me.pbTVSourcesADInfo.Size = New System.Drawing.Size(80, 80)
         Me.pbTVSourcesADInfo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbTVSourcesADInfo.TabIndex = 12
-        Me.pbTVSourcesADInfo.TabStop = False
+        Me.pbTVSourcesADInfo.TabStop = false
         '
         'chkTVShowClearLogoAD
         '
         Me.chkTVShowClearLogoAD.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowClearLogoAD.AutoSize = True
-        Me.chkTVShowClearLogoAD.Enabled = False
+        Me.chkTVShowClearLogoAD.AutoSize = true
+        Me.chkTVShowClearLogoAD.Enabled = false
         Me.chkTVShowClearLogoAD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.chkTVShowClearLogoAD.Location = New System.Drawing.Point(110, 43)
         Me.chkTVShowClearLogoAD.Name = "chkTVShowClearLogoAD"
         Me.chkTVShowClearLogoAD.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowClearLogoAD.TabIndex = 0
-        Me.chkTVShowClearLogoAD.UseVisualStyleBackColor = True
+        Me.chkTVShowClearLogoAD.UseVisualStyleBackColor = true
         '
         'chkTVShowLandscapeAD
         '
         Me.chkTVShowLandscapeAD.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowLandscapeAD.AutoSize = True
-        Me.chkTVShowLandscapeAD.Enabled = False
+        Me.chkTVShowLandscapeAD.AutoSize = true
+        Me.chkTVShowLandscapeAD.Enabled = false
         Me.chkTVShowLandscapeAD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.chkTVShowLandscapeAD.Location = New System.Drawing.Point(110, 83)
         Me.chkTVShowLandscapeAD.Name = "chkTVShowLandscapeAD"
         Me.chkTVShowLandscapeAD.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowLandscapeAD.TabIndex = 3
-        Me.chkTVShowLandscapeAD.UseVisualStyleBackColor = True
+        Me.chkTVShowLandscapeAD.UseVisualStyleBackColor = true
         '
         'chkTVSeasonLandscapeAD
         '
         Me.chkTVSeasonLandscapeAD.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonLandscapeAD.AutoSize = True
-        Me.chkTVSeasonLandscapeAD.Enabled = False
+        Me.chkTVSeasonLandscapeAD.AutoSize = true
+        Me.chkTVSeasonLandscapeAD.Enabled = false
         Me.chkTVSeasonLandscapeAD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.chkTVSeasonLandscapeAD.Location = New System.Drawing.Point(110, 63)
         Me.chkTVSeasonLandscapeAD.Name = "chkTVSeasonLandscapeAD"
         Me.chkTVSeasonLandscapeAD.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonLandscapeAD.TabIndex = 4
-        Me.chkTVSeasonLandscapeAD.UseVisualStyleBackColor = True
+        Me.chkTVSeasonLandscapeAD.UseVisualStyleBackColor = true
         '
         'chkTVShowCharacterArtAD
         '
         Me.chkTVShowCharacterArtAD.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowCharacterArtAD.AutoSize = True
-        Me.chkTVShowCharacterArtAD.Enabled = False
+        Me.chkTVShowCharacterArtAD.AutoSize = true
+        Me.chkTVShowCharacterArtAD.Enabled = false
         Me.chkTVShowCharacterArtAD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.chkTVShowCharacterArtAD.Location = New System.Drawing.Point(110, 3)
         Me.chkTVShowCharacterArtAD.Name = "chkTVShowCharacterArtAD"
         Me.chkTVShowCharacterArtAD.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowCharacterArtAD.TabIndex = 2
-        Me.chkTVShowCharacterArtAD.UseVisualStyleBackColor = True
+        Me.chkTVShowCharacterArtAD.UseVisualStyleBackColor = true
         '
         'lblTVSourcesFileNamingXBMCADCharacterArt
         '
         Me.lblTVSourcesFileNamingXBMCADCharacterArt.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCADCharacterArt.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCADCharacterArt.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCADCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingXBMCADCharacterArt.Location = New System.Drawing.Point(3, 3)
         Me.lblTVSourcesFileNamingXBMCADCharacterArt.Name = "lblTVSourcesFileNamingXBMCADCharacterArt"
@@ -11301,7 +11315,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingXBMCADClearArt
         '
         Me.lblTVSourcesFileNamingXBMCADClearArt.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCADClearArt.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCADClearArt.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCADClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingXBMCADClearArt.Location = New System.Drawing.Point(3, 23)
         Me.lblTVSourcesFileNamingXBMCADClearArt.Name = "lblTVSourcesFileNamingXBMCADClearArt"
@@ -11312,7 +11326,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingXBMCADClearLogo
         '
         Me.lblTVSourcesFileNamingXBMCADClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCADClearLogo.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCADClearLogo.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCADClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingXBMCADClearLogo.Location = New System.Drawing.Point(3, 43)
         Me.lblTVSourcesFileNamingXBMCADClearLogo.Name = "lblTVSourcesFileNamingXBMCADClearLogo"
@@ -11323,7 +11337,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingXBMCADSeasonLandscape
         '
         Me.lblTVSourcesFileNamingXBMCADSeasonLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCADSeasonLandscape.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCADSeasonLandscape.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCADSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingXBMCADSeasonLandscape.Location = New System.Drawing.Point(3, 63)
         Me.lblTVSourcesFileNamingXBMCADSeasonLandscape.Name = "lblTVSourcesFileNamingXBMCADSeasonLandscape"
@@ -11334,7 +11348,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingXBMCADShowLandscape
         '
         Me.lblTVSourcesFileNamingXBMCADShowLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCADShowLandscape.AutoSize = True
+        Me.lblTVSourcesFileNamingXBMCADShowLandscape.AutoSize = true
         Me.lblTVSourcesFileNamingXBMCADShowLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingXBMCADShowLandscape.Location = New System.Drawing.Point(3, 83)
         Me.lblTVSourcesFileNamingXBMCADShowLandscape.Name = "lblTVSourcesFileNamingXBMCADShowLandscape"
@@ -11345,14 +11359,14 @@ Partial Class dlgSettings
         'chkTVShowClearArtAD
         '
         Me.chkTVShowClearArtAD.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowClearArtAD.AutoSize = True
-        Me.chkTVShowClearArtAD.Enabled = False
+        Me.chkTVShowClearArtAD.AutoSize = true
+        Me.chkTVShowClearArtAD.Enabled = false
         Me.chkTVShowClearArtAD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.chkTVShowClearArtAD.Location = New System.Drawing.Point(110, 23)
         Me.chkTVShowClearArtAD.Name = "chkTVShowClearArtAD"
         Me.chkTVShowClearArtAD.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowClearArtAD.TabIndex = 1
-        Me.chkTVShowClearArtAD.UseVisualStyleBackColor = True
+        Me.chkTVShowClearArtAD.UseVisualStyleBackColor = true
         '
         'tpTVSourcesFileNamingNMT
         '
@@ -11362,11 +11376,11 @@ Partial Class dlgSettings
         Me.tpTVSourcesFileNamingNMT.Size = New System.Drawing.Size(512, 314)
         Me.tpTVSourcesFileNamingNMT.TabIndex = 1
         Me.tpTVSourcesFileNamingNMT.Text = "NMT"
-        Me.tpTVSourcesFileNamingNMT.UseVisualStyleBackColor = True
+        Me.tpTVSourcesFileNamingNMT.UseVisualStyleBackColor = true
         '
         'tblTVSourcesFileNamingNMT
         '
-        Me.tblTVSourcesFileNamingNMT.AutoSize = True
+        Me.tblTVSourcesFileNamingNMT.AutoSize = true
         Me.tblTVSourcesFileNamingNMT.ColumnCount = 2
         Me.tblTVSourcesFileNamingNMT.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingNMT.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -11382,20 +11396,20 @@ Partial Class dlgSettings
         '
         'gbTVSourcesFileNamingNMTDefaultsOpts
         '
-        Me.gbTVSourcesFileNamingNMTDefaultsOpts.AutoSize = True
+        Me.gbTVSourcesFileNamingNMTDefaultsOpts.AutoSize = true
         Me.gbTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.tblTVSourcesFileNamingNMTDefaultsOpts)
         Me.gbTVSourcesFileNamingNMTDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbTVSourcesFileNamingNMTDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbTVSourcesFileNamingNMTDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbTVSourcesFileNamingNMTDefaultsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbTVSourcesFileNamingNMTDefaultsOpts.Name = "gbTVSourcesFileNamingNMTDefaultsOpts"
         Me.gbTVSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(353, 141)
         Me.gbTVSourcesFileNamingNMTDefaultsOpts.TabIndex = 18
-        Me.gbTVSourcesFileNamingNMTDefaultsOpts.TabStop = False
+        Me.gbTVSourcesFileNamingNMTDefaultsOpts.TabStop = false
         Me.gbTVSourcesFileNamingNMTDefaultsOpts.Text = "Defaults"
         '
         'tblTVSourcesFileNamingNMTDefaultsOpts
         '
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.AutoSize = True
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.AutoSize = true
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.ColumnCount = 8
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -11437,9 +11451,9 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Name = "tblTVSourcesFileNamingNMTDefaultsOpts"
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowCount = 7
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -11450,118 +11464,118 @@ Partial Class dlgSettings
         'chkTVShowPosterNMJ
         '
         Me.chkTVShowPosterNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowPosterNMJ.AutoSize = True
-        Me.chkTVShowPosterNMJ.Enabled = False
+        Me.chkTVShowPosterNMJ.AutoSize = true
+        Me.chkTVShowPosterNMJ.Enabled = false
         Me.chkTVShowPosterNMJ.Location = New System.Drawing.Point(318, 103)
         Me.chkTVShowPosterNMJ.Name = "chkTVShowPosterNMJ"
         Me.chkTVShowPosterNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowPosterNMJ.TabIndex = 17
-        Me.chkTVShowPosterNMJ.UseVisualStyleBackColor = True
+        Me.chkTVShowPosterNMJ.UseVisualStyleBackColor = true
         '
         'chkTVShowFanartNMJ
         '
         Me.chkTVShowFanartNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowFanartNMJ.AutoSize = True
-        Me.chkTVShowFanartNMJ.Enabled = False
+        Me.chkTVShowFanartNMJ.AutoSize = true
+        Me.chkTVShowFanartNMJ.Enabled = false
         Me.chkTVShowFanartNMJ.Location = New System.Drawing.Point(318, 83)
         Me.chkTVShowFanartNMJ.Name = "chkTVShowFanartNMJ"
         Me.chkTVShowFanartNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowFanartNMJ.TabIndex = 18
-        Me.chkTVShowFanartNMJ.UseVisualStyleBackColor = True
+        Me.chkTVShowFanartNMJ.UseVisualStyleBackColor = true
         '
         'chkTVShowBannerNMJ
         '
         Me.chkTVShowBannerNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowBannerNMJ.AutoSize = True
-        Me.chkTVShowBannerNMJ.Enabled = False
+        Me.chkTVShowBannerNMJ.AutoSize = true
+        Me.chkTVShowBannerNMJ.Enabled = false
         Me.chkTVShowBannerNMJ.Location = New System.Drawing.Point(318, 63)
         Me.chkTVShowBannerNMJ.Name = "chkTVShowBannerNMJ"
         Me.chkTVShowBannerNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowBannerNMJ.TabIndex = 25
-        Me.chkTVShowBannerNMJ.UseVisualStyleBackColor = True
+        Me.chkTVShowBannerNMJ.UseVisualStyleBackColor = true
         '
         'chkTVSeasonPosterNMJ
         '
         Me.chkTVSeasonPosterNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonPosterNMJ.AutoSize = True
-        Me.chkTVSeasonPosterNMJ.Enabled = False
+        Me.chkTVSeasonPosterNMJ.AutoSize = true
+        Me.chkTVSeasonPosterNMJ.Enabled = false
         Me.chkTVSeasonPosterNMJ.Location = New System.Drawing.Point(272, 103)
         Me.chkTVSeasonPosterNMJ.Name = "chkTVSeasonPosterNMJ"
         Me.chkTVSeasonPosterNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonPosterNMJ.TabIndex = 26
-        Me.chkTVSeasonPosterNMJ.UseVisualStyleBackColor = True
+        Me.chkTVSeasonPosterNMJ.UseVisualStyleBackColor = true
         '
         'chkTVEpisodePosterYAMJ
         '
         Me.chkTVEpisodePosterYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVEpisodePosterYAMJ.AutoSize = True
-        Me.chkTVEpisodePosterYAMJ.Enabled = False
+        Me.chkTVEpisodePosterYAMJ.AutoSize = true
+        Me.chkTVEpisodePosterYAMJ.Enabled = false
         Me.chkTVEpisodePosterYAMJ.Location = New System.Drawing.Point(74, 103)
         Me.chkTVEpisodePosterYAMJ.Name = "chkTVEpisodePosterYAMJ"
         Me.chkTVEpisodePosterYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVEpisodePosterYAMJ.TabIndex = 21
-        Me.chkTVEpisodePosterYAMJ.UseVisualStyleBackColor = True
+        Me.chkTVEpisodePosterYAMJ.UseVisualStyleBackColor = true
         '
         'chkTVSeasonBannerYAMJ
         '
         Me.chkTVSeasonBannerYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonBannerYAMJ.AutoSize = True
-        Me.chkTVSeasonBannerYAMJ.Enabled = False
+        Me.chkTVSeasonBannerYAMJ.AutoSize = true
+        Me.chkTVSeasonBannerYAMJ.Enabled = false
         Me.chkTVSeasonBannerYAMJ.Location = New System.Drawing.Point(126, 63)
         Me.chkTVSeasonBannerYAMJ.Name = "chkTVSeasonBannerYAMJ"
         Me.chkTVSeasonBannerYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonBannerYAMJ.TabIndex = 23
-        Me.chkTVSeasonBannerYAMJ.UseVisualStyleBackColor = True
+        Me.chkTVSeasonBannerYAMJ.UseVisualStyleBackColor = true
         '
         'chkTVSeasonFanartNMJ
         '
         Me.chkTVSeasonFanartNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonFanartNMJ.AutoSize = True
-        Me.chkTVSeasonFanartNMJ.Enabled = False
+        Me.chkTVSeasonFanartNMJ.AutoSize = true
+        Me.chkTVSeasonFanartNMJ.Enabled = false
         Me.chkTVSeasonFanartNMJ.Location = New System.Drawing.Point(272, 83)
         Me.chkTVSeasonFanartNMJ.Name = "chkTVSeasonFanartNMJ"
         Me.chkTVSeasonFanartNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonFanartNMJ.TabIndex = 19
-        Me.chkTVSeasonFanartNMJ.UseVisualStyleBackColor = True
+        Me.chkTVSeasonFanartNMJ.UseVisualStyleBackColor = true
         '
         'chkTVSeasonBannerNMJ
         '
         Me.chkTVSeasonBannerNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonBannerNMJ.AutoSize = True
-        Me.chkTVSeasonBannerNMJ.Enabled = False
+        Me.chkTVSeasonBannerNMJ.AutoSize = true
+        Me.chkTVSeasonBannerNMJ.Enabled = false
         Me.chkTVSeasonBannerNMJ.Location = New System.Drawing.Point(272, 63)
         Me.chkTVSeasonBannerNMJ.Name = "chkTVSeasonBannerNMJ"
         Me.chkTVSeasonBannerNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonBannerNMJ.TabIndex = 23
-        Me.chkTVSeasonBannerNMJ.UseVisualStyleBackColor = True
+        Me.chkTVSeasonBannerNMJ.UseVisualStyleBackColor = true
         '
         'chkTVSeasonPosterYAMJ
         '
         Me.chkTVSeasonPosterYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonPosterYAMJ.AutoSize = True
-        Me.chkTVSeasonPosterYAMJ.Enabled = False
+        Me.chkTVSeasonPosterYAMJ.AutoSize = true
+        Me.chkTVSeasonPosterYAMJ.Enabled = false
         Me.chkTVSeasonPosterYAMJ.Location = New System.Drawing.Point(126, 103)
         Me.chkTVSeasonPosterYAMJ.Name = "chkTVSeasonPosterYAMJ"
         Me.chkTVSeasonPosterYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonPosterYAMJ.TabIndex = 26
-        Me.chkTVSeasonPosterYAMJ.UseVisualStyleBackColor = True
+        Me.chkTVSeasonPosterYAMJ.UseVisualStyleBackColor = true
         '
         'chkTVEpisodePosterNMJ
         '
         Me.chkTVEpisodePosterNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVEpisodePosterNMJ.AutoSize = True
-        Me.chkTVEpisodePosterNMJ.Enabled = False
+        Me.chkTVEpisodePosterNMJ.AutoSize = true
+        Me.chkTVEpisodePosterNMJ.Enabled = false
         Me.chkTVEpisodePosterNMJ.Location = New System.Drawing.Point(220, 103)
         Me.chkTVEpisodePosterNMJ.Name = "chkTVEpisodePosterNMJ"
         Me.chkTVEpisodePosterNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVEpisodePosterNMJ.TabIndex = 21
-        Me.chkTVEpisodePosterNMJ.UseVisualStyleBackColor = True
+        Me.chkTVEpisodePosterNMJ.UseVisualStyleBackColor = true
         '
         'lblTVSourcesFileNamingNMTDefaultsEnabled
         '
         Me.lblTVSourcesFileNamingNMTDefaultsEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingNMTDefaultsEnabled.AutoSize = True
-        Me.lblTVSourcesFileNamingNMTDefaultsEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVSourcesFileNamingNMTDefaultsEnabled.AutoSize = true
+        Me.lblTVSourcesFileNamingNMTDefaultsEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTVSourcesFileNamingNMTDefaultsEnabled.Location = New System.Drawing.Point(3, 23)
         Me.lblTVSourcesFileNamingNMTDefaultsEnabled.Name = "lblTVSourcesFileNamingNMTDefaultsEnabled"
         Me.lblTVSourcesFileNamingNMTDefaultsEnabled.Size = New System.Drawing.Size(49, 13)
@@ -11571,29 +11585,29 @@ Partial Class dlgSettings
         'chkTVSeasonFanartYAMJ
         '
         Me.chkTVSeasonFanartYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonFanartYAMJ.AutoSize = True
-        Me.chkTVSeasonFanartYAMJ.Enabled = False
+        Me.chkTVSeasonFanartYAMJ.AutoSize = true
+        Me.chkTVSeasonFanartYAMJ.Enabled = false
         Me.chkTVSeasonFanartYAMJ.Location = New System.Drawing.Point(126, 83)
         Me.chkTVSeasonFanartYAMJ.Name = "chkTVSeasonFanartYAMJ"
         Me.chkTVSeasonFanartYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonFanartYAMJ.TabIndex = 19
-        Me.chkTVSeasonFanartYAMJ.UseVisualStyleBackColor = True
+        Me.chkTVSeasonFanartYAMJ.UseVisualStyleBackColor = true
         '
         'chkTVShowBannerYAMJ
         '
         Me.chkTVShowBannerYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowBannerYAMJ.AutoSize = True
-        Me.chkTVShowBannerYAMJ.Enabled = False
+        Me.chkTVShowBannerYAMJ.AutoSize = true
+        Me.chkTVShowBannerYAMJ.Enabled = false
         Me.chkTVShowBannerYAMJ.Location = New System.Drawing.Point(172, 63)
         Me.chkTVShowBannerYAMJ.Name = "chkTVShowBannerYAMJ"
         Me.chkTVShowBannerYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowBannerYAMJ.TabIndex = 25
-        Me.chkTVShowBannerYAMJ.UseVisualStyleBackColor = True
+        Me.chkTVShowBannerYAMJ.UseVisualStyleBackColor = true
         '
         'lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode
         '
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode.AutoSize = True
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode.AutoSize = true
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode.Location = New System.Drawing.Point(58, 43)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode"
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode.Size = New System.Drawing.Size(48, 13)
@@ -11603,7 +11617,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason
         '
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason.AutoSize = True
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason.AutoSize = true
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason.Location = New System.Drawing.Point(112, 43)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason"
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason.Size = New System.Drawing.Size(44, 13)
@@ -11613,7 +11627,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow
         '
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow.AutoSize = True
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow.AutoSize = true
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow.Location = New System.Drawing.Point(162, 43)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow"
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJShow.Size = New System.Drawing.Size(36, 13)
@@ -11623,18 +11637,18 @@ Partial Class dlgSettings
         'chkTVShowFanartYAMJ
         '
         Me.chkTVShowFanartYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowFanartYAMJ.AutoSize = True
-        Me.chkTVShowFanartYAMJ.Enabled = False
+        Me.chkTVShowFanartYAMJ.AutoSize = true
+        Me.chkTVShowFanartYAMJ.Enabled = false
         Me.chkTVShowFanartYAMJ.Location = New System.Drawing.Point(172, 83)
         Me.chkTVShowFanartYAMJ.Name = "chkTVShowFanartYAMJ"
         Me.chkTVShowFanartYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowFanartYAMJ.TabIndex = 18
-        Me.chkTVShowFanartYAMJ.UseVisualStyleBackColor = True
+        Me.chkTVShowFanartYAMJ.UseVisualStyleBackColor = true
         '
         'lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode
         '
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode.AutoSize = True
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode.AutoSize = true
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode.Location = New System.Drawing.Point(204, 43)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode"
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode.Size = New System.Drawing.Size(48, 13)
@@ -11644,18 +11658,18 @@ Partial Class dlgSettings
         'chkTVShowPosterYAMJ
         '
         Me.chkTVShowPosterYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowPosterYAMJ.AutoSize = True
-        Me.chkTVShowPosterYAMJ.Enabled = False
+        Me.chkTVShowPosterYAMJ.AutoSize = true
+        Me.chkTVShowPosterYAMJ.Enabled = false
         Me.chkTVShowPosterYAMJ.Location = New System.Drawing.Point(172, 103)
         Me.chkTVShowPosterYAMJ.Name = "chkTVShowPosterYAMJ"
         Me.chkTVShowPosterYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowPosterYAMJ.TabIndex = 17
-        Me.chkTVShowPosterYAMJ.UseVisualStyleBackColor = True
+        Me.chkTVShowPosterYAMJ.UseVisualStyleBackColor = true
         '
         'lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason
         '
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason.AutoSize = True
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason.AutoSize = true
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason.Location = New System.Drawing.Point(258, 43)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason"
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason.Size = New System.Drawing.Size(44, 13)
@@ -11665,7 +11679,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow
         '
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow.AutoSize = True
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow.AutoSize = true
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow.Location = New System.Drawing.Point(308, 43)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow"
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJShow.Size = New System.Drawing.Size(36, 13)
@@ -11675,7 +11689,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingNMTDefaultsBanner
         '
         Me.lblTVSourcesFileNamingNMTDefaultsBanner.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingNMTDefaultsBanner.AutoSize = True
+        Me.lblTVSourcesFileNamingNMTDefaultsBanner.AutoSize = true
         Me.lblTVSourcesFileNamingNMTDefaultsBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingNMTDefaultsBanner.Location = New System.Drawing.Point(3, 63)
         Me.lblTVSourcesFileNamingNMTDefaultsBanner.Name = "lblTVSourcesFileNamingNMTDefaultsBanner"
@@ -11686,7 +11700,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingNMTDefaultsFanart
         '
         Me.lblTVSourcesFileNamingNMTDefaultsFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingNMTDefaultsFanart.AutoSize = True
+        Me.lblTVSourcesFileNamingNMTDefaultsFanart.AutoSize = true
         Me.lblTVSourcesFileNamingNMTDefaultsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingNMTDefaultsFanart.Location = New System.Drawing.Point(3, 83)
         Me.lblTVSourcesFileNamingNMTDefaultsFanart.Name = "lblTVSourcesFileNamingNMTDefaultsFanart"
@@ -11697,7 +11711,7 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingNMTDefaultsPoster
         '
         Me.lblTVSourcesFileNamingNMTDefaultsPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingNMTDefaultsPoster.AutoSize = True
+        Me.lblTVSourcesFileNamingNMTDefaultsPoster.AutoSize = true
         Me.lblTVSourcesFileNamingNMTDefaultsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFileNamingNMTDefaultsPoster.Location = New System.Drawing.Point(3, 103)
         Me.lblTVSourcesFileNamingNMTDefaultsPoster.Name = "lblTVSourcesFileNamingNMTDefaultsPoster"
@@ -11708,29 +11722,29 @@ Partial Class dlgSettings
         'chkTVUseYAMJ
         '
         Me.chkTVUseYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVUseYAMJ.AutoSize = True
+        Me.chkTVUseYAMJ.AutoSize = true
         Me.chkTVUseYAMJ.Location = New System.Drawing.Point(126, 23)
         Me.chkTVUseYAMJ.Name = "chkTVUseYAMJ"
         Me.chkTVUseYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVUseYAMJ.TabIndex = 16
-        Me.chkTVUseYAMJ.UseVisualStyleBackColor = True
+        Me.chkTVUseYAMJ.UseVisualStyleBackColor = true
         '
         'chkTVUseNMJ
         '
         Me.chkTVUseNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVUseNMJ.AutoSize = True
-        Me.chkTVUseNMJ.Enabled = False
+        Me.chkTVUseNMJ.AutoSize = true
+        Me.chkTVUseNMJ.Enabled = false
         Me.chkTVUseNMJ.Location = New System.Drawing.Point(272, 23)
         Me.chkTVUseNMJ.Name = "chkTVUseNMJ"
         Me.chkTVUseNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVUseNMJ.TabIndex = 16
-        Me.chkTVUseNMJ.UseVisualStyleBackColor = True
+        Me.chkTVUseNMJ.UseVisualStyleBackColor = true
         '
         'lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ
         '
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.AutoSize = True
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.AutoSize = true
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Location = New System.Drawing.Point(115, 3)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ"
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Size = New System.Drawing.Size(37, 13)
@@ -11740,8 +11754,8 @@ Partial Class dlgSettings
         'lblTVSourcesFileNamingNMTDefaultsHeaderNMJ
         '
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.AutoSize = True
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.AutoSize = true
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Location = New System.Drawing.Point(264, 3)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderNMJ"
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Size = New System.Drawing.Size(32, 13)
@@ -19255,7 +19269,7 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterPrefOnly.AutoSize = true
         Me.tblMovieSetImagesPosterOpts.SetColumnSpan(Me.chkMovieSetPosterPrefOnly, 2)
         Me.chkMovieSetPosterPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieSetPosterPrefOnly.Location = New System.Drawing.Point(158, 25)
+        Me.chkMovieSetPosterPrefOnly.Location = New System.Drawing.Point(186, 25)
         Me.chkMovieSetPosterPrefOnly.Name = "chkMovieSetPosterPrefOnly"
         Me.chkMovieSetPosterPrefOnly.Size = New System.Drawing.Size(50, 17)
         Me.chkMovieSetPosterPrefOnly.TabIndex = 2
@@ -21911,4 +21925,5 @@ End Sub
     Friend WithEvents gbMovieGeneralMediaListSorting As System.Windows.Forms.GroupBox
     Friend WithEvents tblMovieGeneralMediaListSorting As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents btnMovieGeneralMediaListSortingUp As System.Windows.Forms.Button
+    Friend WithEvents chkGeneralShowLangFlags As System.Windows.Forms.CheckBox
 End Class

@@ -2745,6 +2745,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkGeneralShowLangFlags_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralShowLangFlags.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkGeneralShowImgDims_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralShowImgDims.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3378,6 +3382,7 @@ Public Class dlgSettings
                 Me.chkGeneralImagesGlassOverlay.Checked = .GeneralImagesGlassOverlay
                 Me.chkGeneralOverwriteNfo.Checked = .GeneralOverwriteNfo
                 Me.chkGeneralShowGenresText.Checked = .GeneralShowGenresText
+                Me.chkGeneralShowLangFlags.Checked = .GeneralShowLangFlags
                 Me.chkGeneralShowImgDims.Checked = .GeneralShowImgDims
                 Me.chkGeneralShowImgNames.Checked = .GeneralShowImgNames
                 Me.chkGeneralSourceFromFolder.Checked = .GeneralSourceFromFolder
@@ -4993,6 +4998,7 @@ Public Class dlgSettings
                 .GeneralMovieSetTheme = Me.cbGeneralMovieSetTheme.Text
                 .GeneralOverwriteNfo = Me.chkGeneralOverwriteNfo.Checked
                 .GeneralShowGenresText = Me.chkGeneralShowGenresText.Checked
+                .GeneralShowLangFlags = Me.chkGeneralShowLangFlags.Checked
                 .GeneralShowImgDims = Me.chkGeneralShowImgDims.Checked
                 .GeneralShowImgNames = Me.chkGeneralShowImgNames.Checked
                 .GeneralSourceFromFolder = Me.chkGeneralSourceFromFolder.Checked
@@ -6467,6 +6473,7 @@ Public Class dlgSettings
         Me.chkGeneralImagesGlassOverlay.Text = Master.eLang.GetString(966, "Enable Images Glass Overlay")
         Me.chkGeneralOverwriteNfo.Text = Master.eLang.GetString(433, "Overwrite Non-conforming nfos")
         Me.chkGeneralShowGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
+        Me.chkGeneralShowLangFlags.Text = Master.eLang.GetString(489, "Display Language Flags")
         Me.chkGeneralShowImgDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
         Me.chkGeneralShowImgNames.Text = Master.eLang.GetString(1255, "Display Image Names")
         Me.chkGeneralSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")

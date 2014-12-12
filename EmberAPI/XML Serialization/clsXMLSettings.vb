@@ -61,6 +61,7 @@ Partial Public Class clsXMLSettings
     Private _generaloverwritenfo As Boolean
     Private _generalseasonsplitterpanelstate As Integer
     Private _generalshowgenrestext As Boolean
+    Private _generalshowlangflags As Boolean
     Private _generalshowimgdims As Boolean
     Private _generalshowimgnames As Boolean
     Private _generalshowsplitterpanelstate As Integer
@@ -4339,6 +4340,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As List(Of String))
             Me._moviesets = value
+        End Set
+    End Property
+
+    Public Property GeneralShowLangFlags() As Boolean
+        Get
+            Return Me._generalshowlangflags
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalshowlangflags = value
         End Set
     End Property
 

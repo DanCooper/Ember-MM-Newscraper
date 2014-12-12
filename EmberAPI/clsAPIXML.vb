@@ -186,7 +186,7 @@ Public Class APIXML
         Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
         Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, ForTV)
 
-        If lFlags.Count > 0 Then
+        If lFlags.Count > 0 OrElse dLanguages.Count > 0 Then
             Try
                 Dim vRes As String = NFO.GetResFromDimensions(tVideo).ToLower
                 Dim vresFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = vRes AndAlso f.Type = FlagType.VideoResolution)
@@ -265,76 +265,78 @@ Public Class APIXML
                     End If
                 End If
 
-                'Audio Language Flags has range iReturn(5) to iReturn(11)
-                Dim aIcon As Integer = 5
-                Dim hasMoreA As Boolean = fiAV.StreamDetails.Audio.Count > 7
-                For i = 0 To fiAV.StreamDetails.Audio.Count - 1
-                    If If(hasMoreA, aIcon > 10, aIcon > 11) Then Exit For
-                    If fiAV.StreamDetails.Audio(i).LanguageSpecified Then
-                        Dim aLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Audio(i).Language)
-                        aLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(618, "Audio Stream"), i)
-                        aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Audio(i).LongLanguage)
-                        If fiAV.StreamDetails.Audio(i).CodecSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(604, "Codec"), fiAV.StreamDetails.Audio(i).Codec)
-                        If fiAV.StreamDetails.Audio(i).ChannelsSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(611, "Channels"), fiAV.StreamDetails.Audio(i).Channels)
-                        If fiAV.StreamDetails.Audio(i).BitrateSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(1158, "Bitrate"), fiAV.StreamDetails.Audio(i).Bitrate)
-                        iReturn(aIcon) = aLangFlag
-                        aIcon += 1
-                    Else
-                        Dim aLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
-                        aLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(618, "Audio Stream"), i)
-                        aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
-                        If fiAV.StreamDetails.Audio(i).CodecSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(604, "Codec"), fiAV.StreamDetails.Audio(i).Codec)
-                        If fiAV.StreamDetails.Audio(i).ChannelsSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(611, "Channels"), fiAV.StreamDetails.Audio(i).Channels)
-                        If fiAV.StreamDetails.Audio(i).BitrateSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(1158, "Bitrate"), fiAV.StreamDetails.Audio(i).Bitrate)
-                        iReturn(aIcon) = aLangFlag
-                        aIcon += 1
-                    End If
-                Next
-                'If there are more than 7 languages ​​a plus icon appears instead of the 7th language.
-                If hasMoreA Then
-                    Dim pImage As Image
-                    Dim pLang As String = String.Empty
-                    For i = 7 To fiAV.StreamDetails.Audio.Count - 1
-                        pLang = String.Concat(pLang, String.Format("{0}{1}", vbNewLine, fiAV.StreamDetails.Audio(i).LongLanguage))
+                If Master.eSettings.GeneralShowLangFlags Then
+                    'Audio Language Flags has range iReturn(5) to iReturn(11)
+                    Dim aIcon As Integer = 5
+                    Dim hasMoreA As Boolean = fiAV.StreamDetails.Audio.Count > 7
+                    For i = 0 To fiAV.StreamDetails.Audio.Count - 1
+                        If If(hasMoreA, aIcon > 10, aIcon > 11) Then Exit For
+                        If fiAV.StreamDetails.Audio(i).LanguageSpecified Then
+                            Dim aLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Audio(i).Language)
+                            aLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(618, "Audio Stream"), i)
+                            aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Audio(i).LongLanguage)
+                            If fiAV.StreamDetails.Audio(i).CodecSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(604, "Codec"), fiAV.StreamDetails.Audio(i).Codec)
+                            If fiAV.StreamDetails.Audio(i).ChannelsSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(611, "Channels"), fiAV.StreamDetails.Audio(i).Channels)
+                            If fiAV.StreamDetails.Audio(i).BitrateSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(1158, "Bitrate"), fiAV.StreamDetails.Audio(i).Bitrate)
+                            iReturn(aIcon) = aLangFlag
+                            aIcon += 1
+                        Else
+                            Dim aLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
+                            aLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(618, "Audio Stream"), i)
+                            aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
+                            If fiAV.StreamDetails.Audio(i).CodecSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(604, "Codec"), fiAV.StreamDetails.Audio(i).Codec)
+                            If fiAV.StreamDetails.Audio(i).ChannelsSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(611, "Channels"), fiAV.StreamDetails.Audio(i).Channels)
+                            If fiAV.StreamDetails.Audio(i).BitrateSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(1158, "Bitrate"), fiAV.StreamDetails.Audio(i).Bitrate)
+                            iReturn(aIcon) = aLangFlag
+                            aIcon += 1
+                        End If
                     Next
-                    pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguageMore.png"))
-                    pImage.Tag = pLang
-                    iReturn(11) = pImage
-                End If
+                    'If there are more than 7 languages ​​a plus icon appears instead of the 7th language.
+                    If hasMoreA Then
+                        Dim pImage As Image
+                        Dim pLang As String = String.Empty
+                        For i = 7 To fiAV.StreamDetails.Audio.Count - 1
+                            pLang = String.Concat(pLang, String.Format("{0}{1}", vbNewLine, fiAV.StreamDetails.Audio(i).LongLanguage))
+                        Next
+                        pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguageMore.png"))
+                        pImage.Tag = pLang
+                        iReturn(11) = pImage
+                    End If
 
-                'Subtitles Language Flags has range iReturn(12) to iReturn(18)
-                Dim sIcon As Integer = 12
-                Dim hasMoreS As Boolean = fiAV.StreamDetails.Subtitle.Count > 7
-                For i = 0 To fiAV.StreamDetails.Subtitle.Count - 1
-                    If If(hasMoreA, sIcon > 17, sIcon > 18) Then Exit For
-                    If fiAV.StreamDetails.Subtitle(i).LanguageSpecified Then
-                        Dim sLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Subtitle(i).Language)
-                        sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
-                        sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Subtitle(i).LongLanguage)
-                        sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(1287, "Forced"), _
-                                                      If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-                        iReturn(sIcon) = sLangFlag
-                        sIcon += 1
-                    Else
-                        Dim sLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
-                        sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
-                        sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
-                        sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(1287, "Forced"), _
-                                                      If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-                        iReturn(sIcon) = sLangFlag
-                        aIcon += 1
-                    End If
-                Next
-                'If there are more than 7 languages ​​a plus icon appears instead of the 7th language.
-                If hasMoreS Then
-                    Dim pImage As Image
-                    Dim pLang As String = String.Empty
-                    For i = 7 To fiAV.StreamDetails.Subtitle.Count - 1
-                        pLang = String.Concat(pLang, String.Format("{0}{1}", vbNewLine, fiAV.StreamDetails.Subtitle(i).LongLanguage))
+                    'Subtitles Language Flags has range iReturn(12) to iReturn(18)
+                    Dim sIcon As Integer = 12
+                    Dim hasMoreS As Boolean = fiAV.StreamDetails.Subtitle.Count > 7
+                    For i = 0 To fiAV.StreamDetails.Subtitle.Count - 1
+                        If If(hasMoreA, sIcon > 17, sIcon > 18) Then Exit For
+                        If fiAV.StreamDetails.Subtitle(i).LanguageSpecified Then
+                            Dim sLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Subtitle(i).Language)
+                            sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
+                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Subtitle(i).LongLanguage)
+                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(1287, "Forced"), _
+                                                          If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                            iReturn(sIcon) = sLangFlag
+                            sIcon += 1
+                        Else
+                            Dim sLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
+                            sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
+                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
+                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(1287, "Forced"), _
+                                                          If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                            iReturn(sIcon) = sLangFlag
+                            aIcon += 1
+                        End If
                     Next
-                    pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguageMore.png"))
-                    pImage.Tag = pLang
-                    iReturn(18) = pImage
+                    'If there are more than 7 languages ​​a plus icon appears instead of the 7th language.
+                    If hasMoreS Then
+                        Dim pImage As Image
+                        Dim pLang As String = String.Empty
+                        For i = 7 To fiAV.StreamDetails.Subtitle.Count - 1
+                            pLang = String.Concat(pLang, String.Format("{0}{1}", vbNewLine, fiAV.StreamDetails.Subtitle(i).LongLanguage))
+                        Next
+                        pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguageMore.png"))
+                        pImage.Tag = pLang
+                        iReturn(18) = pImage
+                    End If
                 End If
 
             Catch ex As Exception
