@@ -1427,7 +1427,7 @@ Public Class Database
                         With _TVDB.TVShow
                             If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
                             If Not DBNull.Value.Equals(SQLreader("TVDB")) Then .ID = SQLreader("TVDB").ToString
-                            If Not DBNull.Value.Equals(SQLreader("EpisodeGuide")) Then .EpisodeGuideURL = SQLreader("EpisodeGuide").ToString
+                            If Not DBNull.Value.Equals(SQLreader("EpisodeGuide")) Then .EpisodeGuide.URL = SQLreader("EpisodeGuide").ToString
                             If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
                             If Not DBNull.Value.Equals(SQLreader("Genre")) Then .Genre = SQLreader("Genre").ToString
                             If Not DBNull.Value.Equals(SQLreader("Premiered")) Then .Premiered = SQLreader("Premiered").ToString
@@ -2799,7 +2799,7 @@ Public Class Database
                 With _TVShowDB.TVShow
                     parTVDB.Value = .ID
                     parTitle.Value = .Title
-                    parEpisodeGuide.Value = .EpisodeGuideURL
+                    parEpisodeGuide.Value = .EpisodeGuide.URL
                     parPlot.Value = .Plot
                     parGenre.Value = .Genre
                     parPremiered.Value = .Premiered

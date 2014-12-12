@@ -502,6 +502,47 @@ Namespace MediaContainers
     End Class
 
     <Serializable()> _
+    Public Class EpisodeGuide
+
+#Region "Fields"
+
+        Private _url As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clean()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlElement("url")> _
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal Value As String)
+                Me._url = Value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clean()
+            Me._url = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()> _
     Public Class Fanart
 
 #Region "Fields"
@@ -1918,7 +1959,7 @@ Namespace MediaContainers
 
         Private _title As String
         Private _id As String
-        Private _episodeguideurl As String
+        Private _episodeguide As New EpisodeGuide
         Private _rating As String
         Private _genres As New List(Of String)
         Private _mpaa As String
@@ -1995,19 +2036,19 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("episodeguide")> _
-        Public Property EpisodeGuideURL() As String
+        Public Property EpisodeGuide() As EpisodeGuide
             Get
-                Return Me._episodeguideurl
+                Return Me._episodeguide
             End Get
-            Set(ByVal value As String)
-                Me._episodeguideurl = value
+            Set(ByVal value As EpisodeGuide)
+                Me._episodeguide = value
             End Set
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property EpisodeGuideURLSpecified() As Boolean
+        Public ReadOnly Property EpisodeGuideSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._episodeguideurl)
+                Return Not String.IsNullOrEmpty(Me._episodeguide.URL)
             End Get
         End Property
 
@@ -2246,7 +2287,6 @@ Namespace MediaContainers
             _id = String.Empty
             _boxeeTvDb = String.Empty
             _rating = String.Empty
-            _episodeguideurl = String.Empty
             _plot = String.Empty
             _runtime = String.Empty
             _mpaa = String.Empty
