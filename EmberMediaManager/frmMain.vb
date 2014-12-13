@@ -1766,7 +1766,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub bwMovieScraper_Completed(Res As Results)
+    Private Async Function bwMovieScraper_Completed(Res As Results) As Threading.Tasks.Task
         'Dim Res As Results = DirectCast(e.Result, Results)
         If Master.isCL Then
             Me.ScraperDone = True
@@ -1774,7 +1774,7 @@ Public Class frmMain
 
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
             If Not Res.Cancelled Then
-                Me.MovieInfoDownloaded()
+                Await Me.MovieInfoDownloaded()
             Else
                 Me.tslLoading.Visible = False
                 Me.tspbLoading.Visible = False
@@ -1799,7 +1799,7 @@ Public Class frmMain
             Me.pnlCancel.Visible = False
             Me.SetControlsEnabled(True)
         End If
-    End Sub
+    End Function
 
     Private Async Function bwMovieScraper_DoWork(Args As Arguments) As Threading.Tasks.Task 'Handles bwMovieScraper.DoWork
         'Dim Args As Arguments = DirectCast(e.Argument, Arguments)
@@ -2570,7 +2570,7 @@ Public Class frmMain
         RemoveHandler ModulesManager.Instance.ScraperEvent_Movie, AddressOf MovieScraperEvent
 
         logger.Trace("Ended MOVIE scrape")
-        bwMovieScraper_Completed(New Results With {.scrapeType = Args.scrapeType, .Cancelled = Cancelled})
+        Await bwMovieScraper_Completed(New Results With {.scrapeType = Args.scrapeType, .Cancelled = Cancelled})
     End Function
 
     'Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
@@ -2590,14 +2590,14 @@ Public Class frmMain
 
     'Private Sub bwMovieSetScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) 'Handles bwMovieSetScraper.RunWorkerCompleted
 
-    Private Sub bwMovieSetScraper_Completed(Res As Results)
+    Private Async Function bwMovieSetScraper_Completed(Res As Results) As Threading.Tasks.Task
         'Dim Res As Results = DirectCast(e.Result, Results)
         If Master.isCL Then
             Me.ScraperDone = True
         End If
 
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
-            Me.MovieSetInfoDownloaded()
+            Await Me.MovieSetInfoDownloaded()
         Else
             If Me.dgvMovieSets.SelectedRows.Count > 0 Then
                 Me.SelectMovieSetRow(Me.dgvMovieSets.SelectedRows(0).Index)
@@ -2612,7 +2612,7 @@ Public Class frmMain
             Me.pnlCancel.Visible = False
             Me.SetControlsEnabled(True)
         End If
-    End Sub
+    End Function
 
     'Private Async Sub bwMovieSetScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieSetScraper.DoWork
     Private Async Function bwMovieSetScraper_DoWork(Args As Arguments) As Threading.Tasks.Task
@@ -3211,7 +3211,7 @@ Public Class frmMain
         RemoveHandler ModulesManager.Instance.ScraperEvent_MovieSet, AddressOf MovieSetScraperEvent
         'e.Result = New Results With {.scrapeType = Args.scrapeType}
         logger.Trace("Ended MOVIESET scrape")
-        bwMovieSetScraper_Completed(New Results With {.scrapeType = Args.scrapeType})
+        Await bwMovieSetScraper_Completed(New Results With {.scrapeType = Args.scrapeType})
     End Function
 
     'Private Sub bwMovieSetScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieSetScraper.ProgressChanged
@@ -18572,7 +18572,7 @@ doCancel:
                 Select Case iProgress
                     Case 0 ' show
                         Me.SetShowListItemAfterEdit(Convert.ToInt32(Master.currShow.ShowID), Me.dgvTVShows.SelectedRows(0).Index)
-                        ModulesManager.Instance.TVSaveImages()
+                        Await ModulesManager.Instance.TVSaveImages()
                     Case Else
                         logger.Warn("Unhandled TVScraperEventType.SaveAuto <{0}>", iProgress)
                 End Select
@@ -18588,7 +18588,7 @@ doCancel:
                         Using dEditShow As New dlgEditShow
                             If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
                                 Me.SetShowListItemAfterEdit(Convert.ToInt32(Master.currShow.ShowID), Me.dgvTVShows.SelectedRows(0).Index)
-                                ModulesManager.Instance.TVSaveImages()
+                                Await ModulesManager.Instance.TVSaveImages()
                             Else
                                 Me.tspbLoading.Visible = False
                                 Me.tslLoading.Visible = False
