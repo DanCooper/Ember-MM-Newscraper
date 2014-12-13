@@ -38,20 +38,20 @@ Public Class dlgTVDBSearchResults
 
 #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByVal _sInfo As Structures.ScrapeInfo) As Windows.Forms.DialogResult
+    Public Overloads Async Function ShowDialog(ByVal _sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task(Of Windows.Forms.DialogResult)
         Me.sInfo = _sInfo
         Me.Text = String.Concat(Master.eLang.GetString(948, "TV Search Results"), " - ", sInfo.ShowTitle)
-        Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
+        Await Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal _sinfo As Structures.ScrapeInfo, ByVal SkipDownload As Boolean) As Structures.ScrapeInfo
+    Public Overloads Async Function ShowDialog(ByVal _sinfo As Structures.ScrapeInfo, ByVal SkipDownload As Boolean) As Threading.Tasks.Task(Of Structures.ScrapeInfo)
         Me.sInfo = _sinfo
         Me._skipdownload = SkipDownload
 
         Me.Text = String.Concat(Master.eLang.GetString(948, "TV Search Results"), " - ", sInfo.ShowTitle)
-        Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
+        Await Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Return Me.sInfo
@@ -60,7 +60,7 @@ Public Class dlgTVDBSearchResults
         End If
     End Function
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Async Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
         If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
             Me.lvSearchResults.Enabled = False
             Me.sInfo.ShowTitle = Me.txtSearch.Text
@@ -69,7 +69,7 @@ Public Class dlgTVDBSearchResults
             Me.chkManual.Checked = False
             Me.txtSearch.Text = String.Empty
             Me.btnVerify.Enabled = False
-            Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
+            Await Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
             Me.pnlLoading.Visible = True
         End If
     End Sub
@@ -270,7 +270,7 @@ Public Class dlgTVDBSearchResults
         End If
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Async Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         If Me.lvSearchResults.SelectedItems.Count > 0 Then
             Dim sResults As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
             Me.sInfo.TVDBID = sResults.ID.ToString
@@ -279,7 +279,7 @@ Public Class dlgTVDBSearchResults
             If Not _skipdownload Then
                 Me.Label3.Text = Master.eLang.GetString(950, "Downloading show info...")
                 Me.pnlLoading.Visible = True
-                Scraper.sObject.DownloadSeriesAsync(sInfo)
+                Await Scraper.sObject.DownloadSeriesAsync(sInfo)
             Else
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
@@ -291,7 +291,7 @@ Public Class dlgTVDBSearchResults
             If Not _skipdownload Then
                 Me.Label3.Text = Master.eLang.GetString(950, "Downloading show info...")
                 Me.pnlLoading.Visible = True
-                Scraper.sObject.DownloadSeriesAsync(sInfo)
+                Await Scraper.sObject.DownloadSeriesAsync(sInfo)
             Else
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()

@@ -305,8 +305,8 @@ Public Class TVDB_Data_Poster
         Return Nothing
     End Function
 
-    Public Function SaveImages() As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.SaveImages
-        TVScraper.SaveImages()
+    Public Async Function SaveImages() As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.SaveImages
+        Await TVScraper.SaveImages()
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -381,24 +381,24 @@ Public Class TVDB_Data_Poster
 
     End Sub
 
-    Public Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.ScrapeEpisode
+    Public Async Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.ScrapeEpisode
         LoadSettings()
         Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
-        TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Ordering, filterOptions)
+        Await TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Ordering, filterOptions)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.Scraper
+    Public Async Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.Scraper
         LoadSettings()
         Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
-        TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, ShowLang, SourceLang, Ordering, filterOptions, ScrapeType, WithCurrent)
+        Await TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, ShowLang, SourceLang, Ordering, filterOptions, ScrapeType, WithCurrent)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.ScrapeSeason
+    Public Async Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Threading.Tasks.Task(Of Interfaces.ModuleResult) Implements Interfaces.ScraperModule_TV.ScrapeSeason
         LoadSettings()
         Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
-        TVScraper.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Ordering, filterOptions)
+        Await TVScraper.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Ordering, filterOptions)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

@@ -517,7 +517,7 @@ Namespace FileUtils
             Return False
         End Function
 
-        Public Shared Function GetDoppedImage(ByVal e As DragEventArgs) As Images
+        Public Shared Async Function GetDoppedImage(ByVal e As DragEventArgs) As Threading.Tasks.Task(Of Images)
             Dim tImage As New Images
             If e.Data.GetDataPresent("HTML FORMAT") Then
                 Dim clipboardHtml As String = CStr(e.Data.GetData("HTML Format"))
@@ -526,12 +526,12 @@ Namespace FileUtils
                 Dim baseURL As String = parseBaseURL(clipboardHtml)
 
                 If (imageSrc.ToLower().IndexOf("http://") = 0) Or (imageSrc.ToLower().IndexOf("https://") = 0) Then
-                    tImage.FromWeb(imageSrc)
+                    Await tImage.FromWeb(imageSrc)
                     If Not IsNothing(tImage.Image) Then
                         Return tImage
                     End If
                 Else
-                    tImage.FromWeb(baseURL + imageSrc.Substring(1))
+                    Await tImage.FromWeb(baseURL + imageSrc.Substring(1))
                     If Not IsNothing(tImage.Image) Then
                         Return tImage
                     End If

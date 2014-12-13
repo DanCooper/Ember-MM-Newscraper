@@ -28,7 +28,6 @@ Public Class dlgIMDBSearchResults
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
     Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
     Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
@@ -121,38 +120,6 @@ Public Class dlgIMDBSearchResults
         Else
             MsgBox(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
         End If
-    End Sub
-
-    Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-
-        sHTTP.DownloadImage(Args.pURL)
-
-        While sHTTP.IsDownloading
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
-
-        e.Result = New Results With {.Result = sHTTP.Image, .IMDBId = Args.IMDBId}
-    End Sub
-
-    Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
-        '//
-        ' Thread finished: display pic if it was able to get one
-        '\\
-
-        Dim Res As Results = DirectCast(e.Result, Results)
-
-        Try
-            Me.pbPoster.Image = Res.Result
-            If Not _PosterCache.ContainsKey(Res.IMDBId) Then
-                _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        Finally
-            pnlPicStatus.Visible = False
-        End Try
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -270,7 +237,7 @@ Public Class dlgIMDBSearchResults
         Me.Close()
     End Sub
 
-    Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
+    Private Async Function SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean) As Threading.Tasks.Task
         '//
         ' Info downloaded... fill form with data
         '\\
@@ -295,13 +262,19 @@ Public Class dlgIMDBSearchResults
                 Else
                     'go download it, if available
                     If Not String.IsNullOrEmpty(sPoster) Then
-                        If Me.bwDownloadPic.IsBusy Then
-                            Me.bwDownloadPic.CancelAsync()
-                        End If
+                        'If Me.bwDownloadPic.IsBusy Then
+                        '    Me.bwDownloadPic.CancelAsync()
+                        'End If
                         pnlPicStatus.Visible = True
-                        Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
-                        Me.bwDownloadPic.WorkerSupportsCancellation = True
-                        Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _nMovie.IMDBID})
+
+                        Await sHTTP.DownloadImage(sPoster)
+
+                        Me.pbPoster.Image = sHTTP.Image
+                        If Not _PosterCache.ContainsKey(_nMovie.IMDBID) Then
+                            _PosterCache.Add(_nMovie.IMDBID, CType(sHTTP.Image, Image))
+                        End If
+                        pnlPicStatus.Visible = False
+
                     End If
 
                 End If
@@ -322,7 +295,7 @@ Public Class dlgIMDBSearchResults
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
+    End Function
 
     Private Sub SearchResultsDownloaded(ByVal M As IMDB.MovieSearchResults)
         '//
@@ -496,7 +469,7 @@ Public Class dlgIMDBSearchResults
             Me.tmrWait.Stop()
         End If
     End Sub
-    Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
+    Private Async Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
         Try
             Me.tmrWait.Stop()
             Me.tmrLoad.Stop()
@@ -510,7 +483,7 @@ Public Class dlgIMDBSearchResults
                 'check if this movie is in the cache already
                 If _InfoCache.ContainsKey(Me.tvResults.SelectedNode.Tag.ToString) Then
                     _nMovie = GetMovieClone(_InfoCache(Me.tvResults.SelectedNode.Tag.ToString))
-                    SearchMovieInfoDownloaded(String.Empty, True)
+                    Await SearchMovieInfoDownloaded(String.Empty, True)
                     Return
                 End If
 

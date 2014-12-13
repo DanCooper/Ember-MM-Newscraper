@@ -392,8 +392,8 @@ Public Class dlgEditSeason
         Me.Close()
     End Sub
 
-    Private Sub pbSeasonBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonBanner.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbSeasonBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonBanner.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             SeasonBanner = tImage
             Me.pbSeasonBanner.Image = SeasonBanner.Image
@@ -411,8 +411,8 @@ Public Class dlgEditSeason
         End If
     End Sub
 
-    Private Sub pbSeasonFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonFanart.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbSeasonFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonFanart.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             SeasonFanart = tImage
             Me.pbSeasonFanart.Image = SeasonFanart.Image
@@ -430,8 +430,8 @@ Public Class dlgEditSeason
         End If
     End Sub
 
-    Private Sub pbSeasonLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonLandscape.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbSeasonLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonLandscape.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             SeasonLandscape = tImage
             Me.pbSeasonLandscape.Image = SeasonLandscape.Image
@@ -449,8 +449,8 @@ Public Class dlgEditSeason
         End If
     End Sub
 
-    Private Sub pbSeasonPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonPoster.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbSeasonPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonPoster.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             SeasonPoster = tImage
             Me.pbSeasonPoster.Image = SeasonPoster.Image

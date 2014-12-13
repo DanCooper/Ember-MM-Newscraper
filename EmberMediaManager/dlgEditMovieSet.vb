@@ -345,7 +345,7 @@ Public Class dlgEditMovieSet
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
+                            Await pResults.WebImage.FromWeb(pResults.URL)
                             If Not IsNothing(pResults.WebImage.Image) Then
                                 pbMovieBanner.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
@@ -428,7 +428,7 @@ Public Class dlgEditMovieSet
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
+                            Await pResults.WebImage.FromWeb(pResults.URL)
                             If Not IsNothing(pResults.WebImage.Image) Then
                                 pbMovieClearArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearArt.Image.Width, Me.pbMovieClearArt.Image.Height)
@@ -512,7 +512,7 @@ Public Class dlgEditMovieSet
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
+                            Await pResults.WebImage.FromWeb(pResults.URL)
                             If Not IsNothing(pResults.WebImage.Image) Then
                                 pbMovieClearLogo.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearLogo.Image.Width, Me.pbMovieClearLogo.Image.Height)
@@ -596,7 +596,7 @@ Public Class dlgEditMovieSet
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
+                            Await pResults.WebImage.FromWeb(pResults.URL)
                             If Not IsNothing(pResults.WebImage.Image) Then
                                 pbMovieDiscArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieDiscArt.Image.Width, Me.pbMovieDiscArt.Image.Height)
@@ -680,7 +680,7 @@ Public Class dlgEditMovieSet
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
+                            Await pResults.WebImage.FromWeb(pResults.URL)
                             pbMovieFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
                             Cursor = Cursors.Default
 
@@ -763,7 +763,7 @@ Public Class dlgEditMovieSet
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
+                            Await pResults.WebImage.FromWeb(pResults.URL)
                             If Not IsNothing(pResults.WebImage.Image) Then
                                 pbMovieLandscape.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
@@ -847,7 +847,7 @@ Public Class dlgEditMovieSet
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
+                            Await pResults.WebImage.FromWeb(pResults.URL)
                             If Not IsNothing(pResults.WebImage.Image) Then
                                 pbMoviePoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMoviePoster.Image.Width, Me.pbMoviePoster.Image.Height)
@@ -1306,8 +1306,8 @@ Public Class dlgEditMovieSet
         Me.Close()
     End Sub
 
-    Private Sub pbMovieBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieBanner.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbMovieBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieBanner.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             MovieBanner = tImage
             Me.pbMovieBanner.Image = MovieBanner.Image
@@ -1325,8 +1325,8 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub pbMovieClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieClearArt.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbMovieClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieClearArt.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             MovieClearArt = tImage
             Me.pbMovieClearArt.Image = MovieClearArt.Image
@@ -1344,8 +1344,8 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub pbMovieClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieClearLogo.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbMovieClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieClearLogo.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             MovieClearLogo = tImage
             Me.pbMovieClearLogo.Image = MovieClearLogo.Image
@@ -1363,8 +1363,8 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub pbMovieDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieDiscArt.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbMovieDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieDiscArt.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             MovieDiscArt = tImage
             Me.pbMovieDiscArt.Image = MovieDiscArt.Image
@@ -1382,8 +1382,8 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub pbMovieFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieFanart.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbMovieFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieFanart.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             MovieFanart = tImage
             Me.pbMovieFanart.Image = MovieFanart.Image
@@ -1401,8 +1401,8 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub pbMovieLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieLandscape.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbMovieLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieLandscape.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             MovieLandscape = tImage
             Me.pbMovieLandscape.Image = MovieLandscape.Image
@@ -1420,8 +1420,8 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub pbMoviePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbMoviePoster.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbMoviePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbMoviePoster.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             MoviePoster = tImage
             Me.pbMoviePoster.Image = MoviePoster.Image

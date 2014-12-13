@@ -589,8 +589,8 @@ Public Class dlgEditEpisode
         Me.Close()
     End Sub
 
-    Private Sub pbEpisodeFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbEpisodeFanart.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbEpisodeFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbEpisodeFanart.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             EpisodeFanart = tImage
             Me.pbEpisodeFanart.Image = EpisodeFanart.Image
@@ -608,8 +608,8 @@ Public Class dlgEditEpisode
         End If
     End Sub
 
-    Private Sub pbEpisodePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbEpisodePoster.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbEpisodePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbEpisodePoster.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             EpisodePoster = tImage
             Me.pbEpisodePoster.Image = EpisodePoster.Image

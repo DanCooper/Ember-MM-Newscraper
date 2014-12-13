@@ -1515,7 +1515,7 @@ Public Class Scanner
                                                         tmpTVDB.EpPosterPath = Await tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
                                                     End If
                                                 ElseIf Not String.IsNullOrEmpty(tmpTVDB.TVEp.PosterURL) Then
-                                                    tmpTVDB.TVEp.Poster.FromWeb(tmpTVDB.TVEp.PosterURL)
+                                                    Await tmpTVDB.TVEp.Poster.FromWeb(tmpTVDB.TVEp.PosterURL)
                                                     If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
                                                         Directory.CreateDirectory(Directory.GetParent(tmpTVDB.TVEp.LocalFile).FullName)
                                                         tmpTVDB.TVEp.Poster.Save(tmpTVDB.TVEp.LocalFile)

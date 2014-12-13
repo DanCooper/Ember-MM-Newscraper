@@ -794,7 +794,7 @@ Public Class dlgSetsManager
                             pResults = dlgImgS.Results
                             If Not String.IsNullOrEmpty(pResults.URL) Then
                                 Cursor = Cursors.WaitCursor
-                                pResults.WebImage.FromWeb(pResults.URL)
+                                Await pResults.WebImage.FromWeb(pResults.URL)
                                 pbPoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Cursor = Cursors.Default
                                 Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
@@ -836,7 +836,7 @@ Public Class dlgSetsManager
                             pResults = dlgImgS.Results
                             If Not String.IsNullOrEmpty(pResults.URL) Then
                                 Cursor = Cursors.WaitCursor
-                                pResults.WebImage.FromWeb(pResults.URL)
+                                Await pResults.WebImage.FromWeb(pResults.URL)
                                 pbFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Cursor = Cursors.Default
                                 Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)

@@ -1781,7 +1781,7 @@ Public Class dlgOfflineHolder
                                     sMovie.etList = etList
 
                                     If Not String.IsNullOrEmpty(Fanart.URL) Then
-                                        Fanart.WebImage.FromWeb(Fanart.URL)
+                                        Await Fanart.WebImage.FromWeb(Fanart.URL)
                                     End If
                                     ' needs local fanart for dummy movie
                                     'If Not IsNothing(Fanart.WebImage.Image) Then
@@ -1812,7 +1812,7 @@ Public Class dlgOfflineHolder
                                     sMovie.BannerPath = ":" & Banner.URL
 
                                     If Not String.IsNullOrEmpty(Banner.URL) Then
-                                        Banner.WebImage.FromWeb(Banner.URL)
+                                        Await Banner.WebImage.FromWeb(Banner.URL)
                                     End If
                                 End If
                             End Using
@@ -1839,7 +1839,7 @@ Public Class dlgOfflineHolder
                                     sMovie.LandscapePath = ":" & Landscape.URL
 
                                     If Not String.IsNullOrEmpty(Landscape.URL) Then
-                                        Landscape.WebImage.FromWeb(Landscape.URL)
+                                        Await Landscape.WebImage.FromWeb(Landscape.URL)
                                     End If
                                 End If
                             End Using
@@ -1866,7 +1866,7 @@ Public Class dlgOfflineHolder
                                     sMovie.ClearArtPath = ":" & ClearArt.URL
 
                                     If Not String.IsNullOrEmpty(ClearArt.URL) Then
-                                        ClearArt.WebImage.FromWeb(ClearArt.URL)
+                                        Await ClearArt.WebImage.FromWeb(ClearArt.URL)
                                     End If
                                 End If
                             End Using
@@ -1893,7 +1893,7 @@ Public Class dlgOfflineHolder
                                     sMovie.ClearLogoPath = ":" & ClearLogo.URL
 
                                     If Not String.IsNullOrEmpty(ClearLogo.URL) Then
-                                        ClearLogo.WebImage.FromWeb(ClearLogo.URL)
+                                        Await ClearLogo.WebImage.FromWeb(ClearLogo.URL)
                                     End If
                                 End If
                             End Using
@@ -1920,7 +1920,7 @@ Public Class dlgOfflineHolder
                                     sMovie.DiscArtPath = ":" & DiscArt.URL
 
                                     If Not String.IsNullOrEmpty(DiscArt.URL) Then
-                                        DiscArt.WebImage.FromWeb(DiscArt.URL)
+                                        Await DiscArt.WebImage.FromWeb(DiscArt.URL)
                                     End If
                                 End If
                             End Using

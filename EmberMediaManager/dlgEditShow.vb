@@ -1584,8 +1584,8 @@ Public Class dlgEditShow
         Me.Close()
     End Sub
 
-    Private Sub pbASBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbASBanner.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbASBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbASBanner.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ASBanner = tImage
             Me.pbASBanner.Image = ASBanner.Image
@@ -1603,8 +1603,8 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub pbASFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbASFanart.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbASFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbASFanart.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ASFanart = tImage
             Me.pbASFanart.Image = ASFanart.Image
@@ -1622,8 +1622,8 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub pbASLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbASLandscape.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbASLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbASLandscape.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ASLandscape = tImage
             Me.pbASLandscape.Image = ASLandscape.Image
@@ -1641,8 +1641,8 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub pbASPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbASPoster.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbASPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbASPoster.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ASPoster = tImage
             Me.pbASPoster.Image = ASPoster.Image
@@ -1664,8 +1664,8 @@ Public Class dlgEditShow
         Me.DoSelectEF(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, Images))
     End Sub
 
-    Private Sub pbShowBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowBanner.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbShowBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowBanner.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ShowBanner = tImage
             Me.pbShowBanner.Image = ShowBanner.Image
@@ -1683,8 +1683,8 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub pbShowCharacterArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowCharacterArt.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbShowCharacterArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowCharacterArt.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ShowCharacterArt = tImage
             Me.pbShowCharacterArt.Image = ShowCharacterArt.Image
@@ -1702,8 +1702,8 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub pbShowClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowClearArt.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbShowClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowClearArt.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ShowClearArt = tImage
             Me.pbShowClearArt.Image = ShowClearArt.Image
@@ -1721,8 +1721,8 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub pbShowClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowClearLogo.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbShowClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowClearLogo.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ShowClearLogo = tImage
             Me.pbShowClearLogo.Image = ShowClearLogo.Image
@@ -1740,8 +1740,8 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub pbShowFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowFanart.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbShowFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowFanart.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ShowFanart = tImage
             Me.pbShowFanart.Image = ShowFanart.Image
@@ -1759,8 +1759,8 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub pbShowLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowLandscape.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbShowLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowLandscape.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ShowLandscape = tImage
             Me.pbShowLandscape.Image = ShowLandscape.Image
@@ -1778,8 +1778,8 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub pbShowPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowPoster.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+    Private Async Sub pbShowPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowPoster.DragDrop
+        Dim tImage As Images = Await FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
             ShowPoster = tImage
             Me.pbShowPoster.Image = ShowPoster.Image

@@ -311,7 +311,7 @@ Public Class Scraper
                         End Using
 
                         Me.ProcessTVDBZip(xZip, sInfo)
-                        Me.ShowFromXML(sInfo, ImagesOnly)
+                        Await Me.ShowFromXML(sInfo, ImagesOnly)
                     End If
 
                 Else
@@ -319,7 +319,7 @@ Public Class Scraper
                         Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
 
                         Me.ProcessTVDBZip(fZip, sInfo)
-                        Me.ShowFromXML(sInfo, ImagesOnly)
+                        Await Me.ShowFromXML(sInfo, ImagesOnly)
                     End Using
                 End If
             Catch ex As Exception
@@ -500,7 +500,7 @@ Public Class Scraper
 
                 If String.IsNullOrEmpty(sInfo.TVDBID) Then
                     Using dTVDBSearch As New dlgTVDBSearchResults
-                        sInfo = dTVDBSearch.ShowDialog(sInfo, True)
+                        sInfo = Await dTVDBSearch.ShowDialog(sInfo, True)
                         If Not String.IsNullOrEmpty(sInfo.TVDBID) Then
                             Master.currShow.TVShow.ID = sInfo.TVDBID
 
@@ -566,7 +566,7 @@ Public Class Scraper
             Else
                 If String.IsNullOrEmpty(sInfo.TVDBID) Then
                     Using dTVDBSearch As New dlgTVDBSearchResults
-                        sInfo = dTVDBSearch.ShowDialog(sInfo, True)
+                        sInfo = Await dTVDBSearch.ShowDialog(sInfo, True)
                         If Not String.IsNullOrEmpty(sInfo.TVDBID) Then
                             Master.currShow.TVShow.ID = sInfo.TVDBID
                             Await Me.DownloadSeries(sInfo, True)
@@ -634,10 +634,10 @@ Public Class Scraper
                 If String.IsNullOrEmpty(sInfo.TVDBID) Then
                     RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Searching, 0, Nothing)
                     Using dTVDBSearch As New dlgTVDBSearchResults
-                        If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
+                        If Await dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                             Master.currShow = tmpTVDBShow.Episodes(0)
                             If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso File.Exists(Master.currShow.TVEp.LocalFile) Then
-                                Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
+                                Await Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
                                 If Not IsNothing(Master.currShow.TVEp.Poster.Image) Then
                                     Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
                                     Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
@@ -673,7 +673,7 @@ Public Class Scraper
                     Else
                         RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Searching, 0, Nothing)
                         Using dTVDBSearch As New dlgTVDBSearchResults
-                            If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
+                            If Await dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                 Master.currShow = tmpTVDBShow.Episodes(0)
                                 If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso Not File.Exists(Master.currShow.TVEp.LocalFile) Then
                                     Await Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
@@ -721,7 +721,7 @@ Public Class Scraper
                 If String.IsNullOrEmpty(sInfo.TVDBID) AndAlso sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
                     RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Searching, 0, Nothing)
                     Using dTVDBSearch As New dlgTVDBSearchResults
-                        If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
+                        If Await dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                             Master.currShow = tmpTVDBShow.Show
                             RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
@@ -762,7 +762,7 @@ Public Class Scraper
                     ElseIf sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
                         RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Searching, 0, Nothing)
                         Using dTVDBSearch As New dlgTVDBSearchResults
-                            If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
+                            If Await dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                 Master.currShow = tmpTVDBShow.Show
                                 RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
                                 Using dTVImageSel As New dlgTVImageSelect
@@ -869,7 +869,7 @@ Public Class Scraper
                                             Episode.SeasonFanartPath = Await cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
                                         ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) Then
                                             cSea(0).Fanart.Image.Clear()
-                                            cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
+                                            Await cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
                                             If Not IsNothing(cSea(0).Fanart.Image.Image) Then
                                                 Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
                                                 cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile, , , False)
