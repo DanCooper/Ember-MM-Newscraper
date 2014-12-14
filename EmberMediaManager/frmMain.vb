@@ -44,8 +44,8 @@ Public Class frmMain
     'Friend WithEvents bwLoadMovieInfo As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwLoadMovieSetInfo As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwLoadSeasonInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadShowInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwMetaInfo As New System.ComponentModel.BackgroundWorker
+    'Friend WithEvents bwLoadShowInfo As New System.ComponentModel.BackgroundWorker
+    'Friend WithEvents bwMetaInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieSetInfo As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwMovieSetScraper As New System.ComponentModel.BackgroundWorker
@@ -297,7 +297,7 @@ Public Class frmMain
                 'If .bwDownloadPic.IsBusy Then .bwDownloadPic.CancelAsync()
                 'If .bwLoadMovieInfo.IsBusy Then .bwLoadMovieInfo.CancelAsync()
                 'If .bwLoadMovieSetInfo.IsBusy Then .bwLoadMovieSetInfo.CancelAsync()
-                If .bwLoadShowInfo.IsBusy Then .bwLoadShowInfo.CancelAsync()
+                'If .bwLoadShowInfo.IsBusy Then .bwLoadShowInfo.CancelAsync()
                 'If .bwLoadSeasonInfo.IsBusy Then .bwLoadSeasonInfo.CancelAsync()
                 'If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
 
@@ -899,14 +899,15 @@ Public Class frmMain
         ElseIf Not String.IsNullOrEmpty(Master.currShow.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Me.SetControlsEnabled(False, True)
 
-            If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
+            'If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
 
             Me.txtMetaData.Clear()
             Me.pbMILoading.Visible = True
 
-            Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
-            Me.bwMetaInfo.WorkerSupportsCancellation = True
-            Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.TVShow = Master.currShow, .IsTV = True, .setEnabled = True})
+            'Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
+            'Me.bwMetaInfo.WorkerSupportsCancellation = True
+            'Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.TVShow = Master.currShow, .IsTV = True, .setEnabled = True})
+            bwMetaInfo_DoWork(New Arguments With {.TVShow = Master.currShow, .IsTV = True, .setEnabled = True})
         End If
     End Sub
     ''' <summary>
@@ -1631,54 +1632,56 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub bwLoadShowInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadShowInfo.DoWork
+    'Private Sub bwLoadShowInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadShowInfo.DoWork
+    Private Sub bwLoadShowInfo_DoWork(Args As Arguments)
         Try
-
-            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Dim aCancelled As Boolean = False
+            'Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Me.MainClearArt.Clear()
             Me.MainFanart.Clear()
             Me.MainPoster.Clear()
             Me.MainFanartSmall.Clear()
             Me.MainLandscape.Clear()
 
-            If bwLoadShowInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
+            'If bwLoadShowInfo.CancellationPending Then
+            '    e.Cancel = True
+            '    Return
+            'End If
 
             Master.currShow = Master.DB.LoadTVFullShowFromDB(Args.ID)
 
-            If bwLoadShowInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
+            'If bwLoadShowInfo.CancellationPending Then
+            '    e.Cancel = True
+            '    Return
+            'End If
 
             If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
 
-            If bwLoadShowInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
+            'If bwLoadShowInfo.CancellationPending Then
+            '    e.Cancel = True
+            '    Return
+            'End If
 
             If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currShow.ShowClearArtPath)
             If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
             If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.ShowFanartPath)
             If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currShow.ShowLandscapePath)
 
-            If bwLoadShowInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
+            'If bwLoadShowInfo.CancellationPending Then
+            '    e.Cancel = True
+            '    Return
+            'End If
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
-            e.Cancel = True
+            'e.Cancel = True
         End Try
     End Sub
 
-    Private Sub bwLoadShowInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadShowInfo.RunWorkerCompleted
+    'Private Sub bwLoadShowInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadShowInfo.RunWorkerCompleted
+    Private Sub bwLoadShowInfo_RunWorkerCompleted(eCancelled As Boolean)
         Try
-            If Not e.Cancelled Then
+            If Not eCancelled Then
                 Me.fillScreenInfoWithShow()
             Else
                 Me.SetControlsEnabled(True)
@@ -1690,42 +1693,46 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub bwMetaInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMetaInfo.DoWork
+    'Private Sub bwMetaInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMetaInfo.DoWork
+    Private Sub bwMetaInfo_DoWork(Args As Arguments)
         '//
         ' Thread to procure technical and tag information about media via MediaInfo.dll
         '\\
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        'Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Dim aCancel As Boolean = False
+        Dim eResult As Results
 
         Try
             If Args.IsTV Then
                 MediaInfo.UpdateTVMediaInfo(Args.TVShow)
                 Master.DB.SaveTVEpToDB(Args.TVShow, False, False, False, True)
-                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.TVShow.TVEp.FileInfo, True), .TVShow = Args.TVShow, .IsTV = True, .setEnabled = Args.setEnabled}
+                eResult = New Results With {.fileinfo = NFO.FIToString(Args.TVShow.TVEp.FileInfo, True), .TVShow = Args.TVShow, .IsTV = True, .setEnabled = Args.setEnabled}
             Else
                 MediaInfo.UpdateMediaInfo(Args.Movie)
                 Master.DB.SaveMovieToDB(Args.Movie, False, False, True)
-                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.Movie.Movie.FileInfo, False), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
+                eResult = New Results With {.fileinfo = NFO.FIToString(Args.Movie.Movie.FileInfo, False), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
             End If
 
-            If Me.bwMetaInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
+            'If Me.bwMetaInfo.CancellationPending Then
+            '    e.Cancel = True
+            '    Return
+            'End If
+            bwMetaInfo_RunWorkerCompleted(aCancel, eResult)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
-            e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
-            e.Cancel = True
+            eResult = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
+            aCancel = True
         End Try
     End Sub
 
-    Private Sub bwMetaInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMetaInfo.RunWorkerCompleted
+    'Private Sub bwMetaInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMetaInfo.RunWorkerCompleted
+    Private Sub bwMetaInfo_RunWorkerCompleted(eCancelled As Boolean, Res As Results)
         '//
         ' Thread finished: fill textbox with result
         '\\
 
-        If Not e.Cancelled Then
-            Dim Res As Results = DirectCast(e.Result, Results)
+        If Not eCancelled Then
+            'Dim Res As Results = DirectCast(e.Result, Results)
 
             Try
                 If Not Res.fileInfo = "error" Then
@@ -3478,7 +3485,7 @@ doCancel:
 
     Private Sub cbFilterVideoSource_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterVideoSource_Movies.SelectedIndexChanged
         Try
-            While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+            While Me.fScanner.IsBusy OrElse Me.bwRefreshMovies.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -6413,7 +6420,7 @@ doCancel:
         Try
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
@@ -6739,7 +6746,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse _
+                If Me.fScanner.IsBusy OrElse _
                  Me.bwRefreshMovies.IsBusy _
                  Then Return
 
@@ -6881,7 +6888,7 @@ doCancel:
         Try
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
@@ -7257,7 +7264,7 @@ doCancel:
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
@@ -7396,7 +7403,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+                If Me.fScanner.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
@@ -7603,7 +7610,7 @@ doCancel:
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
             Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
@@ -7740,7 +7747,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+                If Me.fScanner.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
                 Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
@@ -7877,7 +7884,7 @@ doCancel:
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
@@ -8028,7 +8035,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+                If Me.fScanner.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
@@ -10396,10 +10403,10 @@ doCancel:
             End If
 
             If Me.fScanner.IsBusy Then Me.fScanner.Cancel()
-            If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
+            'If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
             'If Me.bwLoadMovieInfo.IsBusy Then Me.bwLoadMovieInfo.CancelAsync()
             'If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
-            If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+            'If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             'If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
             'If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             'If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
@@ -10415,10 +10422,10 @@ doCancel:
             pnlCancel.Visible = True
             Me.Refresh()
 
-            While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy _
+            While Me.fScanner.IsBusy _
  _
             OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy _
-            OrElse Me.bwLoadShowInfo.IsBusy _
+ _
             OrElse ModulesManager.Instance.TVIsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
@@ -11175,14 +11182,15 @@ doCancel:
             Me.ShowNoInfo(False)
 
             If doMI Then
-                If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
+                'If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
 
                 Me.txtMetaData.Clear()
                 Me.pbMILoading.Visible = True
 
-                Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
-                Me.bwMetaInfo.WorkerSupportsCancellation = True
-                Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
+                'Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
+                'Me.bwMetaInfo.WorkerSupportsCancellation = True
+                'Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
+                bwMetaInfo_DoWork(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
             End If
 
             If doInfo Then
@@ -11272,10 +11280,11 @@ doCancel:
 
             Me.ClearInfo()
 
-            Me.bwLoadShowInfo = New System.ComponentModel.BackgroundWorker
-            Me.bwLoadShowInfo.WorkerSupportsCancellation = True
-            Me.bwLoadShowInfo.RunWorkerAsync(New Arguments With {.ID = ID})
+            'Me.bwLoadShowInfo = New System.ComponentModel.BackgroundWorker
+            'Me.bwLoadShowInfo.WorkerSupportsCancellation = True
+            'Me.bwLoadShowInfo.RunWorkerAsync(New Arguments With {.ID = ID})
 
+            bwLoadShowInfo_DoWork(New Arguments With {.ID = ID})
             Me.FillSeasons(ID)
 
         Catch ex As Exception
@@ -15643,7 +15652,7 @@ doCancel:
                 Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, iRow).Value), True)
                 Me.fillScreenInfoWithEpisode()
 
-                If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
+                If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
                     Me.cmnuEpisode.Enabled = True
                 End If
             Else
@@ -15930,7 +15939,7 @@ doCancel:
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMovies.Item(0, iRow).Value))
                 Me.fillScreenInfoWithMovie()
 
-                If Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
+                If Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
                     Me.cmnuMovie.Enabled = True
                 End If
             Else
@@ -15959,7 +15968,7 @@ doCancel:
                 Master.currMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(Me.dgvMovieSets.Item(0, iRow).Value))
                 Me.fillScreenInfoWithMovieSet()
 
-                If Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
+                If Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
                     Me.cmnuMovie.Enabled = True
                 End If
             Else
@@ -15992,7 +16001,7 @@ doCancel:
 
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, iRow).Value))
 
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
                     Me.cmnuSeason.Enabled = True
                 End If
             Else
@@ -16028,7 +16037,7 @@ doCancel:
 
                 Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
 
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
                     Me.cmnuShow.Enabled = True
                 End If
             Else
@@ -16882,16 +16891,16 @@ doCancel:
             End If
 
             'might as well wait for these
-            While Me.bwMetaInfo.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
+            'While Me.bwMetaInfo.IsBusy
+            '    Application.DoEvents()
+            '    Threading.Thread.Sleep(50)
+            'End While
 
             If dresult.NeedsRefresh_Movie OrElse dresult.NeedsRefresh_MovieSet OrElse dresult.NeedsRefresh_TV OrElse dresult.NeedsUpdate Then
                 If dresult.NeedsRefresh_Movie Then
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwRefreshMovies.IsBusy OrElse _
-                             Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy
+                              Me.bwRefreshShows.IsBusy
                             Application.DoEvents()
                             'Threading.Thread.Sleep(50)
                         End While
@@ -16902,7 +16911,7 @@ doCancel:
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwRefreshMovies.IsBusy OrElse _
  _
-                              Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy
+                               Me.bwRefreshShows.IsBusy
                             Application.DoEvents()
                             'Threading.Thread.Sleep(50)
                         End While
@@ -16913,7 +16922,7 @@ doCancel:
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwRefreshMovies.IsBusy OrElse _
  _
-                              Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy
+                               Me.bwRefreshShows.IsBusy
                             Application.DoEvents()
                             'Threading.Thread.Sleep(50)
                         End While
@@ -16924,7 +16933,7 @@ doCancel:
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwRefreshMovies.IsBusy OrElse _
  _
-                              Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy
+                               Me.bwRefreshShows.IsBusy
                             Application.DoEvents()
                             'Threading.Thread.Sleep(50)
                         End While
@@ -16933,8 +16942,7 @@ doCancel:
                 End If
             Else
                 If Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso _
-                     Not Me.bwRefreshMovieSets.IsBusy AndAlso _
-                    Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwRefreshShows.IsBusy Then
+                     Not Me.bwRefreshMovieSets.IsBusy AndAlso Not Me.bwRefreshShows.IsBusy Then
                     Me.FillList(True, True, True)
                 End If
             End If
@@ -16943,7 +16951,7 @@ doCancel:
             If dresult.NeedsRestart Then
                 While Me.bwRefreshMovies.IsBusy OrElse _
  _
-                      Me.bwLoadShowInfo.IsBusy OrElse Me.bwRefreshShows.IsBusy
+                       Me.bwRefreshShows.IsBusy
                     Application.DoEvents()
                     'Threading.Thread.Sleep(50)
                 End While
@@ -17980,7 +17988,7 @@ doCancel:
                 Me.ApplyTheme(Theming.ThemeType.Movie)
                 'If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
                 'If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
-                If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+                ' If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
                 'If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
                 'If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 If Me.dgvMovies.RowCount > 0 Then
@@ -18015,7 +18023,7 @@ doCancel:
                 'If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 'If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
                 'If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
-                If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+                'If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
                 If Me.dgvMovieSets.RowCount > 0 Then
                     Me.prevMovieSetRow = -1
 
@@ -18956,5 +18964,6 @@ doCancel:
     Private Function bwMovieSetScraper() As Object
         Throw New NotImplementedException
     End Function
+
 
 End Class

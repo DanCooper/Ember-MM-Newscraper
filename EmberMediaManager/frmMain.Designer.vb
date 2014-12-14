@@ -1147,7 +1147,7 @@ Partial Class frmMain
         '
         Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"), System.Drawing.Image)
         Me.mnuMainEditSettings.Name = "mnuMainEditSettings"
-        Me.mnuMainEditSettings.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMainEditSettings.Size = New System.Drawing.Size(125, 22)
         Me.mnuMainEditSettings.Text = "&Settings..."
         '
         'mnuMainHelp
