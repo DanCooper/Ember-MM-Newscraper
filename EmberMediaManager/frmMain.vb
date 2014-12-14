@@ -18867,7 +18867,7 @@ doCancel:
     End Sub
 
     'Private Async Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
-    Private Async Sub bwCheckVersion_DoWork()
+    Private Async Function bwCheckVersion_DoWork() As Threading.Tasks.Task
         Try
             Dim sHTTP As New EmberAPI.HTTP
             'Pull Assembly version info from current Ember repo on github
@@ -18903,7 +18903,7 @@ doCancel:
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
+    End Function
 
     Public Delegate Sub UpdatemnuVersionDel(sText As String, sForeColor As Color)
 
