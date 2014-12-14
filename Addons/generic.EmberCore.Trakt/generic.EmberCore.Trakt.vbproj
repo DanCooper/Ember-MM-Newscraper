@@ -94,6 +94,11 @@
       <HintPath>..\..\packages\RestSharp.104.1\lib\net35\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.93.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\System.Data.SQLite.Core.1.0.93.0\lib\net45\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -109,15 +114,22 @@
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmTrakt.Designer.vb">
-      <DependentUpon>frmTrakt.vb</DependentUpon>
+    <Compile Include="dlgTrakttvManager.Designer.vb">
+      <DependentUpon>dlgTrakttvManager.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmTrakt.vb">
+    <Compile Include="dlgTrakttvManager.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSettingsHolder.Designer.vb">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="genericTrakt.vb" />
@@ -138,8 +150,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmTrakt.resx">
-      <DependentUpon>frmTrakt.vb</DependentUpon>
+    <EmbeddedResource Include="dlgTrakttvManager.resx">
+      <DependentUpon>dlgTrakttvManager.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSettingsHolder.resx">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
