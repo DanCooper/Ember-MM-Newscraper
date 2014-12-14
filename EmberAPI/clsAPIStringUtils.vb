@@ -1042,6 +1042,35 @@ Public Class StringUtils
         Return False
     End Function
 
+    ''' <summary>
+    ''' Convert String to SHA1
+    ''' </summary>
+    ''' <param name="inputstring">Input string to encrypt to SHA1</param>
+    ''' <remarks>
+    ''' 2014/10/12 Cocotus - First implementation
+    ''' Used for POST-Requests to trakt.tv (encrypt password)
+    ''' </remarks>
+    ''' 
+    Public Shared Function EncryptToSHA1(ByVal inputstring As String) As String
+        Dim strToHash As String = inputstring
+        Dim Result As String = ""
+        Dim OSha1 As New  _
+        System.Security.Cryptography.SHA1CryptoServiceProvider
+
+        'Step 1
+        Dim bytesToHash() As Byte _
+         = System.Text.Encoding.ASCII.GetBytes(strToHash)
+
+        'Step 2
+        bytesToHash = OSha1.ComputeHash(bytesToHash)
+
+        'Step 3
+        For Each item As Byte In bytesToHash
+            Result += item.ToString("x2")
+        Next
+        Return Result
+    End Function
+
 #End Region 'Methods
 
 #Region "Nested Types"
