@@ -49,7 +49,7 @@ Public Class frmMain
     'Friend WithEvents bwMovieSetInfo As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwMovieSetScraper As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
+    'Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovieSets As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshShows As New System.ComponentModel.BackgroundWorker
@@ -753,9 +753,8 @@ Public Class frmMain
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
         If Me.bwRefreshMovieSets.IsBusy Then Me.bwRefreshMovieSets.CancelAsync()
         If Me.bwRefreshShows.IsBusy Then Me.bwRefreshShows.CancelAsync()
-        If Me.bwNonScrape.IsBusy Then Me.bwNonScrape.CancelAsync()
-        While Me.bwRefreshMovies.IsBusy OrElse  _
-            Me.bwNonScrape.IsBusy OrElse Me.bwRefreshShows.IsBusy
+        ' If Me.bwNonScrape.IsBusy Then Me.bwNonScrape.CancelAsync()
+        While Me.bwRefreshMovies.IsBusy OrElse  Me.bwRefreshShows.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -1485,7 +1484,7 @@ Public Class frmMain
             If Not eCancelled Then
                 Me.fillScreenInfoWithMovie()
             Else
-                If Not bwRefreshMovies.IsBusy AndAlso Not bwNonScrape.IsBusy Then
+                If Not bwRefreshMovies.IsBusy Then
                     Me.SetControlsEnabled(True)
                     Me.EnableFilters_Movies(True)
                 Else
@@ -1557,7 +1556,7 @@ Public Class frmMain
             If Not eCancelled Then
                 Me.fillScreenInfoWithMovieSet()
             Else
-                If Not bwRefreshMovieSets.IsBusy AndAlso Not bwNonScrape.IsBusy Then
+                If Not bwRefreshMovieSets.IsBusy Then
                     Me.SetControlsEnabled(True)
                     Me.EnableFilters_MovieSets(True)
                 Else
@@ -3246,7 +3245,8 @@ Public Class frmMain
     '    End If
     'End Sub
 
-    Private Sub bwNonScrape_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNonScrape.RunWorkerCompleted
+    'Private Sub bwNonScrape_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNonScrape.RunWorkerCompleted
+    Private Sub bwNonScrape_Completed()
         Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.xml")
         If File.Exists(configpath) Then
             File.Delete(configpath)
@@ -3264,10 +3264,11 @@ Public Class frmMain
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Sub bwNonScrape_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNonScrape.DoWork
+    'Private Sub bwNonScrape_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNonScrape.DoWork
+    Private Sub bwNonScrape_DoWork(Args As Arguments)
         Dim scrapeMovie As Structures.DBMovie
         Dim iCount As Integer = 0
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        'Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
 
             Try
@@ -3278,11 +3279,11 @@ Public Class frmMain
                             Dim fDeleter As New FileUtils.Delete
                             For Each drvRow As DataRow In Me.dtMovies.Rows
                                 Try
-                                    Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15))
+                                    'Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15))
                                     iCount += 1
                                     If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
-                                    If Me.bwNonScrape.CancellationPending Then GoTo doCancel
+                                    'If Me.bwNonScrape.CancellationPending Then GoTo doCancel
 
                                     scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
 
@@ -3290,7 +3291,7 @@ Public Class frmMain
 
                                     Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
 
-                                    Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                                    'Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 Catch ex As Exception
                                     logger.Error(New StackFrame().GetMethod().Name, ex)
                                 End Try
@@ -3299,10 +3300,10 @@ Public Class frmMain
                             Dim sPath As String = String.Empty
                             For Each drvRow As DataRow In Me.dtMovies.Rows
                                 Try
-                                    Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15).ToString)
+                                    'Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15).ToString)
                                     iCount += 1
 
-                                    If Me.bwNonScrape.CancellationPending Then GoTo doCancel
+                                    'If Me.bwNonScrape.CancellationPending Then GoTo doCancel
                                     sPath = drvRow.Item(37).ToString
                                     If Not String.IsNullOrEmpty(sPath) Then
                                         If FileUtils.Common.isVideoTS(sPath) Then
@@ -3345,30 +3346,31 @@ doCancel:
                         SQLtransaction.Commit()
                     End If
                 End If
+                bwNonScrape_Completed()
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Using
     End Sub
 
-    Private Sub bwNonScrape_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNonScrape.ProgressChanged
-        If Not Master.isCL Then
-            If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") AndAlso Me.dgvMovies.SelectedRows.Count > 0 Then
-                Try
-                    If Me.dgvMovies.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
-                        Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
-                    End If
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
-            Else
-                Me.SetStatus(e.UserState.ToString)
-                Me.tspbLoading.Value = e.ProgressPercentage
-            End If
-        End If
+    'Private Sub bwNonScrape_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNonScrape.ProgressChanged
+    '    If Not Master.isCL Then
+    '        If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") AndAlso Me.dgvMovies.SelectedRows.Count > 0 Then
+    '            Try
+    '                If Me.dgvMovies.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
+    '                    Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
+    '                End If
+    '            Catch ex As Exception
+    '                logger.Error(New StackFrame().GetMethod().Name, ex)
+    '            End Try
+    '        Else
+    '            Me.SetStatus(e.UserState.ToString)
+    '            Me.tspbLoading.Value = e.ProgressPercentage
+    '        End If
+    '    End If
 
-        Me.dgvMovies.Invalidate()
-    End Sub
+    '    Me.dgvMovies.Invalidate()
+    'End Sub
 
     Private Sub bwRefreshMovies_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshMovies.DoWork
         Dim iCount As Integer = 0
@@ -6483,13 +6485,12 @@ doCancel:
     Private Sub dgvMovies_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMovies.CellMouseDown
         Try
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMovies.RowCount > 0 Then
-                If bwNonScrape.IsBusy Then
-                    Me.cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
-                    Return
-                End If
+                'If bwNonScrape.IsBusy Then
+                '    Me.cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                '    Return
+                'End If
 
                 Me.cmnuMovie.Enabled = False
-
 
                 If e.RowIndex >= 0 AndAlso dgvMovies.SelectedRows.Count > 0 Then
 
@@ -6949,10 +6950,10 @@ doCancel:
     Private Sub dgvMovieSets_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMovieSets.CellMouseDown
         Try
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMovieSets.RowCount > 0 Then
-                If bwNonScrape.IsBusy Then
-                    Me.cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
-                    Return
-                End If
+                'If bwNonScrape.IsBusy Then
+                '    Me.cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                '    Return
+                'End If
 
                 Me.cmnuMovieSet.Enabled = False
 
@@ -9430,7 +9431,7 @@ doCancel:
 
             Me.InfoCleared = False
 
-            If Not bwRefreshMovies.IsBusy AndAlso Not Me.bwNonScrape.IsBusy Then
+            If Not bwRefreshMovies.IsBusy Then
                 Me.SetControlsEnabled(True)
                 Me.EnableFilters_Movies(True)
             Else
@@ -9772,7 +9773,7 @@ doCancel:
 
             Me.InfoCleared = False
 
-            If Not bwRefreshMovieSets.IsBusy AndAlso Not Me.bwNonScrape.IsBusy Then
+            If Not bwRefreshMovieSets.IsBusy Then
                 Me.SetControlsEnabled(True)
                 Me.EnableFilters_MovieSets(True)
             Else
@@ -13248,9 +13249,10 @@ doCancel:
         Me.EnableFilters_MovieSets(False)
         Me.EnableFilters_Shows(False)
 
-        bwNonScrape.WorkerReportsProgress = True
-        bwNonScrape.WorkerSupportsCancellation = True
-        bwNonScrape.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options_Movie = Options})
+        'bwNonScrape.WorkerReportsProgress = True
+        'bwNonScrape.WorkerSupportsCancellation = True
+        'bwNonScrape.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options_Movie = Options})
+        bwNonScrape_DoWork(New Arguments With {.scrapeType = sType, .Options_Movie = Options})
     End Sub
 
     Private Sub cmnuMovieOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieOpenFolder.Click
@@ -15939,7 +15941,7 @@ doCancel:
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMovies.Item(0, iRow).Value))
                 Me.fillScreenInfoWithMovie()
 
-                If Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
                     Me.cmnuMovie.Enabled = True
                 End If
             Else
@@ -15968,7 +15970,7 @@ doCancel:
                 Master.currMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(Me.dgvMovieSets.Item(0, iRow).Value))
                 Me.fillScreenInfoWithMovieSet()
 
-                If Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy Then
                     Me.cmnuMovie.Enabled = True
                 End If
             Else
