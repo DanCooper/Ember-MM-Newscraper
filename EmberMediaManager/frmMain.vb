@@ -53,7 +53,7 @@ Public Class frmMain
     'Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwRefreshMovieSets As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwRefreshShows As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
+    'Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Private alActors As New List(Of String)
     Private aniFilterRaise_Movies As Boolean = False
@@ -10487,7 +10487,7 @@ doCancel:
                 Me.TrayIcon.Visible = True
             End If
 
-            Me.bwCheckVersion.RunWorkerAsync()
+            Await bwCheckVersion_DoWork()
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
 
@@ -18866,7 +18866,8 @@ doCancel:
         KeyBuffer = String.Empty
     End Sub
 
-    Private Async Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
+    'Private Async Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
+    Private Async Sub bwCheckVersion_DoWork()
         Try
             Dim sHTTP As New EmberAPI.HTTP
             'Pull Assembly version info from current Ember repo on github
