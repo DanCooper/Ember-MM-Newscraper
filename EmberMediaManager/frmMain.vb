@@ -46,7 +46,7 @@ Public Class frmMain
     'Friend WithEvents bwLoadSeasonInfo As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwLoadShowInfo As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwMetaInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwMovieSetInfo As New System.ComponentModel.BackgroundWorker
+    'Friend WithEvents bwMovieSetInfo As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwMovieSetScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
@@ -7189,7 +7189,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMovieSetInfo.IsBusy OrElse _
+                If Me.fScanner.IsBusy OrElse _
                  Me.bwRefreshMovieSets.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
@@ -11222,14 +11222,14 @@ doCancel:
             Me.ShowNoInfo(False)
 
             If doMI Then
-                If Me.bwMovieSetInfo.IsBusy Then Me.bwMovieSetInfo.CancelAsync()
+                'If Me.bwMovieSetInfo.IsBusy Then Me.bwMovieSetInfo.CancelAsync()
 
                 Me.txtMetaData.Clear()
                 Me.pbMILoading.Visible = True
 
-                Me.bwMovieSetInfo = New System.ComponentModel.BackgroundWorker
-                Me.bwMovieSetInfo.WorkerSupportsCancellation = True
-                Me.bwMovieSetInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .MovieSet = Master.currMovieSet})
+                'Me.bwMovieSetInfo = New System.ComponentModel.BackgroundWorker
+                'Me.bwMovieSetInfo.WorkerSupportsCancellation = True
+                'Me.bwMovieSetInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .MovieSet = Master.currMovieSet})
             End If
 
             If doInfo Then
