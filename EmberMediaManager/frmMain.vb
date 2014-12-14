@@ -52,7 +52,7 @@ Public Class frmMain
     'Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     'Friend WithEvents bwRefreshMovieSets As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwRefreshShows As New System.ComponentModel.BackgroundWorker
+    'Friend WithEvents bwRefreshShows As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Private alActors As New List(Of String)
@@ -752,12 +752,12 @@ Public Class frmMain
         'If Me.bwMovieSetScraper.IsBusy Then Me.bwMovieSetScraper.CancelAsync()
         'If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
         'If Me.bwRefreshMovieSets.IsBusy Then Me.bwRefreshMovieSets.CancelAsync()
-        If Me.bwRefreshShows.IsBusy Then Me.bwRefreshShows.CancelAsync()
+        'If Me.bwRefreshShows.IsBusy Then Me.bwRefreshShows.CancelAsync()
         ' If Me.bwNonScrape.IsBusy Then Me.bwNonScrape.CancelAsync()
-        While Me.bwRefreshShows.IsBusy
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
+        'While Me.bwRefreshShows.IsBusy
+        '    Application.DoEvents()
+        '    Threading.Thread.Sleep(50)
+        'End While
     End Sub
 
     Private Sub btnClearFilters_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearFilters_Movies.Click
@@ -3453,8 +3453,9 @@ doCancel:
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Async Sub bwRefreshShows_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshShows.DoWork
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+    'Private Async Sub bwRefreshShows_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshShows.DoWork
+    Private Async Sub bwRefreshShows_DoWork(Args As Arguments)
+        'Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
         Dim iCount As Integer = 0
         Dim ShowIDs As New Dictionary(Of Long, String)
@@ -3467,7 +3468,7 @@ doCancel:
             For Each KVP As KeyValuePair(Of Long, String) In ShowIDs
                 Try
                     'If Me.bwMovieScraper.CancellationPending Then Return
-                    Me.bwRefreshShows.ReportProgress(iCount, KVP.Value)
+                    'Me.bwRefreshShows.ReportProgress(iCount, KVP.Value)
                     Await Me.RefreshShow(KVP.Key, True, False, False, Args.withEpisodes)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -3476,14 +3477,16 @@ doCancel:
             Next
             SQLtransaction.Commit()
         End Using
+        bwRefreshShows_RunWorkerCompleted()
     End Sub
 
-    Private Sub bwRefreshShows_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwRefreshShows.ProgressChanged
-        Me.SetStatus(e.UserState.ToString)
-        Me.tspbLoading.Value = e.ProgressPercentage
-    End Sub
+    'Private Sub bwRefreshShows_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwRefreshShows.ProgressChanged
+    '    Me.SetStatus(e.UserState.ToString)
+    '    Me.tspbLoading.Value = e.ProgressPercentage
+    'End Sub
 
-    Private Sub bwRefreshShows_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRefreshShows.RunWorkerCompleted
+    'Private Sub bwRefreshShows_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRefreshShows.RunWorkerCompleted
+    Private Sub bwRefreshShows_RunWorkerCompleted()
         Me.tslLoading.Text = String.Empty
         Me.tspbLoading.Visible = False
         Me.tslLoading.Visible = False
@@ -14463,9 +14466,10 @@ doCancel:
             Me.tspbLoading.Visible = True
             Me.tslLoading.Visible = True
 
-            Me.bwRefreshShows.WorkerReportsProgress = True
-            Me.bwRefreshShows.WorkerSupportsCancellation = True
-            Me.bwRefreshShows.RunWorkerAsync(New Arguments With {.withEpisodes = withEpisodes})
+            'Me.bwRefreshShows.WorkerReportsProgress = True
+            'Me.bwRefreshShows.WorkerSupportsCancellation = True
+            'Me.bwRefreshShows.RunWorkerAsync(New Arguments With {.withEpisodes = withEpisodes})
+            bwRefreshShows_DoWork(New Arguments With {.withEpisodes = withEpisodes})
         Else
             Me.SetControlsEnabled(True)
         End If
@@ -16903,10 +16907,10 @@ doCancel:
             If dresult.NeedsRefresh_Movie OrElse dresult.NeedsRefresh_MovieSet OrElse dresult.NeedsRefresh_TV OrElse dresult.NeedsUpdate Then
                 If dresult.NeedsRefresh_Movie Then
                     If Not Me.fScanner.IsBusy Then
-                        While Me.bwRefreshShows.IsBusy
-                            Application.DoEvents()
-                            'Threading.Thread.Sleep(50)
-                        End While
+                        'While Me.bwRefreshShows.IsBusy
+                        '    Application.DoEvents()
+                        '    'Threading.Thread.Sleep(50)
+                        'End While
                         Me.RefreshAllMovies()
                     End If
                 End If
@@ -16923,34 +16927,34 @@ doCancel:
                 End If
                 If dresult.NeedsRefresh_TV Then
                     If Not Me.fScanner.IsBusy Then
-                        While Me.bwRefreshShows.IsBusy
-                            Application.DoEvents()
-                            'Threading.Thread.Sleep(50)
-                        End While
+                        'While Me.bwRefreshShows.IsBusy
+                        '    Application.DoEvents()
+                        '    'Threading.Thread.Sleep(50)
+                        'End While
                         Me.RefreshAllShows(False)
                     End If
                 End If
                 If dresult.NeedsUpdate Then
                     If Not Me.fScanner.IsBusy Then
-                        While Me.bwRefreshShows.IsBusy
-                            Application.DoEvents()
-                            'Threading.Thread.Sleep(50)
-                        End While
+                        'While Me.bwRefreshShows.IsBusy
+                        '    Application.DoEvents()
+                        '    'Threading.Thread.Sleep(50)
+                        'End While
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                     End If
                 End If
             Else
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwRefreshShows.IsBusy Then
+                If Not Me.fScanner.IsBusy Then
                     Me.FillList(True, True, True)
                 End If
             End If
 
             Me.SetMenus(True)
             If dresult.NeedsRestart Then
-                While Me.bwRefreshShows.IsBusy
-                    Application.DoEvents()
-                    'Threading.Thread.Sleep(50)
-                End While
+                'While Me.bwRefreshShows.IsBusy
+                '    Application.DoEvents()
+                '    'Threading.Thread.Sleep(50)
+                'End While
                 Using dRestart As New dlgRestart
                     If dRestart.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Application.Restart()
