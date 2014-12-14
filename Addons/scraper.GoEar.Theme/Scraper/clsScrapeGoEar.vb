@@ -99,7 +99,7 @@ Namespace GoEar
                     sHTTP = Nothing
 
                     Dim rPattern As String = "<div class=""board search_board"">(?<RESULTS>.*?)</ol>"
-                    Dim sPattern As String = "<a title=""escuchar.*?href=""(?<URL>.*?)"">(?<TITLE>.*?)</a>.*?""description""><.*?>(?<DESCRIPTION>.*?)</a>.*?""length"".*?>(?<LENGTH>.*?)</li>.*?""kbps"".*?>(?<BITRATE>.*?) <abbr"
+                    Dim sPattern As String = "<li class=""board_item sound_item group"">.*?redir=""(?<URL>.*?)"">.*?<a title=.*?>(?<TITLE>.*?)<\/a>.*?<li class=""band""><.*?>(?<DESCRIPTION>.*?)<\/a>.*?<li class=""stats length.*?>(?<LENGTH>.*?)<.*?title=""Kbps"">(?<BITRATE>.*?) <"
 
                     Dim rResult As MatchCollection = Regex.Matches(Html, rPattern, RegexOptions.Singleline)
 
