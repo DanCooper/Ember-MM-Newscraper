@@ -42,7 +42,7 @@ Namespace TelevisionTunes
         Public Sub New(ByVal sOriginalTitle As String)
             Clear()
             originaltitle = sOriginalTitle
-            GetMovieThemes()
+            GetThemes()
         End Sub
 
 #End Region 'Constructors
@@ -66,7 +66,7 @@ Namespace TelevisionTunes
             _themelist = New List(Of Themes)
         End Sub
 
-        Private Sub GetMovieThemes()
+        Private Sub GetThemes()
             Dim BaseURL As String = "http://www.televisiontunes.com/search.php?searWords={0}&Send=Search"
             Dim DownloadURL As String = "http://www.televisiontunes.com/download.php?f="
             Dim SearchTitle As String
@@ -89,8 +89,7 @@ Namespace TelevisionTunes
                     Dim tLength As String = String.Empty
                     Dim tBitrate As String = String.Empty
 
-                    Dim rPattern As String = "1\.&nbsp;(?<RESULTS>.*?)</b>"
-                    Dim sPattern As String = "'<a href=""(?<URL>.*?)"">(?<TITLE>.*?)</a>'"
+                    Dim sPattern As String = "&nbsp;<a href=""(?<URL>.*?)"">(?<TITLE>.*?)<\/a>"
                     Dim nPattern As String = "<\/a><br><a href=""(?<NEXTURL>.*?)""><b>Next<\/b><\/a>"
 
                     Dim sHTTP As New HTTP
@@ -98,29 +97,22 @@ Namespace TelevisionTunes
                     sHTTP = Nothing
 
                     While Not String.IsNullOrEmpty(Html)
-                        Dim rResult As MatchCollection = Regex.Matches(Html, rPattern, RegexOptions.Singleline)
+                        Dim sResult As MatchCollection = Regex.Matches(Html, sPattern, RegexOptions.Singleline)
 
-                        If rResult.Count > 0 Then
-                            Dim sHTML As String = rResult.Item(0).Groups(1).Value
+                        For ctr As Integer = 0 To sResult.Count - 1
+                            tWebURL = Web.HttpUtility.HtmlDecode(sResult.Item(ctr).Groups(1).Value)
+                            tTitle = sResult.Item(ctr).Groups(2).Value
+                            tID = GetFileID(tWebURL)
+                            tURL = String.Concat(DownloadURL, tID)
 
-                            Dim sResult As MatchCollection = Regex.Matches(sHTML, sPattern, RegexOptions.Singleline)
-
-                            For ctr As Integer = 0 To sResult.Count - 1
-                                tWebURL = Web.HttpUtility.HtmlDecode(sResult.Item(ctr).Groups(1).Value)
-                                tTitle = sResult.Item(ctr).Groups(2).Value
-                                tID = GetFileID(tWebURL)
-                                tURL = String.Concat(DownloadURL, tID)
-
-                                If Not String.IsNullOrEmpty(tID) Then
-                                    _themelist.Add(New Themes With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Duration = tLength, .Bitrate = tBitrate, .WebURL = tWebURL})
-                                End If
-                            Next
-                        End If
+                            If Not String.IsNullOrEmpty(tID) Then
+                                _themelist.Add(New Themes With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Duration = tLength, .Bitrate = tBitrate, .WebURL = tWebURL})
+                            End If
+                        Next
 
                         'check if there is a "next" page
                         If Regex.IsMatch(Html, nPattern) Then
                             sHTTP = New HTTP
-                            Html = String.Empty
                             Html = sHTTP.DownloadData(String.Concat("http://www.televisiontunes.com/", Regex.Match(Html, nPattern).Groups(1).Value))
                             sHTTP = Nothing
                         Else

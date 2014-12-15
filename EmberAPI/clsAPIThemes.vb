@@ -31,7 +31,7 @@ Public Class Themes
     Private _ext As String
     Private _title As String
     Private _id As String
-    Private _isNew As Boolean
+    Private _isEdit As Boolean
     Private _url As String
     Private _weburl As String
     Private _description As String
@@ -86,12 +86,12 @@ Public Class Themes
         End Set
     End Property
 
-    Public Property isNew() As Boolean
+    Public Property isEdit() As Boolean
         Get
-            Return _isNew
+            Return _isEdit
         End Get
         Set(ByVal value As Boolean)
-            _isNew = value
+            _isEdit = value
         End Set
     End Property
 
@@ -173,7 +173,7 @@ Public Class Themes
         _ext = String.Empty
         _title = String.Empty
         _id = String.Empty
-        _isNew = False
+        _isEdit = False
         _toRemove = False
         _url = String.Empty
         _weburl = String.Empty
@@ -307,7 +307,7 @@ Public Class Themes
 
             Dim fExt As String = Path.GetExtension(Me._ext)
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Theme)
-                If Not File.Exists(String.Concat(a, fExt)) OrElse (isNew OrElse Master.eSettings.MovieThemeOverwrite) Then
+                If Not File.Exists(String.Concat(a, fExt)) OrElse (isEdit OrElse Master.eSettings.MovieThemeOverwrite) Then
                     Save(String.Concat(a, fExt))
                     strReturn = (String.Concat(a, fExt))
                 End If

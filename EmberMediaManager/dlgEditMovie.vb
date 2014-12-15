@@ -48,8 +48,8 @@ Public Class dlgEditMovie
     Private MoviePoster As New Images With {.IsEdit = True}
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
-    Private MovieTrailer As New Trailers
-    Private MovieTheme As New Themes
+    Private MovieTrailer As New Trailers With {.isEdit = True}
+    Private MovieTheme As New Themes With {.isEdit = True}
     Private tmpRating As String = String.Empty
 
     'Extrathumbs
@@ -1044,6 +1044,7 @@ Public Class dlgEditMovie
                     dlgThmS = New dlgThemeSelect()
                     If dlgThmS.ShowDialog(Master.currMovie, aUrlList) = Windows.Forms.DialogResult.OK Then
                         MovieTheme = dlgThmS.Results.WebTheme
+                        MovieTheme.isEdit = True
                         ThemeAddToPlayer(MovieTheme)
                     End If
                 Else
@@ -1067,6 +1068,7 @@ Public Class dlgEditMovie
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
                 MovieTheme.FromFile(ofdLocalFiles.FileName)
+                MovieTheme.isEdit = True
                 ThemeAddToPlayer(MovieTheme)
             End If
         Catch ex As Exception
@@ -1085,6 +1087,7 @@ Public Class dlgEditMovie
             If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
                 tResults = dlgTrlS.Results
                 MovieTrailer = tResults.WebTrailer
+                MovieTrailer.isEdit = True
                 TrailerAddToPlayer(MovieTrailer)
             End If
         Catch ex As Exception
@@ -1101,6 +1104,7 @@ Public Class dlgEditMovie
             dlgTrlS = New dlgTrailerSelect()
             If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
                 MovieTrailer = dlgTrlS.Results.WebTrailer
+                MovieTrailer.isEdit = True
                 TrailerAddToPlayer(MovieTrailer)
             End If
         Catch ex As Exception
@@ -1119,6 +1123,7 @@ Public Class dlgEditMovie
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
                 MovieTrailer.FromFile(ofdLocalFiles.FileName)
+                MovieTrailer.isEdit = True
                 TrailerAddToPlayer(MovieTrailer)
             End If
         Catch ex As Exception
