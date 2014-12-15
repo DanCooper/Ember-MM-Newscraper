@@ -21,7 +21,7 @@
 Imports System.IO
 Imports EmberAPI
 
-Public Class frmTelevisionTunesInfoSettingsHolder
+Public Class frmTelevisionTunesInfoSettingsHolder_TV
 
 #Region "Events"
 
@@ -80,6 +80,5 @@ Public Class frmTelevisionTunesInfoSettingsHolder
     End Sub
 
 #End Region 'Methods
-
 
 End Class

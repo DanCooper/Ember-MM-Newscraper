@@ -23,58 +23,81 @@ Imports EmberAPI
 Imports NLog
 
 Public Class TelevisionTunes_Theme
+    Implements Interfaces.ScraperModule_Theme_Movie
     Implements Interfaces.ScraperModule_Theme_TV
 
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     ''' <summary>
     ''' Scraping Here
     ''' </summary>
     ''' <remarks></remarks>
-    Private _MySettings As New sMySettings
+    Private _MySettings_Movie As New sMySettings
+    Private _MySettings_TV As New sMySettings
     Private _Name As String = "TelevisionTunes_Theme"
-    Private _ScraperEnabled As Boolean = False
-    Private _setup As frmTelevisionTunesInfoSettingsHolder
+    Private _ScraperEnabled_Movie As Boolean = False
+    Private _ScraperEnabled_TV As Boolean = False
+    Private _setup_Movie As frmTelevisionTunesInfoSettingsHolder_Movie
+    Private _setup_TV As frmTelevisionTunesInfoSettingsHolder_TV
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_Theme_TV.ModuleSettingsChanged
+    Public Event ModuleSettingsChanged_TV() Implements Interfaces.ScraperModule_Theme_TV.ModuleSettingsChanged
 
-    Public Event TVScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Theme_TV.TVScraperEvent
+    Public Event ScraperEvent_TV(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Theme_TV.ScraperEvent
 
-    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Theme_TV.ScraperSetupChanged
+    Public Event SetupScraperChanged_TV(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Theme_TV.ScraperSetupChanged
 
-    Public Event SetupNeedsRestart() Implements Interfaces.ScraperModule_Theme_TV.SetupNeedsRestart
+    Public Event SetupNeedsRestart_TV() Implements Interfaces.ScraperModule_Theme_TV.SetupNeedsRestart
+
+
+    Public Event ModuleSettingsChanged_Movie() Implements Interfaces.ScraperModule_Theme_Movie.ModuleSettingsChanged
+
+    Public Event ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Theme_Movie.ScraperEvent
+
+    Public Event SetupScraperChanged_Movie(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Theme_Movie.ScraperSetupChanged
+
+    Public Event SetupNeedsRestart_Movie() Implements Interfaces.ScraperModule_Theme_Movie.SetupNeedsRestart
 
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Theme_TV.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Theme_TV.ModuleName, Interfaces.ScraperModule_Theme_Movie.ModuleName
         Get
             Return _Name
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Theme_TV.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Theme_TV.ModuleVersion, Interfaces.ScraperModule_Theme_Movie.ModuleVersion
         Get
             Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
-    Property ScraperEnabled() As Boolean Implements Interfaces.ScraperModule_Theme_TV.ScraperEnabled
+    Property ScraperEnabled_TV() As Boolean Implements Interfaces.ScraperModule_Theme_TV.ScraperEnabled
         Get
-            Return _ScraperEnabled
+            Return _ScraperEnabled_TV
         End Get
         Set(ByVal value As Boolean)
-            _ScraperEnabled = value
+            _ScraperEnabled_TV = value
+        End Set
+    End Property
+
+    Property ScraperEnabled_Movie() As Boolean Implements Interfaces.ScraperModule_Theme_Movie.ScraperEnabled
+        Get
+            Return _ScraperEnabled_Movie
+        End Get
+        Set(ByVal value As Boolean)
+            _ScraperEnabled_Movie = value
         End Set
     End Property
 
@@ -82,64 +105,128 @@ Public Class TelevisionTunes_Theme
 
 #Region "Methods"
 
-    Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+    Private Sub Handle_ModuleSettingsChanged_Movie()
+        RaiseEvent ModuleSettingsChanged_Movie()
     End Sub
 
-    Private Sub Handle_PostModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+    Private Sub Handle_ModuleSettingsChanged_TV()
+        RaiseEvent ModuleSettingsChanged_TV()
     End Sub
 
-    Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        ScraperEnabled = state
-        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
+    Private Sub Handle_SetupScraperChanged_Movie(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled_Movie = state
+        RaiseEvent SetupScraperChanged_Movie(String.Concat(Me._Name, "_Movie"), state, difforder)
     End Sub
 
-    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Theme_TV.Init
+    Private Sub Handle_SetupScraperChanged_TV(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled_TV = state
+        RaiseEvent SetupScraperChanged_TV(String.Concat(Me._Name, "_TV"), state, difforder)
+    End Sub
+
+    Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Theme_Movie.Init
         _AssemblyName = sAssemblyName
-        LoadSettings()
+        LoadSettings_Movie()
     End Sub
 
-    Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Theme_TV.InjectSetupScraper
-        Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmTelevisionTunesInfoSettingsHolder
-        LoadSettings()
-        _setup.chkEnabled.Checked = _ScraperEnabled
+    Sub Init_TV(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Theme_TV.Init
+        _AssemblyName = sAssemblyName
+        LoadSettings_TV()
+    End Sub
 
-        _setup.orderChanged()
-        SPanel.Name = String.Concat(Me._Name, "Scraper")
+    Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Theme_Movie.InjectSetupScraper
+        Dim SPanel As New Containers.SettingsPanel
+        _setup_Movie = New frmTelevisionTunesInfoSettingsHolder_Movie
+        LoadSettings_Movie()
+        _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
+
+        _setup_Movie.orderChanged()
+
+        SPanel.Name = String.Concat(Me._Name, "_Movie")
+        SPanel.Text = "TelevisionTunes"
+        SPanel.Prefix = "TelevisionTunesTVTheme_"
+        SPanel.Order = 110
+        SPanel.Parent = "pnlMovieTheme"
+        SPanel.Type = Master.eLang.GetString(36, "Movies")
+        SPanel.ImageIndex = If(_ScraperEnabled_Movie, 9, 10)
+        SPanel.Panel = _setup_Movie.pnlSettings
+        AddHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
+        AddHandler _setup_Movie.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
+        Return SPanel
+    End Function
+
+    Function InjectSetupScraper_TV() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Theme_TV.InjectSetupScraper
+        Dim SPanel As New Containers.SettingsPanel
+        _setup_TV = New frmTelevisionTunesInfoSettingsHolder_TV
+        LoadSettings_TV()
+        _setup_TV.chkEnabled.Checked = _ScraperEnabled_TV
+
+        _setup_TV.orderChanged()
+
+        SPanel.Name = String.Concat(Me._Name, "_TV")
         SPanel.Text = "TelevisionTunes"
         SPanel.Prefix = "TelevisionTunesTVTheme_"
         SPanel.Order = 110
         SPanel.Parent = "pnlTVTheme"
         SPanel.Type = Master.eLang.GetString(653, "TV Shows")
-        SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
-        SPanel.Panel = _setup.pnlSettings
-        AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
-        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.ImageIndex = If(_ScraperEnabled_TV, 9, 10)
+        SPanel.Panel = _setup_TV.pnlSettings
+        AddHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV
+        AddHandler _setup_TV.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_TV
         Return SPanel
     End Function
 
-    Sub LoadSettings()
-        ConfigScrapeModifier.Theme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True)
+    Sub LoadSettings_Movie()
+        ConfigScrapeModifier_Movie.Theme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.Content_Type.Movie)
     End Sub
 
-    Sub SaveSettings()
+    Sub LoadSettings_TV()
+        ConfigScrapeModifier_TV.Theme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.Content_Type.TV)
+    End Sub
+
+    Sub SaveSettings_Movie()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier.Theme)
+            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_Movie.Theme, , , Enums.Content_Type.Movie)
         End Using
     End Sub
 
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Theme_TV.SaveSetupScraper
-        SaveSettings()
+    Sub SaveSettings_TV()
+        Using settings = New clsAdvancedSettings()
+            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_TV.Theme, , , Enums.Content_Type.TV)
+        End Using
+    End Sub
+
+    Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Theme_Movie.SaveSetupScraper
+        SaveSettings_Movie()
         If DoDispose Then
-            RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
-            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            _setup.Dispose()
+            RemoveHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
+            RemoveHandler _setup_Movie.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
+            _setup_Movie.Dispose()
         End If
     End Sub
 
-    Function Scraper(ByVal DBTV As Structures.DBTV, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
+    Sub SaveSetupScraper_TV(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Theme_TV.SaveSetupScraper
+        SaveSettings_TV()
+        If DoDispose Then
+            RemoveHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV
+            RemoveHandler _setup_TV.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_TV
+            _setup_TV.Dispose()
+        End If
+    End Sub
+
+    Function Scraper_Movie(ByVal DBMovie As Structures.DBMovie, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
+        logger.Trace("Started scrape")
+
+        Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBMovie.Movie.OriginalTitle)
+
+        If tTelevisionTunes.ThemeList.Count > 0 Then
+            ThemeList = tTelevisionTunes.ThemeList
+        End If
+
+        logger.Trace("Finished scrape")
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function Scraper_TV(ByVal DBTV As Structures.DBTV, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
         logger.Trace("Started scrape")
 
         Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBTV.TVShow.Title)
@@ -152,8 +239,12 @@ Public Class TelevisionTunes_Theme
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Theme_TV.ScraperOrderChanged
-        _setup.orderChanged()
+    Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.ScraperModule_Theme_Movie.ScraperOrderChanged
+        _setup_Movie.orderChanged()
+    End Sub
+
+    Public Sub ScraperOrderChanged_TV() Implements EmberAPI.Interfaces.ScraperModule_Theme_TV.ScraperOrderChanged
+        _setup_TV.orderChanged()
     End Sub
 
 #End Region 'Methods
@@ -169,6 +260,5 @@ Public Class TelevisionTunes_Theme
     End Structure
 
 #End Region 'Nested Types
-
 
 End Class
