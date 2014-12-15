@@ -25,11 +25,11 @@ Imports NLog
 
 Public Class dlgIMDBSearchResults
 
-    #Region "Fields"
+#Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
-    Friend  WithEvents tmrLoad As New System.Windows.Forms.Timer
-    Friend  WithEvents tmrWait As New System.Windows.Forms.Timer
+    Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
+    Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
     Private IMDB As New IMDB.Scraper
     Private sHTTP As New HTTP
@@ -328,7 +328,7 @@ Public Class dlgIMDBSearchResults
             Me.tvResults.Nodes.Clear()
             Me.ClearInfo()
             If Not IsNothing(M) Then
-                If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 OrElse M.TvTitles.Count > 0 OrElse M.ExactMatches.Count > 0 Then
+                If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 OrElse M.TvTitles.Count > 0 OrElse M.ExactMatches.Count > 0 OrElse M.VideoTitles.Count > 0 Then
                     Dim TnP As New TreeNode(String.Format(Master.eLang.GetString(827, "Partial Matches ({0})"), M.PartialMatches.Count))
                     Dim selNode As New TreeNode
 
@@ -405,6 +405,8 @@ Public Class dlgIMDBSearchResults
                     ElseIf M.PopularTitles.Count > 0 Then
                         Me.tvResults.SelectedNode = selNode
                     ElseIf M.TvTitles.Count > 0 Then
+                        Me.tvResults.SelectedNode = selNode
+                    ElseIf M.VideoTitles.Count > 0 Then
                         Me.tvResults.SelectedNode = selNode
                     ElseIf M.PartialMatches.Count > 0 Then
                         Me.tvResults.SelectedNode = selNode
@@ -555,30 +557,30 @@ Public Class dlgIMDBSearchResults
 
 #End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Private Structure Arguments
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim pURL As String
         Dim IMDBId As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
     Private Structure Results
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim Result As Image
         Dim IMDBId As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class
