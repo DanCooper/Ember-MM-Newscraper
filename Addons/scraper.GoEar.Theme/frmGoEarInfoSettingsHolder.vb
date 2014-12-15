@@ -81,5 +81,4 @@ Public Class frmGoEarInfoSettingsHolder
 
 #End Region 'Methods
 
-
 End Class

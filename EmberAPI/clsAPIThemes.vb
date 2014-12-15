@@ -24,6 +24,7 @@ Imports NLog
 
 Public Class Themes
     Implements IDisposable
+
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
@@ -246,8 +247,6 @@ Public Class Themes
                     Me._ms.Write(StreamBuffer, 0, StreamBuffer.Length)
 
                     StreamBuffer = Nothing
-                    '_ms.SetLength(fsImage.Length)
-                    'fsImage.Read(_ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
                     Me._ms.Flush()
 
                     Me._ext = Path.GetExtension(sPath)

@@ -1039,13 +1039,18 @@ Public Class dlgEditMovie
 
         Try
             Me.ThemeStop()
-            dlgThmS = New dlgThemeSelect()
             If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
-                If dlgThmS.ShowDialog(Master.currMovie, aUrlList) = Windows.Forms.DialogResult.OK Then
-                    MovieTheme = dlgThmS.Results.WebTheme
-                    ThemeAddToPlayer(MovieTheme)
+                If aUrlList.Count > 0 Then
+                    dlgThmS = New dlgThemeSelect()
+                    If dlgThmS.ShowDialog(Master.currMovie, aUrlList) = Windows.Forms.DialogResult.OK Then
+                        MovieTheme = dlgThmS.Results.WebTheme
+                        ThemeAddToPlayer(MovieTheme)
+                    End If
+                Else
+                    MsgBox(Master.eLang.GetString(1162, "No themes could be found. Please check to see if any theme scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1163, "No Themes Found"))
                 End If
             End If
+
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try

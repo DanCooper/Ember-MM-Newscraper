@@ -46,7 +46,6 @@ Public Class Trailers
     Private _ms As MemoryStream
     Private Ret As Byte()
 
-
 #End Region 'Fields
 
 #Region "Constructors"

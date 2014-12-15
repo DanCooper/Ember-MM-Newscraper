@@ -41,6 +41,7 @@ Public Class dlgThemeSelect
 #End Region 'Fields
 
 #Region "Properties"
+
     Public Property Results As MediaContainers.Theme
         Get
             Return _results
@@ -49,6 +50,7 @@ Public Class dlgThemeSelect
             _results = value
         End Set
     End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -111,7 +113,7 @@ Public Class dlgThemeSelect
 
     Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByRef tURLList As List(Of Themes)) As DialogResult
         CreateTable(tURLList)
-        
+
         Return MyBase.ShowDialog()
     End Function
 
@@ -207,7 +209,7 @@ Public Class dlgThemeSelect
                 'Me.btnTrailerStop.Enabled = False
             End If
         End If
-        RemoveHandler Trailers.ProgressUpdated, AddressOf DownloadProgressUpdated
+        RemoveHandler Themes.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
     Private Sub DownloadProgressUpdated(ByVal iProgress As Integer)
@@ -216,6 +218,19 @@ Public Class dlgThemeSelect
 
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(1069, "Select Theme")
+    End Sub
+
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        If Me.bwDownloadTheme.IsBusy Then Me.bwDownloadTheme.CancelAsync()
+
+        While Me.bwDownloadTheme.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Results = Nothing
+        Me.Close()
     End Sub
 
 #End Region 'Methods

@@ -43,6 +43,7 @@ Public Class dlgTrailerSelect
 #End Region 'Fields
 
 #Region "Properties"
+
     Public Property Results As MediaContainers.Trailer
         Get
             Return _results
@@ -51,6 +52,7 @@ Public Class dlgTrailerSelect
             _results = value
         End Set
     End Property
+
 #End Region 'Properties
 
 #Region "Methods"

@@ -517,7 +517,7 @@ Public Class Interfaces
 
         Event SetupNeedsRestart()
 
-        Event TVScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
 
 #End Region 'Events
 
