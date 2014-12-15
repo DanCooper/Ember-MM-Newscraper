@@ -237,17 +237,17 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Dim aUrlList As New List(Of Themes)
-        Dim tURL As String = String.Empty
-        If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
-            Using dThemeSelect As New dlgThemeSelect()
-                MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
-            End Using
-        End If
+        'Dim aUrlList As New List(Of Themes)
+        'Dim tURL As String = String.Empty
+        'If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
+        '    Using dThemeSelect As New dlgThemeSelect()
+        '        MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
+        '    End Using
+        'End If
 
-        If Not String.IsNullOrEmpty(MovieTheme.URL) Then
-            'Me.btnPlayTheme.Enabled = True
-        End If
+        'If Not String.IsNullOrEmpty(MovieTheme.URL) Then
+        '    'Me.btnPlayTheme.Enabled = True
+        'End If
     End Sub
 
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
@@ -1034,32 +1034,17 @@ Public Class dlgEditMovie
     'End Sub
 
     Private Sub btnSetMovieThemeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieThemeScrape.Click
-        'Dim tResults As New MediaContainers.Theme
-        'Dim dlgTheS As dlgThemeSelect
-        'Dim tList As New List(Of Themes)
+        Dim dlgThmS As dlgThemeSelect
+        Dim aUrlList As New List(Of Themes)
 
         Try
             Me.ThemeStop()
-
-            '    dlgTheS = New dlgThemeSelect()
-            '    If dlgTheS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
-            '        tResults = dlgTheS.Results
-            '        MovieTheme = tResults.WebTheme
-            '        ThemeAddToPlayer(MovieTheme)
-            '    End If
-
-            Dim aUrlList As New List(Of Themes)
-            Dim tURL As String = String.Empty
+            dlgThmS = New dlgThemeSelect()
             If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
-                Using dThemeSelect As New dlgThemeSelect()
-                    If Not IsNothing(dThemeSelect.ShowDialog(Master.currMovie, aUrlList)) Then
-                        MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
-                    End If
-                End Using
-            End If
-
-            If Not String.IsNullOrEmpty(MovieTheme.URL) Then
-                ThemeAddToPlayer(MovieTheme)
+                If dlgThmS.ShowDialog(Master.currMovie, aUrlList) = Windows.Forms.DialogResult.OK Then
+                    MovieTheme = dlgThmS.Results.WebTheme
+                    ThemeAddToPlayer(MovieTheme)
+                End If
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1084,7 +1069,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovietrailerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieTrailerDL.Click
+    Private Sub btnSetMovieTrailerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieTrailerDL.Click
         Dim tResults As New MediaContainers.Trailer
         Dim dlgTrlS As dlgTrailerSelect
         Dim tList As New List(Of Trailers)
@@ -1103,7 +1088,6 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnSetMovieTrailerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieTrailerScrape.Click
-        Dim tResults As New MediaContainers.Trailer
         Dim dlgTrlS As dlgTrailerSelect
         Dim tList As New List(Of Trailers)
 
@@ -1111,8 +1095,7 @@ Public Class dlgEditMovie
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
             If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
-                tResults = dlgTrlS.Results
-                MovieTrailer = tResults.WebTrailer
+                MovieTrailer = dlgTrlS.Results.WebTrailer
                 TrailerAddToPlayer(MovieTrailer)
             End If
         Catch ex As Exception

@@ -28,8 +28,12 @@ Partial Class dlgThemeSelect
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.gbSelectTheme = New System.Windows.Forms.GroupBox()
         Me.lvThemes = New System.Windows.Forms.ListView()
+        Me.pnlStatus = New System.Windows.Forms.Panel()
+        Me.lblStatus = New System.Windows.Forms.Label()
+        Me.pbStatus = New System.Windows.Forms.ProgressBar()
         CType(Me.vlcPlayer, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbSelectTheme.SuspendLayout()
+        Me.pnlStatus.SuspendLayout()
         Me.SuspendLayout()
         '
         'vlcPlayer
@@ -80,6 +84,38 @@ Partial Class dlgThemeSelect
         Me.lvThemes.UseCompatibleStateImageBehavior = False
         Me.lvThemes.View = System.Windows.Forms.View.Details
         '
+        'pnlStatus
+        '
+        Me.pnlStatus.BackColor = System.Drawing.Color.White
+        Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlStatus.Controls.Add(Me.lblStatus)
+        Me.pnlStatus.Controls.Add(Me.pbStatus)
+        Me.pnlStatus.Location = New System.Drawing.Point(218, 87)
+        Me.pnlStatus.Name = "pnlStatus"
+        Me.pnlStatus.Size = New System.Drawing.Size(200, 54)
+        Me.pnlStatus.TabIndex = 4
+        Me.pnlStatus.Visible = False
+        '
+        'lblStatus
+        '
+        Me.lblStatus.AutoSize = True
+        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblStatus.Location = New System.Drawing.Point(3, 10)
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.Size = New System.Drawing.Size(121, 13)
+        Me.lblStatus.TabIndex = 0
+        Me.lblStatus.Text = "Compiling trailer list..."
+        Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'pbStatus
+        '
+        Me.pbStatus.Location = New System.Drawing.Point(3, 32)
+        Me.pbStatus.MarqueeAnimationSpeed = 25
+        Me.pbStatus.Name = "pbStatus"
+        Me.pbStatus.Size = New System.Drawing.Size(192, 17)
+        Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.pbStatus.TabIndex = 1
+        '
         'dlgThemeSelect
         '
         Me.AcceptButton = Me.OK_Button
@@ -87,14 +123,18 @@ Partial Class dlgThemeSelect
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(638, 377)
+        Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.gbSelectTheme)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.vlcPlayer)
         Me.Name = "dlgThemeSelect"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "dlgThemeSelect"
         CType(Me.vlcPlayer, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbSelectTheme.ResumeLayout(False)
+        Me.pnlStatus.ResumeLayout(False)
+        Me.pnlStatus.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -103,4 +143,7 @@ Partial Class dlgThemeSelect
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents gbSelectTheme As System.Windows.Forms.GroupBox
     Friend WithEvents lvThemes As System.Windows.Forms.ListView
+    Friend WithEvents pnlStatus As System.Windows.Forms.Panel
+    Friend WithEvents lblStatus As System.Windows.Forms.Label
+    Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
 End Class
