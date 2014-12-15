@@ -283,6 +283,10 @@ Public Class Themes
                 Me._ms.Write(retSave, 0, retSave.Length)
 
                 Me._ext = Path.GetExtension(tTheme)
+                Me._url = sURL
+                logger.Debug("Theme downloaded: " & sURL)
+            Else
+                logger.Warn("Theme NOT downloaded: " & sURL)
             End If
 
         Catch ex As Exception

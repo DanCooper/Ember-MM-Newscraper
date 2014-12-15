@@ -21,10 +21,12 @@
 Imports EmberAPI
 Imports System.IO
 Imports System.Net
+Imports NLog
 
 Public Class dlgThemeSelect
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwDownloadTheme As New System.ComponentModel.BackgroundWorker
 
@@ -174,12 +176,10 @@ Public Class dlgThemeSelect
     Private Sub bwDownloadTheme_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTheme.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            Using Trailer As New Trailers()
-                Results.WebTheme.FromWeb(Args.Parameter.URL, Args.Parameter.WebURL)
-                Results.URL = Args.Parameter.URL
-            End Using
-
-        Catch
+            Results.WebTheme.FromWeb(Args.Parameter.URL, Args.Parameter.WebURL)
+            Results.URL = Args.Parameter.URL
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         e.Result = Args.bType

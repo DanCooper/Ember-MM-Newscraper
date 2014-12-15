@@ -390,12 +390,10 @@ Public Class dlgTrailerSelect
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            Using Trailer As New Trailers()
-                Results.WebTrailer.FromWeb(Args.Parameter)
-                Results.URL = Args.Parameter
-            End Using
-
-        Catch
+            Results.WebTrailer.FromWeb(Args.Parameter)
+            Results.URL = Args.Parameter
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         e.Result = Args.bType

@@ -42,7 +42,7 @@ Partial Class dlgThemeSelect
         Me.vlcPlayer.Location = New System.Drawing.Point(12, 258)
         Me.vlcPlayer.Name = "vlcPlayer"
         Me.vlcPlayer.OcxState = CType(resources.GetObject("vlcPlayer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.vlcPlayer.Size = New System.Drawing.Size(460, 57)
+        Me.vlcPlayer.Size = New System.Drawing.Size(460, 56)
         Me.vlcPlayer.TabIndex = 0
         '
         'OK_Button
@@ -123,11 +123,15 @@ Partial Class dlgThemeSelect
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(638, 377)
+        Me.ControlBox = False
         Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.gbSelectTheme)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.vlcPlayer)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "dlgThemeSelect"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "dlgThemeSelect"
