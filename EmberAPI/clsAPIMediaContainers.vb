@@ -2296,6 +2296,7 @@ Namespace MediaContainers
             _studio = String.Empty
             _votes = String.Empty
             _actors.Clear()
+            _episodeguide.URL = String.Empty
         End Sub
 
         Public Sub BlankId()
