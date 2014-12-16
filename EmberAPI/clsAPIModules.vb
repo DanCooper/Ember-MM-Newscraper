@@ -726,8 +726,21 @@ Public Class ModulesManager
                 tmpTitle = StringUtils.FilterName_Movie(If(DBMovie.IsSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
             End If
 
+            Dim tmpYear As String = String.Empty
+            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                tmpYear = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
+            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                tmpYear = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
+            Else
+                If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
+                    tmpYear = StringUtils.GetYear(Directory.GetParent(DBMovie.Filename).Name)
+                Else
+                    tmpYear = StringUtils.GetYear(Path.GetFileNameWithoutExtension(DBMovie.Filename))
+                End If
+            End If
+
             DBMovie.Movie.Title = tmpTitle
-            'DBMovie.Movie.Year = tmpYear TODO: get year from file/folder name
+            DBMovie.Movie.Year = tmpYear
         End If
 
         'create a copy of DBMovie
