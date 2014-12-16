@@ -50,7 +50,7 @@ Partial Class frmSettingsHolder
         Me.chkRenameEditMovies = New System.Windows.Forms.CheckBox()
         Me.lblTips = New System.Windows.Forms.Label()
         Me.gbPreview = New System.Windows.Forms.GroupBox()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblPreview = New System.Windows.Forms.TableLayoutPanel()
         Me.lblSingleEpisodeFile = New System.Windows.Forms.Label()
         Me.txtSingleEpisodeFile = New System.Windows.Forms.TextBox()
         Me.lblMultiEpisodeFile = New System.Windows.Forms.Label()
@@ -70,7 +70,7 @@ Partial Class frmSettingsHolder
         Me.gbRenamerPatternsMovie.SuspendLayout()
         Me.tblRenamerPatternsMovie.SuspendLayout()
         Me.gbPreview.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.tblPreview.SuspendLayout()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
         Me.SuspendLayout()
@@ -444,7 +444,7 @@ Partial Class frmSettingsHolder
         'gbPreview
         '
         Me.gbPreview.AutoSize = True
-        Me.gbPreview.Controls.Add(Me.TableLayoutPanel1)
+        Me.gbPreview.Controls.Add(Me.tblPreview)
         Me.gbPreview.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbPreview.Location = New System.Drawing.Point(302, 285)
@@ -454,35 +454,35 @@ Partial Class frmSettingsHolder
         Me.gbPreview.TabStop = False
         Me.gbPreview.Text = "Preview"
         '
-        'TableLayoutPanel1
+        'tblPreview
         '
-        Me.TableLayoutPanel1.AutoSize = True
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.Controls.Add(Me.lblSingleEpisodeFile, 0, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.txtSingleEpisodeFile, 0, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.lblMultiEpisodeFile, 0, 4)
-        Me.TableLayoutPanel1.Controls.Add(Me.txtMultiEpisodeFile, 0, 5)
-        Me.TableLayoutPanel1.Controls.Add(Me.lblSingleMovieFile, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.txtSingleMovieFile, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.lblMultiSeasonFile, 0, 6)
-        Me.TableLayoutPanel1.Controls.Add(Me.txtMultiSeasonFile, 0, 7)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 9
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(406, 192)
-        Me.TableLayoutPanel1.TabIndex = 0
+        Me.tblPreview.AutoSize = True
+        Me.tblPreview.ColumnCount = 2
+        Me.tblPreview.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblPreview.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblPreview.Controls.Add(Me.lblSingleEpisodeFile, 0, 2)
+        Me.tblPreview.Controls.Add(Me.txtSingleEpisodeFile, 0, 3)
+        Me.tblPreview.Controls.Add(Me.lblMultiEpisodeFile, 0, 4)
+        Me.tblPreview.Controls.Add(Me.txtMultiEpisodeFile, 0, 5)
+        Me.tblPreview.Controls.Add(Me.lblSingleMovieFile, 0, 0)
+        Me.tblPreview.Controls.Add(Me.txtSingleMovieFile, 0, 1)
+        Me.tblPreview.Controls.Add(Me.lblMultiSeasonFile, 0, 6)
+        Me.tblPreview.Controls.Add(Me.txtMultiSeasonFile, 0, 7)
+        Me.tblPreview.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblPreview.Location = New System.Drawing.Point(3, 18)
+        Me.tblPreview.Name = "tblPreview"
+        Me.tblPreview.RowCount = 9
+        Me.tblPreview.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblPreview.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblPreview.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblPreview.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblPreview.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblPreview.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblPreview.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblPreview.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblPreview.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblPreview.Size = New System.Drawing.Size(406, 192)
+        Me.tblPreview.TabIndex = 0
         '
         'lblSingleEpisodeFile
         '
@@ -628,8 +628,8 @@ Partial Class frmSettingsHolder
         Me.tblRenamerPatternsMovie.PerformLayout()
         Me.gbPreview.ResumeLayout(False)
         Me.gbPreview.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
+        Me.tblPreview.ResumeLayout(False)
+        Me.tblPreview.PerformLayout()
         Me.pnlSettingsTop.ResumeLayout(False)
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)
@@ -669,7 +669,7 @@ Partial Class frmSettingsHolder
     Friend WithEvents chkRenameEditEpisodes As System.Windows.Forms.CheckBox
     Friend WithEvents chkRenameUpdateEpisodes As System.Windows.Forms.CheckBox
     Friend WithEvents gbPreview As System.Windows.Forms.GroupBox
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblPreview As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblSingleEpisodeFile As System.Windows.Forms.Label
     Friend WithEvents txtSingleEpisodeFile As System.Windows.Forms.TextBox
     Friend WithEvents lblMultiEpisodeFile As System.Windows.Forms.Label
