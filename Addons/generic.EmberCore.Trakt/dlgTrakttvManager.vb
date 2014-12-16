@@ -17,6 +17,7 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+
 Imports EmberAPI
 Imports NLog
 Imports System.Diagnostics
@@ -28,6 +29,7 @@ Imports System.Windows.Forms
 Public Class dlgTrakttvManager
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     'backgroundworker used for commandline scraping in this module
@@ -67,7 +69,8 @@ Public Class dlgTrakttvManager
 
     'Not used at moment
     'Friend WithEvents bwLoadMovies As New System.ComponentModel.BackgroundWorker
-#End Region
+
+#End Region 'Fields
 
 #Region "Constructors"
     Sub New()
@@ -75,9 +78,11 @@ Public Class dlgTrakttvManager
         InitializeComponent()
         SetUp()
     End Sub
-#End Region
+
+#End Region 'Constructors
 
 #Region "Methods"
+
     ''' <summary>
     ''' Actions on module startup
     ''' </summary>
@@ -173,6 +178,7 @@ Public Class dlgTrakttvManager
     End Sub
 
 #Region "Trakt.tv Sync Playcount"
+
     ''' <summary>
     ''' Commandline call: Update/Sync playcounts of movies and episodes
     ''' </summary>
@@ -463,7 +469,7 @@ Public Class dlgTrakttvManager
 
     End Sub
 
-#End Region
+#End Region 'Trakt.tv Sync Playcount
 
 #Region "Trakt.tv Sync Lists/Tags"
     '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1722,9 +1728,7 @@ Public Class dlgTrakttvManager
         End If
     End Sub
 
-
-
-#End Region
+#End Region 'Trakt.tv Sync Lists/Tags
 
 #Region "Trakt.tv Listviewer"
     ''' <summary>
@@ -1838,7 +1842,7 @@ Public Class dlgTrakttvManager
                     Next
 
                     logger.Info("[" & txttraktListsurl.Text & "] " & "Userlist loaded!")
- 
+
                     'after filling datagrid, enable controls
                     chktraktListsCompare.Checked = False
                     btntraktListsSaveList.Enabled = True
@@ -1989,7 +1993,7 @@ Public Class dlgTrakttvManager
                     Else
                         logger.Info("[" & item.Title & "] " & "Movie Item is Nothing! Could not be compared against library!")
                     End If
-                    
+
                     If foundmovieinlibrary = False Then
                         If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
                             dgvtraktList.Rows.Add(New Object() {item.Title, item.Year, item.Movie.Ratings.Percentage, Strings.Join(item.Movie.Genres.ToArray, "/").Trim, "http://www.imdb.com/title/" & item.Movie.IMDBID, item.Movie.Trailer})
@@ -2063,9 +2067,9 @@ Public Class dlgTrakttvManager
         End Try
     End Sub
 
-#End Region
+#End Region 'Trakt.tv Listviewer
 
-#End Region
+#End Region 'Methods
 
 End Class
 

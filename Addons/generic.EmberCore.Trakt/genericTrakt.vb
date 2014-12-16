@@ -1,4 +1,24 @@
-﻿Imports EmberAPI
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
+
+Imports EmberAPI
 Imports System.Windows.Forms
 Imports System.Drawing
 Imports NLog
@@ -7,11 +27,14 @@ Public Class genericTrakt
     Implements Interfaces.GenericModule
 
 #Region "Delegates"
+
     Public Delegate Sub Delegate_AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
     Public Delegate Sub Delegate_RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
-#End Region
+
+#End Region 'Delegates
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private _setup As frmTraktSettingsHolder
     Private _AssemblyName As String = String.Empty
@@ -20,12 +43,15 @@ Public Class genericTrakt
     Private _enabled As Boolean = False
     Private _Name As String = "Trakt.tv Manager"
     Private MySettings As New _MySettings
-#End Region
+
+#End Region 'Fields
 
 #Region "Events"
+
     Public Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) Implements EmberAPI.Interfaces.GenericModule.GenericEvent
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
     Public Event ModuleSettingsChanged() Implements EmberAPI.Interfaces.GenericModule.ModuleSettingsChanged
+
 #End Region 'Events
 
 #Region "Properties"
@@ -186,17 +212,18 @@ Public Class genericTrakt
 
 #End Region 'Methods
 
-
-
 #Region "Nested Types"
-
-#End Region 'Nested Types
     Structure _MySettings
+
 #Region "Fields"
+
         Dim TraktUsername As String
         Dim TraktPassword As String
+
 #End Region 'Fields
 
     End Structure
+
+#End Region 'Nested Types
 
 End Class
