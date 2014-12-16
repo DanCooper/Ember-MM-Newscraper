@@ -680,8 +680,8 @@ mPlot:          'Plot
             Return alStudio
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, ByVal FullCrew As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As MediaContainers.Movie
-            Dim r As MovieSearchResults = SearchMovie(sMovieName)
+        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByVal sMovieYear As String, ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, ByVal FullCrew As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As MediaContainers.Movie
+            Dim r As MovieSearchResults = SearchMovie(sMovieName, sMovieYear)
             Dim b As Boolean = False
 
 
@@ -693,7 +693,7 @@ mPlot:          'Plot
                 Select Case iType
                     Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
 
-                        If r.ExactMatches.Count = 1 Then 'AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count = 0 Then 'redirected to imdb info page
+                        If r.ExactMatches.Count = 1 Then
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         ElseIf r.PopularTitles.Count = 1 AndAlso r.PopularTitles(0).Lev <= 5 Then
                             b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, Options, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
@@ -800,12 +800,12 @@ mPlot:          'Plot
             End Try
         End Sub
 
-        Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions_Movie)
+        Public Sub SearchMovieAsync(ByVal sMovieTitle As String, ByVal sMovieYear As String, ByVal filterOptions As Structures.ScrapeOptions_Movie)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = False
                     bwIMDB.WorkerSupportsCancellation = True
-                    bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, .Parameter = sMovie, .Options = filterOptions})
+                    bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, .Parameter = sMovieTitle, .MovieYear = sMovieYear, .Options = filterOptions})
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -818,7 +818,7 @@ mPlot:          'Plot
             Try
                 Select Case Args.Search
                     Case SearchType.Movies
-                        Dim r As MovieSearchResults = SearchMovie(Args.Parameter)
+                        Dim r As MovieSearchResults = SearchMovie(Args.Parameter, Args.MovieYear)
                         e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
 
                     Case SearchType.SearchDetails
@@ -904,8 +904,9 @@ mPlot:          'Plot
             Return Regex.Match(strObj, IMDB_ID_REGEX).ToString.Replace("tt", String.Empty)
         End Function
 
-        Private Function SearchMovie(ByVal sMovie As String) As MovieSearchResults
+        Private Function SearchMovie(ByVal sMovieTitle As String, ByVal sMovieYear As String) As MovieSearchResults
             Try
+                Dim sMovie As String = String.Concat(sMovieTitle, " ", If(Not String.IsNullOrEmpty(sMovieYear), String.Concat("(", sMovieYear, ")"), String.Empty))
 
                 Dim D, W As Integer
                 Dim R As New MovieSearchResults
@@ -1105,6 +1106,7 @@ mResult:
             Dim IMDBMovie As MediaContainers.Movie
             Dim Options As Structures.ScrapeOptions_Movie
             Dim Parameter As String
+            Dim MovieYear As String
             Dim Search As SearchType
 
 #End Region 'Fields

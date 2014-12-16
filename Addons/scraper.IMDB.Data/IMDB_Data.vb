@@ -311,7 +311,7 @@ Public Class IMDB_Data
                 _scraper.GetMovieInfo(oDBMovie.Movie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage, _MySettings.CountryAbbreviation)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first!
-                _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie, nMovie, ScrapeType, filterOptions, filterOptions.bFullCrew, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage, _MySettings.CountryAbbreviation)
+                _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie, nMovie, ScrapeType, filterOptions, filterOptions.bFullCrew, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage, _MySettings.CountryAbbreviation)
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(nMovie.IMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
@@ -328,7 +328,7 @@ Public Class IMDB_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) AndAlso String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
                 Using dSearch As New dlgIMDBSearchResults
-                    If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Filename, filterOptions) = Windows.Forms.DialogResult.OK Then
+                    If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie.Filename, filterOptions) = Windows.Forms.DialogResult.OK Then
                         _scraper.GetMovieInfo(nMovie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings.FallBackWorldwide, _MySettings.ForceTitleLanguage, _MySettings.CountryAbbreviation)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, False, False)

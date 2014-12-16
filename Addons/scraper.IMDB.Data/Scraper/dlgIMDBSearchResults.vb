@@ -50,7 +50,7 @@ Public Class dlgIMDBSearchResults
 
 #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieYear As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -61,14 +61,14 @@ Public Class dlgIMDBSearchResults
         _nMovie = nMovie
 
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
-        Me.txtSearch.Text = sMovieTitle
+        Me.txtSearch.Text = String.Concat(sMovieTitle, " ", If(Not String.IsNullOrEmpty(sMovieYear), String.Concat("(", sMovieYear, ")"), String.Empty))
         Me.txtFileName.Text = sMovieFilename
 
         ' fix for Enhancement #91
         'chkManual.Enabled = False
         chkManual.Enabled = True
 
-        IMDB.SearchMovieAsync(sMovieTitle, _filterOptions)
+        IMDB.SearchMovieAsync(sMovieTitle, sMovieYear, _filterOptions)
 
         Return MyBase.ShowDialog()
     End Function
@@ -102,7 +102,7 @@ Public Class dlgIMDBSearchResults
             chkManual.Enabled = False
 
             IMDB.CancelAsync()
-            IMDB.SearchMovieAsync(Me.txtSearch.Text, _filterOptions)
+            IMDB.SearchMovieAsync(Me.txtSearch.Text, String.Empty, _filterOptions)
         End If
     End Sub
 
