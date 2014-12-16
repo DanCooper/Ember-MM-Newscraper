@@ -801,6 +801,7 @@ Public Class Scanner
                 End If
             End If
 
+            'Year
             If String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
                 If FileUtils.Common.isVideoTS(mContainer.Filename) Then
                     tmpMovieDB.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
@@ -815,49 +816,42 @@ Public Class Scanner
                 End If
             End If
 
+            'Title
             If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
                 'no title so assume it's an invalid nfo, clear nfo path if exists
                 mContainer.Nfo = String.Empty
 
                 If FileUtils.Common.isVideoTS(mContainer.Filename) Then
-                    tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
                     tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name, False)
                     If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                        tmpMovieDB.ListTitle = Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name
                         tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name
                     End If
                 ElseIf FileUtils.Common.isBDRip(mContainer.Filename) Then
-                    tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name)
                     tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name, False)
                     If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                        tmpMovieDB.ListTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name
                         tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name
                     End If
                 Else
                     If mContainer.UseFolder AndAlso mContainer.isSingle Then
-                        tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(mContainer.Filename).Name)
                         tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(mContainer.Filename).Name, False)
                         If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                            tmpMovieDB.ListTitle = Directory.GetParent(mContainer.Filename).Name
                             tmpMovieDB.Movie.Title = Directory.GetParent(mContainer.Filename).Name
                         End If
                     Else
-                        tmpMovieDB.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(mContainer.Filename))
                         tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(mContainer.Filename), False)
                         If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                            tmpMovieDB.ListTitle = Path.GetFileNameWithoutExtension(mContainer.Filename)
                             tmpMovieDB.Movie.Title = Path.GetFileNameWithoutExtension(mContainer.Filename)
                         End If
                     End If
                 End If
+            End If
 
+            'ListTitle
+            Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
+            If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
+                tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
             Else
-                Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
-                If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
-                    tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
-                Else
-                    tmpMovieDB.ListTitle = tTitle
-                End If
+                tmpMovieDB.ListTitle = tTitle
             End If
 
             If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
