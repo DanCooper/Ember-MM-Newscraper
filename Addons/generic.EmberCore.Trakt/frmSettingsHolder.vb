@@ -20,7 +20,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Public Class frmTraktSettingsHolder
+Public Class frmSettingsHolder
 
 #Region "Events"
 
@@ -32,8 +32,8 @@ Public Class frmTraktSettingsHolder
 
 #Region "Methods"
 
-    Private Sub chkTraktEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTraktEnabled.CheckedChanged
-        RaiseEvent ModuleEnabledChanged(chkTraktEnabled.Checked)
+    Private Sub chkTraktEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
     End Sub
 
     Public Sub New()
@@ -42,15 +42,14 @@ Public Class frmTraktSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        chkTraktEnabled.Text = Master.eLang.GetString(778, "Use trakt.tv as source for ""Playcount""")
-        Me.gpb_TraktGeneralSettings.Text = Master.eLang.GetString(38, "General Settings")
-        btnTraktSaveSettings.Text = Master.eLang.GetString(273, "Save")
-        lblTraktUsername.Text = Master.eLang.GetString(425, "Username")
-        lblTraktPassword.Text = Master.eLang.GetString(426, "Password")
+        chkEnabled.Text = Master.eLang.GetString(778, "Use trakt.tv as source for ""Playcount""")
+        Me.gbSettingsGeneral.Text = Master.eLang.GetString(38, "General Settings")
+        lblUsername.Text = Master.eLang.GetString(425, "Username")
+        lblPassword.Text = Master.eLang.GetString(426, "Password")
 
-        txtTraktUsername.Text = Master.eSettings.TraktUsername
-        txtTraktPassword.Text = Master.eSettings.TraktPassword
-        txtTraktPassword.PasswordChar = "*"c
+        txtUsername.Text = Master.eSettings.TraktUsername
+        txtPassword.Text = Master.eSettings.TraktPassword
+        txtPassword.PasswordChar = "*"c
 
         'If Not String.IsNullOrEmpty(Master.eSettings.UseTrakt.ToString) Then
         '    chkUseTrakt.Checked = Master.eSettings.UseTrakt
@@ -65,36 +64,20 @@ Public Class frmTraktSettingsHolder
         'End If
     End Sub
 
-    Private Sub btnSavetraktsettings_Click(sender As Object, e As EventArgs) Handles btnTraktSaveSettings.Click
-        '  SaveChanges()
+    Public Sub SaveChanges()
+        Master.eSettings.TraktUsername = txtUsername.Text
+        Master.eSettings.TraktPassword = txtPassword.Text
+        Master.eSettings.UseTrakt = chkEnabled.Checked
+    End Sub
+
+    Private Sub txtUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtUsername.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Public Sub SaveChanges()
-        Master.eSettings.TraktUsername = txtTraktUsername.Text
-        Master.eSettings.TraktPassword = txtTraktPassword.Text
-        Master.eSettings.UseTrakt = chkTraktEnabled.Checked
-    End Sub
-
-    Private Sub txtTraktUser_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTraktUsername.TextChanged
-        If txtTraktUsername.Text <> "" AndAlso txtTraktPassword.Text <> "" Then
-            btnTraktSaveSettings.Enabled = True
-        Else
-            btnTraktSaveSettings.Enabled = False
-        End If
-        'RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub txtTraktPassword_TextChanged(sender As Object, e As EventArgs) Handles txtTraktPassword.TextChanged
-        If txtTraktUsername.Text <> "" AndAlso txtTraktPassword.Text <> "" Then
-            btnTraktSaveSettings.Enabled = True
-        Else
-            btnTraktSaveSettings.Enabled = False
-        End If
+    Private Sub txtPassword_TextChanged(sender As Object, e As EventArgs) Handles txtPassword.TextChanged
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
 #End Region 'Methods
-
-
 
 End Class

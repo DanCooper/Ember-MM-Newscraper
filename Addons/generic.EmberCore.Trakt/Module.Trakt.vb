@@ -23,7 +23,7 @@ Imports System.Windows.Forms
 Imports System.Drawing
 Imports NLog
 
-Public Class genericTrakt
+Public Class Trakt_Generic
     Implements Interfaces.GenericModule
 
 #Region "Delegates"
@@ -36,7 +36,7 @@ Public Class genericTrakt
 #Region "Fields"
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Private _setup As frmTraktSettingsHolder
+    Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
     Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
@@ -153,25 +153,21 @@ Public Class genericTrakt
 
     Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
         _AssemblyName = sAssemblyName
-        'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
         LoadSettings()
     End Sub
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
-        Me._setup = New frmTraktSettingsHolder
-        Me._setup.chkTraktEnabled.Checked = Me._enabled
         Dim SPanel As New Containers.SettingsPanel
-
-
-        _setup.txtTraktUsername.Text = MySettings.TraktUsername
-        _setup.txtTraktPassword.Text = MySettings.TraktPassword
-
+        Me._setup = New frmSettingsHolder
+        Me._setup.chkEnabled.Checked = Me._enabled
+        Me._setup.txtUsername.Text = MySettings.Username
+        Me._setup.txtPassword.Text = MySettings.Password
         SPanel.Name = Me._Name
         SPanel.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
         SPanel.Prefix = "Trakt_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = Me._setup.pnlTraktSettings
+        SPanel.Panel = Me._setup.pnlSettings
         AddHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
         AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
@@ -187,13 +183,13 @@ Public Class genericTrakt
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub
     Sub LoadSettings()
-        MySettings.TraktUsername = clsAdvancedSettings.GetSetting("TraktUsername", "")
-        MySettings.TraktPassword = clsAdvancedSettings.GetSetting("TraktPassword", "")
+        MySettings.Username = clsAdvancedSettings.GetSetting("Username", "")
+        MySettings.Password = clsAdvancedSettings.GetSetting("Password", "")
     End Sub
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me.Enabled = Me._setup.chkTraktEnabled.Checked
-        MySettings.TraktUsername = _setup.txtTraktUsername.Text
-        MySettings.TraktPassword = _setup.txtTraktPassword.Text
+        Me.Enabled = Me._setup.chkEnabled.Checked
+        MySettings.Username = _setup.txtUsername.Text
+        MySettings.Password = _setup.txtPassword.Text
 
         SaveSettings()
         If DoDispose Then
@@ -205,20 +201,21 @@ Public Class genericTrakt
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetSetting("TraktUsername", MySettings.TraktUsername)
-            settings.SetSetting("TraktPassword", MySettings.TraktPassword)
+            settings.SetSetting("Username", MySettings.Username)
+            settings.SetSetting("Password", MySettings.Password)
         End Using
     End Sub
 
 #End Region 'Methods
 
 #Region "Nested Types"
+
     Structure _MySettings
 
 #Region "Fields"
 
-        Dim TraktUsername As String
-        Dim TraktPassword As String
+        Dim Username As String
+        Dim Password As String
 
 #End Region 'Fields
 

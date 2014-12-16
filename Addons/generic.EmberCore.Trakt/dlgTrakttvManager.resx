@@ -143,6 +143,12 @@
         9rMF7VAAAAAASUVORK5CYII=
 </value>
   </data>
+  <metadata name="coltraktPlaycountTitle.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="coltraktPlaycountPlayed.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="btntraktListsRemoveList.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
@@ -189,18 +195,6 @@
         AABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="coltraktPlaycountTitle.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="coltraktPlaycountPlayed.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="coltraktPlaycountTitle.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="coltraktPlaycountPlayed.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <data name="btntraktListsAddMovie.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
@@ -247,44 +241,27 @@
   <metadata name="coltraktListTrailer.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="coltraktListTitle.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="coltraktListYear.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="coltraktListRating.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="coltraktListGenres.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="coltraktListIMDB.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="coltraktListTrailer.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>25</value>
   </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        AAABAAEAEBAAAAEAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB9fH0A
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB5c3YAAAB+ensAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAACwj6UAAAC5nK5zOl+riJ4AAACykqe4mq5zOl6ujaIAAACwj6QAAAAA
-        AAAAAAAAAAAAAACDTXOBSnCDTHKCS3GCS3GCS3GBS3GDTHKBSnCDTHKvjaUAAAAAAAAAAAAAAAAAAADE
-        qb+WY4uTYIeSXoaSXoaSXoaSXoaTYIeWY4u5mLIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC6lbWmeKCl
-        dZ+ldZ6ldp+2j7EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//6xB//+sQf3/
-        rEH6/6xB//+sQf//rEH//6xB//+sQf//rEHRC6xB4AOsQeAHrEH4H6xB//+sQf//rEH//6xB
+        AAABAAEAICAAAAEAIACZAwAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAgAAAAIAgGAAAAc3p69AAAAAlw
+        SFlzAAALEwAACxMBAJqcGAAAA0tJREFUWMPtl0FoI2UUx39vZtI4Iek0S4t2CwZpWsFDoVRYWk+CHQ/m
+        tCAFoeBNPLjbQ/HmpRE8lD2sXhRW9tar2BzUg7ZYqKCHYqWloq1thJ4Kk5JGSNKZ5yUTsklm27pxe9A/
+        PJgM3zfvl//3zXvfiKpyrVLVZsTjceLxOJZlTYrIrR6meUZEZkXkORFBRJo5HwFo0TvAn8B94IUnTP4q
+        8DXwCzDR/sejAPqA14HvgF+B9wHniolfAh4CReAz4EVALgvQCvI2sAX8BLwFxC5IfBPIA38AXwCvtA+I
+        xWKXBgg1CHwA/AZ81bC1XQng3YbVPwC3Aat1gGEYiAipVOrKAKHGgE+BQ+Dzhq0J4A3ge2AXeA9Idpsc
+        AiSTyX8MEOpl4MuGI98CvwMfAkOPm9QNwGobMw7caayjH/GcAKg07M024hh4HrgH2BHzJAgCAX5U1U+A
+        vzrqAPAA0KcQb0Y5cBPAcRzm5+fJZrP4vv9ERSAsOuvr6xQKhfD2SNdKCBQAXVxc1F6rVCrp1NRU6MCd
+        MKfRjXp8fLznJd9xHDKZTOfG7LrLguBf6zuXAniaageQ6wbQ/7wD/A8QVq8oFYvFngJY3W6apkmhUMA0
+        TdLpNI7jcHp6SiKRYHV1lVwux+7uLo7jkMvlegqgAJZlsbe3h23b7O/v47ouKysrZLNZtra2qFarmKbJ
+        6Ojo1ew2jAsBBKBWqzExMcHh4SHT09MMDAxgWRbDw8Ocn58zODiI4zjYtn0lgEql0rncreVRRApAbmZm
+        hqWlJVKpFIlEAsuy8DyPZDKJiBAEAb7vU6/XGRoaulQ33NjYYGFhAc/zAO6q6seRe2Bzc5O5uTnS6TRB
+        EKCqmKaJ7/vNDRqe7+v1etfE1WqVIAiwbZt6vc7x8fHFHyZhO+5FjIyM6NjYmALa39+vk5OT2tfX19GO
+        IwFc19V8Pq+WZSmgs7Ozms/nWx8SGbZt69ramh4dHWkmk9Hl5WU9OztT13XDMXejTkRmeOF5HsVisdma
+        S6XSI78fp1qtxs7ODuVymXK5zMHBAdvb25ycnHSW/FYHROSjXi2BYRhN9wCNxWLhdQV4rZmz9S0wDOOG
+        qt4Gnm2cfnsuEflZVb9RVb/jNbwO/Q0K6WYdQ5GfMgAAAABJRU5ErkJggg==
 </value>
   </data>
 </root>

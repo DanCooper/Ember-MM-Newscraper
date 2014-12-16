@@ -22,8 +22,8 @@ Partial Class dlgTrakttvManager
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrakttvManager))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -36,8 +36,6 @@ Partial Class dlgTrakttvManager
         Me.lblCompiling = New System.Windows.Forms.Label()
         Me.lblFile = New System.Windows.Forms.Label()
         Me.lblCanceling = New System.Windows.Forms.Label()
-        Me.btnCancel = New System.Windows.Forms.Button()
-        Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.pnlTrakt = New System.Windows.Forms.Panel()
         Me.tbTrakt = New System.Windows.Forms.TabControl()
         Me.tbptraktPlaycount = New System.Windows.Forms.TabPage()
@@ -74,17 +72,12 @@ Partial Class dlgTrakttvManager
         Me.btntraktListsGetDatabase = New System.Windows.Forms.Button()
         Me.lbDBLists = New System.Windows.Forms.ListBox()
         Me.txttraktListsEditList = New System.Windows.Forms.TextBox()
-        Me.btntraktListsRemoveList = New System.Windows.Forms.Button()
-        Me.btntraktListsEditList = New System.Windows.Forms.Button()
-        Me.btntraktListsNewList = New System.Windows.Forms.Button()
         Me.lbtraktLists = New System.Windows.Forms.ListBox()
         Me.prgtraktLists = New System.Windows.Forms.ProgressBar()
         Me.gbtraktListsMovies = New System.Windows.Forms.GroupBox()
         Me.dgvMovies = New System.Windows.Forms.DataGridView()
-        Me.btntraktListsAddMovie = New System.Windows.Forms.Button()
         Me.gbtraktListsMoviesInLists = New System.Windows.Forms.GroupBox()
         Me.lbltraktListsCurrentList = New System.Windows.Forms.Label()
-        Me.btntraktListsRemove = New System.Windows.Forms.Button()
         Me.lbtraktListsMoviesinLists = New System.Windows.Forms.ListBox()
         Me.tbptraktListViewer = New System.Windows.Forms.TabPage()
         Me.pnltraktListsComparer = New System.Windows.Forms.Panel()
@@ -108,10 +101,16 @@ Partial Class dlgTrakttvManager
         Me.btntraktListsload = New System.Windows.Forms.Button()
         Me.lbltraktListsurl = New System.Windows.Forms.Label()
         Me.txttraktListsurl = New System.Windows.Forms.TextBox()
+        Me.btntraktListsRemoveList = New System.Windows.Forms.Button()
+        Me.btntraktListsEditList = New System.Windows.Forms.Button()
+        Me.btntraktListsNewList = New System.Windows.Forms.Button()
+        Me.btntraktListsAddMovie = New System.Windows.Forms.Button()
+        Me.btntraktListsRemove = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.pnlTop.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlSaving.SuspendLayout()
-        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTrakt.SuspendLayout()
         Me.tbTrakt.SuspendLayout()
         Me.tbptraktPlaycount.SuspendLayout()
@@ -131,6 +130,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktListsComparer.SuspendLayout()
         Me.gbtraktListsViewer.SuspendLayout()
         CType(Me.dgvtraktList, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -265,31 +265,6 @@ Partial Class dlgTrakttvManager
         Me.lblCanceling.Text = "Canceling Load..."
         Me.lblCanceling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblCanceling.Visible = False
-        '
-        'btnCancel
-        '
-        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
-        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
-        Me.btnCancel.TabIndex = 2
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCancel.UseVisualStyleBackColor = True
-        '
-        'pbTopLogo
-        '
-        Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
-        Me.pbTopLogo.Image = Global.generic.EmberCore.Trakt.My.Resources.Resources.icon
-        Me.pbTopLogo.Location = New System.Drawing.Point(12, 7)
-        Me.pbTopLogo.Name = "pbTopLogo"
-        Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
-        Me.pbTopLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.pbTopLogo.TabIndex = 0
-        Me.pbTopLogo.TabStop = False
         '
         'pnlTrakt
         '
@@ -686,40 +661,6 @@ Partial Class dlgTrakttvManager
         Me.txttraktListsEditList.Size = New System.Drawing.Size(178, 22)
         Me.txttraktListsEditList.TabIndex = 39
         '
-        'btntraktListsRemoveList
-        '
-        Me.btntraktListsRemoveList.Enabled = False
-        Me.btntraktListsRemoveList.Image = CType(resources.GetObject("btntraktListsRemoveList.Image"), System.Drawing.Image)
-        Me.btntraktListsRemoveList.Location = New System.Drawing.Point(188, 187)
-        Me.btntraktListsRemoveList.Name = "btntraktListsRemoveList"
-        Me.btntraktListsRemoveList.Size = New System.Drawing.Size(23, 23)
-        Me.btntraktListsRemoveList.TabIndex = 3
-        Me.btntraktListsRemoveList.UseVisualStyleBackColor = True
-        '
-        'btntraktListsEditList
-        '
-        Me.btntraktListsEditList.Enabled = False
-        Me.btntraktListsEditList.Image = CType(resources.GetObject("btntraktListsEditList.Image"), System.Drawing.Image)
-        Me.btntraktListsEditList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btntraktListsEditList.Location = New System.Drawing.Point(188, 160)
-        Me.btntraktListsEditList.Name = "btntraktListsEditList"
-        Me.btntraktListsEditList.Size = New System.Drawing.Size(23, 23)
-        Me.btntraktListsEditList.TabIndex = 2
-        Me.btntraktListsEditList.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btntraktListsEditList.UseVisualStyleBackColor = True
-        '
-        'btntraktListsNewList
-        '
-        Me.btntraktListsNewList.Enabled = False
-        Me.btntraktListsNewList.Image = CType(resources.GetObject("btntraktListsNewList.Image"), System.Drawing.Image)
-        Me.btntraktListsNewList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btntraktListsNewList.Location = New System.Drawing.Point(6, 187)
-        Me.btntraktListsNewList.Name = "btntraktListsNewList"
-        Me.btntraktListsNewList.Size = New System.Drawing.Size(23, 23)
-        Me.btntraktListsNewList.TabIndex = 1
-        Me.btntraktListsNewList.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btntraktListsNewList.UseVisualStyleBackColor = True
-        '
         'lbtraktLists
         '
         Me.lbtraktLists.Enabled = False
@@ -756,8 +697,8 @@ Partial Class dlgTrakttvManager
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeColumns = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -776,18 +717,6 @@ Partial Class dlgTrakttvManager
         Me.dgvMovies.Size = New System.Drawing.Size(243, 352)
         Me.dgvMovies.StandardTab = True
         Me.dgvMovies.TabIndex = 51
-        '
-        'btntraktListsAddMovie
-        '
-        Me.btntraktListsAddMovie.Enabled = False
-        Me.btntraktListsAddMovie.Image = CType(resources.GetObject("btntraktListsAddMovie.Image"), System.Drawing.Image)
-        Me.btntraktListsAddMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btntraktListsAddMovie.Location = New System.Drawing.Point(8, 382)
-        Me.btntraktListsAddMovie.Name = "btntraktListsAddMovie"
-        Me.btntraktListsAddMovie.Size = New System.Drawing.Size(23, 23)
-        Me.btntraktListsAddMovie.TabIndex = 1
-        Me.btntraktListsAddMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btntraktListsAddMovie.UseVisualStyleBackColor = True
         '
         'gbtraktListsMoviesInLists
         '
@@ -811,16 +740,6 @@ Partial Class dlgTrakttvManager
         Me.lbltraktListsCurrentList.TabIndex = 0
         Me.lbltraktListsCurrentList.Text = "None Selected"
         Me.lbltraktListsCurrentList.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'btntraktListsRemove
-        '
-        Me.btntraktListsRemove.Enabled = False
-        Me.btntraktListsRemove.Image = CType(resources.GetObject("btntraktListsRemove.Image"), System.Drawing.Image)
-        Me.btntraktListsRemove.Location = New System.Drawing.Point(205, 382)
-        Me.btntraktListsRemove.Name = "btntraktListsRemove"
-        Me.btntraktListsRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btntraktListsRemove.TabIndex = 4
-        Me.btntraktListsRemove.UseVisualStyleBackColor = True
         '
         'lbtraktListsMoviesinLists
         '
@@ -1058,6 +977,87 @@ Partial Class dlgTrakttvManager
         Me.txttraktListsurl.Size = New System.Drawing.Size(294, 20)
         Me.txttraktListsurl.TabIndex = 44
         '
+        'btntraktListsRemoveList
+        '
+        Me.btntraktListsRemoveList.Enabled = False
+        Me.btntraktListsRemoveList.Image = CType(resources.GetObject("btntraktListsRemoveList.Image"), System.Drawing.Image)
+        Me.btntraktListsRemoveList.Location = New System.Drawing.Point(188, 187)
+        Me.btntraktListsRemoveList.Name = "btntraktListsRemoveList"
+        Me.btntraktListsRemoveList.Size = New System.Drawing.Size(23, 23)
+        Me.btntraktListsRemoveList.TabIndex = 3
+        Me.btntraktListsRemoveList.UseVisualStyleBackColor = True
+        '
+        'btntraktListsEditList
+        '
+        Me.btntraktListsEditList.Enabled = False
+        Me.btntraktListsEditList.Image = CType(resources.GetObject("btntraktListsEditList.Image"), System.Drawing.Image)
+        Me.btntraktListsEditList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btntraktListsEditList.Location = New System.Drawing.Point(188, 160)
+        Me.btntraktListsEditList.Name = "btntraktListsEditList"
+        Me.btntraktListsEditList.Size = New System.Drawing.Size(23, 23)
+        Me.btntraktListsEditList.TabIndex = 2
+        Me.btntraktListsEditList.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btntraktListsEditList.UseVisualStyleBackColor = True
+        '
+        'btntraktListsNewList
+        '
+        Me.btntraktListsNewList.Enabled = False
+        Me.btntraktListsNewList.Image = CType(resources.GetObject("btntraktListsNewList.Image"), System.Drawing.Image)
+        Me.btntraktListsNewList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btntraktListsNewList.Location = New System.Drawing.Point(6, 187)
+        Me.btntraktListsNewList.Name = "btntraktListsNewList"
+        Me.btntraktListsNewList.Size = New System.Drawing.Size(23, 23)
+        Me.btntraktListsNewList.TabIndex = 1
+        Me.btntraktListsNewList.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btntraktListsNewList.UseVisualStyleBackColor = True
+        '
+        'btntraktListsAddMovie
+        '
+        Me.btntraktListsAddMovie.Enabled = False
+        Me.btntraktListsAddMovie.Image = CType(resources.GetObject("btntraktListsAddMovie.Image"), System.Drawing.Image)
+        Me.btntraktListsAddMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btntraktListsAddMovie.Location = New System.Drawing.Point(8, 382)
+        Me.btntraktListsAddMovie.Name = "btntraktListsAddMovie"
+        Me.btntraktListsAddMovie.Size = New System.Drawing.Size(23, 23)
+        Me.btntraktListsAddMovie.TabIndex = 1
+        Me.btntraktListsAddMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btntraktListsAddMovie.UseVisualStyleBackColor = True
+        '
+        'btntraktListsRemove
+        '
+        Me.btntraktListsRemove.Enabled = False
+        Me.btntraktListsRemove.Image = CType(resources.GetObject("btntraktListsRemove.Image"), System.Drawing.Image)
+        Me.btntraktListsRemove.Location = New System.Drawing.Point(205, 382)
+        Me.btntraktListsRemove.Name = "btntraktListsRemove"
+        Me.btntraktListsRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btntraktListsRemove.TabIndex = 4
+        Me.btntraktListsRemove.UseVisualStyleBackColor = True
+        '
+        'btnCancel
+        '
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
+        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
+        Me.btnCancel.TabIndex = 2
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'pbTopLogo
+        '
+        Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
+        Me.pbTopLogo.Image = Global.generic.EmberCore.Trakt.My.Resources.Resources.icon
+        Me.pbTopLogo.Location = New System.Drawing.Point(12, 7)
+        Me.pbTopLogo.Name = "pbTopLogo"
+        Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
+        Me.pbTopLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.pbTopLogo.TabIndex = 0
+        Me.pbTopLogo.TabStop = False
+        '
         'dlgTrakttvManager
         '
         Me.AcceptButton = Me.OK_Button
@@ -1081,7 +1081,6 @@ Partial Class dlgTrakttvManager
         Me.pnlCancel.ResumeLayout(False)
         Me.pnlSaving.ResumeLayout(False)
         Me.pnlSaving.PerformLayout()
-        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTrakt.ResumeLayout(False)
         Me.tbTrakt.ResumeLayout(False)
         Me.tbptraktPlaycount.ResumeLayout(False)
@@ -1106,6 +1105,7 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsViewer.ResumeLayout(False)
         Me.gbtraktListsViewer.PerformLayout()
         CType(Me.dgvtraktList, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
