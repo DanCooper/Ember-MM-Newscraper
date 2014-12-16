@@ -740,14 +740,46 @@ Public Class Enums
     End Enum
 
     Public Enum ModuleEventType As Integer
-        AfterEdit_Movie = 0                 ' Called after edit movie, movie is already saved to DB
-        AfterEdit_TVEpisode = 1             ' Called after edit episode, episode is already saved to DB
-        AfterEdit_TVSeason = 2              ' Called after edit season, season is already saved to DB
-        AfterEdit_TVShow = 3                ' Called after edit show, show is already saved to DB
-        AfterUpdateDB_TV = 4                ' Called after update DB process
-        AfterUpdateDB_Movie = 5             ' Called after update DB process
-        BeforeEdit_Movie = 6                ' Called when Manual editing or reading from nfo
-        CommandLine = 7                     ' Command Line Module Call
+        ''' <summary>
+        ''' Called after edit movie, movie is already saved to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        AfterEdit_Movie = 0
+        ''' <summary>
+        ''' Called after edit episode, episode is already saved to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        AfterEdit_TVEpisode = 1
+        ''' <summary>
+        ''' Called after edit season, season is already saved to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        AfterEdit_TVSeason = 2
+        ''' <summary>
+        ''' Called after edit show, show is already saved to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        AfterEdit_TVShow = 3
+        ''' <summary>
+        ''' Called after update DB process
+        ''' </summary>
+        ''' <remarks></remarks>
+        AfterUpdateDB_TV = 4
+        ''' <summary>
+        ''' Called after update DB process
+        ''' </summary>
+        ''' <remarks></remarks>
+        AfterUpdateDB_Movie = 5
+        ''' <summary>
+        ''' Called when Manual editing or reading from nfo
+        ''' </summary>
+        ''' <remarks></remarks>
+        BeforeEdit_Movie = 6
+        ''' <summary>
+        ''' Command Line Module Call
+        ''' </summary>
+        ''' <remarks></remarks>
+        CommandLine = 7
         FrameExtrator_Movie = 8
         FrameExtrator_TVEpisode = 9
         Generic = 10
@@ -768,12 +800,28 @@ Public Class Enums
         OnThemeSave_Movie = 25
         OnTrailerSave_Movie = 26
         RandomFrameExtrator = 27
-        ScraperMulti_Movie = 28             ' Called when scraper finishs but before save to DB
-        ScraperMulti_TVEpisode = 29         ' Called when scraper finishs but before save to DB
+        ''' <summary>
+        ''' Called when auto scraper finishs but before save to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        ScraperMulti_Movie = 28
+        ''' <summary>
+        ''' Called when auto scraper finishs but before save to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        ScraperMulti_TVEpisode = 29
+        ''' <summary>
+        ''' Called when single scraper finishs, movie is already saved to DB
+        ''' </summary>
+        ''' <remarks></remarks>
         ScraperSingle_Movie = 30
+        ''' <summary>
+        ''' Called when single scraper finishs, episode is already saved to DB
+        ''' </summary>
+        ''' <remarks></remarks>
         ScraperSingle_TVEpisode = 31
-        ShowMovie = 32                      ' Called after displaying Movie  (not in place yet)
-        ShowTVShow = 33                     ' Called after displaying TVShow (not in place yet)
+        ShowMovie = 32
+        ShowTVShow = 33
         SyncModuleSettings = 34
         Sync_Movie = 35
         TVImageNaming = 36
