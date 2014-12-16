@@ -24,9 +24,11 @@ Public Class BulkRenamerModule
     Implements Interfaces.GenericModule
 
 #Region "Delegates"
+
     Public Delegate Sub Delegate_SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
     Public Delegate Sub Delegate_RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
     Public Delegate Sub Delegate_DropDownItemsAdd(value As System.Windows.Forms.ToolStripMenuItem, tsi As System.Windows.Forms.ToolStripMenuItem)
+
 #End Region 'Fields
 
 #Region "Fields"
@@ -50,6 +52,7 @@ Public Class BulkRenamerModule
     Private WithEvents cmnuRenamerManual_TVEpisode As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmnuRenamerAuto_TVShow As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmnuRenamerManual_TVShows As New System.Windows.Forms.ToolStripMenuItem
+
 #End Region 'Fields
 
 #Region "Events"
