@@ -382,7 +382,7 @@ Public Class dlgExportMovies
                         row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
                         row = row.Replace("<$AUDIO>", _audDetails)
                         row = row.Replace("<$SIZE>", StringUtils.HtmlEncode(MovieSize(_curMovie.Filename).ToString))
-                        row = row.Replace("<$DATEADD>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(_curMovie.DateAdd).ToString("dd.MM.yyyy")))
+                        row = row.Replace("<$DATEADDED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(_curMovie.DateAdded).ToString("dd.MM.yyyy")))
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         row = row.Replace("<$MOVIESETS>", StringUtils.HtmlEncode(AllMovieSetList)) 'A long string of all moviesets, seperated with ;!

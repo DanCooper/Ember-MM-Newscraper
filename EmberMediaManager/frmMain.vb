@@ -976,22 +976,53 @@ Public Class frmMain
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks>this filter is inverted (DESC first) to get the newest title on the top of the list</remarks>
-    Private Sub btnFilterSortDate_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortDate_Movies.Click
+    Private Sub btnFilterSortDateAdded_Movies_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortDateAdded_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
+            Me.btnFilterSortRating_Movies.Tag = String.Empty
+            Me.btnFilterSortRating_Movies.Image = Nothing
+            Me.btnFilterSortDateModified_Movies.Tag = String.Empty
+            Me.btnFilterSortDateModified_Movies.Image = Nothing
+            Me.btnFilterSortTitle_Movies.Tag = String.Empty
+            Me.btnFilterSortTitle_Movies.Image = Nothing
+            Me.btnFilterSortYear_Movies.Tag = String.Empty
+            Me.btnFilterSortYear_Movies.Image = Nothing
+            If Me.btnFilterSortDateAdded_Movies.Tag.ToString = "DESC" Then
+                Me.btnFilterSortDateAdded_Movies.Tag = "ASC"
+                Me.btnFilterSortDateAdded_Movies.Image = My.Resources.asc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Ascending)
+            Else
+                Me.btnFilterSortDateAdded_Movies.Tag = "DESC"
+                Me.btnFilterSortDateAdded_Movies.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Descending)
+            End If
+
+            Me.SaveFilter_Movies()
+        End If
+    End Sub
+    ''' <summary>
+    ''' sorts the movielist by last modification date
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks>this filter is inverted (DESC first) to get the latest modified title on the top of the list</remarks>
+    Private Sub btnFilterSortDateModified_Movies_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortDateModified_Movies.Click
+        If Me.dgvMovies.RowCount > 0 Then
+            Me.btnFilterSortDateAdded_Movies.Tag = String.Empty
+            Me.btnFilterSortDateAdded_Movies.Image = Nothing
             Me.btnFilterSortRating_Movies.Tag = String.Empty
             Me.btnFilterSortRating_Movies.Image = Nothing
             Me.btnFilterSortTitle_Movies.Tag = String.Empty
             Me.btnFilterSortTitle_Movies.Image = Nothing
             Me.btnFilterSortYear_Movies.Tag = String.Empty
             Me.btnFilterSortYear_Movies.Image = Nothing
-            If Me.btnFilterSortDate_Movies.Tag.ToString = "DESC" Then
-                Me.btnFilterSortDate_Movies.Tag = "ASC"
-                Me.btnFilterSortDate_Movies.Image = My.Resources.asc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Ascending)
+            If Me.btnFilterSortDateModified_Movies.Tag.ToString = "DESC" Then
+                Me.btnFilterSortDateModified_Movies.Tag = "ASC"
+                Me.btnFilterSortDateModified_Movies.Image = My.Resources.asc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(65), ComponentModel.ListSortDirection.Ascending)
             Else
-                Me.btnFilterSortDate_Movies.Tag = "DESC"
-                Me.btnFilterSortDate_Movies.Image = My.Resources.desc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns(48), ComponentModel.ListSortDirection.Descending)
+                Me.btnFilterSortDateModified_Movies.Tag = "DESC"
+                Me.btnFilterSortDateModified_Movies.Image = My.Resources.desc
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(65), ComponentModel.ListSortDirection.Descending)
             End If
 
             Me.SaveFilter_Movies()
@@ -1005,8 +1036,10 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub btnFilterSortTitle_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortTitle_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
-            Me.btnFilterSortDate_Movies.Tag = String.Empty
-            Me.btnFilterSortDate_Movies.Image = Nothing
+            Me.btnFilterSortDateAdded_Movies.Tag = String.Empty
+            Me.btnFilterSortDateAdded_Movies.Image = Nothing
+            Me.btnFilterSortDateModified_Movies.Tag = String.Empty
+            Me.btnFilterSortDateModified_Movies.Image = Nothing
             Me.btnFilterSortRating_Movies.Tag = String.Empty
             Me.btnFilterSortRating_Movies.Image = Nothing
             Me.btnFilterSortYear_Movies.Tag = String.Empty
@@ -1032,8 +1065,10 @@ Public Class frmMain
     ''' <remarks>this filter is inverted (DESC first) to get the highest rated title on the top of the list</remarks>
     Private Sub btnFilterSortRating_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortRating_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
-            Me.btnFilterSortDate_Movies.Tag = String.Empty
-            Me.btnFilterSortDate_Movies.Image = Nothing
+            Me.btnFilterSortDateAdded_Movies.Tag = String.Empty
+            Me.btnFilterSortDateAdded_Movies.Image = Nothing
+            Me.btnFilterSortDateModified_Movies.Tag = String.Empty
+            Me.btnFilterSortDateModified_Movies.Image = Nothing
             Me.btnFilterSortTitle_Movies.Tag = String.Empty
             Me.btnFilterSortTitle_Movies.Image = Nothing
             Me.btnFilterSortYear_Movies.Tag = String.Empty
@@ -1059,8 +1094,10 @@ Public Class frmMain
     ''' <remarks>this filter is inverted (DESC first) to get the highest year title on the top of the list</remarks>
     Private Sub btnFilterSortYear_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortYear_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
-            Me.btnFilterSortDate_Movies.Tag = String.Empty
-            Me.btnFilterSortDate_Movies.Image = Nothing
+            Me.btnFilterSortDateAdded_Movies.Tag = String.Empty
+            Me.btnFilterSortDateAdded_Movies.Image = Nothing
+            Me.btnFilterSortDateModified_Movies.Tag = String.Empty
+            Me.btnFilterSortDateModified_Movies.Image = Nothing
             Me.btnFilterSortRating_Movies.Tag = String.Empty
             Me.btnFilterSortRating_Movies.Image = Nothing
             Me.btnFilterSortTitle_Movies.Tag = String.Empty
@@ -2026,6 +2063,7 @@ Public Class frmMain
                     MovieScraperEvent(Enums.ScraperEventType_Movie.Director, DBScrapeMovie.Movie.Director)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.Genre, DBScrapeMovie.Movie.Genre)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.IMDBID, DBScrapeMovie.Movie.ID)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.DateModified, Functions.ConvertToUnixTimestamp(Now))
                     MovieScraperEvent(Enums.ScraperEventType_Movie.ListTitle, DBScrapeMovie.ListTitle)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.MPAA, DBScrapeMovie.Movie.MPAA)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.OriginalTitle, DBScrapeMovie.Movie.OriginalTitle)
@@ -2602,7 +2640,7 @@ Public Class frmMain
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_Movie, Nothing, Nothing, False, DBScrapeMovie)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
-                    Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                    Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, True)
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, DBScrapeMovie)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                     bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
@@ -6946,14 +6984,25 @@ doCancel:
         End If
 
         If Me.dgvMovies.SortedColumn.Index = 48 AndAlso Me.dgvMovies.SortOrder = 1 Then
-            Me.btnFilterSortDate_Movies.Tag = "ASC"
-            Me.btnFilterSortDate_Movies.Image = My.Resources.asc
+            Me.btnFilterSortDateAdded_Movies.Tag = "ASC"
+            Me.btnFilterSortDateAdded_Movies.Image = My.Resources.asc
         ElseIf Me.dgvMovies.SortedColumn.Index = 48 AndAlso Me.dgvMovies.SortOrder = 2 Then
-            Me.btnFilterSortDate_Movies.Tag = "DESC"
-            Me.btnFilterSortDate_Movies.Image = My.Resources.desc
+            Me.btnFilterSortDateAdded_Movies.Tag = "DESC"
+            Me.btnFilterSortDateAdded_Movies.Image = My.Resources.desc
         Else
-            Me.btnFilterSortDate_Movies.Tag = String.Empty
-            Me.btnFilterSortDate_Movies.Image = Nothing
+            Me.btnFilterSortDateAdded_Movies.Tag = String.Empty
+            Me.btnFilterSortDateAdded_Movies.Image = Nothing
+        End If
+
+        If Me.dgvMovies.SortedColumn.Index = 65 AndAlso Me.dgvMovies.SortOrder = 1 Then
+            Me.btnFilterSortDateModified_Movies.Tag = "ASC"
+            Me.btnFilterSortDateModified_Movies.Image = My.Resources.asc
+        ElseIf Me.dgvMovies.SortedColumn.Index = 65 AndAlso Me.dgvMovies.SortOrder = 2 Then
+            Me.btnFilterSortDateModified_Movies.Tag = "DESC"
+            Me.btnFilterSortDateModified_Movies.Image = My.Resources.desc
+        Else
+            Me.btnFilterSortDateModified_Movies.Tag = String.Empty
+            Me.btnFilterSortDateModified_Movies.Image = Nothing
         End If
 
         Me.SaveFilter_Movies()
@@ -8453,7 +8502,8 @@ doCancel:
 
     Private Sub EnableFilters_Movies(ByVal isEnabled As Boolean)
         Me.btnClearFilters_Movies.Enabled = isEnabled
-        Me.btnFilterSortDate_Movies.Enabled = isEnabled
+        Me.btnFilterSortDateAdded_Movies.Enabled = isEnabled
+        Me.btnFilterSortDateModified_Movies.Enabled = isEnabled
         Me.btnFilterSortRating_Movies.Enabled = isEnabled
         Me.btnFilterSortTitle_Movies.Enabled = isEnabled
         Me.btnFilterSortYear_Movies.Enabled = isEnabled
@@ -8571,9 +8621,9 @@ doCancel:
         Me.dgvTVEpisodes.Enabled = False
 
         If Season = 999 Then
-            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes, VideoSource FROM TVEps WHERE TVShowID = ", ShowID, " ORDER BY Season, Episode;"))
+            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource FROM TVEps WHERE TVShowID = ", ShowID, " ORDER BY Season, Episode;"))
         Else
-            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes, VideoSource FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
+            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
         End If
 
         If Me.dtEpisodes.Rows.Count > 0 Then
@@ -8676,9 +8726,9 @@ doCancel:
                                                                       "Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
                                                                       "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, ", _
                                                                       "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, ", _
-                                                                      "VideoSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, ", _
+                                                                      "VideoSource, NeedsSave, SortTitle, DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, ", _
                                                                       "HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
-                                                                      "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, ", _
+                                                                      "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, DateModified, ", _
                                                                       "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movies WHERE ID IN ", _
                                                                       "(SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch_Movies, "%') ORDER BY ListTitle COLLATE NOCASE;"))
                 ElseIf Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
@@ -8686,9 +8736,9 @@ doCancel:
                                                                       "HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, ", _
                                                                       "MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                                       "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
-                                                                      "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdd, ", _
+                                                                      "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdded, ", _
                                                                       "HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
-                                                                      "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, ", _
+                                                                      "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, DateModified, ", _
                                                                       "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movies ", _
                                                                       "WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch_Movies, "%') ORDER BY ListTitle COLLATE NOCASE;"))
                 Else
@@ -8698,9 +8748,9 @@ doCancel:
                                                                            "Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                                            "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
                                                                            "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, ", _
-                                                                           "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
+                                                                           "DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
                                                                            "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, ", _
-                                                                           "TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet ", _
+                                                                           "TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet ", _
                                                                            "FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb ", _
                                                                            "HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;"))
                     Else
@@ -8709,9 +8759,9 @@ doCancel:
                                                                            "Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                                            "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
                                                                            "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, ", _
-                                                                           "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
+                                                                           "DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
                                                                            "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, ", _
-                                                                           "TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet ", _
+                                                                           "TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet ", _
                                                                            "FROM movies ORDER BY ListTitle COLLATE NOCASE;"))
                     End If
                 End If
@@ -13504,6 +13554,8 @@ doCancel:
                     dScrapeRow(64) = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.MovieSet
                     dScrapeRow(70) = DirectCast(Parameter, Boolean)
+                Case Enums.ScraperEventType_Movie.DateModified
+                    dScrapeRow(65) = DirectCast(Parameter, Double)
             End Select
             Me.dgvMovies.Invalidate()
         End If
@@ -13774,7 +13826,7 @@ doCancel:
                                         newImage.SaveAsMovieClearArt(Master.currMovie)
                                         Cursor = Cursors.Default
                                         Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.RefreshMovie(ID, False, False, False, False)
+                                        Me.RefreshMovie(ID, False, False, True)
                                     End If
                                 End If
                             Else
@@ -13915,7 +13967,7 @@ doCancel:
                                         newImage.SaveAsMovieFanart(Master.currMovie)
                                         Cursor = Cursors.Default
                                         Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.RefreshMovie(ID, False, False, False, False)
+                                        Me.RefreshMovie(ID, False, False, True)
                                     End If
                                 End If
                             Else
@@ -14104,7 +14156,7 @@ doCancel:
                                         newImage.SaveAsMoviePoster(Master.currMovie)
                                         Cursor = Cursors.Default
                                         Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.RefreshMovie(ID, False, False, False, False)
+                                        Me.RefreshMovie(ID, False, False, True)
                                     End If
                                 End If
                             Else
@@ -14292,7 +14344,7 @@ doCancel:
                                         newImage.SaveAsMovieLandscape(Master.currMovie)
                                         Cursor = Cursors.Default
                                         Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.RefreshMovie(ID, False, False, False, False)
+                                        Me.RefreshMovie(ID, False, False, True)
                                     End If
                                 End If
                             Else
@@ -15116,6 +15168,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 61, hasClearArt})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 63, tmpMovieDB.Movie.TMDBID})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 64, tmpMovieDB.Movie.TMDBColID})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 65, tmpMovieDB.DateModified})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 70, hasSet})
                     Else
                         selRow.Item(1) = tmpMovieDB.Filename
@@ -15160,6 +15213,7 @@ doCancel:
                         selRow.Item(61) = hasClearArt
                         selRow.Item(63) = tmpMovieDB.Movie.TMDBID
                         selRow.Item(64) = tmpMovieDB.Movie.TMDBColID
+                        selRow.Item(65) = tmpMovieDB.DateModified
                         selRow.Item(70) = hasSet
                     End If
                 End If
@@ -18183,8 +18237,10 @@ doCancel:
                 .btnClearFilters_Shows.Text = .btnClearFilters_Movies.Text
                 .btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
                 .btnMetaDataRefresh.Text = Master.eLang.GetString(58, "Refresh")
-                .btnFilterSortDate_Movies.Tag = String.Empty
-                .btnFilterSortDate_Movies.Text = Master.eLang.GetString(601, "Date Added")
+                .btnFilterSortDateAdded_Movies.Tag = String.Empty
+                .btnFilterSortDateAdded_Movies.Text = Master.eLang.GetString(601, "Date Added")
+                .btnFilterSortDateModified_Movies.Tag = String.Empty
+                .btnFilterSortDateModified_Movies.Text = Master.eLang.GetString(1330, "Date Modified")
                 .btnFilterSortRating_Movies.Tag = String.Empty
                 .btnFilterSortRating_Movies.Text = Master.eLang.GetString(400, "Rating")
                 .btnFilterSortTitle_Movies.Tag = String.Empty

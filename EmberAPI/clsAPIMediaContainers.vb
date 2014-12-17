@@ -635,6 +635,7 @@ Namespace MediaContainers
         Private _tmdbcolid As String
         Private _dateadded As String
         Private _scrapersource As String
+        Private _datemodified As String
 #End Region 'Fields
 
 #Region "Constructors"
@@ -1214,6 +1215,23 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("datemodified")> _
+        Public Property DateModified() As String
+            Get
+                Return Me._datemodified
+            End Get
+            Set(ByVal value As String)
+                Me._datemodified = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property DateModifiedSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._datemodified)
+            End Get
+        End Property
+
         '<XmlElement("watched")> _
         'Public Property Watched() As String
         '    Get
@@ -1604,6 +1622,7 @@ Namespace MediaContainers
             Me._countries.Clear()
             Me._credits.Clear()
             Me._dateadded = String.Empty
+            Me._datemodified = String.Empty
             Me._directors.Clear()
             Me._fanart = New Fanart
             Me._fileInfo = New MediaInfo.Fileinfo
@@ -1666,6 +1685,7 @@ Namespace MediaContainers
             Me._lev = 0
             'Me._videosource = String.Empty
             Me._dateadded = String.Empty
+            Me._datemodified = String.Empty
             Me.MovieID.Clear()
         End Sub
 

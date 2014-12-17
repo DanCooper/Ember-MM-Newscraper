@@ -316,7 +316,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 10
+        Dim MyVideosDBVersion As Integer = 11
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -812,13 +812,14 @@ Public Class Database
                                                        "Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                        "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
                                                        "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, ", _
-                                                       "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
+                                                       "DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
                                                        "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, ", _
-                                                       "TMDBColID, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movies WHERE id = ", MovieID, ";")
+                                                       "TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movies WHERE id = ", MovieID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
-                        If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then _movieDB.DateAdd = Convert.ToInt64(SQLreader("DateAdd"))
+                        If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then _movieDB.DateAdded = Convert.ToInt64(SQLreader("DateAdded"))
+                        If Not DBNull.Value.Equals(SQLreader("DateModified")) Then _movieDB.DateModified = Convert.ToInt64(SQLreader("DateModified"))
                         If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _movieDB.ListTitle = SQLreader("ListTitle").ToString
                         If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.Filename = SQLreader("MoviePath").ToString
                         _movieDB.IsSingle = Convert.ToBoolean(SQLreader("type"))
@@ -848,7 +849,8 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _movieDB.VideoSource = SQLreader("VideoSource").ToString
                         _movieDB.Movie = New MediaContainers.Movie
                         With _movieDB.Movie
-                            If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdd"))).ToString("yyyy-MM-d HH:mm:ss")
+                            If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdded"))).ToString("yyyy-MM-d HH:mm:ss")
+                            If Not DBNull.Value.Equals(SQLreader("DateModified")) Then .DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateModified"))).ToString("yyyy-MM-d HH:mm:ss")
                             If Not DBNull.Value.Equals(SQLreader("IMDB")) Then .ID = SQLreader("IMDB").ToString
                             If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
                             If Not DBNull.Value.Equals(SQLreader("OriginalTitle")) Then .OriginalTitle = SQLreader("OriginalTitle").ToString
@@ -1150,7 +1152,7 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, ", _
                                                        "Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, ", _
-                                                       "HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes, VideoSource FROM TVEps WHERE id = ", EpID, ";")
+                                                       "HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource FROM TVEps WHERE id = ", EpID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
@@ -1159,7 +1161,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _TVDB.EpNfoPath = SQLreader("NfoPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("Source")) Then _TVDB.Source = SQLreader("Source").ToString
                         If Not DBNull.Value.Equals(SQLreader("TVShowID")) Then _TVDB.ShowID = Convert.ToInt64(SQLreader("TVShowID"))
-                        If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then _TVDB.DateAdd = Convert.ToInt64(SQLreader("DateAdd"))
+                        If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then _TVDB.DateAdded = Convert.ToInt64(SQLreader("DateAdded"))
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _TVDB.VideoSource = SQLreader("VideoSource").ToString
                         PathID = Convert.ToInt64(SQLreader("TVEpPathid"))
                         _TVDB.FilenameID = PathID
@@ -1186,7 +1188,7 @@ Public Class Database
                             If Not DBNull.Value.Equals(SQLreader("Director")) Then .Director = SQLreader("Director").ToString
                             If Not DBNull.Value.Equals(SQLreader("Credits")) Then .OldCredits = SQLreader("Credits").ToString
                             If Not DBNull.Value.Equals(SQLreader("Playcount")) Then .Playcount = SQLreader("Playcount").ToString
-                            If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdd"))).ToString("yyyy-MM-d HH:mm:ss")
+                            If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdded"))).ToString("yyyy-MM-d HH:mm:ss")
                             If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime").ToString
                             If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes").ToString
                             If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
@@ -1596,18 +1598,18 @@ Public Class Database
                      "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
                      "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, ", _
                      "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
-                     "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
-                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                     "DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
+                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                      "ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, ", _
                      "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
                      "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, ", _
                      "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
-                     "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
-                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                     "DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
+                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.Int32, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
@@ -1658,7 +1660,7 @@ Public Class Database
                 Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
                 Dim parVideoSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideoSource", DbType.String, 0, "VideoSource")
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
-                Dim parDateAdd As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdd", DbType.Int32, 0, "DateAdd")
+                Dim parDateAdded As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdded", DbType.Int32, 0, "DateAdded")
                 Dim parHasEFanarts As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasEFanarts", DbType.Boolean, 0, "HasEFanarts")
                 Dim parEFanartsPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEFanartsPath", DbType.String, 0, "EFanartsPath")
                 Dim parHasBanner As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasBanner", DbType.Boolean, 0, "HasBanner")
@@ -1675,6 +1677,7 @@ Public Class Database
                 Dim parClearArtPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parClearArtPath", DbType.String, 0, "ClearArtPath")
                 Dim parTMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDB", DbType.String, 0, "TMDB")
                 Dim parTMDBColID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDBColID", DbType.String, 0, "TMDBColID")
+                Dim parDateModified As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateModified", DbType.Int32, 0, "DateModified")
                 Dim parMarkCustom1 As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom1", DbType.Boolean, 0, "MarkCustom1")
                 Dim parMarkCustom2 As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom2", DbType.Boolean, 0, "MarkCustom2")
                 Dim parMarkCustom3 As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom3", DbType.Boolean, 0, "MarkCustom3")
@@ -1684,33 +1687,49 @@ Public Class Database
                 Try
                     If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.DateAdded) Then
                         Dim DateTimeAdded As DateTime = DateTime.ParseExact(_movieDB.Movie.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
-                        parDateAdd.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
+                        parDateAdded.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                     Else
                         Select Case Master.eSettings.GeneralDateTime
                             Case Enums.DateTime.Now
-                                parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
+                                parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdded)
                             Case Enums.DateTime.mtime
                                 Dim mtime As Date = System.IO.File.GetLastWriteTime(_movieDB.Filename)
                                 If mtime.Year > 1601 Then
-                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(mtime)
+                                    parDateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                                 Else
                                     Dim ctime As Date = System.IO.File.GetCreationTime(_movieDB.Filename)
-                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(ctime)
+                                    parDateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                                 End If
                             Case Enums.DateTime.Newer
                                 Dim mtime As Date = System.IO.File.GetLastWriteTime(_movieDB.Filename)
                                 Dim ctime As Date = System.IO.File.GetCreationTime(_movieDB.Filename)
                                 If mtime > ctime Then
-                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(mtime)
+                                    parDateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                                 Else
-                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(ctime)
+                                    parDateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                                 End If
                         End Select
                     End If
-                    _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdd.Value)).ToString("yyyy-MM-d HH:mm:ss")
+                    _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-d HH:mm:ss")
                 Catch ex As Exception
-                    parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
-                    _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdd.Value)).ToString("yyyy-MM-d HH:mm:ss")
+                    parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdded)
+                    _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-d HH:mm:ss")
+                End Try
+
+                Try
+                    If IsNew AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.DateModified) Then
+                        Dim DateTimeDateModified As DateTime = DateTime.ParseExact(_movieDB.Movie.DateModified, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                        parDateModified.Value = Functions.ConvertToUnixTimestamp(DateTimeDateModified)
+                    ElseIf Not IsNew Then
+                        parDateModified.Value = Functions.ConvertToUnixTimestamp(Now)
+                    End If
+                    If Not IsNothing(parDateModified.Value) Then
+                        _movieDB.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateModified.Value)).ToString("yyyy-MM-d HH:mm:ss")
+                    Else
+                        _movieDB.Movie.DateModified = String.Empty
+                    End If
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
 
                 ' First let's save it to NFO, even because we will need the NFO path
@@ -2387,14 +2406,14 @@ Public Class Database
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVEps (", _
                      "TVShowID, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
                      "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount,", _
-                     "HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes, VideoSource", _
+                     "HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource", _
                      ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVEps;")
 
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVEps (", _
                      "ID, TVShowID, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
                      "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount,", _
-                     "HasWatched, DisplaySeason, DisplayEpisode, DateAdd, Runtime, Votes, VideoSource", _
+                     "HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource", _
                      ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVEps;")
 
                     Dim parTVEpID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpID", DbType.UInt64, 0, "ID")
@@ -2427,7 +2446,7 @@ Public Class Database
                 Dim parHasWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasWatched", DbType.Boolean, 0, "HasWatched")
                 Dim parDisplaySeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplaySeason", DbType.String, 0, "DisplaySeason")
                 Dim parDisplayEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplayEpisode", DbType.String, 0, "DisplayEpisode")
-                Dim parDateAdd As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdd", DbType.Int32, 0, "DateAdd")
+                Dim parDateAdded As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdded", DbType.Int32, 0, "DateAdded")
                 Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
                 Dim parVotes As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVotes", DbType.String, 0, "Votes")
                 Dim parVideoSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideoSource", DbType.String, 0, "VideoSource")
@@ -2435,33 +2454,33 @@ Public Class Database
                 Try
                     If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_TVEpDB.TVEp.DateAdded) Then
                         Dim DateTimeAdded As DateTime = DateTime.ParseExact(_TVEpDB.TVEp.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
-                        parDateAdd.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
+                        parDateAdded.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                     Else
                         Select Case Master.eSettings.GeneralDateTime
                             Case Enums.DateTime.Now
-                                parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdd)
+                                parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdded)
                             Case Enums.DateTime.mtime
                                 Dim mtime As Date = System.IO.File.GetLastWriteTime(_TVEpDB.Filename)
                                 If mtime.Year > 1601 Then
-                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(mtime)
+                                    parDateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                                 Else
                                     Dim ctime As Date = System.IO.File.GetCreationTime(_TVEpDB.Filename)
-                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(ctime)
+                                    parDateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                                 End If
                             Case Enums.DateTime.Newer
                                 Dim mtime As Date = System.IO.File.GetLastWriteTime(_TVEpDB.Filename)
                                 Dim ctime As Date = System.IO.File.GetCreationTime(_TVEpDB.Filename)
                                 If mtime > ctime Then
-                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(mtime)
+                                    parDateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                                 Else
-                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(ctime)
+                                    parDateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                                 End If
                         End Select
                     End If
-                    _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdd.Value)).ToString("yyyy-MM-d HH:mm:ss")
+                    _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-d HH:mm:ss")
                 Catch ex As Exception
-                    parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdd)
-                    _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdd.Value)).ToString("yyyy-MM-d HH:mm:ss")
+                    parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdded)
+                    _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-d HH:mm:ss")
                 End Try
 
                 ' First let's save it to NFO, even because we will need the NFO path
@@ -3182,7 +3201,7 @@ Public Class Database
                                                        "Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, ", _
                                                        "Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, ", _
                                                        "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
-                                                       "SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath FROM movies;")
+                                                       "SortTitle, DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath FROM movies;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
                         If Not DBNull.Value.Equals(SQLreader("IMDB")) Then

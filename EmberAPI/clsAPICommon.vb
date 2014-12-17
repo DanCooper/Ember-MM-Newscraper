@@ -842,31 +842,32 @@ Public Class Enums
         Genre = 11
         IMDBID = 12
         LandscapeItem = 13
-        ListTitle = 14
-        MPAA = 15
-        MoviePath = 16
-        NFOItem = 17
-        OriginalTitle = 18
-        Outline = 19
-        Playcount = 20
-        Plot = 21
-        PosterItem = 22
-        Rating = 23
-        ReleaseDate = 24
-        Runtime = 25
-        MovieSet = 26
-        SortTitle = 27
-        Studio = 28
-        TMDBColID = 29
-        TMDBID = 30
-        Tagline = 31
-        ThemeItem = 32
-        Title = 33
-        Top250 = 34
-        Trailer = 35
-        TrailerItem = 36
-        Votes = 37
-        Year = 38
+        DateModified = 14
+        ListTitle = 15
+        MPAA = 16
+        MoviePath = 17
+        NFOItem = 18
+        OriginalTitle = 19
+        Outline = 20
+        Playcount = 21
+        Plot = 22
+        PosterItem = 23
+        Rating = 24
+        ReleaseDate = 25
+        Runtime = 26
+        MovieSet = 27
+        SortTitle = 28
+        Studio = 29
+        TMDBColID = 30
+        TMDBID = 31
+        Tagline = 32
+        ThemeItem = 33
+        Title = 34
+        Top250 = 35
+        Trailer = 36
+        TrailerItem = 37
+        Votes = 38
+        Year = 39
     End Enum
 
     Public Enum ScraperEventType_MovieSet As Integer
@@ -1863,7 +1864,8 @@ Public Class Structures
         Dim DVDProfilerMediaType As String
         Dim DVDProfilerSlot As String
         Dim DVDProfilerTitle As String
-        Dim DateAdd As Long
+        Dim DateAdded As Long
+        Dim DateModified As Long
         Dim DiscArtPath As String
         Dim EFanartsPath As String
         Dim efList As List(Of String)
@@ -1941,7 +1943,7 @@ Public Class Structures
     ''' <remarks></remarks>
     Public Structure DBTV
         Dim ClearShowEFanarts As Boolean
-        Dim DateAdd As Double
+        Dim DateAdded As Double
         Dim efList As List(Of String)
         Dim EpFanartPath As String
         Dim EpID As Long

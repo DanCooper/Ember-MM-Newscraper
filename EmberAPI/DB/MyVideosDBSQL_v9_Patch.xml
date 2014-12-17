@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <transaction name="MyVideosDBSQL_v8_to_v9">
+  <transaction name="MyVideosDBSQL_v9_to_v10">
     <command type="DB">
       <description>1</description>
       <execute>ALTER TABLE TVEps ADD VideoSource TEXT;</execute>

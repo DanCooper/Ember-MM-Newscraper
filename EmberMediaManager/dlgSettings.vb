@@ -6459,7 +6459,7 @@ Public Class dlgSettings
         Me.btnTVSourceEdit.Text = Master.eLang.GetString(535, "Edit Source")
         Me.chkFileSystemCleanerWhitelist.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
         Me.chkGeneralCheckUpdates.Text = Master.eLang.GetString(432, "Check for Updates")
-        Me.chkGeneralDateAddedIgnoreNFO.Text = Master.eLang.GetString(1209, "Ignore &lt;dateadded&gt; from NFO")
+        Me.chkGeneralDateAddedIgnoreNFO.Text = Master.eLang.GetString(1209, "Ignore <dateadded> from NFO")
         Me.chkGeneralDoubleClickScrape.Text = Master.eLang.GetString(1198, "Enable Image Scrape On Double Right Click")
         Me.chkGeneralHideBanner.Text = Master.eLang.GetString(1146, "Do Not Display Banner")
         Me.chkGeneralHideCharacterArt.Text = Master.eLang.GetString(1147, "Do Not Display CharacterArt")
