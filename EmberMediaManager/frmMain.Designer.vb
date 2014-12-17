@@ -1035,6 +1035,7 @@ Partial Class frmMain
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
+        Me.btnFilterSortYear_Movies = New System.Windows.Forms.Button()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -3712,7 +3713,7 @@ Partial Class frmMain
         Me.gbFilterSorting_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFilterSorting_Movies.Location = New System.Drawing.Point(3, 99)
         Me.gbFilterSorting_Movies.Name = "gbFilterSorting_Movies"
-        Me.gbFilterSorting_Movies.Size = New System.Drawing.Size(124, 84)
+        Me.gbFilterSorting_Movies.Size = New System.Drawing.Size(124, 105)
         Me.gbFilterSorting_Movies.TabIndex = 4
         Me.gbFilterSorting_Movies.TabStop = false
         Me.gbFilterSorting_Movies.Text = "Extra Sorting"
@@ -3723,18 +3724,20 @@ Partial Class frmMain
         Me.tblFilterSorting_Movies.ColumnCount = 2
         Me.tblFilterSorting_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterSorting_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterSorting_Movies.Controls.Add(Me.btnFilterSortYear_Movies, 0, 3)
         Me.tblFilterSorting_Movies.Controls.Add(Me.btnFilterSortRating_Movies, 0, 2)
         Me.tblFilterSorting_Movies.Controls.Add(Me.btnFilterSortDate_Movies, 0, 0)
         Me.tblFilterSorting_Movies.Controls.Add(Me.btnFilterSortTitle_Movies, 0, 1)
         Me.tblFilterSorting_Movies.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblFilterSorting_Movies.Location = New System.Drawing.Point(3, 18)
         Me.tblFilterSorting_Movies.Name = "tblFilterSorting_Movies"
-        Me.tblFilterSorting_Movies.RowCount = 4
+        Me.tblFilterSorting_Movies.RowCount = 5
         Me.tblFilterSorting_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSorting_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSorting_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSorting_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterSorting_Movies.Size = New System.Drawing.Size(118, 63)
+        Me.tblFilterSorting_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterSorting_Movies.Size = New System.Drawing.Size(118, 84)
         Me.tblFilterSorting_Movies.TabIndex = 8
         '
         'btnFilterSortRating_Movies
@@ -3782,7 +3785,7 @@ Partial Class frmMain
         Me.btnClearFilters_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.btnClearFilters_Movies.Image = CType(resources.GetObject("btnClearFilters_Movies.Image"),System.Drawing.Image)
         Me.btnClearFilters_Movies.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters_Movies.Location = New System.Drawing.Point(19, 209)
+        Me.btnClearFilters_Movies.Location = New System.Drawing.Point(19, 220)
         Me.btnClearFilters_Movies.Name = "btnClearFilters_Movies"
         Me.btnClearFilters_Movies.Size = New System.Drawing.Size(92, 20)
         Me.btnClearFilters_Movies.TabIndex = 5
@@ -4078,7 +4081,7 @@ Partial Class frmMain
         Me.cbFilterYearModFrom_Movies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterYearModFrom_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.cbFilterYearModFrom_Movies.FormattingEnabled = true
-        Me.cbFilterYearModFrom_Movies.Items.AddRange(New Object() {">=", ">", "=", "<>"})
+        Me.cbFilterYearModFrom_Movies.Items.AddRange(New Object() {"=", "<>", ">=", ">", "<=", "<"})
         Me.cbFilterYearModFrom_Movies.Location = New System.Drawing.Point(87, 86)
         Me.cbFilterYearModFrom_Movies.Name = "cbFilterYearModFrom_Movies"
         Me.cbFilterYearModFrom_Movies.Size = New System.Drawing.Size(70, 21)
@@ -4100,6 +4103,7 @@ Partial Class frmMain
         '
         Me.cbFilterYearModTo_Movies.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.cbFilterYearModTo_Movies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterYearModTo_Movies.Enabled = false
         Me.cbFilterYearModTo_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.cbFilterYearModTo_Movies.FormattingEnabled = true
         Me.cbFilterYearModTo_Movies.Items.AddRange(New Object() {"<=", "<"})
@@ -4123,6 +4127,7 @@ Partial Class frmMain
         'cbFilterYearTo_Movies
         '
         Me.cbFilterYearTo_Movies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterYearTo_Movies.Enabled = false
         Me.cbFilterYearTo_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.cbFilterYearTo_Movies.FormattingEnabled = true
         Me.cbFilterYearTo_Movies.Location = New System.Drawing.Point(163, 113)
@@ -9913,6 +9918,19 @@ Partial Class frmMain
         '
         Me.tmrSearch_Shows.Interval = 250
         '
+        'btnFilterSortYear_Movies
+        '
+        Me.btnFilterSortYear_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnFilterSortYear_Movies.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnFilterSortYear_Movies.Location = New System.Drawing.Point(0, 63)
+        Me.btnFilterSortYear_Movies.Margin = New System.Windows.Forms.Padding(0)
+        Me.btnFilterSortYear_Movies.Name = "btnFilterSortYear_Movies"
+        Me.btnFilterSortYear_Movies.Size = New System.Drawing.Size(117, 21)
+        Me.btnFilterSortYear_Movies.TabIndex = 3
+        Me.btnFilterSortYear_Movies.Text = "Year"
+        Me.btnFilterSortYear_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnFilterSortYear_Movies.UseVisualStyleBackColor = true
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
@@ -11168,4 +11186,5 @@ End Sub
     Friend WithEvents mnuMainHelpForumGer As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cbFilterYearModTo_Movies As System.Windows.Forms.ComboBox
     Friend WithEvents cbFilterYearTo_Movies As System.Windows.Forms.ComboBox
+    Friend WithEvents btnFilterSortYear_Movies As System.Windows.Forms.Button
 End Class
