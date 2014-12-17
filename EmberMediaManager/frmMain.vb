@@ -3487,13 +3487,13 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cbFilterYearMod_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYearMod_Movies.SelectedIndexChanged
+    Private Sub cbFilterYearModFrom_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYearModFrom_Movies.SelectedIndexChanged
         Try
-            If Not String.IsNullOrEmpty(cbFilterYear_Movies.Text) AndAlso Not cbFilterYear_Movies.Text = Master.eLang.All Then
+            If Not String.IsNullOrEmpty(cbFilterYearFrom_Movies.Text) AndAlso Not cbFilterYearFrom_Movies.Text = Master.eLang.All Then
                 Me.FilterArray_Movies.Remove(Me.filYear_Movies)
                 Me.filYear_Movies = String.Empty
 
-                Me.filYear_Movies = String.Concat("Year ", cbFilterYearMod_Movies.Text, " '", cbFilterYear_Movies.Text, "'")
+                Me.filYear_Movies = String.Concat("Year ", cbFilterYearModFrom_Movies.Text, " '", cbFilterYearFrom_Movies.Text, "'")
 
                 Me.FilterArray_Movies.Add(Me.filYear_Movies)
                 Me.RunFilter_Movies()
@@ -3508,13 +3508,34 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cbFilterYear_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYear_Movies.SelectedIndexChanged
+    Private Sub cbFilterYearModTo_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYearModTo_Movies.SelectedIndexChanged
         Try
-            If Not String.IsNullOrEmpty(cbFilterYearMod_Movies.Text) AndAlso Not cbFilterYear_Movies.Text = Master.eLang.All Then
+            If Not String.IsNullOrEmpty(cbFilterYearFrom_Movies.Text) AndAlso Not cbFilterYearFrom_Movies.Text = Master.eLang.All Then
                 Me.FilterArray_Movies.Remove(Me.filYear_Movies)
                 Me.filYear_Movies = String.Empty
 
-                Me.filYear_Movies = String.Concat("Year ", cbFilterYearMod_Movies.Text, " '", cbFilterYear_Movies.Text, "'")
+                Me.filYear_Movies = String.Concat("Year ", cbFilterYearModFrom_Movies.Text, " '", cbFilterYearFrom_Movies.Text, "'")
+
+                Me.FilterArray_Movies.Add(Me.filYear_Movies)
+                Me.RunFilter_Movies()
+            Else
+                If Not String.IsNullOrEmpty(Me.filYear_Movies) Then
+                    Me.FilterArray_Movies.Remove(Me.filYear_Movies)
+                    Me.filYear_Movies = String.Empty
+                    Me.RunFilter_Movies()
+                End If
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub cbFilterYearFrom_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYearFrom_Movies.SelectedIndexChanged
+        Try
+            If Not String.IsNullOrEmpty(cbFilterYearModFrom_Movies.Text) AndAlso Not cbFilterYearFrom_Movies.Text = Master.eLang.All Then
+                Me.FilterArray_Movies.Remove(Me.filYear_Movies)
+                Me.filYear_Movies = String.Empty
+
+                Me.filYear_Movies = String.Concat("Year ", cbFilterYearModFrom_Movies.Text, " '", cbFilterYearFrom_Movies.Text, "'")
 
                 Me.FilterArray_Movies.Add(Me.filYear_Movies)
                 Me.RunFilter_Movies()
@@ -3525,8 +3546,33 @@ doCancel:
                     Me.RunFilter_Movies()
                 End If
 
-                If cbFilterYear_Movies.Text = Master.eLang.All Then
-                    Me.cbFilterYearMod_Movies.Text = String.Empty
+                If cbFilterYearFrom_Movies.Text = Master.eLang.All Then
+                    Me.cbFilterYearModFrom_Movies.Text = String.Empty
+                End If
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub cbFilterYearTo_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYearTo_Movies.SelectedIndexChanged
+        Try
+            If Not String.IsNullOrEmpty(cbFilterYearModFrom_Movies.Text) AndAlso Not cbFilterYearFrom_Movies.Text = Master.eLang.All Then
+                Me.FilterArray_Movies.Remove(Me.filYear_Movies)
+                Me.filYear_Movies = String.Empty
+
+                Me.filYear_Movies = String.Concat("Year ", cbFilterYearModFrom_Movies.Text, " '", cbFilterYearFrom_Movies.Text, "'")
+
+                Me.FilterArray_Movies.Add(Me.filYear_Movies)
+                Me.RunFilter_Movies()
+            Else
+                If Not String.IsNullOrEmpty(Me.filYear_Movies) Then
+                    Me.FilterArray_Movies.Remove(Me.filYear_Movies)
+                    Me.filYear_Movies = String.Empty
+                    Me.RunFilter_Movies()
+                End If
+
+                If cbFilterYearFrom_Movies.Text = Master.eLang.All Then
+                    Me.cbFilterYearModFrom_Movies.Text = String.Empty
                 End If
             End If
         Catch
@@ -4225,17 +4271,29 @@ doCancel:
             End If
             AddHandler cbFilterDataField_Movies.SelectedIndexChanged, AddressOf clbFilterDataFields_Movies_LostFocus
 
-            RemoveHandler cbFilterYear_Movies.SelectedIndexChanged, AddressOf cbFilterYear_Movies_SelectedIndexChanged
-            If Me.cbFilterYear_Movies.Items.Count > 0 Then
-                Me.cbFilterYear_Movies.SelectedIndex = 0
+            RemoveHandler cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearFrom_Movies_SelectedIndexChanged
+            If Me.cbFilterYearFrom_Movies.Items.Count > 0 Then
+                Me.cbFilterYearFrom_Movies.SelectedIndex = 0
             End If
-            AddHandler cbFilterYear_Movies.SelectedIndexChanged, AddressOf cbFilterYear_Movies_SelectedIndexChanged
+            AddHandler cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearFrom_Movies_SelectedIndexChanged
 
-            RemoveHandler cbFilterYearMod_Movies.SelectedIndexChanged, AddressOf cbFilterYearMod_Movies_SelectedIndexChanged
-            If Me.cbFilterYearMod_Movies.Items.Count > 0 Then
-                Me.cbFilterYearMod_Movies.SelectedIndex = 0
+            RemoveHandler cbFilterYearModFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearModFrom_Movies_SelectedIndexChanged
+            If Me.cbFilterYearModFrom_Movies.Items.Count > 0 Then
+                Me.cbFilterYearModFrom_Movies.SelectedIndex = 0
             End If
-            AddHandler cbFilterYearMod_Movies.SelectedIndexChanged, AddressOf cbFilterYearMod_Movies_SelectedIndexChanged
+            AddHandler cbFilterYearModFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearModFrom_Movies_SelectedIndexChanged
+
+            RemoveHandler cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearTo_Movies_SelectedIndexChanged
+            If Me.cbFilterYearTo_Movies.Items.Count > 0 Then
+                Me.cbFilterYearTo_Movies.SelectedIndex = 0
+            End If
+            AddHandler cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearTo_Movies_SelectedIndexChanged
+
+            RemoveHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
+            If Me.cbFilterYearModTo_Movies.Items.Count > 0 Then
+                Me.cbFilterYearModTo_Movies.SelectedIndex = 0
+            End If
+            AddHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
 
             RemoveHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
             If Me.cbFilterVideoSource_Movies.Items.Count > 0 Then
@@ -8351,8 +8409,10 @@ doCancel:
         Me.btnFilterSortTitle_Movies.Enabled = isEnabled
         Me.cbFilterDataField_Movies.Enabled = isEnabled
         Me.cbFilterVideoSource_Movies.Enabled = isEnabled
-        Me.cbFilterYear_Movies.Enabled = isEnabled
-        Me.cbFilterYearMod_Movies.Enabled = isEnabled
+        Me.cbFilterYearFrom_Movies.Enabled = isEnabled
+        Me.cbFilterYearModFrom_Movies.Enabled = isEnabled
+        Me.cbFilterYearTo_Movies.Enabled = isEnabled
+        Me.cbFilterYearModTo_Movies.Enabled = isEnabled
         Me.cbSearchMovies.Enabled = isEnabled
         Me.chkFilterDuplicates_Movies.Enabled = isEnabled
         Me.chkFilterLock_Movies.Enabled = isEnabled
@@ -14381,10 +14441,14 @@ doCancel:
             Me.FilterArray_Movies.Add(Me.filDataField_Movies)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.cbFilterYear_Movies.Text) AndAlso Not Me.cbFilterYear_Movies.Text = Master.eLang.All) OrElse Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse _
-        Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Movies.Checked OrElse Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
-        Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse _
-        Me.chkFilterDuplicates_Movies.Checked OrElse Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
+        If (Not String.IsNullOrEmpty(Me.cbFilterYearFrom_Movies.Text) AndAlso Not Me.cbFilterYearFrom_Movies.Text = Master.eLang.All) OrElse _
+            (Not String.IsNullOrEmpty(Me.cbFilterYearTo_Movies.Text) AndAlso Not Me.cbFilterYearTo_Movies.Text = Master.eLang.All) OrElse _
+            Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse _
+            Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Movies.Checked OrElse _
+            Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
+            Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse _
+            Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterDuplicates_Movies.Checked OrElse _
+            Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterAnd_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_MovieSets.Click
@@ -14508,10 +14572,14 @@ doCancel:
             Me.FilterArray_Movies.Add(Me.filDataField_Movies)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.cbFilterYear_Movies.Text) AndAlso Not Me.cbFilterYear_Movies.Text = Master.eLang.All) OrElse Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse _
-            Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Movies.Checked OrElse Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
-            Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse _
-            Me.chkFilterDuplicates_Movies.Checked OrElse Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
+        If (Not String.IsNullOrEmpty(Me.cbFilterYearFrom_Movies.Text) AndAlso Not Me.cbFilterYearFrom_Movies.Text = Master.eLang.All) OrElse _
+            (Not String.IsNullOrEmpty(Me.cbFilterYearTo_Movies.Text) AndAlso Not Me.cbFilterYearTo_Movies.Text = Master.eLang.All) OrElse _
+            Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse _
+            Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Movies.Checked OrElse _
+            Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
+            Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse _
+            Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterDuplicates_Movies.Checked OrElse _
+            Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterOr_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_MovieSets.Click
@@ -17153,18 +17221,31 @@ doCancel:
                         End Using
                     End Using
 
-                    RemoveHandler Me.cbFilterYear_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYear_Movies_SelectedIndexChanged
-                    Me.cbFilterYear_Movies.Items.Clear()
-                    Me.cbFilterYear_Movies.Items.Add(Master.eLang.All)
+                    RemoveHandler Me.cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearFrom_Movies_SelectedIndexChanged
+                    Me.cbFilterYearFrom_Movies.Items.Clear()
+                    Me.cbFilterYearFrom_Movies.Items.Add(Master.eLang.All)
                     For i As Integer = (Year(Today) + 1) To 1888 Step -1
-                        Me.cbFilterYear_Movies.Items.Add(i)
+                        Me.cbFilterYearFrom_Movies.Items.Add(i)
                     Next
-                    Me.cbFilterYear_Movies.SelectedIndex = 0
-                    AddHandler Me.cbFilterYear_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYear_Movies_SelectedIndexChanged
+                    Me.cbFilterYearFrom_Movies.SelectedIndex = 0
+                    AddHandler Me.cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearFrom_Movies_SelectedIndexChanged
 
-                    RemoveHandler Me.cbFilterYearMod_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearMod_Movies_SelectedIndexChanged
-                    Me.cbFilterYearMod_Movies.SelectedIndex = 0
-                    AddHandler Me.cbFilterYearMod_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearMod_Movies_SelectedIndexChanged
+                    RemoveHandler Me.cbFilterYearModFrom_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearModFrom_Movies_SelectedIndexChanged
+                    Me.cbFilterYearModFrom_Movies.SelectedIndex = 0
+                    AddHandler Me.cbFilterYearModFrom_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearModFrom_Movies_SelectedIndexChanged
+
+                    RemoveHandler Me.cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearTo_Movies_SelectedIndexChanged
+                    Me.cbFilterYearTo_Movies.Items.Clear()
+                    Me.cbFilterYearTo_Movies.Items.Add(Master.eLang.All)
+                    For i As Integer = (Year(Today) + 1) To 1888 Step -1
+                        Me.cbFilterYearTo_Movies.Items.Add(i)
+                    Next
+                    Me.cbFilterYearTo_Movies.SelectedIndex = 0
+                    AddHandler Me.cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearTo_Movies_SelectedIndexChanged
+
+                    RemoveHandler Me.cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearModto_Movies_SelectedIndexChanged
+                    Me.cbFilterYearModTo_Movies.SelectedIndex = 0
+                    AddHandler Me.cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearModTo_Movies_SelectedIndexChanged
 
                     RemoveHandler Me.cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf Me.cbFilterVideoSource_Movies_SelectedIndexChanged
                     Me.cbFilterVideoSource_Movies.Items.Clear()
