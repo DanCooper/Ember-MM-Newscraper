@@ -6656,7 +6656,7 @@ Public Class dlgSettings
         Me.cbTVScraperUpdateTime.Items.AddRange(New String() {Master.eLang.GetString(749, "Week"), Master.eLang.GetString(750, "Bi-Weekly"), Master.eLang.GetString(751, "Month"), Master.eLang.GetString(752, "Never"), Master.eLang.GetString(753, "Always")})
 
         Me.cbTVScraperOptionsOrdering.Items.Clear()
-        Me.cbTVScraperOptionsOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute")})
+        Me.cbTVScraperOptionsOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(728, "Aired")})
 
         Me.cbTVSeasonRetrieve.Items.Clear()
         Me.cbTVSeasonRetrieve.Items.AddRange(New String() {Master.eLang.GetString(13, "Folder Name"), Master.eLang.GetString(15, "File Name")})

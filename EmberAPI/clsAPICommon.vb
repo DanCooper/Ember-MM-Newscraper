@@ -890,6 +890,7 @@ Public Class Enums
         Standard = 0
         DVD = 1
         Absolute = 2
+        Aired = 3
     End Enum
     ''' <summary>
     ''' Enum represeting valid poster sizes
