@@ -43,6 +43,9 @@ Public Class dlgIMDBSearchResults
     Private _InfoCache As New Dictionary(Of String, MediaContainers.Movie)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
     Private _filterOptions As Structures.ScrapeOptions_Movie
+    Private _doSearch As Boolean
+    Private _sMovieTitle As String
+    Private _Res As IMDB.MovieSearchResults
 
     Public _nMovie As MediaContainers.Movie
 
@@ -50,15 +53,15 @@ Public Class dlgIMDBSearchResults
 
 #Region "Methods"
 
-    Public Overloads Async Function ShowDialog(ByVal nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Threading.Tasks.Task(Of Windows.Forms.DialogResult)
+    Public Overloads Function ShowDialog(ByVal nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
-
         Me.tmrLoad.Interval = 100
 
         _filterOptions = filterOptions
         _nMovie = nMovie
+        _sMovieTitle = sMovieTitle
 
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
         Me.txtSearch.Text = sMovieTitle
@@ -68,7 +71,7 @@ Public Class dlgIMDBSearchResults
         'chkManual.Enabled = False
         chkManual.Enabled = True
 
-        Await IMDB.SearchMovieAsync(sMovieTitle, _filterOptions)
+        _doSearch = True
 
         Return MyBase.ShowDialog()
     End Function
@@ -84,8 +87,9 @@ Public Class dlgIMDBSearchResults
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
         Me.txtSearch.Text = sMovieTitle
         Me.txtFileName.Text = sMovieFilename
-        SearchResultsDownloaded(Res)
 
+        _doSearch = False
+        _Res = Res
         Return MyBase.ShowDialog()
     End Function
 
@@ -193,7 +197,7 @@ Public Class dlgIMDBSearchResults
         Me.AcceptButton = Me.OK_Button
     End Sub
 
-    Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Async Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         pnlPicStatus.Visible = False
         AddHandler IMDB.SearchMovieInfoDownloaded, AddressOf SearchMovieInfoDownloaded
@@ -208,6 +212,12 @@ Public Class dlgIMDBSearchResults
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+        If _doSearch Then
+            Await IMDB.SearchMovieAsync(_sMovieTitle, _filterOptions)
+        Else
+            SearchResultsDownloaded(_Res)
+        End If
+
     End Sub
 
     Private Sub dlgIMDBSearchResults_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown

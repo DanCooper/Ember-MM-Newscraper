@@ -882,7 +882,7 @@ mPlot:          'MOVIE PLOT
                         ret = Await GetMovieInfo(imdbID, IMDBMovie, False, True, Options, True, True, "", False)
                         ' return object
                         ' nMovie
-                        RaiseEvent SearchMovieInfoDownloaded(sPoster, ret.Cancelled)
+                        RaiseEvent SearchMovieInfoDownloaded(sPoster, Not ret.Cancelled)
                         Return ret
                 End Select
             Catch ex As Exception
