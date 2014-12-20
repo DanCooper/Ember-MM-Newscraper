@@ -33,31 +33,26 @@ Public Class dlgTVDBSearchResults
     Private sInfo As Structures.ScrapeInfo
     Private _manualresult As Scraper.TVSearchResults = Nothing
     Private _skipdownload As Boolean = False
-
+    Private _OrigInfo As Structures.ScrapeInfo
 #End Region 'Fields
 
 #Region "Methods"
 
-    Public Overloads Async Function ShowDialog(ByVal _sInfo As Structures.ScrapeInfo) As Threading.Tasks.Task(Of Windows.Forms.DialogResult)
+    Public Overloads Function ShowDialog(ByVal _sInfo As Structures.ScrapeInfo) As Windows.Forms.DialogResult
         Me.sInfo = _sInfo
         Me.Text = String.Concat(Master.eLang.GetString(948, "TV Search Results"), " - ", sInfo.ShowTitle)
-        Await Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Async Function ShowDialog(ByVal _sinfo As Structures.ScrapeInfo, ByVal SkipDownload As Boolean) As Threading.Tasks.Task(Of Structures.ScrapeInfo)
+    Public Overloads Function ShowDialog(ByVal _sinfo As Structures.ScrapeInfo, ByVal SkipDownload As Boolean) As Structures.ScrapeInfo
         Me.sInfo = _sinfo
         Me._skipdownload = SkipDownload
 
         Me.Text = String.Concat(Master.eLang.GetString(948, "TV Search Results"), " - ", sInfo.ShowTitle)
-        Await Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
-        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Return Me.sInfo
-        Else
-            Return _sinfo
-        End If
+        MyBase.ShowDialog()
+        Return sInfo
     End Function
 
     Private Async Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
@@ -168,6 +163,7 @@ Public Class dlgTVDBSearchResults
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        sInfo = _OrigInfo
         Me.Close()
     End Sub
 
@@ -202,7 +198,8 @@ Public Class dlgTVDBSearchResults
         Me.txtOutline.Visible = areVisible
     End Sub
 
-    Private Sub dlgTVDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+    Private Async Sub dlgTVDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             AddHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf TVScraperEvent
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -217,6 +214,7 @@ Public Class dlgTVDBSearchResults
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+        Await Scraper.sObject.GetSearchResultsAsync(_sInfo)
     End Sub
 
     Private Sub lvSearchResults_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvSearchResults.ColumnClick

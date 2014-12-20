@@ -45,6 +45,9 @@ Public Class dlgTMDBSearchResults_MovieSet
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
     Private _filterOptions As Structures.ScrapeOptions_MovieSet
 
+    Private _sMovieSetTitle As String
+    Private _doSearch As Boolean = False
+    Private _Res As TMDB.SearchResults_MovieSet
 #End Region 'Fields
 
 #Region "Methods"
@@ -69,7 +72,8 @@ Public Class dlgTMDBSearchResults_MovieSet
         Me.txtSearch.Text = sMovieSetTitle
         Me.txtFileName.Text = String.Empty
         chkManual.Enabled = False
-        TMDBg.SearchMovieSetAsync(sMovieSetTitle, _filterOptions)
+        _sMovieSetTitle = sMovieSetTitle
+        _doSearch = True
 
         Return MyBase.ShowDialog()
     End Function
@@ -83,7 +87,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieSetTitle)
         Me.txtSearch.Text = sMovieSetTitle
         Me.txtFileName.Text = String.Empty
-        SearchResultsDownloaded_MovieSet(Res)
+        _Res = Res
 
         Return MyBase.ShowDialog()
     End Function
@@ -203,6 +207,11 @@ Public Class dlgTMDBSearchResults_MovieSet
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+        If _doSearch Then
+            TMDBg.SearchMovieSetAsync(_sMovieSetTitle, _filterOptions)
+        Else
+            SearchResultsDownloaded_MovieSet(_Res)
+        End If
     End Sub
 
     Private Sub dlgTMDBSearchResults_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
