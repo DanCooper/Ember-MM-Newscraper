@@ -723,6 +723,21 @@ Public Class Database
         _TVDB.TVShow = _tmpTVDB.TVShow
     End Sub
 
+    Public Function GetTVShowOrdering(ByVal ShowID As Long) As Enums.Ordering
+        Dim sOrdering As Enums.Ordering = Enums.Ordering.Standard
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT Ordering FROM TVShows WHERE ID = ", ShowID, ";")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    sOrdering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
+                End While
+            End Using
+        End Using
+
+        Return sOrdering
+    End Function
+
     Public Function GetMovieCountries() As String()
         Dim cList As New List(Of String)
         Dim mCountry As String

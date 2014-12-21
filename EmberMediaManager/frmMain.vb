@@ -4564,7 +4564,7 @@ doCancel:
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
             Me.SetEpisodeListItemAfterEdit(ID, indX)
             If Me.RefreshEpisode(ID) Then
-                Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season, Master.currShow.Ordering)
+                Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
             End If
 
             'Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
@@ -4679,7 +4679,7 @@ doCancel:
                     Case Windows.Forms.DialogResult.OK
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
                         If Me.RefreshEpisode(ID) Then
-                            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season, Master.currShow.Ordering)
+                            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                         End If
                 End Select
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
@@ -7551,7 +7551,7 @@ doCancel:
                     Case Windows.Forms.DialogResult.OK
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
                         If Me.RefreshEpisode(ID) Then
-                            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season, Master.currShow.Ordering)
+                            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                         End If
                 End Select
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
@@ -7593,7 +7593,7 @@ doCancel:
             End If
 
             'icons
-            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <= 24 AndAlso e.RowIndex = -1 Then
+            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <> 15 AndAlso e.ColumnIndex <= 24 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -7611,7 +7611,7 @@ doCancel:
                 e.Handled = True
             End If
 
-            If (e.ColumnIndex = 2 OrElse e.ColumnIndex = 3 OrElse e.ColumnIndex = 12) AndAlso e.RowIndex >= 0 Then
+            If (e.ColumnIndex = 2 OrElse e.ColumnIndex = 3 OrElse e.ColumnIndex = 12 OrElse e.ColumnIndex = 15) AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Gray
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
@@ -7644,7 +7644,7 @@ doCancel:
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
 
-                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <= 24 Then
+                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <> 15 AndAlso e.ColumnIndex <= 24 Then
                     e.PaintBackground(e.ClipBounds, True)
 
                     Dim pt As Point = e.CellBounds.Location
@@ -7691,7 +7691,7 @@ doCancel:
                         Case Windows.Forms.DialogResult.OK
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
                             If Me.RefreshEpisode(ID) Then
-                                Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season, Master.currShow.Ordering)
+                                Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                             End If
                     End Select
                     RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
@@ -8616,7 +8616,9 @@ doCancel:
         End If
     End Sub
 
-    Private Sub FillEpisodes(ByVal ShowID As Integer, ByVal Season As Integer, ByVal Ordering As Enums.Ordering)
+    Private Sub FillEpisodes(ByVal ShowID As Integer, ByVal Season As Integer)
+        Dim sOrdering As Enums.Ordering = Master.DB.GetTVShowOrdering(ShowID)
+
         Me.bsEpisodes.DataSource = Nothing
         Me.dgvTVEpisodes.DataSource = Nothing
 
@@ -8643,6 +8645,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(2).ReadOnly = True
                 .dgvTVEpisodes.Columns(2).MinimumWidth = If(Season = 999, 20, 40)
                 .dgvTVEpisodes.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVEpisodes.Columns(2).Visible = Not sOrdering = Enums.Ordering.Aired
                 .dgvTVEpisodes.Columns(2).ToolTipText = Master.eLang.GetString(755, "Episode #")
                 .dgvTVEpisodes.Columns(2).HeaderText = "#"
                 .dgvTVEpisodes.Columns(2).DefaultCellStyle.Format = "00"
@@ -8686,7 +8689,13 @@ doCancel:
                 .dgvTVEpisodes.Columns(12).DefaultCellStyle.Format = "00"
                 .dgvTVEpisodes.Columns(13).Visible = False
                 .dgvTVEpisodes.Columns(14).Visible = False
-                .dgvTVEpisodes.Columns(15).Visible = False
+                .dgvTVEpisodes.Columns(15).Resizable = DataGridViewTriState.False
+                .dgvTVEpisodes.Columns(15).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                .dgvTVEpisodes.Columns(15).ReadOnly = True
+                .dgvTVEpisodes.Columns(15).SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVEpisodes.Columns(15).Visible = sOrdering = Enums.Ordering.Aired
+                .dgvTVEpisodes.Columns(15).ToolTipText = Master.eLang.GetString(728, "Aired")
+                .dgvTVEpisodes.Columns(15).HeaderText = Master.eLang.GetString(728, "Aired")
                 .dgvTVEpisodes.Columns(16).Visible = False
                 .dgvTVEpisodes.Columns(17).Visible = False
                 .dgvTVEpisodes.Columns(18).Visible = False
@@ -8712,9 +8721,8 @@ doCancel:
                 If Master.isWindows Then .dgvTVEpisodes.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 ResizeTVLists(3)
 
-                If Season = 999 Then
-                    Me.dgvTVEpisodes.Columns("Season").DisplayIndex = 0
-                End If
+                Me.dgvTVEpisodes.Columns("Season").DisplayIndex = 0
+                Me.dgvTVEpisodes.Columns("Aired").DisplayIndex = 1
 
                 '.dgvTVEpisodes.Sort(.dgvTVEpisodes.Columns(2), ComponentModel.ListSortDirection.Ascending)
 
@@ -11642,7 +11650,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub LoadSeasonInfo(ByVal ShowID As Integer, ByVal Season As Integer, ByVal Ordering As Enums.Ordering)
+    Private Sub LoadSeasonInfo(ByVal ShowID As Integer, ByVal Season As Integer)
         Try
             Me.dgvTVSeasons.SuspendLayout()
             Me.SetControlsEnabled(False, True)
@@ -11658,7 +11666,7 @@ doCancel:
             Me.bwLoadSeasonInfo.WorkerSupportsCancellation = True
             Me.bwLoadSeasonInfo.RunWorkerAsync(New Arguments With {.ID = ShowID, .Season = Season})
 
-            Me.FillEpisodes(ShowID, Season, Ordering)
+            Me.FillEpisodes(ShowID, Season)
 
         Catch ex As Exception
             Me.SetControlsEnabled(True)
@@ -14125,7 +14133,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVEpisodeFanart(Master.currShow)
                                 If Me.RefreshEpisode(EpisodeID) Then
-                                    Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season, Master.currShow.Ordering)
+                                    Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                                 End If
                             End If
                             Me.SetControlsEnabled(True)
@@ -14313,7 +14321,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVEpisodePoster(Master.currShow)
                                 If Me.RefreshEpisode(EpisodeID) Then
-                                    Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season, Master.currShow.Ordering)
+                                    Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                                 End If
                             End If
                             Me.SetControlsEnabled(True)
@@ -15470,7 +15478,7 @@ doCancel:
                 SQLtransaction.Commit()
                 SQLtransaction = Nothing
 
-                Me.LoadSeasonInfo(ShowID, Season, tmpSeasonDb.Ordering)
+                Me.LoadSeasonInfo(ShowID, Season)
             End If
 
         Catch ex As Exception
@@ -16558,13 +16566,13 @@ doCancel:
                 Me.ShowNoInfo(True, 1)
                 Master.currShow = Master.DB.LoadTVSeasonFromDB(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, iRow).Value), True)
 
-                Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, iRow).Value), Master.currShow.Ordering)
+                Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, iRow).Value))
 
                 If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuSeason.Enabled = True
                 End If
             Else
-                Me.LoadSeasonInfo(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, iRow).Value), Master.currShow.Ordering)
+                Me.LoadSeasonInfo(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, iRow).Value))
             End If
 
         Catch ex As Exception

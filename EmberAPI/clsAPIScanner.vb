@@ -102,7 +102,11 @@ Public Class Scanner
                             Case Settings.EpRetrieve.FromSeasonResult
                                 If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
                                     For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                                        If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                                        If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then
+                                            cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                                        ElseIf Not String.IsNullOrEmpty(eMatch.Groups("aired").Value) Then
+                                            cSeason.Episodes.Add(-1)
+                                        End If
                                     Next
                                 End If
                         End Select
@@ -1542,9 +1546,19 @@ Public Class Scanner
                                     If tmpTVDB.TVEp.Season = -999 Then tmpTVDB.TVEp.Season = sSeasons.Season
                                     If tmpTVDB.TVEp.Episode = -999 Then tmpTVDB.TVEp.Episode = i
 
+                                    If String.IsNullOrEmpty(tmpTVDB.TVEp.Aired) AndAlso TVContainer.Ordering = Enums.Ordering.Aired Then
+                                        If Regex.IsMatch(tmpTVDB.Filename, "(?<aired>([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]))", RegexOptions.IgnoreCase) Then
+                                            tmpTVDB.TVEp.Aired = Regex.Match(tmpTVDB.Filename, "(?<aired>([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]))", RegexOptions.IgnoreCase).Groups(0).Value
+                                        End If
+                                    End If
+
                                     If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
                                         'nothing usable in the title after filters have runs
-                                        tmpTVDB.TVEp.Title = String.Format("{0} S{1}E{2}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")), tmpTVDB.TVEp.Episode.ToString.PadLeft(2, Convert.ToChar("0")))
+                                        If TVContainer.Ordering = Enums.Ordering.Aired Then
+                                            tmpTVDB.TVEp.Title = String.Format("{0} {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Aired)
+                                        Else
+                                            tmpTVDB.TVEp.Title = String.Format("{0} S{1}E{2}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")), tmpTVDB.TVEp.Episode.ToString.PadLeft(2, Convert.ToChar("0")))
+                                        End If
                                     End If
 
                                     Me.GetTVSeasonImages(tmpTVDB, tmpTVDB.TVEp.Season)
