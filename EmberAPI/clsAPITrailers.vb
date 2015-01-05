@@ -34,7 +34,9 @@ Public Class Trailers
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _ext As String
+    Private _dashaudio As New List(Of DashAudio)
     Private _description As String
+    Private _isDash As Boolean
     Private _isEdit As Boolean
     Private _duration As String
     Private _quality As Enums.TrailerQuality
@@ -83,6 +85,15 @@ Public Class Trailers
         End Get
         Set(ByVal value As String)
             _description = value
+        End Set
+    End Property
+
+    Public Property isDash() As Boolean
+        Get
+            Return _isDash
+        End Get
+        Set(ByVal value As Boolean)
+            _isDash = value
         End Set
     End Property
 
@@ -896,6 +907,56 @@ Public Class Trailers
     End Function
 
 #End Region 'Methods
+
+#Region "Nested Types"
+
+    Class DashAudio
+
+#Region "Fields"
+
+        Private _description As String
+        Private _url As String
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        Public Property Description() As String
+            Get
+                Return Me._description
+            End Get
+            Set(ByVal value As String)
+                Me._description = value
+            End Set
+        End Property
+
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal value As String)
+                Me._url = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+        Public Sub Clear()
+            _description = String.Empty
+            _url = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+#End Region 'Nested Types
 
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' To detect redundant calls

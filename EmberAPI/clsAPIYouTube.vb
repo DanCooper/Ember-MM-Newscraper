@@ -117,20 +117,24 @@ Namespace YouTube
                     Html = String.Empty
                 End If
 
+                Dim test As String = Web.HttpUtility.UrlDecode(Html)
+
                 If String.IsNullOrEmpty(Html.Trim) Then Return DownloadLinks
 
                 Dim VideoTitle As String = GetVideoTitle(Html)
                 VideoTitle = Regex.Replace(VideoTitle, "['?\\:*<>]*", "")
 
                 Dim fmtMatch As Match = Regex.Match(Html, "url_encoded_fmt_stream_map\"": \""(.*?)\"", \""", RegexOptions.IgnoreCase)
-                If fmtMatch.Success Then
-                    Dim FormatMap As String = fmtMatch.Groups(1).Value
+                Dim dashMatch As Match = Regex.Match(Html, "adaptive_fmts\"": \""(.*?)\"", \""", RegexOptions.IgnoreCase)
+
+                If dashMatch.Success Then
+                    Dim FormatMap As String = dashMatch.Groups(1).Value
                     Dim decoded As String = Web.HttpUtility.UrlDecode(FormatMap)
                     Dim FormatArray() As String = Split(decoded.Replace(", ", ";"), ",")
 
                     Dim rurl As New Regex("url=([^\\]+)", RegexOptions.IgnoreCase)
-                    Dim rsig As New Regex("sig=([^\\]+)", RegexOptions.IgnoreCase)
                     Dim ritag As New Regex("itag=(\d+)", RegexOptions.IgnoreCase)
+                    Dim rsig As New Regex("sig=([^\\]+)", RegexOptions.IgnoreCase)
 
                     For i As Integer = 0 To FormatArray.Length - 1
                         Dim yturl As String = rurl.Match(FormatArray(i)).Groups(1).Value
@@ -150,11 +154,11 @@ Namespace YouTube
                                 Link.Description = "240p (FLV, H.263)"
                                 Link.FormatCodec = Enums.TrailerCodec.FLV
                                 Link.FormatQuality = Enums.TrailerQuality.SQ240p
-                            Case "6"
+                            Case "6" 'Discontinued
                                 Link.Description = "270p (FLV, H.263)"
                                 Link.FormatCodec = Enums.TrailerCodec.FLV
                                 Link.FormatQuality = Enums.TrailerQuality.OTHERS
-                            Case "13"
+                            Case "13" 'Discontinued
                                 Link.Description = "144p (3GP, MPEG-4)"
                                 Link.FormatCodec = Enums.TrailerCodec.v3GP
                                 Link.FormatQuality = Enums.TrailerQuality.SQ144p
@@ -170,11 +174,11 @@ Namespace YouTube
                                 Link.Description = "720p (MP4, H.264)"
                                 Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.HD720p
-                            Case "34"
+                            Case "34" 'Discontinued
                                 Link.Description = "360p (FLV, H.264)"
                                 Link.FormatCodec = Enums.TrailerCodec.FLV
                                 Link.FormatQuality = Enums.TrailerQuality.SQ360p
-                            Case "35"
+                            Case "35" 'Discontinued
                                 Link.Description = "480p (FLV, H.264)"
                                 Link.FormatCodec = Enums.TrailerCodec.FLV
                                 Link.FormatQuality = Enums.TrailerQuality.HQ480p
@@ -182,11 +186,11 @@ Namespace YouTube
                                 Link.Description = "240p (3GP, MPEG-4)"
                                 Link.FormatCodec = Enums.TrailerCodec.v3GP
                                 Link.FormatQuality = Enums.TrailerQuality.SQ240p
-                            Case "37"
+                            Case "37" 'Discontinued
                                 Link.Description = "1080p (MP4, H.264)"
                                 Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.HD1080p
-                            Case "38"
+                            Case "38" 'Discontinued
                                 Link.Description = "1536p (MP4, H.264)"
                                 Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.OTHERS
@@ -194,15 +198,15 @@ Namespace YouTube
                                 Link.Description = "360p (WebM, VP8)"
                                 Link.FormatCodec = Enums.TrailerCodec.WebM
                                 Link.FormatQuality = Enums.TrailerQuality.SQ360p
-                            Case "44"
+                            Case "44" 'Discontinued
                                 Link.Description = "480p (WebM, VP8)"
                                 Link.FormatCodec = Enums.TrailerCodec.WebM
                                 Link.FormatQuality = Enums.TrailerQuality.HQ480p
-                            Case "45"
+                            Case "45" 'Discontinued
                                 Link.Description = "720p (WebM, VP8)"
                                 Link.FormatCodec = Enums.TrailerCodec.WebM
                                 Link.FormatQuality = Enums.TrailerQuality.HD720p
-                            Case "46"
+                            Case "46" 'Discontinued
                                 Link.Description = "1080p (WebM, VP8)"
                                 Link.FormatCodec = Enums.TrailerCodec.WebM
                                 Link.FormatQuality = Enums.TrailerQuality.HD1080p
@@ -226,43 +230,118 @@ Namespace YouTube
                                 Link.Description = "3D 360p (WebM, VP8)"
                                 Link.FormatCodec = Enums.TrailerCodec.WebM
                                 Link.FormatQuality = Enums.TrailerQuality.SQ360p
-                            Case "101"
+                            Case "101" 'Discontinued
                                 Link.Description = "3D 480p (WebM, VP8)"
                                 Link.FormatCodec = Enums.TrailerCodec.WebM
                                 Link.FormatQuality = Enums.TrailerQuality.HQ480p
-                            Case "102"
+                            Case "102" 'Discontinued
                                 Link.Description = "3D 720p (WebM, VP8)"
                                 Link.FormatCodec = Enums.TrailerCodec.WebM
                                 Link.FormatQuality = Enums.TrailerQuality.HD720p
-                            Case "120"
-                                Link.Description = "720p LiveStream (FLV, AVC)"
-                                Link.FormatCodec = Enums.TrailerCodec.FLV
-                                Link.FormatQuality = Enums.TrailerQuality.HD720p
-                            Case "133"
-                                Link.Description = "240p ? (MP4, ?)"
+                            Case "133" 'DASH (video only)
+                                Link.Description = "240p (MP4, H.264)"
                                 Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.SQ240p
-                            Case "134"
-                                Link.Description = "360p ? (MP4, ?)"
+                            Case "134" 'DASH (video only)
+                                Link.Description = "360p (MP4, H.264)"
                                 Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.SQ360p
-                            Case "135"
-                                Link.Description = "480p ? (MP4, ?)"
+                            Case "135" 'DASH (video only)
+                                Link.Description = "480p (MP4, H.264)"
                                 Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.HQ480p
-                            Case "136"
-                                Link.Description = "720p ? (MP4, ?)"
+                            Case "136" 'DASH (video only)
+                                Link.Description = "720p (MP4, H.264)"
                                 Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.HD720p
-                            Case "137"
-                                Link.Description = "1080p ? (MP4, ?)"
+                            Case "137" 'DASH (video only)
+                                Link.Description = "1080p (MP4, H.264)"
                                 Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
+                            Case "139" 'DASH (audio only)
+                                Link.Description = "48 kbit/s (MP4, AAC)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
+                            Case "140" 'DASH (audio only)
+                                Link.Description = "128 kbit/s (MP4, AAC)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
+                            Case "141" 'DASH (audio only)
+                                Link.Description = "256 kbit/s (MP4, AAC)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
+                            Case "160" 'DASH (video only, 15 FPS)
+                                Link.Description = "144p (MP4, H.264, 15 FPS)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.SQ144p
+                            Case "171" 'DASH (audio only)
+                                Link.Description = "128 kbit/s (WebM, Vorbis)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
+                            Case "172" 'DASH (audio only)
+                                Link.Description = "192 kbit/s (WebM, Vorbis)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
+                            Case "242" 'DASH (video only)
+                                Link.Description = "240p (WebM, VP9)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.SQ240p
+                            Case "243" 'DASH (video only)
+                                Link.Description = "360p (WebM, VP9)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.SQ360p
+                            Case "244" 'DASH (video only)
+                                Link.Description = "480p (WebM, VP9)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HQ480p
+                            Case "247" 'DASH (video only)
+                                Link.Description = "720p (WebM, VP9)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HD720p
+                            Case "248" 'DASH (video only)
+                                Link.Description = "1080p (WebM, VP9)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
+                            Case "264" 'DASH (video only)
+                                Link.Description = "1140p (MP4, H.264)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD1440p
+                            Case "266" 'DASH (video only)
+                                Link.Description = "2160p (MP4, H.264)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD2160p
+                            Case "271" 'DASH (video only)
+                                Link.Description = "1140p (WebM, VP9)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HD1440p
+                            Case "272" 'DASH (video only)
+                                Link.Description = "2160p (WebM, VP9)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HD2160p
+                            Case "278" 'DASH (video only)
+                                Link.Description = "144p (WebM, VP9)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.SQ144p
+                            Case "298" 'DASH (video only, 60 FPS)
+                                Link.Description = "720p (MP4, H.264, 60 FPS)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD720p
+                            Case "299" 'DASH (video only, 60 FPS)
+                                Link.Description = "1080p (MP4, H.264, 60 FPS)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
+                            Case "302" 'DASH (video only, 60 FPS)
+                                Link.Description = "720p (WebM, VP9, 60 FPS)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HD720p
+                            Case "303" 'DASH (video only, 60 FPS)
+                                Link.Description = "1080p (WebM, VP9, 60 FPS)"
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
                                 Link.FormatQuality = Enums.TrailerQuality.HD1080p
                             Case Else
                                 Link.Description = "Other"
                                 Link.FormatCodec = Enums.TrailerCodec.OTHERS
                                 Link.FormatQuality = Enums.TrailerQuality.OTHERS
-                                'Continue For
                         End Select
 
                         Link.URL = Web.HttpUtility.UrlDecode(Web.HttpUtility.UrlDecode(yturl)) & "&signature=" & ytsig & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
@@ -303,7 +382,7 @@ Namespace YouTube
                 Html = String.Empty
             End If
 
-            Dim Pattern As String = "<li><div class=""yt-lockup yt-lockup-tile yt-lockup-video.*?<span class=""video-time"">(?<TIME>.*?)</span>.*?<a href=""(?<LINK>.*?)"".*?title=""(?<NAME>.*?)"""
+            Dim Pattern As String = "<li><div class=""yt-lockup yt-lockup-tile yt-lockup-video.*?video-time.*?>(?<TIME>.*?)<.*?<h3 class=""yt-lockup-title""><a href=""(?<LINK>.*?)"".*?title=""(?<NAME>.*?)"""
 
             Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline)
 

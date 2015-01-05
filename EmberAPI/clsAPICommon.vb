@@ -986,13 +986,15 @@ Public Class Enums
     ''' <remarks></remarks>
     Public Enum TrailerQuality As Integer
         All = 0
-        HD1080p = 1
-        HD720p = 2
-        HQ480p = 3
-        SQ360p = 4
-        SQ240p = 5
-        SQ144p = 6
-        OTHERS = 7
+        HD2160p = 1
+        HD1440p = 2
+        HD1080p = 3
+        HD720p = 4
+        HQ480p = 5
+        SQ360p = 6
+        SQ240p = 7
+        SQ144p = 8
+        OTHERS = 9
     End Enum
     ''' <summary>
     ''' Enum represeting valid movie image types
