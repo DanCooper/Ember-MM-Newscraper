@@ -76,7 +76,6 @@ Partial Public Class clsXMLSettings
     Private _movieactorthumbsoverwrite As Boolean
     Private _moviebackdropsauto As Boolean
     Private _moviebackdropspath As String
-    Private _moviebannercol As Boolean
     Private _moviebannerheight As Integer
     Private _moviebanneroverwrite As Boolean
     Private _moviebannerprefonly As Boolean
@@ -84,16 +83,12 @@ Partial Public Class clsXMLSettings
     Private _moviebannerresize As Boolean
     Private _moviebannerwidth As Integer
     Private _moviecleandb As Boolean
-    Private _movieclearartcol As Boolean
     Private _movieclearartoverwrite As Boolean
-    Private _movieclearlogocol As Boolean
     Private _movieclearlogooverwrite As Boolean
     Private _movieclickscrape As Boolean
     Private _movieclickscrapeask As Boolean
-    Private _moviediscartcol As Boolean
     Private _moviediscartoverwrite As Boolean
     Private _moviedisplayyear As Boolean
-    Private _movieefanartscol As Boolean
     Private _movieefanartsheight As Integer
     Private _movieefanartslimit As Integer
     Private _movieefanartsoverwrite As Boolean
@@ -101,7 +96,6 @@ Partial Public Class clsXMLSettings
     Private _movieefanartsprefsize As Enums.FanartSize
     Private _movieefanartsresize As Boolean
     Private _movieefanartswidth As Integer
-    Private _movieethumbscol As Boolean
     Private _movieethumbsheight As Integer
     Private _movieethumbslimit As Integer
     Private _movieethumbsoverwrite As Boolean
@@ -109,7 +103,6 @@ Partial Public Class clsXMLSettings
     Private _movieethumbsprefsize As Enums.FanartSize
     Private _movieethumbsresize As Boolean
     Private _movieethumbswidth As Integer
-    Private _moviefanartcol As Boolean
     Private _moviefanartheight As Integer
     Private _moviefanartoverwrite As Boolean
     Private _moviefanartprefonly As Boolean
@@ -131,7 +124,6 @@ Partial Public Class clsXMLSettings
     Private _moviegeneralmarknew As Boolean
     Private _moviegeneralmedialistsorting As List(Of ListSorting)
     Private _movieimdburl As String
-    Private _movielandscapecol As Boolean
     Private _movielandscapeoverwrite As Boolean
     Private _movielevtolerance As Integer
     Private _movielockactors As Boolean
@@ -173,10 +165,7 @@ Partial Public Class clsXMLSettings
     Private _moviemissingsubs As Boolean
     Private _moviemissingtheme As Boolean
     Private _moviemissingtrailer As Boolean
-    Private _moviemoviesetcol As Boolean
-    Private _movienfocol As Boolean
     Private _movienosaveimagestonfo As Boolean
-    Private _moviepostercol As Boolean
     Private _movieposterheight As Integer
     Private _movieposteroverwrite As Boolean
     Private _movieposterprefonly As Boolean
@@ -284,18 +273,14 @@ Partial Public Class clsXMLSettings
     Private _moviesetsorttokens As List(Of String)
     Private _moviesorttokensisempty As Boolean
     Private _moviesetsorttokensisempty As Boolean
-    Private _moviesubcol As Boolean
-    Private _moviethemecol As Boolean
     Private _moviethemeenable As Boolean
     Private _moviethemeoverwrite As Boolean
-    Private _movietrailercol As Boolean
     Private _movietrailerdefaultsearch As String
     Private _movietrailerdeleteexisting As Boolean
     Private _movietrailerenable As Boolean
     Private _movietraileroverwrite As Boolean
     Private _movietrailerminqual As Enums.TrailerQuality
     Private _movietrailerprefqual As Enums.TrailerQuality
-    Private _moviewatchedcol As Boolean
     Private _ommdummyformat As Integer
     Private _ommdummytagline As String
     Private _ommdummytop As String
@@ -2417,114 +2402,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieBannerCol() As Boolean
-        Get
-            Return Me._moviebannercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviebannercol = value
-        End Set
-    End Property
-
-    Public Property MovieClearArtCol() As Boolean
-        Get
-            Return Me._movieclearartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movieclearartcol = value
-        End Set
-    End Property
-
-    Public Property MovieMoviesetCol() As Boolean
-        Get
-            Return Me._moviemoviesetcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviemoviesetcol = value
-        End Set
-    End Property
-
-    Public Property MovieClearLogoCol() As Boolean
-        Get
-            Return Me._movieclearlogocol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movieclearlogocol = value
-        End Set
-    End Property
-
-    Public Property MovieDiscArtCol() As Boolean
-        Get
-            Return Me._moviediscartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviediscartcol = value
-        End Set
-    End Property
-
-    Public Property MovieEFanartsCol() As Boolean
-        Get
-            Return Me._movieefanartscol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movieefanartscol = value
-        End Set
-    End Property
-
-    Public Property MovieEThumbsCol() As Boolean
-        Get
-            Return Me._movieethumbscol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movieethumbscol = value
-        End Set
-    End Property
-
-    Public Property MovieFanartCol() As Boolean
-        Get
-            Return Me._moviefanartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviefanartcol = value
-        End Set
-    End Property
-
-    Public Property MovieLandscapeCol() As Boolean
-        Get
-            Return Me._movielandscapecol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movielandscapecol = value
-        End Set
-    End Property
-
-    Public Property MovieNFOCol() As Boolean
-        Get
-            Return Me._movienfocol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienfocol = value
-        End Set
-    End Property
-
-    Public Property MoviePosterCol() As Boolean
-        Get
-            Return Me._moviepostercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviepostercol = value
-        End Set
-    End Property
-
-    Public Property MovieSubCol() As Boolean
-        Get
-            Return Me._moviesubcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesubcol = value
-        End Set
-    End Property
-
     Public Property MovieSetBannerCol() As Boolean
         Get
             Return Me._moviesetbannercol
@@ -2822,39 +2699,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieThemeCol() As Boolean
-        Get
-            Return Me._moviethemecol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviethemecol = value
-        End Set
-    End Property
-
-    Public Property MovieTrailerCol() As Boolean
-        Get
-            Return Me._movietrailercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movietrailercol = value
-        End Set
-    End Property
-
     Public Property MovieTrailerDefaultSearch() As String
         Get
             Return Me._movietrailerdefaultsearch
         End Get
         Set(ByVal value As String)
             Me._movietrailerdefaultsearch = value
-        End Set
-    End Property
-
-    Public Property MovieWatchedCol() As Boolean
-        Get
-            Return Me._moviewatchedcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviewatchedcol = value
         End Set
     End Property
 

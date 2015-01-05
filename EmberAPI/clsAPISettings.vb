@@ -74,7 +74,6 @@ Public Class Settings
         End Set
     End Property
 
-
     Public Property MovieActorThumbsOverwrite() As Boolean
         Get
             Return Settings._XMLSettings.MovieActorThumbsOverwrite
@@ -1604,114 +1603,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieBannerCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieBannerCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieBannerCol = value
-        End Set
-    End Property
-
-    Public Property MovieClearArtCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieClearArtCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieClearArtCol = value
-        End Set
-    End Property
-
-    Public Property MovieMoviesetCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieMoviesetCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieMoviesetCol = value
-        End Set
-    End Property
-
-    Public Property MovieClearLogoCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieClearLogoCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieClearLogoCol = value
-        End Set
-    End Property
-
-    Public Property MovieDiscArtCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieDiscArtCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieDiscArtCol = value
-        End Set
-    End Property
-
-    Public Property MovieEFanartsCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieEFanartsCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieEFanartsCol = value
-        End Set
-    End Property
-
-    Public Property MovieEThumbsCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieEThumbsCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieEThumbsCol = value
-        End Set
-    End Property
-
-    Public Property MovieFanartCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieFanartCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieFanartCol = value
-        End Set
-    End Property
-
-    Public Property MovieLandscapeCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieLandscapeCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLandscapeCol = value
-        End Set
-    End Property
-
-    Public Property MovieNFOCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieNFOCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieNFOCol = value
-        End Set
-    End Property
-
-    Public Property MoviePosterCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MoviePosterCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MoviePosterCol = value
-        End Set
-    End Property
-
-    Public Property MovieSubCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSubCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSubCol = value
-        End Set
-    End Property
-
     Public Property MovieSetBannerCol() As Boolean
         Get
             Return Settings._XMLSettings.MovieSetBannerCol
@@ -2009,39 +1900,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieThemeCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieThemeCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieThemeCol = value
-        End Set
-    End Property
-
-    Public Property MovieTrailerCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieTrailerCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieTrailerCol = value
-        End Set
-    End Property
-
     Public Property MovieTrailerDefaultSearch() As String
         Get
             Return Settings._XMLSettings.MovieTrailerDefaultSearch
         End Get
         Set(ByVal value As String)
             Settings._XMLSettings.MovieTrailerDefaultSearch = value
-        End Set
-    End Property
-
-    Public Property MovieWatchedCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieWatchedCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieWatchedCol = value
         End Set
     End Property
 
@@ -6120,21 +5984,22 @@ Public Class Settings
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieListSorting) AndAlso (Force OrElse Master.eSettings.MovieGeneralMediaListSorting.Count <= 0) Then
             Master.eSettings.MovieGeneralMediaListSorting.Clear()
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Missing = False, .Column = "ListTitle", .Label = "Title"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Missing = False, .Column = "HasNfo", .Label = "NFO"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = False, .Missing = False, .Column = "HasBanner", .Label = "Banner"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Missing = False, .Column = "HasClearArt", .Label = "ClearArt"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Missing = False, .Column = "HasClearLogo", .Label = "ClearLogo"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Missing = False, .Column = "HasDiscArt", .Label = "DiscArt"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Missing = False, .Column = "HasEFanarts", .Label = "Extrafanarts"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Missing = False, .Column = "HasEThumbs", .Label = "Extrathumbs"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Missing = False, .Column = "HasFanart", .Label = "Fanart"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Missing = False, .Column = "HasLandscape", .Label = "Landscape"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Missing = False, .Column = "HasPoster", .Label = "Poster"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Missing = False, .Column = "HasSub", .Label = "Subtitles"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Missing = False, .Column = "HasTheme", .Label = "Theme"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Missing = False, .Column = "HasTrailer", .Label = "Trailer"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Missing = False, .Column = "HasSet", .Label = "Part of a MovieSet"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Missing = False, .Column = "HasWatched", .Label = "Watched"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Missing = False, .Column = "Year", .Label = "Year"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = False, .Missing = False, .Column = "HasNfo", .Label = "NFO"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Missing = False, .Column = "HasBanner", .Label = "Banner"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Missing = False, .Column = "HasClearArt", .Label = "ClearArt"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Missing = False, .Column = "HasClearLogo", .Label = "ClearLogo"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Missing = False, .Column = "HasDiscArt", .Label = "DiscArt"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Missing = False, .Column = "HasEFanarts", .Label = "Extrafanarts"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Missing = False, .Column = "HasEThumbs", .Label = "Extrathumbs"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Missing = False, .Column = "HasFanart", .Label = "Fanart"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Missing = False, .Column = "HasLandscape", .Label = "Landscape"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Missing = False, .Column = "HasPoster", .Label = "Poster"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Missing = False, .Column = "HasSub", .Label = "Subtitles"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Missing = False, .Column = "HasTheme", .Label = "Theme"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Missing = False, .Column = "HasTrailer", .Label = "Trailer"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Missing = False, .Column = "HasSet", .Label = "Part of a MovieSet"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 16, .Hide = False, .Missing = False, .Column = "HasWatched", .Label = "Watched"})
         End If
     End Sub
 

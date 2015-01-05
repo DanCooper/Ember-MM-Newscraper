@@ -1424,6 +1424,7 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
+        Me.colMovieGeneralMediaListSortingHide = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.gbGeneralMiscOpts.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
@@ -4873,7 +4874,7 @@ Partial Class dlgSettings
         Me.pnlMovieGeneral.AutoSize = true
         Me.pnlMovieGeneral.BackColor = System.Drawing.Color.White
         Me.pnlMovieGeneral.Controls.Add(Me.tblMovieGeneral)
-        Me.pnlMovieGeneral.Location = New System.Drawing.Point(900, 900)
+        Me.pnlMovieGeneral.Location = New System.Drawing.Point(0, 0)
         Me.pnlMovieGeneral.Name = "pnlMovieGeneral"
         Me.pnlMovieGeneral.Size = New System.Drawing.Size(693, 622)
         Me.pnlMovieGeneral.TabIndex = 15
@@ -5353,7 +5354,7 @@ Partial Class dlgSettings
         '
         'lvMovieGeneralMediaListSorting
         '
-        Me.lvMovieGeneralMediaListSorting.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colMovieGeneralMediaListSortingDisplayIndex, Me.colMovieGeneralMediaListSortingName, Me.colMovieGeneralMediaListSortingColumn})
+        Me.lvMovieGeneralMediaListSorting.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colMovieGeneralMediaListSortingDisplayIndex, Me.colMovieGeneralMediaListSortingName, Me.colMovieGeneralMediaListSortingColumn, Me.colMovieGeneralMediaListSortingHide})
         Me.tblMovieGeneralMediaListSorting.SetColumnSpan(Me.lvMovieGeneralMediaListSorting, 5)
         Me.lvMovieGeneralMediaListSorting.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvMovieGeneralMediaListSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
@@ -5379,7 +5380,7 @@ Partial Class dlgSettings
         'colMovieGeneralMediaListSortingColumn
         '
         Me.colMovieGeneralMediaListSortingColumn.Text = "Column"
-        Me.colMovieGeneralMediaListSortingColumn.Width = 190
+        Me.colMovieGeneralMediaListSortingColumn.Width = 150
         '
         'btnMovieGeneralMediaListSortingReset
         '
@@ -19851,6 +19852,10 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1097, 74)
         Me.tblSettingsFooter.TabIndex = 0
         '
+        'colMovieGeneralMediaListSortingHide
+        '
+        Me.colMovieGeneralMediaListSortingHide.Text = "Hide"
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -21926,4 +21931,5 @@ End Sub
     Friend WithEvents tblMovieGeneralMediaListSorting As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents btnMovieGeneralMediaListSortingUp As System.Windows.Forms.Button
     Friend WithEvents chkGeneralShowLangFlags As System.Windows.Forms.CheckBox
+    Friend WithEvents colMovieGeneralMediaListSortingHide As System.Windows.Forms.ColumnHeader
 End Class

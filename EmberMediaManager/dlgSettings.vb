@@ -3388,7 +3388,6 @@ Public Class dlgSettings
                 Me.chkGeneralSourceFromFolder.Checked = .GeneralSourceFromFolder
                 Me.chkMovieActorThumbsOverwrite.Checked = .MovieActorThumbsOverwrite
                 Me.chkMovieSourcesBackdropsAuto.Checked = .MovieBackdropsAuto
-                Me.chkMovieBannerCol.Checked = .MovieBannerCol
                 Me.chkMovieBannerOverwrite.Checked = .MovieBannerOverwrite
                 Me.chkMovieBannerPrefOnly.Checked = .MovieBannerPrefOnly
                 Me.chkMovieBannerResize.Checked = .MovieBannerResize
@@ -3397,16 +3396,12 @@ Public Class dlgSettings
                     Me.txtMovieBannerWidth.Text = .MovieBannerWidth.ToString
                 End If
                 Me.chkMovieCleanDB.Checked = .MovieCleanDB
-                Me.chkMovieClearArtCol.Checked = .MovieClearArtCol
                 Me.chkMovieClearArtOverwrite.Checked = .MovieClearArtOverwrite
-                Me.chkMovieClearLogoCol.Checked = .MovieClearLogoCol
                 Me.chkMovieClearLogoOverwrite.Checked = .MovieClearLogoOverwrite
                 Me.chkMovieClickScrape.Checked = .MovieClickScrape
                 Me.chkMovieClickScrapeAsk.Checked = .MovieClickScrapeAsk
-                Me.chkMovieDiscArtCol.Checked = .MovieDiscArtCol
                 Me.chkMovieDiscArtOverwrite.Checked = .MovieDiscArtOverwrite
                 Me.chkMovieDisplayYear.Checked = .MovieDisplayYear
-                Me.chkMovieEFanartsCol.Checked = .MovieEFanartsCol
                 Me.chkMovieEFanartsOverwrite.Checked = .MovieEFanartsOverwrite
                 Me.chkMovieEFanartsPrefOnly.Checked = .MovieEFanartsPrefOnly
                 Me.chkMovieEFanartsResize.Checked = .MovieEFanartsResize
@@ -3414,7 +3409,6 @@ Public Class dlgSettings
                     Me.txtMovieEFanartsHeight.Text = .MovieEFanartsHeight.ToString
                     Me.txtMovieEFanartsWidth.Text = .MovieEFanartsWidth.ToString
                 End If
-                Me.chkMovieEThumbsCol.Checked = .MovieEThumbsCol
                 Me.chkMovieEThumbsOverwrite.Checked = .MovieEThumbsOverwrite
                 Me.chkMovieEThumbsPrefOnly.Checked = .MovieEThumbsPrefOnly
                 Me.chkMovieEThumbsResize.Checked = .MovieEThumbsResize
@@ -3422,7 +3416,6 @@ Public Class dlgSettings
                     Me.txtMovieEThumbsHeight.Text = .MovieEThumbsHeight.ToString
                     Me.txtMovieEThumbsWidth.Text = .MovieEThumbsWidth.ToString
                 End If
-                Me.chkMovieFanartCol.Checked = .MovieFanartCol
                 Me.chkMovieFanartOverwrite.Checked = .MovieFanartOverwrite
                 Me.chkMovieFanartPrefOnly.Checked = .MovieFanartPrefOnly
                 Me.chkMovieFanartResize.Checked = .MovieFanartResize
@@ -3432,8 +3425,6 @@ Public Class dlgSettings
                 End If
                 Me.chkMovieGeneralIgnoreLastScan.Checked = .MovieGeneralIgnoreLastScan
                 Me.chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
-                Me.chkMovieNFOCol.Checked = .MovieNFOCol
-                Me.chkMovieLandscapeCol.Checked = .MovieLandscapeCol
                 Me.chkMovieLandscapeOverwrite.Checked = .MovieLandscapeOverwrite
                 Me.chkMovieLockActors.Checked = .MovieLockActors
                 Me.chkMovieLockCountry.Checked = .MovieLockCountry
@@ -3473,9 +3464,7 @@ Public Class dlgSettings
                 Me.chkMovieMissingSubs.Checked = .MovieMissingSubs
                 Me.chkMovieMissingTheme.Checked = .MovieMissingTheme
                 Me.chkMovieMissingTrailer.Checked = .MovieMissingTrailer
-                Me.chkMovieMoviesetCol.Checked = .MovieMoviesetCol
                 Me.chkMovieNoSaveImagesToNfo.Checked = .MovieNoSaveImagesToNfo
-                Me.chkMoviePosterCol.Checked = .MoviePosterCol
                 Me.chkMoviePosterOverwrite.Checked = .MoviePosterOverwrite
                 Me.chkMoviePosterPrefOnly.Checked = .MoviePosterPrefOnly
                 Me.chkMoviePosterResize.Checked = .MoviePosterResize
@@ -3574,15 +3563,11 @@ Public Class dlgSettings
                 Me.chkMovieScraperYear.Checked = .MovieScraperYear
                 Me.chkMovieSkipStackedSizeCheck.Checked = .MovieSkipStackedSizeCheck
                 Me.chkMovieSortBeforeScan.Checked = .MovieSortBeforeScan
-                Me.chkMovieSubCol.Checked = .MovieSubCol
-                Me.chkMovieThemeCol.Checked = .MovieThemeCol
                 Me.chkMovieThemeEnable.Checked = .MovieThemeEnable
                 Me.chkMovieThemeOverwrite.Checked = .MovieThemeOverwrite
-                Me.chkMovieTrailerCol.Checked = .MovieTrailerCol
                 Me.chkMovieTrailerDeleteExisting.Checked = .MovieTrailerDeleteExisting
                 Me.chkMovieTrailerEnable.Checked = .MovieTrailerEnable
                 Me.chkMovieTrailerOverwrite.Checked = .MovieTrailerOverwrite
-                Me.chkMovieWatchedCol.Checked = .MovieWatchedCol
                 Me.chkTVASBannerOverwrite.Checked = .TVASBannerOverwrite
                 Me.chkTVASBannerResize.Checked = .TVASBannerResize
                 If .TVASBannerResize Then
@@ -4270,6 +4255,7 @@ Public Class dlgSettings
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)
             lvItem.SubItems.Add(rColumn.Label)
+            lvItem.SubItems.Add(If(rColumn.Hide, "Yes", "No"))
             Me.lvMovieGeneralMediaListSorting.Items.Add(lvItem)
         Next
     End Sub
@@ -5012,7 +4998,6 @@ Public Class dlgSettings
                 Else
                     .MovieBackdropsAuto = False
                 End If
-                .MovieBannerCol = Me.chkMovieBannerCol.Checked
                 .MovieBannerHeight = If(Not String.IsNullOrEmpty(Me.txtMovieBannerHeight.Text), Convert.ToInt32(Me.txtMovieBannerHeight.Text), 0)
                 .MovieBannerOverwrite = Me.chkMovieBannerOverwrite.Checked
                 .MovieBannerPrefOnly = Me.chkMovieBannerPrefOnly.Checked
@@ -5020,16 +5005,12 @@ Public Class dlgSettings
                 .MovieBannerResize = Me.chkMovieBannerResize.Checked
                 .MovieBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieBannerWidth.Text), Convert.ToInt32(Me.txtMovieBannerWidth.Text), 0)
                 .MovieCleanDB = Me.chkMovieCleanDB.Checked
-                .MovieClearArtCol = Me.chkMovieClearArtCol.Checked
                 .MovieClearArtOverwrite = Me.chkMovieClearArtOverwrite.Checked
-                .MovieClearLogoCol = Me.chkMovieClearLogoCol.Checked
                 .MovieClearLogoOverwrite = Me.chkMovieClearLogoOverwrite.Checked
                 .MovieClickScrape = Me.chkMovieClickScrape.Checked
                 .MovieClickScrapeAsk = Me.chkMovieClickScrapeAsk.Checked
-                .MovieDiscArtCol = Me.chkMovieDiscArtCol.Checked
                 .MovieDiscArtOverwrite = Me.chkMovieDiscArtOverwrite.Checked
                 .MovieDisplayYear = Me.chkMovieDisplayYear.Checked
-                .MovieEFanartsCol = Me.chkMovieEFanartsCol.Checked
                 .MovieEFanartsHeight = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsHeight.Text), Convert.ToInt32(Me.txtMovieEFanartsHeight.Text), 0)
                 .MovieEFanartsLimit = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsLimit.Text), Convert.ToInt32(Me.txtMovieEFanartsLimit.Text), 0)
                 .MovieEFanartsOverwrite = Me.chkMovieEFanartsOverwrite.Checked
@@ -5037,7 +5018,6 @@ Public Class dlgSettings
                 .MovieEFanartsPrefSize = DirectCast(Me.cbMovieEFanartsPrefSize.SelectedIndex, Enums.FanartSize)
                 .MovieEFanartsResize = Me.chkMovieEFanartsResize.Checked
                 .MovieEFanartsWidth = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsWidth.Text), Convert.ToInt32(Me.txtMovieEFanartsWidth.Text), 0)
-                .MovieEThumbsCol = Me.chkMovieEThumbsCol.Checked
                 .MovieEThumbsHeight = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsHeight.Text), Convert.ToInt32(Me.txtMovieEThumbsHeight.Text), 0)
                 .MovieEThumbsLimit = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsLimit.Text), Convert.ToInt32(Me.txtMovieEThumbsLimit.Text), 0)
                 .MovieEThumbsOverwrite = Me.chkMovieEThumbsOverwrite.Checked
@@ -5045,7 +5025,6 @@ Public Class dlgSettings
                 .MovieEThumbsPrefSize = DirectCast(Me.cbMovieEThumbsPrefSize.SelectedIndex, Enums.FanartSize)
                 .MovieEThumbsResize = Me.chkMovieEThumbsResize.Checked
                 .MovieEThumbsWidth = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsWidth.Text), Convert.ToInt32(Me.txtMovieEThumbsWidth.Text), 0)
-                .MovieFanartCol = Me.chkMovieFanartCol.Checked
                 .MovieFanartHeight = If(Not String.IsNullOrEmpty(Me.txtMovieFanartHeight.Text), Convert.ToInt32(Me.txtMovieFanartHeight.Text), 0)
                 .MovieFanartOverwrite = Me.chkMovieFanartOverwrite.Checked
                 .MovieFanartPrefOnly = Me.chkMovieFanartPrefOnly.Checked
@@ -5073,8 +5052,6 @@ Public Class dlgSettings
                 Else
                     .MovieIMDBURL = "akas.imdb.com"
                 End If
-                .MovieNFOCol = Me.chkMovieNFOCol.Checked
-                .MovieLandscapeCol = Me.chkMovieLandscapeCol.Checked
                 .MovieLandscapeOverwrite = Me.chkMovieLandscapeOverwrite.Checked
                 .MovieLevTolerance = If(Not String.IsNullOrEmpty(Me.txtMovieLevTolerance.Text), Convert.ToInt32(Me.txtMovieLevTolerance.Text), 0)
                 .MovieLockActors = Me.chkMovieLockActors.Checked
@@ -5117,9 +5094,7 @@ Public Class dlgSettings
                 .MovieMissingSubs = Me.chkMovieMissingSubs.Checked
                 .MovieMissingTheme = Me.chkMovieMissingTheme.Checked
                 .MovieMissingTrailer = Me.chkMovieMissingTrailer.Checked
-                .MovieMoviesetCol = Me.chkMovieMoviesetCol.Checked
                 .MovieNoSaveImagesToNfo = Me.chkMovieNoSaveImagesToNfo.Checked
-                .MoviePosterCol = Me.chkMoviePosterCol.Checked
                 .MoviePosterHeight = If(Not String.IsNullOrEmpty(Me.txtMoviePosterHeight.Text), Convert.ToInt32(Me.txtMoviePosterHeight.Text), 0)
                 .MoviePosterOverwrite = Me.chkMoviePosterOverwrite.Checked
                 .MoviePosterPrefOnly = Me.chkMoviePosterPrefOnly.Checked
@@ -5249,18 +5224,14 @@ Public Class dlgSettings
                 .MovieSetSortTokens.Clear()
                 .MovieSetSortTokens.AddRange(lstMovieSetSortTokens.Items.OfType(Of String).ToList)
                 If .MovieSetSortTokens.Count <= 0 Then .MovieSetSortTokensIsEmpty = True
-                .MovieSubCol = Me.chkMovieSubCol.Checked
-                .MovieThemeCol = Me.chkMovieThemeCol.Checked
                 .MovieThemeEnable = Me.chkMovieThemeEnable.Checked
                 .MovieThemeOverwrite = Me.chkMovieThemeOverwrite.Checked
-                .MovieTrailerCol = Me.chkMovieTrailerCol.Checked
                 .MovieTrailerDefaultSearch = Me.txtMovieTrailerDefaultSearch.Text
                 .MovieTrailerDeleteExisting = Me.chkMovieTrailerDeleteExisting.Checked
                 .MovieTrailerEnable = Me.chkMovieTrailerEnable.Checked
                 .MovieTrailerOverwrite = Me.chkMovieTrailerOverwrite.Checked
                 .MovieTrailerMinQual = DirectCast(Me.cbMovieTrailerMinQual.SelectedIndex, Enums.TrailerQuality)
                 .MovieTrailerPrefQual = DirectCast(Me.cbMovieTrailerPrefQual.SelectedIndex, Enums.TrailerQuality)
-                .MovieWatchedCol = Me.chkMovieWatchedCol.Checked
                 .TVASBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVASBannerHeight.Text), Convert.ToInt32(Me.txtTVASBannerHeight.Text), 0)
                 .TVASBannerOverwrite = Me.chkTVASBannerOverwrite.Checked
                 .TVASBannerPrefType = DirectCast(Me.cbTVASBannerPrefType.SelectedIndex, Enums.TVShowBannerType)
