@@ -57,7 +57,7 @@ Public Class dlgTrailerSelect
 
 #Region "Methods"
 
-    Private Sub dlgTrailerSelect_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
+    Private Sub dlgTrailerSelect_FormClosing(sender As Object, e As System.EventArgs) Handles Me.FormClosing
         RemoveHandler Trailers.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
@@ -423,7 +423,6 @@ Public Class dlgTrailerSelect
                 Me.btnTrailerStop.Enabled = False
             End If
         End If
-        RemoveHandler Trailers.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
