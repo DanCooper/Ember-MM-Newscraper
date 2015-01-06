@@ -508,33 +508,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVEpisodeFanartCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVEpisodeFanartCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVEpisodeFanartCol = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeNfoCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVEpisodeNfoCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVEpisodeNfoCol = value
-        End Set
-    End Property
-
-    Public Property TVEpisodePosterCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVEpisodePosterCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVEpisodePosterCol = value
-        End Set
-    End Property
-
     Public Property TVLockEpisodePlot() As Boolean
         Get
             Return Settings._XMLSettings.TVLockEpisodePlot
@@ -604,15 +577,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVEpisodeProperCase = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeWatchedCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVEpisodeWatchedCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVEpisodeWatchedCol = value
         End Set
     End Property
 
@@ -1603,15 +1567,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetBannerCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetBannerCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetBannerCol = value
-        End Set
-    End Property
-
     Public Property MovieSetBannerPrefOnly() As Boolean
         Get
             Return Settings._XMLSettings.MovieSetBannerPrefOnly
@@ -1627,24 +1582,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieSetBannerResize = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearArtCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetClearArtCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetClearArtCol = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearLogoCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetClearLogoCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetClearLogoCol = value
         End Set
     End Property
 
@@ -1666,24 +1603,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetDiscArtCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetDiscArtCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetDiscArtCol = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetFanartCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetFanartCol = value
-        End Set
-    End Property
-
     Public Property MovieSetFanartPrefOnly() As Boolean
         Get
             Return Settings._XMLSettings.MovieSetFanartPrefOnly
@@ -1702,15 +1621,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetLandscapeCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetLandscapeCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetLandscapeCol = value
-        End Set
-    End Property
-
     Public Property MovieSetLockPlot() As Boolean
         Get
             Return Settings._XMLSettings.MovieSetLockPlot
@@ -1726,24 +1636,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieSetLockTitle = value
-        End Set
-    End Property
-
-    Public Property MovieSetNfoCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetNfoCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetNfoCol = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterCol() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetPosterCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetPosterCol = value
         End Set
     End Property
 
@@ -2293,15 +2185,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVShowClearLogoOverwrite = value
-        End Set
-    End Property
-
-    Public Property TVSeasonLandscapeCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVSeasonLandscapeCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonLandscapeCol = value
         End Set
     End Property
 
@@ -3213,15 +3096,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVSeasonFanartCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVSeasonFanartCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonFanartCol = value
-        End Set
-    End Property
-
     Public Property TVSeasonFanartHeight() As Integer
         Get
             Return Settings._XMLSettings.TVSeasonFanartHeight
@@ -3237,15 +3111,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.TVSeasonFanartWidth = value
-        End Set
-    End Property
-
-    Public Property TVSeasonBannerCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVSeasonBannerCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonBannerCol = value
         End Set
     End Property
 
@@ -3357,15 +3222,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVSeasonPosterCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVSeasonPosterCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonPosterCol = value
-        End Set
-    End Property
-
     Public Property TVSeasonPosterHeight() As Integer
         Get
             Return Settings._XMLSettings.TVSeasonPosterHeight
@@ -3417,15 +3273,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.GeneralShowImgNames = value
-        End Set
-    End Property
-
-    Public Property TVShowFanartCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowFanartCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowFanartCol = value
         End Set
     End Property
 
@@ -3534,87 +3381,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVLockShowVotes = value
-        End Set
-    End Property
-
-    Public Property TVShowBannerCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowBannerCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowBannerCol = value
-        End Set
-    End Property
-
-    Public Property TVShowCharacterArtCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowCharacterArtCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowCharacterArtCol = value
-        End Set
-    End Property
-
-    Public Property TVShowClearArtCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowClearArtCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowClearArtCol = value
-        End Set
-    End Property
-
-    Public Property TVShowClearLogoCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowClearLogoCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowClearLogoCol = value
-        End Set
-    End Property
-
-    Public Property TVShowEFanartsCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowEFanartsCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowEFanartsCol = value
-        End Set
-    End Property
-
-    Public Property TVShowLandscapeCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowLandscapeCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowLandscapeCol = value
-        End Set
-    End Property
-
-    Public Property TVShowThemeCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowThemeCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowThemeCol = value
-        End Set
-    End Property
-
-    Public Property TVShowNfoCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowNfoCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowNfoCol = value
-        End Set
-    End Property
-
-    Public Property TVShowPosterCol() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowPosterCol
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowPosterCol = value
         End Set
     End Property
 
@@ -3849,6 +3615,42 @@ Public Class Settings
         End Get
         Set(ByVal value As List(Of ListSorting))
             Settings._XMLSettings.MovieGeneralMediaListSorting = value
+        End Set
+    End Property
+
+    Public Property MovieSetGeneralMediaListSorting() As List(Of ListSorting)
+        Get
+            Return Settings._XMLSettings.MovieSetGeneralMediaListSorting
+        End Get
+        Set(ByVal value As List(Of ListSorting))
+            Settings._XMLSettings.MovieSetGeneralMediaListSorting = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeGeneralMediaListSorting() As List(Of ListSorting)
+        Get
+            Return Settings._XMLSettings.TVEpisodeGeneralMediaListSorting
+        End Get
+        Set(ByVal value As List(Of ListSorting))
+            Settings._XMLSettings.TVEpisodeGeneralMediaListSorting = value
+        End Set
+    End Property
+
+    Public Property TVSeasonGeneralMediaListSorting() As List(Of ListSorting)
+        Get
+            Return Settings._XMLSettings.TVSeasonGeneralMediaListSorting
+        End Get
+        Set(ByVal value As List(Of ListSorting))
+            Settings._XMLSettings.TVSeasonGeneralMediaListSorting = value
+        End Set
+    End Property
+
+    Public Property TVShowGeneralMediaListSorting() As List(Of ListSorting)
+        Get
+            Return Settings._XMLSettings.TVShowGeneralMediaListSorting
+        End Get
+        Set(ByVal value As List(Of ListSorting))
+            Settings._XMLSettings.TVShowGeneralMediaListSorting = value
         End Set
     End Property
 
@@ -6000,6 +5802,16 @@ Public Class Settings
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Missing = False, .Column = "HasTrailer", .Label = "Trailer"})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Missing = False, .Column = "HasSet", .Label = "Part of a MovieSet"})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 16, .Hide = False, .Missing = False, .Column = "HasWatched", .Label = "Watched"})
+        End If
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeSorting) AndAlso (Force OrElse Master.eSettings.TVEpisodeGeneralMediaListSorting.Count <= 0) Then
+            Master.eSettings.TVEpisodeGeneralMediaListSorting.Clear()
+            Master.eSettings.TVEpisodeGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Missing = False, .Column = "ListTitle", .Label = "Title"})
+            Master.eSettings.TVEpisodeGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Missing = False, .Column = "HasNfo", .Label = "NFO"})
+            Master.eSettings.TVEpisodeGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = False, .Missing = False, .Column = "HasFanart", .Label = "Fanart"})
+            Master.eSettings.TVEpisodeGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Missing = False, .Column = "HasPoster", .Label = "Poster"})
+            Master.eSettings.TVEpisodeGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Missing = False, .Column = "HasSub", .Label = "Subtitles"})
+            Master.eSettings.TVEpisodeGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Missing = False, .Column = "HasWatched", .Label = "Watched"})
         End If
     End Sub
 

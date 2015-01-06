@@ -456,6 +456,31 @@ Public Class frmMain
         End Try
     End Sub
 
+    Private Function CheckColumnHide_Movies(ByVal ColumnName As String) As Boolean
+        Dim lsColumn As Settings.ListSorting = Master.eSettings.MovieGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Return If(lsColumn Is Nothing, False, lsColumn.Hide)
+    End Function
+
+    Private Function CheckColumnHide_MovieSets(ByVal ColumnName As String) As Boolean
+        Dim lsColumn As Settings.ListSorting = Master.eSettings.MovieSetGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Return If(lsColumn Is Nothing, False, lsColumn.Hide)
+    End Function
+
+    Private Function CheckColumnHide_TVEpisodes(ByVal ColumnName As String) As Boolean
+        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVEpisodeGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Return If(lsColumn Is Nothing, False, lsColumn.Hide)
+    End Function
+
+    Private Function CheckColumnHide_TVSeasons(ByVal ColumnName As String) As Boolean
+        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVSeasonGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Return If(lsColumn Is Nothing, False, lsColumn.Hide)
+    End Function
+
+    Private Function CheckColumnHide_TVShows(ByVal ColumnName As String) As Boolean
+        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVShowGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Return If(lsColumn Is Nothing, False, lsColumn.Hide)
+    End Function
+
     Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "")
         Try
             Me.SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
@@ -8659,19 +8684,19 @@ doCancel:
                 .dgvTVEpisodes.Columns(4).Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns(4).ReadOnly = True
                 .dgvTVEpisodes.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns(4).Visible = Not Master.eSettings.TVEpisodePosterCol
+                .dgvTVEpisodes.Columns(4).Visible = Not CheckColumnHide_TVEpisodes(.dgvTVEpisodes.Columns(4).Name)
                 .dgvTVEpisodes.Columns(4).ToolTipText = Master.eLang.GetString(148, "Poster")
                 .dgvTVEpisodes.Columns(5).Width = 20
                 .dgvTVEpisodes.Columns(5).Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns(5).ReadOnly = True
                 .dgvTVEpisodes.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns(5).Visible = Not Master.eSettings.TVEpisodeFanartCol
+                .dgvTVEpisodes.Columns(5).Visible = Not CheckColumnHide_TVEpisodes(.dgvTVEpisodes.Columns(5).Name)
                 .dgvTVEpisodes.Columns(5).ToolTipText = Master.eLang.GetString(149, "Fanart")
                 .dgvTVEpisodes.Columns(6).Width = 20
                 .dgvTVEpisodes.Columns(6).Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns(6).ReadOnly = True
                 .dgvTVEpisodes.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns(6).Visible = Not Master.eSettings.TVEpisodeNfoCol
+                .dgvTVEpisodes.Columns(6).Visible = Not CheckColumnHide_TVEpisodes(.dgvTVEpisodes.Columns(6).Name)
                 .dgvTVEpisodes.Columns(6).ToolTipText = Master.eLang.GetString(150, "Nfo")
                 .dgvTVEpisodes.Columns(7).Visible = False
                 .dgvTVEpisodes.Columns(8).Visible = False
@@ -8708,7 +8733,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(24).Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns(24).ReadOnly = True
                 .dgvTVEpisodes.Columns(24).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns(24).Visible = Not Master.eSettings.TVEpisodeWatchedCol
+                .dgvTVEpisodes.Columns(24).Visible = Not CheckColumnHide_TVEpisodes(.dgvTVEpisodes.Columns(24).Name)
                 .dgvTVEpisodes.Columns(24).ToolTipText = Master.eLang.GetString(981, "Watched")
                 For i As Integer = 25 To .dgvTVEpisodes.Columns.Count - 1
                     .dgvTVEpisodes.Columns(i).Visible = False
@@ -8730,19 +8755,16 @@ doCancel:
                 .dgvTVEpisodes.CurrentCell = Nothing
 
             End With
+
+            If Master.eSettings.TVEpisodeGeneralMediaListSorting.Count > 0 Then
+                For Each mColumn In Master.eSettings.TVEpisodeGeneralMediaListSorting
+                    Me.dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                Next
+            End If
         End If
 
         Me.dgvTVEpisodes.Enabled = True
     End Sub
-
-    Private Function CheckColumnHide_Movies(ByVal ColumnName As String) As Boolean
-        Dim column = Master.eSettings.MovieGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
-        If column IsNot Nothing Then
-            Return column.Hide()
-        Else
-            Return False
-        End If
-    End Function
     ''' <summary>
     ''' Reloads the DB and refresh the lists
     ''' </summary>
@@ -9041,56 +9063,56 @@ doCancel:
                             .dgvMovieSets.Columns(2).Resizable = DataGridViewTriState.False
                             .dgvMovieSets.Columns(2).ReadOnly = True
                             .dgvMovieSets.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvMovieSets.Columns(2).Visible = Not Master.eSettings.MovieSetNfoCol
+                            .dgvMovieSets.Columns(2).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(2).Name)
                             .dgvMovieSets.Columns(2).ToolTipText = Master.eLang.GetString(150, "Nfo")
                             .dgvMovieSets.Columns(3).Visible = False
                             .dgvMovieSets.Columns(4).Width = 20
                             .dgvMovieSets.Columns(4).Resizable = DataGridViewTriState.False
                             .dgvMovieSets.Columns(4).ReadOnly = True
                             .dgvMovieSets.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvMovieSets.Columns(4).Visible = Not Master.eSettings.MovieSetPosterCol
+                            .dgvMovieSets.Columns(4).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(4).Name)
                             .dgvMovieSets.Columns(4).ToolTipText = Master.eLang.GetString(148, "Poster")
                             .dgvMovieSets.Columns(5).Visible = False
                             .dgvMovieSets.Columns(6).Width = 20
                             .dgvMovieSets.Columns(6).Resizable = DataGridViewTriState.False
                             .dgvMovieSets.Columns(6).ReadOnly = True
                             .dgvMovieSets.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvMovieSets.Columns(6).Visible = Not Master.eSettings.MovieSetFanartCol
+                            .dgvMovieSets.Columns(6).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(6).Name)
                             .dgvMovieSets.Columns(6).ToolTipText = Master.eLang.GetString(149, "Fanart")
                             .dgvMovieSets.Columns(7).Visible = False
                             .dgvMovieSets.Columns(8).Width = 20
                             .dgvMovieSets.Columns(8).Resizable = DataGridViewTriState.False
                             .dgvMovieSets.Columns(8).ReadOnly = True
                             .dgvMovieSets.Columns(8).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvMovieSets.Columns(8).Visible = Not Master.eSettings.MovieSetBannerCol
+                            .dgvMovieSets.Columns(8).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(8).Name)
                             .dgvMovieSets.Columns(8).ToolTipText = Master.eLang.GetString(838, "Banner")
                             .dgvMovieSets.Columns(9).Visible = False
                             .dgvMovieSets.Columns(10).Width = 20
                             .dgvMovieSets.Columns(10).Resizable = DataGridViewTriState.False
                             .dgvMovieSets.Columns(10).ReadOnly = True
                             .dgvMovieSets.Columns(10).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvMovieSets.Columns(10).Visible = Not Master.eSettings.MovieSetLandscapeCol
+                            .dgvMovieSets.Columns(10).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(10).Name)
                             .dgvMovieSets.Columns(10).ToolTipText = Master.eLang.GetString(1035, "Landscape")
                             .dgvMovieSets.Columns(11).Visible = False
                             .dgvMovieSets.Columns(12).Width = 20
                             .dgvMovieSets.Columns(12).Resizable = DataGridViewTriState.False
                             .dgvMovieSets.Columns(12).ReadOnly = True
                             .dgvMovieSets.Columns(12).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvMovieSets.Columns(12).Visible = Not Master.eSettings.MovieSetDiscArtCol
+                            .dgvMovieSets.Columns(12).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(12).Name)
                             .dgvMovieSets.Columns(12).ToolTipText = Master.eLang.GetString(1098, "DiscArt")
                             .dgvMovieSets.Columns(13).Visible = False
                             .dgvMovieSets.Columns(14).Width = 20
                             .dgvMovieSets.Columns(14).Resizable = DataGridViewTriState.False
                             .dgvMovieSets.Columns(14).ReadOnly = True
                             .dgvMovieSets.Columns(14).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvMovieSets.Columns(14).Visible = Not Master.eSettings.MovieSetClearLogoCol
+                            .dgvMovieSets.Columns(14).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(14).Name)
                             .dgvMovieSets.Columns(14).ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
                             .dgvMovieSets.Columns(15).Visible = False
                             .dgvMovieSets.Columns(16).Width = 20
                             .dgvMovieSets.Columns(16).Resizable = DataGridViewTriState.False
                             .dgvMovieSets.Columns(16).ReadOnly = True
                             .dgvMovieSets.Columns(16).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvMovieSets.Columns(16).Visible = Not Master.eSettings.MovieSetClearArtCol
+                            .dgvMovieSets.Columns(16).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(16).Name)
                             .dgvMovieSets.Columns(16).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
 
                             For i As Integer = 17 To .dgvMovieSets.Columns.Count - 1
@@ -9107,6 +9129,13 @@ doCancel:
                             End If
 
                         End With
+
+                        If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
+                            For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
+                                Me.dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                            Next
+                        End If
+
                         Me.dgvMovieSets.Enabled = True
                     End If
                 End If
@@ -9129,19 +9158,19 @@ doCancel:
                             .dgvTVShows.Columns(2).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(2).ReadOnly = True
                             .dgvTVShows.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvTVShows.Columns(2).Visible = Not Master.eSettings.TVShowPosterCol
+                            .dgvTVShows.Columns(2).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(2).Name)
                             .dgvTVShows.Columns(2).ToolTipText = Master.eLang.GetString(148, "Poster")
                             .dgvTVShows.Columns(3).Width = 20
                             .dgvTVShows.Columns(3).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(3).ReadOnly = True
                             .dgvTVShows.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvTVShows.Columns(3).Visible = Not Master.eSettings.TVShowFanartCol
+                            .dgvTVShows.Columns(3).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(3).Name)
                             .dgvTVShows.Columns(3).ToolTipText = Master.eLang.GetString(149, "Fanart")
                             .dgvTVShows.Columns(4).Width = 20
                             .dgvTVShows.Columns(4).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(4).ReadOnly = True
                             .dgvTVShows.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvTVShows.Columns(4).Visible = Not Master.eSettings.TVShowNfoCol
+                            .dgvTVShows.Columns(4).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(4).Name)
                             .dgvTVShows.Columns(4).ToolTipText = Master.eLang.GetString(150, "Nfo")
                             .dgvTVShows.Columns(5).Visible = False
                             .dgvTVShows.Columns(6).Visible = False
@@ -9166,14 +9195,14 @@ doCancel:
                             .dgvTVShows.Columns(24).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(24).ReadOnly = True
                             .dgvTVShows.Columns(24).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvTVShows.Columns(24).Visible = Not Master.eSettings.TVShowBannerCol
+                            .dgvTVShows.Columns(24).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(24).Name)
                             .dgvTVShows.Columns(24).ToolTipText = Master.eLang.GetString(838, "Banner")
                             .dgvTVShows.Columns(25).Visible = False
                             .dgvTVShows.Columns(26).Width = 20
                             .dgvTVShows.Columns(26).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(26).ReadOnly = True
                             .dgvTVShows.Columns(26).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvTVShows.Columns(26).Visible = Not Master.eSettings.TVShowLandscapeCol
+                            .dgvTVShows.Columns(26).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(26).Name)
                             .dgvTVShows.Columns(26).ToolTipText = Master.eLang.GetString(1035, "Landscape")
                             .dgvTVShows.Columns(27).Visible = False
                             .dgvTVShows.Columns(28).Visible = False
@@ -9181,35 +9210,35 @@ doCancel:
                             .dgvTVShows.Columns(29).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(29).ReadOnly = True
                             .dgvTVShows.Columns(29).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvTVShows.Columns(29).Visible = Not Master.eSettings.TVShowThemeCol
+                            .dgvTVShows.Columns(29).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(29).Name)
                             .dgvTVShows.Columns(29).ToolTipText = Master.eLang.GetString(1118, "Theme")
                             .dgvTVShows.Columns(30).Visible = False
                             .dgvTVShows.Columns(31).Width = 20
                             .dgvTVShows.Columns(31).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(31).ReadOnly = True
                             .dgvTVShows.Columns(31).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvTVShows.Columns(31).Visible = Not Master.eSettings.TVShowCharacterArtCol
+                            .dgvTVShows.Columns(31).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(31).Name)
                             .dgvTVShows.Columns(31).ToolTipText = Master.eLang.GetString(1140, "CharacterArt")
                             .dgvTVShows.Columns(32).Visible = False
                             .dgvTVShows.Columns(33).Width = 20
                             .dgvTVShows.Columns(33).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(33).ReadOnly = True
                             .dgvTVShows.Columns(33).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvTVShows.Columns(33).Visible = Not Master.eSettings.TVShowClearLogoCol
+                            .dgvTVShows.Columns(33).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(33).Name)
                             .dgvTVShows.Columns(33).ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
                             .dgvTVShows.Columns(34).Visible = False
                             .dgvTVShows.Columns(35).Width = 20
                             .dgvTVShows.Columns(35).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(35).ReadOnly = True
                             .dgvTVShows.Columns(35).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvTVShows.Columns(35).Visible = Not Master.eSettings.TVShowClearArtCol
+                            .dgvTVShows.Columns(35).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(34).Name)
                             .dgvTVShows.Columns(35).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
                             .dgvTVShows.Columns(36).Visible = False
                             .dgvTVShows.Columns(37).Width = 20
                             .dgvTVShows.Columns(37).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(37).ReadOnly = True
                             .dgvTVShows.Columns(37).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvTVShows.Columns(37).Visible = Not Master.eSettings.TVShowEFanartsCol
+                            .dgvTVShows.Columns(37).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(37).Name)
                             .dgvTVShows.Columns(37).ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
 
                             For i As Integer = 38 To .dgvTVShows.Columns.Count - 1
@@ -9225,8 +9254,15 @@ doCancel:
                                 .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
                             End If
                         End With
+
+                        If Master.eSettings.TVShowGeneralMediaListSorting.Count > 0 Then
+                            For Each mColumn In Master.eSettings.TVShowGeneralMediaListSorting
+                                Me.dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                            Next
+                        End If
+
+                        Me.dgvTVShows.Enabled = True
                     End If
-                    Me.dgvTVShows.Enabled = True
                 End If
 
                 If Me.dgvMovies.RowCount > 0 OrElse Me.dgvMovieSets.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0 Then
@@ -10728,13 +10764,13 @@ doCancel:
                 .dgvTVSeasons.Columns(3).Resizable = DataGridViewTriState.False
                 .dgvTVSeasons.Columns(3).ReadOnly = True
                 .dgvTVSeasons.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns(3).Visible = Not Master.eSettings.TVSeasonPosterCol
+                .dgvTVSeasons.Columns(3).Visible = Not CheckColumnHide_TVSeasons(.dgvTVSeasons.Columns(3).Name)
                 .dgvTVSeasons.Columns(3).ToolTipText = Master.eLang.GetString(148, "Poster")
                 .dgvTVSeasons.Columns(4).Width = 20
                 .dgvTVSeasons.Columns(4).Resizable = DataGridViewTriState.False
                 .dgvTVSeasons.Columns(4).ReadOnly = True
                 .dgvTVSeasons.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns(4).Visible = Not Master.eSettings.TVSeasonFanartCol
+                .dgvTVSeasons.Columns(4).Visible = Not CheckColumnHide_TVSeasons(.dgvTVSeasons.Columns(4).Name)
                 .dgvTVSeasons.Columns(4).ToolTipText = Master.eLang.GetString(149, "Fanart")
                 .dgvTVSeasons.Columns(5).Visible = False
                 .dgvTVSeasons.Columns(6).Visible = False
@@ -10745,14 +10781,14 @@ doCancel:
                 .dgvTVSeasons.Columns(10).Resizable = DataGridViewTriState.False
                 .dgvTVSeasons.Columns(10).ReadOnly = True
                 .dgvTVSeasons.Columns(10).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns(10).Visible = Not Master.eSettings.TVSeasonBannerCol
+                .dgvTVSeasons.Columns(10).Visible = Not CheckColumnHide_TVSeasons(.dgvTVSeasons.Columns(10).Name)
                 .dgvTVSeasons.Columns(10).ToolTipText = Master.eLang.GetString(838, "Banner")
                 .dgvTVSeasons.Columns(11).Visible = False
                 .dgvTVSeasons.Columns(12).Width = 20
                 .dgvTVSeasons.Columns(12).Resizable = DataGridViewTriState.False
                 .dgvTVSeasons.Columns(12).ReadOnly = True
                 .dgvTVSeasons.Columns(12).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns(12).Visible = Not Master.eSettings.TVSeasonLandscapeCol
+                .dgvTVSeasons.Columns(12).Visible = Not CheckColumnHide_TVSeasons(.dgvTVSeasons.Columns(12).Name)
                 .dgvTVSeasons.Columns(12).ToolTipText = Master.eLang.GetString(1035, "Landscape")
                 .dgvTVSeasons.Columns(13).Visible = False
                 For i As Integer = 14 To .dgvTVSeasons.Columns.Count - 1
@@ -10769,6 +10805,12 @@ doCancel:
                 Me.FillEpisodes(ShowID, Convert.ToInt32(.dgvTVSeasons.Item(2, 0).Value))
 
             End With
+
+            If Master.eSettings.TVSeasonGeneralMediaListSorting.Count > 0 Then
+                For Each mColumn In Master.eSettings.TVSeasonGeneralMediaListSorting
+                    Me.dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                Next
+            End If
         End If
 
         Me.dgvTVSeasons.Enabled = True
@@ -15954,14 +15996,14 @@ doCancel:
         If Not Master.isWindows Then
             If Me.dgvMovieSets.ColumnCount > 0 Then
                 Me.dgvMovieSets.Columns(0).Width = Me.dgvMovieSets.Width - _
-                If(Master.eSettings.MovieSetNfoCol, 0, 20) - _
-                If(Master.eSettings.MovieSetPosterCol, 0, 20) - _
-                If(Master.eSettings.MovieSetFanartCol, 0, 20) - _
-                If(Master.eSettings.MovieSetBannerCol, 0, 20) - _
-                If(Master.eSettings.MovieSetLandscapeCol, 0, 20) - _
-                If(Master.eSettings.MovieSetDiscArtCol, 0, 20) - _
-                If(Master.eSettings.MovieSetClearLogoCol, 0, 20) - _
-                If(Master.eSettings.MovieSetClearArtCol, 0, 20) - _
+                If(CheckColumnHide_MovieSets("HasNfo"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("HasPoster"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("HasFanart"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("HasBanner"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("HasLandscape"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("HasDiscArt"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("HasClearLogo"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("HasClearArt"), 20, 0) - _
                 If(Me.dgvMovieSets.DisplayRectangle.Height > Me.dgvMovieSets.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
@@ -15973,24 +16015,37 @@ doCancel:
         If Not Master.isWindows Then
             If (iType = 0 OrElse iType = 1) AndAlso Me.dgvTVShows.ColumnCount > 0 Then
                 Me.dgvTVShows.Columns(1).Width = Me.dgvTVShows.Width - _
-                If(Master.eSettings.TVShowPosterCol, 0, 20) - _
-                If(Master.eSettings.TVShowFanartCol, 0, 20) - _
-                If(Master.eSettings.TVShowNfoCol, 0, 20) - _
+                If(CheckColumnHide_TVShows("HasBanner"), 20, 0) - _
+                If(CheckColumnHide_TVShows("HasCharacterArt"), 20, 0) - _
+                If(CheckColumnHide_TVShows("HasClearArt"), 20, 0) - _
+                If(CheckColumnHide_TVShows("HasClearLogo"), 20, 0) - _
+                If(CheckColumnHide_TVShows("HasEFanarts"), 20, 0) - _
+                If(CheckColumnHide_TVShows("HasFanart"), 20, 0) - _
+                If(CheckColumnHide_TVShows("HasLandscape"), 20, 0) - _
+                If(CheckColumnHide_TVShows("HasNfo"), 20, 0) - _
+                If(CheckColumnHide_TVShows("HasPoster"), 20, 0) - _
+                If(CheckColumnHide_TVShows("HasTheme"), 20, 0) - _
+                If(CheckColumnHide_TVShows("HasWatched"), 20, 0) - _
                 If(Me.dgvTVShows.DisplayRectangle.Height > Me.dgvTVShows.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
             If (iType = 0 OrElse iType = 2) AndAlso Me.dgvTVSeasons.ColumnCount > 0 Then
                 Me.dgvTVSeasons.Columns(1).Width = Me.dgvTVSeasons.Width - _
-                If(Master.eSettings.TVSeasonPosterCol, 0, 20) - _
-                If(Master.eSettings.TVSeasonFanartCol, 0, 20) - _
+                If(CheckColumnHide_TVSeasons("HasBanner"), 20, 0) - _
+                If(CheckColumnHide_TVSeasons("HasFanart"), 20, 0) - _
+                If(CheckColumnHide_TVSeasons("HasLandscape"), 20, 0) - _
+                If(CheckColumnHide_TVSeasons("HasPoster"), 20, 0) - _
+                If(CheckColumnHide_TVSeasons("HasWatched"), 20, 0) - _
                 If(Me.dgvTVSeasons.DisplayRectangle.Height > Me.dgvTVSeasons.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
             If (iType = 0 OrElse iType = 3) AndAlso Me.dgvTVEpisodes.ColumnCount > 0 Then
                 Me.dgvTVEpisodes.Columns(2).Width = Me.dgvTVEpisodes.Width - 40 - _
-                If(Master.eSettings.TVEpisodePosterCol, 0, 20) - _
-                If(Master.eSettings.TVEpisodeFanartCol, 0, 20) - _
-                If(Master.eSettings.TVEpisodeNfoCol, 0, 20) - _
+                If(CheckColumnHide_TVEpisodes("HasFanart"), 20, 0) - _
+                If(CheckColumnHide_TVEpisodes("HasNfo"), 20, 0) - _
+                If(CheckColumnHide_TVEpisodes("HasPoster"), 20, 0) - _
+                If(CheckColumnHide_TVEpisodes("HasSub"), 20, 0) - _
+                If(CheckColumnHide_TVEpisodes("HasWatched"), 20, 0) - _
                 If(Me.dgvTVEpisodes.DisplayRectangle.Height > Me.dgvTVEpisodes.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
@@ -17492,41 +17547,41 @@ doCancel:
             End If
 
             If Me.dgvMovieSets.RowCount > 0 Then
-                Me.dgvMovieSets.Columns(2).Visible = Not Master.eSettings.MovieSetNfoCol
-                Me.dgvMovieSets.Columns(4).Visible = Not Master.eSettings.MovieSetPosterCol
-                Me.dgvMovieSets.Columns(6).Visible = Not Master.eSettings.MovieSetFanartCol
-                Me.dgvMovieSets.Columns(8).Visible = Not Master.eSettings.MovieSetBannerCol
-                Me.dgvMovieSets.Columns(10).Visible = Not Master.eSettings.MovieSetLandscapeCol
-                Me.dgvMovieSets.Columns(12).Visible = Not Master.eSettings.MovieSetDiscArtCol
-                Me.dgvMovieSets.Columns(14).Visible = Not Master.eSettings.MovieSetClearLogoCol
-                Me.dgvMovieSets.Columns(16).Visible = Not Master.eSettings.MovieSetClearArtCol
+                Me.dgvMovieSets.Columns(2).Visible = Not CheckColumnHide_MovieSets(Me.dgvMovieSets.Columns(2).Name)
+                Me.dgvMovieSets.Columns(4).Visible = Not CheckColumnHide_MovieSets(Me.dgvMovieSets.Columns(4).Name)
+                Me.dgvMovieSets.Columns(6).Visible = Not CheckColumnHide_MovieSets(Me.dgvMovieSets.Columns(6).Name)
+                Me.dgvMovieSets.Columns(8).Visible = Not CheckColumnHide_MovieSets(Me.dgvMovieSets.Columns(8).Name)
+                Me.dgvMovieSets.Columns(10).Visible = Not CheckColumnHide_MovieSets(Me.dgvMovieSets.Columns(10).Name)
+                Me.dgvMovieSets.Columns(12).Visible = Not CheckColumnHide_MovieSets(Me.dgvMovieSets.Columns(12).Name)
+                Me.dgvMovieSets.Columns(14).Visible = Not CheckColumnHide_MovieSets(Me.dgvMovieSets.Columns(14).Name)
+                Me.dgvMovieSets.Columns(16).Visible = Not CheckColumnHide_MovieSets(Me.dgvMovieSets.Columns(16).Name)
             End If
 
             If Me.dgvTVShows.RowCount > 0 Then
-                Me.dgvTVShows.Columns(2).Visible = Not Master.eSettings.TVShowPosterCol
-                Me.dgvTVShows.Columns(3).Visible = Not Master.eSettings.TVShowFanartCol
-                Me.dgvTVShows.Columns(4).Visible = Not Master.eSettings.TVShowNfoCol
-                Me.dgvTVShows.Columns(24).Visible = Not Master.eSettings.TVShowBannerCol
-                Me.dgvTVShows.Columns(26).Visible = Not Master.eSettings.TVShowLandscapeCol
-                Me.dgvTVShows.Columns(29).Visible = Not Master.eSettings.TVShowThemeCol
-                Me.dgvTVShows.Columns(31).Visible = Not Master.eSettings.TVShowCharacterArtCol
-                Me.dgvTVShows.Columns(33).Visible = Not Master.eSettings.TVShowClearLogoCol
-                Me.dgvTVShows.Columns(35).Visible = Not Master.eSettings.TVShowClearArtCol
-                Me.dgvTVShows.Columns(37).Visible = Not Master.eSettings.TVShowEFanartsCol
+                Me.dgvTVShows.Columns(2).Visible = Not CheckColumnHide_TVShows(Me.dgvTVShows.Columns(2).Name)
+                Me.dgvTVShows.Columns(3).Visible = Not CheckColumnHide_TVShows(Me.dgvTVShows.Columns(3).Name)
+                Me.dgvTVShows.Columns(4).Visible = Not CheckColumnHide_TVShows(Me.dgvTVShows.Columns(4).Name)
+                Me.dgvTVShows.Columns(24).Visible = Not CheckColumnHide_TVShows(Me.dgvTVShows.Columns(24).Name)
+                Me.dgvTVShows.Columns(26).Visible = Not CheckColumnHide_TVShows(Me.dgvTVShows.Columns(26).Name)
+                Me.dgvTVShows.Columns(29).Visible = Not CheckColumnHide_TVShows(Me.dgvTVShows.Columns(29).Name)
+                Me.dgvTVShows.Columns(31).Visible = Not CheckColumnHide_TVShows(Me.dgvTVShows.Columns(31).Name)
+                Me.dgvTVShows.Columns(33).Visible = Not CheckColumnHide_TVShows(Me.dgvTVShows.Columns(33).Name)
+                Me.dgvTVShows.Columns(35).Visible = Not CheckColumnHide_TVShows(Me.dgvTVShows.Columns(35).Name)
+                Me.dgvTVShows.Columns(37).Visible = Not CheckColumnHide_TVShows(Me.dgvTVShows.Columns(37).Name)
             End If
 
             If Me.dgvTVSeasons.RowCount > 0 Then
-                Me.dgvTVSeasons.Columns(3).Visible = Not Master.eSettings.TVSeasonPosterCol
-                Me.dgvTVSeasons.Columns(4).Visible = Not Master.eSettings.TVSeasonFanartCol
-                Me.dgvTVSeasons.Columns(10).Visible = Not Master.eSettings.TVSeasonBannerCol
-                Me.dgvTVSeasons.Columns(12).Visible = Not Master.eSettings.TVSeasonLandscapeCol
+                Me.dgvTVSeasons.Columns(3).Visible = Not CheckColumnHide_TVSeasons(Me.dgvTVSeasons.Columns(3).Name)
+                Me.dgvTVSeasons.Columns(4).Visible = Not CheckColumnHide_TVSeasons(Me.dgvTVSeasons.Columns(4).Name)
+                Me.dgvTVSeasons.Columns(10).Visible = Not CheckColumnHide_TVSeasons(Me.dgvTVSeasons.Columns(10).Name)
+                Me.dgvTVSeasons.Columns(12).Visible = Not CheckColumnHide_TVSeasons(Me.dgvTVSeasons.Columns(12).Name)
             End If
 
             If Me.dgvTVEpisodes.RowCount > 0 Then
-                Me.dgvTVEpisodes.Columns(4).Visible = Not Master.eSettings.TVEpisodePosterCol
-                Me.dgvTVEpisodes.Columns(5).Visible = Not Master.eSettings.TVEpisodeFanartCol
-                Me.dgvTVEpisodes.Columns(6).Visible = Not Master.eSettings.TVEpisodeNfoCol
-                Me.dgvTVEpisodes.Columns(24).Visible = Not Master.eSettings.TVEpisodeWatchedCol
+                Me.dgvTVEpisodes.Columns(4).Visible = Not CheckColumnHide_TVEpisodes(Me.dgvTVEpisodes.Columns(4).Name)
+                Me.dgvTVEpisodes.Columns(5).Visible = Not CheckColumnHide_TVEpisodes(Me.dgvTVEpisodes.Columns(5).Name)
+                Me.dgvTVEpisodes.Columns(6).Visible = Not CheckColumnHide_TVEpisodes(Me.dgvTVEpisodes.Columns(6).Name)
+                Me.dgvTVEpisodes.Columns(24).Visible = Not CheckColumnHide_TVEpisodes(Me.dgvTVEpisodes.Columns(24).Name)
             End If
 
             'might as well wait for these

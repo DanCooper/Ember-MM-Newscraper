@@ -639,6 +639,10 @@ Public Class Enums
         ValidThemeExts = 7
         ValidSubtitleExts = 8
         MovieListSorting = 9
+        MovieSetListSorting = 10
+        TVEpisodeSorting = 11
+        TVSeasonListSorting = 12
+        TVShowListSorting = 13
     End Enum
 
     Public Enum DelType As Integer

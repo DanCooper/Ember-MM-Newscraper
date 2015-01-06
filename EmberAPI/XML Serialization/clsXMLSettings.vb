@@ -218,7 +218,6 @@ Partial Public Class clsXMLSettings
     Private _moviescrapercredits As Boolean
     Private _moviescraperxbmctrailerformat As Boolean
     Private _moviescraperyear As Boolean
-    Private _moviesetbannercol As Boolean
     Private _moviesetbannerheight As Integer
     Private _moviesetbanneroverwrite As Boolean
     Private _moviesetbannerprefonly As Boolean
@@ -227,15 +226,11 @@ Partial Public Class clsXMLSettings
     Private _moviesetbannerwidth As Integer
     Private _moviesetcleandb As Boolean
     Private _moviesetcleanfiles As Boolean
-    Private _moviesetclearartcol As Boolean
     Private _moviesetclearartoverwrite As Boolean
-    Private _moviesetclearlogocol As Boolean
     Private _moviesetclearlogooverwrite As Boolean
     Private _moviesetclickscrape As Boolean
     Private _moviesetclickscrapeask As Boolean
-    Private _moviesetdiscartcol As Boolean
     Private _moviesetdiscartoverwrite As Boolean
-    Private _moviesetfanartcol As Boolean
     Private _moviesetfanartheight As Integer
     Private _moviesetfanartoverwrite As Boolean
     Private _moviesetfanartprefonly As Boolean
@@ -243,7 +238,7 @@ Partial Public Class clsXMLSettings
     Private _moviesetfanartresize As Boolean
     Private _moviesetfanartwidth As Integer
     Private _moviesetgeneralmarknew As Boolean
-    Private _moviesetlandscapecol As Boolean
+    Private _moviesetgeneralmedialistsorting As List(Of ListSorting)
     Private _moviesetlandscapeoverwrite As Boolean
     Private _moviesetlockplot As Boolean
     Private _moviesetlocktitle As Boolean
@@ -255,8 +250,6 @@ Partial Public Class clsXMLSettings
     Private _moviesetmissinglandscape As Boolean
     Private _moviesetmissingnfo As Boolean
     Private _moviesetmissingposter As Boolean
-    Private _moviesetnfocol As Boolean
-    Private _moviesetpostercol As Boolean
     Private _moviesetposterheight As Integer
     Private _moviesetposteroverwrite As Boolean
     Private _moviesetposterprefonly As Boolean
@@ -316,7 +309,6 @@ Partial Public Class clsXMLSettings
     Private _tvdisplaystatus As Boolean
     Private _tvepisodeclickscrape As Boolean
     Private _tvepisodeclickscrapeask As Boolean
-    Private _tvepisodefanartcol As Boolean
     Private _tvepisodefanartheight As Integer
     Private _tvepisodefanartoverwrite As Boolean
     Private _tvepisodefanartprefsize As Enums.TVFanartSize
@@ -324,18 +316,16 @@ Partial Public Class clsXMLSettings
     Private _tvepisodefanartwidth As Integer
     Private _tvepisodefiltercustom As List(Of String)
     Private _tvepisodefiltercustomisempty As Boolean
+    Private _tvepisodegeneralmedialistsorting As List(Of ListSorting)
     Private _tvepisodemissingfanart As Boolean
     Private _tvepisodemissingnfo As Boolean
     Private _tvepisodemissingposter As Boolean
-    Private _tvepisodenfocol As Boolean
     Private _tvepisodenofilter As Boolean
-    Private _tvepisodepostercol As Boolean
     Private _tvepisodeposterheight As Integer
     Private _tvepisodeposteroverwrite As Boolean
     Private _tvepisodeposterresize As Boolean
     Private _tvepisodeposterwidth As Integer
     Private _tvepisodepropercase As Boolean
-    Private _tvepisodewatchedcol As Boolean
     Private _tvgeneralflaglang As String
     Private _tvgeneralignorelastscan As Boolean
     Private _tvgenerallanguage As String
@@ -387,7 +377,6 @@ Partial Public Class clsXMLSettings
     Private _tvscraperupdatetime As Enums.TVScraperUpdateTime
     Private _tvscraperusemdduration As Boolean
     Private _tvscraperusesruntimeforep As Boolean
-    Private _tvseasonbannercol As Boolean
     Private _tvseasonbannerheight As Integer
     Private _tvseasonbanneroverwrite As Boolean
     Private _tvseasonbannerpreftype As Enums.TVSeasonBannerType
@@ -395,40 +384,33 @@ Partial Public Class clsXMLSettings
     Private _tvseasonbannerwidth As Integer
     Private _tvseasonclickscrape As Boolean
     Private _tvseasonclickscrapeask As Boolean
-    Private _tvseasonfanartcol As Boolean
     Private _tvseasonfanartheight As Integer
     Private _tvseasonfanartoverwrite As Boolean
     Private _tvseasonfanartprefsize As Enums.TVFanartSize
     Private _tvseasonfanartresize As Boolean
     Private _tvseasonfanartwidth As Integer
-    Private _tvseasonlandscapecol As Boolean
+    Private _tvseasongeneralmedialistsorting As List(Of ListSorting)
     Private _tvseasonlandscapeoverwrite As Boolean
     Private _tvseasonmissingbanner As Boolean
     Private _tvseasonmissingfanart As Boolean
     Private _tvseasonmissinglandscape As Boolean
     Private _tvseasonmissingposter As Boolean
-    Private _tvseasonpostercol As Boolean
     Private _tvseasonposterheight As Integer
     Private _tvseasonposteroverwrite As Boolean
     Private _tvseasonposterprefsize As Enums.TVPosterSize
     Private _tvepisodeposterprefsize As Enums.TVEpisodePosterSize
     Private _tvseasonposterresize As Boolean
     Private _tvseasonposterwidth As Integer
-    Private _tvshowbannercol As Boolean
     Private _tvshowbannerheight As Integer
     Private _tvshowbanneroverwrite As Boolean
     Private _tvshowbannerpreftype As Enums.TVShowBannerType
     Private _tvshowbannerresize As Boolean
     Private _tvshowbannerwidth As Integer
-    Private _tvshowcharacterartcol As Boolean
     Private _tvshowcharacterartoverwrite As Boolean
-    Private _tvshowclearartcol As Boolean
     Private _tvshowclearartoverwrite As Boolean
-    Private _tvshowclearlogocol As Boolean
     Private _tvshowclearlogooverwrite As Boolean
     Private _tvshowclickscrape As Boolean
     Private _tvshowclickscrapeask As Boolean
-    Private _tvshowefanartscol As Boolean
     Private _tvshowefanartslimit As Integer
     Private _tvshowefanartsoverwrite As Boolean
     Private _tvshowefanartsprefonly As Boolean
@@ -436,7 +418,6 @@ Partial Public Class clsXMLSettings
     Private _tvshowefanartsresize As Boolean
     Private _tvshowefanartsheight As Integer
     Private _tvshowefanartswidth As Integer
-    Private _tvshowfanartcol As Boolean
     Private _tvshowfanartheight As Integer
     Private _tvshowfanartoverwrite As Boolean
     Private _tvshowfanartprefsize As Enums.TVFanartSize
@@ -444,7 +425,7 @@ Partial Public Class clsXMLSettings
     Private _tvshowfanartwidth As Integer
     Private _tvshowfiltercustom As List(Of String)
     Private _tvshowfiltercustomisempty As Boolean
-    Private _tvshowlandscapecol As Boolean
+    Private _tvshowgeneralmedialistsorting As List(Of ListSorting)
     Private _tvshowlandscapeoverwrite As Boolean
     Private _tvshowmissingbanner As Boolean
     Private _tvshowmissingcharacterart As Boolean
@@ -456,8 +437,6 @@ Partial Public Class clsXMLSettings
     Private _tvshowmissingnfo As Boolean
     Private _tvshowmissingposter As Boolean
     Private _tvshowmissingtheme As Boolean
-    Private _tvshownfocol As Boolean
-    Private _tvshowpostercol As Boolean
     Private _tvshowposterheight As Integer
     Private _tvshowposteroverwrite As Boolean
     Private _tvshowposterprefsize As Enums.TVPosterSize
@@ -468,7 +447,6 @@ Partial Public Class clsXMLSettings
     Private _tvskiplessthan As Integer
     Private _tvsorttokens As List(Of String)
     Private _tvsorttokensisempty As Boolean
-    Private _tvshowthemecol As Boolean
     Private _username As String
     Private _usetrakt As Boolean
     Private _version As String
@@ -1309,33 +1287,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVEpisodeFanartCol() As Boolean
-        Get
-            Return Me._tvepisodefanartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvepisodefanartcol = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeNfoCol() As Boolean
-        Get
-            Return Me._tvepisodenfocol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvepisodenfocol = value
-        End Set
-    End Property
-
-    Public Property TVEpisodePosterCol() As Boolean
-        Get
-            Return Me._tvepisodepostercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvepisodepostercol = value
-        End Set
-    End Property
-
     Public Property TVLockEpisodePlot() As Boolean
         Get
             Return Me._tvlockepisodeplot
@@ -1405,15 +1356,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvepisodepropercase = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeWatchedCol() As Boolean
-        Get
-            Return Me._tvepisodewatchedcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvepisodewatchedcol = value
         End Set
     End Property
 
@@ -2402,78 +2344,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieSetBannerCol() As Boolean
-        Get
-            Return Me._moviesetbannercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesetbannercol = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearArtCol() As Boolean
-        Get
-            Return Me._moviesetclearartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesetclearartcol = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearLogoCol() As Boolean
-        Get
-            Return Me._moviesetclearlogocol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesetclearlogocol = value
-        End Set
-    End Property
-
-    Public Property MovieSetDiscArtCol() As Boolean
-        Get
-            Return Me._moviesetdiscartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesetdiscartcol = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartCol() As Boolean
-        Get
-            Return Me._moviesetfanartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesetfanartcol = value
-        End Set
-    End Property
-
-    Public Property MovieSetLandscapeCol() As Boolean
-        Get
-            Return Me._moviesetlandscapecol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesetlandscapecol = value
-        End Set
-    End Property
-
-    Public Property MovieSetNfoCol() As Boolean
-        Get
-            Return Me._moviesetnfocol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesetnfocol = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterCol() As Boolean
-        Get
-            Return Me._moviesetpostercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesetpostercol = value
-        End Set
-    End Property
-
     Public Property MovieSetBannerPrefOnly() As Boolean
         Get
             Return Me._moviesetbannerprefonly
@@ -3092,15 +2962,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowclearlogooverwrite = value
-        End Set
-    End Property
-
-    Public Property TVSeasonLandscapeCol() As Boolean
-        Get
-            Return Me._tvseasonlandscapecol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvseasonlandscapecol = value
         End Set
     End Property
 
@@ -4013,15 +3874,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVSeasonFanartCol() As Boolean
-        Get
-            Return Me._tvseasonfanartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvseasonfanartcol = value
-        End Set
-    End Property
-
     Public Property TVSeasonFanartHeight() As Integer
         Get
             Return Me._tvseasonfanartheight
@@ -4037,15 +3889,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._tvseasonfanartwidth = value
-        End Set
-    End Property
-
-    Public Property TVSeasonBannerCol() As Boolean
-        Get
-            Return Me._tvseasonbannercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvseasonbannercol = value
         End Set
     End Property
 
@@ -4157,15 +4000,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVSeasonPosterCol() As Boolean
-        Get
-            Return Me._tvseasonpostercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvseasonpostercol = value
-        End Set
-    End Property
-
     Public Property TVSeasonPosterHeight() As Integer
         Get
             Return Me._tvseasonposterheight
@@ -4217,15 +4051,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._generalshowimgnames = value
-        End Set
-    End Property
-
-    Public Property TVShowFanartCol() As Boolean
-        Get
-            Return Me._tvshowfanartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowfanartcol = value
         End Set
     End Property
 
@@ -4334,87 +4159,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvlockshowvotes = value
-        End Set
-    End Property
-
-    Public Property TVShowBannerCol() As Boolean
-        Get
-            Return Me._tvshowbannercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowbannercol = value
-        End Set
-    End Property
-
-    Public Property TVShowCharacterArtCol() As Boolean
-        Get
-            Return Me._tvshowcharacterartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowcharacterartcol = value
-        End Set
-    End Property
-
-    Public Property TVShowClearArtCol() As Boolean
-        Get
-            Return Me._tvshowclearartcol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowclearartcol = value
-        End Set
-    End Property
-
-    Public Property TVShowClearLogoCol() As Boolean
-        Get
-            Return Me._tvshowclearlogocol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowclearlogocol = value
-        End Set
-    End Property
-
-    Public Property TVShowEFanartsCol() As Boolean
-        Get
-            Return Me._tvshowefanartscol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowefanartscol = value
-        End Set
-    End Property
-
-    Public Property TVShowLandscapeCol() As Boolean
-        Get
-            Return Me._tvshowlandscapecol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowlandscapecol = value
-        End Set
-    End Property
-
-    Public Property TVShowThemeCol() As Boolean
-        Get
-            Return Me._tvshowthemecol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowthemecol = value
-        End Set
-    End Property
-
-    Public Property TVShowNfoCol() As Boolean
-        Get
-            Return Me._tvshownfocol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshownfocol = value
-        End Set
-    End Property
-
-    Public Property TVShowPosterCol() As Boolean
-        Get
-            Return Me._tvshowpostercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowpostercol = value
         End Set
     End Property
 
@@ -4649,6 +4393,42 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As List(Of ListSorting))
             Me._moviegeneralmedialistsorting = value
+        End Set
+    End Property
+
+    Public Property MovieSetGeneralMediaListSorting() As List(Of ListSorting)
+        Get
+            Return Me._moviesetgeneralmedialistsorting
+        End Get
+        Set(ByVal value As List(Of ListSorting))
+            Me._moviesetgeneralmedialistsorting = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeGeneralMediaListSorting() As List(Of ListSorting)
+        Get
+            Return Me._tvepisodegeneralmedialistsorting
+        End Get
+        Set(ByVal value As List(Of ListSorting))
+            Me._tvepisodegeneralmedialistsorting = value
+        End Set
+    End Property
+
+    Public Property TVSeasonGeneralMediaListSorting() As List(Of ListSorting)
+        Get
+            Return Me._tvseasongeneralmedialistsorting
+        End Get
+        Set(ByVal value As List(Of ListSorting))
+            Me._tvseasongeneralmedialistsorting = value
+        End Set
+    End Property
+
+    Public Property TVShowGeneralMediaListSorting() As List(Of ListSorting)
+        Get
+            Return Me._tvshowgeneralmedialistsorting
+        End Get
+        Set(ByVal value As List(Of ListSorting))
+            Me._tvshowgeneralmedialistsorting = value
         End Set
     End Property
 
