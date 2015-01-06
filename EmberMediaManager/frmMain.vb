@@ -6808,7 +6808,7 @@ doCancel:
             End If
 
             'icons
-            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 70 AndAlso e.RowIndex = -1 Then
+            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 17 AndAlso e.ColumnIndex <= 70 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -6843,7 +6843,7 @@ doCancel:
             End If
 
             'text
-            If e.ColumnIndex = 3 AndAlso e.RowIndex >= 0 Then
+            If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 17) AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvMovies.Item(11, e.RowIndex).Value) Then                  'is marked
                     e.CellStyle.ForeColor = Color.Crimson
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
@@ -8240,7 +8240,7 @@ doCancel:
             End If
 
             'icons
-            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 38 AndAlso e.RowIndex = -1 Then
+            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <> 28 AndAlso e.ColumnIndex <= 38 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -8274,7 +8274,7 @@ doCancel:
 
             End If
 
-            If e.ColumnIndex = 1 AndAlso e.RowIndex >= 0 Then
+            If (e.ColumnIndex = 1 OrElse e.ColumnIndex = 28) AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvTVShows.Item(6, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Crimson
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
@@ -8300,7 +8300,7 @@ doCancel:
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
 
-                If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 38 Then
+                If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <> 38 AndAlso e.ColumnIndex <= 38 Then
                     e.PaintBackground(e.ClipBounds, True)
 
                     Dim pt As Point = e.CellBounds.Location
@@ -8871,6 +8871,7 @@ doCancel:
                             .dgvMovies.Columns(3).ReadOnly = True
                             .dgvMovies.Columns(3).MinimumWidth = 83
                             .dgvMovies.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
+                            .dgvMovies.Columns(3).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(3).Name)
                             .dgvMovies.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
                             .dgvMovies.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
                             .dgvMovies.Columns(4).Width = 20
@@ -8916,13 +8917,13 @@ doCancel:
                             .dgvMovies.Columns(14).Visible = False
                             .dgvMovies.Columns(15).Visible = False
                             .dgvMovies.Columns(16).Visible = False
-                            .dgvMovies.Columns(17).Resizable = DataGridViewTriState.True
+                            .dgvMovies.Columns(17).Resizable = DataGridViewTriState.False
                             .dgvMovies.Columns(17).ReadOnly = True
-                            .dgvMovies.Columns(17).MinimumWidth = 40
                             .dgvMovies.Columns(17).SortMode = DataGridViewColumnSortMode.Automatic
                             .dgvMovies.Columns(17).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(17).Name)
                             .dgvMovies.Columns(17).ToolTipText = Master.eLang.GetString(278, "Year")
                             .dgvMovies.Columns(17).HeaderText = Master.eLang.GetString(278, "Year")
+                            .dgvMovies.Columns(17).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                             .dgvMovies.Columns(18).Visible = False
                             .dgvMovies.Columns(19).Visible = False
                             .dgvMovies.Columns(20).Visible = False
@@ -8984,7 +8985,7 @@ doCancel:
                             .dgvMovies.Columns(55).Resizable = DataGridViewTriState.False
                             .dgvMovies.Columns(55).ReadOnly = True
                             .dgvMovies.Columns(55).SortMode = DataGridViewColumnSortMode.Automatic
-                            .dgvMovies.Columns(55).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(5).Name)
+                            .dgvMovies.Columns(55).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(55).Name)
                             .dgvMovies.Columns(55).ToolTipText = Master.eLang.GetString(1118, "Theme")
                             .dgvMovies.Columns(56).Visible = False
                             .dgvMovies.Columns(57).Width = 20
@@ -9205,7 +9206,13 @@ doCancel:
                             .dgvTVShows.Columns(26).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(26).Name)
                             .dgvTVShows.Columns(26).ToolTipText = Master.eLang.GetString(1035, "Landscape")
                             .dgvTVShows.Columns(27).Visible = False
-                            .dgvTVShows.Columns(28).Visible = False
+                            .dgvTVShows.Columns(28).Resizable = DataGridViewTriState.False
+                            .dgvTVShows.Columns(28).ReadOnly = True
+                            .dgvTVShows.Columns(28).SortMode = DataGridViewColumnSortMode.Automatic
+                            .dgvTVShows.Columns(28).Visible = Not CheckColumnHide_TVShows(.dgvTVShows.Columns(28).Name)
+                            .dgvTVShows.Columns(28).ToolTipText = Master.eLang.GetString(215, "Status")
+                            .dgvTVShows.Columns(28).HeaderText = Master.eLang.GetString(215, "Status")
+                            .dgvTVShows.Columns(28).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                             .dgvTVShows.Columns(29).Width = 20
                             .dgvTVShows.Columns(29).Resizable = DataGridViewTriState.False
                             .dgvTVShows.Columns(29).ReadOnly = True
@@ -15972,6 +15979,7 @@ doCancel:
         If Not Master.isWindows Then
             If Me.dgvMovies.ColumnCount > 0 Then
                 Me.dgvMovies.Columns(3).Width = Me.dgvMovies.Width - _
+                If(CheckColumnHide_Movies("Year"), dgvMovies.Columns(17).Width, 0) - _
                 If(CheckColumnHide_Movies("HasBanner"), 20, 0) - _
                 If(CheckColumnHide_Movies("HasClearArt"), 20, 0) - _
                 If(CheckColumnHide_Movies("HasClearLogo"), 20, 0) - _

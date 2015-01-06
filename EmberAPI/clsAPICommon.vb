@@ -640,7 +640,7 @@ Public Class Enums
         ValidSubtitleExts = 8
         MovieListSorting = 9
         MovieSetListSorting = 10
-        TVEpisodeSorting = 11
+        TVEpisodeListSorting = 11
         TVSeasonListSorting = 12
         TVShowListSorting = 13
     End Enum

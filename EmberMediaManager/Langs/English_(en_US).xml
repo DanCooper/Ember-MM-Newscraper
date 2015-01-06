@@ -362,7 +362,7 @@
   <string id="361">Finished</string>
   <string id="362">Done</string>
   <string id="363">Movies - Exporting Backdrops...</string>
-  <string id="364"/>
+  <string id="364"></strng>
   <string id="365">Sets Manager</string>
   <string id="366">Sets</string>
   <string id="367">Movies In Set</string>
@@ -488,11 +488,11 @@
   <string id="487">Notifications</string>
   <string id="488">Global Scraper Fields</string>
   <string id="489">Display Language Flags</string>
-  <string id="490"></string>
-  <string id="491"></string>
-  <string id="492"></string>
-  <string id="493"></string>
-  <string id="494"></string>
+  <string id="490">Movie List Sorting</string>
+  <string id="491">MovieSet List Sorting</string>
+  <string id="492">Show List Sorting</string>
+  <string id="493">Season List Sorting</string>
+  <string id="494">Episode List Sorting</string>
   <string id="495"></string>
   <string id="496"></string>
   <string id="497">Images</string>
@@ -1420,4 +1420,5 @@
   <string id="1328">Export unknown movies</string>
   <string id="1329">Downloading selected theme...</string>
   <string id="1330">Date Modified</string>
+  <string id="1331">Column</string>
 </strings>
