@@ -55,7 +55,7 @@ Public Class dlgThemeSelect
 
 #Region "Methods"
 
-    Private Sub dlgThemeSelect_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
+    Private Sub dlgThemeSelect_FormClosing(sender As Object, e As System.EventArgs) Handles Me.FormClosing
         RemoveHandler Themes.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
@@ -209,7 +209,6 @@ Public Class dlgThemeSelect
                 'Me.btnTrailerStop.Enabled = False
             End If
         End If
-        RemoveHandler Themes.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
     Private Sub DownloadProgressUpdated(ByVal iProgress As Integer)
