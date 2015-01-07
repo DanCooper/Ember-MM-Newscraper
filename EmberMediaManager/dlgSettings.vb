@@ -5928,6 +5928,11 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
 
+        'Ask On Click Scrape
+        Dim strAskOnClickScrape As String = Master.eLang.GetString(852, "Ask On Click Scrape")
+        Me.chkMovieClickScrapeAsk.Text = strAskOnClickScrape
+        Me.chkMovieSetClickScrapeAsk.Text = strAskOnClickScrape
+
         'Automatically Resize:
         Dim strAutomaticallyResize As String = Master.eLang.GetString(481, "Automatically Resize:")
         Me.chkMoviePosterResize.Text = strAutomaticallyResize
@@ -6071,6 +6076,11 @@ Public Class dlgSettings
         Me.lblTVSourcesFileNamingNMTDefaultsEnabled.Text = strEnabled
         Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.Text = strEnabled
         Me.chkMovieUseExpert.Text = strEnabled
+
+        'Enabled Click Scrape
+        Dim strEnabledClickScrape As String = Master.eLang.GetString(849, "Enable Click Scrape")
+        Me.chkMovieClickScrape.Text = strEnabledClickScrape
+        Me.chkMovieSetClickScrape.Text = strEnabledClickScrape
 
         'Episode #
         Dim strEpisodeNR As String = Master.eLang.GetString(660, "Episode #")
@@ -6530,8 +6540,6 @@ Public Class dlgSettings
         Me.chkGeneralSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
         Me.chkMovieSourcesBackdropsAuto.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         Me.chkMovieCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
-        Me.chkMovieClickScrape.Text = Master.eLang.GetString(849, "Enable Click Scrape")
-        Me.chkMovieClickScrapeAsk.Text = Master.eLang.GetString(852, "Ask On Click Scrape")
         Me.chkMovieDisplayYear.Text = Master.eLang.GetString(464, "Display Year in List Title")
         Me.chkMovieGeneralIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
         Me.chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
