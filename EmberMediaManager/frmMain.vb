@@ -467,17 +467,17 @@ Public Class frmMain
     End Function
 
     Private Function CheckColumnHide_TVEpisodes(ByVal ColumnName As String) As Boolean
-        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVEpisodeGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVGeneralEpisodeListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
         Return If(lsColumn Is Nothing, False, lsColumn.Hide)
     End Function
 
     Private Function CheckColumnHide_TVSeasons(ByVal ColumnName As String) As Boolean
-        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVSeasonGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVGeneralSeasonListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
         Return If(lsColumn Is Nothing, False, lsColumn.Hide)
     End Function
 
     Private Function CheckColumnHide_TVShows(ByVal ColumnName As String) As Boolean
-        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVShowGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVGeneralShowListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
         Return If(lsColumn Is Nothing, False, lsColumn.Hide)
     End Function
 
@@ -6801,110 +6801,110 @@ doCancel:
     End Sub
 
     Private Sub dgvMovies_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovies.CellPainting
-        Try
-            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
-                e.Handled = True
-                Return
+
+        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            e.Handled = True
+            Return
+        End If
+
+        'icons
+        If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 13 AndAlso e.ColumnIndex <> 16 AndAlso e.ColumnIndex <> 17 _
+             AndAlso e.ColumnIndex <> 20 AndAlso e.ColumnIndex <> 63 AndAlso e.ColumnIndex <= 70 AndAlso e.RowIndex = -1 Then
+            e.PaintBackground(e.ClipBounds, False)
+
+            Dim pt As Point = e.CellBounds.Location
+            Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+            pt.X += offset
+            pt.Y = 3
+            If e.ColumnIndex = 34 Then 'Watched
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 8)
+            ElseIf e.ColumnIndex = 49 Then 'Extrafanarts
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 9)
+            ElseIf e.ColumnIndex = 51 Then 'Banner
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 10)
+            ElseIf e.ColumnIndex = 53 Then 'Landscape
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 11)
+            ElseIf e.ColumnIndex = 55 Then 'Theme
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 12)
+            ElseIf e.ColumnIndex = 57 Then 'DiscArt
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 13)
+            ElseIf e.ColumnIndex = 59 Then 'ClearLogo
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
+            ElseIf e.ColumnIndex = 61 Then 'ClearArt
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 15)
+            ElseIf e.ColumnIndex = 70 Then 'Inside a Set
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 17)
+            Else 'Poster/Fanart/NFO/Trailer/Subs/Extrathumbs
+                Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
             End If
 
-            'icons
-            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 17 AndAlso e.ColumnIndex <= 70 AndAlso e.RowIndex = -1 Then
-                e.PaintBackground(e.ClipBounds, False)
+            e.Handled = True
+
+        End If
+
+        'text
+        If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 13 OrElse e.ColumnIndex = 16 OrElse e.ColumnIndex = 17 _
+             OrElse e.ColumnIndex = 20 OrElse e.ColumnIndex = 63) AndAlso e.RowIndex >= 0 Then
+            If Convert.ToBoolean(Me.dgvMovies.Item(11, e.RowIndex).Value) Then                  'is marked
+                e.CellStyle.ForeColor = Color.Crimson
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Crimson
+            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(10, e.RowIndex).Value) Then              'is new
+                e.CellStyle.ForeColor = Color.Green
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Green
+            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(66, e.RowIndex).Value) Then              'is marked custom 1
+                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
+            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(67, e.RowIndex).Value) Then              'is marked custom 2
+                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
+            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(68, e.RowIndex).Value) Then              'is marked custom 3
+                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
+            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(69, e.RowIndex).Value) Then              'is marked custom 4
+                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
+            Else
+                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+            End If
+        End If
+
+        If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 70 AndAlso e.RowIndex >= 0 Then
+            If Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value) Then                  'is locked
+                e.CellStyle.BackColor = Color.LightSteelBlue
+                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then              'out of tolerance
+                e.CellStyle.BackColor = Color.MistyRose
+                e.CellStyle.SelectionBackColor = Color.DarkMagenta
+            Else
+                e.CellStyle.BackColor = Color.White
+                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+            End If
+
+            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 13 AndAlso e.ColumnIndex <> 16 AndAlso e.ColumnIndex <> 17 _
+             AndAlso e.ColumnIndex <> 20 AndAlso e.ColumnIndex <> 63 AndAlso e.ColumnIndex <= 70 Then
+                e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
                 Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
 
                 pt.X += offset
-                pt.Y = 3
-                If e.ColumnIndex = 34 Then 'Watched
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 8)
-                ElseIf e.ColumnIndex = 49 Then 'Extrafanarts
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 9)
-                ElseIf e.ColumnIndex = 51 Then 'Banner
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 10)
-                ElseIf e.ColumnIndex = 53 Then 'Landscape
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 11)
-                ElseIf e.ColumnIndex = 55 Then 'Theme
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 12)
-                ElseIf e.ColumnIndex = 57 Then 'DiscArt
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 13)
-                ElseIf e.ColumnIndex = 59 Then 'ClearLogo
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
-                ElseIf e.ColumnIndex = 61 Then 'ClearArt
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 15)
-                ElseIf e.ColumnIndex = 70 Then 'Inside a Set
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 17)
-                Else 'Poster/Fanart/NFO/Trailer/Subs/Extrathumbs
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
-                End If
-
+                pt.Y = e.CellBounds.Top + 3
+                Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
                 e.Handled = True
-
             End If
+        End If
 
-            'text
-            If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 17) AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvMovies.Item(11, e.RowIndex).Value) Then                  'is marked
-                    e.CellStyle.ForeColor = Color.Crimson
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Crimson
-                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(10, e.RowIndex).Value) Then              'is new
-                    e.CellStyle.ForeColor = Color.Green
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Green
-                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(66, e.RowIndex).Value) Then              'is marked custom 1
-                    e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
-                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(67, e.RowIndex).Value) Then              'is marked custom 2
-                    e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
-                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(68, e.RowIndex).Value) Then              'is marked custom 3
-                    e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
-                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(69, e.RowIndex).Value) Then              'is marked custom 4
-                    e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
-                Else
-                    e.CellStyle.ForeColor = Color.Black
-                    e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                    e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
-                End If
-            End If
+        'Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
 
-            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 70 AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value) Then                  'is locked
-                    e.CellStyle.BackColor = Color.LightSteelBlue
-                    e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then              'out of tolerance
-                    e.CellStyle.BackColor = Color.MistyRose
-                    e.CellStyle.SelectionBackColor = Color.DarkMagenta
-                Else
-                    e.CellStyle.BackColor = Color.White
-                    e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                End If
-
-                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 70 Then
-                    e.PaintBackground(e.ClipBounds, True)
-
-                    Dim pt As Point = e.CellBounds.Location
-                    Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
-
-                    pt.X += offset
-                    pt.Y = e.CellBounds.Top + 3
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
-                    e.Handled = True
-                End If
-            End If
-
-            Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
 
     Private Sub dgvMovies_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMovies.KeyDown
@@ -7286,90 +7286,87 @@ doCancel:
     End Sub
 
     Private Sub dgvMovieSets_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovieSets.CellPainting
-        Try
-            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovieSets.Item(e.ColumnIndex, e.RowIndex).Displayed Then
-                e.Handled = True
-                Return
+
+        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovieSets.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            e.Handled = True
+            Return
+        End If
+
+        'icons
+        If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 17 AndAlso e.RowIndex = -1 Then
+            e.PaintBackground(e.ClipBounds, False)
+
+            Dim pt As Point = e.CellBounds.Location
+            Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+            pt.X += offset
+            pt.Y = 3
+            If e.ColumnIndex = 2 Then 'NFO
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 2)
+            ElseIf e.ColumnIndex = 4 Then 'Poster
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 0)
+            ElseIf e.ColumnIndex = 6 Then 'Fanart
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 1)
+            ElseIf e.ColumnIndex = 8 Then 'Banner
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 10)
+            ElseIf e.ColumnIndex = 10 Then 'Landscape
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 11)
+            ElseIf e.ColumnIndex = 12 Then 'DiscArt
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 13)
+            ElseIf e.ColumnIndex = 14 Then 'ClearLogo
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
+            ElseIf e.ColumnIndex = 16 Then 'ClearArt
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 15)
             End If
 
-            'icons
-            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 17 AndAlso e.RowIndex = -1 Then
-                e.PaintBackground(e.ClipBounds, False)
+            e.Handled = True
+
+        End If
+
+        'text
+        If e.ColumnIndex = 1 AndAlso e.RowIndex >= 0 Then
+            If Convert.ToBoolean(Me.dgvMovieSets.Item(22, e.RowIndex).Value) Then                  'is marked
+                e.CellStyle.ForeColor = Color.Crimson
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Crimson
+            ElseIf Convert.ToBoolean(Me.dgvMovieSets.Item(21, e.RowIndex).Value) Then              'is new
+                e.CellStyle.ForeColor = Color.Green
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Green
+            Else
+                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+            End If
+        End If
+
+        If e.ColumnIndex >= 0 AndAlso e.ColumnIndex <= 23 AndAlso e.RowIndex >= 0 Then
+            If Convert.ToBoolean(Me.dgvMovieSets.Item(23, e.RowIndex).Value) Then                  'is locked
+                e.CellStyle.BackColor = Color.LightSteelBlue
+                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+                'ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then              'use folder
+                '    e.CellStyle.BackColor = Color.MistyRose
+                '    e.CellStyle.SelectionBackColor = Color.DarkMagenta
+            Else
+                e.CellStyle.BackColor = Color.White
+                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+            End If
+
+            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 17 Then
+                e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
                 Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
 
                 pt.X += offset
-                pt.Y = 3
-                If e.ColumnIndex = 2 Then 'NFO
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 2)
-                ElseIf e.ColumnIndex = 4 Then 'Poster
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 0)
-                ElseIf e.ColumnIndex = 6 Then 'Fanart
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 1)
-                ElseIf e.ColumnIndex = 8 Then 'Banner
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 10)
-                ElseIf e.ColumnIndex = 10 Then 'Landscape
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 11)
-                ElseIf e.ColumnIndex = 12 Then 'DiscArt
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 13)
-                ElseIf e.ColumnIndex = 14 Then 'ClearLogo
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
-                ElseIf e.ColumnIndex = 16 Then 'ClearArt
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 15)
-                End If
-
+                pt.Y = e.CellBounds.Top + 3
+                Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
                 e.Handled = True
-
             End If
+        End If
 
-            'text
-            If e.ColumnIndex = 1 AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvMovieSets.Item(22, e.RowIndex).Value) Then                  'is marked
-                    e.CellStyle.ForeColor = Color.Crimson
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Crimson
-                ElseIf Convert.ToBoolean(Me.dgvMovieSets.Item(21, e.RowIndex).Value) Then              'is new
-                    e.CellStyle.ForeColor = Color.Green
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Green
-                Else
-                    e.CellStyle.ForeColor = Color.Black
-                    e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                    e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
-                End If
-            End If
+        Me.tpMovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(366, "Sets"), Me.dgvMovieSets.RowCount)
 
-            If e.ColumnIndex >= 0 AndAlso e.ColumnIndex <= 23 AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvMovieSets.Item(23, e.RowIndex).Value) Then                  'is locked
-                    e.CellStyle.BackColor = Color.LightSteelBlue
-                    e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                    'ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then              'use folder
-                    '    e.CellStyle.BackColor = Color.MistyRose
-                    '    e.CellStyle.SelectionBackColor = Color.DarkMagenta
-                Else
-                    e.CellStyle.BackColor = Color.White
-                    e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                End If
-
-                If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 17 Then
-                    e.PaintBackground(e.ClipBounds, True)
-
-                    Dim pt As Point = e.CellBounds.Location
-                    Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
-
-                    pt.X += offset
-                    pt.Y = e.CellBounds.Top + 3
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
-                    e.Handled = True
-                End If
-            End If
-
-            Me.tpMovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(366, "Sets"), Me.dgvMovieSets.RowCount)
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
 
     Private Sub dgvMovieSets_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMovieSets.KeyDown
@@ -7610,80 +7607,77 @@ doCancel:
     End Sub
 
     Private Sub dgvTVEpisodes_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVEpisodes.CellPainting
-        Try
 
-            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvTVEpisodes.Item(e.ColumnIndex, e.RowIndex).Displayed Then
-                e.Handled = True
-                Return
+        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvTVEpisodes.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            e.Handled = True
+            Return
+        End If
+
+        'icons
+        If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <> 15 AndAlso e.ColumnIndex <= 24 AndAlso e.RowIndex = -1 Then
+            e.PaintBackground(e.ClipBounds, False)
+
+            Dim pt As Point = e.CellBounds.Location
+            Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+            pt.X += offset
+            pt.Y = 3
+
+            If e.ColumnIndex = 24 Then 'Watched
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 8)
+            Else
+                Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
             End If
 
-            'icons
-            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <> 15 AndAlso e.ColumnIndex <= 24 AndAlso e.RowIndex = -1 Then
-                e.PaintBackground(e.ClipBounds, False)
+            e.Handled = True
+        End If
+
+        If (e.ColumnIndex = 2 OrElse e.ColumnIndex = 3 OrElse e.ColumnIndex = 12 OrElse e.ColumnIndex = 15) AndAlso e.RowIndex >= 0 Then
+            If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, e.RowIndex).Value) Then
+                e.CellStyle.ForeColor = Color.Gray
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.LightGray
+            ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, e.RowIndex).Value) Then
+                e.CellStyle.ForeColor = Color.Crimson
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Crimson
+            ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(7, e.RowIndex).Value) Then
+                e.CellStyle.ForeColor = Color.Green
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Green
+            Else
+                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+            End If
+        End If
+
+        If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 24 AndAlso e.RowIndex >= 0 Then
+
+            If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, e.RowIndex).Value) Then
+                e.CellStyle.BackColor = Color.White
+                e.CellStyle.SelectionBackColor = Color.DarkGray
+            ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, e.RowIndex).Value) Then
+                e.CellStyle.BackColor = Color.LightSteelBlue
+                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+            Else
+                e.CellStyle.BackColor = Color.White
+                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+            End If
+
+            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <> 15 AndAlso e.ColumnIndex <= 24 Then
+                e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
                 Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
 
                 pt.X += offset
-                pt.Y = 3
-
-                If e.ColumnIndex = 24 Then 'Watched
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 8)
-                Else
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
-                End If
-
+                pt.Y = e.CellBounds.Top + 3
+                Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
                 e.Handled = True
             End If
+        End If
 
-            If (e.ColumnIndex = 2 OrElse e.ColumnIndex = 3 OrElse e.ColumnIndex = 12 OrElse e.ColumnIndex = 15) AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, e.RowIndex).Value) Then
-                    e.CellStyle.ForeColor = Color.Gray
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
-                    e.CellStyle.SelectionForeColor = Color.LightGray
-                ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, e.RowIndex).Value) Then
-                    e.CellStyle.ForeColor = Color.Crimson
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Crimson
-                ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(7, e.RowIndex).Value) Then
-                    e.CellStyle.ForeColor = Color.Green
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Green
-                Else
-                    e.CellStyle.ForeColor = Color.Black
-                    e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                    e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
-                End If
-            End If
-
-            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 24 AndAlso e.RowIndex >= 0 Then
-
-                If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, e.RowIndex).Value) Then
-                    e.CellStyle.BackColor = Color.White
-                    e.CellStyle.SelectionBackColor = Color.DarkGray
-                ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, e.RowIndex).Value) Then
-                    e.CellStyle.BackColor = Color.LightSteelBlue
-                    e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                Else
-                    e.CellStyle.BackColor = Color.White
-                    e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                End If
-
-                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <> 15 AndAlso e.ColumnIndex <= 24 Then
-                    e.PaintBackground(e.ClipBounds, True)
-
-                    Dim pt As Point = e.CellBounds.Location
-                    Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
-
-                    pt.X += offset
-                    pt.Y = e.CellBounds.Top + 3
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
-                    e.Handled = True
-                End If
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
 
     Private Sub dgvTVEpisodes_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvTVEpisodes.KeyDown
@@ -7958,77 +7952,74 @@ doCancel:
     End Sub
 
     Private Sub dgvTVSeasons_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVSeasons.CellPainting
-        Try
 
-            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvTVSeasons.Item(e.ColumnIndex, e.RowIndex).Displayed Then
-                e.Handled = True
-                Return
+        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvTVSeasons.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            e.Handled = True
+            Return
+        End If
+
+        'icons
+        If (e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 13) AndAlso e.RowIndex = -1 Then
+            e.PaintBackground(e.ClipBounds, False)
+
+            Dim pt As Point = e.CellBounds.Location
+            Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+            pt.X += offset
+            pt.Y = 3
+
+            If e.ColumnIndex = 3 Then 'Poster
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 0)
+            ElseIf e.ColumnIndex = 4 Then 'Fanart
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 1)
+            ElseIf e.ColumnIndex = 10 Then 'Banner
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 10)
+            ElseIf e.ColumnIndex = 12 Then 'Landscape
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 11)
             End If
 
-            'icons
-            If (e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 13) AndAlso e.RowIndex = -1 Then
-                e.PaintBackground(e.ClipBounds, False)
+            e.Handled = True
+
+        End If
+
+        If e.ColumnIndex = 1 AndAlso e.RowIndex >= 0 Then
+            If Convert.ToBoolean(Me.dgvTVSeasons.Item(8, e.RowIndex).Value) Then
+                e.CellStyle.ForeColor = Color.Crimson
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Crimson
+            ElseIf Convert.ToBoolean(Me.dgvTVSeasons.Item(9, e.RowIndex).Value) Then
+                e.CellStyle.ForeColor = Color.Green
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Green
+            Else
+                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+            End If
+        End If
+
+        If e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 13 AndAlso e.RowIndex >= 0 Then
+            If Convert.ToBoolean(Me.dgvTVSeasons.Item(7, e.RowIndex).Value) Then
+                e.CellStyle.BackColor = Color.LightSteelBlue
+                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+            Else
+                e.CellStyle.BackColor = Color.White
+                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+            End If
+
+            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 13 Then
+                e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
                 Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
 
                 pt.X += offset
-                pt.Y = 3
-
-                If e.ColumnIndex = 3 Then 'Poster
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 0)
-                ElseIf e.ColumnIndex = 4 Then 'Fanart
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 1)
-                ElseIf e.ColumnIndex = 10 Then 'Banner
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 10)
-                ElseIf e.ColumnIndex = 12 Then 'Landscape
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 11)
-                End If
-
+                pt.Y = e.CellBounds.Top + 3
+                Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
                 e.Handled = True
-
             End If
+        End If
 
-            If e.ColumnIndex = 1 AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvTVSeasons.Item(8, e.RowIndex).Value) Then
-                    e.CellStyle.ForeColor = Color.Crimson
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Crimson
-                ElseIf Convert.ToBoolean(Me.dgvTVSeasons.Item(9, e.RowIndex).Value) Then
-                    e.CellStyle.ForeColor = Color.Green
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Green
-                Else
-                    e.CellStyle.ForeColor = Color.Black
-                    e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                    e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
-                End If
-            End If
-
-            If e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 13 AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvTVSeasons.Item(7, e.RowIndex).Value) Then
-                    e.CellStyle.BackColor = Color.LightSteelBlue
-                    e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                Else
-                    e.CellStyle.BackColor = Color.White
-                    e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                End If
-
-                If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 13 Then
-                    e.PaintBackground(e.ClipBounds, True)
-
-                    Dim pt As Point = e.CellBounds.Location
-                    Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
-
-                    pt.X += offset
-                    pt.Y = e.CellBounds.Top + 3
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
-                    e.Handled = True
-                End If
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
 
     Private Sub dgvTVSeasons_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvTVSeasons.KeyDown
@@ -8232,90 +8223,86 @@ doCancel:
     End Sub
 
     Private Sub dgvTVShows_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVShows.CellPainting
-        Try
 
-            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvTVShows.Item(e.ColumnIndex, e.RowIndex).Displayed Then
-                e.Handled = True
-                Return
+        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvTVShows.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            e.Handled = True
+            Return
+        End If
+
+        'icons
+        If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <> 28 AndAlso e.ColumnIndex <= 38 AndAlso e.RowIndex = -1 Then
+            e.PaintBackground(e.ClipBounds, False)
+
+            Dim pt As Point = e.CellBounds.Location
+            Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+            pt.X += offset
+            pt.Y = 3
+            If e.ColumnIndex = 2 Then 'Poster
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 0)
+            ElseIf e.ColumnIndex = 3 Then 'Fanart
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 1)
+            ElseIf e.ColumnIndex = 4 Then 'NFO
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 2)
+            ElseIf e.ColumnIndex = 24 Then 'Banner
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 10)
+            ElseIf e.ColumnIndex = 26 Then 'Landscape
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 11)
+            ElseIf e.ColumnIndex = 29 Then 'Theme
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 12)
+            ElseIf e.ColumnIndex = 31 Then 'CharacterArt
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 16)
+            ElseIf e.ColumnIndex = 33 Then 'ClearLogo
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
+            ElseIf e.ColumnIndex = 35 Then 'ClearArt
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 15)
+            ElseIf e.ColumnIndex = 37 Then 'Extrafanarts
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 9)
             End If
 
-            'icons
-            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <> 28 AndAlso e.ColumnIndex <= 38 AndAlso e.RowIndex = -1 Then
-                e.PaintBackground(e.ClipBounds, False)
+            e.Handled = True
+
+        End If
+
+        If (e.ColumnIndex = 1 OrElse e.ColumnIndex = 28) AndAlso e.RowIndex >= 0 Then
+            If Convert.ToBoolean(Me.dgvTVShows.Item(6, e.RowIndex).Value) Then
+                e.CellStyle.ForeColor = Color.Crimson
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Crimson
+            ElseIf Convert.ToBoolean(Me.dgvTVShows.Item(5, e.RowIndex).Value) Then
+                e.CellStyle.ForeColor = Color.Green
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Green
+            Else
+                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+            End If
+        End If
+
+        If e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 38 AndAlso e.RowIndex >= 0 Then
+
+            If Convert.ToBoolean(Me.dgvTVShows.Item(10, e.RowIndex).Value) Then
+                e.CellStyle.BackColor = Color.LightSteelBlue
+                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+            Else
+                e.CellStyle.BackColor = Color.White
+                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+            End If
+
+            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <> 28 AndAlso e.ColumnIndex <= 38 Then
+                e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
                 Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
 
                 pt.X += offset
-                pt.Y = 3
-                If e.ColumnIndex = 2 Then 'Poster
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 0)
-                ElseIf e.ColumnIndex = 3 Then 'Fanart
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 1)
-                ElseIf e.ColumnIndex = 4 Then 'NFO
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 2)
-                ElseIf e.ColumnIndex = 24 Then 'Banner
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 10)
-                ElseIf e.ColumnIndex = 26 Then 'Landscape
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 11)
-                ElseIf e.ColumnIndex = 29 Then 'Theme
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 12)
-                ElseIf e.ColumnIndex = 31 Then 'CharacterArt
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 16)
-                ElseIf e.ColumnIndex = 33 Then 'ClearLogo
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
-                ElseIf e.ColumnIndex = 35 Then 'ClearArt
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 15)
-                ElseIf e.ColumnIndex = 37 Then 'Extrafanarts
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, 9)
-                End If
-
+                pt.Y = e.CellBounds.Top + 3
+                Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
                 e.Handled = True
-
             End If
+        End If
 
-            If (e.ColumnIndex = 1 OrElse e.ColumnIndex = 28) AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvTVShows.Item(6, e.RowIndex).Value) Then
-                    e.CellStyle.ForeColor = Color.Crimson
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Crimson
-                ElseIf Convert.ToBoolean(Me.dgvTVShows.Item(5, e.RowIndex).Value) Then
-                    e.CellStyle.ForeColor = Color.Green
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Green
-                Else
-                    e.CellStyle.ForeColor = Color.Black
-                    e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                    e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
-                End If
-            End If
-
-            If e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 38 AndAlso e.RowIndex >= 0 Then
-
-                If Convert.ToBoolean(Me.dgvTVShows.Item(10, e.RowIndex).Value) Then
-                    e.CellStyle.BackColor = Color.LightSteelBlue
-                    e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                Else
-                    e.CellStyle.BackColor = Color.White
-                    e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                End If
-
-                If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <> 38 AndAlso e.ColumnIndex <= 38 Then
-                    e.PaintBackground(e.ClipBounds, True)
-
-                    Dim pt As Point = e.CellBounds.Location
-                    Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
-
-                    pt.X += offset
-                    pt.Y = e.CellBounds.Top + 3
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
-                    e.Handled = True
-                End If
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
 
     Private Sub dgvTVShows_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvTVShows.KeyDown
@@ -8668,7 +8655,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(2).Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
                 .dgvTVEpisodes.Columns(2).ReadOnly = True
-                .dgvTVEpisodes.Columns(2).MinimumWidth = If(Season = 999, 20, 40)
+                .dgvTVEpisodes.Columns(2).MinimumWidth = If(Season = 999, 35, 70)
                 .dgvTVEpisodes.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
                 .dgvTVEpisodes.Columns(2).Visible = Not sOrdering = Enums.Ordering.Aired
                 .dgvTVEpisodes.Columns(2).ToolTipText = Master.eLang.GetString(755, "Episode #")
@@ -8703,7 +8690,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(9).Visible = False
                 .dgvTVEpisodes.Columns(10).Visible = False
                 .dgvTVEpisodes.Columns(11).Visible = False
-                .dgvTVEpisodes.Columns(12).MinimumWidth = 20
+                .dgvTVEpisodes.Columns(12).MinimumWidth = 35
                 .dgvTVEpisodes.Columns(12).Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns(12).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
                 .dgvTVEpisodes.Columns(12).ReadOnly = True
@@ -8715,7 +8702,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(13).Visible = False
                 .dgvTVEpisodes.Columns(14).Visible = False
                 .dgvTVEpisodes.Columns(15).Resizable = DataGridViewTriState.False
-                .dgvTVEpisodes.Columns(15).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                .dgvTVEpisodes.Columns(15).Width = 80
                 .dgvTVEpisodes.Columns(15).ReadOnly = True
                 .dgvTVEpisodes.Columns(15).SortMode = DataGridViewColumnSortMode.Automatic
                 .dgvTVEpisodes.Columns(15).Visible = sOrdering = Enums.Ordering.Aired
@@ -8746,9 +8733,6 @@ doCancel:
                 If Master.isWindows Then .dgvTVEpisodes.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 ResizeTVLists(3)
 
-                Me.dgvTVEpisodes.Columns("Season").DisplayIndex = 0
-                Me.dgvTVEpisodes.Columns("Aired").DisplayIndex = 1
-
                 '.dgvTVEpisodes.Sort(.dgvTVEpisodes.Columns(2), ComponentModel.ListSortDirection.Ascending)
 
                 .dgvTVEpisodes.ClearSelection()
@@ -8756,11 +8740,15 @@ doCancel:
 
             End With
 
-            If Master.eSettings.TVEpisodeGeneralMediaListSorting.Count > 0 Then
-                For Each mColumn In Master.eSettings.TVEpisodeGeneralMediaListSorting
+            If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
+                For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
                     Me.dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                 Next
             End If
+
+            Me.dgvTVEpisodes.Columns("Season").DisplayIndex = 0
+            Me.dgvTVEpisodes.Columns("Episode").DisplayIndex = 1
+            Me.dgvTVEpisodes.Columns("Aired").DisplayIndex = 2
         End If
 
         Me.dgvTVEpisodes.Enabled = True
@@ -8913,10 +8901,22 @@ doCancel:
                             .dgvMovies.Columns(10).Visible = False
                             .dgvMovies.Columns(11).Visible = False
                             .dgvMovies.Columns(12).Visible = False
-                            .dgvMovies.Columns(13).Visible = False
+                            .dgvMovies.Columns(13).Resizable = DataGridViewTriState.False
+                            .dgvMovies.Columns(13).ReadOnly = True
+                            .dgvMovies.Columns(13).SortMode = DataGridViewColumnSortMode.Automatic
+                            .dgvMovies.Columns(13).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(13).Name)
+                            .dgvMovies.Columns(13).ToolTipText = Master.eLang.GetString(61, "IMDB ID")
+                            .dgvMovies.Columns(13).HeaderText = Master.eLang.GetString(61, "IMDB ID")
+                            .dgvMovies.Columns(13).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                             .dgvMovies.Columns(14).Visible = False
                             .dgvMovies.Columns(15).Visible = False
-                            .dgvMovies.Columns(16).Visible = False
+                            .dgvMovies.Columns(16).Resizable = DataGridViewTriState.False
+                            .dgvMovies.Columns(16).ReadOnly = True
+                            .dgvMovies.Columns(16).SortMode = DataGridViewColumnSortMode.Automatic
+                            .dgvMovies.Columns(16).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(16).Name)
+                            .dgvMovies.Columns(16).ToolTipText = Master.eLang.GetString(302, "Original Title")
+                            .dgvMovies.Columns(16).HeaderText = Master.eLang.GetString(302, "Original Title")
+                            .dgvMovies.Columns(16).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                             .dgvMovies.Columns(17).Resizable = DataGridViewTriState.False
                             .dgvMovies.Columns(17).ReadOnly = True
                             .dgvMovies.Columns(17).SortMode = DataGridViewColumnSortMode.Automatic
@@ -8926,7 +8926,14 @@ doCancel:
                             .dgvMovies.Columns(17).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                             .dgvMovies.Columns(18).Visible = False
                             .dgvMovies.Columns(19).Visible = False
-                            .dgvMovies.Columns(20).Visible = False
+                            .dgvMovies.Columns(20).Resizable = DataGridViewTriState.False
+                            .dgvMovies.Columns(20).Width = 70
+                            .dgvMovies.Columns(20).ReadOnly = True
+                            .dgvMovies.Columns(20).SortMode = DataGridViewColumnSortMode.Automatic
+                            .dgvMovies.Columns(20).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(20).Name)
+                            .dgvMovies.Columns(20).ToolTipText = Master.eLang.GetString(401, "MPAA")
+                            .dgvMovies.Columns(20).HeaderText = Master.eLang.GetString(401, "MPAA")
+                            '.dgvMovies.Columns(20).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                             .dgvMovies.Columns(21).Visible = False
                             .dgvMovies.Columns(22).Visible = False
                             .dgvMovies.Columns(23).Visible = False
@@ -9009,7 +9016,13 @@ doCancel:
                             .dgvMovies.Columns(61).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(61).Name)
                             .dgvMovies.Columns(61).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
                             .dgvMovies.Columns(62).Visible = False
-                            .dgvMovies.Columns(63).Visible = False
+                            .dgvMovies.Columns(63).Resizable = DataGridViewTriState.False
+                            .dgvMovies.Columns(63).ReadOnly = True
+                            .dgvMovies.Columns(63).SortMode = DataGridViewColumnSortMode.Automatic
+                            .dgvMovies.Columns(63).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(63).Name)
+                            .dgvMovies.Columns(63).ToolTipText = Master.eLang.GetString(933, "TMDB ID")
+                            .dgvMovies.Columns(63).HeaderText = Master.eLang.GetString(933, "TMDB ID")
+                            .dgvMovies.Columns(63).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                             .dgvMovies.Columns(64).Visible = False
                             .dgvMovies.Columns(65).Visible = False
                             .dgvMovies.Columns(66).Visible = False
@@ -9262,8 +9275,8 @@ doCancel:
                             End If
                         End With
 
-                        If Master.eSettings.TVShowGeneralMediaListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.TVShowGeneralMediaListSorting
+                        If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
+                            For Each mColumn In Master.eSettings.TVGeneralShowListSorting
                                 Me.dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                             Next
                         End If
@@ -10813,8 +10826,8 @@ doCancel:
 
             End With
 
-            If Master.eSettings.TVSeasonGeneralMediaListSorting.Count > 0 Then
-                For Each mColumn In Master.eSettings.TVSeasonGeneralMediaListSorting
+            If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
+                For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
                     Me.dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                 Next
             End If

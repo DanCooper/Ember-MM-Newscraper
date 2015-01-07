@@ -40,9 +40,9 @@ Public Class dlgSettings
     Private MovieMeta As New List(Of Settings.MetadataPerType)
     Private MovieGeneralMediaListSorting As New List(Of Settings.ListSorting)
     Private MovieSetGeneralMediaListSorting As New List(Of Settings.ListSorting)
-    Private TVEpisodeGeneralMediaListSorting As New List(Of Settings.ListSorting)
-    Private TVSeasonGeneralMediaListSorting As New List(Of Settings.ListSorting)
-    Private TVShowGeneralMediaListSorting As New List(Of Settings.ListSorting)
+    Private TVGeneralEpisodeListSorting As New List(Of Settings.ListSorting)
+    Private TVGeneralSeasonListSorting As New List(Of Settings.ListSorting)
+    Private TVGeneralShowListSorting As New List(Of Settings.ListSorting)
     Private NoUpdate As Boolean = True
     Private SettingsPanels As New List(Of Containers.SettingsPanel)
     Private TVShowRegex As New List(Of Settings.TVShowRegEx)
@@ -1146,30 +1146,90 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVShowGeneralMediaListSortingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowGeneralMediaListSortingUp.Click
+    Private Sub btnTVGeneralEpisodeListSortingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralEpisodeListSortingUp.Click
         Try
-            If Me.lvTVShowGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvTVShowGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not Me.lvTVShowGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = Me.TVShowGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVShowGeneralMediaListSorting.SelectedItems(0).Text))
+            If Me.lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 AndAlso Not Me.lvTVGeneralEpisodeListSorting.SelectedItems(0).Index = 0 Then
+                Dim selItem As Settings.ListSorting = Me.TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
 
                 If Not IsNothing(selItem) Then
-                    Me.lvTVShowGeneralMediaListSorting.SuspendLayout()
-                    Dim iIndex As Integer = Me.TVShowGeneralMediaListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = Me.lvTVShowGeneralMediaListSorting.SelectedIndices(0)
-                    Me.TVShowGeneralMediaListSorting.Remove(selItem)
-                    Me.TVShowGeneralMediaListSorting.Insert(iIndex - 1, selItem)
+                    Me.lvTVGeneralEpisodeListSorting.SuspendLayout()
+                    Dim iIndex As Integer = Me.TVGeneralEpisodeListSorting.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvTVGeneralEpisodeListSorting.SelectedIndices(0)
+                    Me.TVGeneralEpisodeListSorting.Remove(selItem)
+                    Me.TVGeneralEpisodeListSorting.Insert(iIndex - 1, selItem)
 
-                    Me.RenumberTVShowGeneralMediaListSorting()
-                    Me.LoadTVShowGeneralMediaListSorting()
+                    Me.RenumberTVEpisodeGeneralMediaListSorting()
+                    Me.LoadTVGeneralEpisodeListSorting()
 
                     If Not selIndex - 3 < 0 Then
-                        Me.lvTVShowGeneralMediaListSorting.TopItem = Me.lvTVShowGeneralMediaListSorting.Items(selIndex - 3)
+                        Me.lvTVGeneralEpisodeListSorting.TopItem = Me.lvTVGeneralEpisodeListSorting.Items(selIndex - 3)
                     End If
-                    Me.lvTVShowGeneralMediaListSorting.Items(selIndex - 1).Selected = True
-                    Me.lvTVShowGeneralMediaListSorting.ResumeLayout()
+                    Me.lvTVGeneralEpisodeListSorting.Items(selIndex - 1).Selected = True
+                    Me.lvTVGeneralEpisodeListSorting.ResumeLayout()
                 End If
 
                 Me.SetApplyButton(True)
-                Me.lvTVShowGeneralMediaListSorting.Focus()
+                Me.lvTVGeneralEpisodeListSorting.Focus()
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnTVGeneralSeasonListSortingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralSeasonListSortingUp.Click
+        Try
+            If Me.lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 AndAlso Not Me.lvTVGeneralSeasonListSorting.SelectedItems(0).Index = 0 Then
+                Dim selItem As Settings.ListSorting = Me.TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
+
+                If Not IsNothing(selItem) Then
+                    Me.lvTVGeneralSeasonListSorting.SuspendLayout()
+                    Dim iIndex As Integer = Me.TVGeneralSeasonListSorting.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvTVGeneralSeasonListSorting.SelectedIndices(0)
+                    Me.TVGeneralSeasonListSorting.Remove(selItem)
+                    Me.TVGeneralSeasonListSorting.Insert(iIndex - 1, selItem)
+
+                    Me.RenumberTVSeasonGeneralMediaListSorting()
+                    Me.LoadTVGeneralSeasonListSorting()
+
+                    If Not selIndex - 3 < 0 Then
+                        Me.lvTVGeneralSeasonListSorting.TopItem = Me.lvTVGeneralSeasonListSorting.Items(selIndex - 3)
+                    End If
+                    Me.lvTVGeneralSeasonListSorting.Items(selIndex - 1).Selected = True
+                    Me.lvTVGeneralSeasonListSorting.ResumeLayout()
+                End If
+
+                Me.SetApplyButton(True)
+                Me.lvTVGeneralSeasonListSorting.Focus()
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnTVGeneralShowListSortingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralShowListSortingUp.Click
+        Try
+            If Me.lvTVGeneralShowListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralShowListSorting.SelectedItems.Count > 0 AndAlso Not Me.lvTVGeneralShowListSorting.SelectedItems(0).Index = 0 Then
+                Dim selItem As Settings.ListSorting = Me.TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralShowListSorting.SelectedItems(0).Text))
+
+                If Not IsNothing(selItem) Then
+                    Me.lvTVGeneralShowListSorting.SuspendLayout()
+                    Dim iIndex As Integer = Me.TVGeneralShowListSorting.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvTVGeneralShowListSorting.SelectedIndices(0)
+                    Me.TVGeneralShowListSorting.Remove(selItem)
+                    Me.TVGeneralShowListSorting.Insert(iIndex - 1, selItem)
+
+                    Me.RenumberTVShowGeneralMediaListSorting()
+                    Me.LoadTVGeneralShowListSorting()
+
+                    If Not selIndex - 3 < 0 Then
+                        Me.lvTVGeneralShowListSorting.TopItem = Me.lvTVGeneralShowListSorting.Items(selIndex - 3)
+                    End If
+                    Me.lvTVGeneralShowListSorting.Items(selIndex - 1).Selected = True
+                    Me.lvTVGeneralShowListSorting.ResumeLayout()
+                End If
+
+                Me.SetApplyButton(True)
+                Me.lvTVGeneralShowListSorting.Focus()
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1236,30 +1296,90 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVShowGeneralMediaListSortingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowGeneralMediaListSortingDown.Click
+    Private Sub btnTVGeneralEpisodeListSortingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralEpisodeListSortingDown.Click
         Try
-            If Me.lvTVShowGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvTVShowGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Me.lvTVShowGeneralMediaListSorting.SelectedItems(0).Index < (Me.lvTVShowGeneralMediaListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = Me.TVShowGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVShowGeneralMediaListSorting.SelectedItems(0).Text))
+            If Me.lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 AndAlso Me.lvTVGeneralEpisodeListSorting.SelectedItems(0).Index < (Me.lvTVGeneralEpisodeListSorting.Items.Count - 1) Then
+                Dim selItem As Settings.ListSorting = Me.TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
 
                 If Not IsNothing(selItem) Then
-                    Me.lvTVShowGeneralMediaListSorting.SuspendLayout()
-                    Dim iIndex As Integer = Me.TVShowGeneralMediaListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = Me.lvTVShowGeneralMediaListSorting.SelectedIndices(0)
-                    Me.TVShowGeneralMediaListSorting.Remove(selItem)
-                    Me.TVShowGeneralMediaListSorting.Insert(iIndex + 1, selItem)
+                    Me.lvTVGeneralEpisodeListSorting.SuspendLayout()
+                    Dim iIndex As Integer = Me.TVGeneralEpisodeListSorting.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvTVGeneralEpisodeListSorting.SelectedIndices(0)
+                    Me.TVGeneralEpisodeListSorting.Remove(selItem)
+                    Me.TVGeneralEpisodeListSorting.Insert(iIndex + 1, selItem)
 
-                    Me.RenumberTVShowGeneralMediaListSorting()
-                    Me.LoadTVShowGeneralMediaListSorting()
+                    Me.RenumberTVEpisodeGeneralMediaListSorting()
+                    Me.LoadTVGeneralEpisodeListSorting()
 
                     If Not selIndex - 2 < 0 Then
-                        Me.lvTVShowGeneralMediaListSorting.TopItem = Me.lvTVShowGeneralMediaListSorting.Items(selIndex - 2)
+                        Me.lvTVGeneralEpisodeListSorting.TopItem = Me.lvTVGeneralEpisodeListSorting.Items(selIndex - 2)
                     End If
-                    Me.lvTVShowGeneralMediaListSorting.Items(selIndex + 1).Selected = True
-                    Me.lvTVShowGeneralMediaListSorting.ResumeLayout()
+                    Me.lvTVGeneralEpisodeListSorting.Items(selIndex + 1).Selected = True
+                    Me.lvTVGeneralEpisodeListSorting.ResumeLayout()
                 End If
 
                 Me.SetApplyButton(True)
-                Me.lvTVShowGeneralMediaListSorting.Focus()
+                Me.lvTVGeneralEpisodeListSorting.Focus()
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnTVGeneralSeasonListSortingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralSeasonListSortingDown.Click
+        Try
+            If Me.lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 AndAlso Me.lvTVGeneralSeasonListSorting.SelectedItems(0).Index < (Me.lvTVGeneralSeasonListSorting.Items.Count - 1) Then
+                Dim selItem As Settings.ListSorting = Me.TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
+
+                If Not IsNothing(selItem) Then
+                    Me.lvTVGeneralSeasonListSorting.SuspendLayout()
+                    Dim iIndex As Integer = Me.TVGeneralSeasonListSorting.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvTVGeneralSeasonListSorting.SelectedIndices(0)
+                    Me.TVGeneralSeasonListSorting.Remove(selItem)
+                    Me.TVGeneralSeasonListSorting.Insert(iIndex + 1, selItem)
+
+                    Me.RenumberTVSeasonGeneralMediaListSorting()
+                    Me.LoadTVGeneralSeasonListSorting()
+
+                    If Not selIndex - 2 < 0 Then
+                        Me.lvTVGeneralSeasonListSorting.TopItem = Me.lvTVGeneralSeasonListSorting.Items(selIndex - 2)
+                    End If
+                    Me.lvTVGeneralSeasonListSorting.Items(selIndex + 1).Selected = True
+                    Me.lvTVGeneralSeasonListSorting.ResumeLayout()
+                End If
+
+                Me.SetApplyButton(True)
+                Me.lvTVGeneralSeasonListSorting.Focus()
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnTVGeneralShowListSortingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralShowListSortingDown.Click
+        Try
+            If Me.lvTVGeneralShowListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralShowListSorting.SelectedItems.Count > 0 AndAlso Me.lvTVGeneralShowListSorting.SelectedItems(0).Index < (Me.lvTVGeneralShowListSorting.Items.Count - 1) Then
+                Dim selItem As Settings.ListSorting = Me.TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralShowListSorting.SelectedItems(0).Text))
+
+                If Not IsNothing(selItem) Then
+                    Me.lvTVGeneralShowListSorting.SuspendLayout()
+                    Dim iIndex As Integer = Me.TVGeneralShowListSorting.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvTVGeneralShowListSorting.SelectedIndices(0)
+                    Me.TVGeneralShowListSorting.Remove(selItem)
+                    Me.TVGeneralShowListSorting.Insert(iIndex + 1, selItem)
+
+                    Me.RenumberTVShowGeneralMediaListSorting()
+                    Me.LoadTVGeneralShowListSorting()
+
+                    If Not selIndex - 2 < 0 Then
+                        Me.lvTVGeneralShowListSorting.TopItem = Me.lvTVGeneralShowListSorting.Items(selIndex - 2)
+                    End If
+                    Me.lvTVGeneralShowListSorting.Items(selIndex + 1).Selected = True
+                    Me.lvTVGeneralShowListSorting.ResumeLayout()
+                End If
+
+                Me.SetApplyButton(True)
+                Me.lvTVGeneralShowListSorting.Focus()
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1310,25 +1430,69 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub lvTVShowGeneralMediaListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvTVShowGeneralMediaListSorting.MouseDoubleClick
-        If Me.lvTVShowGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvTVShowGeneralMediaListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = Me.TVShowGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVShowGeneralMediaListSorting.SelectedItems(0).Text))
+    Private Sub lvTVGeneralEpisodeListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvTVGeneralEpisodeListSorting.MouseDoubleClick
+        If Me.lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 Then
+            Dim selItem As Settings.ListSorting = Me.TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
 
             If Not IsNothing(selItem) Then
-                Me.lvTVShowGeneralMediaListSorting.SuspendLayout()
+                Me.lvTVGeneralEpisodeListSorting.SuspendLayout()
                 selItem.Hide = Not selItem.Hide
-                Dim topIndex As Integer = Me.lvTVShowGeneralMediaListSorting.TopItem.Index
-                Dim selIndex As Integer = Me.lvTVShowGeneralMediaListSorting.SelectedIndices(0)
+                Dim topIndex As Integer = Me.lvTVGeneralEpisodeListSorting.TopItem.Index
+                Dim selIndex As Integer = Me.lvTVGeneralEpisodeListSorting.SelectedIndices(0)
 
-                Me.LoadTVShowGeneralMediaListSorting()
+                Me.LoadTVGeneralEpisodeListSorting()
 
-                Me.lvTVShowGeneralMediaListSorting.TopItem = Me.lvTVShowGeneralMediaListSorting.Items(topIndex)
-                Me.lvTVShowGeneralMediaListSorting.Items(selIndex).Selected = True
-                Me.lvTVShowGeneralMediaListSorting.ResumeLayout()
+                Me.lvTVGeneralEpisodeListSorting.TopItem = Me.lvTVGeneralEpisodeListSorting.Items(topIndex)
+                Me.lvTVGeneralEpisodeListSorting.Items(selIndex).Selected = True
+                Me.lvTVGeneralEpisodeListSorting.ResumeLayout()
             End If
 
             Me.SetApplyButton(True)
-            Me.lvTVShowGeneralMediaListSorting.Focus()
+            Me.lvTVGeneralEpisodeListSorting.Focus()
+        End If
+    End Sub
+
+    Private Sub lvTVGeneralSeasonListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvTVGeneralSeasonListSorting.MouseDoubleClick
+        If Me.lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 Then
+            Dim selItem As Settings.ListSorting = Me.TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
+
+            If Not IsNothing(selItem) Then
+                Me.lvTVGeneralSeasonListSorting.SuspendLayout()
+                selItem.Hide = Not selItem.Hide
+                Dim topIndex As Integer = Me.lvTVGeneralSeasonListSorting.TopItem.Index
+                Dim selIndex As Integer = Me.lvTVGeneralSeasonListSorting.SelectedIndices(0)
+
+                Me.LoadTVGeneralSeasonListSorting()
+
+                Me.lvTVGeneralSeasonListSorting.TopItem = Me.lvTVGeneralSeasonListSorting.Items(topIndex)
+                Me.lvTVGeneralSeasonListSorting.Items(selIndex).Selected = True
+                Me.lvTVGeneralSeasonListSorting.ResumeLayout()
+            End If
+
+            Me.SetApplyButton(True)
+            Me.lvTVGeneralSeasonListSorting.Focus()
+        End If
+    End Sub
+
+    Private Sub lvTVGeneralShowListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvTVGeneralShowListSorting.MouseDoubleClick
+        If Me.lvTVGeneralShowListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralShowListSorting.SelectedItems.Count > 0 Then
+            Dim selItem As Settings.ListSorting = Me.TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralShowListSorting.SelectedItems(0).Text))
+
+            If Not IsNothing(selItem) Then
+                Me.lvTVGeneralShowListSorting.SuspendLayout()
+                selItem.Hide = Not selItem.Hide
+                Dim topIndex As Integer = Me.lvTVGeneralShowListSorting.TopItem.Index
+                Dim selIndex As Integer = Me.lvTVGeneralShowListSorting.SelectedIndices(0)
+
+                Me.LoadTVGeneralShowListSorting()
+
+                Me.lvTVGeneralShowListSorting.TopItem = Me.lvTVGeneralShowListSorting.Items(topIndex)
+                Me.lvTVGeneralShowListSorting.Items(selIndex).Selected = True
+                Me.lvTVGeneralShowListSorting.ResumeLayout()
+            End If
+
+            Me.SetApplyButton(True)
+            Me.lvTVGeneralShowListSorting.Focus()
         End If
     End Sub
 
@@ -1417,11 +1581,27 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub btnTVShowGeneralMediaListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowGeneralMediaListSortingReset.Click
+    Private Sub btnTVEpisodeGeneralMediaListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralEpisodeListSortingReset.Click
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeListSorting, True)
+        Me.TVGeneralEpisodeListSorting.Clear()
+        Me.TVGeneralEpisodeListSorting.AddRange(Master.eSettings.TVGeneralEpisodeListSorting)
+        Me.LoadTVGeneralEpisodeListSorting()
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub btnTVSeasonGeneralMediaListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralSeasonListSortingReset.Click
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSeasonListSorting, True)
+        Me.TVGeneralSeasonListSorting.Clear()
+        Me.TVGeneralSeasonListSorting.AddRange(Master.eSettings.TVGeneralSeasonListSorting)
+        Me.LoadTVGeneralSeasonListSorting()
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub btnTVGeneralShowListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralShowListSortingReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowListSorting, True)
-        Me.TVShowGeneralMediaListSorting.Clear()
-        Me.TVShowGeneralMediaListSorting.AddRange(Master.eSettings.TVShowGeneralMediaListSorting)
-        Me.LoadTVShowGeneralMediaListSorting()
+        Me.TVGeneralShowListSorting.Clear()
+        Me.TVGeneralShowListSorting.AddRange(Master.eSettings.TVGeneralShowListSorting)
+        Me.LoadTVGeneralShowListSorting()
         Me.SetApplyButton(True)
     End Sub
 
@@ -3661,14 +3841,14 @@ Public Class dlgSettings
                 Me.MovieSetGeneralMediaListSorting.AddRange(.MovieSetGeneralMediaListSorting)
                 Me.LoadMovieSetGeneralMediaListSorting()
 
-                Me.TVEpisodeGeneralMediaListSorting.AddRange(.TVEpisodeGeneralMediaListSorting)
-                Me.LoadTVEpisodeGeneralMediaListSorting()
+                Me.TVGeneralEpisodeListSorting.AddRange(.TVGeneralEpisodeListSorting)
+                Me.LoadTVGeneralEpisodeListSorting()
 
-                Me.TVSeasonGeneralMediaListSorting.AddRange(.TVSeasonGeneralMediaListSorting)
-                Me.LoadTVSeasonGeneralMediaListSorting()
+                Me.TVGeneralSeasonListSorting.AddRange(.TVGeneralSeasonListSorting)
+                Me.LoadTVGeneralSeasonListSorting()
 
-                Me.TVShowGeneralMediaListSorting.AddRange(.TVShowGeneralMediaListSorting)
-                Me.LoadTVShowGeneralMediaListSorting()
+                Me.TVGeneralShowListSorting.AddRange(.TVGeneralShowListSorting)
+                Me.LoadTVGeneralShowListSorting()
 
                 Me.TVMeta.AddRange(.TVMetadataPerFileType)
                 Me.LoadTVMetadata()
@@ -4170,39 +4350,39 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub LoadTVEpisodeGeneralMediaListSorting()
-        'Dim lvItem As ListViewItem
-        'Me.lvTVEpisodesGeneralMediaListSorting.Items.Clear()
-        'For Each rColumn As Settings.ListSorting In Me.TVEpisodeGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
-        '    lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
-        '    lvItem.SubItems.Add(rColumn.Column)
-        '    lvItem.SubItems.Add(rColumn.Label)
-        '    lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-        '    Me.lvTVEpisodesGeneralMediaListSorting.Items.Add(lvItem)
-        'Next
-    End Sub
-
-    Private Sub LoadTVSeasonGeneralMediaListSorting()
-        'Dim lvItem As ListViewItem
-        'Me.lvTVSeasonGeneralMediaListSorting.Items.Clear()
-        'For Each rColumn As Settings.ListSorting In Me.TVSeasonGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
-        '    lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
-        '    lvItem.SubItems.Add(rColumn.Column)
-        '    lvItem.SubItems.Add(rColumn.Label)
-        '    lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-        '    Me.lvTVSeasonGeneralMediaListSorting.Items.Add(lvItem)
-        'Next
-    End Sub
-
-    Private Sub LoadTVShowGeneralMediaListSorting()
+    Private Sub LoadTVGeneralEpisodeListSorting()
         Dim lvItem As ListViewItem
-        Me.lvTVShowGeneralMediaListSorting.Items.Clear()
-        For Each rColumn As Settings.ListSorting In Me.TVShowGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
+        Me.lvTVGeneralEpisodeListSorting.Items.Clear()
+        For Each rColumn As Settings.ListSorting In Me.TVGeneralEpisodeListSorting.OrderBy(Function(f) f.DisplayIndex)
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)
             lvItem.SubItems.Add(rColumn.Label)
             lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            Me.lvTVShowGeneralMediaListSorting.Items.Add(lvItem)
+            Me.lvTVGeneralEpisodeListSorting.Items.Add(lvItem)
+        Next
+    End Sub
+
+    Private Sub LoadTVGeneralSeasonListSorting()
+        Dim lvItem As ListViewItem
+        Me.lvTVGeneralSeasonListSorting.Items.Clear()
+        For Each rColumn As Settings.ListSorting In Me.TVGeneralSeasonListSorting.OrderBy(Function(f) f.DisplayIndex)
+            lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
+            lvItem.SubItems.Add(rColumn.Column)
+            lvItem.SubItems.Add(rColumn.Label)
+            lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            Me.lvTVGeneralSeasonListSorting.Items.Add(lvItem)
+        Next
+    End Sub
+
+    Private Sub LoadTVGeneralShowListSorting()
+        Dim lvItem As ListViewItem
+        Me.lvTVGeneralShowListSorting.Items.Clear()
+        For Each rColumn As Settings.ListSorting In Me.TVGeneralShowListSorting.OrderBy(Function(f) f.DisplayIndex)
+            lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
+            lvItem.SubItems.Add(rColumn.Column)
+            lvItem.SubItems.Add(rColumn.Label)
+            lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            Me.lvTVGeneralShowListSorting.Items.Add(lvItem)
         Next
     End Sub
 
@@ -4904,20 +5084,20 @@ Public Class dlgSettings
     End Sub
 
     Private Sub RenumberTVEpisodeGeneralMediaListSorting()
-        For i As Integer = 0 To Me.TVEpisodeGeneralMediaListSorting.Count - 1
-            Me.TVEpisodeGeneralMediaListSorting(i).DisplayIndex = i
+        For i As Integer = 0 To Me.TVGeneralEpisodeListSorting.Count - 1
+            Me.TVGeneralEpisodeListSorting(i).DisplayIndex = i
         Next
     End Sub
 
     Private Sub RenumberTVSeasonGeneralMediaListSorting()
-        For i As Integer = 0 To Me.TVSeasonGeneralMediaListSorting.Count - 1
-            Me.TVSeasonGeneralMediaListSorting(i).DisplayIndex = i
+        For i As Integer = 0 To Me.TVGeneralSeasonListSorting.Count - 1
+            Me.TVGeneralSeasonListSorting(i).DisplayIndex = i
         Next
     End Sub
 
     Private Sub RenumberTVShowGeneralMediaListSorting()
-        For i As Integer = 0 To Me.TVShowGeneralMediaListSorting.Count - 1
-            Me.TVShowGeneralMediaListSorting(i).DisplayIndex = i
+        For i As Integer = 0 To Me.TVGeneralShowListSorting.Count - 1
+            Me.TVGeneralShowListSorting(i).DisplayIndex = i
         Next
     End Sub
 
@@ -5202,14 +5382,14 @@ Public Class dlgSettings
                 .TVEpisodeFilterCustom.Clear()
                 .TVEpisodeFilterCustom.AddRange(Me.lstTVEpisodeFilter.Items.OfType(Of String).ToList)
                 If .TVEpisodeFilterCustom.Count <= 0 Then .TVEpisodeFilterCustomIsEmpty = True
-                .TVEpisodeGeneralMediaListSorting.Clear()
-                .TVEpisodeGeneralMediaListSorting.AddRange(Me.TVEpisodeGeneralMediaListSorting)
                 .TVEpisodeNoFilter = Me.chkTVEpisodeNoFilter.Checked
                 .TVEpisodePosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVEpisodePosterHeight.Text), Convert.ToInt32(Me.txtTVEpisodePosterHeight.Text), 0)
                 .TVEpisodePosterOverwrite = Me.chkTVEpisodePosterOverwrite.Checked
                 .TVEpisodePosterResize = Me.chkTVEpisodePosterResize.Checked
                 .TVEpisodePosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVEpisodePosterWidth.Text), Convert.ToInt32(Me.txtTVEpisodePosterWidth.Text), 0)
                 .TVEpisodeProperCase = Me.chkTVEpisodeProperCase.Checked
+                .TVGeneralEpisodeListSorting.Clear()
+                .TVGeneralEpisodeListSorting.AddRange(Me.TVGeneralEpisodeListSorting)
                 .TVGeneralFlagLang = If(Me.cbTVLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cbTVLanguageOverlay.Text)
                 .TVGeneralIgnoreLastScan = Me.chkTVGeneralIgnoreLastScan.Checked
                 'cocotus, 2014/05/21 Fixed: If cbTVGeneralLang.Text is empty it will crash here -> no AdvancedSettings.xml will be built/saved!!(happens when user has not yet set TVLanguage via Fetch language button!)
@@ -5219,6 +5399,10 @@ Public Class dlgSettings
                 End If
                 .TVGeneralMarkNewEpisodes = Me.chkTVGeneralMarkNewEpisodes.Checked
                 .TVGeneralMarkNewShows = Me.chkTVGeneralMarkNewShows.Checked
+                .TVGeneralSeasonListSorting.Clear()
+                .TVGeneralSeasonListSorting.AddRange(Me.TVGeneralSeasonListSorting)
+                .TVGeneralShowListSorting.Clear()
+                .TVGeneralShowListSorting.AddRange(Me.TVGeneralShowListSorting)
                 .TVLockEpisodePlot = Me.chkTVLockEpisodePlot.Checked
                 .TVLockEpisodeRating = Me.chkTVLockEpisodeRating.Checked
                 .TVLockEpisodeRuntime = Me.chkTVLockEpisodeRuntime.Checked
@@ -5279,8 +5463,6 @@ Public Class dlgSettings
                 .TVSeasonFanartPrefSize = DirectCast(Me.cbTVSeasonFanartPrefSize.SelectedIndex, Enums.TVFanartSize)
                 .TVSeasonFanartResize = Me.chkTVSeasonFanartResize.Checked
                 .TVSeasonFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVSeasonFanartWidth.Text), Convert.ToInt32(Me.txtTVSeasonFanartWidth.Text), 0)
-                .TVSeasonGeneralMediaListSorting.Clear()
-                .TVSeasonGeneralMediaListSorting.AddRange(Me.TVSeasonGeneralMediaListSorting)
                 .TVSeasonLandscapeOverwrite = Me.chkTVSeasonLandscapeOverwrite.Checked
                 .TVSeasonPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonPosterHeight.Text), Convert.ToInt32(Me.txtTVSeasonPosterHeight.Text), 0)
                 .TVSeasonPosterOverwrite = Me.chkTVSeasonPosterOverwrite.Checked
@@ -5311,8 +5493,6 @@ Public Class dlgSettings
                 .TVShowFilterCustom.Clear()
                 .TVShowFilterCustom.AddRange(Me.lstTVShowFilter.Items.OfType(Of String).ToList)
                 If .TVShowFilterCustom.Count <= 0 Then .TVShowFilterCustomIsEmpty = True
-                .TVShowGeneralMediaListSorting.Clear()
-                .TVShowGeneralMediaListSorting.AddRange(Me.TVShowGeneralMediaListSorting)
                 .TVShowLandscapeOverwrite = Me.chkTVShowLandscapeOverwrite.Checked
                 .TVShowPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVShowPosterHeight.Text), Convert.ToInt32(Me.txtTVShowPosterHeight.Text), 0)
                 .TVShowPosterOverwrite = Me.chkTVShowPosterOverwrite.Checked
@@ -5835,9 +6015,9 @@ Public Class dlgSettings
         Dim strColumn As String = Master.eLang.GetString(1331, "Column")
         Me.colMovieGeneralMediaListSortingLabel.Text = strColumn
         Me.colMovieSetGeneralMediaListSortingLabel.Text = strColumn
-        'Me.colTVEpisodeGeneralMediaListSortingLabel.Text = strColumn
-        'Me.colTVSeasonGeneralMediaListSortingLabel.Text = strColumn
-        Me.colTVShowGeneralMediaListSortingLabel.Text = strColumn
+        Me.colTVGeneralEpisodeListSortingLabel.Text = strColumn
+        Me.colTVGeneralSeasonListSortingLabel.Text = strColumn
+        Me.colTVGeneralShowListSortingLabel.Text = strColumn
 
         'Country
         Dim strCountry As String = Master.eLang.GetString(301, "Country")
@@ -5896,6 +6076,10 @@ Public Class dlgSettings
         Dim strEpisodeNR As String = Master.eLang.GetString(660, "Episode #")
         Me.lblTVScraperGlobalEpisode.Text = strEpisodeNR
 
+        'Episode List Sorting
+        Dim strEpisodeListSorting As String = Master.eLang.GetString(494, "Episode List Sorting")
+        Me.gbTVGeneralEpisodeListSorting.Text = strEpisodeListSorting
+
         'Episodes
         Dim strEpisodes As String = Master.eLang.GetString(682, "Episodes")
         Me.lblTVScraperGlobalHeaderEpisodes.Text = strEpisodes
@@ -5951,9 +6135,9 @@ Public Class dlgSettings
         Dim strHide As String = Master.eLang.GetString(465, "Hide")
         Me.colMovieGeneralMediaListSortingHide.Text = strHide
         Me.colMovieSetGeneralMediaListSortingHide.Text = strHide
-        'Me.colTVEpisodeGeneralMediaListSortingHide.Text = strHide
-        'Me.colTVSeasonGeneralMediaListSortingHide.Text = strHide
-        Me.colTVShowGeneralMediaListSortingHide.Text = strHide
+        Me.colTVGeneralEpisodeListSortingHide.Text = strHide
+        Me.colTVGeneralSeasonListSortingHide.Text = strHide
+        Me.colTVGeneralShowListSortingHide.Text = strHide
 
         'Landscape
         Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
@@ -6060,6 +6244,14 @@ Public Class dlgSettings
         'MPAA
         Dim strMPAA As String = Master.eLang.GetString(401, "MPAA")
         Me.lblMovieScraperGlobalMPAA.Text = strMPAA
+
+        'Movie List Sorting
+        Dim strMovieListSorting As String = Master.eLang.GetString(490, "Movie List Sorting")
+        Me.gbMovieGeneralMediaListSorting.Text = strMovieListSorting
+
+        'MovieSet List Sorting
+        Dim strMovieSetListSorting As String = Master.eLang.GetString(491, "MovieSet List Sorting")
+        Me.gbMovieSetGeneralMediaListSorting.Text = strMovieSetListSorting
 
         'NFO
         Dim strNFO As String = Master.eLang.GetString(150, "NFO")
@@ -6224,8 +6416,16 @@ Public Class dlgSettings
         Dim strSeasonNR As String = Master.eLang.GetString(659, "Season #")
         Me.lblTVScraperGlobalSeason.Text = strSeasonNR
 
+        'Season List Sorting
+        Dim strSeasonListSorting As String = Master.eLang.GetString(493, "Season List Sorting")
+        Me.gbTVGeneralSeasonListSorting.Text = strSeasonListSorting
+
         'Seasons
         Dim strSeasons As String = Master.eLang.GetString(681, "Seasons")
+
+        'Show List Sorting
+        Dim strShowListSorting As String = Master.eLang.GetString(492, "Show List Sorting")
+        Me.gbTVGeneralShowListSorting.Text = strShowListSorting
 
         'Shows
         Dim strShows As String = Master.eLang.GetString(680, "Shows")

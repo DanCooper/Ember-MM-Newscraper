@@ -316,7 +316,6 @@ Partial Public Class clsXMLSettings
     Private _tvepisodefanartwidth As Integer
     Private _tvepisodefiltercustom As List(Of String)
     Private _tvepisodefiltercustomisempty As Boolean
-    Private _tvepisodegeneralmedialistsorting As List(Of ListSorting)
     Private _tvepisodemissingfanart As Boolean
     Private _tvepisodemissingnfo As Boolean
     Private _tvepisodemissingposter As Boolean
@@ -326,12 +325,15 @@ Partial Public Class clsXMLSettings
     Private _tvepisodeposterresize As Boolean
     Private _tvepisodeposterwidth As Integer
     Private _tvepisodepropercase As Boolean
+    Private _tvgeneralepisodelistsorting As List(Of ListSorting)
     Private _tvgeneralflaglang As String
     Private _tvgeneralignorelastscan As Boolean
     Private _tvgenerallanguage As String
     Private _tvgenerallanguages As clsXMLTVDBLanguages
     Private _tvgeneralmarknewepisodes As Boolean
     Private _tvgeneralmarknewshows As Boolean
+    Private _tvgeneralseasonlistsorting As List(Of ListSorting)
+    Private _tvgeneralshowlistsorting As List(Of ListSorting)
     Private _tvlockepisodeplot As Boolean
     Private _tvlockepisoderating As Boolean
     Private _tvlockepisoderuntime As Boolean
@@ -389,7 +391,6 @@ Partial Public Class clsXMLSettings
     Private _tvseasonfanartprefsize As Enums.TVFanartSize
     Private _tvseasonfanartresize As Boolean
     Private _tvseasonfanartwidth As Integer
-    Private _tvseasongeneralmedialistsorting As List(Of ListSorting)
     Private _tvseasonlandscapeoverwrite As Boolean
     Private _tvseasonmissingbanner As Boolean
     Private _tvseasonmissingfanart As Boolean
@@ -425,7 +426,6 @@ Partial Public Class clsXMLSettings
     Private _tvshowfanartwidth As Integer
     Private _tvshowfiltercustom As List(Of String)
     Private _tvshowfiltercustomisempty As Boolean
-    Private _tvshowgeneralmedialistsorting As List(Of ListSorting)
     Private _tvshowlandscapeoverwrite As Boolean
     Private _tvshowmissingbanner As Boolean
     Private _tvshowmissingcharacterart As Boolean
@@ -4405,30 +4405,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVEpisodeGeneralMediaListSorting() As List(Of ListSorting)
+    Public Property TVGeneralEpisodeListSorting() As List(Of ListSorting)
         Get
-            Return Me._tvepisodegeneralmedialistsorting
+            Return Me._tvgeneralepisodelistsorting
         End Get
         Set(ByVal value As List(Of ListSorting))
-            Me._tvepisodegeneralmedialistsorting = value
+            Me._tvgeneralepisodelistsorting = value
         End Set
     End Property
 
-    Public Property TVSeasonGeneralMediaListSorting() As List(Of ListSorting)
+    Public Property TVGeneralSeasonListSorting() As List(Of ListSorting)
         Get
-            Return Me._tvseasongeneralmedialistsorting
+            Return Me._tvgeneralseasonlistsorting
         End Get
         Set(ByVal value As List(Of ListSorting))
-            Me._tvseasongeneralmedialistsorting = value
+            Me._tvgeneralseasonlistsorting = value
         End Set
     End Property
 
-    Public Property TVShowGeneralMediaListSorting() As List(Of ListSorting)
+    Public Property TVGeneralShowListSorting() As List(Of ListSorting)
         Get
-            Return Me._tvshowgeneralmedialistsorting
+            Return Me._tvgeneralshowlistsorting
         End Get
         Set(ByVal value As List(Of ListSorting))
-            Me._tvshowgeneralmedialistsorting = value
+            Me._tvgeneralshowlistsorting = value
         End Set
     End Property
 

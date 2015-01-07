@@ -320,7 +320,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         Me.Label1.Text = Master.eLang.GetString(1232, "MovieSet Search Results")
         Me.chkManual.Text = Master.eLang.GetString(926, "Manual TMDB Entry:")
         Me.btnVerify.Text = Master.eLang.GetString(848, "Verify")
-        Me.lblTMDBHeader.Text = Master.eLang.GetString(933, "TMDB ID:")
+        Me.lblTMDBHeader.Text = String.Concat(Master.eLang.GetString(933, "TMDB ID"), ":")
         Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
         Me.Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
     End Sub

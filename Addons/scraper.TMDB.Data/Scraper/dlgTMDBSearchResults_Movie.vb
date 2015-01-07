@@ -354,7 +354,7 @@ Public Class dlgTMDBSearchResults_Movie
         Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
         Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
         Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblTMDBHeader.Text = Master.eLang.GetString(933, "TMDB ID:")
+        Me.lblTMDBHeader.Text = String.Concat(Master.eLang.GetString(933, "TMDB ID"), ":")
         Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
         Me.Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
     End Sub

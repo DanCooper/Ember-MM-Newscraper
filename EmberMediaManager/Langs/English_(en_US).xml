@@ -931,7 +931,7 @@
   <string id="930">A Trailer of your preferred size could not be found. Please choose another.</string>
   <string id="931">Open In Browser</string>
   <string id="932">TVDB API Key</string>
-  <string id="933">TMDB ID:</string>
+  <string id="933">TMDB ID</string>
   <string id="934">Searching TMDB...</string>
   <string id="935">Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again.</string>
   <string id="936">Get your API Key from www.themoviedb.org</string>
