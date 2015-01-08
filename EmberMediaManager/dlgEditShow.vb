@@ -1111,13 +1111,17 @@ Public Class dlgEditShow
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Try
-            For Each Pan In Me.pnlEFImage
-                CType(Pan.Tag, Images).Dispose()
-            Next
-            For Each Pan In Me.pbEFImage
-                CType(Pan.Tag, Images).Dispose()
-                Pan.Image.Dispose()
-            Next
+            If Not IsNothing(Me.pnlEFImage) Then
+                For Each Pan In Me.pnlEFImage
+                    CType(Pan.Tag, Images).Dispose()
+                Next
+            End If
+            If Not IsNothing(Me.pbEFImage) Then
+                For Each Pan In Me.pbEFImage
+                    CType(Pan.Tag, Images).Dispose()
+                    Pan.Image.Dispose()
+                Next
+            End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -1248,6 +1252,7 @@ Public Class dlgEditShow
     Private Sub FillInfo()
         With Me
             .cbOrdering.SelectedIndex = Master.currShow.Ordering
+            .cbEpisodeSorting.SelectedIndex = Master.currShow.EpisodeSorting
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then .txtTitle.Text = Master.currShow.TVShow.Title
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Plot) Then .txtPlot.Text = Master.currShow.TVShow.Plot
@@ -2187,6 +2192,7 @@ Public Class dlgEditShow
         Try
             With Me
                 Master.currShow.Ordering = DirectCast(.cbOrdering.SelectedIndex, Enums.Ordering)
+                Master.currShow.EpisodeSorting = DirectCast(.cbEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
 
                 Master.currShow.TVShow.Title = .txtTitle.Text.Trim
                 Master.currShow.TVShow.Plot = .txtPlot.Text.Trim
@@ -2392,6 +2398,7 @@ Public Class dlgEditShow
         Me.colThumb.Text = Master.eLang.GetString(234, "Thumb")
         Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
         Me.lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
+        Me.lblEpisodeSorting.Text = String.Concat(Master.eLang.GetString(364, "Show Episodes by"), ":")
         Me.lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
         Me.lblOrdering.Text = Master.eLang.GetString(739, "Episode Ordering:")
         Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
@@ -2418,8 +2425,11 @@ Public Class dlgEditShow
         Me.tpShowLandscape.Text = Master.eLang.GetString(1035, "Landscape")
         Me.tpShowPoster.Text = Master.eLang.GetString(148, "Poster")
 
+        Me.cbOrdering.Items.Clear()
         Me.cbOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(728, "Aired")})
 
+        Me.cbEpisodeSorting.Items.Clear()
+        Me.cbEpisodeSorting.Items.AddRange(New String() {Master.eLang.GetString(755, "Episode #"), Master.eLang.GetString(728, "Aired")})
     End Sub
 
 #End Region 'Methods

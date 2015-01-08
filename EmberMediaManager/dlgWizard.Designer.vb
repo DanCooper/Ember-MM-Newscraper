@@ -460,6 +460,8 @@ Partial Class dlgWizard
         Me.lblMovieSetBannerExpertParent = New System.Windows.Forms.Label()
         Me.chkMovieSetUseExpert = New System.Windows.Forms.CheckBox()
         Me.Label48 = New System.Windows.Forms.Label()
+        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.tblMovieSettings.SuspendLayout()
@@ -3778,7 +3780,7 @@ Partial Class dlgWizard
         '
         'lvTVSources
         '
-        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
+        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7})
         Me.lvTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvTVSources.FullRowSelect = True
         Me.lvTVSources.HideSelection = False
@@ -5945,6 +5947,14 @@ Partial Class dlgWizard
         Me.Label48.Text = resources.GetString("Label48.Text")
         Me.Label48.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Exclude"
+        '
+        'ColumnHeader7
+        '
+        Me.ColumnHeader7.Text = "Sorting"
+        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
@@ -6611,4 +6621,6 @@ End Sub
     Friend WithEvents chkTVUseBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxee As System.Windows.Forms.Label
     Friend WithEvents tpTVSourcesFileNamingExpert As System.Windows.Forms.TabPage
+    Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader
 End Class

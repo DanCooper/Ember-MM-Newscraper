@@ -988,7 +988,7 @@ Public Class dlgWizard
         Master.DB.LoadTVSourcesFromDB()
         lvTVSources.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT ID, Name, Path, LastScan, Language, Ordering FROM TVSources;"
+            SQLcommand.CommandText = "SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     lvItem = New ListViewItem(SQLreader("ID").ToString)
@@ -996,6 +996,8 @@ Public Class dlgWizard
                     lvItem.SubItems.Add(SQLreader("Path").ToString)
                     lvItem.SubItems.Add(Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = SQLreader("Language").ToString).name)
                     lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering).ToString)
+                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Exclude")), Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting).ToString)
                     tmppath = SQLreader("Path").ToString
                     lvTVSources.Items.Add(lvItem)
                 End While
@@ -1500,6 +1502,8 @@ Public Class dlgWizard
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
         Me.lvTVSources.Columns(3).Text = Master.eLang.GetString(610, "Language")
         Me.lvTVSources.Columns(4).Text = Master.eLang.GetString(1167, "Ordering")
+        Me.lvTVSources.Columns(5).Text = Master.eLang.GetString(264, "Exclude")
+        Me.lvTVSources.Columns(6).Text = "Sorting"
         Me.pnlWelcome.Location = New Point(166, 7)
         Me.pnlWelcome.Visible = True
         Me.pnlMovieSources.Visible = False

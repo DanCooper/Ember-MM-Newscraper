@@ -108,6 +108,10 @@ Public Class Scraper
         Return sObject.GetSingleEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .Options = Options})
     End Function
 
+    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
+        Return sObject.GetSingleEpisodeByAired(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .Aired = Aired, .showLang = Lang, .Ordering = Ordering, .Options = Options})
+    End Function
+
     Public Sub GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef RetImage As Images)
         sObject.GetSingleImage(New Structures.ScrapeInfo With {.ShowTitle = Title, .ShowID = ShowID, .TVDBID = TVDBID, .ImageType = Type, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .CurrentImage = CurrentImage}, RetImage)
     End Sub
@@ -124,8 +128,8 @@ Public Class Scraper
         sObject.SaveImages()
     End Sub
 
-    Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions)
-        sObject.ScrapeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
+    Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions)
+        sObject.ScrapeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .Aired = Aired, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
     End Sub
 
     Public Sub ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions)
@@ -462,6 +466,28 @@ Public Class Scraper
                 Else
                     DownloadSeries(sInfo)
                     tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
+                    If Not IsNothing(tEp) Then
+                        Return tEp
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Return New MediaContainers.EpisodeDetails
+        End Function
+
+        Public Function GetSingleEpisodeByAired(ByVal sInfo As Structures.ScrapeInfo) As MediaContainers.EpisodeDetails
+            Dim tEp As New MediaContainers.EpisodeDetails
+            Try
+
+                tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Aired = sInfo.Aired)
+
+                If Not IsNothing(tEp) Then
+                    Return tEp
+                Else
+                    DownloadSeries(sInfo)
+                    tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Aired = sInfo.Aired)
                     If Not IsNothing(tEp) Then
                         Return tEp
                     End If
@@ -1086,6 +1112,7 @@ Public Class Scraper
 
         Private Sub ShowFromXML(ByVal sInfo As Structures.ScrapeInfo, ByVal ImagesOnly As Boolean)
             Dim Actors As New List(Of MediaContainers.Person)
+            Dim eAired As String = String.Empty
             Dim sID As String = String.Empty
             Dim iEp As Integer = -1
             Dim iSeas As Integer = -1
@@ -1147,6 +1174,7 @@ Public Class Scraper
 
                                 Episode.ShowLanguage = sInfo.ShowLang
 
+                                eAired = Episode.TVEp.Aired
                                 iEp = Episode.TVEp.Episode
                                 iSeas = Episode.TVEp.Season
                                 sTitle = Episode.TVEp.Title
@@ -1174,12 +1202,24 @@ Public Class Scraper
                                     xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString) AndAlso Convert.ToInt32(CLng(e.Element("DVD_episodenumber").Value.ToString)) = iEp AndAlso Not IsNothing(e.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) AndAlso Convert.ToInt32(e.Element("DVD_season").Value) = iSeas)
                                 ElseIf tOrdering = Enums.Ordering.Absolute Then
                                     If iSeas = 1 Then
-                                        xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToInt32(e.Element("absolute_number").Value.ToString) = iEp)
+                                        If Not iEp = -999 Then
+                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToInt32(e.Element("absolute_number").Value.ToString) = iEp)
+                                        Else
+                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToString(e.Element("FirstAired").Value.ToString) = eAired)
+                                        End If
                                     Else
-                                        xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToInt32(e.Element("EpisodeNumber").Value.ToString) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
+                                        If Not iEp = -999 Then
+                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToInt32(e.Element("EpisodeNumber").Value.ToString) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
+                                        Else
+                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToString(e.Element("FirstAired").Value.ToString) = eAired)
+                                        End If
                                     End If
                                 Else
-                                    xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Convert.ToInt32(e.Element("EpisodeNumber").Value) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
+                                    If Not iEp = -999 Then
+                                        xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Convert.ToInt32(e.Element("EpisodeNumber").Value) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
+                                    Else
+                                        xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Convert.ToString(e.Element("FirstAired").Value) = eAired)
+                                    End If
                                 End If
 
                                 If IsNothing(xE) Then
@@ -1190,7 +1230,7 @@ Public Class Scraper
                                 If Not IsNothing(xE) Then
                                     With Episode.TVEp
                                         If sInfo.Options.bEpTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso Not String.IsNullOrEmpty(xE.Element("EpisodeName").Value) Then .Title = xE.Element("EpisodeName").Value
-                                        If byTitle Then
+                                        If byTitle OrElse .Episode = -999 Then
                                             If tOrdering = Enums.Ordering.DVD Then
                                                 If sInfo.Options.bEpSeason Then .Season = If(IsNothing(xE.Element("DVD_season")) OrElse String.IsNullOrEmpty(xE.Element("DVD_season").Value), 0, Convert.ToInt32(xE.Element("DVD_season").Value))
                                                 If sInfo.Options.bEpEpisode Then .Episode = If(IsNothing(xE.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(xE.Element("DVD_episodenumber").Value), 0, Convert.ToInt32(xE.Element("DVD_episodenumber").Value))
@@ -1203,8 +1243,8 @@ Public Class Scraper
                                             End If
                                         End If
                                         If Not IsNothing(xE.Element("airsafter_season")) AndAlso Not String.IsNullOrEmpty(xE.Element("airsafter_season").Value) Then
-                                            .DisplaySeason = Convert.ToInt32(xE.Element("airsafter_season").Value) + 1
-                                            .DisplayEpisode = 0
+                                            .DisplaySeason = Convert.ToInt32(xE.Element("airsafter_season").Value)
+                                            .DisplayEpisode = 4096
                                             .displaySEset = True
                                         End If
                                         If Not IsNothing(xE.Element("airsbefore_season")) AndAlso Not String.IsNullOrEmpty(xE.Element("airsbefore_season").Value) Then
@@ -1212,7 +1252,7 @@ Public Class Scraper
                                             .displaySEset = True
                                         End If
                                         If Not IsNothing(xE.Element("airsbefore_episode")) AndAlso Not String.IsNullOrEmpty(xE.Element("airsbefore_episode").Value) Then
-                                            .DisplayEpisode = Convert.ToInt32(CLng(xE.Element("airsbefore_episode").Value)) - 1
+                                            .DisplayEpisode = Convert.ToInt32(CLng(xE.Element("airsbefore_episode").Value))
                                             .displaySEset = True
                                         End If
                                         If sInfo.Options.bEpAired Then .Aired = If(IsNothing(xE.Element("FirstAired")), .Aired, xE.Element("FirstAired").Value)

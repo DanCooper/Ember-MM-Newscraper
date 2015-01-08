@@ -37,12 +37,14 @@ Partial Class dlgTVSource
         Me.tmrPathWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
         Me.pnlTVSource = New System.Windows.Forms.Panel()
+        Me.gbSourceOptions = New System.Windows.Forms.GroupBox()
+        Me.chkExclude = New System.Windows.Forms.CheckBox()
         Me.lblSourceLanguage = New System.Windows.Forms.Label()
         Me.lblSourceOrdering = New System.Windows.Forms.Label()
         Me.cbSourceOrdering = New System.Windows.Forms.ComboBox()
         Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
-        Me.gbSourceOptions = New System.Windows.Forms.GroupBox()
-        Me.chkExclude = New System.Windows.Forms.CheckBox()
+        Me.lblSourceEpisodeSorting = New System.Windows.Forms.Label()
+        Me.cbSourceEpisodeSorting = New System.Windows.Forms.ComboBox()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTVSource.SuspendLayout()
         Me.gbSourceOptions.SuspendLayout()
@@ -52,7 +54,7 @@ Partial Class dlgTVSource
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(283, 176)
+        Me.OK_Button.Location = New System.Drawing.Point(283, 195)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -62,7 +64,7 @@ Partial Class dlgTVSource
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(356, 176)
+        Me.Cancel_Button.Location = New System.Drawing.Point(356, 195)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -146,6 +148,8 @@ Partial Class dlgTVSource
         'pnlTVSource
         '
         Me.pnlTVSource.BackColor = System.Drawing.Color.White
+        Me.pnlTVSource.Controls.Add(Me.lblSourceEpisodeSorting)
+        Me.pnlTVSource.Controls.Add(Me.cbSourceEpisodeSorting)
         Me.pnlTVSource.Controls.Add(Me.gbSourceOptions)
         Me.pnlTVSource.Controls.Add(Me.lblSourceLanguage)
         Me.pnlTVSource.Controls.Add(Me.lblSourceOrdering)
@@ -159,8 +163,30 @@ Partial Class dlgTVSource
         Me.pnlTVSource.Controls.Add(Me.txtSourceName)
         Me.pnlTVSource.Location = New System.Drawing.Point(4, 4)
         Me.pnlTVSource.Name = "pnlTVSource"
-        Me.pnlTVSource.Size = New System.Drawing.Size(427, 160)
+        Me.pnlTVSource.Size = New System.Drawing.Size(427, 185)
         Me.pnlTVSource.TabIndex = 2
+        '
+        'gbSourceOptions
+        '
+        Me.gbSourceOptions.Controls.Add(Me.chkExclude)
+        Me.gbSourceOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSourceOptions.Location = New System.Drawing.Point(169, 8)
+        Me.gbSourceOptions.Name = "gbSourceOptions"
+        Me.gbSourceOptions.Size = New System.Drawing.Size(250, 53)
+        Me.gbSourceOptions.TabIndex = 13
+        Me.gbSourceOptions.TabStop = False
+        Me.gbSourceOptions.Text = "Source Options"
+        '
+        'chkExclude
+        '
+        Me.chkExclude.AutoSize = True
+        Me.chkExclude.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkExclude.Location = New System.Drawing.Point(6, 21)
+        Me.chkExclude.Name = "chkExclude"
+        Me.chkExclude.Size = New System.Drawing.Size(199, 17)
+        Me.chkExclude.TabIndex = 3
+        Me.chkExclude.Text = "Exclude path from library updates"
+        Me.chkExclude.UseVisualStyleBackColor = True
         '
         'lblSourceLanguage
         '
@@ -202,27 +228,26 @@ Partial Class dlgTVSource
         Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
         Me.cbSourceLanguage.TabIndex = 9
         '
-        'gbSourceOptions
+        'lblSourceEpisodeSorting
         '
-        Me.gbSourceOptions.Controls.Add(Me.chkExclude)
-        Me.gbSourceOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbSourceOptions.Location = New System.Drawing.Point(169, 8)
-        Me.gbSourceOptions.Name = "gbSourceOptions"
-        Me.gbSourceOptions.Size = New System.Drawing.Size(250, 53)
-        Me.gbSourceOptions.TabIndex = 13
-        Me.gbSourceOptions.TabStop = False
-        Me.gbSourceOptions.Text = "Source Options"
+        Me.lblSourceEpisodeSorting.AutoSize = True
+        Me.lblSourceEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.lblSourceEpisodeSorting.Location = New System.Drawing.Point(9, 154)
+        Me.lblSourceEpisodeSorting.Name = "lblSourceEpisodeSorting"
+        Me.lblSourceEpisodeSorting.Size = New System.Drawing.Size(104, 13)
+        Me.lblSourceEpisodeSorting.TabIndex = 14
+        Me.lblSourceEpisodeSorting.Text = "Show Episodes by:"
+        Me.lblSourceEpisodeSorting.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
-        'chkExclude
+        'cbSourceEpisodeSorting
         '
-        Me.chkExclude.AutoSize = True
-        Me.chkExclude.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkExclude.Location = New System.Drawing.Point(6, 21)
-        Me.chkExclude.Name = "chkExclude"
-        Me.chkExclude.Size = New System.Drawing.Size(199, 17)
-        Me.chkExclude.TabIndex = 3
-        Me.chkExclude.Text = "Exclude path from library updates"
-        Me.chkExclude.UseVisualStyleBackColor = True
+        Me.cbSourceEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSourceEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbSourceEpisodeSorting.FormattingEnabled = True
+        Me.cbSourceEpisodeSorting.Location = New System.Drawing.Point(215, 151)
+        Me.cbSourceEpisodeSorting.Name = "cbSourceEpisodeSorting"
+        Me.cbSourceEpisodeSorting.Size = New System.Drawing.Size(172, 21)
+        Me.cbSourceEpisodeSorting.TabIndex = 15
         '
         'dlgTVSource
         '
@@ -230,7 +255,7 @@ Partial Class dlgTVSource
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(435, 211)
+        Me.ClientSize = New System.Drawing.Size(435, 224)
         Me.Controls.Add(Me.pnlTVSource)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
@@ -271,5 +296,7 @@ Partial Class dlgTVSource
     Friend WithEvents lblSourceLanguage As System.Windows.Forms.Label
     Friend WithEvents gbSourceOptions As System.Windows.Forms.GroupBox
     Friend WithEvents chkExclude As System.Windows.Forms.CheckBox
+    Friend WithEvents lblSourceEpisodeSorting As System.Windows.Forms.Label
+    Friend WithEvents cbSourceEpisodeSorting As System.Windows.Forms.ComboBox
 
 End Class

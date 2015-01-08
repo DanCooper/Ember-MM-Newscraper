@@ -894,7 +894,14 @@ Public Class Enums
         Standard = 0
         DVD = 1
         Absolute = 2
-        Aired = 3
+    End Enum
+    ''' <summary>
+    ''' Enum representing Order of displaying Episodes
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum EpisodeSorting As Integer
+        Episode = 0
+        Aired = 1
     End Enum
     ''' <summary>
     ''' Enum represeting valid poster sizes
@@ -1855,6 +1862,7 @@ Public Class Structures
         Dim Language As String
         Dim Ordering As Enums.Ordering
         Dim Exclude As Boolean
+        Dim EpisodeSorting As Enums.EpisodeSorting
     End Structure
     ''' <summary>
     ''' Structure representing a movie in the database
@@ -1952,6 +1960,7 @@ Public Class Structures
         Dim efList As List(Of String)
         Dim EpFanartPath As String
         Dim EpID As Long
+        Dim EpisodeSorting As Enums.EpisodeSorting
         Dim EpNeedsSave As Boolean
         Dim EpNfoPath As String
         Dim EpPosterPath As String
@@ -1997,6 +2006,7 @@ Public Class Structures
     End Structure
 
     Public Structure ScrapeInfo
+        Dim Aired As String
         Dim CurrentImage As Images
         Dim Ordering As Enums.Ordering
         Dim iEpisode As Integer

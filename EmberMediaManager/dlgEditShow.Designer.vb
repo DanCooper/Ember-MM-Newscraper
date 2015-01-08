@@ -29,6 +29,8 @@ Partial Class dlgEditShow
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditShow = New System.Windows.Forms.TabControl()
         Me.tpShowDetails = New System.Windows.Forms.TabPage()
+        Me.txtVotes = New System.Windows.Forms.TextBox()
+        Me.lblVotes = New System.Windows.Forms.Label()
         Me.lblRuntime = New System.Windows.Forms.Label()
         Me.txtRuntime = New System.Windows.Forms.TextBox()
         Me.pbStar10 = New System.Windows.Forms.PictureBox()
@@ -157,8 +159,8 @@ Partial Class dlgEditShow
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.cbOrdering = New System.Windows.Forms.ComboBox()
         Me.lblOrdering = New System.Windows.Forms.Label()
-        Me.txtVotes = New System.Windows.Forms.TextBox()
-        Me.lblVotes = New System.Windows.Forms.Label()
+        Me.cbEpisodeSorting = New System.Windows.Forms.ComboBox()
+        Me.lblEpisodeSorting = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditShow.SuspendLayout()
@@ -316,6 +318,25 @@ Partial Class dlgEditShow
         Me.tpShowDetails.TabIndex = 0
         Me.tpShowDetails.Text = "Details"
         Me.tpShowDetails.UseVisualStyleBackColor = True
+        '
+        'txtVotes
+        '
+        Me.txtVotes.BackColor = System.Drawing.SystemColors.Window
+        Me.txtVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVotes.Location = New System.Drawing.Point(738, 392)
+        Me.txtVotes.Name = "txtVotes"
+        Me.txtVotes.Size = New System.Drawing.Size(66, 22)
+        Me.txtVotes.TabIndex = 81
+        '
+        'lblVotes
+        '
+        Me.lblVotes.AutoSize = True
+        Me.lblVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVotes.Location = New System.Drawing.Point(735, 377)
+        Me.lblVotes.Name = "lblVotes"
+        Me.lblVotes.Size = New System.Drawing.Size(38, 13)
+        Me.lblVotes.TabIndex = 80
+        Me.lblVotes.Text = "Votes:"
         '
         'lblRuntime
         '
@@ -1756,24 +1777,24 @@ Partial Class dlgEditShow
         Me.lblOrdering.TabIndex = 4
         Me.lblOrdering.Text = "Episode Ordering:"
         '
-        'txtVotes
+        'cbEpisodeSorting
         '
-        Me.txtVotes.BackColor = System.Drawing.SystemColors.Window
-        Me.txtVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVotes.Location = New System.Drawing.Point(738, 392)
-        Me.txtVotes.Name = "txtVotes"
-        Me.txtVotes.Size = New System.Drawing.Size(66, 22)
-        Me.txtVotes.TabIndex = 81
+        Me.cbEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbEpisodeSorting.FormattingEnabled = True
+        Me.cbEpisodeSorting.Location = New System.Drawing.Point(426, 553)
+        Me.cbEpisodeSorting.Name = "cbEpisodeSorting"
+        Me.cbEpisodeSorting.Size = New System.Drawing.Size(166, 21)
+        Me.cbEpisodeSorting.TabIndex = 5
         '
-        'lblVotes
+        'lblEpisodeSorting
         '
-        Me.lblVotes.AutoSize = True
-        Me.lblVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVotes.Location = New System.Drawing.Point(735, 377)
-        Me.lblVotes.Name = "lblVotes"
-        Me.lblVotes.Size = New System.Drawing.Size(38, 13)
-        Me.lblVotes.TabIndex = 80
-        Me.lblVotes.Text = "Votes:"
+        Me.lblEpisodeSorting.AutoSize = True
+        Me.lblEpisodeSorting.Location = New System.Drawing.Point(317, 558)
+        Me.lblEpisodeSorting.Name = "lblEpisodeSorting"
+        Me.lblEpisodeSorting.Size = New System.Drawing.Size(103, 13)
+        Me.lblEpisodeSorting.TabIndex = 4
+        Me.lblEpisodeSorting.Text = "Episode Sorted by:"
         '
         'dlgEditShow
         '
@@ -1782,6 +1803,8 @@ Partial Class dlgEditShow
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 582)
+        Me.Controls.Add(Me.lblEpisodeSorting)
+        Me.Controls.Add(Me.cbEpisodeSorting)
         Me.Controls.Add(Me.lblOrdering)
         Me.Controls.Add(Me.cbOrdering)
         Me.Controls.Add(Me.tcEditShow)
@@ -1978,5 +2001,7 @@ Partial Class dlgEditShow
     Friend WithEvents txtRuntime As System.Windows.Forms.TextBox
     Friend WithEvents txtVotes As System.Windows.Forms.TextBox
     Friend WithEvents lblVotes As System.Windows.Forms.Label
+    Friend WithEvents cbEpisodeSorting As System.Windows.Forms.ComboBox
+    Friend WithEvents lblEpisodeSorting As System.Windows.Forms.Label
 
 End Class

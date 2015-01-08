@@ -129,7 +129,7 @@ Public Class dlgTVSource
         Try
             If Me._id >= 0 Then
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = String.Concat("SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude FROM TVSources WHERE ID = ", Me._id, ";")
+                    SQLcommand.CommandText = String.Concat("SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources WHERE ID = ", Me._id, ";")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         If SQLreader.HasRows() Then
                             SQLreader.Read()
@@ -139,6 +139,7 @@ Public Class dlgTVSource
                                 Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = SQLreader("Language").ToString).name
                             End If
                             Me.cbSourceOrdering.SelectedIndex = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
+                            Me.cbSourceEpisodeSorting.SelectedIndex = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
                             Me.chkExclude.Checked = Convert.ToBoolean(SQLreader("Exclude"))
                             Me.autoName = False
                         End If
@@ -164,15 +165,16 @@ Public Class dlgTVSource
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Me._id >= 0 Then
-                        SQLcommand.CommandText = String.Concat("UPDATE TVSources SET Name = (?), Path = (?), Language = (?), Ordering = (?), Exclude = (?) WHERE ID =", Me._id, ";")
+                        SQLcommand.CommandText = String.Concat("UPDATE TVSources SET Name = (?), Path = (?), Language = (?), Ordering = (?), Exclude = (?), EpisodeSorting = (?) WHERE ID =", Me._id, ";")
                     Else
-                        SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (Name, Path, Language, Ordering, Exclude) VALUES (?,?,?,?,?);"
+                        SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (Name, Path, Language, Ordering, Exclude, EpisodeSorting) VALUES (?,?,?,?,?,?);"
                     End If
                     Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "Name")
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "Path")
                     Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
                     Dim parOrdering As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOrdering", DbType.Int16, 0, "Ordering")
                     Dim parExclude As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExclude", DbType.Boolean, 0, "Exclude")
+                    Dim parEpisodeSorting As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEpisodeSorting", DbType.Int16, 0, "EpisodeSorting")
 
                     parName.Value = txtSourceName.Text.Trim
                     parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
@@ -185,6 +187,11 @@ Public Class dlgTVSource
                         parOrdering.Value = DirectCast(Me.cbSourceOrdering.SelectedIndex, Enums.Ordering)
                     Else
                         parOrdering.Value = Enums.Ordering.Standard
+                    End If
+                    If cbSourceEpisodeSorting.Text <> String.Empty Then
+                        parEpisodeSorting.Value = DirectCast(Me.cbSourceEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
+                    Else
+                        parEpisodeSorting.Value = Enums.EpisodeSorting.Episode
                     End If
                     parExclude.Value = chkExclude.Checked
 
@@ -207,6 +214,7 @@ Public Class dlgTVSource
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
         Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
+        Me.lblSourceEpisodeSorting.Text = String.Concat(Master.eLang.GetString(364, "Show Episodes by"), ":")
         Me.lblSourceLanguage.Text = Master.eLang.GetString(1166, "Default Language:")
         Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
         Me.lblSourceOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
@@ -217,7 +225,10 @@ Public Class dlgTVSource
         Me.cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
         Me.cbSourceOrdering.Items.Clear()
-        Me.cbSourceOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(728, "Aired")})
+        Me.cbSourceOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute")})
+
+        Me.cbSourceEpisodeSorting.Items.Clear()
+        Me.cbSourceEpisodeSorting.Items.AddRange(New String() {Master.eLang.GetString(755, "Episode #"), Master.eLang.GetString(728, "Aired")})
     End Sub
 
     Private Sub tmrName_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrName.Tick

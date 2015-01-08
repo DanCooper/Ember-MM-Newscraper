@@ -316,7 +316,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 11
+        Dim MyVideosDBVersion As Integer = 12
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -702,6 +702,7 @@ Public Class Database
         Dim _tmpTVDB As New Structures.DBTV
         _tmpTVDB = LoadTVShowFromDB(_TVDB.ShowID)
 
+        _TVDB.EpisodeSorting = _tmpTVDB.EpisodeSorting
         _TVDB.IsLockShow = _tmpTVDB.IsLockShow
         _TVDB.IsMarkShow = _tmpTVDB.IsMarkShow
         _TVDB.ListTitle = _tmpTVDB.ListTitle
@@ -723,19 +724,19 @@ Public Class Database
         _TVDB.TVShow = _tmpTVDB.TVShow
     End Sub
 
-    Public Function GetTVShowOrdering(ByVal ShowID As Long) As Enums.Ordering
-        Dim sOrdering As Enums.Ordering = Enums.Ordering.Standard
+    Public Function GetTVShowEpisodeSorting(ByVal ShowID As Long) As Enums.EpisodeSorting
+        Dim sEpisodeSorting As Enums.EpisodeSorting = Enums.EpisodeSorting.Episode
 
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT Ordering FROM TVShows WHERE ID = ", ShowID, ";")
+            SQLcommand.CommandText = String.Concat("SELECT EpisodeSorting FROM TVShows WHERE ID = ", ShowID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    sOrdering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
+                    sEpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
                 End While
             End Using
         End Using
 
-        Return sOrdering
+        Return sEpisodeSorting
     End Function
 
     Public Function GetMovieCountries() As String()
@@ -1418,7 +1419,8 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT ID, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, ", _
                                                        "Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, ", _
                                                        "HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, ", _
-                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes FROM TVShows WHERE id = ", ShowID, ";")
+                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes, EpisodeSorting ", _
+                                                       "FROM TVShows WHERE id = ", ShowID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
@@ -1440,6 +1442,7 @@ Public Class Database
                         _TVDB.IsLockShow = Convert.ToBoolean(SQLreader("Lock"))
                         _TVDB.ShowNeedsSave = Convert.ToBoolean(SQLreader("NeedsSave"))
                         _TVDB.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
+                        _TVDB.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
                         _TVDB.TVShow = New MediaContainers.TVShow
                         With _TVDB.TVShow
                             If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
@@ -2775,15 +2778,15 @@ Public Class Database
                      "TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
                      "Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, ", _
                      "HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, ", _
-                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes, EpisodeSorting", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVShows (", _
                      "ID, TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
                      "Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, ", _
                      "HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, ", _
-                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes, EpisodeSorting", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
                     Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "ID")
                     parTVShowID.Value = _TVShowDB.ShowID
                 End If
@@ -2829,6 +2832,7 @@ Public Class Database
                 Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
                 Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "Title")
                 Dim parVotes As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVotes", DbType.String, 0, "Votes")
+                Dim parEpisodeSorting As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEpisodeSorting", DbType.Int16, 0, "EpisodeSorting")
 
                 With _TVShowDB.TVShow
                     parTVDB.Value = .ID
@@ -2878,6 +2882,7 @@ Public Class Database
                 parNeedsSave.Value = _TVShowDB.ShowNeedsSave
                 parLanguage.Value = If(String.IsNullOrEmpty(_TVShowDB.ShowLanguage), Master.DB.GetTVSourceLanguage(_TVShowDB.Source), _TVShowDB.ShowLanguage)
                 parOrdering.Value = _TVShowDB.Ordering
+                parEpisodeSorting.Value = _TVShowDB.EpisodeSorting
 
 
 
@@ -2940,7 +2945,7 @@ Public Class Database
         Master.TVSources.Clear()
         Try
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT ID, Name, path, LastScan, Language, Ordering, Exclude FROM TVSources;"
+                SQLcommand.CommandText = "SELECT ID, Name, path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
                         Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
@@ -2951,6 +2956,7 @@ Public Class Database
                             tvsource.Language = SQLreader("Language").ToString
                             tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
                             tvsource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
+                            tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
                             Master.TVSources.Add(tvsource)
                         Catch ex As Exception
                             logger.Error(New StackFrame().GetMethod().Name, ex)

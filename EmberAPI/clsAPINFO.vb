@@ -1264,6 +1264,69 @@ Public Class NFO
         Return New MediaContainers.EpisodeDetails
     End Function
 
+    Public Shared Function LoadTVEpFromNFO(ByVal sPath As String, ByVal SeasonNumber As Integer, ByVal Aired As String) As MediaContainers.EpisodeDetails
+        Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
+        Dim xmlEp As New MediaContainers.EpisodeDetails
+
+        If Not String.IsNullOrEmpty(sPath) AndAlso SeasonNumber >= -1 Then
+            Try
+                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
+                    'better way to read multi-root xml??
+                    Using xmlSR As StreamReader = New StreamReader(sPath)
+                        Dim xmlStr As String = xmlSR.ReadToEnd
+                        Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
+                        If rMatches.Count = 1 Then
+                            'only one episodedetail... assume it's the proper one
+                            Using xmlRead As StringReader = New StringReader(rMatches(0).Value)
+                                xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
+                                xmlEp = CleanNFO_TVEpisodes(xmlEp)
+                                xmlSer = Nothing
+                                If xmlEp.FileInfoSpecified Then
+                                    If xmlEp.FileInfo.StreamDetails.AudioSpecified Then
+                                        For Each aStream In xmlEp.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                                            aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
+                                        Next
+                                    End If
+                                    If xmlEp.FileInfo.StreamDetails.SubtitleSpecified Then
+                                        For Each sStream In xmlEp.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                                            sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
+                                        Next
+                                    End If
+                                End If
+                                Return xmlEp
+                            End Using
+                        ElseIf rMatches.Count > 1 Then
+                            For Each xmlReg As Match In rMatches
+                                Using xmlRead As StringReader = New StringReader(xmlReg.Value)
+                                    xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
+                                    xmlEp = CleanNFO_TVEpisodes(xmlEp)
+                                    If xmlEp.Aired = Aired AndAlso xmlEp.Season = SeasonNumber Then
+                                        xmlSer = Nothing
+                                        Return xmlEp
+                                    End If
+                                End Using
+                            Next
+                        End If
+                    End Using
+
+                Else
+                    'not really anything else to do with non-conforming nfos aside from rename them
+                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                        RenameEpNonConfNfo(sPath, True)
+                    End If
+                End If
+
+            Catch
+                'not really anything else to do with non-conforming nfos aside from rename them
+                If Not Master.eSettings.GeneralOverwriteNfo Then
+                    RenameEpNonConfNfo(sPath, True)
+                End If
+            End Try
+        End If
+
+        Return New MediaContainers.EpisodeDetails
+    End Function
+
     Public Shared Function LoadTVShowFromNFO(ByVal sPath As String) As MediaContainers.TVShow
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlShow As New MediaContainers.TVShow

@@ -6169,7 +6169,7 @@ doCancel:
 
     Private Sub cmnuEpisodeRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRescrape.Click
         Me.SetControlsEnabled(False, True)
-        ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpOrdering, Master.DefaultTVOptions)
+        ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToString(Me.dgvTVEpisodes.Item(15, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpOrdering, Master.DefaultTVOptions)
     End Sub
 
     Private Sub cmnuShowRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRefresh.Click
@@ -8639,7 +8639,7 @@ doCancel:
     End Sub
 
     Private Sub FillEpisodes(ByVal ShowID As Integer, ByVal Season As Integer)
-        Dim sOrdering As Enums.Ordering = Master.DB.GetTVShowOrdering(ShowID)
+        Dim sEpisodeSorting As Enums.EpisodeSorting = Master.DB.GetTVShowEpisodeSorting(ShowID)
 
         Me.bsEpisodes.DataSource = Nothing
         Me.dgvTVEpisodes.DataSource = Nothing
@@ -8667,7 +8667,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(2).ReadOnly = True
                 .dgvTVEpisodes.Columns(2).MinimumWidth = If(Season = 999, 35, 70)
                 .dgvTVEpisodes.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns(2).Visible = Not sOrdering = Enums.Ordering.Aired
+                .dgvTVEpisodes.Columns(2).Visible = Not sEpisodeSorting = Enums.EpisodeSorting.Aired
                 .dgvTVEpisodes.Columns(2).ToolTipText = Master.eLang.GetString(755, "Episode #")
                 .dgvTVEpisodes.Columns(2).HeaderText = "#"
                 .dgvTVEpisodes.Columns(2).DefaultCellStyle.Format = "00"
@@ -8715,7 +8715,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(15).Width = 80
                 .dgvTVEpisodes.Columns(15).ReadOnly = True
                 .dgvTVEpisodes.Columns(15).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns(15).Visible = sOrdering = Enums.Ordering.Aired
+                .dgvTVEpisodes.Columns(15).Visible = sEpisodeSorting = Enums.EpisodeSorting.Aired
                 .dgvTVEpisodes.Columns(15).ToolTipText = Master.eLang.GetString(728, "Aired")
                 .dgvTVEpisodes.Columns(15).HeaderText = Master.eLang.GetString(728, "Aired")
                 .dgvTVEpisodes.Columns(16).Visible = False
