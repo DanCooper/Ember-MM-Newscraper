@@ -19,8 +19,7 @@
 ' ################################################################################
 ' #
 ' # Dialog size: 1120; 900
-' # Panel size: 750; 500
-' # Enlarge it to see all the panels.
+' # Move the panels (pnl*) from 900;900 to 0;0 to edit. Move it back after editing.
 
 Imports System
 Imports System.IO
