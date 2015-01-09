@@ -122,6 +122,38 @@ Partial Class frmMain
         Me.tblFilterMissingItemsTop_Movies = New System.Windows.Forms.TableLayoutPanel()
         Me.lblFilterMissingItems_Movies = New System.Windows.Forms.Label()
         Me.lblFilterMissingItemsClose_Movies = New System.Windows.Forms.Label()
+        Me.pnlFilterMissingItems_MovieSets = New System.Windows.Forms.Panel()
+        Me.pnlFilterMissingItemsMain_MovieSets = New System.Windows.Forms.Panel()
+        Me.tlbFilterMissingItemsMain_MovieSets = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkMovieSetMissingBanner = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetMissingClearArt = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetMissingClearLogo = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetMissingDiscArt = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetMissingFanart = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetMissingLandscape = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetMissingPoster = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetMissingNFO = New System.Windows.Forms.CheckBox()
+        Me.pnlFilterMissingItemsTop_MovieSets = New System.Windows.Forms.Panel()
+        Me.tblFilterMissingItemsTop_MovieSets = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblFilterMissingItems_MovieSets = New System.Windows.Forms.Label()
+        Me.lblFilterMissingItemsClose_MovieSets = New System.Windows.Forms.Label()
+        Me.pnlFilterMissingItems_Shows = New System.Windows.Forms.Panel()
+        Me.pnlFilterMissingItemsMain_Shows = New System.Windows.Forms.Panel()
+        Me.tblFilterMissingItemsMain_Shows = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkShowMissingBanner = New System.Windows.Forms.CheckBox()
+        Me.chkShowMissingClearArt = New System.Windows.Forms.CheckBox()
+        Me.chkShowMissingClearLogo = New System.Windows.Forms.CheckBox()
+        Me.chkShowMissingEFanarts = New System.Windows.Forms.CheckBox()
+        Me.chkShowMissingFanart = New System.Windows.Forms.CheckBox()
+        Me.chkShowMissingLandscape = New System.Windows.Forms.CheckBox()
+        Me.chkShowMissingPoster = New System.Windows.Forms.CheckBox()
+        Me.chkShowMissingNFO = New System.Windows.Forms.CheckBox()
+        Me.chkShowMissingCharacterArt = New System.Windows.Forms.CheckBox()
+        Me.chkShowMissingTheme = New System.Windows.Forms.CheckBox()
+        Me.pnlFilterMissingItemsTop_Shows = New System.Windows.Forms.Panel()
+        Me.tblFilterMissingItemsTop_Shows = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblFilterMissingItems_Shows = New System.Windows.Forms.Label()
+        Me.lblFilterMissingItemsClose_Shows = New System.Windows.Forms.Label()
         Me.pnlFilterSources_Movies = New System.Windows.Forms.Panel()
         Me.pnlFilterSourcesMain_Movies = New System.Windows.Forms.Panel()
         Me.clbFilterSources_Movies = New System.Windows.Forms.CheckedListBox()
@@ -368,8 +400,7 @@ Partial Class frmMain
         Me.btnFilterUp_Movies = New System.Windows.Forms.Button()
         Me.btnFilterDown_Movies = New System.Windows.Forms.Button()
         Me.pnlFilter_MovieSets = New System.Windows.Forms.Panel()
-        Me.pnlFilterMain_MovieSets = New System.Windows.Forms.Panel()
-        Me.tblFilterMain_MovieSets = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblFilter_MovieSets = New System.Windows.Forms.TableLayoutPanel()
         Me.gbFilterGeneral_MovieSets = New System.Windows.Forms.GroupBox()
         Me.tblFilterGeneral_MovieSets = New System.Windows.Forms.TableLayoutPanel()
         Me.btnFilterMissing_MovieSets = New System.Windows.Forms.Button()
@@ -1087,6 +1118,16 @@ Partial Class frmMain
         Me.tblFilterMissingItemsMain_Movies.SuspendLayout
         Me.pnlFilterMissingItemsTop_Movies.SuspendLayout
         Me.tblFilterMissingItemsTop_Movies.SuspendLayout
+        Me.pnlFilterMissingItems_MovieSets.SuspendLayout
+        Me.pnlFilterMissingItemsMain_MovieSets.SuspendLayout
+        Me.tlbFilterMissingItemsMain_MovieSets.SuspendLayout
+        Me.pnlFilterMissingItemsTop_MovieSets.SuspendLayout
+        Me.tblFilterMissingItemsTop_MovieSets.SuspendLayout
+        Me.pnlFilterMissingItems_Shows.SuspendLayout
+        Me.pnlFilterMissingItemsMain_Shows.SuspendLayout
+        Me.tblFilterMissingItemsMain_Shows.SuspendLayout
+        Me.pnlFilterMissingItemsTop_Shows.SuspendLayout
+        Me.tblFilterMissingItemsTop_Shows.SuspendLayout
         Me.pnlFilterSources_Movies.SuspendLayout
         Me.pnlFilterSourcesMain_Movies.SuspendLayout
         Me.pnlFilterSourcesTop_Movies.SuspendLayout
@@ -1137,8 +1178,7 @@ Partial Class frmMain
         Me.pnlFilterTop_Movies.SuspendLayout
         Me.tblFilterTop_Movies.SuspendLayout
         Me.pnlFilter_MovieSets.SuspendLayout
-        Me.pnlFilterMain_MovieSets.SuspendLayout
-        Me.tblFilterMain_MovieSets.SuspendLayout
+        Me.tblFilter_MovieSets.SuspendLayout
         Me.gbFilterGeneral_MovieSets.SuspendLayout
         Me.tblFilterGeneral_MovieSets.SuspendLayout
         Me.gbFilterSpecific_MovieSets.SuspendLayout
@@ -1577,6 +1617,8 @@ Partial Class frmMain
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterGenres_Shows)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterDataFields_Movies)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterMissingItems_Movies)
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilterMissingItems_MovieSets)
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilterMissingItems_Shows)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterSources_Movies)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterSources_Shows)
         Me.scMain.Panel1.Controls.Add(Me.dgvMovies)
@@ -1993,11 +2035,12 @@ Partial Class frmMain
         '
         'pnlFilterMissingItems_Movies
         '
+        Me.pnlFilterMissingItems_Movies.AutoSize = true
         Me.pnlFilterMissingItems_Movies.Controls.Add(Me.pnlFilterMissingItemsMain_Movies)
         Me.pnlFilterMissingItems_Movies.Controls.Add(Me.pnlFilterMissingItemsTop_Movies)
         Me.pnlFilterMissingItems_Movies.Location = New System.Drawing.Point(0, 900)
         Me.pnlFilterMissingItems_Movies.Name = "pnlFilterMissingItems_Movies"
-        Me.pnlFilterMissingItems_Movies.Size = New System.Drawing.Size(189, 320)
+        Me.pnlFilterMissingItems_Movies.Size = New System.Drawing.Size(170, 321)
         Me.pnlFilterMissingItems_Movies.TabIndex = 27
         Me.pnlFilterMissingItems_Movies.Visible = false
         '
@@ -2010,7 +2053,7 @@ Partial Class frmMain
         Me.pnlFilterMissingItemsMain_Movies.Location = New System.Drawing.Point(0, 20)
         Me.pnlFilterMissingItemsMain_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.pnlFilterMissingItemsMain_Movies.Name = "pnlFilterMissingItemsMain_Movies"
-        Me.pnlFilterMissingItemsMain_Movies.Size = New System.Drawing.Size(189, 300)
+        Me.pnlFilterMissingItemsMain_Movies.Size = New System.Drawing.Size(170, 301)
         Me.pnlFilterMissingItemsMain_Movies.TabIndex = 26
         '
         'tblFilterMissingItemsMain_Movies
@@ -2050,7 +2093,7 @@ Partial Class frmMain
         Me.tblFilterMissingItemsMain_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterMissingItemsMain_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterMissingItemsMain_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterMissingItemsMain_Movies.Size = New System.Drawing.Size(187, 298)
+        Me.tblFilterMissingItemsMain_Movies.Size = New System.Drawing.Size(168, 299)
         Me.tblFilterMissingItemsMain_Movies.TabIndex = 0
         '
         'chkMovieMissingBanner
@@ -2191,7 +2234,7 @@ Partial Class frmMain
         Me.pnlFilterMissingItemsTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlFilterMissingItemsTop_Movies.Location = New System.Drawing.Point(0, 0)
         Me.pnlFilterMissingItemsTop_Movies.Name = "pnlFilterMissingItemsTop_Movies"
-        Me.pnlFilterMissingItemsTop_Movies.Size = New System.Drawing.Size(189, 20)
+        Me.pnlFilterMissingItemsTop_Movies.Size = New System.Drawing.Size(170, 20)
         Me.pnlFilterMissingItemsTop_Movies.TabIndex = 25
         '
         'tblFilterMissingItemsTop_Movies
@@ -2209,7 +2252,7 @@ Partial Class frmMain
         Me.tblFilterMissingItemsTop_Movies.RowCount = 2
         Me.tblFilterMissingItemsTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterMissingItemsTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterMissingItemsTop_Movies.Size = New System.Drawing.Size(189, 20)
+        Me.tblFilterMissingItemsTop_Movies.Size = New System.Drawing.Size(170, 20)
         Me.tblFilterMissingItemsTop_Movies.TabIndex = 0
         '
         'lblFilterMissingItems_Movies
@@ -2234,11 +2277,424 @@ Partial Class frmMain
         Me.lblFilterMissingItemsClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblFilterMissingItemsClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterMissingItemsClose_Movies.ForeColor = System.Drawing.Color.White
-        Me.lblFilterMissingItemsClose_Movies.Location = New System.Drawing.Point(151, 3)
+        Me.lblFilterMissingItemsClose_Movies.Location = New System.Drawing.Point(132, 3)
         Me.lblFilterMissingItemsClose_Movies.Name = "lblFilterMissingItemsClose_Movies"
         Me.lblFilterMissingItemsClose_Movies.Size = New System.Drawing.Size(35, 13)
         Me.lblFilterMissingItemsClose_Movies.TabIndex = 24
         Me.lblFilterMissingItemsClose_Movies.Text = "Close"
+        '
+        'pnlFilterMissingItems_MovieSets
+        '
+        Me.pnlFilterMissingItems_MovieSets.AutoSize = true
+        Me.pnlFilterMissingItems_MovieSets.Controls.Add(Me.pnlFilterMissingItemsMain_MovieSets)
+        Me.pnlFilterMissingItems_MovieSets.Controls.Add(Me.pnlFilterMissingItemsTop_MovieSets)
+        Me.pnlFilterMissingItems_MovieSets.Location = New System.Drawing.Point(0, 900)
+        Me.pnlFilterMissingItems_MovieSets.Name = "pnlFilterMissingItems_MovieSets"
+        Me.pnlFilterMissingItems_MovieSets.Size = New System.Drawing.Size(170, 206)
+        Me.pnlFilterMissingItems_MovieSets.TabIndex = 28
+        Me.pnlFilterMissingItems_MovieSets.Visible = false
+        '
+        'pnlFilterMissingItemsMain_MovieSets
+        '
+        Me.pnlFilterMissingItemsMain_MovieSets.AutoSize = true
+        Me.pnlFilterMissingItemsMain_MovieSets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterMissingItemsMain_MovieSets.Controls.Add(Me.tlbFilterMissingItemsMain_MovieSets)
+        Me.pnlFilterMissingItemsMain_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFilterMissingItemsMain_MovieSets.Location = New System.Drawing.Point(0, 20)
+        Me.pnlFilterMissingItemsMain_MovieSets.Margin = New System.Windows.Forms.Padding(0)
+        Me.pnlFilterMissingItemsMain_MovieSets.Name = "pnlFilterMissingItemsMain_MovieSets"
+        Me.pnlFilterMissingItemsMain_MovieSets.Size = New System.Drawing.Size(170, 186)
+        Me.pnlFilterMissingItemsMain_MovieSets.TabIndex = 26
+        '
+        'tlbFilterMissingItemsMain_MovieSets
+        '
+        Me.tlbFilterMissingItemsMain_MovieSets.AutoSize = true
+        Me.tlbFilterMissingItemsMain_MovieSets.ColumnCount = 2
+        Me.tlbFilterMissingItemsMain_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.Controls.Add(Me.chkMovieSetMissingBanner, 0, 0)
+        Me.tlbFilterMissingItemsMain_MovieSets.Controls.Add(Me.chkMovieSetMissingClearArt, 0, 1)
+        Me.tlbFilterMissingItemsMain_MovieSets.Controls.Add(Me.chkMovieSetMissingClearLogo, 0, 2)
+        Me.tlbFilterMissingItemsMain_MovieSets.Controls.Add(Me.chkMovieSetMissingDiscArt, 0, 3)
+        Me.tlbFilterMissingItemsMain_MovieSets.Controls.Add(Me.chkMovieSetMissingFanart, 0, 4)
+        Me.tlbFilterMissingItemsMain_MovieSets.Controls.Add(Me.chkMovieSetMissingLandscape, 0, 5)
+        Me.tlbFilterMissingItemsMain_MovieSets.Controls.Add(Me.chkMovieSetMissingPoster, 0, 7)
+        Me.tlbFilterMissingItemsMain_MovieSets.Controls.Add(Me.chkMovieSetMissingNFO, 0, 6)
+        Me.tlbFilterMissingItemsMain_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlbFilterMissingItemsMain_MovieSets.Location = New System.Drawing.Point(0, 0)
+        Me.tlbFilterMissingItemsMain_MovieSets.Name = "tlbFilterMissingItemsMain_MovieSets"
+        Me.tlbFilterMissingItemsMain_MovieSets.RowCount = 9
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tlbFilterMissingItemsMain_MovieSets.Size = New System.Drawing.Size(168, 184)
+        Me.tlbFilterMissingItemsMain_MovieSets.TabIndex = 0
+        '
+        'chkMovieSetMissingBanner
+        '
+        Me.chkMovieSetMissingBanner.AutoSize = true
+        Me.chkMovieSetMissingBanner.Location = New System.Drawing.Point(3, 3)
+        Me.chkMovieSetMissingBanner.Name = "chkMovieSetMissingBanner"
+        Me.chkMovieSetMissingBanner.Size = New System.Drawing.Size(63, 17)
+        Me.chkMovieSetMissingBanner.TabIndex = 0
+        Me.chkMovieSetMissingBanner.Text = "Banner"
+        Me.chkMovieSetMissingBanner.UseVisualStyleBackColor = true
+        '
+        'chkMovieSetMissingClearArt
+        '
+        Me.chkMovieSetMissingClearArt.AutoSize = true
+        Me.chkMovieSetMissingClearArt.Location = New System.Drawing.Point(3, 26)
+        Me.chkMovieSetMissingClearArt.Name = "chkMovieSetMissingClearArt"
+        Me.chkMovieSetMissingClearArt.Size = New System.Drawing.Size(67, 17)
+        Me.chkMovieSetMissingClearArt.TabIndex = 0
+        Me.chkMovieSetMissingClearArt.Text = "ClearArt"
+        Me.chkMovieSetMissingClearArt.UseVisualStyleBackColor = true
+        '
+        'chkMovieSetMissingClearLogo
+        '
+        Me.chkMovieSetMissingClearLogo.AutoSize = true
+        Me.chkMovieSetMissingClearLogo.Location = New System.Drawing.Point(3, 49)
+        Me.chkMovieSetMissingClearLogo.Name = "chkMovieSetMissingClearLogo"
+        Me.chkMovieSetMissingClearLogo.Size = New System.Drawing.Size(78, 17)
+        Me.chkMovieSetMissingClearLogo.TabIndex = 0
+        Me.chkMovieSetMissingClearLogo.Text = "ClearLogo"
+        Me.chkMovieSetMissingClearLogo.UseVisualStyleBackColor = true
+        '
+        'chkMovieSetMissingDiscArt
+        '
+        Me.chkMovieSetMissingDiscArt.AutoSize = true
+        Me.chkMovieSetMissingDiscArt.Location = New System.Drawing.Point(3, 72)
+        Me.chkMovieSetMissingDiscArt.Name = "chkMovieSetMissingDiscArt"
+        Me.chkMovieSetMissingDiscArt.Size = New System.Drawing.Size(62, 17)
+        Me.chkMovieSetMissingDiscArt.TabIndex = 0
+        Me.chkMovieSetMissingDiscArt.Text = "DiscArt"
+        Me.chkMovieSetMissingDiscArt.UseVisualStyleBackColor = true
+        '
+        'chkMovieSetMissingFanart
+        '
+        Me.chkMovieSetMissingFanart.AutoSize = true
+        Me.chkMovieSetMissingFanart.Location = New System.Drawing.Point(3, 95)
+        Me.chkMovieSetMissingFanart.Name = "chkMovieSetMissingFanart"
+        Me.chkMovieSetMissingFanart.Size = New System.Drawing.Size(59, 17)
+        Me.chkMovieSetMissingFanart.TabIndex = 0
+        Me.chkMovieSetMissingFanart.Text = "Fanart"
+        Me.chkMovieSetMissingFanart.UseVisualStyleBackColor = true
+        '
+        'chkMovieSetMissingLandscape
+        '
+        Me.chkMovieSetMissingLandscape.AutoSize = true
+        Me.chkMovieSetMissingLandscape.Location = New System.Drawing.Point(3, 118)
+        Me.chkMovieSetMissingLandscape.Name = "chkMovieSetMissingLandscape"
+        Me.chkMovieSetMissingLandscape.Size = New System.Drawing.Size(80, 17)
+        Me.chkMovieSetMissingLandscape.TabIndex = 0
+        Me.chkMovieSetMissingLandscape.Text = "Landscape"
+        Me.chkMovieSetMissingLandscape.UseVisualStyleBackColor = true
+        '
+        'chkMovieSetMissingPoster
+        '
+        Me.chkMovieSetMissingPoster.AutoSize = true
+        Me.chkMovieSetMissingPoster.Location = New System.Drawing.Point(3, 164)
+        Me.chkMovieSetMissingPoster.Name = "chkMovieSetMissingPoster"
+        Me.chkMovieSetMissingPoster.Size = New System.Drawing.Size(58, 17)
+        Me.chkMovieSetMissingPoster.TabIndex = 0
+        Me.chkMovieSetMissingPoster.Text = "Poster"
+        Me.chkMovieSetMissingPoster.UseVisualStyleBackColor = true
+        '
+        'chkMovieSetMissingNFO
+        '
+        Me.chkMovieSetMissingNFO.AutoSize = true
+        Me.chkMovieSetMissingNFO.Location = New System.Drawing.Point(3, 141)
+        Me.chkMovieSetMissingNFO.Name = "chkMovieSetMissingNFO"
+        Me.chkMovieSetMissingNFO.Size = New System.Drawing.Size(49, 17)
+        Me.chkMovieSetMissingNFO.TabIndex = 0
+        Me.chkMovieSetMissingNFO.Text = "NFO"
+        Me.chkMovieSetMissingNFO.UseVisualStyleBackColor = true
+        '
+        'pnlFilterMissingItemsTop_MovieSets
+        '
+        Me.pnlFilterMissingItemsTop_MovieSets.AutoSize = true
+        Me.pnlFilterMissingItemsTop_MovieSets.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.pnlFilterMissingItemsTop_MovieSets.Controls.Add(Me.tblFilterMissingItemsTop_MovieSets)
+        Me.pnlFilterMissingItemsTop_MovieSets.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlFilterMissingItemsTop_MovieSets.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFilterMissingItemsTop_MovieSets.Name = "pnlFilterMissingItemsTop_MovieSets"
+        Me.pnlFilterMissingItemsTop_MovieSets.Size = New System.Drawing.Size(170, 20)
+        Me.pnlFilterMissingItemsTop_MovieSets.TabIndex = 25
+        '
+        'tblFilterMissingItemsTop_MovieSets
+        '
+        Me.tblFilterMissingItemsTop_MovieSets.AutoSize = true
+        Me.tblFilterMissingItemsTop_MovieSets.ColumnCount = 3
+        Me.tblFilterMissingItemsTop_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterMissingItemsTop_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.tblFilterMissingItemsTop_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterMissingItemsTop_MovieSets.Controls.Add(Me.lblFilterMissingItems_MovieSets, 0, 0)
+        Me.tblFilterMissingItemsTop_MovieSets.Controls.Add(Me.lblFilterMissingItemsClose_MovieSets, 2, 0)
+        Me.tblFilterMissingItemsTop_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterMissingItemsTop_MovieSets.Location = New System.Drawing.Point(0, 0)
+        Me.tblFilterMissingItemsTop_MovieSets.Name = "tblFilterMissingItemsTop_MovieSets"
+        Me.tblFilterMissingItemsTop_MovieSets.RowCount = 2
+        Me.tblFilterMissingItemsTop_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterMissingItemsTop_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsTop_MovieSets.Size = New System.Drawing.Size(170, 20)
+        Me.tblFilterMissingItemsTop_MovieSets.TabIndex = 0
+        '
+        'lblFilterMissingItems_MovieSets
+        '
+        Me.lblFilterMissingItems_MovieSets.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblFilterMissingItems_MovieSets.AutoSize = true
+        Me.lblFilterMissingItems_MovieSets.BackColor = System.Drawing.Color.Transparent
+        Me.lblFilterMissingItems_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblFilterMissingItems_MovieSets.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilterMissingItems_MovieSets.Location = New System.Drawing.Point(3, 3)
+        Me.lblFilterMissingItems_MovieSets.Name = "lblFilterMissingItems_MovieSets"
+        Me.lblFilterMissingItems_MovieSets.Size = New System.Drawing.Size(79, 13)
+        Me.lblFilterMissingItems_MovieSets.TabIndex = 23
+        Me.lblFilterMissingItems_MovieSets.Text = "Missing Items"
+        Me.lblFilterMissingItems_MovieSets.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblFilterMissingItemsClose_MovieSets
+        '
+        Me.lblFilterMissingItemsClose_MovieSets.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblFilterMissingItemsClose_MovieSets.AutoSize = true
+        Me.lblFilterMissingItemsClose_MovieSets.BackColor = System.Drawing.Color.Transparent
+        Me.lblFilterMissingItemsClose_MovieSets.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblFilterMissingItemsClose_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblFilterMissingItemsClose_MovieSets.ForeColor = System.Drawing.Color.White
+        Me.lblFilterMissingItemsClose_MovieSets.Location = New System.Drawing.Point(132, 3)
+        Me.lblFilterMissingItemsClose_MovieSets.Name = "lblFilterMissingItemsClose_MovieSets"
+        Me.lblFilterMissingItemsClose_MovieSets.Size = New System.Drawing.Size(35, 13)
+        Me.lblFilterMissingItemsClose_MovieSets.TabIndex = 24
+        Me.lblFilterMissingItemsClose_MovieSets.Text = "Close"
+        '
+        'pnlFilterMissingItems_Shows
+        '
+        Me.pnlFilterMissingItems_Shows.AutoSize = true
+        Me.pnlFilterMissingItems_Shows.Controls.Add(Me.pnlFilterMissingItemsMain_Shows)
+        Me.pnlFilterMissingItems_Shows.Controls.Add(Me.pnlFilterMissingItemsTop_Shows)
+        Me.pnlFilterMissingItems_Shows.Location = New System.Drawing.Point(0, 900)
+        Me.pnlFilterMissingItems_Shows.Name = "pnlFilterMissingItems_Shows"
+        Me.pnlFilterMissingItems_Shows.Size = New System.Drawing.Size(170, 252)
+        Me.pnlFilterMissingItems_Shows.TabIndex = 29
+        Me.pnlFilterMissingItems_Shows.Visible = false
+        '
+        'pnlFilterMissingItemsMain_Shows
+        '
+        Me.pnlFilterMissingItemsMain_Shows.AutoSize = true
+        Me.pnlFilterMissingItemsMain_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterMissingItemsMain_Shows.Controls.Add(Me.tblFilterMissingItemsMain_Shows)
+        Me.pnlFilterMissingItemsMain_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFilterMissingItemsMain_Shows.Location = New System.Drawing.Point(0, 20)
+        Me.pnlFilterMissingItemsMain_Shows.Margin = New System.Windows.Forms.Padding(0)
+        Me.pnlFilterMissingItemsMain_Shows.Name = "pnlFilterMissingItemsMain_Shows"
+        Me.pnlFilterMissingItemsMain_Shows.Size = New System.Drawing.Size(170, 232)
+        Me.pnlFilterMissingItemsMain_Shows.TabIndex = 26
+        '
+        'tblFilterMissingItemsMain_Shows
+        '
+        Me.tblFilterMissingItemsMain_Shows.AutoSize = true
+        Me.tblFilterMissingItemsMain_Shows.ColumnCount = 2
+        Me.tblFilterMissingItemsMain_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterMissingItemsMain_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingBanner, 0, 0)
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingClearArt, 0, 2)
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingClearLogo, 0, 3)
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingEFanarts, 0, 4)
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingFanart, 0, 5)
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingLandscape, 0, 6)
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingPoster, 0, 8)
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingNFO, 0, 7)
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingCharacterArt, 0, 1)
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingTheme, 0, 9)
+        Me.tblFilterMissingItemsMain_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterMissingItemsMain_Shows.Location = New System.Drawing.Point(0, 0)
+        Me.tblFilterMissingItemsMain_Shows.Name = "tblFilterMissingItemsMain_Shows"
+        Me.tblFilterMissingItemsMain_Shows.RowCount = 11
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterMissingItemsMain_Shows.Size = New System.Drawing.Size(168, 230)
+        Me.tblFilterMissingItemsMain_Shows.TabIndex = 0
+        '
+        'chkShowMissingBanner
+        '
+        Me.chkShowMissingBanner.AutoSize = true
+        Me.chkShowMissingBanner.Location = New System.Drawing.Point(3, 3)
+        Me.chkShowMissingBanner.Name = "chkShowMissingBanner"
+        Me.chkShowMissingBanner.Size = New System.Drawing.Size(63, 17)
+        Me.chkShowMissingBanner.TabIndex = 0
+        Me.chkShowMissingBanner.Text = "Banner"
+        Me.chkShowMissingBanner.UseVisualStyleBackColor = true
+        '
+        'chkShowMissingClearArt
+        '
+        Me.chkShowMissingClearArt.AutoSize = true
+        Me.chkShowMissingClearArt.Location = New System.Drawing.Point(3, 49)
+        Me.chkShowMissingClearArt.Name = "chkShowMissingClearArt"
+        Me.chkShowMissingClearArt.Size = New System.Drawing.Size(67, 17)
+        Me.chkShowMissingClearArt.TabIndex = 0
+        Me.chkShowMissingClearArt.Text = "ClearArt"
+        Me.chkShowMissingClearArt.UseVisualStyleBackColor = true
+        '
+        'chkShowMissingClearLogo
+        '
+        Me.chkShowMissingClearLogo.AutoSize = true
+        Me.chkShowMissingClearLogo.Location = New System.Drawing.Point(3, 72)
+        Me.chkShowMissingClearLogo.Name = "chkShowMissingClearLogo"
+        Me.chkShowMissingClearLogo.Size = New System.Drawing.Size(78, 17)
+        Me.chkShowMissingClearLogo.TabIndex = 0
+        Me.chkShowMissingClearLogo.Text = "ClearLogo"
+        Me.chkShowMissingClearLogo.UseVisualStyleBackColor = true
+        '
+        'chkShowMissingEFanarts
+        '
+        Me.chkShowMissingEFanarts.AutoSize = true
+        Me.chkShowMissingEFanarts.Location = New System.Drawing.Point(3, 95)
+        Me.chkShowMissingEFanarts.Name = "chkShowMissingEFanarts"
+        Me.chkShowMissingEFanarts.Size = New System.Drawing.Size(87, 17)
+        Me.chkShowMissingEFanarts.TabIndex = 0
+        Me.chkShowMissingEFanarts.Text = "Extrafanarts"
+        Me.chkShowMissingEFanarts.UseVisualStyleBackColor = true
+        '
+        'chkShowMissingFanart
+        '
+        Me.chkShowMissingFanart.AutoSize = true
+        Me.chkShowMissingFanart.Location = New System.Drawing.Point(3, 118)
+        Me.chkShowMissingFanart.Name = "chkShowMissingFanart"
+        Me.chkShowMissingFanart.Size = New System.Drawing.Size(59, 17)
+        Me.chkShowMissingFanart.TabIndex = 0
+        Me.chkShowMissingFanart.Text = "Fanart"
+        Me.chkShowMissingFanart.UseVisualStyleBackColor = true
+        '
+        'chkShowMissingLandscape
+        '
+        Me.chkShowMissingLandscape.AutoSize = true
+        Me.chkShowMissingLandscape.Location = New System.Drawing.Point(3, 141)
+        Me.chkShowMissingLandscape.Name = "chkShowMissingLandscape"
+        Me.chkShowMissingLandscape.Size = New System.Drawing.Size(80, 17)
+        Me.chkShowMissingLandscape.TabIndex = 0
+        Me.chkShowMissingLandscape.Text = "Landscape"
+        Me.chkShowMissingLandscape.UseVisualStyleBackColor = true
+        '
+        'chkShowMissingPoster
+        '
+        Me.chkShowMissingPoster.AutoSize = true
+        Me.chkShowMissingPoster.Location = New System.Drawing.Point(3, 187)
+        Me.chkShowMissingPoster.Name = "chkShowMissingPoster"
+        Me.chkShowMissingPoster.Size = New System.Drawing.Size(58, 17)
+        Me.chkShowMissingPoster.TabIndex = 0
+        Me.chkShowMissingPoster.Text = "Poster"
+        Me.chkShowMissingPoster.UseVisualStyleBackColor = true
+        '
+        'chkShowMissingNFO
+        '
+        Me.chkShowMissingNFO.AutoSize = true
+        Me.chkShowMissingNFO.Location = New System.Drawing.Point(3, 164)
+        Me.chkShowMissingNFO.Name = "chkShowMissingNFO"
+        Me.chkShowMissingNFO.Size = New System.Drawing.Size(49, 17)
+        Me.chkShowMissingNFO.TabIndex = 0
+        Me.chkShowMissingNFO.Text = "NFO"
+        Me.chkShowMissingNFO.UseVisualStyleBackColor = true
+        '
+        'chkShowMissingCharacterArt
+        '
+        Me.chkShowMissingCharacterArt.AutoSize = true
+        Me.chkShowMissingCharacterArt.Location = New System.Drawing.Point(3, 26)
+        Me.chkShowMissingCharacterArt.Name = "chkShowMissingCharacterArt"
+        Me.chkShowMissingCharacterArt.Size = New System.Drawing.Size(90, 17)
+        Me.chkShowMissingCharacterArt.TabIndex = 0
+        Me.chkShowMissingCharacterArt.Text = "CharacterArt"
+        Me.chkShowMissingCharacterArt.UseVisualStyleBackColor = true
+        '
+        'chkShowMissingTheme
+        '
+        Me.chkShowMissingTheme.AutoSize = true
+        Me.chkShowMissingTheme.Location = New System.Drawing.Point(3, 210)
+        Me.chkShowMissingTheme.Name = "chkShowMissingTheme"
+        Me.chkShowMissingTheme.Size = New System.Drawing.Size(59, 17)
+        Me.chkShowMissingTheme.TabIndex = 0
+        Me.chkShowMissingTheme.Text = "Theme"
+        Me.chkShowMissingTheme.UseVisualStyleBackColor = true
+        '
+        'pnlFilterMissingItemsTop_Shows
+        '
+        Me.pnlFilterMissingItemsTop_Shows.AutoSize = true
+        Me.pnlFilterMissingItemsTop_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.pnlFilterMissingItemsTop_Shows.Controls.Add(Me.tblFilterMissingItemsTop_Shows)
+        Me.pnlFilterMissingItemsTop_Shows.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlFilterMissingItemsTop_Shows.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFilterMissingItemsTop_Shows.Name = "pnlFilterMissingItemsTop_Shows"
+        Me.pnlFilterMissingItemsTop_Shows.Size = New System.Drawing.Size(170, 20)
+        Me.pnlFilterMissingItemsTop_Shows.TabIndex = 25
+        '
+        'tblFilterMissingItemsTop_Shows
+        '
+        Me.tblFilterMissingItemsTop_Shows.AutoSize = true
+        Me.tblFilterMissingItemsTop_Shows.ColumnCount = 3
+        Me.tblFilterMissingItemsTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterMissingItemsTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.tblFilterMissingItemsTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterMissingItemsTop_Shows.Controls.Add(Me.lblFilterMissingItems_Shows, 0, 0)
+        Me.tblFilterMissingItemsTop_Shows.Controls.Add(Me.lblFilterMissingItemsClose_Shows, 2, 0)
+        Me.tblFilterMissingItemsTop_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterMissingItemsTop_Shows.Location = New System.Drawing.Point(0, 0)
+        Me.tblFilterMissingItemsTop_Shows.Name = "tblFilterMissingItemsTop_Shows"
+        Me.tblFilterMissingItemsTop_Shows.RowCount = 2
+        Me.tblFilterMissingItemsTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterMissingItemsTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterMissingItemsTop_Shows.Size = New System.Drawing.Size(170, 20)
+        Me.tblFilterMissingItemsTop_Shows.TabIndex = 0
+        '
+        'lblFilterMissingItems_Shows
+        '
+        Me.lblFilterMissingItems_Shows.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblFilterMissingItems_Shows.AutoSize = true
+        Me.lblFilterMissingItems_Shows.BackColor = System.Drawing.Color.Transparent
+        Me.lblFilterMissingItems_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblFilterMissingItems_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilterMissingItems_Shows.Location = New System.Drawing.Point(3, 3)
+        Me.lblFilterMissingItems_Shows.Name = "lblFilterMissingItems_Shows"
+        Me.lblFilterMissingItems_Shows.Size = New System.Drawing.Size(79, 13)
+        Me.lblFilterMissingItems_Shows.TabIndex = 23
+        Me.lblFilterMissingItems_Shows.Text = "Missing Items"
+        Me.lblFilterMissingItems_Shows.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblFilterMissingItemsClose_Shows
+        '
+        Me.lblFilterMissingItemsClose_Shows.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblFilterMissingItemsClose_Shows.AutoSize = true
+        Me.lblFilterMissingItemsClose_Shows.BackColor = System.Drawing.Color.Transparent
+        Me.lblFilterMissingItemsClose_Shows.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblFilterMissingItemsClose_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblFilterMissingItemsClose_Shows.ForeColor = System.Drawing.Color.White
+        Me.lblFilterMissingItemsClose_Shows.Location = New System.Drawing.Point(132, 3)
+        Me.lblFilterMissingItemsClose_Shows.Name = "lblFilterMissingItemsClose_Shows"
+        Me.lblFilterMissingItemsClose_Shows.Size = New System.Drawing.Size(35, 13)
+        Me.lblFilterMissingItemsClose_Shows.TabIndex = 24
+        Me.lblFilterMissingItemsClose_Shows.Text = "Close"
         '
         'pnlFilterSources_Movies
         '
@@ -4636,7 +5092,7 @@ Partial Class frmMain
         '
         Me.pnlFilter_MovieSets.AutoSize = true
         Me.pnlFilter_MovieSets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilter_MovieSets.Controls.Add(Me.pnlFilterMain_MovieSets)
+        Me.pnlFilter_MovieSets.Controls.Add(Me.tblFilter_MovieSets)
         Me.pnlFilter_MovieSets.Controls.Add(Me.pnlFilterTop_MovieSets)
         Me.pnlFilter_MovieSets.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlFilter_MovieSets.Location = New System.Drawing.Point(0, 347)
@@ -4645,36 +5101,26 @@ Partial Class frmMain
         Me.pnlFilter_MovieSets.TabIndex = 26
         Me.pnlFilter_MovieSets.Visible = false
         '
-        'pnlFilterMain_MovieSets
+        'tblFilter_MovieSets
         '
-        Me.pnlFilterMain_MovieSets.AutoSize = true
-        Me.pnlFilterMain_MovieSets.Controls.Add(Me.tblFilterMain_MovieSets)
-        Me.pnlFilterMain_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlFilterMain_MovieSets.Location = New System.Drawing.Point(0, 22)
-        Me.pnlFilterMain_MovieSets.Name = "pnlFilterMain_MovieSets"
-        Me.pnlFilterMain_MovieSets.Size = New System.Drawing.Size(565, 146)
-        Me.pnlFilterMain_MovieSets.TabIndex = 7
-        '
-        'tblFilterMain_MovieSets
-        '
-        Me.tblFilterMain_MovieSets.AutoScroll = true
-        Me.tblFilterMain_MovieSets.AutoSize = true
-        Me.tblFilterMain_MovieSets.ColumnCount = 3
-        Me.tblFilterMain_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterMain_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterMain_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterMain_MovieSets.Controls.Add(Me.gbFilterGeneral_MovieSets, 0, 0)
-        Me.tblFilterMain_MovieSets.Controls.Add(Me.gbFilterSpecific_MovieSets, 1, 0)
-        Me.tblFilterMain_MovieSets.Controls.Add(Me.btnClearFilters_MovieSets, 0, 1)
-        Me.tblFilterMain_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblFilterMain_MovieSets.Location = New System.Drawing.Point(0, 0)
-        Me.tblFilterMain_MovieSets.Name = "tblFilterMain_MovieSets"
-        Me.tblFilterMain_MovieSets.RowCount = 3
-        Me.tblFilterMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterMain_MovieSets.Size = New System.Drawing.Size(565, 146)
-        Me.tblFilterMain_MovieSets.TabIndex = 8
+        Me.tblFilter_MovieSets.AutoScroll = true
+        Me.tblFilter_MovieSets.AutoSize = true
+        Me.tblFilter_MovieSets.ColumnCount = 3
+        Me.tblFilter_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilter_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilter_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilter_MovieSets.Controls.Add(Me.gbFilterGeneral_MovieSets, 0, 0)
+        Me.tblFilter_MovieSets.Controls.Add(Me.gbFilterSpecific_MovieSets, 1, 0)
+        Me.tblFilter_MovieSets.Controls.Add(Me.btnClearFilters_MovieSets, 0, 1)
+        Me.tblFilter_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilter_MovieSets.Location = New System.Drawing.Point(0, 22)
+        Me.tblFilter_MovieSets.Name = "tblFilter_MovieSets"
+        Me.tblFilter_MovieSets.RowCount = 3
+        Me.tblFilter_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilter_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilter_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilter_MovieSets.Size = New System.Drawing.Size(565, 146)
+        Me.tblFilter_MovieSets.TabIndex = 8
         '
         'gbFilterGeneral_MovieSets
         '
@@ -4767,7 +5213,7 @@ Partial Class frmMain
         Me.gbFilterSpecific_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFilterSpecific_MovieSets.Location = New System.Drawing.Point(133, 3)
         Me.gbFilterSpecific_MovieSets.Name = "gbFilterSpecific_MovieSets"
-        Me.tblFilterMain_MovieSets.SetRowSpan(Me.gbFilterSpecific_MovieSets, 2)
+        Me.tblFilter_MovieSets.SetRowSpan(Me.gbFilterSpecific_MovieSets, 2)
         Me.gbFilterSpecific_MovieSets.Size = New System.Drawing.Size(114, 140)
         Me.gbFilterSpecific_MovieSets.TabIndex = 6
         Me.gbFilterSpecific_MovieSets.TabStop = false
@@ -10353,6 +10799,26 @@ Partial Class frmMain
         Me.pnlFilterMissingItemsTop_Movies.PerformLayout
         Me.tblFilterMissingItemsTop_Movies.ResumeLayout(false)
         Me.tblFilterMissingItemsTop_Movies.PerformLayout
+        Me.pnlFilterMissingItems_MovieSets.ResumeLayout(false)
+        Me.pnlFilterMissingItems_MovieSets.PerformLayout
+        Me.pnlFilterMissingItemsMain_MovieSets.ResumeLayout(false)
+        Me.pnlFilterMissingItemsMain_MovieSets.PerformLayout
+        Me.tlbFilterMissingItemsMain_MovieSets.ResumeLayout(false)
+        Me.tlbFilterMissingItemsMain_MovieSets.PerformLayout
+        Me.pnlFilterMissingItemsTop_MovieSets.ResumeLayout(false)
+        Me.pnlFilterMissingItemsTop_MovieSets.PerformLayout
+        Me.tblFilterMissingItemsTop_MovieSets.ResumeLayout(false)
+        Me.tblFilterMissingItemsTop_MovieSets.PerformLayout
+        Me.pnlFilterMissingItems_Shows.ResumeLayout(false)
+        Me.pnlFilterMissingItems_Shows.PerformLayout
+        Me.pnlFilterMissingItemsMain_Shows.ResumeLayout(false)
+        Me.pnlFilterMissingItemsMain_Shows.PerformLayout
+        Me.tblFilterMissingItemsMain_Shows.ResumeLayout(false)
+        Me.tblFilterMissingItemsMain_Shows.PerformLayout
+        Me.pnlFilterMissingItemsTop_Shows.ResumeLayout(false)
+        Me.pnlFilterMissingItemsTop_Shows.PerformLayout
+        Me.tblFilterMissingItemsTop_Shows.ResumeLayout(false)
+        Me.tblFilterMissingItemsTop_Shows.PerformLayout
         Me.pnlFilterSources_Movies.ResumeLayout(false)
         Me.pnlFilterSources_Movies.PerformLayout
         Me.pnlFilterSourcesMain_Movies.ResumeLayout(false)
@@ -10428,10 +10894,8 @@ Partial Class frmMain
         Me.tblFilterTop_Movies.PerformLayout
         Me.pnlFilter_MovieSets.ResumeLayout(false)
         Me.pnlFilter_MovieSets.PerformLayout
-        Me.pnlFilterMain_MovieSets.ResumeLayout(false)
-        Me.pnlFilterMain_MovieSets.PerformLayout
-        Me.tblFilterMain_MovieSets.ResumeLayout(false)
-        Me.tblFilterMain_MovieSets.PerformLayout
+        Me.tblFilter_MovieSets.ResumeLayout(false)
+        Me.tblFilter_MovieSets.PerformLayout
         Me.gbFilterGeneral_MovieSets.ResumeLayout(false)
         Me.gbFilterGeneral_MovieSets.PerformLayout
         Me.tblFilterGeneral_MovieSets.ResumeLayout(false)
@@ -11509,8 +11973,7 @@ End Sub
     Friend WithEvents pbSubtitleLang1 As System.Windows.Forms.PictureBox
     Friend WithEvents pbSubtitleLang0 As System.Windows.Forms.PictureBox
     Friend WithEvents mnuMainToolsRewriteMovieContent As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents pnlFilterMain_MovieSets As System.Windows.Forms.Panel
-    Friend WithEvents tblFilterMain_MovieSets As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblFilter_MovieSets As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblFilterGeneral_MovieSets As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblFilterSpecific_MovieSets As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblFilterModifier_MovieSets As System.Windows.Forms.TableLayoutPanel
@@ -11579,4 +12042,36 @@ End Sub
     Friend WithEvents tblFilterMissingItemsTop_Movies As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblFilterMissingItems_Movies As System.Windows.Forms.Label
     Friend WithEvents lblFilterMissingItemsClose_Movies As System.Windows.Forms.Label
+    Friend WithEvents pnlFilterMissingItems_MovieSets As System.Windows.Forms.Panel
+    Friend WithEvents pnlFilterMissingItemsMain_MovieSets As System.Windows.Forms.Panel
+    Friend WithEvents tlbFilterMissingItemsMain_MovieSets As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents chkMovieSetMissingBanner As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetMissingClearArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetMissingClearLogo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetMissingDiscArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetMissingFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetMissingLandscape As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetMissingPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetMissingNFO As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlFilterMissingItemsTop_MovieSets As System.Windows.Forms.Panel
+    Friend WithEvents tblFilterMissingItemsTop_MovieSets As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblFilterMissingItems_MovieSets As System.Windows.Forms.Label
+    Friend WithEvents lblFilterMissingItemsClose_MovieSets As System.Windows.Forms.Label
+    Friend WithEvents pnlFilterMissingItems_Shows As System.Windows.Forms.Panel
+    Friend WithEvents pnlFilterMissingItemsMain_Shows As System.Windows.Forms.Panel
+    Friend WithEvents tblFilterMissingItemsMain_Shows As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents chkShowMissingBanner As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowMissingClearArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowMissingClearLogo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowMissingEFanarts As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowMissingFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowMissingLandscape As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowMissingPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowMissingNFO As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlFilterMissingItemsTop_Shows As System.Windows.Forms.Panel
+    Friend WithEvents tblFilterMissingItemsTop_Shows As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblFilterMissingItems_Shows As System.Windows.Forms.Label
+    Friend WithEvents lblFilterMissingItemsClose_Shows As System.Windows.Forms.Label
+    Friend WithEvents chkShowMissingCharacterArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowMissingTheme As System.Windows.Forms.CheckBox
 End Class

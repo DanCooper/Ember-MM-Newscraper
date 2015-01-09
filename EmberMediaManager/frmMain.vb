@@ -3613,6 +3613,49 @@ doCancel:
         Me.RunFilter_Movies()
     End Sub
 
+    Private Sub SetFilterMissing_MovieSets()
+        Dim MissingFilter As New List(Of String)
+        Me.FilterArray_MovieSets.Remove(filMissing_MovieSets)
+        If Me.chkFilterMissing_MovieSets.Checked Then
+            With Master.eSettings
+                If .MovieSetMissingBanner Then MissingFilter.Add("HasBanner = 0")
+                If .MovieSetMissingClearArt Then MissingFilter.Add("HasClearArt = 0")
+                If .MovieSetMissingClearLogo Then MissingFilter.Add("HasClearLogo = 0")
+                If .MovieSetMissingDiscArt Then MissingFilter.Add("HasDiscArt = 0")
+                If .MovieSetMissingFanart Then MissingFilter.Add("HasFanart = 0")
+                If .MovieSetMissingLandscape Then MissingFilter.Add("HasLandscape = 0")
+                If .MovieSetMissingNFO Then MissingFilter.Add("HasNfo = 0")
+                If .MovieSetMissingPoster Then MissingFilter.Add("HasPoster = 0")
+            End With
+            filMissing_MovieSets = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
+            If Not IsNothing(filMissing_MovieSets) Then Me.FilterArray_MovieSets.Add(filMissing_MovieSets)
+        End If
+        Me.RunFilter_MovieSets()
+    End Sub
+
+    Private Sub SetFilterMissing_Shows()
+        Dim MissingFilter As New List(Of String)
+        Me.FilterArray_Shows.Remove(filMissing_Shows)
+        If Me.chkFilterMissing_Shows.Checked Then
+            With Master.eSettings
+                If .TVShowMissingBanner Then MissingFilter.Add("HasBanner = 0")
+                If .TVShowMissingCharacterArt Then MissingFilter.Add("HasCharacterArt = 0")
+                If .TVShowMissingClearArt Then MissingFilter.Add("HasClearArt = 0")
+                If .TVShowMissingClearLogo Then MissingFilter.Add("HasClearLogo = 0")
+                If .TVShowMissingEFanarts Then MissingFilter.Add("HasEFanarts = 0")
+                If .TVShowMissingFanart Then MissingFilter.Add("HasFanart = 0")
+                If .TVShowMissingLandscape Then MissingFilter.Add("HasLandscape = 0")
+                If .TVShowMissingNFO Then MissingFilter.Add("HasNfo = 0")
+                If .TVShowMissingPoster Then MissingFilter.Add("HasPoster = 0")
+                If .TVShowMissingTheme Then MissingFilter.Add("HasTheme = 0")
+            End With
+            filMissing_Shows = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
+            If Not IsNothing(filMissing_Shows) Then Me.FilterArray_Shows.Add(filMissing_Shows)
+        End If
+        Me.RunFilter_Shows()
+    End Sub
+
+
     Private Sub SetFilterYear_Movies()
         Try
             If Not String.IsNullOrEmpty(cbFilterYearFrom_Movies.Text) AndAlso Not cbFilterYearFrom_Movies.Text = Master.eLang.All Then
@@ -3888,55 +3931,11 @@ doCancel:
     End Sub
 
     Private Sub chkFilterMissing_MovieSets_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterMissing_MovieSets.Click
-        Try
-            Dim MissingFilter As New List(Of String)
-            If Me.chkFilterMissing_MovieSets.Checked Then
-                With Master.eSettings
-                    If .MovieSetMissingBanner Then MissingFilter.Add("HasBanner = 0")
-                    If .MovieSetMissingClearArt Then MissingFilter.Add("HasClearArt = 0")
-                    If .MovieSetMissingClearLogo Then MissingFilter.Add("HasClearLogo = 0")
-                    If .MovieSetMissingDiscArt Then MissingFilter.Add("HasDiscArt = 0")
-                    'If .MovieSetMissingEFanarts Then MissingFilter.Add("HasEFanarts = 0")
-                    'If .MovieSetMissingEThumbs Then MissingFilter.Add("HasEThumbs = 0")
-                    If .MovieSetMissingFanart Then MissingFilter.Add("HasFanart = 0")
-                    If .MovieSetMissingLandscape Then MissingFilter.Add("HasLandscape = 0")
-                    If .MovieSetMissingNFO Then MissingFilter.Add("HasNfo = 0")
-                    If .MovieSetMissingPoster Then MissingFilter.Add("HasPoster = 0")
-                End With
-                filMissing_MovieSets = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
-                If Not IsNothing(filMissing_MovieSets) Then Me.FilterArray_MovieSets.Add(filMissing_MovieSets)
-            Else
-                Me.FilterArray_MovieSets.Remove(filMissing_MovieSets)
-            End If
-            Me.RunFilter_MovieSets()
-        Catch
-        End Try
+        SetFilterMissing_MovieSets()
     End Sub
 
     Private Sub chkFilterMissing_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterMissing_Shows.Click
-        Try
-            Dim MissingFilter As New List(Of String)
-            If Me.chkFilterMissing_Shows.Checked Then
-                With Master.eSettings
-                    If .TVShowMissingBanner Then MissingFilter.Add("HasBanner = 0")
-                    If .TVShowMissingCharacterArt Then MissingFilter.Add("HasCharacterArt = 0")
-                    If .TVShowMissingClearArt Then MissingFilter.Add("HasClearArt = 0")
-                    If .TVShowMissingClearLogo Then MissingFilter.Add("HasClearLogo = 0")
-                    If .TVShowMissingEFanarts Then MissingFilter.Add("HasEFanarts = 0")
-                    If .TVShowMissingFanart Then MissingFilter.Add("HasFanart = 0")
-                    If .TVShowMissingLandscape Then MissingFilter.Add("HasLandscape = 0")
-                    If .TVShowMissingNFO Then MissingFilter.Add("HasNfo = 0")
-                    If .TVShowMissingPoster Then MissingFilter.Add("HasPoster = 0")
-                    If .TVShowMissingTheme Then MissingFilter.Add("HasTheme = 0")
-                End With
-                filMissing_Shows = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
-                If Not IsNothing(filMissing_Shows) Then Me.FilterArray_Shows.Add(filMissing_Shows)
-            Else
-                Me.FilterArray_Shows.Remove(filMissing_Shows)
-            End If
-            Me.RunFilter_Shows()
-        Catch
-        End Try
+        SetFilterMissing_Shows()
     End Sub
 
     Private Sub chkFilterNew_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNew_Movies.Click
@@ -4076,6 +4075,132 @@ doCancel:
         Me.chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
         Me.chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
         SetFilterMissing_Movies()
+    End Sub
+
+    Private Sub chkMovieSetMissingBanner_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingBanner.CheckedChanged
+        Master.eSettings.MovieSetMissingBanner = Me.chkMovieSetMissingBanner.Checked
+        Me.chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        Me.chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        SetFilterMissing_MovieSets()
+    End Sub
+
+    Private Sub chkMovieSetMissingClearArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingClearArt.CheckedChanged
+        Master.eSettings.MovieSetMissingClearArt = Me.chkMovieSetMissingClearArt.Checked
+        Me.chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        Me.chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        SetFilterMissing_MovieSets()
+    End Sub
+
+    Private Sub chkMovieSetMissingClearLogo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingClearLogo.CheckedChanged
+        Master.eSettings.MovieSetMissingClearLogo = Me.chkMovieSetMissingClearLogo.Checked
+        Me.chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        Me.chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        SetFilterMissing_MovieSets()
+    End Sub
+
+    Private Sub chkMovieSetMissingDiscArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingDiscArt.CheckedChanged
+        Master.eSettings.MovieSetMissingDiscArt = Me.chkMovieSetMissingDiscArt.Checked
+        Me.chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        Me.chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        SetFilterMissing_MovieSets()
+    End Sub
+
+    Private Sub chkMovieSetMissingFanart_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingFanart.CheckedChanged
+        Master.eSettings.MovieSetMissingFanart = Me.chkMovieSetMissingFanart.Checked
+        Me.chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        Me.chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        SetFilterMissing_MovieSets()
+    End Sub
+
+    Private Sub chkMovieSetMissingLandscape_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingLandscape.CheckedChanged
+        Master.eSettings.MovieSetMissingLandscape = Me.chkMovieSetMissingLandscape.Checked
+        Me.chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        Me.chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        SetFilterMissing_MovieSets()
+    End Sub
+
+    Private Sub chkMovieSetMissingNFO_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingNFO.CheckedChanged
+        Master.eSettings.MovieSetMissingNFO = Me.chkMovieSetMissingNFO.Checked
+        Me.chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        Me.chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        SetFilterMissing_MovieSets()
+    End Sub
+
+    Private Sub chkMovieSetMissingPoster_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingPoster.CheckedChanged
+        Master.eSettings.MovieSetMissingPoster = Me.chkMovieSetMissingPoster.Checked
+        Me.chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        Me.chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        SetFilterMissing_MovieSets()
+    End Sub
+
+    Private Sub chkShowMissingBanner_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingBanner.CheckedChanged
+        Master.eSettings.TVShowMissingBanner = Me.chkShowMissingBanner.Checked
+        Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        SetFilterMissing_Shows()
+    End Sub
+
+    Private Sub chkShowMissingCharacterArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingCharacterArt.CheckedChanged
+        Master.eSettings.TVShowMissingCharacterArt = Me.chkShowMissingCharacterArt.Checked
+        Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        SetFilterMissing_Shows()
+    End Sub
+
+    Private Sub chkShowMissingClearArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingClearArt.CheckedChanged
+        Master.eSettings.TVShowMissingClearArt = Me.chkShowMissingClearArt.Checked
+        Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        SetFilterMissing_Shows()
+    End Sub
+
+    Private Sub chkShowMissingClearLogo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingClearLogo.CheckedChanged
+        Master.eSettings.TVShowMissingClearLogo = Me.chkShowMissingClearLogo.Checked
+        Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        SetFilterMissing_Shows()
+    End Sub
+
+    Private Sub chkShowMissingEFanarts_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingEFanarts.CheckedChanged
+        Master.eSettings.TVShowMissingEFanarts = Me.chkShowMissingEFanarts.Checked
+        Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        SetFilterMissing_Shows()
+    End Sub
+
+    Private Sub chkShowMissingFanart_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingFanart.CheckedChanged
+        Master.eSettings.TVShowMissingFanart = Me.chkShowMissingFanart.Checked
+        Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        SetFilterMissing_Shows()
+    End Sub
+
+    Private Sub chkShowMissingLandscape_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingLandscape.CheckedChanged
+        Master.eSettings.TVShowMissingLandscape = Me.chkShowMissingLandscape.Checked
+        Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        SetFilterMissing_Shows()
+    End Sub
+
+    Private Sub chkShowMissingNFO_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingNFO.CheckedChanged
+        Master.eSettings.TVShowMissingNFO = Me.chkShowMissingNFO.Checked
+        Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        SetFilterMissing_Shows()
+    End Sub
+
+    Private Sub chkShowMissingPoster_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingPoster.CheckedChanged
+        Master.eSettings.TVShowMissingPoster = Me.chkShowMissingPoster.Checked
+        Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        SetFilterMissing_Shows()
+    End Sub
+
+    Private Sub chkShowMissingTheme_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingTheme.CheckedChanged
+        Master.eSettings.TVShowMissingTheme = Me.chkShowMissingTheme.Checked
+        Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        SetFilterMissing_Shows()
     End Sub
 
     Private Sub clbFilterGenres_Movies_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles clbFilterGenres_Movies.ItemCheck
@@ -4440,6 +4565,7 @@ doCancel:
             Me.chkFilterMarkCustom4_Movies.Checked = False
             Me.chkFilterNew_Movies.Checked = False
             Me.chkFilterLock_Movies.Checked = False
+            Me.pnlFilterMissingItems_Movies.Visible = False
             Me.rbFilterOr_Movies.Checked = False
             Me.rbFilterAnd_Movies.Checked = True
             Me.txtFilterGenre_Movies.Text = String.Empty
@@ -4533,6 +4659,7 @@ doCancel:
             Me.chkFilterNew_MovieSets.Checked = False
             Me.chkFilterLock_MovieSets.Checked = False
             Me.chkFilterOne_MovieSets.Checked = False
+            Me.pnlFilterMissingItems_MovieSets.Visible = False
             Me.rbFilterOr_MovieSets.Checked = False
             Me.rbFilterAnd_MovieSets.Checked = True
             'Me.txtFilterGenre.Text = String.Empty
@@ -4598,6 +4725,7 @@ doCancel:
             'Me.chkFilterMarkCustom4.Checked = False
             Me.chkFilterNew_Shows.Checked = False
             Me.chkFilterLock_Shows.Checked = False
+            Me.pnlFilterMissingItems_Shows.Visible = False
             Me.rbFilterOr_Shows.Checked = False
             Me.rbFilterAnd_Shows.Checked = True
             Me.txtFilterGenre_Shows.Text = String.Empty
@@ -8640,7 +8768,7 @@ doCancel:
         Me.chkFilterMissing_Movies.Enabled = If(Master.eSettings.MovieMissingItemsAnyEnabled, isEnabled, False)
         Me.chkFilterNew_Movies.Enabled = isEnabled
         Me.chkFilterTolerance_Movies.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
-        Me.pnlFilterMissingItems_Movies.Visible = False
+        Me.pnlFilterMissingItems_Movies.Visible = If(Not isEnabled, False, Me.pnlFilterMissingItems_Movies.Visible)
         Me.rbFilterAnd_Movies.Enabled = isEnabled
         Me.rbFilterOr_Movies.Enabled = isEnabled
         Me.txtFilterCountry_Movies.Enabled = isEnabled
@@ -8652,6 +8780,7 @@ doCancel:
 
     Private Sub EnableFilters_MovieSets(ByVal isEnabled As Boolean)
         Me.btnClearFilters_MovieSets.Enabled = isEnabled
+        Me.btnFilterMissing_MovieSets.Enabled = isEnabled
         'Me.btnSortDate.Enabled = isEnabled
         'Me.btnIMDBRating.Enabled = isEnabled
         'Me.btnSortTitle.Enabled = isEnabled
@@ -8671,6 +8800,7 @@ doCancel:
         Me.chkFilterNew_MovieSets.Enabled = isEnabled
         Me.chkFilterOne_MovieSets.Enabled = isEnabled
         'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
+        Me.pnlFilterMissingItems_MovieSets.Visible = If(Not isEnabled, False, Me.pnlFilterMissingItems_MovieSets.Visible)
         Me.rbFilterAnd_MovieSets.Enabled = isEnabled
         Me.rbFilterOr_MovieSets.Enabled = isEnabled
         'Me.txtFilterCountry.Enabled = isEnabled
@@ -8681,6 +8811,7 @@ doCancel:
 
     Private Sub EnableFilters_Shows(ByVal isEnabled As Boolean)
         Me.btnClearFilters_Shows.Enabled = isEnabled
+        Me.btnFilterMissing_Shows.Enabled = isEnabled
         'Me.btnSortDate.Enabled = isEnabled
         'Me.btnIMDBRating.Enabled = isEnabled
         'Me.btnSortTitle.Enabled = isEnabled
@@ -8698,6 +8829,7 @@ doCancel:
         Me.chkFilterMissing_Shows.Enabled = If(Master.eSettings.TVShowMissingItemsAnyEnabled, isEnabled, False)
         Me.chkFilterNew_Shows.Enabled = isEnabled
         'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
+        Me.pnlFilterMissingItems_Shows.Visible = If(Not isEnabled, False, Me.pnlFilterMissingItems_Shows.Visible)
         Me.rbFilterAnd_Shows.Enabled = isEnabled
         Me.rbFilterOr_Shows.Enabled = isEnabled
         'Me.txtFilterCountry.Enabled = isEnabled
@@ -11626,6 +11758,10 @@ doCancel:
                                                                    (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.gbFilterDataField_Movies.Top + Me.tblFilterDataField_Movies.Top + Me.txtFilterDataField_Movies.Top) - Me.pnlFilterDataFields_Movies.Height)
                 Me.pnlFilterMissingItems_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterGeneral_Movies.Left + Me.tblFilterGeneral_Movies.Left + Me.btnFilterMissing_Movies.Left + 1, _
                                                                      (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterGeneral_Movies.Top + Me.tblFilterGeneral_Movies.Top + Me.btnFilterMissing_Movies.Top) - Me.pnlFilterMissingItems_Movies.Height)
+                Me.pnlFilterMissingItems_MovieSets.Location = New Point(Me.pnlFilter_MovieSets.Left + Me.tblFilter_MovieSets.Left + Me.gbFilterGeneral_MovieSets.Left + Me.tblFilterGeneral_MovieSets.Left + Me.btnFilterMissing_MovieSets.Left + 1, _
+                                                                     (Me.pnlFilter_MovieSets.Top + Me.tblFilter_MovieSets.Top + Me.gbFilterGeneral_MovieSets.Top + Me.tblFilterGeneral_MovieSets.Top + Me.btnFilterMissing_MovieSets.Top) - Me.pnlFilterMissingItems_MovieSets.Height)
+                Me.pnlFilterMissingItems_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterGeneral_Shows.Left + Me.tblFilterGeneral_Shows.Left + Me.btnFilterMissing_Shows.Left + 1, _
+                                                                     (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterGeneral_Shows.Top + Me.tblFilterGeneral_Shows.Top + Me.btnFilterMissing_Shows.Top) - Me.pnlFilterMissingItems_Shows.Height)
                 Me.pnlFilterSources_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterSource_Movies.Left + 1, _
                                                                 (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterSource_Movies.Top) - Me.pnlFilterSources_Movies.Height)
                 Me.pnlFilterSources_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterSource_Shows.Left + 1, _
@@ -11734,6 +11870,14 @@ doCancel:
 
     Private Sub lblFilterMissingItemsClose_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterMissingItemsClose_Movies.Click
         Me.pnlFilterMissingItems_Movies.Visible = False
+    End Sub
+
+    Private Sub lblFilterMissingItemsClose_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterMissingItemsClose_MovieSets.Click
+        Me.pnlFilterMissingItems_MovieSets.Visible = False
+    End Sub
+
+    Private Sub lblFilterMissingItemsClose_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterMissingItemsClose_Shows.Click
+        Me.pnlFilterMissingItems_Shows.Visible = False
     End Sub
 
     Private Sub lblFilterSourceClose_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterSourcesClose_Movies.Click
@@ -16385,6 +16529,10 @@ doCancel:
                                                                    (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.gbFilterDataField_Movies.Top + Me.tblFilterDataField_Movies.Top + Me.txtFilterDataField_Movies.Top) - Me.pnlFilterDataFields_Movies.Height)
                 Me.pnlFilterMissingItems_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterGeneral_Movies.Left + Me.tblFilterGeneral_Movies.Left + Me.btnFilterMissing_Movies.Left + 1, _
                                                                      (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterGeneral_Movies.Top + Me.tblFilterGeneral_Movies.Top + Me.btnFilterMissing_Movies.Top) - Me.pnlFilterMissingItems_Movies.Height)
+                Me.pnlFilterMissingItems_MovieSets.Location = New Point(Me.pnlFilter_MovieSets.Left + Me.tblFilter_MovieSets.Left + Me.gbFilterGeneral_MovieSets.Left + Me.tblFilterGeneral_MovieSets.Left + Me.btnFilterMissing_MovieSets.Left + 1, _
+                                                                     (Me.pnlFilter_MovieSets.Top + Me.tblFilter_MovieSets.Top + Me.gbFilterGeneral_MovieSets.Top + Me.tblFilterGeneral_MovieSets.Top + Me.btnFilterMissing_MovieSets.Top) - Me.pnlFilterMissingItems_MovieSets.Height)
+                Me.pnlFilterMissingItems_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterGeneral_Shows.Left + Me.tblFilterGeneral_Shows.Left + Me.btnFilterMissing_Shows.Left + 1, _
+                                                                     (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterGeneral_Shows.Top + Me.tblFilterGeneral_Shows.Top + Me.btnFilterMissing_Shows.Top) - Me.pnlFilterMissingItems_Shows.Height)
                 Me.pnlFilterSources_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterSource_Movies.Left + 1, _
                                                                 (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterSource_Movies.Top) - Me.pnlFilterSources_Movies.Height)
                 Me.pnlFilterSources_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterSource_Shows.Left + 1, _
@@ -18537,6 +18685,78 @@ doCancel:
                 .chkMovieMissingTrailer.Checked = Master.eSettings.MovieMissingTrailer
                 AddHandler Me.chkMovieMissingTrailer.CheckedChanged, AddressOf Me.chkMovieMissingTrailer_CheckedChanged
 
+                RemoveHandler Me.chkMovieSetMissingBanner.CheckedChanged, AddressOf Me.chkMovieSetMissingBanner_CheckedChanged
+                .chkMovieSetMissingBanner.Checked = Master.eSettings.MovieSetMissingBanner
+                AddHandler Me.chkMovieSetMissingBanner.CheckedChanged, AddressOf Me.chkMovieSetMissingBanner_CheckedChanged
+
+                RemoveHandler Me.chkMovieSetMissingClearArt.CheckedChanged, AddressOf Me.chkMovieSetMissingClearArt_CheckedChanged
+                .chkMovieSetMissingClearArt.Checked = Master.eSettings.MovieSetMissingClearArt
+                AddHandler Me.chkMovieSetMissingClearArt.CheckedChanged, AddressOf Me.chkMovieSetMissingClearArt_CheckedChanged
+
+                RemoveHandler Me.chkMovieSetMissingClearLogo.CheckedChanged, AddressOf Me.chkMovieSetMissingClearLogo_CheckedChanged
+                .chkMovieSetMissingClearLogo.Checked = Master.eSettings.MovieSetMissingClearLogo
+                AddHandler Me.chkMovieSetMissingClearLogo.CheckedChanged, AddressOf Me.chkMovieSetMissingClearLogo_CheckedChanged
+
+                RemoveHandler Me.chkMovieSetMissingDiscArt.CheckedChanged, AddressOf Me.chkMovieSetMissingDiscArt_CheckedChanged
+                .chkMovieSetMissingDiscArt.Checked = Master.eSettings.MovieSetMissingDiscArt
+                AddHandler Me.chkMovieSetMissingDiscArt.CheckedChanged, AddressOf Me.chkMovieSetMissingDiscArt_CheckedChanged
+
+                RemoveHandler Me.chkMovieSetMissingFanart.CheckedChanged, AddressOf Me.chkMovieSetMissingFanart_CheckedChanged
+                .chkMovieSetMissingFanart.Checked = Master.eSettings.MovieSetMissingFanart
+                AddHandler Me.chkMovieSetMissingFanart.CheckedChanged, AddressOf Me.chkMovieSetMissingFanart_CheckedChanged
+
+                RemoveHandler Me.chkMovieSetMissingLandscape.CheckedChanged, AddressOf Me.chkMovieSetMissingLandscape_CheckedChanged
+                .chkMovieSetMissingLandscape.Checked = Master.eSettings.MovieSetMissingLandscape
+                AddHandler Me.chkMovieSetMissingLandscape.CheckedChanged, AddressOf Me.chkMovieSetMissingLandscape_CheckedChanged
+
+                RemoveHandler Me.chkMovieSetMissingNFO.CheckedChanged, AddressOf Me.chkMovieSetMissingNFO_CheckedChanged
+                .chkMovieSetMissingNFO.Checked = Master.eSettings.MovieSetMissingNFO
+                AddHandler Me.chkMovieSetMissingNFO.CheckedChanged, AddressOf Me.chkMovieSetMissingNFO_CheckedChanged
+
+                RemoveHandler Me.chkMovieSetMissingPoster.CheckedChanged, AddressOf Me.chkMovieSetMissingPoster_CheckedChanged
+                .chkMovieSetMissingPoster.Checked = Master.eSettings.MovieSetMissingPoster
+                AddHandler Me.chkMovieSetMissingPoster.CheckedChanged, AddressOf Me.chkMovieSetMissingPoster_CheckedChanged
+
+                RemoveHandler Me.chkShowMissingBanner.CheckedChanged, AddressOf Me.chkShowMissingBanner_CheckedChanged
+                .chkShowMissingBanner.Checked = Master.eSettings.TVShowMissingBanner
+                AddHandler Me.chkShowMissingBanner.CheckedChanged, AddressOf Me.chkShowMissingBanner_CheckedChanged
+
+                RemoveHandler Me.chkShowMissingCharacterArt.CheckedChanged, AddressOf Me.chkShowMissingCharacterArt_CheckedChanged
+                .chkShowMissingCharacterArt.Checked = Master.eSettings.TVShowMissingCharacterArt
+                AddHandler Me.chkShowMissingCharacterArt.CheckedChanged, AddressOf Me.chkShowMissingCharacterArt_CheckedChanged
+
+                RemoveHandler Me.chkShowMissingClearArt.CheckedChanged, AddressOf Me.chkShowMissingClearArt_CheckedChanged
+                .chkShowMissingClearArt.Checked = Master.eSettings.TVShowMissingClearArt
+                AddHandler Me.chkShowMissingClearArt.CheckedChanged, AddressOf Me.chkShowMissingClearArt_CheckedChanged
+
+                RemoveHandler Me.chkShowMissingClearLogo.CheckedChanged, AddressOf Me.chkShowMissingClearLogo_CheckedChanged
+                .chkShowMissingClearLogo.Checked = Master.eSettings.TVShowMissingClearLogo
+                AddHandler Me.chkShowMissingClearLogo.CheckedChanged, AddressOf Me.chkShowMissingClearLogo_CheckedChanged
+
+                RemoveHandler Me.chkShowMissingEFanarts.CheckedChanged, AddressOf Me.chkShowMissingEFanarts_CheckedChanged
+                .chkShowMissingEFanarts.Checked = Master.eSettings.TVShowMissingEFanarts
+                AddHandler Me.chkShowMissingEFanarts.CheckedChanged, AddressOf Me.chkShowMissingEFanarts_CheckedChanged
+
+                RemoveHandler Me.chkShowMissingFanart.CheckedChanged, AddressOf Me.chkShowMissingFanart_CheckedChanged
+                .chkShowMissingFanart.Checked = Master.eSettings.TVShowMissingFanart
+                AddHandler Me.chkShowMissingFanart.CheckedChanged, AddressOf Me.chkShowMissingFanart_CheckedChanged
+
+                RemoveHandler Me.chkShowMissingLandscape.CheckedChanged, AddressOf Me.chkShowMissingLandscape_CheckedChanged
+                .chkShowMissingLandscape.Checked = Master.eSettings.TVShowMissingLandscape
+                AddHandler Me.chkShowMissingLandscape.CheckedChanged, AddressOf Me.chkShowMissingLandscape_CheckedChanged
+
+                RemoveHandler Me.chkShowMissingNFO.CheckedChanged, AddressOf Me.chkShowMissingNFO_CheckedChanged
+                .chkShowMissingNFO.Checked = Master.eSettings.TVShowMissingNFO
+                AddHandler Me.chkShowMissingNFO.CheckedChanged, AddressOf Me.chkShowMissingNFO_CheckedChanged
+
+                RemoveHandler Me.chkShowMissingPoster.CheckedChanged, AddressOf Me.chkShowMissingPoster_CheckedChanged
+                .chkShowMissingPoster.Checked = Master.eSettings.TVShowMissingPoster
+                AddHandler Me.chkShowMissingPoster.CheckedChanged, AddressOf Me.chkShowMissingPoster_CheckedChanged
+
+                RemoveHandler Me.chkShowMissingTheme.CheckedChanged, AddressOf Me.chkShowMissingTheme_CheckedChanged
+                .chkShowMissingTheme.Checked = Master.eSettings.TVShowMissingTheme
+                AddHandler Me.chkShowMissingTheme.CheckedChanged, AddressOf Me.chkShowMissingTheme_CheckedChanged
+
                 .cmnuEpisodeChange.Text = Master.eLang.GetString(772, "Change Episode")
                 .cmnuEpisodeEdit.Text = Master.eLang.GetString(656, "Edit Episode")
                 .cmnuEpisodeEdit.Text = Master.eLang.GetString(656, "Edit Episode")
@@ -19559,11 +19779,30 @@ doCancel:
     Private Sub btnFilterMissing_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnFilterMissing_Movies.Click
         Me.pnlFilterMissingItems_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterGeneral_Movies.Left + Me.tblFilterGeneral_Movies.Left + Me.btnFilterMissing_Movies.Left + 1, _
                                                        (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterGeneral_Movies.Top + Me.tblFilterGeneral_Movies.Top + Me.btnFilterMissing_Movies.Top) - Me.pnlFilterMissingItems_Movies.Height)
-        'Me.pnlFilterMissingItems_Movies.Width = Me.txtFilterCountry_Movies.Width
         If Me.pnlFilterMissingItems_Movies.Visible Then
             Me.pnlFilterMissingItems_Movies.Visible = False
         Else
             Me.pnlFilterMissingItems_Movies.Visible = True
+        End If
+    End Sub
+
+    Private Sub btnFilterMissing_MovieSets_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnFilterMissing_MovieSets.Click
+        Me.pnlFilterMissingItems_MovieSets.Location = New Point(Me.pnlFilter_MovieSets.Left + Me.tblFilter_MovieSets.Left + Me.gbFilterGeneral_MovieSets.Left + Me.tblFilterGeneral_MovieSets.Left + Me.btnFilterMissing_MovieSets.Left + 1, _
+                                                       (Me.pnlFilter_MovieSets.Top + Me.tblFilter_MovieSets.Top + Me.gbFilterGeneral_MovieSets.Top + Me.tblFilterGeneral_MovieSets.Top + Me.btnFilterMissing_MovieSets.Top) - Me.pnlFilterMissingItems_MovieSets.Height)
+        If Me.pnlFilterMissingItems_MovieSets.Visible Then
+            Me.pnlFilterMissingItems_MovieSets.Visible = False
+        Else
+            Me.pnlFilterMissingItems_MovieSets.Visible = True
+        End If
+    End Sub
+
+    Private Sub btnFilterMissing_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnFilterMissing_Shows.Click
+        Me.pnlFilterMissingItems_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterGeneral_Shows.Left + Me.tblFilterGeneral_Shows.Left + Me.btnFilterMissing_Shows.Left + 1, _
+                                                       (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterGeneral_Shows.Top + Me.tblFilterGeneral_Shows.Top + Me.btnFilterMissing_Shows.Top) - Me.pnlFilterMissingItems_Shows.Height)
+        If Me.pnlFilterMissingItems_Shows.Visible Then
+            Me.pnlFilterMissingItems_Shows.Visible = False
+        Else
+            Me.pnlFilterMissingItems_Shows.Visible = True
         End If
     End Sub
 
