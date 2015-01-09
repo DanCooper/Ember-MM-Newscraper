@@ -1540,12 +1540,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieMissingSubs() As Boolean
+    Public Property MovieMissingSubtitles() As Boolean
         Get
-            Return Settings._XMLSettings.MovieMissingSubs
+            Return Settings._XMLSettings.MovieMissingSubtitles
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieMissingSubs = value
+            Settings._XMLSettings.MovieMissingSubtitles = value
         End Set
     End Property
 
@@ -5907,7 +5907,7 @@ Public Class Settings
     Public Function MovieMissingItemsAnyEnabled() As Boolean
         Return MovieMissingBanner OrElse MovieMissingClearArt OrElse MovieMissingClearLogo OrElse MovieMissingDiscArt OrElse MovieMissingEFanarts OrElse _
             MovieMissingEThumbs OrElse MovieMissingFanart OrElse MovieMissingLandscape OrElse MovieMissingNFO OrElse MovieMissingPoster OrElse _
-            MovieMissingSubs OrElse MovieMissingTheme OrElse MovieMissingTrailer
+            MovieMissingSubtitles OrElse MovieMissingTheme OrElse MovieMissingTrailer
     End Function
 
     Public Function MoviePosterAnyEnabled() As Boolean

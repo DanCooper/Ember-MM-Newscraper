@@ -162,7 +162,7 @@ Partial Public Class clsXMLSettings
     Private _moviemissinglandscape As Boolean
     Private _moviemissingnfo As Boolean
     Private _moviemissingposter As Boolean
-    Private _moviemissingsubs As Boolean
+    Private _moviemissingsubtitles As Boolean
     Private _moviemissingtheme As Boolean
     Private _moviemissingtrailer As Boolean
     Private _movienosaveimagestonfo As Boolean
@@ -2317,12 +2317,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieMissingSubs() As Boolean
+    Public Property MovieMissingSubtitles() As Boolean
         Get
-            Return Me._moviemissingsubs
+            Return Me._moviemissingsubtitles
         End Get
         Set(ByVal value As Boolean)
-            Me._moviemissingsubs = value
+            Me._moviemissingsubtitles = value
         End Set
     End Property
 
