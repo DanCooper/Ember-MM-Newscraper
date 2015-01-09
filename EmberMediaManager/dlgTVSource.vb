@@ -88,6 +88,12 @@ Public Class dlgTVSource
         Me.tmrWait.Enabled = True
     End Sub
 
+    Private Sub cbSourceEpisodeSorting_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSourceEpisodeSorting.SelectedIndexChanged
+        Me.OK_Button.Enabled = False
+        Me.tmrWait.Enabled = False
+        Me.tmrWait.Enabled = True
+    End Sub
+
     Private Sub CheckConditions()
         Dim isValid As Boolean = False
 
@@ -118,7 +124,8 @@ Public Class dlgTVSource
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso _
-            Me.cbSourceLanguage.Text <> String.Empty AndAlso Me.cbSourceOrdering.Text <> String.Empty AndAlso isValid Then
+            Me.cbSourceLanguage.Text <> String.Empty AndAlso Me.cbSourceOrdering.Text <> String.Empty AndAlso _
+            Me.cbSourceEpisodeSorting.Text <> String.Empty AndAlso isValid Then
             Me.OK_Button.Enabled = True
         End If
 
@@ -149,6 +156,7 @@ Public Class dlgTVSource
                 If Me.cbSourceLanguage.Items.Count > 0 Then
                     Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
                 End If
+                Me.cbSourceEpisodeSorting.SelectedIndex = Enums.EpisodeSorting.Episode
                 Me.cbSourceOrdering.SelectedIndex = Enums.Ordering.Standard
             End If
         Catch ex As Exception
