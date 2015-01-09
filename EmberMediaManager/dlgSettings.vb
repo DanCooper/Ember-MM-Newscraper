@@ -702,7 +702,7 @@ Public Class dlgSettings
     Private Sub btnTVShowRegexAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexAdd.Click
         If String.IsNullOrEmpty(Me.btnTVShowRegexAdd.Tag.ToString) Then
             Dim lID = (From lRegex As Settings.TVShowRegEx In Me.TVShowRegex Select lRegex.ID).Max
-            Me.TVShowRegex.Add(New Settings.TVShowRegEx With {.ID = Convert.ToInt32(lID) + 1, .SeasonRegex = Me.txtTVSeasonRegex.Text, .SeasonFromDirectory = Not Convert.ToBoolean(Me.cbTVSeasonRetrieve.SelectedIndex), .EpisodeRegex = Me.txtTVEpisodeRegex.Text, .EpisodeRetrieve = DirectCast(Me.cbTVEpisodeRetrieve.SelectedIndex, Settings.EpRetrieve)})
+            Me.TVShowRegex.Add(New Settings.TVShowRegEx With {.ID = Convert.ToInt32(lID) + 1, .SeasonRegex = Me.txtTVSeasonRegex.Text, .SeasonFromDirectory = Not Convert.ToBoolean(Me.cbTVSeasonRetrieve.SelectedIndex), .EpisodeRegex = Me.txtTVEpisodeRegex.Text, .EpisodeRetrieve = DirectCast(Me.cbTVEpisodeRetrieve.SelectedIndex, Settings.EpRetrieve), .byDate = Me.chkTVEpisodeAired.Checked})
         Else
             Dim selRex = From lRegex As Settings.TVShowRegEx In Me.TVShowRegex Where lRegex.ID = Convert.ToInt32(Me.btnTVShowRegexAdd.Tag)
             If selRex.Count > 0 Then
@@ -710,6 +710,7 @@ Public Class dlgSettings
                 selRex(0).SeasonFromDirectory = Not Convert.ToBoolean(Me.cbTVSeasonRetrieve.SelectedIndex)
                 selRex(0).EpisodeRegex = Me.txtTVEpisodeRegex.Text
                 selRex(0).EpisodeRetrieve = DirectCast(Me.cbTVEpisodeRetrieve.SelectedIndex, Settings.EpRetrieve)
+                selRex(0).byDate = Me.chkTVEpisodeAired.Checked
             End If
         End If
 
@@ -3335,6 +3336,7 @@ Public Class dlgSettings
         Me.cbTVSeasonRetrieve.SelectedIndex = -1
         Me.txtTVEpisodeRegex.Text = String.Empty
         Me.cbTVEpisodeRetrieve.SelectedIndex = -1
+        Me.chkTVEpisodeAired.Checked = False
     End Sub
 
     Private Sub dlgSettings_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -3363,6 +3365,13 @@ Public Class dlgSettings
                 Me.cbTVEpisodeRetrieve.SelectedIndex = 1
             Case "Result"
                 Me.cbTVEpisodeRetrieve.SelectedIndex = 2
+        End Select
+
+        Select Case lItem.SubItems(5).Text
+            Case "Yes"
+                Me.chkTVEpisodeAired.Checked = True
+            Case "No"
+                Me.chkTVEpisodeAired.Checked = False
         End Select
     End Sub
 
@@ -4412,6 +4421,7 @@ Public Class dlgSettings
                 Case Settings.EpRetrieve.FromSeasonResult
                     lvItem.SubItems.Add("Result")
             End Select
+            lvItem.SubItems.Add(If(rShow.byDate, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             Me.lvTVShowRegex.Items.Add(lvItem)
         Next
     End Sub
@@ -4794,10 +4804,10 @@ Public Class dlgSettings
             lvItem = New ListViewItem(s.id)
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
-            lvItem.SubItems.Add(If(s.Recursive, "Yes", "No"))
-            lvItem.SubItems.Add(If(s.UseFolderName, "Yes", "No"))
-            lvItem.SubItems.Add(If(s.IsSingle, "Yes", "No"))
-            lvItem.SubItems.Add(If(s.Exclude, "Yes", "No"))
+            lvItem.SubItems.Add(If(s.Recursive, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(If(s.UseFolderName, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(If(s.IsSingle, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(If(s.Exclude, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvMovieSources.Items.Add(lvItem)
         Next
     End Sub
@@ -6675,6 +6685,7 @@ Public Class dlgSettings
         Me.lvTVShowRegex.Columns(2).Text = Master.eLang.GetString(694, "Apply To")
         Me.lvTVShowRegex.Columns(3).Text = Master.eLang.GetString(697, "Episode Regex")
         Me.lvTVShowRegex.Columns(4).Text = Master.eLang.GetString(694, "Apply To")
+        Me.lvTVShowRegex.Columns(5).Text = Master.eLang.GetString(728, "Aired")
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
         Me.lvTVSources.Columns(3).Text = Master.eLang.GetString(610, "Language")
@@ -6716,7 +6727,7 @@ Public Class dlgSettings
         Me.cbTVScraperUpdateTime.Items.AddRange(New String() {Master.eLang.GetString(749, "Week"), Master.eLang.GetString(750, "Bi-Weekly"), Master.eLang.GetString(751, "Month"), Master.eLang.GetString(752, "Never"), Master.eLang.GetString(753, "Always")})
 
         Me.cbTVScraperOptionsOrdering.Items.Clear()
-        Me.cbTVScraperOptionsOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(728, "Aired")})
+        Me.cbTVScraperOptionsOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(1332, "Day Of Year")})
 
         Me.cbTVSeasonRetrieve.Items.Clear()
         Me.cbTVSeasonRetrieve.Items.AddRange(New String() {Master.eLang.GetString(13, "Folder Name"), Master.eLang.GetString(15, "File Name")})

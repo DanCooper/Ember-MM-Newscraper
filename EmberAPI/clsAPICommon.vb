@@ -894,6 +894,7 @@ Public Class Enums
         Standard = 0
         DVD = 1
         Absolute = 2
+        DayOfYear = 3
     End Enum
     ''' <summary>
     ''' Enum representing Order of displaying Episodes

@@ -2426,7 +2426,7 @@ Public Class dlgEditShow
         Me.tpShowPoster.Text = Master.eLang.GetString(148, "Poster")
 
         Me.cbOrdering.Items.Clear()
-        Me.cbOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(728, "Aired")})
+        Me.cbOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(1332, "Day Of Year")})
 
         Me.cbEpisodeSorting.Items.Clear()
         Me.cbEpisodeSorting.Items.AddRange(New String() {Master.eLang.GetString(755, "Episode #"), Master.eLang.GetString(728, "Aired")})
