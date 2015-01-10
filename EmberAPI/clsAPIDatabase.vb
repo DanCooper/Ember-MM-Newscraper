@@ -493,10 +493,8 @@ Public Class Database
                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader
                     While SQLReader.Read
                         Using SQLECommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            If Not Master.eSettings.TVDisplayMissingEpisodes OrElse Force Then 'TODO: fix MissingEpsiode handling
+                            If Force Then
                                 SQLECommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = ", Convert.ToInt32(SQLReader("TVEpPathID")), ";")
-                                SQLECommand.ExecuteNonQuery()
-                                SQLECommand.CommandText = String.Concat("DELETE FROM TVEps WHERE ID = ", ID, ";")
                                 SQLECommand.ExecuteNonQuery()
                                 SQLECommand.CommandText = String.Concat("DELETE FROM TVEpActors WHERE TVEpID = ", ID, ";")
                                 SQLECommand.ExecuteNonQuery()
@@ -505,6 +503,8 @@ Public Class Database
                                 SQLECommand.CommandText = String.Concat("DELETE FROM TVAStreams WHERE TVEpID = ", ID, ";")
                                 SQLECommand.ExecuteNonQuery()
                                 SQLECommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", ID, ";")
+                                SQLECommand.ExecuteNonQuery()
+                                SQLECommand.CommandText = String.Concat("DELETE FROM TVEps WHERE ID = ", ID, ";")
                                 SQLECommand.ExecuteNonQuery()
 
                                 If DoCleanSeasons Then Master.DB.CleanSeasons(True)
@@ -517,7 +517,9 @@ Public Class Database
                                 SQLECommand.ExecuteNonQuery()
                                 SQLECommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", ID, ";")
                                 SQLECommand.ExecuteNonQuery()
-                                SQLECommand.CommandText = String.Concat("UPDATE TVEps SET Missing = 1 WHERE ID = ", ID, ";")
+                                SQLECommand.CommandText = String.Concat("UPDATE TVEps SET HasPoster = 0, HasFanart = 0, HasNfo = 0, New = 0, New = 0, ", _
+                                                                        "TVEpPathID = -1, PosterPath = '', FanartPath = '', NfoPath = '', ", _
+                                                                        "Missing = 1, VideoSource = '' WHERE ID = ", ID, ";")
                                 SQLECommand.ExecuteNonQuery()
                             End If
                         End Using
@@ -2373,13 +2375,11 @@ Public Class Database
             'Copy fileinfo duration over to runtime var for xbmc to pick up episode runtime.
             NFO.LoadTVEpDuration(_TVEpDB)
 
-            'delete so it will remove if there is a "missing" episode entry already
-            If Master.eSettings.TVDisplayMissingEpisodes Then
-                Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE TVShowID = ", _TVEpDB.ShowID, " AND Episode = ", _TVEpDB.TVEp.Episode, " AND Season = ", _TVEpDB.TVEp.Season, " AND Missing = 1;")
-                    SQLCommand.ExecuteNonQuery()
-                End Using
-            End If
+            'delete so it will remove if there is a "missing" episode entry already. Only "missing" episodes must be deleted.
+            Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE TVShowID = ", _TVEpDB.ShowID, " AND Episode = ", _TVEpDB.TVEp.Episode, " AND Season = ", _TVEpDB.TVEp.Season, " AND Missing = 1;")
+                SQLCommand.ExecuteNonQuery()
+            End Using
 
             If Not String.IsNullOrEmpty(_TVEpDB.Filename) Then
                 If _TVEpDB.FilenameID > -1 Then

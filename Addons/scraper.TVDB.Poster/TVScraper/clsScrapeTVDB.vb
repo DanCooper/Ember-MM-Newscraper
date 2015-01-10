@@ -867,17 +867,15 @@ Public Class Scraper
             Me.bwTVDB.ReportProgress(tmpTVDBShow.Episodes.Count, "max")
 
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                If Master.eSettings.TVDisplayMissingEpisodes Then
-                    'clear old missing episode from db
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        If Not IsNothing(onlyScrapeSeason) AndAlso onlyScrapeSeason <> 999 Then
-                            SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND Season = ", onlyScrapeSeason, " AND TVShowID = ", Master.currShow.ShowID, ";")
-                        Else
-                            SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND TVShowID = ", Master.currShow.ShowID, ";")
-                        End If
-                        SQLCommand.ExecuteNonQuery()
-                    End Using
-                End If
+                'clear old missing episode from db
+                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    If Not IsNothing(onlyScrapeSeason) AndAlso onlyScrapeSeason <> 999 Then
+                        SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND Season = ", onlyScrapeSeason, " AND TVShowID = ", Master.currShow.ShowID, ";")
+                    Else
+                        SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND TVShowID = ", Master.currShow.ShowID, ";")
+                    End If
+                    SQLCommand.ExecuteNonQuery()
+                End Using
 
                 Try
                     'For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
@@ -894,11 +892,9 @@ Public Class Scraper
                             iSea = Episode.TVEp.Season
 
                             'remove it from tepisodes since it's a real episode
-                            If Master.eSettings.TVDisplayMissingEpisodes Then
-                                tEpisode = tEpisodes.FirstOrDefault(Function(e) e.Episode = iEp AndAlso e.Season = iSea)
-                                If Not IsNothing(tEpisode) Then tEpisodes.Remove(tEpisode)
-                                tShow = Episode
-                            End If
+                            tEpisode = tEpisodes.FirstOrDefault(Function(e) e.Episode = iEp AndAlso e.Season = iSea)
+                            If Not IsNothing(tEpisode) Then tEpisodes.Remove(tEpisode)
+                            tShow = Episode
 
                             If Me.bwTVDB.CancellationPending Then Return
 
@@ -975,23 +971,21 @@ Public Class Scraper
                     Next
 
                     'now save all missing episodes
-                    If Master.eSettings.TVDisplayMissingEpisodes Then
-                        tShow.Filename = String.Empty
-                        tShow.EpFanartPath = String.Empty
-                        tShow.EpPosterPath = String.Empty
-                        tShow.EpNfoPath = String.Empty
-                        tShow.SeasonFanartPath = String.Empty
-                        tShow.SeasonPosterPath = String.Empty
-                        tShow.ShowFanartPath = String.Empty
-                        tShow.IsLockEp = False
-                        tShow.IsMarkEp = False
-                        tShow.EpID = -1
-                        If tEpisodes.Count > 0 Then
-                            For Each Episode As MediaContainers.EpisodeDetails In tEpisodes
-                                tShow.TVEp = Episode
-                                Master.DB.SaveTVEpToDB(tShow, True, True, True)
-                            Next
-                        End If
+                    tShow.Filename = String.Empty
+                    tShow.EpFanartPath = String.Empty
+                    tShow.EpPosterPath = String.Empty
+                    tShow.EpNfoPath = String.Empty
+                    tShow.SeasonFanartPath = String.Empty
+                    tShow.SeasonPosterPath = String.Empty
+                    tShow.ShowFanartPath = String.Empty
+                    tShow.IsLockEp = False
+                    tShow.IsMarkEp = False
+                    tShow.EpID = -1
+                    If tEpisodes.Count > 0 Then
+                        For Each Episode As MediaContainers.EpisodeDetails In tEpisodes
+                            tShow.TVEp = Episode
+                            Master.DB.SaveTVEpToDB(tShow, True, True, True)
+                        Next
                     End If
 
                     If Me.bwTVDB.CancellationPending Then Return
@@ -1123,7 +1117,7 @@ Public Class Scraper
             Dim tOrdering As Enums.Ordering = Enums.Ordering.Standard
 
             If Not ImagesOnly Then
-                If Master.eSettings.TVDisplayMissingEpisodes Then tEpisodes = Me.GetListOfKnownEpisodes(sInfo)
+                tEpisodes = Me.GetListOfKnownEpisodes(sInfo)
 
                 'get the actors first
                 Try

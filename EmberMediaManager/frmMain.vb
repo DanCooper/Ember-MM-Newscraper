@@ -6352,7 +6352,11 @@ doCancel:
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), True, False, True)
+                If Not Convert.ToBoolean(sRow.Cells(22).Value) Then
+                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, False, True) 'set the episode as "missing episode"
+                Else
+                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), True, False, True) 'remove the "missing episode" from DB
+                End If
             Next
 
             Master.DB.CleanSeasons(True)
@@ -8874,9 +8878,9 @@ doCancel:
         Me.dgvTVEpisodes.Enabled = False
 
         If Season = 999 Then
-            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT * FROM TVEps WHERE TVShowID = ", ShowID, " ORDER BY Season, Episode;"))
+            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT * FROM TVEps WHERE TVShowID = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Season, Episode;"))
         Else
-            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT * FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
+            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT * FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Episode;"))
         End If
 
         If Me.dtEpisodes.Rows.Count > 0 Then
@@ -9074,7 +9078,7 @@ doCancel:
                 Master.DB.FillDataTable(Me.dtShows, String.Concat("SELECT ID, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, ", _
                                                                            "Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, ", _
                                                                            "HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, ", _
-                                                                           "HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes FROM TVShows ORDER BY Title COLLATE NOCASE;"))
+                                                                           "HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes FROM TVShows ORDER BY ListTitle COLLATE NOCASE;"))
             End If
 
 
@@ -10997,7 +11001,19 @@ doCancel:
 
         Me.dgvTVSeasons.Enabled = False
 
-        Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock, Mark, New, HasBanner, BannerPath, HasLandscape, LandscapePath FROM TVSeason WHERE TVShowID = ", ShowID, " ORDER BY Season;"))
+        If Master.eSettings.TVDisplayMissingEpisodes Then
+            Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, ", _
+                                                                "Lock, Mark, New, HasBanner, BannerPath, HasLandscape, LandscapePath ", _
+                                                                "FROM TVSeason WHERE TVShowID = ", ShowID, " ORDER BY Season;"))
+        Else
+            Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT DISTINCT TVSeason.TVShowID, TVSeason.SeasonText, TVSeason.Season, TVSeason.HasPoster, ", _
+                                                                "TVSeason.HasFanart, TVSeason.PosterPath, TVSeason.FanartPath, TVSeason.Lock, TVSeason.Mark, ", _
+                                                                "TVSeason.New, TVSeason.HasBanner, TVSeason.BannerPath, TVSeason.HasLandscape, TVSeason.LandscapePath ", _
+                                                                "FROM TVSeason LEFT OUTER JOIN TVEps ON (TVEps.TVShowID = TVSeason.TVShowID) AND (TVEps.Season = TVSeason.Season) ", _
+                                                                "WHERE TVSeason.TVShowID = ", ShowID, " AND TVEps.Missing = 0 ", _
+                                                                "OR TVSeason.TVShowID = ", ShowID, " AND TVSeason.Season = 999 ", _
+                                                                "ORDER BY TVSeason.Season;"))
+        End If
 
         If Me.dtSeasons.Rows.Count > 0 Then
 
@@ -17793,18 +17809,6 @@ doCancel:
         Me.cmnuTraySettings.Enabled = True
         Me.cmnuTrayExit.Enabled = True
         If Not dresult.DidCancel Then
-
-            If Not Master.eSettings.TVDisplayMissingEpisodes Then
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = "DELETE FROM TVEps WHERE Missing = 1"
-                        SQLCommand.ExecuteNonQuery()
-
-                        Master.DB.CleanSeasons(True)
-                    End Using
-                    SQLTrans.Commit()
-                End Using
-            End If
 
             Me.SetUp(True)
 
