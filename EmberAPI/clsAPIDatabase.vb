@@ -2376,7 +2376,7 @@ Public Class Database
             'delete so it will remove if there is a "missing" episode entry already
             If Master.eSettings.TVDisplayMissingEpisodes Then
                 Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE TVShowID = ", _TVEpDB.ShowID, " AND Episode = ", _TVEpDB.TVEp.Episode, " AND Season = ", _TVEpDB.TVEp.Season, ";")
+                    SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE TVShowID = ", _TVEpDB.ShowID, " AND Episode = ", _TVEpDB.TVEp.Episode, " AND Season = ", _TVEpDB.TVEp.Season, " AND Missing = 1;")
                     SQLCommand.ExecuteNonQuery()
                 End Using
             End If
