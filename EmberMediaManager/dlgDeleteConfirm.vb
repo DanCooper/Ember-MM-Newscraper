@@ -103,7 +103,7 @@ Public Class dlgDeleteConfirm
                             Case Enums.DelType.Seasons
                                 tPair = DirectCast(ItemParentNode.Tag, KeyValuePair(Of Long, Long))
                             Case Enums.DelType.Episodes
-                                Master.DB.DeleteTVEpFromDB(Convert.ToInt64(ItemParentNode.Tag), True, True, True)
+                                Master.DB.DeleteTVEpFromDB(Convert.ToInt64(ItemParentNode.Tag), False, True, True)
                         End Select
 
                         If ItemParentNode.Nodes.Count > 0 Then

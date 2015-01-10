@@ -611,7 +611,7 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLReader.Read
-                        DeleteTVEpFromDB(Convert.ToInt64(SQLReader("ID")), False, False, True)
+                        DeleteTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True, False, True)
                     End While
                 End Using
                 SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
