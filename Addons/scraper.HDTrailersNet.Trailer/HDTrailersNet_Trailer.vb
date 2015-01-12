@@ -26,11 +26,12 @@ Imports NLog
 ''' HDTrailerNet Trailer scraper
 ''' </summary>
 ''' <remarks></remarks>
-Public Class HDTrailerdNet_Trailer
+Public Class HDTrailersNet_Trailer
     Implements Interfaces.ScraperModule_Trailer_Movie
 
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
@@ -46,11 +47,8 @@ Public Class HDTrailerdNet_Trailer
 #Region "Events"
 
     Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_Trailer_Movie.ModuleSettingsChanged
-
     Public Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Trailer_Movie.ScraperEvent
-
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Trailer_Movie.ScraperSetupChanged
-
     Public Event SetupNeedsRestart() Implements Interfaces.ScraperModule_Trailer_Movie.SetupNeedsRestart
 
     'Public Event ProgressUpdated(ByVal iPercent As Integer) Implements Interfaces.EmberMovieScraperModule_Trailer.ProgressUpdated
@@ -178,7 +176,9 @@ Public Class HDTrailerdNet_Trailer
     Structure sMySettings
 
 #Region "Fields"
+
         Dim TrailerPrefQual As String
+
 #End Region 'Fields
 
     End Structure
