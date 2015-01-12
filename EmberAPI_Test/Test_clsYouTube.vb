@@ -149,14 +149,14 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub YouTube_VideoLinkItemCollection_Add_DoesntYetExist()
             'Arrange
-            Dim videoLinkItemCollection As New YouTube.VideoLinkItemCollection()
+            Dim videoLinkItemCollection As New YouTube.YouTubeLinkItemCollection()
             Dim itemToAdd = New YouTube.VideoLinkItem()
             itemToAdd.Description = "First item to add"
             itemToAdd.URL = "Random URL"
 
             'Act
             videoLinkItemCollection.Add(itemToAdd)
-            Dim result = videoLinkItemCollection.Count()
+            Dim result = videoLinkItemCollection.VideoLinks.Count()
 
             'Assert
             Assert.IsTrue(result = 1, "Expected 1, actual count was {0}, when adding Nothing", result)
@@ -165,21 +165,21 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub YouTube_VideoLinkItemCollection_Add_AlreadyExists1()
             'Arrange
-            Dim videoLinkItemCollection As New YouTube.VideoLinkItemCollection()
+            Dim videoLinkItemCollection As New YouTube.YouTubeLinkItemCollection()
             Dim firstItemToAdd = New YouTube.VideoLinkItem()
             firstItemToAdd.Description = "First item to add"
             firstItemToAdd.URL = "Random URL"
-            firstItemToAdd.FormatQuality = Enums.TrailerQuality.OTHERS
+            firstItemToAdd.FormatQuality = Enums.TrailerVideoQuality.OTHERS
 
             Dim secondItemToAdd = New YouTube.VideoLinkItem()
             secondItemToAdd.Description = "Second item to add"
             secondItemToAdd.URL = "Random URL 2"
-            secondItemToAdd.FormatQuality = Enums.TrailerQuality.SQ360p
+            secondItemToAdd.FormatQuality = Enums.TrailerVideoQuality.SQ360p
 
             Dim duplicateItemToAdd = New YouTube.VideoLinkItem()
             duplicateItemToAdd.Description = "Duplicate item to add"
             duplicateItemToAdd.URL = "Random URL 2"
-            duplicateItemToAdd.FormatQuality = Enums.TrailerQuality.OTHERS
+            duplicateItemToAdd.FormatQuality = Enums.TrailerVideoQuality.OTHERS
 
             'Act
             videoLinkItemCollection.Add(firstItemToAdd)
@@ -194,21 +194,21 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub YouTube_VideoLinkItemCollection_Add_AlreadyExists2()
             'Arrange
-            Dim videoLinkItemCollection As New YouTube.VideoLinkItemCollection()
+            Dim videoLinkItemCollection As New YouTube.YouTubeLinkItemCollection()
             Dim firstItemToAdd = New YouTube.VideoLinkItem()
             firstItemToAdd.Description = "First item to add"
             firstItemToAdd.URL = "Random URL"
-            firstItemToAdd.FormatQuality = Enums.TrailerQuality.HD1080p
+            firstItemToAdd.FormatQuality = Enums.TrailerVideoQuality.HD1080p
 
             Dim secondItemToAdd = New YouTube.VideoLinkItem()
             secondItemToAdd.Description = "Second item to add"
             secondItemToAdd.URL = "Random URL 2"
-            secondItemToAdd.FormatQuality = Enums.TrailerQuality.HD720p
+            secondItemToAdd.FormatQuality = Enums.TrailerVideoQuality.HD720p
 
             Dim duplicateItemToAdd = New YouTube.VideoLinkItem()
             duplicateItemToAdd.Description = "Duplicate item to add"
             duplicateItemToAdd.URL = "Random URL 2"
-            duplicateItemToAdd.FormatQuality = Enums.TrailerQuality.HD1080p
+            duplicateItemToAdd.FormatQuality = Enums.TrailerVideoQuality.HD1080p
 
             'Act
             videoLinkItemCollection.Add(firstItemToAdd)
@@ -223,10 +223,11 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub YouTube_VideoLinkItemCollection_Add_NothingArgument()
             'Arrange
-            Dim videoLinkItemCollection As New YouTube.VideoLinkItemCollection()
+            Dim videoLinkItemCollection As New YouTube.YouTubeLinkItemCollection()
+            Dim videolink As YouTube.VideoLinkItem
 
             'Act
-            videoLinkItemCollection.Add(Nothing)
+            YouTube.YouTubeLinkItemCollection.Add(videolink)
             Dim result = videoLinkItemCollection.Count()
             'Assert
             Assert.IsTrue(result = 0, "Expected 0, actual count was {0}, when adding Nothing", result)

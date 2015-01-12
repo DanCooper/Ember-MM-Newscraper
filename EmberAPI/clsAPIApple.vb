@@ -172,18 +172,18 @@ Namespace Apple
                     Select Case Resolution
                         Case "SD"
                             Link.Description = "240p (MP4)"
-                            Link.FormatCodec = Enums.TrailerCodec.MP4
-                            Link.FormatQuality = Enums.TrailerQuality.SQ240p
+                            Link.FormatCodec = Enums.TrailerVideoCodec.MP4
+                            Link.FormatQuality = Enums.TrailerVideoQuality.SQ240p
                         Case "480p"
                             Link.Description = "480p (MP4)"
-                            Link.FormatCodec = Enums.TrailerCodec.MP4
-                            Link.FormatQuality = Enums.TrailerQuality.HQ480p
+                            Link.FormatCodec = Enums.TrailerVideoCodec.MP4
+                            Link.FormatQuality = Enums.TrailerVideoQuality.HQ480p
                         Case "720p"
                             Link.Description = "720p (MP4)"
-                            Link.FormatCodec = Enums.TrailerCodec.MP4
-                            Link.FormatQuality = Enums.TrailerQuality.HD720p
+                            Link.FormatCodec = Enums.TrailerVideoCodec.MP4
+                            Link.FormatQuality = Enums.TrailerVideoQuality.HD720p
                         Case Else
-                            Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                            Link.FormatQuality = Enums.TrailerVideoQuality.OTHERS
                     End Select
 
                     If Not String.IsNullOrEmpty(Link.URL) Then 'AndAlso sHTTP.IsValidURL(Link.URL) Then
@@ -263,11 +263,11 @@ Namespace Apple
                                 trailer.URL = tDownloadURL
                                 Select Case prevQual
                                     Case "1080p"
-                                        trailer.Quality = Enums.TrailerQuality.HD1080p
+                                        trailer.Quality = Enums.TrailerVideoQuality.HD1080p
                                     Case "720p"
-                                        trailer.Quality = Enums.TrailerQuality.HD720p
+                                        trailer.Quality = Enums.TrailerVideoQuality.HD720p
                                     Case "480p"
-                                        trailer.Quality = Enums.TrailerQuality.HQ480p
+                                        trailer.Quality = Enums.TrailerVideoQuality.HQ480p
                                 End Select
                             End If
                         Next
@@ -291,8 +291,8 @@ Namespace Apple
 #Region "Fields"
 
         Private _Description As String
-        Private _FormatCodec As Enums.TrailerCodec
-        Private _FormatQuality As Enums.TrailerQuality
+        Private _FormatCodec As Enums.TrailerVideoCodec
+        Private _FormatQuality As Enums.TrailerVideoQuality
         Private _URL As String
 
 #End Region 'Fields
@@ -317,20 +317,20 @@ Namespace Apple
             End Set
         End Property
 
-        Friend Property FormatCodec() As Enums.TrailerCodec
+        Friend Property FormatCodec() As Enums.TrailerVideoCodec
             Get
                 Return _FormatCodec
             End Get
-            Set(ByVal value As Enums.TrailerCodec)
+            Set(ByVal value As Enums.TrailerVideoCodec)
                 _FormatCodec = value
             End Set
         End Property
 
-        Friend Property FormatQuality() As Enums.TrailerQuality
+        Friend Property FormatQuality() As Enums.TrailerVideoQuality
             Get
                 Return _FormatQuality
             End Get
-            Set(ByVal value As Enums.TrailerQuality)
+            Set(ByVal value As Enums.TrailerVideoQuality)
                 _FormatQuality = value
             End Set
         End Property
@@ -344,8 +344,8 @@ Namespace Apple
 #Region "Fields"
 
         Private _Description As String
-        Private _FormatCodec As Enums.TrailerCodec
-        Private _FormatQuality As Enums.TrailerQuality
+        Private _FormatCodec As Enums.TrailerVideoCodec
+        Private _FormatQuality As Enums.TrailerVideoQuality
         Private _URL As String
 
 #End Region 'Fields
@@ -370,20 +370,20 @@ Namespace Apple
             End Set
         End Property
 
-        Friend Property FormatCodec() As Enums.TrailerCodec
+        Friend Property FormatCodec() As Enums.TrailerVideoCodec
             Get
                 Return _FormatCodec
             End Get
-            Set(ByVal value As Enums.TrailerCodec)
+            Set(ByVal value As Enums.TrailerVideoCodec)
                 _FormatCodec = value
             End Set
         End Property
 
-        Friend Property FormatQuality() As Enums.TrailerQuality
+        Friend Property FormatQuality() As Enums.TrailerVideoQuality
             Get
                 Return _FormatQuality
             End Get
-            Set(ByVal value As Enums.TrailerQuality)
+            Set(ByVal value As Enums.TrailerVideoQuality)
                 _FormatQuality = value
             End Set
         End Property
@@ -393,7 +393,7 @@ Namespace Apple
     End Class
 
     Public Class VideoLinkItemCollection
-        Inherits Generic.SortedList(Of Enums.TrailerQuality, VideoLinkItem)
+        Inherits Generic.SortedList(Of Enums.TrailerVideoQuality, VideoLinkItem)
 
 #Region "Methods"
         ''' <summary>
@@ -419,7 +419,7 @@ Namespace Apple
     End Class
 
     Public Class TrailerLinkItemCollection
-        Inherits Generic.SortedList(Of Enums.TrailerQuality, TrailerLinkItem)
+        Inherits Generic.SortedList(Of Enums.TrailerVideoQuality, TrailerLinkItem)
 
 #Region "Methods"
         ''' <summary>

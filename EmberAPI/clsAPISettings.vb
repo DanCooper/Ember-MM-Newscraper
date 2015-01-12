@@ -2899,20 +2899,20 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieTrailerMinQual() As Enums.TrailerQuality
+    Public Property MovieTrailerMinQual() As Enums.TrailerVideoQuality
         Get
             Return Settings._XMLSettings.MovieTrailerMinQual
         End Get
-        Set(ByVal value As Enums.TrailerQuality)
+        Set(ByVal value As Enums.TrailerVideoQuality)
             Settings._XMLSettings.MovieTrailerMinQual = value
         End Set
     End Property
 
-    Public Property MovieTrailerPrefQual() As Enums.TrailerQuality
+    Public Property MovieTrailerPrefQual() As Enums.TrailerVideoQuality
         Get
             Return Settings._XMLSettings.MovieTrailerPrefQual
         End Get
-        Set(ByVal value As Enums.TrailerQuality)
+        Set(ByVal value As Enums.TrailerVideoQuality)
             Settings._XMLSettings.MovieTrailerPrefQual = value
         End Set
     End Property

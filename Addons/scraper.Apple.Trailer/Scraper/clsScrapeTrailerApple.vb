@@ -241,11 +241,11 @@ Namespace Apple
                                     trailer.Source = "Apple"
                                     Select Case prevQual
                                         Case "1080p"
-                                            trailer.Quality = Enums.TrailerQuality.HD1080p
+                                            trailer.Quality = Enums.TrailerVideoQuality.HD1080p
                                         Case "720p"
-                                            trailer.Quality = Enums.TrailerQuality.HD720p
+                                            trailer.Quality = Enums.TrailerVideoQuality.HD720p
                                         Case "480p"
-                                            trailer.Quality = Enums.TrailerQuality.HQ480p
+                                            trailer.Quality = Enums.TrailerVideoQuality.HQ480p
                                     End Select
                                     'set trailer extension
                                     trailer.Extention = IO.Path.GetExtension(trailer.URL)

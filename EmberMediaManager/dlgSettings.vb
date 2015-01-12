@@ -4397,14 +4397,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub LoadMovieTrailerQualities()
-        Dim items As New Dictionary(Of String, Enums.TrailerQuality)
-        items.Add(Master.eLang.GetString(569, "All"), Enums.TrailerQuality.All)
-        items.Add("1080p", Enums.TrailerQuality.HD1080p)
-        items.Add("720p", Enums.TrailerQuality.HD720p)
-        items.Add("480p", Enums.TrailerQuality.HQ480p)
-        items.Add("360p", Enums.TrailerQuality.SQ360p)
-        items.Add("240p", Enums.TrailerQuality.SQ240p)
-        items.Add("144p", Enums.TrailerQuality.SQ144p)
+        Dim items As New Dictionary(Of String, Enums.TrailerVideoQuality)
+        items.Add(Master.eLang.GetString(569, "All"), Enums.TrailerVideoQuality.All)
+        items.Add("1080p", Enums.TrailerVideoQuality.HD1080p)
+        items.Add("720p", Enums.TrailerVideoQuality.HD720p)
+        items.Add("480p", Enums.TrailerVideoQuality.HQ480p)
+        items.Add("360p", Enums.TrailerVideoQuality.SQ360p)
+        items.Add("240p", Enums.TrailerVideoQuality.SQ240p)
+        items.Add("144p", Enums.TrailerVideoQuality.SQ144p)
         Me.cbMovieTrailerMinQual.DataSource = items.ToList
         Me.cbMovieTrailerMinQual.DisplayMember = "Key"
         Me.cbMovieTrailerMinQual.ValueMember = "Value"
@@ -5258,8 +5258,8 @@ Public Class dlgSettings
                 .MovieTrailerDeleteExisting = Me.chkMovieTrailerDeleteExisting.Checked
                 .MovieTrailerEnable = Me.chkMovieTrailerEnable.Checked
                 .MovieTrailerOverwrite = Me.chkMovieTrailerOverwrite.Checked
-                .MovieTrailerMinQual = DirectCast(Me.cbMovieTrailerMinQual.SelectedIndex, Enums.TrailerQuality)
-                .MovieTrailerPrefQual = DirectCast(Me.cbMovieTrailerPrefQual.SelectedIndex, Enums.TrailerQuality)
+                .MovieTrailerMinQual = DirectCast(Me.cbMovieTrailerMinQual.SelectedIndex, Enums.TrailerVideoQuality)
+                .MovieTrailerPrefQual = DirectCast(Me.cbMovieTrailerPrefQual.SelectedIndex, Enums.TrailerVideoQuality)
                 .MovieWatchedCol = Me.chkMovieWatchedCol.Checked
                 .TVASBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVASBannerHeight.Text), Convert.ToInt32(Me.txtTVASBannerHeight.Text), 0)
                 .TVASBannerOverwrite = Me.chkTVASBannerOverwrite.Checked

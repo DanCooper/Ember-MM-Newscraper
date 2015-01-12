@@ -248,13 +248,13 @@ Namespace Davestrailerpage
                                                     '..and most important: trailer quality
                                                     If trailerlink.Groups(2).Value.Contains("1080") Then
                                                         '1080p
-                                                        trailer.Quality = Enums.TrailerQuality.HD1080p
+                                                        trailer.Quality = Enums.TrailerVideoQuality.HD1080p
                                                     ElseIf trailerlink.Groups(2).Value.Contains("720") Then
                                                         '720p
-                                                        trailer.Quality = Enums.TrailerQuality.HD720p
+                                                        trailer.Quality = Enums.TrailerVideoQuality.HD720p
                                                     Else
                                                         'other                     
-                                                        trailer.Quality = Enums.TrailerQuality.HQ480p
+                                                        trailer.Quality = Enums.TrailerVideoQuality.HQ480p
                                                     End If
                                                     ' Step 4: Add scraped trailer to global list
                                                     _trailerlist.Add(trailer)
@@ -290,24 +290,24 @@ Namespace Davestrailerpage
                                                 If trailerlink.Groups(3).Value <> "" Then
                                                     If trailerlink.Groups(3).Value.Contains("1080") Then
                                                         '1080p
-                                                        trailer.Quality = Enums.TrailerQuality.HD1080p
+                                                        trailer.Quality = Enums.TrailerVideoQuality.HD1080p
                                                     ElseIf trailerlink.Groups(3).Value.Contains("720") Then
                                                         '720p
-                                                        trailer.Quality = Enums.TrailerQuality.HD720p
+                                                        trailer.Quality = Enums.TrailerVideoQuality.HD720p
                                                     Else
                                                         'other                     
-                                                        trailer.Quality = Enums.TrailerQuality.HQ480p
+                                                        trailer.Quality = Enums.TrailerVideoQuality.HQ480p
                                                     End If
                                                 Else
                                                     If trailerlink.Groups(1).Value.Contains("1080") Then
                                                         '1080p
-                                                        trailer.Quality = Enums.TrailerQuality.HD1080p
+                                                        trailer.Quality = Enums.TrailerVideoQuality.HD1080p
                                                     ElseIf trailerlink.Groups(1).Value.Contains("720") Then
                                                         '720p
-                                                        trailer.Quality = Enums.TrailerQuality.HD720p
+                                                        trailer.Quality = Enums.TrailerVideoQuality.HD720p
                                                     Else
                                                         'other                     
-                                                        trailer.Quality = Enums.TrailerQuality.HQ480p
+                                                        trailer.Quality = Enums.TrailerVideoQuality.HQ480p
                                                     End If
                                                 End If
 
