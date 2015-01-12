@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Die Werte der Assemblyattribute überprüfen
 
-<Assembly: AssemblyTitle("scraper.Trailer.HDTrailerNet")> 
+<Assembly: AssemblyTitle("scraper.Trailer.HDTrailersNET")> 
 <Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
 <Assembly: AssemblyCompany("Ember Media Manager")> 
-<Assembly: AssemblyProduct("scraper.Trailer.HDTrailerNet")> 
+<Assembly: AssemblyProduct("scraper.Trailer.HDTrailersNET")> 
 <Assembly: AssemblyCopyright("Copyright ©  2014")> 
 <Assembly: AssemblyTrademark("")> 
 

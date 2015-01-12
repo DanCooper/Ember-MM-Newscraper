@@ -9,7 +9,7 @@
     <StartupObject>
     </StartupObject>
     <RootNamespace>ScraperModule</RootNamespace>
-    <AssemblyName>scraper.Trailer.TrailerHDTrailersNet</AssemblyName>
+    <AssemblyName>scraper.Trailer.HDTrailersNET</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -102,13 +102,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmHDTrailersNetTrailerSettingsHolder.Designer.vb">
-      <DependentUpon>frmHDTrailersNetTrailerSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmHDTrailersNETTrailerSettingsHolder.Designer.vb">
+      <DependentUpon>frmHDTrailersNETTrailerSettingsHolder.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmHDTrailersNetTrailerSettingsHolder.vb">
+    <Compile Include="frmHDTrailersNETTrailerSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HDTrailersNet_Trailer.vb" />
+    <Compile Include="HDTrailersNET_Trailer.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -127,8 +127,8 @@
     <Compile Include="Scraper\clsScrapeTrailerHDTrailersNet.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmHDTrailersNetTrailerSettingsHolder.resx">
-      <DependentUpon>frmHDTrailersNetTrailerSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmHDTrailersNETTrailerSettingsHolder.resx">
+      <DependentUpon>frmHDTrailersNETTrailerSettingsHolder.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

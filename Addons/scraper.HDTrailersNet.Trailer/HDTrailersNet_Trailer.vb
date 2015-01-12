@@ -109,9 +109,9 @@ Public Class HDTrailersNet_Trailer
         _setup = New frmHDTrailersNetTrailerSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
-        SPanel.Text = "HD-trailers.net"
+        SPanel.Text = "HD-Trailers.net"
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Prefix = "HDTrailersNetTrailer_"
+        SPanel.Prefix = "HDTrailersNETTrailer_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieTrailer"
         SPanel.Type = Master.eLang.GetString(36, "Movies")

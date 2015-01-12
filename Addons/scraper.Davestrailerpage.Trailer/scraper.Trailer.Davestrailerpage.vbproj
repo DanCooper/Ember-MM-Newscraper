@@ -9,7 +9,7 @@
     <StartupObject>
     </StartupObject>
     <RootNamespace>ScraperModule</RootNamespace>
-    <AssemblyName>scraper.Trailer.TrailerDavestrailerpage</AssemblyName>
+    <AssemblyName>scraper.Trailer.Davestrailerpage</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
