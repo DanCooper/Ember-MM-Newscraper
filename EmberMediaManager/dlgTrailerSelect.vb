@@ -413,7 +413,7 @@ Public Class dlgTrailerSelect
             Me.pbStatus.Value = 0
         ElseIf e.ProgressPercentage = -2 Then
             Me.lblStatus.Text = e.UserState.ToString
-            Me.pbStatus.Style = ProgressBarStyle.Continuous
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
         Else
             Me.pbStatus.Value = e.ProgressPercentage
         End If
