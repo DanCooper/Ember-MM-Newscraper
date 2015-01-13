@@ -5604,7 +5604,7 @@ Public Class Settings
         Me.GeneralHidePoster = True
         Me.GeneralImagesGlassOverlay = False
         Me.GeneralLanguage = "English_(en_US)"
-        Me.GeneralMainSplitterPanelState = 364
+        Me.GeneralMainSplitterPanelState = 550
         Me.GeneralMovieInfoPanelState = 200
         Me.GeneralMovieSetInfoPanelState = 200
         Me.GeneralMovieTheme = "Default"
@@ -6248,76 +6248,76 @@ Public Class Settings
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieListSorting) AndAlso (Force OrElse Master.eSettings.MovieGeneralMediaListSorting.Count <= 0) Then
             Master.eSettings.MovieGeneralMediaListSorting.Clear()
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Missing = False, .Column = "ListTitle", .Label = Master.eLang.GetString(21, "Title")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Missing = False, .Column = "OriginalTitle", .Label = Master.eLang.GetString(302, "Original Title")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = True, .Missing = False, .Column = "Year", .Label = Master.eLang.GetString(278, "Year")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = True, .Missing = False, .Column = "MPAA", .Label = Master.eLang.GetString(401, "MPAA")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = True, .Missing = False, .Column = "Rating", .Label = Master.eLang.GetString(400, "Rating")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = True, .Missing = False, .Column = "Imdb", .Label = Master.eLang.GetString(61, "IMDB ID")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = True, .Missing = False, .Column = "TMDB", .Label = Master.eLang.GetString(933, "TMDB ID")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Missing = False, .Column = "HasNfo", .Label = Master.eLang.GetString(150, "NFO")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Missing = False, .Column = "HasBanner", .Label = Master.eLang.GetString(838, "Banner")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Missing = False, .Column = "HasClearArt", .Label = Master.eLang.GetString(1096, "ClearArt")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Missing = False, .Column = "HasClearLogo", .Label = Master.eLang.GetString(1097, "ClearLogo")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Missing = False, .Column = "HasDiscArt", .Label = Master.eLang.GetString(1098, "DiscArt")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Missing = False, .Column = "HasEFanarts", .Label = Master.eLang.GetString(992, "Extrafanarts")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Missing = False, .Column = "HasEThumbs", .Label = Master.eLang.GetString(153, "Extrathumbs")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Missing = False, .Column = "HasFanart", .Label = Master.eLang.GetString(149, "Fanart")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Missing = False, .Column = "HasLandscape", .Label = Master.eLang.GetString(1035, "Landscape")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 16, .Hide = False, .Missing = False, .Column = "HasPoster", .Label = Master.eLang.GetString(148, "Poster")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 17, .Hide = False, .Missing = False, .Column = "HasSub", .Label = Master.eLang.GetString(152, "Subtitles")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 18, .Hide = False, .Missing = False, .Column = "HasTheme", .Label = Master.eLang.GetString(1118, "Theme")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 19, .Hide = False, .Missing = False, .Column = "HasTrailer", .Label = Master.eLang.GetString(151, "Trailer")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 20, .Hide = False, .Missing = False, .Column = "HasSet", .Label = Master.eLang.GetString(1295, "Part of a MovieSet")})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 21, .Hide = False, .Missing = False, .Column = "HasWatched", .Label = Master.eLang.GetString(981, "Watched")})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "ListTitle", .LabelID = 21, .LabelText = "Title"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = "OriginalTitle", .LabelID = 302, .LabelText = "Original Title"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = True, .Column = "Year", .LabelID = 278, .LabelText = "Year"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = True, .Column = "MPAA", .LabelID = 401, .LabelText = "MPAA"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = True, .Column = "Rating", .LabelID = 400, .LabelText = "Rating"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = True, .Column = "Imdb", .LabelID = 61, .LabelText = "IMDB ID"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = True, .Column = "TMDB", .LabelID = 933, .LabelText = "TMDB ID"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Column = "HasNfo", .LabelID = 150, .LabelText = "NFO"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = "HasBanner", .LabelID = 838, .LabelText = "Banner"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Column = "HasClearArt", .LabelID = 1096, .LabelText = "ClearArt"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Column = "HasClearLogo", .LabelID = 1097, .LabelText = "ClearLogo"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Column = "HasDiscArt", .LabelID = 1098, .LabelText = "DiscArt"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Column = "HasEFanarts", .LabelID = 992, .LabelText = "Extrafanarts"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Column = "HasEThumbs", .LabelID = 153, .LabelText = "Extrathumbs"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Column = "HasFanart", .LabelID = 149, .LabelText = "Fanart"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Column = "HasLandscape", .LabelID = 1035, .LabelText = "Landscape"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 16, .Hide = False, .Column = "HasPoster", .LabelID = 148, .LabelText = "Poster"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 17, .Hide = False, .Column = "HasSub", .LabelID = 152, .LabelText = "Subtitles"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 18, .Hide = False, .Column = "HasTheme", .LabelID = 1118, .LabelText = "Theme"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 19, .Hide = False, .Column = "HasTrailer", .LabelID = 151, .LabelText = "Trailer"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 20, .Hide = False, .Column = "HasSet", .LabelID = 1295, .LabelText = "Part of a MovieSet"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 21, .Hide = False, .Column = "HasWatched", .LabelID = 981, .LabelText = "Watched"})
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetListSorting) AndAlso (Force OrElse Master.eSettings.MovieSetGeneralMediaListSorting.Count <= 0) Then
             Master.eSettings.MovieSetGeneralMediaListSorting.Clear()
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Missing = False, .Column = "ListTitle", .Label = Master.eLang.GetString(21, "Title")})
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Missing = False, .Column = "HasNfo", .Label = Master.eLang.GetString(150, "NFO")})
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = False, .Missing = False, .Column = "HasBanner", .Label = Master.eLang.GetString(838, "Banner")})
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Missing = False, .Column = "HasClearArt", .Label = Master.eLang.GetString(1096, "ClearArt")})
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Missing = False, .Column = "HasClearLogo", .Label = Master.eLang.GetString(1097, "ClearLogo")})
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = True, .Missing = False, .Column = "HasDiscArt", .Label = Master.eLang.GetString(1098, "DiscArt")})
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Missing = False, .Column = "HasFanart", .Label = Master.eLang.GetString(149, "Fanart")})
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Missing = False, .Column = "HasLandscape", .Label = Master.eLang.GetString(1035, "Landscape")})
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Missing = False, .Column = "HasPoster", .Label = Master.eLang.GetString(148, "Poster")})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "ListTitle", .LabelID = 21, .LabelText = "Title"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Column = "HasNfo", .LabelID = 150, .LabelText = "NFO"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = False, .Column = "HasBanner", .LabelID = 838, .LabelText = "Banner"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Column = "HasClearArt", .LabelID = 1096, .LabelText = "ClearArt"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Column = "HasClearLogo", .LabelID = 1097, .LabelText = "ClearLogo"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = True, .Column = "HasDiscArt", .LabelID = 1098, .LabelText = "DiscArt"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Column = "HasFanart", .LabelID = 149, .LabelText = "Fanart"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Column = "HasLandscape", .LabelID = 1035, .LabelText = "Landscape"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = "HasPoster", .LabelID = 148, .LabelText = "Poster"})
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralEpisodeListSorting.Count <= 0) Then
             Master.eSettings.TVGeneralEpisodeListSorting.Clear()
-            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Missing = False, .Column = "Title", .Label = Master.eLang.GetString(21, "Title")})
-            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Missing = False, .Column = "HasNfo", .Label = Master.eLang.GetString(150, "NFO")})
-            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = True, .Missing = False, .Column = "HasFanart", .Label = Master.eLang.GetString(149, "Fanart")})
-            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Missing = False, .Column = "HasPoster", .Label = Master.eLang.GetString(148, "Poster")})
-            'Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Missing = False, .Column = "HasSub", .Label = Master.eLang.GetString(152, "Subtitles")})
-            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Missing = False, .Column = "HasWatched", .Label = Master.eLang.GetString(981, "Watched")})
+            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "Title", .LabelID = 21, .LabelText = "Title"})
+            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Column = "HasNfo", .LabelID = 150, .LabelText = "NFO"})
+            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = True, .Column = "HasFanart", .LabelID = 149, .LabelText = "Fanart"})
+            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Column = "HasPoster", .LabelID = 148, .LabelText = "Poster"})
+            'Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Column = "HasSub", .Label = 152, .LabelText =  "Subtitles"})
+            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Column = "HasWatched", .LabelID = 981, .LabelText = "Watched"})
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSeasonListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralSeasonListSorting.Count <= 0) Then
             Master.eSettings.TVGeneralSeasonListSorting.Clear()
-            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Missing = False, .Column = "SeasonText", .Label = Master.eLang.GetString(650, "Season")})
-            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Missing = False, .Column = "HasBanner", .Label = Master.eLang.GetString(838, "Banner")})
-            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = False, .Missing = False, .Column = "HasFanart", .Label = Master.eLang.GetString(149, "Fanart")})
-            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Missing = False, .Column = "HasLandscape", .Label = Master.eLang.GetString(1035, "Landscape")})
-            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Missing = False, .Column = "HasPoster", .Label = Master.eLang.GetString(148, "Poster")})
+            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "SeasonText", .LabelID = 650, .LabelText = "Season"})
+            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Column = "HasBanner", .LabelID = 838, .LabelText = "Banner"})
+            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = False, .Column = "HasFanart", .LabelID = 149, .LabelText = "Fanart"})
+            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Column = "HasLandscape", .LabelID = 1035, .LabelText = "Landscape"})
+            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Column = "HasPoster", .LabelID = 148, .LabelText = "Poster"})
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralShowListSorting.Count <= 0) Then
             Master.eSettings.TVGeneralShowListSorting.Clear()
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Missing = False, .Column = "ListTitle", .Label = Master.eLang.GetString(21, "Title")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Missing = False, .Column = "Status", .Label = Master.eLang.GetString(215, "Status")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = False, .Missing = False, .Column = "HasNfo", .Label = Master.eLang.GetString(150, "NFO")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Missing = False, .Column = "HasBanner", .Label = Master.eLang.GetString(838, "Banner")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Missing = False, .Column = "HasCharacterArt", .Label = Master.eLang.GetString(1140, "CharacterArt")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Missing = False, .Column = "HasClearArt", .Label = Master.eLang.GetString(1096, "ClearArt")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Missing = False, .Column = "HasClearLogo", .Label = Master.eLang.GetString(1097, "ClearLogo")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Missing = False, .Column = "HasEFanarts", .Label = Master.eLang.GetString(992, "Extrafanarts")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Missing = False, .Column = "HasFanart", .Label = Master.eLang.GetString(149, "Fanart")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Missing = False, .Column = "HasLandscape", .Label = Master.eLang.GetString(1035, "Landscape")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Missing = False, .Column = "HasPoster", .Label = Master.eLang.GetString(148, "Poster")})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Missing = False, .Column = "HasTheme", .Label = Master.eLang.GetString(1118, "Theme")})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "ListTitle", .LabelID = 21, .LabelText = "Title"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = "Status", .LabelID = 215, .LabelText = "Status"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = False, .Column = "HasNfo", .LabelID = 150, .LabelText = "NFO"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Column = "HasBanner", .LabelID = 838, .LabelText = "Banner"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Column = "HasCharacterArt", .LabelID = 1140, .LabelText = "CharacterArt"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Column = "HasClearArt", .LabelID = 1096, .LabelText = "ClearArt"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Column = "HasClearLogo", .LabelID = 1097, .LabelText = "ClearLogo"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Column = "HasEFanarts", .LabelID = 992, .LabelText = "Extrafanarts"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = "HasFanart", .LabelID = 149, .LabelText = "Fanart"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Column = "HasLandscape", .LabelID = 1035, .LabelText = "Landscape"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Column = "HasPoster", .LabelID = 148, .LabelText = "Poster"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Column = "HasTheme", .LabelID = 1118, .LabelText = "Theme"})
         End If
     End Sub
 
@@ -6658,8 +6658,8 @@ Public Class Settings
         Private _column As String
         Private _displayindex As Integer
         Private _hide As Boolean
-        Private _label As String
-        Private _missing As Boolean
+        Private _labelid As Integer
+        Private _labeltext As String
 
 #End Region 'Fields
 
@@ -6672,7 +6672,12 @@ Public Class Settings
 #End Region 'Constructors
 
 #Region "Properties"
-
+        ''' <summary>
+        ''' Column name in database (need to be exactly like column name in DB)
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Public Property Column() As String
             Get
                 Return Me._column
@@ -6690,7 +6695,12 @@ Public Class Settings
                 _displayindex = value
             End Set
         End Property
-
+        ''' <summary>
+        ''' Hide or show column in media lists
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Public Property Hide() As Boolean
             Get
                 Return Me._hide
@@ -6699,21 +6709,32 @@ Public Class Settings
                 Me._hide = value
             End Set
         End Property
-        Public Property Label() As String
+        ''' <summary>
+        ''' ID of string in Master.eLangs.GetString
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property LabelID() As Integer
             Get
-                Return Me._label
+                Return Me._labelid
             End Get
-            Set(ByVal value As String)
-                Me._label = value
+            Set(ByVal value As Integer)
+                Me._labelid = value
             End Set
         End Property
-
-        Public Property Missing() As Boolean
+        ''' <summary>
+        ''' Default text for the LabelID in Master.eLangs.GetString
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property LabelText() As String
             Get
-                Return Me._missing
+                Return Me._labeltext
             End Get
-            Set(ByVal value As Boolean)
-                Me._missing = value
+            Set(ByVal value As String)
+                Me._labeltext = value
             End Set
         End Property
 
@@ -6725,8 +6746,8 @@ Public Class Settings
             Me._column = String.Empty
             Me._displayindex = -1
             Me._hide = False
-            Me._label = String.Empty
-            Me._missing = False
+            Me._labelid = 1
+            Me._labeltext = String.Empty
         End Sub
 
 #End Region 'Methods

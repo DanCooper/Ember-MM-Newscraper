@@ -4331,7 +4331,7 @@ Public Class dlgSettings
         For Each rColumn As Settings.ListSorting In Me.MovieGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)
-            lvItem.SubItems.Add(rColumn.Label)
+            lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
             lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             Me.lvMovieGeneralMediaListSorting.Items.Add(lvItem)
         Next
@@ -4343,7 +4343,7 @@ Public Class dlgSettings
         For Each rColumn As Settings.ListSorting In Me.MovieSetGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)
-            lvItem.SubItems.Add(rColumn.Label)
+            lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
             lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             Me.lvMovieSetGeneralMediaListSorting.Items.Add(lvItem)
         Next
@@ -4355,7 +4355,7 @@ Public Class dlgSettings
         For Each rColumn As Settings.ListSorting In Me.TVGeneralEpisodeListSorting.OrderBy(Function(f) f.DisplayIndex)
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)
-            lvItem.SubItems.Add(rColumn.Label)
+            lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
             lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             Me.lvTVGeneralEpisodeListSorting.Items.Add(lvItem)
         Next
@@ -4367,7 +4367,7 @@ Public Class dlgSettings
         For Each rColumn As Settings.ListSorting In Me.TVGeneralSeasonListSorting.OrderBy(Function(f) f.DisplayIndex)
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)
-            lvItem.SubItems.Add(rColumn.Label)
+            lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
             lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             Me.lvTVGeneralSeasonListSorting.Items.Add(lvItem)
         Next
@@ -4379,7 +4379,7 @@ Public Class dlgSettings
         For Each rColumn As Settings.ListSorting In Me.TVGeneralShowListSorting.OrderBy(Function(f) f.DisplayIndex)
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)
-            lvItem.SubItems.Add(rColumn.Label)
+            lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
             lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             Me.lvTVGeneralShowListSorting.Items.Add(lvItem)
         Next
