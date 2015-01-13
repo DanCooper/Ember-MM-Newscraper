@@ -408,7 +408,15 @@ Public Class dlgTrailerSelect
     End Sub
 
     Private Sub bwDownloadTrailer_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDownloadTrailer.ProgressChanged
-        pbStatus.Value = e.ProgressPercentage
+        If e.ProgressPercentage = -1 Then
+            Me.lblStatus.Text = e.UserState.ToString
+            Me.pbStatus.Value = 0
+        ElseIf e.ProgressPercentage = -2 Then
+            Me.lblStatus.Text = e.UserState.ToString
+            Me.pbStatus.Style = ProgressBarStyle.Continuous
+        Else
+            Me.pbStatus.Value = e.ProgressPercentage
+        End If
         Application.DoEvents()
     End Sub
 
@@ -441,8 +449,8 @@ Public Class dlgTrailerSelect
         Me.Close()
     End Sub
 
-    Private Sub DownloadProgressUpdated(ByVal iProgress As Integer)
-        bwDownloadTrailer.ReportProgress(iProgress)
+    Private Sub DownloadProgressUpdated(ByVal iProgress As Integer, ByVal strInfo As String)
+        bwDownloadTrailer.ReportProgress(iProgress, strInfo)
     End Sub
 
     Private Sub lvTrailers_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvTrailers.SelectedIndexChanged
