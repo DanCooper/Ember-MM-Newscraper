@@ -1302,7 +1302,7 @@ Public Class Database
 
             'external subtitles
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT TVEpID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path FROM TVSubs WHERE TVEpID = ", EpID, " AND Subs_Type = 'External';")
+                SQLcommand.CommandText = String.Concat("SELECT TVEpID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path, Subs_Forced FROM TVSubs WHERE TVEpID = ", EpID, " AND Subs_Type = 'External';")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim subtitle As MediaInfo.Subtitle
                     While SQLreader.Read
