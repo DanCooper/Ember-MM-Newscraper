@@ -5551,7 +5551,7 @@ Public Class Settings
         '    Dim objStreamReader As New StreamReader(configpath)
         '    Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
 
-        '    _XMLSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
+        '_XMLSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
         '    objStreamReader.Close()
         '    ' error - someone removed the variable that holds the default TVDB languages. In case TVDB is not online to check them
         '    '_tvscraperlanguages.Sort(AddressOf CompareLanguagesLong)
@@ -5561,7 +5561,6 @@ Public Class Settings
 
 
         'Safe Solution: Don't load it from XML files
-
         Me.CleanDotFanartJPG = False
         Me.CleanExtrathumbs = False
         Me.CleanFanartJPG = False
@@ -6003,6 +6002,8 @@ Public Class Settings
         Me.UseTrakt = False
         Me.Version = String.Empty
         Me.RestartScraper = False
+
+        LoadTVLanguages()
     End Sub
 
     Public Sub Load()
@@ -6020,16 +6021,16 @@ Public Class Settings
                 objStreamReader.Close()
                 'Now we deserialize just the data in a local, shared, variable. So we can reference to us
                 Master.eSettings = Me
-            Else
-                Master.eSettings = New Settings
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             Master.eSettings = New Settings
         End Try
 
-        If Not Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-            SetDefaultsForLists(Enums.DefaultType.All, False)
+        SetDefaultsForLists(Enums.DefaultType.All, False)
+
+        If Master.eSettings.TVGeneralLanguages Is Nothing OrElse Master.eSettings.TVGeneralLanguages.Language.Count <= 0 Then
+            LoadTVLanguages()
         End If
 
         ' Fix added to avoid to have no movie NFO saved
@@ -6070,6 +6071,24 @@ Public Class Settings
             Master.eSettings.TVShowLandscapeAD = True
             Master.eSettings.TVShowPosterFrodo = True
         End If
+    End Sub
+
+    Public Sub LoadTVLanguages()
+        Try
+            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultTVLanguages.xml")
+
+            Dim objStreamReader As New StreamReader(configpath)
+            Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
+            Dim tSettings As New clsXMLSettings
+
+            tSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
+            objStreamReader.Close()
+
+            _XMLSettings.TVGeneralLanguages = tSettings.TVGeneralLanguages
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     Public Sub Save()
