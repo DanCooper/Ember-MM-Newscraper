@@ -457,8 +457,7 @@ Partial Class frmSettingsHolder
         'tblPreview
         '
         Me.tblPreview.AutoSize = True
-        Me.tblPreview.ColumnCount = 2
-        Me.tblPreview.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblPreview.ColumnCount = 1
         Me.tblPreview.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblPreview.Controls.Add(Me.lblSingleEpisodeFile, 0, 2)
         Me.tblPreview.Controls.Add(Me.txtSingleEpisodeFile, 0, 3)
@@ -497,7 +496,7 @@ Partial Class frmSettingsHolder
         '
         'txtSingleEpisodeFile
         '
-        Me.txtSingleEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtSingleEpisodeFile.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtSingleEpisodeFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSingleEpisodeFile.Location = New System.Drawing.Point(3, 71)
         Me.txtSingleEpisodeFile.Name = "txtSingleEpisodeFile"
@@ -517,7 +516,7 @@ Partial Class frmSettingsHolder
         '
         'txtMultiEpisodeFile
         '
-        Me.txtMultiEpisodeFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtMultiEpisodeFile.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtMultiEpisodeFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMultiEpisodeFile.Location = New System.Drawing.Point(3, 119)
         Me.txtMultiEpisodeFile.Name = "txtMultiEpisodeFile"
@@ -537,7 +536,7 @@ Partial Class frmSettingsHolder
         '
         'txtSingleMovieFile
         '
-        Me.txtSingleMovieFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtSingleMovieFile.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtSingleMovieFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSingleMovieFile.Location = New System.Drawing.Point(3, 23)
         Me.txtSingleMovieFile.Name = "txtSingleMovieFile"
@@ -557,7 +556,7 @@ Partial Class frmSettingsHolder
         '
         'txtMultiSeasonFile
         '
-        Me.txtMultiSeasonFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtMultiSeasonFile.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtMultiSeasonFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMultiSeasonFile.Location = New System.Drawing.Point(3, 167)
         Me.txtMultiSeasonFile.Name = "txtMultiSeasonFile"
