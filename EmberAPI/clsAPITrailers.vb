@@ -301,11 +301,11 @@ Public Class Trailers
                 FileUtils.Delete.DeleteDirectory(tmpPath)
             End If
             Directory.CreateDirectory(tmpPath)
-            RaiseEvent ProgressUpdated(-1, "Downloading Dash Audio...")
+            RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1334, "Downloading Dash Audio..."))
             tTrailerAudio = WebPage.DownloadFile(sTrailerLinksContainer.AudioURL, Path.Combine(tmpPath, "traileraudio"), True, "trailer")
-            RaiseEvent ProgressUpdated(-1, "Downloading Dash Video...")
+            RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1335, "Downloading Dash Video..."))
             tTrailerVideo = WebPage.DownloadFile(sTrailerLinksContainer.VideoURL, Path.Combine(tmpPath, "trailervideo"), True, "trailer")
-            RaiseEvent ProgressUpdated(-2, "Merging Trailer...")
+            RaiseEvent ProgressUpdated(-2, Master.eLang.GetString(1336, "Merging Trailer..."))
             Using ffmpeg As New Process()
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 '                                                ffmpeg info                                                     '
@@ -419,12 +419,12 @@ Public Class Trailers
                 If Regex.IsMatch(aUrl.URL, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                     Dim YT As New YouTube.Scraper
                     YT.GetVideoLinks(aUrl.URL)
-                    If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefQual).Count > 0 Then
-                        tLink = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefQual).URL
+                    If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual).Count > 0 Then
+                        tLink = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual).URL
                         aUrl.URL = tLink
-                        aUrl.Quality = Master.eSettings.MovieTrailerPrefQual
+                        aUrl.Quality = Master.eSettings.MovieTrailerPrefVideoQual
                     Else
-                        Select Case Master.eSettings.MovieTrailerMinQual
+                        Select Case Master.eSettings.MovieTrailerMinVideoQual
                             Case Enums.TrailerVideoQuality.All
                                 If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
                                     tLink = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).URL
@@ -593,12 +593,12 @@ Public Class Trailers
                 ElseIf Regex.IsMatch(aUrl.URL, "https?:\/\/.*imdb.*") Then
                     Dim IMDb As New IMDb.Scraper
                     IMDb.GetVideoLinks(aUrl.URL)
-                    If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
-                        tLink = IMDb.VideoLinks(Master.eSettings.MovieTrailerPrefQual).URL
+                    If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefVideoQual) Then
+                        tLink = IMDb.VideoLinks(Master.eSettings.MovieTrailerPrefVideoQual).URL
                         aUrl.URL = tLink
-                        aUrl.Quality = Master.eSettings.MovieTrailerPrefQual
+                        aUrl.Quality = Master.eSettings.MovieTrailerPrefVideoQual
                     Else
-                        Select Case Master.eSettings.MovieTrailerMinQual
+                        Select Case Master.eSettings.MovieTrailerMinVideoQual
                             Case Enums.TrailerVideoQuality.All
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
@@ -772,7 +772,7 @@ Public Class Trailers
             lsttrailerresults.AddRange(UrlList)
             'Check 2: Clean Up -> first remove all movies which don't have preferred quality and check if there's at least one left!
             For i = lsttrailerresults.Count - 1 To 0 Step -1
-                If (lsttrailerresults(i).Quality <> Master.eSettings.MovieTrailerPrefQual) OrElse lsttrailerresults(i).Description.ToLower.Contains("trailer") = False Then
+                If (lsttrailerresults(i).Quality <> Master.eSettings.MovieTrailerPrefVideoQual) OrElse lsttrailerresults(i).Description.ToLower.Contains("trailer") = False Then
                     lsttrailerresults.RemoveAt(i)
                 End If
             Next
@@ -783,7 +783,7 @@ Public Class Trailers
                 lsttrailerresults.AddRange(UrlList)
                 'Defaultvalue: all trailers with equal/better quality than 480p
                 Dim tqualities As String = "HD720pHD1080pHQ480p"
-                Select Case Master.eSettings.MovieTrailerMinQual
+                Select Case Master.eSettings.MovieTrailerMinVideoQual
                     Case Enums.TrailerVideoQuality.HD1080p
                         tqualities = "HD1080p"
                     Case Enums.TrailerVideoQuality.HD720p
@@ -813,10 +813,10 @@ Public Class Trailers
 
             For Each aUrl As Trailers In UrlList
 
-                If aUrl.Quality = Master.eSettings.MovieTrailerPrefQual Then
+                If aUrl.Quality = Master.eSettings.MovieTrailerPrefVideoQual Then
                     tLink = aUrl.URL
                 Else
-                    Select Case Master.eSettings.MovieTrailerMinQual
+                    Select Case Master.eSettings.MovieTrailerMinVideoQual
                         Case Enums.TrailerVideoQuality.All
                             tLink = aUrl.URL
                         Case Enums.TrailerVideoQuality.HD1080p

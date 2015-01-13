@@ -521,7 +521,7 @@ Namespace YouTube
             End Set
         End Property
 
-        Friend Property FormatCodec() As Enums.TrailerAudioCodec
+        Public Property FormatCodec() As Enums.TrailerAudioCodec
             Get
                 Return _FormatCodec
             End Get
@@ -530,7 +530,7 @@ Namespace YouTube
             End Set
         End Property
 
-        Friend Property FormatQuality() As Enums.TrailerAudioQuality
+        Public Property FormatQuality() As Enums.TrailerAudioQuality
             Get
                 Return _FormatQuality
             End Get
@@ -590,7 +590,7 @@ Namespace YouTube
             End Set
         End Property
 
-        Friend Property FormatCodec() As Enums.TrailerVideoCodec
+        Public Property FormatCodec() As Enums.TrailerVideoCodec
             Get
                 Return _formatcodec
             End Get
@@ -599,7 +599,7 @@ Namespace YouTube
             End Set
         End Property
 
-        Friend Property FormatQuality() As Enums.TrailerVideoQuality
+        Public Property FormatQuality() As Enums.TrailerVideoQuality
             Get
                 Return _formatquality
             End Get

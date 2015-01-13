@@ -99,11 +99,13 @@ Public Class dlgTrailerFormat
                         lbVideoFormats.DisplayMember = "Description"
                         lbVideoFormats.ValueMember = "URL"
 
-                        'If YouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefQual).count > 0 Then
-                        '    Me.lbFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
-                        'ElseIf Me.lbFormats.Items.Count = 1 Then
-                        '    Me.lbFormats.SelectedIndex = 0
-                        'End If
+                        Dim prevQualLink As YouTube.VideoLinkItem
+                        prevQualLink = YouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual)
+                        If prevQualLink IsNot Nothing Then
+                            Me.lbVideoFormats.SelectedItem = prevQualLink
+                        ElseIf Me.lbVideoFormats.Items.Count = 1 Then
+                            Me.lbVideoFormats.SelectedIndex = 0
+                        End If
 
                         Me.lbVideoFormats.Enabled = True
 
@@ -131,8 +133,8 @@ Public Class dlgTrailerFormat
                         lbVideoFormats.DisplayMember = "Description"
                         lbVideoFormats.ValueMember = "URL"
 
-                        If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
-                            Me.lbVideoFormats.SelectedIndex = IMDb.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
+                        If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefVideoQual) Then
+                            Me.lbVideoFormats.SelectedIndex = IMDb.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefVideoQual)
                         ElseIf Me.lbVideoFormats.Items.Count = 1 Then
                             Me.lbVideoFormats.SelectedIndex = 0
                         End If
@@ -227,7 +229,8 @@ Public Class dlgTrailerFormat
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(923, "Select Format")
         Me.lblStatus.Text = Master.eLang.GetString(924, "Getting available formats...")
-        Me.gbFormats.Text = Master.eLang.GetString(925, "Available Formats")
+        Me.gbAudioFormats.Text = Master.eLang.GetString(1333, "Available Audio Formats")
+        Me.gbVideoFormats.Text = Master.eLang.GetString(925, "Available Video Formats")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
@@ -235,63 +238,6 @@ Public Class dlgTrailerFormat
 #End Region 'Methods
 
 #Region "Nested Types"
-
-    Class LinkContainer
-
-#Region "Fields"
-
-        Private _audiourl As String
-        Private _isDash As Boolean
-        Private _videourl As String
-
-#End Region 'Fields
-
-#Region "Properties"
-
-        Public Property AudioURL() As String
-            Get
-                Return Me._audiourl
-            End Get
-            Set(ByVal value As String)
-                Me._audiourl = value
-            End Set
-        End Property
-
-        Public Property isDash() As Boolean
-            Get
-                Return Me._isDash
-            End Get
-            Set(ByVal value As Boolean)
-                Me._isDash = value
-            End Set
-        End Property
-
-        Public Property VideoURL() As String
-            Get
-                Return Me._videourl
-            End Get
-            Set(ByVal value As String)
-                Me._videourl = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-        Public Sub Clear()
-            _audiourl = String.Empty
-            _isDash = False
-            _videourl = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
 
     Private Structure Arguments
 

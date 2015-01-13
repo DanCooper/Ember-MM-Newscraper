@@ -282,6 +282,8 @@ Public Class dlgTrailerSelect
         Try
             If Not String.IsNullOrEmpty(Me.txtLocalTrailer.Text) Then
                 TrailerAddToPlayer(Me.txtLocalTrailer.Text)
+            ElseIf Not String.IsNullOrEmpty(Me.txtManualTrailerLink.Text) Then
+                TrailerAddToPlayer(Me.txtManualTrailerLink.Text)
             End If
         Catch
             MsgBox(Master.eLang.GetString(908, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(59, "Error Playing Trailer"))
@@ -595,7 +597,7 @@ Public Class dlgTrailerSelect
         Me.axVLCTrailer.playlist.items.clear()
 
         If Not String.IsNullOrEmpty(Trailer) Then
-            If Regex.IsMatch(Trailer, "http:\/\/.*?") Then
+            If Regex.IsMatch(Trailer, "https?:\/\/.*?") Then
                 Me.axVLCTrailer.playlist.add(Trailer)
                 Me.TrailerStart()
             Else

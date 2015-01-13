@@ -923,7 +923,7 @@
   <string id="922">Fall back on English</string>
   <string id="923">Select Format</string>
   <string id="924">Getting available formats...</string>
-  <string id="925">Available Formats</string>
+  <string id="925">Available Video Formats</string>
   <string id="926">Manual TMDB Entry</string>
   <string id="927">A Fanart of your preferred size could not be found. Please choose another.</string>
   <string id="928">A Poster of your preferred size could not be found. Please choose another.</string>
@@ -1422,4 +1422,8 @@
   <string id="1330">Date Modified</string>
   <string id="1331">Column</string>
   <string id="1332">Day Of Year</string>
+  <string id="1333">Available Audio Formats</string>
+  <string id="1334">Downloading Dash Audio...</string>
+  <string id="1335">Downloading Dash Video...</string>
+  <string id="1336">Merging Trailer...</string>
 </strings>

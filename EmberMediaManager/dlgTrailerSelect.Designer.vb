@@ -114,7 +114,7 @@ Partial Class dlgTrailerSelect
         Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlStatus.Controls.Add(Me.lblStatus)
         Me.pnlStatus.Controls.Add(Me.pbStatus)
-        Me.pnlStatus.Location = New System.Drawing.Point(122, 60)
+        Me.pnlStatus.Location = New System.Drawing.Point(191, 141)
         Me.pnlStatus.Name = "pnlStatus"
         Me.pnlStatus.Size = New System.Drawing.Size(200, 54)
         Me.pnlStatus.TabIndex = 1

@@ -187,7 +187,7 @@ Namespace Apple
                         Dim tDescription As New List(Of String)
                         'get preferred quality setting
                         Dim prevQual As String = "480p"
-                        prevQual = Master.eSettings.MovieTrailerPrefQual.ToString
+                        prevQual = Master.eSettings.MovieTrailerPrefVideoQual.ToString
                         If prevQual.Contains("720") Then
                             prevQual = "720p"
                         ElseIf prevQual.Contains("1080") Then
