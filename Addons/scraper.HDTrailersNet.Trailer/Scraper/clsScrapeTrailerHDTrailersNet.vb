@@ -182,13 +182,13 @@ Namespace HDTrailersNet
                                         '..and most important: trailer quality
                                         If item.Groups(1).Value.Contains("1080p") Then
                                             '1080p
-                                            trailer.Quality = Enums.TrailerQuality.HD1080p
+                                            trailer.Quality = Enums.TrailerVideoQuality.HD1080p
                                         ElseIf item.Groups(1).Value.Contains("720p") Then
                                             '720p
-                                            trailer.Quality = Enums.TrailerQuality.HD720p
+                                            trailer.Quality = Enums.TrailerVideoQuality.HD720p
                                         Else
                                             'other                     
-                                            trailer.Quality = Enums.TrailerQuality.HQ480p
+                                            trailer.Quality = Enums.TrailerVideoQuality.HQ480p
                                         End If
                                         ' Step 4: Add scraped trailer to global list
                                         _trailerlist.Add(trailer)

@@ -24,15 +24,18 @@ Partial Class dlgTrailerFormat
     Private Sub InitializeComponent()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.lbFormats = New System.Windows.Forms.ListBox()
+        Me.lbVideoFormats = New System.Windows.Forms.ListBox()
         Me.gbFormats = New System.Windows.Forms.GroupBox()
         Me.pnlStatus = New System.Windows.Forms.Panel()
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.prbStatus = New System.Windows.Forms.ProgressBar()
         Me.pnlTrailerFormat = New System.Windows.Forms.Panel()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lbAudioFormats = New System.Windows.Forms.ListBox()
         Me.gbFormats.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.pnlTrailerFormat.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -55,19 +58,19 @@ Partial Class dlgTrailerFormat
         Me.Cancel_Button.TabIndex = 1
         Me.Cancel_Button.Text = "Cancel"
         '
-        'lbFormats
+        'lbVideoFormats
         '
-        Me.lbFormats.Enabled = False
-        Me.lbFormats.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbFormats.FormattingEnabled = True
-        Me.lbFormats.Location = New System.Drawing.Point(4, 19)
-        Me.lbFormats.Name = "lbFormats"
-        Me.lbFormats.Size = New System.Drawing.Size(170, 121)
-        Me.lbFormats.TabIndex = 0
+        Me.lbVideoFormats.Enabled = False
+        Me.lbVideoFormats.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbVideoFormats.FormattingEnabled = True
+        Me.lbVideoFormats.Location = New System.Drawing.Point(4, 19)
+        Me.lbVideoFormats.Name = "lbVideoFormats"
+        Me.lbVideoFormats.Size = New System.Drawing.Size(170, 121)
+        Me.lbVideoFormats.TabIndex = 0
         '
         'gbFormats
         '
-        Me.gbFormats.Controls.Add(Me.lbFormats)
+        Me.gbFormats.Controls.Add(Me.lbVideoFormats)
         Me.gbFormats.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFormats.Location = New System.Drawing.Point(10, 8)
         Me.gbFormats.Name = "gbFormats"
@@ -110,11 +113,32 @@ Partial Class dlgTrailerFormat
         'pnlTrailerFormat
         '
         Me.pnlTrailerFormat.BackColor = System.Drawing.Color.White
+        Me.pnlTrailerFormat.Controls.Add(Me.GroupBox1)
         Me.pnlTrailerFormat.Controls.Add(Me.gbFormats)
         Me.pnlTrailerFormat.Location = New System.Drawing.Point(12, 12)
         Me.pnlTrailerFormat.Name = "pnlTrailerFormat"
-        Me.pnlTrailerFormat.Size = New System.Drawing.Size(200, 169)
+        Me.pnlTrailerFormat.Size = New System.Drawing.Size(445, 169)
         Me.pnlTrailerFormat.TabIndex = 2
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.lbAudioFormats)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(230, 8)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(180, 151)
+        Me.GroupBox1.TabIndex = 1
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Available Formats"
+        '
+        'lbAudioFormats
+        '
+        Me.lbAudioFormats.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbAudioFormats.FormattingEnabled = True
+        Me.lbAudioFormats.Location = New System.Drawing.Point(4, 19)
+        Me.lbAudioFormats.Name = "lbAudioFormats"
+        Me.lbAudioFormats.Size = New System.Drawing.Size(170, 121)
+        Me.lbAudioFormats.TabIndex = 0
         '
         'dlgTrailerFormat
         '
@@ -122,7 +146,7 @@ Partial Class dlgTrailerFormat
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(224, 217)
+        Me.ClientSize = New System.Drawing.Size(495, 217)
         Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.pnlTrailerFormat)
         Me.Controls.Add(Me.Cancel_Button)
@@ -140,16 +164,19 @@ Partial Class dlgTrailerFormat
         Me.pnlStatus.ResumeLayout(False)
         Me.pnlStatus.PerformLayout()
         Me.pnlTrailerFormat.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents lbFormats As System.Windows.Forms.ListBox
+    Friend WithEvents lbVideoFormats As System.Windows.Forms.ListBox
     Friend WithEvents gbFormats As System.Windows.Forms.GroupBox
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
     Friend WithEvents prbStatus As System.Windows.Forms.ProgressBar
     Friend WithEvents pnlTrailerFormat As System.Windows.Forms.Panel
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents lbAudioFormats As System.Windows.Forms.ListBox
 
 End Class

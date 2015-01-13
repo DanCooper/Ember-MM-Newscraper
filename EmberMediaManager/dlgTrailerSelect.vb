@@ -154,16 +154,16 @@ Public Class dlgTrailerSelect
             End If
         ElseIf Regex.IsMatch(Me.txtManualTrailerLink.Text, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") OrElse _
             Regex.IsMatch(Me.txtManualTrailerLink.Text, "https?:\/\/.*imdb.*\/video\/imdb\/.*") Then
-            Dim sFormat As String = String.Empty
+            Dim sFormat As New TrailerLinksContainer
             Using dFormats As New dlgTrailerFormat
                 sFormat = dFormats.ShowDialog(Me.txtManualTrailerLink.Text)
             End Using
             If Me.noDownload Then
-                Results.URL = sFormat
+                Results.URL = sFormat.VideoURL
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
-                If Not String.IsNullOrEmpty(sFormat) Then
+                If sFormat IsNot Nothing AndAlso Not String.IsNullOrEmpty(sFormat.VideoURL) Then
                     Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                     Me.bwDownloadTrailer.WorkerReportsProgress = True
                     Me.bwDownloadTrailer.WorkerSupportsCancellation = True
@@ -189,10 +189,11 @@ Public Class dlgTrailerSelect
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
+                Dim ManualTrailer As New TrailerLinksContainer With {.VideoURL = Me.txtManualTrailerLink.Text}
                 Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadTrailer.WorkerReportsProgress = True
                 Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = Me.txtManualTrailerLink.Text, .bType = CloseDialog})
+                Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = ManualTrailer, .bType = CloseDialog})
             End If
         Else
             If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
@@ -201,11 +202,11 @@ Public Class dlgTrailerSelect
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
-                    Dim sFormat As String = String.Empty
+                    Dim sFormat As New TrailerLinksContainer
                     Using dFormats As New dlgTrailerFormat
                         sFormat = dFormats.ShowDialog(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString)
                     End Using
-                    If Not String.IsNullOrEmpty(sFormat) Then
+                    If sFormat IsNot Nothing AndAlso Not String.IsNullOrEmpty(sFormat.VideoURL) Then
                         Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                         Me.bwDownloadTrailer.WorkerReportsProgress = True
                         Me.bwDownloadTrailer.WorkerSupportsCancellation = True
@@ -215,7 +216,7 @@ Public Class dlgTrailerSelect
                     End If
                 End If
             ElseIf Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "https?:\/\/.*imdb.*") Then
-                Dim sFormat As String = String.Empty
+                Dim sFormat As New TrailerLinksContainer
                 Using dFormats As New dlgTrailerFormat
                     sFormat = dFormats.ShowDialog(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString)
                 End Using
@@ -224,7 +225,7 @@ Public Class dlgTrailerSelect
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
-                    If Not String.IsNullOrEmpty(sFormat) Then
+                    If sFormat IsNot Nothing AndAlso Not String.IsNullOrEmpty(sFormat.VideoURL) Then
                         Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                         Me.bwDownloadTrailer.WorkerReportsProgress = True
                         Me.bwDownloadTrailer.WorkerSupportsCancellation = True
@@ -239,10 +240,11 @@ Public Class dlgTrailerSelect
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
+                    Dim SelectedTrailer As New TrailerLinksContainer With {.VideoURL = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString}
                     Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                     Me.bwDownloadTrailer.WorkerReportsProgress = True
                     Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                    Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, .bType = CloseDialog})
+                    Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = SelectedTrailer, .bType = CloseDialog})
                 End If
             End If
         End If
@@ -393,7 +395,7 @@ Public Class dlgTrailerSelect
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
             Results.WebTrailer.FromWeb(Args.Parameter)
-            Results.URL = Args.Parameter
+            Results.URL = Args.Parameter.VideoURL
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -406,7 +408,15 @@ Public Class dlgTrailerSelect
     End Sub
 
     Private Sub bwDownloadTrailer_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDownloadTrailer.ProgressChanged
-        pbStatus.Value = e.ProgressPercentage
+        If e.ProgressPercentage = -1 Then
+            Me.lblStatus.Text = e.UserState.ToString
+            Me.pbStatus.Value = 0
+        ElseIf e.ProgressPercentage = -2 Then
+            Me.lblStatus.Text = e.UserState.ToString
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+        Else
+            Me.pbStatus.Value = e.ProgressPercentage
+        End If
         Application.DoEvents()
     End Sub
 
@@ -438,8 +448,8 @@ Public Class dlgTrailerSelect
         Me.Close()
     End Sub
 
-    Private Sub DownloadProgressUpdated(ByVal iProgress As Integer)
-        bwDownloadTrailer.ReportProgress(iProgress)
+    Private Sub DownloadProgressUpdated(ByVal iProgress As Integer, ByVal strInfo As String)
+        bwDownloadTrailer.ReportProgress(iProgress, strInfo)
     End Sub
 
     Private Sub lvTrailers_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvTrailers.SelectedIndexChanged
@@ -451,8 +461,8 @@ Public Class dlgTrailerSelect
             Dim vLink As String = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
             If Regex.IsMatch(vLink, "https?:\/\/.*imdb.*\/video\/imdb\/.*") Then
                 Using dFormats As New dlgTrailerFormat
-                    Dim sFormat As String = dFormats.ShowDialog(vLink)
-                    Me.TrailerAddToPlayer(sFormat)
+                    Dim sFormat As TrailerLinksContainer = dFormats.ShowDialog(vLink)
+                    Me.TrailerAddToPlayer(sFormat.VideoURL)
                 End Using
             ElseIf Regex.IsMatch(vLink, "https?:\/\/movietrailers\.apple\.com.*?") OrElse Regex.IsMatch(vLink, "https?:\/\/trailers.apple.com\*?") Then
                 MsgBox(String.Format(Master.eLang.GetString(1169, "Please use the {0}{1}{0} button for this trailer"), """", Master.eLang.GetString(931, "Open In Browser")), MsgBoxStyle.Information, Master.eLang.GetString(271, "Error Playing Trailer"))
@@ -616,7 +626,7 @@ Public Class dlgTrailerSelect
 #Region "Fields"
 
         Dim bType As Boolean
-        Dim Parameter As String
+        Dim Parameter As TrailerLinksContainer
 
 #End Region 'Fields
 

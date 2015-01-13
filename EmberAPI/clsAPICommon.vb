@@ -986,7 +986,29 @@ Public Class Enums
     ''' Enum representing the trailer codec options
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum TrailerCodec As Integer
+    Public Enum TrailerAudioCodec As Integer
+        MP4 = 0
+        WebM = 1
+        OTHERS = 3
+    End Enum
+    ''' <summary>
+    ''' Enum representing the trailer quality options
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum TrailerAudioQuality As Integer
+        All = 0
+        AAC256kbps = 1
+        AAC128kbps = 2
+        AAC48kbps = 3
+        Vorbis192kbps = 4
+        Vorbis128kbps = 5
+        OTHERS = 6
+    End Enum
+    ''' <summary>
+    ''' Enum representing the trailer codec options
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum TrailerVideoCodec As Integer
         MP4 = 0
         WebM = 1
         v3GP = 2
@@ -997,15 +1019,21 @@ Public Class Enums
     ''' Enum representing the trailer quality options
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum TrailerQuality As Integer
+    Public Enum TrailerVideoQuality As Integer
         All = 0
-        HD1080p = 1
-        HD720p = 2
-        HQ480p = 3
-        SQ360p = 4
-        SQ240p = 5
-        SQ144p = 6
-        OTHERS = 7
+        HD2160p = 1
+        HD2160p60fps = 1
+        HD1440p = 3
+        HD1080p = 4
+        HD1080p60fps = 5
+        HD720p = 6
+        HD720p60fps = 7
+        HQ480p = 8
+        SQ360p = 9
+        SQ240p = 10
+        SQ144p = 11
+        SQ144p15fps = 12
+        OTHERS = 13
     End Enum
     ''' <summary>
     ''' Enum represeting valid movie image types

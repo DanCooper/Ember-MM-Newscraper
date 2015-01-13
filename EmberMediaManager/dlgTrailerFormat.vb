@@ -31,7 +31,7 @@ Public Class dlgTrailerFormat
 
     Private WithEvents YouTube As YouTube.Scraper
     Private WithEvents IMDb As IMDb.Scraper
-    Private _selectedformaturl As String
+    Private _trailerlinkscontainer As New TrailerLinksContainer
     Private _url As String
     Private _isYouTube As Boolean
     Private _isIMDb As Boolean
@@ -40,14 +40,16 @@ Public Class dlgTrailerFormat
 
 #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByVal URL As String) As String
+    Public Overloads Function ShowDialog(ByVal URL As String) As TrailerLinksContainer
+
         Me._url = URL
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Return _selectedformaturl
+            Return _trailerlinkscontainer
         Else
-            Return String.Empty
+            Return Nothing
         End If
+
     End Function
 
     Private Sub dlgTrailerFormat_Shown(sender As Object, e As System.EventArgs) Handles Me.Shown
@@ -90,19 +92,34 @@ Public Class dlgTrailerFormat
         If Not e.Cancelled Then
             If Convert.ToBoolean(e.Result) Then
                 If Me._isYouTube Then
-                    If YouTube.VideoLinks.Count > 0 Then
+                    If YouTube.YouTubeLinks.VideoLinks.Count > 0 Then
                         Me.pnlStatus.Visible = False
 
-                        lbFormats.DataSource = YouTube.VideoLinks.Values.ToList
-                        lbFormats.DisplayMember = "Description"
-                        lbFormats.ValueMember = "URL"
+                        lbVideoFormats.DataSource = YouTube.YouTubeLinks.VideoLinks.ToList
+                        lbVideoFormats.DisplayMember = "Description"
+                        lbVideoFormats.ValueMember = "URL"
 
-                        If YouTube.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
-                            Me.lbFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
-                        ElseIf Me.lbFormats.Items.Count = 1 Then
-                            Me.lbFormats.SelectedIndex = 0
+                        'If YouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefQual).count > 0 Then
+                        '    Me.lbFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
+                        'ElseIf Me.lbFormats.Items.Count = 1 Then
+                        '    Me.lbFormats.SelectedIndex = 0
+                        'End If
+
+                        Me.lbVideoFormats.Enabled = True
+
+                        If YouTube.YouTubeLinks.AudioLinks.Count > 0 Then
+                            lbAudioFormats.DataSource = YouTube.YouTubeLinks.AudioLinks.ToList
+                            lbAudioFormats.DisplayMember = "Description"
+                            lbAudioFormats.ValueMember = "URL"
+
+                            'If YouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefQual).count > 0 Then
+                            '    Me.lbFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
+                            'ElseIf Me.lbFormats.Items.Count = 1 Then
+                            '    Me.lbFormats.SelectedIndex = 0
+                            'End If
+
+                            Me.lbAudioFormats.Enabled = True
                         End If
-                        Me.lbFormats.Enabled = True
                     Else
                         MsgBox(Master.eLang.GetString(1170, "Trailer could not be parsed"), MsgBoxStyle.Information, Master.eLang.GetString(1134, "Error"))
                     End If
@@ -110,16 +127,16 @@ Public Class dlgTrailerFormat
                     If IMDb.VideoLinks.Count > 0 Then
                         Me.pnlStatus.Visible = False
 
-                        lbFormats.DataSource = IMDb.VideoLinks.Values.ToList
-                        lbFormats.DisplayMember = "Description"
-                        lbFormats.ValueMember = "URL"
+                        lbVideoFormats.DataSource = IMDb.VideoLinks.Values.ToList
+                        lbVideoFormats.DisplayMember = "Description"
+                        lbVideoFormats.ValueMember = "URL"
 
                         If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
-                            Me.lbFormats.SelectedIndex = IMDb.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
-                        ElseIf Me.lbFormats.Items.Count = 1 Then
-                            Me.lbFormats.SelectedIndex = 0
+                            Me.lbVideoFormats.SelectedIndex = IMDb.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
+                        ElseIf Me.lbVideoFormats.Items.Count = 1 Then
+                            Me.lbVideoFormats.SelectedIndex = 0
                         End If
-                        Me.lbFormats.Enabled = True
+                        Me.lbVideoFormats.Enabled = True
                     Else
                         MsgBox(Master.eLang.GetString(1170, "Trailer could not be parsed"), MsgBoxStyle.Information, Master.eLang.GetString(1134, "Error"))
                     End If
@@ -140,7 +157,8 @@ Public Class dlgTrailerFormat
         Try
             Me.SetUp()
 
-            lbFormats.DataSource = Nothing
+            lbAudioFormats.DataSource = Nothing
+            lbVideoFormats.DataSource = Nothing
 
             YouTube = New YouTube.Scraper
             IMDb = New IMDb.Scraper
@@ -150,16 +168,50 @@ Public Class dlgTrailerFormat
         End Try
     End Sub
 
-    Private Sub lstFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbFormats.SelectedIndexChanged
+    Private Sub lbAudioFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbAudioFormats.SelectedIndexChanged
         Try
             If _isYouTube Then
-                Me._selectedformaturl = DirectCast(lbFormats.SelectedItem, YouTube.VideoLinkItem).URL
+                Me._trailerlinkscontainer.AudioURL = DirectCast(lbAudioFormats.SelectedItem, YouTube.AudioLinkItem).URL
             ElseIf _isIMDb Then
-                Me._selectedformaturl = DirectCast(lbFormats.SelectedItem, IMDb.VideoLinkItem).URL
+                Me._trailerlinkscontainer.AudioURL = String.Empty
             End If
 
-            If Me.lbFormats.SelectedItems.Count > 0 Then
+            If Me._trailerlinkscontainer.isDash AndAlso Me.lbVideoFormats.SelectedItems.Count > 0 AndAlso Me.lbAudioFormats.SelectedItems.Count > 0 Then
                 Me.OK_Button.Enabled = True
+            ElseIf Not Me._trailerlinkscontainer.isDash Then
+                Me.OK_Button.Enabled = True
+            Else
+                Me.OK_Button.Enabled = False
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub lbVideoFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbVideoFormats.SelectedIndexChanged
+        Try
+            If _isYouTube Then
+                Me._trailerlinkscontainer.VideoURL = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).URL
+                Me._trailerlinkscontainer.isDash = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).isDash
+                If Me._trailerlinkscontainer.isDash Then
+                    Me.lbAudioFormats.Enabled = True
+                Else
+                    Me.lbAudioFormats.Enabled = False
+                End If
+            ElseIf _isIMDb Then
+                Me._trailerlinkscontainer.VideoURL = DirectCast(lbVideoFormats.SelectedItem, IMDb.VideoLinkItem).URL
+                Me._trailerlinkscontainer.isDash = False
+            End If
+
+            If Me.lbVideoFormats.SelectedItems.Count > 0 Then
+                If Me._trailerlinkscontainer.isDash Then
+                    If lbAudioFormats.SelectedItems.Count > 0 Then
+                        Me.OK_Button.Enabled = True
+                    Else
+                        Me.OK_Button.Enabled = False
+                    End If
+                Else
+                    Me.OK_Button.Enabled = True
+                End If
             Else
                 Me.OK_Button.Enabled = False
             End If
@@ -180,10 +232,66 @@ Public Class dlgTrailerFormat
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
-
 #End Region 'Methods
 
 #Region "Nested Types"
+
+    Class LinkContainer
+
+#Region "Fields"
+
+        Private _audiourl As String
+        Private _isDash As Boolean
+        Private _videourl As String
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        Public Property AudioURL() As String
+            Get
+                Return Me._audiourl
+            End Get
+            Set(ByVal value As String)
+                Me._audiourl = value
+            End Set
+        End Property
+
+        Public Property isDash() As Boolean
+            Get
+                Return Me._isDash
+            End Get
+            Set(ByVal value As Boolean)
+                Me._isDash = value
+            End Set
+        End Property
+
+        Public Property VideoURL() As String
+            Get
+                Return Me._videourl
+            End Get
+            Set(ByVal value As String)
+                Me._videourl = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+        Public Sub Clear()
+            _audiourl = String.Empty
+            _isDash = False
+            _videourl = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
 
     Private Structure Arguments
 

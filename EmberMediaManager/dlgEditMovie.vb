@@ -1714,6 +1714,10 @@ Public Class dlgEditMovie
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrafanarts"))
             End If
 
+            If Directory.Exists(Path.Combine(Master.TempPath, "DashTrailer")) Then
+                FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "DashTrailer"))
+            End If
+
             If Not IsNothing(Me.pnlETImage) Then
                 For Each Pan In Me.pnlETImage
                     CType(Pan.Tag, Images).Dispose()
