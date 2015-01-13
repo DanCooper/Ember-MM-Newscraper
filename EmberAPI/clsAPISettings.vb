@@ -2646,21 +2646,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieTrailerMinQual() As Enums.TrailerVideoQuality
+    Public Property MovieTrailerMinVideoQual() As Enums.TrailerVideoQuality
         Get
-            Return Settings._XMLSettings.MovieTrailerMinQual
+            Return Settings._XMLSettings.MovieTrailerMinVideoQual
         End Get
         Set(ByVal value As Enums.TrailerVideoQuality)
-            Settings._XMLSettings.MovieTrailerMinQual = value
+            Settings._XMLSettings.MovieTrailerMinVideoQual = value
         End Set
     End Property
 
-    Public Property MovieTrailerPrefQual() As Enums.TrailerVideoQuality
+    Public Property MovieTrailerPrefVideoQual() As Enums.TrailerVideoQuality
         Get
-            Return Settings._XMLSettings.MovieTrailerPrefQual
+            Return Settings._XMLSettings.MovieTrailerPrefVideoQual
         End Get
         Set(ByVal value As Enums.TrailerVideoQuality)
-            Settings._XMLSettings.MovieTrailerPrefQual = value
+            Settings._XMLSettings.MovieTrailerPrefVideoQual = value
         End Set
     End Property
 
@@ -2673,7 +2673,7 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property ProxyCreds() As NetworkCredential
+    Public Property ProxyCredentials() As NetworkCredential
         Get
             Return Settings._XMLSettings.ProxyCredentials
         End Get
@@ -5544,21 +5544,465 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Clear()
-        'Make it simple: load a default values XML file
-        Try
-            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultSettings.xml")
+        ''Make it simple: load a default values XML file
+        'Try
+        '    Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultSettings.xml")
 
-            Dim objStreamReader As New StreamReader(configpath)
-            Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
+        '    Dim objStreamReader As New StreamReader(configpath)
+        '    Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
 
-            _XMLSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
-            objStreamReader.Close()
-            ' error - someone removed the variable that holds the default TVDB languages. In case TVDB is not online to check them
-            '_tvscraperlanguages.Sort(AddressOf CompareLanguagesLong)
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+        '    _XMLSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
+        '    objStreamReader.Close()
+        '    ' error - someone removed the variable that holds the default TVDB languages. In case TVDB is not online to check them
+        '    '_tvscraperlanguages.Sort(AddressOf CompareLanguagesLong)
+        'Catch ex As Exception
+        '    logger.Error(New StackFrame().GetMethod().Name, ex)
+        'End Try
 
-        End Try
+
+        'Safe Solution: Don't load it from XML files
+
+        Me.CleanDotFanartJPG = False
+        Me.CleanExtrathumbs = False
+        Me.CleanFanartJPG = False
+        Me.CleanFolderJPG = False
+        Me.CleanMovieJPG = False
+        Me.CleanMovieNFO = False
+        Me.CleanMovieNFOB = False
+        Me.CleanMovieTBN = False
+        Me.CleanMovieTBNB = False
+        Me.CleanMovieFanartJPG = False
+        Me.CleanMovieNameJPG = False
+        Me.CleanPosterJPG = False
+        Me.CleanPosterTBN = False
+        Me.EmberModules = New List(Of ModulesManager._XMLEmberModuleClass)
+        Me.FileSystemCleanerWhitelist = False
+        Me.FileSystemCleanerWhitelistExts = New List(Of String)
+        Me.FileSystemExpertCleaner = False
+        Me.FileSystemNoStackExts = New List(Of String)
+        Me.FileSystemValidExts = New List(Of String)
+        Me.FileSystemValidSubtitlesExts = New List(Of String)
+        Me.FileSystemValidThemeExts = New List(Of String)
+        Me.GeneralCheckUpdates = False
+        Me.GeneralDateAddedIgnoreNFO = False
+        Me.GeneralDateTime = Enums.DateTime.Now
+        Me.GeneralDaemonDrive = String.Empty
+        Me.GeneralDaemonPath = String.Empty
+        Me.GeneralDoubleClickScrape = False
+        Me.GeneralFilterPanelStateMovie = False
+        Me.GeneralFilterPanelStateMovieSet = False
+        Me.GeneralFilterPanelStateShow = False
+        Me.GeneralMainFilterSortColumn_Movies = 3
+        Me.GeneralMainFilterSortOrder_Movies = 0
+        Me.GeneralHideBanner = True
+        Me.GeneralHideCharacterArt = True
+        Me.GeneralHideClearArt = True
+        Me.GeneralHideClearLogo = True
+        Me.GeneralHideDiscArt = True
+        Me.GeneralHideFanart = True
+        Me.GeneralHideFanartSmall = True
+        Me.GeneralHideLandscape = True
+        Me.GeneralHidePoster = True
+        Me.GeneralImagesGlassOverlay = False
+        Me.GeneralLanguage = "English_(en_US)"
+        Me.GeneralMainSplitterPanelState = 364
+        Me.GeneralMovieInfoPanelState = 200
+        Me.GeneralMovieSetInfoPanelState = 200
+        Me.GeneralMovieTheme = "Default"
+        Me.GeneralMovieSetTheme = "Default"
+        Me.GeneralOverwriteNfo = False
+        Me.GeneralSeasonSplitterPanelState = 200
+        Me.GeneralShowGenresText = True
+        Me.GeneralShowLangFlags = True
+        Me.GeneralShowImgDims = True
+        Me.GeneralShowImgNames = True
+        Me.GeneralShowSplitterPanelState = 200
+        Me.GeneralSourceFromFolder = False
+        Me.GeneralTVEpisodeTheme = "Default"
+        Me.GeneralTVShowInfoPanelState = 200
+        Me.GeneralTVShowTheme = "Default"
+        'Me.GeneralWindowLoc =
+        'Me.GeneralWindowSize =
+        Me.GeneralWindowState = FormWindowState.Maximized
+        Me.GenreFilter = "English"
+        Me.MovieActorThumbsOverwrite = True
+        Me.MovieBackdropsAuto = False
+        Me.MovieBackdropsPath = String.Empty
+        Me.MovieBannerHeight = 0
+        Me.MovieBannerOverwrite = True
+        Me.MovieBannerPrefOnly = False
+        Me.MovieBannerPrefType = Enums.MovieBannerType.Graphical
+        Me.MovieBannerResize = False
+        Me.MovieBannerWidth = 0
+        Me.MovieCleanDB = False
+        Me.MovieClearArtOverwrite = True
+        Me.MovieClearLogoOverwrite = True
+        Me.MovieClickScrape = False
+        Me.MovieClickScrapeAsk = False
+        Me.MovieDiscArtOverwrite = True
+        Me.MovieDisplayYear = False
+        Me.MovieEFanartsHeight = 0
+        Me.MovieEFanartsLimit = 0
+        Me.MovieEFanartsOverwrite = True
+        Me.MovieEFanartsPrefOnly = False
+        Me.MovieEFanartsPrefSize = Enums.FanartSize.Xlrg
+        Me.MovieEFanartsResize = False
+        Me.MovieEFanartsWidth = 0
+        Me.MovieEThumbsHeight = 0
+        Me.MovieEThumbsLimit = 4
+        Me.MovieEThumbsOverwrite = True
+        Me.MovieEThumbsPrefOnly = False
+        Me.MovieEThumbsPrefSize = 0
+        Me.MovieEThumbsResize = False
+        Me.MovieEThumbsWidth = 0
+        Me.MovieFanartHeight = 0
+        Me.MovieFanartOverwrite = True
+        Me.MovieFanartPrefOnly = False
+        Me.MovieFanartPrefSize = Enums.FanartSize.Xlrg
+        Me.MovieFanartResize = False
+        Me.MovieFanartWidth = 0
+        Me.MovieFilterCustom = New List(Of String)
+        Me.MovieFilterCustomIsEmpty = False
+        Me.MovieGeneralCustomMarker1Color = -32704
+        Me.MovieGeneralCustomMarker2Color = -16776961
+        Me.MovieGeneralCustomMarker3Color = -12582784
+        Me.MovieGeneralCustomMarker4Color = -16711681
+        Me.MovieGeneralCustomMarker1Name = String.Empty
+        Me.MovieGeneralCustomMarker2Name = String.Empty
+        Me.MovieGeneralCustomMarker3Name = String.Empty
+        Me.MovieGeneralCustomMarker4Name = String.Empty
+        Me.MovieGeneralFlagLang = String.Empty
+        Me.MovieGeneralIgnoreLastScan = True
+        Me.MovieGeneralMarkNew = False
+        Me.MovieGeneralMediaListSorting = New List(Of ListSorting)
+        Me.MovieIMDBURL = String.Empty
+        Me.MovieLandscapeOverwrite = True
+        Me.MovieLevTolerance = 0
+        Me.MovieLockActors = False
+        Me.MovieLockCert = False
+        Me.MovieLockCollectionID = False
+        Me.MovieLockCollections = False
+        Me.MovieLockCountry = False
+        Me.MovieLockDirector = False
+        Me.MovieLockGenre = False
+        Me.MovieLockLanguageA = False
+        Me.MovieLockLanguageV = False
+        Me.MovieLockMPAA = False
+        Me.MovieLockOriginalTitle = False
+        Me.MovieLockOutline = False
+        Me.MovieLockPlot = False
+        Me.MovieLockRating = False
+        Me.MovieLockReleaseDate = False
+        Me.MovieLockRuntime = False
+        Me.MovieLockStudio = False
+        Me.MovieLockTags = False
+        Me.MovieLockTagline = False
+        Me.MovieLockTitle = False
+        Me.MovieLockTop250 = False
+        Me.MovieLockTrailer = False
+        Me.MovieLockVotes = False
+        Me.MovieLockCredits = False
+        Me.MovieLockYear = False
+        Me.MovieMetadataPerFileType = New List(Of MetadataPerType)
+        Me.MovieMissingBanner = False
+        Me.MovieMissingClearArt = False
+        Me.MovieMissingClearLogo = False
+        Me.MovieMissingDiscArt = False
+        Me.MovieMissingEFanarts = False
+        Me.MovieMissingEThumbs = False
+        Me.MovieMissingFanart = False
+        Me.MovieMissingLandscape = False
+        Me.MovieMissingNFO = False
+        Me.MovieMissingPoster = False
+        Me.MovieMissingSubtitles = False
+        Me.MovieMissingTheme = False
+        Me.MovieMissingTrailer = False
+        Me.MovieNoSaveImagesToNfo = False
+        Me.MoviePosterHeight = 0
+        Me.MoviePosterOverwrite = True
+        Me.MoviePosterPrefOnly = False
+        Me.MoviePosterPrefSize = Enums.PosterSize.Xlrg
+        Me.MoviePosterResize = False
+        Me.MoviePosterWidth = 0
+        Me.MovieProperCase = True
+        Me.MovieScanOrderModify = False
+        Me.MovieScraperCast = True
+        Me.MovieScraperCastLimit = 0
+        Me.MovieScraperCastWithImgOnly = False
+        Me.MovieScraperCertForMPAA = False
+        Me.MovieScraperCertForMPAAFallback = False
+        Me.MovieScraperCert = False
+        Me.MovieScraperCertLang = String.Empty
+        Me.MovieScraperCleanFields = False
+        Me.MovieScraperCleanPlotOutline = False
+        Me.MovieScraperCollectionID = True
+        Me.MovieScraperCollectionsAuto = False
+        Me.MovieScraperCountry = True
+        Me.MovieScraperDirector = True
+        Me.MovieScraperDurationRuntimeFormat = "<m>"
+        Me.MovieScraperReleaseFormat = False
+        Me.MovieScraperGenre = True
+        Me.MovieScraperGenreLimit = 0
+        Me.MovieScraperMetaDataIFOScan = True
+        Me.MovieScraperMetaDataScan = True
+        Me.MovieScraperMPAA = True
+        Me.MovieScraperOriginalTitle = True
+        Me.MovieScraperCertOnlyValue = False
+        Me.MovieScraperOutline = True
+        Me.MovieScraperOutlineLimit = 350
+        Me.MovieScraperOutlinePlotEnglishOverwrite = False
+        Me.MovieScraperPlot = True
+        Me.MovieScraperPlotForOutline = False
+        Me.MovieScraperRating = True
+        Me.MovieScraperRelease = True
+        Me.MovieScraperRuntime = True
+        Me.MovieScraperStudio = True
+        Me.MovieScraperStudioLimit = 0
+        Me.MovieScraperStudioWithImgOnly = True
+        Me.MovieScraperTagline = True
+        Me.MovieScraperTitle = True
+        Me.MovieScraperTop250 = True
+        Me.MovieScraperTrailer = False
+        Me.MovieScraperUseDetailView = False
+        Me.MovieScraperUseMDDuration = False
+        Me.MovieScraperCertFSK = False
+        Me.MovieScraperVotes = True
+        Me.MovieScraperCredits = True
+        Me.MovieScraperXBMCTrailerFormat = False
+        Me.MovieScraperYear = True
+        Me.MovieSetBannerHeight = 0
+        Me.MovieSetBannerOverwrite = True
+        Me.MovieSetBannerPrefOnly = False
+        Me.MovieSetBannerPrefType = Enums.MovieBannerType.Graphical
+        Me.MovieSetBannerResize = False
+        Me.MovieSetBannerWidth = 0
+        Me.MovieSetCleanDB = False
+        Me.MovieSetCleanFiles = False
+        Me.MovieSetClearArtOverwrite = True
+        Me.MovieSetClearLogoOverwrite = True
+        Me.MovieSetClickScrape = False
+        Me.MovieSetClickScrapeAsk = False
+        Me.MovieSetDiscArtOverwrite = True
+        Me.MovieSetFanartHeight = 0
+        Me.MovieSetFanartOverwrite = True
+        Me.MovieSetFanartPrefOnly = False
+        Me.MovieSetFanartPrefSize = Enums.FanartSize.Xlrg
+        Me.MovieSetFanartResize = False
+        Me.MovieSetFanartWidth = 0
+        Me.MovieSetGeneralMarkNew = False
+        Me.MovieSetGeneralMediaListSorting = New List(Of ListSorting)
+        Me.MovieSetLandscapeOverwrite = True
+        Me.MovieSetLockPlot = False
+        Me.MovieSetLockTitle = False
+        Me.MovieSetMissingBanner = False
+        Me.MovieSetMissingClearArt = False
+        Me.MovieSetMissingClearLogo = False
+        Me.MovieSetMissingDiscArt = False
+        Me.MovieSetMissingFanart = False
+        Me.MovieSetMissingLandscape = False
+        Me.MovieSetMissingNFO = False
+        Me.MovieSetMissingPoster = False
+        Me.MovieSetPosterHeight = 0
+        Me.MovieSetPosterOverwrite = True
+        Me.MovieSetPosterPrefOnly = False
+        Me.MovieSetPosterPrefSize = Enums.PosterSize.Xlrg
+        Me.MovieSetPosterResize = False
+        Me.MovieSetPosterWidth = 0
+        Me.MovieSets = New List(Of String)
+        Me.MovieSetScraperPlot = True
+        Me.MovieSetScraperTitle = True
+        Me.MovieSkipLessThan = 0
+        Me.MovieSkipStackedSizeCheck = False
+        Me.MovieSortBeforeScan = False
+        Me.MovieSortTokens = New List(Of String)
+        Me.MovieSetSortTokens = New List(Of String)
+        Me.MovieSortTokensIsEmpty = False
+        Me.MovieSetSortTokensIsEmpty = False
+        Me.MovieThemeEnable = False
+        Me.MovieThemeOverwrite = True
+        Me.MovieTrailerDefaultSearch = "trailer"
+        Me.MovieTrailerDeleteExisting = True
+        Me.MovieTrailerEnable = True
+        Me.MovieTrailerOverwrite = True
+        Me.MovieTrailerMinVideoQual = Enums.TrailerVideoQuality.All
+        Me.MovieTrailerPrefVideoQual = Enums.TrailerVideoQuality.All
+        Me.OMMDummyFormat = 0
+        Me.OMMDummyTagline = String.Empty
+        Me.OMMDummyTop = String.Empty
+        Me.OMMDummyUseBackground = True
+        Me.OMMDummyUseFanart = True
+        Me.OMMDummyUseOverlay = True
+        Me.OMMMediaStubTagline = String.Empty
+        Me.Password = String.Empty
+        Me.ProxyCredentials = New NetworkCredential
+        Me.ProxyPort = 0
+        Me.ProxyURI = String.Empty
+        Me.SortPath = String.Empty
+        Me.TraktPassword = String.Empty
+        Me.TraktUsername = String.Empty
+        Me.TVASBannerHeight = 0
+        Me.TVASBannerOverwrite = True
+        Me.TVASBannerPrefType = Enums.TVShowBannerType.Text
+        Me.TVASBannerResize = False
+        Me.TVASBannerWidth = 0
+        Me.TVASFanartHeight = 0
+        Me.TVASFanartOverwrite = True
+        Me.TVASFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVASFanartResize = False
+        Me.TVASFanartWidth = 0
+        Me.TVASLandscapeOverwrite = True
+        Me.TVASPosterHeight = 0
+        Me.TVASPosterOverwrite = True
+        Me.TVASPosterPrefSize = Enums.TVPosterSize.HD1000
+        Me.TVASPosterResize = False
+        Me.TVASPosterWidth = 0
+        Me.TVCleanDB = False
+        Me.TVDisplayMissingEpisodes = True
+        Me.TVDisplayStatus = False
+        Me.TVEpisodeClickScrape = False
+        Me.TVEpisodeClickScrapeAsk = False
+        Me.TVEpisodeFanartHeight = 0
+        Me.TVEpisodeFanartOverwrite = True
+        Me.TVEpisodeFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVEpisodeFanartResize = False
+        Me.TVEpisodeFanartWidth = 0
+        Me.TVEpisodeFilterCustom = New List(Of String)
+        Me.TVEpisodeFilterCustomIsEmpty = False
+        Me.TVEpisodeMissingFanart = False
+        Me.TVEpisodeMissingNFO = False
+        Me.TVEpisodeMissingPoster = False
+        Me.TVEpisodeNoFilter = True
+        Me.TVEpisodePosterHeight = 0
+        Me.TVEpisodePosterOverwrite = True
+        Me.TVEpisodePosterResize = False
+        Me.TVEpisodePosterWidth = 0
+        Me.TVEpisodeProperCase = True
+        Me.TVGeneralEpisodeListSorting = New List(Of ListSorting)
+        Me.TVGeneralFlagLang = String.Empty
+        Me.TVGeneralIgnoreLastScan = True
+        Me.TVGeneralLanguage = "en"
+        Me.TVGeneralLanguages = New clsXMLTVDBLanguages
+        Me.TVGeneralMarkNewEpisodes = False
+        Me.TVGeneralMarkNewShows = False
+        Me.TVGeneralSeasonListSorting = New List(Of ListSorting)
+        Me.TVGeneralShowListSorting = New List(Of ListSorting)
+        Me.TVLockEpisodePlot = True
+        Me.TVLockEpisodeRating = True
+        Me.TVLockEpisodeRuntime = True
+        Me.TVLockEpisodeTitle = True
+        Me.TVLockEpisodeVotes = True
+        Me.TVLockShowGenre = False
+        Me.TVLockShowPlot = False
+        Me.TVLockShowRating = False
+        Me.TVLockShowRuntime = False
+        Me.TVLockShowStatus = False
+        Me.TVLockShowStudio = False
+        Me.TVLockShowTitle = False
+        Me.TVLockShowVotes = False
+        Me.TVMetadataPerFileType = New List(Of MetadataPerType)
+        Me.TVScanOrderModify = False
+        Me.TVScraperDurationRuntimeFormat = "<m>"
+        Me.TVScraperEpisodeActors = True
+        Me.TVScraperEpisodeAired = True
+        Me.TVScraperEpisodeCredits = True
+        Me.TVScraperEpisodeDirector = True
+        Me.TVScraperEpisodeEpisode = True
+        Me.TVScraperEpisodePlot = True
+        Me.TVScraperEpisodeRating = True
+        Me.TVScraperEpisodeRuntime = True
+        Me.TVScraperEpisodeSeason = True
+        Me.TVScraperEpisodeTitle = True
+        Me.TVScraperEpisodeVotes = True
+        Me.TVScraperMetaDataScan = True
+        Me.TVScraperOptionsOrdering = Enums.Ordering.Standard
+        Me.TVScraperRatingRegion = "usa"
+        Me.TVScraperShowActors = True
+        Me.TVScraperShowEpiGuideURL = False
+        Me.TVScraperShowGenre = True
+        Me.TVScraperShowMPAA = True
+        Me.TVScraperShowPlot = True
+        Me.TVScraperShowPremiered = True
+        Me.TVScraperShowRating = True
+        Me.TVScraperShowRuntime = True
+        Me.TVScraperShowStatus = True
+        Me.TVScraperShowStudio = True
+        Me.TVScraperShowTitle = True
+        Me.TVScraperShowVotes = True
+        Me.TVScraperUpdateTime = Enums.TVScraperUpdateTime.Always
+        Me.TVScraperUseMDDuration = True
+        Me.TVScraperUseSRuntimeForEp = False
+        Me.TVSeasonBannerHeight = 0
+        Me.TVSeasonBannerOverwrite = True
+        Me.TVSeasonBannerPrefType = Enums.TVSeasonBannerType.Text
+        Me.TVSeasonBannerResize = False
+        Me.TVSeasonBannerWidth = 0
+        Me.TVSeasonClickScrape = False
+        Me.TVSeasonClickScrapeAsk = False
+        Me.TVSeasonFanartHeight = 0
+        Me.TVSeasonFanartOverwrite = True
+        Me.TVSeasonFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVSeasonFanartResize = False
+        Me.TVSeasonFanartWidth = 0
+        Me.TVSeasonLandscapeOverwrite = True
+        Me.TVSeasonMissingBanner = False
+        Me.TVSeasonMissingFanart = False
+        Me.TVSeasonMissingLandscape = False
+        Me.TVSeasonMissingPoster = False
+        Me.TVSeasonPosterHeight = 0
+        Me.TVSeasonPosterOverwrite = True
+        Me.TVSeasonPosterPrefSize = Enums.TVPosterSize.HD1000
+        Me.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.SD225
+        Me.TVSeasonPosterResize = False
+        Me.TVSeasonPosterWidth = 0
+        Me.TVShowBannerHeight = 0
+        Me.TVShowBannerOverwrite = True
+        Me.TVShowBannerPrefType = Enums.TVShowBannerType.Text
+        Me.TVShowBannerResize = False
+        Me.TVShowBannerWidth = 0
+        Me.TVShowCharacterArtOverwrite = True
+        Me.TVShowClearArtOverwrite = True
+        Me.TVShowClearLogoOverwrite = True
+        Me.TVShowClickScrape = False
+        Me.TVShowClickScrapeAsk = False
+        Me.TVShowEFanartsLimit = 4
+        Me.TVShowEFanartsOverwrite = True
+        Me.TVShowEFanartsPrefOnly = False
+        Me.TVShowEFanartsPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVShowEFanartsResize = False
+        Me.TVShowEFanartsHeight = 0
+        Me.TVShowEFanartsWidth = 0
+        Me.TVShowFanartHeight = 0
+        Me.TVShowFanartOverwrite = True
+        Me.TVShowFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVShowFanartResize = False
+        Me.TVShowFanartWidth = 0
+        Me.TVShowFilterCustom = New List(Of String)
+        Me.TVShowFilterCustomIsEmpty = False
+        Me.TVShowLandscapeOverwrite = True
+        Me.TVShowMissingBanner = False
+        Me.TVShowMissingCharacterArt = False
+        Me.TVShowMissingClearArt = False
+        Me.TVShowMissingClearLogo = False
+        Me.TVShowMissingEFanarts = False
+        Me.TVShowMissingFanart = False
+        Me.TVShowMissingLandscape = False
+        Me.TVShowMissingNFO = False
+        Me.TVShowMissingPoster = False
+        Me.TVShowMissingTheme = False
+        Me.TVShowPosterHeight = 0
+        Me.TVShowPosterOverwrite = True
+        Me.TVShowPosterPrefSize = Enums.TVPosterSize.HD1000
+        Me.TVShowPosterResize = False
+        Me.TVShowPosterWidth = 0
+        Me.TVShowProperCase = True
+        Me.TVShowRegexes = New List(Of TVShowRegEx)
+        Me.TVSkipLessThan = 0
+        Me.TVSortTokens = New List(Of String)
+        Me.TVSortTokensIsEmpty = False
+        Me.Username = String.Empty
+        Me.UseTrakt = False
+        Me.Version = String.Empty
+        Me.RestartScraper = False
     End Sub
 
     Public Sub Load()
@@ -5626,7 +6070,6 @@ Public Class Settings
             Master.eSettings.TVShowLandscapeAD = True
             Master.eSettings.TVShowPosterFrodo = True
         End If
-
     End Sub
 
     Public Sub Save()

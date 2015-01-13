@@ -321,6 +321,9 @@
     <Content Include="Defaults\DefaultMovieCertLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Defaults\DefaultTVLanguages.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Defaults\DefaultGenre.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -272,8 +272,8 @@ Partial Public Class clsXMLSettings
     Private _movietrailerdeleteexisting As Boolean
     Private _movietrailerenable As Boolean
     Private _movietraileroverwrite As Boolean
-    Private _movietrailerminqual As Enums.TrailerVideoQuality
-    Private _movietrailerprefqual As Enums.TrailerVideoQuality
+    Private _movietrailerminvideoqual As Enums.TrailerVideoQuality
+    Private _movietrailerprefvideoqual As Enums.TrailerVideoQuality
     Private _ommdummyformat As Integer
     Private _ommdummytagline As String
     Private _ommdummytop As String
@@ -3424,21 +3424,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieTrailerMinQual() As Enums.TrailerVideoQuality
+    Public Property MovieTrailerMinVideoQual() As Enums.TrailerVideoQuality
         Get
-            Return Me._movietrailerminqual
+            Return Me._movietrailerminvideoqual
         End Get
         Set(ByVal value As Enums.TrailerVideoQuality)
-            Me._movietrailerminqual = value
+            Me._movietrailerminvideoqual = value
         End Set
     End Property
 
-    Public Property MovieTrailerPrefQual() As Enums.TrailerVideoQuality
+    Public Property MovieTrailerPrefVideoQual() As Enums.TrailerVideoQuality
         Get
-            Return Me._movietrailerprefqual
+            Return Me._movietrailerprefvideoqual
         End Get
         Set(ByVal value As Enums.TrailerVideoQuality)
-            Me._movietrailerprefqual = value
+            Me._movietrailerprefvideoqual = value
         End Set
     End Property
 

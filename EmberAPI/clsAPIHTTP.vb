@@ -486,9 +486,9 @@ Public Class HTTP
             Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
             wProxy.BypassProxyOnLocal = True
             'TODO Dekker500 - Verify if this Password/empty clause is required. Proxies can have usernames but blank passwords, no?
-            If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) AndAlso _
-            Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.Password) Then
-                wProxy.Credentials = Master.eSettings.ProxyCreds
+            If Not String.IsNullOrEmpty(Master.eSettings.ProxyCredentials.UserName) AndAlso _
+            Not String.IsNullOrEmpty(Master.eSettings.ProxyCredentials.Password) Then
+                wProxy.Credentials = Master.eSettings.ProxyCredentials
             Else
                 wProxy.Credentials = CredentialCache.DefaultCredentials
             End If

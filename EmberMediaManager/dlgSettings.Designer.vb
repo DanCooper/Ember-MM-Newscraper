@@ -1172,11 +1172,11 @@ Partial Class dlgSettings
         Me.lblMovieTrailerDefaultSearch = New System.Windows.Forms.Label()
         Me.chkMovieTrailerEnable = New System.Windows.Forms.CheckBox()
         Me.chkMovieTrailerOverwrite = New System.Windows.Forms.CheckBox()
-        Me.cbMovieTrailerMinQual = New System.Windows.Forms.ComboBox()
+        Me.cbMovieTrailerMinVideoQual = New System.Windows.Forms.ComboBox()
         Me.chkMovieTrailerDeleteExisting = New System.Windows.Forms.CheckBox()
         Me.lblMovieTrailerMinQual = New System.Windows.Forms.Label()
         Me.lblMovieTrailerPrefQual = New System.Windows.Forms.Label()
-        Me.cbMovieTrailerPrefQual = New System.Windows.Forms.ComboBox()
+        Me.cbMovieTrailerPrefVideoQual = New System.Windows.Forms.ComboBox()
         Me.fileBrowse = New System.Windows.Forms.OpenFileDialog()
         Me.pnlMovieThemes = New System.Windows.Forms.Panel()
         Me.tblMovieThemes = New System.Windows.Forms.TableLayoutPanel()
@@ -16392,11 +16392,11 @@ Partial Class dlgSettings
         Me.tblMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerDefaultSearch, 0, 7)
         Me.tblMovieTrailerOpts.Controls.Add(Me.chkMovieTrailerEnable, 0, 0)
         Me.tblMovieTrailerOpts.Controls.Add(Me.chkMovieTrailerOverwrite, 0, 1)
-        Me.tblMovieTrailerOpts.Controls.Add(Me.cbMovieTrailerMinQual, 0, 6)
+        Me.tblMovieTrailerOpts.Controls.Add(Me.cbMovieTrailerMinVideoQual, 0, 6)
         Me.tblMovieTrailerOpts.Controls.Add(Me.chkMovieTrailerDeleteExisting, 0, 2)
         Me.tblMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerMinQual, 0, 5)
         Me.tblMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerPrefQual, 0, 3)
-        Me.tblMovieTrailerOpts.Controls.Add(Me.cbMovieTrailerPrefQual, 0, 4)
+        Me.tblMovieTrailerOpts.Controls.Add(Me.cbMovieTrailerPrefVideoQual, 0, 4)
         Me.tblMovieTrailerOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieTrailerOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieTrailerOpts.Name = "tblMovieTrailerOpts"
@@ -16461,15 +16461,15 @@ Partial Class dlgSettings
         '
         'cbMovieTrailerMinQual
         '
-        Me.cbMovieTrailerMinQual.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbMovieTrailerMinQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieTrailerMinQual.Enabled = false
-        Me.cbMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieTrailerMinQual.FormattingEnabled = true
-        Me.cbMovieTrailerMinQual.Location = New System.Drawing.Point(3, 139)
-        Me.cbMovieTrailerMinQual.Name = "cbMovieTrailerMinQual"
-        Me.cbMovieTrailerMinQual.Size = New System.Drawing.Size(125, 21)
-        Me.cbMovieTrailerMinQual.TabIndex = 9
+        Me.cbMovieTrailerMinVideoQual.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbMovieTrailerMinVideoQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieTrailerMinVideoQual.Enabled = false
+        Me.cbMovieTrailerMinVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbMovieTrailerMinVideoQual.FormattingEnabled = true
+        Me.cbMovieTrailerMinVideoQual.Location = New System.Drawing.Point(3, 139)
+        Me.cbMovieTrailerMinVideoQual.Name = "cbMovieTrailerMinQual"
+        Me.cbMovieTrailerMinVideoQual.Size = New System.Drawing.Size(125, 21)
+        Me.cbMovieTrailerMinVideoQual.TabIndex = 9
         '
         'chkMovieTrailerDeleteExisting
         '
@@ -16510,15 +16510,15 @@ Partial Class dlgSettings
         '
         'cbMovieTrailerPrefQual
         '
-        Me.cbMovieTrailerPrefQual.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbMovieTrailerPrefQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieTrailerPrefQual.Enabled = false
-        Me.cbMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieTrailerPrefQual.FormattingEnabled = true
-        Me.cbMovieTrailerPrefQual.Location = New System.Drawing.Point(3, 92)
-        Me.cbMovieTrailerPrefQual.Name = "cbMovieTrailerPrefQual"
-        Me.cbMovieTrailerPrefQual.Size = New System.Drawing.Size(125, 21)
-        Me.cbMovieTrailerPrefQual.TabIndex = 7
+        Me.cbMovieTrailerPrefVideoQual.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbMovieTrailerPrefVideoQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieTrailerPrefVideoQual.Enabled = false
+        Me.cbMovieTrailerPrefVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbMovieTrailerPrefVideoQual.FormattingEnabled = true
+        Me.cbMovieTrailerPrefVideoQual.Location = New System.Drawing.Point(3, 92)
+        Me.cbMovieTrailerPrefVideoQual.Name = "cbMovieTrailerPrefQual"
+        Me.cbMovieTrailerPrefVideoQual.Size = New System.Drawing.Size(125, 21)
+        Me.cbMovieTrailerPrefVideoQual.TabIndex = 7
         '
         'pnlMovieThemes
         '
@@ -19730,7 +19730,7 @@ End Sub
     Friend WithEvents txtMovieIMDBURL As System.Windows.Forms.TextBox
     Friend WithEvents pnlMovieTrailers As System.Windows.Forms.Panel
     Friend WithEvents gbMovieTrailerOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents cbMovieTrailerPrefQual As System.Windows.Forms.ComboBox
+    Friend WithEvents cbMovieTrailerPrefVideoQual As System.Windows.Forms.ComboBox
     Friend WithEvents lblMovieTrailerPrefQual As System.Windows.Forms.Label
     Friend WithEvents chkMovieTrailerDeleteExisting As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieTrailerOverwrite As System.Windows.Forms.CheckBox
@@ -20028,7 +20028,7 @@ End Sub
     Friend WithEvents chkMovieDiscArtOverwrite As System.Windows.Forms.CheckBox
     Friend WithEvents gbMovieImagesActorThumbsOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieActorThumbsOverwrite As System.Windows.Forms.CheckBox
-    Friend WithEvents cbMovieTrailerMinQual As System.Windows.Forms.ComboBox
+    Friend WithEvents cbMovieTrailerMinVideoQual As System.Windows.Forms.ComboBox
     Friend WithEvents lblMovieTrailerMinQual As System.Windows.Forms.Label
     Friend WithEvents lblTVScraperDurationRuntimeFormat As System.Windows.Forms.Label
     Friend WithEvents lblTVScraperRatingRegion As System.Windows.Forms.Label
