@@ -922,10 +922,7 @@ Public Class dlgWizard
         If Directory.Exists(Path.Combine(Functions.AppPath, "Langs")) Then
             Dim alL As New List(Of String)
             Dim alLangs As New List(Of String)
-            Try
-                alL.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Langs"), "*).xml"))
-            Catch
-            End Try
+            alL.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Langs"), "*).xml"))
             alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToArray)
             Me.cbIntLang.Items.AddRange(alLangs.ToArray)
         End If
@@ -1006,69 +1003,61 @@ Public Class dlgWizard
     End Sub
 
     Private Sub RemoveSource()
-        Try
-            If Me.lvMovies.SelectedItems.Count > 0 Then
-                If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
-                    Me.lvMovies.BeginUpdate()
+        If Me.lvMovies.SelectedItems.Count > 0 Then
+            If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+                Me.lvMovies.BeginUpdate()
 
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
-                            While Me.lvMovies.SelectedItems.Count > 0
-                                parSource.Value = lvMovies.SelectedItems(0).SubItems(1).Text
-                                SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
-                                SQLcommand.ExecuteNonQuery()
-                                SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")
-                                SQLcommand.ExecuteNonQuery()
-                                lvMovies.Items.Remove(Me.lvMovies.SelectedItems(0))
-                            End While
-                        End Using
-                        SQLtransaction.Commit()
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                        While Me.lvMovies.SelectedItems.Count > 0
+                            parSource.Value = lvMovies.SelectedItems(0).SubItems(1).Text
+                            SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
+                            SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")
+                            SQLcommand.ExecuteNonQuery()
+                            lvMovies.Items.Remove(Me.lvMovies.SelectedItems(0))
+                        End While
                     End Using
+                    SQLtransaction.Commit()
+                End Using
 
-                    Me.lvMovies.Sort()
-                    Me.lvMovies.EndUpdate()
-                    Me.lvMovies.Refresh()
-                End If
+                Me.lvMovies.Sort()
+                Me.lvMovies.EndUpdate()
+                Me.lvMovies.Refresh()
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End If
     End Sub
 
     Private Sub RemoveTVSource()
-        Try
-            If Me.lvTVSources.SelectedItems.Count > 0 Then
-                If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the TV Shows from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
-                    Me.lvTVSources.BeginUpdate()
+        If Me.lvTVSources.SelectedItems.Count > 0 Then
+            If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the TV Shows from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+                Me.lvTVSources.BeginUpdate()
 
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
-                            While Me.lvTVSources.SelectedItems.Count > 0
-                                parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
-                                SQLcommand.CommandText = "SELECT Id FROM TVShows WHERE Source = (?);"
-                                Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                                    While SQLReader.Read
-                                        Master.DB.DeleteTVShowFromDB(Convert.ToInt64(SQLReader("ID")), True)
-                                    End While
-                                End Using
-                                SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE name = (?);")
-                                SQLcommand.ExecuteNonQuery()
-                                lvTVSources.Items.Remove(lvTVSources.SelectedItems(0))
-                            End While
-                        End Using
-                        SQLtransaction.Commit()
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                        While Me.lvTVSources.SelectedItems.Count > 0
+                            parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
+                            SQLcommand.CommandText = "SELECT Id FROM TVShows WHERE Source = (?);"
+                            Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                                While SQLReader.Read
+                                    Master.DB.DeleteTVShowFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                End While
+                            End Using
+                            SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE name = (?);")
+                            SQLcommand.ExecuteNonQuery()
+                            lvTVSources.Items.Remove(lvTVSources.SelectedItems(0))
+                        End While
                     End Using
+                    SQLtransaction.Commit()
+                End Using
 
-                    Me.lvTVSources.Sort()
-                    Me.lvTVSources.EndUpdate()
-                    Me.lvTVSources.Refresh()
-                End If
+                Me.lvTVSources.Sort()
+                Me.lvTVSources.EndUpdate()
+                Me.lvTVSources.Refresh()
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End If
     End Sub
 
     Private Sub SaveSettings()
