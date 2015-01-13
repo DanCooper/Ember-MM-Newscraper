@@ -213,7 +213,7 @@ Public Class Localization
 
         Dim Assembly = "*EmberAPP"
         htStrings = htArrayStrings.FirstOrDefault(Function(x) x.AssenblyName = Assembly).htStrings
-        If IsNothing(htStrings) Then
+        If htStrings Is Nothing Then
             tStr = strDefault
         Else
             x1 = From x As LanguageString In htStrings.string Where (x.id = ID)
@@ -248,18 +248,13 @@ Public Class Localization
     End Sub
 
     Public Sub LoadHelpStrings(ByVal hPath As String)
-        Try
-            If File.Exists(hPath) Then
-                Dim objStreamReader As New StreamReader(hPath)
-                Dim xHelpString As New XmlSerializer(htHelpStrings.GetType)
+        If File.Exists(hPath) Then
+            Dim objStreamReader As New StreamReader(hPath)
+            Dim xHelpString As New XmlSerializer(htHelpStrings.GetType)
 
-                htHelpStrings = CType(xHelpString.Deserialize(objStreamReader), clsXMLLanguageHelp)
-                objStreamReader.Close()
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            htHelpStrings = CType(xHelpString.Deserialize(objStreamReader), clsXMLLanguageHelp)
+            objStreamReader.Close()
+        End If
     End Sub
 
     Public Sub LoadLanguage(ByVal Language As String, Optional ByVal rAssembly As String = "", Optional ByVal force As Boolean = False)
@@ -268,68 +263,62 @@ Public Class Localization
         Dim lPath As String = String.Empty
         Dim lhPath As String = String.Empty
 
-        Try
-            If Not String.IsNullOrEmpty(Language) Then
-                If rAssembly = "" Then
-                    Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-                Else
-                    Assembly = rAssembly
-                End If
-
-
-                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" OrElse Assembly = "*EmberAPI" OrElse Assembly = "*EmberAPP" Then
-                    Assembly = "*EmberAPP"
-                    lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
-                    lhPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, "-Help.xml")
-                Else
-                    lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
-                    lhPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, "-Help.xml")
-                    If Not File.Exists(lPath) Then 'Failback disabled, possible not need anymore
-                        'lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
-                        File.WriteAllText(lPath, "<?xml version=""1.0"" encoding=""utf-8""?>" & vbCrLf & _
-                            "<strings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">" & vbCrLf & _
-                            "</strings>")
-                    End If
-                End If
-                If Not force AndAlso Not htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly).AssenblyName Is Nothing Then Return
-
-                LoadHelpStrings(lhPath)
-
-                htStrings.string.Clear()
-
-                If File.Exists(lPath) Then
-                    Dim objStreamReader As New StreamReader(lPath)
-                    Dim xLangString As New XmlSerializer(htStrings.GetType)
-
-                    htStrings = CType(xLangString.Deserialize(objStreamReader), clsXMLLanguage)
-                    objStreamReader.Close()
-
-                    htArrayStrings.Remove(htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly))
-                    htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
-                    _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
-                    _none = GetString(570, Master.eLang.None)
-                    _disabled = GetString(571, Master.eLang.Disabled)
-                Else
-                    Dim tLocs As Locs = htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly)
-                    If Not IsNothing(tLocs) Then
-                        tLocs.htStrings = htStrings
-                    Else
-                        htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
-                    End If
-                End If
+        If Not String.IsNullOrEmpty(Language) Then
+            If rAssembly = "" Then
+                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
             Else
-                logger.Error("Cannot find {0}.xml." & vbNewLine & "Expected path: {1}", Language, lPath)
-                MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+                Assembly = rAssembly
             End If
+
+
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" OrElse Assembly = "*EmberAPI" OrElse Assembly = "*EmberAPP" Then
+                Assembly = "*EmberAPP"
+                lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
+                lhPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, "-Help.xml")
+            Else
+                lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
+                lhPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, "-Help.xml")
+                If Not File.Exists(lPath) Then 'Failback disabled, possible not need anymore
+                    'lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
+                    File.WriteAllText(lPath, "<?xml version=""1.0"" encoding=""utf-8""?>" & vbCrLf & _
+                        "<strings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">" & vbCrLf & _
+                        "</strings>")
+                End If
+            End If
+            If Not force AndAlso Not htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly).AssenblyName Is Nothing Then Return
+
+            LoadHelpStrings(lhPath)
+
+            htStrings.string.Clear()
+
+            If File.Exists(lPath) Then
+                Dim objStreamReader As New StreamReader(lPath)
+                Dim xLangString As New XmlSerializer(htStrings.GetType)
+
+                htStrings = CType(xLangString.Deserialize(objStreamReader), clsXMLLanguage)
+                objStreamReader.Close()
+
+                htArrayStrings.Remove(htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly))
+                htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
+                _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
+                _none = GetString(570, Master.eLang.None)
+                _disabled = GetString(571, Master.eLang.Disabled)
+            Else
+                Dim tLocs As Locs = htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly)
+                If Not IsNothing(tLocs) Then
+                    tLocs.htStrings = htStrings
+                Else
+                    htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
+                End If
+            End If
+        Else
+            logger.Error("Cannot find {0}.xml." & vbNewLine & "Expected path: {1}", Language, lPath)
+            MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+        End If
 
             ' Need to change Globaly Langs_all
             Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
-
 
 #End Region 'Methods
 
