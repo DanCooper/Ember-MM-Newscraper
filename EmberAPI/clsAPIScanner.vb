@@ -351,7 +351,7 @@ Public Class Scanner
     Public Sub GetTVEpisodeFolderContents(ByRef Episode As EpisodeContainer)
         Dim tmpName As String = String.Empty
         Dim fName As String = String.Empty
-        Dim fList As New List(Of String)
+        Dim fList As New List(Of String) 
         Dim EpisodePath As String = Episode.Filename
 
         Try
@@ -380,6 +380,16 @@ Public Class Scanner
             tmpName = Path.Combine(Directory.GetParent(Episode.Filename).FullName, Path.GetFileNameWithoutExtension(Episode.Filename))
             fName = String.Concat(tmpName, ".nfo")
             Episode.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+
+            'subtitles (external)
+            For Each fFile As String In fList
+                For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
+                    If Regex.IsMatch(fFile.ToLower, String.Concat(Path.GetFileNameWithoutExtension(Episode.Filename).ToLower, ".*?\", ext)) Then
+                        Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
+                        Episode.Subtitles.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                    End If
+                Next
+            Next
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
