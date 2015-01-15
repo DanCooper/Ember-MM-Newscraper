@@ -3866,8 +3866,10 @@ Public Class dlgSettings
                 If Me.cbMovieScraperCertLang.Items.Count > 0 Then
                     If .MovieScraperCertLang = Master.eLang.All Then
                         Me.cbMovieScraperCertLang.SelectedIndex = 0
-                    Else
+                    ElseIf Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
                         Me.cbMovieScraperCertLang.Text = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang).name
+                    Else
+                        Me.cbMovieScraperCertLang.SelectedIndex = 0
                     End If
                 End If
             Catch ex As Exception
@@ -4146,60 +4148,56 @@ Public Class dlgSettings
     End Sub
 
     Private Sub frmSettings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Try
-            Functions.PNLDoubleBuffer(Me.pnlSettingsMain)
-            Me.SetUp()
-            Me.AddPanels()
-            Me.AddButtons()
-            Me.AddHelpHandlers(Me, "Core_")
+        Functions.PNLDoubleBuffer(Me.pnlSettingsMain)
+        Me.SetUp()
+        Me.AddPanels()
+        Me.AddButtons()
+        Me.AddHelpHandlers(Me, "Core_")
 
-            'get optimal panel size
-            Dim pWidth As Integer = CInt(Me.Width)
-            Dim pHeight As Integer = CInt(Me.Height)
-            If My.Computer.Screen.WorkingArea.Width < 1120 Then
-                pWidth = CInt(My.Computer.Screen.WorkingArea.Width)
-            End If
-            If My.Computer.Screen.WorkingArea.Height < 900 Then
-                pHeight = CInt(My.Computer.Screen.WorkingArea.Height)
-            End If
-            Me.Size = New Size(pWidth, pHeight)
-            Dim pLeft As Integer
-            Dim pTop As Integer
-            pLeft = CInt((My.Computer.Screen.WorkingArea.Width - pWidth) / 2)
-            pTop = CInt((My.Computer.Screen.WorkingArea.Height - pHeight) / 2)
-            Me.Location = New Point(pLeft, pTop)
+        'get optimal panel size
+        Dim pWidth As Integer = CInt(Me.Width)
+        Dim pHeight As Integer = CInt(Me.Height)
+        If My.Computer.Screen.WorkingArea.Width < 1120 Then
+            pWidth = CInt(My.Computer.Screen.WorkingArea.Width)
+        End If
+        If My.Computer.Screen.WorkingArea.Height < 900 Then
+            pHeight = CInt(My.Computer.Screen.WorkingArea.Height)
+        End If
+        Me.Size = New Size(pWidth, pHeight)
+        Dim pLeft As Integer
+        Dim pTop As Integer
+        pLeft = CInt((My.Computer.Screen.WorkingArea.Width - pWidth) / 2)
+        pTop = CInt((My.Computer.Screen.WorkingArea.Height - pHeight) / 2)
+        Me.Location = New Point(pLeft, pTop)
 
-            Dim iBackground As New Bitmap(Me.pnlSettingsTop.Width, Me.pnlSettingsTop.Height)
-            Using g As Graphics = Graphics.FromImage(iBackground)
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlSettingsTop.ClientRectangle)
-                Me.pnlSettingsTop.BackgroundImage = iBackground
-            End Using
+        Dim iBackground As New Bitmap(Me.pnlSettingsTop.Width, Me.pnlSettingsTop.Height)
+        Using g As Graphics = Graphics.FromImage(iBackground)
+            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlSettingsTop.ClientRectangle)
+            Me.pnlSettingsTop.BackgroundImage = iBackground
+        End Using
 
-            iBackground = New Bitmap(Me.pnlSettingsCurrent.Width, Me.pnlSettingsCurrent.Height)
-            Using b As Graphics = Graphics.FromImage(iBackground)
-                b.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsCurrent.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlSettingsCurrent.ClientRectangle)
-                Me.pnlSettingsCurrent.BackgroundImage = iBackground
-            End Using
+        iBackground = New Bitmap(Me.pnlSettingsCurrent.Width, Me.pnlSettingsCurrent.Height)
+        Using b As Graphics = Graphics.FromImage(iBackground)
+            b.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlSettingsCurrent.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlSettingsCurrent.ClientRectangle)
+            Me.pnlSettingsCurrent.BackgroundImage = iBackground
+        End Using
 
-            Me.LoadGenreLangs()
-            Me.LoadIntLangs()
-            Me.LoadLangs()
-            Me.LoadThemes()
-            Me.LoadTVRatingRegions()
-            Me.FillSettings()
-            Me.lvMovieSources.ListViewItemSorter = New ListViewItemComparer(1)
-            Me.lvTVSources.ListViewItemSorter = New ListViewItemComparer(1)
-            Me.sResult.NeedsUpdate = False
-            Me.sResult.NeedsRefresh_Movie = False
-            Me.sResult.NeedsRefresh_MovieSet = False
-            Me.sResult.NeedsRefresh_TV = False
-            Me.sResult.DidCancel = False
-            Me.didApply = False
-            Me.NoUpdate = False
-            RaiseEvent LoadEnd()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.LoadGenreLangs()
+        Me.LoadIntLangs()
+        Me.LoadLangs()
+        Me.LoadThemes()
+        Me.LoadTVRatingRegions()
+        Me.FillSettings()
+        Me.lvMovieSources.ListViewItemSorter = New ListViewItemComparer(1)
+        Me.lvTVSources.ListViewItemSorter = New ListViewItemComparer(1)
+        Me.sResult.NeedsUpdate = False
+        Me.sResult.NeedsRefresh_Movie = False
+        Me.sResult.NeedsRefresh_MovieSet = False
+        Me.sResult.NeedsRefresh_TV = False
+        Me.sResult.DidCancel = False
+        Me.didApply = False
+        Me.NoUpdate = False
+        RaiseEvent LoadEnd()
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
