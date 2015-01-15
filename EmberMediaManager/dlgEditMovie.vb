@@ -404,22 +404,16 @@ Public Class dlgEditMovie
 
     Private Sub btnRemoveMovieTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieTheme.Click
         Me.ThemeStop()
-        Me.axVLCTheme.playlist.items.clear()
+        'Me.axVLCTheme.playlist.items.clear()
         Me.MovieTheme.Dispose()
         Me.MovieTheme.toRemove = True
-        Me.btnThemeMute.Enabled = False
-        Me.btnThemePlay.Enabled = False
-        Me.btnThemeStop.Enabled = False
     End Sub
 
     Private Sub btnRemoveMovieTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieTrailer.Click
         Me.TrailerStop()
-        Me.axVLCTrailer.playlist.items.clear()
+        'Me.axVLCTrailer.playlist.items.clear()
         Me.MovieTrailer.Dispose()
         Me.MovieTrailer.toRemove = True
-        Me.btnTrailerMute.Enabled = False
-        Me.btnTrailerPlay.Enabled = False
-        Me.btnTrailerStop.Enabled = False
     End Sub
 
     Private Sub btnMovieEThumbsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEThumbsRemove.Click
@@ -1149,91 +1143,67 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub ThemeStart()
-        If Me.axVLCTheme.playlist.isPlaying Then
-            Me.axVLCTheme.playlist.togglePause()
-            Me.btnThemePlay.Text = "Play"
-        Else
-            Me.axVLCTheme.playlist.play()
-            Me.btnThemePlay.Text = "Pause"
-        End If
+        'If Me.axVLCTheme.playlist.isPlaying Then
+        '    Me.axVLCTheme.playlist.togglePause()
+        '    Me.btnThemePlay.Text = "Play"
+        'Else
+        '    Me.axVLCTheme.playlist.play()
+        '    Me.btnThemePlay.Text = "Pause"
+        'End If
     End Sub
 
     Private Sub ThemeStop()
-        Me.axVLCTheme.playlist.stop()
-        Me.btnThemePlay.Text = "Play"
+        'Me.axVLCTheme.playlist.stop()
+        'Me.btnThemePlay.Text = "Play"
     End Sub
 
     Private Sub ThemeAddToPlayer(ByVal Theme As Themes)
-        Dim Link As String = String.Empty
-        Me.axVLCTheme.playlist.stop()
-        Me.axVLCTheme.playlist.items.clear()
+        'Dim Link As String = String.Empty
+        'Me.axVLCTheme.playlist.stop()
+        'Me.axVLCTheme.playlist.items.clear()
 
-        If Not String.IsNullOrEmpty(Theme.URL) Then
-            If Regex.IsMatch(Theme.URL, "http:\/\/.*?") Then
-                Me.axVLCTheme.playlist.add(Theme.URL)
-            Else
-                Me.axVLCTheme.playlist.add(String.Concat("file:///", Theme.URL))
-            End If
-            Me.btnThemeMute.Enabled = True
-            Me.btnThemePlay.Enabled = True
-            Me.btnThemeStop.Enabled = True
-        End If
-    End Sub
-
-    Private Sub btnThemePlay_Click(sender As Object, e As EventArgs) Handles btnThemePlay.Click
-        Me.ThemeStart()
-    End Sub
-
-    Private Sub btnThemeStop_Click(sender As Object, e As EventArgs) Handles btnThemeStop.Click
-        Me.ThemeStop()
-    End Sub
-
-    Private Sub btnThemeMute_Click(sender As Object, e As EventArgs) Handles btnThemeMute.Click
-        Me.axVLCTheme.audio.toggleMute()
+        'If Not String.IsNullOrEmpty(Theme.URL) Then
+        '    If Regex.IsMatch(Theme.URL, "http:\/\/.*?") Then
+        '        Me.axVLCTheme.playlist.add(Theme.URL)
+        '    Else
+        '        Me.axVLCTheme.playlist.add(String.Concat("file:///", Theme.URL))
+        '    End If
+        '    Me.btnThemeMute.Enabled = True
+        '    Me.btnThemePlay.Enabled = True
+        '    Me.btnThemeStop.Enabled = True
+        'End If
     End Sub
 
     Private Sub TrailerStart()
-        If Me.axVLCTrailer.playlist.isPlaying Then
-            Me.axVLCTrailer.playlist.togglePause()
-            Me.btnTrailerPlay.Text = "Play"
-        Else
-            Me.axVLCTrailer.playlist.play()
-            Me.btnTrailerPlay.Text = "Pause"
-        End If
+        'If Me.axVLCTrailer.playlist.isPlaying Then
+        '    Me.axVLCTrailer.playlist.togglePause()
+        '    Me.btnTrailerPlay.Text = "Play"
+        'Else
+        '    Me.axVLCTrailer.playlist.play()
+        '    Me.btnTrailerPlay.Text = "Pause"
+        'End If
     End Sub
 
     Private Sub TrailerStop()
-        Me.axVLCTrailer.playlist.stop()
-        Me.btnTrailerPlay.Text = "Play"
+        'Me.axVLCTrailer.playlist.stop()
+        'Me.btnTrailerPlay.Text = "Play"
     End Sub
 
     Private Sub TrailerAddToPlayer(ByVal Trailer As Trailers)
-        Dim Link As String = String.Empty
-        Me.axVLCTrailer.playlist.stop()
-        Me.axVLCTrailer.playlist.items.clear()
+        'Dim Link As String = String.Empty
+        'Me.axVLCTrailer.playlist.stop()
+        'Me.axVLCTrailer.playlist.items.clear()
 
-        If Not String.IsNullOrEmpty(Trailer.URL) Then
-            If Regex.IsMatch(Trailer.URL, "http:\/\/.*?") Then
-                Me.axVLCTrailer.playlist.add(Trailer.URL)
-            Else
-                Me.axVLCTrailer.playlist.add(String.Concat("file:///", Trailer.URL))
-            End If
-            Me.btnTrailerMute.Enabled = True
-            Me.btnTrailerPlay.Enabled = True
-            Me.btnTrailerStop.Enabled = True
-        End If
-    End Sub
-
-    Private Sub btnTrailerPlay_Click(sender As Object, e As EventArgs) Handles btnTrailerPlay.Click
-        Me.TrailerStart()
-    End Sub
-
-    Private Sub btnTrailerStop_Click(sender As Object, e As EventArgs) Handles btnTrailerStop.Click
-        Me.TrailerStop()
-    End Sub
-
-    Private Sub btnTrailerMute_Click(sender As Object, e As EventArgs) Handles btnTrailerMute.Click
-        Me.axVLCTrailer.audio.toggleMute()
+        'If Not String.IsNullOrEmpty(Trailer.URL) Then
+        '    If Regex.IsMatch(Trailer.URL, "http:\/\/.*?") Then
+        '        Me.axVLCTrailer.playlist.add(Trailer.URL)
+        '    Else
+        '        Me.axVLCTrailer.playlist.add(String.Concat("file:///", Trailer.URL))
+        '    End If
+        '    Me.btnTrailerMute.Enabled = True
+        '    Me.btnTrailerPlay.Enabled = True
+        '    Me.btnTrailerStop.Enabled = True
+        'End If
     End Sub
 
     ' temporarily disabled
@@ -1902,11 +1872,26 @@ Public Class dlgEditMovie
 
             Me.LoadGenres()
             Me.LoadRatings()
-            Dim params As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, params, Nothing, True)
-            pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
+
+            Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True)
+            pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
             If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
                 tcEditMovie.TabPages.Remove(tpFrameExtraction)
+            End If
+
+            Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPreview_Audio, paramsThemePreview, Nothing, True)
+            pnlThemePreview.Controls.Add(DirectCast(paramsThemePreview(0), Panel))
+            If Not String.IsNullOrEmpty(pnlThemePreview.Controls.Item(1).Name) Then
+                pnlThemePreviewNoPlayer.Visible = False
+            End If
+
+            Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPreview_Video, paramsTrailerPreview, Nothing, True)
+            pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
+            If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
+                pnlTrailerPreviewNoPlayer.Visible = False
             End If
 
             Me.FillInfo()
@@ -2284,10 +2269,6 @@ Public Class dlgEditMovie
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
                         MovieTheme.FromFile(Master.currMovie.ThemePath)
                         ThemeAddToPlayer(MovieTheme)
-                    Else
-                        Me.btnThemeMute.Enabled = False
-                        Me.btnThemePlay.Enabled = False
-                        Me.btnThemeStop.Enabled = False
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Substring(0, 1) = ":" Then
@@ -2296,10 +2277,6 @@ Public Class dlgEditMovie
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) Then
                         MovieTrailer.FromFile(Master.currMovie.TrailerPath)
                         TrailerAddToPlayer(MovieTrailer)
-                    Else
-                        Me.btnTrailerMute.Enabled = False
-                        Me.btnTrailerPlay.Enabled = False
-                        Me.btnTrailerStop.Enabled = False
                     End If
 
                     If Path.GetExtension(Master.currMovie.Filename).ToLower = ".disc" Then

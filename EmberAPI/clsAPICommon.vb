@@ -787,48 +787,50 @@ Public Class Enums
         FrameExtrator_Movie = 8
         FrameExtrator_TVEpisode = 9
         Generic = 10
-        MovieImageNaming = 11
-        Notification = 12
-        OnBannerSave_Movie = 13
-        OnClearArtSave_Movie = 14
-        OnClearLogoSave_Movie = 15
-        OnDiscArtSave_Movie = 16
-        OnFanartDelete_Movie = 17
-        OnFanartSave_Movie = 18
-        OnLandscapeSave_Movie = 19
-        OnNFORead_TVShow = 20
-        OnNFOSave_Movie = 21
-        OnNFOSave_TVShow = 22
-        OnPosterDelete_Movie = 23
-        OnPosterSave_Movie = 24
-        OnThemeSave_Movie = 25
-        OnTrailerSave_Movie = 26
-        RandomFrameExtrator = 27
+        MediaPreview_Audio = 11
+        MediaPreview_Video = 12
+        MovieImageNaming = 13
+        Notification = 14
+        OnBannerSave_Movie = 15
+        OnClearArtSave_Movie = 16
+        OnClearLogoSave_Movie = 17
+        OnDiscArtSave_Movie = 18
+        OnFanartDelete_Movie = 19
+        OnFanartSave_Movie = 20
+        OnLandscapeSave_Movie = 21
+        OnNFORead_TVShow = 22
+        OnNFOSave_Movie = 23
+        OnNFOSave_TVShow = 24
+        OnPosterDelete_Movie = 25
+        OnPosterSave_Movie = 26
+        OnThemeSave_Movie = 27
+        OnTrailerSave_Movie = 28
+        RandomFrameExtrator = 29
         ''' <summary>
         ''' Called when auto scraper finishs but before save to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_Movie = 28
+        ScraperMulti_Movie = 30
         ''' <summary>
         ''' Called when auto scraper finishs but before save to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVEpisode = 29
+        ScraperMulti_TVEpisode = 31
         ''' <summary>
         ''' Called when single scraper finishs, movie is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_Movie = 30
+        ScraperSingle_Movie = 32
         ''' <summary>
         ''' Called when single scraper finishs, episode is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVEpisode = 31
-        ShowMovie = 32
-        ShowTVShow = 33
-        SyncModuleSettings = 34
-        Sync_Movie = 35
-        TVImageNaming = 36
+        ScraperSingle_TVEpisode = 33
+        ShowMovie = 34
+        ShowTVShow = 35
+        SyncModuleSettings = 36
+        Sync_Movie = 37
+        TVImageNaming = 38
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer
