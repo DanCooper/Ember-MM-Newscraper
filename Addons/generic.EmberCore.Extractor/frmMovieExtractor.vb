@@ -1,4 +1,24 @@
-﻿Imports System.Windows.Forms
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
+
+Imports System.Windows.Forms
 Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
@@ -7,14 +27,19 @@ Imports NLog
 
 
 Public Class frmMovieExtractor
+
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private PreviousFrameValue As Integer
-#End Region
+
+#End Region 'Fields
 
 #Region "Events"
+
     Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
-#End Region
+
+#End Region 'Events
 
 #Region "Methods"
 
@@ -69,13 +94,14 @@ Public Class frmMovieExtractor
             PreviousFrameValue = 0
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             tbFrame.Maximum = 0
             tbFrame.Value = 0
             tbFrame.Enabled = False
             pbFrame.Image = Nothing
         End Try
     End Sub
+
     Private Sub tbFrame_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tbFrame.KeyUp
         If tbFrame.Value <> PreviousFrameValue Then
             GrabTheFrame()
@@ -87,13 +113,14 @@ Public Class frmMovieExtractor
             GrabTheFrame()
         End If
     End Sub
+
     Private Sub tbFrame_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbFrame.Scroll
         Try
             Dim sec2Time As New TimeSpan(0, 0, tbFrame.Value)
             lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -147,7 +174,7 @@ Public Class frmMovieExtractor
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             PreviousFrameValue = 0
             lblTime.Text = String.Empty
             tbFrame.Maximum = 0
@@ -239,17 +266,17 @@ Public Class frmMovieExtractor
             'End If
             MsgBox("This feature is currently unavailable", MsgBoxStyle.OkOnly, "No Beta Feature") 'TODO: re-add autothumbs
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
     Private Sub txtThumbCount_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtThumbCount.GotFocus
         Me.AcceptButton = Me.btnAutoGen
     End Sub
+
     Private Sub txtThumbCount_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtThumbCount.TextChanged
         btnAutoGen.Enabled = Not String.IsNullOrEmpty(txtThumbCount.Text)
     End Sub
-
 
     Private Sub frmMovieExtrator_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         'If Master.eSettings.AutoThumbs > 0 Then
@@ -278,6 +305,7 @@ Public Class frmMovieExtractor
         ' Add any initialization after the InitializeComponent() call.
 
     End Sub
-#End Region
+
+#End Region 'Methods
 
 End Class

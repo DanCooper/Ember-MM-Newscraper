@@ -22,21 +22,18 @@ Imports EmberAPI
 
 Public Class frmSettingsHolder
 
-    #Region "Fields"
+#Region "Fields"
 
+#End Region 'Fields
 
-
-    #End Region 'Fields
-
-    #Region "Events"
+#Region "Events"
 
     Public Event ModuleEnabledChanged(ByVal State As Boolean, ByVal difforder As Integer)
-
     Public Event ModuleSettingsChanged()
 
-    #End Region 'Events
+#End Region 'Events
 
-    #Region "Methods"
+#Region "Methods"
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent ModuleEnabledChanged(cbEnabled.Checked, 0)
