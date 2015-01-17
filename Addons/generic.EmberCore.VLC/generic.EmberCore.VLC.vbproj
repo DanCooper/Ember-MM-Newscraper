@@ -130,23 +130,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsVLC.vb" />
-    <Compile Include="clsVLCTest.vb" />
-    <Compile Include="frmVLCVideo.Designer.vb">
-      <DependentUpon>frmVLCVideo.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmVLCVideo.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="frmSettingsHolder.Designer.vb">
       <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </Compile>
     <Compile Include="frmSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmVLCAudio.Designer.vb">
-      <DependentUpon>frmVLCAudio.vb</DependentUpon>
+    <Compile Include="frmAudioPlayer.Designer.vb">
+      <DependentUpon>frmAudioPlayer.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmVLCAudio.vb">
+    <Compile Include="frmAudioPlayer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVideoPlayer.Designer.vb">
+      <DependentUpon>frmVideoPlayer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmVideoPlayer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Module.VLC.vb" />
@@ -167,17 +166,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmVLCVideo.resx">
-      <DependentUpon>frmVLCVideo.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsHolder.resx">
       <DependentUpon>frmSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmVLCAudio.resx">
-      <DependentUpon>frmVLCAudio.vb</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="frmAudioPlayer.resx">
+      <DependentUpon>frmAudioPlayer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVideoPlayer.resx">
+      <DependentUpon>frmVideoPlayer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

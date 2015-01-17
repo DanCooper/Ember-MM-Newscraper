@@ -18,30 +18,68 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports System.Windows.Forms
+Imports System
+Imports System.IO
+Imports System.Text.RegularExpressions
+Imports EmberAPI
 Imports NLog
 
-Public Class clsVLCTest
+
+Public Class frmAudioPlayer
 
 #Region "Fields"
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-#End Region 'Fields
+#End Region
+
+#Region "Events"
+
+#End Region
+
+#Region "Constructors"
+
+#End Region
 
 #Region "Methods"
 
-    Public Shared Function DoTest(Optional ByVal withDialog As Boolean = False) As Boolean
-        Try
-            Dim VLCPlayer As New AXVLC.VLCPlugin2
-            If withDialog Then MsgBox("Looking good", MsgBoxStyle.OkOnly, "OK")
-            Return True
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            MsgBox("VLC ActiveX plugin is not registred", MsgBoxStyle.Critical, "Error")
-            Return False
-        End Try
-    End Function
+    Public Sub SetUp()
 
-#End Region 'Methods
+    End Sub
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.SetUp()
+        ' Add any initialization after the InitializeComponent() call.
+
+    End Sub
+
+    Public Sub PlayerPlay()
+        Me.AxVLCPlayer.playlist.play()
+    End Sub
+
+    Public Sub PlayerStop()
+        Me.AxVLCPlayer.playlist.stop()
+    End Sub
+
+    Public Sub PlaylistAdd(ByVal URL As String)
+        If Not String.IsNullOrEmpty(URL) Then
+            Me.AxVLCPlayer.playlist.items.clear()
+            If Regex.IsMatch(URL, "http:\/\/.*?") Then
+                Me.AxVLCPlayer.playlist.add(URL)
+            Else
+                Me.AxVLCPlayer.playlist.add(String.Concat("file:///", URL))
+            End If
+        End If
+    End Sub
+
+    Public Sub PlaylistClear()
+        Me.AxVLCPlayer.playlist.items.clear()
+    End Sub
+
+#End Region
 
 End Class

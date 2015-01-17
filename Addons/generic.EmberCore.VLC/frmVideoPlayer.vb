@@ -26,18 +26,19 @@ Imports EmberAPI
 Imports NLog
 
 
-Public Class frmVLCVideo
+Public Class frmVideoPlayer
 
 #Region "Fields"
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Private PreviousFrameValue As Integer
 
 #End Region
 
 #Region "Events"
 
-    Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
+#End Region
+
+#Region "Constructors"
 
 #End Region
 
@@ -54,6 +55,29 @@ Public Class frmVLCVideo
         Me.SetUp()
         ' Add any initialization after the InitializeComponent() call.
 
+    End Sub
+
+    Public Sub PlayerPlay()
+        Me.AxVLCPlayer.playlist.play()
+    End Sub
+
+    Public Sub PlayerStop()
+        Me.AxVLCPlayer.playlist.stop()
+    End Sub
+
+    Public Sub PlaylistAdd(ByVal URL As String)
+        If Not String.IsNullOrEmpty(URL) Then
+            Me.AxVLCPlayer.playlist.items.clear()
+            If Regex.IsMatch(URL, "http:\/\/.*?") Then
+                Me.AxVLCPlayer.playlist.add(URL)
+            Else
+                Me.AxVLCPlayer.playlist.add(String.Concat("file:///", URL))
+            End If
+        End If
+    End Sub
+
+    Public Sub PlaylistClear()
+        Me.AxVLCPlayer.playlist.items.clear()
     End Sub
 
 #End Region

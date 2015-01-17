@@ -36,8 +36,8 @@ Public Class VLCPlayer
     Private _MySettings As New MySettings
     Private _name As String = "VLC Player"
     Private _setup As frmSettingsHolder
-    Private frmVLCAudio As frmVLCAudio
-    Private frmVLCVideo As frmVLCVideo
+    Private frmAudioPlayer As frmAudioPlayer
+    Private frmVideoPlayer As frmVideoPlayer
 
 #End Region 'Fields
 
@@ -71,7 +71,11 @@ Public Class VLCPlayer
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MediaPlayer_Audio, Enums.ModuleEventType.MediaPlayer_Video})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MediaPlayer_Audio, Enums.ModuleEventType.MediaPlayer_Video, _
+                                                                                   Enums.ModuleEventType.MediaPlayerPlay_Audio, Enums.ModuleEventType.MediaPlayerPlay_Video, _
+                                                                                   Enums.ModuleEventType.MediaPlayerPlaylistAdd_Audio, Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video, _
+                                                                                   Enums.ModuleEventType.MediaPlayerPlaylistClear_Audio, Enums.ModuleEventType.MediaPlayerPlaylistClear_Video, _
+                                                                                   Enums.ModuleEventType.MediaPlayerStop_Audio, Enums.ModuleEventType.MediaPlayerStop_Video})
         End Get
     End Property
 
@@ -112,27 +116,31 @@ Public Class VLCPlayer
     End Function
 
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
-        If clsVLCTest.DoTest Then
+        If clsVLC.DoTest Then
             Select Case mType
                 Case Enums.ModuleEventType.MediaPlayer_Audio
                     If _MySettings.UseAsAudioPlayer Then
-                        frmVLCAudio = New frmVLCAudio
-                        _params(0) = frmVLCAudio.pnlExtrator
-                        AddHandler frmVLCAudio.GenericEvent, AddressOf Handle_GenericEvent
+                        frmAudioPlayer = New frmAudioPlayer
+                        _params(0) = frmAudioPlayer.pnlPlayer
                     End If
                 Case Enums.ModuleEventType.MediaPlayer_Video
                     If _MySettings.UseAsVideoPlayer Then
-                        frmVLCVideo = New frmVLCVideo
-                        _params(0) = frmVLCVideo.pnlVLC
-                        AddHandler frmVLCVideo.GenericEvent, AddressOf Handle_GenericEvent
+                        frmVideoPlayer = New frmVideoPlayer
+                        _params(0) = frmVideoPlayer.pnlPlayer
                     End If
+                Case Enums.ModuleEventType.MediaPlayerPlay_Video
+                    frmVideoPlayer.PlayerPlay()
+                Case Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video
+                    If _params(0) IsNot Nothing AndAlso Not String.IsNullOrEmpty(_params(0).ToString) Then
+                        frmVideoPlayer.PlaylistAdd(_params(0).ToString)
+                    End If
+                Case Enums.ModuleEventType.MediaPlayerPlaylistClear_Video
+                    frmVideoPlayer.PlaylistClear()
+                Case Enums.ModuleEventType.MediaPlayerStop_Video
+                    frmVideoPlayer.PlayerStop()
             End Select
         End If
     End Function
-
-    Sub Handle_GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
-        RaiseEvent GenericEvent(mType, _params)
-    End Sub
 
     Sub LoadSettings()
         _MySettings.UseAsAudioPlayer = clsAdvancedSettings.GetBooleanSetting("UseAsAudioPlayer", False)

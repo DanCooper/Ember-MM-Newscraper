@@ -789,48 +789,56 @@ Public Class Enums
         Generic = 10
         MediaPlayer_Audio = 11
         MediaPlayer_Video = 12
-        MovieImageNaming = 13
-        Notification = 14
-        OnBannerSave_Movie = 15
-        OnClearArtSave_Movie = 16
-        OnClearLogoSave_Movie = 17
-        OnDiscArtSave_Movie = 18
-        OnFanartDelete_Movie = 19
-        OnFanartSave_Movie = 20
-        OnLandscapeSave_Movie = 21
-        OnNFORead_TVShow = 22
-        OnNFOSave_Movie = 23
-        OnNFOSave_TVShow = 24
-        OnPosterDelete_Movie = 25
-        OnPosterSave_Movie = 26
-        OnThemeSave_Movie = 27
-        OnTrailerSave_Movie = 28
-        RandomFrameExtrator = 29
+        MediaPlayerPlay_Audio = 13
+        MediaPlayerPlay_Video = 14
+        MediaPlayerPlaylistAdd_Audio = 15
+        MediaPlayerPlaylistAdd_Video = 16
+        MediaPlayerPlaylistClear_Audio = 17
+        MediaPlayerPlaylistClear_Video = 18
+        MediaPlayerStop_Audio = 19
+        MediaPlayerStop_Video = 20
+        MovieImageNaming = 21
+        Notification = 22
+        OnBannerSave_Movie = 23
+        OnClearArtSave_Movie = 24
+        OnClearLogoSave_Movie = 25
+        OnDiscArtSave_Movie = 26
+        OnFanartDelete_Movie = 27
+        OnFanartSave_Movie = 28
+        OnLandscapeSave_Movie = 29
+        OnNFORead_TVShow = 30
+        OnNFOSave_Movie = 31
+        OnNFOSave_TVShow = 32
+        OnPosterDelete_Movie = 33
+        OnPosterSave_Movie = 34
+        OnThemeSave_Movie = 35
+        OnTrailerSave_Movie = 36
+        RandomFrameExtrator = 37
         ''' <summary>
         ''' Called when auto scraper finishs but before save to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_Movie = 30
+        ScraperMulti_Movie = 38
         ''' <summary>
         ''' Called when auto scraper finishs but before save to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVEpisode = 31
+        ScraperMulti_TVEpisode = 39
         ''' <summary>
         ''' Called when single scraper finishs, movie is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_Movie = 32
+        ScraperSingle_Movie = 40
         ''' <summary>
         ''' Called when single scraper finishs, episode is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVEpisode = 33
-        ShowMovie = 34
-        ShowTVShow = 35
-        SyncModuleSettings = 36
-        Sync_Movie = 37
-        TVImageNaming = 38
+        ScraperSingle_TVEpisode = 41
+        ShowMovie = 42
+        ShowTVShow = 43
+        SyncModuleSettings = 44
+        Sync_Movie = 45
+        TVImageNaming = 46
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer

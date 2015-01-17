@@ -36,7 +36,7 @@ Public Class frmSettingsHolder
 #Region "Methods"
 
     Private Sub btnTest_Click(sender As Object, e As EventArgs) Handles btnTestInstallation.Click
-        clsVLCTest.DoTest(True)
+        clsVLC.DoTest(True)
     End Sub
 
     Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged

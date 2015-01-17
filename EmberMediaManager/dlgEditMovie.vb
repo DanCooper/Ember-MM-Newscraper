@@ -27,6 +27,10 @@ Imports System.Net
 
 Public Class dlgEditMovie
 
+#Region "Events"
+
+#End Region 'Events
+
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
@@ -51,6 +55,8 @@ Public Class dlgEditMovie
     Private MovieTrailer As New Trailers With {.isEdit = True}
     Private MovieTheme As New Themes With {.isEdit = True}
     Private tmpRating As String = String.Empty
+    Private AnyThemePlayerEnabled As Boolean = False
+    Private AnyTrailerPlayerEnabled As Boolean = False
 
     'Extrathumbs
     Private etDeleteList As New List(Of String)
@@ -411,7 +417,7 @@ Public Class dlgEditMovie
 
     Private Sub btnRemoveMovieTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieTrailer.Click
         Me.TrailerStop()
-        'Me.axVLCTrailer.playlist.items.clear()
+        Me.TrailerPlaylistClear()
         Me.MovieTrailer.Dispose()
         Me.MovieTrailer.toRemove = True
     End Sub
@@ -1082,7 +1088,7 @@ Public Class dlgEditMovie
                 tResults = dlgTrlS.Results
                 MovieTrailer = tResults.WebTrailer
                 MovieTrailer.isEdit = True
-                TrailerAddToPlayer(MovieTrailer)
+                TrailerPlaylistAdd(MovieTrailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1099,7 +1105,7 @@ Public Class dlgEditMovie
             If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
                 MovieTrailer = dlgTrlS.Results.WebTrailer
                 MovieTrailer.isEdit = True
-                TrailerAddToPlayer(MovieTrailer)
+                TrailerPlaylistAdd(MovieTrailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1118,7 +1124,7 @@ Public Class dlgEditMovie
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
                 MovieTrailer.FromFile(ofdLocalFiles.FileName)
                 MovieTrailer.isEdit = True
-                TrailerAddToPlayer(MovieTrailer)
+                TrailerPlaylistAdd(MovieTrailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1161,49 +1167,27 @@ Public Class dlgEditMovie
         'Dim Link As String = String.Empty
         'Me.axVLCTheme.playlist.stop()
         'Me.axVLCTheme.playlist.items.clear()
-
-        'If Not String.IsNullOrEmpty(Theme.URL) Then
-        '    If Regex.IsMatch(Theme.URL, "http:\/\/.*?") Then
-        '        Me.axVLCTheme.playlist.add(Theme.URL)
-        '    Else
-        '        Me.axVLCTheme.playlist.add(String.Concat("file:///", Theme.URL))
-        '    End If
-        '    Me.btnThemeMute.Enabled = True
-        '    Me.btnThemePlay.Enabled = True
-        '    Me.btnThemeStop.Enabled = True
-        'End If
     End Sub
 
-    Private Sub TrailerStart()
-        'If Me.axVLCTrailer.playlist.isPlaying Then
-        '    Me.axVLCTrailer.playlist.togglePause()
-        '    Me.btnTrailerPlay.Text = "Play"
-        'Else
-        '    Me.axVLCTrailer.playlist.play()
-        '    Me.btnTrailerPlay.Text = "Pause"
-        'End If
+    Private Sub TrailerPlaylistAdd(ByVal Trailer As Trailers)
+        If AnyTrailerPlayerEnabled Then
+            Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.URL})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video, paramsTrailerPreview, Nothing, True)
+        End If
+    End Sub
+
+    Private Sub TrailerPlaylistClear()
+        If AnyTrailerPlayerEnabled Then
+            Dim paramsTrailerPreview As New List(Of Object)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlaylistClear_Video, Nothing, Nothing, True)
+        End If
     End Sub
 
     Private Sub TrailerStop()
-        'Me.axVLCTrailer.playlist.stop()
-        'Me.btnTrailerPlay.Text = "Play"
-    End Sub
-
-    Private Sub TrailerAddToPlayer(ByVal Trailer As Trailers)
-        'Dim Link As String = String.Empty
-        'Me.axVLCTrailer.playlist.stop()
-        'Me.axVLCTrailer.playlist.items.clear()
-
-        'If Not String.IsNullOrEmpty(Trailer.URL) Then
-        '    If Regex.IsMatch(Trailer.URL, "http:\/\/.*?") Then
-        '        Me.axVLCTrailer.playlist.add(Trailer.URL)
-        '    Else
-        '        Me.axVLCTrailer.playlist.add(String.Concat("file:///", Trailer.URL))
-        '    End If
-        '    Me.btnTrailerMute.Enabled = True
-        '    Me.btnTrailerPlay.Enabled = True
-        '    Me.btnTrailerStop.Enabled = True
-        'End If
+        If AnyTrailerPlayerEnabled Then
+            Dim paramsTrailerPreview As New List(Of Object)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerStop_Video, Nothing, Nothing, True)
+        End If
     End Sub
 
     ' temporarily disabled
@@ -1884,6 +1868,7 @@ Public Class dlgEditMovie
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
             pnlThemePreview.Controls.Add(DirectCast(paramsThemePreview(0), Panel))
             If Not String.IsNullOrEmpty(pnlThemePreview.Controls.Item(1).Name) Then
+                AnyThemePlayerEnabled = True
                 pnlThemePreviewNoPlayer.Visible = False
             End If
 
@@ -1891,6 +1876,7 @@ Public Class dlgEditMovie
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
             pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
             If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
+                AnyTrailerPlayerEnabled = True
                 pnlTrailerPreviewNoPlayer.Visible = False
             End If
 
@@ -2273,10 +2259,10 @@ Public Class dlgEditMovie
 
                     If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Substring(0, 1) = ":" Then
                         MovieTrailer.FromWeb(Master.currMovie.TrailerPath.Substring(1, Master.currMovie.TrailerPath.Length - 1))
-                        TrailerAddToPlayer(MovieTrailer)
+                        TrailerPlaylistAdd(MovieTrailer)
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) Then
                         MovieTrailer.FromFile(Master.currMovie.TrailerPath)
-                        TrailerAddToPlayer(MovieTrailer)
+                        TrailerPlaylistAdd(MovieTrailer)
                     End If
 
                     If Path.GetExtension(Master.currMovie.Filename).ToLower = ".disc" Then
@@ -3349,7 +3335,6 @@ Public Class dlgEditMovie
                 End If
             End If
         End If
-
     End Sub
 
     Private Sub txtOutline_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtOutline.KeyDown
