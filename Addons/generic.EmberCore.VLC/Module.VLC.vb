@@ -33,6 +33,7 @@ Public Class VLCPlayer
     Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
+    Private _MySettings As New MySettings
     Private _name As String = "VLC Player"
     Private _setup As frmSettingsHolder
     Private frmVLCAudio As frmVLCAudio
@@ -59,11 +60,6 @@ Public Class VLCPlayer
         Set(ByVal value As Boolean)
             If _enabled = value Then Return
             _enabled = value
-            If _enabled Then
-                Enable()
-            Else
-                Disable()
-            End If
         End Set
     End Property
 
@@ -75,7 +71,7 @@ Public Class VLCPlayer
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MediaPreview_Audio, Enums.ModuleEventType.MediaPreview_Video})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MediaPlayer_Audio, Enums.ModuleEventType.MediaPlayer_Video})
         End Get
     End Property
 
@@ -91,12 +87,18 @@ Public Class VLCPlayer
 
     Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements EmberAPI.Interfaces.GenericModule.Init
         _AssemblyName = sAssemblyName
+        LoadSettings()
     End Sub
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmSettingsHolder
-        Me._setup.cbEnabled.Checked = Me._enabled
+        _setup = New frmSettingsHolder
+        LoadSettings()
+        _setup.chkEnabled.Checked = Me._enabled
+
+        _setup.chkUseAsAudioPlayer.Checked = _MySettings.UseAsAudioPlayer
+        _setup.chkUseAsVideoPlayer.Checked = _MySettings.UseAsVideoPlayer
+
         SPanel.Name = Me._name
         SPanel.Text = "VLC Player"
         SPanel.Prefix = "VLCPlayer_"
@@ -110,42 +112,50 @@ Public Class VLCPlayer
     End Function
 
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
-        Select Case mType
-            Case Enums.ModuleEventType.MediaPreview_Audio
-                frmVLCAudio = New frmVLCAudio
-                AddHandler frmVLCAudio.GenericEvent, AddressOf Handle_GenericEvent
-                _params(0) = frmVLCAudio.pnlExtrator
-            Case Enums.ModuleEventType.MediaPreview_Video
-                frmVLCVideo = New frmVLCVideo
-                _params(0) = frmVLCVideo.pnlVLC
-                AddHandler frmVLCVideo.GenericEvent, AddressOf Handle_GenericEvent
-        End Select
+        If clsVLCTest.DoTest Then
+            Select Case mType
+                Case Enums.ModuleEventType.MediaPlayer_Audio
+                    If _MySettings.UseAsAudioPlayer Then
+                        frmVLCAudio = New frmVLCAudio
+                        _params(0) = frmVLCAudio.pnlExtrator
+                        AddHandler frmVLCAudio.GenericEvent, AddressOf Handle_GenericEvent
+                    End If
+                Case Enums.ModuleEventType.MediaPlayer_Video
+                    If _MySettings.UseAsVideoPlayer Then
+                        frmVLCVideo = New frmVLCVideo
+                        _params(0) = frmVLCVideo.pnlVLC
+                        AddHandler frmVLCVideo.GenericEvent, AddressOf Handle_GenericEvent
+                    End If
+            End Select
+        End If
     End Function
 
     Sub Handle_GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
         RaiseEvent GenericEvent(mType, _params)
     End Sub
 
+    Sub LoadSettings()
+        _MySettings.UseAsAudioPlayer = clsAdvancedSettings.GetBooleanSetting("UseAsAudioPlayer", False)
+        _MySettings.UseAsVideoPlayer = clsAdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False)
+    End Sub
+
+    Sub SaveSettings()
+        Using settings = New clsAdvancedSettings()
+            settings.SetBooleanSetting("UseAsAudioPlayer", _MySettings.UseAsAudioPlayer)
+            settings.SetBooleanSetting("UseAsVideoPlayer", _MySettings.UseAsVideoPlayer)
+        End Using
+    End Sub
+
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.GenericModule.SaveSetup
-        Me.Enabled = _setup.cbEnabled.Checked
+        Me.Enabled = _setup.chkEnabled.Checked
+        _MySettings.UseAsAudioPlayer = _setup.chkUseAsAudioPlayer.Checked
+        _MySettings.UseAsVideoPlayer = _setup.chkUseAsVideoPlayer.Checked
+        SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
             RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If
-    End Sub
-
-    Sub Disable()
-        Try
-
-        Catch ex As Exception
-        End Try
-    End Sub
-
-    Sub Enable()
-        Try
-        Catch ex As Exception
-        End Try
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
@@ -156,14 +166,21 @@ Public Class VLCPlayer
         RaiseEvent ModuleEnabledChanged(Me._name, state, difforder)
     End Sub
 
-    Public Shared Function GetFFMpeg() As String
-        If Master.isWindows Then
-            Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-        Else
-            Return "ffmpeg"
-        End If
-    End Function
-
 #End Region 'Methods
+
+#Region "Nested Types"
+
+    Structure MySettings
+
+#Region "Fields"
+
+        Dim UseAsAudioPlayer As Boolean
+        Dim UseAsVideoPlayer As Boolean
+
+#End Region 'Fields
+
+    End Structure
+
+#End Region 'Nested Types
 
 End Class

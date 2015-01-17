@@ -130,7 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsVLC.vb" />
-    <Compile Include="clsVLCTestDialog.vb" />
+    <Compile Include="clsVLCTest.vb" />
     <Compile Include="frmVLCVideo.Designer.vb">
       <DependentUpon>frmVLCVideo.vb</DependentUpon>
     </Compile>

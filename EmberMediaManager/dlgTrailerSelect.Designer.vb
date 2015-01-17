@@ -53,18 +53,20 @@ Partial Class dlgTrailerSelect
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog()
         Me.pnlTrailerSelect = New System.Windows.Forms.Panel()
         Me.gbPreview = New System.Windows.Forms.GroupBox()
-        Me.btnTrailerMute = New System.Windows.Forms.Button()
-        Me.btnTrailerStop = New System.Windows.Forms.Button()
-        Me.btnTrailerPlay = New System.Windows.Forms.Button()
-        Me.axVLCTrailer = New AxAXVLC.AxVLCPlugin2()
         Me.btnPlayInBrowser = New System.Windows.Forms.Button()
+        Me.pnlTrailerPreview = New System.Windows.Forms.Panel()
+        Me.pnlTrailerPreviewNoPlayer = New System.Windows.Forms.Panel()
+        Me.tblTrailerPreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblTrailerPreviewNoPlayer = New System.Windows.Forms.Label()
         Me.gbSelectTrailer.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.gbYouTubeSearch.SuspendLayout()
         Me.gbManualTrailer.SuspendLayout()
         Me.pnlTrailerSelect.SuspendLayout()
         Me.gbPreview.SuspendLayout()
-        CType(Me.axVLCTrailer, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlTrailerPreview.SuspendLayout()
+        Me.pnlTrailerPreviewNoPlayer.SuspendLayout()
+        Me.tblTrailerPreviewNoPlayer.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -316,11 +318,8 @@ Partial Class dlgTrailerSelect
         '
         'gbPreview
         '
-        Me.gbPreview.Controls.Add(Me.btnTrailerMute)
-        Me.gbPreview.Controls.Add(Me.btnTrailerStop)
+        Me.gbPreview.Controls.Add(Me.pnlTrailerPreview)
         Me.gbPreview.Controls.Add(Me.gbManualTrailer)
-        Me.gbPreview.Controls.Add(Me.btnTrailerPlay)
-        Me.gbPreview.Controls.Add(Me.axVLCTrailer)
         Me.gbPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbPreview.Location = New System.Drawing.Point(597, 9)
         Me.gbPreview.Name = "gbPreview"
@@ -328,44 +327,6 @@ Partial Class dlgTrailerSelect
         Me.gbPreview.TabIndex = 9
         Me.gbPreview.TabStop = False
         Me.gbPreview.Text = "Preview"
-        '
-        'btnTrailerMute
-        '
-        Me.btnTrailerMute.Location = New System.Drawing.Point(309, 244)
-        Me.btnTrailerMute.Name = "btnTrailerMute"
-        Me.btnTrailerMute.Size = New System.Drawing.Size(75, 23)
-        Me.btnTrailerMute.TabIndex = 15
-        Me.btnTrailerMute.Text = "Mute"
-        Me.btnTrailerMute.UseVisualStyleBackColor = True
-        '
-        'btnTrailerStop
-        '
-        Me.btnTrailerStop.Enabled = False
-        Me.btnTrailerStop.Location = New System.Drawing.Point(94, 244)
-        Me.btnTrailerStop.Name = "btnTrailerStop"
-        Me.btnTrailerStop.Size = New System.Drawing.Size(75, 23)
-        Me.btnTrailerStop.TabIndex = 14
-        Me.btnTrailerStop.Text = "Stop"
-        Me.btnTrailerStop.UseVisualStyleBackColor = True
-        '
-        'btnTrailerPlay
-        '
-        Me.btnTrailerPlay.Enabled = False
-        Me.btnTrailerPlay.Location = New System.Drawing.Point(13, 244)
-        Me.btnTrailerPlay.Name = "btnTrailerPlay"
-        Me.btnTrailerPlay.Size = New System.Drawing.Size(75, 23)
-        Me.btnTrailerPlay.TabIndex = 13
-        Me.btnTrailerPlay.Text = "Play"
-        Me.btnTrailerPlay.UseVisualStyleBackColor = True
-        '
-        'axVLCTrailer
-        '
-        Me.axVLCTrailer.Enabled = True
-        Me.axVLCTrailer.Location = New System.Drawing.Point(7, 22)
-        Me.axVLCTrailer.Name = "axVLCTrailer"
-        Me.axVLCTrailer.OcxState = CType(resources.GetObject("axVLCTrailer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCTrailer.Size = New System.Drawing.Size(384, 216)
-        Me.axVLCTrailer.TabIndex = 10
         '
         'btnPlayInBrowser
         '
@@ -376,6 +337,50 @@ Partial Class dlgTrailerSelect
         Me.btnPlayInBrowser.TabIndex = 4
         Me.btnPlayInBrowser.Text = "Open In Browser"
         Me.btnPlayInBrowser.UseVisualStyleBackColor = True
+        '
+        'pnlTrailerPreview
+        '
+        Me.pnlTrailerPreview.BackColor = System.Drawing.Color.DimGray
+        Me.pnlTrailerPreview.Controls.Add(Me.pnlTrailerPreviewNoPlayer)
+        Me.pnlTrailerPreview.Location = New System.Drawing.Point(7, 22)
+        Me.pnlTrailerPreview.Name = "pnlTrailerPreview"
+        Me.pnlTrailerPreview.Size = New System.Drawing.Size(384, 216)
+        Me.pnlTrailerPreview.TabIndex = 16
+        '
+        'pnlTrailerPreviewNoPlayer
+        '
+        Me.pnlTrailerPreviewNoPlayer.BackColor = System.Drawing.Color.White
+        Me.pnlTrailerPreviewNoPlayer.Controls.Add(Me.tblTrailerPreviewNoPlayer)
+        Me.pnlTrailerPreviewNoPlayer.Location = New System.Drawing.Point(78, 77)
+        Me.pnlTrailerPreviewNoPlayer.Name = "pnlTrailerPreviewNoPlayer"
+        Me.pnlTrailerPreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
+        Me.pnlTrailerPreviewNoPlayer.TabIndex = 0
+        '
+        'tblTrailerPreviewNoPlayer
+        '
+        Me.tblTrailerPreviewNoPlayer.AutoSize = True
+        Me.tblTrailerPreviewNoPlayer.ColumnCount = 1
+        Me.tblTrailerPreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblTrailerPreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblTrailerPreviewNoPlayer.Controls.Add(Me.lblTrailerPreviewNoPlayer, 0, 0)
+        Me.tblTrailerPreviewNoPlayer.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTrailerPreviewNoPlayer.Location = New System.Drawing.Point(0, 0)
+        Me.tblTrailerPreviewNoPlayer.Name = "tblTrailerPreviewNoPlayer"
+        Me.tblTrailerPreviewNoPlayer.RowCount = 1
+        Me.tblTrailerPreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblTrailerPreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56.0!))
+        Me.tblTrailerPreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
+        Me.tblTrailerPreviewNoPlayer.TabIndex = 0
+        '
+        'lblTrailerPreviewNoPlayer
+        '
+        Me.lblTrailerPreviewNoPlayer.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblTrailerPreviewNoPlayer.AutoSize = True
+        Me.lblTrailerPreviewNoPlayer.Location = New System.Drawing.Point(52, 21)
+        Me.lblTrailerPreviewNoPlayer.Name = "lblTrailerPreviewNoPlayer"
+        Me.lblTrailerPreviewNoPlayer.Size = New System.Drawing.Size(137, 13)
+        Me.lblTrailerPreviewNoPlayer.TabIndex = 0
+        Me.lblTrailerPreviewNoPlayer.Text = "no Media Player enabled"
         '
         'dlgTrailerSelect
         '
@@ -406,7 +411,11 @@ Partial Class dlgTrailerSelect
         Me.gbManualTrailer.PerformLayout()
         Me.pnlTrailerSelect.ResumeLayout(False)
         Me.gbPreview.ResumeLayout(False)
-        CType(Me.axVLCTrailer, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlTrailerPreview.ResumeLayout(False)
+        Me.pnlTrailerPreviewNoPlayer.ResumeLayout(False)
+        Me.pnlTrailerPreviewNoPlayer.PerformLayout()
+        Me.tblTrailerPreviewNoPlayer.ResumeLayout(False)
+        Me.tblTrailerPreviewNoPlayer.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -432,11 +441,7 @@ Partial Class dlgTrailerSelect
     Friend WithEvents gbYouTubeSearch As System.Windows.Forms.GroupBox
     Friend WithEvents btnYouTubeSearch As System.Windows.Forms.Button
     Friend WithEvents txtYouTubeSearch As System.Windows.Forms.TextBox
-    Friend WithEvents axVLCTrailer As AxAXVLC.AxVLCPlugin2
     Friend WithEvents btnTrailerScrape As System.Windows.Forms.Button
-    Friend WithEvents btnTrailerMute As System.Windows.Forms.Button
-    Friend WithEvents btnTrailerStop As System.Windows.Forms.Button
-    Friend WithEvents btnTrailerPlay As System.Windows.Forms.Button
     Friend WithEvents colURL As System.Windows.Forms.ColumnHeader
     Friend WithEvents colWebURL As System.Windows.Forms.ColumnHeader
     Friend WithEvents colDescription As System.Windows.Forms.ColumnHeader
@@ -445,5 +450,9 @@ Partial Class dlgTrailerSelect
     Friend WithEvents colSource As System.Windows.Forms.ColumnHeader
     Friend WithEvents colNumber As System.Windows.Forms.ColumnHeader
     Friend WithEvents colExtension As System.Windows.Forms.ColumnHeader
+    Friend WithEvents pnlTrailerPreview As System.Windows.Forms.Panel
+    Friend WithEvents pnlTrailerPreviewNoPlayer As System.Windows.Forms.Panel
+    Friend WithEvents tblTrailerPreviewNoPlayer As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblTrailerPreviewNoPlayer As System.Windows.Forms.Label
 
 End Class

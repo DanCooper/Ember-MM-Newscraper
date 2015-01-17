@@ -161,7 +161,7 @@ Namespace IMDb
                             Link.FormatCodec = Enums.TrailerVideoCodec.MP4
                             Link.FormatQuality = Enums.TrailerVideoQuality.HD720p
                         Case Else
-                            Link.FormatQuality = Enums.TrailerVideoQuality.OTHERS
+                            Link.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
                     End Select
 
                     If Not String.IsNullOrEmpty(Link.URL) Then 'AndAlso sHTTP.IsValidURL(Link.URL) Then

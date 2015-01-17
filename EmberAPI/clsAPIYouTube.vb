@@ -132,7 +132,7 @@ Namespace YouTube
                     Case "6" 'Discontinued
                         vLink.Description = "270p (FLV, H.263)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.FLV
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.OTHERS
+                        vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
                         vLink.isDash = False
                     Case "13" 'Discontinued
                         vLink.Description = "144p (3GP, MPEG-4)"
@@ -177,7 +177,7 @@ Namespace YouTube
                     Case "38" 'Discontinued
                         vLink.Description = "1536p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.OTHERS
+                        vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
                         vLink.isDash = False
                     Case "43"
                         vLink.Description = "360p (WebM, VP8)"
@@ -217,7 +217,7 @@ Namespace YouTube
                     Case "85"
                         vLink.Description = "3D 520p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.OTHERS
+                        vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
                         vLink.isDash = False
                     Case "100"
                         vLink.Description = "3D 360p (WebM, VP8)"
@@ -356,8 +356,9 @@ Namespace YouTube
                         vLink.isDash = True
                     Case Else
                         vLink.Description = "Other"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.OTHERS
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.OTHERS
+                        vLink.FormatCodec = Enums.TrailerVideoCodec.UNKNOWN
+                        vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
+                        vLink.isDash = False
                 End Select
 
                 If Not String.IsNullOrEmpty(vLink.Description) Then
@@ -545,8 +546,8 @@ Namespace YouTube
 
         Public Sub Clear()
             Me.Description = String.Empty
-            Me._FormatCodec = Enums.TrailerAudioCodec.OTHERS
-            Me._FormatQuality = Enums.TrailerAudioQuality.OTHERS
+            Me._FormatCodec = Enums.TrailerAudioCodec.UNKNOWN
+            Me._FormatQuality = Enums.TrailerAudioQuality.UNKNOWN
             Me._URL = String.Empty
         End Sub
 
@@ -632,8 +633,8 @@ Namespace YouTube
 
         Public Sub Clear()
             Me.Description = String.Empty
-            Me._formatcodec = Enums.TrailerVideoCodec.OTHERS
-            Me._formatquality = Enums.TrailerVideoQuality.OTHERS
+            Me._formatcodec = Enums.TrailerVideoCodec.UNKNOWN
+            Me._formatquality = Enums.TrailerVideoQuality.UNKNOWN
             Me._isdash = False
             Me._url = String.Empty
         End Sub

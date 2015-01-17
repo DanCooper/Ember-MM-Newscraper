@@ -787,8 +787,8 @@ Public Class Enums
         FrameExtrator_Movie = 8
         FrameExtrator_TVEpisode = 9
         Generic = 10
-        MediaPreview_Audio = 11
-        MediaPreview_Video = 12
+        MediaPlayer_Audio = 11
+        MediaPlayer_Video = 12
         MovieImageNaming = 13
         Notification = 14
         OnBannerSave_Movie = 15
@@ -991,7 +991,7 @@ Public Class Enums
     Public Enum TrailerAudioCodec As Integer
         MP4 = 0
         WebM = 1
-        OTHERS = 3
+        UNKNOWN = 3
     End Enum
     ''' <summary>
     ''' Enum representing the trailer quality options
@@ -1004,7 +1004,7 @@ Public Class Enums
         AAC48kbps = 3
         Vorbis192kbps = 4
         Vorbis128kbps = 5
-        OTHERS = 6
+        UNKNOWN = 6
     End Enum
     ''' <summary>
     ''' Enum representing the trailer codec options
@@ -1015,7 +1015,7 @@ Public Class Enums
         WebM = 1
         v3GP = 2
         FLV = 3
-        OTHERS = 4
+        UNKNOWN = 4
     End Enum
     ''' <summary>
     ''' Enum representing the trailer quality options
@@ -1035,7 +1035,7 @@ Public Class Enums
         SQ240p = 10
         SQ144p = 11
         SQ144p15fps = 12
-        OTHERS = 13
+        UNKNOWN = 13
     End Enum
     ''' <summary>
     ''' Enum represeting valid movie image types

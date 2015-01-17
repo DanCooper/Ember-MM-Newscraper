@@ -35,12 +35,20 @@ Public Class frmSettingsHolder
 
 #Region "Methods"
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        clsVLCTestDialog.VLCTest()
+    Private Sub btnTest_Click(sender As Object, e As EventArgs) Handles btnTestInstallation.Click
+        clsVLCTest.DoTest(True)
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent ModuleEnabledChanged(cbEnabled.Checked, 0)
+    Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked, 0)
+    End Sub
+
+    Private Sub chkUseAsAudioPlayer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseAsAudioPlayer.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkUseAsVideoPlayer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseAsVideoPlayer.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Public Sub New()
@@ -49,7 +57,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
     End Sub
 
 #End Region 'Methods

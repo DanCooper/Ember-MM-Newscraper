@@ -130,7 +130,7 @@ Public Class dlgThemeSelect
     Private Sub lvThemes_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThemes.DoubleClick
         Dim tURL As String = Me.lvThemes.SelectedItems(0).SubItems(1).Text.ToString
         Dim tWebURL As String = Me.lvThemes.SelectedItems(0).SubItems(6).Text.ToString
-        Me.vlcPlayer.playlist.stop()
+        'Me.vlcPlayer.playlist.stop()
 
         If tURL.Contains("goear") Then
             'GoEar needs a existing connection to download files, otherwise you will be blocked
@@ -138,9 +138,9 @@ Public Class dlgThemeSelect
             dummyclient.OpenRead(tWebURL)
             dummyclient.Dispose()
         End If
-        Me.vlcPlayer.playlist.items.clear()
-        Me.vlcPlayer.playlist.add(tURL)
-        Me.vlcPlayer.playlist.play()
+        'Me.vlcPlayer.playlist.items.clear()
+        'Me.vlcPlayer.playlist.add(tURL)
+        'Me.vlcPlayer.playlist.play()
     End Sub
 
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
@@ -169,7 +169,7 @@ Public Class dlgThemeSelect
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
         'Me.TrailerStop()
-        Me.vlcPlayer.playlist.stop()
+        'Me.vlcPlayer.playlist.stop()
 
         Me.OK_Button.Enabled = isEnabled
         Me.lvThemes.Enabled = isEnabled

@@ -258,7 +258,7 @@ Public Class dlgEditMovie
 
         Try
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Master.currMovie, tList, True, True) = Windows.Forms.DialogResult.OK Then
+            If dlgTrlS.ShowDialog(Master.currMovie, tList, True, True, True) = Windows.Forms.DialogResult.OK Then
                 tURL = dlgTrlS.Results.URL
             End If
 
@@ -1078,7 +1078,7 @@ Public Class dlgEditMovie
         Try
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
+            If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
                 tResults = dlgTrlS.Results
                 MovieTrailer = tResults.WebTrailer
                 MovieTrailer.isEdit = True
@@ -1096,7 +1096,7 @@ Public Class dlgEditMovie
         Try
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
+            If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
                 MovieTrailer = dlgTrlS.Results.WebTrailer
                 MovieTrailer.isEdit = True
                 TrailerAddToPlayer(MovieTrailer)
@@ -1881,14 +1881,14 @@ Public Class dlgEditMovie
             End If
 
             Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPreview_Audio, paramsThemePreview, Nothing, True)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
             pnlThemePreview.Controls.Add(DirectCast(paramsThemePreview(0), Panel))
             If Not String.IsNullOrEmpty(pnlThemePreview.Controls.Item(1).Name) Then
                 pnlThemePreviewNoPlayer.Visible = False
             End If
 
             Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPreview_Video, paramsTrailerPreview, Nothing, True)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
             pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
             If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
                 pnlTrailerPreviewNoPlayer.Visible = False

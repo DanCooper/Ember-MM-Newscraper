@@ -20,7 +20,7 @@
 
 Imports NLog
 
-Public Class clsVLCTestDialog
+Public Class clsVLCTest
 
 #Region "Fields"
 
@@ -30,15 +30,17 @@ Public Class clsVLCTestDialog
 
 #Region "Methods"
 
-    Public Shared Sub VLCTest()
+    Public Shared Function DoTest(Optional ByVal withDialog As Boolean = False) As Boolean
         Try
             Dim VLCPlayer As New AXVLC.VLCPlugin2
-            MsgBox("Looking good", MsgBoxStyle.OkOnly, "OK")
+            If withDialog Then MsgBox("Looking good", MsgBoxStyle.OkOnly, "OK")
+            Return True
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             MsgBox("VLC ActiveX plugin is not registred", MsgBoxStyle.Critical, "Error")
+            Return False
         End Try
-    End Sub
+    End Function
 
 #End Region 'Methods
 
