@@ -12,13 +12,54 @@ namespace Trakttv.TraktAPI.Model
     [DataContract]
     public class TraktResponse
     {
-        [DataMember(Name = "status")]
-        public string Status { get; set; }
+        [DataMember(Name = "added")]
+        public Items Added { get; set; }
 
-        [DataMember(Name = "message")]
-        public string Message { get; set; }
+        [DataMember(Name = "deleted")]
+        public Items Deleted { get; set; }
 
-        [DataMember(Name = "error")]
-        public string Error { get; set; }
+        [DataMember(Name = "existing")]
+        public Items Existing { get; set; }
+
+        [DataContract]
+        public class Items
+        {
+            [DataMember(Name = "movies")]
+            public int Movies { get; set; }
+
+            [DataMember(Name = "shows")]
+            public int Shows { get; set; }
+
+            [DataMember(Name = "seasons")]
+            public int Seasons { get; set; }
+
+            [DataMember(Name = "episodes")]
+            public int Episodes { get; set; }
+
+            [DataMember(Name = "people")]
+            public int People { get; set; }
+        }
+
+        [DataMember(Name = "not_found")]
+        public NotFoundObjects NotFound { get; set; }
+
+        [DataContract]
+        public class NotFoundObjects
+        {
+            [DataMember(Name = "movies")]
+            public List<TraktMovie> Movies { get; set; }
+
+            [DataMember(Name = "shows")]
+            public List<TraktShow> Shows { get; set; }
+
+            [DataMember(Name = "episodes")]
+            public List<TraktEpisode> Episodes { get; set; }
+
+            [DataMember(Name = "seasons")]
+            public List<TraktSeason> Seasons { get; set; }
+
+            [DataMember(Name = "people")]
+            public List<TraktPerson> People { get; set; }
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿            '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+﻿           'WARNING: 2015/01/18 OUTDATED v1 examples below! See for trakt module in Ember to watch updated methods'
+		   
+		    '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             'Some Sample VB CODE for getting watched movies from Trakt - calling from Ember Module!
             'Get watched movies of user
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

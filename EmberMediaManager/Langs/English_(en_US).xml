@@ -1426,4 +1426,10 @@
   <string id="1334">Downloading Dash Audio...</string>
   <string id="1335">Downloading Dash Video...</string>
   <string id="1336">Merging Trailer...</string>
+  <string id="1337">Sync Watchlist</string>
+  <string id="1338">Get movies from trakt.tv watchlist</string>
+  <string id="1339">Get episodes from trakt.tv watchlist</string>
+  <string id="1340">Remove watched movies from trakt.tv watchlist</string>
+  <string id="1341">Clear trakt.tv watchlist</string>
+  <string id="1342">Send unwatched movies to trakt.tv watchlist</string>  
 </strings>

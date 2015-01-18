@@ -22,8 +22,8 @@ Partial Class dlgTrakttvManager
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrakttvManager))
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -36,6 +36,8 @@ Partial Class dlgTrakttvManager
         Me.lblCompiling = New System.Windows.Forms.Label()
         Me.lblFile = New System.Windows.Forms.Label()
         Me.lblCanceling = New System.Windows.Forms.Label()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.pnlTrakt = New System.Windows.Forms.Panel()
         Me.tbTrakt = New System.Windows.Forms.TabControl()
         Me.tbptraktPlaycount = New System.Windows.Forms.TabPage()
@@ -50,6 +52,20 @@ Partial Class dlgTrakttvManager
         Me.lbltraktPlaycounthelp = New System.Windows.Forms.Label()
         Me.btntraktPlaycountSyncLibrary = New System.Windows.Forms.Button()
         Me.btntraktPlaycountGetSeries = New System.Windows.Forms.Button()
+        Me.tbptraktWatchlist = New System.Windows.Forms.TabPage()
+        Me.pnltraktWatchlist = New System.Windows.Forms.Panel()
+        Me.gbtraktWatchlist = New System.Windows.Forms.GroupBox()
+        Me.btntraktWatchlistGetMovies = New System.Windows.Forms.Button()
+        Me.dgvtraktWatchlist = New System.Windows.Forms.DataGridView()
+        Me.coltraktWatchlistTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktWatchlistYear = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktWatchlistListedAt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktWatchlistIMDB = New System.Windows.Forms.DataGridViewLinkColumn()
+        Me.lbltraktWatchliststate = New System.Windows.Forms.Label()
+        Me.prgtraktWatchlist = New System.Windows.Forms.ProgressBar()
+        Me.lbltraktWatchlisthelp = New System.Windows.Forms.Label()
+        Me.btntraktWatchlistSyncLibrary = New System.Windows.Forms.Button()
+        Me.btntraktWatchlistGetSeries = New System.Windows.Forms.Button()
         Me.tbptraktListsSync = New System.Windows.Forms.TabPage()
         Me.pnltraktLists = New System.Windows.Forms.Panel()
         Me.gbtraktListsSYNC = New System.Windows.Forms.GroupBox()
@@ -72,12 +88,17 @@ Partial Class dlgTrakttvManager
         Me.btntraktListsGetDatabase = New System.Windows.Forms.Button()
         Me.lbDBLists = New System.Windows.Forms.ListBox()
         Me.txttraktListsEditList = New System.Windows.Forms.TextBox()
+        Me.btntraktListsRemoveList = New System.Windows.Forms.Button()
+        Me.btntraktListsEditList = New System.Windows.Forms.Button()
+        Me.btntraktListsNewList = New System.Windows.Forms.Button()
         Me.lbtraktLists = New System.Windows.Forms.ListBox()
         Me.prgtraktLists = New System.Windows.Forms.ProgressBar()
         Me.gbtraktListsMovies = New System.Windows.Forms.GroupBox()
         Me.dgvMovies = New System.Windows.Forms.DataGridView()
+        Me.btntraktListsAddMovie = New System.Windows.Forms.Button()
         Me.gbtraktListsMoviesInLists = New System.Windows.Forms.GroupBox()
         Me.lbltraktListsCurrentList = New System.Windows.Forms.Label()
+        Me.btntraktListsRemove = New System.Windows.Forms.Button()
         Me.lbtraktListsMoviesinLists = New System.Windows.Forms.ListBox()
         Me.tbptraktListViewer = New System.Windows.Forms.TabPage()
         Me.pnltraktListsComparer = New System.Windows.Forms.Panel()
@@ -101,22 +122,23 @@ Partial Class dlgTrakttvManager
         Me.btntraktListsload = New System.Windows.Forms.Button()
         Me.lbltraktListsurl = New System.Windows.Forms.Label()
         Me.txttraktListsurl = New System.Windows.Forms.TextBox()
-        Me.btntraktListsRemoveList = New System.Windows.Forms.Button()
-        Me.btntraktListsEditList = New System.Windows.Forms.Button()
-        Me.btntraktListsNewList = New System.Windows.Forms.Button()
-        Me.btntraktListsAddMovie = New System.Windows.Forms.Button()
-        Me.btntraktListsRemove = New System.Windows.Forms.Button()
-        Me.btnCancel = New System.Windows.Forms.Button()
-        Me.pbTopLogo = New System.Windows.Forms.PictureBox()
+        Me.btntraktWatchlistSendEmberUnwatched = New System.Windows.Forms.Button()
+        Me.btntraktWatchlistClean = New System.Windows.Forms.Button()
+        Me.gbtraktWatchlistExpert = New System.Windows.Forms.GroupBox()
         Me.pnlTop.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlSaving.SuspendLayout()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTrakt.SuspendLayout()
         Me.tbTrakt.SuspendLayout()
         Me.tbptraktPlaycount.SuspendLayout()
         Me.pnltraktPlaycount.SuspendLayout()
         Me.gbtraktPlaycount.SuspendLayout()
         CType(Me.dgvtraktPlaycount, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tbptraktWatchlist.SuspendLayout()
+        Me.pnltraktWatchlist.SuspendLayout()
+        Me.gbtraktWatchlist.SuspendLayout()
+        CType(Me.dgvtraktWatchlist, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tbptraktListsSync.SuspendLayout()
         Me.pnltraktLists.SuspendLayout()
         Me.gbtraktListsSYNC.SuspendLayout()
@@ -130,7 +152,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktListsComparer.SuspendLayout()
         Me.gbtraktListsViewer.SuspendLayout()
         CType(Me.dgvtraktList, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbtraktWatchlistExpert.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -266,6 +288,31 @@ Partial Class dlgTrakttvManager
         Me.lblCanceling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblCanceling.Visible = False
         '
+        'btnCancel
+        '
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
+        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
+        Me.btnCancel.TabIndex = 2
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'pbTopLogo
+        '
+        Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
+        Me.pbTopLogo.Image = Global.generic.EmberCore.Trakt.My.Resources.Resources.icon
+        Me.pbTopLogo.Location = New System.Drawing.Point(12, 7)
+        Me.pbTopLogo.Name = "pbTopLogo"
+        Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
+        Me.pbTopLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.pbTopLogo.TabIndex = 0
+        Me.pbTopLogo.TabStop = False
+        '
         'pnlTrakt
         '
         Me.pnlTrakt.Controls.Add(Me.tbTrakt)
@@ -277,6 +324,7 @@ Partial Class dlgTrakttvManager
         'tbTrakt
         '
         Me.tbTrakt.Controls.Add(Me.tbptraktPlaycount)
+        Me.tbTrakt.Controls.Add(Me.tbptraktWatchlist)
         Me.tbTrakt.Controls.Add(Me.tbptraktListsSync)
         Me.tbTrakt.Controls.Add(Me.tbptraktListViewer)
         Me.tbTrakt.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -420,6 +468,156 @@ Partial Class dlgTrakttvManager
         Me.btntraktPlaycountGetSeries.Text = "Get watched episodes"
         Me.btntraktPlaycountGetSeries.UseVisualStyleBackColor = True
         '
+        'tbptraktWatchlist
+        '
+        Me.tbptraktWatchlist.Controls.Add(Me.pnltraktWatchlist)
+        Me.tbptraktWatchlist.Location = New System.Drawing.Point(4, 27)
+        Me.tbptraktWatchlist.Name = "tbptraktWatchlist"
+        Me.tbptraktWatchlist.Padding = New System.Windows.Forms.Padding(3)
+        Me.tbptraktWatchlist.Size = New System.Drawing.Size(1096, 435)
+        Me.tbptraktWatchlist.TabIndex = 3
+        Me.tbptraktWatchlist.Text = "Watchlist"
+        Me.tbptraktWatchlist.UseVisualStyleBackColor = True
+        '
+        'pnltraktWatchlist
+        '
+        Me.pnltraktWatchlist.Controls.Add(Me.gbtraktWatchlist)
+        Me.pnltraktWatchlist.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnltraktWatchlist.Location = New System.Drawing.Point(3, 3)
+        Me.pnltraktWatchlist.Name = "pnltraktWatchlist"
+        Me.pnltraktWatchlist.Size = New System.Drawing.Size(1090, 429)
+        Me.pnltraktWatchlist.TabIndex = 42
+        '
+        'gbtraktWatchlist
+        '
+        Me.gbtraktWatchlist.Controls.Add(Me.gbtraktWatchlistExpert)
+        Me.gbtraktWatchlist.Controls.Add(Me.btntraktWatchlistGetMovies)
+        Me.gbtraktWatchlist.Controls.Add(Me.dgvtraktWatchlist)
+        Me.gbtraktWatchlist.Controls.Add(Me.lbltraktWatchliststate)
+        Me.gbtraktWatchlist.Controls.Add(Me.prgtraktWatchlist)
+        Me.gbtraktWatchlist.Controls.Add(Me.lbltraktWatchlisthelp)
+        Me.gbtraktWatchlist.Controls.Add(Me.btntraktWatchlistSyncLibrary)
+        Me.gbtraktWatchlist.Controls.Add(Me.btntraktWatchlistGetSeries)
+        Me.gbtraktWatchlist.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbtraktWatchlist.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbtraktWatchlist.Location = New System.Drawing.Point(0, 0)
+        Me.gbtraktWatchlist.Name = "gbtraktWatchlist"
+        Me.gbtraktWatchlist.Size = New System.Drawing.Size(1090, 429)
+        Me.gbtraktWatchlist.TabIndex = 41
+        Me.gbtraktWatchlist.TabStop = False
+        Me.gbtraktWatchlist.Text = "Sync Watchlist"
+        '
+        'btntraktWatchlistGetMovies
+        '
+        Me.btntraktWatchlistGetMovies.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktWatchlistGetMovies.Location = New System.Drawing.Point(6, 23)
+        Me.btntraktWatchlistGetMovies.Name = "btntraktWatchlistGetMovies"
+        Me.btntraktWatchlistGetMovies.Size = New System.Drawing.Size(105, 66)
+        Me.btntraktWatchlistGetMovies.TabIndex = 4
+        Me.btntraktWatchlistGetMovies.Text = "Get movies from trakt.tv watchlist"
+        Me.btntraktWatchlistGetMovies.UseVisualStyleBackColor = True
+        '
+        'dgvtraktWatchlist
+        '
+        Me.dgvtraktWatchlist.AllowUserToAddRows = False
+        Me.dgvtraktWatchlist.AllowUserToDeleteRows = False
+        Me.dgvtraktWatchlist.AllowUserToResizeColumns = False
+        Me.dgvtraktWatchlist.AllowUserToResizeRows = False
+        Me.dgvtraktWatchlist.BackgroundColor = System.Drawing.Color.White
+        Me.dgvtraktWatchlist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvtraktWatchlist.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.coltraktWatchlistTitle, Me.coltraktWatchlistYear, Me.coltraktWatchlistListedAt, Me.coltraktWatchlistIMDB})
+        Me.dgvtraktWatchlist.Location = New System.Drawing.Point(258, 23)
+        Me.dgvtraktWatchlist.MultiSelect = False
+        Me.dgvtraktWatchlist.Name = "dgvtraktWatchlist"
+        Me.dgvtraktWatchlist.RowHeadersVisible = False
+        Me.dgvtraktWatchlist.RowHeadersWidth = 175
+        Me.dgvtraktWatchlist.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.dgvtraktWatchlist.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.dgvtraktWatchlist.ShowCellErrors = False
+        Me.dgvtraktWatchlist.ShowCellToolTips = False
+        Me.dgvtraktWatchlist.ShowRowErrors = False
+        Me.dgvtraktWatchlist.Size = New System.Drawing.Size(747, 400)
+        Me.dgvtraktWatchlist.TabIndex = 32
+        '
+        'coltraktWatchlistTitle
+        '
+        Me.coltraktWatchlistTitle.Frozen = True
+        Me.coltraktWatchlistTitle.HeaderText = "Title"
+        Me.coltraktWatchlistTitle.Name = "coltraktWatchlistTitle"
+        Me.coltraktWatchlistTitle.Width = 250
+        '
+        'coltraktWatchlistYear
+        '
+        Me.coltraktWatchlistYear.Frozen = True
+        Me.coltraktWatchlistYear.HeaderText = "Year"
+        Me.coltraktWatchlistYear.Name = "coltraktWatchlistYear"
+        '
+        'coltraktWatchlistListedAt
+        '
+        Me.coltraktWatchlistListedAt.Frozen = True
+        Me.coltraktWatchlistListedAt.HeaderText = "Listed At"
+        Me.coltraktWatchlistListedAt.Name = "coltraktWatchlistListedAt"
+        Me.coltraktWatchlistListedAt.Width = 130
+        '
+        'coltraktWatchlistIMDB
+        '
+        Me.coltraktWatchlistIMDB.Frozen = True
+        Me.coltraktWatchlistIMDB.HeaderText = "IMDB"
+        Me.coltraktWatchlistIMDB.Name = "coltraktWatchlistIMDB"
+        Me.coltraktWatchlistIMDB.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.coltraktWatchlistIMDB.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.coltraktWatchlistIMDB.Width = 264
+        '
+        'lbltraktWatchliststate
+        '
+        Me.lbltraktWatchliststate.AutoSize = True
+        Me.lbltraktWatchliststate.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktWatchliststate.ForeColor = System.Drawing.Color.SteelBlue
+        Me.lbltraktWatchliststate.Location = New System.Drawing.Point(184, 171)
+        Me.lbltraktWatchliststate.Name = "lbltraktWatchliststate"
+        Me.lbltraktWatchliststate.Size = New System.Drawing.Size(45, 15)
+        Me.lbltraktWatchliststate.TabIndex = 35
+        Me.lbltraktWatchliststate.Text = "Done!"
+        Me.lbltraktWatchliststate.Visible = False
+        '
+        'prgtraktWatchlist
+        '
+        Me.prgtraktWatchlist.Location = New System.Drawing.Point(6, 145)
+        Me.prgtraktWatchlist.Name = "prgtraktWatchlist"
+        Me.prgtraktWatchlist.Size = New System.Drawing.Size(223, 23)
+        Me.prgtraktWatchlist.TabIndex = 34
+        '
+        'lbltraktWatchlisthelp
+        '
+        Me.lbltraktWatchlisthelp.AutoSize = True
+        Me.lbltraktWatchlisthelp.Location = New System.Drawing.Point(8, 171)
+        Me.lbltraktWatchlisthelp.Name = "lbltraktWatchlisthelp"
+        Me.lbltraktWatchlisthelp.Size = New System.Drawing.Size(11, 13)
+        Me.lbltraktWatchlisthelp.TabIndex = 40
+        Me.lbltraktWatchlisthelp.Text = "-"
+        '
+        'btntraktWatchlistSyncLibrary
+        '
+        Me.btntraktWatchlistSyncLibrary.Enabled = False
+        Me.btntraktWatchlistSyncLibrary.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktWatchlistSyncLibrary.Location = New System.Drawing.Point(6, 95)
+        Me.btntraktWatchlistSyncLibrary.Name = "btntraktWatchlistSyncLibrary"
+        Me.btntraktWatchlistSyncLibrary.Size = New System.Drawing.Size(223, 44)
+        Me.btntraktWatchlistSyncLibrary.TabIndex = 33
+        Me.btntraktWatchlistSyncLibrary.Text = "Remove watched movies from trakt.tv watchlist"
+        Me.btntraktWatchlistSyncLibrary.UseVisualStyleBackColor = True
+        '
+        'btntraktWatchlistGetSeries
+        '
+        Me.btntraktWatchlistGetSeries.Enabled = False
+        Me.btntraktWatchlistGetSeries.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktWatchlistGetSeries.Location = New System.Drawing.Point(124, 23)
+        Me.btntraktWatchlistGetSeries.Name = "btntraktWatchlistGetSeries"
+        Me.btntraktWatchlistGetSeries.Size = New System.Drawing.Size(105, 66)
+        Me.btntraktWatchlistGetSeries.TabIndex = 39
+        Me.btntraktWatchlistGetSeries.Text = "Get episodes from trakt.tv watchlist"
+        Me.btntraktWatchlistGetSeries.UseVisualStyleBackColor = True
+        '
         'tbptraktListsSync
         '
         Me.tbptraktListsSync.Controls.Add(Me.pnltraktLists)
@@ -441,6 +639,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktLists.Controls.Add(Me.gbtraktListsMovies)
         Me.pnltraktLists.Controls.Add(Me.gbtraktListsMoviesInLists)
         Me.pnltraktLists.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnltraktLists.Enabled = False
         Me.pnltraktLists.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktLists.Name = "pnltraktLists"
         Me.pnltraktLists.Size = New System.Drawing.Size(1090, 429)
@@ -661,6 +860,40 @@ Partial Class dlgTrakttvManager
         Me.txttraktListsEditList.Size = New System.Drawing.Size(178, 22)
         Me.txttraktListsEditList.TabIndex = 39
         '
+        'btntraktListsRemoveList
+        '
+        Me.btntraktListsRemoveList.Enabled = False
+        Me.btntraktListsRemoveList.Image = CType(resources.GetObject("btntraktListsRemoveList.Image"), System.Drawing.Image)
+        Me.btntraktListsRemoveList.Location = New System.Drawing.Point(188, 187)
+        Me.btntraktListsRemoveList.Name = "btntraktListsRemoveList"
+        Me.btntraktListsRemoveList.Size = New System.Drawing.Size(23, 23)
+        Me.btntraktListsRemoveList.TabIndex = 3
+        Me.btntraktListsRemoveList.UseVisualStyleBackColor = True
+        '
+        'btntraktListsEditList
+        '
+        Me.btntraktListsEditList.Enabled = False
+        Me.btntraktListsEditList.Image = CType(resources.GetObject("btntraktListsEditList.Image"), System.Drawing.Image)
+        Me.btntraktListsEditList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btntraktListsEditList.Location = New System.Drawing.Point(188, 160)
+        Me.btntraktListsEditList.Name = "btntraktListsEditList"
+        Me.btntraktListsEditList.Size = New System.Drawing.Size(23, 23)
+        Me.btntraktListsEditList.TabIndex = 2
+        Me.btntraktListsEditList.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btntraktListsEditList.UseVisualStyleBackColor = True
+        '
+        'btntraktListsNewList
+        '
+        Me.btntraktListsNewList.Enabled = False
+        Me.btntraktListsNewList.Image = CType(resources.GetObject("btntraktListsNewList.Image"), System.Drawing.Image)
+        Me.btntraktListsNewList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btntraktListsNewList.Location = New System.Drawing.Point(6, 187)
+        Me.btntraktListsNewList.Name = "btntraktListsNewList"
+        Me.btntraktListsNewList.Size = New System.Drawing.Size(23, 23)
+        Me.btntraktListsNewList.TabIndex = 1
+        Me.btntraktListsNewList.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btntraktListsNewList.UseVisualStyleBackColor = True
+        '
         'lbtraktLists
         '
         Me.lbtraktLists.Enabled = False
@@ -697,8 +930,8 @@ Partial Class dlgTrakttvManager
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeColumns = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle14
         Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -717,6 +950,18 @@ Partial Class dlgTrakttvManager
         Me.dgvMovies.Size = New System.Drawing.Size(243, 352)
         Me.dgvMovies.StandardTab = True
         Me.dgvMovies.TabIndex = 51
+        '
+        'btntraktListsAddMovie
+        '
+        Me.btntraktListsAddMovie.Enabled = False
+        Me.btntraktListsAddMovie.Image = CType(resources.GetObject("btntraktListsAddMovie.Image"), System.Drawing.Image)
+        Me.btntraktListsAddMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btntraktListsAddMovie.Location = New System.Drawing.Point(8, 382)
+        Me.btntraktListsAddMovie.Name = "btntraktListsAddMovie"
+        Me.btntraktListsAddMovie.Size = New System.Drawing.Size(23, 23)
+        Me.btntraktListsAddMovie.TabIndex = 1
+        Me.btntraktListsAddMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btntraktListsAddMovie.UseVisualStyleBackColor = True
         '
         'gbtraktListsMoviesInLists
         '
@@ -740,6 +985,16 @@ Partial Class dlgTrakttvManager
         Me.lbltraktListsCurrentList.TabIndex = 0
         Me.lbltraktListsCurrentList.Text = "None Selected"
         Me.lbltraktListsCurrentList.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'btntraktListsRemove
+        '
+        Me.btntraktListsRemove.Enabled = False
+        Me.btntraktListsRemove.Image = CType(resources.GetObject("btntraktListsRemove.Image"), System.Drawing.Image)
+        Me.btntraktListsRemove.Location = New System.Drawing.Point(205, 382)
+        Me.btntraktListsRemove.Name = "btntraktListsRemove"
+        Me.btntraktListsRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btntraktListsRemove.TabIndex = 4
+        Me.btntraktListsRemove.UseVisualStyleBackColor = True
         '
         'lbtraktListsMoviesinLists
         '
@@ -768,6 +1023,7 @@ Partial Class dlgTrakttvManager
         '
         Me.pnltraktListsComparer.Controls.Add(Me.gbtraktListsViewer)
         Me.pnltraktListsComparer.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnltraktListsComparer.Enabled = False
         Me.pnltraktListsComparer.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktListsComparer.Name = "pnltraktListsComparer"
         Me.pnltraktListsComparer.Size = New System.Drawing.Size(1090, 429)
@@ -977,86 +1233,38 @@ Partial Class dlgTrakttvManager
         Me.txttraktListsurl.Size = New System.Drawing.Size(294, 20)
         Me.txttraktListsurl.TabIndex = 44
         '
-        'btntraktListsRemoveList
+        'btntraktWatchlistSendEmberUnwatched
         '
-        Me.btntraktListsRemoveList.Enabled = False
-        Me.btntraktListsRemoveList.Image = CType(resources.GetObject("btntraktListsRemoveList.Image"), System.Drawing.Image)
-        Me.btntraktListsRemoveList.Location = New System.Drawing.Point(188, 187)
-        Me.btntraktListsRemoveList.Name = "btntraktListsRemoveList"
-        Me.btntraktListsRemoveList.Size = New System.Drawing.Size(23, 23)
-        Me.btntraktListsRemoveList.TabIndex = 3
-        Me.btntraktListsRemoveList.UseVisualStyleBackColor = True
+        Me.btntraktWatchlistSendEmberUnwatched.Enabled = False
+        Me.btntraktWatchlistSendEmberUnwatched.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktWatchlistSendEmberUnwatched.Location = New System.Drawing.Point(5, 83)
+        Me.btntraktWatchlistSendEmberUnwatched.Name = "btntraktWatchlistSendEmberUnwatched"
+        Me.btntraktWatchlistSendEmberUnwatched.Size = New System.Drawing.Size(223, 44)
+        Me.btntraktWatchlistSendEmberUnwatched.TabIndex = 41
+        Me.btntraktWatchlistSendEmberUnwatched.Text = "Send unwatched movies to trakt.tv watchlist"
+        Me.btntraktWatchlistSendEmberUnwatched.UseVisualStyleBackColor = True
         '
-        'btntraktListsEditList
+        'btntraktWatchlistClean
         '
-        Me.btntraktListsEditList.Enabled = False
-        Me.btntraktListsEditList.Image = CType(resources.GetObject("btntraktListsEditList.Image"), System.Drawing.Image)
-        Me.btntraktListsEditList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btntraktListsEditList.Location = New System.Drawing.Point(188, 160)
-        Me.btntraktListsEditList.Name = "btntraktListsEditList"
-        Me.btntraktListsEditList.Size = New System.Drawing.Size(23, 23)
-        Me.btntraktListsEditList.TabIndex = 2
-        Me.btntraktListsEditList.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btntraktListsEditList.UseVisualStyleBackColor = True
+        Me.btntraktWatchlistClean.Enabled = False
+        Me.btntraktWatchlistClean.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktWatchlistClean.Location = New System.Drawing.Point(6, 21)
+        Me.btntraktWatchlistClean.Name = "btntraktWatchlistClean"
+        Me.btntraktWatchlistClean.Size = New System.Drawing.Size(223, 44)
+        Me.btntraktWatchlistClean.TabIndex = 42
+        Me.btntraktWatchlistClean.Text = "Clear trakt.tv watchlist"
+        Me.btntraktWatchlistClean.UseVisualStyleBackColor = True
         '
-        'btntraktListsNewList
+        'gbtraktWatchlistExpert
         '
-        Me.btntraktListsNewList.Enabled = False
-        Me.btntraktListsNewList.Image = CType(resources.GetObject("btntraktListsNewList.Image"), System.Drawing.Image)
-        Me.btntraktListsNewList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btntraktListsNewList.Location = New System.Drawing.Point(6, 187)
-        Me.btntraktListsNewList.Name = "btntraktListsNewList"
-        Me.btntraktListsNewList.Size = New System.Drawing.Size(23, 23)
-        Me.btntraktListsNewList.TabIndex = 1
-        Me.btntraktListsNewList.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btntraktListsNewList.UseVisualStyleBackColor = True
-        '
-        'btntraktListsAddMovie
-        '
-        Me.btntraktListsAddMovie.Enabled = False
-        Me.btntraktListsAddMovie.Image = CType(resources.GetObject("btntraktListsAddMovie.Image"), System.Drawing.Image)
-        Me.btntraktListsAddMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btntraktListsAddMovie.Location = New System.Drawing.Point(8, 382)
-        Me.btntraktListsAddMovie.Name = "btntraktListsAddMovie"
-        Me.btntraktListsAddMovie.Size = New System.Drawing.Size(23, 23)
-        Me.btntraktListsAddMovie.TabIndex = 1
-        Me.btntraktListsAddMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btntraktListsAddMovie.UseVisualStyleBackColor = True
-        '
-        'btntraktListsRemove
-        '
-        Me.btntraktListsRemove.Enabled = False
-        Me.btntraktListsRemove.Image = CType(resources.GetObject("btntraktListsRemove.Image"), System.Drawing.Image)
-        Me.btntraktListsRemove.Location = New System.Drawing.Point(205, 382)
-        Me.btntraktListsRemove.Name = "btntraktListsRemove"
-        Me.btntraktListsRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btntraktListsRemove.TabIndex = 4
-        Me.btntraktListsRemove.UseVisualStyleBackColor = True
-        '
-        'btnCancel
-        '
-        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
-        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
-        Me.btnCancel.TabIndex = 2
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCancel.UseVisualStyleBackColor = True
-        '
-        'pbTopLogo
-        '
-        Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
-        Me.pbTopLogo.Image = Global.generic.EmberCore.Trakt.My.Resources.Resources.icon
-        Me.pbTopLogo.Location = New System.Drawing.Point(12, 7)
-        Me.pbTopLogo.Name = "pbTopLogo"
-        Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
-        Me.pbTopLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.pbTopLogo.TabIndex = 0
-        Me.pbTopLogo.TabStop = False
+        Me.gbtraktWatchlistExpert.Controls.Add(Me.btntraktWatchlistClean)
+        Me.gbtraktWatchlistExpert.Controls.Add(Me.btntraktWatchlistSendEmberUnwatched)
+        Me.gbtraktWatchlistExpert.Location = New System.Drawing.Point(6, 290)
+        Me.gbtraktWatchlistExpert.Name = "gbtraktWatchlistExpert"
+        Me.gbtraktWatchlistExpert.Size = New System.Drawing.Size(241, 133)
+        Me.gbtraktWatchlistExpert.TabIndex = 43
+        Me.gbtraktWatchlistExpert.TabStop = False
+        Me.gbtraktWatchlistExpert.Text = "Advanced Options"
         '
         'dlgTrakttvManager
         '
@@ -1081,6 +1289,7 @@ Partial Class dlgTrakttvManager
         Me.pnlCancel.ResumeLayout(False)
         Me.pnlSaving.ResumeLayout(False)
         Me.pnlSaving.PerformLayout()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTrakt.ResumeLayout(False)
         Me.tbTrakt.ResumeLayout(False)
         Me.tbptraktPlaycount.ResumeLayout(False)
@@ -1088,6 +1297,11 @@ Partial Class dlgTrakttvManager
         Me.gbtraktPlaycount.ResumeLayout(False)
         Me.gbtraktPlaycount.PerformLayout()
         CType(Me.dgvtraktPlaycount, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tbptraktWatchlist.ResumeLayout(False)
+        Me.pnltraktWatchlist.ResumeLayout(False)
+        Me.gbtraktWatchlist.ResumeLayout(False)
+        Me.gbtraktWatchlist.PerformLayout()
+        CType(Me.dgvtraktWatchlist, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tbptraktListsSync.ResumeLayout(False)
         Me.pnltraktLists.ResumeLayout(False)
         Me.pnltraktLists.PerformLayout()
@@ -1105,7 +1319,7 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsViewer.ResumeLayout(False)
         Me.gbtraktListsViewer.PerformLayout()
         CType(Me.dgvtraktList, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gbtraktWatchlistExpert.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -1193,5 +1407,22 @@ Partial Class dlgTrakttvManager
     Friend WithEvents chkltraktListsDetailsComments As System.Windows.Forms.CheckBox
     Friend WithEvents cbotraktListsDetailsPrivacy As System.Windows.Forms.ComboBox
     Friend WithEvents btntraktListsDetailsUpdate As System.Windows.Forms.Button
+    Friend WithEvents tbptraktWatchlist As System.Windows.Forms.TabPage
+    Friend WithEvents pnltraktWatchlist As System.Windows.Forms.Panel
+    Friend WithEvents gbtraktWatchlist As System.Windows.Forms.GroupBox
+    Friend WithEvents btntraktWatchlistGetMovies As System.Windows.Forms.Button
+    Friend WithEvents dgvtraktWatchlist As System.Windows.Forms.DataGridView
+    Friend WithEvents lbltraktWatchliststate As System.Windows.Forms.Label
+    Friend WithEvents prgtraktWatchlist As System.Windows.Forms.ProgressBar
+    Friend WithEvents lbltraktWatchlisthelp As System.Windows.Forms.Label
+    Friend WithEvents btntraktWatchlistSyncLibrary As System.Windows.Forms.Button
+    Friend WithEvents btntraktWatchlistGetSeries As System.Windows.Forms.Button
+    Friend WithEvents coltraktWatchlistTitle As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents coltraktWatchlistYear As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents coltraktWatchlistListedAt As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents coltraktWatchlistIMDB As System.Windows.Forms.DataGridViewLinkColumn
+    Friend WithEvents btntraktWatchlistSendEmberUnwatched As System.Windows.Forms.Button
+    Friend WithEvents gbtraktWatchlistExpert As System.Windows.Forms.GroupBox
+    Friend WithEvents btntraktWatchlistClean As System.Windows.Forms.Button
 
 End Class

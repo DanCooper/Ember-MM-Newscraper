@@ -7,18 +7,12 @@ using System.Runtime.Serialization;
 namespace Trakttv.TraktAPI.Model
 {
     [DataContract]
-    public class TraktMovieBase
+    public class TraktMovieBase : TraktId
     {
-        [DataMember(Name = "title")]
-        public string Title { get; set; }
+        [DataMember(Name = "imdb")]
+        public string Imdb { get; set; }
 
-        [DataMember(Name = "year")]
-        public string Year { get; set; }
-
-        [DataMember(Name = "imdb_id")]
-        public string IMDBID { get; set; }
-
-        [DataMember(Name = "tmdb_id")]
-        public string TMDBID { get; set; }
+        [DataMember(Name = "tmdb")]
+        public int? Tmdb { get; set; }
     }
 }

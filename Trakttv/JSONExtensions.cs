@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
-
+using System.Globalization;
 namespace Trakttv
 {
     /// <summary>
@@ -86,56 +86,16 @@ namespace Trakttv
             }
         }
 
-        public static string ToSlug(this string item)
+        /// <summary>
+        /// avoid null reference exception for IEnumerables that are null
+        /// before converting to a list
+        /// </summary>
+        public static List<T> ToNullableList<T>(this IEnumerable<T> source)
         {
-            string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
-            string invalidReStr = string.Format(@"[{0}]+", invalidChars);
-            return Regex.Replace(item, invalidReStr, string.Empty).ToLower().Replace(" ", "-");
-        }
+            if (source == null)
+                return null;
 
-        public static bool IsNumber(this string number)
-        {
-            double retValue;
-            return double.TryParse(number, out retValue);
-        }
-
-        public static string StripHTML(this string htmlString)
-        {
-            if (string.IsNullOrEmpty(htmlString)) return string.Empty;
-
-            string pattern = @"<(.|\n)*?>";
-            return Regex.Replace(htmlString, pattern, string.Empty);
-        }
-
-        public static string RemapHighOrderChars(this string input)
-        {
-            if (string.IsNullOrEmpty(input)) return string.Empty;
-
-            // hack to remap high order unicode characters with a low order equivalents
-            // for now, this allows better usage of clipping. This can be removed, once the skin engine can properly render unicode without falling back to sprites
-            // as unicode is more widely used, this will hit us more with existing font rendering only allowing cached font textures with clipping
-
-            input = input.Replace((char)8211, '-');  //	–
-            input = input.Replace((char)8212, '-');  //	—
-            input = input.Replace((char)8216, '\''); //	‘
-            input = input.Replace((char)8217, '\''); //	’
-            input = input.Replace((char)8220, '"');  //	“
-            input = input.Replace((char)8221, '"');  //	”
-            input = input.Replace((char)8223, '"');  // ‟
-            input = input.Replace((char)8226, '*');  //	•
-            input = input.Replace(((char)8230).ToString(), "...");  //	…
-
-            return input;
-        }
-
-        public static string SurroundWithDoubleQuotes(this string text)
-        {
-            return SurroundWith(text, "\"");
-        }
-
-        public static string SurroundWith(this string text, string ends)
-        {
-            return ends + text + ends;
+            return source.ToList();
         }
     }
 }
