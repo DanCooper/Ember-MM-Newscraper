@@ -2533,54 +2533,70 @@ Public Class frmMain
 
                 'Trailer
                 If Master.GlobalScrapeMod.Trailer Then
-                    If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                        Trailer.Clear()
-                        aUrlList.Clear()
-                        tURL = String.Empty
-                        If Trailer.WebTrailer.IsAllowedToDownload(DBScrapeMovie) Then
-                            If Not ModulesManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
-                                If aUrlList.Count > 0 Then
-                                    logger.Warn("[" & DBScrapeMovie.Movie.Title & "] Avalaible trailers: " & aUrlList.Count)
-                                Else
-                                    logger.Warn("[" & DBScrapeMovie.Movie.Title & "] NO trailers avalaible!")
-                                End If
-                                If aUrlList.Count > 0 Then
-                                    If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.GetPreferredTrailer(aUrlList, Trailer) Then
+                    'If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                    Trailer.Clear()
+                    aUrlList.Clear()
+                    tURL = String.Empty
+                    If Trailer.WebTrailer.IsAllowedToDownload(DBScrapeMovie) Then
+                        If Not ModulesManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
+                            If aUrlList.Count > 0 Then
+                                logger.Warn("[" & DBScrapeMovie.Movie.Title & "] Avalaible trailers: " & aUrlList.Count)
+                            Else
+                                logger.Warn("[" & DBScrapeMovie.Movie.Title & "] NO trailers avalaible!")
+                            End If
+                            If aUrlList.Count > 0 Then
+                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.GetPreferredTrailer(aUrlList, Trailer) Then
 
 
-                                        'Cocotus 2014/09/26 After going thourgh GetPreferredTrailers aUrlList is now sorted/filtered - any trailer on this list is ok and can be downloaded!
-                                        For Each _trailer As Trailers In aUrlList
-                                            'trailer URL shoud never be empty at this point anyway, might as well remove check
-                                            If Not String.IsNullOrEmpty(_trailer.URL) Then
-                                                'this will download the trailer and save it temporarly as "dummy.ext"
-                                                Trailer.WebTrailer.FromWeb(_trailer.URL)
-                                                'If trailer was downloaded, Trailer.WebTrailer.URL and Trailer.WebTrailer.Extension are not empty anymore. We use this as a check!
-                                                If Not String.IsNullOrEmpty(Trailer.WebTrailer.URL) Then
-                                                    'now rename dummy.ext to trailer and save it in movie folder
-                                                    tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
-                                                    If Not String.IsNullOrEmpty(tURL) Then
-                                                        DBScrapeMovie.TrailerPath = tURL
-                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, True)
-                                                        logger.Info("[" & DBScrapeMovie.Movie.Title & "] " & _trailer.Quality & " Downloaded trailer: " & _trailer.URL)
-                                                        'since trailer was downloaded we can leave loop, all good!
-                                                        Exit For
-                                                    Else
-                                                        logger.Warn("[" & DBScrapeMovie.Movie.Title & "] Saving of downloaded trailer failed: " & _trailer.URL)
-                                                    End If
+                                    'Cocotus 2014/09/26 After going thourgh GetPreferredTrailers aUrlList is now sorted/filtered - any trailer on this list is ok and can be downloaded!
+                                    For Each _trailer As Trailers In aUrlList
+                                        'trailer URL shoud never be empty at this point anyway, might as well remove check
+                                        If Not String.IsNullOrEmpty(_trailer.URL) Then
+                                            'this will download the trailer and save it temporarly as "dummy.ext"
+                                            Trailer.WebTrailer.FromWeb(_trailer.URL)
+                                            'If trailer was downloaded, Trailer.WebTrailer.URL and Trailer.WebTrailer.Extension are not empty anymore. We use this as a check!
+                                            If Not String.IsNullOrEmpty(Trailer.WebTrailer.URL) Then
+                                                'now rename dummy.ext to trailer and save it in movie folder
+                                                tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
+                                                If Not String.IsNullOrEmpty(tURL) Then
+                                                    DBScrapeMovie.TrailerPath = tURL
+                                                    MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, True)
+                                                    logger.Info("[" & DBScrapeMovie.Movie.Title & "] " & _trailer.Quality & " Downloaded trailer: " & _trailer.URL)
+                                                    'since trailer was downloaded we can leave loop, all good!
+                                                    Exit For
                                                 Else
-                                                    logger.Debug("[" & DBScrapeMovie.Movie.Title & "] Download of trailer failed: " & _trailer.URL)
+                                                    logger.Warn("[" & DBScrapeMovie.Movie.Title & "] Saving of downloaded trailer failed: " & _trailer.URL)
                                                 End If
                                             Else
-                                                logger.Debug("[" & DBScrapeMovie.Movie.Title & "] No trailer link to download!")
+                                                logger.Debug("[" & DBScrapeMovie.Movie.Title & "] Download of trailer failed: " & _trailer.URL)
                                             End If
-                                        Next
+                                        Else
+                                            logger.Debug("[" & DBScrapeMovie.Movie.Title & "] No trailer link to download!")
+                                        End If
+                                    Next
+                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
+                                        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
                                     End If
-                                Else
-                                    logger.Warn("[" & DBScrapeMovie.Movie.Title & "] No trailer links scraped!")
+                                    Using dTrailerSelect As New dlgTrailerSelect
+                                        If dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList, False, True, False) = DialogResult.OK Then
+                                            Trailer = dTrailerSelect.Results
+                                            If Not String.IsNullOrEmpty(Trailer.WebTrailer.URL) Then
+                                                tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
+                                                If Not String.IsNullOrEmpty(tURL) Then
+                                                    DBScrapeMovie.TrailerPath = tURL
+                                                    MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, True)
+                                                End If
+                                            End If
+                                        End If
+                                    End Using
                                 End If
+                            Else
+                                logger.Warn("[" & DBScrapeMovie.Movie.Title & "] No trailer links scraped!")
                             End If
                         End If
                     End If
+                    'End If
                 End If
 
                 If bwMovieScraper.CancellationPending Then Exit For

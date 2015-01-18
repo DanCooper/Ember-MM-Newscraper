@@ -787,48 +787,58 @@ Public Class Enums
         FrameExtrator_Movie = 8
         FrameExtrator_TVEpisode = 9
         Generic = 10
-        MovieImageNaming = 11
-        Notification = 12
-        OnBannerSave_Movie = 13
-        OnClearArtSave_Movie = 14
-        OnClearLogoSave_Movie = 15
-        OnDiscArtSave_Movie = 16
-        OnFanartDelete_Movie = 17
-        OnFanartSave_Movie = 18
-        OnLandscapeSave_Movie = 19
-        OnNFORead_TVShow = 20
-        OnNFOSave_Movie = 21
-        OnNFOSave_TVShow = 22
-        OnPosterDelete_Movie = 23
-        OnPosterSave_Movie = 24
-        OnThemeSave_Movie = 25
-        OnTrailerSave_Movie = 26
-        RandomFrameExtrator = 27
+        MediaPlayer_Audio = 11
+        MediaPlayer_Video = 12
+        MediaPlayerPlay_Audio = 13
+        MediaPlayerPlay_Video = 14
+        MediaPlayerPlaylistAdd_Audio = 15
+        MediaPlayerPlaylistAdd_Video = 16
+        MediaPlayerPlaylistClear_Audio = 17
+        MediaPlayerPlaylistClear_Video = 18
+        MediaPlayerStop_Audio = 19
+        MediaPlayerStop_Video = 20
+        MovieImageNaming = 21
+        Notification = 22
+        OnBannerSave_Movie = 23
+        OnClearArtSave_Movie = 24
+        OnClearLogoSave_Movie = 25
+        OnDiscArtSave_Movie = 26
+        OnFanartDelete_Movie = 27
+        OnFanartSave_Movie = 28
+        OnLandscapeSave_Movie = 29
+        OnNFORead_TVShow = 30
+        OnNFOSave_Movie = 31
+        OnNFOSave_TVShow = 32
+        OnPosterDelete_Movie = 33
+        OnPosterSave_Movie = 34
+        OnThemeSave_Movie = 35
+        OnTrailerSave_Movie = 36
+        RandomFrameExtrator = 37
         ''' <summary>
         ''' Called when auto scraper finishs but before save to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_Movie = 28
+        ScraperMulti_Movie = 38
         ''' <summary>
         ''' Called when auto scraper finishs but before save to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVEpisode = 29
+        ScraperMulti_TVEpisode = 39
         ''' <summary>
         ''' Called when single scraper finishs, movie is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_Movie = 30
+        ScraperSingle_Movie = 40
         ''' <summary>
         ''' Called when single scraper finishs, episode is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVEpisode = 31
-        ShowMovie = 32
-        ShowTVShow = 33
-        SyncModuleSettings = 34
-        Sync_Movie = 35
-        TVImageNaming = 36
+        ScraperSingle_TVEpisode = 41
+        ShowMovie = 42
+        ShowTVShow = 43
+        SyncModuleSettings = 44
+        Sync_Movie = 45
+        TVImageNaming = 46
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer
@@ -989,7 +999,7 @@ Public Class Enums
     Public Enum TrailerAudioCodec As Integer
         MP4 = 0
         WebM = 1
-        OTHERS = 3
+        UNKNOWN = 3
     End Enum
     ''' <summary>
     ''' Enum representing the trailer quality options
@@ -1002,7 +1012,7 @@ Public Class Enums
         AAC48kbps = 3
         Vorbis192kbps = 4
         Vorbis128kbps = 5
-        OTHERS = 6
+        UNKNOWN = 6
     End Enum
     ''' <summary>
     ''' Enum representing the trailer codec options
@@ -1013,7 +1023,7 @@ Public Class Enums
         WebM = 1
         v3GP = 2
         FLV = 3
-        OTHERS = 4
+        UNKNOWN = 4
     End Enum
     ''' <summary>
     ''' Enum representing the trailer quality options
@@ -1033,7 +1043,7 @@ Public Class Enums
         SQ240p = 10
         SQ144p = 11
         SQ144p15fps = 12
-        OTHERS = 13
+        UNKNOWN = 13
     End Enum
     ''' <summary>
     ''' Enum represeting valid movie image types

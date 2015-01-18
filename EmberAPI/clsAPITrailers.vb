@@ -199,7 +199,7 @@ Public Class Trailers
         _description = String.Empty
         _isEdit = False
         _duration = String.Empty
-        _quality = Enums.TrailerVideoQuality.OTHERS
+        _quality = Enums.TrailerVideoQuality.UNKNOWN
         _source = String.Empty
         _toRemove = False
         _url = String.Empty
@@ -450,10 +450,10 @@ Public Class Trailers
                                     tLink = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p).URL
                                     aUrl.URL = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ144p
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.OTHERS).Count > 0 Then
-                                    tLink = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.OTHERS).URL
+                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN).Count > 0 Then
+                                    tLink = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN).URL
                                     aUrl.URL = tLink
-                                    aUrl.Quality = Enums.TrailerVideoQuality.OTHERS
+                                    aUrl.Quality = Enums.TrailerVideoQuality.UNKNOWN
                                 End If
                             Case Enums.TrailerVideoQuality.HD1080p
                                 If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
@@ -551,7 +551,7 @@ Public Class Trailers
                                     aUrl.URL = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ144p
                                 End If
-                            Case Enums.TrailerVideoQuality.OTHERS
+                            Case Enums.TrailerVideoQuality.UNKNOWN
                                 If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
                                     tLink = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).URL
                                     aUrl.URL = tLink
@@ -576,10 +576,10 @@ Public Class Trailers
                                     tLink = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p).URL
                                     aUrl.URL = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ144p
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.OTHERS).Count > 0 Then
-                                    tLink = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.OTHERS).URL
+                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN).Count > 0 Then
+                                    tLink = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN).URL
                                     aUrl.URL = tLink
-                                    aUrl.Quality = Enums.TrailerVideoQuality.OTHERS
+                                    aUrl.Quality = Enums.TrailerVideoQuality.UNKNOWN
                                 End If
                         End Select
                     End If
@@ -624,10 +624,10 @@ Public Class Trailers
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
                                     aUrl.URL = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ144p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.OTHERS) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.OTHERS).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.UNKNOWN) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.UNKNOWN).URL
                                     aUrl.URL = tLink
-                                    aUrl.Quality = Enums.TrailerVideoQuality.OTHERS
+                                    aUrl.Quality = Enums.TrailerVideoQuality.UNKNOWN
                                 End If
                             Case Enums.TrailerVideoQuality.HD1080p
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
@@ -725,7 +725,7 @@ Public Class Trailers
                                     aUrl.URL = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ144p
                                 End If
-                            Case Enums.TrailerVideoQuality.OTHERS
+                            Case Enums.TrailerVideoQuality.UNKNOWN
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
                                     aUrl.URL = tLink
@@ -750,10 +750,10 @@ Public Class Trailers
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
                                     aUrl.URL = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ144p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.OTHERS) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.OTHERS).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.UNKNOWN) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.UNKNOWN).URL
                                     aUrl.URL = tLink
-                                    aUrl.Quality = Enums.TrailerVideoQuality.OTHERS
+                                    aUrl.Quality = Enums.TrailerVideoQuality.UNKNOWN
                                 End If
                         End Select
                     End If
@@ -796,7 +796,7 @@ Public Class Trailers
                         tqualities = "HD720pHD1080pHQ480pSQ360pSQ240p"
                     Case Enums.TrailerVideoQuality.SQ144p
                         tqualities = "HD720pHD1080pHQ480pSQ360pSQ240pSQ144p"
-                    Case Enums.TrailerVideoQuality.OTHERS
+                    Case Enums.TrailerVideoQuality.UNKNOWN
                         tqualities = "HD720pHD1080pHQ480pSQ360pSQ240pSQ144pOTHERS"
                 End Select
                 'Build up alternative list
@@ -873,7 +873,7 @@ Public Class Trailers
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ144p Then
                                 tLink = aUrl.URL
                             End If
-                        Case Enums.TrailerVideoQuality.OTHERS
+                        Case Enums.TrailerVideoQuality.UNKNOWN
                             If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
                                 tLink = aUrl.URL
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
@@ -886,7 +886,7 @@ Public Class Trailers
                                 tLink = aUrl.URL
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ144p Then
                                 tLink = aUrl.URL
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.OTHERS Then
+                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.UNKNOWN Then
                                 tLink = aUrl.URL
                             End If
                     End Select

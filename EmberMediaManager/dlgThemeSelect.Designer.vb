@@ -22,8 +22,6 @@ Partial Class dlgThemeSelect
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgThemeSelect))
-        Me.vlcPlayer = New AxAXVLC.AxVLCPlugin2()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.gbSelectTheme = New System.Windows.Forms.GroupBox()
@@ -31,19 +29,16 @@ Partial Class dlgThemeSelect
         Me.pnlStatus = New System.Windows.Forms.Panel()
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.pbStatus = New System.Windows.Forms.ProgressBar()
-        CType(Me.vlcPlayer, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlThemePreview = New System.Windows.Forms.Panel()
+        Me.pnlThemePreviewNoPlayer = New System.Windows.Forms.Panel()
+        Me.tblThemePreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblThemePreviewNoPlayer = New System.Windows.Forms.Label()
         Me.gbSelectTheme.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
+        Me.pnlThemePreview.SuspendLayout()
+        Me.pnlThemePreviewNoPlayer.SuspendLayout()
+        Me.tblThemePreviewNoPlayer.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'vlcPlayer
-        '
-        Me.vlcPlayer.Enabled = True
-        Me.vlcPlayer.Location = New System.Drawing.Point(12, 258)
-        Me.vlcPlayer.Name = "vlcPlayer"
-        Me.vlcPlayer.OcxState = CType(resources.GetObject("vlcPlayer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.vlcPlayer.Size = New System.Drawing.Size(460, 56)
-        Me.vlcPlayer.TabIndex = 0
         '
         'OK_Button
         '
@@ -116,6 +111,50 @@ Partial Class dlgThemeSelect
         Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.pbStatus.TabIndex = 1
         '
+        'pnlThemePreview
+        '
+        Me.pnlThemePreview.BackColor = System.Drawing.Color.DimGray
+        Me.pnlThemePreview.Controls.Add(Me.pnlThemePreviewNoPlayer)
+        Me.pnlThemePreview.Location = New System.Drawing.Point(12, 258)
+        Me.pnlThemePreview.Name = "pnlThemePreview"
+        Me.pnlThemePreview.Size = New System.Drawing.Size(441, 107)
+        Me.pnlThemePreview.TabIndex = 15
+        '
+        'pnlThemePreviewNoPlayer
+        '
+        Me.pnlThemePreviewNoPlayer.BackColor = System.Drawing.Color.White
+        Me.pnlThemePreviewNoPlayer.Controls.Add(Me.tblThemePreviewNoPlayer)
+        Me.pnlThemePreviewNoPlayer.Location = New System.Drawing.Point(100, 27)
+        Me.pnlThemePreviewNoPlayer.Name = "pnlThemePreviewNoPlayer"
+        Me.pnlThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
+        Me.pnlThemePreviewNoPlayer.TabIndex = 0
+        '
+        'tblThemePreviewNoPlayer
+        '
+        Me.tblThemePreviewNoPlayer.AutoSize = True
+        Me.tblThemePreviewNoPlayer.ColumnCount = 1
+        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblThemePreviewNoPlayer.Controls.Add(Me.lblThemePreviewNoPlayer, 0, 0)
+        Me.tblThemePreviewNoPlayer.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblThemePreviewNoPlayer.Location = New System.Drawing.Point(0, 0)
+        Me.tblThemePreviewNoPlayer.Name = "tblThemePreviewNoPlayer"
+        Me.tblThemePreviewNoPlayer.RowCount = 1
+        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56.0!))
+        Me.tblThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
+        Me.tblThemePreviewNoPlayer.TabIndex = 0
+        '
+        'lblThemePreviewNoPlayer
+        '
+        Me.lblThemePreviewNoPlayer.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblThemePreviewNoPlayer.AutoSize = True
+        Me.lblThemePreviewNoPlayer.Location = New System.Drawing.Point(59, 21)
+        Me.lblThemePreviewNoPlayer.Name = "lblThemePreviewNoPlayer"
+        Me.lblThemePreviewNoPlayer.Size = New System.Drawing.Size(124, 13)
+        Me.lblThemePreviewNoPlayer.TabIndex = 0
+        Me.lblThemePreviewNoPlayer.Text = "no Media Player enabled"
+        '
         'dlgThemeSelect
         '
         Me.AcceptButton = Me.OK_Button
@@ -124,25 +163,28 @@ Partial Class dlgThemeSelect
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(638, 377)
         Me.ControlBox = False
+        Me.Controls.Add(Me.pnlThemePreview)
         Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.gbSelectTheme)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
-        Me.Controls.Add(Me.vlcPlayer)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgThemeSelect"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "dlgThemeSelect"
-        CType(Me.vlcPlayer, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbSelectTheme.ResumeLayout(False)
         Me.pnlStatus.ResumeLayout(False)
         Me.pnlStatus.PerformLayout()
+        Me.pnlThemePreview.ResumeLayout(False)
+        Me.pnlThemePreviewNoPlayer.ResumeLayout(False)
+        Me.pnlThemePreviewNoPlayer.PerformLayout()
+        Me.tblThemePreviewNoPlayer.ResumeLayout(False)
+        Me.tblThemePreviewNoPlayer.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents vlcPlayer As AxAXVLC.AxVLCPlugin2
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents gbSelectTheme As System.Windows.Forms.GroupBox
@@ -150,4 +192,8 @@ Partial Class dlgThemeSelect
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
     Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
+    Friend WithEvents pnlThemePreview As System.Windows.Forms.Panel
+    Friend WithEvents pnlThemePreviewNoPlayer As System.Windows.Forms.Panel
+    Friend WithEvents tblThemePreviewNoPlayer As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblThemePreviewNoPlayer As System.Windows.Forms.Label
 End Class
