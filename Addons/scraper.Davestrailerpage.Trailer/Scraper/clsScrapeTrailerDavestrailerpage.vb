@@ -239,10 +239,10 @@ Namespace Davestrailerpage
                                                     'trailer description
                                                     trailer.Description = trailerresult.Groups(1).Value
                                                     'trailer URLs
-                                                    trailer.URL = trailerlink.Groups(1).Value
+                                                    trailer.VideoURL = trailerlink.Groups(1).Value
                                                     trailer.WebURL = trailerlink.Groups(1).Value
                                                     'trailer extension
-                                                    trailer.Extention = IO.Path.GetExtension(trailer.URL)
+                                                    trailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
                                                     'trailer source
                                                     trailer.Source = "Davestrailer"
                                                     '..and most important: trailer quality
@@ -280,10 +280,10 @@ Namespace Davestrailerpage
                                                 'trailer description
                                                 trailer.Description = trailerlink.Groups(2).Value
                                                 'trailer URLs
-                                                trailer.URL = trailerlink.Groups(1).Value
+                                                trailer.VideoURL = trailerlink.Groups(1).Value
                                                 trailer.WebURL = trailerlink.Groups(1).Value
                                                 'trailer extension
-                                                trailer.Extention = IO.Path.GetExtension(trailer.URL)
+                                                trailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
                                                 'trailer source
                                                 trailer.Source = "Davestrailer"
                                                 '..and most important: trailer quality

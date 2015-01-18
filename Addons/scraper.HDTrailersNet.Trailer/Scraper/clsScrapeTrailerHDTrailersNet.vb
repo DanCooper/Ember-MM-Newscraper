@@ -173,10 +173,10 @@ Namespace HDTrailersNet
                                             trailer.Description = item.Groups(2).Value
                                         End If
                                         'trailer URLs
-                                        trailer.URL = item.Groups(1).Value
+                                        trailer.VideoURL = item.Groups(1).Value
                                         trailer.WebURL = item.Groups(1).Value
                                         'trailer extension
-                                        trailer.Extention = IO.Path.GetExtension(trailer.URL)
+                                        trailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
                                         'trailer source
                                         trailer.Source = "HD-Trailers.net"
                                         '..and most important: trailer quality

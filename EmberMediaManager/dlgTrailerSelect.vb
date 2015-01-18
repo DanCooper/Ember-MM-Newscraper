@@ -117,7 +117,7 @@ Public Class dlgTrailerSelect
         For Each aUrl In nList
             Dim itm As ListViewItem
             str(0) = ID.ToString
-            str(1) = aUrl.URL.ToString
+            str(1) = aUrl.VideoURL.ToString
             str(2) = aUrl.WebURL.ToString
             str(3) = aUrl.Description.ToString
             str(4) = aUrl.Duration.ToString

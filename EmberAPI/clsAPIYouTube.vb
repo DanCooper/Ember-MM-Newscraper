@@ -355,7 +355,7 @@ Namespace YouTube
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps
                         vLink.isDash = True
                     Case Else
-                        vLink.Description = "Other"
+                        vLink.Description = "Unknown"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.UNKNOWN
                         vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
                         vLink.isDash = False
@@ -471,7 +471,7 @@ Namespace YouTube
                 tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
                 tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
                 If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
-                    tList.Add(New Trailers With {.URL = tLink, .WebURL = tLink, .Description = tName, .Duration = tLength, .Source = "YouTube"})
+                    tList.Add(New Trailers With {.VideoURL = tLink, .WebURL = tLink, .Description = tName, .Duration = tLength, .Source = "YouTube"})
                 End If
             Next
 

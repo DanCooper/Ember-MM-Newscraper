@@ -1171,7 +1171,7 @@ Public Class dlgEditMovie
 
     Private Sub TrailerPlaylistAdd(ByVal Trailer As Trailers)
         If AnyTrailerPlayerEnabled Then
-            Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.URL})
+            Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.VideoURL})
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video, paramsTrailerPreview, Nothing, True)
         End If
     End Sub

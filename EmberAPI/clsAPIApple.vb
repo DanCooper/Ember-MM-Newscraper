@@ -114,12 +114,12 @@ Namespace Apple
                         Dim zResult As MatchCollection = Regex.Matches(sHtml, zPattern, RegexOptions.Singleline)
 
                         For ctr As Integer = 0 To zResult.Count - 1
-                            TrailerLinks.Add(New Trailers With {.URL = zResult.Item(ctr).Groups(1).Value, .Description = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
+                            TrailerLinks.Add(New Trailers With {.VideoURL = zResult.Item(ctr).Groups(1).Value, .Description = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
                         Next
 
                         For Each trailer In TrailerLinks
                             Dim DLURL As String = String.Empty
-                            Dim TrailerSiteLink As String = String.Concat(TrailerBaseURL, "/", trailer.URL)
+                            Dim TrailerSiteLink As String = String.Concat(TrailerBaseURL, "/", trailer.VideoURL)
 
                             sHTTP = New HTTP
                             Dim zHtml As String = sHTTP.DownloadData(TrailerSiteLink)
@@ -140,7 +140,7 @@ Namespace Apple
                                 tDownloadURL = tDownloadURL.Replace("1080p", "h1080p")
                                 tDownloadURL = tDownloadURL.Replace("720p", "h720p")
                                 tDownloadURL = tDownloadURL.Replace("480p", "h480p")
-                                trailer.URL = tDownloadURL
+                                trailer.VideoURL = tDownloadURL
                                 Select Case prevQual
                                     Case "1080p"
                                         trailer.Quality = Enums.TrailerVideoQuality.HD1080p
