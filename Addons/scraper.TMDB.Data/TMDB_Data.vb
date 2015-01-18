@@ -480,7 +480,7 @@ Public Class TMDB_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If String.IsNullOrEmpty(oDBMovie.Movie.ID) AndAlso String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
                 Using dSearch As New dlgTMDBSearchResults_Movie(Settings, _scraper)
-                    If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Filename, filterOptions, 0) = Windows.Forms.DialogResult.OK Then
+                    If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Filename, filterOptions, CInt(oDBMovie.Movie.Year)) = Windows.Forms.DialogResult.OK Then
                         _scraper.GetMovieInfo(nMovie.TMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, False, False)

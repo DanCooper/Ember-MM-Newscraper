@@ -644,14 +644,11 @@ Public Class StringUtils
     ''' </summary>
     ''' <param name="sString"><c>String</c> from which to get the year</param>
     ''' <returns>Only the year of source <c>String</c> without brackets</returns>
-    ''' <remarks>The year can only be 4 digits. More or less digits and the string won't be modified.
-    ''' Opening and closing brackets are required.</remarks>
+    ''' <remarks>The year can only be 4 digits from 1900 - 2099. More or less digits and the string won't be modified.</remarks>
     Public Shared Function GetYear(ByVal sString As String) As String
         If String.IsNullOrEmpty(sString) Then Return String.Empty
-        Dim strYear As String = Regex.Match(sString, "\(+\d{4}\)+").Value
+        Dim strYear As String = Regex.Match(sString, "((19|20)\d{2})").Value
         If Not String.IsNullOrEmpty(strYear) Then
-            strYear = Replace(strYear, "(", String.Empty)
-            strYear = Replace(strYear, ")", String.Empty)
             Return strYear.Trim
         End If
         Return String.Empty
