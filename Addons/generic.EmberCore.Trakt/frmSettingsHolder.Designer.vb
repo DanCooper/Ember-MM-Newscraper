@@ -189,7 +189,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Size = New System.Drawing.Size(351, 128)
         Me.pnlSettings.TabIndex = 1
         '
-        'frmTraktSettingsHolder
+        'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -201,7 +201,7 @@ Partial Class frmSettingsHolder
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmTraktSettingsHolder"
+        Me.Name = "frmSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "frmSettingsHolder"

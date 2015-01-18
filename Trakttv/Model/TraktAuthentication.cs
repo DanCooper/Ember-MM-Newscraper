@@ -9,7 +9,7 @@ namespace Trakttv.TraktAPI.Model
     [DataContract]
     public class TraktAuthentication
     {
-        [DataMember(Name = "username")]
+        [DataMember(Name = "login")]
         public string Username { get; set; }
 
         [DataMember(Name = "password")]
