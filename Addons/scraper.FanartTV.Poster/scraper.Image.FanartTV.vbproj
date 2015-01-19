@@ -145,6 +145,12 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmFanartTVMediaSettingsHolder_TV.Designer.vb">
+      <DependentUpon>frmFanartTVMediaSettingsHolder_TV.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFanartTVMediaSettingsHolder_TV.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmFanartTVMediaSettingsHolder_MovieSet.Designer.vb">
       <DependentUpon>frmFanartTVMediaSettingsHolder_MovieSet.vb</DependentUpon>
     </Compile>
@@ -176,6 +182,10 @@
     <Compile Include="FanartTV_Image.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmFanartTVMediaSettingsHolder_TV.resx">
+      <DependentUpon>frmFanartTVMediaSettingsHolder_TV.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmFanartTVMediaSettingsHolder_MovieSet.resx">
       <DependentUpon>frmFanartTVMediaSettingsHolder_MovieSet.vb</DependentUpon>
       <SubType>Designer</SubType>

@@ -252,6 +252,52 @@ Public Class Interfaces
 
     End Interface
 
+    Public Interface ScraperModule_Image_TV
+
+#Region "Events"
+
+        Event ModuleSettingsChanged()
+
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
+
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+
+        Event SetupNeedsRestart()
+
+        Event ImagesDownloaded(ByVal Images As List(Of MediaContainers.Image))
+
+        Event ProgressUpdated(ByVal iPercent As Integer)
+
+#End Region 'Events
+
+#Region "Properties"
+
+        ReadOnly Property ModuleName() As String
+
+        ReadOnly Property ModuleVersion() As String
+
+        Property ScraperEnabled() As Boolean
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Sub ScraperOrderChanged()
+
+        Sub Init(ByVal sAssemblyName As String)
+
+        Function InjectSetupScraper() As Containers.SettingsPanel
+
+        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
+
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+
+        Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
+
+#End Region 'Methods
+
+    End Interface
+
     Public Interface ScraperModule_Theme_Movie
 
 #Region "Events"
@@ -287,6 +333,67 @@ Public Class Interfaces
         Function Scraper(ByVal DBMovie As Structures.DBMovie, ByRef URLList As List(Of Themes)) As ModuleResult
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+
+#End Region 'Methods
+
+    End Interface
+
+    Public Interface ScraperModule_Theme_TV
+
+#Region "Events"
+
+        Event ModuleSettingsChanged()
+
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+
+        Event SetupNeedsRestart()
+
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
+
+#End Region 'Events
+
+#Region "Properties"
+
+        ReadOnly Property ModuleName() As String
+
+        ReadOnly Property ModuleVersion() As String
+
+        Property ScraperEnabled() As Boolean
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Sub ScraperOrderChanged()
+
+        Sub Init(ByVal sAssemblyName As String)
+
+        Function InjectSetupScraper() As Containers.SettingsPanel
+
+        Function Scraper(ByVal DBTV As Structures.DBTV, ByRef URLList As List(Of Themes)) As ModuleResult
+
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+
+
+        'Sub ScraperOrderChanged()
+
+        'Sub CancelAsync()
+
+        'Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String, ByRef epDet As MediaContainers.EpisodeDetails) As ModuleResult
+
+        'Function GetLangs(ByVal sMirror As String, ByRef Langs As List(Of Containers.TVLanguage)) As ModuleResult
+
+        'Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef Image As Images) As ModuleResult
+
+        'Sub Init(ByVal sAssemblyName As String)
+
+        'Function InjectSetupScraper() As Containers.SettingsPanel
+
+        'Function Scraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
+
+        'Function SaveImages() As ModuleResult
+
+        'Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
 #End Region 'Methods
 
@@ -508,67 +615,6 @@ Public Class Interfaces
     '#End Region	'Methods
 
     '	End Interface
-
-    Public Interface ScraperModule_Theme_TV
-
-#Region "Events"
-
-        Event ModuleSettingsChanged()
-
-        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
-        Event SetupNeedsRestart()
-
-        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
-
-#End Region 'Events
-
-#Region "Properties"
-
-        ReadOnly Property ModuleName() As String
-
-        ReadOnly Property ModuleVersion() As String
-
-        Property ScraperEnabled() As Boolean
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Sub ScraperOrderChanged()
-
-        Sub Init(ByVal sAssemblyName As String)
-
-        Function InjectSetupScraper() As Containers.SettingsPanel
-
-        Function Scraper(ByVal DBTV As Structures.DBTV, ByRef URLList As List(Of Themes)) As ModuleResult
-
-        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-
-
-        'Sub ScraperOrderChanged()
-
-        'Sub CancelAsync()
-
-        'Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String, ByRef epDet As MediaContainers.EpisodeDetails) As ModuleResult
-
-        'Function GetLangs(ByVal sMirror As String, ByRef Langs As List(Of Containers.TVLanguage)) As ModuleResult
-
-        'Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef Image As Images) As ModuleResult
-
-        'Sub Init(ByVal sAssemblyName As String)
-
-        'Function InjectSetupScraper() As Containers.SettingsPanel
-
-        'Function Scraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
-
-        'Function SaveImages() As ModuleResult
-
-        'Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-
-#End Region 'Methods
-
-    End Interface
 
 #End Region 'Nested Interfaces
 

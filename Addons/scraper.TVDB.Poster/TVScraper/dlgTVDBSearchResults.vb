@@ -204,7 +204,7 @@ Public Class dlgTVDBSearchResults
 
     Private Sub dlgTVDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            AddHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf TVScraperEvent
+            AddHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
                 g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)

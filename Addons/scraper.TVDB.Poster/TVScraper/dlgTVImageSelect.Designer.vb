@@ -49,7 +49,7 @@
         Me.tvList.ImageList = Me.ImageList1
         Me.tvList.Location = New System.Drawing.Point(3, 4)
         Me.tvList.Name = "tvList"
-        Me.tvList.SelectedImageIndex = 0
+        Me.tvList.SelectedImageIndex = 7
         Me.tvList.Size = New System.Drawing.Size(214, 262)
         Me.tvList.TabIndex = 2
         Me.tvList.Visible = False
@@ -58,10 +58,14 @@
         '
         Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        Me.ImageList1.Images.SetKeyName(0, "hasPoster.png")
-        Me.ImageList1.Images.SetKeyName(1, "hasFanart.png")
-        Me.ImageList1.Images.SetKeyName(2, "hasbanner.png")
-        Me.ImageList1.Images.SetKeyName(3, "star_full.png")
+        Me.ImageList1.Images.SetKeyName(0, "hasBanner.png")
+        Me.ImageList1.Images.SetKeyName(1, "hasCharacterArt.png")
+        Me.ImageList1.Images.SetKeyName(2, "hasClearArt.png")
+        Me.ImageList1.Images.SetKeyName(3, "hasClearLogo.png")
+        Me.ImageList1.Images.SetKeyName(4, "hasFanart.png")
+        Me.ImageList1.Images.SetKeyName(5, "hasLandscape.png")
+        Me.ImageList1.Images.SetKeyName(6, "hasPoster.png")
+        Me.ImageList1.Images.SetKeyName(7, "star_full.png")
         '
         'pnlImages
         '

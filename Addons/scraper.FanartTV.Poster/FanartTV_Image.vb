@@ -28,12 +28,14 @@ Imports System.Diagnostics
 Public Class FanartTV_Image
     Implements Interfaces.ScraperModule_Image_Movie
     Implements Interfaces.ScraperModule_Image_MovieSet
+    Implements Interfaces.ScraperModule_Image_TV
 
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
     Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     ''' <summary>
@@ -42,11 +44,14 @@ Public Class FanartTV_Image
     ''' <remarks></remarks>
     Private _MySettings_Movie As New sMySettings
     Private _MySettings_MovieSet As New sMySettings
+    Private _MySettings_TV As New sMySettings
     Private _Name As String = "FanartTV_Poster"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_MovieSet As Boolean = False
+    Private _ScraperEnabled_TV As Boolean = False
     Private _setup_Movie As frmFanartTVMediaSettingsHolder_Movie
     Private _setup_MovieSet As frmFanartTVMediaSettingsHolder_MovieSet
+    Private _setup_TV As frmFanartTVMediaSettingsHolder_TV
     Private _scraper As New Scraper
 
 #End Region 'Fields
@@ -78,17 +83,30 @@ Public Class FanartTV_Image
 
     Public Event ProgressUpdated_MovieSet(ByVal iPercent As Integer) Implements Interfaces.ScraperModule_Image_MovieSet.ProgressUpdated
 
+
+    Public Event ModuleSettingsChanged_TV() Implements Interfaces.ScraperModule_Image_TV.ModuleSettingsChanged
+
+    Public Event MovieScraperEvent_TV(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_TV.ScraperEvent
+
+    Public Event SetupScraperChanged_TV(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Image_TV.ScraperSetupChanged
+
+    Public Event SetupNeedsRestart_TV() Implements Interfaces.ScraperModule_Image_TV.SetupNeedsRestart
+
+    Public Event ImagesDownloaded_TV(ByVal Posters As List(Of MediaContainers.Image)) Implements Interfaces.ScraperModule_Image_TV.ImagesDownloaded
+
+    Public Event ProgressUpdated_TV(ByVal iPercent As Integer) Implements Interfaces.ScraperModule_Image_TV.ProgressUpdated
+
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Image_Movie.ModuleName, Interfaces.ScraperModule_Image_MovieSet.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Image_Movie.ModuleName, Interfaces.ScraperModule_Image_MovieSet.ModuleName, Interfaces.ScraperModule_Image_TV.ModuleName
         Get
             Return _Name
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Image_Movie.ModuleVersion, Interfaces.ScraperModule_Image_MovieSet.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Image_Movie.ModuleVersion, Interfaces.ScraperModule_Image_MovieSet.ModuleVersion, Interfaces.ScraperModule_Image_TV.ModuleVersion
         Get
             Return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
@@ -109,6 +127,15 @@ Public Class FanartTV_Image
         End Get
         Set(ByVal value As Boolean)
             _ScraperEnabled_MovieSet = value
+        End Set
+    End Property
+
+    Property ScraperEnabled_TV() As Boolean Implements Interfaces.ScraperModule_Image_TV.ScraperEnabled
+        Get
+            Return _ScraperEnabled_TV
+        End Get
+        Set(ByVal value As Boolean)
+            _ScraperEnabled_TV = value
         End Set
     End Property
 
@@ -155,6 +182,26 @@ Public Class FanartTV_Image
         Return False
     End Function
 
+    Function QueryScraperCapabilities_TV(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
+        Select Case cap
+            Case Enums.ScraperCapabilities.Banner
+                Return ConfigScrapeModifier_TV.Banner
+            Case Enums.ScraperCapabilities.CharacterArt
+                Return ConfigScrapeModifier_TV.CharacterArt
+            Case Enums.ScraperCapabilities.ClearArt
+                Return ConfigScrapeModifier_TV.ClearArt
+            Case Enums.ScraperCapabilities.ClearLogo
+                Return ConfigScrapeModifier_TV.ClearLogo
+            Case Enums.ScraperCapabilities.Fanart
+                Return ConfigScrapeModifier_TV.Fanart
+            Case Enums.ScraperCapabilities.Landscape
+                Return ConfigScrapeModifier_TV.Landscape
+            Case Enums.ScraperCapabilities.Poster
+                Return ConfigScrapeModifier_TV.Poster
+        End Select
+        Return False
+    End Function
+
     Private Sub Handle_ModuleSettingsChanged_Movie()
         RaiseEvent ModuleSettingsChanged_Movie()
     End Sub
@@ -163,12 +210,20 @@ Public Class FanartTV_Image
         RaiseEvent ModuleSettingsChanged_MovieSet()
     End Sub
 
+    Private Sub Handle_ModuleSettingsChanged_TV()
+        RaiseEvent ModuleSettingsChanged_TV()
+    End Sub
+
     Private Sub Handle_SetupNeedsRestart_Movie()
         RaiseEvent SetupNeedsRestart_Movie()
     End Sub
 
     Private Sub Handle_SetupNeedsRestart_MovieSet()
         RaiseEvent SetupNeedsRestart_MovieSet()
+    End Sub
+
+    Private Sub Handle_SetupNeedsRestart_TV()
+        RaiseEvent SetupNeedsRestart_TV()
     End Sub
 
     Private Sub Handle_SetupScraperChanged_Movie(ByVal state As Boolean, ByVal difforder As Integer)
@@ -181,6 +236,11 @@ Public Class FanartTV_Image
         RaiseEvent SetupScraperChanged_MovieSet(String.Concat(Me._Name, "_MovieSet"), state, difforder)
     End Sub
 
+    Private Sub Handle_SetupScraperChanged_TV(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled_TV = state
+        RaiseEvent SetupScraperChanged_TV(String.Concat(Me._Name, "_TV"), state, difforder)
+    End Sub
+
     Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_Movie.Init
         _AssemblyName = sAssemblyName
         LoadSettings_Movie()
@@ -189,6 +249,11 @@ Public Class FanartTV_Image
     Sub Init_MovieSet(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_MovieSet.Init
         _AssemblyName = sAssemblyName
         LoadSettings_MovieSet()
+    End Sub
+
+    Sub Init_TV(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_TV.Init
+        _AssemblyName = sAssemblyName
+        LoadSettings_TV()
     End Sub
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
@@ -277,6 +342,49 @@ Public Class FanartTV_Image
         Return Spanel
     End Function
 
+    Function InjectSetupScraper_TV() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_TV.InjectSetupScraper
+        Dim Spanel As New Containers.SettingsPanel
+        _setup_TV = New frmFanartTVMediaSettingsHolder_TV
+        LoadSettings_TV()
+        _setup_TV.chkEnabled.Checked = _ScraperEnabled_TV
+        _setup_TV.chkGetBlankImages.Checked = _MySettings_TV.GetBlankImages
+        _setup_TV.chkGetEnglishImages.Checked = _MySettings_TV.GetEnglishImages
+        _setup_TV.chkPrefLanguageOnly.Checked = _MySettings_TV.PrefLanguageOnly
+        _setup_TV.chkScrapePoster.Checked = ConfigScrapeModifier_TV.Poster
+        _setup_TV.chkScrapeFanart.Checked = ConfigScrapeModifier_TV.Fanart
+        _setup_TV.chkScrapeBanner.Checked = ConfigScrapeModifier_TV.Banner
+        _setup_TV.chkScrapeCharacterArt.Checked = ConfigScrapeModifier_TV.CharacterArt
+        _setup_TV.chkScrapeClearArt.Checked = ConfigScrapeModifier_TV.ClearArt
+        _setup_TV.chkScrapeClearArtOnlyHD.Checked = _MySettings_TV.ClearArtOnlyHD
+        _setup_TV.chkScrapeClearLogo.Checked = ConfigScrapeModifier_TV.ClearLogo
+        _setup_TV.chkScrapeClearLogoOnlyHD.Checked = _MySettings_TV.ClearLogoOnlyHD
+        _setup_TV.chkScrapeLandscape.Checked = ConfigScrapeModifier_TV.Landscape
+        _setup_TV.txtApiKey.Text = _MySettings_TV.ApiKey
+        _setup_TV.cbPrefLanguage.Text = _MySettings_TV.PrefLanguage
+
+        If Not String.IsNullOrEmpty(_MySettings_TV.ApiKey) Then
+            _setup_TV.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            _setup_TV.lblEMMAPI.Visible = False
+            _setup_TV.txtApiKey.Enabled = True
+        End If
+
+        _setup_TV.orderChanged()
+
+        Spanel.Name = String.Concat(Me._Name, "_TV")
+        Spanel.Text = Master.eLang.GetString(788, "FanartTV")
+        Spanel.Prefix = "FanartTVTVMedia_"
+        Spanel.Order = 110
+        Spanel.Parent = "pnlTVMedia"
+        Spanel.Type = Master.eLang.GetString(653, "TV Shows")
+        Spanel.ImageIndex = If(Me._ScraperEnabled_TV, 9, 10)
+        Spanel.Panel = Me._setup_TV.pnlSettings
+
+        AddHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV
+        AddHandler _setup_TV.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_TV
+        AddHandler _setup_TV.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_TV
+        Return Spanel
+    End Function
+
     Sub LoadSettings_Movie()
         _MySettings_Movie.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.Movie)
         _MySettings_Movie.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
@@ -317,6 +425,25 @@ Public Class FanartTV_Image
         ConfigScrapeModifier_MovieSet.EFanarts = ConfigScrapeModifier_MovieSet.Fanart
     End Sub
 
+    Sub LoadSettings_TV()
+        _MySettings_TV.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.TV)
+        _MySettings_TV.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.TV)
+        _MySettings_TV.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False, , Enums.Content_Type.TV)
+        _MySettings_TV.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False, , Enums.Content_Type.TV)
+        _MySettings_TV.GetEnglishImages = clsAdvancedSettings.GetBooleanSetting("GetEnglishImages", False, , Enums.Content_Type.TV)
+        _MySettings_TV.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.Content_Type.TV)
+        _MySettings_TV.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.Content_Type.TV)
+
+        ConfigScrapeModifier_TV.Banner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.Content_Type.TV)
+        ConfigScrapeModifier_TV.CharacterArt = clsAdvancedSettings.GetBooleanSetting("DoCharacterArt", True, , Enums.Content_Type.TV)
+        ConfigScrapeModifier_TV.ClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.Content_Type.TV)
+        ConfigScrapeModifier_TV.ClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.Content_Type.TV)
+        ConfigScrapeModifier_TV.EFanarts = ConfigScrapeModifier_TV.Fanart
+        ConfigScrapeModifier_TV.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.TV)
+        ConfigScrapeModifier_TV.Landscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.Content_Type.TV)
+        ConfigScrapeModifier_TV.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.TV)
+    End Sub
+
     Sub SaveSettings_Movie()
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_Movie.ClearArtOnlyHD, , , Enums.Content_Type.Movie)
@@ -354,6 +481,26 @@ Public Class FanartTV_Image
             settings.SetBooleanSetting("GetBlankImages", _MySettings_MovieSet.GetBlankImages, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("GetEnglishImages", _MySettings_MovieSet.GetEnglishImages, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("PrefLanguageOnly", _MySettings_MovieSet.PrefLanguageOnly, , , Enums.Content_Type.MovieSet)
+        End Using
+    End Sub
+
+    Sub SaveSettings_TV()
+        Using settings = New clsAdvancedSettings()
+            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_TV.ClearArtOnlyHD, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings_TV.ClearLogoOnlyHD, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("DoBanner", ConfigScrapeModifier_TV.Banner, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("DoCharacterArt", ConfigScrapeModifier_TV.CharacterArt, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("DoClearArt", ConfigScrapeModifier_TV.ClearArt, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("DoClearLogo", ConfigScrapeModifier_TV.ClearLogo, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_TV.Fanart, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("DoLandscape", ConfigScrapeModifier_TV.Landscape, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_TV.Poster, , , Enums.Content_Type.TV)
+
+            settings.SetSetting("ApiKey", _setup_TV.txtApiKey.Text, , , Enums.Content_Type.TV)
+            settings.SetSetting("PrefLanguage", _MySettings_TV.PrefLanguage, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("GetBlankImages", _MySettings_TV.GetBlankImages, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("GetEnglishImages", _MySettings_TV.GetEnglishImages, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("PrefLanguageOnly", _MySettings_TV.PrefLanguageOnly, , , Enums.Content_Type.TV)
         End Using
     End Sub
 
@@ -400,6 +547,29 @@ Public Class FanartTV_Image
             RemoveHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_MovieSet
             RemoveHandler _setup_MovieSet.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_MovieSet
             _setup_MovieSet.Dispose()
+        End If
+    End Sub
+
+    Sub SaveSetupScraper_TV(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_TV.SaveSetupScraper
+        _MySettings_TV.PrefLanguage = _setup_TV.cbPrefLanguage.Text
+        _MySettings_TV.PrefLanguageOnly = _setup_TV.chkPrefLanguageOnly.Checked
+        _MySettings_TV.GetBlankImages = _setup_TV.chkGetBlankImages.Checked
+        _MySettings_TV.GetEnglishImages = _setup_TV.chkGetEnglishImages.Checked
+        _MySettings_TV.ClearArtOnlyHD = _setup_TV.chkScrapeClearArtOnlyHD.Checked
+        _MySettings_TV.ClearLogoOnlyHD = _setup_TV.chkScrapeClearLogoOnlyHD.Checked
+        ConfigScrapeModifier_TV.CharacterArt = _setup_TV.chkScrapeCharacterArt.Checked
+        ConfigScrapeModifier_TV.Poster = _setup_TV.chkScrapePoster.Checked
+        ConfigScrapeModifier_TV.Fanart = _setup_TV.chkScrapeFanart.Checked
+        ConfigScrapeModifier_TV.Banner = _setup_TV.chkScrapeBanner.Checked
+        ConfigScrapeModifier_TV.ClearArt = _setup_TV.chkScrapeClearArt.Checked
+        ConfigScrapeModifier_TV.ClearLogo = _setup_TV.chkScrapeClearLogo.Checked
+        ConfigScrapeModifier_TV.Landscape = _setup_TV.chkScrapeLandscape.Checked
+        SaveSettings_TV()
+        If DoDispose Then
+            RemoveHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV
+            RemoveHandler _setup_TV.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_TV
+            RemoveHandler _setup_TV.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_TV
+            _setup_TV.Dispose()
         End If
     End Sub
 
@@ -457,12 +627,40 @@ Public Class FanartTV_Image
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
+    Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
+        logger.Trace("Started scrape FanartTV")
+
+        LoadSettings_TV()
+
+        Dim Settings As FanartTVs.Scraper.sMySettings_ForScraper
+        Settings.ApiKey = _MySettings_TV.ApiKey
+        Settings.ClearArtOnlyHD = _MySettings_TV.ClearArtOnlyHD
+        Settings.ClearLogoOnlyHD = _MySettings_TV.ClearLogoOnlyHD
+        Settings.GetBlankImages = _MySettings_TV.GetBlankImages
+        Settings.GetEnglishImages = _MySettings_TV.GetEnglishImages
+        Settings.PrefLanguage = _MySettings_TV.PrefLanguage
+        Settings.PrefLanguageOnly = _MySettings_TV.PrefLanguageOnly
+
+        If Not String.IsNullOrEmpty(DBTV.TVShow.ID) Then
+            ImageList = _scraper.GetImages_TV(DBTV.TVShow.ID, Type, Settings)
+        Else
+            logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+        End If
+
+        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape FanartTV")
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
     Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.ScraperModule_Image_Movie.ScraperOrderChanged
         _setup_Movie.orderChanged()
     End Sub
 
     Public Sub ScraperOrderChanged_MovieSet() Implements EmberAPI.Interfaces.ScraperModule_Image_MovieSet.ScraperOrderChanged
         _setup_MovieSet.orderChanged()
+    End Sub
+
+    Public Sub ScraperOrderChanged_TV() Implements EmberAPI.Interfaces.ScraperModule_Image_TV.ScraperOrderChanged
+        _setup_TV.orderChanged()
     End Sub
 
 #End Region 'Methods

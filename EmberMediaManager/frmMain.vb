@@ -11263,7 +11263,7 @@ doCancel:
 
             AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
             AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
-            AddHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf TVScraperEvent
+            AddHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
             AddHandler ModulesManager.Instance.GenericEvent, AddressOf Me.GenericRunCallBack
 
             Functions.DGVDoubleBuffer(Me.dgvMovies)

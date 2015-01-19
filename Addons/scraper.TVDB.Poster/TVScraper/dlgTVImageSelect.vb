@@ -46,11 +46,19 @@ Public Class dlgTVImageSelect
     Private pnlImage() As Panel
     Private SeasonPosterList As New List(Of Scraper.TVDBSeasonPoster)
     Private SeasonBannerList As New List(Of Scraper.TVDBSeasonBanner)
-    Private SelIsPoster As Boolean = True
-    Private SelIsBanner As Boolean = True
-    Private SelIsLandscape As Boolean = True
+    Private SelImgType As Enums.TVImageType
+    'Private SelIsBanner As Boolean = False
+    'Private SelIsCharacterArt As Boolean = False
+    'Private SelIsClearArt As Boolean = False
+    'Private SelIsClearLogo As Boolean = False
+    'Private SelIsLandscape As Boolean = False
+    'Private SelIsPoster As Boolean = False
     Private SelSeason As Integer = -999
     Private ShowBannerList As New List(Of Scraper.TVDBShowBanner)
+    Private ShowCharacterArtList As New List(Of Scraper.TVDBShowCharacterArt)
+    Private ShowClearArtList As New List(Of Scraper.TVDBShowClearArt)
+    Private ShowClearLogoList As New List(Of Scraper.TVDBShowClearLogo)
+    Private ShowLandscapeList As New List(Of Scraper.TVDBShowLandscape)
     Private ShowPosterList As New List(Of Scraper.TVDBPoster)
     Private _fanartchanged As Boolean = False
     Private _id As Integer = -1
@@ -177,6 +185,72 @@ Public Class dlgTVImageSelect
             End If
             Me.bwLoadImages.ReportProgress(1, "progress")
 
+            'Show CharacterArt
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowCharacterArt) AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso IsNothing(Scraper.TVDBImages.ShowCharacterArt.Image.Image) Then
+                Dim tSPg As Scraper.TVDBShowCharacterArt = ShowCharacterArtList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
+
+                If CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) Then
+                    If IsNothing(tSPg) Then tSPg = ShowCharacterArtList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
+                End If
+
+                If IsNothing(tSPg) Then tSPg = ShowCharacterArtList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+
+                If Not IsNothing(tSPg) Then
+                    Scraper.TVDBImages.ShowCharacterArt.Image = tSPg.Image
+                    Scraper.TVDBImages.ShowCharacterArt.LocalFile = tSPg.LocalFile
+                    Scraper.TVDBImages.ShowCharacterArt.URL = tSPg.URL
+                End If
+            End If
+
+            If Me.bwLoadImages.CancellationPending Then
+                Return True
+            End If
+            Me.bwLoadImages.ReportProgress(1, "progress")
+
+            'Show ClearArt
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowClearArt) AndAlso Master.eSettings.TVShowClearArtAnyEnabled AndAlso IsNothing(Scraper.TVDBImages.ShowClearArt.Image.Image) Then
+                Dim tSPg As Scraper.TVDBShowClearArt = ShowClearArtList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
+
+                If CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) Then
+                    If IsNothing(tSPg) Then tSPg = ShowClearArtList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
+                End If
+
+                If IsNothing(tSPg) Then tSPg = ShowClearArtList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+
+                If Not IsNothing(tSPg) Then
+                    Scraper.TVDBImages.ShowClearArt.Image = tSPg.Image
+                    Scraper.TVDBImages.ShowClearArt.LocalFile = tSPg.LocalFile
+                    Scraper.TVDBImages.ShowClearArt.URL = tSPg.URL
+                End If
+            End If
+
+            If Me.bwLoadImages.CancellationPending Then
+                Return True
+            End If
+            Me.bwLoadImages.ReportProgress(1, "progress")
+
+            'Show ClearLogo
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowClearLogo) AndAlso Master.eSettings.TVShowClearLogoAnyEnabled AndAlso IsNothing(Scraper.TVDBImages.ShowClearLogo.Image.Image) Then
+                Dim tSPg As Scraper.TVDBShowClearLogo = ShowClearLogoList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
+
+                If CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) Then
+                    If IsNothing(tSPg) Then tSPg = ShowClearLogoList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
+                End If
+
+                If IsNothing(tSPg) Then tSPg = ShowClearLogoList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+
+                If Not IsNothing(tSPg) Then
+                    Scraper.TVDBImages.ShowClearLogo.Image = tSPg.Image
+                    Scraper.TVDBImages.ShowClearLogo.LocalFile = tSPg.LocalFile
+                    Scraper.TVDBImages.ShowClearLogo.URL = tSPg.URL
+                End If
+            End If
+
+            If Me.bwLoadImages.CancellationPending Then
+                Return True
+            End If
+            Me.bwLoadImages.ReportProgress(1, "progress")
+
             'Show Fanart
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart) AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then 'TODO: add *FanartEnabled check
                 Dim tSF As Scraper.TVDBFanart = GenericFanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image) AndAlso Me.GetFanartDims(f.Size) = Master.eSettings.TVShowFanartPrefSize AndAlso f.Language = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
@@ -208,8 +282,30 @@ Public Class dlgTVImageSelect
             End If
             Me.bwLoadImages.ReportProgress(2, "progress")
 
+            'Show Landscape
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowLandscape) AndAlso Master.eSettings.TVShowLandscapeAnyEnabled AndAlso IsNothing(Scraper.TVDBImages.ShowLandscape.Image.Image) Then
+                Dim tSPg As Scraper.TVDBShowLandscape = ShowLandscapeList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
+
+                If CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) Then
+                    If IsNothing(tSPg) Then tSPg = ShowLandscapeList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
+                End If
+
+                If IsNothing(tSPg) Then tSPg = ShowLandscapeList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+
+                If Not IsNothing(tSPg) Then
+                    Scraper.TVDBImages.ShowLandscape.Image = tSPg.Image
+                    Scraper.TVDBImages.ShowLandscape.LocalFile = tSPg.LocalFile
+                    Scraper.TVDBImages.ShowLandscape.URL = tSPg.URL
+                End If
+            End If
+
+            If Me.bwLoadImages.CancellationPending Then
+                Return True
+            End If
+            Me.bwLoadImages.ReportProgress(1, "progress")
+
             'Show Poster
-            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster) AndAlso Master.eSettings.TVShowPosterAnyEnabled AndAlso IsNothing(Scraper.TVDBImages.ShowPoster.Image.Image) Then
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster) AndAlso Master.eSettings.TVShowPosterAnyEnabled AndAlso IsNothing(Scraper.TVDBImages.ShowLandscape.Image.Image) Then
                 Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso Me.GetPosterDims(p.Size) = Master.eSettings.TVShowPosterPrefSize AndAlso p.Language = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
 
                 If CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) Then
@@ -437,6 +533,21 @@ Public Class dlgTVImageSelect
                 Master.currShow.ShowBannerPath = Scraper.TVDBImages.ShowBanner.LocalFile
             End If
 
+            'Show CharacterArt
+            If Master.eSettings.TVShowCharacterArtAnyEnabled Then
+                Master.currShow.ShowCharacterArtPath = Scraper.TVDBImages.ShowCharacterArt.LocalFile
+            End If
+
+            'Show ClearArt
+            If Master.eSettings.TVShowClearArtAnyEnabled Then
+                Master.currShow.ShowClearArtPath = Scraper.TVDBImages.ShowClearArt.LocalFile
+            End If
+
+            'Show ClearLogo
+            If Master.eSettings.TVShowClearLogoAnyEnabled Then
+                Master.currShow.ShowClearLogoPath = Scraper.TVDBImages.ShowClearLogo.LocalFile
+            End If
+
             'Show Fanart
             If Master.eSettings.TVShowFanartAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowFanart.LocalFile) Then
@@ -451,6 +562,11 @@ Public Class dlgTVImageSelect
                         Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
                     End If
                 End If
+            End If
+
+            'Show Landscape
+            If Master.eSettings.TVShowLandscapeAnyEnabled Then
+                Master.currShow.ShowLandscapePath = Scraper.TVDBImages.ShowLandscape.LocalFile
             End If
 
             'Show Poster
@@ -557,12 +673,16 @@ Public Class dlgTVImageSelect
         Me.bwLoadData.ReportProgress(Scraper.tmpTVDBShow.Episodes.Count, "current")
 
         'initialize the struct
-        Scraper.TVDBImages.ShowPoster = New Scraper.TVDBPoster
         Scraper.TVDBImages.ShowBanner = New Scraper.TVDBShowBanner
+        Scraper.TVDBImages.ShowCharacterArt = New Scraper.TVDBShowCharacterArt
+        Scraper.TVDBImages.ShowClearArt = New Scraper.TVDBShowClearArt
+        Scraper.TVDBImages.ShowClearLogo = New Scraper.TVDBShowClearLogo
         Scraper.TVDBImages.ShowFanart = New Scraper.TVDBFanart
-        Scraper.TVDBImages.AllSeasonsPoster = New Scraper.TVDBPoster
+        Scraper.TVDBImages.ShowLandscape = New Scraper.TVDBShowLandscape
+        Scraper.TVDBImages.ShowPoster = New Scraper.TVDBPoster
         Scraper.TVDBImages.AllSeasonsBanner = New Scraper.TVDBShowBanner
         Scraper.TVDBImages.AllSeasonsFanart = New Scraper.TVDBFanart
+        Scraper.TVDBImages.AllSeasonsPoster = New Scraper.TVDBPoster
         Scraper.TVDBImages.SeasonImageList = New List(Of Scraper.TVDBSeasonImage)
 
         If Me.bwLoadData.CancellationPending Then
@@ -592,24 +712,22 @@ Public Class dlgTVImageSelect
                 cSI.Season = Me._season
                 cSI.Fanart.Image = CType(Me.pbCurrent.Tag, Images)
                 Scraper.TVDBImages.SeasonImageList.Add(cSI)
-            Case Enums.TVImageType.ShowPoster
-                Scraper.TVDBImages.ShowPoster.Image = CType(Me.pbCurrent.Tag, Images)
             Case Enums.TVImageType.ShowBanner
                 Scraper.TVDBImages.ShowBanner.Image = CType(Me.pbCurrent.Tag, Images)
+            Case Enums.TVImageType.ShowCharacterArt
+                Scraper.TVDBImages.ShowCharacterArt.Image = CType(Me.pbCurrent.Tag, Images)
+            Case Enums.TVImageType.ShowClearArt
+                Scraper.TVDBImages.ShowClearArt.Image = CType(Me.pbCurrent.Tag, Images)
+            Case Enums.TVImageType.ShowClearLogo
+                Scraper.TVDBImages.ShowClearLogo.Image = CType(Me.pbCurrent.Tag, Images)
             Case Enums.TVImageType.ShowFanart, Enums.TVImageType.EpisodeFanart
                 Scraper.TVDBImages.ShowFanart.Image = CType(Me.pbCurrent.Tag, Images)
+            Case Enums.TVImageType.ShowLandscape
+                Scraper.TVDBImages.ShowLandscape.Image = CType(Me.pbCurrent.Tag, Images)
+            Case Enums.TVImageType.ShowPoster
+                Scraper.TVDBImages.ShowPoster.Image = CType(Me.pbCurrent.Tag, Images)
             Case Enums.TVImageType.All
                 If _withcurrent Then
-                    If Master.eSettings.TVShowPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowPosterPath) Then
-                        Scraper.TVDBImages.ShowPoster.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowPosterPath)
-                        Scraper.TVDBImages.ShowPoster.LocalFile = Scraper.tmpTVDBShow.Show.ShowPosterPath
-                    End If
-
-                    If Me.bwLoadData.CancellationPending Then
-                        e.Cancel = True
-                        Return
-                    End If
-
                     If Master.eSettings.TVShowBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowBannerPath) Then
                         Scraper.TVDBImages.ShowBanner.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowBannerPath)
                         Scraper.TVDBImages.ShowBanner.LocalFile = Scraper.tmpTVDBShow.Show.ShowBannerPath
@@ -620,9 +738,59 @@ Public Class dlgTVImageSelect
                         Return
                     End If
 
+                    If Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowCharacterArtPath) Then
+                        Scraper.TVDBImages.ShowCharacterArt.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowCharacterArtPath)
+                        Scraper.TVDBImages.ShowCharacterArt.LocalFile = Scraper.tmpTVDBShow.Show.ShowCharacterArtPath
+                    End If
+
+                    If Me.bwLoadData.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
+
+                    If Master.eSettings.TVShowClearArtAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowClearArtPath) Then
+                        Scraper.TVDBImages.ShowClearArt.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowClearArtPath)
+                        Scraper.TVDBImages.ShowClearArt.LocalFile = Scraper.tmpTVDBShow.Show.ShowClearArtPath
+                    End If
+
+                    If Me.bwLoadData.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
+
+                    If Master.eSettings.TVShowClearLogoAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowClearLogoPath) Then
+                        Scraper.TVDBImages.ShowClearLogo.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowClearLogoPath)
+                        Scraper.TVDBImages.ShowClearLogo.LocalFile = Scraper.tmpTVDBShow.Show.ShowClearLogoPath
+                    End If
+
+                    If Me.bwLoadData.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
+
                     If Master.eSettings.TVShowFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowFanartPath) Then
                         Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowFanartPath)
                         Scraper.TVDBImages.ShowFanart.LocalFile = Scraper.tmpTVDBShow.Show.ShowFanartPath
+                    End If
+
+                    If Me.bwLoadData.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
+
+                    If Master.eSettings.TVShowLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowLandscapePath) Then
+                        Scraper.TVDBImages.ShowLandscape.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowLandscapePath)
+                        Scraper.TVDBImages.ShowLandscape.LocalFile = Scraper.tmpTVDBShow.Show.ShowLandscapePath
+                    End If
+
+                    If Me.bwLoadData.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
+
+                    If Master.eSettings.TVShowPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowPosterPath) Then
+                        Scraper.TVDBImages.ShowPoster.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowPosterPath)
+                        Scraper.TVDBImages.ShowPoster.LocalFile = Scraper.tmpTVDBShow.Show.ShowPosterPath
                     End If
 
                     If Me.bwLoadData.CancellationPending Then
@@ -1023,6 +1191,126 @@ Public Class dlgTVImageSelect
                 Next
             End If
 
+            'Show CharacterArt
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowCharacterArt Then
+                For Each SPost As Scraper.TVDBShowCharacterArt In Scraper.tmpTVDBShow.ShowCharacterArt
+                    Try
+                        If Not File.Exists(SPost.LocalFile) Then
+                            If Not String.IsNullOrEmpty(SPost.URL) Then
+                                SPost.Image.FromWeb(SPost.URL)
+                                If Not IsNothing(SPost.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(SPost.LocalFile).FullName)
+                                    SPost.Image.Save(SPost.LocalFile)
+                                    ShowCharacterArtList.Add(SPost)
+                                End If
+                            End If
+                        Else
+                            SPost.Image.FromFile(SPost.LocalFile)
+                            ShowCharacterArtList.Add(SPost)
+                        End If
+
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
+                        End If
+
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                    End Try
+                Next
+            End If
+
+            'Show ClearArt
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowClearArt Then
+                For Each SPost As Scraper.TVDBShowClearArt In Scraper.tmpTVDBShow.ShowClearArt
+                    Try
+                        If Not File.Exists(SPost.LocalFile) Then
+                            If Not String.IsNullOrEmpty(SPost.URL) Then
+                                SPost.Image.FromWeb(SPost.URL)
+                                If Not IsNothing(SPost.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(SPost.LocalFile).FullName)
+                                    SPost.Image.Save(SPost.LocalFile)
+                                    ShowClearArtList.Add(SPost)
+                                End If
+                            End If
+                        Else
+                            SPost.Image.FromFile(SPost.LocalFile)
+                            ShowClearArtList.Add(SPost)
+                        End If
+
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
+                        End If
+
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                    End Try
+                Next
+            End If
+
+            'Show ClearLogo
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowClearLogo Then
+                For Each SPost As Scraper.TVDBShowClearLogo In Scraper.tmpTVDBShow.ShowClearLogo
+                    Try
+                        If Not File.Exists(SPost.LocalFile) Then
+                            If Not String.IsNullOrEmpty(SPost.URL) Then
+                                SPost.Image.FromWeb(SPost.URL)
+                                If Not IsNothing(SPost.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(SPost.LocalFile).FullName)
+                                    SPost.Image.Save(SPost.LocalFile)
+                                    ShowClearLogoList.Add(SPost)
+                                End If
+                            End If
+                        Else
+                            SPost.Image.FromFile(SPost.LocalFile)
+                            ShowClearLogoList.Add(SPost)
+                        End If
+
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
+                        End If
+
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                    End Try
+                Next
+            End If
+
+            'Show/AllSeason Landscape
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowLandscape OrElse Me._type = Enums.TVImageType.AllSeasonsLandscape Then
+                For Each SPost As Scraper.TVDBShowLandscape In Scraper.tmpTVDBShow.ShowLandscapes
+                    Try
+                        If Not File.Exists(SPost.LocalFile) Then
+                            If Not String.IsNullOrEmpty(SPost.URL) Then
+                                SPost.Image.FromWeb(SPost.URL)
+                                If Not IsNothing(SPost.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(SPost.LocalFile).FullName)
+                                    SPost.Image.Save(SPost.LocalFile)
+                                    ShowLandscapeList.Add(SPost)
+                                End If
+                            End If
+                        Else
+                            SPost.Image.FromFile(SPost.LocalFile)
+                            ShowLandscapeList.Add(SPost)
+                        End If
+
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
+                        End If
+
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                    End Try
+                Next
+            End If
+
             'Show/AllSeason/Season/Episode Fanart
             If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.AllSeasonsFanart OrElse Me._type = Enums.TVImageType.SeasonFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart Then
                 For Each SFan As Scraper.TVDBFanart In Scraper.tmpTVDBShow.Fanarts
@@ -1087,27 +1375,30 @@ Public Class dlgTVImageSelect
 
     Private Sub GenerateList()
         Try
-            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster) AndAlso Master.eSettings.TVShowPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(956, "Show Poster"), .Tag = "showp", .ImageIndex = 0, .SelectedImageIndex = 0})
-            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowBanner) AndAlso Master.eSettings.TVShowBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = "Show Banner", .Tag = "showb", .ImageIndex = 2, .SelectedImageIndex = 0})
-            'If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowLandscape) AndAlso Master.eSettings.TVShowLandscapeEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1010, "Show Landscape"), .Tag = "showl", .ImageIndex = 0, .SelectedImageIndex = 0})
-            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart) AndAlso (Master.eSettings.TVShowFanartAnyEnabled OrElse Master.eSettings.TVEpisodeFanartAnyEnabled) Then Me.tvList.Nodes.Add(New TreeNode With {.Text = If(Me._type = Enums.TVImageType.EpisodeFanart, Master.eLang.GetString(688, "Episode Fanart"), Master.eLang.GetString(684, "Show Fanart")), .Tag = "showf", .ImageIndex = 1, .SelectedImageIndex = 1})
-            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonsPoster) AndAlso Master.eSettings.TVASPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(735, "All Seasons Poster"), .Tag = "allp", .ImageIndex = 0, .SelectedImageIndex = 2})
-            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonsBanner) AndAlso Master.eSettings.TVASBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1014, "All Seasons Banner"), .Tag = "allb", .ImageIndex = 2, .SelectedImageIndex = 2})
-            'If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonsLandscape) AndAlso Master.eSettings.TVASLandscapeEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1016, "All Seasons Landscape"), .Tag = "alll", .ImageIndex = 2, .SelectedImageIndex = 2})
-            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonsFanart) AndAlso Master.eSettings.TVASFanartAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1015, "All Seasons Fanart"), .Tag = "allf", .ImageIndex = 1, .SelectedImageIndex = 2})
-            'If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowCharacterArt) AndAlso Master.eSettings.TVShowCharacterArtEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1011, "Show CharacterArt"), .Tag = "showcha", .ImageIndex = 0, .SelectedImageIndex = 0})
-            'If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowClearArt) AndAlso Master.eSettings.TVShowClearArtEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1013, "Show ClearArt"), .Tag = "showca", .ImageIndex = 0, .SelectedImageIndex = 0})
-            'If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowClearLogo) AndAlso Master.eSettings.TVShowClearLogoEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1012, "Show ClearLogo"), .Tag = "showcl", .ImageIndex = 0, .SelectedImageIndex = 0})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster) AndAlso Master.eSettings.TVShowPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(956, "Show Poster"), .Tag = "showp", .ImageIndex = 6, .SelectedImageIndex = 6})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowBanner) AndAlso Master.eSettings.TVShowBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = "Show Banner", .Tag = "showb", .ImageIndex = 0, .SelectedImageIndex = 0})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowCharacterArt) AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1011, "Show CharacterArt"), .Tag = "showch", .ImageIndex = 2, .SelectedImageIndex = 2})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowClearArt) AndAlso Master.eSettings.TVShowClearArtAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1013, "Show ClearArt"), .Tag = "showca", .ImageIndex = 3, .SelectedImageIndex = 3})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowClearLogo) AndAlso Master.eSettings.TVShowClearLogoAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1012, "Show ClearLogo"), .Tag = "showcl", .ImageIndex = 4, .SelectedImageIndex = 4})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowLandscape) AndAlso Master.eSettings.TVShowLandscapeAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1010, "Show Landscape"), .Tag = "showl", .ImageIndex = 5, .SelectedImageIndex = 5})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart) AndAlso (Master.eSettings.TVShowFanartAnyEnabled OrElse Master.eSettings.TVEpisodeFanartAnyEnabled) Then Me.tvList.Nodes.Add(New TreeNode With {.Text = If(Me._type = Enums.TVImageType.EpisodeFanart, Master.eLang.GetString(688, "Episode Fanart"), Master.eLang.GetString(684, "Show Fanart")), .Tag = "showf", .ImageIndex = 4, .SelectedImageIndex = 4})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonsPoster) AndAlso Master.eSettings.TVASPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(735, "All Seasons Poster"), .Tag = "allp", .ImageIndex = 6, .SelectedImageIndex = 6})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonsBanner) AndAlso Master.eSettings.TVASBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1014, "All Seasons Banner"), .Tag = "allb", .ImageIndex = 0, .SelectedImageIndex = 0})
+            'If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonsLandscape) AndAlso Master.eSettings.TVASLandscapeAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1016, "All Seasons Landscape"), .Tag = "alll", .ImageIndex = 5, .SelectedImageIndex = 5})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonsFanart) AndAlso Master.eSettings.TVASFanartAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1015, "All Seasons Fanart"), .Tag = "allf", .ImageIndex = 4, .SelectedImageIndex = 1})
+            'If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowCharacterArt) AndAlso Master.eSettings.TVShowCharacterArtEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1011, "Show CharacterArt"), .Tag = "showcha", .ImageIndex = 1, .SelectedImageIndex = 1})
+            'If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowClearArt) AndAlso Master.eSettings.TVShowClearArtEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1013, "Show ClearArt"), .Tag = "showca", .ImageIndex = 2, .SelectedImageIndex = 2})
+            'If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowClearLogo) AndAlso Master.eSettings.TVShowClearLogoEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1012, "Show ClearLogo"), .Tag = "showcl", .ImageIndex = 3, .SelectedImageIndex = 3})
 
             Dim TnS As TreeNode
             If Me._type = Enums.TVImageType.All Then
                 For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList.OrderBy(Function(s) s.Season)
                     Try
-                        TnS = New TreeNode(String.Format(Master.eLang.GetString(726, "Season {0}"), cSeason.Season), 3, 3)
-                        If Master.eSettings.TVSeasonPosterAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(685, "Season Posters"), .Tag = String.Concat("p", cSeason.Season.ToString), .ImageIndex = 0, .SelectedImageIndex = 0})
-                        If Master.eSettings.TVSeasonBannerAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1017, "Season Banner"), .Tag = String.Concat("b", cSeason.Season.ToString), .ImageIndex = 2, .SelectedImageIndex = 0})
-                        'If Master.eSettings.TVSeasonLandscapeEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1018, "Season Landscape"), .Tag = String.Concat("l", cSeason.Season.ToString), .ImageIndex = 0, .SelectedImageIndex = 0})
-                        If Master.eSettings.TVSeasonFanartAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString), .ImageIndex = 1, .SelectedImageIndex = 1})
+                        TnS = New TreeNode(String.Format(Master.eLang.GetString(726, "Season {0}"), cSeason.Season), 7, 7)
+                        If Master.eSettings.TVSeasonPosterAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(685, "Season Posters"), .Tag = String.Concat("p", cSeason.Season.ToString), .ImageIndex = 6, .SelectedImageIndex = 6})
+                        If Master.eSettings.TVSeasonBannerAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1017, "Season Banner"), .Tag = String.Concat("b", cSeason.Season.ToString), .ImageIndex = 0, .SelectedImageIndex = 0})
+                        'If Master.eSettings.TVSeasonLandscapeEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1018, "Season Landscape"), .Tag = String.Concat("l", cSeason.Season.ToString), .ImageIndex = 5, .SelectedImageIndex = 5})
+                        If Master.eSettings.TVSeasonFanartAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString), .ImageIndex = 4, .SelectedImageIndex = 4})
                         Me.tvList.Nodes.Add(TnS)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name,ex)
@@ -1203,39 +1494,57 @@ Public Class dlgTVImageSelect
 
     Private Sub pbUndo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbUndo.Click
         If Me.SelSeason = -999 Then
-            If Me.SelIsPoster Then
-                Scraper.TVDBImages.ShowPoster.Image = DefaultImages.ShowPoster.Image
-                Scraper.TVDBImages.ShowPoster.LocalFile = DefaultImages.ShowPoster.LocalFile
-                Scraper.TVDBImages.ShowPoster.URL = DefaultImages.ShowPoster.URL
-                Me.pbCurrent.Image = Scraper.TVDBImages.ShowPoster.Image.Image
-                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowPoster.Image
-            ElseIf Me.SelIsBanner Then
+            If SelImgType = Enums.TVImageType.ShowBanner Then
                 Scraper.TVDBImages.ShowBanner.Image = DefaultImages.ShowBanner.Image
                 Scraper.TVDBImages.ShowBanner.LocalFile = DefaultImages.ShowBanner.LocalFile
                 Scraper.TVDBImages.ShowBanner.URL = DefaultImages.ShowBanner.URL
                 Me.pbCurrent.Image = Scraper.TVDBImages.ShowBanner.Image.Image
                 Me.pbCurrent.Tag = Scraper.TVDBImages.ShowBanner.Image
-            Else
+            ElseIf SelImgType = Enums.TVImageType.ShowCharacterArt Then
+                Scraper.TVDBImages.ShowCharacterArt.Image = DefaultImages.ShowCharacterArt.Image
+                Scraper.TVDBImages.ShowCharacterArt.LocalFile = DefaultImages.ShowCharacterArt.LocalFile
+                Scraper.TVDBImages.ShowCharacterArt.URL = DefaultImages.ShowCharacterArt.URL
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowCharacterArt.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowCharacterArt.Image
+            ElseIf SelImgType = Enums.TVImageType.ShowClearArt Then
+                Scraper.TVDBImages.ShowClearArt.Image = DefaultImages.ShowClearArt.Image
+                Scraper.TVDBImages.ShowClearArt.LocalFile = DefaultImages.ShowClearArt.LocalFile
+                Scraper.TVDBImages.ShowClearArt.URL = DefaultImages.ShowClearArt.URL
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowClearArt.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowClearArt.Image
+            ElseIf SelImgType = Enums.TVImageType.ShowClearLogo Then
+                Scraper.TVDBImages.ShowClearLogo.Image = DefaultImages.ShowClearLogo.Image
+                Scraper.TVDBImages.ShowClearLogo.LocalFile = DefaultImages.ShowClearLogo.LocalFile
+                Scraper.TVDBImages.ShowClearLogo.URL = DefaultImages.ShowClearLogo.URL
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowClearLogo.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowClearLogo.Image
+            ElseIf SelImgType = Enums.TVImageType.ShowFanart Then
                 Scraper.TVDBImages.ShowFanart.Image = DefaultImages.ShowFanart.Image
                 Scraper.TVDBImages.ShowFanart.LocalFile = DefaultImages.ShowFanart.LocalFile
                 Scraper.TVDBImages.ShowFanart.URL = DefaultImages.ShowFanart.URL
                 Me.pbCurrent.Image = Scraper.TVDBImages.ShowFanart.Image.Image
                 Me.pbCurrent.Tag = Scraper.TVDBImages.ShowFanart.Image
+            ElseIf SelImgType = Enums.TVImageType.ShowPoster Then
+                Scraper.TVDBImages.ShowPoster.Image = DefaultImages.ShowPoster.Image
+                Scraper.TVDBImages.ShowPoster.LocalFile = DefaultImages.ShowPoster.LocalFile
+                Scraper.TVDBImages.ShowPoster.URL = DefaultImages.ShowPoster.URL
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowPoster.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowPoster.Image
             End If
         ElseIf Me.SelSeason = 999 Then
-            If Me.SelIsPoster Then
+            If SelImgType = Enums.TVImageType.AllSeasonsPoster Then
                 Scraper.TVDBImages.AllSeasonsPoster.Image = DefaultImages.AllSeasonsPoster.Image
                 Scraper.TVDBImages.AllSeasonsPoster.LocalFile = DefaultImages.AllSeasonsPoster.LocalFile
                 Scraper.TVDBImages.AllSeasonsPoster.URL = DefaultImages.AllSeasonsPoster.URL
                 Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsPoster.Image.Image
                 Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsPoster.Image
-            ElseIf Me.SelIsBanner Then
+            ElseIf SelImgType = Enums.TVImageType.AllSeasonsBanner Then
                 Scraper.TVDBImages.AllSeasonsBanner.Image = DefaultImages.AllSeasonsBanner.Image
                 Scraper.TVDBImages.AllSeasonsBanner.LocalFile = DefaultImages.AllSeasonsBanner.LocalFile
                 Scraper.TVDBImages.AllSeasonsBanner.URL = DefaultImages.AllSeasonsBanner.URL
                 Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsBanner.Image.Image
                 Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsBanner.Image
-            Else
+            ElseIf SelImgType = Enums.TVImageType.AllSeasonsFanart Then
                 Scraper.TVDBImages.AllSeasonsFanart.Image = DefaultImages.AllSeasonsFanart.Image
                 Scraper.TVDBImages.AllSeasonsFanart.LocalFile = DefaultImages.AllSeasonsFanart.LocalFile
                 Scraper.TVDBImages.AllSeasonsFanart.URL = DefaultImages.AllSeasonsFanart.URL
@@ -1243,17 +1552,17 @@ Public Class dlgTVImageSelect
                 Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsFanart.Image
             End If
         Else
-            If Me.SelIsPoster Then
+            If SelImgType = Enums.TVImageType.SeasonPoster Then
                 Dim dSPost As Images = DefaultImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster
                 Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster = dSPost
                 Me.pbCurrent.Image = dSPost.Image
                 Me.pbCurrent.Tag = dSPost
-            ElseIf Me.SelIsBanner Then
+            ElseIf SelImgType = Enums.TVImageType.SeasonBanner Then
                 Dim dSPost As Images = DefaultImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner
                 Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner = dSPost
                 Me.pbCurrent.Image = dSPost.Image
                 Me.pbCurrent.Tag = dSPost
-            Else
+            ElseIf SelImgType = Enums.TVImageType.SeasonFanart Then
                 Dim dSFan As Scraper.TVDBFanart = DefaultImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart
                 Dim tSFan As Scraper.TVDBFanart = Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart
                 tSFan.Image = dSFan.Image
@@ -1279,39 +1588,55 @@ Public Class dlgTVImageSelect
         Me._fanartchanged = True
 
         If Me.SelSeason = -999 Then
-            If Me.SelIsPoster Then
+            If SelImgType = Enums.TVImageType.ShowPoster Then
                 Scraper.TVDBImages.ShowPoster.Image = SelTag.ImageObj
                 Scraper.TVDBImages.ShowPoster.LocalFile = SelTag.Path
                 Scraper.TVDBImages.ShowPoster.URL = SelTag.URL
-            ElseIf Me.SelIsBanner Then
+            ElseIf SelImgType = Enums.TVImageType.ShowBanner Then
                 Scraper.TVDBImages.ShowBanner.Image = SelTag.ImageObj
                 Scraper.TVDBImages.ShowBanner.LocalFile = SelTag.Path
                 Scraper.TVDBImages.ShowBanner.URL = SelTag.URL
-            Else
+            ElseIf SelImgType = Enums.TVImageType.ShowCharacterArt Then
+                Scraper.TVDBImages.ShowCharacterArt.Image = SelTag.ImageObj
+                Scraper.TVDBImages.ShowCharacterArt.LocalFile = SelTag.Path
+                Scraper.TVDBImages.ShowCharacterArt.URL = SelTag.URL
+            ElseIf SelImgType = Enums.TVImageType.ShowClearArt Then
+                Scraper.TVDBImages.ShowClearArt.Image = SelTag.ImageObj
+                Scraper.TVDBImages.ShowClearArt.LocalFile = SelTag.Path
+                Scraper.TVDBImages.ShowClearArt.URL = SelTag.URL
+            ElseIf SelImgType = Enums.TVImageType.ShowClearLogo Then
+                Scraper.TVDBImages.ShowClearLogo.Image = SelTag.ImageObj
+                Scraper.TVDBImages.ShowClearLogo.LocalFile = SelTag.Path
+                Scraper.TVDBImages.ShowClearLogo.URL = SelTag.URL
+            ElseIf SelImgType = Enums.TVImageType.ShowLandscape Then
+                Scraper.TVDBImages.ShowLandscape.Image = SelTag.ImageObj
+                Scraper.TVDBImages.ShowLandscape.LocalFile = SelTag.Path
+                Scraper.TVDBImages.ShowLandscape.URL = SelTag.URL
+            ElseIf SelImgType = Enums.TVImageType.ShowFanart Then
                 Scraper.TVDBImages.ShowFanart.Image = SelTag.ImageObj
                 Scraper.TVDBImages.ShowFanart.LocalFile = SelTag.Path
                 Scraper.TVDBImages.ShowFanart.URL = SelTag.URL
             End If
         ElseIf Me.SelSeason = 999 Then
-            If Me.SelIsPoster Then
+            If SelImgType = Enums.TVImageType.AllSeasonsPoster Then
                 Scraper.TVDBImages.AllSeasonsPoster.Image = SelTag.ImageObj
                 Scraper.TVDBImages.AllSeasonsPoster.LocalFile = SelTag.Path
                 Scraper.TVDBImages.AllSeasonsPoster.URL = SelTag.URL
-            ElseIf Me.SelIsBanner Then
+            ElseIf SelImgType = Enums.TVImageType.SeasonBanner Then
                 Scraper.TVDBImages.AllSeasonsBanner.Image = SelTag.ImageObj
                 Scraper.TVDBImages.AllSeasonsBanner.LocalFile = SelTag.Path
                 Scraper.TVDBImages.AllSeasonsBanner.URL = SelTag.URL
-            Else
+            ElseIf SelImgType = Enums.TVImageType.AllSeasonsFanart Then
                 Scraper.TVDBImages.AllSeasonsFanart.Image = SelTag.ImageObj
                 Scraper.TVDBImages.AllSeasonsFanart.LocalFile = SelTag.Path
                 Scraper.TVDBImages.AllSeasonsFanart.URL = SelTag.URL
             End If
         Else
-            If Me.SelIsPoster Then
+            If SelImgType = Enums.TVImageType.SeasonPoster Then
                 Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster = SelTag.ImageObj
-            ElseIf Me.SelIsBanner Then
+            ElseIf SelImgType = Enums.TVImageType.SeasonBanner Then
                 Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner = SelTag.ImageObj
-            Else
+            ElseIf SelImgType = Enums.TVImageType.SeasonFanart Then
                 Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.Image = SelTag.ImageObj
                 Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.LocalFile = SelTag.Path
                 Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.URL = SelTag.URL
@@ -1336,9 +1661,7 @@ Public Class dlgTVImageSelect
                 Me.lblCurrentImage.Visible = True
                 If e.Node.Tag.ToString = "showp" Then
                     Me.SelSeason = -999
-                    Me.SelIsPoster = True
-                    Me.SelIsBanner = False
-                    Me.SelIsLandscape = False
+                    Me.SelImgType = Enums.TVImageType.ShowPoster
                     If Not IsNothing(Scraper.TVDBImages.ShowPoster) AndAlso Not IsNothing(Scraper.TVDBImages.ShowPoster.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowPoster.Image.Image) Then
                         Me.pbCurrent.Image = Scraper.TVDBImages.ShowPoster.Image.Image
                     Else
@@ -1360,9 +1683,7 @@ Public Class dlgTVImageSelect
 
                 ElseIf e.Node.Tag.ToString = "showb" Then
                     Me.SelSeason = -999
-                    Me.SelIsPoster = False
-                    Me.SelIsBanner = True
-                    Me.SelIsLandscape = False
+                    Me.SelImgType = Enums.TVImageType.ShowBanner
                     If Not IsNothing(Scraper.TVDBImages.ShowBanner) AndAlso Not IsNothing(Scraper.TVDBImages.ShowBanner.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowBanner.Image.Image) Then
                         Me.pbCurrent.Image = Scraper.TVDBImages.ShowBanner.Image.Image
                     Else
@@ -1382,11 +1703,57 @@ Public Class dlgTVImageSelect
                     '    End If
                     'Next
 
+                ElseIf e.Node.Tag.ToString = "showch" Then
+                    Me.SelSeason = -999
+                    Me.SelImgType = Enums.TVImageType.ShowCharacterArt
+                    If Not IsNothing(Scraper.TVDBImages.ShowCharacterArt) AndAlso Not IsNothing(Scraper.TVDBImages.ShowCharacterArt.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowCharacterArt.Image.Image) Then
+                        Me.pbCurrent.Image = Scraper.TVDBImages.ShowCharacterArt.Image.Image
+                    Else
+                        Me.pbCurrent.Image = Nothing
+                    End If
+
+                    iCount = ShowCharacterArtList.Count
+                    For i = 0 To iCount - 1
+                        If Not IsNothing(ShowCharacterArtList(i)) AndAlso Not IsNothing(ShowCharacterArtList(i).Image) AndAlso Not IsNothing(ShowCharacterArtList(i).Image.Image) Then
+                            Me.AddImage(String.Format("{0}x{1}", ShowCharacterArtList(i).Image.Image.Width, ShowCharacterArtList(i).Image.Image.Height), i, New ImageTag With {.URL = ShowCharacterArtList(i).URL, .Path = ShowCharacterArtList(i).LocalFile, .isFanart = False, .ImageObj = ShowCharacterArtList(i).Image})
+                        End If
+                    Next
+
+                ElseIf e.Node.Tag.ToString = "showca" Then
+                    Me.SelSeason = -999
+                    Me.SelImgType = Enums.TVImageType.ShowClearArt
+                    If Not IsNothing(Scraper.TVDBImages.ShowClearArt) AndAlso Not IsNothing(Scraper.TVDBImages.ShowClearArt.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowClearArt.Image.Image) Then
+                        Me.pbCurrent.Image = Scraper.TVDBImages.ShowClearArt.Image.Image
+                    Else
+                        Me.pbCurrent.Image = Nothing
+                    End If
+
+                    iCount = ShowClearArtList.Count
+                    For i = 0 To iCount - 1
+                        If Not IsNothing(ShowClearArtList(i)) AndAlso Not IsNothing(ShowClearArtList(i).Image) AndAlso Not IsNothing(ShowClearArtList(i).Image.Image) Then
+                            Me.AddImage(String.Format("{0}x{1}", ShowClearArtList(i).Image.Image.Width, ShowClearArtList(i).Image.Image.Height), i, New ImageTag With {.URL = ShowClearArtList(i).URL, .Path = ShowClearArtList(i).LocalFile, .isFanart = False, .ImageObj = ShowClearArtList(i).Image})
+                        End If
+                    Next
+
+                ElseIf e.Node.Tag.ToString = "showcl" Then
+                    Me.SelSeason = -999
+                    Me.SelImgType = Enums.TVImageType.ShowClearLogo
+                    If Not IsNothing(Scraper.TVDBImages.ShowClearLogo) AndAlso Not IsNothing(Scraper.TVDBImages.ShowClearLogo.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowClearLogo.Image.Image) Then
+                        Me.pbCurrent.Image = Scraper.TVDBImages.ShowClearLogo.Image.Image
+                    Else
+                        Me.pbCurrent.Image = Nothing
+                    End If
+
+                    iCount = ShowClearLogoList.Count
+                    For i = 0 To iCount - 1
+                        If Not IsNothing(ShowClearLogoList(i)) AndAlso Not IsNothing(ShowClearLogoList(i).Image) AndAlso Not IsNothing(ShowClearLogoList(i).Image.Image) Then
+                            Me.AddImage(String.Format("{0}x{1}", ShowClearLogoList(i).Image.Image.Width, ShowClearLogoList(i).Image.Image.Height), i, New ImageTag With {.URL = ShowClearLogoList(i).URL, .Path = ShowClearLogoList(i).LocalFile, .isFanart = False, .ImageObj = ShowClearLogoList(i).Image})
+                        End If
+                    Next
+
                 ElseIf e.Node.Tag.ToString = "showf" Then
                     Me.SelSeason = -999
-                    Me.SelIsPoster = False
-                    Me.SelIsBanner = False
-                    Me.SelIsLandscape = False
+                    Me.SelImgType = Enums.TVImageType.ShowFanart
                     If Not IsNothing(Scraper.TVDBImages.ShowFanart) AndAlso Not IsNothing(Scraper.TVDBImages.ShowFanart.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
                         Me.pbCurrent.Image = Scraper.TVDBImages.ShowFanart.Image.Image
                     Else
@@ -1399,11 +1766,25 @@ Public Class dlgTVImageSelect
                         End If
                     Next
 
+                ElseIf e.Node.Tag.ToString = "showl" Then
+                    Me.SelSeason = -999
+                    Me.SelImgType = Enums.TVImageType.ShowLandscape
+                    If Not IsNothing(Scraper.TVDBImages.ShowLandscape) AndAlso Not IsNothing(Scraper.TVDBImages.ShowLandscape.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowLandscape.Image.Image) Then
+                        Me.pbCurrent.Image = Scraper.TVDBImages.ShowLandscape.Image.Image
+                    Else
+                        Me.pbCurrent.Image = Nothing
+                    End If
+
+                    iCount = ShowLandscapeList.Count
+                    For i = 0 To iCount - 1
+                        If Not IsNothing(ShowLandscapeList(i)) AndAlso Not IsNothing(ShowLandscapeList(i).Image) AndAlso Not IsNothing(ShowLandscapeList(i).Image.Image) Then
+                            Me.AddImage(String.Format("{0}x{1}", ShowLandscapeList(i).Image.Image.Width, ShowLandscapeList(i).Image.Image.Height), i, New ImageTag With {.URL = ShowLandscapeList(i).URL, .Path = ShowLandscapeList(i).LocalFile, .isFanart = False, .ImageObj = ShowLandscapeList(i).Image})
+                        End If
+                    Next
+
                 ElseIf e.Node.Tag.ToString = "allp" Then
                     Me.SelSeason = 999
-                    Me.SelIsPoster = True
-                    Me.SelIsBanner = False
-                    Me.SelIsLandscape = False
+                    Me.SelImgType = Enums.TVImageType.AllSeasonsPoster
                     If Not IsNothing(Scraper.TVDBImages.AllSeasonsPoster) AndAlso Not IsNothing(Scraper.TVDBImages.AllSeasonsPoster.Image) AndAlso Not IsNothing(Scraper.TVDBImages.AllSeasonsPoster.Image.Image) Then
                         Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsPoster.Image.Image
                     Else
@@ -1419,9 +1800,7 @@ Public Class dlgTVImageSelect
 
                 ElseIf e.Node.Tag.ToString = "allb" Then
                     Me.SelSeason = 999
-                    Me.SelIsPoster = False
-                    Me.SelIsBanner = True
-                    Me.SelIsLandscape = False
+                    Me.SelImgType = Enums.TVImageType.AllSeasonsBanner
                     If Not IsNothing(Scraper.TVDBImages.AllSeasonsBanner) AndAlso Not IsNothing(Scraper.TVDBImages.AllSeasonsBanner.Image) AndAlso Not IsNothing(Scraper.TVDBImages.AllSeasonsBanner.Image.Image) Then
                         Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsBanner.Image.Image
                     Else
@@ -1437,9 +1816,7 @@ Public Class dlgTVImageSelect
 
                 ElseIf e.Node.Tag.ToString = "allf" Then
                     Me.SelSeason = 999
-                    Me.SelIsPoster = False
-                    Me.SelIsBanner = False
-                    Me.SelIsLandscape = False
+                    Me.SelImgType = Enums.TVImageType.AllSeasonsFanart
                     If Not IsNothing(Scraper.TVDBImages.AllSeasonsFanart) AndAlso Not IsNothing(Scraper.TVDBImages.AllSeasonsFanart.Image) AndAlso Not IsNothing(Scraper.TVDBImages.AllSeasonsFanart.Image.Image) Then
                         Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsFanart.Image.Image
                     Else
@@ -1468,9 +1845,7 @@ Public Class dlgTVImageSelect
                     If tMatch.Success Then
                         If tMatch.Groups("type").Value = "f" Then
                             Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
-                            Me.SelIsPoster = False
-                            Me.SelIsBanner = False
-                            Me.SelIsLandscape = False
+                            Me.SelImgType = Enums.TVImageType.SeasonFanart
                             Dim tFanart As Scraper.TVDBSeasonImage = Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(f) f.Season = Convert.ToInt32(tMatch.Groups("num").Value))
                             If Not IsNothing(tFanart) AndAlso Not IsNothing(tFanart.Fanart) AndAlso Not IsNothing(tFanart.Fanart.Image) AndAlso Not IsNothing(tFanart.Fanart.Image.Image) Then
                                 Me.pbCurrent.Image = tFanart.Fanart.Image.Image
@@ -1484,9 +1859,7 @@ Public Class dlgTVImageSelect
                             Next
                         ElseIf tMatch.Groups("type").Value = "p" Then
                             Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
-                            Me.SelIsPoster = True
-                            Me.SelIsBanner = False
-                            Me.SelIsLandscape = False
+                            Me.SelImgType = Enums.TVImageType.SeasonPoster
                             Dim tPoster As Scraper.TVDBSeasonImage = Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(f) f.Season = Me.SelSeason)
                             If Not IsNothing(tPoster) AndAlso Not IsNothing(tPoster.Poster) AndAlso Not IsNothing(tPoster.Poster.Image) Then
                                 Me.pbCurrent.Image = tPoster.Poster.Image
@@ -1502,9 +1875,7 @@ Public Class dlgTVImageSelect
                             Next
                         ElseIf tMatch.Groups("type").Value = "b" Then
                             Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
-                            Me.SelIsPoster = False
-                            Me.SelIsBanner = True
-                            Me.SelIsLandscape = False
+                            Me.SelImgType = Enums.TVImageType.SeasonBanner
                             Dim tBanner As Scraper.TVDBSeasonImage = Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(f) f.Season = Me.SelSeason)
                             If Not IsNothing(tBanner) AndAlso Not IsNothing(tBanner.Banner) AndAlso Not IsNothing(tBanner.Banner.Image) Then
                                 Me.pbCurrent.Image = tBanner.Banner.Image

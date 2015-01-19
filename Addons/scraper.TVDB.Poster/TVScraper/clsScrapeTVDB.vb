@@ -149,13 +149,17 @@ Public Class Scraper
 
 #Region "Fields"
 
-        Dim AllSeasonsPoster As TVDBPoster
         Dim AllSeasonsBanner As TVDBShowBanner
         Dim AllSeasonsFanart As TVDBFanart
+        Dim AllSeasonsPoster As TVDBPoster
         Dim SeasonImageList As List(Of TVDBSeasonImage)
-        Dim ShowFanart As TVDBFanart
-        Dim ShowPoster As TVDBPoster
         Dim ShowBanner As TVDBShowBanner
+        Dim ShowCharacterArt As TVDBShowCharacterArt
+        Dim ShowClearArt As TVDBShowClearArt
+        Dim ShowClearLogo As TVDBShowClearLogo
+        Dim ShowFanart As TVDBFanart
+        Dim ShowLandscape As TVDBShowLandscape
+        Dim ShowPoster As TVDBPoster
 
 #End Region 'Fields
 
@@ -1320,6 +1324,61 @@ Public Class Scraper
                             End If
                         Next
                     End If
+
+                    'get external scraper images
+
+                    'CharacterArt
+                    Dim aList As New List(Of MediaContainers.Image)
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities.CharacterArt, aList) Then
+                        If aList.Count > 0 Then
+                            For Each img In aList.Where(Function(f) f.Description = "original")
+                                tmpTVDBShow.ShowCharacterArt.Add(New TVDBShowCharacterArt With { _
+                                                              .URL = img.URL, _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterart", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang})
+                            Next
+                        End If
+                    End If
+
+                    'ClearArt
+                    aList = New List(Of MediaContainers.Image)
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities.ClearArt, aList) Then
+                        If aList.Count > 0 Then
+                            For Each img In aList.Where(Function(f) f.Description = "original")
+                                tmpTVDBShow.ShowClearArt.Add(New TVDBShowClearArt With { _
+                                                              .URL = img.URL, _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearart", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang})
+                            Next
+                        End If
+                    End If
+
+                    'ClearLogo
+                    aList = New List(Of MediaContainers.Image)
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities.ClearLogo, aList) Then
+                        If aList.Count > 0 Then
+                            For Each img In aList.Where(Function(f) f.Description = "original")
+                                tmpTVDBShow.ShowClearLogo.Add(New TVDBShowClearLogo With { _
+                                                              .URL = img.URL, _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogo", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang})
+                            Next
+                        End If
+                    End If
+
+                    'Landscape
+                    aList = New List(Of MediaContainers.Image)
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities.Landscape, aList) Then
+                        If aList.Count > 0 Then
+                            For Each img In aList.Where(Function(f) f.Description = "original")
+                                tmpTVDBShow.ShowLandscapes.Add(New TVDBShowLandscape With { _
+                                                              .URL = img.URL, _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscape", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang})
+                            Next
+                        End If
+                    End If
+
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1846,6 +1905,10 @@ Public Class Scraper
         Private _seasonbanners As New List(Of TVDBSeasonBanner)
         Private _show As Structures.DBTV
         Private _showbanners As New List(Of TVDBShowBanner)
+        Private _showcharacterarts As New List(Of TVDBShowCharacterArt)
+        Private _showcleararts As New List(Of TVDBShowClearArt)
+        Private _showclearlogos As New List(Of TVDBShowClearLogo)
+        Private _showlandscapes As New List(Of TVDBShowLandscape)
 
 #End Region 'Fields
 
@@ -1931,6 +1994,42 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property ShowCharacterArt() As List(Of TVDBShowCharacterArt)
+            Get
+                Return Me._showcharacterarts
+            End Get
+            Set(ByVal value As List(Of TVDBShowCharacterArt))
+                Me._showcharacterarts = value
+            End Set
+        End Property
+
+        Public Property ShowClearArt() As List(Of TVDBShowClearArt)
+            Get
+                Return Me._showcleararts
+            End Get
+            Set(ByVal value As List(Of TVDBShowClearArt))
+                Me._showcleararts = value
+            End Set
+        End Property
+
+        Public Property ShowClearLogo() As List(Of TVDBShowClearLogo)
+            Get
+                Return Me._showclearlogos
+            End Get
+            Set(ByVal value As List(Of TVDBShowClearLogo))
+                Me._showclearlogos = value
+            End Set
+        End Property
+
+        Public Property ShowLandscapes() As List(Of TVDBShowLandscape)
+            Get
+                Return Me._showlandscapes
+            End Get
+            Set(ByVal value As List(Of TVDBShowLandscape))
+                Me._showlandscapes = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -1941,6 +2040,10 @@ Public Class Scraper
             Me._episodes = New List(Of Structures.DBTV)
             Me._fanarts = New List(Of TVDBFanart)
             Me._showbanners = New List(Of TVDBShowBanner)
+            Me._showcharacterarts = New List(Of TVDBShowCharacterArt)
+            Me._showcleararts = New List(Of TVDBShowClearArt)
+            Me._showclearlogos = New List(Of TVDBShowClearLogo)
+            Me._showlandscapes = New List(Of TVDBShowLandscape)
             Me._seasonposters = New List(Of TVDBSeasonPoster)
             Me._seasonbanners = New List(Of TVDBSeasonBanner)
             Me._posters = New List(Of TVDBPoster)
@@ -2025,6 +2128,298 @@ Public Class Scraper
         Public Sub Clear()
             Me._url = String.Empty
             Me._type = Enums.TVShowBannerType.None
+            Me._localfile = String.Empty
+            Me._image = New Images
+            Me._language = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()> _
+    Public Class TVDBShowCharacterArt
+
+#Region "Fields"
+
+        Private _image As Images
+        Private _localfile As String
+        Private _url As String
+        Private _language As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Image() As Images
+            Get
+                Return Me._image
+            End Get
+            Set(ByVal value As Images)
+                Me._image = value
+            End Set
+        End Property
+
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal value As String)
+                Me._url = value
+            End Set
+        End Property
+
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._url = String.Empty
+            Me._localfile = String.Empty
+            Me._image = New Images
+            Me._language = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()> _
+    Public Class TVDBShowClearArt
+
+#Region "Fields"
+
+        Private _image As Images
+        Private _localfile As String
+        Private _url As String
+        Private _language As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Image() As Images
+            Get
+                Return Me._image
+            End Get
+            Set(ByVal value As Images)
+                Me._image = value
+            End Set
+        End Property
+
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal value As String)
+                Me._url = value
+            End Set
+        End Property
+
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._url = String.Empty
+            Me._localfile = String.Empty
+            Me._image = New Images
+            Me._language = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()> _
+    Public Class TVDBShowClearLogo
+
+#Region "Fields"
+
+        Private _image As Images
+        Private _localfile As String
+        Private _url As String
+        Private _language As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Image() As Images
+            Get
+                Return Me._image
+            End Get
+            Set(ByVal value As Images)
+                Me._image = value
+            End Set
+        End Property
+
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal value As String)
+                Me._url = value
+            End Set
+        End Property
+
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._url = String.Empty
+            Me._localfile = String.Empty
+            Me._image = New Images
+            Me._language = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()> _
+    Public Class TVDBShowLandscape
+
+#Region "Fields"
+
+        Private _image As Images
+        Private _localfile As String
+        Private _url As String
+        Private _language As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Image() As Images
+            Get
+                Return Me._image
+            End Get
+            Set(ByVal value As Images)
+                Me._image = value
+            End Set
+        End Property
+
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal value As String)
+                Me._url = value
+            End Set
+        End Property
+
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._url = String.Empty
             Me._localfile = String.Empty
             Me._image = New Images
             Me._language = String.Empty
