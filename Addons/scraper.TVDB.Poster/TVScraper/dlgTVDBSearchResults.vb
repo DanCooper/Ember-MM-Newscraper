@@ -41,6 +41,7 @@ Public Class dlgTVDBSearchResults
     Public Overloads Function ShowDialog(ByVal _sInfo As Structures.ScrapeInfo) As Windows.Forms.DialogResult
         Me.sInfo = _sInfo
         Me.Text = String.Concat(Master.eLang.GetString(948, "TV Search Results"), " - ", sInfo.ShowTitle)
+        Me.txtSearch.Text = sInfo.ShowTitle
         Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         Return MyBase.ShowDialog()
@@ -51,6 +52,7 @@ Public Class dlgTVDBSearchResults
         Me._skipdownload = SkipDownload
 
         Me.Text = String.Concat(Master.eLang.GetString(948, "TV Search Results"), " - ", sInfo.ShowTitle)
+        Me.txtSearch.Text = sInfo.ShowTitle
         Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then

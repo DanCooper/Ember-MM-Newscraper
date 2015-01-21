@@ -33,7 +33,7 @@ Public Class IMDB_Image
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
     Public Shared _AssemblyName As String
 
     Private _Name As String = "IMDB_Poster"
@@ -85,9 +85,9 @@ Public Class IMDB_Image
 #End Region 'Properties
 
 #Region "Methods"
-    Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
+    Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities.Poster
+            Case Enums.ScraperCapabilities_Movie_MovieSet.Poster
                 Return ConfigScrapeModifier.Poster
         End Select
         Return False
@@ -140,7 +140,7 @@ Public Class IMDB_Image
         ConfigScrapeModifier.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("Started scrape", New StackTrace().ToString())
         LoadSettings()
 

@@ -196,11 +196,11 @@ Public Class Interfaces
 
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
+        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
-        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
 
 #End Region 'Methods
 
@@ -242,11 +242,11 @@ Public Class Interfaces
 
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
+        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
-        Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
 
 #End Region 'Methods
 
@@ -288,11 +288,11 @@ Public Class Interfaces
 
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
+        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
-        Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
 
 #End Region 'Methods
 
@@ -431,7 +431,7 @@ Public Class Interfaces
 
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 

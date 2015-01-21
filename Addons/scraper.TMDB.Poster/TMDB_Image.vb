@@ -33,8 +33,8 @@ Public Class TMDB_Image
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
-    Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier_Movie_MovieSet
+    Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier_Movie_MovieSet
     Public Shared _AssemblyName As String
 
     Private TMDBId As String
@@ -120,21 +120,21 @@ Public Class TMDB_Image
 
 #Region "Methods"
 
-    Function QueryScraperCapabilities_Movie(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
+    Function QueryScraperCapabilities_Movie(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities.Fanart
+            Case Enums.ScraperCapabilities_Movie_MovieSet.Fanart
                 Return ConfigScrapeModifier_Movie.Fanart
-            Case Enums.ScraperCapabilities.Poster
+            Case Enums.ScraperCapabilities_Movie_MovieSet.Poster
                 Return ConfigScrapeModifier_Movie.Poster
         End Select
         Return False
     End Function
 
-    Function QueryScraperCapabilities_MovieSet(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.ScraperModule_Image_MovieSet.QueryScraperCapabilities
+    Function QueryScraperCapabilities_MovieSet(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean Implements Interfaces.ScraperModule_Image_MovieSet.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities.Fanart
+            Case Enums.ScraperCapabilities_Movie_MovieSet.Fanart
                 Return ConfigScrapeModifier_MovieSet.Fanart
-            Case Enums.ScraperCapabilities.Poster
+            Case Enums.ScraperCapabilities_Movie_MovieSet.Poster
                 Return ConfigScrapeModifier_MovieSet.Poster
         End Select
         Return False
@@ -280,7 +280,7 @@ Public Class TMDB_Image
 
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_Movie()
@@ -306,7 +306,7 @@ Public Class TMDB_Image
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()

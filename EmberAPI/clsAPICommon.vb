@@ -729,7 +729,7 @@ Public Class Enums
     ''' Enum representing possible scraper capabilities
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum ScraperCapabilities
+    Public Enum ScraperCapabilities_Movie_MovieSet
         Poster = 0
         Fanart = 1
         Trailer = 2
@@ -741,6 +741,31 @@ Public Class Enums
         DiscArt = 8
         Landscape = 9
         Theme = 10
+    End Enum
+    ''' <summary>
+    ''' Enum representing possible scraper capabilities
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum ScraperCapabilities_TV
+        AllSeasonsBanner = 1
+        AllSeasonsFanart = 2
+        AllSeasonsLandscape = 3
+        AllSeasonsPoster = 4
+        EpisodeFanart = 5
+        EpisodePoster = 6
+        SeasonBanner = 7
+        SeasonFanart = 8
+        SeasonLandscape = 9
+        SeasonPoster = 10
+        ShowBanner = 11
+        ShowCharacterArt = 12
+        ShowClearArt = 13
+        ShowClearLogo = 14
+        ShowEFanarts = 15
+        ShowFanart = 16
+        ShowLandscape = 17
+        ShowPoster = 18
+        ShowTheme = 19
     End Enum
 
     Public Enum ModuleEventType As Integer
@@ -1546,8 +1571,8 @@ Public Class Functions
     ''' <param name="Options2">Secondary Structures.ScrapeModifier</param>
     ''' <returns>Structures.ScrapeModifier representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
-    Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier, ByVal Options2 As Structures.ScrapeModifier) As Structures.ScrapeModifier
-        Dim filterModifier As New Structures.ScrapeModifier
+    Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier_Movie_MovieSet, ByVal Options2 As Structures.ScrapeModifier_Movie_MovieSet) As Structures.ScrapeModifier_Movie_MovieSet
+        Dim filterModifier As New Structures.ScrapeModifier_Movie_MovieSet
         filterModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
         filterModifier.EThumbs = Options.EThumbs AndAlso Options2.EThumbs
         filterModifier.EFanarts = Options.EFanarts AndAlso Options2.EFanarts
@@ -2061,7 +2086,7 @@ Public Class Structures
         Dim ScrapeType As Enums.ScrapeType
     End Structure
 
-    Public Structure ScrapeModifier
+    Public Structure ScrapeModifier_Movie_MovieSet
         Dim DoSearch As Boolean
         Dim EThumbs As Boolean
         Dim EFanarts As Boolean
@@ -2078,6 +2103,30 @@ Public Class Structures
         Dim DiscArt As Boolean
         Dim Landscape As Boolean
         Dim Theme As Boolean
+    End Structure
+
+    Public Structure ScrapeModifier_TV
+        Dim AllSeasonsBanner As Boolean
+        Dim AllSeasonsFanart As Boolean
+        Dim AllSeasonsLandscape As Boolean
+        Dim AllSeasonsPoster As Boolean
+        Dim DoSearch As Boolean
+        Dim Meta As Boolean
+        Dim NFO As Boolean
+        Dim SeasonBanner As Boolean
+        Dim SeasonFanart As Boolean
+        Dim SeasonLandscape As Boolean
+        Dim SeasonPoster As Boolean
+        Dim ShowActorThumbs As Boolean
+        Dim ShowBanner As Boolean
+        Dim ShowCharacterArt As Boolean
+        Dim ShowClearArt As Boolean
+        Dim ShowClearLogo As Boolean
+        Dim ShowEFanarts As Boolean
+        Dim ShowFanart As Boolean
+        Dim ShowLandscape As Boolean
+        Dim ShowPoster As Boolean
+        Dim ShowTheme As Boolean
     End Structure
     ''' <summary>
     ''' Structure representing posible scrape fields for movies

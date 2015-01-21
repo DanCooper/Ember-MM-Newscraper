@@ -35,7 +35,7 @@ Public Class IMDB_Data
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigOptions As New Structures.ScrapeOptions_Movie
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
     Public Shared _AssemblyName As String
     ''' <summary>
     ''' Scraping Here

@@ -331,7 +331,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Banner, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -407,7 +407,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearArt, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -484,7 +484,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.ClearLogo, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -561,7 +561,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.DiscArt, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -638,7 +638,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Fanart, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
@@ -714,7 +714,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Landscape, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -791,7 +791,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities.Poster, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_MovieSet(currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(currMovieSet, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -1185,31 +1185,31 @@ Public Class dlgEditMovieSet
                         .lblMoviePosterSize.Visible = True
                     End If
 
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.Banner) Then
+                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Banner) Then
                         .btnSetMovieBannerScrape.Enabled = False
                     End If
 
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.ClearArt) Then
+                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt) Then
                         .btnSetMovieClearArtScrape.Enabled = False
                     End If
 
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.ClearLogo) Then
+                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo) Then
                         .btnSetMovieClearLogoScrape.Enabled = False
                     End If
 
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.DiscArt) Then
+                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt) Then
                         .btnSetMovieDiscArtScrape.Enabled = False
                     End If
 
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.Fanart) Then
+                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Fanart) Then
                         .btnSetMovieFanartScrape.Enabled = False
                     End If
 
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.Landscape) Then
+                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Landscape) Then
                         .btnSetMovieLandscapeScrape.Enabled = False
                     End If
 
-                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.Poster) Then
+                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Poster) Then
                         .btnSetMoviePosterScrape.Enabled = False
                     End If
                 End If

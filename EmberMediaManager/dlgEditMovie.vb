@@ -478,7 +478,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Banner, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -554,7 +554,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -630,7 +630,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.ClearLogo, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -706,7 +706,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.DiscArt, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -812,7 +812,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
@@ -892,7 +892,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -968,7 +968,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -2086,7 +2086,7 @@ Public Class dlgEditMovie
                     .bwEFanarts.RunWorkerAsync()
 
                     If Master.eSettings.MovieBannerAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Banner) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Banner) Then
                             .btnSetMovieBannerScrape.Enabled = False
                         End If
                     Else
@@ -2094,7 +2094,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieClearArtAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearArt) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt) Then
                             .btnSetMovieClearArtScrape.Enabled = False
                         End If
                     Else
@@ -2102,7 +2102,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieClearLogoAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearLogo) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo) Then
                             .btnSetMovieClearLogoScrape.Enabled = False
                         End If
                     Else
@@ -2110,7 +2110,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieDiscArtAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.DiscArt) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt) Then
                             .btnSetMovieDiscArtScrape.Enabled = False
                         End If
                     Else
@@ -2134,7 +2134,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieFanartAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart) Then
                             .btnSetMovieFanartScrape.Enabled = False
                         End If
                     Else
@@ -2142,7 +2142,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieLandscapeAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Landscape) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Landscape) Then
                             .btnSetMovieLandscapeScrape.Enabled = False
                         End If
                     Else
@@ -2150,7 +2150,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MoviePosterAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Poster) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Poster) Then
                             .btnSetMoviePosterScrape.Enabled = False
                         End If
                     Else

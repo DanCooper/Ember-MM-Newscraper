@@ -30,7 +30,7 @@ Public Class GoEar_Theme
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
     Public Shared _AssemblyName As String
 
     ''' <summary>

@@ -875,7 +875,7 @@ Public Class ModulesManager
     ''' <param name="ImageList">List of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+    Public Function ScrapeImage_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_Movie) = externalScrapersModules_Image_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
@@ -917,7 +917,7 @@ Public Class ModulesManager
     ''' <param name="ImageList">List of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+    Public Function ScrapeImage_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_MovieSet) = externalScrapersModules_Image_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
@@ -959,7 +959,7 @@ Public Class ModulesManager
     ''' <param name="ImageList">List of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_TV(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+    Public Function ScrapeImage_TV(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_TV) = externalScrapersModules_Image_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
@@ -1042,7 +1042,7 @@ Public Class ModulesManager
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTrailer_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Boolean
+    Public Function ScrapeTrailer_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef URLList As List(Of Trailers)) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer_Movie) = externalScrapersModules_Trailer_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of Trailers)
@@ -1607,7 +1607,7 @@ Public Class ModulesManager
         RaiseEvent GenericEvent(mType, _params)
     End Sub
 
-    Function QueryScraperCapabilities_Image_Movie(ByVal cap As Enums.ScraperCapabilities) As Boolean
+    Function QueryScraperCapabilities_Image_Movie(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1623,7 +1623,7 @@ Public Class ModulesManager
         Return ret
     End Function
 
-    Function QueryScraperCapabilities_Image_MovieSet(ByVal cap As Enums.ScraperCapabilities) As Boolean
+    Function QueryScraperCapabilities_Image_MovieSet(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1639,7 +1639,7 @@ Public Class ModulesManager
         Return ret
     End Function
 
-    Function QueryScraperCapabilities_Image_TV(ByVal cap As Enums.ScraperCapabilities) As Boolean
+    Function QueryScraperCapabilities_Image_TV(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1655,7 +1655,7 @@ Public Class ModulesManager
         Return ret
     End Function
 
-    Function QueryScraperCapabilities_Trailer_Movie(ByVal cap As Enums.ScraperCapabilities) As Boolean
+    Function QueryScraperCapabilities_Trailer_Movie(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)

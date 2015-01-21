@@ -86,7 +86,7 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetTMDBImages(ByVal TMDBID As String, ByVal Type As Enums.ScraperCapabilities, ByRef Settings As sMySettings_ForScraper) As List(Of MediaContainers.Image)
+        Public Function GetTMDBImages(ByVal TMDBID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As sMySettings_ForScraper) As List(Of MediaContainers.Image)
             Dim alPosters As New List(Of MediaContainers.Image) 'main poster list
             Dim alPostersP As New List(Of MediaContainers.Image) 'preferred language poster list
             Dim alPostersE As New List(Of MediaContainers.Image) 'english poster list
@@ -102,7 +102,7 @@ Namespace TMDB
             Try
                 If Not String.IsNullOrEmpty(TMDBID) Then
                     images = _TMDBApiA.GetMovieImages(CInt(TMDBID))
-                    If Type = Enums.ScraperCapabilities.Poster Then
+                    If Type = Enums.ScraperCapabilities_Movie_MovieSet.Poster Then
                         If IsNothing(images.posters) OrElse images.posters.Count = 0 Then
                             images = _TMDBApiE.GetMovieImages(CInt(TMDBID))
                             If IsNothing(images.posters) OrElse images.posters.Count = 0 Then
@@ -124,7 +124,7 @@ Namespace TMDB
 
                     If bwTMDB.CancellationPending Then Return Nothing
 
-                    If Type = Enums.ScraperCapabilities.Poster Then
+                    If Type = Enums.ScraperCapabilities_Movie_MovieSet.Poster Then
                         For Each tmdbI As V3.Poster In images.posters
                             'If bwTMDB.CancellationPending Then Return Nothing
                             For Each aSize In Master.eSize.poster_names
@@ -165,7 +165,7 @@ Namespace TMDB
                         alPosters.AddRange(alPostersE)
                         alPosters.AddRange(alPostersOs)
                         alPosters.AddRange(alPostersN)
-                    ElseIf Type = Enums.ScraperCapabilities.Fanart Then
+                    ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.Fanart Then
                         For Each tmdbI As V3.Backdrop In images.backdrops
                             'If bwTMDB.CancellationPending Then Return Nothing
                             For Each aSize In Master.eSize.backdrop_names
@@ -203,7 +203,7 @@ Namespace TMDB
 #Region "Fields"
 
             Dim Parameter As String
-            Dim Type As Enums.ScraperCapabilities
+            Dim Type As Enums.ScraperCapabilities_Movie_MovieSet
 
 #End Region 'Fields
 

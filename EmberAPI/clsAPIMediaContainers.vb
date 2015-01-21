@@ -2362,6 +2362,7 @@ Namespace MediaContainers
         Public Property URL As String ' path to image (local or url)
         Public Property WebImage As Images
         Public Property ParentID As String 'All images of the same size must have this identical, is used to group the images.
+        Public Property Season As Integer
         Public Property ShortLang As String
         Public Property LongLang As String
         Public Property Likes As Integer
@@ -2375,15 +2376,16 @@ Namespace MediaContainers
 #Region "Methods"
 
         Public Sub Clear()
-            Me._URL = String.Empty
             Me._Description = String.Empty
-            Me._WebImage = New Images
-            Me._isChecked = False
-            Me._Likes = 0
-            Me._VoteAverage = String.Empty
-            Me.VoteCount = 0
             Me._Disc = 0
             Me._DiscType = String.Empty
+            Me._isChecked = False
+            Me._Likes = 0
+            Me._Season = -1
+            Me._URL = String.Empty
+            Me._VoteAverage = String.Empty
+            Me._VoteCount = 0
+            Me._WebImage = New Images
         End Sub
 
 #End Region 'Methods

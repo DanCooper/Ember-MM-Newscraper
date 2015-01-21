@@ -127,51 +127,67 @@ Public Class frmFanartTVMediaSettingsHolder_TV
         End If
     End Sub
 
-    Private Sub chkScrapeBanner_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeBanner.CheckedChanged
+    Private Sub chkScrapeSeasonBanner_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeSeasonBanner.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkScrapeClearArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearArt.CheckedChanged
+    Private Sub chkScrapeShowBanner_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowBanner.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapeShowClearArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowClearArt.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
 
-        Me.chkScrapeClearArtOnlyHD.Enabled = Me.chkScrapeClearArt.Checked
+        Me.chkScrapeShowClearArtOnlyHD.Enabled = Me.chkScrapeShowClearArt.Checked
 
-        If Not Me.chkScrapeClearArt.Checked Then
-            Me.chkScrapeClearArtOnlyHD.Checked = False
+        If Not Me.chkScrapeShowClearArt.Checked Then
+            Me.chkScrapeShowClearArtOnlyHD.Checked = False
         End If
     End Sub
 
-    Private Sub chkScrapeClearArtOnlyHD_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearArtOnlyHD.CheckedChanged
+    Private Sub chkScrapeShowClearArtOnlyHD_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowClearArtOnlyHD.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkScrapeClearLogo_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearLogo.CheckedChanged
+    Private Sub chkScrapeShowClearLogo_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowClearLogo.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
 
-        Me.chkScrapeClearLogoOnlyHD.Enabled = Me.chkScrapeClearLogo.Checked
+        Me.chkScrapeShowClearLogoOnlyHD.Enabled = Me.chkScrapeShowClearLogo.Checked
 
-        If Not Me.chkScrapeClearLogo.Checked Then
-            Me.chkScrapeClearLogoOnlyHD.Checked = False
+        If Not Me.chkScrapeShowClearLogo.Checked Then
+            Me.chkScrapeShowClearLogoOnlyHD.Checked = False
         End If
     End Sub
 
-    Private Sub chkScrapeClearLogoOnlyHD_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearLogoOnlyHD.CheckedChanged
+    Private Sub chkScrapeShowClearLogoOnlyHD_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowClearLogoOnlyHD.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkScrapeDiscArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeCharacterArt.CheckedChanged
+    Private Sub chkScrapeShowCharacterArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowCharacterArt.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkScrapeFanart_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeFanart.CheckedChanged
+    Private Sub chkScrapeSeasonFanart_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeSeasonFanart.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkScrapeLandscape_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeLandscape.CheckedChanged
+    Private Sub chkScrapeShowFanart_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowFanart.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkScrapePoster_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapePoster.CheckedChanged
+    Private Sub chkScrapeSeasonLandscape_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeSeasonLandscape.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapeShowLandscape_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowLandscape.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapeSeasonPoster_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeSeasonPoster.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapeShowPoster_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowPoster.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -191,15 +207,19 @@ Public Class frmFanartTVMediaSettingsHolder_TV
         Me.chkGetBlankImages.Text = Master.eLang.GetString(1207, "Also Get Blank Images")
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
         Me.chkPrefLanguageOnly.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
-        Me.chkScrapeBanner.Text = Master.eLang.GetString(1051, "Get Banner")
-        Me.chkScrapeClearArt.Text = Master.eLang.GetString(1053, "Get ClearArt")
-        Me.chkScrapeClearArtOnlyHD.Text = Master.eLang.GetString(1105, "Only HD")
-        Me.chkScrapeClearLogo.Text = Master.eLang.GetString(1054, "Get ClearLogo")
-        Me.chkScrapeClearLogoOnlyHD.Text = Me.chkScrapeClearArtOnlyHD.Text
-        Me.chkScrapeCharacterArt.Text = Master.eLang.GetString(1052, "Get CharacterArt")
-        Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
-        Me.chkScrapeLandscape.Text = Master.eLang.GetString(1056, "Get Landscape")
-        Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Poster")
+        Me.chkScrapeSeasonBanner.Text = Master.eLang.GetString(1051, "Get Banner")
+        Me.chkScrapeSeasonFanart.Text = Master.eLang.GetString(940, "Get Fanart")
+        Me.chkScrapeSeasonLandscape.Text = Master.eLang.GetString(1056, "Get Landscape")
+        Me.chkScrapeSeasonPoster.Text = Master.eLang.GetString(939, "Get Poster")
+        Me.chkScrapeShowBanner.Text = Master.eLang.GetString(1051, "Get Banner")
+        Me.chkScrapeShowClearArt.Text = Master.eLang.GetString(1053, "Get ClearArt")
+        Me.chkScrapeShowClearArtOnlyHD.Text = Master.eLang.GetString(1105, "Only HD")
+        Me.chkScrapeShowClearLogo.Text = Master.eLang.GetString(1054, "Get ClearLogo")
+        Me.chkScrapeShowClearLogoOnlyHD.Text = Me.chkScrapeShowClearArtOnlyHD.Text
+        Me.chkScrapeShowCharacterArt.Text = Master.eLang.GetString(1052, "Get CharacterArt")
+        Me.chkScrapeShowFanart.Text = Master.eLang.GetString(940, "Get Fanart")
+        Me.chkScrapeShowLandscape.Text = Master.eLang.GetString(1056, "Get Landscape")
+        Me.chkScrapeShowPoster.Text = Master.eLang.GetString(939, "Get Poster")
         Me.gbScraperImagesOpts.Text = Master.eLang.GetString(268, "Images - Scraper specific")
         Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         Me.lblAPIHint.Text = Master.eLang.GetString(1248, "Using a Personal API Key reduces the time you have to wait for new images to show up from 7 days to 48 hours.")

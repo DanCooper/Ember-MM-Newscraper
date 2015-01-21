@@ -1327,54 +1327,109 @@ Public Class Scraper
 
                     'get external scraper images
 
-                    'CharacterArt
+                    'AllSeasons/Show Banner
                     Dim aList As New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities.CharacterArt, aList) Then
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowBanner, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.ShowCharacterArt.Add(New TVDBShowCharacterArt With { _
+                                tmpTVDBShow.ShowBanners.Add(New TVDBShowBanner With { _
                                                               .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterart", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters/graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang})
                             Next
                         End If
                     End If
 
-                    'ClearArt
+                    'Season Banner
                     aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities.ClearArt, aList) Then
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonBanner, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.ShowClearArt.Add(New TVDBShowClearArt With { _
+                                tmpTVDBShow.SeasonBanners.Add(New TVDBSeasonBanner With { _
                                                               .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearart", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters/seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang, _
+                                                              .Season = img.Season})
+                            Next
+                        End If
+                    End If
+
+                    'Show CharacterArt
+                    aList = New List(Of MediaContainers.Image)
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowCharacterArt, aList) Then
+                        If aList.Count > 0 Then
+                            For Each img In aList.Where(Function(f) f.Description = "original")
+                                tmpTVDBShow.ShowCharacterArts.Add(New TVDBShowCharacterArt With { _
+                                                              .URL = img.URL, _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang})
                             Next
                         End If
                     End If
 
-                    'ClearLogo
+                    'Show ClearArt
                     aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities.ClearLogo, aList) Then
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowClearArt, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.ShowClearLogo.Add(New TVDBShowClearLogo With { _
+                                tmpTVDBShow.ShowClearArts.Add(New TVDBShowClearArt With { _
                                                               .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogo", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang})
                             Next
                         End If
                     End If
 
-                    'Landscape
+                    'Show ClearLogo
                     aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities.Landscape, aList) Then
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowClearLogo, aList) Then
+                        If aList.Count > 0 Then
+                            For Each img In aList.Where(Function(f) f.Description = "original")
+                                tmpTVDBShow.ShowClearLogos.Add(New TVDBShowClearLogo With { _
+                                                              .URL = img.URL, _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang})
+                            Next
+                        End If
+                    End If
+
+                    'AllSeasons/Show Landscape
+                    aList = New List(Of MediaContainers.Image)
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowLandscape, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
                                 tmpTVDBShow.ShowLandscapes.Add(New TVDBShowLandscape With { _
                                                               .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscape", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang})
+                            Next
+                        End If
+                    End If
+
+                    'Season Landscape
+                    aList = New List(Of MediaContainers.Image)
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonLandscape, aList) Then
+                        If aList.Count > 0 Then
+                            For Each img In aList.Where(Function(f) f.Description = "original")
+                                tmpTVDBShow.SeasonLandscapes.Add(New TVDBSeasonLandscape With { _
+                                                              .URL = img.URL, _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang, _
+                                                              .Season = img.Season})
+                            Next
+                        End If
+                    End If
+
+                    'Season Poster
+                    aList = New List(Of MediaContainers.Image)
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonPoster, aList) Then
+                        If aList.Count > 0 Then
+                            For Each img In aList.Where(Function(f) f.Description = "original")
+                                tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
+                                                              .URL = img.URL, _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters/seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang, _
+                                                              .Season = img.Season})
                             Next
                         End If
                     End If
@@ -1893,6 +1948,90 @@ Public Class Scraper
 
     End Class
 
+    <Serializable()> _
+    Public Class TVDBSeasonLandscape
+
+#Region "Fields"
+
+        Private _image As Images
+        Private _localfile As String
+        Private _url As String
+        Private _language As String
+        Private _season As Integer
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Image() As Images
+            Get
+                Return Me._image
+            End Get
+            Set(ByVal value As Images)
+                Me._image = value
+            End Set
+        End Property
+
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal value As String)
+                Me._url = value
+            End Set
+        End Property
+
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._url = String.Empty
+            Me._localfile = String.Empty
+            Me._image = New Images
+            Me._language = String.Empty
+            Me._season = -1
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
     Public Class TVDBShow
 
 #Region "Fields"
@@ -1903,6 +2042,7 @@ Public Class Scraper
         Private _posters As New List(Of TVDBPoster)
         Private _seasonposters As New List(Of TVDBSeasonPoster)
         Private _seasonbanners As New List(Of TVDBSeasonBanner)
+        Private _seasonlandscapes As New List(Of TVDBSeasonLandscape)
         Private _show As Structures.DBTV
         Private _showbanners As New List(Of TVDBShowBanner)
         Private _showcharacterarts As New List(Of TVDBShowCharacterArt)
@@ -1976,6 +2116,15 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property SeasonLandscapes() As List(Of TVDBSeasonLandscape)
+            Get
+                Return Me._seasonlandscapes
+            End Get
+            Set(ByVal value As List(Of TVDBSeasonLandscape))
+                Me._seasonlandscapes = value
+            End Set
+        End Property
+
         Public Property Show() As Structures.DBTV
             Get
                 Return Me._show
@@ -1994,7 +2143,7 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property ShowCharacterArt() As List(Of TVDBShowCharacterArt)
+        Public Property ShowCharacterArts() As List(Of TVDBShowCharacterArt)
             Get
                 Return Me._showcharacterarts
             End Get
@@ -2003,7 +2152,7 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property ShowClearArt() As List(Of TVDBShowClearArt)
+        Public Property ShowClearArts() As List(Of TVDBShowClearArt)
             Get
                 Return Me._showcleararts
             End Get
@@ -2012,7 +2161,7 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property ShowClearLogo() As List(Of TVDBShowClearLogo)
+        Public Property ShowClearLogos() As List(Of TVDBShowClearLogo)
             Get
                 Return Me._showclearlogos
             End Get
@@ -2046,6 +2195,7 @@ Public Class Scraper
             Me._showlandscapes = New List(Of TVDBShowLandscape)
             Me._seasonposters = New List(Of TVDBSeasonPoster)
             Me._seasonbanners = New List(Of TVDBSeasonBanner)
+            Me._seasonlandscapes = New List(Of TVDBSeasonLandscape)
             Me._posters = New List(Of TVDBPoster)
         End Sub
 

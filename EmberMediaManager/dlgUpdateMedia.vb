@@ -106,39 +106,39 @@ Public Class dlgUpdateMedia
 
             If chkModAll.Checked Then
                 chkModActorThumbs.Checked = chkModAll.Checked
-                chkModBanner.Checked = chkModAll.Checked AndAlso .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Banner)
-                chkModClearArt.Checked = chkModAll.Checked AndAlso .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearArt)
-                chkModClearLogo.Checked = chkModAll.Checked AndAlso .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearLogo)
-                chkModDiscArt.Checked = chkModAll.Checked AndAlso .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.DiscArt)
-                chkModEFanarts.Checked = chkModAll.Checked AndAlso .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart)
-                chkModEThumbs.Checked = chkModAll.Checked AndAlso .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart)
-                chkModFanart.Checked = chkModAll.Checked AndAlso .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart)
-                chkModLandscape.Checked = chkModAll.Checked AndAlso .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Landscape)
-                chkModPoster.Checked = chkModAll.Checked AndAlso .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Poster)
+                chkModBanner.Checked = chkModAll.Checked AndAlso .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Banner)
+                chkModClearArt.Checked = chkModAll.Checked AndAlso .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt)
+                chkModClearLogo.Checked = chkModAll.Checked AndAlso .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo)
+                chkModDiscArt.Checked = chkModAll.Checked AndAlso .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt)
+                chkModEFanarts.Checked = chkModAll.Checked AndAlso .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+                chkModEThumbs.Checked = chkModAll.Checked AndAlso .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+                chkModFanart.Checked = chkModAll.Checked AndAlso .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+                chkModLandscape.Checked = chkModAll.Checked AndAlso .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Landscape)
+                chkModPoster.Checked = chkModAll.Checked AndAlso .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Poster)
                 chkModMeta.Checked = chkModAll.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso .MovieScraperMetaDataScan
                 chkModNFO.Checked = chkModAll.Checked
-                chkModTheme.Checked = chkModAll.Checked AndAlso .MovieThemeEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities.Theme)
-                chkModTrailer.Checked = chkModAll.Checked AndAlso .MovieTrailerEnable AndAlso .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities.Trailer)
+                chkModTheme.Checked = chkModAll.Checked AndAlso .MovieThemeEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Theme)
+                chkModTrailer.Checked = chkModAll.Checked AndAlso .MovieTrailerEnable AndAlso .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Trailer)
                 chkOptsAll.Checked = chkModAll.Checked
             Else
                 If chkModMeta.Checked Then chkModMeta.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso .MovieScraperMetaDataScan AndAlso (Not rbUpdate_Ask.Checked OrElse chkModNFO.Checked)
             End If
 
             chkModActorThumbs.Enabled = Not chkModAll.Checked
-            chkModBanner.Enabled = Not chkModAll.Checked AndAlso .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Banner)
-            chkModClearArt.Enabled = Not chkModAll.Checked AndAlso .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearArt)
-            chkModClearLogo.Enabled = Not chkModAll.Checked AndAlso .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearLogo)
-            chkModDiscArt.Enabled = Not chkModAll.Checked AndAlso .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.DiscArt)
-            chkModEFanarts.Enabled = Not chkModAll.Checked AndAlso .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart)
-            chkModEThumbs.Enabled = Not chkModAll.Checked AndAlso .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart)
-            chkModFanart.Enabled = Not chkModAll.Checked AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart)
-            chkModFanart.Enabled = Not chkModAll.Checked AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart)
-            chkModLandscape.Enabled = Not chkModAll.Checked AndAlso .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Landscape)
+            chkModBanner.Enabled = Not chkModAll.Checked AndAlso .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Banner)
+            chkModClearArt.Enabled = Not chkModAll.Checked AndAlso .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt)
+            chkModClearLogo.Enabled = Not chkModAll.Checked AndAlso .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo)
+            chkModDiscArt.Enabled = Not chkModAll.Checked AndAlso .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt)
+            chkModEFanarts.Enabled = Not chkModAll.Checked AndAlso .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+            chkModEThumbs.Enabled = Not chkModAll.Checked AndAlso .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+            chkModFanart.Enabled = Not chkModAll.Checked AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+            chkModFanart.Enabled = Not chkModAll.Checked AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+            chkModLandscape.Enabled = Not chkModAll.Checked AndAlso .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Landscape)
             chkModMeta.Enabled = Not chkModAll.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso .MovieScraperMetaDataScan AndAlso (Not rbUpdate_Ask.Checked OrElse chkModNFO.Checked)
             chkModNFO.Enabled = Not chkModAll.Checked
-            chkModPoster.Enabled = Not chkModAll.Checked AndAlso .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Poster)
-            chkModTheme.Enabled = Not chkModAll.Checked AndAlso .MovieThemeEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities.Theme)
-            chkModTrailer.Enabled = Not chkModAll.Checked AndAlso .MovieTrailerEnable AndAlso .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities.Trailer)
+            chkModPoster.Enabled = Not chkModAll.Checked AndAlso .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Poster)
+            chkModTheme.Enabled = Not chkModAll.Checked AndAlso .MovieThemeEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Theme)
+            chkModTrailer.Enabled = Not chkModAll.Checked AndAlso .MovieTrailerEnable AndAlso .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Trailer)
             chkOptsAll.Enabled = Not chkModAll.Checked
 
             If Me.chkModAll.Checked Then

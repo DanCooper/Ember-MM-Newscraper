@@ -28,15 +28,23 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
         Me.gbScraperImagesOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperImagesOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkScrapeLandscape = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeClearLogoOnlyHD = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeClearArtOnlyHD = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeClearArt = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeClearLogo = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeFanart = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeCharacterArt = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeBanner = New System.Windows.Forms.CheckBox()
-        Me.chkScrapePoster = New System.Windows.Forms.CheckBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkScrapeSeasonBanner = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeSeasonFanart = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeSeasonLandscape = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeSeasonPoster = New System.Windows.Forms.CheckBox()
+        Me.gbScraperImagesShow = New System.Windows.Forms.GroupBox()
+        Me.tblScraperImagesShow = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkScrapeShowLandscape = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeShowClearLogoOnlyHD = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeShowClearArtOnlyHD = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeShowClearArt = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeShowClearLogo = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeShowFanart = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeShowCharacterArt = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeShowBanner = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeShowPoster = New System.Windows.Forms.CheckBox()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblAPIHint = New System.Windows.Forms.Label()
@@ -65,6 +73,10 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.tblSettingsMain.SuspendLayout()
         Me.gbScraperImagesOpts.SuspendLayout()
         Me.tblScraperImagesOpts.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.gbScraperImagesShow.SuspendLayout()
+        Me.tblScraperImagesShow.SuspendLayout()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
         CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -84,7 +96,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(452, 408)
+        Me.pnlSettings.Size = New System.Drawing.Size(642, 505)
         Me.pnlSettings.TabIndex = 0
         '
         'pnlSettingsMain
@@ -94,7 +106,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 29)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(452, 342)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(642, 439)
         Me.pnlSettingsMain.TabIndex = 98
         '
         'tblSettingsMain
@@ -113,7 +125,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsMain.Size = New System.Drawing.Size(452, 342)
+        Me.tblSettingsMain.Size = New System.Drawing.Size(642, 439)
         Me.tblSettingsMain.TabIndex = 0
         '
         'gbScraperImagesOpts
@@ -124,7 +136,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.gbScraperImagesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperImagesOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperImagesOpts.Name = "gbScraperImagesOpts"
-        Me.gbScraperImagesOpts.Size = New System.Drawing.Size(432, 136)
+        Me.gbScraperImagesOpts.Size = New System.Drawing.Size(432, 163)
         Me.gbScraperImagesOpts.TabIndex = 96
         Me.gbScraperImagesOpts.TabStop = False
         Me.gbScraperImagesOpts.Text = "Images - Scraper specific"
@@ -132,149 +144,267 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         'tblScraperImagesOpts
         '
         Me.tblScraperImagesOpts.AutoSize = True
-        Me.tblScraperImagesOpts.ColumnCount = 3
+        Me.tblScraperImagesOpts.ColumnCount = 2
         Me.tblScraperImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeLandscape, 1, 2)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeClearLogoOnlyHD, 0, 4)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeClearArtOnlyHD, 0, 2)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeClearArt, 0, 1)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeClearLogo, 0, 3)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeFanart, 1, 1)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeCharacterArt, 1, 0)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeBanner, 0, 0)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapePoster, 1, 3)
+        Me.tblScraperImagesOpts.Controls.Add(Me.GroupBox1, 1, 0)
+        Me.tblScraperImagesOpts.Controls.Add(Me.gbScraperImagesShow, 0, 0)
         Me.tblScraperImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperImagesOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperImagesOpts.Name = "tblScraperImagesOpts"
-        Me.tblScraperImagesOpts.RowCount = 6
+        Me.tblScraperImagesOpts.RowCount = 2
         Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesOpts.Size = New System.Drawing.Size(426, 115)
-        Me.tblScraperImagesOpts.TabIndex = 98
+        Me.tblScraperImagesOpts.Size = New System.Drawing.Size(426, 142)
+        Me.tblScraperImagesOpts.TabIndex = 11
         '
-        'chkScrapeLandscape
+        'GroupBox1
         '
-        Me.chkScrapeLandscape.AutoSize = True
-        Me.chkScrapeLandscape.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeLandscape.Location = New System.Drawing.Point(108, 49)
-        Me.chkScrapeLandscape.Name = "chkScrapeLandscape"
-        Me.chkScrapeLandscape.Size = New System.Drawing.Size(101, 17)
-        Me.chkScrapeLandscape.TabIndex = 7
-        Me.chkScrapeLandscape.Text = "Get Landscape"
-        Me.chkScrapeLandscape.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeLandscape.UseVisualStyleBackColor = True
+        Me.GroupBox1.AutoSize = True
+        Me.GroupBox1.Controls.Add(Me.TableLayoutPanel1)
+        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox1.Location = New System.Drawing.Point(237, 3)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(186, 136)
+        Me.GroupBox1.TabIndex = 11
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Season"
         '
-        'chkScrapeClearLogoOnlyHD
+        'TableLayoutPanel1
         '
-        Me.chkScrapeClearLogoOnlyHD.AutoSize = True
-        Me.chkScrapeClearLogoOnlyHD.Enabled = False
-        Me.chkScrapeClearLogoOnlyHD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkScrapeClearLogoOnlyHD.Location = New System.Drawing.Point(3, 95)
-        Me.chkScrapeClearLogoOnlyHD.Name = "chkScrapeClearLogoOnlyHD"
-        Me.chkScrapeClearLogoOnlyHD.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkScrapeClearLogoOnlyHD.Size = New System.Drawing.Size(89, 17)
-        Me.chkScrapeClearLogoOnlyHD.TabIndex = 8
-        Me.chkScrapeClearLogoOnlyHD.Text = "Only HD"
-        Me.chkScrapeClearLogoOnlyHD.UseVisualStyleBackColor = True
+        Me.TableLayoutPanel1.AutoSize = True
+        Me.TableLayoutPanel1.ColumnCount = 3
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonBanner, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonFanart, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonLandscape, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonPoster, 0, 3)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 6
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(180, 115)
+        Me.TableLayoutPanel1.TabIndex = 98
         '
-        'chkScrapeClearArtOnlyHD
+        'chkScrapeSeasonBanner
         '
-        Me.chkScrapeClearArtOnlyHD.AutoSize = True
-        Me.chkScrapeClearArtOnlyHD.Enabled = False
-        Me.chkScrapeClearArtOnlyHD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkScrapeClearArtOnlyHD.Location = New System.Drawing.Point(3, 49)
-        Me.chkScrapeClearArtOnlyHD.Name = "chkScrapeClearArtOnlyHD"
-        Me.chkScrapeClearArtOnlyHD.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkScrapeClearArtOnlyHD.Size = New System.Drawing.Size(89, 17)
-        Me.chkScrapeClearArtOnlyHD.TabIndex = 9
-        Me.chkScrapeClearArtOnlyHD.Text = "Only HD"
-        Me.chkScrapeClearArtOnlyHD.UseVisualStyleBackColor = True
+        Me.chkScrapeSeasonBanner.AutoSize = True
+        Me.chkScrapeSeasonBanner.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeSeasonBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeSeasonBanner.Location = New System.Drawing.Point(3, 3)
+        Me.chkScrapeSeasonBanner.Name = "chkScrapeSeasonBanner"
+        Me.chkScrapeSeasonBanner.Size = New System.Drawing.Size(84, 17)
+        Me.chkScrapeSeasonBanner.TabIndex = 2
+        Me.chkScrapeSeasonBanner.Text = "Get Banner"
+        Me.chkScrapeSeasonBanner.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeSeasonBanner.UseVisualStyleBackColor = True
         '
-        'chkScrapeClearArt
+        'chkScrapeSeasonFanart
         '
-        Me.chkScrapeClearArt.AutoSize = True
-        Me.chkScrapeClearArt.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeClearArt.Location = New System.Drawing.Point(3, 26)
-        Me.chkScrapeClearArt.Name = "chkScrapeClearArt"
-        Me.chkScrapeClearArt.Size = New System.Drawing.Size(88, 17)
-        Me.chkScrapeClearArt.TabIndex = 4
-        Me.chkScrapeClearArt.Text = "Get ClearArt"
-        Me.chkScrapeClearArt.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeClearArt.UseVisualStyleBackColor = True
+        Me.chkScrapeSeasonFanart.AutoSize = True
+        Me.chkScrapeSeasonFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeSeasonFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeSeasonFanart.Location = New System.Drawing.Point(3, 26)
+        Me.chkScrapeSeasonFanart.Name = "chkScrapeSeasonFanart"
+        Me.chkScrapeSeasonFanart.Size = New System.Drawing.Size(80, 17)
+        Me.chkScrapeSeasonFanart.TabIndex = 1
+        Me.chkScrapeSeasonFanart.Text = "Get Fanart"
+        Me.chkScrapeSeasonFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeSeasonFanart.UseVisualStyleBackColor = True
         '
-        'chkScrapeClearLogo
+        'chkScrapeSeasonLandscape
         '
-        Me.chkScrapeClearLogo.AutoSize = True
-        Me.chkScrapeClearLogo.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeClearLogo.Location = New System.Drawing.Point(3, 72)
-        Me.chkScrapeClearLogo.Name = "chkScrapeClearLogo"
-        Me.chkScrapeClearLogo.Size = New System.Drawing.Size(99, 17)
-        Me.chkScrapeClearLogo.TabIndex = 3
-        Me.chkScrapeClearLogo.Text = "Get ClearLogo"
-        Me.chkScrapeClearLogo.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeClearLogo.UseVisualStyleBackColor = True
+        Me.chkScrapeSeasonLandscape.AutoSize = True
+        Me.chkScrapeSeasonLandscape.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeSeasonLandscape.Location = New System.Drawing.Point(3, 49)
+        Me.chkScrapeSeasonLandscape.Name = "chkScrapeSeasonLandscape"
+        Me.chkScrapeSeasonLandscape.Size = New System.Drawing.Size(101, 17)
+        Me.chkScrapeSeasonLandscape.TabIndex = 7
+        Me.chkScrapeSeasonLandscape.Text = "Get Landscape"
+        Me.chkScrapeSeasonLandscape.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeSeasonLandscape.UseVisualStyleBackColor = True
         '
-        'chkScrapeFanart
+        'chkScrapeSeasonPoster
         '
-        Me.chkScrapeFanart.AutoSize = True
-        Me.chkScrapeFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeFanart.Location = New System.Drawing.Point(108, 26)
-        Me.chkScrapeFanart.Name = "chkScrapeFanart"
-        Me.chkScrapeFanart.Size = New System.Drawing.Size(80, 17)
-        Me.chkScrapeFanart.TabIndex = 1
-        Me.chkScrapeFanart.Text = "Get Fanart"
-        Me.chkScrapeFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeFanart.UseVisualStyleBackColor = True
+        Me.chkScrapeSeasonPoster.AutoSize = True
+        Me.chkScrapeSeasonPoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeSeasonPoster.Location = New System.Drawing.Point(3, 72)
+        Me.chkScrapeSeasonPoster.Name = "chkScrapeSeasonPoster"
+        Me.chkScrapeSeasonPoster.Size = New System.Drawing.Size(79, 17)
+        Me.chkScrapeSeasonPoster.TabIndex = 0
+        Me.chkScrapeSeasonPoster.Text = "Get Poster"
+        Me.chkScrapeSeasonPoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeSeasonPoster.UseVisualStyleBackColor = True
         '
-        'chkScrapeCharacterArt
+        'gbScraperImagesShow
         '
-        Me.chkScrapeCharacterArt.AutoSize = True
-        Me.chkScrapeCharacterArt.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeCharacterArt.Location = New System.Drawing.Point(108, 3)
-        Me.chkScrapeCharacterArt.Name = "chkScrapeCharacterArt"
-        Me.chkScrapeCharacterArt.Size = New System.Drawing.Size(111, 17)
-        Me.chkScrapeCharacterArt.TabIndex = 6
-        Me.chkScrapeCharacterArt.Text = "Get CharacterArt"
-        Me.chkScrapeCharacterArt.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeCharacterArt.UseVisualStyleBackColor = True
+        Me.gbScraperImagesShow.AutoSize = True
+        Me.gbScraperImagesShow.Controls.Add(Me.tblScraperImagesShow)
+        Me.gbScraperImagesShow.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbScraperImagesShow.Location = New System.Drawing.Point(3, 3)
+        Me.gbScraperImagesShow.Name = "gbScraperImagesShow"
+        Me.gbScraperImagesShow.Size = New System.Drawing.Size(228, 136)
+        Me.gbScraperImagesShow.TabIndex = 10
+        Me.gbScraperImagesShow.TabStop = False
+        Me.gbScraperImagesShow.Text = "Show"
         '
-        'chkScrapeBanner
+        'tblScraperImagesShow
         '
-        Me.chkScrapeBanner.AutoSize = True
-        Me.chkScrapeBanner.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeBanner.Location = New System.Drawing.Point(3, 3)
-        Me.chkScrapeBanner.Name = "chkScrapeBanner"
-        Me.chkScrapeBanner.Size = New System.Drawing.Size(84, 17)
-        Me.chkScrapeBanner.TabIndex = 2
-        Me.chkScrapeBanner.Text = "Get Banner"
-        Me.chkScrapeBanner.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeBanner.UseVisualStyleBackColor = True
+        Me.tblScraperImagesShow.AutoSize = True
+        Me.tblScraperImagesShow.ColumnCount = 3
+        Me.tblScraperImagesShow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperImagesShow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperImagesShow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperImagesShow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperImagesShow.Controls.Add(Me.chkScrapeShowLandscape, 1, 2)
+        Me.tblScraperImagesShow.Controls.Add(Me.chkScrapeShowClearLogoOnlyHD, 0, 4)
+        Me.tblScraperImagesShow.Controls.Add(Me.chkScrapeShowClearArtOnlyHD, 0, 2)
+        Me.tblScraperImagesShow.Controls.Add(Me.chkScrapeShowClearArt, 0, 1)
+        Me.tblScraperImagesShow.Controls.Add(Me.chkScrapeShowClearLogo, 0, 3)
+        Me.tblScraperImagesShow.Controls.Add(Me.chkScrapeShowFanart, 1, 1)
+        Me.tblScraperImagesShow.Controls.Add(Me.chkScrapeShowCharacterArt, 1, 0)
+        Me.tblScraperImagesShow.Controls.Add(Me.chkScrapeShowBanner, 0, 0)
+        Me.tblScraperImagesShow.Controls.Add(Me.chkScrapeShowPoster, 1, 3)
+        Me.tblScraperImagesShow.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblScraperImagesShow.Location = New System.Drawing.Point(3, 18)
+        Me.tblScraperImagesShow.Name = "tblScraperImagesShow"
+        Me.tblScraperImagesShow.RowCount = 6
+        Me.tblScraperImagesShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesShow.Size = New System.Drawing.Size(222, 115)
+        Me.tblScraperImagesShow.TabIndex = 98
         '
-        'chkScrapePoster
+        'chkScrapeShowLandscape
         '
-        Me.chkScrapePoster.AutoSize = True
-        Me.chkScrapePoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapePoster.Location = New System.Drawing.Point(108, 72)
-        Me.chkScrapePoster.Name = "chkScrapePoster"
-        Me.chkScrapePoster.Size = New System.Drawing.Size(79, 17)
-        Me.chkScrapePoster.TabIndex = 0
-        Me.chkScrapePoster.Text = "Get Poster"
-        Me.chkScrapePoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapePoster.UseVisualStyleBackColor = True
+        Me.chkScrapeShowLandscape.AutoSize = True
+        Me.chkScrapeShowLandscape.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeShowLandscape.Location = New System.Drawing.Point(108, 49)
+        Me.chkScrapeShowLandscape.Name = "chkScrapeShowLandscape"
+        Me.chkScrapeShowLandscape.Size = New System.Drawing.Size(101, 17)
+        Me.chkScrapeShowLandscape.TabIndex = 7
+        Me.chkScrapeShowLandscape.Text = "Get Landscape"
+        Me.chkScrapeShowLandscape.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowLandscape.UseVisualStyleBackColor = True
+        '
+        'chkScrapeShowClearLogoOnlyHD
+        '
+        Me.chkScrapeShowClearLogoOnlyHD.AutoSize = True
+        Me.chkScrapeShowClearLogoOnlyHD.Enabled = False
+        Me.chkScrapeShowClearLogoOnlyHD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkScrapeShowClearLogoOnlyHD.Location = New System.Drawing.Point(3, 95)
+        Me.chkScrapeShowClearLogoOnlyHD.Name = "chkScrapeShowClearLogoOnlyHD"
+        Me.chkScrapeShowClearLogoOnlyHD.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.chkScrapeShowClearLogoOnlyHD.Size = New System.Drawing.Size(89, 17)
+        Me.chkScrapeShowClearLogoOnlyHD.TabIndex = 8
+        Me.chkScrapeShowClearLogoOnlyHD.Text = "Only HD"
+        Me.chkScrapeShowClearLogoOnlyHD.UseVisualStyleBackColor = True
+        '
+        'chkScrapeShowClearArtOnlyHD
+        '
+        Me.chkScrapeShowClearArtOnlyHD.AutoSize = True
+        Me.chkScrapeShowClearArtOnlyHD.Enabled = False
+        Me.chkScrapeShowClearArtOnlyHD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkScrapeShowClearArtOnlyHD.Location = New System.Drawing.Point(3, 49)
+        Me.chkScrapeShowClearArtOnlyHD.Name = "chkScrapeShowClearArtOnlyHD"
+        Me.chkScrapeShowClearArtOnlyHD.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.chkScrapeShowClearArtOnlyHD.Size = New System.Drawing.Size(89, 17)
+        Me.chkScrapeShowClearArtOnlyHD.TabIndex = 9
+        Me.chkScrapeShowClearArtOnlyHD.Text = "Only HD"
+        Me.chkScrapeShowClearArtOnlyHD.UseVisualStyleBackColor = True
+        '
+        'chkScrapeShowClearArt
+        '
+        Me.chkScrapeShowClearArt.AutoSize = True
+        Me.chkScrapeShowClearArt.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeShowClearArt.Location = New System.Drawing.Point(3, 26)
+        Me.chkScrapeShowClearArt.Name = "chkScrapeShowClearArt"
+        Me.chkScrapeShowClearArt.Size = New System.Drawing.Size(88, 17)
+        Me.chkScrapeShowClearArt.TabIndex = 4
+        Me.chkScrapeShowClearArt.Text = "Get ClearArt"
+        Me.chkScrapeShowClearArt.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowClearArt.UseVisualStyleBackColor = True
+        '
+        'chkScrapeShowClearLogo
+        '
+        Me.chkScrapeShowClearLogo.AutoSize = True
+        Me.chkScrapeShowClearLogo.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeShowClearLogo.Location = New System.Drawing.Point(3, 72)
+        Me.chkScrapeShowClearLogo.Name = "chkScrapeShowClearLogo"
+        Me.chkScrapeShowClearLogo.Size = New System.Drawing.Size(99, 17)
+        Me.chkScrapeShowClearLogo.TabIndex = 3
+        Me.chkScrapeShowClearLogo.Text = "Get ClearLogo"
+        Me.chkScrapeShowClearLogo.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowClearLogo.UseVisualStyleBackColor = True
+        '
+        'chkScrapeShowFanart
+        '
+        Me.chkScrapeShowFanart.AutoSize = True
+        Me.chkScrapeShowFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeShowFanart.Location = New System.Drawing.Point(108, 26)
+        Me.chkScrapeShowFanart.Name = "chkScrapeShowFanart"
+        Me.chkScrapeShowFanart.Size = New System.Drawing.Size(80, 17)
+        Me.chkScrapeShowFanart.TabIndex = 1
+        Me.chkScrapeShowFanart.Text = "Get Fanart"
+        Me.chkScrapeShowFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowFanart.UseVisualStyleBackColor = True
+        '
+        'chkScrapeShowCharacterArt
+        '
+        Me.chkScrapeShowCharacterArt.AutoSize = True
+        Me.chkScrapeShowCharacterArt.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeShowCharacterArt.Location = New System.Drawing.Point(108, 3)
+        Me.chkScrapeShowCharacterArt.Name = "chkScrapeShowCharacterArt"
+        Me.chkScrapeShowCharacterArt.Size = New System.Drawing.Size(111, 17)
+        Me.chkScrapeShowCharacterArt.TabIndex = 6
+        Me.chkScrapeShowCharacterArt.Text = "Get CharacterArt"
+        Me.chkScrapeShowCharacterArt.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowCharacterArt.UseVisualStyleBackColor = True
+        '
+        'chkScrapeShowBanner
+        '
+        Me.chkScrapeShowBanner.AutoSize = True
+        Me.chkScrapeShowBanner.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeShowBanner.Location = New System.Drawing.Point(3, 3)
+        Me.chkScrapeShowBanner.Name = "chkScrapeShowBanner"
+        Me.chkScrapeShowBanner.Size = New System.Drawing.Size(84, 17)
+        Me.chkScrapeShowBanner.TabIndex = 2
+        Me.chkScrapeShowBanner.Text = "Get Banner"
+        Me.chkScrapeShowBanner.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowBanner.UseVisualStyleBackColor = True
+        '
+        'chkScrapeShowPoster
+        '
+        Me.chkScrapeShowPoster.AutoSize = True
+        Me.chkScrapeShowPoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeShowPoster.Location = New System.Drawing.Point(108, 72)
+        Me.chkScrapeShowPoster.Name = "chkScrapeShowPoster"
+        Me.chkScrapeShowPoster.Size = New System.Drawing.Size(79, 17)
+        Me.chkScrapeShowPoster.TabIndex = 0
+        Me.chkScrapeShowPoster.Text = "Get Poster"
+        Me.chkScrapeShowPoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeShowPoster.UseVisualStyleBackColor = True
         '
         'gbScraperOpts
         '
@@ -282,7 +412,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.gbScraperOpts.Controls.Add(Me.tblScraperOpts)
         Me.gbScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 145)
+        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 172)
         Me.gbScraperOpts.Name = "gbScraperOpts"
         Me.gbScraperOpts.Size = New System.Drawing.Size(432, 183)
         Me.gbScraperOpts.TabIndex = 95
@@ -462,9 +592,9 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.pnlSettingsBottom.AutoSize = True
         Me.pnlSettingsBottom.Controls.Add(Me.tblSettingsBottom)
         Me.pnlSettingsBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlSettingsBottom.Location = New System.Drawing.Point(0, 371)
+        Me.pnlSettingsBottom.Location = New System.Drawing.Point(0, 468)
         Me.pnlSettingsBottom.Name = "pnlSettingsBottom"
-        Me.pnlSettingsBottom.Size = New System.Drawing.Size(452, 37)
+        Me.pnlSettingsBottom.Size = New System.Drawing.Size(642, 37)
         Me.pnlSettingsBottom.TabIndex = 97
         '
         'tblSettingsBottom
@@ -482,7 +612,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.tblSettingsBottom.RowCount = 2
         Me.tblSettingsBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsBottom.Size = New System.Drawing.Size(452, 37)
+        Me.tblSettingsBottom.Size = New System.Drawing.Size(642, 37)
         Me.tblSettingsBottom.TabIndex = 98
         '
         'pbIconBottom
@@ -518,7 +648,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsTop.Name = "pnlSettingsTop"
-        Me.pnlSettingsTop.Size = New System.Drawing.Size(452, 29)
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(642, 29)
         Me.pnlSettingsTop.TabIndex = 0
         '
         'tblSettingsTop
@@ -541,14 +671,14 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.tblSettingsTop.RowCount = 2
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsTop.Size = New System.Drawing.Size(452, 29)
+        Me.tblSettingsTop.Size = New System.Drawing.Size(642, 29)
         Me.tblSettingsTop.TabIndex = 99
         '
         'btnDown
         '
         Me.btnDown.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
-        Me.btnDown.Location = New System.Drawing.Point(426, 3)
+        Me.btnDown.Location = New System.Drawing.Point(616, 3)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(23, 23)
         Me.btnDown.TabIndex = 3
@@ -559,7 +689,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.lblScraperOrder.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblScraperOrder.AutoSize = True
         Me.lblScraperOrder.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblScraperOrder.Location = New System.Drawing.Point(333, 8)
+        Me.lblScraperOrder.Location = New System.Drawing.Point(523, 8)
         Me.lblScraperOrder.Name = "lblScraperOrder"
         Me.lblScraperOrder.Size = New System.Drawing.Size(58, 12)
         Me.lblScraperOrder.TabIndex = 1
@@ -569,7 +699,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         '
         Me.btnUp.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
-        Me.btnUp.Location = New System.Drawing.Point(397, 3)
+        Me.btnUp.Location = New System.Drawing.Point(587, 3)
         Me.btnUp.Name = "btnUp"
         Me.btnUp.Size = New System.Drawing.Size(23, 23)
         Me.btnUp.TabIndex = 2
@@ -592,7 +722,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(452, 408)
+        Me.ClientSize = New System.Drawing.Size(642, 505)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -612,6 +742,14 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.gbScraperImagesOpts.PerformLayout()
         Me.tblScraperImagesOpts.ResumeLayout(False)
         Me.tblScraperImagesOpts.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel1.PerformLayout()
+        Me.gbScraperImagesShow.ResumeLayout(False)
+        Me.gbScraperImagesShow.PerformLayout()
+        Me.tblScraperImagesShow.ResumeLayout(False)
+        Me.tblScraperImagesShow.PerformLayout()
         Me.gbScraperOpts.ResumeLayout(False)
         Me.gbScraperOpts.PerformLayout()
         Me.tblScraperOpts.ResumeLayout(False)
@@ -643,29 +781,37 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
     Friend WithEvents lblAPIKey As System.Windows.Forms.Label
     Friend WithEvents txtApiKey As System.Windows.Forms.TextBox
     Friend WithEvents gbScraperImagesOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents chkScrapePoster As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScrapeFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeShowPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeShowFanart As System.Windows.Forms.CheckBox
     Friend WithEvents cbPrefLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label
-    Friend WithEvents chkScrapeLandscape As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScrapeCharacterArt As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScrapeClearArt As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScrapeClearLogo As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScrapeBanner As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScrapeClearLogoOnlyHD As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScrapeClearArtOnlyHD As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeShowLandscape As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeShowCharacterArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeShowClearArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeShowClearLogo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeShowBanner As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeShowClearLogoOnlyHD As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeShowClearArtOnlyHD As System.Windows.Forms.CheckBox
     Friend WithEvents chkGetBlankImages As System.Windows.Forms.CheckBox
     Friend WithEvents chkPrefLanguageOnly As System.Windows.Forms.CheckBox
     Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents lblAPIHint As System.Windows.Forms.Label
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel
-    Friend WithEvents tblScraperImagesOpts As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblScraperImagesShow As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
     Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
     Friend WithEvents tblScraperOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblScraperImagesOpts As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbScraperImagesShow As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents chkScrapeSeasonLandscape As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeSeasonFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeSeasonBanner As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeSeasonPoster As System.Windows.Forms.CheckBox
 
 End Class

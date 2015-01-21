@@ -35,7 +35,7 @@ Public Class IMDB_Trailer
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
     Public Shared _AssemblyName As String
 
     Private _Name As String = "IMDB_Trailer"
@@ -148,7 +148,7 @@ Public Class IMDB_Trailer
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
         logger.Trace("Started scrape", New StackTrace().ToString())
 
         Dim tIMDBID As String = String.Empty
