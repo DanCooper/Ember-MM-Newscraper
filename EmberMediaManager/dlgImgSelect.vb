@@ -41,7 +41,7 @@ Public Class dlgImgSelect
     Private chkImageEF() As CheckBox
     Private pnlImageET() As Panel
     Private pnlImageEF() As Panel
-    Private DLType As Enums.MovieImageType
+    Private DLType As Enums.ImageType_Movie
     Private isWorkerDone As Boolean = False
     'Private ETHashes As New List(Of String)
     Private iCounter As Integer = 0
@@ -126,7 +126,7 @@ Public Class dlgImgSelect
     ''' <param name="_isEdit"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.MovieImageType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ImageType_Movie, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
         '//
         ' Overload to pass data
         '\\
@@ -139,19 +139,19 @@ Public Class dlgImgSelect
         Me.DLType = Type
         Me.isEdit = _isEdit
         Select Case DLType
-            Case Enums.MovieImageType.Banner
+            Case Enums.ImageType_Movie.Banner
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.MovieImageType.ClearArt
+            Case Enums.ImageType_Movie.ClearArt
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.MovieImageType.ClearLogo
+            Case Enums.ImageType_Movie.ClearLogo
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.MovieImageType.DiscArt
+            Case Enums.ImageType_Movie.DiscArt
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.MovieImageType.Fanart
+            Case Enums.ImageType_Movie.Fanart
                 aDes = Master.eSize.backdrop_names(0).description
-            Case Enums.MovieImageType.Landscape
+            Case Enums.ImageType_Movie.Landscape
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.MovieImageType.Poster
+            Case Enums.ImageType_Movie.Poster
                 aDes = Master.eSize.poster_names(0).description
         End Select
 
@@ -159,7 +159,7 @@ Public Class dlgImgSelect
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.MovieImageType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ImageType_Movie, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
         '//
         ' Overload to pass data
         '\\
@@ -172,19 +172,19 @@ Public Class dlgImgSelect
         Me.DLType = Type
         Me.isEdit = _isEdit
         Select Case DLType
-            Case Enums.MovieImageType.Banner
+            Case Enums.ImageType_Movie.Banner
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.MovieImageType.ClearArt
+            Case Enums.ImageType_Movie.ClearArt
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.MovieImageType.ClearLogo
+            Case Enums.ImageType_Movie.ClearLogo
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.MovieImageType.DiscArt
+            Case Enums.ImageType_Movie.DiscArt
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.MovieImageType.Fanart
+            Case Enums.ImageType_Movie.Fanart
                 aDes = Master.eSize.backdrop_names(0).description
-            Case Enums.MovieImageType.Landscape
+            Case Enums.ImageType_Movie.Landscape
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.MovieImageType.Poster
+            Case Enums.ImageType_Movie.Poster
                 aDes = Master.eSize.poster_names(0).description
         End Select
 
@@ -262,7 +262,7 @@ Public Class dlgImgSelect
             AddHandler pbImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
 
-            If Me.DLType = Enums.MovieImageType.Fanart Then
+            If Me.DLType = Enums.ImageType_Movie.Fanart Then
                 ReDim Preserve Me.chkImageET(iIndex)
                 ReDim Preserve Me.chkImageEF(iIndex)
                 ReDim Preserve Me.pnlImageET(iIndex)
@@ -545,9 +545,9 @@ Public Class dlgImgSelect
             FillListView(aDes)
         Else
             Select Case DLType
-                Case Enums.MovieImageType.Poster
+                Case Enums.ImageType_Movie.Poster
                     FillListView(Master.eSize.poster_names(Me.cbFilterSize.SelectedIndex - 1).description)
-                Case Enums.MovieImageType.Fanart
+                Case Enums.ImageType_Movie.Fanart
                     FillListView(Master.eSize.backdrop_names(Me.cbFilterSize.SelectedIndex - 1).description)
             End Select
         End If
@@ -574,7 +574,7 @@ Public Class dlgImgSelect
             For i As Integer = 0 To UBound(Me.pnlImage)
                 Me.pnlImage(i).BackColor = Color.White
 
-                If DLType = Enums.MovieImageType.Fanart Then
+                If DLType = Enums.ImageType_Movie.Fanart Then
                     Me.lblImage(i).BackColor = Color.White
                     Me.lblImage(i).ForeColor = Color.Black
                 Else
@@ -586,7 +586,7 @@ Public Class dlgImgSelect
             'set selected pnl color to blue
             Me.pnlImage(iIndex).BackColor = Color.Blue
 
-            If DLType = Enums.MovieImageType.Fanart Then
+            If DLType = Enums.ImageType_Movie.Fanart Then
                 Me.lblImage(iIndex).BackColor = Color.Blue
                 Me.lblImage(iIndex).ForeColor = Color.White
             Else
@@ -721,7 +721,7 @@ Public Class dlgImgSelect
                 End Select
             End If
 
-            If Me.DLType = Enums.MovieImageType.Fanart Then
+            If Me.DLType = Enums.ImageType_Movie.Fanart Then
                 Dim iMod As Integer = 0
                 Dim iVal As Integer = 1
                 Dim etPath As String = String.Empty
@@ -808,37 +808,37 @@ Public Class dlgImgSelect
                 Title = Me.tMovieSet.ListTitle
             End If
 
-            If Me.DLType = Enums.MovieImageType.Poster Then
+            If Me.DLType = Enums.ImageType_Movie.Poster Then
                 Me.Text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
-            ElseIf Me.DLType = Enums.MovieImageType.Banner Then
+            ElseIf Me.DLType = Enums.ImageType_Movie.Banner Then
                 Me.Text = String.Concat(Master.eLang.GetString(1064, "Select Banner"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
-            ElseIf Me.DLType = Enums.MovieImageType.Landscape Then
+            ElseIf Me.DLType = Enums.ImageType_Movie.Landscape Then
                 Me.Text = String.Concat(Master.eLang.GetString(1065, "Select Landscape"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
-            ElseIf Me.DLType = Enums.MovieImageType.Fanart Then
+            ElseIf Me.DLType = Enums.ImageType_Movie.Fanart Then
                 Me.Text = String.Concat(Master.eLang.GetString(878, "Select Fanart"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
-            ElseIf Me.DLType = Enums.MovieImageType.ClearArt Then
+            ElseIf Me.DLType = Enums.ImageType_Movie.ClearArt Then
                 Me.Text = String.Concat(Master.eLang.GetString(1109, "Select ClearArt"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
-            ElseIf Me.DLType = Enums.MovieImageType.ClearLogo Then
+            ElseIf Me.DLType = Enums.ImageType_Movie.ClearLogo Then
                 Me.Text = String.Concat(Master.eLang.GetString(1110, "Select ClearLogo"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
-            ElseIf Me.DLType = Enums.MovieImageType.DiscArt Then
+            ElseIf Me.DLType = Enums.ImageType_Movie.DiscArt Then
                 Me.Text = String.Concat(Master.eLang.GetString(1111, "Select DiscArt"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
@@ -898,7 +898,7 @@ Public Class dlgImgSelect
 
             For Each TMDBPoster As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)
                 If Not (TMDBPoster.Width = "n/a") AndAlso Not (TMDBPoster.Height = "n/a") Then
-                    If Me.DLType = Enums.MovieImageType.Poster Then
+                    If Me.DLType = Enums.ImageType_Movie.Poster Then
                         Select Case TMDBPoster.Description
                             Case Master.eSize.poster_names(5).description
                                 ' xlarge
@@ -945,7 +945,7 @@ Public Class dlgImgSelect
                         End Select
                     End If
                 Else
-                    If Me.DLType = Enums.MovieImageType.Poster Then
+                    If Me.DLType = Enums.ImageType_Movie.Poster Then
                         Select Case TMDBPoster.Description
                             Case Master.eSize.poster_names(5).description
                                 ' xlarge
@@ -986,7 +986,7 @@ Public Class dlgImgSelect
                 End If
             Next
 
-            If Me.DLType = Enums.MovieImageType.Fanart Then
+            If Me.DLType = Enums.ImageType_Movie.Fanart Then
                 Select Case Master.eSettings.MovieFanartPrefSize
                     Case Enums.FanartSize.Small
                         Me.rbSmall.Checked = rbSmall.Enabled

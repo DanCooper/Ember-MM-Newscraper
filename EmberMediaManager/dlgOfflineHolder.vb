@@ -538,7 +538,7 @@ Public Class dlgOfflineHolder
                 If Master.GlobalScrapeMod.Poster Then
                     Poster.Clear()
                     aList.Clear()
-                    If Poster.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.MovieImageType.Poster) Then
+                    If Poster.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ImageType_Movie.Poster) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
                             If aList.Count > 0 AndAlso Images.GetPreferredMoviePoster(aList, Poster) Then
                                 If Not String.IsNullOrEmpty(Poster.URL) Then
@@ -554,7 +554,7 @@ Public Class dlgOfflineHolder
                     aList.Clear()
                     efList.Clear()
                     etList.Clear()
-                    If Fanart.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.MovieImageType.Fanart) Then
+                    If Fanart.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ImageType_Movie.Fanart) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
                             If aList.Count > 0 AndAlso Images.GetPreferredMovieFanart(aList, Fanart) Then
                                 If Not String.IsNullOrEmpty(Fanart.URL) Then
@@ -568,7 +568,7 @@ Public Class dlgOfflineHolder
                 If Master.GlobalScrapeMod.Banner Then
                     Banner.Clear()
                     aList.Clear()
-                    If Banner.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.MovieImageType.Banner) Then
+                    If Banner.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ImageType_Movie.Banner) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
                             If aList.Count > 0 Then Banner = aList.Item(0) 'AndAlso Images.GetPreferredBanner(aList, Banner) Then
                             If Not String.IsNullOrEmpty(Banner.URL) Then
@@ -581,7 +581,7 @@ Public Class dlgOfflineHolder
                 If Master.GlobalScrapeMod.Landscape Then
                     Landscape.Clear()
                     aList.Clear()
-                    If Landscape.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.MovieImageType.Landscape) Then
+                    If Landscape.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ImageType_Movie.Landscape) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
                             If aList.Count > 0 Then Landscape = aList.Item(0) 'AndAlso Images.GetPreferredLandscape(aList, Landscape) Then
                             If Not String.IsNullOrEmpty(Landscape.URL) Then
@@ -594,7 +594,7 @@ Public Class dlgOfflineHolder
                 If Master.GlobalScrapeMod.ClearArt Then
                     ClearArt.Clear()
                     aList.Clear()
-                    If ClearArt.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.MovieImageType.ClearArt) Then
+                    If ClearArt.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ImageType_Movie.ClearArt) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
                             If aList.Count > 0 Then ClearArt = aList.Item(0) 'AndAlso Images.GetPreferredClearArt(aList, ClearArt) Then
                             If Not String.IsNullOrEmpty(ClearArt.URL) Then
@@ -607,7 +607,7 @@ Public Class dlgOfflineHolder
                 If Master.GlobalScrapeMod.ClearLogo Then
                     ClearLogo.Clear()
                     aList.Clear()
-                    If ClearLogo.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.MovieImageType.ClearLogo) Then
+                    If ClearLogo.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ImageType_Movie.ClearLogo) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
                             If aList.Count > 0 Then ClearLogo = aList.Item(0) 'AndAlso Images.GetPreferredClearLogo(aList, ClearLogo) Then
                             If Not String.IsNullOrEmpty(ClearLogo.URL) Then
@@ -620,7 +620,7 @@ Public Class dlgOfflineHolder
                 If Master.GlobalScrapeMod.DiscArt Then
                     DiscArt.Clear()
                     aList.Clear()
-                    If DiscArt.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.MovieImageType.DiscArt) Then
+                    If DiscArt.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ImageType_Movie.DiscArt) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
                             If aList.Count > 0 Then DiscArt = aList.Item(0) 'AndAlso Images.GetPreferredDiscArt(aList, DiscArt) Then
                             If Not String.IsNullOrEmpty(DiscArt.URL) Then
@@ -1507,7 +1507,7 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.Poster Then
                 Poster.Clear()
                 aList.Clear()
-                If Poster.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Poster) Then
+                If Poster.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.Poster) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
                         If aList.Count > 0 AndAlso Images.GetPreferredMoviePoster(aList, Poster) Then
                             If Not String.IsNullOrEmpty(Poster.URL) Then
@@ -1523,7 +1523,7 @@ Public Class dlgOfflineHolder
                 aList.Clear()
                 efList.Clear()
                 etList.Clear()
-                If Fanart.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Fanart) Then
+                If Fanart.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.Fanart) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
                         If aList.Count > 0 AndAlso Images.GetPreferredMovieFanart(aList, Fanart) Then
                             If Not String.IsNullOrEmpty(Fanart.URL) Then
@@ -1537,7 +1537,7 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.Banner Then
                 Banner.Clear()
                 aList.Clear()
-                If Banner.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Banner) Then
+                If Banner.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.Banner) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
                         If aList.Count > 0 Then Banner = aList.Item(0) 'AndAlso Images.GetPreferredBanner(aList, Banner) Then
                         If Not String.IsNullOrEmpty(Banner.URL) Then
@@ -1550,7 +1550,7 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.Landscape Then
                 Landscape.Clear()
                 aList.Clear()
-                If Landscape.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Landscape) Then
+                If Landscape.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.Landscape) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
                         If aList.Count > 0 Then Landscape = aList.Item(0) 'AndAlso Images.GetPreferredLandscape(aList, Landscape) Then
                         If Not String.IsNullOrEmpty(Landscape.URL) Then
@@ -1563,7 +1563,7 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.ClearArt Then
                 ClearArt.Clear()
                 aList.Clear()
-                If ClearArt.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.ClearArt) Then
+                If ClearArt.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.ClearArt) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
                         If aList.Count > 0 Then ClearArt = aList.Item(0) 'AndAlso Images.GetPreferredClearArt(aList, ClearArt) Then
                         If Not String.IsNullOrEmpty(ClearArt.URL) Then
@@ -1576,7 +1576,7 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.ClearLogo Then
                 ClearLogo.Clear()
                 aList.Clear()
-                If ClearLogo.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.ClearLogo) Then
+                If ClearLogo.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.ClearLogo) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
                         If aList.Count > 0 Then ClearLogo = aList.Item(0) 'AndAlso Images.GetPreferredClearLogo(aList, ClearLogo) Then
                         If Not String.IsNullOrEmpty(ClearLogo.URL) Then
@@ -1589,7 +1589,7 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.DiscArt Then
                 DiscArt.Clear()
                 aList.Clear()
-                If DiscArt.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.DiscArt) Then
+                If DiscArt.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.DiscArt) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
                         If aList.Count > 0 Then DiscArt = aList.Item(0) 'AndAlso Images.GetPreferredDiscArt(aList, DiscArt) Then
                         If Not String.IsNullOrEmpty(DiscArt.URL) Then
@@ -1640,11 +1640,11 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.Poster Then
                 Poster.Clear()
                 aList.Clear()
-                If Poster.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Poster) Then
+                If Poster.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.Poster) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
                         If aList.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
-                                If dImgSelect.ShowDialog(sMovie, Enums.MovieImageType.Poster, aList, etList, efList) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(sMovie, Enums.ImageType_Movie.Poster, aList, etList, efList) = DialogResult.OK Then
                                     Poster = dImgSelect.Results
                                     sMovie.PosterPath = ":" & Poster.URL
                                 End If
@@ -1659,11 +1659,11 @@ Public Class dlgOfflineHolder
                 aList.Clear()
                 efList.Clear()
                 etList.Clear()
-                If Fanart.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Fanart) Then
+                If Fanart.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.Fanart) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
                         If aList.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
-                                If dImgSelect.ShowDialog(sMovie, Enums.MovieImageType.Fanart, aList, efList, etList) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(sMovie, Enums.ImageType_Movie.Fanart, aList, efList, etList) = DialogResult.OK Then
                                     Fanart = dImgSelect.Results
                                     efList = dImgSelect.efList
                                     etList = dImgSelect.etList
@@ -1688,11 +1688,11 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.Banner Then
                 Banner.Clear()
                 aList.Clear()
-                If Banner.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Banner) Then
+                If Banner.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.Banner) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
                         If aList.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
-                                If dImgSelect.ShowDialog(sMovie, Enums.MovieImageType.Banner, aList, efList, etList) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(sMovie, Enums.ImageType_Movie.Banner, aList, efList, etList) = DialogResult.OK Then
                                     Banner = dImgSelect.Results
                                     sMovie.BannerPath = ":" & Banner.URL
 
@@ -1709,11 +1709,11 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.Landscape Then
                 Landscape.Clear()
                 aList.Clear()
-                If Landscape.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Landscape) Then
+                If Landscape.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.Landscape) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
                         If aList.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
-                                If dImgSelect.ShowDialog(sMovie, Enums.MovieImageType.Landscape, aList, efList, etList) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(sMovie, Enums.ImageType_Movie.Landscape, aList, efList, etList) = DialogResult.OK Then
                                     Landscape = dImgSelect.Results
                                     sMovie.LandscapePath = ":" & Landscape.URL
 
@@ -1730,11 +1730,11 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.ClearArt Then
                 ClearArt.Clear()
                 aList.Clear()
-                If ClearArt.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.ClearArt) Then
+                If ClearArt.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.ClearArt) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
                         If aList.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
-                                If dImgSelect.ShowDialog(sMovie, Enums.MovieImageType.ClearArt, aList, efList, etList) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(sMovie, Enums.ImageType_Movie.ClearArt, aList, efList, etList) = DialogResult.OK Then
                                     ClearArt = dImgSelect.Results
                                     sMovie.ClearArtPath = ":" & ClearArt.URL
 
@@ -1751,11 +1751,11 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.ClearLogo Then
                 ClearLogo.Clear()
                 aList.Clear()
-                If ClearLogo.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.ClearLogo) Then
+                If ClearLogo.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.ClearLogo) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
                         If aList.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
-                                If dImgSelect.ShowDialog(sMovie, Enums.MovieImageType.ClearLogo, aList, efList, etList) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(sMovie, Enums.ImageType_Movie.ClearLogo, aList, efList, etList) = DialogResult.OK Then
                                     ClearLogo = dImgSelect.Results
                                     sMovie.ClearLogoPath = ":" & ClearLogo.URL
 
@@ -1772,11 +1772,11 @@ Public Class dlgOfflineHolder
             If Master.GlobalScrapeMod.DiscArt Then
                 DiscArt.Clear()
                 aList.Clear()
-                If DiscArt.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.DiscArt) Then
+                If DiscArt.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType_Movie.DiscArt) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
                         If aList.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
-                                If dImgSelect.ShowDialog(sMovie, Enums.MovieImageType.DiscArt, aList, efList, etList) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(sMovie, Enums.ImageType_Movie.DiscArt, aList, efList, etList) = DialogResult.OK Then
                                     DiscArt = dImgSelect.Results
                                     sMovie.DiscArtPath = ":" & DiscArt.URL
 

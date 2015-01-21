@@ -894,13 +894,13 @@ Public Class Images
     ''' <param name="isChange"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.MovieImageType, Optional ByVal isChange As Boolean = False) As Boolean
+    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.ImageType_Movie, Optional ByVal isChange As Boolean = False) As Boolean
         '2013/11/26 Dekker500 - Need to figure out exactly what this method is doing so it can be documented
 
         Try
             With Master.eSettings
                 Select Case fType
-                    Case Enums.MovieImageType.Banner
+                    Case Enums.ImageType_Movie.Banner
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.BannerPath) OrElse .MovieBannerOverwrite) AndAlso _
                             (.MovieBannerEden OrElse .MovieBannerAD OrElse .MovieBannerNMJ OrElse .MovieBannerYAMJ OrElse _
                              (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieBannerExpertBDMV) OrElse _
@@ -910,7 +910,7 @@ Public Class Images
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.ClearArt
+                    Case Enums.ImageType_Movie.ClearArt
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.ClearArtPath) OrElse .MovieClearArtOverwrite) AndAlso _
                             (.MovieClearArtEden OrElse .MovieClearArtAD OrElse _
                              (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieClearArtExpertBDMV) OrElse _
@@ -920,7 +920,7 @@ Public Class Images
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.ClearLogo
+                    Case Enums.ImageType_Movie.ClearLogo
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.ClearLogoPath) OrElse .MovieClearLogoOverwrite) AndAlso _
                             (.MovieClearLogoEden OrElse .MovieClearLogoAD OrElse _
                              (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieClearLogoExpertBDMV) OrElse _
@@ -930,7 +930,7 @@ Public Class Images
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.DiscArt
+                    Case Enums.ImageType_Movie.DiscArt
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.DiscArtPath) OrElse .MovieDiscArtOverwrite) AndAlso _
                             (.MovieDiscArtEden OrElse .MovieDiscArtAD OrElse _
                              (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieDiscArtExpertBDMV) OrElse _
@@ -940,21 +940,21 @@ Public Class Images
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.EFanarts
+                    Case Enums.ImageType_Movie.EFanarts
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso _
                             (.MovieExtrafanartsEden OrElse .MovieExtrafanartsFrodo)) Then
                             Return True
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.EThumbs
+                    Case Enums.ImageType_Movie.EThumbs
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso _
                             (.MovieExtrathumbsEden OrElse .MovieExtrathumbsFrodo)) Then
                             Return True
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.Fanart
+                    Case Enums.ImageType_Movie.Fanart
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse .MovieFanartOverwrite)) AndAlso _
                         (.MovieFanartBoxee OrElse .MovieFanartFrodo OrElse .MovieFanartEden OrElse .MovieFanartYAMJ OrElse _
                          .MovieFanartNMJ OrElse (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieFanartExpertBDMV) OrElse _
@@ -964,7 +964,7 @@ Public Class Images
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.Landscape
+                    Case Enums.ImageType_Movie.Landscape
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.LandscapePath) OrElse .MovieLandscapeOverwrite) AndAlso _
                             (.MovieLandscapeEden OrElse .MovieLandscapeAD OrElse _
                              (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieLandscapeExpertBDMV) OrElse _
@@ -974,7 +974,7 @@ Public Class Images
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.Poster
+                    Case Enums.ImageType_Movie.Poster
                         If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse .MoviePosterOverwrite)) AndAlso _
                         (.MoviePosterBoxee OrElse .MoviePosterFrodo OrElse .MoviePosterEden OrElse .MoviePosterNMJ OrElse _
                          .MoviePosterYAMJ OrElse (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MoviePosterExpertBDMV) OrElse _
@@ -999,49 +999,49 @@ Public Class Images
     ''' <param name="isChange"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function IsAllowedToDownload(ByVal mMovieSet As Structures.DBMovieSet, ByVal fType As Enums.MovieImageType, Optional ByVal isChange As Boolean = False) As Boolean
+    Public Function IsAllowedToDownload(ByVal mMovieSet As Structures.DBMovieSet, ByVal fType As Enums.ImageType_Movie, Optional ByVal isChange As Boolean = False) As Boolean
         '2013/11/26 Dekker500 - Need to figure out exactly what this method is doing so it can be documented
 
         Try
             With Master.eSettings
                 Select Case fType
-                    Case Enums.MovieImageType.Banner
+                    Case Enums.ImageType_Movie.Banner
                         If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.BannerPath) OrElse .MovieSetBannerOverwrite) AndAlso .MovieSetBannerAnyEnabled) Then
                             Return True
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.ClearArt
+                    Case Enums.ImageType_Movie.ClearArt
                         If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ClearArtPath) OrElse .MovieSetClearArtOverwrite) AndAlso .MovieSetClearArtAnyEnabled) Then
                             Return True
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.ClearLogo
+                    Case Enums.ImageType_Movie.ClearLogo
                         If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ClearLogoPath) OrElse .MovieSetClearLogoOverwrite) AndAlso .MovieSetClearLogoAnyEnabled) Then
                             Return True
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.DiscArt
+                    Case Enums.ImageType_Movie.DiscArt
                         If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.DiscArtPath) OrElse .MovieSetDiscArtOverwrite) AndAlso .MovieSetDiscArtAnyEnabled) Then
                             Return True
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.Fanart
+                    Case Enums.ImageType_Movie.Fanart
                         If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.FanartPath) OrElse .MovieSetFanartOverwrite) AndAlso .MovieSetFanartAnyEnabled) Then
                             Return True
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.Landscape
+                    Case Enums.ImageType_Movie.Landscape
                         If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.LandscapePath) OrElse .MovieSetLandscapeOverwrite) AndAlso .MovieSetLandscapeAnyEnabled) Then
                             Return True
                         Else
                             Return False
                         End If
-                    Case Enums.MovieImageType.Poster
+                    Case Enums.ImageType_Movie.Poster
                         If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.PosterPath) OrElse .MovieSetPosterOverwrite) AndAlso .MovieSetPosterAnyEnabled) Then
                             Return True
                         Else
@@ -1169,7 +1169,7 @@ Public Class Images
             End If
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.AllSeasonsBanner, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.AllSeasonsBanner, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -1218,7 +1218,7 @@ Public Class Images
             End If
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.AllSeasonsFanart, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.AllSeasonsFanart, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -1259,7 +1259,7 @@ Public Class Images
             Dim ShowPath As String = mShow.ShowPath
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.AllSeasonsLandscape, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.AllSeasonsLandscape, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -1308,7 +1308,7 @@ Public Class Images
             End If
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.AllSeasonsPoster, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.AllSeasonsPoster, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -1356,7 +1356,7 @@ Public Class Images
             End If
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.EpisodeFanart, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.EpisodeFanart, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -1406,7 +1406,7 @@ Public Class Images
             End If
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.EpisodePoster, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.EpisodePoster, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2029,7 +2029,7 @@ Public Class Images
             End If
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.SeasonBanner, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.SeasonBanner, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2092,7 +2092,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.SeasonFanart, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.SeasonFanart, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2150,7 +2150,7 @@ Public Class Images
             End Try
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.SeasonLandscape, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.SeasonLandscape, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2214,7 +2214,7 @@ Public Class Images
             End If
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.SeasonPoster, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.SeasonPoster, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2267,7 +2267,7 @@ Public Class Images
             End If
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowBanner, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.ShowBanner, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2310,7 +2310,7 @@ Public Class Images
             Dim ShowPath As String = mShow.ShowPath
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowCharacterArt, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.ShowCharacterArt, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2353,7 +2353,7 @@ Public Class Images
             Dim ShowPath As String = mShow.ShowPath
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowClearArt, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.ShowClearArt, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2396,7 +2396,7 @@ Public Class Images
             Dim ShowPath As String = mShow.ShowPath
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowClearLogo, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.ShowClearLogo, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2488,7 +2488,7 @@ Public Class Images
             End If
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowFanart, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.ShowFanart, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2533,7 +2533,7 @@ Public Class Images
             Dim ShowPath As String = mShow.ShowPath
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowLandscape, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.ShowLandscape, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))
@@ -2584,7 +2584,7 @@ Public Class Images
             End If
 
             Try
-                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowPoster, mShow, New List(Of String)})
+                Dim params As New List(Of Object)(New Object() {Enums.ImageType_TV.ShowPoster, mShow, New List(Of String)})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
                 For Each s As String In DirectCast(params(2), List(Of String))

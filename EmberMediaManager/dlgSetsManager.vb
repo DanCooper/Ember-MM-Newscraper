@@ -783,7 +783,7 @@ Public Class dlgSetsManager
                 If Not ModulesManager.Instance.ScrapeImage_Movie(collectionMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(collectionMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        If dlgImgS.ShowDialog(collectionMovie, Enums.ImageType_Movie.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                             pResults = dlgImgS.Results
                             If Not String.IsNullOrEmpty(pResults.URL) Then
                                 Cursor = Cursors.WaitCursor
@@ -819,7 +819,7 @@ Public Class dlgSetsManager
                 If Not ModulesManager.Instance.ScrapeImage_Movie(collectionMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(collectionMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        If dlgImgS.ShowDialog(collectionMovie, Enums.ImageType_Movie.Fanart, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                             pResults = dlgImgS.Results
                             If Not String.IsNullOrEmpty(pResults.URL) Then
                                 Cursor = Cursors.WaitCursor

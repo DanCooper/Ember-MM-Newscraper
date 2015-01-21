@@ -112,7 +112,7 @@ Public Class Scraper
         Return sObject.GetSingleEpisodeByAired(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .Aired = Aired, .showLang = Lang, .Ordering = Ordering, .Options = Options})
     End Function
 
-    Public Sub GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef RetImage As Images)
+    Public Sub GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.ImageType_TV, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef RetImage As Images)
         sObject.GetSingleImage(New Structures.ScrapeInfo With {.ShowTitle = Title, .ShowID = ShowID, .TVDBID = TVDBID, .ImageType = Type, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .CurrentImage = CurrentImage}, RetImage)
     End Sub
 
@@ -151,6 +151,7 @@ Public Class Scraper
 
         Dim AllSeasonsBanner As TVDBShowBanner
         Dim AllSeasonsFanart As TVDBFanart
+        Dim AllSeasonsLandscape As TVDBShowLandscape
         Dim AllSeasonsPoster As TVDBPoster
         Dim SeasonImageList As List(Of TVDBSeasonImage)
         Dim ShowBanner As TVDBShowBanner
@@ -506,7 +507,7 @@ Public Class Scraper
         Public Sub GetSingleImage(ByVal sInfo As Structures.ScrapeInfo, ByRef RetImage As Images)
             tmpTVDBShow = New TVDBShow
 
-            If sInfo.ImageType = Enums.TVImageType.EpisodePoster Then
+            If sInfo.ImageType = Enums.ImageType_TV.EpisodePoster Then
 
                 If String.IsNullOrEmpty(sInfo.TVDBID) Then
                     Using dTVDBSearch As New dlgTVDBSearchResults
@@ -732,15 +733,55 @@ Public Class Scraper
         End Sub
 
         Public Sub StartSingleScraper(ByVal sInfo As Structures.ScrapeInfo)
-            Try
-                If String.IsNullOrEmpty(sInfo.TVDBID) AndAlso sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
+            If String.IsNullOrEmpty(sInfo.TVDBID) AndAlso sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
+                RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Searching, 0, Nothing)
+                Using dTVDBSearch As New dlgTVDBSearchResults
+                    If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
+                        Master.currShow = tmpTVDBShow.Show
+                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
+                        Using dTVImageSel As New dlgTVImageSelect
+                            If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.ImageType_TV.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
+                                If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
+                                    Me.SaveImages()
+                                Else
+                                    RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Verifying, 0, Nothing)
+                                End If
+                            Else
+                                RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Cancelled, 0, Nothing)
+                            End If
+                        End Using
+                    Else
+                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Cancelled, 0, Nothing)
+                    End If
+                End Using
+            Else
+                DownloadSeries(sInfo)
+                If tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
+                    Master.currShow = tmpTVDBShow.Show
+                    RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
+                    Using dTVImageSel As New dlgTVImageSelect
+                        If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.ImageType_TV.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
+                            If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
+                                Me.SaveImages()
+                            Else
+                                If sInfo.ScrapeType = Enums.ScrapeType.FullAuto Then
+                                    RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SaveAuto, 0, Nothing)
+                                Else
+                                    RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Verifying, 0, Nothing)
+                                End If
+                            End If
+                        Else
+                            RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Cancelled, 0, Nothing)
+                        End If
+                    End Using
+                ElseIf sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
                     RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Searching, 0, Nothing)
                     Using dTVDBSearch As New dlgTVDBSearchResults
                         If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                             Master.currShow = tmpTVDBShow.Show
                             RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
-                                If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
+                                If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.ImageType_TV.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
                                     If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
                                         Me.SaveImages()
                                     Else
@@ -755,54 +796,10 @@ Public Class Scraper
                         End If
                     End Using
                 Else
-                    DownloadSeries(sInfo)
-                    If tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
-                        Master.currShow = tmpTVDBShow.Show
-                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
-                        Using dTVImageSel As New dlgTVImageSelect
-                            If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
-                                If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
-                                    Me.SaveImages()
-                                Else
-                                    If sInfo.ScrapeType = Enums.ScrapeType.FullAuto Then
-                                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SaveAuto, 0, Nothing)
-                                    Else
-                                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Verifying, 0, Nothing)
-                                    End If
-                                End If
-                            Else
-                                RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Cancelled, 0, Nothing)
-                            End If
-                        End Using
-                    ElseIf sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
-                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Searching, 0, Nothing)
-                        Using dTVDBSearch As New dlgTVDBSearchResults
-                            If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
-                                Master.currShow = tmpTVDBShow.Show
-                                RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
-                                Using dTVImageSel As New dlgTVImageSelect
-                                    If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
-                                        If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
-                                            Me.SaveImages()
-                                        Else
-                                            RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Verifying, 0, Nothing)
-                                        End If
-                                    Else
-                                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Cancelled, 0, Nothing)
-                                    End If
-                                End Using
-                            Else
-                                RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Cancelled, 0, Nothing)
-                            End If
-                        End Using
-                    Else
-                        'Ignore Show scrape if ScrapeAuto and show don't have ID
-                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Cancelled, 0, Nothing)
-                    End If
+                    'Ignore Show scrape if ScrapeAuto and show don't have ID
+                    RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Cancelled, 0, Nothing)
                 End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+            End If
         End Sub
 
         Private Sub bwtvDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVDB.DoWork
@@ -840,24 +837,20 @@ Public Class Scraper
         Private Sub bwTVDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVDB.RunWorkerCompleted
             Dim Res As Results = DirectCast(e.Result, Results)
 
-            Try
-                Select Case Res.Type
-                    Case 0 'search
-                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SearchResultsDownloaded, 0, DirectCast(Res.Result, List(Of TVSearchResults)))
-                    Case 1 'show download
-                        RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ShowDownloaded, 0, Nothing)
-                    Case 2 'load episodes
-                        If Not e.Cancelled Then
-                            StartSingleScraper(DirectCast(Res.Result, Structures.ScrapeInfo))
-                        Else
-                            RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ScraperDone, 0, Nothing)
-                        End If
-                    Case 3 'save
+            Select Case Res.Type
+                Case 0 'search
+                    RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SearchResultsDownloaded, 0, DirectCast(Res.Result, List(Of TVSearchResults)))
+                Case 1 'show download
+                    RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ShowDownloaded, 0, Nothing)
+                Case 2 'load episodes
+                    If Not e.Cancelled Then
+                        StartSingleScraper(DirectCast(Res.Result, Structures.ScrapeInfo))
+                    Else
                         RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ScraperDone, 0, Nothing)
-                End Select
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+                    End If
+                Case 3 'save
+                    RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.ScraperDone, 0, Nothing)
+            End Select
         End Sub
 
         Private Sub SaveAllTVInfo()
@@ -1327,34 +1320,38 @@ Public Class Scraper
 
                     'get external scraper images
 
-                    'AllSeasons/Show Banner
+                    If tShow.TVShow Is Nothing OrElse String.IsNullOrEmpty(tShow.TVShow.TVDBID) Then
+                        tShow.TVShow = New MediaContainers.TVShow With {.TVDBID = sInfo.TVDBID}
+                    End If
+
+                    'Banner AllSeasons/Show
                     Dim aList As New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowBanner, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
                                 tmpTVDBShow.ShowBanners.Add(New TVDBShowBanner With { _
                                                               .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters/graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang})
                             Next
                         End If
                     End If
 
-                    'Season Banner
+                    'Banner Season
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonBanner, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
                                 tmpTVDBShow.SeasonBanners.Add(New TVDBSeasonBanner With { _
                                                               .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters/seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
                                                               .Season = img.Season})
                             Next
                         End If
                     End If
 
-                    'Show CharacterArt
+                    'CharacterArt Show
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowCharacterArt, aList) Then
                         If aList.Count > 0 Then
@@ -1367,7 +1364,7 @@ Public Class Scraper
                         End If
                     End If
 
-                    'Show ClearArt
+                    'ClearArt Show
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowClearArt, aList) Then
                         If aList.Count > 0 Then
@@ -1380,7 +1377,7 @@ Public Class Scraper
                         End If
                     End If
 
-                    'Show ClearLogo
+                    'ClearLogo Show
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowClearLogo, aList) Then
                         If aList.Count > 0 Then
@@ -1393,7 +1390,20 @@ Public Class Scraper
                         End If
                     End If
 
-                    'AllSeasons/Show Landscape
+                    'Fanart AllSeasons/Season/Show
+                    aList = New List(Of MediaContainers.Image)
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowFanart, aList) Then
+                        If aList.Count > 0 Then
+                            For Each img In aList.Where(Function(f) f.Description = "original")
+                                tmpTVDBShow.Fanarts.Add(New TVDBFanart With { _
+                                                              .URL = img.URL, _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang})
+                            Next
+                        End If
+                    End If
+
+                    'Landscape AllSeasons/Show
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowLandscape, aList) Then
                         If aList.Count > 0 Then
@@ -1406,7 +1416,7 @@ Public Class Scraper
                         End If
                     End If
 
-                    'Season Landscape
+                    'Landscape Season
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonLandscape, aList) Then
                         If aList.Count > 0 Then
@@ -1420,20 +1430,32 @@ Public Class Scraper
                         End If
                     End If
 
-                    'Season Poster
+                    'Poster AllSeasons/Show
+                    aList = New List(Of MediaContainers.Image)
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowPoster, aList) Then
+                        If aList.Count > 0 Then
+                            For Each img In aList.Where(Function(f) f.Description = "original")
+                                tmpTVDBShow.Posters.Add(New TVDBPoster With { _
+                                                              .URL = img.URL, _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang})
+                            Next
+                        End If
+                    End If
+
+                    'Poster Season
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonPoster, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
                                 tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
                                                               .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters/seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
                                                               .Season = img.Season})
                             Next
                         End If
                     End If
-
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)

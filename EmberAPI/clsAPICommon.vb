@@ -735,12 +735,11 @@ Public Class Enums
         Trailer = 2
         ActorThumbs = 3
         Banner = 4
-        CharacterArt = 5
-        ClearArt = 6
-        ClearLogo = 7
-        DiscArt = 8
-        Landscape = 9
-        Theme = 10
+        ClearArt = 5
+        ClearLogo = 6
+        DiscArt = 7
+        Landscape = 8
+        Theme = 99
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities
@@ -1074,7 +1073,7 @@ Public Class Enums
     ''' Enum represeting valid movie image types
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum MovieImageType As Integer
+    Public Enum ImageType_Movie As Integer
         Banner = 0
         CharacterArt = 1
         ClearArt = 2
@@ -1090,7 +1089,7 @@ Public Class Enums
     ''' Enum representing valid TV image types
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum TVImageType As Integer
+    Public Enum ImageType_TV As Integer
         All = 0
         AllSeasonsBanner = 1
         AllSeasonsFanart = 2
@@ -2074,7 +2073,7 @@ Public Class Structures
         Dim CurrentImage As Images
         Dim Ordering As Enums.Ordering
         Dim iEpisode As Integer
-        Dim ImageType As Enums.TVImageType
+        Dim ImageType As Enums.ImageType_TV
         Dim iSeason As Integer
         Dim Options As Structures.TVScrapeOptions
         Dim ShowLang As String

@@ -42,7 +42,7 @@ Public Class dlgImgSelectNew
     Private chkImageEF() As CheckBox
     Private pnlImageET() As Panel
     Private pnlImageEF() As Panel
-    Private DLType As Enums.MovieImageType
+    Private DLType As Enums.ImageType_Movie
     Private isWorkerDone As Boolean = False
     'Private ETHashes As New List(Of String)
     Private iCounter As Integer = 0
