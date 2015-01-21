@@ -37,7 +37,7 @@ Public Class Settings
 #Region "Constructors"
 
     Public Sub New()
-        Me.Clear()
+        Me.SetDefaults()
     End Sub
 
 #End Region 'Constructors
@@ -5539,11 +5539,120 @@ Public Class Settings
 
 #Region "Methods"
 
+    Public Sub Load()
+        Try
+            'Cocotus, Load from central "Settings" folder if it exists!
+            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Settings.xml")
+
+            If File.Exists(configpath) Then
+                'old
+                '  Dim strmReader As New StreamReader(Path.Combine(Functions.AppPath, "Settings.xml"))
+                Dim objStreamReader As New StreamReader(configpath)
+                Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
+
+                _XMLSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
+                objStreamReader.Close()
+                'Now we deserialize just the data in a local, shared, variable. So we can reference to us
+                Master.eSettings = Me
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Master.eSettings = New Settings
+        End Try
+
+        SetDefaultsForLists(Enums.DefaultType.All, False)
+
+        If Master.eSettings.TVGeneralLanguages Is Nothing OrElse Master.eSettings.TVGeneralLanguages.Language.Count <= 0 Then
+            LoadTVLanguages()
+        End If
+
+        ' Fix added to avoid to have no movie NFO saved
+        If Not (Master.eSettings.MovieUseBoxee Or Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
+            Master.eSettings.MovieUseFrodo = True
+            Master.eSettings.MovieActorThumbsFrodo = True
+            Master.eSettings.MovieBannerAD = True
+            Master.eSettings.MovieClearArtAD = True
+            Master.eSettings.MovieClearLogoAD = True
+            Master.eSettings.MovieDiscArtAD = True
+            Master.eSettings.MovieExtrafanartsFrodo = True
+            Master.eSettings.MovieExtrathumbsFrodo = True
+            Master.eSettings.MovieFanartFrodo = True
+            Master.eSettings.MovieLandscapeAD = True
+            Master.eSettings.MovieNFOFrodo = True
+            Master.eSettings.MoviePosterFrodo = True
+            Master.eSettings.MovieXBMCThemeEnable = True
+            Master.eSettings.MovieXBMCThemeMovie = True
+            Master.eSettings.MovieTrailerFrodo = True
+            Master.eSettings.MovieScraperXBMCTrailerFormat = True
+        End If
+
+        ' Fix added to avoid to have no tv show NFO saved
+        If Not (Master.eSettings.TVUseBoxee OrElse Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
+            Master.eSettings.TVUseFrodo = True
+            Master.eSettings.TVEpisodeActorThumbsFrodo = True
+            Master.eSettings.TVEpisodePosterFrodo = True
+            Master.eSettings.TVSeasonBannerFrodo = True
+            Master.eSettings.TVSeasonFanartFrodo = True
+            Master.eSettings.TVSeasonLandscapeAD = True
+            Master.eSettings.TVSeasonPosterFrodo = True
+            Master.eSettings.TVShowActorThumbsFrodo = True
+            Master.eSettings.TVShowBannerFrodo = True
+            Master.eSettings.TVShowCharacterArtAD = True
+            Master.eSettings.TVShowClearArtAD = True
+            Master.eSettings.TVShowClearLogoAD = True
+            Master.eSettings.TVShowExtrafanartsFrodo = True
+            Master.eSettings.TVShowFanartFrodo = True
+            Master.eSettings.TVShowLandscapeAD = True
+            Master.eSettings.TVShowPosterFrodo = True
+        End If
+    End Sub
+
+    Public Sub LoadTVLanguages()
+        Try
+            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultTVLanguages.xml")
+
+            Dim objStreamReader As New StreamReader(configpath)
+            Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
+            Dim tSettings As New clsXMLSettings
+
+            tSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
+            objStreamReader.Close()
+
+            _XMLSettings.TVGeneralLanguages = tSettings.TVGeneralLanguages
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Public Sub Save()
+        Try
+            Dim xmlSerial As New XmlSerializer(GetType(Settings))
+
+            'Cocotus All XML Config files in new Setting-folder!
+            Dim configpath As String = ""
+            If Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
+                configpath = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml")
+                'still Settings.xml is on old place (root)
+            Else
+                configpath = Path.Combine(Functions.AppPath, "Settings.xml")
+            End If
+
+            'old
+            '  Dim xmlWriter As New StreamWriter(Path.Combine(Functions.AppPath, "Settings.xml"))
+
+            Dim xmlWriter As New StreamWriter(configpath)
+            xmlSerial.Serialize(xmlWriter, Master.eSettings)
+            xmlWriter.Close()
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
     ''' <summary>
     ''' Defines all default settings for a new installation
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub Clear()
+    Public Sub SetDefaults()
         ''Make it simple: load a default values XML file
         'Try
         '    Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultSettings.xml")
@@ -5757,13 +5866,13 @@ Public Class Settings
         Me.MovieScraperRuntime = True
         Me.MovieScraperStudio = True
         Me.MovieScraperStudioLimit = 0
-        Me.MovieScraperStudioWithImgOnly = True
+        Me.MovieScraperStudioWithImgOnly = False
         Me.MovieScraperTagline = True
         Me.MovieScraperTitle = True
         Me.MovieScraperTop250 = True
-        Me.MovieScraperTrailer = False
+        Me.MovieScraperTrailer = True
         Me.MovieScraperUseDetailView = False
-        Me.MovieScraperUseMDDuration = False
+        Me.MovieScraperUseMDDuration = True
         Me.MovieScraperCertFSK = False
         Me.MovieScraperVotes = True
         Me.MovieScraperCredits = True
@@ -5817,7 +5926,7 @@ Public Class Settings
         Me.MovieSetSortTokens = New List(Of String)
         Me.MovieSortTokensIsEmpty = False
         Me.MovieSetSortTokensIsEmpty = False
-        Me.MovieThemeEnable = False
+        Me.MovieThemeEnable = True
         Me.MovieThemeOverwrite = True
         Me.MovieTrailerDefaultSearch = "trailer"
         Me.MovieTrailerDeleteExisting = True
@@ -6004,115 +6113,6 @@ Public Class Settings
         Me.RestartScraper = False
 
         LoadTVLanguages()
-    End Sub
-
-    Public Sub Load()
-        Try
-            'Cocotus, Load from central "Settings" folder if it exists!
-            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Settings.xml")
-
-            If File.Exists(configpath) Then
-                'old
-                '  Dim strmReader As New StreamReader(Path.Combine(Functions.AppPath, "Settings.xml"))
-                Dim objStreamReader As New StreamReader(configpath)
-                Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
-
-                _XMLSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
-                objStreamReader.Close()
-                'Now we deserialize just the data in a local, shared, variable. So we can reference to us
-                Master.eSettings = Me
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Master.eSettings = New Settings
-        End Try
-
-        SetDefaultsForLists(Enums.DefaultType.All, False)
-
-        If Master.eSettings.TVGeneralLanguages Is Nothing OrElse Master.eSettings.TVGeneralLanguages.Language.Count <= 0 Then
-            LoadTVLanguages()
-        End If
-
-        ' Fix added to avoid to have no movie NFO saved
-        If Not (Master.eSettings.MovieUseBoxee Or Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
-            Master.eSettings.MovieUseFrodo = True
-            Master.eSettings.MovieActorThumbsFrodo = True
-            Master.eSettings.MovieBannerAD = True
-            Master.eSettings.MovieClearArtAD = True
-            Master.eSettings.MovieClearLogoAD = True
-            Master.eSettings.MovieDiscArtAD = True
-            Master.eSettings.MovieExtrafanartsFrodo = True
-            Master.eSettings.MovieExtrathumbsFrodo = True
-            Master.eSettings.MovieFanartFrodo = True
-            Master.eSettings.MovieLandscapeAD = True
-            Master.eSettings.MovieNFOFrodo = True
-            Master.eSettings.MoviePosterFrodo = True
-            Master.eSettings.MovieXBMCThemeEnable = True
-            Master.eSettings.MovieXBMCThemeMovie = True
-            Master.eSettings.MovieTrailerFrodo = True
-            Master.eSettings.MovieScraperXBMCTrailerFormat = True
-        End If
-
-        ' Fix added to avoid to have no tv show NFO saved
-        If Not (Master.eSettings.TVUseBoxee OrElse Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
-            Master.eSettings.TVUseFrodo = True
-            Master.eSettings.TVEpisodeActorThumbsFrodo = True
-            Master.eSettings.TVEpisodePosterFrodo = True
-            Master.eSettings.TVSeasonBannerFrodo = True
-            Master.eSettings.TVSeasonFanartFrodo = True
-            Master.eSettings.TVSeasonLandscapeAD = True
-            Master.eSettings.TVSeasonPosterFrodo = True
-            Master.eSettings.TVShowActorThumbsFrodo = True
-            Master.eSettings.TVShowBannerFrodo = True
-            Master.eSettings.TVShowCharacterArtAD = True
-            Master.eSettings.TVShowClearArtAD = True
-            Master.eSettings.TVShowClearLogoAD = True
-            Master.eSettings.TVShowFanartFrodo = True
-            Master.eSettings.TVShowLandscapeAD = True
-            Master.eSettings.TVShowPosterFrodo = True
-        End If
-    End Sub
-
-    Public Sub LoadTVLanguages()
-        Try
-            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultTVLanguages.xml")
-
-            Dim objStreamReader As New StreamReader(configpath)
-            Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
-            Dim tSettings As New clsXMLSettings
-
-            tSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
-            objStreamReader.Close()
-
-            _XMLSettings.TVGeneralLanguages = tSettings.TVGeneralLanguages
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Public Sub Save()
-        Try
-            Dim xmlSerial As New XmlSerializer(GetType(Settings))
-
-            'Cocotus All XML Config files in new Setting-folder!
-            Dim configpath As String = ""
-            If Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-                configpath = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml")
-                'still Settings.xml is on old place (root)
-            Else
-                configpath = Path.Combine(Functions.AppPath, "Settings.xml")
-            End If
-
-            'old
-            '  Dim xmlWriter As New StreamWriter(Path.Combine(Functions.AppPath, "Settings.xml"))
-
-            Dim xmlWriter As New StreamWriter(configpath)
-            xmlSerial.Serialize(xmlWriter, Master.eSettings)
-            xmlWriter.Close()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
 
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
