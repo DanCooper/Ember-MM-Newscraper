@@ -4584,6 +4584,29 @@ Public Class dlgSettings
         Me.cbTVEpisodePosterPrefSize.ValueMember = "Value"
     End Sub
 
+    Private Sub LoadTVScraperOptionsOrdering()
+        Dim items As New Dictionary(Of String, Enums.Ordering)
+        items.Add(Master.eLang.GetString(438, "Standard"), Enums.Ordering.Standard)
+        items.Add(Master.eLang.GetString(1067, "DVD"), Enums.Ordering.DVD)
+        items.Add(Master.eLang.GetString(839, "Absolute"), Enums.Ordering.Absolute)
+        items.Add(Master.eLang.GetString(1332, "Day Of Year"), Enums.Ordering.DayOfYear)
+        Me.cbTVScraperOptionsOrdering.DataSource = items.ToList
+        Me.cbTVScraperOptionsOrdering.DisplayMember = "Key"
+        Me.cbTVScraperOptionsOrdering.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadTVScraperUpdateTime()
+        Dim items As New Dictionary(Of String, Enums.TVScraperUpdateTime)
+        items.Add(Master.eLang.GetString(749, "Week"), Enums.TVScraperUpdateTime.Week)
+        items.Add(Master.eLang.GetString(750, "Bi-Weekly"), Enums.TVScraperUpdateTime.BiWeekly)
+        items.Add(Master.eLang.GetString(751, "Month"), Enums.TVScraperUpdateTime.Month)
+        items.Add(Master.eLang.GetString(752, "Never"), Enums.TVScraperUpdateTime.Never)
+        items.Add(Master.eLang.GetString(753, "Always"), Enums.TVScraperUpdateTime.Always)
+        Me.cbTVScraperUpdateTime.DataSource = items.ToList
+        Me.cbTVScraperUpdateTime.DisplayMember = "Key"
+        Me.cbTVScraperUpdateTime.ValueMember = "Value"
+    End Sub
+
     Private Sub LoadTVSeasonBannerTypes()
         Dim items As New Dictionary(Of String, Enums.TVSeasonBannerType)
         items.Add(Master.eLang.GetString(746, "Blank"), Enums.TVSeasonBannerType.Blank)
@@ -6744,12 +6767,6 @@ Public Class dlgSettings
         Me.lblTVSkipLessThan.Text = Me.lblMovieSkipLessThan.Text
         Me.lblTVSkipLessThanMB.Text = Me.lblMovieSkipLessThanMB.Text
 
-        Me.cbTVScraperUpdateTime.Items.Clear()
-        Me.cbTVScraperUpdateTime.Items.AddRange(New String() {Master.eLang.GetString(749, "Week"), Master.eLang.GetString(750, "Bi-Weekly"), Master.eLang.GetString(751, "Month"), Master.eLang.GetString(752, "Never"), Master.eLang.GetString(753, "Always")})
-
-        Me.cbTVScraperOptionsOrdering.Items.Clear()
-        Me.cbTVScraperOptionsOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(1332, "Day Of Year")})
-
         Me.cbTVSeasonRetrieve.Items.Clear()
         Me.cbTVSeasonRetrieve.Items.AddRange(New String() {Master.eLang.GetString(13, "Folder Name"), Master.eLang.GetString(15, "File Name")})
 
@@ -6763,6 +6780,8 @@ Public Class dlgSettings
         Me.LoadMovieTrailerQualities()
         Me.LoadTVFanartSizes()
         Me.LoadTVPosterSizes()
+        Me.LoadTVScraperOptionsOrdering()
+        Me.LoadTVScraperUpdateTime()
         Me.LoadTVSeasonBannerTypes()
         Me.LoadTVShowBannerTypes()
     End Sub

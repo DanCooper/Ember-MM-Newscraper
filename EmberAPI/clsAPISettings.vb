@@ -54,6 +54,7 @@ Public Class Settings
 
     'Trick: all the data is now in the shared private variable _XMLSettings. To avoid changing EVERY reference to a settings
     ' we create here property stubs that read the corresponding property of the _XMLSettings
+
 #Region "Properties"
 
     Public Property MovieScraperCastLimit() As Integer
@@ -6038,7 +6039,7 @@ Public Class Settings
         Me.TVScraperShowVotes = True
         Me.TVScraperUpdateTime = Enums.TVScraperUpdateTime.Always
         Me.TVScraperUseMDDuration = True
-        Me.TVScraperUseSRuntimeForEp = False
+        Me.TVScraperUseSRuntimeForEp = True
         Me.TVSeasonBannerHeight = 0
         Me.TVSeasonBannerOverwrite = True
         Me.TVSeasonBannerPrefType = Enums.TVSeasonBannerType.Text
