@@ -15953,6 +15953,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 22, tmpShowDb.ShowLanguage})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 24, hasBanner})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 26, hasLandscape})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 28, tmpShowDb.TVShow.Status})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 29, hasTheme})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 31, hasCharacterArt})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 33, hasClearLogo})
@@ -15967,6 +15968,7 @@ doCancel:
                         DirectCast(dRow(0), DataRow).Item(22) = tmpShowDb.ShowLanguage
                         DirectCast(dRow(0), DataRow).Item(24) = hasBanner
                         DirectCast(dRow(0), DataRow).Item(26) = hasLandscape
+                        DirectCast(dRow(0), DataRow).Item(28) = tmpShowDb.TVShow.Status
                         DirectCast(dRow(0), DataRow).Item(29) = hasTheme
                         DirectCast(dRow(0), DataRow).Item(31) = hasCharacterArt
                         DirectCast(dRow(0), DataRow).Item(33) = hasClearLogo
@@ -19654,6 +19656,7 @@ doCancel:
                     Case 0 ' show
                         Me.SetShowListItemAfterEdit(Convert.ToInt32(Master.currShow.ShowID), Me.dgvTVShows.SelectedRows(0).Index)
                         ModulesManager.Instance.TVSaveImages()
+                        Master.DB.SaveTVShowToDB(Master.currShow, False, False, True)
                     Case Else
                         logger.Warn("Unhandled TVScraperEventType.SaveAuto <{0}>", iProgress)
                 End Select
