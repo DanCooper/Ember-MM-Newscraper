@@ -154,66 +154,99 @@ Public Class dlgEditShow
         Me.pbASBanner.Image = Nothing
         Me.pbASBanner.Tag = Nothing
         Me.ASBanner.Dispose()
+
+        Me.lblASBannerSize.Text = String.Empty
+        Me.lblASBannerSize.Visible = False
     End Sub
 
     Private Sub btnRemoveASFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveASFanart.Click
         Me.pbASFanart.Image = Nothing
         Me.pbASFanart.Tag = Nothing
         Me.ASFanart.Dispose()
+
+        Me.lblASFanartSize.Text = String.Empty
+        Me.lblASFanartSize.Visible = False
     End Sub
 
     Private Sub btnRemoveASLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveASLandscape.Click
         Me.pbASLandscape.Image = Nothing
         Me.pbASLandscape.Tag = Nothing
         Me.ASLandscape.Dispose()
+
+        Me.lblASLandscapeSize.Text = String.Empty
+        Me.lblASLandscapeSize.Visible = False
     End Sub
 
     Private Sub btnRemoveASPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveASPoster.Click
         Me.pbASPoster.Image = Nothing
         Me.pbASPoster.Tag = Nothing
         Me.ASPoster.Dispose()
+
+        Me.lblASPosterSize.Text = String.Empty
+        Me.lblASPosterSize.Visible = False
     End Sub
 
     Private Sub btnRemoveShowBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowBanner.Click
         Me.pbShowBanner.Image = Nothing
         Me.pbShowBanner.Tag = Nothing
         Me.ShowBanner.Dispose()
+
+        Me.lblShowBannerSize.Text = String.Empty
+        Me.lblShowBannerSize.Visible = False
     End Sub
 
     Private Sub btnRemoveShowCharacterArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowCharacterArt.Click
         Me.pbShowCharacterArt.Image = Nothing
         Me.pbShowCharacterArt.Tag = Nothing
         Me.ShowCharacterArt.Dispose()
+
+        Me.lblShowCharacterArtSize.Text = String.Empty
+        Me.lblShowCharacterArtSize.Visible = False
     End Sub
 
     Private Sub btnRemoveShowClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowClearArt.Click
         Me.pbShowClearArt.Image = Nothing
         Me.pbShowClearArt.Tag = Nothing
         Me.ShowClearArt.Dispose()
+
+        Me.lblShowClearArtSize.Text = String.Empty
+        Me.lblShowClearArtSize.Visible = False
     End Sub
 
     Private Sub btnRemoveShowClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowClearLogo.Click
         Me.pbShowClearLogo.Image = Nothing
         Me.pbShowClearLogo.Tag = Nothing
         Me.ShowClearLogo.Dispose()
+
+        Me.lblShowClearLogoSize.Text = String.Empty
+        Me.lblShowClearLogoSize.Visible = False
     End Sub
 
     Private Sub btnRemoveShowFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowFanart.Click
         Me.pbShowFanart.Image = Nothing
         Me.pbShowFanart.Tag = Nothing
         Me.ShowFanart.Dispose()
+
+        Me.lblShowFanartSize.Text = String.Empty
+        Me.lblShowFanartSize.Visible = False
     End Sub
 
     Private Sub btnRemoveShowLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowLandscape.Click
         Me.pbShowLandscape.Image = Nothing
         Me.pbShowLandscape.Tag = Nothing
         Me.ShowLandscape.Dispose()
+
+        Me.lblShowLandscapeSize.Text = String.Empty
+        Me.lblShowLandscapeSize.Visible = False
     End Sub
 
     Private Sub btnRemoveShowPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowPoster.Click
         Me.pbShowPoster.Image = Nothing
         Me.pbShowPoster.Tag = Nothing
         Me.ShowPoster.Dispose()
+
+        Me.lblShowPosterSize.Text = String.Empty
+        Me.lblShowPosterSize.Visible = False
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
@@ -227,6 +260,9 @@ Public Class dlgEditShow
             ASBanner = tImage
             Me.pbASBanner.Image = tImage.Image
             Me.pbASBanner.Tag = tImage
+
+            Me.lblASBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASBanner.Image.Width, Me.pbASBanner.Image.Height)
+            Me.lblASBannerSize.Visible = True
         End If
     End Sub
 
@@ -281,6 +317,9 @@ Public Class dlgEditShow
             ASFanart = tImage
             Me.pbASFanart.Image = tImage.Image
             Me.pbASFanart.Tag = tImage
+
+            Me.lblASFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASFanart.Image.Width, Me.pbASFanart.Image.Height)
+            Me.lblASFanartSize.Visible = True
         End If
     End Sub
 
@@ -335,6 +374,9 @@ Public Class dlgEditShow
             ASLandscape = tImage
             Me.pbASLandscape.Image = tImage.Image
             Me.pbASLandscape.Tag = tImage
+
+            Me.lblASLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASLandscape.Image.Width, Me.pbASLandscape.Image.Height)
+            Me.lblASLandscapeSize.Visible = True
         End If
     End Sub
 
@@ -389,6 +431,9 @@ Public Class dlgEditShow
             ASPoster = tImage
             Me.pbASPoster.Image = tImage.Image
             Me.pbASPoster.Tag = tImage
+
+            Me.lblASPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASPoster.Image.Width, Me.pbASPoster.Image.Height)
+            Me.lblASPosterSize.Visible = True
         End If
     End Sub
 
@@ -443,6 +488,9 @@ Public Class dlgEditShow
             ShowBanner = tImage
             Me.pbShowBanner.Image = tImage.Image
             Me.pbShowBanner.Tag = tImage
+
+            Me.lblShowBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowBanner.Image.Width, Me.pbShowBanner.Image.Height)
+            Me.lblShowBannerSize.Visible = True
         End If
     End Sub
 
@@ -497,6 +545,9 @@ Public Class dlgEditShow
             ShowCharacterArt = tImage
             Me.pbShowCharacterArt.Image = tImage.Image
             Me.pbShowCharacterArt.Tag = tImage
+
+            Me.lblShowCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowCharacterArt.Image.Width, Me.pbShowCharacterArt.Image.Height)
+            Me.lblShowCharacterArtSize.Visible = True
         End If
     End Sub
 
@@ -572,6 +623,9 @@ Public Class dlgEditShow
             ShowClearArt = tImage
             Me.pbShowClearArt.Image = tImage.Image
             Me.pbShowClearArt.Tag = tImage
+
+            Me.lblShowClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowClearArt.Image.Width, Me.pbShowClearArt.Image.Height)
+            Me.lblShowClearArtSize.Visible = True
         End If
     End Sub
 
@@ -626,6 +680,9 @@ Public Class dlgEditShow
             ShowClearLogo = tImage
             Me.pbShowClearLogo.Image = tImage.Image
             Me.pbShowClearLogo.Tag = tImage
+
+            Me.lblShowClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowClearLogo.Image.Width, Me.pbShowClearLogo.Image.Height)
+            Me.lblShowClearLogoSize.Visible = True
         End If
     End Sub
 
@@ -716,6 +773,9 @@ Public Class dlgEditShow
             ShowLandscape = tImage
             Me.pbShowLandscape.Image = tImage.Image
             Me.pbShowLandscape.Tag = tImage
+
+            Me.lblShowLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowLandscape.Image.Width, Me.pbShowLandscape.Image.Height)
+            Me.lblShowLandscapeSize.Visible = True
         End If
     End Sub
 

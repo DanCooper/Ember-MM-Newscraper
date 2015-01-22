@@ -1782,7 +1782,7 @@ Partial Class dlgEditShow
         Me.cbEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbEpisodeSorting.FormattingEnabled = True
-        Me.cbEpisodeSorting.Location = New System.Drawing.Point(426, 553)
+        Me.cbEpisodeSorting.Location = New System.Drawing.Point(440, 553)
         Me.cbEpisodeSorting.Name = "cbEpisodeSorting"
         Me.cbEpisodeSorting.Size = New System.Drawing.Size(166, 21)
         Me.cbEpisodeSorting.TabIndex = 5
@@ -1790,11 +1790,12 @@ Partial Class dlgEditShow
         'lblEpisodeSorting
         '
         Me.lblEpisodeSorting.AutoSize = True
-        Me.lblEpisodeSorting.Location = New System.Drawing.Point(317, 558)
+        Me.lblEpisodeSorting.Location = New System.Drawing.Point(330, 558)
         Me.lblEpisodeSorting.Name = "lblEpisodeSorting"
         Me.lblEpisodeSorting.Size = New System.Drawing.Size(103, 13)
         Me.lblEpisodeSorting.TabIndex = 4
         Me.lblEpisodeSorting.Text = "Episode Sorted by:"
+        Me.lblEpisodeSorting.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'dlgEditShow
         '
