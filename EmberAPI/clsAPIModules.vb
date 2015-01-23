@@ -468,7 +468,7 @@ Public Class ModulesManager
                 SetScraperEnable_Image_Movie("scraper.Image.TMDB.ScraperModule.TMDB_Image", True)
             End If
             If Not ThemeScraperAnyEnabled AndAlso Not ThemeScraperFound Then
-                SetScraperEnable_Theme_Movie("scraper.Theme.GoEar.ScraperModule.GoEar_Theme", True)
+                SetScraperEnable_Theme_Movie("scraper.Theme.TelevisionTunes.ScraperModule.TelevisionTunes_Theme", True)
             End If
             If Not TrailerScraperAnyEnabled AndAlso Not TrailerScraperFound Then
                 SetScraperEnable_Trailer_Movie("scraper.Trailer.TMDB.ScraperModule.TMDB_Trailer", True)
