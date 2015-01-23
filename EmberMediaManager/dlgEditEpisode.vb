@@ -110,6 +110,10 @@ Public Class dlgEditEpisode
         Me.DeleteActors()
     End Sub
 
+    Private Sub btnRemoveEpisodeSubtitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveEpisodeSubtitle.Click
+        Me.DeleteSubtitle()
+    End Sub
+
     Private Sub btnSetEpisodeFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodeFanartScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodeFanart, Images))
 
@@ -378,7 +382,7 @@ Public Class dlgEditEpisode
                 End If
             End With
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -402,7 +406,7 @@ Public Class dlgEditEpisode
             End If
 
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -414,7 +418,7 @@ Public Class dlgEditEpisode
                 End While
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -550,6 +554,8 @@ Public Class dlgEditEpisode
                     .lblEpisodePosterSize.Visible = True
                 End If
             End If
+
+            Me.LoadSubtitles()
         End With
     End Sub
 
@@ -916,83 +922,91 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub SetInfo()
-        Try
-            With Me
+        With Me
+            Master.currShow.TVEp.Aired = .txtAired.Text.Trim
+            Master.currShow.TVEp.OldCredits = .txtCredits.Text.Trim
+            Master.currShow.TVEp.Director = .txtDirector.Text.Trim
+            Master.currShow.TVEp.Episode = Convert.ToInt32(.txtEpisode.Text.Trim)
+            Master.currShow.TVEp.Plot = .txtPlot.Text.Trim
+            Master.currShow.TVEp.Rating = .tmpRating
+            Master.currShow.TVEp.Runtime = .txtRuntime.Text.Trim
+            Master.currShow.TVEp.Season = Convert.ToInt32(.txtSeason.Text.Trim)
+            Master.currShow.TVEp.Title = .txtTitle.Text.Trim
+            Master.currShow.TVEp.Votes = .txtVotes.Text.Trim
+            Master.currShow.TVEp.VideoSource = .txtVideoSource.Text.Trim
+            Master.currShow.VideoSource = .txtVideoSource.Text.Trim
 
-                Master.currShow.TVEp.Aired = .txtAired.Text.Trim
-                Master.currShow.TVEp.OldCredits = .txtCredits.Text.Trim
-                Master.currShow.TVEp.Director = .txtDirector.Text.Trim
-                Master.currShow.TVEp.Episode = Convert.ToInt32(.txtEpisode.Text.Trim)
-                Master.currShow.TVEp.Plot = .txtPlot.Text.Trim
-                Master.currShow.TVEp.Rating = .tmpRating
-                Master.currShow.TVEp.Runtime = .txtRuntime.Text.Trim
-                Master.currShow.TVEp.Season = Convert.ToInt32(.txtSeason.Text.Trim)
-                Master.currShow.TVEp.Title = .txtTitle.Text.Trim
-                Master.currShow.TVEp.Votes = .txtVotes.Text.Trim
-                Master.currShow.TVEp.VideoSource = .txtVideoSource.Text.Trim
-                Master.currShow.VideoSource = .txtVideoSource.Text.Trim
+            Master.currShow.TVEp.Actors.Clear()
 
-                Master.currShow.TVEp.Actors.Clear()
+            If .lvActors.Items.Count > 0 Then
+                For Each lviActor As ListViewItem In .lvActors.Items
+                    Dim addActor As New MediaContainers.Person
+                    addActor.Name = lviActor.Text.Trim
+                    addActor.Role = lviActor.SubItems(1).Text.Trim
+                    addActor.Thumb = lviActor.SubItems(2).Text.Trim
 
-                If .lvActors.Items.Count > 0 Then
-                    For Each lviActor As ListViewItem In .lvActors.Items
-                        Dim addActor As New MediaContainers.Person
-                        addActor.Name = lviActor.Text.Trim
-                        addActor.Role = lviActor.SubItems(1).Text.Trim
-                        addActor.Thumb = lviActor.SubItems(2).Text.Trim
+                    Master.currShow.TVEp.Actors.Add(addActor)
+                Next
+            End If
 
-                        Master.currShow.TVEp.Actors.Add(addActor)
-                    Next
+            If chkWatched.Checked Then
+                'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
+                If String.IsNullOrEmpty(Master.currShow.TVEp.Playcount) Or Master.currShow.TVEp.Playcount = "0" Then
+                    Master.currShow.TVEp.Playcount = "1"
                 End If
 
-                If chkWatched.Checked Then
-                    'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                    If String.IsNullOrEmpty(Master.currShow.TVEp.Playcount) Or Master.currShow.TVEp.Playcount = "0" Then
-                        Master.currShow.TVEp.Playcount = "1"
-                    End If
-
-                    'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                    '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
-                    '        If Not File.Exists(a) Then
-                    '            Dim fs As FileStream = File.Create(a)
-                    '            fs.Close()
-                    '        End If
-                    '    Next
-                    'End If
-                Else
-                    'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                    If IsNumeric(Master.currShow.TVEp.Playcount) AndAlso CInt(Master.currShow.TVEp.Playcount) > 0 Then
-                        Master.currShow.TVEp.Playcount = ""
-                    End If
-
-                    'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                    '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
-                    '        If File.Exists(a) Then
-                    '            File.Delete(a)
-                    '        End If
-                    '    Next
-                    'End If
+                'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+                '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
+                '        If Not File.Exists(a) Then
+                '            Dim fs As FileStream = File.Create(a)
+                '            fs.Close()
+                '        End If
+                '    Next
+                'End If
+            Else
+                'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
+                If IsNumeric(Master.currShow.TVEp.Playcount) AndAlso CInt(Master.currShow.TVEp.Playcount) > 0 Then
+                    Master.currShow.TVEp.Playcount = ""
                 End If
 
-                'Episode Fanart
-                If Not IsNothing(.EpisodeFanart.Image) Then
-                    Master.currShow.EpFanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Master.currShow)
-                Else
-                    .EpisodeFanart.DeleteTVEpisodeFanart(Master.currShow)
-                    Master.currShow.EpFanartPath = String.Empty
-                End If
+                'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+                '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
+                '        If File.Exists(a) Then
+                '            File.Delete(a)
+                '        End If
+                '    Next
+                'End If
+            End If
 
-                'Episode Poster
-                If Not IsNothing(.EpisodePoster.Image) Then
-                    Master.currShow.EpPosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Master.currShow)
-                Else
-                    .EpisodePoster.DeleteTVEpisodePosters(Master.currShow)
-                    Master.currShow.EpPosterPath = String.Empty
+            'Episode Fanart
+            If Not IsNothing(.EpisodeFanart.Image) Then
+                Master.currShow.EpFanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Master.currShow)
+            Else
+                .EpisodeFanart.DeleteTVEpisodeFanart(Master.currShow)
+                Master.currShow.EpFanartPath = String.Empty
+            End If
+
+            'Episode Poster
+            If Not IsNothing(.EpisodePoster.Image) Then
+                Master.currShow.EpPosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Master.currShow)
+            Else
+                .EpisodePoster.DeleteTVEpisodePosters(Master.currShow)
+                Master.currShow.EpPosterPath = String.Empty
+            End If
+
+            Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
+            For Each Subtitle In Master.currShow.EpSubtitles
+                If Subtitle.toRemove Then
+                    removeSubtitles.Add(Subtitle)
                 End If
-            End With
-        Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            Next
+            For Each Subtitle In removeSubtitles
+                If File.Exists(Subtitle.SubsPath) Then
+                    File.Delete(Subtitle.SubsPath)
+                End If
+                Master.currShow.EpSubtitles.Remove(Subtitle)
+            Next
+        End With
     End Sub
 
     Private Sub SetUp()
@@ -1080,7 +1094,7 @@ Public Class dlgEditEpisode
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1101,7 +1115,7 @@ Public Class dlgEditEpisode
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1124,7 +1138,7 @@ Public Class dlgEditEpisode
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1145,7 +1159,7 @@ Public Class dlgEditEpisode
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1153,6 +1167,143 @@ Public Class dlgEditEpisode
         If e.KeyData = (Keys.Control Or Keys.A) Then
             Me.txtPlot.SelectAll()
         End If
+    End Sub
+
+    Private Sub lvSubtitles_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvSubtitles.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.DeleteSubtitle()
+    End Sub
+
+    Private Sub lvSubtitles_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvSubtitles.DoubleClick
+        If lvSubtitles.SelectedItems.Count > 0 Then
+            If lvSubtitles.SelectedItems.Item(0).Tag.ToString <> "Header" Then
+                EditSubtitle()
+            End If
+        End If
+    End Sub
+
+    Private Sub lvSubtitles_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSubtitles.SelectedIndexChanged
+        If lvSubtitles.SelectedItems.Count > 0 Then
+            If lvSubtitles.SelectedItems.Item(0).Tag.ToString = "Header" Then
+                lvSubtitles.SelectedItems.Clear()
+                btnRemoveEpisodeSubtitle.Enabled = False
+                txtSubtitlesPreview.Clear()
+            Else
+                btnRemoveEpisodeSubtitle.Enabled = True
+                txtSubtitlesPreview.Text = ReadSubtitle(Me.lvSubtitles.SelectedItems.Item(0).SubItems(1).Text.ToString)
+            End If
+        Else
+            btnRemoveEpisodeSubtitle.Enabled = False
+            txtSubtitlesPreview.Clear()
+        End If
+    End Sub
+
+    Private Function ReadSubtitle(ByVal sPath As String) As String
+        Dim sText As String = String.Empty
+
+        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
+            Try
+                Dim objReader As New StreamReader(sPath)
+
+                sText = objReader.ReadToEnd
+
+                objReader.Close()
+
+                Return sText
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End If
+
+        Return String.Empty
+    End Function
+
+    Private Sub EditSubtitle()
+        Try
+            If lvSubtitles.SelectedItems.Count > 0 Then
+                Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
+                Dim tmpFileInfo As New MediaInfo.Fileinfo
+                tmpFileInfo.StreamDetails.Subtitle.AddRange(Master.currShow.EpSubtitles)
+                Using dEditStream As New dlgFIStreamEditor
+                    Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
+                    If Not stream Is Nothing Then
+                        If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
+                            Master.currShow.EpSubtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
+                        End If
+                        'NeedToRefresh = True
+                        LoadSubtitles()
+                    End If
+                End Using
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub DeleteSubtitle()
+        Try
+            If lvSubtitles.SelectedItems.Count > 0 Then
+                Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
+                If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
+                    Master.currShow.EpSubtitles(Convert.ToInt16(i.Text)).toRemove = True
+                End If
+                'NeedToRefresh = True
+                LoadSubtitles()
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub LoadSubtitles()
+        Dim c As Integer
+        Dim g As New ListViewGroup
+        Dim i As New ListViewItem
+        lvSubtitles.Groups.Clear()
+        lvSubtitles.Items.Clear()
+        Try
+            If Master.currShow.EpSubtitles.Count > 0 Then
+                g = New ListViewGroup
+                g.Header = Master.eLang.GetString(597, "Subtitle Stream")
+                lvSubtitles.Groups.Add(g)
+                c = 1
+                ' Fake Group Header
+                i = New ListViewItem
+                'i.UseItemStyleForSubItems = False
+                i.ForeColor = Color.DarkBlue
+                i.Tag = "Header"
+                i.Text = String.Empty
+                i.SubItems.Add(Master.eLang.GetString(60, "File Path"))
+                i.SubItems.Add(Master.eLang.GetString(610, "Language"))
+                i.SubItems.Add(Master.eLang.GetString(1288, "Type"))
+                i.SubItems.Add(Master.eLang.GetString(1287, "Forced"))
+
+                g.Items.Add(i)
+                lvSubtitles.Items.Add(i)
+                Dim s As MediaInfo.Subtitle
+                For c = 0 To Master.currShow.EpSubtitles.Count - 1
+                    s = Master.currShow.EpSubtitles(c)
+                    If Not s Is Nothing Then
+                        i = New ListViewItem
+                        i.Tag = Master.eLang.GetString(597, "Subtitle Stream")
+                        i.Text = c.ToString
+                        i.SubItems.Add(s.SubsPath)
+                        i.SubItems.Add(s.LongLanguage)
+                        i.SubItems.Add(s.SubsType)
+                        i.SubItems.Add(If(s.SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+
+                        If s.toRemove Then
+                            i.ForeColor = Color.Red
+                        End If
+
+                        g.Items.Add(i)
+                        lvSubtitles.Items.Add(i)
+                    End If
+                Next
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
 #End Region 'Methods

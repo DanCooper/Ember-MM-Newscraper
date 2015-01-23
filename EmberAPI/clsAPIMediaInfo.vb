@@ -1377,7 +1377,7 @@ Public Class MediaInfo
         Private _subs_foced As Boolean = False
         Private _subs_path As String = String.Empty
         Private _subs_type As String = String.Empty
-        Private _toremove As Boolean = False            'trigger to delete local/external trailer files
+        Private _toremove As Boolean = False            'trigger to delete local/external subtitle files
 
 #End Region 'Fields
 

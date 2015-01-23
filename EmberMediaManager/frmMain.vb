@@ -7805,54 +7805,44 @@ doCancel:
     End Sub
 
     Private Sub dgvTVEpisodes_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellDoubleClick
-        Try
+        If e.RowIndex < 0 Then Exit Sub
 
-            If e.RowIndex < 0 Then Exit Sub
+        If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy _
+            OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy _
-                OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+        Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+        Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
 
-            Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
-            Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
-
-            Using dEditEpisode As New dlgEditEpisode
-                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
-                Select Case dEditEpisode.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
-                        If Me.RefreshEpisode(ID) Then
-                            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
-                        End If
-                End Select
-                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Using dEditEpisode As New dlgEditEpisode
+            AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
+            Select Case dEditEpisode.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
+                    If Me.RefreshEpisode(ID) Then
+                        Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
+                    End If
+            End Select
+            RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
+        End Using
     End Sub
 
     Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
-        Try
-            If Not Me.tcMain.SelectedIndex = 2 OrElse Not Me.currList = 2 Then Return
+        If Not Me.tcMain.SelectedIndex = 2 OrElse Not Me.currList = 2 Then Return
 
-            Me.tmrWaitShow.Stop()
-            Me.tmrWaitSeason.Stop()
-            Me.tmrWaitMovie.Stop()
-            Me.tmrWaitMovieSet.Stop()
-            Me.tmrWaitEp.Stop()
-            Me.tmrLoadShow.Stop()
-            Me.tmrLoadSeason.Stop()
-            Me.tmrLoadMovie.Stop()
-            Me.tmrLoadMovieSet.Stop()
-            Me.tmrLoadEp.Stop()
+        Me.tmrWaitShow.Stop()
+        Me.tmrWaitSeason.Stop()
+        Me.tmrWaitMovie.Stop()
+        Me.tmrWaitMovieSet.Stop()
+        Me.tmrWaitEp.Stop()
+        Me.tmrLoadShow.Stop()
+        Me.tmrLoadSeason.Stop()
+        Me.tmrLoadMovie.Stop()
+        Me.tmrLoadMovieSet.Stop()
+        Me.tmrLoadEp.Stop()
 
-            Me.currEpRow = e.RowIndex
-            Me.tmrWaitEp.Start()
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.currEpRow = e.RowIndex
+        Me.tmrWaitEp.Start()
     End Sub
 
     Private Sub dgvTVEpisodes_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVEpisodes.CellPainting
@@ -7863,7 +7853,7 @@ doCancel:
         End If
 
         'icons
-        If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <> 15 AndAlso e.ColumnIndex <= 24 AndAlso e.RowIndex = -1 Then
+        If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <> 15 AndAlso e.ColumnIndex <= 31 AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -7874,6 +7864,8 @@ doCancel:
 
             If e.ColumnIndex = 24 Then 'Watched
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 8)
+            ElseIf e.ColumnIndex = 31 Then 'Subtitles
+                Me.ilColumnIcons.Draw(e.Graphics, pt, 4)
             Else
                 Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
             End If
@@ -7901,7 +7893,7 @@ doCancel:
             End If
         End If
 
-        If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 24 AndAlso e.RowIndex >= 0 Then
+        If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 31 AndAlso e.RowIndex >= 0 Then
 
             If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, e.RowIndex).Value) Then
                 e.CellStyle.BackColor = Color.White
@@ -7914,7 +7906,7 @@ doCancel:
                 e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
             End If
 
-            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <> 15 AndAlso e.ColumnIndex <= 24 Then
+            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 12 AndAlso e.ColumnIndex <> 15 AndAlso e.ColumnIndex <= 31 Then
                 e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -7935,186 +7927,174 @@ doCancel:
     End Sub
 
     Private Sub dgvTVEpisodes_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVEpisodes.KeyPress
-        Try
-            If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
-                KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
-                tmrKeyBuffer.Start()
-                For Each drvRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                    If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(KeyBuffer) Then
-                        drvRow.Selected = True
-                        Me.dgvTVEpisodes.CurrentCell = drvRow.Cells(3)
-                        Exit For
-                    End If
-                Next
-            ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+        If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
+            KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
+            tmrKeyBuffer.Start()
+            For Each drvRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
+                If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(KeyBuffer) Then
+                    drvRow.Selected = True
+                    Me.dgvTVEpisodes.CurrentCell = drvRow.Cells(3)
+                    Exit For
+                End If
+            Next
+        ElseIf e.KeyChar = Chr(13) Then
+            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
-                Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
-                Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
-                Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
+            Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+            Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
 
-                Using dEditEpisode As New dlgEditEpisode
-                    AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
-                    Select Case dEditEpisode.ShowDialog()
-                        Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
-                            If Me.RefreshEpisode(ID) Then
-                                Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
-                            End If
-                    End Select
-                    RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
-                End Using
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            Using dEditEpisode As New dlgEditEpisode
+                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
+                Select Case dEditEpisode.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
+                        If Me.RefreshEpisode(ID) Then
+                            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
+                        End If
+                End Select
+                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
+            End Using
+        End If
     End Sub
 
     Private Sub ShowEpisodeMenuItems(ByVal Visible As Boolean)
         Dim cMnu As ToolStripMenuItem
         Dim cSep As ToolStripSeparator
 
-        Try
-            If Visible Then
-                For Each cMnuItem As Object In Me.cmnuEpisode.Items
-                    If TypeOf cMnuItem Is ToolStripMenuItem Then
-                        DirectCast(cMnuItem, ToolStripMenuItem).Visible = True
-                    ElseIf TypeOf cMnuItem Is ToolStripSeparator Then
-                        DirectCast(cMnuItem, ToolStripSeparator).Visible = True
+        If Visible Then
+            For Each cMnuItem As Object In Me.cmnuEpisode.Items
+                If TypeOf cMnuItem Is ToolStripMenuItem Then
+                    DirectCast(cMnuItem, ToolStripMenuItem).Visible = True
+                ElseIf TypeOf cMnuItem Is ToolStripSeparator Then
+                    DirectCast(cMnuItem, ToolStripSeparator).Visible = True
+                End If
+            Next
+            Me.cmnuEpisodeRemoveFromDisk.Visible = True
+        Else
+            For Each cMnuItem As Object In Me.cmnuEpisode.Items
+                If TypeOf cMnuItem Is ToolStripMenuItem Then
+                    cMnu = DirectCast(cMnuItem, ToolStripMenuItem)
+                    If Not cMnu.Name = "RemoveEpToolStripMenuItem" AndAlso Not cMnu.Name = "cmnuEpTitle" Then
+                        cMnu.Visible = False
                     End If
-                Next
-                Me.cmnuEpisodeRemoveFromDisk.Visible = True
-            Else
-                For Each cMnuItem As Object In Me.cmnuEpisode.Items
-                    If TypeOf cMnuItem Is ToolStripMenuItem Then
-                        cMnu = DirectCast(cMnuItem, ToolStripMenuItem)
-                        If Not cMnu.Name = "RemoveEpToolStripMenuItem" AndAlso Not cMnu.Name = "cmnuEpTitle" Then
-                            cMnu.Visible = False
-                        End If
-                    ElseIf TypeOf cMnuItem Is ToolStripSeparator Then
-                        cSep = DirectCast(cMnuItem, ToolStripSeparator)
-                        If Not cSep.Name = "ToolStripSeparator6" Then
-                            cSep.Visible = False
-                        End If
+                ElseIf TypeOf cMnuItem Is ToolStripSeparator Then
+                    cSep = DirectCast(cMnuItem, ToolStripSeparator)
+                    If Not cSep.Name = "ToolStripSeparator6" Then
+                        cSep.Visible = False
                     End If
-                    Me.cmnuEpisodeRemoveFromDisk.Visible = False
-                Next
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
+                End If
+                Me.cmnuEpisodeRemoveFromDisk.Visible = False
+            Next
+        End If
     End Sub
 
     Private Sub dgvTVEpisodes_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVEpisodes.MouseDown
-        Try
-            Dim hasMissing As Boolean = False
 
-            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVEpisodes.RowCount > 0 Then
+        Dim hasMissing As Boolean = False
 
-                Me.cmnuEpisode.Enabled = False
+        If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVEpisodes.RowCount > 0 Then
 
-                Dim dgvHTI As DataGridView.HitTestInfo = dgvTVEpisodes.HitTest(e.X, e.Y)
-                If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+            Me.cmnuEpisode.Enabled = False
 
-                    If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
+            Dim dgvHTI As DataGridView.HitTestInfo = dgvTVEpisodes.HitTest(e.X, e.Y)
+            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
-                        Me.cmnuEpisode.Enabled = True
+                If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
+
+                    Me.cmnuEpisode.Enabled = True
+
+                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                        If Convert.ToBoolean(sRow.Cells(22).Value) Then
+                            hasMissing = True
+                            Exit For
+                        End If
+                    Next
+
+                    Me.cmnuEpisodeTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+
+                    If hasMissing Then
+                        Me.ShowEpisodeMenuItems(False)
+                    Else
+                        Dim setMark As Boolean = False
+                        Dim setLock As Boolean = False
+                        Dim setWatched As Boolean = False
+
+                        Me.ShowEpisodeMenuItems(True)
+
+                        Me.ToolStripSeparator9.Visible = False
+                        Me.cmnuEpisodeEdit.Visible = False
+                        Me.ToolStripSeparator10.Visible = False
+                        Me.cmnuEpisodeRescrape.Visible = False
+                        Me.cmnuEpisodeChange.Visible = False
+                        Me.ToolStripSeparator12.Visible = False
+                        Me.cmnuEpisodeOpenFolder.Visible = False
 
                         For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                            If Convert.ToBoolean(sRow.Cells(22).Value) Then
-                                hasMissing = True
-                                Exit For
+                            'if any one item is set as unmarked, set menu to mark
+                            'else they are all marked, so set menu to unmark
+                            If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
+                                setMark = True
+                                If setLock AndAlso setWatched Then Exit For
+                            End If
+                            'if any one item is set as unlocked, set menu to lock
+                            'else they are all locked so set menu to unlock
+                            If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
+                                setLock = True
+                                If setMark AndAlso setWatched Then Exit For
+                            End If
+                            'if any one item is set as unwatched, set menu to watched
+                            'else they are all watched so set menu to not watched
+                            If Not Convert.ToBoolean(sRow.Cells(24).Value) Then
+                                setWatched = True
+                                If setLock AndAlso setMark Then Exit For
                             End If
                         Next
 
-                        Me.cmnuEpisodeTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-
-                        If hasMissing Then
-                            Me.ShowEpisodeMenuItems(False)
-                        Else
-                            Dim setMark As Boolean = False
-                            Dim setLock As Boolean = False
-                            Dim setWatched As Boolean = False
-
-                            Me.ShowEpisodeMenuItems(True)
-
-                            Me.ToolStripSeparator9.Visible = False
-                            Me.cmnuEpisodeEdit.Visible = False
-                            Me.ToolStripSeparator10.Visible = False
-                            Me.cmnuEpisodeRescrape.Visible = False
-                            Me.cmnuEpisodeChange.Visible = False
-                            Me.ToolStripSeparator12.Visible = False
-                            Me.cmnuEpisodeOpenFolder.Visible = False
-
-                            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                                'if any one item is set as unmarked, set menu to mark
-                                'else they are all marked, so set menu to unmark
-                                If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
-                                    setMark = True
-                                    If setLock AndAlso setWatched Then Exit For
-                                End If
-                                'if any one item is set as unlocked, set menu to lock
-                                'else they are all locked so set menu to unlock
-                                If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
-                                    setLock = True
-                                    If setMark AndAlso setWatched Then Exit For
-                                End If
-                                'if any one item is set as unwatched, set menu to watched
-                                'else they are all watched so set menu to not watched
-                                If Not Convert.ToBoolean(sRow.Cells(24).Value) Then
-                                    setWatched = True
-                                    If setLock AndAlso setMark Then Exit For
-                                End If
-                            Next
-
-                            Me.cmnuEpisodeMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
-                            Me.cmnuEpisodeLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
-                            Me.cmnuEpisodeWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
-                        End If
-                    Else
-                        cmnuEpisodeTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex).Value, " <<")
-
-                        If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 2 Then
-                            Me.prevEpRow = -1
-                            Me.currList = 2
-                            Me.dgvTVEpisodes.CurrentCell = Nothing
-                            Me.dgvTVEpisodes.ClearSelection()
-                            Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected = True
-                            Me.dgvTVEpisodes.CurrentCell = Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex)
-                        Else
-                            Me.cmnuEpisode.Enabled = True
-                        End If
-
-                        If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, dgvHTI.RowIndex).Value) Then hasMissing = True
-
-                        If hasMissing Then
-                            Me.ShowEpisodeMenuItems(False)
-                        Else
-                            Me.ShowEpisodeMenuItems(True)
-
-                            Me.ToolStripSeparator9.Visible = True
-                            Me.cmnuEpisodeEdit.Visible = True
-                            Me.ToolStripSeparator10.Visible = True
-                            Me.cmnuEpisodeRescrape.Visible = True
-                            Me.cmnuEpisodeChange.Visible = True
-                            Me.ToolStripSeparator12.Visible = True
-                            Me.cmnuEpisodeOpenFolder.Visible = True
-
-                            Me.cmnuEpisodeMark.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                            Me.cmnuEpisodeLock.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-                            Me.cmnuEpisodeWatched.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(24, dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
-                        End If
-
+                        Me.cmnuEpisodeMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                        Me.cmnuEpisodeLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                        Me.cmnuEpisodeWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
                     End If
                 Else
-                    Me.cmnuEpisode.Enabled = False
-                    Me.cmnuEpisodeTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                    cmnuEpisodeTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex).Value, " <<")
+
+                    If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 2 Then
+                        Me.prevEpRow = -1
+                        Me.currList = 2
+                        Me.dgvTVEpisodes.CurrentCell = Nothing
+                        Me.dgvTVEpisodes.ClearSelection()
+                        Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected = True
+                        Me.dgvTVEpisodes.CurrentCell = Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex)
+                    Else
+                        Me.cmnuEpisode.Enabled = True
+                    End If
+
+                    If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, dgvHTI.RowIndex).Value) Then hasMissing = True
+
+                    If hasMissing Then
+                        Me.ShowEpisodeMenuItems(False)
+                    Else
+                        Me.ShowEpisodeMenuItems(True)
+
+                        Me.ToolStripSeparator9.Visible = True
+                        Me.cmnuEpisodeEdit.Visible = True
+                        Me.ToolStripSeparator10.Visible = True
+                        Me.cmnuEpisodeRescrape.Visible = True
+                        Me.cmnuEpisodeChange.Visible = True
+                        Me.ToolStripSeparator12.Visible = True
+                        Me.cmnuEpisodeOpenFolder.Visible = True
+
+                        Me.cmnuEpisodeMark.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                        Me.cmnuEpisodeLock.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                        Me.cmnuEpisodeWatched.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(24, dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
+                    End If
+
                 End If
+            Else
+                Me.cmnuEpisode.Enabled = False
+                Me.cmnuEpisodeTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End If
     End Sub
 
     Private Sub dgvTVEpisodes_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVEpisodes.Resize
@@ -8977,7 +8957,19 @@ doCancel:
                 .dgvTVEpisodes.Columns(24).SortMode = DataGridViewColumnSortMode.Automatic
                 .dgvTVEpisodes.Columns(24).Visible = Not CheckColumnHide_TVEpisodes(.dgvTVEpisodes.Columns(24).Name)
                 .dgvTVEpisodes.Columns(24).ToolTipText = Master.eLang.GetString(981, "Watched")
-                For i As Integer = 25 To .dgvTVEpisodes.Columns.Count - 1
+                .dgvTVEpisodes.Columns(25).Visible = False
+                .dgvTVEpisodes.Columns(26).Visible = False
+                .dgvTVEpisodes.Columns(27).Visible = False
+                .dgvTVEpisodes.Columns(28).Visible = False
+                .dgvTVEpisodes.Columns(29).Visible = False
+                .dgvTVEpisodes.Columns(30).Visible = False
+                .dgvTVEpisodes.Columns(31).Width = 20
+                .dgvTVEpisodes.Columns(31).Resizable = DataGridViewTriState.False
+                .dgvTVEpisodes.Columns(31).ReadOnly = True
+                .dgvTVEpisodes.Columns(31).SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVEpisodes.Columns(31).Visible = Not CheckColumnHide_TVEpisodes(.dgvMovies.Columns(31).Name)
+                .dgvTVEpisodes.Columns(31).ToolTipText = Master.eLang.GetString(152, "Subtitles")
+                For i As Integer = 32 To .dgvTVEpisodes.Columns.Count - 1
                     .dgvTVEpisodes.Columns(i).Visible = False
                 Next
 
@@ -15247,110 +15239,106 @@ doCancel:
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
-        Try
+        tmpShowDb = Master.DB.LoadTVEpFromDB(ID, True)
 
-            tmpShowDb = Master.DB.LoadTVEpFromDB(ID, True)
+        If Directory.Exists(tmpShowDb.ShowPath) Then
 
-            If Directory.Exists(tmpShowDb.ShowPath) Then
-
-                If FromNfo Then
-                    If String.IsNullOrEmpty(tmpShowDb.EpNfoPath) Then
-                        Dim sNFO As String = NFO.GetEpNfoPath(tmpShowDb.Filename)
-                        tmpShowDb.EpNfoPath = sNFO
-                        tmpEp = NFO.LoadTVEpFromNFO(sNFO, tmpShowDb.TVEp.Season, tmpShowDb.TVEp.Episode)
-                    Else
-                        tmpEp = NFO.LoadTVEpFromNFO(tmpShowDb.EpNfoPath, tmpShowDb.TVEp.Season, tmpShowDb.TVEp.Episode)
-                    End If
-
-                    If Not tmpEp.Episode = -999 Then
-                        tmpShowDb.TVEp = tmpEp
-                    End If
-                End If
-
-                If String.IsNullOrEmpty(tmpShowDb.TVEp.Title) Then
-                    tmpShowDb.TVEp.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(tmpShowDb.Filename), tmpShowDb.TVShow.Title, False)
-                End If
-
-                Dim fromFile As String = APIXML.GetVideoSource(tmpShowDb.Filename, False)
-                If Not String.IsNullOrEmpty(fromFile) Then
-                    tmpShowDb.VideoSource = fromFile
-                    tmpShowDb.TVEp.VideoSource = tmpShowDb.VideoSource
-                ElseIf String.IsNullOrEmpty(tmpShowDb.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                    tmpShowDb.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpShowDb.Filename)), String.Empty, "*EmberAPP")
-                    tmpShowDb.TVEp.VideoSource = tmpShowDb.VideoSource
-                ElseIf Not String.IsNullOrEmpty(tmpShowDb.TVEp.VideoSource) Then
-                    tmpShowDb.VideoSource = tmpShowDb.TVEp.VideoSource
-                End If
-
-                Dim eContainer As New Scanner.EpisodeContainer With {.Filename = tmpShowDb.Filename}
-                fScanner.GetTVEpisodeFolderContents(eContainer)
-                tmpShowDb.EpPosterPath = eContainer.Poster
-                tmpShowDb.EpFanartPath = eContainer.Fanart
-                tmpShowDb.EpSubtitles = eContainer.Subtitles
-                'assume invalid nfo if no title
-                tmpShowDb.EpNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVEp.Title), String.Empty, eContainer.Nfo)
-
-                hasFanart = Not String.IsNullOrEmpty(eContainer.Fanart)
-                hasPoster = Not String.IsNullOrEmpty(eContainer.Poster)
-                hasWatched = Not String.IsNullOrEmpty(tmpShowDb.TVEp.Playcount) AndAlso Not tmpShowDb.TVEp.Playcount = "0"
-                hasSubtitles = eContainer.Subtitles.Count > 0 OrElse tmpShowDb.TVEp.FileInfo.StreamDetails.Subtitle.Count > 0
-
-                Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
-
-                If Not IsNothing(dRow(0)) Then
-                    tmpShowDb.IsMarkEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(8))
-                    tmpShowDb.IsLockEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
-
-                    If Not Convert.ToInt32(DirectCast(dRow(0), DataRow).Item(12)) = tmpShowDb.TVEp.Season Then
-                        SeasonChanged = True
-                        ShowID = Convert.ToInt32(tmpShowDb.ShowID)
-                    End If
-
-                    If Not Convert.ToInt32(DirectCast(dRow(0), DataRow).Item(2)) = tmpShowDb.TVEp.Episode Then
-                        EpisodeChanged = True
-                        ShowID = Convert.ToInt32(tmpShowDb.ShowID)
-                    End If
-
-                    If Me.InvokeRequired Then
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpShowDb.TVEp.Title})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 4, hasPoster})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 5, hasFanart})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 7, False})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 23, tmpShowDb.TVEp.Playcount})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 24, hasWatched})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 30, tmpShowDb.VideoSource})
-                    Else
-                        DirectCast(dRow(0), DataRow).Item(3) = tmpShowDb.TVEp.Title
-                        DirectCast(dRow(0), DataRow).Item(4) = hasPoster
-                        DirectCast(dRow(0), DataRow).Item(5) = hasFanart
-                        DirectCast(dRow(0), DataRow).Item(6) = If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)
-                        DirectCast(dRow(0), DataRow).Item(7) = False
-                        DirectCast(dRow(0), DataRow).Item(23) = tmpShowDb.TVEp.Playcount
-                        DirectCast(dRow(0), DataRow).Item(24) = hasWatched
-                        DirectCast(dRow(0), DataRow).Item(30) = tmpShowDb.VideoSource
-                    End If
-                End If
-
-                Master.DB.SaveTVEpToDB(tmpShowDb, False, False, BatchMode, ToNfo)
-
-            Else
-                Master.DB.DeleteTVEpFromDB(ID, False, True, BatchMode)
-                Return True
-            End If
-
-            If Not BatchMode Then
-                If (SeasonChanged OrElse EpisodeChanged) AndAlso ShowID > -1 Then
-                    Master.DB.CleanSeasons(BatchMode)
-                    Me.FillSeasons(ShowID)
+            If FromNfo Then
+                If String.IsNullOrEmpty(tmpShowDb.EpNfoPath) Then
+                    Dim sNFO As String = NFO.GetEpNfoPath(tmpShowDb.Filename)
+                    tmpShowDb.EpNfoPath = sNFO
+                    tmpEp = NFO.LoadTVEpFromNFO(sNFO, tmpShowDb.TVEp.Season, tmpShowDb.TVEp.Episode)
                 Else
-                    Me.LoadEpisodeInfo(Convert.ToInt32(ID))
+                    tmpEp = NFO.LoadTVEpFromNFO(tmpShowDb.EpNfoPath, tmpShowDb.TVEp.Season, tmpShowDb.TVEp.Episode)
+                End If
+
+                If Not tmpEp.Episode = -999 Then
+                    tmpShowDb.TVEp = tmpEp
                 End If
             End If
 
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            If String.IsNullOrEmpty(tmpShowDb.TVEp.Title) Then
+                tmpShowDb.TVEp.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(tmpShowDb.Filename), tmpShowDb.TVShow.Title, False)
+            End If
+
+            Dim fromFile As String = APIXML.GetVideoSource(tmpShowDb.Filename, False)
+            If Not String.IsNullOrEmpty(fromFile) Then
+                tmpShowDb.VideoSource = fromFile
+                tmpShowDb.TVEp.VideoSource = tmpShowDb.VideoSource
+            ElseIf String.IsNullOrEmpty(tmpShowDb.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                tmpShowDb.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpShowDb.Filename)), String.Empty, "*EmberAPP")
+                tmpShowDb.TVEp.VideoSource = tmpShowDb.VideoSource
+            ElseIf Not String.IsNullOrEmpty(tmpShowDb.TVEp.VideoSource) Then
+                tmpShowDb.VideoSource = tmpShowDb.TVEp.VideoSource
+            End If
+
+            Dim eContainer As New Scanner.EpisodeContainer With {.Filename = tmpShowDb.Filename}
+            fScanner.GetTVEpisodeFolderContents(eContainer)
+            tmpShowDb.EpPosterPath = eContainer.Poster
+            tmpShowDb.EpFanartPath = eContainer.Fanart
+            tmpShowDb.EpSubtitles = eContainer.Subtitles
+            'assume invalid nfo if no title
+            tmpShowDb.EpNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVEp.Title), String.Empty, eContainer.Nfo)
+
+            hasFanart = Not String.IsNullOrEmpty(eContainer.Fanart)
+            hasPoster = Not String.IsNullOrEmpty(eContainer.Poster)
+            hasWatched = Not String.IsNullOrEmpty(tmpShowDb.TVEp.Playcount) AndAlso Not tmpShowDb.TVEp.Playcount = "0"
+            hasSubtitles = eContainer.Subtitles.Count > 0 OrElse tmpShowDb.TVEp.FileInfo.StreamDetails.Subtitle.Count > 0
+
+            Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
+
+            If Not IsNothing(dRow(0)) Then
+                tmpShowDb.IsMarkEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(8))
+                tmpShowDb.IsLockEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
+
+                If Not Convert.ToInt32(DirectCast(dRow(0), DataRow).Item(12)) = tmpShowDb.TVEp.Season Then
+                    SeasonChanged = True
+                    ShowID = Convert.ToInt32(tmpShowDb.ShowID)
+                End If
+
+                If Not Convert.ToInt32(DirectCast(dRow(0), DataRow).Item(2)) = tmpShowDb.TVEp.Episode Then
+                    EpisodeChanged = True
+                    ShowID = Convert.ToInt32(tmpShowDb.ShowID)
+                End If
+
+                If Me.InvokeRequired Then
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpShowDb.TVEp.Title})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 4, hasPoster})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 5, hasFanart})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 7, False})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 23, tmpShowDb.TVEp.Playcount})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 24, hasWatched})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 30, tmpShowDb.VideoSource})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 31, hasSubtitles})
+                Else
+                    DirectCast(dRow(0), DataRow).Item(3) = tmpShowDb.TVEp.Title
+                    DirectCast(dRow(0), DataRow).Item(4) = hasPoster
+                    DirectCast(dRow(0), DataRow).Item(5) = hasFanart
+                    DirectCast(dRow(0), DataRow).Item(6) = If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)
+                    DirectCast(dRow(0), DataRow).Item(7) = False
+                    DirectCast(dRow(0), DataRow).Item(23) = tmpShowDb.TVEp.Playcount
+                    DirectCast(dRow(0), DataRow).Item(24) = hasWatched
+                    DirectCast(dRow(0), DataRow).Item(30) = tmpShowDb.VideoSource
+                    DirectCast(dRow(0), DataRow).Item(31) = hasSubtitles
+                End If
+            End If
+
+            Master.DB.SaveTVEpToDB(tmpShowDb, False, False, BatchMode, ToNfo)
+
+        Else
+            Master.DB.DeleteTVEpFromDB(ID, False, True, BatchMode)
+            Return True
+        End If
+
+        If Not BatchMode Then
+            If (SeasonChanged OrElse EpisodeChanged) AndAlso ShowID > -1 Then
+                Master.DB.CleanSeasons(BatchMode)
+                Me.FillSeasons(ShowID)
+            Else
+                Me.LoadEpisodeInfo(Convert.ToInt32(ID))
+            End If
+        End If
 
         Return False
     End Function

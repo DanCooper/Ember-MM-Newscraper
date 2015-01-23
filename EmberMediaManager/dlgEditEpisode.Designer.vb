@@ -23,12 +23,16 @@ Partial Class dlgEditEpisode
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditEpisode))
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
         Me.lblTopTitle = New System.Windows.Forms.Label()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditEpisode = New System.Windows.Forms.TabControl()
         Me.tpEpsiodeDetails = New System.Windows.Forms.TabPage()
+        Me.txtVideoSource = New System.Windows.Forms.TextBox()
+        Me.lblVideoSource = New System.Windows.Forms.Label()
         Me.txtVotes = New System.Windows.Forms.TextBox()
         Me.lblVotes = New System.Windows.Forms.Label()
         Me.lblRuntime = New System.Windows.Forms.Label()
@@ -93,8 +97,19 @@ Partial Class dlgEditEpisode
         Me.chkWatched = New System.Windows.Forms.CheckBox()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.txtVideoSource = New System.Windows.Forms.TextBox()
-        Me.lblVideoSource = New System.Windows.Forms.Label()
+        Me.tpSubtitles = New System.Windows.Forms.TabPage()
+        Me.lblSubtitlesPreview = New System.Windows.Forms.Label()
+        Me.txtSubtitlesPreview = New System.Windows.Forms.TextBox()
+        Me.lvSubtitles = New System.Windows.Forms.ListView()
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.btnRemoveEpisodeSubtitle = New System.Windows.Forms.Button()
+        Me.btnSetMovieSubtitleDL = New System.Windows.Forms.Button()
+        Me.btnSetMovieSubtitleScrape = New System.Windows.Forms.Button()
+        Me.btnSetMovieSubtitleLocal = New System.Windows.Forms.Button()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditEpisode.SuspendLayout()
@@ -116,6 +131,7 @@ Partial Class dlgEditEpisode
         Me.tpFrameExtraction.SuspendLayout()
         Me.tpEpisodeMetaData.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
+        Me.tpSubtitles.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -174,6 +190,7 @@ Partial Class dlgEditEpisode
         Me.tcEditEpisode.Controls.Add(Me.tpEpisodePoster)
         Me.tcEditEpisode.Controls.Add(Me.tpEpisodeFanart)
         Me.tcEditEpisode.Controls.Add(Me.tpFrameExtraction)
+        Me.tcEditEpisode.Controls.Add(Me.tpSubtitles)
         Me.tcEditEpisode.Controls.Add(Me.tpEpisodeMetaData)
         Me.tcEditEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tcEditEpisode.Location = New System.Drawing.Point(4, 70)
@@ -230,6 +247,25 @@ Partial Class dlgEditEpisode
         Me.tpEpsiodeDetails.TabIndex = 0
         Me.tpEpsiodeDetails.Text = "Details"
         Me.tpEpsiodeDetails.UseVisualStyleBackColor = True
+        '
+        'txtVideoSource
+        '
+        Me.txtVideoSource.BackColor = System.Drawing.SystemColors.Window
+        Me.txtVideoSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoSource.Location = New System.Drawing.Point(645, 395)
+        Me.txtVideoSource.Name = "txtVideoSource"
+        Me.txtVideoSource.Size = New System.Drawing.Size(183, 22)
+        Me.txtVideoSource.TabIndex = 88
+        '
+        'lblVideoSource
+        '
+        Me.lblVideoSource.AutoSize = True
+        Me.lblVideoSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoSource.Location = New System.Drawing.Point(643, 380)
+        Me.lblVideoSource.Name = "lblVideoSource"
+        Me.lblVideoSource.Size = New System.Drawing.Size(78, 13)
+        Me.lblVideoSource.TabIndex = 87
+        Me.lblVideoSource.Text = "Video Source:"
         '
         'txtVotes
         '
@@ -842,24 +878,130 @@ Partial Class dlgEditEpisode
         Me.tsFilename.Size = New System.Drawing.Size(55, 17)
         Me.tsFilename.Text = "Filename"
         '
-        'txtVideoSource
+        'tpSubtitles
         '
-        Me.txtVideoSource.BackColor = System.Drawing.SystemColors.Window
-        Me.txtVideoSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVideoSource.Location = New System.Drawing.Point(645, 395)
-        Me.txtVideoSource.Name = "txtVideoSource"
-        Me.txtVideoSource.Size = New System.Drawing.Size(183, 22)
-        Me.txtVideoSource.TabIndex = 88
+        Me.tpSubtitles.Controls.Add(Me.lblSubtitlesPreview)
+        Me.tpSubtitles.Controls.Add(Me.txtSubtitlesPreview)
+        Me.tpSubtitles.Controls.Add(Me.lvSubtitles)
+        Me.tpSubtitles.Controls.Add(Me.btnRemoveEpisodeSubtitle)
+        Me.tpSubtitles.Controls.Add(Me.btnSetMovieSubtitleDL)
+        Me.tpSubtitles.Controls.Add(Me.btnSetMovieSubtitleScrape)
+        Me.tpSubtitles.Controls.Add(Me.btnSetMovieSubtitleLocal)
+        Me.tpSubtitles.Location = New System.Drawing.Point(4, 22)
+        Me.tpSubtitles.Name = "tpSubtitles"
+        Me.tpSubtitles.Size = New System.Drawing.Size(836, 452)
+        Me.tpSubtitles.TabIndex = 7
+        Me.tpSubtitles.Text = "Subtitles"
+        Me.tpSubtitles.UseVisualStyleBackColor = True
         '
-        'lblVideoSource
+        'lblSubtitlesPreview
         '
-        Me.lblVideoSource.AutoSize = True
-        Me.lblVideoSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVideoSource.Location = New System.Drawing.Point(643, 380)
-        Me.lblVideoSource.Name = "lblVideoSource"
-        Me.lblVideoSource.Size = New System.Drawing.Size(78, 13)
-        Me.lblVideoSource.TabIndex = 87
-        Me.lblVideoSource.Text = "Video Source:"
+        Me.lblSubtitlesPreview.AutoSize = True
+        Me.lblSubtitlesPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblSubtitlesPreview.Location = New System.Drawing.Point(10, 292)
+        Me.lblSubtitlesPreview.Name = "lblSubtitlesPreview"
+        Me.lblSubtitlesPreview.Size = New System.Drawing.Size(51, 13)
+        Me.lblSubtitlesPreview.TabIndex = 44
+        Me.lblSubtitlesPreview.Text = "Preview:"
+        '
+        'txtSubtitlesPreview
+        '
+        Me.txtSubtitlesPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtSubtitlesPreview.Location = New System.Drawing.Point(4, 308)
+        Me.txtSubtitlesPreview.Multiline = True
+        Me.txtSubtitlesPreview.Name = "txtSubtitlesPreview"
+        Me.txtSubtitlesPreview.ReadOnly = True
+        Me.txtSubtitlesPreview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtSubtitlesPreview.Size = New System.Drawing.Size(726, 138)
+        Me.txtSubtitlesPreview.TabIndex = 43
+        '
+        'lvSubtitles
+        '
+        Me.lvSubtitles.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lvSubtitles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
+        Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvSubtitles.FullRowSelect = True
+        ListViewGroup1.Header = "Local Subtitles"
+        ListViewGroup1.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
+        Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+        ListViewItem1.Group = ListViewGroup1
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
+        Me.lvSubtitles.MultiSelect = False
+        Me.lvSubtitles.Name = "lvSubtitles"
+        Me.lvSubtitles.Size = New System.Drawing.Size(724, 257)
+        Me.lvSubtitles.TabIndex = 42
+        Me.lvSubtitles.UseCompatibleStateImageBehavior = False
+        Me.lvSubtitles.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Width = 25
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Width = 550
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Width = 100
+        '
+        'btnRemoveMovieSubtitle
+        '
+        Me.btnRemoveEpisodeSubtitle.Enabled = False
+        Me.btnRemoveEpisodeSubtitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveEpisodeSubtitle.Image = CType(resources.GetObject("btnRemoveMovieSubtitle.Image"), System.Drawing.Image)
+        Me.btnRemoveEpisodeSubtitle.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveEpisodeSubtitle.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveEpisodeSubtitle.Name = "btnRemoveMovieSubtitle"
+        Me.btnRemoveEpisodeSubtitle.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveEpisodeSubtitle.TabIndex = 41
+        Me.btnRemoveEpisodeSubtitle.Text = "Remove Subtitle"
+        Me.btnRemoveEpisodeSubtitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveEpisodeSubtitle.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieSubtitleDL
+        '
+        Me.btnSetMovieSubtitleDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieSubtitleDL.Image = CType(resources.GetObject("btnSetMovieSubtitleDL.Image"), System.Drawing.Image)
+        Me.btnSetMovieSubtitleDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieSubtitleDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetMovieSubtitleDL.Name = "btnSetMovieSubtitleDL"
+        Me.btnSetMovieSubtitleDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieSubtitleDL.TabIndex = 40
+        Me.btnSetMovieSubtitleDL.Text = "Add Subtitle (Download)"
+        Me.btnSetMovieSubtitleDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieSubtitleDL.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieSubtitleScrape
+        '
+        Me.btnSetMovieSubtitleScrape.Enabled = False
+        Me.btnSetMovieSubtitleScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieSubtitleScrape.Image = CType(resources.GetObject("btnSetMovieSubtitleScrape.Image"), System.Drawing.Image)
+        Me.btnSetMovieSubtitleScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieSubtitleScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetMovieSubtitleScrape.Name = "btnSetMovieSubtitleScrape"
+        Me.btnSetMovieSubtitleScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieSubtitleScrape.TabIndex = 39
+        Me.btnSetMovieSubtitleScrape.Text = "Add Subtitle (Scrape)"
+        Me.btnSetMovieSubtitleScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieSubtitleScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieSubtitleLocal
+        '
+        Me.btnSetMovieSubtitleLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieSubtitleLocal.Image = CType(resources.GetObject("btnSetMovieSubtitleLocal.Image"), System.Drawing.Image)
+        Me.btnSetMovieSubtitleLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieSubtitleLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetMovieSubtitleLocal.Name = "btnSetMovieSubtitleLocal"
+        Me.btnSetMovieSubtitleLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieSubtitleLocal.TabIndex = 38
+        Me.btnSetMovieSubtitleLocal.Text = "Add Subtitle (Local Browse)"
+        Me.btnSetMovieSubtitleLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieSubtitleLocal.UseVisualStyleBackColor = True
         '
         'dlgEditEpisode
         '
@@ -907,6 +1049,8 @@ Partial Class dlgEditEpisode
         Me.tpEpisodeMetaData.ResumeLayout(False)
         Me.StatusStrip.ResumeLayout(False)
         Me.StatusStrip.PerformLayout()
+        Me.tpSubtitles.ResumeLayout(False)
+        Me.tpSubtitles.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -983,5 +1127,18 @@ Partial Class dlgEditEpisode
     Friend WithEvents tsFilename As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents txtVideoSource As System.Windows.Forms.TextBox
     Friend WithEvents lblVideoSource As System.Windows.Forms.Label
+    Friend WithEvents tpSubtitles As System.Windows.Forms.TabPage
+    Friend WithEvents lblSubtitlesPreview As System.Windows.Forms.Label
+    Friend WithEvents txtSubtitlesPreview As System.Windows.Forms.TextBox
+    Friend WithEvents lvSubtitles As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents btnRemoveEpisodeSubtitle As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieSubtitleDL As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieSubtitleScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieSubtitleLocal As System.Windows.Forms.Button
 
 End Class
