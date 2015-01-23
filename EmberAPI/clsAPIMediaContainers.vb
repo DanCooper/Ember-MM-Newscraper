@@ -2370,6 +2370,7 @@ Namespace MediaContainers
         Public Property VoteCount As Integer
         Public Property Disc As Integer
         Public Property DiscType As String
+        Public Property ThumbURL As String
 
 #End Region 'Properties
 
@@ -2386,6 +2387,7 @@ Namespace MediaContainers
             Me._VoteAverage = String.Empty
             Me._VoteCount = 0
             Me._WebImage = New Images
+            Me._ThumbURL = String.Empty
         End Sub
 
 #End Region 'Methods

@@ -1280,7 +1280,7 @@ Public Class Scraper
                                     Case "fanart"
                                         tmpTVDBShow.Fanarts.Add(New TVDBFanart With { _
                                                              .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                             .ThumbnailURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
+                                                             .ThumbURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
                                                              .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("ThumbnailPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
@@ -1332,7 +1332,10 @@ Public Class Scraper
                                 tmpTVDBShow.ShowBanners.Add(New TVDBShowBanner With { _
                                                               .URL = img.URL, _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang})
+                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\_cache\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang, _
+                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .ThumbURL = img.ThumbURL})
                             Next
                         End If
                     End If
@@ -1345,8 +1348,11 @@ Public Class Scraper
                                 tmpTVDBShow.SeasonBanners.Add(New TVDBSeasonBanner With { _
                                                               .URL = img.URL, _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
-                                                              .Season = img.Season})
+                                                              .Season = img.Season, _
+                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .ThumbURL = img.ThumbURL})
                             Next
                         End If
                     End If
@@ -1359,7 +1365,10 @@ Public Class Scraper
                                 tmpTVDBShow.ShowCharacterArts.Add(New TVDBShowCharacterArt With { _
                                                               .URL = img.URL, _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang})
+                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang, _
+                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .ThumbURL = img.ThumbURL})
                             Next
                         End If
                     End If
@@ -1372,7 +1381,10 @@ Public Class Scraper
                                 tmpTVDBShow.ShowClearArts.Add(New TVDBShowClearArt With { _
                                                               .URL = img.URL, _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang})
+                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang, _
+                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .ThumbURL = img.ThumbURL})
                             Next
                         End If
                     End If
@@ -1385,7 +1397,10 @@ Public Class Scraper
                                 tmpTVDBShow.ShowClearLogos.Add(New TVDBShowClearLogo With { _
                                                               .URL = img.URL, _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang})
+                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang, _
+                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .ThumbURL = img.ThumbURL})
                             Next
                         End If
                     End If
@@ -1398,7 +1413,10 @@ Public Class Scraper
                                 tmpTVDBShow.Fanarts.Add(New TVDBFanart With { _
                                                               .URL = img.URL, _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang})
+                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\_cache\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang, _
+                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .ThumbURL = img.ThumbURL})
                             Next
                         End If
                     End If
@@ -1411,7 +1429,10 @@ Public Class Scraper
                                 tmpTVDBShow.ShowLandscapes.Add(New TVDBShowLandscape With { _
                                                               .URL = img.URL, _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang})
+                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang, _
+                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .ThumbURL = img.ThumbURL})
                             Next
                         End If
                     End If
@@ -1424,8 +1445,11 @@ Public Class Scraper
                                 tmpTVDBShow.SeasonLandscapes.Add(New TVDBSeasonLandscape With { _
                                                               .URL = img.URL, _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
-                                                              .Season = img.Season})
+                                                              .Season = img.Season, _
+                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .ThumbURL = img.ThumbURL})
                             Next
                         End If
                     End If
@@ -1438,7 +1462,10 @@ Public Class Scraper
                                 tmpTVDBShow.Posters.Add(New TVDBPoster With { _
                                                               .URL = img.URL, _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang})
+                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\_cache\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .Language = img.ShortLang, _
+                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .ThumbURL = img.ThumbURL})
                             Next
                         End If
                     End If
@@ -1451,8 +1478,11 @@ Public Class Scraper
                                 tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
                                                               .URL = img.URL, _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
+                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
-                                                              .Season = img.Season})
+                                                              .Season = img.Season, _
+                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .ThumbURL = img.ThumbURL})
                             Next
                         End If
                     End If
@@ -1514,12 +1544,12 @@ Public Class Scraper
 #Region "Fields"
 
         Private _image As Images
+        Private _language As String
         Private _localfile As String
         Private _localthumb As String
         Private _size As Size
-        Private _thumbnailurl As String
+        Private _thumburl As String
         Private _url As String
-        Private _language As String
 
 #End Region 'Fields
 
@@ -1539,6 +1569,15 @@ Public Class Scraper
             End Get
             Set(ByVal value As Images)
                 Me._image = value
+            End Set
+        End Property
+
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
             End Set
         End Property
 
@@ -1569,12 +1608,12 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property ThumbnailURL() As String
+        Public Property ThumbURL() As String
             Get
-                Return Me._thumbnailurl
+                Return Me._thumburl
             End Get
             Set(ByVal value As String)
-                Me._thumbnailurl = value
+                Me._thumburl = value
             End Set
         End Property
 
@@ -1587,22 +1626,13 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
             Me._url = String.Empty
-            Me._thumbnailurl = String.Empty
+            Me._thumburl = String.Empty
             Me._size = New Size
             Me._localfile = String.Empty
             Me._localthumb = String.Empty
@@ -1620,10 +1650,12 @@ Public Class Scraper
 #Region "Fields"
 
         Private _image As Images
-        Private _localfile As String
-        Private _size As Size
-        Private _url As String
         Private _language As String
+        Private _localfile As String
+        Private _localthumb As String
+        Private _size As Size
+        Private _thumburl As String
+        Private _url As String
 
 #End Region 'Fields
 
@@ -1646,12 +1678,30 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
         Public Property LocalFile() As String
             Get
                 Return Me._localfile
             End Get
             Set(ByVal value As String)
                 Me._localfile = value
+            End Set
+        End Property
+
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
             End Set
         End Property
 
@@ -1664,6 +1714,15 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property ThumbURL() As String
+            Get
+                Return Me._thumburl
+            End Get
+            Set(ByVal value As String)
+                Me._thumburl = value
+            End Set
+        End Property
+
         Public Property URL() As String
             Get
                 Return Me._url
@@ -1673,25 +1732,18 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._url = String.Empty
-            Me._size = New Size
-            Me._localfile = String.Empty
             Me._image = New Images
             Me._language = String.Empty
+            Me._localfile = String.Empty
+            Me._localthumb = String.Empty
+            Me._size = New Size
+            Me._thumburl = String.Empty
+            Me._url = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -1703,10 +1755,10 @@ Public Class Scraper
 
 #Region "Fields"
 
-        Private _fanart As TVDBFanart
-        Private _poster As Images
         Private _banner As Images
+        Private _fanart As TVDBFanart
         Private _landscape As Images
+        Private _poster As Images
         Private _season As Integer
 
 #End Region 'Fields
@@ -1721,30 +1773,21 @@ Public Class Scraper
 
 #Region "Properties"
 
-        Public Property Fanart() As TVDBFanart
-            Get
-                Return Me._fanart
-            End Get
-            Set(ByVal value As TVDBFanart)
-                Me._fanart = value
-            End Set
-        End Property
-
-        Public Property Poster() As Images
-            Get
-                Return Me._poster
-            End Get
-            Set(ByVal value As Images)
-                Me._poster = value
-            End Set
-        End Property
-
         Public Property Banner() As Images
             Get
                 Return Me._banner
             End Get
             Set(ByVal value As Images)
                 Me._banner = value
+            End Set
+        End Property
+
+        Public Property Fanart() As TVDBFanart
+            Get
+                Return Me._fanart
+            End Get
+            Set(ByVal value As TVDBFanart)
+                Me._fanart = value
             End Set
         End Property
 
@@ -1757,6 +1800,15 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Poster() As Images
+            Get
+                Return Me._poster
+            End Get
+            Set(ByVal value As Images)
+                Me._poster = value
+            End Set
+        End Property
+
         Public Property Season() As Integer
             Get
                 Return Me._season
@@ -1771,11 +1823,11 @@ Public Class Scraper
 #Region "Methods"
 
         Public Sub Clear()
-            Me._season = -1
-            Me._poster = New Images
             Me._banner = New Images
-            Me._landscape = New Images
             Me._fanart = New TVDBFanart
+            Me._landscape = New Images
+            Me._poster = New Images
+            Me._season = -1
         End Sub
 
 #End Region 'Methods
@@ -1787,11 +1839,14 @@ Public Class Scraper
 #Region "Fields"
 
         Private _image As Images
+        Private _language As String
         Private _localfile As String
+        Private _localthumb As String
         Private _season As Integer
+        Private _size As Size
+        Private _thumburl As String
         Private _type As Enums.TVSeasonPosterType
         Private _url As String
-        Private _language As String
 
 #End Region 'Fields
 
@@ -1814,6 +1869,15 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
         Public Property LocalFile() As String
             Get
                 Return Me._localfile
@@ -1823,12 +1887,39 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
+            End Set
+        End Property
+
         Public Property Season() As Integer
             Get
                 Return Me._season
             End Get
             Set(ByVal value As Integer)
                 Me._season = value
+            End Set
+        End Property
+
+        Public Property Size() As Size
+            Get
+                Return Me._size
+            End Get
+            Set(ByVal value As Size)
+                Me._size = value
+            End Set
+        End Property
+
+        Public Property ThumbURL() As String
+            Get
+                Return Me._thumburl
+            End Get
+            Set(ByVal value As String)
+                Me._thumburl = value
             End Set
         End Property
 
@@ -1850,26 +1941,20 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._url = String.Empty
-            Me._season = 0
-            Me._type = Enums.TVSeasonPosterType.None
-            Me._localfile = String.Empty
             Me._image = New Images
             Me._language = String.Empty
+            Me._localfile = String.Empty
+            Me._localthumb = String.Empty
+            Me._season = 0
+            Me._size = New Size
+            Me._thumburl = String.Empty
+            Me._type = Enums.TVSeasonPosterType.None
+            Me._url = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -1881,11 +1966,14 @@ Public Class Scraper
 #Region "Fields"
 
         Private _image As Images
+        Private _language As String
         Private _localfile As String
+        Private _localthumb As String
         Private _season As Integer
+        Private _size As Size
+        Private _thumburl As String
         Private _type As Enums.TVSeasonPosterType
         Private _url As String
-        Private _language As String
 
 #End Region 'Fields
 
@@ -1908,6 +1996,15 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
         Public Property LocalFile() As String
             Get
                 Return Me._localfile
@@ -1917,12 +2014,39 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
+            End Set
+        End Property
+
         Public Property Season() As Integer
             Get
                 Return Me._season
             End Get
             Set(ByVal value As Integer)
                 Me._season = value
+            End Set
+        End Property
+
+        Public Property Size() As Size
+            Get
+                Return Me._size
+            End Get
+            Set(ByVal value As Size)
+                Me._size = value
+            End Set
+        End Property
+
+        Public Property ThumbURL() As String
+            Get
+                Return Me._thumburl
+            End Get
+            Set(ByVal value As String)
+                Me._thumburl = value
             End Set
         End Property
 
@@ -1944,26 +2068,20 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._url = String.Empty
-            Me._season = 0
-            Me._type = Enums.TVSeasonPosterType.None
-            Me._localfile = String.Empty
             Me._image = New Images
             Me._language = String.Empty
+            Me._localfile = String.Empty
+            Me._localthumb = String.Empty
+            Me._season = 0
+            Me._size = New Size
+            Me._thumburl = String.Empty
+            Me._type = Enums.TVSeasonPosterType.None
+            Me._url = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -1976,10 +2094,13 @@ Public Class Scraper
 #Region "Fields"
 
         Private _image As Images
-        Private _localfile As String
-        Private _url As String
         Private _language As String
+        Private _localfile As String
+        Private _localthumb As String
         Private _season As Integer
+        Private _size As Size
+        Private _thumburl As String
+        Private _url As String
 
 #End Region 'Fields
 
@@ -2002,12 +2123,30 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
         Public Property LocalFile() As String
             Get
                 Return Me._localfile
             End Get
             Set(ByVal value As String)
                 Me._localfile = value
+            End Set
+        End Property
+
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
             End Set
         End Property
 
@@ -2020,6 +2159,24 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Size() As Size
+            Get
+                Return Me._size
+            End Get
+            Set(ByVal value As Size)
+                Me._size = value
+            End Set
+        End Property
+
+        Public Property ThumbURL() As String
+            Get
+                Return Me._thumburl
+            End Get
+            Set(ByVal value As String)
+                Me._thumburl = value
+            End Set
+        End Property
+
         Public Property URL() As String
             Get
                 Return Me._url
@@ -2029,25 +2186,19 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._url = String.Empty
-            Me._localfile = String.Empty
             Me._image = New Images
             Me._language = String.Empty
+            Me._localfile = String.Empty
+            Me._localthumb = String.Empty
             Me._season = -1
+            Me._size = New Size
+            Me._thumburl = String.Empty
+            Me._url = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -2231,10 +2382,13 @@ Public Class Scraper
 #Region "Fields"
 
         Private _image As Images
+        Private _language As String
         Private _localfile As String
+        Private _localthumb As String
+        Private _size As New Size
+        Private _thumburl As String
         Private _type As Enums.TVShowBannerType
         Private _url As String
-        Private _language As String
 
 #End Region 'Fields
 
@@ -2257,12 +2411,48 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
         Public Property LocalFile() As String
             Get
                 Return Me._localfile
             End Get
             Set(ByVal value As String)
                 Me._localfile = value
+            End Set
+        End Property
+
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
+            End Set
+        End Property
+
+        Public Property Size() As Size
+            Get
+                Return Me._size
+            End Get
+            Set(ByVal value As Size)
+                Me._size = value
+            End Set
+        End Property
+
+        Public Property ThumbURL() As String
+            Get
+                Return Me._thumburl
+            End Get
+            Set(ByVal value As String)
+                Me._thumburl = value
             End Set
         End Property
 
@@ -2284,25 +2474,19 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._url = String.Empty
-            Me._type = Enums.TVShowBannerType.None
-            Me._localfile = String.Empty
             Me._image = New Images
             Me._language = String.Empty
+            Me._localfile = String.Empty
+            Me._localthumb = String.Empty
+            Me._size = New Size
+            Me._thumburl = String.Empty
+            Me._type = Enums.TVShowBannerType.None
+            Me._url = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -2315,9 +2499,12 @@ Public Class Scraper
 #Region "Fields"
 
         Private _image As Images
-        Private _localfile As String
-        Private _url As String
         Private _language As String
+        Private _localfile As String
+        Private _localthumb As String
+        Private _size As Size
+        Private _thumburl As String
+        Private _url As String
 
 #End Region 'Fields
 
@@ -2340,12 +2527,48 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
         Public Property LocalFile() As String
             Get
                 Return Me._localfile
             End Get
             Set(ByVal value As String)
                 Me._localfile = value
+            End Set
+        End Property
+
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
+            End Set
+        End Property
+
+        Public Property Size() As Size
+            Get
+                Return Me._size
+            End Get
+            Set(ByVal value As Size)
+                Me._size = value
+            End Set
+        End Property
+
+        Public Property ThumbURL() As String
+            Get
+                Return Me._thumburl
+            End Get
+            Set(ByVal value As String)
+                Me._thumburl = value
             End Set
         End Property
 
@@ -2358,24 +2581,18 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._url = String.Empty
-            Me._localfile = String.Empty
             Me._image = New Images
             Me._language = String.Empty
+            Me._localfile = String.Empty
+            Me._localthumb = String.Empty
+            Me._size = New Size
+            Me._thumburl = String.Empty
+            Me._url = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -2388,9 +2605,12 @@ Public Class Scraper
 #Region "Fields"
 
         Private _image As Images
-        Private _localfile As String
-        Private _url As String
         Private _language As String
+        Private _localfile As String
+        Private _localthumb As String
+        Private _size As Size
+        Private _thumburl As String
+        Private _url As String
 
 #End Region 'Fields
 
@@ -2413,12 +2633,48 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
         Public Property LocalFile() As String
             Get
                 Return Me._localfile
             End Get
             Set(ByVal value As String)
                 Me._localfile = value
+            End Set
+        End Property
+
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
+            End Set
+        End Property
+
+        Public Property Size() As Size
+            Get
+                Return Me._size
+            End Get
+            Set(ByVal value As Size)
+                Me._size = value
+            End Set
+        End Property
+
+        Public Property ThumbURL() As String
+            Get
+                Return Me._thumburl
+            End Get
+            Set(ByVal value As String)
+                Me._thumburl = value
             End Set
         End Property
 
@@ -2431,24 +2687,18 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._url = String.Empty
-            Me._localfile = String.Empty
             Me._image = New Images
             Me._language = String.Empty
+            Me._localfile = String.Empty
+            Me._localthumb = String.Empty
+            Me._size = New Size
+            Me._thumburl = String.Empty
+            Me._url = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -2461,9 +2711,12 @@ Public Class Scraper
 #Region "Fields"
 
         Private _image As Images
-        Private _localfile As String
-        Private _url As String
         Private _language As String
+        Private _localfile As String
+        Private _localthumb As String
+        Private _size As Size
+        Private _thumburl As String
+        Private _url As String
 
 #End Region 'Fields
 
@@ -2486,12 +2739,48 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
         Public Property LocalFile() As String
             Get
                 Return Me._localfile
             End Get
             Set(ByVal value As String)
                 Me._localfile = value
+            End Set
+        End Property
+
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
+            End Set
+        End Property
+
+        Public Property Size() As Size
+            Get
+                Return Me._size
+            End Get
+            Set(ByVal value As Size)
+                Me._size = value
+            End Set
+        End Property
+
+        Public Property ThumbURL() As String
+            Get
+                Return Me._thumburl
+            End Get
+            Set(ByVal value As String)
+                Me._thumburl = value
             End Set
         End Property
 
@@ -2504,24 +2793,18 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._url = String.Empty
-            Me._localfile = String.Empty
             Me._image = New Images
             Me._language = String.Empty
+            Me._localfile = String.Empty
+            Me._localthumb = String.Empty
+            Me._size = New Size
+            Me._thumburl = String.Empty
+            Me._url = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -2534,9 +2817,12 @@ Public Class Scraper
 #Region "Fields"
 
         Private _image As Images
-        Private _localfile As String
-        Private _url As String
         Private _language As String
+        Private _localfile As String
+        Private _localthumb As String
+        Private _size As Size
+        Private _thumburl As String
+        Private _url As String
 
 #End Region 'Fields
 
@@ -2559,12 +2845,48 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
         Public Property LocalFile() As String
             Get
                 Return Me._localfile
             End Get
             Set(ByVal value As String)
                 Me._localfile = value
+            End Set
+        End Property
+
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
+            End Set
+        End Property
+
+        Public Property Size() As Size
+            Get
+                Return Me._size
+            End Get
+            Set(ByVal value As Size)
+                Me._size = value
+            End Set
+        End Property
+
+        Public Property ThumbURL() As String
+            Get
+                Return Me._thumburl
+            End Get
+            Set(ByVal value As String)
+                Me._thumburl = value
             End Set
         End Property
 
@@ -2577,24 +2899,18 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._url = String.Empty
-            Me._localfile = String.Empty
             Me._image = New Images
             Me._language = String.Empty
+            Me._localfile = String.Empty
+            Me._localthumb = String.Empty
+            Me._size = New Size
+            Me._thumburl = String.Empty
+            Me._url = String.Empty
         End Sub
 
 #End Region 'Methods
