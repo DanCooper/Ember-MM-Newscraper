@@ -106,6 +106,9 @@ Section "Ember Media Manager" SecEmberMediaManager
   SectionIn RO
   SectionIn 1 2 3 #section is in install type Portable/UserFolder/Minimal
   
+  ;Cleanup old defaults folder
+  RMDir /r "$INSTDIR\Defaults"
+  
   ;Cleanup old modules folder
   RMDir /r "$INSTDIR\Modules"
   
