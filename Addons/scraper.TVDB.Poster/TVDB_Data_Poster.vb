@@ -190,7 +190,6 @@ Public Class TVDB_Data_Poster
         Return SPanel
     End Function
 
-    'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements Interfaces.EmberTVScraperModule.ScraperUpdateMediaList
     Public Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_TV.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmTVInfoSettingsHolder

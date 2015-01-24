@@ -251,67 +251,64 @@ Public Class Scraper
         End Sub
 
         Public Function ChangeEpisode(ByVal sInfo As Structures.ScrapeInfo) As MediaContainers.EpisodeDetails
-            Try
-                Dim tEpisodes As List(Of MediaContainers.EpisodeDetails) = Me.GetListOfKnownEpisodes(sInfo)
-                If tEpisodes.Count > 0 Then
-                    Using dChangeEp As New dlgTVChangeEp
-                        Return dChangeEp.ShowDialog(tEpisodes)
-                    End Using
-                Else
-                    MsgBox(Master.eLang.GetString(943, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(944, "No Known Episodes"))
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+            Dim tEpisodes As List(Of MediaContainers.EpisodeDetails) = Me.GetListOfKnownEpisodes(sInfo)
+            If tEpisodes.Count > 0 Then
+                Using dChangeEp As New dlgTVChangeEp
+                    Return dChangeEp.ShowDialog(tEpisodes)
+                End Using
+            Else
+                MsgBox(Master.eLang.GetString(943, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(944, "No Known Episodes"))
+            End If
 
             Return Nothing
         End Function
 
         Public Sub DownloadSeries(ByVal sInfo As Structures.ScrapeInfo, Optional ByVal ImagesOnly As Boolean = False)
-            Try
-                Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.ShowLang, ".zip"))
-                Dim fExists As Boolean = File.Exists(fPath)
-                Dim doDownload As Boolean = False
+            Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.ShowLang, ".zip"))
+            Dim fExists As Boolean = File.Exists(fPath)
+            Dim doDownload As Boolean = False
 
-                Select Case Master.eSettings.TVScraperUpdateTime
-                    Case Enums.TVScraperUpdateTime.Always
+            Select Case Master.eSettings.TVScraperUpdateTime
+                Case Enums.TVScraperUpdateTime.Always
+                    'Check how old the ZIP file is. If it's older than 12h -> try to get a fresh/updated file
+                    'This is usefull for non english users because TVDB can has much "not yet translated" information if the file is to old
+                    Dim fileInfo As New FileInfo(fPath)
+                    If fileInfo.LastWriteTime < DateTime.Now.AddHours(-12) Then
                         doDownload = True
-                    Case Enums.TVScraperUpdateTime.Never
-                        doDownload = False
-                    Case Enums.TVScraperUpdateTime.Week
-                        If fExists AndAlso File.GetCreationTime(fPath).AddDays(7) < Now Then doDownload = True
-                    Case Enums.TVScraperUpdateTime.BiWeekly
-                        If fExists AndAlso File.GetCreationTime(fPath).AddDays(14) < Now Then doDownload = True
-                    Case Enums.TVScraperUpdateTime.Month
-                        If fExists AndAlso File.GetCreationTime(fPath).AddMonths(1) < Now Then doDownload = True
-                End Select
+                    End If
+                Case Enums.TVScraperUpdateTime.Never
+                    doDownload = False
+                Case Enums.TVScraperUpdateTime.Week
+                    If fExists AndAlso File.GetCreationTime(fPath).AddDays(7) < Now Then doDownload = True
+                Case Enums.TVScraperUpdateTime.BiWeekly
+                    If fExists AndAlso File.GetCreationTime(fPath).AddDays(14) < Now Then doDownload = True
+                Case Enums.TVScraperUpdateTime.Month
+                    If fExists AndAlso File.GetCreationTime(fPath).AddMonths(1) < Now Then doDownload = True
+            End Select
 
-                If doDownload OrElse Not fExists Then
-                    Using sHTTP As New HTTP
-                        Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.ShowLang))
+            If doDownload OrElse Not fExists Then
+                Using sHTTP As New HTTP
+                    Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.ShowLang))
 
-                        If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
-                            'save it to the temp dir
-                            Directory.CreateDirectory(Directory.GetParent(fPath).FullName)
-                            Using fStream As FileStream = New FileStream(fPath, FileMode.Create, FileAccess.Write)
-                                fStream.Write(xZip, 0, xZip.Length)
-                            End Using
+                    If xZip IsNot Nothing AndAlso xZip.Length > 0 Then
+                        'save it to the temp dir
+                        Directory.CreateDirectory(Directory.GetParent(fPath).FullName)
+                        Using fStream As FileStream = New FileStream(fPath, FileMode.Create, FileAccess.Write)
+                            fStream.Write(xZip, 0, xZip.Length)
+                        End Using
 
-                            Me.ProcessTVDBZip(xZip, sInfo)
-                            Me.ShowFromXML(sInfo, ImagesOnly)
-                        End If
-                    End Using
-                Else
-                    Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
-                        Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
-
-                        Me.ProcessTVDBZip(fZip, sInfo)
+                        Me.ProcessTVDBZip(xZip, sInfo)
                         Me.ShowFromXML(sInfo, ImagesOnly)
-                    End Using
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+                    End If
+                End Using
+            Else
+                Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
+                    Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
+
+                    Me.ProcessTVDBZip(fZip, sInfo)
+                    Me.ShowFromXML(sInfo, ImagesOnly)
+                End Using
+            End If
         End Sub
         Public Sub DownloadSeriesAsync(ByVal sInfo As Structures.ScrapeInfo)
             Try
@@ -337,13 +334,6 @@ Public Class Scraper
             Try
                 If File.Exists(fPath) Then
 
-                    'Check how old the ZIP file is. If it's older than 12h -> try to get a fresh/updated file
-                    'This is usefull for non english users because TVDB can has much "not yet translated" information if the file is to old
-                    Dim fileInfo As New FileInfo(fPath)
-                    If fileInfo.LastWriteTime < DateTime.Now.AddHours(-12) Then
-                        DownloadSeries(sInfo)
-                    End If
-
                     Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
                         Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
                         Me.ProcessTVDBZip(fZip, sInfo)
@@ -353,8 +343,8 @@ Public Class Scraper
                             If Not String.IsNullOrEmpty(aXML) Then
                                 Dim xdActors As XDocument = XDocument.Parse(aXML)
                                 For Each Actor As XElement In xdActors.Descendants("Actor")
-                                    If Not IsNothing(Actor.Element("Name")) AndAlso Not String.IsNullOrEmpty(Actor.Element("Name").Value) Then
-                                        Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = If(IsNothing(Actor.Element("Role")), String.Empty, Actor.Element("Role").Value), .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Actor.Element("Image").Value))})
+                                    If Actor.Element("Name") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Actor.Element("Name").Value) Then
+                                        Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = If(Actor.Element("Role") Is Nothing, String.Empty, Actor.Element("Role").Value), .Thumb = If(Actor.Element("Image") Is Nothing OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Actor.Element("Image").Value))})
                                     End If
                                 Next
                             End If
@@ -366,30 +356,30 @@ Public Class Scraper
                             Dim xdEps As XDocument = XDocument.Parse(sXML)
 
                             For Each Episode As XElement In xdEps.Descendants("Episode")
-                                If Not IsNothing(Episode.Element("EpisodeName").Value) AndAlso Not String.IsNullOrEmpty(Episode.Element("EpisodeName").Value) Then
+                                If Episode.Element("EpisodeName").Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(Episode.Element("EpisodeName").Value) Then
                                     tEpisode = New MediaContainers.EpisodeDetails
 
                                     tOrdering = Enums.Ordering.Standard
 
                                     If sInfo.Ordering = Enums.Ordering.DVD Then
-                                        If Not IsNothing(Episode.Element("SeasonNumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value.ToString) AndAlso _
-                                        Not IsNothing(Episode.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
-                                        Not IsNothing(Episode.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
+                                        If Episode.Element("SeasonNumber") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value.ToString) AndAlso _
+                                        Episode.Element("DVD_season") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
+                                        Episode.Element("DVD_episodenumber") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
                                             tSeas = Convert.ToInt32(Episode.Element("SeasonNumber").Value)
                                             If sInfo.iSeason >= 0 AndAlso Not tSeas = sInfo.iSeason Then Continue For
-                                            If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_season")) OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) OrElse IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
+                                            If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) = tSeas AndAlso (e.Element("DVD_season") Is Nothing OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) OrElse e.Element("DVD_episodenumber") Is Nothing OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
                                                 tOrdering = Enums.Ordering.DVD
                                             End If
-                                        ElseIf Not IsNothing(Episode.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
-                                        Not IsNothing(Episode.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
+                                        ElseIf Episode.Element("DVD_season") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
+                                        Episode.Element("DVD_episodenumber") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
                                             tSeas = Convert.ToInt32(Episode.Element("DVD_season").Value)
-                                            If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("DVD_season").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
+                                            If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("DVD_season").Value) = tSeas AndAlso (e.Element("DVD_episodenumber") Is Nothing OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
                                                 tOrdering = Enums.Ordering.DVD
                                             End If
                                         End If
                                     ElseIf sInfo.Ordering = Enums.Ordering.Absolute Then
-                                        If Not IsNothing(Episode.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(Episode.Element("absolute_number").Value.ToString) Then
-                                            If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) > 0 AndAlso (IsNothing(e.Element("absolute_number")) OrElse String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString))).Count = 0 Then
+                                        If Episode.Element("absolute_number") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Episode.Element("absolute_number").Value.ToString) Then
+                                            If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) > 0 AndAlso (e.Element("absolute_number") Is Nothing OrElse String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString))).Count = 0 Then
                                                 tOrdering = Enums.Ordering.Absolute
                                             End If
                                         End If
@@ -406,32 +396,32 @@ Public Class Scraper
                                             .Season = 1
                                             .Episode = Convert.ToInt32(Episode.Element("absolute_number").Value)
                                         Else
-                                            .Season = If(IsNothing(Episode.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value), 0, Convert.ToInt32(Episode.Element("SeasonNumber").Value))
-                                            .Episode = If(IsNothing(Episode.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(Episode.Element("EpisodeNumber").Value), 0, Convert.ToInt32(Episode.Element("EpisodeNumber").Value))
+                                            .Season = If(Episode.Element("SeasonNumber") Is Nothing OrElse String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value), 0, Convert.ToInt32(Episode.Element("SeasonNumber").Value))
+                                            .Episode = If(Episode.Element("EpisodeNumber") Is Nothing OrElse String.IsNullOrEmpty(Episode.Element("EpisodeNumber").Value), 0, Convert.ToInt32(Episode.Element("EpisodeNumber").Value))
                                         End If
-                                        If Not IsNothing(Episode.Element("airsafter_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsafter_season").Value) Then
+                                        If Episode.Element("airsafter_season") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Episode.Element("airsafter_season").Value) Then
                                             .DisplaySeason = Convert.ToInt32(Episode.Element("airsafter_season").Value)
                                             .DisplayEpisode = 4096
                                             .displaySEset = True
                                         End If
-                                        If Not IsNothing(Episode.Element("airsbefore_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_season").Value) Then
+                                        If Episode.Element("airsbefore_season") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_season").Value) Then
                                             .DisplaySeason = Convert.ToInt32(Episode.Element("airsbefore_season").Value)
                                             .displaySEset = True
                                         End If
-                                        If Not IsNothing(Episode.Element("airsbefore_episode")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_episode").Value) Then
+                                        If Episode.Element("airsbefore_episode") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_episode").Value) Then
                                             .DisplayEpisode = Convert.ToInt32(CLng(Episode.Element("airsbefore_episode").Value))
                                             .displaySEset = True
                                         End If
 
-                                        .Aired = If(IsNothing(Episode.Element("FirstAired")), String.Empty, Episode.Element("FirstAired").Value)
-                                        .Rating = If(IsNothing(Episode.Element("Rating")), String.Empty, Episode.Element("Rating").Value)
-                                        .Votes = If(IsNothing(Episode.Element("RatingCount")), String.Empty, Episode.Element("RatingCount").Value)
-                                        .Plot = If(IsNothing(Episode.Element("Overview")), String.Empty, Episode.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
-                                        .Director = If(IsNothing(Episode.Element("Director")), String.Empty, Strings.Join(Episode.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
-                                        .OldCredits = If(IsNothing(Episode.Element("Writer")), String.Empty, Strings.Join(Episode.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
+                                        .Aired = If(Episode.Element("FirstAired") Is Nothing, String.Empty, Episode.Element("FirstAired").Value)
+                                        .Rating = If(Episode.Element("Rating") Is Nothing, String.Empty, Episode.Element("Rating").Value)
+                                        .Votes = If(Episode.Element("RatingCount") Is Nothing, String.Empty, Episode.Element("RatingCount").Value)
+                                        .Plot = If(Episode.Element("Overview") Is Nothing, String.Empty, Episode.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
+                                        .Director = If(Episode.Element("Director") Is Nothing, String.Empty, Strings.Join(Episode.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
+                                        .OldCredits = If(Episode.Element("Writer") Is Nothing, String.Empty, Strings.Join(Episode.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                         .Actors = Actors
-                                        .PosterURL = If(IsNothing(Episode.Element("filename")), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Episode.Element("filename").Value))
-                                        .LocalFile = If(IsNothing(Episode.Element("filename")), String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, Episode.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
+                                        .PosterURL = If(Episode.Element("filename") Is Nothing, String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Episode.Element("filename").Value))
+                                        .LocalFile = If(Episode.Element("filename") Is Nothing, String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, Episode.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
                                     End With
 
                                     tEpisodes.Add(tEpisode)
@@ -466,12 +456,12 @@ Public Class Scraper
 
                 tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
 
-                If Not IsNothing(tEp) Then
+                If tEp IsNot Nothing Then
                     Return tEp
                 Else
                     DownloadSeries(sInfo)
                     tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
-                    If Not IsNothing(tEp) Then
+                    If tEp IsNot Nothing Then
                         Return tEp
                     End If
                 End If
@@ -488,12 +478,12 @@ Public Class Scraper
 
                 tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Aired = sInfo.Aired)
 
-                If Not IsNothing(tEp) Then
+                If tEp IsNot Nothing Then
                     Return tEp
                 Else
                     DownloadSeries(sInfo)
                     tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Aired = sInfo.Aired)
-                    If Not IsNothing(tEp) Then
+                    If tEp IsNot Nothing Then
                         Return tEp
                     End If
                 End If
@@ -516,19 +506,19 @@ Public Class Scraper
                             Master.currShow.TVShow.ID = sInfo.TVDBID
 
                             Dim tmpEp As MediaContainers.EpisodeDetails = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Episode = sInfo.iEpisode AndAlso e.Season = sInfo.iSeason)
-                            If Not IsNothing(tmpEp) Then
+                            If tmpEp IsNot Nothing Then
 
                                 If File.Exists(tmpEp.LocalFile) Then
                                     RetImage.FromFile(tmpEp.LocalFile)
                                 Else
                                     RetImage.FromWeb(tmpEp.PosterURL)
-                                    If Not IsNothing(RetImage.Image) Then
+                                    If RetImage.Image IsNot Nothing Then
                                         Directory.CreateDirectory(Directory.GetParent(tmpEp.LocalFile).FullName)
                                         RetImage.Save(tmpEp.LocalFile)
                                     End If
                                 End If
 
-                                If Not IsNothing(RetImage.Image) Then
+                                If RetImage.Image IsNot Nothing Then
                                     Using dPosterConfirm As New dlgTVEpisodePoster
                                         If Not (dPosterConfirm.ShowDialog(RetImage.Image) = DialogResult.OK) Then
                                             RetImage.Dispose()
@@ -547,18 +537,18 @@ Public Class Scraper
                     End Using
                 Else
                     Dim tmpEp As MediaContainers.EpisodeDetails = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Episode = sInfo.iEpisode AndAlso e.Season = sInfo.iSeason)
-                    If Not IsNothing(tmpEp) Then
+                    If tmpEp IsNot Nothing Then
                         If File.Exists(tmpEp.LocalFile) Then
                             RetImage.FromFile(tmpEp.LocalFile)
                         Else
                             RetImage.FromWeb(tmpEp.PosterURL)
-                            If Not IsNothing(RetImage.Image) Then
+                            If RetImage.Image IsNot Nothing Then
                                 Directory.CreateDirectory(Directory.GetParent(tmpEp.LocalFile).FullName)
                                 RetImage.Save(tmpEp.LocalFile)
                             End If
                         End If
 
-                        If Not IsNothing(RetImage.Image) Then
+                        If RetImage.Image IsNot Nothing Then
                             Using dPosterConfirm As New dlgTVEpisodePoster
                                 If Not (dPosterConfirm.ShowDialog(RetImage.Image) = DialogResult.OK) Then
                                     RetImage.Dispose()
@@ -612,7 +602,7 @@ Public Class Scraper
                 Using zStream As ZipInputStream = New ZipInputStream(New MemoryStream(tvZip))
                     Dim zEntry As ZipEntry = zStream.GetNextEntry
 
-                    While Not IsNothing(zEntry)
+                    While zEntry IsNot Nothing
                         Dim zBuffer As Byte() = Functions.ReadStreamToEnd(zStream)
 
                         Select Case True
@@ -652,7 +642,7 @@ Public Class Scraper
                             Master.currShow = tmpTVDBShow.Episodes(0)
                             If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso File.Exists(Master.currShow.TVEp.LocalFile) Then
                                 Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
-                                If Not IsNothing(Master.currShow.TVEp.Poster.Image) Then
+                                If Master.currShow.TVEp.Poster.Image IsNot Nothing Then
                                     Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
                                     Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
                                 End If
@@ -673,7 +663,7 @@ Public Class Scraper
                         Master.currShow = tmpTVDBShow.Episodes(0)
                         If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso Not File.Exists(Master.currShow.TVEp.LocalFile) Then
                             Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
-                            If Not IsNothing(Master.currShow.TVEp.Poster.Image) Then
+                            If Master.currShow.TVEp.Poster.Image IsNot Nothing Then
                                 Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
                                 Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
                             End If
@@ -691,7 +681,7 @@ Public Class Scraper
                                 Master.currShow = tmpTVDBShow.Episodes(0)
                                 If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso Not File.Exists(Master.currShow.TVEp.LocalFile) Then
                                     Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
-                                    If Not IsNothing(Master.currShow.TVEp.Poster) Then
+                                    If Master.currShow.TVEp.Poster IsNot Nothing Then
                                         Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
                                         Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
                                     End If
@@ -741,7 +731,7 @@ Public Class Scraper
                         RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
                         Using dTVImageSel As New dlgTVImageSelect
                             If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.ImageType_TV.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
-                                If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
+                                If sInfo.iSeason >= 0 Then
                                     Me.SaveImages()
                                 Else
                                     RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Verifying, 0, Nothing)
@@ -761,7 +751,7 @@ Public Class Scraper
                     RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
                     Using dTVImageSel As New dlgTVImageSelect
                         If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.ImageType_TV.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
-                            If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
+                            If sInfo.iSeason >= 0 Then
                                 Me.SaveImages()
                             Else
                                 If sInfo.ScrapeType = Enums.ScrapeType.FullAuto Then
@@ -782,7 +772,7 @@ Public Class Scraper
                             RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
                                 If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.ImageType_TV.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
-                                    If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
+                                    If sInfo.iSeason >= 0 Then
                                         Me.SaveImages()
                                     Else
                                         RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Verifying, 0, Nothing)
@@ -805,29 +795,25 @@ Public Class Scraper
         Private Sub bwtvDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVDB.DoWork
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
-            Try
-                Select Case Args.Type
-                    Case 0 'search
-                        e.Result = New Results With {.Type = 0, .Result = SearchSeries(DirectCast(Args.Parameter, Structures.ScrapeInfo))}
-                    Case 1 'show download
-                        Me.DownloadSeries(DirectCast(Args.Parameter, Structures.ScrapeInfo))
-                        e.Result = New Results With {.Type = 1}
-                    Case 2 'load episodes
-                        LoadAllEpisodes(DirectCast(Args.Parameter, Structures.ScrapeInfo).ShowID, 999)
-                        onlyScrapeSeason = 999
-                        e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
-                    Case 3 'save
-                        Me.SaveAllTVInfo()
-                        e.Result = New Results With {.Type = 3}
-                    Case 4
-                        Dim sInfo As Structures.ScrapeInfo = DirectCast(Args.Parameter, Structures.ScrapeInfo)
-                        LoadAllEpisodes(sInfo.ShowID, sInfo.iSeason)
-                        onlyScrapeSeason = sInfo.iSeason
-                        e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
-                End Select
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+            Select Case Args.Type
+                Case 0 'search
+                    e.Result = New Results With {.Type = 0, .Result = SearchSeries(DirectCast(Args.Parameter, Structures.ScrapeInfo))}
+                Case 1 'show download
+                    Me.DownloadSeries(DirectCast(Args.Parameter, Structures.ScrapeInfo))
+                    e.Result = New Results With {.Type = 1}
+                Case 2 'load episodes
+                    LoadAllEpisodes(DirectCast(Args.Parameter, Structures.ScrapeInfo).ShowID, 999)
+                    onlyScrapeSeason = 999
+                    e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
+                Case 3 'save
+                    Me.SaveAllTVInfo()
+                    e.Result = New Results With {.Type = 3}
+                Case 4
+                    Dim sInfo As Structures.ScrapeInfo = DirectCast(Args.Parameter, Structures.ScrapeInfo)
+                    LoadAllEpisodes(sInfo.ShowID, sInfo.iSeason)
+                    onlyScrapeSeason = sInfo.iSeason
+                    e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
+            End Select
         End Sub
 
         Private Sub bwTVDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVDB.ProgressChanged
@@ -866,7 +852,7 @@ Public Class Scraper
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 'clear old missing episode from db
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    If Not IsNothing(onlyScrapeSeason) AndAlso onlyScrapeSeason <> 999 Then
+                    If onlyScrapeSeason <> 999 Then
                         SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND Season = ", onlyScrapeSeason, " AND TVShowID = ", Master.currShow.ShowID, ";")
                     Else
                         SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND TVShowID = ", Master.currShow.ShowID, ";")
@@ -874,125 +860,116 @@ Public Class Scraper
                     SQLCommand.ExecuteNonQuery()
                 End Using
 
-                Try
-                    'For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
+                For i As Integer = 0 To tmpTVDBShow.Episodes.Count - 1
+                    If Me.bwTVDB.CancellationPending Then Return
 
-                    For i As Integer = 0 To tmpTVDBShow.Episodes.Count - 1
-                        Try
-                            If Me.bwTVDB.CancellationPending Then Return
+                    Dim Episode As Structures.DBTV = tmpTVDBShow.Episodes.Item(i)
 
-                            Dim Episode As Structures.DBTV = tmpTVDBShow.Episodes.Item(i)
+                    Episode.ShowID = Master.currShow.ShowID
 
-                            Episode.ShowID = Master.currShow.ShowID
+                    iEp = Episode.TVEp.Episode
+                    iSea = Episode.TVEp.Season
 
-                            iEp = Episode.TVEp.Episode
-                            iSea = Episode.TVEp.Season
-
-                            'remove it from tepisodes since it's a real episode
-                            tEpisode = tEpisodes.FirstOrDefault(Function(e) e.Episode = iEp AndAlso e.Season = iSea)
-                            If Not IsNothing(tEpisode) Then tEpisodes.Remove(tEpisode)
-                            tShow = Episode
-
-                            If Me.bwTVDB.CancellationPending Then Return
-
-                            If Episode.TVEp.Season > -1 AndAlso Episode.TVEp.Episode > -1 AndAlso Not Episode.IsLockEp Then
-                                If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsTVEpisodePoster(Episode, Episode.TVEp.PosterURL)
-
-                                If Me.bwTVDB.CancellationPending Then Return
-
-                                If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
-
-                                If Me.bwTVDB.CancellationPending Then Return
-
-                                Dim cSea = From cSeason As TVDBSeasonImage In TVDBImages.SeasonImageList Where cSeason.Season = iSea Take 1
-                                If cSea.Count > 0 Then
-                                    If Not IsNothing(cSea(0).Poster.Image) Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsTVSeasonPoster(Episode)
-                                    If Not IsNothing(cSea(0).Banner.Image) Then Episode.SeasonBannerPath = cSea(0).Banner.SaveAsTVSeasonBanner(Episode)
-
-                                    If Me.bwTVDB.CancellationPending Then Return
-
-                                    If Master.eSettings.TVSeasonFanartAnyEnabled Then
-                                        If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
-                                            cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
-                                            Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
-                                        ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) Then
-                                            cSea(0).Fanart.Image.Clear()
-                                            cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
-                                            If Not IsNothing(cSea(0).Fanart.Image.Image) Then
-                                                Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
-                                                cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile)
-                                                Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
-                                            End If
-                                        End If
-                                    End If
-                                End If
-
-                                If Me.bwTVDB.CancellationPending Then Return
-
-                                If Master.eSettings.TVScraperMetaDataScan Then MediaInfo.UpdateTVMediaInfo(Episode)
-
-                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, , Episode)
-
-                                Master.DB.SaveTVEpToDB(Episode, False, True, True, True)
-
-                                'fix/workaround for multi-episode files after renaming
-                                For e As Integer = 0 To tmpTVDBShow.Episodes.Count - 1
-                                    If tmpTVDBShow.Episodes.Item(e).FilenameID = Episode.FilenameID AndAlso Not tmpTVDBShow.Episodes.Item(e).EpID = Episode.EpID Then
-                                        Dim newEpDetails As New Structures.DBTV
-                                        newEpDetails = tmpTVDBShow.Episodes.Item(e)
-                                        newEpDetails.EpFanartPath = Episode.EpFanartPath
-                                        newEpDetails.EpNfoPath = Episode.EpNfoPath
-                                        newEpDetails.EpPosterPath = Episode.EpPosterPath
-                                        newEpDetails.EpSubtitles = Episode.EpSubtitles
-                                        newEpDetails.Filename = Episode.Filename
-                                        tmpTVDBShow.Episodes.Item(e) = newEpDetails
-                                    End If
-                                Next
-
-                                If Me.bwTVDB.CancellationPending Then Return
-                            End If
-                            Me.bwTVDB.ReportProgress(iProgress, "progress")
-
-                            'If AdvancedSettings.GetBooleanSetting("ScrapeActorsThumbs", False) Then 
-                            'For Each act As MediaContainers.Person In Episode.TVEp.Actors
-                            'Dim img As New Images
-                            'img.FromWeb(act.Thumb)
-                            'img.SaveAsActorThumb(act, Directory.GetParent(Episode.Filename).FullName)
-                            'Next
-                            'End If
-
-                            iProgress += 1
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name, ex)
-                        End Try
-                    Next
-
-                    'now save all missing episodes
-                    tShow.Filename = String.Empty
-                    tShow.EpFanartPath = String.Empty
-                    tShow.EpPosterPath = String.Empty
-                    tShow.EpNfoPath = String.Empty
-                    tShow.SeasonFanartPath = String.Empty
-                    tShow.SeasonPosterPath = String.Empty
-                    tShow.ShowFanartPath = String.Empty
-                    tShow.IsLockEp = False
-                    tShow.IsMarkEp = False
-                    tShow.EpID = -1
-                    If tEpisodes.Count > 0 Then
-                        For Each Episode As MediaContainers.EpisodeDetails In tEpisodes
-                            tShow.TVEp = Episode
-                            Master.DB.SaveTVEpToDB(tShow, True, True, True)
-                        Next
-                    End If
+                    'remove it from tepisodes since it's a real episode
+                    tEpisode = tEpisodes.FirstOrDefault(Function(e) e.Episode = iEp AndAlso e.Season = iSea)
+                    If tEpisode IsNot Nothing Then tEpisodes.Remove(tEpisode)
+                    tShow = Episode
 
                     If Me.bwTVDB.CancellationPending Then Return
 
-                    SQLTrans.Commit()
+                    If Episode.TVEp.Season > -1 AndAlso Episode.TVEp.Episode > -1 AndAlso Not Episode.IsLockEp Then
+                        If Episode.TVEp.Poster.Image IsNot Nothing Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsTVEpisodePoster(Episode, Episode.TVEp.PosterURL)
 
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
+                        If Me.bwTVDB.CancellationPending Then Return
 
+                        If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Episode.TVEp.Fanart.Image IsNot Nothing Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
+
+                        If Me.bwTVDB.CancellationPending Then Return
+
+                        Dim cSea = From cSeason As TVDBSeasonImage In TVDBImages.SeasonImageList Where cSeason.Season = iSea Take 1
+                        If cSea.Count > 0 Then
+                            If Not cSea(0).AlreadySaved Then
+                                If cSea(0).Banner.Image IsNot Nothing Then Episode.SeasonBannerPath = cSea(0).Banner.SaveAsTVSeasonBanner(Episode)
+                                If cSea(0).Landscape.Image IsNot Nothing Then Episode.SeasonLandscapePath = cSea(0).Banner.SaveAsTVSeasonLandscape(Episode)
+                                If cSea(0).Poster.Image IsNot Nothing Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsTVSeasonPoster(Episode)
+
+                                If Master.eSettings.TVSeasonFanartAnyEnabled Then
+                                    If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
+                                        cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
+                                        Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
+                                    ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) Then
+                                        cSea(0).Fanart.Image.Clear()
+                                        cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
+                                        If cSea(0).Fanart.Image.Image IsNot Nothing Then
+                                            Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
+                                            cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile)
+                                            Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
+                                        End If
+                                    End If
+                                End If
+                            End If
+                        End If
+
+                        If Me.bwTVDB.CancellationPending Then Return
+
+                        If Master.eSettings.TVScraperMetaDataScan Then MediaInfo.UpdateTVMediaInfo(Episode)
+
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, , Episode)
+
+                        Master.DB.SaveTVEpToDB(Episode, False, If(cSea(0).AlreadySaved = False, True, False), True, True)
+                        cSea(0).AlreadySaved = True
+
+                        'fix/workaround for multi-episode files after renaming
+                        For e As Integer = 0 To tmpTVDBShow.Episodes.Count - 1
+                            If tmpTVDBShow.Episodes.Item(e).FilenameID = Episode.FilenameID AndAlso Not tmpTVDBShow.Episodes.Item(e).EpID = Episode.EpID Then
+                                Dim newEpDetails As New Structures.DBTV
+                                newEpDetails = tmpTVDBShow.Episodes.Item(e)
+                                newEpDetails.EpFanartPath = Episode.EpFanartPath
+                                newEpDetails.EpNfoPath = Episode.EpNfoPath
+                                newEpDetails.EpPosterPath = Episode.EpPosterPath
+                                newEpDetails.EpSubtitles = Episode.EpSubtitles
+                                newEpDetails.Filename = Episode.Filename
+                                tmpTVDBShow.Episodes.Item(e) = newEpDetails
+                            End If
+                        Next
+
+                        If Me.bwTVDB.CancellationPending Then Return
+                    End If
+                    Me.bwTVDB.ReportProgress(iProgress, "progress")
+
+                    'If AdvancedSettings.GetBooleanSetting("ScrapeActorsThumbs", False) Then 
+                    'For Each act As MediaContainers.Person In Episode.TVEp.Actors
+                    'Dim img As New Images
+                    'img.FromWeb(act.Thumb)
+                    'img.SaveAsActorThumb(act, Directory.GetParent(Episode.Filename).FullName)
+                    'Next
+                    'End If
+
+                    iProgress += 1
+                Next
+
+                'now save all missing episodes
+                tShow.Filename = String.Empty
+                tShow.EpFanartPath = String.Empty
+                tShow.EpNfoPath = String.Empty
+                tShow.EpPosterPath = String.Empty
+                tShow.SeasonBannerPath = String.Empty
+                tShow.SeasonFanartPath = String.Empty
+                tShow.SeasonLandscapePath = String.Empty
+                tShow.SeasonPosterPath = String.Empty
+                tShow.IsLockEp = False
+                tShow.IsMarkEp = False
+                tShow.EpID = -1
+                If tEpisodes.Count > 0 Then
+                    For Each Episode As MediaContainers.EpisodeDetails In tEpisodes
+                        tShow.TVEp = Episode
+                        Master.DB.SaveTVEpToDB(tShow, True, True, True)
+                    Next
+                End If
+
+                If Me.bwTVDB.CancellationPending Then Return
+
+                SQLTrans.Commit()
             End Using
         End Sub
 
@@ -1001,7 +978,7 @@ Public Class Scraper
 
             sImage.FromWeb(sURL)
 
-            If Not IsNothing(sImage.Image) Then
+            If sImage.Image IsNot Nothing Then
                 sImage.Save(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, sPath.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
             End If
             sImage = Nothing
@@ -1045,20 +1022,20 @@ Public Class Scraper
                                     sLang = String.Empty
                                     cResult = New TVSearchResults
                                     cResult.ID = Convert.ToInt32(tSer.Element("id").Value)
-                                    cResult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
-                                    If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
+                                    cResult.Name = If(tSer.Element("SeriesName") IsNot Nothing, tSer.Element("SeriesName").Value, String.Empty)
+                                    If tSer.Element("Language") IsNot Nothing AndAlso Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
                                         sLang = tSer.Element("Language").Value
                                         cResult.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(s) s.abbreviation = sLang)
-                                    ElseIf Not IsNothing(tSer.Element("Language")) Then
+                                    ElseIf tSer.Element("Language") IsNot Nothing Then
                                         sLang = tSer.Element("Language").Value
                                         cResult.Language = New TVDBLanguagesLanguage With {.name = String.Format("Unknown ({0})", sLang), .abbreviation = sLang, .id = 0}
                                     Else
                                         'no language info available... don't bother adding it
                                         Continue For
                                     End If
-                                    cResult.Aired = If(Not IsNothing(tSer.Element("FirstAired")), tSer.Element("FirstAired").Value, String.Empty)
-                                    cResult.Overview = If(Not IsNothing(tSer.Element("Overview")), tSer.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf), String.Empty)
-                                    cResult.Banner = If(Not IsNothing(tSer.Element("banner")), tSer.Element("banner").Value, String.Empty)
+                                    cResult.Aired = If(tSer.Element("FirstAired") IsNot Nothing, tSer.Element("FirstAired").Value, String.Empty)
+                                    cResult.Overview = If(tSer.Element("Overview") IsNot Nothing, tSer.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf), String.Empty)
+                                    cResult.Banner = If(tSer.Element("banner") IsNot Nothing, tSer.Element("banner").Value, String.Empty)
                                     If Not String.IsNullOrEmpty(cResult.Name) AndAlso Not String.IsNullOrEmpty(sLang) AndAlso xSer.Where(Function(s) s.Element("seriesid").Value.ToString = cResult.ID.ToString AndAlso s.Element("language").Value.ToString = sLang).Count = 0 Then
                                         cResult.Lev = StringUtils.ComputeLevenshtein(sInfo.ShowTitle, cResult.Name)
                                         tvdbResults.Add(cResult)
@@ -1073,20 +1050,20 @@ Public Class Scraper
                         sLang = String.Empty
                         cResult = New TVSearchResults
                         cResult.ID = Convert.ToInt32(xS.Element("seriesid").Value)
-                        cResult.Name = If(Not IsNothing(xS.Element("SeriesName")), xS.Element("SeriesName").Value, String.Empty)
-                        If Not IsNothing(xS.Element("language")) AndAlso Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
+                        cResult.Name = If(xS.Element("SeriesName") IsNot Nothing, xS.Element("SeriesName").Value, String.Empty)
+                        If xS.Element("language") IsNot Nothing AndAlso Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
                             sLang = xS.Element("language").Value
                             cResult.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(s) s.abbreviation = sLang)
-                        ElseIf Not IsNothing(xS.Element("language")) Then
+                        ElseIf xS.Element("language") IsNot Nothing Then
                             sLang = xS.Element("language").Value
                             cResult.Language = New TVDBLanguagesLanguage With {.name = String.Format("Unknown ({0})", sLang), .abbreviation = sLang, .id = 0}
                         Else
                             'no language info available... don't bother adding it
                             Continue For
                         End If
-                        cResult.Aired = If(Not IsNothing(xS.Element("FirstAired")), xS.Element("FirstAired").Value, String.Empty)
-                        cResult.Overview = If(Not IsNothing(xS.Element("Overview")), xS.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf), String.Empty)
-                        cResult.Banner = If(Not IsNothing(xS.Element("banner")), xS.Element("banner").Value, String.Empty)
+                        cResult.Aired = If(xS.Element("FirstAired") IsNot Nothing, xS.Element("FirstAired").Value, String.Empty)
+                        cResult.Overview = If(xS.Element("Overview") IsNot Nothing, xS.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf), String.Empty)
+                        cResult.Banner = If(xS.Element("banner") IsNot Nothing, xS.Element("banner").Value, String.Empty)
                         If Not String.IsNullOrEmpty(cResult.Name) AndAlso Not String.IsNullOrEmpty(sLang) Then
                             cResult.Lev = StringUtils.ComputeLevenshtein(sInfo.ShowTitle, cResult.Name)
                             tvdbResults.Add(cResult)
@@ -1122,8 +1099,8 @@ Public Class Scraper
                         If Not String.IsNullOrEmpty(aXML) Then
                             Dim xdActors As XDocument = XDocument.Parse(aXML)
                             For Each Actor As XElement In xdActors.Descendants("Actor")
-                                If Not IsNothing(Actor.Element("Name")) AndAlso Not String.IsNullOrEmpty(Actor.Element("Name").Value) Then
-                                    Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Actor.Element("Image").Value))})
+                                If Actor.Element("Name") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Actor.Element("Name").Value) Then
+                                    Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(Actor.Element("Image") Is Nothing OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Actor.Element("Image").Value))})
                                 End If
                             Next
                         End If
@@ -1139,21 +1116,21 @@ Public Class Scraper
                         Dim xS = From xShow In xdShow.Descendants("Series")
                         If xS.Count > 0 Then
                             tShow.ShowLanguage = sInfo.ShowLang
-                            If Not IsNothing(tShow.TVShow) Then
+                            If tShow.TVShow IsNot Nothing Then
                                 With tShow.TVShow
                                     sID = xS(0).Element("id").Value
                                     .ID = sID
-                                    If sInfo.Options.bShowTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.TVLockShowTitle) Then .Title = If(IsNothing(xS(0).Element("SeriesName")), .Title, xS(0).Element("SeriesName").Value)
+                                    If sInfo.Options.bShowTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.TVLockShowTitle) Then .Title = If(xS(0).Element("SeriesName") Is Nothing, .Title, xS(0).Element("SeriesName").Value)
                                     If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuide.URL = If(Not String.IsNullOrEmpty(clsAdvancedSettings.GetSetting("TVDBAPIKey", "")), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, clsAdvancedSettings.GetSetting("TVDBAPIKey", ""), sID, clsAdvancedSettings.GetSetting("TVDBLanguage", "en")), String.Empty)
-                                    If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.TVLockShowGenre) Then .Genre = If(IsNothing(xS(0).Element("Genre")), .Genre, Strings.Join(xS(0).Element("Genre").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
-                                    If sInfo.Options.bShowMPAA Then .MPAA = If(IsNothing(xS(0).Element("ContentRating")), .MPAA, xS(0).Element("ContentRating").Value)
-                                    If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockShowPlot) Then .Plot = If(IsNothing(xS(0).Element("Overview")), .Plot, xS(0).Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
-                                    If sInfo.Options.bShowPremiered Then .Premiered = If(IsNothing(xS(0).Element("FirstAired")), .Premiered, xS(0).Element("FirstAired").Value)
-                                    If sInfo.Options.bShowRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.TVLockShowRating) Then .Rating = If(IsNothing(xS(0).Element("Rating")), .Rating, xS(0).Element("Rating").Value)
-                                    If sInfo.Options.bShowRuntime AndAlso (String.IsNullOrEmpty(.Runtime) OrElse Not Master.eSettings.TVLockShowRuntime) Then .Runtime = If(IsNothing(xS(0).Element("Runtime")), .Runtime, xS(0).Element("Runtime").Value)
-                                    If sInfo.Options.bShowStatus AndAlso (String.IsNullOrEmpty(.Status) OrElse Not Master.eSettings.TVLockShowStatus) Then .Status = If(IsNothing(xS(0).Element("Status")), .Status, xS(0).Element("Status").Value)
-                                    If sInfo.Options.bShowStudio AndAlso (String.IsNullOrEmpty(.Studio) OrElse Not Master.eSettings.TVLockShowStudio) Then .Studio = If(IsNothing(xS(0).Element("Network")), .Studio, xS(0).Element("Network").Value)
-                                    If sInfo.Options.bShowVotes AndAlso (String.IsNullOrEmpty(.Votes) OrElse Not Master.eSettings.TVLockShowVotes) Then .Votes = If(IsNothing(xS(0).Element("RatingCount")), .Votes, xS(0).Element("RatingCount").Value)
+                                    If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.TVLockShowGenre) Then .Genre = If(xS(0).Element("Genre") Is Nothing, .Genre, Strings.Join(xS(0).Element("Genre").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
+                                    If sInfo.Options.bShowMPAA Then .MPAA = If(xS(0).Element("ContentRating") Is Nothing, .MPAA, xS(0).Element("ContentRating").Value)
+                                    If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockShowPlot) Then .Plot = If(xS(0).Element("Overview") Is Nothing, .Plot, xS(0).Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
+                                    If sInfo.Options.bShowPremiered Then .Premiered = If(xS(0).Element("FirstAired") Is Nothing, .Premiered, xS(0).Element("FirstAired").Value)
+                                    If sInfo.Options.bShowRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.TVLockShowRating) Then .Rating = If(xS(0).Element("Rating") Is Nothing, .Rating, xS(0).Element("Rating").Value)
+                                    If sInfo.Options.bShowRuntime AndAlso (String.IsNullOrEmpty(.Runtime) OrElse Not Master.eSettings.TVLockShowRuntime) Then .Runtime = If(xS(0).Element("Runtime") Is Nothing, .Runtime, xS(0).Element("Runtime").Value)
+                                    If sInfo.Options.bShowStatus AndAlso (String.IsNullOrEmpty(.Status) OrElse Not Master.eSettings.TVLockShowStatus) Then .Status = If(xS(0).Element("Status") Is Nothing, .Status, xS(0).Element("Status").Value)
+                                    If sInfo.Options.bShowStudio AndAlso (String.IsNullOrEmpty(.Studio) OrElse Not Master.eSettings.TVLockShowStudio) Then .Studio = If(xS(0).Element("Network") Is Nothing, .Studio, xS(0).Element("Network").Value)
+                                    If sInfo.Options.bShowVotes AndAlso (String.IsNullOrEmpty(.Votes) OrElse Not Master.eSettings.TVLockShowVotes) Then .Votes = If(xS(0).Element("RatingCount") Is Nothing, .Votes, xS(0).Element("RatingCount").Value)
                                     If sInfo.Options.bShowActors Then .Actors = Actors
                                 End With
                             End If
@@ -1172,7 +1149,7 @@ Public Class Scraper
                                 byTitle = False
                                 tOrdering = Enums.Ordering.Standard
 
-                                If Not IsNothing(tShow.TVShow) Then Episode.TVShow = tShow.TVShow
+                                If tShow.TVShow IsNot Nothing Then Episode.TVShow = tShow.TVShow
 
                                 If sInfo.Ordering = Enums.Ordering.DVD Then
                                     'first we need to check if dvd order is specified for every episode in the season
@@ -1180,29 +1157,29 @@ Public Class Scraper
                                     'where this will not work (season 1 episode 1 = dvd_season 2 dvd_episode 1) but it
                                     'should work in most cases and is the best solution I could come up with
 
-                                    If xdShow.Descendants("Episode").Where(Function(e) Not IsNothing(e.Element("SeasonNumber")) AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas AndAlso (IsNothing(e.Element("DVD_season")) OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) OrElse IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
+                                    If xdShow.Descendants("Episode").Where(Function(e) e.Element("SeasonNumber") IsNot Nothing AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas AndAlso (e.Element("DVD_season") Is Nothing OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) OrElse e.Element("DVD_episodenumber") Is Nothing OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
                                         tOrdering = Enums.Ordering.DVD
                                     End If
                                 ElseIf sInfo.Ordering = Enums.Ordering.Absolute Then
-                                    If xdShow.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) > 0 AndAlso (IsNothing(e.Element("absolute_number")) OrElse String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString))).Count = 0 Then
+                                    If xdShow.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) > 0 AndAlso (e.Element("absolute_number") Is Nothing OrElse String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString))).Count = 0 Then
                                         tOrdering = Enums.Ordering.Absolute
                                     End If
                                 End If
 
                                 If tOrdering = Enums.Ordering.DVD Then
-                                    xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString) AndAlso Convert.ToInt32(CLng(e.Element("DVD_episodenumber").Value.ToString)) = iEp AndAlso Not IsNothing(e.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) AndAlso Convert.ToInt32(e.Element("DVD_season").Value) = iSeas)
+                                    xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) e.Element("DVD_episodenumber") IsNot Nothing AndAlso Not String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString) AndAlso Convert.ToInt32(CLng(e.Element("DVD_episodenumber").Value.ToString)) = iEp AndAlso e.Element("DVD_season") IsNot Nothing AndAlso Not String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) AndAlso Convert.ToInt32(e.Element("DVD_season").Value) = iSeas)
                                 ElseIf tOrdering = Enums.Ordering.Absolute Then
                                     If iSeas = 1 Then
                                         If Not iEp = -999 Then
-                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToInt32(e.Element("absolute_number").Value.ToString) = iEp)
+                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) e.Element("absolute_number") IsNot Nothing AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToInt32(e.Element("absolute_number").Value.ToString) = iEp)
                                         Else
-                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToString(e.Element("FirstAired").Value.ToString) = eAired)
+                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) e.Element("absolute_number") IsNot Nothing AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToString(e.Element("FirstAired").Value.ToString) = eAired)
                                         End If
                                     Else
                                         If Not iEp = -999 Then
-                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToInt32(e.Element("EpisodeNumber").Value.ToString) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
+                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) e.Element("absolute_number") IsNot Nothing AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToInt32(e.Element("EpisodeNumber").Value.ToString) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
                                         Else
-                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToString(e.Element("FirstAired").Value.ToString) = eAired)
+                                            xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) e.Element("absolute_number") IsNot Nothing AndAlso Not String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString) AndAlso Convert.ToString(e.Element("FirstAired").Value.ToString) = eAired)
                                         End If
                                     End If
                                 Else
@@ -1213,48 +1190,48 @@ Public Class Scraper
                                     End If
                                 End If
 
-                                If IsNothing(xE) Then
+                                If xE Is Nothing Then
                                     xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) StringUtils.ComputeLevenshtein(e.Element("EpisodeName").Value, sTitle) < 5)
                                     byTitle = True
                                 End If
 
-                                If Not IsNothing(xE) Then
+                                If xE IsNot Nothing Then
                                     With Episode.TVEp
                                         If sInfo.Options.bEpTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso Not String.IsNullOrEmpty(xE.Element("EpisodeName").Value) Then .Title = xE.Element("EpisodeName").Value
                                         If byTitle OrElse .Episode = -999 Then
                                             If tOrdering = Enums.Ordering.DVD Then
-                                                If sInfo.Options.bEpSeason Then .Season = If(IsNothing(xE.Element("DVD_season")) OrElse String.IsNullOrEmpty(xE.Element("DVD_season").Value), 0, Convert.ToInt32(xE.Element("DVD_season").Value))
-                                                If sInfo.Options.bEpEpisode Then .Episode = If(IsNothing(xE.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(xE.Element("DVD_episodenumber").Value), 0, Convert.ToInt32(xE.Element("DVD_episodenumber").Value))
+                                                If sInfo.Options.bEpSeason Then .Season = If(xE.Element("DVD_season") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("DVD_season").Value), 0, Convert.ToInt32(xE.Element("DVD_season").Value))
+                                                If sInfo.Options.bEpEpisode Then .Episode = If(xE.Element("DVD_episodenumber") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("DVD_episodenumber").Value), 0, Convert.ToInt32(xE.Element("DVD_episodenumber").Value))
                                             ElseIf tOrdering = Enums.Ordering.Absolute Then
                                                 If sInfo.Options.bEpSeason Then .Season = 1
-                                                If sInfo.Options.bEpEpisode Then .Episode = If(IsNothing(xE.Element("absolute_number")) OrElse String.IsNullOrEmpty(xE.Element("absolute_number").Value), 0, Convert.ToInt32(xE.Element("absolute_number").Value))
+                                                If sInfo.Options.bEpEpisode Then .Episode = If(xE.Element("absolute_number") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("absolute_number").Value), 0, Convert.ToInt32(xE.Element("absolute_number").Value))
                                             Else
-                                                If sInfo.Options.bEpSeason Then .Season = If(IsNothing(xE.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(xE.Element("SeasonNumber").Value), 0, Convert.ToInt32(xE.Element("SeasonNumber").Value))
-                                                If sInfo.Options.bEpEpisode Then .Episode = If(IsNothing(xE.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(xE.Element("EpisodeNumber").Value), 0, Convert.ToInt32(xE.Element("EpisodeNumber").Value))
+                                                If sInfo.Options.bEpSeason Then .Season = If(xE.Element("SeasonNumber") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("SeasonNumber").Value), 0, Convert.ToInt32(xE.Element("SeasonNumber").Value))
+                                                If sInfo.Options.bEpEpisode Then .Episode = If(xE.Element("EpisodeNumber") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("EpisodeNumber").Value), 0, Convert.ToInt32(xE.Element("EpisodeNumber").Value))
                                             End If
                                         End If
-                                        If Not IsNothing(xE.Element("airsafter_season")) AndAlso Not String.IsNullOrEmpty(xE.Element("airsafter_season").Value) Then
+                                        If xE.Element("airsafter_season") IsNot Nothing AndAlso Not String.IsNullOrEmpty(xE.Element("airsafter_season").Value) Then
                                             .DisplaySeason = Convert.ToInt32(xE.Element("airsafter_season").Value)
                                             .DisplayEpisode = 4096
                                             .displaySEset = True
                                         End If
-                                        If Not IsNothing(xE.Element("airsbefore_season")) AndAlso Not String.IsNullOrEmpty(xE.Element("airsbefore_season").Value) Then
+                                        If xE.Element("airsbefore_season") IsNot Nothing AndAlso Not String.IsNullOrEmpty(xE.Element("airsbefore_season").Value) Then
                                             .DisplaySeason = Convert.ToInt32(xE.Element("airsbefore_season").Value)
                                             .displaySEset = True
                                         End If
-                                        If Not IsNothing(xE.Element("airsbefore_episode")) AndAlso Not String.IsNullOrEmpty(xE.Element("airsbefore_episode").Value) Then
+                                        If xE.Element("airsbefore_episode") IsNot Nothing AndAlso Not String.IsNullOrEmpty(xE.Element("airsbefore_episode").Value) Then
                                             .DisplayEpisode = Convert.ToInt32(CLng(xE.Element("airsbefore_episode").Value))
                                             .displaySEset = True
                                         End If
-                                        If sInfo.Options.bEpAired Then .Aired = If(IsNothing(xE.Element("FirstAired")), .Aired, xE.Element("FirstAired").Value)
-                                        If sInfo.Options.bEpRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.TVLockEpisodeRating) Then .Rating = If(IsNothing(xE.Element("Rating")), .Rating, xE.Element("Rating").Value)
-                                        If sInfo.Options.bEpVotes AndAlso (String.IsNullOrEmpty(.Votes) OrElse Not Master.eSettings.TVLockEpisodeVotes) Then .Votes = If(IsNothing(xE.Element("RatingCount")), .Votes, xE.Element("RatingCount").Value)
-                                        If sInfo.Options.bEpPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) Then .Plot = If(IsNothing(xE.Element("Overview")), .Plot, xE.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
-                                        If sInfo.Options.bEpDirector Then .Director = If(IsNothing(xE.Element("Director")), .Director, Strings.Join(xE.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
-                                        If sInfo.Options.bEpCredits Then .OldCredits = If(IsNothing(xE.Element("Writer")), .OldCredits, Strings.Join(xE.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
+                                        If sInfo.Options.bEpAired Then .Aired = If(xE.Element("FirstAired") Is Nothing, .Aired, xE.Element("FirstAired").Value)
+                                        If sInfo.Options.bEpRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.TVLockEpisodeRating) Then .Rating = If(xE.Element("Rating") Is Nothing, .Rating, xE.Element("Rating").Value)
+                                        If sInfo.Options.bEpVotes AndAlso (String.IsNullOrEmpty(.Votes) OrElse Not Master.eSettings.TVLockEpisodeVotes) Then .Votes = If(xE.Element("RatingCount") Is Nothing, .Votes, xE.Element("RatingCount").Value)
+                                        If sInfo.Options.bEpPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) Then .Plot = If(xE.Element("Overview") Is Nothing, .Plot, xE.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
+                                        If sInfo.Options.bEpDirector Then .Director = If(xE.Element("Director") Is Nothing, .Director, Strings.Join(xE.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
+                                        If sInfo.Options.bEpCredits Then .OldCredits = If(xE.Element("Writer") Is Nothing, .OldCredits, Strings.Join(xE.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                         If sInfo.Options.bEpActors Then .Actors = Actors
-                                        .PosterURL = If(IsNothing(xE.Element("filename")) OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, xE.Element("filename").Value))
-                                        .LocalFile = If(IsNothing(xE.Element("filename")) OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, xE.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
+                                        .PosterURL = If(xE.Element("filename") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, xE.Element("filename").Value))
+                                        .LocalFile = If(xE.Element("filename") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, xE.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
                                     End With
                                 End If
                             Next
@@ -1269,50 +1246,50 @@ Public Class Scraper
             End If
             'and finally the images
             Try
-                If ImagesOnly OrElse Not IsNothing(tShow.TVShow) Then
+                If ImagesOnly OrElse tShow.TVShow IsNot Nothing Then
                     If Not String.IsNullOrEmpty(bXML) Then
                         Dim xdImage As XDocument = XDocument.Parse(bXML)
                         For Each tImage As XElement In xdImage.Descendants("Banner")
-                            If (Not IsNothing(tImage.Element("BannerPath")) AndAlso Not String.IsNullOrEmpty(tImage.Element("BannerPath").Value)) AndAlso _
-                               (Not CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) OrElse ((Not IsNothing(tImage.Element("Language")) AndAlso tImage.Element("Language").Value = clsAdvancedSettings.GetSetting("TVDBLanguage", "en")) OrElse _
-                               ((IsNothing(tImage.Element("Language")) OrElse tImage.Element("Language").Value = "en") AndAlso CBool(clsAdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))))) Then
+                            If (tImage.Element("BannerPath") IsNot Nothing AndAlso Not String.IsNullOrEmpty(tImage.Element("BannerPath").Value)) AndAlso _
+                               (Not CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) OrElse ((tImage.Element("Language") IsNot Nothing AndAlso tImage.Element("Language").Value = clsAdvancedSettings.GetSetting("TVDBLanguage", "en")) OrElse _
+                               ((tImage.Element("Language") Is Nothing OrElse tImage.Element("Language").Value = "en") AndAlso CBool(clsAdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))))) Then
                                 Select Case tImage.Element("BannerType").Value
                                     Case "fanart"
                                         tmpTVDBShow.Fanarts.Add(New TVDBFanart With { _
                                                              .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                             .ThumbURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
-                                                             .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
+                                                             .ThumbURL = If(tImage.Element("ThumbnailPath") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
+                                                             .Size = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("ThumbnailPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                             .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                                             .Language = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
                                     Case "poster"
                                         tmpTVDBShow.Posters.Add(New TVDBPoster With { _
                                                               .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                              .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
+                                                              .Size = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                              .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                                              .Language = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
                                     Case "season"
                                         If tImage.Element("BannerType2").Value.ToLower = "season" Then
                                             tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
                                                                     .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                                    .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                                    .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVSeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                                    .Season = If(tImage.Element("Season") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
+                                                                    .Type = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVSeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
                                                                     .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                                    .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                                                    .Language = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
                                         Else
                                             tmpTVDBShow.SeasonBanners.Add(New TVDBSeasonBanner With { _
                                                                     .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                                    .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                                    .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVSeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                                    .Season = If(tImage.Element("Season") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
+                                                                    .Type = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVSeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
                                                                     .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                                    .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                                                    .Language = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
                                         End If
                                     Case "series"
                                         tmpTVDBShow.ShowBanners.Add(New TVDBShowBanner With { _
                                                               .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                              .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVShowBannerType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
+                                                              .Type = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVShowBannerType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                              .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                                              .Language = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
                                 End Select
                             End If
                         Next
@@ -1334,7 +1311,7 @@ Public Class Scraper
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\_cache\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
-                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
                                                               .ThumbURL = img.ThumbURL})
                             Next
                         End If
@@ -1351,7 +1328,7 @@ Public Class Scraper
                                                               .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
                                                               .Season = img.Season, _
-                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
                                                               .ThumbURL = img.ThumbURL})
                             Next
                         End If
@@ -1367,7 +1344,7 @@ Public Class Scraper
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
-                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
                                                               .ThumbURL = img.ThumbURL})
                             Next
                         End If
@@ -1383,7 +1360,7 @@ Public Class Scraper
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
-                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
                                                               .ThumbURL = img.ThumbURL})
                             Next
                         End If
@@ -1399,7 +1376,7 @@ Public Class Scraper
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
-                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
                                                               .ThumbURL = img.ThumbURL})
                             Next
                         End If
@@ -1415,7 +1392,7 @@ Public Class Scraper
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\_cache\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
-                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
                                                               .ThumbURL = img.ThumbURL})
                             Next
                         End If
@@ -1431,7 +1408,7 @@ Public Class Scraper
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
-                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
                                                               .ThumbURL = img.ThumbURL})
                             Next
                         End If
@@ -1448,7 +1425,7 @@ Public Class Scraper
                                                               .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
                                                               .Season = img.Season, _
-                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
                                                               .ThumbURL = img.ThumbURL})
                             Next
                         End If
@@ -1464,7 +1441,7 @@ Public Class Scraper
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\_cache\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
-                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
                                                               .ThumbURL = img.ThumbURL})
                             Next
                         End If
@@ -1481,7 +1458,7 @@ Public Class Scraper
                                                               .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
                                                               .Language = img.ShortLang, _
                                                               .Season = img.Season, _
-                                                              .Size = If(IsNothing(img.Width) OrElse String.IsNullOrEmpty(img.Width) OrElse IsNothing(img.Height) OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
+                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
                                                               .ThumbURL = img.ThumbURL})
                             Next
                         End If
@@ -1755,6 +1732,7 @@ Public Class Scraper
 
 #Region "Fields"
 
+        Private _alreadysaved As Boolean
         Private _banner As Images
         Private _fanart As TVDBFanart
         Private _landscape As Images
@@ -1772,6 +1750,15 @@ Public Class Scraper
 #End Region 'Constructors
 
 #Region "Properties"
+
+        Public Property AlreadySaved() As Boolean
+            Get
+                Return Me._alreadysaved
+            End Get
+            Set(ByVal value As Boolean)
+                Me._alreadysaved = value
+            End Set
+        End Property
 
         Public Property Banner() As Images
             Get
@@ -1823,6 +1810,7 @@ Public Class Scraper
 #Region "Methods"
 
         Public Sub Clear()
+            Me._alreadysaved = False
             Me._banner = New Images
             Me._fanart = New TVDBFanart
             Me._landscape = New Images

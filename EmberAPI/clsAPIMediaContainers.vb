@@ -27,27 +27,28 @@ Namespace MediaContainers
 
 #Region "Fields"
 
-        Private _title As String
-        Private _aired As String
-        Private _runtime As String
-        Private _rating As String
-        Private _season As Integer
-        Private _episode As Integer
-        Private _dateadded As String
-        Private _displayseason As Integer
-        Private _displayepisode As Integer
-        Private _plot As String
-        Private _credits As New List(Of String)
-        Private _directors As New List(Of String)
         Private _actors As New List(Of Person)
+        Private _aired As String
+        Private _credits As New List(Of String)
+        Private _dateadded As String
+        Private _directors As New List(Of String)
+        Private _displayepisode As Integer
+        Private _displayseason As Integer
+        Private _episode As Integer
+        Private _fanart As New Images
         Private _fileInfo As New MediaInfo.Fileinfo
-        Private _poster As Images
-        Private _posterurl As String
         Private _localfile As String
         Private _playcount As String
-        Private _fanart As Images
+        Private _plot As String
+        Private _poster As New Images
+        Private _posterurl As String
+        Private _rating As String
+        Private _runtime As String
+        Private _season As Integer
+        Private _title As String
         Private _videosource As String
         Private _votes As String
+
         <XmlIgnore()> _
         Public displaySEset As Boolean = False
 
@@ -436,27 +437,27 @@ Namespace MediaContainers
 #Region "Methods"
 
         Public Sub Clear()
-            Me._title = String.Empty
-            Me._season = -999
-            Me._episode = -999
+            Me._actors.Clear()
             Me._aired = String.Empty
-            Me._rating = String.Empty
-            Me._runtime = String.Empty
-            Me._plot = String.Empty
+            Me._credits.Clear()
             Me._dateadded = String.Empty
             Me._directors.Clear()
-            Me._credits.Clear()
-            Me._actors.Clear()
-            Me._fileInfo = New MediaInfo.Fileinfo
-            Me._posterurl = String.Empty
-            Me._localfile = String.Empty
-            Me._poster = New Images
+            Me._displayepisode = -999
+            Me._displayseason = -999
+            Me._episode = -999
             Me._fanart = New Images
+            Me._fileInfo = New MediaInfo.Fileinfo
+            Me._localfile = String.Empty
+            Me._playcount = String.Empty
+            Me._plot = String.Empty
+            Me._poster = New Images
+            Me._posterurl = String.Empty
+            Me._rating = String.Empty
+            Me._runtime = String.Empty
+            Me._season = -999
+            Me._title = String.Empty
             Me._videosource = String.Empty
             Me._votes = String.Empty
-            Me._displayseason = -999
-            Me._displayepisode = -999
-            Me._playcount = String.Empty
         End Sub
 
         Public Sub AddCredit(ByVal value As String)
