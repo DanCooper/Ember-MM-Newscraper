@@ -60,9 +60,9 @@ Partial Class dlgBulkRenamer_TV
         Me.pnlCancel.SuspendLayout()
         Me.SuspendLayout()
         '
-        'tsmUnlockMovie
+        'tsmUnlockEpisode
         '
-        Me.tsmUnlockEpisode.Name = "tsmUnlockMovie"
+        Me.tsmUnlockEpisode.Name = "tsmUnlockEpisode"
         Me.tsmUnlockEpisode.Size = New System.Drawing.Size(173, 22)
         Me.tsmUnlockEpisode.Text = "Unlock TV Show(s)"
         '
@@ -78,9 +78,9 @@ Partial Class dlgBulkRenamer_TV
         Me.chkRenamedOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkRenamedOnly.Location = New System.Drawing.Point(668, 442)
         Me.chkRenamedOnly.Name = "chkRenamedOnly"
-        Me.chkRenamedOnly.Size = New System.Drawing.Size(231, 17)
+        Me.chkRenamedOnly.Size = New System.Drawing.Size(254, 17)
         Me.chkRenamedOnly.TabIndex = 11
-        Me.chkRenamedOnly.Text = "Display Only Files That Will Be Renamed"
+        Me.chkRenamedOnly.Text = "Display Only Episodes That Will Be Renamed"
         Me.chkRenamedOnly.UseVisualStyleBackColor = True
         '
         'txtFolderPatternShows
@@ -92,6 +92,7 @@ Partial Class dlgBulkRenamer_TV
         Me.txtFolderPatternShows.Size = New System.Drawing.Size(200, 22)
         Me.txtFolderPatternShows.TabIndex = 6
         Me.txtFolderPatternShows.Text = "$T ($Y)"
+        Me.txtFolderPatternShows.Visible = False
         '
         'tsmLockAll
         '
@@ -109,14 +110,15 @@ Partial Class dlgBulkRenamer_TV
         Me.lblFolderPatternShows.TabIndex = 5
         Me.lblFolderPatternShows.Text = "Show Folders Pattern"
         Me.lblFolderPatternShows.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblFolderPatternShows.Visible = False
         '
         'lblFilePatternEpisodes
         '
         Me.lblFilePatternEpisodes.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblFilePatternEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilePatternEpisodes.Location = New System.Drawing.Point(522, 419)
+        Me.lblFilePatternEpisodes.Location = New System.Drawing.Point(540, 419)
         Me.lblFilePatternEpisodes.Name = "lblFilePatternEpisodes"
-        Me.lblFilePatternEpisodes.Size = New System.Drawing.Size(140, 13)
+        Me.lblFilePatternEpisodes.Size = New System.Drawing.Size(122, 13)
         Me.lblFilePatternEpisodes.TabIndex = 8
         Me.lblFilePatternEpisodes.Text = "Episode Files Pattern"
         Me.lblFilePatternEpisodes.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -137,9 +139,9 @@ Partial Class dlgBulkRenamer_TV
         Me.txtFilePatternEpisodes.TabIndex = 9
         Me.txtFilePatternEpisodes.Text = "$T"
         '
-        'tsmLockMovie
+        'tsmLockEpisode
         '
-        Me.tsmLockEpisode.Name = "tsmLockMovie"
+        Me.tsmLockEpisode.Name = "tsmLockEpisode"
         Me.tsmLockEpisode.Size = New System.Drawing.Size(173, 22)
         Me.tsmLockEpisode.Text = "Lock TV Show(s)"
         '
@@ -166,7 +168,7 @@ Partial Class dlgBulkRenamer_TV
         '
         Me.cmsEpisodeList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmLockEpisode, Me.tsmUnlockEpisode, Me.ToolStripSeparator1, Me.tsmLockAll, Me.tsmUnlockAll})
         Me.cmsEpisodeList.Name = "cmsMovieList"
-        Me.cmsEpisodeList.Size = New System.Drawing.Size(174, 120)
+        Me.cmsEpisodeList.Size = New System.Drawing.Size(174, 98)
         '
         'lblTopDetails
         '
@@ -324,7 +326,7 @@ Partial Class dlgBulkRenamer_TV
         '
         Me.btnFolderPatternHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnFolderPatternHelp.Image = CType(resources.GetObject("btnFolderPatternHelp.Image"), System.Drawing.Image)
-        Me.btnFolderPatternHelp.Location = New System.Drawing.Point(517, 418)
+        Me.btnFolderPatternHelp.Location = New System.Drawing.Point(522, 444)
         Me.btnFolderPatternHelp.Name = "btnFolderPatternHelp"
         Me.btnFolderPatternHelp.Size = New System.Drawing.Size(17, 19)
         Me.btnFolderPatternHelp.TabIndex = 7
