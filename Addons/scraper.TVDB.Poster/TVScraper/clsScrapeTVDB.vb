@@ -889,10 +889,20 @@ Public Class Scraper
                         Dim cSea = From cSeason As TVDBSeasonImage In TVDBImages.SeasonImageList Where cSeason.Season = iSea Take 1
                         If cSea.Count > 0 Then
                             If Not cSea(0).AlreadySaved Then
-                                If cSea(0).Banner.Image IsNot Nothing Then Episode.SeasonBannerPath = cSea(0).Banner.SaveAsTVSeasonBanner(Episode)
-                                If cSea(0).Landscape.Image IsNot Nothing Then Episode.SeasonLandscapePath = cSea(0).Banner.SaveAsTVSeasonLandscape(Episode)
-                                If cSea(0).Poster.Image IsNot Nothing Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsTVSeasonPoster(Episode)
-
+                                If Master.eSettings.TVSeasonBannerAnyEnabled Then
+                                    If Not String.IsNullOrEmpty(cSea(0).Banner.LocalFile) AndAlso File.Exists(cSea(0).Banner.LocalFile) Then
+                                        cSea(0).Banner.Image.FromFile(cSea(0).Banner.LocalFile)
+                                        Episode.SeasonBannerPath = cSea(0).Banner.Image.SaveAsTVSeasonBanner(Episode)
+                                    ElseIf Not String.IsNullOrEmpty(cSea(0).Banner.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Banner.LocalFile) Then
+                                        cSea(0).Banner.Image.Clear()
+                                        cSea(0).Banner.Image.FromWeb(cSea(0).Banner.URL)
+                                        If cSea(0).Banner.Image.Image IsNot Nothing Then
+                                            Directory.CreateDirectory(Directory.GetParent(cSea(0).Banner.LocalFile).FullName)
+                                            cSea(0).Banner.Image.Save(cSea(0).Banner.LocalFile)
+                                            Episode.SeasonBannerPath = cSea(0).Banner.Image.SaveAsTVSeasonBanner(Episode)
+                                        End If
+                                    End If
+                                End If
                                 If Master.eSettings.TVSeasonFanartAnyEnabled Then
                                     If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
                                         cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
@@ -904,6 +914,34 @@ Public Class Scraper
                                             Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
                                             cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile)
                                             Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
+                                        End If
+                                    End If
+                                End If
+                                If Master.eSettings.TVSeasonLandscapeAnyEnabled Then
+                                    If Not String.IsNullOrEmpty(cSea(0).Landscape.LocalFile) AndAlso File.Exists(cSea(0).Landscape.LocalFile) Then
+                                        cSea(0).Landscape.Image.FromFile(cSea(0).Landscape.LocalFile)
+                                        Episode.SeasonLandscapePath = cSea(0).Landscape.Image.SaveAsTVSeasonLandscape(Episode)
+                                    ElseIf Not String.IsNullOrEmpty(cSea(0).Landscape.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Landscape.LocalFile) Then
+                                        cSea(0).Landscape.Image.Clear()
+                                        cSea(0).Landscape.Image.FromWeb(cSea(0).Landscape.URL)
+                                        If cSea(0).Landscape.Image.Image IsNot Nothing Then
+                                            Directory.CreateDirectory(Directory.GetParent(cSea(0).Landscape.LocalFile).FullName)
+                                            cSea(0).Landscape.Image.Save(cSea(0).Landscape.LocalFile)
+                                            Episode.SeasonLandscapePath = cSea(0).Landscape.Image.SaveAsTVSeasonLandscape(Episode)
+                                        End If
+                                    End If
+                                End If
+                                If Master.eSettings.TVSeasonPosterAnyEnabled Then
+                                    If Not String.IsNullOrEmpty(cSea(0).Poster.LocalFile) AndAlso File.Exists(cSea(0).Poster.LocalFile) Then
+                                        cSea(0).Poster.Image.FromFile(cSea(0).Poster.LocalFile)
+                                        Episode.SeasonPosterPath = cSea(0).Poster.Image.SaveAsTVSeasonPoster(Episode)
+                                    ElseIf Not String.IsNullOrEmpty(cSea(0).Poster.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Poster.LocalFile) Then
+                                        cSea(0).Poster.Image.Clear()
+                                        cSea(0).Poster.Image.FromWeb(cSea(0).Poster.URL)
+                                        If cSea(0).Poster.Image.Image IsNot Nothing Then
+                                            Directory.CreateDirectory(Directory.GetParent(cSea(0).Poster.LocalFile).FullName)
+                                            cSea(0).Poster.Image.Save(cSea(0).Poster.LocalFile)
+                                            Episode.SeasonPosterPath = cSea(0).Poster.Image.SaveAsTVSeasonPoster(Episode)
                                         End If
                                     End If
                                 End If
@@ -1733,10 +1771,10 @@ Public Class Scraper
 #Region "Fields"
 
         Private _alreadysaved As Boolean
-        Private _banner As Images
+        Private _banner As TVDBSeasonBanner
         Private _fanart As TVDBFanart
-        Private _landscape As Images
-        Private _poster As Images
+        Private _landscape As TVDBSeasonLandscape
+        Private _poster As TVDBSeasonPoster
         Private _season As Integer
 
 #End Region 'Fields
@@ -1760,11 +1798,11 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Banner() As Images
+        Public Property Banner() As TVDBSeasonBanner
             Get
                 Return Me._banner
             End Get
-            Set(ByVal value As Images)
+            Set(ByVal value As TVDBSeasonBanner)
                 Me._banner = value
             End Set
         End Property
@@ -1778,20 +1816,20 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Landscape() As Images
+        Public Property Landscape() As TVDBSeasonLandscape
             Get
                 Return Me._landscape
             End Get
-            Set(ByVal value As Images)
+            Set(ByVal value As TVDBSeasonLandscape)
                 Me._landscape = value
             End Set
         End Property
 
-        Public Property Poster() As Images
+        Public Property Poster() As TVDBSeasonPoster
             Get
                 Return Me._poster
             End Get
-            Set(ByVal value As Images)
+            Set(ByVal value As TVDBSeasonPoster)
                 Me._poster = value
             End Set
         End Property
@@ -1811,10 +1849,10 @@ Public Class Scraper
 
         Public Sub Clear()
             Me._alreadysaved = False
-            Me._banner = New Images
+            Me._banner = New TVDBSeasonBanner
             Me._fanart = New TVDBFanart
-            Me._landscape = New Images
-            Me._poster = New Images
+            Me._landscape = New TVDBSeasonLandscape
+            Me._poster = New TVDBSeasonPoster
             Me._season = -1
         End Sub
 
