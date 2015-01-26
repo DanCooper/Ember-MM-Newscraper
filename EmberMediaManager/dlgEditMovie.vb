@@ -2883,8 +2883,7 @@ Public Class dlgEditMovie
                     Next
                 Else
                     Dim i As Integer = 0
-                    'Descending to get "Rated PG-13" before "Rated PG"
-                    For ctr As Integer = Me.lbMPAA.Items.Count - 1 To 0 Step -1
+                    For ctr As Integer = 0 To Me.lbMPAA.Items.Count
                         If Master.currMovie.Movie.MPAA.ToLower.StartsWith(Me.lbMPAA.Items.Item(ctr).ToString.ToLower) Then
                             i = ctr
                             Exit For
