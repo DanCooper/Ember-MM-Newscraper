@@ -270,10 +270,10 @@ Public Class Scraper
 
             Select Case Master.eSettings.TVScraperUpdateTime
                 Case Enums.TVScraperUpdateTime.Always
-                    'Check how old the ZIP file is. If it's older than 12h -> try to get a fresh/updated file
+                    'Check how old the ZIP file is. If it's older than 10min -> try to get a fresh/updated file
                     'This is usefull for non english users because TVDB can has much "not yet translated" information if the file is to old
                     Dim fileInfo As New FileInfo(fPath)
-                    If fileInfo.LastWriteTime < DateTime.Now.AddHours(-12) Then
+                    If fileInfo.LastWriteTime < DateTime.Now.AddMinutes(-10) Then
                         doDownload = True
                     End If
                 Case Enums.TVScraperUpdateTime.Never
@@ -452,44 +452,24 @@ Public Class Scraper
 
         Public Function GetSingleEpisode(ByVal sInfo As Structures.ScrapeInfo) As MediaContainers.EpisodeDetails
             Dim tEp As New MediaContainers.EpisodeDetails
-            Try
 
-                tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
-
-                If tEp IsNot Nothing Then
-                    Return tEp
-                Else
-                    DownloadSeries(sInfo)
-                    tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
-                    If tEp IsNot Nothing Then
-                        Return tEp
-                    End If
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+            DownloadSeries(sInfo)
+            tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
+            If tEp IsNot Nothing Then
+                Return tEp
+            End If
 
             Return New MediaContainers.EpisodeDetails
         End Function
 
         Public Function GetSingleEpisodeByAired(ByVal sInfo As Structures.ScrapeInfo) As MediaContainers.EpisodeDetails
             Dim tEp As New MediaContainers.EpisodeDetails
-            Try
 
-                tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Aired = sInfo.Aired)
-
-                If tEp IsNot Nothing Then
-                    Return tEp
-                Else
-                    DownloadSeries(sInfo)
-                    tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Aired = sInfo.Aired)
-                    If tEp IsNot Nothing Then
-                        Return tEp
-                    End If
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+            DownloadSeries(sInfo)
+            tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Aired = sInfo.Aired)
+            If tEp IsNot Nothing Then
+                Return tEp
+            End If
 
             Return New MediaContainers.EpisodeDetails
         End Function
