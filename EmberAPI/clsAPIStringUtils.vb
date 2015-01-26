@@ -992,17 +992,39 @@ Public Class StringUtils
             Return "...".Substring(0, fLimit)
         End If
 
-        'If we get this far, fOutline is longer than we want it, so it needs to be shortened.
-        Dim lastPeriod As Integer = fOutline.LastIndexOf("."c)
+        Dim nOutline = fOutline
 
-        If lastPeriod < 0 OrElse lastPeriod > fLimit - 3 Then
+        nOutline = nOutline.Substring(0, fLimit - 2)
+        If nOutline.EndsWith(".") AndAlso Not (nOutline.ToLower.EndsWith("dr.") OrElse nOutline.ToLower.EndsWith("mr.") OrElse nOutline.ToLower.EndsWith("ms.")) Then
+            Return String.Concat(nOutline, "..")
+        ElseIf nOutline.EndsWith(".") Then
+            nOutline = nOutline.Substring(0, nOutline.Length - 1)
+        End If
+
+        'If we get this far, nOutline is longer than we want it, so it needs to be shortened.
+        Dim lastPeriod As Integer = nOutline.LastIndexOf("."c)
+
+        If lastPeriod < 0 Then
             'No period was found, or was too close to the max length
-            'Cheat and trim the last 3 chars, replacing with "..."
-            Return String.Concat(fOutline.Substring(0, fLimit - 3), "...")
+            'Cheat and trim the last char, replacing with "..."
+            Return String.Concat(nOutline.Substring(0, nOutline.Length - 1), "...")
         End If
 
         'If we get this far, we found a period that was not at the extreme end of the string
-        Return String.Concat(fOutline.Substring(0, lastPeriod + 1), "..") 'Note only 2 periods required, since one is already there
+        nOutline = nOutline.Substring(0, lastPeriod + 1)
+
+        While nOutline.ToLower.EndsWith("dr.") OrElse nOutline.ToLower.EndsWith("mr.") OrElse nOutline.ToLower.EndsWith("ms.")
+            nOutline = nOutline.Substring(0, nOutline.Length - 1)
+            lastPeriod = nOutline.LastIndexOf("."c)
+            If lastPeriod < 0 Then
+                'No period was found, or was too close to the max length
+                'Cheat and trim the last char, replacing with "..."
+                Return String.Concat(fOutline.Substring(0, fLimit - 3), "...")
+            End If
+            nOutline = nOutline.Substring(0, lastPeriod + 1)
+        End While
+
+        Return String.Concat(nOutline.Substring(0, lastPeriod), "..") 'Note only 2 periods required, since one is already there
     End Function
 
     ''' <summary>
