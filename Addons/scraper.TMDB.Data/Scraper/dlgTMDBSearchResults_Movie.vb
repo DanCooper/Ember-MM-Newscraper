@@ -56,7 +56,7 @@ Public Class dlgTMDBSearchResults_Movie
         TMDB = _TMDB
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie, Optional ByVal sMovieYear As Integer = 0) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie, ByVal sMovieYear As String) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False

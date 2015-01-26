@@ -892,14 +892,20 @@ Namespace TMDB
             End Try
         End Sub
 
-        Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions_Movie, Optional ByVal sYear As Integer = 0)
+        Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions_Movie, Optional ByVal sYear As String = "")
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
+                Dim tYear As Integer = 0
+
+                If Not String.IsNullOrEmpty(sYear) AndAlso IsNumeric(sYear) Then
+                    tYear = CInt(sYear)
+                End If
+
                 If Not bwTMDB.IsBusy Then
                     bwTMDB.WorkerReportsProgress = False
                     bwTMDB.WorkerSupportsCancellation = True
                     bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, _
-                      .Parameter = sMovie, .Options_Movie = filterOptions, .Year = CInt(sYear)})
+                      .Parameter = sMovie, .Options_Movie = filterOptions, .Year = tYear})
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
