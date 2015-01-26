@@ -687,6 +687,24 @@ Public Class dlgTVImageSelect
                 End If
             End If
 
+        ElseIf Me._type = Enums.ImageType_TV.AllSeasonsBanner Then
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsBanner.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.AllSeasonsBanner.LocalFile) Then
+                Scraper.TVDBImages.AllSeasonsBanner.Image.FromFile(Scraper.TVDBImages.AllSeasonsBanner.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsBanner.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsBanner.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsBanner.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsBanner.LocalFile) Then
+                Scraper.TVDBImages.AllSeasonsBanner.Image.Clear()
+                Scraper.TVDBImages.AllSeasonsBanner.Image.FromWeb(Scraper.TVDBImages.AllSeasonsBanner.URL)
+                If Not IsNothing(Scraper.TVDBImages.AllSeasonsBanner.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.AllSeasonsBanner.LocalFile).FullName)
+                    Scraper.TVDBImages.AllSeasonsBanner.Image.Save(Scraper.TVDBImages.AllSeasonsBanner.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsBanner.Image.Image
+                    Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsBanner.Image
+                End If
+            End If
         ElseIf Me._type = Enums.ImageType_TV.AllSeasonsFanart Then
             Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
             Me.pbStatus.Style = ProgressBarStyle.Marquee
@@ -703,6 +721,42 @@ Public Class dlgTVImageSelect
                     Scraper.TVDBImages.AllSeasonsFanart.Image.Save(Scraper.TVDBImages.AllSeasonsFanart.LocalFile)
                     Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsFanart.Image.Image
                     Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsFanart.Image
+                End If
+            End If
+        ElseIf Me._type = Enums.ImageType_TV.AllSeasonsLandscape Then
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile) Then
+                Scraper.TVDBImages.AllSeasonsLandscape.Image.FromFile(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsLandscape.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsLandscape.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsLandscape.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile) Then
+                Scraper.TVDBImages.AllSeasonsLandscape.Image.Clear()
+                Scraper.TVDBImages.AllSeasonsLandscape.Image.FromWeb(Scraper.TVDBImages.AllSeasonsLandscape.URL)
+                If Not IsNothing(Scraper.TVDBImages.AllSeasonsLandscape.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile).FullName)
+                    Scraper.TVDBImages.AllSeasonsLandscape.Image.Save(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsLandscape.Image.Image
+                    Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsLandscape.Image
+                End If
+            End If
+        ElseIf Me._type = Enums.ImageType_TV.AllSeasonsPoster Then
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsPoster.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.AllSeasonsPoster.LocalFile) Then
+                Scraper.TVDBImages.AllSeasonsPoster.Image.FromFile(Scraper.TVDBImages.AllSeasonsPoster.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsPoster.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsPoster.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsPoster.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsPoster.LocalFile) Then
+                Scraper.TVDBImages.AllSeasonsPoster.Image.Clear()
+                Scraper.TVDBImages.AllSeasonsPoster.Image.FromWeb(Scraper.TVDBImages.AllSeasonsPoster.URL)
+                If Not IsNothing(Scraper.TVDBImages.AllSeasonsPoster.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.AllSeasonsPoster.LocalFile).FullName)
+                    Scraper.TVDBImages.AllSeasonsPoster.Image.Save(Scraper.TVDBImages.AllSeasonsPoster.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonsPoster.Image.Image
+                    Me.pbCurrent.Tag = Scraper.TVDBImages.AllSeasonsPoster.Image
                 End If
             End If
         ElseIf Me._type = Enums.ImageType_TV.SeasonFanart Then
@@ -723,6 +777,78 @@ Public Class dlgTVImageSelect
                     Me.pbCurrent.Tag = Scraper.TVDBImages.SeasonImageList(0).Fanart.Image
                 End If
             End If
+        ElseIf Me._type = Enums.ImageType_TV.ShowBanner Then
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowBanner.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowBanner.LocalFile) Then
+                Scraper.TVDBImages.ShowBanner.Image.FromFile(Scraper.TVDBImages.ShowBanner.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowBanner.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowBanner.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowBanner.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowBanner.LocalFile) Then
+                Scraper.TVDBImages.ShowBanner.Image.Clear()
+                Scraper.TVDBImages.ShowBanner.Image.FromWeb(Scraper.TVDBImages.ShowBanner.URL)
+                If Not IsNothing(Scraper.TVDBImages.ShowBanner.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowBanner.LocalFile).FullName)
+                    Scraper.TVDBImages.ShowBanner.Image.Save(Scraper.TVDBImages.ShowBanner.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.ShowBanner.Image.Image
+                    Me.pbCurrent.Tag = Scraper.TVDBImages.ShowBanner.Image
+                End If
+            End If
+        ElseIf Me._type = Enums.ImageType_TV.ShowCharacterArt Then
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowCharacterArt.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowCharacterArt.LocalFile) Then
+                Scraper.TVDBImages.ShowCharacterArt.Image.FromFile(Scraper.TVDBImages.ShowCharacterArt.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowCharacterArt.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowCharacterArt.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowCharacterArt.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowCharacterArt.LocalFile) Then
+                Scraper.TVDBImages.ShowCharacterArt.Image.Clear()
+                Scraper.TVDBImages.ShowCharacterArt.Image.FromWeb(Scraper.TVDBImages.ShowCharacterArt.URL)
+                If Not IsNothing(Scraper.TVDBImages.ShowCharacterArt.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowCharacterArt.LocalFile).FullName)
+                    Scraper.TVDBImages.ShowCharacterArt.Image.Save(Scraper.TVDBImages.ShowCharacterArt.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.ShowCharacterArt.Image.Image
+                    Me.pbCurrent.Tag = Scraper.TVDBImages.ShowCharacterArt.Image
+                End If
+            End If
+        ElseIf Me._type = Enums.ImageType_TV.ShowClearArt Then
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearArt.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowClearArt.LocalFile) Then
+                Scraper.TVDBImages.ShowClearArt.Image.FromFile(Scraper.TVDBImages.ShowClearArt.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowClearArt.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowClearArt.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearArt.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearArt.LocalFile) Then
+                Scraper.TVDBImages.ShowClearArt.Image.Clear()
+                Scraper.TVDBImages.ShowClearArt.Image.FromWeb(Scraper.TVDBImages.ShowClearArt.URL)
+                If Not IsNothing(Scraper.TVDBImages.ShowClearArt.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowClearArt.LocalFile).FullName)
+                    Scraper.TVDBImages.ShowClearArt.Image.Save(Scraper.TVDBImages.ShowClearArt.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.ShowClearArt.Image.Image
+                    Me.pbCurrent.Tag = Scraper.TVDBImages.ShowClearArt.Image
+                End If
+            End If
+        ElseIf Me._type = Enums.ImageType_TV.ShowClearLogo Then
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearLogo.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowClearLogo.LocalFile) Then
+                Scraper.TVDBImages.ShowClearLogo.Image.FromFile(Scraper.TVDBImages.ShowClearLogo.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowClearLogo.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowClearLogo.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearLogo.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearLogo.LocalFile) Then
+                Scraper.TVDBImages.ShowClearLogo.Image.Clear()
+                Scraper.TVDBImages.ShowClearLogo.Image.FromWeb(Scraper.TVDBImages.ShowClearLogo.URL)
+                If Not IsNothing(Scraper.TVDBImages.ShowClearLogo.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowClearLogo.LocalFile).FullName)
+                    Scraper.TVDBImages.ShowClearLogo.Image.Save(Scraper.TVDBImages.ShowClearLogo.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.ShowClearLogo.Image.Image
+                    Me.pbCurrent.Tag = Scraper.TVDBImages.ShowClearLogo.Image
+                End If
+            End If
         ElseIf (Me._type = Enums.ImageType_TV.ShowFanart OrElse Me._type = Enums.ImageType_TV.EpisodeFanart) Then
             Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
             Me.pbStatus.Style = ProgressBarStyle.Marquee
@@ -739,6 +865,42 @@ Public Class dlgTVImageSelect
                     Scraper.TVDBImages.ShowFanart.Image.Save(Scraper.TVDBImages.ShowFanart.LocalFile)
                     Me.pbCurrent.Image = Scraper.TVDBImages.ShowFanart.Image.Image
                     Me.pbCurrent.Tag = Scraper.TVDBImages.ShowFanart.Image
+                End If
+            End If
+        ElseIf Me._type = Enums.ImageType_TV.ShowLandscape Then
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowLandscape.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowLandscape.LocalFile) Then
+                Scraper.TVDBImages.ShowLandscape.Image.FromFile(Scraper.TVDBImages.ShowLandscape.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowLandscape.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowLandscape.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowLandscape.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowLandscape.LocalFile) Then
+                Scraper.TVDBImages.ShowLandscape.Image.Clear()
+                Scraper.TVDBImages.ShowLandscape.Image.FromWeb(Scraper.TVDBImages.ShowLandscape.URL)
+                If Not IsNothing(Scraper.TVDBImages.ShowLandscape.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowLandscape.LocalFile).FullName)
+                    Scraper.TVDBImages.ShowLandscape.Image.Save(Scraper.TVDBImages.ShowLandscape.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.ShowLandscape.Image.Image
+                    Me.pbCurrent.Tag = Scraper.TVDBImages.ShowLandscape.Image
+                End If
+            End If
+        ElseIf (Me._type = Enums.ImageType_TV.ShowPoster OrElse Me._type = Enums.ImageType_TV.EpisodePoster) Then
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowPoster.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowPoster.LocalFile) Then
+                Scraper.TVDBImages.ShowPoster.Image.FromFile(Scraper.TVDBImages.ShowPoster.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowPoster.Image.Image
+                Me.pbCurrent.Tag = Scraper.TVDBImages.ShowPoster.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowPoster.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowPoster.LocalFile) Then
+                Scraper.TVDBImages.ShowPoster.Image.Clear()
+                Scraper.TVDBImages.ShowPoster.Image.FromWeb(Scraper.TVDBImages.ShowPoster.URL)
+                If Not IsNothing(Scraper.TVDBImages.ShowPoster.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowPoster.LocalFile).FullName)
+                    Scraper.TVDBImages.ShowPoster.Image.Save(Scraper.TVDBImages.ShowPoster.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.ShowPoster.Image.Image
+                    Me.pbCurrent.Tag = Scraper.TVDBImages.ShowPoster.Image
                 End If
             End If
         End If
