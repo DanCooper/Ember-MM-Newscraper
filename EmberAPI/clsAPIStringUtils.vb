@@ -1024,7 +1024,7 @@ Public Class StringUtils
             nOutline = nOutline.Substring(0, lastPeriod + 1)
         End While
 
-        Return String.Concat(nOutline.Substring(0, lastPeriod), "..") 'Note only 2 periods required, since one is already there
+        Return String.Concat(nOutline.Substring(0, lastPeriod + 1), "..") 'Note only 2 periods required, since one is already there
     End Function
 
     ''' <summary>
