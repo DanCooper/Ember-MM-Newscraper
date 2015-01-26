@@ -89,11 +89,7 @@ Public Class dlgTVImageSelect
             'no preferred size, just get any one of them
             If IsNothing(tSP) Then tSP = ShowBannerList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
-            If Not IsNothing(tSP) Then
-                Scraper.TVDBImages.AllSeasonsBanner.Image = tSP.Image
-                Scraper.TVDBImages.AllSeasonsBanner.LocalFile = tSP.LocalFile
-                Scraper.TVDBImages.AllSeasonsBanner.URL = tSP.URL
-            End If
+            If Not IsNothing(tSP) Then Scraper.TVDBImages.AllSeasonsBanner = tSP
         End If
         If Me.bwLoadImages.CancellationPending Then
             Return True
@@ -108,21 +104,7 @@ Public Class dlgTVImageSelect
             'no fanart of the preferred size, just get the first available
             If IsNothing(tSF) Then tSF = GenericFanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image))
 
-            If Not IsNothing(tSF) Then
-                If Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso File.Exists(tSF.LocalFile) Then
-                    Scraper.TVDBImages.AllSeasonsFanart.Image.FromFile(tSF.LocalFile)
-                    Scraper.TVDBImages.AllSeasonsFanart.LocalFile = tSF.LocalFile
-                    Scraper.TVDBImages.AllSeasonsFanart.URL = tSF.URL
-                ElseIf Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso Not String.IsNullOrEmpty(tSF.URL) Then
-                    Scraper.TVDBImages.AllSeasonsFanart.Image.FromWeb(tSF.URL)
-                    If Not IsNothing(Scraper.TVDBImages.AllSeasonsFanart.Image.Image) Then
-                        Directory.CreateDirectory(Directory.GetParent(tSF.LocalFile).FullName)
-                        Scraper.TVDBImages.AllSeasonsFanart.Image.Save(tSF.LocalFile)
-                        Scraper.TVDBImages.AllSeasonsFanart.LocalFile = tSF.LocalFile
-                        Scraper.TVDBImages.AllSeasonsFanart.URL = tSF.URL
-                    End If
-                End If
-            End If
+            If Not IsNothing(tSF) Then Scraper.TVDBImages.AllSeasonsFanart = tSF
         End If
         If Me.bwLoadImages.CancellationPending Then
             Return True
@@ -136,9 +118,7 @@ Public Class dlgTVImageSelect
             If IsNothing(tSP) Then tSP = ShowLandscapeList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
             If Not IsNothing(tSP) Then
-                Scraper.TVDBImages.AllSeasonsLandscape.Image = tSP.Image
-                Scraper.TVDBImages.AllSeasonsLandscape.LocalFile = tSP.LocalFile
-                Scraper.TVDBImages.AllSeasonsLandscape.URL = tSP.URL
+                Scraper.TVDBImages.AllSeasonsLandscape = tSP
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -154,11 +134,7 @@ Public Class dlgTVImageSelect
             'no preferred size, just get any one of them
             If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
-            If Not IsNothing(tSPg) Then
-                Scraper.TVDBImages.AllSeasonsPoster.Image = tSPg.Image
-                Scraper.TVDBImages.AllSeasonsPoster.LocalFile = tSPg.LocalFile
-                Scraper.TVDBImages.AllSeasonsPoster.URL = tSPg.URL
-            End If
+            If Not IsNothing(tSPg) Then Scraper.TVDBImages.AllSeasonsPoster = tSPg
         End If
         If Me.bwLoadImages.CancellationPending Then
             Return True
@@ -177,11 +153,7 @@ Public Class dlgTVImageSelect
             'no preferred size, just get any one of them
             If IsNothing(tSP) Then tSP = ShowBannerList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
-            If Not IsNothing(tSP) Then
-                Scraper.TVDBImages.ShowBanner.Image = tSP.Image
-                Scraper.TVDBImages.ShowBanner.LocalFile = tSP.LocalFile
-                Scraper.TVDBImages.ShowBanner.URL = tSP.URL
-            End If
+            If Not IsNothing(tSP) Then Scraper.TVDBImages.ShowBanner = tSP
         End If
         If Me.bwLoadImages.CancellationPending Then
             Return True
@@ -194,11 +166,7 @@ Public Class dlgTVImageSelect
 
             If IsNothing(tSPg) Then tSPg = ShowCharacterArtList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
-            If Not IsNothing(tSPg) Then
-                Scraper.TVDBImages.ShowCharacterArt.Image = tSPg.Image
-                Scraper.TVDBImages.ShowCharacterArt.LocalFile = tSPg.LocalFile
-                Scraper.TVDBImages.ShowCharacterArt.URL = tSPg.URL
-            End If
+            If Not IsNothing(tSPg) Then Scraper.TVDBImages.ShowCharacterArt = tSPg
         End If
         If Me.bwLoadImages.CancellationPending Then
             Return True
@@ -211,11 +179,7 @@ Public Class dlgTVImageSelect
 
             If IsNothing(tSPg) Then tSPg = ShowClearArtList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
-            If Not IsNothing(tSPg) Then
-                Scraper.TVDBImages.ShowClearArt.Image = tSPg.Image
-                Scraper.TVDBImages.ShowClearArt.LocalFile = tSPg.LocalFile
-                Scraper.TVDBImages.ShowClearArt.URL = tSPg.URL
-            End If
+            If Not IsNothing(tSPg) Then Scraper.TVDBImages.ShowClearArt = tSPg
         End If
         If Me.bwLoadImages.CancellationPending Then
             Return True
@@ -228,11 +192,7 @@ Public Class dlgTVImageSelect
 
             If IsNothing(tSPg) Then tSPg = ShowClearLogoList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
-            If Not IsNothing(tSPg) Then
-                Scraper.TVDBImages.ShowClearLogo.Image = tSPg.Image
-                Scraper.TVDBImages.ShowClearLogo.LocalFile = tSPg.LocalFile
-                Scraper.TVDBImages.ShowClearLogo.URL = tSPg.URL
-            End If
+            If Not IsNothing(tSPg) Then Scraper.TVDBImages.ShowClearLogo = tSPg
         End If
         If Me.bwLoadImages.CancellationPending Then
             Return True
@@ -247,21 +207,7 @@ Public Class dlgTVImageSelect
             'no fanart of the preferred size, just get the first available
             If IsNothing(tSF) Then tSF = GenericFanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image))
 
-            If Not IsNothing(tSF) Then
-                If Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso File.Exists(tSF.LocalFile) Then
-                    Scraper.TVDBImages.ShowFanart.Image.FromFile(tSF.LocalFile)
-                    Scraper.TVDBImages.ShowFanart.LocalFile = tSF.LocalFile
-                    Scraper.TVDBImages.ShowFanart.URL = tSF.URL
-                ElseIf Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso Not String.IsNullOrEmpty(tSF.URL) Then
-                    Scraper.TVDBImages.ShowFanart.Image.FromWeb(tSF.URL)
-                    If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
-                        Directory.CreateDirectory(Directory.GetParent(tSF.LocalFile).FullName)
-                        Scraper.TVDBImages.ShowFanart.Image.Save(tSF.LocalFile)
-                        Scraper.TVDBImages.ShowFanart.LocalFile = tSF.LocalFile
-                        Scraper.TVDBImages.ShowFanart.URL = tSF.URL
-                    End If
-                End If
-            End If
+            If Not IsNothing(tSF) Then Scraper.TVDBImages.ShowFanart = tSF
         End If
         If Me.bwLoadImages.CancellationPending Then
             Return True
@@ -274,11 +220,7 @@ Public Class dlgTVImageSelect
 
             If IsNothing(tSPg) Then tSPg = ShowLandscapeList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
-            If Not IsNothing(tSPg) Then
-                Scraper.TVDBImages.ShowLandscape.Image = tSPg.Image
-                Scraper.TVDBImages.ShowLandscape.LocalFile = tSPg.LocalFile
-                Scraper.TVDBImages.ShowLandscape.URL = tSPg.URL
-            End If
+            If Not IsNothing(tSPg) Then Scraper.TVDBImages.ShowLandscape = tSPg
         End If
         If Me.bwLoadImages.CancellationPending Then
             Return True
@@ -297,11 +239,7 @@ Public Class dlgTVImageSelect
             'no preferred size, just get any one of them
             If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
-            If Not IsNothing(tSPg) Then
-                Scraper.TVDBImages.ShowPoster.Image = tSPg.Image
-                Scraper.TVDBImages.ShowPoster.LocalFile = tSPg.LocalFile
-                Scraper.TVDBImages.ShowPoster.URL = tSPg.URL
-            End If
+            If Not IsNothing(tSPg) Then Scraper.TVDBImages.ShowPoster = tSPg
         End If
         If Me.bwLoadImages.CancellationPending Then
             Return True
@@ -331,19 +269,6 @@ Public Class dlgTVImageSelect
                         If IsNothing(tSeaF) Then tSeaF = GenericFanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image))
                         If Not IsNothing(tSeaF) Then
                             If Not IsNothing(tSeaF) Then cSeason.Fanart = tSeaF
-                            'If Not String.IsNullOrEmpty(tSeaF.LocalFile) AndAlso File.Exists(tSeaF.LocalFile) Then
-                            '    cSeason.Fanart.Image.FromFile(tSeaF.LocalFile)
-                            '    cSeason.Fanart.LocalFile = tSeaF.LocalFile
-                            '    cSeason.Fanart.URL = tSeaF.URL
-                            'ElseIf Not String.IsNullOrEmpty(tSeaF.LocalFile) AndAlso Not String.IsNullOrEmpty(tSeaF.URL) Then
-                            '    cSeason.Fanart.Image.FromWeb(tSeaF.URL)
-                            '    If Not IsNothing(cSeason.Fanart.Image.Image) Then
-                            '        Directory.CreateDirectory(Directory.GetParent(tSeaF.LocalFile).FullName)
-                            '        cSeason.Fanart.Image.Save(tSeaF.LocalFile)
-                            '        cSeason.Fanart.LocalFile = tSeaF.LocalFile
-                            '        cSeason.Fanart.URL = tSeaF.URL
-                            '    End If
-                            'End If
                         End If
                     End If
 
