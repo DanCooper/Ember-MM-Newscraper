@@ -272,8 +272,12 @@ Public Class Scraper
                 Case Enums.TVScraperUpdateTime.Always
                     'Check how old the ZIP file is. If it's older than 10min -> try to get a fresh/updated file
                     'This is usefull for non english users because TVDB can has much "not yet translated" information if the file is to old
-                    Dim fileInfo As New FileInfo(fPath)
-                    If fileInfo.LastWriteTime < DateTime.Now.AddMinutes(-10) Then
+                    If File.Exists(fPath) Then
+                        Dim fileInfo As New FileInfo(fPath)
+                        If fileInfo.LastWriteTime < DateTime.Now.AddMinutes(-10) Then
+                            doDownload = True
+                        End If
+                    Else
                         doDownload = True
                     End If
                 Case Enums.TVScraperUpdateTime.Never
