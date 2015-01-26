@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("generic.EmberCore.Extractor")> 
+<Assembly: AssemblyTitle("generic.EmberCore.VLC")> 
 <Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
 <Assembly: AssemblyCompany("Ember Media Manager")> 
-<Assembly: AssemblyProduct("generic.EmberCore.Extractor")> 
+<Assembly: AssemblyProduct("generic.EmberCore.VLC")> 
 <Assembly: AssemblyCopyright("Copyright ©  2011")> 
 <Assembly: AssemblyTrademark("")> 
 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.4.0.1")> 
-<Assembly: AssemblyFileVersion("1.4.0.1")> 
+<Assembly: AssemblyVersion("1.4.0.8")> 
+<Assembly: AssemblyFileVersion("1.4.0.8")> 
