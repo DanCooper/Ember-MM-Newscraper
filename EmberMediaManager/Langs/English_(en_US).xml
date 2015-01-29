@@ -1434,4 +1434,13 @@
   <string id="1342">Send unwatched movies to trakt.tv watchlist</string>
   <string id="1343">No CharacterArts Found</string>
   <string id="1344">No CharacterArt images could be found. Please check to see if any CharacterArt scrapers are enabled.</string>
+  <string id="1345">Scrape popular lists</string>
+  <string id="1346">Scrape lists of favorite users</string>
+  <string id="1347">Scrape lists of friends</string>
+  <string id="1348">Favorite lists</string>
+  <string id="1349">Scraped lists</string>
+  <string id="1350">Save list to favorites</string>
+  <string id="1351">Remove list from favorites</string>
+  <string id="1352">Step 1 (Optional): Load specific lists from trakt.tv</string>
+  <string id="1353">Step 2: Load selected list or type URL</string>
 </strings>
