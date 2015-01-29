@@ -411,6 +411,35 @@ namespace Trakttv
 
         #endregion
 
+        #region GET Friends/Followers
+        /// <summary>
+        /// Returns a list of Friends for current user
+        /// Friends are a two-way relationship ie. both following each other
+        /// </summary>
+        public static IEnumerable<TraktNetworkFriend> GetNetworkFriends()
+        {
+            return GetNetworkFriends(TraktSettings.Username);
+        }
+        public static IEnumerable<TraktNetworkFriend> GetNetworkFriends(string username)
+        {
+            var response = READFromTrakt(string.Format(TraktURIs.GETNetworkFriends, username));
+            return response.FromJSONArray<TraktNetworkFriend>();
+        }
+
+        /// <summary>
+        /// Returns a list of people the current user follows
+        /// </summary>
+        public static IEnumerable<TraktNetworkUser> GetNetworkFollowing()
+        {
+            return GetNetworkFollowing(TraktSettings.Username);
+        }
+        public static IEnumerable<TraktNetworkUser> GetNetworkFollowing(string username)
+        {
+            var response = READFromTrakt(string.Format(TraktURIs.GETNetworkFollowing, username));
+            return response.FromJSONArray<TraktNetworkUser>();
+        }
+        #endregion
+
         #region POST User List
 
         /// <summary>

@@ -23,7 +23,7 @@ Partial Class dlgTrakttvManager
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrakttvManager))
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -55,6 +55,9 @@ Partial Class dlgTrakttvManager
         Me.tbptraktWatchlist = New System.Windows.Forms.TabPage()
         Me.pnltraktWatchlist = New System.Windows.Forms.Panel()
         Me.gbtraktWatchlist = New System.Windows.Forms.GroupBox()
+        Me.gbtraktWatchlistExpert = New System.Windows.Forms.GroupBox()
+        Me.btntraktWatchlistClean = New System.Windows.Forms.Button()
+        Me.btntraktWatchlistSendEmberUnwatched = New System.Windows.Forms.Button()
         Me.btntraktWatchlistGetMovies = New System.Windows.Forms.Button()
         Me.dgvtraktWatchlist = New System.Windows.Forms.DataGridView()
         Me.coltraktWatchlistTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -103,13 +106,24 @@ Partial Class dlgTrakttvManager
         Me.tbptraktListViewer = New System.Windows.Forms.TabPage()
         Me.pnltraktListsComparer = New System.Windows.Forms.Panel()
         Me.gbtraktListsViewer = New System.Windows.Forms.GroupBox()
-        Me.lbltraktListsdescription = New System.Windows.Forms.Label()
-        Me.lbltraktListsdescriptionloaded = New System.Windows.Forms.Label()
-        Me.btntraktListsfetch = New System.Windows.Forms.Button()
-        Me.cbotraktListsfetch = New System.Windows.Forms.ComboBox()
+        Me.cbotraktListsFavorites = New System.Windows.Forms.ComboBox()
+        Me.gbtraktListsViewerStep2 = New System.Windows.Forms.GroupBox()
+        Me.txttraktListURL = New System.Windows.Forms.TextBox()
+        Me.btntraktListLoad = New System.Windows.Forms.Button()
+        Me.lbltraktListURL = New System.Windows.Forms.Label()
+        Me.btntraktListSaveFavorite = New System.Windows.Forms.Button()
+        Me.btntraktListRemoveFavorite = New System.Windows.Forms.Button()
+        Me.lbltraktListsFavorites = New System.Windows.Forms.Label()
+        Me.gbtraktListsViewerStep1 = New System.Windows.Forms.GroupBox()
+        Me.lbltraktListsScraped = New System.Windows.Forms.Label()
+        Me.cbotraktListsScraped = New System.Windows.Forms.ComboBox()
+        Me.btntraktListsGetFollowers = New System.Windows.Forms.Button()
+        Me.btntraktListsGetFriends = New System.Windows.Forms.Button()
+        Me.btntraktListsGetPopular = New System.Windows.Forms.Button()
+        Me.lbltraktListDescriptionText = New System.Windows.Forms.Label()
+        Me.lbltraktListDescription = New System.Windows.Forms.Label()
         Me.lbltraktListsCount = New System.Windows.Forms.Label()
         Me.chktraktListsCompare = New System.Windows.Forms.CheckBox()
-        Me.lbltraktListsurlhelp = New System.Windows.Forms.Label()
         Me.btntraktListsSaveList = New System.Windows.Forms.Button()
         Me.btntraktListsSaveListCompare = New System.Windows.Forms.Button()
         Me.dgvtraktList = New System.Windows.Forms.DataGridView()
@@ -119,12 +133,6 @@ Partial Class dlgTrakttvManager
         Me.coltraktListGenres = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.coltraktListIMDB = New System.Windows.Forms.DataGridViewLinkColumn()
         Me.coltraktListTrailer = New System.Windows.Forms.DataGridViewLinkColumn()
-        Me.btntraktListsload = New System.Windows.Forms.Button()
-        Me.lbltraktListsurl = New System.Windows.Forms.Label()
-        Me.txttraktListsurl = New System.Windows.Forms.TextBox()
-        Me.btntraktWatchlistSendEmberUnwatched = New System.Windows.Forms.Button()
-        Me.btntraktWatchlistClean = New System.Windows.Forms.Button()
-        Me.gbtraktWatchlistExpert = New System.Windows.Forms.GroupBox()
         Me.pnlTop.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlSaving.SuspendLayout()
@@ -138,6 +146,7 @@ Partial Class dlgTrakttvManager
         Me.tbptraktWatchlist.SuspendLayout()
         Me.pnltraktWatchlist.SuspendLayout()
         Me.gbtraktWatchlist.SuspendLayout()
+        Me.gbtraktWatchlistExpert.SuspendLayout()
         CType(Me.dgvtraktWatchlist, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tbptraktListsSync.SuspendLayout()
         Me.pnltraktLists.SuspendLayout()
@@ -151,8 +160,9 @@ Partial Class dlgTrakttvManager
         Me.tbptraktListViewer.SuspendLayout()
         Me.pnltraktListsComparer.SuspendLayout()
         Me.gbtraktListsViewer.SuspendLayout()
+        Me.gbtraktListsViewerStep2.SuspendLayout()
+        Me.gbtraktListsViewerStep1.SuspendLayout()
         CType(Me.dgvtraktList, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.gbtraktWatchlistExpert.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -506,6 +516,39 @@ Partial Class dlgTrakttvManager
         Me.gbtraktWatchlist.TabIndex = 41
         Me.gbtraktWatchlist.TabStop = False
         Me.gbtraktWatchlist.Text = "Sync Watchlist"
+        '
+        'gbtraktWatchlistExpert
+        '
+        Me.gbtraktWatchlistExpert.Controls.Add(Me.btntraktWatchlistClean)
+        Me.gbtraktWatchlistExpert.Controls.Add(Me.btntraktWatchlistSendEmberUnwatched)
+        Me.gbtraktWatchlistExpert.Location = New System.Drawing.Point(6, 290)
+        Me.gbtraktWatchlistExpert.Name = "gbtraktWatchlistExpert"
+        Me.gbtraktWatchlistExpert.Size = New System.Drawing.Size(241, 133)
+        Me.gbtraktWatchlistExpert.TabIndex = 43
+        Me.gbtraktWatchlistExpert.TabStop = False
+        Me.gbtraktWatchlistExpert.Text = "Advanced Options"
+        '
+        'btntraktWatchlistClean
+        '
+        Me.btntraktWatchlistClean.Enabled = False
+        Me.btntraktWatchlistClean.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktWatchlistClean.Location = New System.Drawing.Point(6, 21)
+        Me.btntraktWatchlistClean.Name = "btntraktWatchlistClean"
+        Me.btntraktWatchlistClean.Size = New System.Drawing.Size(223, 44)
+        Me.btntraktWatchlistClean.TabIndex = 42
+        Me.btntraktWatchlistClean.Text = "Clear trakt.tv watchlist"
+        Me.btntraktWatchlistClean.UseVisualStyleBackColor = True
+        '
+        'btntraktWatchlistSendEmberUnwatched
+        '
+        Me.btntraktWatchlistSendEmberUnwatched.Enabled = False
+        Me.btntraktWatchlistSendEmberUnwatched.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktWatchlistSendEmberUnwatched.Location = New System.Drawing.Point(5, 83)
+        Me.btntraktWatchlistSendEmberUnwatched.Name = "btntraktWatchlistSendEmberUnwatched"
+        Me.btntraktWatchlistSendEmberUnwatched.Size = New System.Drawing.Size(223, 44)
+        Me.btntraktWatchlistSendEmberUnwatched.TabIndex = 41
+        Me.btntraktWatchlistSendEmberUnwatched.Text = "Send unwatched movies to trakt.tv watchlist"
+        Me.btntraktWatchlistSendEmberUnwatched.UseVisualStyleBackColor = True
         '
         'btntraktWatchlistGetMovies
         '
@@ -930,8 +973,8 @@ Partial Class dlgTrakttvManager
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeColumns = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle9
         Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -1023,7 +1066,6 @@ Partial Class dlgTrakttvManager
         '
         Me.pnltraktListsComparer.Controls.Add(Me.gbtraktListsViewer)
         Me.pnltraktListsComparer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnltraktListsComparer.Enabled = False
         Me.pnltraktListsComparer.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktListsComparer.Name = "pnltraktListsComparer"
         Me.pnltraktListsComparer.Size = New System.Drawing.Size(1090, 429)
@@ -1031,19 +1073,17 @@ Partial Class dlgTrakttvManager
         '
         'gbtraktListsViewer
         '
-        Me.gbtraktListsViewer.Controls.Add(Me.lbltraktListsdescription)
-        Me.gbtraktListsViewer.Controls.Add(Me.lbltraktListsdescriptionloaded)
-        Me.gbtraktListsViewer.Controls.Add(Me.btntraktListsfetch)
-        Me.gbtraktListsViewer.Controls.Add(Me.cbotraktListsfetch)
+        Me.gbtraktListsViewer.Controls.Add(Me.cbotraktListsFavorites)
+        Me.gbtraktListsViewer.Controls.Add(Me.gbtraktListsViewerStep2)
+        Me.gbtraktListsViewer.Controls.Add(Me.lbltraktListsFavorites)
+        Me.gbtraktListsViewer.Controls.Add(Me.gbtraktListsViewerStep1)
+        Me.gbtraktListsViewer.Controls.Add(Me.lbltraktListDescriptionText)
+        Me.gbtraktListsViewer.Controls.Add(Me.lbltraktListDescription)
         Me.gbtraktListsViewer.Controls.Add(Me.lbltraktListsCount)
         Me.gbtraktListsViewer.Controls.Add(Me.chktraktListsCompare)
-        Me.gbtraktListsViewer.Controls.Add(Me.lbltraktListsurlhelp)
         Me.gbtraktListsViewer.Controls.Add(Me.btntraktListsSaveList)
         Me.gbtraktListsViewer.Controls.Add(Me.btntraktListsSaveListCompare)
         Me.gbtraktListsViewer.Controls.Add(Me.dgvtraktList)
-        Me.gbtraktListsViewer.Controls.Add(Me.btntraktListsload)
-        Me.gbtraktListsViewer.Controls.Add(Me.lbltraktListsurl)
-        Me.gbtraktListsViewer.Controls.Add(Me.txttraktListsurl)
         Me.gbtraktListsViewer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbtraktListsViewer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
         Me.gbtraktListsViewer.Location = New System.Drawing.Point(0, 0)
@@ -1053,43 +1093,172 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsViewer.TabStop = False
         Me.gbtraktListsViewer.Text = "List viewer"
         '
-        'lbltraktListsdescription
+        'cbotraktListsFavorites
         '
-        Me.lbltraktListsdescription.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbltraktListsdescription.Location = New System.Drawing.Point(656, 100)
-        Me.lbltraktListsdescription.Name = "lbltraktListsdescription"
-        Me.lbltraktListsdescription.Size = New System.Drawing.Size(91, 20)
-        Me.lbltraktListsdescription.TabIndex = 56
-        Me.lbltraktListsdescription.Text = "Description"
-        Me.lbltraktListsdescription.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.cbotraktListsFavorites.FormattingEnabled = True
+        Me.cbotraktListsFavorites.Location = New System.Drawing.Point(733, 16)
+        Me.cbotraktListsFavorites.Name = "cbotraktListsFavorites"
+        Me.cbotraktListsFavorites.Size = New System.Drawing.Size(351, 21)
+        Me.cbotraktListsFavorites.TabIndex = 59
         '
-        'lbltraktListsdescriptionloaded
+        'gbtraktListsViewerStep2
         '
-        Me.lbltraktListsdescriptionloaded.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbltraktListsdescriptionloaded.Location = New System.Drawing.Point(659, 128)
-        Me.lbltraktListsdescriptionloaded.Name = "lbltraktListsdescriptionloaded"
-        Me.lbltraktListsdescriptionloaded.Size = New System.Drawing.Size(422, 58)
-        Me.lbltraktListsdescriptionloaded.TabIndex = 55
-        Me.lbltraktListsdescriptionloaded.Text = "-"
+        Me.gbtraktListsViewerStep2.Controls.Add(Me.txttraktListURL)
+        Me.gbtraktListsViewerStep2.Controls.Add(Me.btntraktListLoad)
+        Me.gbtraktListsViewerStep2.Controls.Add(Me.lbltraktListURL)
+        Me.gbtraktListsViewerStep2.Controls.Add(Me.btntraktListSaveFavorite)
+        Me.gbtraktListsViewerStep2.Controls.Add(Me.btntraktListRemoveFavorite)
+        Me.gbtraktListsViewerStep2.Location = New System.Drawing.Point(644, 154)
+        Me.gbtraktListsViewerStep2.Name = "gbtraktListsViewerStep2"
+        Me.gbtraktListsViewerStep2.Size = New System.Drawing.Size(440, 89)
+        Me.gbtraktListsViewerStep2.TabIndex = 59
+        Me.gbtraktListsViewerStep2.TabStop = False
+        Me.gbtraktListsViewerStep2.Text = "Step 2: Load selected list or type URL"
         '
-        'btntraktListsfetch
+        'txttraktListURL
         '
-        Me.btntraktListsfetch.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktListsfetch.Location = New System.Drawing.Point(986, 46)
-        Me.btntraktListsfetch.Name = "btntraktListsfetch"
-        Me.btntraktListsfetch.Size = New System.Drawing.Size(95, 21)
-        Me.btntraktListsfetch.TabIndex = 54
-        Me.btntraktListsfetch.Text = "Fetch lists"
-        Me.btntraktListsfetch.UseVisualStyleBackColor = True
+        Me.txttraktListURL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txttraktListURL.Location = New System.Drawing.Point(51, 25)
+        Me.txttraktListURL.Name = "txttraktListURL"
+        Me.txttraktListURL.Size = New System.Drawing.Size(280, 20)
+        Me.txttraktListURL.TabIndex = 44
         '
-        'cbotraktListsfetch
+        'btntraktListLoad
         '
-        Me.cbotraktListsfetch.Enabled = False
-        Me.cbotraktListsfetch.FormattingEnabled = True
-        Me.cbotraktListsfetch.Location = New System.Drawing.Point(686, 46)
-        Me.cbotraktListsfetch.Name = "cbotraktListsfetch"
-        Me.cbotraktListsfetch.Size = New System.Drawing.Size(294, 21)
-        Me.cbotraktListsfetch.TabIndex = 53
+        Me.btntraktListLoad.Enabled = False
+        Me.btntraktListLoad.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktListLoad.Location = New System.Drawing.Point(337, 25)
+        Me.btntraktListLoad.Name = "btntraktListLoad"
+        Me.btntraktListLoad.Size = New System.Drawing.Size(97, 52)
+        Me.btntraktListLoad.TabIndex = 36
+        Me.btntraktListLoad.Text = "Load list"
+        Me.btntraktListLoad.UseVisualStyleBackColor = True
+        '
+        'lbltraktListURL
+        '
+        Me.lbltraktListURL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktListURL.Location = New System.Drawing.Point(6, 28)
+        Me.lbltraktListURL.Name = "lbltraktListURL"
+        Me.lbltraktListURL.Size = New System.Drawing.Size(39, 17)
+        Me.lbltraktListURL.TabIndex = 45
+        Me.lbltraktListURL.Text = "Url:"
+        Me.lbltraktListURL.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        '
+        'btntraktListSaveFavorite
+        '
+        Me.btntraktListSaveFavorite.Enabled = False
+        Me.btntraktListSaveFavorite.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktListSaveFavorite.Location = New System.Drawing.Point(51, 50)
+        Me.btntraktListSaveFavorite.Name = "btntraktListSaveFavorite"
+        Me.btntraktListSaveFavorite.Size = New System.Drawing.Size(137, 27)
+        Me.btntraktListSaveFavorite.TabIndex = 58
+        Me.btntraktListSaveFavorite.Text = "Save list to favorites"
+        Me.btntraktListSaveFavorite.UseVisualStyleBackColor = True
+        '
+        'btntraktListRemoveFavorite
+        '
+        Me.btntraktListRemoveFavorite.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktListRemoveFavorite.Location = New System.Drawing.Point(194, 50)
+        Me.btntraktListRemoveFavorite.Name = "btntraktListRemoveFavorite"
+        Me.btntraktListRemoveFavorite.Size = New System.Drawing.Size(137, 27)
+        Me.btntraktListRemoveFavorite.TabIndex = 56
+        Me.btntraktListRemoveFavorite.Text = "Remove list from favorites"
+        Me.btntraktListRemoveFavorite.UseVisualStyleBackColor = True
+        '
+        'lbltraktListsFavorites
+        '
+        Me.lbltraktListsFavorites.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktListsFavorites.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.lbltraktListsFavorites.Location = New System.Drawing.Point(644, 15)
+        Me.lbltraktListsFavorites.Name = "lbltraktListsFavorites"
+        Me.lbltraktListsFavorites.Size = New System.Drawing.Size(90, 28)
+        Me.lbltraktListsFavorites.TabIndex = 58
+        Me.lbltraktListsFavorites.Text = "Favorite lists:"
+        Me.lbltraktListsFavorites.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'gbtraktListsViewerStep1
+        '
+        Me.gbtraktListsViewerStep1.Controls.Add(Me.lbltraktListsScraped)
+        Me.gbtraktListsViewerStep1.Controls.Add(Me.cbotraktListsScraped)
+        Me.gbtraktListsViewerStep1.Controls.Add(Me.btntraktListsGetFollowers)
+        Me.gbtraktListsViewerStep1.Controls.Add(Me.btntraktListsGetFriends)
+        Me.gbtraktListsViewerStep1.Controls.Add(Me.btntraktListsGetPopular)
+        Me.gbtraktListsViewerStep1.Location = New System.Drawing.Point(644, 46)
+        Me.gbtraktListsViewerStep1.Name = "gbtraktListsViewerStep1"
+        Me.gbtraktListsViewerStep1.Size = New System.Drawing.Size(440, 104)
+        Me.gbtraktListsViewerStep1.TabIndex = 57
+        Me.gbtraktListsViewerStep1.TabStop = False
+        Me.gbtraktListsViewerStep1.Text = "Step 1 (Optional): Load specific lists from trakt.tv"
+        '
+        'lbltraktListsScraped
+        '
+        Me.lbltraktListsScraped.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktListsScraped.Location = New System.Drawing.Point(8, 74)
+        Me.lbltraktListsScraped.Name = "lbltraktListsScraped"
+        Me.lbltraktListsScraped.Size = New System.Drawing.Size(133, 21)
+        Me.lbltraktListsScraped.TabIndex = 55
+        Me.lbltraktListsScraped.Text = "Scraped lists:"
+        Me.lbltraktListsScraped.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        '
+        'cbotraktListsScraped
+        '
+        Me.cbotraktListsScraped.Enabled = False
+        Me.cbotraktListsScraped.FormattingEnabled = True
+        Me.cbotraktListsScraped.Location = New System.Drawing.Point(148, 74)
+        Me.cbotraktListsScraped.Name = "cbotraktListsScraped"
+        Me.cbotraktListsScraped.Size = New System.Drawing.Size(274, 21)
+        Me.cbotraktListsScraped.TabIndex = 55
+        '
+        'btntraktListsGetFollowers
+        '
+        Me.btntraktListsGetFollowers.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktListsGetFollowers.Location = New System.Drawing.Point(9, 21)
+        Me.btntraktListsGetFollowers.Name = "btntraktListsGetFollowers"
+        Me.btntraktListsGetFollowers.Size = New System.Drawing.Size(133, 47)
+        Me.btntraktListsGetFollowers.TabIndex = 57
+        Me.btntraktListsGetFollowers.Text = "Scrape lists of favorite users"
+        Me.btntraktListsGetFollowers.UseVisualStyleBackColor = True
+        '
+        'btntraktListsGetFriends
+        '
+        Me.btntraktListsGetFriends.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktListsGetFriends.Location = New System.Drawing.Point(147, 21)
+        Me.btntraktListsGetFriends.Name = "btntraktListsGetFriends"
+        Me.btntraktListsGetFriends.Size = New System.Drawing.Size(134, 47)
+        Me.btntraktListsGetFriends.TabIndex = 55
+        Me.btntraktListsGetFriends.Text = "Scrape lists of friends"
+        Me.btntraktListsGetFriends.UseVisualStyleBackColor = True
+        '
+        'btntraktListsGetPopular
+        '
+        Me.btntraktListsGetPopular.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktListsGetPopular.Location = New System.Drawing.Point(287, 21)
+        Me.btntraktListsGetPopular.Name = "btntraktListsGetPopular"
+        Me.btntraktListsGetPopular.Size = New System.Drawing.Size(134, 47)
+        Me.btntraktListsGetPopular.TabIndex = 54
+        Me.btntraktListsGetPopular.Text = "Scrape popular lists"
+        Me.btntraktListsGetPopular.UseVisualStyleBackColor = True
+        '
+        'lbltraktListDescriptionText
+        '
+        Me.lbltraktListDescriptionText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lbltraktListDescriptionText.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktListDescriptionText.ForeColor = System.Drawing.Color.Blue
+        Me.lbltraktListDescriptionText.Location = New System.Drawing.Point(644, 264)
+        Me.lbltraktListDescriptionText.Name = "lbltraktListDescriptionText"
+        Me.lbltraktListDescriptionText.Size = New System.Drawing.Size(440, 58)
+        Me.lbltraktListDescriptionText.TabIndex = 55
+        Me.lbltraktListDescriptionText.Text = "-"
+        '
+        'lbltraktListDescription
+        '
+        Me.lbltraktListDescription.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktListDescription.Location = New System.Drawing.Point(641, 246)
+        Me.lbltraktListDescription.Name = "lbltraktListDescription"
+        Me.lbltraktListDescription.Size = New System.Drawing.Size(75, 18)
+        Me.lbltraktListDescription.TabIndex = 56
+        Me.lbltraktListDescription.Text = "Description"
+        Me.lbltraktListDescription.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         '
         'lbltraktListsCount
         '
@@ -1105,30 +1274,20 @@ Partial Class dlgTrakttvManager
         'chktraktListsCompare
         '
         Me.chktraktListsCompare.Enabled = False
-        Me.chktraktListsCompare.Location = New System.Drawing.Point(653, 262)
+        Me.chktraktListsCompare.Location = New System.Drawing.Point(655, 325)
         Me.chktraktListsCompare.Name = "chktraktListsCompare"
-        Me.chktraktListsCompare.Size = New System.Drawing.Size(130, 36)
+        Me.chktraktListsCompare.Size = New System.Drawing.Size(175, 25)
         Me.chktraktListsCompare.TabIndex = 51
         Me.chktraktListsCompare.Text = "only show unknown movies"
         Me.chktraktListsCompare.UseVisualStyleBackColor = True
-        '
-        'lbltraktListsurlhelp
-        '
-        Me.lbltraktListsurlhelp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbltraktListsurlhelp.Location = New System.Drawing.Point(638, 38)
-        Me.lbltraktListsurlhelp.Name = "lbltraktListsurlhelp"
-        Me.lbltraktListsurlhelp.Size = New System.Drawing.Size(46, 29)
-        Me.lbltraktListsurlhelp.TabIndex = 50
-        Me.lbltraktListsurlhelp.Text = "trakt.tv list:"
-        Me.lbltraktListsurlhelp.TextAlign = System.Drawing.ContentAlignment.BottomRight
         '
         'btntraktListsSaveList
         '
         Me.btntraktListsSaveList.Enabled = False
         Me.btntraktListsSaveList.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktListsSaveList.Location = New System.Drawing.Point(653, 304)
+        Me.btntraktListsSaveList.Location = New System.Drawing.Point(792, 356)
         Me.btntraktListsSaveList.Name = "btntraktListsSaveList"
-        Me.btntraktListsSaveList.Size = New System.Drawing.Size(133, 46)
+        Me.btntraktListsSaveList.Size = New System.Drawing.Size(123, 46)
         Me.btntraktListsSaveList.TabIndex = 48
         Me.btntraktListsSaveList.Text = "Export complete list"
         Me.btntraktListsSaveList.UseVisualStyleBackColor = True
@@ -1204,68 +1363,6 @@ Partial Class dlgTrakttvManager
         Me.coltraktListTrailer.Name = "coltraktListTrailer"
         Me.coltraktListTrailer.Text = "Link"
         '
-        'btntraktListsload
-        '
-        Me.btntraktListsload.Enabled = False
-        Me.btntraktListsload.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktListsload.Location = New System.Drawing.Point(986, 73)
-        Me.btntraktListsload.Name = "btntraktListsload"
-        Me.btntraktListsload.Size = New System.Drawing.Size(95, 22)
-        Me.btntraktListsload.TabIndex = 36
-        Me.btntraktListsload.Text = "Load list"
-        Me.btntraktListsload.UseVisualStyleBackColor = True
-        '
-        'lbltraktListsurl
-        '
-        Me.lbltraktListsurl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbltraktListsurl.Location = New System.Drawing.Point(638, 75)
-        Me.lbltraktListsurl.Name = "lbltraktListsurl"
-        Me.lbltraktListsurl.Size = New System.Drawing.Size(46, 17)
-        Me.lbltraktListsurl.TabIndex = 45
-        Me.lbltraktListsurl.Text = "Url:"
-        Me.lbltraktListsurl.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        '
-        'txttraktListsurl
-        '
-        Me.txttraktListsurl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txttraktListsurl.Location = New System.Drawing.Point(686, 73)
-        Me.txttraktListsurl.Name = "txttraktListsurl"
-        Me.txttraktListsurl.Size = New System.Drawing.Size(294, 20)
-        Me.txttraktListsurl.TabIndex = 44
-        '
-        'btntraktWatchlistSendEmberUnwatched
-        '
-        Me.btntraktWatchlistSendEmberUnwatched.Enabled = False
-        Me.btntraktWatchlistSendEmberUnwatched.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktWatchlistSendEmberUnwatched.Location = New System.Drawing.Point(5, 83)
-        Me.btntraktWatchlistSendEmberUnwatched.Name = "btntraktWatchlistSendEmberUnwatched"
-        Me.btntraktWatchlistSendEmberUnwatched.Size = New System.Drawing.Size(223, 44)
-        Me.btntraktWatchlistSendEmberUnwatched.TabIndex = 41
-        Me.btntraktWatchlistSendEmberUnwatched.Text = "Send unwatched movies to trakt.tv watchlist"
-        Me.btntraktWatchlistSendEmberUnwatched.UseVisualStyleBackColor = True
-        '
-        'btntraktWatchlistClean
-        '
-        Me.btntraktWatchlistClean.Enabled = False
-        Me.btntraktWatchlistClean.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktWatchlistClean.Location = New System.Drawing.Point(6, 21)
-        Me.btntraktWatchlistClean.Name = "btntraktWatchlistClean"
-        Me.btntraktWatchlistClean.Size = New System.Drawing.Size(223, 44)
-        Me.btntraktWatchlistClean.TabIndex = 42
-        Me.btntraktWatchlistClean.Text = "Clear trakt.tv watchlist"
-        Me.btntraktWatchlistClean.UseVisualStyleBackColor = True
-        '
-        'gbtraktWatchlistExpert
-        '
-        Me.gbtraktWatchlistExpert.Controls.Add(Me.btntraktWatchlistClean)
-        Me.gbtraktWatchlistExpert.Controls.Add(Me.btntraktWatchlistSendEmberUnwatched)
-        Me.gbtraktWatchlistExpert.Location = New System.Drawing.Point(6, 290)
-        Me.gbtraktWatchlistExpert.Name = "gbtraktWatchlistExpert"
-        Me.gbtraktWatchlistExpert.Size = New System.Drawing.Size(241, 133)
-        Me.gbtraktWatchlistExpert.TabIndex = 43
-        Me.gbtraktWatchlistExpert.TabStop = False
-        Me.gbtraktWatchlistExpert.Text = "Advanced Options"
-        '
         'dlgTrakttvManager
         '
         Me.AcceptButton = Me.OK_Button
@@ -1301,6 +1398,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktWatchlist.ResumeLayout(False)
         Me.gbtraktWatchlist.ResumeLayout(False)
         Me.gbtraktWatchlist.PerformLayout()
+        Me.gbtraktWatchlistExpert.ResumeLayout(False)
         CType(Me.dgvtraktWatchlist, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tbptraktListsSync.ResumeLayout(False)
         Me.pnltraktLists.ResumeLayout(False)
@@ -1317,9 +1415,10 @@ Partial Class dlgTrakttvManager
         Me.tbptraktListViewer.ResumeLayout(False)
         Me.pnltraktListsComparer.ResumeLayout(False)
         Me.gbtraktListsViewer.ResumeLayout(False)
-        Me.gbtraktListsViewer.PerformLayout()
+        Me.gbtraktListsViewerStep2.ResumeLayout(False)
+        Me.gbtraktListsViewerStep2.PerformLayout()
+        Me.gbtraktListsViewerStep1.ResumeLayout(False)
         CType(Me.dgvtraktList, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.gbtraktWatchlistExpert.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -1368,19 +1467,17 @@ Partial Class dlgTrakttvManager
     Friend WithEvents tbptraktListViewer As System.Windows.Forms.TabPage
     Friend WithEvents pnltraktListsComparer As System.Windows.Forms.Panel
     Friend WithEvents gbtraktListsViewer As System.Windows.Forms.GroupBox
-    Friend WithEvents lbltraktListsdescription As System.Windows.Forms.Label
-    Friend WithEvents lbltraktListsdescriptionloaded As System.Windows.Forms.Label
-    Friend WithEvents btntraktListsfetch As System.Windows.Forms.Button
-    Friend WithEvents cbotraktListsfetch As System.Windows.Forms.ComboBox
+    Friend WithEvents lbltraktListDescription As System.Windows.Forms.Label
+    Friend WithEvents lbltraktListDescriptionText As System.Windows.Forms.Label
+    Friend WithEvents btntraktListsGetPopular As System.Windows.Forms.Button
     Friend WithEvents lbltraktListsCount As System.Windows.Forms.Label
     Friend WithEvents chktraktListsCompare As System.Windows.Forms.CheckBox
-    Friend WithEvents lbltraktListsurlhelp As System.Windows.Forms.Label
     Friend WithEvents btntraktListsSaveList As System.Windows.Forms.Button
     Friend WithEvents btntraktListsSaveListCompare As System.Windows.Forms.Button
     Friend WithEvents dgvtraktList As System.Windows.Forms.DataGridView
-    Friend WithEvents btntraktListsload As System.Windows.Forms.Button
-    Friend WithEvents lbltraktListsurl As System.Windows.Forms.Label
-    Friend WithEvents txttraktListsurl As System.Windows.Forms.TextBox
+    Friend WithEvents btntraktListLoad As System.Windows.Forms.Button
+    Friend WithEvents lbltraktListURL As System.Windows.Forms.Label
+    Friend WithEvents txttraktListURL As System.Windows.Forms.TextBox
     Friend WithEvents pnlCancel As System.Windows.Forms.Panel
     Friend WithEvents pnlSaving As System.Windows.Forms.Panel
     Friend WithEvents lblSaving As System.Windows.Forms.Label
@@ -1424,5 +1521,15 @@ Partial Class dlgTrakttvManager
     Friend WithEvents btntraktWatchlistSendEmberUnwatched As System.Windows.Forms.Button
     Friend WithEvents gbtraktWatchlistExpert As System.Windows.Forms.GroupBox
     Friend WithEvents btntraktWatchlistClean As System.Windows.Forms.Button
+    Friend WithEvents btntraktListSaveFavorite As System.Windows.Forms.Button
+    Friend WithEvents gbtraktListsViewerStep1 As System.Windows.Forms.GroupBox
+    Friend WithEvents btntraktListsGetFriends As System.Windows.Forms.Button
+    Friend WithEvents gbtraktListsViewerStep2 As System.Windows.Forms.GroupBox
+    Friend WithEvents btntraktListRemoveFavorite As System.Windows.Forms.Button
+    Friend WithEvents btntraktListsGetFollowers As System.Windows.Forms.Button
+    Friend WithEvents lbltraktListsScraped As System.Windows.Forms.Label
+    Friend WithEvents cbotraktListsScraped As System.Windows.Forms.ComboBox
+    Friend WithEvents cbotraktListsFavorites As System.Windows.Forms.ComboBox
+    Friend WithEvents lbltraktListsFavorites As System.Windows.Forms.Label
 
 End Class

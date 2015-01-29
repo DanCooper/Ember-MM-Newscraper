@@ -67,11 +67,15 @@ Public Class dlgTrakttvManager
 
     'Tab: trakt.tv Listviewer variables
     'fetched listnames
-    Private traktpopularlistTitle As New List(Of String)
+    Private userListTitle As New List(Of String)
     'fetched listURLs
-    Private traktpopularlistURL As New List(Of String)
+    Private userListURL As New List(Of String)
     'scraped userlist from trakt.tv
-    Private favoriteList As New TraktAPI.Model.TraktList
+    Private userList As New TraktAPI.Model.TraktListDetail
+    'all lists from specific user
+    Private userLists As New List(Of TraktAPI.Model.TraktListDetail)
+    'scraped items of a userlist from trakt.tv
+    Private userListItems As New List(Of TraktAPI.Model.TraktListItem)
     'binding for movie datagridview
     Private bsMovies As New BindingSource
 
@@ -163,11 +167,16 @@ Public Class dlgTrakttvManager
             'Tab: List viewer
             lbltraktListsCount.Text = Master.eLang.GetString(794, "Search Results") & ":"
             gbtraktListsViewer.Text = Master.eLang.GetString(1304, "List Viewer")
-            lbltraktListsurlhelp.Text = Master.eLang.GetString(1322, "trakt.tv list:")
-            lbltraktListsurl.Text = Master.eLang.GetString(1323, "URL:")
-            btntraktListsfetch.Text = Master.eLang.GetString(1324, "Fetch lists")
-            btntraktListsload.Text = Master.eLang.GetString(1325, "Load list")
-            lbltraktListsdescription.Text = Master.eLang.GetString(979, "Description")
+            lbltraktListsFavorites.Text = Master.eLang.GetString(1348, "Favorite lists") & ":"
+            lbltraktListsScraped.Text = Master.eLang.GetString(1349, "Scraped lists") & ":"
+            lbltraktListURL.Text = Master.eLang.GetString(1323, "URL:")
+            btntraktListsGetPopular.Text = Master.eLang.GetString(1345, "Scrape popular lists")
+            btntraktListsGetFollowers.Text = Master.eLang.GetString(1346, "Scrape lists of favorite users")
+            btntraktListsGetFriends.Text = Master.eLang.GetString(1347, "Scrape lists of friends")
+            btntraktListRemoveFavorite.Text = Master.eLang.GetString(1351, "Remove list from favorites")
+            btntraktListSaveFavorite.Text = Master.eLang.GetString(1350, "Save list to favorites")
+            btntraktListLoad.Text = Master.eLang.GetString(1325, "Load list")
+            lbltraktListDescription.Text = Master.eLang.GetString(979, "Description")
             chktraktListsCompare.Text = Master.eLang.GetString(1326, "only show unknown movies")
             btntraktListsSaveList.Text = Master.eLang.GetString(1327, "Export complete list")
             btntraktListsSaveListCompare.Text = Master.eLang.GetString(1328, "Export unknown movies")
@@ -177,6 +186,8 @@ Public Class dlgTrakttvManager
             coltraktListTrailer.Name = Master.eLang.GetString(151, "Trailer")
             coltraktListRating.Name = Master.eLang.GetString(400, "Rating")
             coltraktListIMDB.Name = Master.eLang.GetString(1323, "URL")
+            gbtraktListsViewerStep1.Text = Master.eLang.GetString(1352, "Step 1 (Optional): Load specific lists from trakt.tv")
+            gbtraktListsViewerStep2.Text = Master.eLang.GetString(1353, "Step 2: Load selected list or type URL")
 
             'Tab: Sync Watchlist 
             gbtraktWatchlist.Text = Master.eLang.GetString(1337, "Sync Watchlist")
@@ -199,11 +210,117 @@ Public Class dlgTrakttvManager
             coltraktWatchlistIMDB.Name = Master.eLang.GetString(1323, "URL")
             'load existing movies from database into datatable
             Master.DB.FillDataTable(Me.dtMovies, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+
+
+
+            RemoveHandler Me.cbotraktListsFavorites.SelectedIndexChanged, AddressOf Me.cbotraktListsFavorites_SelectedIndexChanged
+            Me.cbotraktListsFavorites.Items.Clear()
+            'Cocotus 2014/10/11 Automatically populate avalaible videosources from user settings to sourcefilter instead of using hardcoded list here!
+            Dim mylists As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            mylists = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+            If Not mylists Is Nothing Then
+                cbotraktListsFavorites.Enabled = True
+                For Each k In mylists
+                    If cbotraktListsFavorites.Items.Contains(k.Value) = False Then
+                        Me.cbotraktListsFavorites.Items.Add(k.Name)
+                    End If
+                Next
+                Me.cbotraktListsFavorites.SelectedIndex = 0
+                txttraktListURL.Text = mylists.Item(0).Value
+            Else
+                cbotraktListsFavorites.Enabled = False
+            End If
+
+            AddHandler Me.cbotraktListsFavorites.SelectedIndexChanged, AddressOf Me.cbotraktListsFavorites_SelectedIndexChanged
+
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try 
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' Remove list from favorites 
+    ''' </summary>
+    ''' <param name="sender">"Remove favorite list"-Button in Form</param>
+    ''' <remarks>
+    ''' 2015/01/01 Cocotus
+    ''' </remarks>
+    Private Sub btntraktListRemoveFavorite_Click(sender As Object, e As EventArgs) Handles btntraktListRemoveFavorite.Click
+        Dim mylists As New List(Of AdvancedSettingsComplexSettingsTableItem)
+        mylists = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+        If Not IsNothing(mylists) Then
+            For i = mylists.Count - 1 To 0 Step -1
+                If mylists(i).Value = txttraktListURL.Text Then
+                    mylists.RemoveAt(i)
+                    Exit For
+                End If
+            Next
+            Dim setting_name As New List(Of String)
+            Dim setting_value As New List(Of String)
+            For Each sett As AdvancedSettingsComplexSettingsTableItem In mylists
+                setting_name.Add(sett.Name)
+                setting_value.Add(sett.Value)
+            Next
+
+            Using settings = New clsAdvancedSettings()
+                settings.ClearComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+                Dim updatedsettings As New List(Of AdvancedSettingsComplexSettingsTableItem)
+                For i = 0 To setting_name.Count - 1
+                    updatedsettings.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = setting_name.Item(i), .Value = setting_value.Item(i)})
+                Next  
+                settings.SetComplexSetting("TraktFavoriteLists", updatedsettings, "generic.EmberCore.Trakt")
+                btntraktListRemoveFavorite.Enabled = False
+                cbotraktListsFavorites.Enabled = True
+                cbotraktListsFavorites.Items.Clear()
+                cbotraktListsFavorites.Text = ""
+                cbotraktListsFavorites.SelectedText = ""
+                cbotraktListsFavorites.SelectedIndex = -1
+                For Each k In updatedsettings
+                    If cbotraktListsFavorites.Items.Contains(k.Value) = False Then
+                        Me.cbotraktListsFavorites.Items.Add(k.Name)
+                    End If
+                Next
+                txttraktListURL.Text = ""
+                lbltraktListDescriptionText.Text = ""
+            End Using
+        End If
+    End Sub
+    ''' <summary>
+    ''' Save list to favorites 
+    ''' </summary>
+    ''' <param name="sender">"Save favorite list"-Button in Form</param>
+    ''' <remarks>
+    ''' 2015/01/01 Cocotus
+    ''' </remarks>
+    Private Sub btntraktListSaveFavorite_Click(sender As Object, e As EventArgs) Handles btntraktListSaveFavorite.Click
+        Dim mylists As New List(Of AdvancedSettingsComplexSettingsTableItem)
+        mylists = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+        Using settings = New clsAdvancedSettings()
+            If Not IsNothing(mylists) Then
+                If mylists.FindIndex(Function(f) f.Value = txttraktListURL.Text) = -1 Then
+                    mylists.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = Me.cbotraktListsScraped.SelectedItem.ToString, .Value = txttraktListURL.Text})
+
+                    settings.SetComplexSetting("TraktFavoriteLists", mylists, "generic.EmberCore.Trakt")
+                End If
+            Else
+                mylists = New List(Of AdvancedSettingsComplexSettingsTableItem)()
+                mylists.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = Me.cbotraktListsScraped.SelectedItem.ToString, .Value = txttraktListURL.Text})
+                settings.SetComplexSetting("TraktFavoriteLists", mylists, "generic.EmberCore.Trakt")
+            End If
+        End Using
+        cbotraktListsFavorites.Enabled = True
+        btntraktListRemoveFavorite.Enabled = True
+        cbotraktListsFavorites.Enabled = True
+        cbotraktListsFavorites.Items.Clear()
+        cbotraktListsFavorites.Text = ""
+        cbotraktListsFavorites.SelectedText = ""
+        cbotraktListsFavorites.SelectedIndex = -1
+        For Each k In mylists
+            If cbotraktListsFavorites.Items.Contains(k.Value) = False Then
+                Me.cbotraktListsFavorites.Items.Add(k.Name)
+            End If
+        Next
+    End Sub
     ''' <summary>
     ''' Actions on module close event
     ''' </summary>
@@ -227,25 +344,20 @@ Public Class dlgTrakttvManager
     ''' 2015/01/17 Cocotus - First implementation of new V2 Authentification process for trakt.tv API
     ''' </remarks>
     Private Function LoginToTrakt(ByVal _traktuser As String, ByVal _traktpassword As String, ByVal _trakttoken As String) As String
-        Try
-            ' Use Trakttv wrapper
-            Dim account As New TraktAPI.Model.TraktAuthentication
-            account.Username = _traktuser
-            account.Password = _traktpassword
-            TraktSettings.Password = _traktpassword
-            TraktSettings.Username = _traktuser
+        ' Use Trakttv wrapper
+        Dim account As New TraktAPI.Model.TraktAuthentication
+        account.Username = _traktuser
+        account.Password = _traktpassword
+        TraktSettings.Password = _traktpassword
+        TraktSettings.Username = _traktuser
 
-            If String.IsNullOrEmpty(_trakttoken) Then
-                Dim response = Trakttv.TraktMethods.LoginToAccount(account)
-                _trakttoken = response.Token
-            Else
-                TraktSettings.Token = _trakttoken
-            End If
-            Return _trakttoken
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return ""
-        End Try
+        If String.IsNullOrEmpty(_trakttoken) Then
+            Dim response = Trakttv.TraktMethods.LoginToAccount(account)
+            _trakttoken = response.Token
+        Else
+            TraktSettings.Token = _trakttoken
+        End If
+        Return _trakttoken
     End Function
 
 #Region "Trakt.tv Sync Watchlist"
@@ -2190,344 +2302,529 @@ Public Class dlgTrakttvManager
 
     '#End Region 'Trakt.tv Sync Lists/Tags
 
-    '#Region "Trakt.tv Listviewer"
-    '    ''' <summary>
-    '    ''' Download popular trakttv lists information and display URL and name of list for user
-    '    ''' </summary>
-    '    ''' <param name="sender">"Fetch lists"-Button in Form</param>
-    '    ''' <remarks>
-    '    ''' For now there's no official API support for getting general popular lists on trakt.tv. Therefore download HTML of URl and use Regex to get information needed
-    '    ''' 2014/10/31 Cocotus - First implementation
-    '    ''' </remarks>
-    '    Private Sub btntraktListsfetch_Click(sender As Object, e As EventArgs) Handles btntraktListsfetch.Click
-
-    '        Try
-    '            'Check if lists need to be scraped -  maybe lists are loaded already?!
-    '            If traktpopularlistTitle.Count = 0 AndAlso traktpopularlistURL.Count = 0 Then
-    '                'Link to scrape list from
-    '                Dim SearchURL As String = "http://trakt.tv/lists/personal/popular/weekly"
-
-    '                Dim sHTTP As New HTTP
-    '                Dim Html As String = sHTTP.DownloadData(SearchURL)
-    '                sHTTP = Nothing
-
-    '                If Not String.IsNullOrEmpty(Html) Then
-    '                    'use regexmatched to extract information
-    '                    'Example of list information in HTML:
-    '                    '<div class="title-overflow"></div>
-    '                    '<a href="/user/listr/lists/500-essential-cult-movies-the-ultimate-guide-by-jennifer-eiss">500 Essential Cult Movies: The Ultimate Guide By Jennifer Eiss</a>
-    '                    '</h3>
-
-    '                    Dim sPattern As String = "<div class=""title-overflow""></div>.*?href=""(?<URL>.*?)"">(?<TITLE>.*?)</a>"
-    '                    Dim sResult As MatchCollection = Regex.Matches(Html, sPattern, RegexOptions.Singleline)
-    '                    For ctr As Integer = 0 To sResult.Count - 1
-    '                        If Not String.IsNullOrEmpty(sResult.Item(ctr).Groups(2).Value) AndAlso Not String.IsNullOrEmpty(sResult.Item(ctr).Groups(1).Value) Then
-    '                            traktpopularlistTitle.Add(sResult.Item(ctr).Groups(2).Value)
-    '                            traktpopularlistURL.Add(sResult.Item(ctr).Groups(1).Value)
-    '                            cbotraktListsfetch.Items.Add(sResult.Item(ctr).Groups(2).Value)
-    '                        End If
-    '                    Next
-    '                Else
-    '                    logger.Debug("[http://trakt.tv/lists/personal/popular/weekly] HTML could not be downloaded!")
-    '                End If
-    '            End If
-    '            cbotraktListsfetch.Enabled = True
-
-    '        Catch ex As Exception
-    '            logger.Error(New StackFrame().GetMethod().Name, ex)
-    '            cbotraktListsfetch.Enabled = False
-    '        End Try
-
-    '    End Sub
-    '    ''' <summary>
-    '    ''' Load selected traktlist into datagrid
-    '    ''' </summary>
-    '    ''' <param name="sender">"Load list" button of form</param>
-    '    ''' <returns></returns>
-    '    ''' <remarks>
-    '    ''' load userlist into datagrid
-    '    ''' 2014/10/12 Cocotus - First implementation
-    '    ''' </remarks>
-    '    Private Sub btntraktListsload_Click(sender As Object, e As EventArgs) Handles btntraktListsload.Click
-    '        'reset controls and labels
-    '        dgvtraktList.DataSource = Nothing
-    '        dgvtraktList.Rows.Clear()
-    '        chktraktListsCompare.Checked = False
-    '        btntraktListsSaveList.Enabled = False
-    '        btntraktListsSaveListCompare.Enabled = False
-    '        chktraktListsCompare.Enabled = False
-    '        lbltraktListsCount.Visible = False
-    '        lbltraktListsCount.Text = Master.eLang.GetString(794, "Search Results") & ": " & dgvtraktList.Rows.Count
-    '        'display description of list
-    '        lbltraktListsdescriptionloaded.Text = ""
-
-    '        Try
-    '            If Not String.IsNullOrEmpty(txttraktListsurl.Text) Then
-
-    '                favoriteList = Nothing
-
-    '                'Check if url is valid, i.e http://trakt.tv/user/codermike/lists/100-greatest-scifi-movies
-    '                Dim tmp As String = txttraktListsurl.Text
-    '                If tmp.IndexOf("user/") > 0 Then
-    '                    tmp = tmp.Remove(0, tmp.IndexOf("user/") + 5)
-    '                    Dim parts As String() = tmp.Split(New String() {"/"}, StringSplitOptions.None)
-    '                    If parts.Length = 3 Then
-    '                        favoriteList = TraktAPI.TrakttvAPI.GetUserList(parts(0), parts(2))
-    '                    Else
-    '                        logger.Info("[" & txttraktListsurl.Text & "] " & "Invalid URL!")
-    '                    End If
-    '                Else
-    '                    logger.Info("[" & txttraktListsurl.Text & "] " & "Invalid URL!")
-    '                End If
+#Region "Trakt.tv Listviewer"
+    ''' <summary>
+    ''' Download trakttv list(s) of your friend(s) and populate combobox with the list(s) of your friend(s)
+    ''' </summary>
+    ''' <param name="sender">"Load lists of your friends"-Button in Form</param>
+    ''' <remarks>
+    ''' 2015/01/01 Cocotus
+    ''' </remarks>
+    Private Sub btntraktListsGetFriends_Click(sender As Object, e As EventArgs) Handles btntraktListsGetFriends.Click
+        traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
+        If Not String.IsNullOrEmpty(traktToken) Then
+            cbotraktListsScraped.Items.Clear()
+            userLists.Clear()
+            userListURL.Clear()
+            userListTitle.Clear()
+            Dim traktFriends As IEnumerable(Of TraktAPI.Model.TraktNetworkFriend) = TrakttvAPI.GetNetworkFriends(traktUser)
+            Dim lstfriends As New List(Of TraktAPI.Model.TraktNetworkFriend)
+            For Each tmpfriend In lstfriends
+                userLists.Clear()
+                Dim traktList As IEnumerable(Of TraktAPI.Model.TraktListDetail) = Nothing
+                traktList = TrakttvAPI.GetUserLists(tmpfriend.User.Username)
+                If Not traktLists Is Nothing Then
+                    userLists.AddRange(traktList)
+                    For Each tmplist In userLists
+                        userListURL.Add("http://trakt.tv/users/" & tmpfriend.User.Username & "/lists/" & tmplist.Ids.Slug)
+                        userListTitle.Add(tmplist.Name)
+                    Next
+                End If
+            Next
+            For Each title In userListTitle
+                cbotraktListsScraped.Items.Add(title)
+            Next
+            If cbotraktListsScraped.Items.Count > 0 Then
+                cbotraktListsScraped.SelectedIndex = 0
+                cbotraktListsScraped.Enabled = True
+            End If
+        Else
+            logger.Debug("Trakt Token could not be generated!")
+        End If
+    End Sub
+    ''' <summary>
+    ''' Download trakttv list(s) of users you follow and populate combobox with the list(s)
+    ''' </summary>
+    ''' <param name="sender">"Load lists of your favorite users"-Button in Form</param>
+    ''' <remarks>
+    ''' 2015/01/01 Cocotus
+    ''' </remarks>
+    Private Sub btntraktListsGetFollowers_Click(sender As Object, e As EventArgs) Handles btntraktListsGetFollowers.Click
+        traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
+        If Not String.IsNullOrEmpty(traktToken) Then
+            cbotraktListsScraped.Items.Clear()
+            userListURL.Clear()
+            userListTitle.Clear()
+            Dim traktFollwing As IEnumerable(Of TraktAPI.Model.TraktNetworkUser) = TrakttvAPI.GetNetworkFollowing(traktUser)
+            Dim lstFollwing As New List(Of TraktAPI.Model.TraktNetworkUser)
+            lstFollwing.AddRange(traktFollwing)
+            For Each tmpfollwing In lstFollwing
+                userLists.Clear()
+                Dim traktList As IEnumerable(Of TraktAPI.Model.TraktListDetail) = Nothing
+                traktList = TrakttvAPI.GetUserLists(tmpfollwing.User.Username)
+                If Not traktLists Is Nothing Then
+                    userLists.AddRange(traktList)
+                    For Each tmplist In userLists
+                        userListURL.Add("http://trakt.tv/users/" & tmpfollwing.User.Username & "/lists/" & tmplist.Ids.Slug)
+                        userListTitle.Add(tmplist.Name)
+                    Next
+                End If
+            Next
+            For Each title In userListTitle
+                cbotraktListsScraped.Items.Add(title)
+            Next
+            If cbotraktListsScraped.Items.Count > 0 Then
+                cbotraktListsScraped.SelectedIndex = 0
+                cbotraktListsScraped.Enabled = True
+            End If
+        Else
+            logger.Debug("Trakt Token could not be generated!")
+        End If
+    End Sub
 
 
-    '                'Check if current userlist is valid and contains required data
-    '                If Not favoriteList Is Nothing AndAlso Not favoriteList.Name Is Nothing AndAlso Not favoriteList.Items Is Nothing Then
-    '                    '  lbtraktLists.Items.Clear()
+    ''' <summary>
+    ''' Download popular trakttv lists information and display URL and name of list for user
+    ''' </summary>
+    ''' <param name="sender">"Fetch lists"-Button in Form</param>
+    ''' <remarks>
+    ''' For now there's no official API support for getting general popular lists on trakt.tv. Therefore download HTML of URl and use Regex to get information needed
+    ''' 2014/10/31 Cocotus - First implementation
+    ''' 2015/01/01 Cocotus - Right now BROKEN!! Will be fixed when its available again on trak.tv!!
+    ''' </remarks>
+    Private Sub btntraktListsGetPopular_Click(sender As Object, e As EventArgs) Handles btntraktListsGetPopular.Click
 
-    '                    'fill rows
-    '                    'we map to dgv manually
-    '                    dgvtraktList.AutoGenerateColumns = False
-    '                    Dim debugcount As Integer = favoriteList.Items.Count - 1
-    '                    For i = favoriteList.Items.Count - 1 To 0 Step -1
-    '                        debugcount = debugcount - 1
-    '                        'if list contains movies (= not empty list)  check if there's only movies - Ember doesn't support episodes right now!
-    '                        If Not favoriteList.Items(i).Type Is Nothing AndAlso favoriteList.Items(i).Type = "movie" AndAlso Not favoriteList.Items(i).Title Is Nothing AndAlso favoriteList.Items(i).Title <> "" AndAlso Not favoriteList.Items(i).ImdbId Is Nothing AndAlso favoriteList.Items(i).ImdbId <> "" Then
-    '                            'valid movie!
-    '                            dgvtraktList.Rows.Add(New Object() {favoriteList.Items(i).Title, favoriteList.Items(i).Year, favoriteList.Items(i).Movie.Ratings.Percentage, Strings.Join(favoriteList.Items(i).Movie.Genres.ToArray, "/").Trim, "http://www.imdb.com/title/" & favoriteList.Items(i).Movie.IMDBID, favoriteList.Items(i).Movie.Trailer})
-    '                        Else
-    '                            logger.Info("[" & txttraktListsurl.Text & "] Movie with Index: " & debugcount.ToString & " Invalid entry could not be added. Not a valid movie!")
-    '                            favoriteList.Items.RemoveAt(i)
-    '                        End If
-    '                    Next
+        'Link to scrape list from
+        Dim SearchURL As String = "http://trakt.tv/lists/personal/popular/weekly"
 
-    '                    logger.Info("[" & txttraktListsurl.Text & "] " & "Userlist loaded!")
+        Dim sHTTP As New HTTP
+        Dim Html As String = sHTTP.DownloadData(SearchURL)
+        sHTTP = Nothing
 
-    '                    'after filling datagrid, enable controls
-    '                    chktraktListsCompare.Checked = False
-    '                    btntraktListsSaveList.Enabled = True
-    '                    btntraktListsSaveListCompare.Enabled = True
-    '                    chktraktListsCompare.Enabled = True
-    '                    lbltraktListsCount.Visible = True
-    '                    lbltraktListsCount.Text = Master.eLang.GetString(794, "Search Results") & ": " & dgvtraktList.Rows.Count
-    '                    'display description of list
-    '                    lbltraktListsdescriptionloaded.Text = favoriteList.Description
-    '                Else
-    '                    'invalid list, may contains episodes, invalid movie entrys!
-    '                    logger.Info("[" & txttraktListsurl.Text & "] " & "Invalid list! (episodes, invalid movie entries!)")
-    '                End If
+        If Not String.IsNullOrEmpty(Html) Then
+            cbotraktListsScraped.Items.Clear()
+            userLists.Clear()
+            userListTitle.Clear()
+            userListURL.Clear()
+            'use regexmatched to extract information
+            'Example of list information in HTML:
+            '<div class="title-overflow"></div>
+            '<a href="/user/listr/lists/500-essential-cult-movies-the-ultimate-guide-by-jennifer-eiss">500 Essential Cult Movies: The Ultimate Guide By Jennifer Eiss</a>
+            '</h3>
 
-    '            Else
-    '                logger.Info("Missing URL to list - no scraping possible!")
-    '            End If
-    '        Catch ex As Exception
-    '            logger.Error(New StackFrame().GetMethod().Name, ex)
-    '        End Try
-    '    End Sub
+            Dim sPattern As String = "<div class=""title-overflow""></div>.*?href=""(?<URL>.*?)"">(?<TITLE>.*?)</a>"
+            Dim sResult As MatchCollection = Regex.Matches(Html, sPattern, RegexOptions.Singleline)
+            For ctr As Integer = 0 To sResult.Count - 1
+                If Not String.IsNullOrEmpty(sResult.Item(ctr).Groups(2).Value) AndAlso Not String.IsNullOrEmpty(sResult.Item(ctr).Groups(1).Value) Then
+                    userListTitle.Add(sResult.Item(ctr).Groups(2).Value)
+                    userListURL.Add(sResult.Item(ctr).Groups(1).Value)
+                    cbotraktListsScraped.Items.Add(sResult.Item(ctr).Groups(2).Value)
+                End If
+            Next
+            If cbotraktListsScraped.Items.Count > 0 Then
+                cbotraktListsScraped.SelectedIndex = 0
+                cbotraktListsScraped.Enabled = True
+            End If
+        Else
+            logger.Debug("[http://trakt.tv/lists/personal/popular/weekly] HTML could not be downloaded!")
+        End If
 
-    '    ''' <summary>
-    '    ''' Trigger creation of HTML page which list all movies of the traktlist
-    '    ''' </summary>
-    '    ''' <remarks>
-    '    ''' 2014/10/24 Cocotus - First implementation
-    '    ''' For now a simple HTML page with basic information (Title,Trailerlink,IMDBlink,Year,Rating,Overview,Genres)
-    '    ''' </remarks>
-    '    Private Sub btntraktListsSaveList_Click(sender As Object, e As EventArgs) Handles btntraktListsSaveList.Click
-    '        Try
-    '            Dim HTMLPage As String = BuildHTML(favoriteList, False)
-    '            If Not String.IsNullOrEmpty(HTMLPage) Then
-    '                File.WriteAllText(Path.Combine(Master.TempPath, "index.html"), HTMLPage)
-    '                Functions.Launch(Path.Combine(Master.TempPath, "index.html"), True)
-    '            Else
-    '                logger.Info("HTMLPage could not be created!")
-    '            End If
-    '        Catch ex As Exception
-    '            logger.Error(New StackFrame().GetMethod().Name, ex)
-    '        End Try
-    '    End Sub
-    '    ''' <summary>
-    '    ''' Trigger creation of HTML page which list only unknown movies
-    '    ''' </summary>
-    '    ''' <returns>HTML page as string, if empty then there was an error during build process</returns>
-    '    ''' <remarks>
-    '    ''' 2014/10/24 Cocotus - First implementation
-    '    ''' For now a simple HTML page with basic information (Title,Trailerlink,IMDBlink,Year,Rating,Overview,Genres)
-    '    ''' </remarks>
-    '    Private Sub btntraktListsSaveListCompare_Click(sender As Object, e As EventArgs) Handles btntraktListsSaveListCompare.Click
-    '        Try
-    '            Dim HTMLPage As String = BuildHTML(favoriteList, True)
-    '            If Not String.IsNullOrEmpty(HTMLPage) Then
-    '                File.WriteAllText(Path.Combine(Master.TempPath, "index.html"), HTMLPage)
-    '                Functions.Launch(Path.Combine(Master.TempPath, "index.html"), True)
-    '            Else
-    '                logger.Info("HTMLPage could not be created!")
-    '            End If
-    '        Catch ex As Exception
-    '            logger.Error(New StackFrame().GetMethod().Name, ex)
-    '        End Try
-    '    End Sub
 
-    '    ''' <summary>
-    '    ''' Create HTML page to display traktlistitems (movies)
-    '    ''' </summary>
-    '    ''' <param name="list">loaded trakttv list</param>
-    '    ''' <param name="exportonlyunknownmovies">true=only movies which are not in Ember database will be used, false=all movies from list will be used</param>
-    '    ''' <returns>HTML page as string, if empty then there was an error during build process</returns>
-    '    ''' <remarks>
-    '    ''' 2014/10/24 Cocotus - First implementation
-    '    ''' For now a simple HTML page with basic information (Title,Trailerlink,IMDBlink,Year,Rating,Overview,Genres)
-    '    ''' </remarks>
-    '    Private Function BuildHTML(ByVal list As TraktAPI.Model.TraktUserList, ByVal exportonlyunknownmovies As Boolean) As String
-    '        Try
-    '            Dim HTML As String = ""
-    '            Dim HTMLHEADER As String = "<html><body><table><thead><tr><tr><th>" & Master.eLang.GetString(21, "Title") & "</th><th>" & Master.eLang.GetString(278, "Year") & "</th><th>" & Master.eLang.GetString(400, "Rating") & "</th><th>" & Master.eLang.GetString(20, "Genre") & "</th><th>" & Master.eLang.GetString(64, "Overview") & "</th><th>" & Master.eLang.GetString(885, "IMDB") & "</th><th>" & Master.eLang.GetString(151, "Trailer") & "</th></tr></thead>"
-    '            Dim HTMLDATAROW As String = ""
-    '            Dim HTMLFOOTER As String = "</table></body></html>"
+    End Sub
+    ''' <summary>
+    ''' Load selected traktlist into datagrid
+    ''' </summary>
+    ''' <param name="sender">"Load list" button of form</param>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' load userlist into datagrid
+    ''' 2014/10/12 Cocotus - First implementation
+    ''' 2015/01/25 Cocotus, Fixed for v2 API
+    ''' </remarks>
+    Private Sub btntraktListLoad_Click(sender As Object, e As EventArgs) Handles btntraktListLoad.Click
+        'reset controls and labels
+        chktraktListsCompare.Checked = False
+        dgvtraktList.DataSource = Nothing
+        dgvtraktList.Rows.Clear()
+        btntraktListsSaveList.Enabled = False
+        btntraktListsSaveListCompare.Enabled = False
+        chktraktListsCompare.Enabled = False
+        lbltraktListsCount.Visible = False
+        userListItems.Clear()
+        userList = Nothing
+        userLists.Clear()
+        'display description of list
+        lbltraktListDescriptionText.Text = ""
+        If Not String.IsNullOrEmpty(txttraktListURL.Text) Then
+            'Check if url is valid, i.e http://trakt.tv/users/nielsz/lists/active-imdb-top-250
+            Dim tmp As String = txttraktListURL.Text
+            If tmp.IndexOf("users/") > 0 Then
+                tmp = tmp.Remove(0, tmp.IndexOf("users/") + 6)
+                Dim parts As String() = tmp.Split(New String() {"/"}, StringSplitOptions.None)
+                If parts.Length = 3 Then
+                    traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
+                    If Not String.IsNullOrEmpty(traktToken) Then
+                        Dim traktListItems As IEnumerable(Of TraktAPI.Model.TraktListItem) = Nothing
+                        traktListItems = TrakttvAPI.GetUserListItems(parts(0), parts(2))
+                        If Not traktListItems Is Nothing Then
+                            userListItems.AddRange(traktListItems)
+                            Dim traktList As IEnumerable(Of TraktAPI.Model.TraktListDetail) = Nothing
+                            traktList = TrakttvAPI.GetUserLists(parts(0))
+                            If Not traktLists Is Nothing Then
+                                userLists.AddRange(traktList)
+                                For Each tmplist In userLists
+                                    If tmplist.Ids.Slug = parts(2) Then
+                                        userList = tmplist
+                                    End If
+                                Next
+                            End If
+                        End If
+                    Else
+                        logger.Info("Trakt Token could not be generated!")
+                    End If
+                Else
+                    logger.Info("[" & txttraktListURL.Text & "] " & "Invalid URL!")
+                End If
+            Else
+                logger.Info("[" & txttraktListURL.Text & "] " & "Invalid URL!")
+            End If
 
-    '            If exportonlyunknownmovies = True Then
-    '                Dim foundmovieinlibrary As Boolean = False
-    '                For Each item In favoriteList.Items
-    '                    'search movie in global moviedatatable
-    '                    For Each sRow As DataRow In dtMovies.Rows
-    '                        If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
-    '                            If item.Movie.IMDBID = "tt" & sRow.Item("IMDB").ToString Then
-    '                                foundmovieinlibrary = True
-    '                                Exit For
-    '                            End If
-    '                        Else
-    '                            logger.Info("[" & item.Title & "] " & "Movie Item is Nothing! Could not be compared against library!")
-    '                        End If
-    '                    Next
-    '                    If foundmovieinlibrary = False Then
-    '                        If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
-    '                            HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Title & "</td><td>" & item.Year & "</td><td>" & item.Movie.Ratings.Percentage & "</td><td>" & Strings.Join(item.Movie.Genres.ToArray, "/").Trim & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.IMDBID & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
-    '                        Else
-    '                            logger.Info("[" & item.Title & "] " & "Movie Item is Nothing! Could not be added to HTML!")
-    '                        End If
 
-    '                    Else
-    '                        logger.Info("[" & item.Title & "] " & "Movie already in library!")
-    '                    End If
-    '                Next
-    '            Else
-    '                For Each item In list.Items
-    '                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
-    '                        HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Title & "</td><td>" & item.Year & "</td><td>" & item.Movie.Ratings.Percentage & "</td><td>" & Strings.Join(item.Movie.Genres.ToArray, "/").Trim & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.IMDBID & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
-    '                    Else
-    '                        logger.Info("[" & item.Title & "] " & "Movie Item is Nothing! Could not be added to HTML!")
-    '                    End If
-    '                Next
-    '            End If
-    '            HTML = HTMLHEADER & HTMLDATAROW & HTMLFOOTER
-    '            Return HTML
-    '        Catch ex As Exception
-    '            logger.Error(New StackFrame().GetMethod().Name, ex)
-    '            Return ""
-    '        End Try
-    '    End Function
-    '    ''' <summary>
-    '    ''' Update datagridview and show either all entries of loaded list or only unknown movies
-    '    ''' </summary>
-    '    ''' <param name="list">Checked state changed event of checkbox</param>
-    '    ''' <returns></returns>
-    '    ''' <remarks>
-    '    ''' 2014/10/24 Cocotus - First implementation
-    '    ''' </remarks>
-    '    Private Sub chktraktListsCompare_CheckedChanged(sender As Object, e As EventArgs) Handles chktraktListsCompare.CheckedChanged
-    '        Try
-    '            dgvtraktList.DataSource = Nothing
-    '            dgvtraktList.Rows.Clear()
+            'Check if current userlist is valid and contains required data
+            If Not userListItems Is Nothing AndAlso Not userList Is Nothing Then
+                '  lbtraktLists.Items.Clear()
 
-    '            If chktraktListsCompare.Checked = True Then
-    '                Dim foundmovieinlibrary As Boolean = False
+                'fill rows
+                'we map to dgv manually
+                dgvtraktList.AutoGenerateColumns = False
+                Dim debugcount As Integer = userListItems.Count - 1
+                For i = userListItems.Count - 1 To 0 Step -1
+                    debugcount = debugcount - 1
+                    'if list contains movies (= not empty list)  check if there's only movies - Ember doesn't support episodes right now! 'userListItems(i).Movie.Rating.ToString '
+                    If Not userListItems(i).Type Is Nothing AndAlso userListItems(i).Type = "movie" AndAlso Not userListItems(i).Movie Is Nothing AndAlso Not userListItems(i).Movie.Title Is Nothing AndAlso userListItems(i).Movie.Title <> "" AndAlso Not userListItems(i).Movie.Ids Is Nothing AndAlso userListItems(i).Movie.Ids.Imdb <> "" Then
+                        'valid movie!
+                        If userListItems(i).Movie.Rating Is Nothing Then
+                            If userListItems(i).Movie.Genres Is Nothing Then
+                                dgvtraktList.Rows.Add(New Object() {userListItems(i).Movie.Title, userListItems(i).Movie.Year, "", "", "http://www.imdb.com/title/" & userListItems(i).Movie.Ids.Imdb, userListItems(i).Movie.Trailer})
+                            Else
+                                dgvtraktList.Rows.Add(New Object() {userListItems(i).Movie.Title, userListItems(i).Movie.Year, "", Strings.Join(userListItems(i).Movie.Genres.ToArray, "/").Trim, "http://www.imdb.com/title/" & userListItems(i).Movie.Ids.Imdb, userListItems(i).Movie.Trailer})
+                            End If
+                        Else
+                            If userListItems(i).Movie.Genres Is Nothing Then
+                                dgvtraktList.Rows.Add(New Object() {userListItems(i).Movie.Title, userListItems(i).Movie.Year, userListItems(i).Movie.Rating.ToString, "", "http://www.imdb.com/title/" & userListItems(i).Movie.Ids.Imdb, userListItems(i).Movie.Trailer})
+                            Else
+                                dgvtraktList.Rows.Add(New Object() {userListItems(i).Movie.Title, userListItems(i).Movie.Year, userListItems(i).Movie.Rating.ToString, Strings.Join(userListItems(i).Movie.Genres.ToArray, "/").Trim, "http://www.imdb.com/title/" & userListItems(i).Movie.Ids.Imdb, userListItems(i).Movie.Trailer})
+                            End If
 
-    '                For Each item In favoriteList.Items
-    '                    'search movie in globalist
-    '                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
-    '                        For Each sRow As DataRow In dtMovies.Rows
-    '                            If item.Movie.IMDBID = "tt" & sRow.Item("IMDB").ToString Then
-    '                                foundmovieinlibrary = True
-    '                                Exit For
-    '                            End If
-    '                        Next
-    '                    Else
-    '                        logger.Info("[" & item.Title & "] " & "Movie Item is Nothing! Could not be compared against library!")
-    '                    End If
+                        End If
 
-    '                    If foundmovieinlibrary = False Then
-    '                        If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
-    '                            dgvtraktList.Rows.Add(New Object() {item.Title, item.Year, item.Movie.Ratings.Percentage, Strings.Join(item.Movie.Genres.ToArray, "/").Trim, "http://www.imdb.com/title/" & item.Movie.IMDBID, item.Movie.Trailer})
-    '                        Else
-    '                            logger.Info("[" & item.Title & "] " & "Movie Item is Nothing! Could not be added to datagrid!")
-    '                        End If
-    '                    Else
-    '                        logger.Info("[" & item.Title & "] " & "Movie already in library!")
-    '                    End If
-    '                Next
-    '            Else
-    '                'fill rows
-    '                For Each item In favoriteList.Items
-    '                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
-    '                        dgvtraktList.Rows.Add(New Object() {item.Title, item.Year, item.Movie.Ratings.Percentage, Strings.Join(item.Movie.Genres.ToArray, "/").Trim, "http://www.imdb.com/title/" & item.Movie.IMDBID, item.Movie.Trailer})
-    '                    Else
-    '                        logger.Info("[" & item.Title & "] " & "Movie Item is Nothing! Could not be added to datagrid!")
-    '                    End If
-    '                Next
-    '            End If
+                    Else
+                        logger.Info("[" & txttraktListURL.Text & "] Movie with Index: " & debugcount.ToString & " Invalid entry could not be added. Not a valid movie!")
+                        userListItems.RemoveAt(i)
+                    End If
+                Next
 
-    '            lbltraktListsCount.Text = Master.eLang.GetString(794, "Search Results") & ": " & dgvtraktList.Rows.Count
-    '        Catch ex As Exception
-    '            logger.Error(New StackFrame().GetMethod().Name, ex)
-    '        End Try
+                logger.Info("[" & txttraktListURL.Text & "] " & "Userlist loaded!")
 
-    '    End Sub
+                'after filling datagrid, enable controls
+                btntraktListsSaveList.Enabled = True
+                btntraktListsSaveListCompare.Enabled = True
+                chktraktListsCompare.Enabled = True
+                lbltraktListsCount.Visible = True
+                lbltraktListsCount.Text = Master.eLang.GetString(794, "Search Results") & ": " & dgvtraktList.Rows.Count
+                'display description of list
+                If Not String.IsNullOrEmpty(userList.Description) Then
+                    lbltraktListDescriptionText.Text = userList.Description
+                End If
+            Else
+                'invalid list, may contains episodes, invalid movie entrys!
+                logger.Info("[" & txttraktListURL.Text & "] " & "Invalid list! (episodes, invalid movie entries!)")
+            End If
 
-    '    ''' <summary>
-    '    ''' Enable/Disable Loadlist button logic
-    '    ''' </summary>
-    '    ''' <param name="sender">Textchanged Event of URL textbox</param>
-    '    ''' <remarks>
-    '    ''' 2014/10/31 Cocotus - First implementation
-    '    Private Sub txttraktListsurl_TextChanged(sender As Object, e As EventArgs) Handles txttraktListsurl.TextChanged
-    '        If Not String.IsNullOrEmpty(txttraktListsurl.Text) Then
-    '            btntraktListsload.Enabled = True
-    '        Else
-    '            btntraktListsload.Enabled = False
-    '        End If
-    '    End Sub
+        Else
+            logger.Info("Missing URL to list - no scraping possible!")
+        End If
+    End Sub
 
-    '    ''' <summary>
-    '    ''' Open link in datagrid using default browser
-    '    ''' </summary>
-    '    ''' <param name="sender">Cell click event</param>
-    '    ''' <remarks>
-    '    ''' 2014/10/31 Cocotus - First implementation
-    '    Private Sub dgvtraktList_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvtraktList.CellContentClick
-    '        If e.RowIndex > -1 Then
-    '            If dgvtraktList(e.ColumnIndex, e.RowIndex).Value.ToString().StartsWith("http") Then
-    '                System.Diagnostics.Process.Start(dgvtraktList.CurrentCell.Value.ToString())
-    '            End If
-    '        End If
-    '    End Sub
+    ''' <summary>
+    ''' Trigger creation of HTML page which list all movies of the traktlist
+    ''' </summary>
+    ''' <remarks>
+    ''' 2014/10/24 Cocotus - First implementation
+    ''' For now a simple HTML page with basic information (Title,Trailerlink,IMDBlink,Year,Rating,Overview,Genres)
+    ''' </remarks>
+    Private Sub btntraktListsSaveList_Click(sender As Object, e As EventArgs) Handles btntraktListsSaveList.Click
 
-    '    ''' <summary>
-    '    ''' Set URL of selected popular list into URL-Textbox
-    '    ''' </summary>
-    '    ''' <param name="sender">Combobox Index Changed Event</param>
-    '    ''' <remarks>
-    '    ''' 2014/10/31 Cocotus - First implementation
-    '    ''' </remarks>
-    '    Private Sub cbotraktListsfetch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbotraktListsfetch.SelectedIndexChanged
-    '        Try
-    '            If Not String.IsNullOrEmpty(Me.cbotraktListsfetch.SelectedItem.ToString) Then
-    '                txttraktListsurl.Text = traktpopularlistURL.Item(cbotraktListsfetch.SelectedIndex)
-    '            End If
-    '        Catch ex As Exception
-    '            logger.Error(New StackFrame().GetMethod().Name, ex)
-    '        End Try
-    '    End Sub
+        Dim HTMLPage As String = BuildHTML(userListItems, False)
+        If Not String.IsNullOrEmpty(HTMLPage) Then
+            File.WriteAllText(Path.Combine(Master.TempPath, "index.html"), HTMLPage)
+            Functions.Launch(Path.Combine(Master.TempPath, "index.html"), True)
+        Else
+            logger.Info("HTMLPage could not be created!")
+        End If
 
-    '#End Region 'Trakt.tv Listviewer
+    End Sub
+    ''' <summary>
+    ''' Trigger creation of HTML page which list only unknown movies
+    ''' </summary>
+    ''' <returns>HTML page as string, if empty then there was an error during build process</returns>
+    ''' <remarks>
+    ''' 2014/10/24 Cocotus - First implementation
+    ''' For now a simple HTML page with basic information (Title,Trailerlink,IMDBlink,Year,Rating,Overview,Genres)
+    ''' </remarks>
+    Private Sub btntraktListsSaveListCompare_Click(sender As Object, e As EventArgs) Handles btntraktListsSaveListCompare.Click
+
+        Dim HTMLPage As String = BuildHTML(userListItems, True)
+        If Not String.IsNullOrEmpty(HTMLPage) Then
+            File.WriteAllText(Path.Combine(Master.TempPath, "index.html"), HTMLPage)
+            Functions.Launch(Path.Combine(Master.TempPath, "index.html"), True)
+        Else
+            logger.Info("HTMLPage could not be created!")
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Create HTML page to display traktlistitems (movies)
+    ''' </summary>
+    ''' <param name="list">loaded trakttv list</param>
+    ''' <param name="exportonlyunknownmovies">true=only movies which are not in Ember database will be used, false=all movies from list will be used</param>
+    ''' <returns>HTML page as string, if empty then there was an error during build process</returns>
+    ''' <remarks>
+    ''' 2014/10/24 Cocotus - First implementation
+    ''' For now a simple HTML page with basic information (Title,Trailerlink,IMDBlink,Year,Rating,Overview,Genres)
+    ''' </remarks>
+    Private Function BuildHTML(ByVal userlistitem As List(Of TraktAPI.Model.TraktListItem), ByVal exportonlyunknownmovies As Boolean) As String
+
+        Dim HTML As String = ""
+        Dim HTMLHEADER As String = "<html><body><table><thead><tr><tr><th>" & Master.eLang.GetString(21, "Title") & "</th><th>" & Master.eLang.GetString(278, "Year") & "</th><th>" & Master.eLang.GetString(400, "Rating") & "</th><th>" & Master.eLang.GetString(20, "Genre") & "</th><th>" & Master.eLang.GetString(64, "Overview") & "</th><th>" & Master.eLang.GetString(885, "IMDB") & "</th><th>" & Master.eLang.GetString(151, "Trailer") & "</th></tr></thead>"
+        Dim HTMLDATAROW As String = ""
+        Dim HTMLFOOTER As String = "</table></body></html>"
+
+        If exportonlyunknownmovies = True Then
+            Dim foundmovieinlibrary As Boolean = False
+            For Each item In userlistitem
+                'search movie in global moviedatatable
+                For Each sRow As DataRow In dtMovies.Rows
+                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                        If item.Movie.Ids.Imdb = "tt" & sRow.Item("IMDB").ToString Then
+                            foundmovieinlibrary = True
+                            Exit For
+                        End If
+                    Else
+                        logger.Info("[" & item.Movie.Title & "] " & "Movie Item is Nothing! Could not be compared against library!")
+                    End If
+                Next
+                If foundmovieinlibrary = False Then
+                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                        If item.Movie.Rating Is Nothing Then
+                            If item.Movie.Genres Is Nothing Then
+                                HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & "" & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
+                            Else
+                                HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & Strings.Join(item.Movie.Genres.ToArray, "/").Trim & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
+                            End If
+                        Else
+                            If item.Movie.Genres Is Nothing Then
+                                HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & item.Movie.Rating.ToString & "</td><td>" & "" & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
+                            Else
+                                HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & item.Movie.Rating.ToString & "</td><td>" & Strings.Join(item.Movie.Genres.ToArray, "/").Trim & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
+                            End If
+                        End If
+                    Else
+                        logger.Info("[" & item.Movie.Title & "] " & "Movie Item is Nothing! Could not be added to HTML!")
+                    End If
+
+                Else
+                    logger.Info("[" & item.Movie.Title & "] " & "Movie already in library!")
+                End If
+            Next
+        Else
+            For Each item In userlistitem
+                If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                    If item.Movie.Rating Is Nothing Then
+                        If item.Movie.Genres Is Nothing Then
+                            HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & "" & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
+                        Else
+                            HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & Strings.Join(item.Movie.Genres.ToArray, "/").Trim & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
+                        End If
+                    Else
+                        If item.Movie.Genres Is Nothing Then
+                            HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & item.Movie.Rating.ToString & "</td><td>" & "" & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
+                        Else
+                            HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & item.Movie.Rating.ToString & "</td><td>" & Strings.Join(item.Movie.Genres.ToArray, "/").Trim & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
+                        End If
+                    End If
+                Else
+                    logger.Info("[" & item.Movie.Title & "] " & "Movie Item is Nothing! Could not be added to HTML!")
+                End If
+
+            Next
+        End If
+        HTML = HTMLHEADER & HTMLDATAROW & HTMLFOOTER
+        Return HTML
+    End Function
+    ''' <summary>
+    ''' Update datagridview and show either all entries of loaded list or only unknown movies
+    ''' </summary>
+    ''' <param name="list">Checked state changed event of checkbox</param>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' 2014/10/24 Cocotus - First implementation
+    ''' </remarks>
+    Private Sub chktraktListsCompare_CheckedChanged(sender As Object, e As EventArgs) Handles chktraktListsCompare.CheckedChanged
+
+        dgvtraktList.DataSource = Nothing
+        dgvtraktList.Rows.Clear()
+
+        If chktraktListsCompare.Checked = True Then
+            Dim foundmovieinlibrary As Boolean = False
+
+            For Each item In userListItems
+                'search movie in globalist
+                If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                    For Each sRow As DataRow In dtMovies.Rows
+                        If item.Movie.Ids.Imdb = "tt" & sRow.Item("IMDB").ToString Then
+                            foundmovieinlibrary = True
+                            Exit For
+                        End If
+                    Next
+                Else
+                    logger.Info("[" & item.Movie.Title & "] " & "Movie Item is Nothing! Could not be compared against library!")
+                End If
+
+                If foundmovieinlibrary = False Then
+                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                        'valid movie!
+                        If item.Movie.Rating Is Nothing Then
+                            If item.Movie.Genres Is Nothing Then
+                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", "", "http://www.imdb.com/title/" & item.Movie.Ids.Imdb, item.Movie.Trailer})
+                            Else
+                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", Strings.Join(item.Movie.Genres.ToArray, "/").Trim, "http://www.imdb.com/title/" & item.Movie.Ids.Imdb, item.Movie.Trailer})
+                            End If
+                        Else
+                            If item.Movie.Genres Is Nothing Then
+                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, item.Movie.Rating.ToString, "", "http://www.imdb.com/title/" & item.Movie.Ids.Imdb, item.Movie.Trailer})
+                            Else
+                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, item.Movie.Rating.ToString, Strings.Join(item.Movie.Genres.ToArray, "/").Trim, "http://www.imdb.com/title/" & item.Movie.Ids.Imdb, item.Movie.Trailer})
+                            End If
+
+                        End If
+                    Else
+                        logger.Info("[" & item.Movie.Title & "] " & "Movie Item is Nothing! Could not be added to datagrid!")
+                    End If
+                Else
+                    logger.Info("[" & item.Movie.Title & "] " & "Movie already in library!")
+                End If
+            Next
+        Else
+            'fill rows
+            For Each item In userListItems
+                If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                    'valid movie!
+                    If item.Movie.Rating Is Nothing Then
+                        If item.Movie.Genres Is Nothing Then
+                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", "", "http://www.imdb.com/title/" & item.Movie.Ids.Imdb, item.Movie.Trailer})
+                        Else
+                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", Strings.Join(item.Movie.Genres.ToArray, "/").Trim, "http://www.imdb.com/title/" & item.Movie.Ids.Imdb, item.Movie.Trailer})
+                        End If
+                    Else
+                        If item.Movie.Genres Is Nothing Then
+                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, item.Movie.Rating.ToString, "", "http://www.imdb.com/title/" & item.Movie.Ids.Imdb, item.Movie.Trailer})
+                        Else
+                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, item.Movie.Rating.ToString, Strings.Join(item.Movie.Genres.ToArray, "/").Trim, "http://www.imdb.com/title/" & item.Movie.Ids.Imdb, item.Movie.Trailer})
+                        End If
+
+                    End If
+                Else
+                    logger.Info("[" & item.Movie.Title & "] " & "Movie Item is Nothing! Could not be added to datagrid!")
+                End If
+            Next
+        End If
+
+        lbltraktListsCount.Text = Master.eLang.GetString(794, "Search Results") & ": " & dgvtraktList.Rows.Count
+    End Sub
+
+    ''' <summary>
+    ''' Enable/Disable Loadlist button logic
+    ''' </summary>
+    ''' <param name="sender">Textchanged Event of URL textbox</param>
+    ''' <remarks>
+    ''' 2014/10/31 Cocotus - First implementation
+    Private Sub txttraktListsurl_TextChanged(sender As Object, e As EventArgs) Handles txttraktListURL.TextChanged
+        btntraktListRemoveFavorite.Enabled = False
+        If Not String.IsNullOrEmpty(txttraktListURL.Text) Then
+            btntraktListLoad.Enabled = True
+ 
+            If Not String.IsNullOrEmpty(cbotraktListsScraped.Text) Then
+                btntraktListSaveFavorite.Enabled = True          
+            End If
+            Dim mylists As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+            If Not IsNothing(mylists) Then
+                Using settings = New clsAdvancedSettings()
+                    For Each sett In mylists
+                        If sett.Value = txttraktListURL.Text Then
+                            btntraktListRemoveFavorite.Enabled = True
+                        End If
+                    Next
+                End Using
+            End If
+        Else
+            btntraktListLoad.Enabled = False
+            btntraktListSaveFavorite.Enabled = False
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Open link in datagrid using default browser
+    ''' </summary>
+    ''' <param name="sender">Cell click event</param>
+    ''' <remarks>
+    ''' 2014/10/31 Cocotus - First implementation
+    Private Sub dgvtraktList_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvtraktList.CellContentClick
+        If e.RowIndex > -1 Then
+            If dgvtraktList(e.ColumnIndex, e.RowIndex).Value.ToString().StartsWith("http") Then
+                System.Diagnostics.Process.Start(dgvtraktList.CurrentCell.Value.ToString())
+            End If
+        End If
+    End Sub
+
+
+    ''' <summary>
+    ''' Populate URL Textbox with your selected saved trakt.tv list
+    ''' </summary>
+    ''' <param name="sender">SelectionChanged Event of favorite list combobox</param>
+    ''' <remarks>
+    ''' 2015/01/01 Cocotus
+    ''' </remarks>
+    Private Sub cbotraktListsFavorites_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbotraktListsFavorites.SelectedIndexChanged
+        Dim mylists As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+        If Not IsNothing(mylists) Then
+            Using settings = New clsAdvancedSettings()
+                For Each sett In mylists
+                    If sett.Name = cbotraktListsFavorites.SelectedItem.ToString Then
+                        txttraktListURL.Text = sett.Value
+                        btntraktListRemoveFavorite.Enabled = True
+                    End If
+                Next
+            End Using
+        End If
+    End Sub
+
+
+
+    ''' <summary>
+    ''' Populate URL Textbox with your selected trakt.tv list
+    ''' </summary>
+    ''' <param name="sender">SelectionChanged Event of favorite list combobox</param>
+    ''' <remarks>
+    ''' 2015/01/01 Cocotus
+    ''' </remarks>
+    Private Sub cbotraktListsScraped_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbotraktListsScraped.SelectedIndexChanged
+        If Not String.IsNullOrEmpty(Me.cbotraktListsScraped.SelectedItem.ToString) Then
+            txttraktListURL.Text = userListURL.Item(cbotraktListsScraped.SelectedIndex)
+        End If
+    End Sub
+#End Region 'Trakt.tv Listviewer
 
 #End Region 'Methods
 

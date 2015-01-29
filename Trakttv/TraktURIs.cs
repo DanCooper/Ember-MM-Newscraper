@@ -62,6 +62,12 @@ namespace Trakttv
 
         public const string ShowSeasons = "http://api.trakt.tv/shows/{0}/seasons?extended=full,images";
         public const string SeasonEpisodes = "http://api.trakt.tv/shows/{0}/seasons/{1}?extended=full,images";
+
+        // Friends/Followers requests
+        public const string GETNetworkFriends = "http://api.trakt.tv/users/{0}/friends?extended=full,images";
+        public const string GETNetworkFollowers = "http://api.trakt.tv/users/{0}/followers?extended=full,images";
+        public const string GETNetworkFollowing = "http://api.trakt.tv/users/{0}/following?extended=full,images";
+
         #endregion
     }
 }
