@@ -614,6 +614,7 @@ Namespace MediaContainers
         Private _votes As String
         Private _mpaa As String
         Private _certifications As New List(Of String)
+        Private _tags As New List(Of String)
         Private _genres As New List(Of String)
         Private _studios As New List(Of String)
         Private _directors As New List(Of String)
@@ -942,6 +943,20 @@ Namespace MediaContainers
             Get
                 Return Me._certifications.Count > 0
             End Get
+        End Property
+
+        <XmlElement("tag")> _
+        Public Property Tags() As List(Of String)
+            Get
+                Return _tags
+            End Get
+            Set(ByVal value As List(Of String))
+                If IsNothing(value) Then
+                    _tags.Clear()
+                Else
+                    _tags = value
+                End If
+            End Set
         End Property
 
         <XmlElement("genre")> _
@@ -1627,6 +1642,7 @@ Namespace MediaContainers
             Me._directors.Clear()
             Me._fanart = New Fanart
             Me._fileInfo = New MediaInfo.Fileinfo
+            Me._tags.Clear()
             Me._genres.Clear()
             Me._lev = 0
             Me._mpaa = String.Empty
@@ -1670,6 +1686,7 @@ Namespace MediaContainers
             Me._tagline = String.Empty
             Me._trailer = String.Empty
             Me._certifications.Clear()
+            Me._tags.Clear()
             Me._genres.Clear()
             Me._runtime = String.Empty
             Me._releaseDate = String.Empty
@@ -1815,6 +1832,7 @@ Namespace MediaContainers
 
 #Region "Fields"
 
+        Private _id As Long
         Private _name As String
         Private _role As String
         Private _thumb As String
@@ -1840,6 +1858,15 @@ Namespace MediaContainers
 #End Region 'Constructors
 
 #Region "Properties"
+
+        Public Property ID() As Long
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal Value As Long)
+                Me._id = Value
+            End Set
+        End Property
 
         <XmlElement("name")> _
         Public Property Name() As String
@@ -1876,6 +1903,7 @@ Namespace MediaContainers
 #Region "Methods"
 
         Public Sub Clean()
+            Me._id = -1
             Me._name = String.Empty
             Me._role = String.Empty
             Me._thumb = String.Empty
@@ -1991,6 +2019,7 @@ Namespace MediaContainers
         Private _actors As New List(Of Person)
         Private _boxeeTvDb As String
         Private _status As String
+        Private _tags As New List(Of String)
         Private _votes As String
 
 #End Region 'Fields
@@ -2237,6 +2266,20 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("tag")> _
+        Public Property Tags() As List(Of String)
+            Get
+                Return _tags
+            End Get
+            Set(ByVal value As List(Of String))
+                If IsNothing(value) Then
+                    _tags.Clear()
+                Else
+                    _tags = value
+                End If
+            End Set
+        End Property
+
         <XmlElement("runtime")> _
         Public Property Runtime() As String
             Get
@@ -2318,6 +2361,7 @@ Namespace MediaContainers
             _votes = String.Empty
             _actors.Clear()
             _episodeguide.URL = String.Empty
+            _tags.Clear()
         End Sub
 
         Public Sub BlankId()

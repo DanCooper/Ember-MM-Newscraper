@@ -538,7 +538,7 @@ Public Class frmMain
             Dim dRow = From drvRow In dtMovies.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT Mark, SortTitle FROM Movies WHERE ID = ", iID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT Mark, SortTitle FROM movie WHERE idMovie = ", iID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     SQLreader.Read()
                     DirectCast(dRow(0), DataRow).Item(11) = Convert.ToBoolean(SQLreader("mark"))
@@ -644,7 +644,7 @@ Public Class frmMain
         Try
             Dim table As New DataTable
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "Select * from Movies;"
+                SQLcommand.CommandText = "Select * from movie;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     'Load the SqlDataReader object to the DataTable object as follows. 
                     table.Load(SQLreader)
@@ -8694,51 +8694,46 @@ doCancel:
     End Sub
 
     Private Sub DoTitleCheck()
-        Try
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = "UPDATE movie SET OutOfTolerance = (?) WHERE idMovie = (?);"
+                Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
+                Dim par_idMovie As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_idMovie", DbType.Int32, 0, "idMovie")
+                Dim LevFail As Boolean = False
+                Dim pTitle As String = String.Empty
+                For Each drvRow As DataGridViewRow In Me.dgvMovies.Rows
 
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = "UPDATE movies SET OutOfTolerance = (?) WHERE ID = (?);"
-                    Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
-                    Dim LevFail As Boolean = False
-                    Dim pTitle As String = String.Empty
-                    For Each drvRow As DataGridViewRow In Me.dgvMovies.Rows
-
-                        If Master.eSettings.MovieLevTolerance > 0 Then
-                            If FileUtils.Common.isVideoTS(drvRow.Cells(1).Value.ToString) Then
-                                pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).Name
-                            ElseIf FileUtils.Common.isBDRip(drvRow.Cells(1).Value.ToString) Then
-                                pTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).FullName).Name
-                            Else
-                                If Convert.ToBoolean(drvRow.Cells(43).FormattedValue) AndAlso Convert.ToBoolean(drvRow.Cells(2).FormattedValue) Then
-                                    pTitle = Directory.GetParent(drvRow.Cells(1).Value.ToString).Name
-                                Else
-                                    pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value.ToString)
-                                End If
-                            End If
-
-                            LevFail = StringUtils.ComputeLevenshtein(StringUtils.FilterName_Movie(drvRow.Cells(15).Value.ToString, False, True).ToLower, StringUtils.FilterName_Movie(pTitle, False, True).ToLower) > Master.eSettings.MovieLevTolerance
-
-                            parOutOfTolerance.Value = LevFail
-                            drvRow.Cells(44).Value = LevFail
-                            parID.Value = drvRow.Cells(0).Value
+                    If Master.eSettings.MovieLevTolerance > 0 Then
+                        If FileUtils.Common.isVideoTS(drvRow.Cells(1).Value.ToString) Then
+                            pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).Name
+                        ElseIf FileUtils.Common.isBDRip(drvRow.Cells(1).Value.ToString) Then
+                            pTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).FullName).Name
                         Else
-                            parOutOfTolerance.Value = False
-                            drvRow.Cells(44).Value = False
-                            parID.Value = drvRow.Cells(0).Value
+                            If Convert.ToBoolean(drvRow.Cells(43).FormattedValue) AndAlso Convert.ToBoolean(drvRow.Cells(2).FormattedValue) Then
+                                pTitle = Directory.GetParent(drvRow.Cells(1).Value.ToString).Name
+                            Else
+                                pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value.ToString)
+                            End If
                         End If
-                        SQLcommand.ExecuteNonQuery()
-                    Next
-                End Using
 
-                SQLtransaction.Commit()
+                        LevFail = StringUtils.ComputeLevenshtein(StringUtils.FilterName_Movie(drvRow.Cells(15).Value.ToString, False, True).ToLower, StringUtils.FilterName_Movie(pTitle, False, True).ToLower) > Master.eSettings.MovieLevTolerance
+
+                        parOutOfTolerance.Value = LevFail
+                        drvRow.Cells(44).Value = LevFail
+                        par_idMovie.Value = drvRow.Cells(0).Value
+                    Else
+                        parOutOfTolerance.Value = False
+                        drvRow.Cells(44).Value = False
+                        par_idMovie.Value = drvRow.Cells(0).Value
+                    End If
+                    SQLcommand.ExecuteNonQuery()
+                Next
             End Using
 
-            Me.dgvMovies.Invalidate()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            SQLtransaction.Commit()
+        End Using
+
+        Me.dgvMovies.Invalidate()
     End Sub
 
     Sub dtListUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
@@ -9008,35 +9003,34 @@ doCancel:
     ''' <param name="doTVShows">reload tv shows</param>
     ''' <remarks></remarks>
     Private Sub FillList(ByVal doMovies As Boolean, ByVal doMovieSets As Boolean, ByVal doTVShows As Boolean)
-        Try
-            If doMovies Then
-                Me.bsMovies.DataSource = Nothing
-                Me.dgvMovies.DataSource = Nothing
-                Me.ClearInfo()
-                If Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
-                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, ", _
-                                                                      "HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, ", _
-                                                                      "Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
-                                                                      "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, ", _
-                                                                      "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, ", _
-                                                                      "VideoSource, NeedsSave, SortTitle, DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, ", _
-                                                                      "HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
-                                                                      "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, DateModified, ", _
-                                                                      "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movies WHERE ID IN ", _
-                                                                      "(SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch_Movies, "%') ORDER BY ListTitle COLLATE NOCASE;"))
-                ElseIf Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
-                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, ", _
+        If doMovies Then
+            Me.bsMovies.DataSource = Nothing
+            Me.dgvMovies.DataSource = Nothing
+            Me.ClearInfo()
+            If Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
+                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT idMovie, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, ", _
+                                                                  "HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, ", _
+                                                                  "Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
+                                                                  "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, ", _
+                                                                  "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, ", _
+                                                                  "VideoSource, NeedsSave, SortTitle, DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, ", _
+                                                                  "HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
+                                                                  "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, DateModified, ", _
+                                                                  "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movie WHERE ID IN ", _
+                                                                  "(SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch_Movies, "%') ORDER BY ListTitle COLLATE NOCASE;"))
+            ElseIf Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
+                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT idMovie, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, ", _
                                                                       "HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, ", _
                                                                       "MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                                       "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
                                                                       "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdded, ", _
                                                                       "HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
                                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, DateModified, ", _
-                                                                      "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movies ", _
+                                                                      "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movie ", _
                                                                       "WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch_Movies, "%') ORDER BY ListTitle COLLATE NOCASE;"))
-                Else
-                    If Me.chkFilterDuplicates_Movies.Checked Then
-                        Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, ", _
+            Else
+                If Me.chkFilterDuplicates_Movies.Checked Then
+                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT idMovie, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, ", _
                                                                            "HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, ", _
                                                                            "Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                                            "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
@@ -9044,10 +9038,10 @@ doCancel:
                                                                            "DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
                                                                            "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, ", _
                                                                            "TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet ", _
-                                                                           "FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb ", _
+                                                                           "FROM movie WHERE imdb IN (SELECT imdb FROM movie WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb ", _
                                                                            "HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;"))
-                    Else
-                        Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, ", _
+                Else
+                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT idMovie, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, ", _
                                                                            "HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, ", _
                                                                            "Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                                            "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
@@ -9055,39 +9049,35 @@ doCancel:
                                                                            "DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
                                                                            "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, ", _
                                                                            "TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet ", _
-                                                                           "FROM movies ORDER BY ListTitle COLLATE NOCASE;"))
-                    End If
+                                                                           "FROM movie ORDER BY ListTitle COLLATE NOCASE;"))
                 End If
             End If
+        End If
 
+        If doMovieSets Then
+            Me.bsMovieSets.DataSource = Nothing
+            Me.dgvMovieSets.DataSource = Nothing
+            Me.ClearInfo()
+            Master.DB.FillDataTable(Me.dtMovieSets, String.Concat("SELECT Sets.ID, Sets.ListTitle, Sets.HasNfo, Sets.NfoPath, Sets.HasPoster, Sets.PosterPath, Sets.HasFanart, ", _
+                                                                       "Sets.FanartPath, Sets.HasBanner, Sets.BannerPath, Sets.HasLandscape, Sets.LandscapePath, Sets.HasDiscArt, ", _
+                                                                       "Sets.DiscArtPath, Sets.HasClearLogo, Sets.ClearLogoPath, Sets.HasClearArt, Sets.ClearArtPath, Sets.TMDBColID, ", _
+                                                                       "Sets.Plot, Sets.SetName, Sets.New, Sets.Mark, Sets.Lock, COUNT(MoviesSets.MovieID) AS 'Count' FROM Sets ", _
+                                                                       "LEFT OUTER JOIN MoviesSets ON Sets.ID = MoviesSets.SetID GROUP BY Sets.ID ORDER BY Sets.ListTitle COLLATE NOCASE;"))
+        End If
 
-
-            If doMovieSets Then
-                Me.bsMovieSets.DataSource = Nothing
-                Me.dgvMovieSets.DataSource = Nothing
-                Me.ClearInfo()
-                Master.DB.FillDataTable(Me.dtMovieSets, String.Concat("SELECT Sets.ID, Sets.ListTitle, Sets.HasNfo, Sets.NfoPath, Sets.HasPoster, Sets.PosterPath, Sets.HasFanart, ", _
-                                                                           "Sets.FanartPath, Sets.HasBanner, Sets.BannerPath, Sets.HasLandscape, Sets.LandscapePath, Sets.HasDiscArt, ", _
-                                                                           "Sets.DiscArtPath, Sets.HasClearLogo, Sets.ClearLogoPath, Sets.HasClearArt, Sets.ClearArtPath, Sets.TMDBColID, ", _
-                                                                           "Sets.Plot, Sets.SetName, Sets.New, Sets.Mark, Sets.Lock, COUNT(MoviesSets.MovieID) AS 'Count' FROM Sets ", _
-                                                                           "LEFT OUTER JOIN MoviesSets ON Sets.ID = MoviesSets.SetID GROUP BY Sets.ID ORDER BY Sets.ListTitle COLLATE NOCASE;"))
-            End If
-
-
-
-            If doTVShows Then
-                Me.bsShows.DataSource = Nothing
-                Me.dgvTVShows.DataSource = Nothing
-                Me.bsSeasons.DataSource = Nothing
-                Me.dgvTVSeasons.DataSource = Nothing
-                Me.bsEpisodes.DataSource = Nothing
-                Me.dgvTVEpisodes.DataSource = Nothing
-                Me.ClearInfo()
-                Master.DB.FillDataTable(Me.dtShows, String.Concat("SELECT ID, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, ", _
-                                                                           "Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, ", _
-                                                                           "HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, ", _
-                                                                           "HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes FROM TVShows ORDER BY ListTitle COLLATE NOCASE;"))
-            End If
+        If doTVShows Then
+            Me.bsShows.DataSource = Nothing
+            Me.dgvTVShows.DataSource = Nothing
+            Me.bsSeasons.DataSource = Nothing
+            Me.dgvTVSeasons.DataSource = Nothing
+            Me.bsEpisodes.DataSource = Nothing
+            Me.dgvTVEpisodes.DataSource = Nothing
+            Me.ClearInfo()
+            Master.DB.FillDataTable(Me.dtShows, String.Concat("SELECT ID, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, ", _
+                                                                       "Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, ", _
+                                                                       "HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, ", _
+                                                                       "HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath, Runtime, Title, Votes FROM TVShows ORDER BY ListTitle COLLATE NOCASE;"))
+        End If
 
 
             If Master.isCL Then
@@ -9540,11 +9530,6 @@ doCancel:
                     Me.ClearInfo()
                 End If
             End If
-
-        Catch ex As Exception
-            Me.LoadingDone = True
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
 
         If Not Master.isCL Then
             Me.mnuUpdate.Enabled = True
@@ -17612,7 +17597,7 @@ doCancel:
                 Me.cmnuTrayMovieFilterAskTrailer.Enabled = TrailerAllowed_Movie
 
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS mcount FROM movie WHERE mark = 1;")
                     Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         SQLcount.Read()
                         If SQLcount.HasRows AndAlso Convert.ToInt32(SQLcount("mcount")) > 0 Then
