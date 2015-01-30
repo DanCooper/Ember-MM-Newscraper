@@ -507,10 +507,10 @@ Public Class FileFolderRenamer
                         'last step: get a list of all episodes
                         Dim aEpisodesList As New List(Of Integer)
                         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            SQLNewcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", _tv.ShowID, ";")
+                            SQLNewcommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", _tv.ShowID, ";")
                             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                                 While SQLReader.Read
-                                    If Not aEpisodesList.Contains(Convert.ToInt32(SQLReader("ID"))) Then aEpisodesList.Add(Convert.ToInt32(SQLReader("ID")))
+                                    If Not aEpisodesList.Contains(Convert.ToInt32(SQLReader("idEpisode"))) Then aEpisodesList.Add(Convert.ToInt32(SQLReader("idEpisode")))
                                 End While
                             End Using
                             aEpisodesList.Sort()
@@ -746,7 +746,7 @@ Public Class FileFolderRenamer
                 'first step: get a list of all seasons
                 Dim aSeasonsList As New List(Of Integer)
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT Season FROM TVEps WHERE TVEpPathID = ", _tmpTVEpisode.FilenameID, ";")
+                    SQLNewcommand.CommandText = String.Concat("SELECT Season FROM episode WHERE TVEpPathID = ", _tmpTVEpisode.FilenameID, ";")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
                             If Not aSeasonsList.Contains(Convert.ToInt32(SQLReader("Season"))) Then aSeasonsList.Add(Convert.ToInt32(SQLReader("Season")))
@@ -759,11 +759,11 @@ Public Class FileFolderRenamer
                 For Each aSeason As Integer In aSeasonsList
                     Dim aEpisodesList As New List(Of Episode)
                     Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLNewcommand.CommandText = String.Concat("SELECT ID, Episode, Title FROM TVEps WHERE TVEpPathID = ", _tmpTVEpisode.FilenameID, " AND Season = ", aSeason, ";")
+                        SQLNewcommand.CommandText = String.Concat("SELECT idEpisode, Episode, Title FROM episode WHERE TVEpPathID = ", _tmpTVEpisode.FilenameID, " AND Season = ", aSeason, ";")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                             While SQLReader.Read
                                 Dim aEpisode As New Episode
-                                aEpisode.ID = Convert.ToInt32(SQLReader("ID"))
+                                aEpisode.ID = Convert.ToInt32(SQLReader("idEpisode"))
                                 aEpisode.Episode = Convert.ToInt32(SQLReader("Episode"))
                                 aEpisode.Title = SQLReader("Title").ToString
                                 aEpisodesList.Add(aEpisode)
@@ -1545,9 +1545,9 @@ Public Class FileFolderRenamer
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 If String.IsNullOrEmpty(tvSource) Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0 AND New = 1;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE Missing = 0 AND New = 1;")
                 Else
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0 AND New = 1 AND Source = '", tvSource, "';")
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE Missing = 0 AND New = 1 AND Source = '", tvSource, "';")
                 End If
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
@@ -1555,20 +1555,20 @@ Public Class FileFolderRenamer
                     End If
                 End Using
                 If String.IsNullOrEmpty(tvSource) Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 AND New = 1 ORDER BY TVShowID ASC, Season ASC, Episode ASC;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE Missing = 0 AND New = 1 ORDER BY idShow ASC, Season ASC, Episode ASC;")
                 Else
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 AND New = 1 AND Source = '", tvSource, "' ORDER BY TVShowID ASC, Season ASC, Episode ASC;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE Missing = 0 AND New = 1 AND Source = '", tvSource, "' ORDER BY idShow ASC, Season ASC, Episode ASC;")
                 End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             Try
-                                If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("id")) Then
+                                If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("idEpisode")) Then
                                     _tmpPath = SQLreader("NfoPath").ToString
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
 
                                         EpisodeFile = New FileFolderRenamer.FileRename
-                                        _currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(SQLreader("id")), True)
+                                        _currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(SQLreader("idEpisode")), True)
 
                                         If Not _currShow.EpID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
                                             'Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))

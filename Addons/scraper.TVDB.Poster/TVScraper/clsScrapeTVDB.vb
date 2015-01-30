@@ -216,9 +216,9 @@ Public Class Scraper
 
                 Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If OnlySeason = 999 Then
-                        SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
+                        SQLCount.CommandText = String.Concat("SELECT COUNT(idEpisode) AS eCount FROM episode WHERE idShow = ", _ID, " AND Missing = 0;")
                     Else
-                        SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, " AND Season = ", OnlySeason, " AND Missing = 0;")
+                        SQLCount.CommandText = String.Concat("SELECT COUNT(idEpisode) AS eCount FROM episode WHERE idShow = ", _ID, " AND Season = ", OnlySeason, " AND Missing = 0;")
                     End If
                     Using SQLRCount As SQLite.SQLiteDataReader = SQLCount.ExecuteReader
                         If SQLRCount.HasRows Then
@@ -226,13 +226,13 @@ Public Class Scraper
                             If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
                                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                                     If OnlySeason = 999 Then
-                                        SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
+                                        SQLCommand.CommandText = String.Concat("SELECT idEpisode, Lock FROM episode WHERE idShow = ", _ID, " AND Missing = 0;")
                                     Else
-                                        SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Season = ", OnlySeason, " AND Missing = 0;")
+                                        SQLCommand.CommandText = String.Concat("SELECT idEpisode, Lock FROM episode WHERE idShow = ", _ID, " AND Season = ", OnlySeason, " AND Missing = 0;")
                                     End If
                                     Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                         While SQLReader.Read
-                                            tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))
+                                            tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("idEpisode")), True))
                                         End While
                                     End Using
                                 End Using
@@ -837,9 +837,9 @@ Public Class Scraper
                 'clear old missing episode from db
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If onlyScrapeSeason <> 999 Then
-                        SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND Season = ", onlyScrapeSeason, " AND TVShowID = ", Master.currShow.ShowID, ";")
+                        SQLCommand.CommandText = String.Concat("DELETE FROM episode WHERE Missing = 1 AND Season = ", onlyScrapeSeason, " AND idShow = ", Master.currShow.ShowID, ";")
                     Else
-                        SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND TVShowID = ", Master.currShow.ShowID, ";")
+                        SQLCommand.CommandText = String.Concat("DELETE FROM episode WHERE Missing = 1 AND idShow = ", Master.currShow.ShowID, ";")
                     End If
                     SQLCommand.ExecuteNonQuery()
                 End Using

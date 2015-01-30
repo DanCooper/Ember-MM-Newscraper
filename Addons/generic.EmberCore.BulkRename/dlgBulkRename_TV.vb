@@ -109,9 +109,9 @@ Public Class dlgBulkRenamer_TV
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE Missing = 0;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(id) AS mcount FROM TVEps WHERE Missing = 0 AND {0};", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE Missing = 0 AND {0};", dbFilter)
                 End If
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
@@ -119,20 +119,20 @@ Public Class dlgBulkRenamer_TV
                     End If
                 End Using
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 ORDER BY TVShowID ASC, Season ASC, Episode ASC;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE Missing = 0 ORDER BY idShow ASC, Season ASC, Episode ASC;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, id FROM TVEps WHERE Missing = 0 AND {0} ORDER BY TVShowID ASC, Season ASC, Episode ASC;", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, idEpisode FROM episode WHERE Missing = 0 AND {0} ORDER BY idShow ASC, Season ASC, Episode ASC;", dbFilter)
                 End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             Try
-                                If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("id")) Then
+                                If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("idEpisode")) Then
                                     _tmpPath = SQLreader("NfoPath").ToString
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
 
                                         EpisodeFile = New FileFolderRenamer.FileRename
-                                        _currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(SQLreader("id")), True)
+                                        _currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(SQLreader("idEpisode")), True)
 
                                         If Not _currShow.EpID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
                                             Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))

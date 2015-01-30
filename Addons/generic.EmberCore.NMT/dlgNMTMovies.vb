@@ -82,11 +82,11 @@ Public Class dlgNMTMovies
             Me.SetUp()
             'If dtMovieMedia Is Nothing Then
             dtMovieMedia = New DataTable
-            Master.DB.FillDataTable(dtMovieMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtMovieMedia, "SELECT idMovie, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movie ORDER BY ListTitle COLLATE NOCASE;")
             'End If
             'If dtShows Is Nothing Then
             dtShows = New DataTable
-            Master.DB.FillDataTable(dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath FROM TVShows ORDER BY Title COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtShows, "SELECT idShow, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath FROM tvshow ORDER BY Title COLLATE NOCASE;")
             'End If
             'If dtSeasons Is Nothing Then
             dtSeasons = New DataTable
@@ -94,7 +94,7 @@ Public Class dlgNMTMovies
             'End If
             'If dtEpisodes Is Nothing Then
             dtEpisodes = New DataTable
-            Master.DB.FillDataTable(dtEpisodes, "SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode FROM TVEps ORDER BY Episode COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtEpisodes, "SELECT idEpisode, idShow, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode FROM episode ORDER BY Episode COLLATE NOCASE;")
             'End If
             dtEpisodesPaths = New DataTable
             Master.DB.FillDataTable(dtEpisodesPaths, "SELECT ID, TVEpPath FROM TVEpPaths;")
@@ -412,9 +412,9 @@ Public Class dlgNMTMovies
                     bwBuildHTML.ReportProgress(1)
                     Continue For
                 End If
-                FilterTVShows.Add(Convert.ToInt32(_curShow.Item("ID")))
+                FilterTVShows.Add(Convert.ToInt32(_curShow.Item("idShow")))
                 Dim hfile As String = Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvindex").DestPath.Replace("/", Path.DirectorySeparatorChar))
-                HTMLTVBody.Append(ProcessTVShowsTags(_curShow, hfile, ShowCounter, _curShow.Item("ID").ToString, tvrow))
+                HTMLTVBody.Append(ProcessTVShowsTags(_curShow, hfile, ShowCounter, _curShow.Item("idShow").ToString, tvrow))
 
 
 
@@ -427,13 +427,13 @@ Public Class dlgNMTMovies
                 Dim ShowDetailsrow As String = patternShowDetails
                 Dim showrow As String = String.Empty
                 If Not String.IsNullOrEmpty(htmlShowDetailsPath) Then
-                    detailsShowOutput = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Show", _curShow.Item("ID").ToString, ".htm"))
-                    ShowDetailsrow = ProcessTVShowsTags(_curShow, detailsShowOutput, ShowCounter, _curShow.Item("ID").ToString, ShowDetailsrow, GetUserParam("RelativePathToBase", "../../"))
+                    detailsShowOutput = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Show", _curShow.Item("idShow").ToString, ".htm"))
+                    ShowDetailsrow = ProcessTVShowsTags(_curShow, detailsShowOutput, ShowCounter, _curShow.Item("idShow").ToString, ShowDetailsrow, GetUserParam("RelativePathToBase", "../../"))
                 End If
                 GetHtmlParts(ShowDetailsrow, tvshowheader, tvshowrow, tvshowfooter, "TVSEASON")
                 HTMLTVShowBody.Append(tvshowheader)
-                For Each _curSeason As DataRow In dtSeasons.Select(String.Format("TVShowID = {0} AND Season <> 999", _curShow.Item("ID").ToString))
-                    If dtEpisodes.Select(String.Format("TVShowID = {0} AND Season = {1}", _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString)).Count = 0 Then
+                For Each _curSeason As DataRow In dtSeasons.Select(String.Format("idShow = {0} AND Season <> 999", _curShow.Item("ID").ToString))
+                    If dtEpisodes.Select(String.Format("idShow = {0} AND Season = {1}", _curShow.Item("idShow").ToString, _curSeason.Item("Season").ToString)).Count = 0 Then
                         Continue For
                     End If
                     If Not String.IsNullOrEmpty(htmlShowDetailsPath) Then
@@ -453,10 +453,10 @@ Public Class dlgNMTMovies
 
                     Dim EpisodeCounter As Integer = 1
                     showrow = tvshowSeasonheader
-                    For Each _curEp As DataRow In dtEpisodes.Select(String.Format("TVShowID = {0} AND Season = {1}", _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString))
+                    For Each _curEp As DataRow In dtEpisodes.Select(String.Format("idShow = {0} AND Season = {1}", _curShow.Item("idShow").ToString, _curSeason.Item("Season").ToString))
                         If bwBuildHTML.CancellationPending Then Return
                         If Not String.IsNullOrEmpty(htmlShowDetailsPath) Then
-                            Dim showepisode As String = ProcessTVEpisodeTags(_curEp, detailsShowOutput, EpisodeCounter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, _curEp.Item("ID").ToString, tvshowSeasonrow, GetUserParam("RelativePathToBase", "../../"))
+                            Dim showepisode As String = ProcessTVEpisodeTags(_curEp, detailsShowOutput, EpisodeCounter, _curShow.Item("idShow").ToString, _curSeason.Item("Season").ToString, _curEp.Item("idEpisode").ToString, tvshowSeasonrow, GetUserParam("RelativePathToBase", "../../"))
                             showrow = String.Concat(showrow, showepisode)
                         End If
                         If Not String.IsNullOrEmpty(htmlSeasonDetailsPath) Then
@@ -464,7 +464,7 @@ Public Class dlgNMTMovies
                             '**File.WriteAllText(detailsSeasonOutput, ProcessTVEpisodeTags(_curEp, detailsSeasonOutput, EpisodeCounter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, _curEp.Item("ID").ToString, patternEpDetails, GetUserParam("RelativePathToBase", "../../")))
                         End If
                         If Not String.IsNullOrEmpty(htmlEpDetailsPath) Then
-                            detailsEpsOutput = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvepisode").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Eps", _curEp.Item("ID").ToString, ".htm"))
+                            detailsEpsOutput = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvepisode").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Eps", _curEp.Item("idEpisode").ToString, ".htm"))
                             'File.WriteAllText(detailsEpsOutput, ProcessTVEpisodeTags(_curEp, detailsEpsOutput, EpisodeCounter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, _curEp.Item("ID").ToString, patternEpDetails, GetUserParam("RelativePathToBase", "../../")))
                         End If
                         EpisodeCounter += 1
@@ -1025,15 +1025,15 @@ Public Class dlgNMTMovies
             Dim counter As Integer = 1
             Directory.CreateDirectory(finalpath)
             For Each _curShow As DataRow In dtShows.Rows
-                If Not FilterTVShows.Contains(Convert.ToInt32(_curShow.Item("ID"))) Then Continue For
+                If Not FilterTVShows.Contains(Convert.ToInt32(_curShow.Item("idShow"))) Then Continue For
 
                 Try
-                    Dim posterfile As String = Path.Combine(finalpath, String.Concat(_curShow.Item("ID").ToString, ".jpg"))
+                    Dim posterfile As String = Path.Combine(finalpath, String.Concat(_curShow.Item("idShow").ToString, ".jpg"))
                     If File.Exists(_curShow.Item("PosterPath").ToString) AndAlso Not File.Exists(posterfile) Then
                         If ImageNeedProcess("TVThumb") Then
                             For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing.Where(Function(y) y._type = "Thumb")
                                 For Each c As NMTExporterModule.Config._ImageProcessingCommand In s.Commands
-                                    posterfile = Path.Combine(finalpath, String.Concat(c.prefix, _curShow.Item("ID").ToString, c.sufix))
+                                    posterfile = Path.Combine(finalpath, String.Concat(c.prefix, _curShow.Item("idShow").ToString, c.sufix))
                                     Dim exe As String = Path.Combine(Path.Combine(sBasePath, "bin"), c.execute)
                                     Dim params As String = c.params.Replace("$1", String.Concat("""", _curShow.Item("PosterPath").ToString, """")).Replace("$2", String.Concat("""", posterfile, """"))
                                     Using execute As New Process
@@ -1065,7 +1065,7 @@ Public Class dlgNMTMovies
                         If ImageNeedProcess("TVPoster") Then
                             For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing.Where(Function(y) y._type = "Poster")
                                 For Each c As NMTExporterModule.Config._ImageProcessingCommand In s.Commands
-                                    posterfile = Path.Combine(finalpath, String.Concat(c.prefix, _curShow.Item("ID").ToString, c.sufix))
+                                    posterfile = Path.Combine(finalpath, String.Concat(c.prefix, _curShow.Item("idShow").ToString, c.sufix))
                                     Dim exe As String = Path.Combine(Path.Combine(sBasePath, "bin"), c.execute)
                                     Dim params As String = c.params.Replace("$1", String.Concat("""", _curShow.Item("PosterPath").ToString, """")).Replace("$2", String.Concat("""", posterfile, """"))
                                     Using execute As New Process
@@ -1104,10 +1104,10 @@ Public Class dlgNMTMovies
             Dim counter As Integer = 1
             Directory.CreateDirectory(finalpath)
             For Each _curMovie As DataRow In dtMovieMedia.Rows
-                If Not FilterMovies.Contains(Convert.ToInt32(_curMovie.Item("ID"))) Then Continue For
+                If Not FilterMovies.Contains(Convert.ToInt32(_curMovie.Item("idMovie"))) Then Continue For
 
                 Try
-                    Dim posterfile As String = Path.Combine(finalpath, String.Concat(_curMovie.Item("ID").ToString, ".jpg"))
+                    Dim posterfile As String = Path.Combine(finalpath, String.Concat(_curMovie.Item("idMovie").ToString, ".jpg"))
                     If File.Exists(_curMovie.Item("PosterPath").ToString) AndAlso Not File.Exists(posterfile) Then
                         If ImageNeedProcess("Thumb") Then
                             For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing.Where(Function(y) y._type = "Thumb")
@@ -1144,7 +1144,7 @@ Public Class dlgNMTMovies
                         If ImageNeedProcess("Poster") Then
                             For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing.Where(Function(y) y._type = "Poster")
                                 For Each c As NMTExporterModule.Config._ImageProcessingCommand In s.Commands
-                                    posterfile = Path.Combine(finalpath, String.Concat(c.prefix, _curMovie.Item("ID").ToString, c.sufix))
+                                    posterfile = Path.Combine(finalpath, String.Concat(c.prefix, _curMovie.Item("idMovie").ToString, c.sufix))
                                     Dim exe As String = Path.Combine(Path.Combine(sBasePath, "bin"), c.execute)
                                     Dim params As String = c.params.Replace("$1", String.Concat("""", _curMovie.Item("PosterPath").ToString, """")).Replace("$2", String.Concat("""", posterfile, """"))
                                     Using execute As New Process
@@ -1183,9 +1183,9 @@ Public Class dlgNMTMovies
             Dim finalpath As String = Path.Combine(fpath, GetUserParam("BackdropPath", "Thumbs/").Replace("/", Path.DirectorySeparatorChar))
             Directory.CreateDirectory(finalpath)
             For Each _curMovie As DataRow In dtMovieMedia.Rows
-                If Not FilterMovies.Contains(Convert.ToInt32(_curMovie.Item("ID"))) Then Continue For
+                If Not FilterMovies.Contains(Convert.ToInt32(_curMovie.Item("idMovie"))) Then Continue For
                 Try
-                    Dim Fanartfile As String = Path.Combine(finalpath, String.Concat(_curMovie.Item("ID").ToString, "-backdrop.jpg"))
+                    Dim Fanartfile As String = Path.Combine(finalpath, String.Concat(_curMovie.Item("idMovie").ToString, "-backdrop.jpg"))
                     If File.Exists(_curMovie.Item("FanartPath").ToString) AndAlso Not File.Exists(Fanartfile) Then
                         If new_width > 0 Then
                             Dim im As New Images

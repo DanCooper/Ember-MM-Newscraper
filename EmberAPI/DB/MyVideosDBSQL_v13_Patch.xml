@@ -2,7 +2,377 @@
 <CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <transaction name="MyVideosDBSQL_v13_to_v14">
     <command type="DB">
-      <description>1</description>
+      <description>create table art</description>
+      <execute>
+        CREATE TABLE art (
+        art_id      integer PRIMARY KEY,
+        media_id    integer,
+        media_type  text,
+        type        text,
+        url         text
+        );
+
+        CREATE INDEX ix_art
+        ON art
+        (media_id, media_type, type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit/create table tvshow</description>
+      <execute>
+        CREATE TABLE TVShows01(
+        ID,
+        ListTitle,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Language,
+        Ordering,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        Status,
+        HasTheme,
+        ThemePath,
+        HasCharacterArt,
+        CharacterArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        HasEFanarts,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting
+        );
+
+        INSERT INTO TVShows01
+        SELECT
+        ID,
+        ListTitle,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Language,
+        Ordering,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        Status,
+        HasTheme,
+        ThemePath,
+        HasCharacterArt,
+        CharacterArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        HasEFanarts,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting
+        FROM TVShows;
+
+        DROP TABLE TVShows;
+
+        CREATE TABLE tvshow (
+        idShow            integer PRIMARY KEY AUTOINCREMENT,
+        ListTitle         text,
+        HasPoster         bool NOT NULL DEFAULT 0,
+        HasFanart         bool NOT NULL DEFAULT 0,
+        HasNfo            bool NOT NULL DEFAULT 0,
+        "New"             bool DEFAULT 0,
+        Mark              bool NOT NULL DEFAULT 0,
+        TVShowPath        text NOT NULL,
+        Source            text NOT NULL,
+        TVDB              text,
+        Lock              bool NOT NULL DEFAULT 0,
+        EpisodeGuide      text,
+        Plot              text,
+        Genre             text,
+        Premiered         text,
+        Studio            text,
+        MPAA              text,
+        Rating            text,
+        PosterPath        text,
+        FanartPath        text,
+        NfoPath           text,
+        NeedsSave         bool NOT NULL DEFAULT 0,
+        Language          text,
+        Ordering          integer NOT NULL DEFAULT 0,
+        HasBanner         bool NOT NULL DEFAULT 0,
+        BannerPath        text,
+        HasLandscape      bool NOT NULL DEFAULT 0,
+        LandscapePath     text,
+        Status            text,
+        HasTheme          bool NOT NULL DEFAULT 0,
+        ThemePath         text,
+        HasCharacterArt   bool NOT NULL DEFAULT 0,
+        CharacterArtPath  text,
+        HasClearLogo      bool NOT NULL DEFAULT 0,
+        ClearLogoPath     text,
+        HasClearArt       bool NOT NULL DEFAULT 0,
+        ClearArtPath      text,
+        HasEFanarts       bool NOT NULL DEFAULT 0,
+        EFanartsPath      text,
+        Runtime           text,
+        Title             text,
+        Votes             text,
+        EpisodeSorting    integer NOT NULL DEFAULT 0
+        );
+
+        CREATE UNIQUE INDEX UniqueTVShowPath
+        ON tvshow
+        (TVShowPath);
+
+        INSERT INTO tvshow
+        (idShow,
+        ListTitle,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Language,
+        Ordering,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        Status,
+        HasTheme,
+        ThemePath,
+        HasCharacterArt,
+        CharacterArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        HasEFanarts,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting)
+        SELECT
+        ID,
+        ListTitle,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Language,
+        Ordering,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        Status,
+        HasTheme,
+        ThemePath,
+        HasCharacterArt,
+        CharacterArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        HasEFanarts,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting
+        FROM TVShows01;
+
+        DROP TABLE TVShows01;
+
+        CREATE TRIGGER delete_tvshow
+        AFTER DELETE
+        ON tvshow
+        BEGIN
+        DELETE FROM actorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM directorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
+        DELETE FROM movielinktvshow WHERE idShow=old.idShow;
+        DELETE FROM seasons WHERE idShow=old.idShow;
+        DELETE FROM art WHERE media_id=old.idShow AND media_type='tvshow';
+        DELETE FROM taglinks WHERE idMedia=old.idShow AND media_type='tvshow';
+        END;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table studio, studiolinkmovie, studiolinktvshow</description>
+      <execute>
+        CREATE TABLE studio (
+        idStudio   integer PRIMARY KEY,
+        strStudio  text
+        );
+
+        CREATE TABLE studiolinkmovie (
+        idStudio  integer,
+        idMovie   integer
+        );
+
+        CREATE UNIQUE INDEX ix_studiolinkmovie_1
+        ON studiolinkmovie
+        (idStudio, idMovie);
+
+        CREATE UNIQUE INDEX ix_studiolinkmovie_2
+        ON studiolinkmovie
+        (idMovie, idStudio);
+        
+        CREATE TABLE studiolinktvshow (
+        idStudio  integer,
+        idShow    integer
+        );
+
+        CREATE UNIQUE INDEX ix_studiolinktvshow_1
+        ON studiolinktvshow
+        (idStudio, idShow);
+
+        CREATE UNIQUE INDEX ix_studiolinktvshow_2
+        ON studiolinktvshow
+        (idShow, idStudio);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table writerlinkepisode, writerlinkmovie</description>
+      <execute>
+        CREATE TABLE writerlinkepisode (
+        idWriter   integer,
+        idEpisode  integer
+        );
+
+        CREATE UNIQUE INDEX ix_writerlinkepisode_1
+        ON writerlinkepisode
+        (idWriter, idEpisode);
+
+        CREATE UNIQUE INDEX ix_writerlinkepisode_2
+        ON writerlinkepisode
+        (idEpisode, idWriter);
+        
+        CREATE TABLE writerlinkmovie (
+        idWriter  integer,
+        idMovie   integer
+        );
+
+        CREATE UNIQUE INDEX ix_writerlinkmovie_1
+        ON writerlinkmovie
+        (idWriter, idMovie);
+
+        CREATE UNIQUE INDEX ix_writerlinkmovie_2
+        ON writerlinkmovie
+        (idMovie, idWriter);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table genre, genrelinkmovie, genrelinktvshow</description>
+      <execute>
+        CREATE TABLE genre (
+        idGenre   integer PRIMARY KEY,
+        strGenre  text
+        );
+
+        CREATE TABLE genrelinkmovie (
+        idGenre  integer,
+        idMovie  integer
+        );
+
+        CREATE UNIQUE INDEX ix_genrelinkmovie_1
+        ON genrelinkmovie
+        (idGenre, idMovie);
+
+        CREATE UNIQUE INDEX ix_genrelinkmovie_2
+        ON genrelinkmovie
+        (idMovie, idGenre);
+
+        CREATE TABLE genrelinktvshow (
+        idGenre  integer,
+        idShow   integer
+        );
+
+        CREATE UNIQUE INDEX ix_genrelinktvshow_1
+        ON genrelinktvshow
+        (idGenre, idShow);
+
+        CREATE UNIQUE INDEX ix_genrelinktvshow_2
+        ON genrelinktvshow
+        (idShow, idGenre);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit/create table actors</description>
       <execute>
         CREATE TABLE Actors01(
         Name,
@@ -17,13 +387,13 @@
 
         DROP TABLE Actors;
 
-        CREATE TABLE actor (
+        CREATE TABLE actors (
         idActor INTEGER PRIMARY KEY AUTOINCREMENT,
         strActor TEXT NOT NULL,
         strThumb TEXT
         );
 
-        INSERT INTO actor
+        INSERT INTO actors
         (strActor,
         strThumb)
         SELECT
@@ -32,10 +402,82 @@
         FROM Actors01;
 
         DROP TABLE Actors01;
+
+        CREATE TRIGGER delete_person
+        AFTER DELETE
+        ON actors
+        BEGIN
+        DELETE FROM art WHERE media_id=old.idActor AND media_type IN ('actor','artist','writer','director');
+        END;
       </execute>
     </command>
     <command type="DB">
-      <description>2</description>
+      <description>create table directorlinkepisode, directorlinkmovie, directorlinktvshow</description>
+      <execute>
+        CREATE TABLE directorlinkepisode (
+        idDirector  integer,
+        idEpisode   integer
+        );
+
+        CREATE UNIQUE INDEX ix_directorlinkepisode_1
+        ON directorlinkepisode
+        (idDirector, idEpisode);
+
+        CREATE UNIQUE INDEX ix_directorlinkepisode_2
+        ON directorlinkepisode
+        (idEpisode, idDirector);
+
+        CREATE TABLE directorlinkmovie (
+        idDirector  integer,
+        idMovie     integer
+        );
+
+        CREATE UNIQUE INDEX ix_directorlinkmovie_1
+        ON directorlinkmovie
+        (idDirector, idMovie);
+
+        CREATE UNIQUE INDEX ix_directorlinkmovie_2
+        ON directorlinkmovie
+        (idMovie, idDirector);
+
+        CREATE TABLE directorlinktvshow (
+        idDirector  integer,
+        idShow      integer
+        );
+
+        CREATE UNIQUE INDEX ix_directorlinktvshow_1
+        ON directorlinktvshow
+        (idDirector, idShow);
+
+        CREATE UNIQUE INDEX ix_directorlinktvshow_2
+        ON directorlinktvshow
+        (idShow, idDirector);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table country, countrylinkmovie</description>
+      <execute>
+        CREATE TABLE country (
+        idCountry   integer PRIMARY KEY,
+        strCountry  text
+        );
+
+        CREATE TABLE countrylinkmovie (
+        idCountry  integer,
+        idMovie    integer
+        );
+
+        CREATE UNIQUE INDEX ix_countrylinkmovie_1
+        ON countrylinkmovie
+        (idCountry, idMovie);
+
+        CREATE UNIQUE INDEX ix_countrylinkmovie_2
+        ON countrylinkmovie
+        (idMovie, idCountry);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit/create table actorlinkepisode</description>
       <execute>
         CREATE TABLE TVEpActors01(
         TVEpID,
@@ -68,7 +510,7 @@
         B.TVEpID,
         B.Role
         FROM
-        actor A,
+        actors A,
         TVEpActors01 B
         WHERE
         A.strActor = B.ActorName;
@@ -85,7 +527,7 @@
       </execute>
     </command>
     <command type="DB">
-      <description>3</description>
+      <description>edit/create table actorlinkmovie</description>
       <execute>
         CREATE TABLE MoviesActors01(
         MovieID,
@@ -118,7 +560,7 @@
         B.MovieID,
         B.Role
         FROM
-        actor A,
+        actors A,
         MoviesActors01 B
         WHERE
         A.strActor = B.ActorName;
@@ -135,7 +577,7 @@
       </execute>
     </command>
     <command type="DB">
-      <description>4</description>
+      <description>edit/create table actorlinktvshow</description>
       <execute>
         CREATE TABLE TVShowActors01(
         TVShowID,
@@ -168,7 +610,7 @@
         B.TVShowID,
         B.Role
         FROM
-        actor A,
+        actors A,
         TVShowActors01 B
         WHERE
         A.strActor = B.ActorName;
@@ -185,7 +627,7 @@
       </execute>
     </command>
     <command type="DB">
-      <description>5</description>
+      <description>create table tag</description>
       <execute>
         CREATE TABLE tag (
         idTag   integer PRIMARY KEY,
@@ -198,7 +640,7 @@
       </execute>
     </command>
     <command type="DB">
-      <description>6</description>
+      <description>create table taglinks</description>
       <execute>
         CREATE TABLE taglinks (
         idTag       integer,
@@ -225,7 +667,7 @@
       </execute>
     </command>
     <command type="DB">
-      <description>4</description>
+      <description>edit/create table movie</description>
       <execute>
         CREATE TABLE Movies01(
         ID,
@@ -611,12 +1053,13 @@
         DELETE FROM MoviesSets WHERE MovieID=old.idMovie;
         DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
         DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM art WHERE media_id=old.idMovie AND media_type='movie';
         DELETE FROM MoviesVStreams WHERE MovieID=old.idMovie;
         END;
       </execute>
     </command>
     <command type="DB">
-      <description>6</description>
+      <description>create table movielinktvshow</description>
       <execute>
         CREATE TABLE movielinktvshow (
         idMovie  integer,
@@ -633,13 +1076,347 @@
       </execute>
     </command>
     <command type="DB">
-      <description>6</description>
+      <description>edit/create table episode</description>
       <execute>
-        CREATE TRIGGER delete_MoviesSets
+        CREATE TABLE TVEps01(
+        ID,
+        TVShowID,
+        Episode,
+        Title,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVEpPathID,
+        Source,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        Director,
+        Credits,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Missing,
+        Playcount,
+        HasWatched,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub
+        );
+
+        INSERT INTO TVEps01
+        SELECT
+        ID,
+        TVShowID,
+        Episode,
+        Title,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVEpPathID,
+        Source,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        Director,
+        Credits,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Missing,
+        Playcount,
+        HasWatched,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub
+        FROM TVEps;
+
+        DROP TABLE TVEps;
+
+        CREATE TABLE episode (
+        idEpisode       integer PRIMARY KEY AUTOINCREMENT,
+        idShow          integer NOT NULL,
+        Episode         integer,
+        Title           text,
+        HasPoster       bool NOT NULL DEFAULT 0,
+        HasFanart       bool NOT NULL DEFAULT 0,
+        HasNfo          bool NOT NULL DEFAULT 0,
+        "New"           bool DEFAULT 0,
+        Mark            bool NOT NULL DEFAULT 0,
+        TVEpPathID      integer NOT NULL,
+        Source          text NOT NULL,
+        Lock            bool NOT NULL DEFAULT 0,
+        Season          integer,
+        Rating          text,
+        Plot            text,
+        Aired           text,
+        Director        text,
+        Credits         text,
+        PosterPath      text,
+        FanartPath      text,
+        NfoPath         text,
+        NeedsSave       bool NOT NULL DEFAULT 0,
+        Missing         bool NOT NULL DEFAULT 0,
+        Playcount       text,
+        HasWatched      bool NOT NULL DEFAULT 0,
+        DisplaySeason   integer,
+        DisplayEpisode  integer,
+        DateAdded       integer,
+        Runtime         text,
+        Votes           text,
+        VideoSource     text,
+        HasSub          bool NOT NULL DEFAULT 0
+        );
+
+        INSERT INTO episode
+        (idEpisode,
+        idShow,
+        Episode,
+        Title,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVEpPathID,
+        Source,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        Director,
+        Credits,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Missing,
+        Playcount,
+        HasWatched,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub)
+        SELECT
+        ID,
+        TVShowID,
+        Episode,
+        Title,
+        HasPoster,
+        HasFanart,
+        HasNfo,
+        "New",
+        Mark,
+        TVEpPathID,
+        Source,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        Director,
+        Credits,
+        PosterPath,
+        FanartPath,
+        NfoPath,
+        NeedsSave,
+        Missing,
+        Playcount,
+        HasWatched,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub
+        FROM TVEps01;
+
+        DROP TABLE TVEps01;
+
+        CREATE TRIGGER delete_episode
         AFTER DELETE
-        ON Sets
+        ON episode
         BEGIN
-        DELETE FROM MoviesSets WHERE SetID=old.ID;
+        DELETE FROM TVEpPaths WHERE ID=old.TVEpPathID;
+        DELETE FROM TVVStreams WHERE TVEpID=old.idEpisode;
+        DELETE FROM TVAStreams WHERE TVEpID=old.idEpisode;
+        DELETE FROM TVSubs WHERE TVEpID=old.idEpisode;
+        DELETE FROM actorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM directorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM writerlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM art WHERE media_id=old.idEpisode AND media_type='episode';
+        END;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit/create table set</description>
+      <execute>
+        CREATE TABLE Sets01(
+        ID,
+        ListTitle,
+        HasNfo,
+        NfoPath,
+        HasPoster,
+        PosterPath,
+        HasFanart,
+        FanartPath,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        HasDiscArt,
+        DiscArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        TMDBColID,
+        Plot,
+        SetName,
+        "New",
+        Mark,
+        Lock
+        );
+
+        INSERT INTO Sets01
+        SELECT
+        ID,
+        ListTitle,
+        HasNfo,
+        NfoPath,
+        HasPoster,
+        PosterPath,
+        HasFanart,
+        FanartPath,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        HasDiscArt,
+        DiscArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        TMDBColID,
+        Plot,
+        SetName,
+        "New",
+        Mark,
+        Lock
+        FROM Sets;
+
+        DROP TABLE Sets;
+
+        CREATE TABLE sets (
+        idSet          integer PRIMARY KEY AUTOINCREMENT,
+        ListTitle      text NOT NULL,
+        HasNfo         bool NOT NULL DEFAULT 0,
+        NfoPath        text,
+        HasPoster      bool NOT NULL DEFAULT 0,
+        PosterPath     text,
+        HasFanart      bool NOT NULL DEFAULT 0,
+        FanartPath     text,
+        HasBanner      bool NOT NULL DEFAULT 0,
+        BannerPath     text,
+        HasLandscape   bool NOT NULL DEFAULT 0,
+        LandscapePath  text,
+        HasDiscArt     bool NOT NULL DEFAULT 0,
+        DiscArtPath    text,
+        HasClearLogo   bool NOT NULL DEFAULT 0,
+        ClearLogoPath  text,
+        HasClearArt    bool NOT NULL DEFAULT 0,
+        ClearArtPath   text,
+        TMDBColID      text,
+        Plot           text,
+        SetName        text,
+        "New"          bool NOT NULL DEFAULT 0,
+        Mark           bool NOT NULL DEFAULT 0,
+        Lock           bool NOT NULL DEFAULT 0
+        );
+
+        INSERT INTO sets
+        (idSet,
+        ListTitle,
+        HasNfo,
+        NfoPath,
+        HasPoster,
+        PosterPath,
+        HasFanart,
+        FanartPath,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        HasDiscArt,
+        DiscArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        TMDBColID,
+        Plot,
+        SetName,
+        "New",
+        Mark,
+        Lock)
+        SELECT
+        ID,
+        ListTitle,
+        HasNfo,
+        NfoPath,
+        HasPoster,
+        PosterPath,
+        HasFanart,
+        FanartPath,
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath,
+        HasDiscArt,
+        DiscArtPath,
+        HasClearLogo,
+        ClearLogoPath,
+        HasClearArt,
+        ClearArtPath,
+        TMDBColID,
+        Plot,
+        SetName,
+        "New",
+        Mark,
+        Lock
+        FROM Sets01;
+
+        DROP TABLE Sets01;
+
+        CREATE TRIGGER delete_set
+        AFTER DELETE
+        ON sets
+        BEGIN
+        DELETE FROM art WHERE media_id=old.idSet AND media_type='set';
         END;
       </execute>
     </command>

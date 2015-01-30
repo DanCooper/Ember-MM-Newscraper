@@ -588,16 +588,12 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Try
-            Me.SetInfo()
 
-            Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
+        Me.SetInfo()
 
-            Me.CleanUp()
+        Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
 
-        Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.CleanUp()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()

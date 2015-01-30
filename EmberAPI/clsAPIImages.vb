@@ -571,7 +571,7 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -605,7 +605,7 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -639,7 +639,7 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -673,7 +673,7 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -2014,7 +2014,7 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -2078,7 +2078,7 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -2141,7 +2141,7 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -2199,7 +2199,7 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If

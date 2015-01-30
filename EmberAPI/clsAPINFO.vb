@@ -1548,8 +1548,8 @@ Public Class NFO
                     End If
 
                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = "SELECT ID FROM TVEps WHERE ID <> (?) AND TVEpPathID IN (SELECT ID FROM TVEpPaths WHERE TVEpPath = (?)) ORDER BY Episode"
-                        Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "ID")
+                        SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND TVEpPathID IN (SELECT ID FROM TVEpPaths WHERE TVEpPath = (?)) ORDER BY Episode"
+                        Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
                         Dim parTVEpPath As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parTVEpPath", DbType.String, 0, "TVEpPath")
 
                         parID.Value = tvEpToSave.EpID
@@ -1557,7 +1557,7 @@ Public Class NFO
 
                         Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLreader.Read
-                                EpList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("ID")), False).TVEp)
+                                EpList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), False).TVEp)
                             End While
                         End Using
 

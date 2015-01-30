@@ -433,7 +433,7 @@ Public Class Scanner
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", TVDB.ShowID, " AND Season = ", TVDB.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", TVDB.ShowID, " AND Season = ", TVDB.TVEp.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -1015,7 +1015,7 @@ Public Class Scanner
                         tmpTVDB.IsMarkSeason = False
 
                         Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            SQLCommand.CommandText = String.Concat("SELECT MIN(Episode) AS MinE FROM TVEps WHERE TVShowID = ", tmpTVDB.ShowID, ";")
+                            SQLCommand.CommandText = String.Concat("SELECT MIN(Episode) AS MinE FROM episode WHERE idShow = ", tmpTVDB.ShowID, ";")
                             tRes = SQLCommand.ExecuteScalar
                             If Not TypeOf tRes Is DBNull Then
                                 tEp = Convert.ToInt32(tRes)
@@ -1586,10 +1586,10 @@ Public Class Scanner
 
                 htTVShows.Clear()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = "SELECT ID, TVShowPath FROM TVShows;"
+                    SQLcommand.CommandText = "SELECT idShow, TVShowPath FROM tvshow;"
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
-                            htTVShows.Add(SQLreader("TVShowPath").ToString.ToLower, SQLreader("ID"))
+                            htTVShows.Add(SQLreader("TVShowPath").ToString.ToLower, SQLreader("idShow"))
                             If Me.bwPrelim.CancellationPending Then
                                 e.Cancel = True
                                 Return

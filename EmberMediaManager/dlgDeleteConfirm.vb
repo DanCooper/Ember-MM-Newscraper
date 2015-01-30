@@ -235,7 +235,7 @@ Public Class dlgDeleteConfirm
                                 ItemParentNode.SelectedImageKey = "MOVIE"
                                 ItemParentNode.Tag = Season
 
-                                SQLDelCommand.CommandText = String.Concat("SELECT ID, TVEpPathID FROM TVEps WHERE TVShowID = ", Season.Value, " AND Season = ", Season.Key, ";")
+                                SQLDelCommand.CommandText = String.Concat("SELECT idEpisode, TVEpPathID FROM episode WHERE idShow = ", Season.Value, " AND Season = ", Season.Key, ";")
                                 Using SQLDelReader As SQLite.SQLiteDataReader = SQLDelCommand.ExecuteReader
                                     While SQLDelReader.Read
                                         Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()

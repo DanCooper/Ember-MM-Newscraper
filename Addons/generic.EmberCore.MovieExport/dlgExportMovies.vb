@@ -496,13 +496,13 @@ Public Class dlgExportMovies
         Try
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
+                SQLcommand.CommandText = String.Concat("SELECT * FROM tvshow ORDER BY Title COLLATE NOCASE;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             If Not allTVShows.Contains(SQLreader("Title").ToString) AndAlso Not String.IsNullOrEmpty(SQLreader("Title").ToString) Then
-                                If Not String.IsNullOrEmpty(SQLreader("ID").ToString) Then
-                                    allTVShows.Add(SQLreader("ID").ToString & "*" & SQLreader("Title").ToString & GetSeasonInfo(SQLreader("ID").ToString))
+                                If Not String.IsNullOrEmpty(SQLreader("idShow").ToString) Then
+                                    allTVShows.Add(SQLreader("idShow").ToString & "*" & SQLreader("Title").ToString & GetSeasonInfo(SQLreader("idShow").ToString))
                                 End If
                             End If
                         End While

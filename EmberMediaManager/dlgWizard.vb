@@ -1039,7 +1039,7 @@ Public Class dlgWizard
                         Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                         While Me.lvTVSources.SelectedItems.Count > 0
                             parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
-                            SQLcommand.CommandText = "SELECT Id FROM TVShows WHERE Source = (?);"
+                            SQLcommand.CommandText = "SELECT idShow FROM tvshow WHERE Source = (?);"
                             Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                                 While SQLReader.Read
                                     Master.DB.DeleteTVShowFromDB(Convert.ToInt64(SQLReader("ID")), True)
