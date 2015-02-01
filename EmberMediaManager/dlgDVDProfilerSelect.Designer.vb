@@ -95,7 +95,7 @@ Partial Class dlgDVDProfilerSelect
         Me.Controls.Add(Me.lvCollection)
         Me.Controls.Add(Me.btnLoadCollection)
         Me.Name = "dlgDVDProfilerSelect"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Load DVD Profiler Collection"
         Me.tlpButtons.ResumeLayout(False)
         Me.ResumeLayout(False)
