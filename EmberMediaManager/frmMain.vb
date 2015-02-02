@@ -6825,44 +6825,40 @@ doCancel:
     End Sub
 
     Private Sub dgvMovies_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellDoubleClick
-        Try
-            If e.RowIndex < 0 Then Exit Sub
+        If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+        If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
-            Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
-            Master.currMovie = Master.DB.LoadMovieFromDB(ID)
+        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
+        Master.currMovie = Master.DB.LoadMovieFromDB(ID)
 
-            Functions.SetScraperMod(Enums.ModType_Movie.All, False, True)
+        Functions.SetScraperMod(Enums.ModType_Movie.All, False, True)
 
-            Using dEditMovie As New dlgEditMovie
-                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
-                Select Case dEditMovie.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
-                        Me.SetMovieListItemAfterEdit(ID, indX)
-                        If Me.RefreshMovie(ID) Then
-                            Me.FillList(True, True, False)
-                        Else
-                            Me.FillList(False, True, False)
-                        End If
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
-                    Case Windows.Forms.DialogResult.Retry
-                        Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
-                        Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
-                    Case Windows.Forms.DialogResult.Abort
-                        Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, True)
-                        Functions.SetScraperMod(Enums.ModType_Movie.All, True, False)
-                        Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
-                    Case Else
-                        If Me.InfoCleared Then Me.LoadMovieInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
-                End Select
-                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Using dEditMovie As New dlgEditMovie
+            AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+            Select Case dEditMovie.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
+                    Me.SetMovieListItemAfterEdit(ID, indX)
+                    If Me.RefreshMovie(ID) Then
+                        Me.FillList(True, True, False)
+                    Else
+                        Me.FillList(False, True, False)
+                    End If
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
+                Case Windows.Forms.DialogResult.Retry
+                    Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
+                    Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                Case Windows.Forms.DialogResult.Abort
+                    Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, True)
+                    Functions.SetScraperMod(Enums.ModType_Movie.All, True, False)
+                    Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                Case Else
+                    If Me.InfoCleared Then Me.LoadMovieInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
+            End Select
+            RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+        End Using
     End Sub
 
     Private Sub dgvMovies_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellEnter

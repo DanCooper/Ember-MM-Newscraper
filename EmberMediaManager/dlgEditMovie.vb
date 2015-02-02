@@ -224,7 +224,8 @@ Public Class dlgEditMovie
                 eActor = dAddEditActor.ShowDialog(True)
             End Using
             If Not IsNothing(eActor) Then
-                Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.Name)
+                Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.ID.ToString)
+                lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
                 lvItem.SubItems.Add(eActor.Thumb)
             End If
@@ -1895,14 +1896,15 @@ Public Class dlgEditMovie
         Try
             If Me.lvActors.SelectedItems.Count > 0 Then
                 Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
-                Dim eActor As New MediaContainers.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
+                Dim eActor As New MediaContainers.Person With {.ID = CInt(lvwItem.Text), .Name = lvwItem.SubItems(1).Text, .Role = lvwItem.SubItems(2).Text, .Thumb = lvwItem.SubItems(3).Text}
                 Using dAddEditActor As New dlgAddEditActor
                     eActor = dAddEditActor.ShowDialog(False, eActor)
                 End Using
                 If Not IsNothing(eActor) Then
-                    lvwItem.Text = eActor.Name
-                    lvwItem.SubItems(1).Text = eActor.Role
-                    lvwItem.SubItems(2).Text = eActor.Thumb
+                    lvwItem.Text = eActor.ID.ToString
+                    lvwItem.SubItems(1).Text = eActor.Name
+                    lvwItem.SubItems(2).Text = eActor.Role
+                    lvwItem.SubItems(3).Text = eActor.Thumb
                     lvwItem.Selected = True
                     lvwItem.EnsureVisible()
                 End If
@@ -2037,7 +2039,8 @@ Public Class dlgEditMovie
                 Dim lvItem As ListViewItem
                 .lvActors.Items.Clear()
                 For Each imdbAct As MediaContainers.Person In Master.currMovie.Movie.Actors
-                    lvItem = .lvActors.Items.Add(imdbAct.Name)
+                    lvItem = .lvActors.Items.Add(imdbAct.ID.ToString)
+                    lvItem.SubItems.Add(imdbAct.Name)
                     lvItem.SubItems.Add(imdbAct.Role)
                     lvItem.SubItems.Add(imdbAct.Thumb)
                 Next
@@ -2356,18 +2359,13 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Try
-            Me.ThemeStop()
-            Me.TrailerStop()
-            Me.SetInfo()
+        Me.ThemeStop()
+        Me.TrailerStop()
+        Me.SetInfo()
 
-            Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
+        Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
 
-            Me.CleanUp()
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.CleanUp()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
@@ -3027,9 +3025,10 @@ Public Class dlgEditMovie
                 If .lvActors.Items.Count > 0 Then
                     For Each lviActor As ListViewItem In .lvActors.Items
                         Dim addActor As New MediaContainers.Person
-                        addActor.Name = lviActor.Text.Trim
-                        addActor.Role = lviActor.SubItems(1).Text.Trim
-                        addActor.Thumb = lviActor.SubItems(2).Text.Trim
+                        addActor.ID = CInt(lviActor.Text)
+                        addActor.Name = lviActor.SubItems(1).Text.Trim
+                        addActor.Role = lviActor.SubItems(2).Text.Trim
+                        addActor.Thumb = lviActor.SubItems(3).Text.Trim
 
                         Master.currMovie.Movie.Actors.Add(addActor)
                     Next

@@ -200,6 +200,10 @@ Partial Class dlgEditMovie
         Me.btnSetMovieTrailerScrape = New System.Windows.Forms.Button()
         Me.btnSetMovieTrailerLocal = New System.Windows.Forms.Button()
         Me.tpTheme = New System.Windows.Forms.TabPage()
+        Me.pnlThemePreview = New System.Windows.Forms.Panel()
+        Me.pnlThemePreviewNoPlayer = New System.Windows.Forms.Panel()
+        Me.tblThemePreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblThemePreviewNoPlayer = New System.Windows.Forms.Label()
         Me.btnSetMovieThemeDL = New System.Windows.Forms.Button()
         Me.btnRemoveMovieTheme = New System.Windows.Forms.Button()
         Me.btnSetMovieThemeScrape = New System.Windows.Forms.Button()
@@ -219,10 +223,7 @@ Partial Class dlgEditMovie
         Me.chkWatched = New System.Windows.Forms.CheckBox()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.pnlThemePreview = New System.Windows.Forms.Panel()
-        Me.pnlThemePreviewNoPlayer = New System.Windows.Forms.Panel()
-        Me.tblThemePreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblThemePreviewNoPlayer = New System.Windows.Forms.Label()
+        Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditMovie.SuspendLayout()
@@ -266,12 +267,12 @@ Partial Class dlgEditMovie
         Me.pnlTrailerPreviewNoPlayer.SuspendLayout()
         Me.tblTrailerPreviewNoPlayer.SuspendLayout()
         Me.tpTheme.SuspendLayout()
-        Me.tpMetaData.SuspendLayout()
-        Me.tpMediaStub.SuspendLayout()
-        Me.StatusStrip.SuspendLayout()
         Me.pnlThemePreview.SuspendLayout()
         Me.pnlThemePreviewNoPlayer.SuspendLayout()
         Me.tblThemePreviewNoPlayer.SuspendLayout()
+        Me.tpMetaData.SuspendLayout()
+        Me.tpMediaStub.SuspendLayout()
+        Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -813,7 +814,7 @@ Partial Class dlgEditMovie
         '
         Me.lvActors.BackColor = System.Drawing.SystemColors.Window
         Me.lvActors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colRole, Me.colThumb})
+        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(273, 156)
@@ -2243,6 +2244,50 @@ Partial Class dlgEditMovie
         Me.tpTheme.Text = "Theme"
         Me.tpTheme.UseVisualStyleBackColor = True
         '
+        'pnlThemePreview
+        '
+        Me.pnlThemePreview.BackColor = System.Drawing.Color.DimGray
+        Me.pnlThemePreview.Controls.Add(Me.pnlThemePreviewNoPlayer)
+        Me.pnlThemePreview.Location = New System.Drawing.Point(6, 6)
+        Me.pnlThemePreview.Name = "pnlThemePreview"
+        Me.pnlThemePreview.Size = New System.Drawing.Size(800, 450)
+        Me.pnlThemePreview.TabIndex = 14
+        '
+        'pnlThemePreviewNoPlayer
+        '
+        Me.pnlThemePreviewNoPlayer.BackColor = System.Drawing.Color.White
+        Me.pnlThemePreviewNoPlayer.Controls.Add(Me.tblThemePreviewNoPlayer)
+        Me.pnlThemePreviewNoPlayer.Location = New System.Drawing.Point(285, 203)
+        Me.pnlThemePreviewNoPlayer.Name = "pnlThemePreviewNoPlayer"
+        Me.pnlThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
+        Me.pnlThemePreviewNoPlayer.TabIndex = 0
+        '
+        'tblThemePreviewNoPlayer
+        '
+        Me.tblThemePreviewNoPlayer.AutoSize = True
+        Me.tblThemePreviewNoPlayer.ColumnCount = 1
+        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblThemePreviewNoPlayer.Controls.Add(Me.lblThemePreviewNoPlayer, 0, 0)
+        Me.tblThemePreviewNoPlayer.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblThemePreviewNoPlayer.Location = New System.Drawing.Point(0, 0)
+        Me.tblThemePreviewNoPlayer.Name = "tblThemePreviewNoPlayer"
+        Me.tblThemePreviewNoPlayer.RowCount = 1
+        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56.0!))
+        Me.tblThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
+        Me.tblThemePreviewNoPlayer.TabIndex = 0
+        '
+        'lblThemePreviewNoPlayer
+        '
+        Me.lblThemePreviewNoPlayer.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblThemePreviewNoPlayer.AutoSize = True
+        Me.lblThemePreviewNoPlayer.Location = New System.Drawing.Point(52, 21)
+        Me.lblThemePreviewNoPlayer.Name = "lblThemePreviewNoPlayer"
+        Me.lblThemePreviewNoPlayer.Size = New System.Drawing.Size(137, 13)
+        Me.lblThemePreviewNoPlayer.TabIndex = 0
+        Me.lblThemePreviewNoPlayer.Text = "no Media Player enabled"
+        '
         'btnSetMovieThemeDL
         '
         Me.btnSetMovieThemeDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -2433,49 +2478,10 @@ Partial Class dlgEditMovie
         Me.tsFilename.Size = New System.Drawing.Size(55, 17)
         Me.tsFilename.Text = "Filename"
         '
-        'pnlThemePreview
+        'colID
         '
-        Me.pnlThemePreview.BackColor = System.Drawing.Color.DimGray
-        Me.pnlThemePreview.Controls.Add(Me.pnlThemePreviewNoPlayer)
-        Me.pnlThemePreview.Location = New System.Drawing.Point(6, 6)
-        Me.pnlThemePreview.Name = "pnlThemePreview"
-        Me.pnlThemePreview.Size = New System.Drawing.Size(800, 450)
-        Me.pnlThemePreview.TabIndex = 14
-        '
-        'pnlThemePreviewNoPlayer
-        '
-        Me.pnlThemePreviewNoPlayer.BackColor = System.Drawing.Color.White
-        Me.pnlThemePreviewNoPlayer.Controls.Add(Me.tblThemePreviewNoPlayer)
-        Me.pnlThemePreviewNoPlayer.Location = New System.Drawing.Point(285, 203)
-        Me.pnlThemePreviewNoPlayer.Name = "pnlThemePreviewNoPlayer"
-        Me.pnlThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
-        Me.pnlThemePreviewNoPlayer.TabIndex = 0
-        '
-        'tblThemePreviewNoPlayer
-        '
-        Me.tblThemePreviewNoPlayer.AutoSize = True
-        Me.tblThemePreviewNoPlayer.ColumnCount = 1
-        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblThemePreviewNoPlayer.Controls.Add(Me.lblThemePreviewNoPlayer, 0, 0)
-        Me.tblThemePreviewNoPlayer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblThemePreviewNoPlayer.Location = New System.Drawing.Point(0, 0)
-        Me.tblThemePreviewNoPlayer.Name = "tblThemePreviewNoPlayer"
-        Me.tblThemePreviewNoPlayer.RowCount = 1
-        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56.0!))
-        Me.tblThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
-        Me.tblThemePreviewNoPlayer.TabIndex = 0
-        '
-        'lblThemePreviewNoPlayer
-        '
-        Me.lblThemePreviewNoPlayer.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblThemePreviewNoPlayer.AutoSize = True
-        Me.lblThemePreviewNoPlayer.Location = New System.Drawing.Point(52, 21)
-        Me.lblThemePreviewNoPlayer.Name = "lblThemePreviewNoPlayer"
-        Me.lblThemePreviewNoPlayer.Size = New System.Drawing.Size(137, 13)
-        Me.lblThemePreviewNoPlayer.TabIndex = 0
-        Me.lblThemePreviewNoPlayer.Text = "no Media Player enabled"
+        Me.colID.Text = "ID"
+        Me.colID.Width = 0
         '
         'dlgEditMovie
         '
@@ -2549,16 +2555,16 @@ Partial Class dlgEditMovie
         Me.tblTrailerPreviewNoPlayer.ResumeLayout(False)
         Me.tblTrailerPreviewNoPlayer.PerformLayout()
         Me.tpTheme.ResumeLayout(False)
-        Me.tpMetaData.ResumeLayout(False)
-        Me.tpMediaStub.ResumeLayout(False)
-        Me.tpMediaStub.PerformLayout()
-        Me.StatusStrip.ResumeLayout(False)
-        Me.StatusStrip.PerformLayout()
         Me.pnlThemePreview.ResumeLayout(False)
         Me.pnlThemePreviewNoPlayer.ResumeLayout(False)
         Me.pnlThemePreviewNoPlayer.PerformLayout()
         Me.tblThemePreviewNoPlayer.ResumeLayout(False)
         Me.tblThemePreviewNoPlayer.PerformLayout()
+        Me.tpMetaData.ResumeLayout(False)
+        Me.tpMediaStub.ResumeLayout(False)
+        Me.tpMediaStub.PerformLayout()
+        Me.StatusStrip.ResumeLayout(False)
+        Me.StatusStrip.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout
 
@@ -2760,5 +2766,6 @@ End Sub
     Friend WithEvents pnlThemePreviewNoPlayer As System.Windows.Forms.Panel
     Friend WithEvents tblThemePreviewNoPlayer As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblThemePreviewNoPlayer As System.Windows.Forms.Label
+    Friend WithEvents colID As System.Windows.Forms.ColumnHeader
 
 End Class

@@ -89,14 +89,6 @@ Partial Class dlgEditEpisode
         Me.pbEpisodeFanart = New System.Windows.Forms.PictureBox()
         Me.tpFrameExtraction = New System.Windows.Forms.TabPage()
         Me.pnlFrameExtrator = New System.Windows.Forms.Panel()
-        Me.tpEpisodeMetaData = New System.Windows.Forms.TabPage()
-        Me.pnlFileInfo = New System.Windows.Forms.Panel()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.OK_Button = New System.Windows.Forms.Button()
-        Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
-        Me.chkWatched = New System.Windows.Forms.CheckBox()
-        Me.StatusStrip = New System.Windows.Forms.StatusStrip()
-        Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tpSubtitles = New System.Windows.Forms.TabPage()
         Me.lblSubtitlesPreview = New System.Windows.Forms.Label()
         Me.txtSubtitlesPreview = New System.Windows.Forms.TextBox()
@@ -110,6 +102,15 @@ Partial Class dlgEditEpisode
         Me.btnSetMovieSubtitleDL = New System.Windows.Forms.Button()
         Me.btnSetMovieSubtitleScrape = New System.Windows.Forms.Button()
         Me.btnSetMovieSubtitleLocal = New System.Windows.Forms.Button()
+        Me.tpEpisodeMetaData = New System.Windows.Forms.TabPage()
+        Me.pnlFileInfo = New System.Windows.Forms.Panel()
+        Me.Cancel_Button = New System.Windows.Forms.Button()
+        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
+        Me.chkWatched = New System.Windows.Forms.CheckBox()
+        Me.StatusStrip = New System.Windows.Forms.StatusStrip()
+        Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditEpisode.SuspendLayout()
@@ -129,9 +130,9 @@ Partial Class dlgEditEpisode
         Me.tpEpisodeFanart.SuspendLayout()
         CType(Me.pbEpisodeFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFrameExtraction.SuspendLayout()
+        Me.tpSubtitles.SuspendLayout()
         Me.tpEpisodeMetaData.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
-        Me.tpSubtitles.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -474,7 +475,7 @@ Partial Class dlgEditEpisode
         '
         'lvActors
         '
-        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colRole, Me.colThumb})
+        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(7, 204)
@@ -813,71 +814,6 @@ Partial Class dlgEditEpisode
         Me.pnlFrameExtrator.Size = New System.Drawing.Size(834, 452)
         Me.pnlFrameExtrator.TabIndex = 0
         '
-        'tpEpisodeMetaData
-        '
-        Me.tpEpisodeMetaData.Controls.Add(Me.pnlFileInfo)
-        Me.tpEpisodeMetaData.Location = New System.Drawing.Point(4, 22)
-        Me.tpEpisodeMetaData.Name = "tpEpisodeMetaData"
-        Me.tpEpisodeMetaData.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpEpisodeMetaData.Size = New System.Drawing.Size(836, 452)
-        Me.tpEpisodeMetaData.TabIndex = 5
-        Me.tpEpisodeMetaData.Text = "Meta Data"
-        Me.tpEpisodeMetaData.UseVisualStyleBackColor = True
-        '
-        'pnlFileInfo
-        '
-        Me.pnlFileInfo.Location = New System.Drawing.Point(-4, 0)
-        Me.pnlFileInfo.Name = "pnlFileInfo"
-        Me.pnlFileInfo.Size = New System.Drawing.Size(844, 452)
-        Me.pnlFileInfo.TabIndex = 0
-        '
-        'Cancel_Button
-        '
-        Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(775, 553)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Cancel"
-        '
-        'OK_Button
-        '
-        Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.OK_Button.Location = New System.Drawing.Point(702, 553)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
-        '
-        'chkWatched
-        '
-        Me.chkWatched.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.chkWatched.AutoSize = True
-        Me.chkWatched.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWatched.Location = New System.Drawing.Point(12, 557)
-        Me.chkWatched.Name = "chkWatched"
-        Me.chkWatched.Size = New System.Drawing.Size(72, 17)
-        Me.chkWatched.TabIndex = 7
-        Me.chkWatched.Text = "Watched"
-        Me.chkWatched.UseVisualStyleBackColor = True
-        '
-        'StatusStrip
-        '
-        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsFilename})
-        Me.StatusStrip.Location = New System.Drawing.Point(0, 579)
-        Me.StatusStrip.Name = "StatusStrip"
-        Me.StatusStrip.Size = New System.Drawing.Size(854, 22)
-        Me.StatusStrip.SizingGrip = False
-        Me.StatusStrip.TabIndex = 8
-        Me.StatusStrip.Text = "StatusStrip1"
-        '
-        'tsFilename
-        '
-        Me.tsFilename.Name = "tsFilename"
-        Me.tsFilename.Size = New System.Drawing.Size(55, 17)
-        Me.tsFilename.Text = "Filename"
-        '
         'tpSubtitles
         '
         Me.tpSubtitles.Controls.Add(Me.lblSubtitlesPreview)
@@ -949,14 +885,14 @@ Partial Class dlgEditEpisode
         '
         Me.ColumnHeader3.Width = 100
         '
-        'btnRemoveMovieSubtitle
+        'btnRemoveEpisodeSubtitle
         '
         Me.btnRemoveEpisodeSubtitle.Enabled = False
         Me.btnRemoveEpisodeSubtitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnRemoveEpisodeSubtitle.Image = CType(resources.GetObject("btnRemoveMovieSubtitle.Image"), System.Drawing.Image)
+        Me.btnRemoveEpisodeSubtitle.Image = CType(resources.GetObject("btnRemoveEpisodeSubtitle.Image"), System.Drawing.Image)
         Me.btnRemoveEpisodeSubtitle.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnRemoveEpisodeSubtitle.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemoveEpisodeSubtitle.Name = "btnRemoveMovieSubtitle"
+        Me.btnRemoveEpisodeSubtitle.Name = "btnRemoveEpisodeSubtitle"
         Me.btnRemoveEpisodeSubtitle.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveEpisodeSubtitle.TabIndex = 41
         Me.btnRemoveEpisodeSubtitle.Text = "Remove Subtitle"
@@ -1003,6 +939,75 @@ Partial Class dlgEditEpisode
         Me.btnSetMovieSubtitleLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetMovieSubtitleLocal.UseVisualStyleBackColor = True
         '
+        'tpEpisodeMetaData
+        '
+        Me.tpEpisodeMetaData.Controls.Add(Me.pnlFileInfo)
+        Me.tpEpisodeMetaData.Location = New System.Drawing.Point(4, 22)
+        Me.tpEpisodeMetaData.Name = "tpEpisodeMetaData"
+        Me.tpEpisodeMetaData.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpEpisodeMetaData.Size = New System.Drawing.Size(836, 452)
+        Me.tpEpisodeMetaData.TabIndex = 5
+        Me.tpEpisodeMetaData.Text = "Meta Data"
+        Me.tpEpisodeMetaData.UseVisualStyleBackColor = True
+        '
+        'pnlFileInfo
+        '
+        Me.pnlFileInfo.Location = New System.Drawing.Point(-4, 0)
+        Me.pnlFileInfo.Name = "pnlFileInfo"
+        Me.pnlFileInfo.Size = New System.Drawing.Size(844, 452)
+        Me.pnlFileInfo.TabIndex = 0
+        '
+        'Cancel_Button
+        '
+        Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Location = New System.Drawing.Point(775, 553)
+        Me.Cancel_Button.Name = "Cancel_Button"
+        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
+        Me.Cancel_Button.TabIndex = 1
+        Me.Cancel_Button.Text = "Cancel"
+        '
+        'OK_Button
+        '
+        Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.OK_Button.Location = New System.Drawing.Point(702, 553)
+        Me.OK_Button.Name = "OK_Button"
+        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
+        Me.OK_Button.TabIndex = 0
+        Me.OK_Button.Text = "OK"
+        '
+        'chkWatched
+        '
+        Me.chkWatched.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.chkWatched.AutoSize = True
+        Me.chkWatched.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkWatched.Location = New System.Drawing.Point(12, 557)
+        Me.chkWatched.Name = "chkWatched"
+        Me.chkWatched.Size = New System.Drawing.Size(72, 17)
+        Me.chkWatched.TabIndex = 7
+        Me.chkWatched.Text = "Watched"
+        Me.chkWatched.UseVisualStyleBackColor = True
+        '
+        'StatusStrip
+        '
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsFilename})
+        Me.StatusStrip.Location = New System.Drawing.Point(0, 579)
+        Me.StatusStrip.Name = "StatusStrip"
+        Me.StatusStrip.Size = New System.Drawing.Size(854, 22)
+        Me.StatusStrip.SizingGrip = False
+        Me.StatusStrip.TabIndex = 8
+        Me.StatusStrip.Text = "StatusStrip1"
+        '
+        'tsFilename
+        '
+        Me.tsFilename.Name = "tsFilename"
+        Me.tsFilename.Size = New System.Drawing.Size(55, 17)
+        Me.tsFilename.Text = "Filename"
+        '
+        'colID
+        '
+        Me.colID.Width = 0
+        '
         'dlgEditEpisode
         '
         Me.AcceptButton = Me.OK_Button
@@ -1046,11 +1051,11 @@ Partial Class dlgEditEpisode
         Me.tpEpisodeFanart.ResumeLayout(False)
         CType(Me.pbEpisodeFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFrameExtraction.ResumeLayout(False)
+        Me.tpSubtitles.ResumeLayout(False)
+        Me.tpSubtitles.PerformLayout()
         Me.tpEpisodeMetaData.ResumeLayout(False)
         Me.StatusStrip.ResumeLayout(False)
         Me.StatusStrip.PerformLayout()
-        Me.tpSubtitles.ResumeLayout(False)
-        Me.tpSubtitles.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1140,5 +1145,6 @@ Partial Class dlgEditEpisode
     Friend WithEvents btnSetMovieSubtitleDL As System.Windows.Forms.Button
     Friend WithEvents btnSetMovieSubtitleScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetMovieSubtitleLocal As System.Windows.Forms.Button
+    Friend WithEvents colID As System.Windows.Forms.ColumnHeader
 
 End Class

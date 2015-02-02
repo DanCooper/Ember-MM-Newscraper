@@ -161,6 +161,7 @@ Partial Class dlgEditShow
         Me.lblOrdering = New System.Windows.Forms.Label()
         Me.cbEpisodeSorting = New System.Windows.Forms.ComboBox()
         Me.lblEpisodeSorting = New System.Windows.Forms.Label()
+        Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditShow.SuspendLayout()
@@ -520,7 +521,7 @@ Partial Class dlgEditShow
         '
         'lvActors
         '
-        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colRole, Me.colThumb})
+        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(217, 155)
@@ -1797,6 +1798,11 @@ Partial Class dlgEditShow
         Me.lblEpisodeSorting.Text = "Episode Sorted by:"
         Me.lblEpisodeSorting.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
+        'colID
+        '
+        Me.colID.Text = "ID"
+        Me.colID.Width = 0
+        '
         'dlgEditShow
         '
         Me.AcceptButton = Me.OK_Button
@@ -2004,5 +2010,6 @@ Partial Class dlgEditShow
     Friend WithEvents lblVotes As System.Windows.Forms.Label
     Friend WithEvents cbEpisodeSorting As System.Windows.Forms.ComboBox
     Friend WithEvents lblEpisodeSorting As System.Windows.Forms.Label
+    Friend WithEvents colID As System.Windows.Forms.ColumnHeader
 
 End Class
