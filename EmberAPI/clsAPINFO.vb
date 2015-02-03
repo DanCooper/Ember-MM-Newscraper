@@ -212,7 +212,7 @@ Public Class NFO
 
                 If Master.eSettings.MovieScraperCastWithImgOnly Then
                     For i = scrapedmovie.Actors.Count - 1 To 0 Step -1
-                        If String.IsNullOrEmpty(scrapedmovie.Actors(i).Thumb) Then
+                        If String.IsNullOrEmpty(scrapedmovie.Actors(i).ThumbURL) Then
                             scrapedmovie.Actors.RemoveAt(i)
                         End If
                     Next

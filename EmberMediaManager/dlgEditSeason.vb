@@ -60,24 +60,20 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonBannerDL.Click
-        Try
-            Using dImgManual As New dlgImgManual
-                Dim tImage As Images
-                If dImgManual.ShowDialog() = DialogResult.OK Then
-                    tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
-                        SeasonBanner = tImage
-                        Me.pbSeasonBanner.Image = SeasonBanner.Image
-                        Me.pbSeasonBanner.Tag = SeasonBanner
+        Using dImgManual As New dlgImgManual
+            Dim tImage As Images
+            If dImgManual.ShowDialog() = DialogResult.OK Then
+                tImage = dImgManual.Results
+                If Not IsNothing(tImage.Image) Then
+                    SeasonBanner = tImage
+                    Me.pbSeasonBanner.Image = SeasonBanner.Image
+                    Me.pbSeasonBanner.Tag = SeasonBanner
 
-                        Me.lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonBanner.Image.Width, Me.pbSeasonBanner.Image.Height)
-                        Me.lblSeasonBannerSize.Visible = True
-                    End If
+                    Me.lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonBanner.Image.Width, Me.pbSeasonBanner.Image.Height)
+                    Me.lblSeasonBannerSize.Visible = True
                 End If
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
-        End Try
+            End If
+        End Using
     End Sub
 
     Private Sub btnSetSeasonBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonBannerScrape.Click
@@ -100,45 +96,37 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonBannerLocal.Click
-        Try
-            With ofdImage
-                .InitialDirectory = Master.currShow.ShowPath
-                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
-                .FilterIndex = 0
-            End With
+        With ofdImage
+            .InitialDirectory = Master.currShow.ShowPath
+            .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+            .FilterIndex = 0
+        End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                SeasonBanner.FromFile(ofdImage.FileName)
-                Me.pbSeasonBanner.Image = SeasonBanner.Image
-                Me.pbSeasonBanner.Tag = SeasonBanner
+        If ofdImage.ShowDialog() = DialogResult.OK Then
+            SeasonBanner.FromFile(ofdImage.FileName)
+            Me.pbSeasonBanner.Image = SeasonBanner.Image
+            Me.pbSeasonBanner.Tag = SeasonBanner
 
-                Me.lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonBanner.Image.Width, Me.pbSeasonBanner.Image.Height)
-                Me.lblSeasonBannerSize.Visible = True
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            Me.lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonBanner.Image.Width, Me.pbSeasonBanner.Image.Height)
+            Me.lblSeasonBannerSize.Visible = True
+        End If
     End Sub
 
     Private Sub btnSetSeasonFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonFanartDL.Click
-        Try
-            Using dImgManual As New dlgImgManual
-                Dim tImage As Images
-                If dImgManual.ShowDialog() = DialogResult.OK Then
-                    tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
-                        SeasonFanart = tImage
-                        Me.pbSeasonFanart.Image = SeasonFanart.Image
-                        Me.pbSeasonFanart.Tag = SeasonFanart
+        Using dImgManual As New dlgImgManual
+            Dim tImage As Images
+            If dImgManual.ShowDialog() = DialogResult.OK Then
+                tImage = dImgManual.Results
+                If Not IsNothing(tImage.Image) Then
+                    SeasonFanart = tImage
+                    Me.pbSeasonFanart.Image = SeasonFanart.Image
+                    Me.pbSeasonFanart.Tag = SeasonFanart
 
-                        Me.lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonFanart.Image.Width, Me.pbSeasonFanart.Image.Height)
-                        Me.lblSeasonFanartSize.Visible = True
-                    End If
+                    Me.lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonFanart.Image.Width, Me.pbSeasonFanart.Image.Height)
+                    Me.lblSeasonFanartSize.Visible = True
                 End If
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            End If
+        End Using
     End Sub
 
     Private Sub btnSetSeasonFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonFanartScrape.Click
@@ -161,45 +149,37 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonFanartLocal.Click
-        Try
-            With ofdImage
-                .InitialDirectory = Master.currShow.ShowPath
-                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
-                .FilterIndex = 4
-            End With
+        With ofdImage
+            .InitialDirectory = Master.currShow.ShowPath
+            .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+            .FilterIndex = 4
+        End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                SeasonFanart.FromFile(ofdImage.FileName)
-                Me.pbSeasonFanart.Image = SeasonFanart.Image
-                Me.pbSeasonFanart.Tag = SeasonFanart
+        If ofdImage.ShowDialog() = DialogResult.OK Then
+            SeasonFanart.FromFile(ofdImage.FileName)
+            Me.pbSeasonFanart.Image = SeasonFanart.Image
+            Me.pbSeasonFanart.Tag = SeasonFanart
 
-                Me.lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonFanart.Image.Width, Me.pbSeasonFanart.Image.Height)
-                Me.lblSeasonFanartSize.Visible = True
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            Me.lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonFanart.Image.Width, Me.pbSeasonFanart.Image.Height)
+            Me.lblSeasonFanartSize.Visible = True
+        End If
     End Sub
 
     Private Sub btnSetSeasonLandscapeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonLandscapeDL.Click
-        Try
-            Using dImgManual As New dlgImgManual
-                Dim tImage As Images
-                If dImgManual.ShowDialog() = DialogResult.OK Then
-                    tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
-                        SeasonLandscape = tImage
-                        Me.pbSeasonLandscape.Image = SeasonLandscape.Image
-                        Me.pbSeasonLandscape.Tag = SeasonLandscape
+        Using dImgManual As New dlgImgManual
+            Dim tImage As Images
+            If dImgManual.ShowDialog() = DialogResult.OK Then
+                tImage = dImgManual.Results
+                If Not IsNothing(tImage.Image) Then
+                    SeasonLandscape = tImage
+                    Me.pbSeasonLandscape.Image = SeasonLandscape.Image
+                    Me.pbSeasonLandscape.Tag = SeasonLandscape
 
-                        Me.lblSeasonLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonLandscape.Image.Width, Me.pbSeasonLandscape.Image.Height)
-                        Me.lblSeasonLandscapeSize.Visible = True
-                    End If
+                    Me.lblSeasonLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonLandscape.Image.Width, Me.pbSeasonLandscape.Image.Height)
+                    Me.lblSeasonLandscapeSize.Visible = True
                 End If
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            End If
+        End Using
     End Sub
 
     Private Sub btnSetSeasonLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonLandscapeScrape.Click
@@ -222,45 +202,37 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonLandscapeLocal.Click
-        Try
-            With ofdImage
-                .InitialDirectory = Master.currShow.ShowPath
-                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
-                .FilterIndex = 0
-            End With
+        With ofdImage
+            .InitialDirectory = Master.currShow.ShowPath
+            .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+            .FilterIndex = 0
+        End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                SeasonLandscape.FromFile(ofdImage.FileName)
-                Me.pbSeasonLandscape.Image = SeasonLandscape.Image
-                Me.pbSeasonLandscape.Tag = SeasonLandscape
+        If ofdImage.ShowDialog() = DialogResult.OK Then
+            SeasonLandscape.FromFile(ofdImage.FileName)
+            Me.pbSeasonLandscape.Image = SeasonLandscape.Image
+            Me.pbSeasonLandscape.Tag = SeasonLandscape
 
-                Me.lblSeasonLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonLandscape.Image.Width, Me.pbSeasonLandscape.Image.Height)
-                Me.lblSeasonLandscapeSize.Visible = True
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            Me.lblSeasonLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonLandscape.Image.Width, Me.pbSeasonLandscape.Image.Height)
+            Me.lblSeasonLandscapeSize.Visible = True
+        End If
     End Sub
 
     Private Sub btnSetSeasonPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonPosterDL.Click
-        Try
-            Using dImgManual As New dlgImgManual
-                Dim tImage As Images
-                If dImgManual.ShowDialog() = DialogResult.OK Then
-                    tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
-                        SeasonPoster = tImage
-                        Me.pbSeasonPoster.Image = SeasonPoster.Image
-                        Me.pbSeasonPoster.Tag = SeasonPoster
+        Using dImgManual As New dlgImgManual
+            Dim tImage As Images
+            If dImgManual.ShowDialog() = DialogResult.OK Then
+                tImage = dImgManual.Results
+                If Not IsNothing(tImage.Image) Then
+                    SeasonPoster = tImage
+                    Me.pbSeasonPoster.Image = SeasonPoster.Image
+                    Me.pbSeasonPoster.Tag = SeasonPoster
 
-                        Me.lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonPoster.Image.Width, Me.pbSeasonPoster.Image.Height)
-                        Me.lblSeasonPosterSize.Visible = True
-                    End If
+                    Me.lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonPoster.Image.Width, Me.pbSeasonPoster.Image.Height)
+                    Me.lblSeasonPosterSize.Visible = True
                 End If
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            End If
+        End Using
     End Sub
 
     Private Sub btnSetSeasonPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonPosterScrape.Click
@@ -283,24 +255,20 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonPosterLocal.Click
-        Try
-            With ofdImage
-                .InitialDirectory = Master.currShow.ShowPath
-                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
-                .FilterIndex = 0
-            End With
+        With ofdImage
+            .InitialDirectory = Master.currShow.ShowPath
+            .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+            .FilterIndex = 0
+        End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                SeasonPoster.FromFile(ofdImage.FileName)
-                Me.pbSeasonPoster.Image = SeasonPoster.Image
-                Me.pbSeasonPoster.Tag = SeasonPoster
+        If ofdImage.ShowDialog() = DialogResult.OK Then
+            SeasonPoster.FromFile(ofdImage.FileName)
+            Me.pbSeasonPoster.Image = SeasonPoster.Image
+            Me.pbSeasonPoster.Tag = SeasonPoster
 
-                Me.lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonPoster.Image.Width, Me.pbSeasonPoster.Image.Height)
-                Me.lblSeasonPosterSize.Visible = True
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
-        End Try
+            Me.lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonPoster.Image.Width, Me.pbSeasonPoster.Image.Height)
+            Me.lblSeasonPosterSize.Visible = True
+        End If
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -379,14 +347,9 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Try
-            Me.SetInfo()
+        Me.SetInfo()
 
-            Master.DB.SaveTVSeasonToDB(Master.currShow, False)
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
-        End Try
+        Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
@@ -469,89 +432,85 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub SetInfo()
-        Try
-            With Me
+        With Me
 
-                'Banner
-                If Master.currShow.TVEp.Season = 999 Then
-                    If Not IsNothing(.SeasonBanner.Image) Then
-                        'AllSeasons Banner
-                        Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVASBanner(Master.currShow, "")
-                    Else
-                        .SeasonBanner.DeleteTVASBanner(Master.currShow)
-                        Master.currShow.SeasonBannerPath = String.Empty
-                    End If
+            'Banner
+            If Master.currShow.TVEp.Season = 999 Then
+                If Not IsNothing(.SeasonBanner.Image) Then
+                    'AllSeasons Banner
+                    Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVASBanner(Master.currShow, "")
                 Else
-                    'Season Banner
-                    If Not IsNothing(.SeasonBanner.Image) Then
-                        Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVSeasonBanner(Master.currShow)
-                    Else
-                        .SeasonBanner.DeleteTVSeasonBanner(Master.currShow)
-                        Master.currShow.SeasonBannerPath = String.Empty
-                    End If
+                    .SeasonBanner.DeleteTVASBanner(Master.currShow)
+                    Master.currShow.SeasonBannerPath = String.Empty
                 End If
-
-                'Fanart
-                If Master.currShow.TVEp.Season = 999 Then
-                    If Not IsNothing(.SeasonFanart.Image) Then
-                        'AllSeasons Fanart
-                        Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVASFanart(Master.currShow, "")
-                    Else
-                        .SeasonFanart.DeleteTVASFanart(Master.currShow)
-                        Master.currShow.SeasonFanartPath = String.Empty
-                    End If
+            Else
+                'Season Banner
+                If Not IsNothing(.SeasonBanner.Image) Then
+                    Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVSeasonBanner(Master.currShow)
                 Else
-                    'Season Fanart
-                    If Not IsNothing(.SeasonFanart.Image) Then
-                        Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVSeasonFanart(Master.currShow)
-                    Else
-                        .SeasonFanart.DeleteTVSeasonFanart(Master.currShow)
-                        Master.currShow.SeasonFanartPath = String.Empty
-                    End If
+                    .SeasonBanner.DeleteTVSeasonBanner(Master.currShow)
+                    Master.currShow.SeasonBannerPath = String.Empty
                 End If
+            End If
 
-                'Landscape
-                If Master.currShow.TVEp.Season = 999 Then
-                    If Not IsNothing(.SeasonLandscape.Image) Then
-                        'AllSeasons Landscape
-                        Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVASLandscape(Master.currShow, "")
-                    Else
-                        .SeasonLandscape.DeleteTVASLandscape(Master.currShow)
-                        Master.currShow.SeasonLandscapePath = String.Empty
-                    End If
+            'Fanart
+            If Master.currShow.TVEp.Season = 999 Then
+                If Not IsNothing(.SeasonFanart.Image) Then
+                    'AllSeasons Fanart
+                    Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVASFanart(Master.currShow, "")
                 Else
-                    'Season Landscape
-                    If Not IsNothing(.SeasonLandscape.Image) Then
-                        Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVSeasonLandscape(Master.currShow)
-                    Else
-                        .SeasonLandscape.DeleteTVSeasonLandscape(Master.currShow)
-                        Master.currShow.SeasonLandscapePath = String.Empty
-                    End If
+                    .SeasonFanart.DeleteTVASFanart(Master.currShow)
+                    Master.currShow.SeasonFanartPath = String.Empty
                 End If
-
-                'Poster
-                If Master.currShow.TVEp.Season = 999 Then
-                    If Not IsNothing(.SeasonPoster.Image) Then
-                        'AllSeasons Poster
-                        Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVASPoster(Master.currShow, "")
-                    Else
-                        .SeasonPoster.DeleteTVASPoster(Master.currShow)
-                        Master.currShow.SeasonPosterPath = String.Empty
-                    End If
+            Else
+                'Season Fanart
+                If Not IsNothing(.SeasonFanart.Image) Then
+                    Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVSeasonFanart(Master.currShow)
                 Else
-                    'Season Poster
-                    If Not IsNothing(.SeasonPoster.Image) Then
-                        Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVSeasonPoster(Master.currShow)
-                    Else
-                        .SeasonPoster.DeleteTVSeasonPoster(Master.currShow)
-                        Master.currShow.SeasonPosterPath = String.Empty
-                    End If
+                    .SeasonFanart.DeleteTVSeasonFanart(Master.currShow)
+                    Master.currShow.SeasonFanartPath = String.Empty
                 End If
+            End If
 
-            End With
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
-        End Try
+            'Landscape
+            If Master.currShow.TVEp.Season = 999 Then
+                If Not IsNothing(.SeasonLandscape.Image) Then
+                    'AllSeasons Landscape
+                    Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVASLandscape(Master.currShow, "")
+                Else
+                    .SeasonLandscape.DeleteTVASLandscape(Master.currShow)
+                    Master.currShow.SeasonLandscapePath = String.Empty
+                End If
+            Else
+                'Season Landscape
+                If Not IsNothing(.SeasonLandscape.Image) Then
+                    Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVSeasonLandscape(Master.currShow)
+                Else
+                    .SeasonLandscape.DeleteTVSeasonLandscape(Master.currShow)
+                    Master.currShow.SeasonLandscapePath = String.Empty
+                End If
+            End If
+
+            'Poster
+            If Master.currShow.TVEp.Season = 999 Then
+                If Not IsNothing(.SeasonPoster.Image) Then
+                    'AllSeasons Poster
+                    Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVASPoster(Master.currShow, "")
+                Else
+                    .SeasonPoster.DeleteTVASPoster(Master.currShow)
+                    Master.currShow.SeasonPosterPath = String.Empty
+                End If
+            Else
+                'Season Poster
+                If Not IsNothing(.SeasonPoster.Image) Then
+                    Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVSeasonPoster(Master.currShow)
+                Else
+                    .SeasonPoster.DeleteTVSeasonPoster(Master.currShow)
+                    Master.currShow.SeasonPosterPath = String.Empty
+                End If
+            End If
+
+        End With
     End Sub
 
     Private Sub SetUp()

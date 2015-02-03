@@ -278,7 +278,7 @@ Public Class dlgMovieDataScraperPreview
                             For Each imdbAct As MediaContainers.Person In scraperresult.Actors
                                 lvItem = .lvActorsIMDB.Items.Add(imdbAct.Name)
                                 lvItem.SubItems.Add(imdbAct.Role)
-                                lvItem.SubItems.Add(imdbAct.Thumb)
+                                lvItem.SubItems.Add(imdbAct.ThumbURL)
                             Next
                             tbActors.SelectedTab = tbActorsIMDB
                         Else
@@ -462,7 +462,7 @@ Public Class dlgMovieDataScraperPreview
                             For Each TMDBAct As MediaContainers.Person In scraperresult.Actors
                                 lvItem = .lvActorsTMDB.Items.Add(TMDBAct.Name)
                                 lvItem.SubItems.Add(TMDBAct.Role)
-                                lvItem.SubItems.Add(TMDBAct.Thumb)
+                                lvItem.SubItems.Add(TMDBAct.ThumbURL)
                             Next
                             tbActors.SelectedTab = tbActorsTMDB
                         Else
@@ -639,7 +639,7 @@ Public Class dlgMovieDataScraperPreview
                             For Each OFDBAct As MediaContainers.Person In scraperresult.Actors
                                 lvItem = .lvActorsOFDB.Items.Add(OFDBAct.Name)
                                 lvItem.SubItems.Add(OFDBAct.Role)
-                                lvItem.SubItems.Add(OFDBAct.Thumb)
+                                lvItem.SubItems.Add(OFDBAct.ThumbURL)
                             Next
                             tbActors.SelectedTab = tbActorsOFDB
                         Else
@@ -816,7 +816,7 @@ Public Class dlgMovieDataScraperPreview
                             For Each MoviepilotAct As MediaContainers.Person In scraperresult.Actors
                                 lvItem = .lvActorsMoviepilot.Items.Add(MoviepilotAct.Name)
                                 lvItem.SubItems.Add(MoviepilotAct.Role)
-                                lvItem.SubItems.Add(MoviepilotAct.Thumb)
+                                lvItem.SubItems.Add(MoviepilotAct.ThumbURL)
                             Next
                             tbActors.SelectedTab = tbActorsMoviepilot
                         Else

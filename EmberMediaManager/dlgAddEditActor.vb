@@ -136,13 +136,13 @@ Public Class dlgAddEditActor
                 Me.Text = Master.eLang.GetString(158, "Edit Actor")
                 Me.txtName.Text = Me.eActor.Name
                 Me.txtRole.Text = Me.eActor.Role
-                Me.txtThumb.Text = Me.eActor.Thumb
+                Me.txtThumb.Text = Me.eActor.ThumbURL
 
             End If
 
             Me.Activate()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -154,10 +154,10 @@ Public Class dlgAddEditActor
         Try
             Me.eActor.Name = Me.txtName.Text
             Me.eActor.Role = Me.txtRole.Text
-            Me.eActor.Thumb = Me.txtThumb.Text
+            Me.eActor.ThumbURL = Me.txtThumb.Text
             Me.DialogResult = Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.Close()

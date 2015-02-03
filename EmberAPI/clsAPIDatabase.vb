@@ -60,6 +60,209 @@ Public Class Database
 
 #Region "Methods"
 
+    Private Sub AddCountryToMovie(ByVal idMovie As Long, ByVal idCountry As Long)
+        AddToLinkTable("countrylinkmovie", "idCountry", idCountry, "idMovie", idMovie)
+    End Sub
+
+    Private Sub AddDirectorToEpisode(ByVal idEpisode As Long, ByVal idDirector As Long)
+        AddToLinkTable("directorlinkepisode", "idDirector", idDirector, "idEpisode", idEpisode)
+    End Sub
+
+    Private Sub AddDirectorToMovie(ByVal idMovie As Long, ByVal idDirector As Long)
+        AddToLinkTable("directorlinkmovie", "idDirector", idDirector, "idMovie", idMovie)
+    End Sub
+
+    Private Sub AddDirectorToTvShow(ByVal idShow As Long, ByVal idDirector As Long)
+        AddToLinkTable("directorlinktvshow", "idDirector", idDirector, "idShow", idShow)
+    End Sub
+
+    Private Sub AddGenreToMovie(ByVal idMovie As Long, ByVal idGenre As Long)
+        AddToLinkTable("genrelinkmovie", "idGenre", idGenre, "idMovie", idMovie)
+    End Sub
+
+    Private Sub AddGenreToTvShow(ByVal idShow As Long, ByVal idGenre As Long)
+        AddToLinkTable("genrelinktvshow", "idGenre", idGenre, "idShow", idShow)
+    End Sub
+
+    Private Sub AddStudioToMovie(ByVal idMovie As Long, ByVal idStudio As Long)
+        AddToLinkTable("studiolinkmovie", "idStudio", idStudio, "idMovie", idMovie)
+    End Sub
+
+    Private Sub AddStudioToTvShow(ByVal idShow As Long, ByVal idStudio As Long)
+        AddToLinkTable("studiolinktvshow", "idStudio", idStudio, "idShow", idShow)
+    End Sub
+
+    Private Sub AddWriterToEpisode(ByVal idEpisode As Long, ByVal idWriter As Long)
+        AddToLinkTable("writerlinkepisode", "idWriter", idWriter, "idEpisode", idEpisode)
+    End Sub
+
+    Private Sub AddWriterToMovie(ByVal idMovie As Long, ByVal idWriter As Long)
+        AddToLinkTable("writerlinkmovie", "idWriter", idWriter, "idMovie", idMovie)
+    End Sub
+
+    Private Function AddCountry(ByVal strCountry As String) As Long
+        Return AddToTable("country", "idCountry", "strCountry", strCountry)
+    End Function
+
+    Private Function AddGenre(ByVal strGenre As String) As Long
+        Return AddToTable("genre", "idGenre", "strGenre", strGenre)
+    End Function
+
+    Private Function AddSet(ByVal strSet As String) As Long
+        If String.IsNullOrEmpty(strSet) Then Return -1
+        Return AddToTable("sets", "idSet", "strSet", strSet)
+    End Function
+
+    Private Function AddStudio(ByVal strStudio As String) As Long
+        Return AddToTable("studio", "idStudio", "strStudio", strStudio)
+    End Function
+
+    Private Function AddTag(ByVal strTag As String) As Long
+        If String.IsNullOrEmpty(strTag) Then Return -1
+        Return AddToTable("tag", "idTag", "strTag", strTag)
+    End Function
+
+    Private Sub AddCast(ByVal idMedia As Long, ByVal table As String, ByVal field As String, ByVal cast As List(Of MediaContainers.Person))
+        If cast Is Nothing Then Return
+
+        Dim iOrder As Integer = 0
+        For Each actor As MediaContainers.Person In cast
+            Dim idActor = AddActor(actor.Name, actor.ThumbURL, actor.ThumbPath)
+            AddLinkToActor(table, idActor, field, idMedia, actor.Role, iOrder)
+        Next
+    End Sub
+    ''' <summary>
+    ''' add or update actor
+    ''' </summary>
+    ''' <param name="strActor">actor name</param>
+    ''' <param name="thumbURLs">thumb URL</param>
+    ''' <param name="thumb">local thumb path</param>
+    ''' <returns><c>ID</c> of actor in actors table</returns>
+    ''' <remarks></remarks>
+    Private Function AddActor(ByVal strActor As String, ByVal thumbURLs As String, ByVal thumb As String) As Long
+        Dim doesExist As Boolean = False
+        Dim ID As Long = -1
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT idActor FROM actors WHERE strActor like ""{0}""", strActor)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    doesExist = True
+                    ID = CInt(SQLreader("idActor"))
+                    Exit While
+                End While
+            End Using
+
+            If Not doesExist Then
+                SQLcommand.CommandText = String.Format("INSERT INTO actors (idActor, strActor, strThumb) VALUES (NULL, '{0}','{1}'); SELECT LAST_INSERT_ROWID() FROM actors;", strActor, thumbURLs)
+                ID = CInt(SQLcommand.ExecuteScalar())
+            Else
+                SQLcommand.CommandText = String.Format("UPDATE actors SET strThumb='{0}' WHERE idActor={1}", thumbURLs, ID)
+                SQLcommand.ExecuteNonQuery()
+            End If
+
+            If Not String.IsNullOrEmpty(thumb) Then
+                'SetArtForItem(idActor, "actor", "thumb", thumb)
+            End If
+
+            Return ID
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' add an actor to an actorlink* table
+    ''' </summary>
+    ''' <param name="table">link table name without "actorlink" prefix("episode", "movie" or "tvshow")</param>
+    ''' <param name="actorID">ID of actor in table actors</param>
+    ''' <param name="field">field name in <c>table</c> without "id" prefix("Episode", "Movie" or "Show")</param>
+    ''' <param name="secondID">ID of <c>field</c> </param>
+    ''' <param name="role">actors role</param>
+    ''' <param name="order">actors order</param>
+    ''' <returns><c>True</c> if the actor link has been created, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Private Function AddLinkToActor(ByVal table As String, ByVal actorID As Long, ByVal field As String, _
+                                    ByVal secondID As Long, ByVal role As String, _
+                                    ByVal order As Long) As Boolean
+        Dim doesExist As Boolean = False
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT * FROM actorlink{0} WHERE idActor={1} AND id{2}={3};", table, actorID, field, secondID)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    doesExist = True
+                    Exit While
+                End While
+            End Using
+
+            If Not doesExist Then
+                SQLcommand.CommandText = String.Format("INSERT INTO actorlink{0} (idActor, id{1}, strRole, iOrder) VALUES ({2},{3},""{4}"",{5})", table, field, actorID, secondID, role, order)
+                SQLcommand.ExecuteNonQuery()
+                Return True
+            Else
+                Return False
+            End If
+        End Using
+    End Function
+
+    Private Function AddToLinkTable(ByVal table As String, ByVal firstField As String, ByVal firstID As Long, ByVal secondField As String, ByVal secondID As Long, _
+                               Optional ByVal typeField As String = "", Optional ByVal type As String = "") As Boolean
+        Dim doesExist As Boolean = False
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT * FROM {0} WHERE {1}={2} AND {3}={4}", table, firstField, firstID, secondField, secondID)
+            If Not String.IsNullOrEmpty(typeField) AndAlso Not String.IsNullOrEmpty(type) Then
+                SQLcommand.CommandText = String.Concat(SQLcommand.CommandText, String.Format(" AND {0}={1}", typeField, type))
+            End If
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    doesExist = True
+                    Exit While
+                End While
+            End Using
+
+            If Not doesExist Then
+                If String.IsNullOrEmpty(typeField) AndAlso String.IsNullOrEmpty(type) Then
+                    SQLcommand.CommandText = String.Format("INSERT INTO {0} ({1},{2}) VALUES ({3},{4})", table, firstField, secondField, firstID, secondID)
+                Else
+                    SQLcommand.CommandText = String.Format("INSERT INTO {0} ({1},{2},{3}) VALUES ({4},{5},{6})", table, firstField, secondField, typeField, firstID, secondID, type)
+                End If
+                SQLcommand.ExecuteNonQuery()
+                Return True
+            Else
+                Return False
+            End If
+        End Using
+    End Function
+
+    Private Function AddToTable(ByVal table As String, ByVal firstField As String, ByVal secondField As String, ByVal value As String) As Long
+        Dim doesExist As Boolean = False
+        Dim ID As Long = -1
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT {0} FROM {1} WHERE {2} LIKE ""{3}""", firstField, table, secondField, value)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    doesExist = True
+                    ID = CInt(String.Format(SQLreader("{0}").ToString, firstField))
+                    Exit While
+                End While
+            End Using
+
+            If Not doesExist Then
+                SQLcommand.CommandText = String.Format("INSERT INTO {0} ({1}, {2}) VALUES (NULL, ""{3}""); SELECT LAST_INSERT_ROWID() FROM {0};", table, firstField, secondField, value)
+                SQLcommand.ExecuteNonQuery()
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If SQLreader.Read Then
+                        ID = Convert.ToInt64(SQLreader(0))
+                    End If
+                End Using
+            Else
+                Return ID
+            End If
+
+        End Using
+    End Function
+
     ''' <summary>
     ''' Iterates db entries to check if the paths to the movie or TV files are valid. 
     ''' If not, remove all entries pertaining to the movie.
@@ -875,7 +1078,7 @@ Public Class Database
                     person.ID = Convert.ToInt64(SQLreader("idActor"))
                     person.Name = SQLreader("strActor").ToString
                     person.Role = SQLreader("strRole").ToString
-                    person.Thumb = SQLreader("strThumb").ToString
+                    person.ThumbURL = SQLreader("strThumb").ToString
                     _movieDB.Movie.Actors.Add(person)
                 End While
             End Using
@@ -1103,35 +1306,32 @@ Public Class Database
     ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
     ''' <param name="WithShow">If <c>True</c>, also retrieve base show information</param>
     ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVAllSeasonFromDB(ByVal ShowID As Long, Optional ByVal WithShow As Boolean = False) As Structures.DBTV
+    Public Function LoadTVAllSeasonsFromDB(ByVal ShowID As Long, Optional ByVal WithShow As Boolean = False) As Structures.DBTV
         'TODO This method seems mis-named, and may not be performing its intended role
-        'DanCooper: Works correctly. AllSeasonPosters don't have existing episodes, so it needs to be fetched manually from DB.
+        'DanCooper: Works correctly. AllSeasonsPosters don't have existing episodes, so it needs to be fetched manually from DB.
+
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         Dim _TVDB As New Structures.DBTV
-        Try
-            _TVDB.ShowID = ShowID
-            _TVDB.TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}
+        _TVDB.ShowID = ShowID
+        _TVDB.TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}
 
-            Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommandTVSeason.CommandText = String.Concat("SELECT TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock, Mark, ", _
-                                                               "New, HasBanner, BannerPath, HasLandscape, LandscapePath FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = 999;")
-                Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
-                    If SQLReader.HasRows Then
-                        SQLReader.Read()
-                        If Not DBNull.Value.Equals(SQLReader("BannerPath")) Then _TVDB.SeasonBannerPath = SQLReader("BannerPath").ToString
-                        If Not DBNull.Value.Equals(SQLReader("FanartPath")) Then _TVDB.SeasonFanartPath = SQLReader("FanartPath").ToString
-                        If Not DBNull.Value.Equals(SQLReader("LandscapePath")) Then _TVDB.SeasonLandscapePath = SQLReader("LandscapePath").ToString
-                        If Not DBNull.Value.Equals(SQLReader("PosterPath")) Then _TVDB.SeasonPosterPath = SQLReader("PosterPath").ToString
-                    End If
-                End Using
+        Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommandTVSeason.CommandText = String.Concat("SELECT idShow, Season, SeasonText, HasPoster, HasFanart, PosterPath, FanartPath, Lock, Mark, ", _
+                                                           "New, HasBanner, BannerPath, HasLandscape, LandscapePath FROM seasons WHERE idShow = ", ShowID, " AND Season = 999;")
+            Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
+                If SQLReader.HasRows Then
+                    SQLReader.Read()
+                    If Not DBNull.Value.Equals(SQLReader("BannerPath")) Then _TVDB.SeasonBannerPath = SQLReader("BannerPath").ToString
+                    If Not DBNull.Value.Equals(SQLReader("FanartPath")) Then _TVDB.SeasonFanartPath = SQLReader("FanartPath").ToString
+                    If Not DBNull.Value.Equals(SQLReader("LandscapePath")) Then _TVDB.SeasonLandscapePath = SQLReader("LandscapePath").ToString
+                    If Not DBNull.Value.Equals(SQLReader("PosterPath")) Then _TVDB.SeasonPosterPath = SQLReader("PosterPath").ToString
+                End If
             End Using
+        End Using
 
-            If WithShow Then Master.DB.FillTVShowFromDB(_TVDB)
+        If WithShow Then Master.DB.FillTVShowFromDB(_TVDB)
 
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
         Return _TVDB
     End Function
 
@@ -1214,7 +1414,7 @@ Public Class Database
                     person.ID = Convert.ToInt64(SQLreader("idActor"))
                     person.Name = SQLreader("strActor").ToString
                     person.Role = SQLreader("strRole").ToString
-                    person.Thumb = SQLreader("strThumb").ToString
+                    person.ThumbURL = SQLreader("strThumb").ToString
                     _TVDB.TVEp.Actors.Add(person)
                 End While
             End Using
@@ -1334,7 +1534,7 @@ Public Class Database
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         If Master.eSettings.TVASPosterAnyEnabled Then
-            Return Master.DB.LoadTVAllSeasonFromDB(ShowID, True)
+            Return Master.DB.LoadTVAllSeasonsFromDB(ShowID, True)
         Else
             Return Master.DB.LoadTVShowFromDB(ShowID)
         End If
@@ -1359,7 +1559,7 @@ Public Class Database
             _TVDB.TVEp.Season = iSeason
 
             Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommandTVSeason.CommandText = String.Concat("SELECT TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock , Mark , New, HasBanner, BannerPath, HasLandscape, LandscapePath FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
+                SQLcommandTVSeason.CommandText = String.Concat("SELECT idShow, Season, SeasonText, HasPoster, HasFanart, PosterPath, FanartPath, Lock , Mark , New, HasBanner, BannerPath, HasLandscape, LandscapePath FROM seasons WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
                     If SQLReader.HasRows Then
                         SQLReader.Read()
@@ -1448,7 +1648,7 @@ Public Class Database
                         person.ID = Convert.ToInt64(SQLreader("idActor"))
                         person.Name = SQLreader("strActor").ToString
                         person.Role = SQLreader("strRole").ToString
-                        person.Thumb = SQLreader("strThumb").ToString
+                        person.ThumbURL = SQLreader("strThumb").ToString
                         _TVDB.TVShow.Actors.Add(person)
                     End While
                 End Using
@@ -1517,8 +1717,9 @@ Public Class Database
                                     SQLcommand.CommandText = _cmd.execute
                                     Try
                                         SQLcommand.ExecuteNonQuery()
+                                        logger.Info(String.Concat(Trans.name, ": ", _cmd.description))
                                     Catch ex As Exception
-                                        logger.Info(New StackFrame().GetMethod().Name, ex, Trans.name, _cmd.execute)
+                                        logger.Info(New StackFrame().GetMethod().Name, ex, Trans.name, _cmd.description)
                                         TransOk = False
                                         Exit For
                                     End Try
@@ -1847,72 +2048,46 @@ Public Class Database
                     SQLcommand_actorlinkmovie.ExecuteNonQuery()
                 End Using
 
-                Dim iActor As Long = 0
-                For Each actor As MediaContainers.Person In _movieDB.Movie.Actors
-                    If actor.ID > -1 Then
-                        Using SQLcommand_actor As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            SQLcommand_actor.CommandText = String.Concat("INSERT OR REPLACE INTO actors (idActor, strActor, strThumb) VALUES (?,?,?);")
+                AddCast(_movieDB.ID, "movie", "movie", _movieDB.Movie.Actors)
 
-                            Dim par_actor_idActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_idActor", DbType.UInt64, 0, "idActor")
-                            Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                            Dim par_actor_strThumb As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strThumb", DbType.String, 0, "strThumb")
-                            par_actor_idActor.Value = actor.ID
-                            par_actor_strActor.Value = actor.Name
-                            par_actor_strThumb.Value = actor.Thumb
-                            SQLcommand_actor.ExecuteNonQuery()
-                        End Using
-                    Else
-                        Using SQLcommand_actor As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            SQLcommand_actor.CommandText = "SELECT idActor FROM actors WHERE strActor = (?);"
+                'Directors
+                Using SQLcommand_directorlinkmovie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_directorlinkmovie.CommandText = String.Concat("DELETE FROM directorlinkmovie WHERE idMovie = ", _movieDB.ID, ";")
+                    SQLcommand_directorlinkmovie.ExecuteNonQuery()
+                End Using
 
-                            Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                            par_actor_strActor.Value = actor.Name
+                For Each director As String In _movieDB.Movie.Directors
+                    AddDirectorToMovie(_movieDB.ID, AddActor(director, "", ""))
+                Next
 
-                            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_actor.ExecuteReader
-                                If SQLreader.HasRows Then
-                                    SQLreader.Read()
-                                    actor.ID = Convert.ToInt64(SQLreader("idActor"))
-                                End If
-                            End Using
-                        End Using
+                'Genres
+                Using SQLcommand_genrelinkmovie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_genrelinkmovie.CommandText = String.Concat("DELETE FROM genrelinkmovie WHERE idMovie = ", _movieDB.ID, ";")
+                    SQLcommand_genrelinkmovie.ExecuteNonQuery()
+                End Using
 
-                        Using SQLcommand_actor As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            If actor.ID > -1 Then
-                                SQLcommand_actor.CommandText = String.Concat("INSERT OR REPLACE INTO actors (idActor, strActor, strThumb) VALUES (?,?,?);")
+                For Each genre As String In _movieDB.Movie.Genres
+                    AddGenreToMovie(_movieDB.ID, AddGenre(genre))
+                Next
 
-                                Dim par_actor_idActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_idActor", DbType.UInt64, 0, "idActor")
-                                Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                                Dim par_actor_strThumb As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strThumb", DbType.String, 0, "strThumb")
-                                par_actor_idActor.Value = actor.ID
-                                par_actor_strActor.Value = actor.Name
-                                par_actor_strThumb.Value = actor.Thumb
-                                SQLcommand_actor.ExecuteNonQuery()
-                            Else
-                                SQLcommand_actor.CommandText = String.Concat("INSERT INTO actors (", _
-                                                                         "strActor, strThumb) VALUES (?,?); SELECT LAST_INSERT_ROWID() FROM actors;")
-                                Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                                Dim par_actor_strThumb As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strThumb", DbType.String, 0, "strThumb")
-                                par_actor_strActor.Value = actor.Name
-                                par_actor_strThumb.Value = actor.Thumb
+                'Studios
+                Using SQLcommand_studiolinkmovie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_studiolinkmovie.CommandText = String.Concat("DELETE FROM studiolinkmovie WHERE idMovie = ", _movieDB.ID, ";")
+                    SQLcommand_studiolinkmovie.ExecuteNonQuery()
+                End Using
 
-                                actor.ID = Convert.ToInt64(SQLcommand_actor.ExecuteScalar)
-                            End If
-                        End Using
-                    End If
+                For Each studio As String In _movieDB.Movie.Studios
+                    AddStudioToMovie(_movieDB.ID, AddStudio(studio))
+                Next
 
-                    Using SQLcommand_actorlinkmovie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLcommand_actorlinkmovie.CommandText = String.Concat("INSERT OR REPLACE INTO actorlinkmovie (idActor, idMovie, strRole, iOrder) VALUES (?,?,?,?);")
-                        Dim par_actorlinkmovie_idActor As SQLite.SQLiteParameter = SQLcommand_actorlinkmovie.Parameters.Add("par_actorlinkepisode_idActor", DbType.UInt64, 0, "idActor")
-                        Dim par_actorlinkmovie_idMovie As SQLite.SQLiteParameter = SQLcommand_actorlinkmovie.Parameters.Add("par_actorlinkepisode_idMovie", DbType.UInt64, 0, "idMovie")
-                        Dim par_actorlinkmovie_strRole As SQLite.SQLiteParameter = SQLcommand_actorlinkmovie.Parameters.Add("par_actorlinkepisode_strRole", DbType.String, 0, "strRole")
-                        Dim par_actorlinkmovie_iOrder As SQLite.SQLiteParameter = SQLcommand_actorlinkmovie.Parameters.Add("par_actorlinkepisode_iOrder", DbType.UInt64, 0, "iOrder")
-                        par_actorlinkmovie_idActor.Value = actor.ID
-                        par_actorlinkmovie_idMovie.Value = _movieDB.ID
-                        par_actorlinkmovie_strRole.Value = actor.Role
-                        par_actorlinkmovie_iOrder.Value = iActor
-                        SQLcommand_actorlinkmovie.ExecuteNonQuery()
-                        iActor += 1
-                    End Using
+                'Writers
+                Using SQLcommand_writerlinkmovie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_writerlinkmovie.CommandText = String.Concat("DELETE FROM writerlinkmovie WHERE idMovie = ", _movieDB.ID, ";")
+                    SQLcommand_writerlinkmovie.ExecuteNonQuery()
+                End Using
+
+                For Each writer As String In _movieDB.Movie.Writers
+                    AddWriterToMovie(_movieDB.ID, AddWriter(writer))
                 Next
 
                 'Video Streams
@@ -2125,77 +2300,21 @@ Public Class Database
                 '    End Using
                 'Next
 
-            'MovieSets part
-            Using SQLcommandMovieSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommandMovieSets.CommandText = String.Concat("DELETE FROM MoviesSets WHERE MovieID = ", _movieDB.ID, ";")
-                SQLcommandMovieSets.ExecuteNonQuery()
-            End Using
+                'MovieSets part
+                Using SQLcommandMovieSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommandMovieSets.CommandText = String.Concat("DELETE FROM MoviesSets WHERE MovieID = ", _movieDB.ID, ";")
+                    SQLcommandMovieSets.ExecuteNonQuery()
+                End Using
 
-            Dim IsNewSet As Boolean
-            For Each s As MediaContainers.Set In _movieDB.Movie.Sets
-                If s.TitleSpecified Then
-                    IsNewSet = Not s.ID > 0
-                    If Not IsNewSet Then
-                        Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
-                         "MovieID, SetID, SetOrder", _
-                         ") VALUES (?,?,?);")
-                            Dim parMoviesSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_MovieID", DbType.Int64, 0, "MovieID")
-                            Dim parMoviesSets_SetID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_SetID", DbType.Int64, 0, "SetID")
-                            Dim parMoviesSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_SetOrder", DbType.String, 0, "SetOrder")
-
-                            parMoviesSets_MovieID.Value = _movieDB.ID
-                            parMoviesSets_SetID.Value = s.ID
-                            parMoviesSets_SetOrder.Value = s.Order
-                            SQLcommandMoviesSets.ExecuteNonQuery()
-                        End Using
-                    Else
-                        'first check if a Set with same TMDBColID is already existing
-                        If Not String.IsNullOrEmpty(s.TMDBColID) Then
-                            Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                SQLcommandSets.CommandText = String.Concat("SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
-                                                                       "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
-                                                                       "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                       "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM Sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
-                                Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
-                                    If SQLreader.HasRows Then
-                                        SQLreader.Read()
-                                        If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
-                                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Title = CStr(SQLreader("SetName"))
-                                        IsNewSet = False
-                                        NFO.SaveMovieToNFO(_movieDB) 'to save the "new" SetName
-                                    Else
-                                        IsNewSet = True
-                                    End If
-                                End Using
-                            End Using
-                        End If
-
-                        If IsNewSet Then
-                            'secondly check if a Set with same name is already existing
-                            Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                SQLcommandSets.CommandText = String.Concat("SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
-                                                                       "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
-                                                                       "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                       "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM Sets WHERE SetName LIKE """, s.Title, """;")
-                                Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
-                                    If SQLreader.HasRows Then
-                                        SQLreader.Read()
-                                        If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
-                                        IsNewSet = False
-                                    Else
-                                        IsNewSet = True
-                                    End If
-                                End Using
-                            End Using
-                        End If
-
+                Dim IsNewSet As Boolean
+                For Each s As MediaContainers.Set In _movieDB.Movie.Sets
+                    If s.TitleSpecified Then
+                        IsNewSet = Not s.ID > 0
                         If Not IsNewSet Then
-                            'create new MoviesSets with existing SetID
                             Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                                 SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
-                                                                                 "MovieID, SetID, SetOrder", _
-                                                                                 ") VALUES (?,?,?);")
+                             "MovieID, SetID, SetOrder", _
+                             ") VALUES (?,?,?);")
                                 Dim parMoviesSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_MovieID", DbType.Int64, 0, "MovieID")
                                 Dim parMoviesSets_SetID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_SetID", DbType.Int64, 0, "SetID")
                                 Dim parMoviesSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_SetOrder", DbType.String, 0, "SetOrder")
@@ -2206,80 +2325,48 @@ Public Class Database
                                 SQLcommandMoviesSets.ExecuteNonQuery()
                             End Using
                         Else
-                            'create new Set
-                            Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO Sets (", _
-                                                                                 "ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
-                                                                                 "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
-                                                                                 "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                                 "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock", _
-                                                                                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
-                                Dim parSets_ListTitle As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ListTitle", DbType.String, 0, "ListTitle")
-                                Dim parSets_HasNfo As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasInfo", DbType.Boolean, 0, "HasNfo")
-                                Dim parSets_NfoPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_NfoPath", DbType.String, 0, "NfoPath")
-                                Dim parSets_HasPoster As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasPoster", DbType.Boolean, 0, "HasPoster")
-                                Dim parSets_PosterPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_PosterPath", DbType.String, 0, "PosterPath")
-                                Dim parSets_HasFanart As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasFanart", DbType.Boolean, 0, "HasFanart")
-                                Dim parSets_FanartPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_FanartPath", DbType.String, 0, "FanartPath")
-                                Dim parSets_HasBanner As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasBanner", DbType.Boolean, 0, "HasBanner")
-                                Dim parSets_BannerPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_BannerPath", DbType.String, 0, "BannerPath")
-                                Dim parSets_HasLandscape As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasLandscape", DbType.Boolean, 0, "HasLandscape")
-                                Dim parSets_LandscapePath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_LandscapePath", DbType.String, 0, "LandscapePath")
-                                Dim parSets_HasDiscArt As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasDiscArt", DbType.Boolean, 0, "HasDiscArt")
-                                Dim parSets_DiscArtPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_DiscArtPath", DbType.String, 0, "DiscArtPath")
-                                Dim parSets_HasClearLogo As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasClearLogo", DbType.Boolean, 0, "HasClearLogo")
-                                Dim parSets_ClearLogoPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ClearLogoPath", DbType.String, 0, "ClearLogoPath")
-                                Dim parSets_HasClearArt As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasClearArt", DbType.Boolean, 0, "HasClearArt")
-                                Dim parSets_ClearArtPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ClearArtPath", DbType.String, 0, "ClearArtPath")
-                                Dim parSets_TMDBColID As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "TMDBColID")
-                                Dim parSets_Plot As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Plot", DbType.String, 0, "Plot")
-                                Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
-                                Dim parSets_New As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_New", DbType.Boolean, 0, "New")
-                                Dim parSets_Mark As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Mark", DbType.Boolean, 0, "Mark")
-                                Dim parSets_Lock As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Lock", DbType.Boolean, 0, "Lock")
-
-                                parSets_SetName.Value = s.Title
-                                parSets_ListTitle.Value = StringUtils.FilterTokens_MovieSet(s.Title)
-                                parSets_TMDBColID.Value = s.TMDBColID
-                                parSets_Plot.Value = String.Empty
-                                parSets_BannerPath.Value = String.Empty
-                                parSets_ClearArtPath.Value = String.Empty
-                                parSets_ClearLogoPath.Value = String.Empty
-                                parSets_DiscArtPath.Value = String.Empty
-                                parSets_FanartPath.Value = String.Empty
-                                parSets_LandscapePath.Value = String.Empty
-                                parSets_NfoPath.Value = String.Empty
-                                parSets_PosterPath.Value = String.Empty
-                                parSets_HasBanner.Value = False
-                                parSets_HasClearArt.Value = False
-                                parSets_HasClearLogo.Value = False
-                                parSets_HasDiscArt.Value = False
-                                parSets_HasFanart.Value = False
-                                parSets_HasLandscape.Value = False
-                                parSets_HasNfo.Value = False
-                                parSets_HasPoster.Value = False
-                                parSets_New.Value = True
-                                parSets_Lock.Value = False
-
-                                If Master.eSettings.MovieSetGeneralMarkNew Then
-                                    parSets_Mark.Value = True
-                                Else
-                                    parSets_Mark.Value = False
-                                End If
-                                SQLcommandSets.ExecuteNonQuery()
-                            End Using
-
-                            Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName FROM Sets WHERE SetName LIKE """, s.Title, """;")
-                                Using rdrSets As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
-                                    If rdrSets.Read Then
-                                        s.ID = Convert.ToInt64(rdrSets(0))
-                                    End If
+                            'first check if a Set with same TMDBColID is already existing
+                            If Not String.IsNullOrEmpty(s.TMDBColID) Then
+                                Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                    SQLcommandSets.CommandText = String.Concat("SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                                                                           "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
+                                                                           "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
+                                                                           "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM Sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
+                                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
+                                        If SQLreader.HasRows Then
+                                            SQLreader.Read()
+                                            If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
+                                            If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Title = CStr(SQLreader("SetName"))
+                                            IsNewSet = False
+                                            NFO.SaveMovieToNFO(_movieDB) 'to save the "new" SetName
+                                        Else
+                                            IsNewSet = True
+                                        End If
+                                    End Using
                                 End Using
-                            End Using
+                            End If
 
-                            'create new MoviesSets with new SetID
-                            If s.ID > 0 Then
+                            If IsNewSet Then
+                                'secondly check if a Set with same name is already existing
+                                Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                    SQLcommandSets.CommandText = String.Concat("SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                                                                           "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
+                                                                           "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
+                                                                           "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM Sets WHERE SetName LIKE """, s.Title, """;")
+                                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
+                                        If SQLreader.HasRows Then
+                                            SQLreader.Read()
+                                            If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
+                                            IsNewSet = False
+                                        Else
+                                            IsNewSet = True
+                                        End If
+                                    End Using
+                                End Using
+                            End If
+
+                            If Not IsNewSet Then
+                                'create new MoviesSets with existing SetID
                                 Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                                     SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
                                                                                      "MovieID, SetID, SetOrder", _
@@ -2293,11 +2380,99 @@ Public Class Database
                                     parMoviesSets_SetOrder.Value = s.Order
                                     SQLcommandMoviesSets.ExecuteNonQuery()
                                 End Using
+                            Else
+                                'create new Set
+                                Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                    SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO Sets (", _
+                                                                                     "ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                                                                                     "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
+                                                                                     "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
+                                                                                     "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock", _
+                                                                                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
+                                    Dim parSets_ListTitle As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ListTitle", DbType.String, 0, "ListTitle")
+                                    Dim parSets_HasNfo As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasInfo", DbType.Boolean, 0, "HasNfo")
+                                    Dim parSets_NfoPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_NfoPath", DbType.String, 0, "NfoPath")
+                                    Dim parSets_HasPoster As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasPoster", DbType.Boolean, 0, "HasPoster")
+                                    Dim parSets_PosterPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_PosterPath", DbType.String, 0, "PosterPath")
+                                    Dim parSets_HasFanart As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasFanart", DbType.Boolean, 0, "HasFanart")
+                                    Dim parSets_FanartPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_FanartPath", DbType.String, 0, "FanartPath")
+                                    Dim parSets_HasBanner As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasBanner", DbType.Boolean, 0, "HasBanner")
+                                    Dim parSets_BannerPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_BannerPath", DbType.String, 0, "BannerPath")
+                                    Dim parSets_HasLandscape As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasLandscape", DbType.Boolean, 0, "HasLandscape")
+                                    Dim parSets_LandscapePath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_LandscapePath", DbType.String, 0, "LandscapePath")
+                                    Dim parSets_HasDiscArt As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasDiscArt", DbType.Boolean, 0, "HasDiscArt")
+                                    Dim parSets_DiscArtPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_DiscArtPath", DbType.String, 0, "DiscArtPath")
+                                    Dim parSets_HasClearLogo As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasClearLogo", DbType.Boolean, 0, "HasClearLogo")
+                                    Dim parSets_ClearLogoPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ClearLogoPath", DbType.String, 0, "ClearLogoPath")
+                                    Dim parSets_HasClearArt As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasClearArt", DbType.Boolean, 0, "HasClearArt")
+                                    Dim parSets_ClearArtPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ClearArtPath", DbType.String, 0, "ClearArtPath")
+                                    Dim parSets_TMDBColID As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "TMDBColID")
+                                    Dim parSets_Plot As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Plot", DbType.String, 0, "Plot")
+                                    Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
+                                    Dim parSets_New As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_New", DbType.Boolean, 0, "New")
+                                    Dim parSets_Mark As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Mark", DbType.Boolean, 0, "Mark")
+                                    Dim parSets_Lock As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Lock", DbType.Boolean, 0, "Lock")
+
+                                    parSets_SetName.Value = s.Title
+                                    parSets_ListTitle.Value = StringUtils.FilterTokens_MovieSet(s.Title)
+                                    parSets_TMDBColID.Value = s.TMDBColID
+                                    parSets_Plot.Value = String.Empty
+                                    parSets_BannerPath.Value = String.Empty
+                                    parSets_ClearArtPath.Value = String.Empty
+                                    parSets_ClearLogoPath.Value = String.Empty
+                                    parSets_DiscArtPath.Value = String.Empty
+                                    parSets_FanartPath.Value = String.Empty
+                                    parSets_LandscapePath.Value = String.Empty
+                                    parSets_NfoPath.Value = String.Empty
+                                    parSets_PosterPath.Value = String.Empty
+                                    parSets_HasBanner.Value = False
+                                    parSets_HasClearArt.Value = False
+                                    parSets_HasClearLogo.Value = False
+                                    parSets_HasDiscArt.Value = False
+                                    parSets_HasFanart.Value = False
+                                    parSets_HasLandscape.Value = False
+                                    parSets_HasNfo.Value = False
+                                    parSets_HasPoster.Value = False
+                                    parSets_New.Value = True
+                                    parSets_Lock.Value = False
+
+                                    If Master.eSettings.MovieSetGeneralMarkNew Then
+                                        parSets_Mark.Value = True
+                                    Else
+                                        parSets_Mark.Value = False
+                                    End If
+                                    SQLcommandSets.ExecuteNonQuery()
+                                End Using
+
+                                Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                    SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName FROM Sets WHERE SetName LIKE """, s.Title, """;")
+                                    Using rdrSets As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
+                                        If rdrSets.Read Then
+                                            s.ID = Convert.ToInt64(rdrSets(0))
+                                        End If
+                                    End Using
+                                End Using
+
+                                'create new MoviesSets with new SetID
+                                If s.ID > 0 Then
+                                    Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                        SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
+                                                                                         "MovieID, SetID, SetOrder", _
+                                                                                         ") VALUES (?,?,?);")
+                                        Dim parMoviesSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_MovieID", DbType.Int64, 0, "MovieID")
+                                        Dim parMoviesSets_SetID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_SetID", DbType.Int64, 0, "SetID")
+                                        Dim parMoviesSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_SetOrder", DbType.String, 0, "SetOrder")
+
+                                        parMoviesSets_MovieID.Value = _movieDB.ID
+                                        parMoviesSets_SetID.Value = s.ID
+                                        parMoviesSets_SetOrder.Value = s.Order
+                                        SQLcommandMoviesSets.ExecuteNonQuery()
+                                    End Using
+                                End If
                             End If
                         End If
                     End If
-                End If
-            Next
+                Next
             End If
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
@@ -2658,73 +2833,7 @@ Public Class Database
                     SQLcommand_actorlinkepisode.ExecuteNonQuery()
                 End Using
 
-                Dim iActor As Long = 0
-                For Each actor As MediaContainers.Person In _TVEpDB.TVEp.Actors
-                    If actor.ID > -1 Then
-                        Using SQLcommand_actor As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            SQLcommand_actor.CommandText = String.Concat("INSERT OR REPLACE INTO actors (idActor, strActor, strThumb) VALUES (?,?,?);")
-
-                            Dim par_actor_idActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_idActor", DbType.UInt64, 0, "idActor")
-                            Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                            Dim par_actor_strThumb As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strThumb", DbType.String, 0, "strThumb")
-                            par_actor_idActor.Value = actor.ID
-                            par_actor_strActor.Value = actor.Name
-                            par_actor_strThumb.Value = actor.Thumb
-                            SQLcommand_actor.ExecuteNonQuery()
-                        End Using
-                    Else
-                        Using SQLcommand_actor As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            SQLcommand_actor.CommandText = "SELECT idActor FROM actors WHERE strActor = (?);"
-
-                            Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                            par_actor_strActor.Value = actor.Name
-
-                            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_actor.ExecuteReader
-                                If SQLreader.HasRows Then
-                                    SQLreader.Read()
-                                    actor.ID = Convert.ToInt64(SQLreader("idActor"))
-                                End If
-                            End Using
-                        End Using
-
-                        Using SQLcommand_actor As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            If actor.ID > -1 Then
-                                SQLcommand_actor.CommandText = String.Concat("INSERT OR REPLACE INTO actors (idActor, strActor, strThumb) VALUES (?,?,?);")
-
-                                Dim par_actor_idActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_idActor", DbType.UInt64, 0, "idActor")
-                                Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                                Dim par_actor_strThumb As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strThumb", DbType.String, 0, "strThumb")
-                                par_actor_idActor.Value = actor.ID
-                                par_actor_strActor.Value = actor.Name
-                                par_actor_strThumb.Value = actor.Thumb
-                                SQLcommand_actor.ExecuteNonQuery()
-                            Else
-                                SQLcommand_actor.CommandText = String.Concat("INSERT INTO actors (", _
-                                                                         "strActor, strThumb) VALUES (?,?); SELECT LAST_INSERT_ROWID() FROM actors;")
-                                Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                                Dim par_actor_strThumb As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strThumb", DbType.String, 0, "strThumb")
-                                par_actor_strActor.Value = actor.Name
-                                par_actor_strThumb.Value = actor.Thumb
-
-                                actor.ID = Convert.ToInt64(SQLcommand_actor.ExecuteScalar)
-                            End If
-                        End Using
-                    End If
-
-                    Using SQLcommand_actorlinkepisode As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLcommand_actorlinkepisode.CommandText = String.Concat("INSERT OR REPLACE INTO actorlinkepisode (idActor, idEpisode, strRole, iOrder) VALUES (?,?,?,?);")
-                        Dim par_actorlinkepisode_idActor As SQLite.SQLiteParameter = SQLcommand_actorlinkepisode.Parameters.Add("par_actorlinkepisode_idActor", DbType.UInt64, 0, "idActor")
-                        Dim par_actorlinkepisode_idEpisode As SQLite.SQLiteParameter = SQLcommand_actorlinkepisode.Parameters.Add("par_actorlinkepisode_idEpisode", DbType.UInt64, 0, "idEpisode")
-                        Dim par_actorlinkepisode_strRole As SQLite.SQLiteParameter = SQLcommand_actorlinkepisode.Parameters.Add("par_actorlinkepisode_strRole", DbType.String, 0, "strRole")
-                        Dim par_actorlinkepisode_iOrder As SQLite.SQLiteParameter = SQLcommand_actorlinkepisode.Parameters.Add("par_actorlinkepisode_iOrder", DbType.UInt64, 0, "iOrder")
-                        par_actorlinkepisode_idActor.Value = actor.ID
-                        par_actorlinkepisode_idEpisode.Value = _TVEpDB.EpID
-                        par_actorlinkepisode_strRole.Value = actor.Role
-                        par_actorlinkepisode_iOrder.Value = iActor
-                        SQLcommand_actorlinkepisode.ExecuteNonQuery()
-                        iActor += 1
-                    End Using
-                Next
+                AddCast(_TVEpDB.EpID, "episode", "episode", _TVEpDB.TVEp.Actors)
 
                 Using SQLcommandTVVStreams As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommandTVVStreams.CommandText = String.Concat("DELETE FROM TVVStreams WHERE TVEpID = ", _TVEpDB.EpID, ";")
@@ -2855,50 +2964,45 @@ Public Class Database
     Public Sub SaveTVSeasonToDB(ByRef _TVSeasonDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False)
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
-        Try
-            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-            If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
-            Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommandTVSeason.CommandText = String.Concat("INSERT OR ", If(IsNew, "IGNORE", "REPLACE"), " INTO TVSeason (", _
-                  "TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock, Mark, New, HasBanner, BannerPath, HasLandscape, LandscapePath", _
-                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
-                Dim parSeasonShowID As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonShowID", DbType.UInt64, 0, "TVShowID")
-                Dim parSeasonSeasonText As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonSeasonText", DbType.String, 0, "SeasonText")
-                Dim parSeasonSeason As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonSeason", DbType.Int32, 0, "Season")
-                Dim parSeasonHasPoster As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasPoster", DbType.Boolean, 0, "HasPoster")
-                Dim parSeasonHasFanart As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasFanart", DbType.Boolean, 0, "HasFanart")
-                Dim parSeasonPosterPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonPosterPath", DbType.String, 0, "PosterPath")
-                Dim parSeasonFanartPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonFanartPath", DbType.String, 0, "FanartPath")
-                Dim parSeasonLock As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonLock", DbType.Boolean, 0, "Lock")
-                Dim parSeasonMark As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonMark", DbType.Boolean, 0, "Mark")
-                Dim parSeasonNew As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "New")
-                Dim parSeasonHasBanner As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasBanner", DbType.Boolean, 0, "HasBanner")
-                Dim parSeasonBannerPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonBannerPath", DbType.String, 0, "BannerPath")
-                Dim parSeasonHasLandscape As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasLandscape", DbType.Boolean, 0, "HasLandscape")
-                Dim parSeasonLandscapePath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonLandscapePath", DbType.String, 0, "LandscapePath")
-                parSeasonShowID.Value = _TVSeasonDB.ShowID
-                parSeasonSeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
-                parSeasonSeason.Value = _TVSeasonDB.TVEp.Season
-                parSeasonHasPoster.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonPosterPath)
-                parSeasonHasBanner.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonBannerPath)
-                parSeasonHasFanart.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonFanartPath)
-                parSeasonHasLandscape.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonLandscapePath)
-                parSeasonPosterPath.Value = _TVSeasonDB.SeasonPosterPath
-                parSeasonBannerPath.Value = _TVSeasonDB.SeasonBannerPath
-                parSeasonFanartPath.Value = _TVSeasonDB.SeasonFanartPath
-                parSeasonLandscapePath.Value = _TVSeasonDB.SeasonLandscapePath
-                parSeasonLock.Value = _TVSeasonDB.IsLockSeason
-                parSeasonMark.Value = _TVSeasonDB.IsMarkSeason
-                parSeasonNew.Value = IsNew
-                SQLcommandTVSeason.ExecuteNonQuery()
-            End Using
+        Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommandTVSeason.CommandText = String.Concat("INSERT OR ", If(IsNew, "IGNORE", "REPLACE"), " INTO seasons (", _
+              "idShow, Season, SeasonText, HasPoster, HasFanart, PosterPath, FanartPath, Lock, Mark, New, HasBanner, BannerPath, HasLandscape, LandscapePath", _
+              ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
+            Dim par_seasons_idShow As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_idShow", DbType.UInt64, 0, "idShow")
+            Dim par_seasons_Season As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_Season", DbType.Int32, 0, "Season")
+            Dim par_seasons_SeasonText As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_SeasonText", DbType.String, 0, "SeasonText")
+            Dim par_seasons_HasPoster As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_HasPoster", DbType.Boolean, 0, "HasPoster")
+            Dim par_seasons_HasFanart As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_HasFanart", DbType.Boolean, 0, "HasFanart")
+            Dim par_seasons_PosterPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_PosterPath", DbType.String, 0, "PosterPath")
+            Dim par_seasons_FanartPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_FanartPath", DbType.String, 0, "FanartPath")
+            Dim par_seasons_Lock As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_Lock", DbType.Boolean, 0, "Lock")
+            Dim par_seasons_Mark As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_Mark", DbType.Boolean, 0, "Mark")
+            Dim par_seasons_New As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_New", DbType.Boolean, 0, "New")
+            Dim par_seasons_HasBanner As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_HasBanner", DbType.Boolean, 0, "HasBanner")
+            Dim par_seasons_BannerPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_BannerPath", DbType.String, 0, "BannerPath")
+            Dim par_seasons_HasLandscape As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_HasLandscape", DbType.Boolean, 0, "HasLandscape")
+            Dim par_seasons_LandscapePath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_LandscapePath", DbType.String, 0, "LandscapePath")
+            par_seasons_idShow.Value = _TVSeasonDB.ShowID
+            par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
+            par_seasons_Season.Value = _TVSeasonDB.TVEp.Season
+            par_seasons_HasPoster.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonPosterPath)
+            par_seasons_HasBanner.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonBannerPath)
+            par_seasons_HasFanart.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonFanartPath)
+            par_seasons_HasLandscape.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonLandscapePath)
+            par_seasons_PosterPath.Value = _TVSeasonDB.SeasonPosterPath
+            par_seasons_BannerPath.Value = _TVSeasonDB.SeasonBannerPath
+            par_seasons_FanartPath.Value = _TVSeasonDB.SeasonFanartPath
+            par_seasons_LandscapePath.Value = _TVSeasonDB.SeasonLandscapePath
+            par_seasons_Lock.Value = _TVSeasonDB.IsLockSeason
+            par_seasons_Mark.Value = _TVSeasonDB.IsMarkSeason
+            par_seasons_New.Value = IsNew
+            Dim test As Integer = CInt(SQLcommandTVSeason.ExecuteScalar())
+        End Using
 
-            If Not BatchMode Then SQLtransaction.Commit()
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        If Not BatchMode Then SQLtransaction.Commit()
     End Sub
     ''' <summary>
     ''' Saves all show information from a Structures.DBTV object to the database
@@ -3053,73 +3157,7 @@ Public Class Database
                         SQLcommand_actorlinktvshow.ExecuteNonQuery()
                     End Using
 
-                    Dim iActor As Long = 0
-                    For Each actor As MediaContainers.Person In _TVShowDB.TVShow.Actors
-                        If actor.ID > -1 Then
-                            Using SQLcommand_actor As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                SQLcommand_actor.CommandText = String.Concat("INSERT OR REPLACE INTO actors (idActor, strActor, strThumb) VALUES (?,?,?);")
-
-                                Dim par_actor_idActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_idActor", DbType.UInt64, 0, "idActor")
-                                Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                                Dim par_actor_strThumb As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strThumb", DbType.String, 0, "strThumb")
-                                par_actor_idActor.Value = actor.ID
-                                par_actor_strActor.Value = actor.Name
-                                par_actor_strThumb.Value = actor.Thumb
-                                SQLcommand_actor.ExecuteNonQuery()
-                            End Using
-                        Else
-                            Using SQLcommand_actor As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                SQLcommand_actor.CommandText = "SELECT idActor FROM actors WHERE strActor = (?);"
-
-                                Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                                par_actor_strActor.Value = actor.Name
-
-                                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_actor.ExecuteReader
-                                    If SQLreader.HasRows Then
-                                        SQLreader.Read()
-                                        actor.ID = Convert.ToInt64(SQLreader("idActor"))
-                                    End If
-                                End Using
-                            End Using
-
-                            Using SQLcommand_actor As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                If actor.ID > -1 Then
-                                    SQLcommand_actor.CommandText = String.Concat("INSERT OR REPLACE INTO actors (idActor, strActor, strThumb) VALUES (?,?,?);")
-
-                                    Dim par_actor_idActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_idActor", DbType.UInt64, 0, "idActor")
-                                    Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                                    Dim par_actor_strThumb As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strThumb", DbType.String, 0, "strThumb")
-                                    par_actor_idActor.Value = actor.ID
-                                    par_actor_strActor.Value = actor.Name
-                                    par_actor_strThumb.Value = actor.Thumb
-                                    SQLcommand_actor.ExecuteNonQuery()
-                                Else
-                                    SQLcommand_actor.CommandText = String.Concat("INSERT INTO actors (", _
-                                                                             "strActor, strThumb) VALUES (?,?); SELECT LAST_INSERT_ROWID() FROM actors;")
-                                    Dim par_actor_strActor As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strActor", DbType.String, 0, "strActor")
-                                    Dim par_actor_strThumb As SQLite.SQLiteParameter = SQLcommand_actor.Parameters.Add("par_actor_strThumb", DbType.String, 0, "strThumb")
-                                    par_actor_strActor.Value = actor.Name
-                                    par_actor_strThumb.Value = actor.Thumb
-
-                                    actor.ID = Convert.ToInt64(SQLcommand_actor.ExecuteScalar)
-                                End If
-                            End Using
-                        End If
-
-                        Using SQLcommand_actorlinktvshow As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            SQLcommand_actorlinktvshow.CommandText = String.Concat("INSERT OR REPLACE INTO actorlinktvshow (idActor, idShow, strRole, iOrder) VALUES (?,?,?,?);")
-                            Dim par_actorlinktvshow_idActor As SQLite.SQLiteParameter = SQLcommand_actorlinktvshow.Parameters.Add("par_actorlinktvshow_idActor", DbType.UInt64, 0, "idActor")
-                            Dim par_actorlinktvshow_idShow As SQLite.SQLiteParameter = SQLcommand_actorlinktvshow.Parameters.Add("par_actorlinktvshow_idShow", DbType.UInt64, 0, "idShow")
-                            Dim par_actorlinktvshow_strRole As SQLite.SQLiteParameter = SQLcommand_actorlinktvshow.Parameters.Add("par_actorlinktvshow_strRole", DbType.String, 0, "strRole")
-                            Dim par_actorlinktvshow_iOrder As SQLite.SQLiteParameter = SQLcommand_actorlinktvshow.Parameters.Add("par_actorlinktvshow_iOrder", DbType.UInt64, 0, "iOrder")
-                            par_actorlinktvshow_idActor.Value = actor.ID
-                            par_actorlinktvshow_idShow.Value = _TVShowDB.ShowID
-                            par_actorlinktvshow_strRole.Value = actor.Role
-                            par_actorlinktvshow_iOrder.Value = iActor
-                            SQLcommand_actorlinktvshow.ExecuteNonQuery()
-                            iActor += 1
-                        End Using
-                    Next
+                    AddCast(_TVShowDB.ShowID, "tvshow", "show", _TVShowDB.TVShow.Actors)
                 End If
             End Using
 

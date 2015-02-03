@@ -227,7 +227,7 @@ Public Class dlgEditMovie
                 Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.ID.ToString)
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
-                lvItem.SubItems.Add(eActor.Thumb)
+                lvItem.SubItems.Add(eActor.ThumbURL)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1896,7 +1896,7 @@ Public Class dlgEditMovie
         Try
             If Me.lvActors.SelectedItems.Count > 0 Then
                 Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
-                Dim eActor As New MediaContainers.Person With {.ID = CInt(lvwItem.Text), .Name = lvwItem.SubItems(1).Text, .Role = lvwItem.SubItems(2).Text, .Thumb = lvwItem.SubItems(3).Text}
+                Dim eActor As New MediaContainers.Person With {.ID = CInt(lvwItem.Text), .Name = lvwItem.SubItems(1).Text, .Role = lvwItem.SubItems(2).Text, .ThumbURL = lvwItem.SubItems(3).Text}
                 Using dAddEditActor As New dlgAddEditActor
                     eActor = dAddEditActor.ShowDialog(False, eActor)
                 End Using
@@ -1904,7 +1904,7 @@ Public Class dlgEditMovie
                     lvwItem.Text = eActor.ID.ToString
                     lvwItem.SubItems(1).Text = eActor.Name
                     lvwItem.SubItems(2).Text = eActor.Role
-                    lvwItem.SubItems(3).Text = eActor.Thumb
+                    lvwItem.SubItems(3).Text = eActor.ThumbURL
                     lvwItem.Selected = True
                     lvwItem.EnsureVisible()
                 End If
@@ -2042,7 +2042,7 @@ Public Class dlgEditMovie
                     lvItem = .lvActors.Items.Add(imdbAct.ID.ToString)
                     lvItem.SubItems.Add(imdbAct.Name)
                     lvItem.SubItems.Add(imdbAct.Role)
-                    lvItem.SubItems.Add(imdbAct.Thumb)
+                    lvItem.SubItems.Add(imdbAct.ThumbURL)
                 Next
 
                 If Not Master.currMovie.Filename = String.Empty AndAlso Master.currMovie.Movie.VideoSource = "" Then
@@ -3028,7 +3028,7 @@ Public Class dlgEditMovie
                         addActor.ID = CInt(lviActor.Text)
                         addActor.Name = lviActor.SubItems(1).Text.Trim
                         addActor.Role = lviActor.SubItems(2).Text.Trim
-                        addActor.Thumb = lviActor.SubItems(3).Text.Trim
+                        addActor.ThumbURL = lviActor.SubItems(3).Text.Trim
 
                         Master.currMovie.Movie.Actors.Add(addActor)
                     Next
@@ -3082,7 +3082,7 @@ Public Class dlgEditMovie
                 If Master.GlobalScrapeMod.ActorThumbs Then
                     For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
                         Dim img As New Images
-                        img.FromWeb(act.Thumb)
+                        img.FromWeb(act.ThumbURL)
                         If Not IsNothing(img.Image) Then
                             img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
                         End If

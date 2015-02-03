@@ -212,7 +212,7 @@ Public Class Scraper
                 tmpTVDBShow = New TVDBShow
 
                 tmpTVDBShow.Show = Master.DB.LoadTVFullShowFromDB(_ID)
-                tmpTVDBShow.AllSeason = Master.DB.LoadTVAllSeasonFromDB(_ID)
+                tmpTVDBShow.AllSeason = Master.DB.LoadTVAllSeasonsFromDB(_ID)
 
                 Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If OnlySeason = 999 Then
@@ -348,7 +348,7 @@ Public Class Scraper
                                 Dim xdActors As XDocument = XDocument.Parse(aXML)
                                 For Each Actor As XElement In xdActors.Descendants("Actor")
                                     If Actor.Element("Name") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Actor.Element("Name").Value) Then
-                                        Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = If(Actor.Element("Role") Is Nothing, String.Empty, Actor.Element("Role").Value), .Thumb = If(Actor.Element("Image") Is Nothing OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Actor.Element("Image").Value))})
+                                        Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = If(Actor.Element("Role") Is Nothing, String.Empty, Actor.Element("Role").Value), .ThumbURL = If(Actor.Element("Image") Is Nothing OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Actor.Element("Image").Value))})
                                     End If
                                 Next
                             End If
@@ -1122,7 +1122,7 @@ Public Class Scraper
                             Dim xdActors As XDocument = XDocument.Parse(aXML)
                             For Each Actor As XElement In xdActors.Descendants("Actor")
                                 If Actor.Element("Name") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Actor.Element("Name").Value) Then
-                                    Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(Actor.Element("Image") Is Nothing OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Actor.Element("Image").Value))})
+                                    Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .ThumbURL = If(Actor.Element("Image") Is Nothing OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Actor.Element("Image").Value))})
                                 End If
                             Next
                         End If

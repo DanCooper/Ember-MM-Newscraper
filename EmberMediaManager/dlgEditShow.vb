@@ -96,10 +96,10 @@ Public Class dlgEditShow
                 Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.ID.ToString)
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
-                lvItem.SubItems.Add(eActor.Thumb)
+                lvItem.SubItems.Add(eActor.ThumbURL)
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -147,7 +147,7 @@ Public Class dlgEditShow
                 Me.FillInfo()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -875,7 +875,7 @@ Public Class dlgEditShow
                 Me.lblShowPosterSize.Visible = True
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1150,7 +1150,7 @@ Public Class dlgEditShow
                 End If
             End With
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1199,7 +1199,7 @@ Public Class dlgEditShow
                 End While
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1292,7 +1292,7 @@ Public Class dlgEditShow
         Try
             If Me.lvActors.SelectedItems.Count > 0 Then
                 Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
-                Dim eActor As New MediaContainers.Person With {.ID = CInt(lvwItem.Text), .Name = lvwItem.SubItems(1).Text, .Role = lvwItem.SubItems(2).Text, .Thumb = lvwItem.SubItems(3).Text}
+                Dim eActor As New MediaContainers.Person With {.ID = CInt(lvwItem.Text), .Name = lvwItem.SubItems(1).Text, .Role = lvwItem.SubItems(2).Text, .ThumbURL = lvwItem.SubItems(3).Text}
                 Using dAddEditActor As New dlgAddEditActor
                     eActor = dAddEditActor.ShowDialog(False, eActor)
                 End Using
@@ -1300,14 +1300,14 @@ Public Class dlgEditShow
                     lvwItem.Text = eActor.ID.ToString
                     lvwItem.SubItems(1).Text = eActor.Name
                     lvwItem.SubItems(2).Text = eActor.Role
-                    lvwItem.SubItems(3).Text = eActor.Thumb
+                    lvwItem.SubItems(3).Text = eActor.ThumbURL
                     lvwItem.Selected = True
                     lvwItem.EnsureVisible()
                 End If
                 eActor = Nothing
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1349,7 +1349,7 @@ Public Class dlgEditShow
                 lvItem = .lvActors.Items.Add(imdbAct.ID.ToString)
                 lvItem.SubItems.Add(imdbAct.Name)
                 lvItem.SubItems.Add(imdbAct.Role)
-                lvItem.SubItems.Add(imdbAct.Thumb)
+                lvItem.SubItems.Add(imdbAct.ThumbURL)
             Next
 
             Dim tRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVShow.Rating)
@@ -2238,7 +2238,7 @@ Public Class dlgEditShow
                 End If
 
             Catch ex As Exception
-                Logger.Error(New StackFrame().GetMethod().Name,ex)
+                Logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
             Me.lbMPAA.SelectedIndex = 0
@@ -2302,7 +2302,7 @@ Public Class dlgEditShow
                         addActor.ID = CInt(lviActor.Text.Trim)
                         addActor.Name = lviActor.SubItems(1).Text.Trim
                         addActor.Role = lviActor.SubItems(2).Text.Trim
-                        addActor.Thumb = lviActor.SubItems(3).Text.Trim
+                        addActor.ThumbURL = lviActor.SubItems(3).Text.Trim
 
                         Master.currShow.TVShow.Actors.Add(addActor)
                     Next
@@ -2401,7 +2401,7 @@ Public Class dlgEditShow
 
             End With
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

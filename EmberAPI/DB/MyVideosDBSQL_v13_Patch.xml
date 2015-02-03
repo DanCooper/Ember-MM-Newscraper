@@ -1272,6 +1272,110 @@
       </execute>
     </command>
     <command type="DB">
+      <description>edit/create table seasons</description>
+      <execute>
+        CREATE TABLE TVSeason01(
+        TVShowID,
+        SeasonText,
+        Season,
+        HasPoster,
+        HasFanart,
+        PosterPath,
+        FanartPath,
+        Lock,
+        Mark,
+        "New",
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath
+        );
+
+        INSERT INTO TVSeason01
+        SELECT
+        TVShowID,
+        SeasonText,
+        Season,
+        HasPoster,
+        HasFanart,
+        PosterPath,
+        FanartPath,
+        Lock,
+        Mark,
+        "New",
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath
+        FROM TVSeason;
+
+        DROP TABLE TVSeason;
+
+        CREATE TABLE seasons (
+        idSeason       integer PRIMARY KEY,
+        idShow         integer,
+        Season         integer,
+        SeasonText     text,
+        HasPoster      bool NOT NULL DEFAULT 0,
+        HasFanart      bool NOT NULL DEFAULT 0,
+        PosterPath     text,
+        FanartPath     text,
+        Lock           bool NOT NULL DEFAULT 0,
+        Mark           bool NOT NULL DEFAULT 0,
+        "New"          bool NOT NULL DEFAULT 0,
+        HasBanner      bool NOT NULL DEFAULT 0,
+        BannerPath     text,
+        HasLandscape   bool NOT NULL DEFAULT 0,
+        LandscapePath  text
+        );
+
+        INSERT INTO seasons
+        (idShow,
+        Season,
+        SeasonText,
+        HasPoster,
+        HasFanart,
+        PosterPath,
+        FanartPath,
+        Lock,
+        Mark,
+        "New",
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath)
+        SELECT
+        TVShowID,
+        Season,
+        SeasonText,
+        HasPoster,
+        HasFanart,
+        PosterPath,
+        FanartPath,
+        Lock,
+        Mark,
+        "New",
+        HasBanner,
+        BannerPath,
+        HasLandscape,
+        LandscapePath
+        FROM TVSeason01;
+
+        DROP TABLE TVSeason01;
+
+        CREATE UNIQUE INDEX ix_seasons
+        ON seasons
+        (idShow, season);
+
+        CREATE TRIGGER delete_season
+        AFTER DELETE
+        ON seasons
+        BEGIN
+        DELETE FROM art WHERE media_id=old.idSeason AND media_type='season';
+        END;
+      </execute>
+    </command>
+    <command type="DB">
       <description>edit/create table set</description>
       <execute>
         CREATE TABLE Sets01(

@@ -1835,7 +1835,8 @@ Namespace MediaContainers
         Private _id As Long
         Private _name As String
         Private _role As String
-        Private _thumb As String
+        Private _thumbpath As String
+        Private _thumburl As String
 
 #End Region 'Fields
 
@@ -1848,7 +1849,7 @@ Namespace MediaContainers
         Public Sub New(ByVal sName As String, ByVal sRole As String, ByVal sThumb As String)
             Me._name = sName
             Me._role = sRole
-            Me._thumb = sThumb
+            Me._thumburl = sThumb
         End Sub
 
         Public Sub New()
@@ -1889,12 +1890,21 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("thumb")> _
-        Public Property Thumb() As String
+        Public Property ThumbURL() As String
             Get
-                Return Me._thumb
+                Return Me._thumburl
             End Get
             Set(ByVal Value As String)
-                Me._thumb = Value
+                Me._thumburl = Value
+            End Set
+        End Property
+
+        Public Property ThumbPath() As String
+            Get
+                Return Me._thumbpath
+            End Get
+            Set(ByVal Value As String)
+                Me._thumbpath = Value
             End Set
         End Property
 
@@ -1906,7 +1916,8 @@ Namespace MediaContainers
             Me._id = -1
             Me._name = String.Empty
             Me._role = String.Empty
-            Me._thumb = String.Empty
+            Me._thumbpath = String.Empty
+            Me._thumburl = String.Empty
         End Sub
 
         Public Overrides Function ToString() As String
