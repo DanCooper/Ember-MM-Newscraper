@@ -18,6 +18,252 @@
       </execute>
     </command>
     <command type="DB">
+      <description>get art paths from Movies</description>
+      <execute>
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'movie' AS media_type, 'banner' AS type, BannerPath
+        FROM Movies
+        WHERE NOT BannerPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'movie' AS media_type, 'clearart' AS type, ClearArtPath
+        FROM Movies
+        WHERE NOT ClearArtPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'movie' AS media_type, 'clearlogo' AS type, ClearLogoPath
+        FROM Movies
+        WHERE NOT ClearLogoPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'movie' AS media_type, 'discart' AS type, DiscArtPath
+        FROM Movies
+        WHERE NOT DiscArtPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'movie' AS media_type, 'fanart' AS type, FanartPath
+        FROM Movies
+        WHERE NOT FanartPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'movie' AS media_type, 'landscape' AS type, LandscapePath
+        FROM Movies
+        WHERE NOT LandscapePath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'movie' AS media_type, 'poster' AS type, PosterPath
+        FROM Movies
+        WHERE NOT PosterPath = "";
+      </execute>
+    </command>
+    <command type="DB">
+      <description>get art paths from Sets</description>
+      <execute>
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'set' AS media_type, 'banner' AS type, BannerPath
+        FROM Sets
+        WHERE NOT BannerPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'set' AS media_type, 'clearart' AS type, ClearArtPath
+        FROM Sets
+        WHERE NOT ClearArtPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'set' AS media_type, 'clearlogo' AS type, ClearLogoPath
+        FROM Sets
+        WHERE NOT ClearLogoPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'set' AS media_type, 'discart' AS type, DiscArtPath
+        FROM Sets
+        WHERE NOT DiscArtPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'set' AS media_type, 'fanart' AS type, FanartPath
+        FROM Sets
+        WHERE NOT FanartPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'set' AS media_type, 'landscape' AS type, LandscapePath
+        FROM Sets
+        WHERE NOT LandscapePath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'set' AS media_type, 'poster' AS type, PosterPath
+        FROM Sets
+        WHERE NOT PosterPath = "";
+      </execute>
+    </command>
+    <command type="DB">
+      <description>get art paths from TVEps</description>
+      <execute>
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'episode' AS media_type, 'fanart' AS type, FanartPath
+        FROM TVEps
+        WHERE NOT FanartPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'episode' AS media_type, 'poster' AS type, PosterPath
+        FROM TVEps
+        WHERE NOT PosterPath = "";
+      </execute>
+    </command>
+    <command type="DB">
+      <description>get art paths from TVShows</description>
+      <execute>
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'tvshow' AS media_type, 'banner' AS type, BannerPath
+        FROM TVShows
+        WHERE NOT BannerPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'tvshow' AS media_type, 'characterart' AS type, CharacterArtPath
+        FROM TVShows
+        WHERE NOT CharacterArtPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'tvshow' AS media_type, 'clearart' AS type, ClearArtPath
+        FROM TVShows
+        WHERE NOT ClearArtPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'tvshow' AS media_type, 'clearlogo' AS type, ClearLogoPath
+        FROM TVShows
+        WHERE NOT ClearLogoPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'tvshow' AS media_type, 'fanart' AS type, FanartPath
+        FROM TVShows
+        WHERE NOT FanartPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'tvshow' AS media_type, 'landscape' AS type, LandscapePath
+        FROM TVShows
+        WHERE NOT LandscapePath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        ID, 'tvshow' AS media_type, 'poster' AS type, PosterPath
+        FROM TVShows
+        WHERE NOT PosterPath = "";
+      </execute>
+    </command>
+    <command type="DB">
       <description>edit/create table tvshow</description>
       <execute>
         CREATE TABLE TVShows01(
@@ -1522,6 +1768,57 @@
         BEGIN
         DELETE FROM art WHERE media_id=old.idSet AND media_type='set';
         END;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>get art paths from seasons</description>
+      <execute>
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        idSeason, 'season' AS media_type, 'banner' AS type, BannerPath
+        FROM seasons
+        WHERE NOT BannerPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        idSeason, 'season' AS media_type, 'fanart' AS type, FanartPath
+        FROM seasons
+        WHERE NOT FanartPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        idSeason, 'season' AS media_type, 'landscape' AS type, LandscapePath
+        FROM seasons
+        WHERE NOT LandscapePath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        idSeason, 'season' AS media_type, 'poster' AS type, PosterPath
+        FROM seasons
+        WHERE NOT PosterPath = "";
+      </execute>
+    </command>
+    <command type="DB">
+      <description>remove table MoviesFanart/MoviesPosters</description>
+      <execute>
+        DROP TABLE MoviesFanart;
+        DROP TABLE MoviesPosters;
       </execute>
     </command>
   </transaction>
