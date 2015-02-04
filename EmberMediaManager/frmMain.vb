@@ -2665,7 +2665,7 @@ Public Class frmMain
                             Dim img As New Images
                             img.FromWeb(act.ThumbURL)
                             If Not IsNothing(img.Image) Then
-                                img.SaveAsMovieActorThumb(act, Directory.GetParent(DBScrapeMovie.Filename).FullName, DBScrapeMovie)
+                                act.ThumbPath = img.SaveAsMovieActorThumb(act, Directory.GetParent(DBScrapeMovie.Filename).FullName, DBScrapeMovie)
                             End If
                         Next
                     End If

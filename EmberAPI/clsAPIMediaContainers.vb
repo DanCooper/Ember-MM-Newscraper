@@ -2025,6 +2025,7 @@ Namespace MediaContainers
         Private _mpaa As String
         Private _premiered As String
         Private _studio As String
+        Private _studios As New List(Of String)
         Private _plot As String
         Private _runtime As String
         Private _actors As New List(Of Person)
@@ -2032,6 +2033,7 @@ Namespace MediaContainers
         Private _status As String
         Private _tags As New List(Of String)
         Private _votes As String
+        Private _directors As New List(Of String)
 
 #End Region 'Fields
 
@@ -2192,6 +2194,27 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlElement("director")> _
+        Public Property Directors() As List(Of String)
+            Get
+                Return _directors
+            End Get
+            Set(ByVal value As List(Of String))
+                If IsNothing(value) Then
+                    _directors.Clear()
+                Else
+                    _directors = value
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property DirectorsSpecified() As Boolean
+            Get
+                Return _directors.Count > 0
+            End Get
+        End Property
+
         <XmlElement("mpaa")> _
         Public Property MPAA() As String
             Get
@@ -2227,19 +2250,31 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("studio")> _
+        Public Property Studios() As List(Of String)
+            Get
+                Return Me._studios
+            End Get
+            Set(ByVal value As List(Of String))
+                Me._studios = value
+            End Set
+        End Property
+
+        <Obsolete("This property is depreciated. Use TVShow.Studios [List(Of String)] instead.")> _
+        <XmlIgnore()> _
         Public Property Studio() As String
             Get
-                Return Me._studio
+                Return String.Join(" / ", _studios.ToArray)
             End Get
             Set(ByVal value As String)
-                Me._studio = value
+                _studios.Clear()
+                AddStudio(value)
             End Set
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property StudioSpecified() As Boolean
+        Public ReadOnly Property StudiosSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._studio)
+                Return _studios.Count > 0
             End Get
         End Property
 
@@ -2357,6 +2392,24 @@ Namespace MediaContainers
             End If
         End Sub
 
+        Public Sub AddStudio(ByVal value As String)
+            If String.IsNullOrEmpty(value) Then Return
+
+            If value.Contains("/") Then
+                Dim values As String() = value.Split(New [Char]() {"/"c})
+                For Each studio As String In values
+                    studio = studio.Trim
+                    If Not _studios.Contains(studio) Then
+                        _studios.Add(studio)
+                    End If
+                Next
+            Else
+                If Not _studios.Contains(value) Then
+                    _studios.Add(value.Trim)
+                End If
+            End If
+        End Sub
+
         Public Sub Clear()
             _title = String.Empty
             _id = String.Empty
@@ -2373,6 +2426,8 @@ Namespace MediaContainers
             _actors.Clear()
             _episodeguide.URL = String.Empty
             _tags.Clear()
+            _directors.Clear()
+            _studios.Clear()
         End Sub
 
         Public Sub BlankId()

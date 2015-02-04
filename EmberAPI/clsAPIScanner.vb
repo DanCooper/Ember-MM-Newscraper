@@ -1530,136 +1530,131 @@ Public Class Scanner
     End Function
 
     Private Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
-        Try
-            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-            Master.DB.ClearNew()
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Master.DB.ClearNew()
 
-            If Args.Scan.Movies Then
-                Me.MoviePaths = Master.DB.GetMoviePaths
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        If Not String.IsNullOrEmpty(Args.SourceName) Then
-                            SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources WHERE Name = ""{0}"";", Args.SourceName)
-                        Else
-                            SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources WHERE Exclude = 0;"
-                        End If
-
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                                SQLUpdatecommand.CommandText = "UPDATE sources SET LastScan = (?) WHERE ID = (?);"
-                                Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
-                                Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
-                                While SQLreader.Read
-                                    Try
-                                        SourceLastScan = If(DBNull.Value.Equals(SQLreader("LastScan")), Now, Convert.ToDateTime(SQLreader("LastScan").ToString))
-                                    Catch ex As Exception
-                                        SourceLastScan = Now
-                                    End Try
-                                    If Convert.ToBoolean(SQLreader("Recursive")) OrElse (Master.eSettings.MovieGeneralIgnoreLastScan OrElse Directory.GetLastWriteTime(SQLreader("Path").ToString) > SourceLastScan) Then
-                                        'save the scan time back to the db
-                                        parLastScan.Value = Now
-                                        parID.Value = SQLreader("ID")
-                                        SQLUpdatecommand.ExecuteNonQuery()
-                                        Try
-                                            If Master.eSettings.MovieSortBeforeScan Then
-                                                FileUtils.FileSorter.SortFiles(SQLreader("Path").ToString)
-                                            End If
-                                        Catch ex As Exception
-                                            logger.Error(New StackFrame().GetMethod().Name, ex)
-                                        End Try
-                                        ScanMovieSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), True)
-                                    End If
-                                    If Me.bwPrelim.CancellationPending Then
-                                        e.Cancel = True
-                                        Return
-                                    End If
-                                End While
-                            End Using
-                        End Using
-                    End Using
-                    SQLTrans.Commit()
-                End Using
-            End If
-
-            If Args.Scan.TV Then
-                bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
-
-                htTVShows.Clear()
+        If Args.Scan.Movies Then
+            Me.MoviePaths = Master.DB.GetMoviePaths
+            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = "SELECT idShow, TVShowPath FROM tvshow;"
+                    If Not String.IsNullOrEmpty(Args.SourceName) Then
+                        SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources WHERE Name = ""{0}"";", Args.SourceName)
+                    Else
+                        SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources WHERE Exclude = 0;"
+                    End If
+
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        While SQLreader.Read
-                            htTVShows.Add(SQLreader("TVShowPath").ToString.ToLower, SQLreader("idShow"))
-                            If Me.bwPrelim.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
-                        End While
-                    End Using
-                End Using
-
-                TVPaths.Clear()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        While SQLreader.Read
-                            TVPaths.Add(SQLreader("TVEpPath").ToString.ToLower)
-                            If Me.bwPrelim.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
-                        End While
-                    End Using
-                End Using
-
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        If Not String.IsNullOrEmpty(Args.SourceName) Then
-                            SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources WHERE Name = ""{0}"";", Args.SourceName)
-                        Else
-                            SQLcommand.CommandText = "SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources WHERE Exclude = 0;"
-                        End If
-
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                                SQLUpdatecommand.CommandText = "UPDATE TVSources SET LastScan = (?) WHERE ID = (?);"
-                                Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
-                                Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
-                                While SQLreader.Read
-                                    Try
-                                        SourceLastScan = If(DBNull.Value.Equals(SQLreader("LastScan")), Now, Convert.ToDateTime(SQLreader("LastScan").ToString))
-                                    Catch ex As Exception
-                                        SourceLastScan = Now
-                                    End Try
+                        Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLUpdatecommand.CommandText = "UPDATE sources SET LastScan = (?) WHERE ID = (?);"
+                            Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
+                            Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                            While SQLreader.Read
+                                Try
+                                    SourceLastScan = If(DBNull.Value.Equals(SQLreader("LastScan")), Now, Convert.ToDateTime(SQLreader("LastScan").ToString))
+                                Catch ex As Exception
+                                    SourceLastScan = Now
+                                End Try
+                                If Convert.ToBoolean(SQLreader("Recursive")) OrElse (Master.eSettings.MovieGeneralIgnoreLastScan OrElse Directory.GetLastWriteTime(SQLreader("Path").ToString) > SourceLastScan) Then
                                     'save the scan time back to the db
                                     parLastScan.Value = Now
                                     parID.Value = SQLreader("ID")
                                     SQLUpdatecommand.ExecuteNonQuery()
-                                    ScanTVSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, SQLreader("Language").ToString, DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering), DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting))
-                                    If Me.bwPrelim.CancellationPending Then
-                                        e.Cancel = True
-                                        Return
-                                    End If
-                                End While
-                            End Using
+                                    Try
+                                        If Master.eSettings.MovieSortBeforeScan Then
+                                            FileUtils.FileSorter.SortFiles(SQLreader("Path").ToString)
+                                        End If
+                                    Catch ex As Exception
+                                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                                    End Try
+                                    ScanMovieSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), True)
+                                End If
+                                If Me.bwPrelim.CancellationPending Then
+                                    e.Cancel = True
+                                    Return
+                                End If
+                            End While
                         End Using
                     End Using
-                    SQLTrans.Commit()
                 End Using
-            End If
+                SQLTrans.Commit()
+            End Using
+        End If
 
-            'no separate MovieSet scanning possible, so we clean MovieSets when movies were scanned
-            If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
-                Me.bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
-                'remove any db entries that no longer exist
-                Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceName)
-            End If
+        If Args.Scan.TV Then
+            bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
 
-            e.Result = Args
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            e.Cancel = True
-        End Try
+            htTVShows.Clear()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = "SELECT idShow, TVShowPath FROM tvshow;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        htTVShows.Add(SQLreader("TVShowPath").ToString.ToLower, SQLreader("idShow"))
+                        If Me.bwPrelim.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+                    End While
+                End Using
+            End Using
+
+            TVPaths.Clear()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        TVPaths.Add(SQLreader("TVEpPath").ToString.ToLower)
+                        If Me.bwPrelim.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+                    End While
+                End Using
+            End Using
+
+            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    If Not String.IsNullOrEmpty(Args.SourceName) Then
+                        SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources WHERE Name = ""{0}"";", Args.SourceName)
+                    Else
+                        SQLcommand.CommandText = "SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources WHERE Exclude = 0;"
+                    End If
+
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLUpdatecommand.CommandText = "UPDATE TVSources SET LastScan = (?) WHERE ID = (?);"
+                            Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
+                            Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                            While SQLreader.Read
+                                Try
+                                    SourceLastScan = If(DBNull.Value.Equals(SQLreader("LastScan")), Now, Convert.ToDateTime(SQLreader("LastScan").ToString))
+                                Catch ex As Exception
+                                    SourceLastScan = Now
+                                End Try
+                                'save the scan time back to the db
+                                parLastScan.Value = Now
+                                parID.Value = SQLreader("ID")
+                                SQLUpdatecommand.ExecuteNonQuery()
+                                ScanTVSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, SQLreader("Language").ToString, DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering), DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting))
+                                If Me.bwPrelim.CancellationPending Then
+                                    e.Cancel = True
+                                    Return
+                                End If
+                            End While
+                        End Using
+                    End Using
+                End Using
+                SQLTrans.Commit()
+            End Using
+        End If
+
+        'no separate MovieSet scanning possible, so we clean MovieSets when movies were scanned
+        If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
+            Me.bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
+            'remove any db entries that no longer exist
+            Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceName)
+        End If
+
+        e.Result = Args
     End Sub
 
     Private Sub bwPrelim_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwPrelim.ProgressChanged

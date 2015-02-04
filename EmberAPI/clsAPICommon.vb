@@ -2155,6 +2155,7 @@ Public Class Structures
         Dim bTitle As Boolean
         Dim bTop250 As Boolean
         Dim bCountry As Boolean
+        Dim bTags As Boolean
         Dim bTrailer As Boolean
         Dim bVotes As Boolean
         Dim bWriters As Boolean

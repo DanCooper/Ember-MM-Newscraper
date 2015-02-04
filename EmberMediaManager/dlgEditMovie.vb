@@ -3084,7 +3084,7 @@ Public Class dlgEditMovie
                         Dim img As New Images
                         img.FromWeb(act.ThumbURL)
                         If Not IsNothing(img.Image) Then
-                            img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
+                            act.ThumbPath = img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
                         End If
                     Next
                 End If
