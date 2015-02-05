@@ -920,12 +920,7 @@
         MoviePath,
         Type,
         ListTitle,
-        HasPoster,
-        HasFanart,
-        HasNfo,
-        HasTrailer,
         HasSub,
-        HasEThumbs,
         "New",
         Mark,
         Source,
@@ -963,15 +958,8 @@
         NeedsSave,
         SortTitle,
         DateAdded,
-        HasEFanarts,
         EFanartsPath,
-        HasBanner,
-        HasLandscape,
-        HasTheme,
         ThemePath,
-        HasDiscArt,
-        HasClearLogo,
-        HasClearArt,
         TMDB,
         TMDBColID,
         DateModified,
@@ -988,12 +976,7 @@
         MoviePath,
         Type,
         ListTitle,
-        HasPoster,
-        HasFanart,
-        HasNfo,
-        HasTrailer,
         HasSub,
-        HasEThumbs,
         "New",
         Mark,
         Source,
@@ -1031,15 +1014,8 @@
         NeedsSave,
         SortTitle,
         DateAdded,
-        HasEFanarts,
         EFanartsPath,
-        HasBanner,
-        HasLandscape,
-        HasTheme,
         ThemePath,
-        HasDiscArt,
-        HasClearLogo,
-        HasClearArt,
         TMDB,
         TMDBColID,
         DateModified,
@@ -1057,12 +1033,7 @@
         MoviePath       text,
         Type            bool,
         ListTitle       text,
-        HasPoster       bool NOT NULL DEFAULT 0,
-        HasFanart       bool NOT NULL DEFAULT 0,
-        HasNfo          bool NOT NULL DEFAULT 0,
-        HasTrailer      bool NOT NULL DEFAULT 0,
         HasSub          bool NOT NULL DEFAULT 0,
-        HasEThumbs      bool NOT NULL DEFAULT 0,
         "New"           bool NOT NULL DEFAULT 0,
         Mark            bool NOT NULL DEFAULT 0,
         Source          text,
@@ -1100,15 +1071,8 @@
         NeedsSave       bool,
         SortTitle       text,
         DateAdded       integer,
-        HasEFanarts     bool NOT NULL DEFAULT 0,
         EFanartsPath    text,
-        HasBanner       bool NOT NULL DEFAULT 0,
-        HasLandscape    bool NOT NULL DEFAULT 0,
-        HasTheme        bool NOT NULL DEFAULT 0,
         ThemePath       text,
-        HasDiscArt      bool NOT NULL DEFAULT 0,
-        HasClearLogo    bool NOT NULL DEFAULT 0,
-        HasClearArt     bool NOT NULL DEFAULT 0,
         TMDB            text,
         TMDBColID       text,
         DateModified    integer,
@@ -1124,12 +1088,7 @@
         MoviePath,
         Type,
         ListTitle,
-        HasPoster,
-        HasFanart,
-        HasNfo,
-        HasTrailer,
         HasSub,
-        HasEThumbs,
         "New",
         Mark,
         Source,
@@ -1167,15 +1126,8 @@
         NeedsSave,
         SortTitle,
         DateAdded,
-        HasEFanarts,
         EFanartsPath,
-        HasBanner,
-        HasLandscape,
-        HasTheme,
         ThemePath,
-        HasDiscArt,
-        HasClearLogo,
-        HasClearArt,
         TMDB,
         TMDBColID,
         DateModified,
@@ -1189,12 +1141,7 @@
         MoviePath,
         Type,
         ListTitle,
-        HasPoster,
-        HasFanart,
-        HasNfo,
-        HasTrailer,
         HasSub,
-        HasEThumbs,
         "New",
         Mark,
         Source,
@@ -1232,15 +1179,8 @@
         NeedsSave,
         SortTitle,
         DateAdded,
-        HasEFanarts,
         EFanartsPath,
-        HasBanner,
-        HasLandscape,
-        HasTheme,
         ThemePath,
-        HasDiscArt,
-        HasClearLogo,
-        HasClearArt,
         TMDB,
         TMDBColID,
         DateModified,
@@ -1739,6 +1679,45 @@
       <execute>
         DROP TABLE MoviesFanart;
         DROP TABLE MoviesPosters;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create view movielist</description>
+      <execute>
+        CREATE VIEW movielist
+        AS
+        SELECT
+        movie.*,
+        banner.url AS BannerPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        discart.url AS DiscArtPath,
+        fanart.url AS FanartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath
+        FROM
+        movie
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = movie.idMovie)
+        AND (banner.media_type = "movie")
+        AND (banner.type = "banner")
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = movie.idMovie)
+        AND (clearart.media_type = "movie")
+        AND (clearart.type = "clearart")
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = movie.idMovie)
+        AND (clearlogo.media_type = "movie")
+        AND (clearlogo.type = "clearlogo")
+        LEFT OUTER JOIN art AS discart ON (discart.media_id = movie.idMovie)
+        AND (discart.media_type = "movie")
+        AND (discart.type = "discart")
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = movie.idMovie)
+        AND (fanart.media_type = "movie")
+        AND (fanart.type = "fanart")
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = movie.idMovie)
+        AND (landscape.media_type = "movie")
+        AND (landscape.type = "landscape")
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = movie.idMovie)
+        AND (poster.media_type = "movie")
+        AND (poster.type = "poster");
       </execute>
     </command>
   </transaction>

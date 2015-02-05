@@ -1034,13 +1034,13 @@ Public Class Database
 
         _movieDB.ID = MovieID
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT idMovie, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, ", _
-                                                   "HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, ", _
+            SQLcommand.CommandText = String.Concat("SELECT idMovie, MoviePath, Type, ListTitle, HasSub, ", _
+                                                   "New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, ", _
                                                    "Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                    "Director, Credits, Playcount, HasWatched, Trailer, EThumbsPath, NfoPath, ", _
                                                    "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, ", _
-                                                   "DateAdded, HasEFanarts, EFanartsPath, HasBanner, HasLandscape, HasTheme, ", _
-                                                   "ThemePath, HasDiscArt, HasClearLogo, HasClearArt, TMDB, ", _
+                                                   "DateAdded, EFanartsPath, ", _
+                                                   "ThemePath, TMDB, ", _
                                                    "TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet FROM movie WHERE idMovie = ", _movieDB.ID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.HasRows Then
@@ -1835,34 +1835,29 @@ Public Class Database
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movie (", _
-                 "MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, ", _
+                 "MoviePath, Type, ListTitle, HasSub, New, Mark, Source, Imdb, Lock, ", _
                  "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
                  "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, ", _
                  "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
-                 "DateAdded, HasEFanarts, EFanartsPath, HasBanner, HasLandscape, HasTheme, ThemePath, HasDiscArt, ", _
-                 "HasClearLogo, HasClearArt, TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
+                 "DateAdded, EFanartsPath, ThemePath, ", _
+                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movie (", _
-                 "idMovie, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, ", _
+                 "idMovie, MoviePath, Type, ListTitle, HasSub, New, Mark, Source, Imdb, Lock, ", _
                  "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
                  "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, ", _
                  "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
-                 "DateAdded, HasEFanarts, EFanartsPath, HasBanner, HasLandscape, HasTheme, ThemePath, HasDiscArt, ", _
-                 "HasClearLogo, HasClearArt, TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
+                 "DateAdded, EFanartsPath, ThemePath, ", _
+                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
                 Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("paridMovie", DbType.Int32, 0, "idMovie")
                 parMovieID.Value = _movieDB.ID
             End If
             Dim parMoviePath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMoviePath", DbType.String, 0, "MoviePath")
             Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 0, "Type")
             Dim parListTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
-            Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
-            Dim parHasFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasFanart", DbType.Boolean, 0, "HasFanart")
-            Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasInfo", DbType.Boolean, 0, "HasNfo")
-            Dim parHasTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasTrailer", DbType.Boolean, 0, "HasTrailer")
             Dim parHasSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasSub", DbType.Boolean, 0, "HasSub")
-            Dim parHasEThumbs As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasEThumbs", DbType.Boolean, 0, "HasEThumbs")
             Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "New")
             Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
             Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "Source")
@@ -1900,15 +1895,8 @@ Public Class Database
             Dim parVideoSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideoSource", DbType.String, 0, "VideoSource")
             Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
             Dim parDateAdded As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdded", DbType.Int32, 0, "DateAdded")
-            Dim parHasEFanarts As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasEFanarts", DbType.Boolean, 0, "HasEFanarts")
             Dim parEFanartsPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEFanartsPath", DbType.String, 0, "EFanartsPath")
-            Dim parHasBanner As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasBanner", DbType.Boolean, 0, "HasBanner")
-            Dim parHasLandscape As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasLandscape", DbType.Boolean, 0, "HasLandscape")
-            Dim parHasTheme As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasTheme", DbType.Boolean, 0, "HasTheme")
             Dim parThemePath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parThemePath", DbType.String, 0, "ThemePath")
-            Dim parHasDiscArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasDiscArt", DbType.Boolean, 0, "HasDiscArt")
-            Dim parHasClearLogo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearLogo", DbType.Boolean, 0, "HasClearLogo")
-            Dim parHasClearArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearArt", DbType.Boolean, 0, "HasClearArt")
             Dim parTMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDB", DbType.String, 0, "TMDB")
             Dim parTMDBColID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDBColID", DbType.String, 0, "TMDBColID")
             Dim parDateModified As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateModified", DbType.Int32, 0, "DateModified")
@@ -1982,19 +1970,7 @@ Public Class Database
                 parFanartURL.Value = String.Empty
             End If
 
-            parHasBanner.Value = Not String.IsNullOrEmpty(_movieDB.BannerPath)
-            parHasClearArt.Value = Not String.IsNullOrEmpty(_movieDB.ClearArtPath)
-            parHasClearLogo.Value = Not String.IsNullOrEmpty(_movieDB.ClearLogoPath)
-            parHasDiscArt.Value = Not String.IsNullOrEmpty(_movieDB.DiscArtPath)
-            parHasEFanarts.Value = Not String.IsNullOrEmpty(_movieDB.EFanartsPath)
-            parHasEThumbs.Value = Not String.IsNullOrEmpty(_movieDB.EThumbsPath)
-            parHasFanart.Value = Not String.IsNullOrEmpty(_movieDB.FanartPath)
-            parHasLandscape.Value = Not String.IsNullOrEmpty(_movieDB.LandscapePath)
-            parHasNfo.Value = Not String.IsNullOrEmpty(_movieDB.NfoPath)
-            parHasPoster.Value = Not String.IsNullOrEmpty(_movieDB.PosterPath)
             parHasSub.Value = _movieDB.Subtitles.Count > 0 OrElse _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
-            parHasTheme.Value = Not String.IsNullOrEmpty(_movieDB.ThemePath)
-            parHasTrailer.Value = Not String.IsNullOrEmpty(_movieDB.TrailerPath)
             parHasWatched.Value = Not String.IsNullOrEmpty(_movieDB.Movie.PlayCount) AndAlso Not _movieDB.Movie.PlayCount = "0"
             parHasSet.Value = _movieDB.Movie.Sets.Count > 0
 
