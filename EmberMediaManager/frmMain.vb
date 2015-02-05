@@ -610,16 +610,16 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parGenre As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGenre", DbType.String, 0, "Genre")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET Genre = (?) WHERE id = (?);"
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
+                    SQLcommand.CommandText = "UPDATE movie SET Genre = (?) WHERE idMovie = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                        If Not sRow.Cells(27).Value.ToString.Contains(Me.cmnuMovieGenresGenre.Text) Then
-                            If Not String.IsNullOrEmpty(sRow.Cells(27).Value.ToString) Then
-                                parGenre.Value = String.Format("{0} / {1}", sRow.Cells(27).Value, Me.cmnuMovieGenresGenre.Text).Trim
+                        If Not sRow.Cells("Genre").Value.ToString.Contains(Me.cmnuMovieGenresGenre.Text) Then
+                            If Not String.IsNullOrEmpty(sRow.Cells("Genre").Value.ToString) Then
+                                parGenre.Value = String.Format("{0} / {1}", sRow.Cells("Genre").Value, Me.cmnuMovieGenresGenre.Text).Trim
                             Else
                                 parGenre.Value = Me.cmnuMovieGenresGenre.Text.Trim
                             End If
-                            parID.Value = sRow.Cells(0).Value
+                            parID.Value = sRow.Cells("idMovie").Value
                             SQLcommand.ExecuteNonQuery()
                         End If
                     Next
@@ -629,7 +629,7 @@ Public Class frmMain
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                    Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True)
+                    Me.RefreshMovie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, False, True)
                 Next
                 SQLtransaction.Commit()
             End Using
@@ -2064,10 +2064,6 @@ Public Class frmMain
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
 
-                If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-                    MovieScraperEvent(Enums.ScraperEventType_Movie.NFOItem, True)
-                End If
-
                 NewListTitle = DBScrapeMovie.ListTitle
 
                 If Not NewListTitle = OldListTitle Then
@@ -2122,7 +2118,7 @@ Public Class frmMain
                                     tURL = Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.PosterPath = tURL
-                                        MovieScraperEvent(Enums.ScraperEventType_Movie.PosterItem, True)
+                                        MovieScraperEvent(Enums.ScraperEventType_Movie.PosterItem, DBScrapeMovie.PosterPath)
                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                         '    DBScrapeMovie.Movie.Thumb = pResults.Posters
                                         'End If
@@ -2144,7 +2140,7 @@ Public Class frmMain
                                                     tURL = Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.PosterPath = tURL
-                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.PosterItem, True)
+                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.PosterItem, DBScrapeMovie.PosterPath)
                                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                                         '    DBScrapeMovie.Movie.Thumb = pResults.Posters
                                                         'End If
@@ -2180,7 +2176,7 @@ Public Class frmMain
                                     tURL = Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.FanartPath = tURL
-                                        MovieScraperEvent(Enums.ScraperEventType_Movie.FanartItem, True)
+                                        MovieScraperEvent(Enums.ScraperEventType_Movie.FanartItem, DBScrapeMovie.FanartPath)
                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                         '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
                                         'End If
@@ -2204,7 +2200,7 @@ Public Class frmMain
                                                     tURL = Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.FanartPath = tURL
-                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.FanartItem, True)
+                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.FanartItem, DBScrapeMovie.FanartPath)
                                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                                         '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
                                                         'End If
@@ -2241,7 +2237,7 @@ Public Class frmMain
                                     tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.BannerPath = tURL
-                                        MovieScraperEvent(Enums.ScraperEventType_Movie.BannerItem, True)
+                                        MovieScraperEvent(Enums.ScraperEventType_Movie.BannerItem, DBScrapeMovie.BannerPath)
                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                         '    DBScrapeMovie.Movie.Thumb = pResults.Posters
                                         'End If
@@ -2263,7 +2259,7 @@ Public Class frmMain
                                                     tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.BannerPath = tURL
-                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.BannerItem, True)
+                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.BannerItem, DBScrapeMovie.BannerPath)
                                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                                         '    DBScrapeMovie.Movie.Thumb = pResults.Posters
                                                         'End If
@@ -2298,7 +2294,7 @@ Public Class frmMain
                                     tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.LandscapePath = tURL
-                                        MovieScraperEvent(Enums.ScraperEventType_Movie.LandscapeItem, True)
+                                        MovieScraperEvent(Enums.ScraperEventType_Movie.LandscapeItem, DBScrapeMovie.LandscapePath)
                                     End If
                                 End If
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
@@ -2317,7 +2313,7 @@ Public Class frmMain
                                                     tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.LandscapePath = tURL
-                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.LandscapeItem, True)
+                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.LandscapeItem, DBScrapeMovie.LandscapePath)
                                                     End If
                                                 End If
                                             Else
@@ -2349,7 +2345,7 @@ Public Class frmMain
                                     tURL = ClearArt.WebImage.SaveAsMovieClearArt(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.ClearArtPath = tURL
-                                        MovieScraperEvent(Enums.ScraperEventType_Movie.ClearArtItem, True)
+                                        MovieScraperEvent(Enums.ScraperEventType_Movie.ClearArtItem, DBScrapeMovie.ClearArtPath)
                                     End If
                                 End If
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
@@ -2368,7 +2364,7 @@ Public Class frmMain
                                                     tURL = ClearArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.ClearArtPath = tURL
-                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.ClearArtItem, True)
+                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.ClearArtItem, DBScrapeMovie.ClearArtPath)
                                                     End If
                                                 End If
                                             Else
@@ -2400,7 +2396,7 @@ Public Class frmMain
                                     tURL = ClearLogo.WebImage.SaveAsMovieClearLogo(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.ClearLogoPath = tURL
-                                        MovieScraperEvent(Enums.ScraperEventType_Movie.ClearLogoItem, True)
+                                        MovieScraperEvent(Enums.ScraperEventType_Movie.ClearLogoItem, DBScrapeMovie.ClearLogoPath)
                                     End If
                                 End If
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
@@ -2419,7 +2415,7 @@ Public Class frmMain
                                                     tURL = ClearLogo.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.ClearLogoPath = tURL
-                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.ClearLogoItem, True)
+                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.ClearLogoItem, DBScrapeMovie.ClearLogoPath)
                                                     End If
                                                 End If
                                             Else
@@ -2451,7 +2447,7 @@ Public Class frmMain
                                     tURL = DiscArt.WebImage.SaveAsMovieDiscArt(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.DiscArtPath = tURL
-                                        MovieScraperEvent(Enums.ScraperEventType_Movie.DiscArtItem, True)
+                                        MovieScraperEvent(Enums.ScraperEventType_Movie.DiscArtItem, DBScrapeMovie.DiscArtPath)
                                     End If
                                 End If
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
@@ -2470,7 +2466,7 @@ Public Class frmMain
                                                     tURL = DiscArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.DiscArtPath = tURL
-                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.DiscArtItem, True)
+                                                        MovieScraperEvent(Enums.ScraperEventType_Movie.DiscArtItem, DBScrapeMovie.DiscArtPath)
                                                     End If
                                                 End If
                                             Else
@@ -2501,7 +2497,7 @@ Public Class frmMain
                                             tURL = Theme.WebTheme.SaveAsMovieTheme(DBScrapeMovie)
                                             If Not String.IsNullOrEmpty(tURL) Then
                                                 DBScrapeMovie.ThemePath = tURL
-                                                MovieScraperEvent(Enums.ScraperEventType_Movie.ThemeItem, True)
+                                                MovieScraperEvent(Enums.ScraperEventType_Movie.ThemeItem, DBScrapeMovie.ThemePath)
                                             End If
                                         End If
                                         'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
@@ -2512,7 +2508,7 @@ Public Class frmMain
                                         '        tURL = dThemeSelect.ShowDialog(DBScrapeMovie, tUrlList)
                                         '        If Not String.IsNullOrEmpty(tURL) Then
                                         '            DBScrapeMovie.ThemePath = tURL
-                                        '            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
+                                        '            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, DBScrapeMovie.ThemePath )
                                         '        End If
                                         '    End Using
                                     End If
@@ -2553,7 +2549,7 @@ Public Class frmMain
                                                 tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
                                                 If Not String.IsNullOrEmpty(tURL) Then
                                                     DBScrapeMovie.TrailerPath = tURL
-                                                    MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, True)
+                                                    MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, DBScrapeMovie.TrailerPath)
                                                     logger.Info("[" & DBScrapeMovie.Movie.Title & "] " & _trailer.Quality & " Downloaded trailer: " & _trailer.VideoURL)
                                                     'since trailer was downloaded we can leave loop, all good!
                                                     Exit For
@@ -2578,7 +2574,7 @@ Public Class frmMain
                                                 tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
                                                 If Not String.IsNullOrEmpty(tURL) Then
                                                     DBScrapeMovie.TrailerPath = tURL
-                                                    MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, True)
+                                                    MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, DBScrapeMovie.TrailerPath)
                                                 End If
                                             End If
                                         End If
@@ -2612,7 +2608,7 @@ Public Class frmMain
                                             Dim etPath As String = EThumb.SaveAsMovieExtrathumb(DBScrapeMovie)
                                             If Not String.IsNullOrEmpty(etPath) Then
                                                 DBScrapeMovie.EThumbsPath = etPath
-                                                MovieScraperEvent(Enums.ScraperEventType_Movie.EThumbsItem, True)
+                                                MovieScraperEvent(Enums.ScraperEventType_Movie.EThumbsItem, DBScrapeMovie.EThumbsPath)
                                                 eti = eti + 1
                                             End If
                                         End If
@@ -2644,7 +2640,7 @@ Public Class frmMain
                                             Dim efPath As String = EFanart.SaveAsMovieExtrafanart(DBScrapeMovie, Path.GetFileName(lItem))
                                             If Not String.IsNullOrEmpty(efPath) Then
                                                 DBScrapeMovie.EFanartsPath = efPath
-                                                MovieScraperEvent(Enums.ScraperEventType_Movie.EFanartsItem, True)
+                                                MovieScraperEvent(Enums.ScraperEventType_Movie.EFanartsItem, DBScrapeMovie.EFanartsPath)
                                                 efi = efi + 1
                                             End If
                                         End If
@@ -2678,7 +2674,8 @@ Public Class frmMain
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_Movie, Nothing, Nothing, False, DBScrapeMovie)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
-                    Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, True)
+                    Dim newNfoPath As Structures.DBMovie = Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, True)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.NFOItem, newNfoPath.NfoPath)
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, DBScrapeMovie)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                     bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
@@ -2700,8 +2697,8 @@ Public Class frmMain
         If e.ProgressPercentage = -1 Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
-            If Me.dgvMovies.SelectedRows.Count > 0 AndAlso Me.dgvMovies.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString Then
-                If Me.dgvMovies.CurrentCell Is Me.dgvMovies.SelectedRows(0).Cells(3) Then
+            If Me.dgvMovies.SelectedRows.Count > 0 AndAlso Me.dgvMovies.SelectedRows(0).Cells("idMovie").Value.ToString = e.UserState.ToString Then
+                If Me.dgvMovies.CurrentCell Is Me.dgvMovies.SelectedRows(0).Cells("ListTitle") Then
                     Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
                 End If
             End If
@@ -3286,8 +3283,8 @@ Public Class frmMain
         If e.ProgressPercentage = -1 Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviesetscraped", 3, Master.eLang.GetString(1204, "MovieSet Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
-            If Me.dgvMovieSets.SelectedRows.Count > 0 AndAlso Me.dgvMovieSets.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString Then
-                If Me.dgvMovieSets.CurrentCell Is Me.dgvMovieSets.SelectedRows(0).Cells(1) Then
+            If Me.dgvMovieSets.SelectedRows.Count > 0 AndAlso Me.dgvMovieSets.SelectedRows(0).Cells("idSet").Value.ToString = e.UserState.ToString Then
+                If Me.dgvMovieSets.CurrentCell Is Me.dgvMovieSets.SelectedRows(0).Cells("ListTitle") Then
                     Me.SelectMovieSetRow(Me.dgvMovieSets.SelectedRows(0).Index)
                 End If
             End If
@@ -3406,7 +3403,7 @@ doCancel:
         If Not Master.isCL Then
             If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") AndAlso Me.dgvMovies.SelectedRows.Count > 0 Then
                 Try
-                    If Me.dgvMovies.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
+                    If Me.dgvMovies.SelectedRows(0).Cells("idMovie").Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
                         Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
                     End If
                 Catch ex As Exception
@@ -4789,10 +4786,10 @@ doCancel:
 
                         If Master.isWindows Then
                             Explorer.StartInfo.FileName = "explorer.exe"
-                            Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells(7).Value.ToString)
+                            Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells("TVShowPath").Value.ToString)
                         Else
                             Explorer.StartInfo.FileName = "xdg-open"
-                            Explorer.StartInfo.Arguments = String.Format("""{0}""", sRow.Cells(7).Value.ToString)
+                            Explorer.StartInfo.Arguments = String.Format("""{0}""", sRow.Cells("TVShowPath").Value.ToString)
                         End If
                         Explorer.Start()
                     End Using
@@ -4842,8 +4839,8 @@ doCancel:
             Dim SeasonNum As Integer = -1
 
             For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                ShowId = Convert.ToInt64(sRow.Cells(0).Value)
-                SeasonNum = Convert.ToInt32(sRow.Cells(2).Value)
+                ShowId = Convert.ToInt64(sRow.Cells("idShow").Value)
+                SeasonNum = Convert.ToInt32(sRow.Cells("Season").Value)
                 'seasonnum first... showid can't be key or else only one season will be deleted
                 If Not SeasonsToDelete.ContainsKey(SeasonNum) Then
                     SeasonsToDelete.Add(SeasonNum, ShowId)
@@ -4871,7 +4868,7 @@ doCancel:
             Dim EpId As Long = -1
 
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                EpId = Convert.ToInt64(sRow.Cells(0).Value)
+                EpId = Convert.ToInt64(sRow.Cells("idEpisode").Value)
                 If Not EpsToDelete.ContainsKey(EpId) Then
                     EpsToDelete.Add(EpId, 0)
                 End If
@@ -4899,7 +4896,7 @@ doCancel:
             Dim ShowId As Long = -1
 
             For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                ShowId = Convert.ToInt64(sRow.Cells(0).Value)
+                ShowId = Convert.ToInt64(sRow.Cells("idShow").Value)
                 If Not ShowsToDelete.ContainsKey(ShowId) Then
                     ShowsToDelete.Add(ShowId, 0)
                 End If
@@ -5043,7 +5040,7 @@ doCancel:
             If doOpen Then
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", sRow.Cells(9).Value.ToString, ";")
+                        SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", sRow.Cells("idEpisode").Value.ToString, ";")
                         ePath = SQLCommand.ExecuteScalar.ToString
 
                         If Not String.IsNullOrEmpty(ePath) Then
@@ -5077,8 +5074,8 @@ doCancel:
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET Playcount = (?) WHERE id = (?);"
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
+                    SQLcommand.CommandText = "UPDATE movie SET Playcount = (?) WHERE idMovie = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
                         Dim currPlaycount As String = String.Empty
                         Dim hasWatched As Boolean = False
@@ -5147,7 +5144,7 @@ doCancel:
                         Dim hasWatched As Boolean = False
                         Dim newPlaycount As String = String.Empty
 
-                        currPlaycount = Convert.ToString(sRow.Cells(23).Value)
+                        currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
                         hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
 
                         If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
@@ -5159,10 +5156,10 @@ doCancel:
                         End If
 
                         parPlaycount.Value = newPlaycount
-                        parID.Value = sRow.Cells(0).Value
+                        parID.Value = sRow.Cells("idEpisode").Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(23).Value = newPlaycount
-                        sRow.Cells(24).Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setWatched, Not hasWatched)
+                        sRow.Cells("Playcount").Value = newPlaycount
+                        sRow.Cells("HasWatched").Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setWatched, Not hasWatched)
                     Next
                 End Using
                 SQLtransaction.Commit()
@@ -5171,7 +5168,7 @@ doCancel:
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    Me.RefreshEpisode(Convert.ToInt64(sRow.Cells(0).Value), True, False, True)
+                    Me.RefreshEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True)
                 Next
                 SQLtransaction.Commit()
             End Using
@@ -5206,9 +5203,9 @@ doCancel:
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parHasWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "TVShowID")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
                     Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                    SQLcommand.CommandText = "UPDATE TVSeason SET mark = (?) WHERE TVShowID = (?) AND Season = (?);"
+                    SQLcommand.CommandText = "UPDATE seasons SET mark = (?) WHERE idShow = (?) AND Season = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
                         parHasWatched.Value = setHasWatched
                         'parMark.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setHasWatched, Not Convert.ToBoolean(sRow.Cells(8).Value))
@@ -5228,7 +5225,7 @@ doCancel:
                             SQLECommand.ExecuteNonQuery()
 
                             For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                                eRow.Cells(24).Value = parHasWatched.Value
+                                eRow.Cells("HasWatched").Value = parHasWatched.Value
                             Next
                         End Using
                     Next
@@ -5315,7 +5312,7 @@ doCancel:
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
                     'if any one item is set as unlocked, set menu to lock
                     'else they are all locked so set menu to unlock
-                    If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
+                    If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                         setLock = True
                         Exit For
                     End If
@@ -5324,14 +5321,14 @@ doCancel:
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "Lock")
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
-                    SQLcommand.CommandText = "UPDATE tvshow SET lock = (?) WHERE idShow = (?);"
+                    SQLcommand.CommandText = "UPDATE tvshow SET Lock = (?) WHERE idShow = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        parLock.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(11).Value))
-                        parID.Value = sRow.Cells(0).Value
+                        parLock.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells("Lock").Value))
+                        parID.Value = sRow.Cells("idEpisode").Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(11).Value = parLock.Value
+                        sRow.Cells("Lock").Value = parLock.Value
                     Next
                 End Using
 
@@ -5339,7 +5336,7 @@ doCancel:
                 Dim LockCount As Integer = 0
                 Dim NotLockCount As Integer = 0
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                    If Convert.ToBoolean(sRow.Cells(11).Value) Then
+                    If Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                         LockCount += 1
                     Else
                         NotLockCount += 1
@@ -5348,19 +5345,19 @@ doCancel:
 
                 If LockCount = 0 OrElse NotLockCount = 0 Then
                     Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSeaLock As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaLock", DbType.Boolean, 0, "lock")
-                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
+                        Dim parSeaLock As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaLock", DbType.Boolean, 0, "Lock")
+                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "idShow")
                         Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                        SQLSeacommand.CommandText = "UPDATE TVSeason SET lock = (?) WHERE TVShowID = (?) AND Season = (?);"
+                        SQLSeacommand.CommandText = "UPDATE seasons SET Lock = (?) WHERE idShow = (?) AND Season = (?);"
                         If LockCount = 0 Then
                             parSeaLock.Value = False
                         ElseIf NotLockCount = 0 Then
                             parSeaLock.Value = True
                         End If
-                        parSeaID.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value)
-                        parSeason.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value)
+                        parSeaID.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
+                        parSeason.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells("Season").Value)
                         SQLSeacommand.ExecuteNonQuery()
-                        Me.dgvTVSeasons.SelectedRows(0).Cells(7).Value = parSeaLock.Value
+                        Me.dgvTVSeasons.SelectedRows(0).Cells("Lock").Value = parSeaLock.Value
                     End Using
                 End If
 
@@ -5380,7 +5377,7 @@ doCancel:
             Dim setLock As Boolean = False
             If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                    If Not Convert.ToBoolean(sRow.Cells(7).Value) Then
+                    If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                         setLock = True
                         Exit For
                     End If
@@ -5390,15 +5387,15 @@ doCancel:
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "TVShowID")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
                     Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                    SQLcommand.CommandText = "UPDATE TVSeason SET Lock = (?) WHERE TVShowID = (?) AND Season = (?);"
+                    SQLcommand.CommandText = "UPDATE seasons SET Lock = (?) WHERE idShow = (?) AND Season = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                        parLock.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(7).Value))
-                        parID.Value = sRow.Cells(0).Value
-                        parSeason.Value = sRow.Cells(2).Value
+                        parLock.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells("Lock").Value))
+                        parID.Value = sRow.Cells("idShow").Value
+                        parSeason.Value = sRow.Cells("Season").Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(7).Value = parLock.Value
+                        sRow.Cells("Lock").Value = parLock.Value
 
                         Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parELock As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parELock", DbType.Boolean, 0, "mark")
@@ -5411,7 +5408,7 @@ doCancel:
                             SQLECommand.ExecuteNonQuery()
 
                             For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                                eRow.Cells(11).Value = parLock.Value
+                                eRow.Cells("Lock").Value = parLock.Value
                             Next
                         End Using
                     Next
@@ -5434,7 +5431,7 @@ doCancel:
                 For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
                     'if any one item is set as unlocked, set menu to lock
                     'else they are all locked so set menu to unlock
-                    If Not Convert.ToBoolean(sRow.Cells(10).Value) Then
+                    If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                         setLock = True
                         Exit For
                     End If
@@ -5447,21 +5444,21 @@ doCancel:
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
                     SQLcommand.CommandText = "UPDATE tvshow SET lock = (?) WHERE idShow = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                        parLock.Value = If(Me.dgvTVShows.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(10).Value))
-                        parID.Value = sRow.Cells(0).Value
+                        parLock.Value = If(Me.dgvTVShows.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells("Lock").Value))
+                        parID.Value = sRow.Cells("idShow").Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(10).Value = parLock.Value
+                        sRow.Cells("Lock").Value = parLock.Value
 
                         Using SQLSeaCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parSeaLock As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaLock", DbType.Boolean, 0, "lock")
-                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
-                            SQLSeaCommand.CommandText = "UPDATE TVSeason SET lock = (?) WHERE TVShowID = (?);"
+                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "idShow")
+                            SQLSeaCommand.CommandText = "UPDATE seasons SET lock = (?) WHERE idShow = (?);"
                             parSeaLock.Value = parLock.Value
                             parSeaID.Value = parID.Value
                             SQLSeaCommand.ExecuteNonQuery()
 
                             For Each eRow As DataGridViewRow In Me.dgvTVSeasons.Rows
-                                eRow.Cells(7).Value = parLock.Value
+                                eRow.Cells("Lock").Value = parLock.Value
                             Next
                         End Using
 
@@ -5474,7 +5471,7 @@ doCancel:
                             SQLECommand.ExecuteNonQuery()
 
                             For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                                eRow.Cells(11).Value = parLock.Value
+                                eRow.Cells("Lock").Value = parLock.Value
                             Next
                         End Using
                     Next
@@ -5518,8 +5515,8 @@ doCancel:
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
+                    SQLcommand.CommandText = "UPDATE movie SET lock = (?) WHERE idMovie = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
                         parLock.Value = If(Me.dgvMovies.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells("Lock").Value))
                         parID.Value = sRow.Cells("idMovie").Value
@@ -5550,7 +5547,7 @@ doCancel:
                 For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
                     'if any one item is set as unlocked, set menu to lock
                     'else they are all locked so set menu to unlock
-                    If Not Convert.ToBoolean(sRow.Cells(23).Value) Then
+                    If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                         setLock = True
                         Exit For
                     End If
@@ -5560,13 +5557,13 @@ doCancel:
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE Sets SET Lock = (?) WHERE id = (?);"
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idSet")
+                    SQLcommand.CommandText = "UPDATE sets SET Lock = (?) WHERE idSet = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
-                        parLock.Value = If(Me.dgvMovieSets.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(23).Value))
-                        parID.Value = sRow.Cells(0).Value
+                        parLock.Value = If(Me.dgvMovieSets.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells("Lock").Value))
+                        parID.Value = sRow.Cells("idSet").Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(23).Value = parLock.Value
+                        sRow.Cells("Lock").Value = parLock.Value
                     Next
                 End Using
                 SQLtransaction.Commit()
@@ -5592,7 +5589,7 @@ doCancel:
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
                     'if any one item is set as unmarked, set menu to mark
                     'else they are all marked, so set menu to unmark
-                    If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
+                    If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                         setMark = True
                         Exit For
                     End If
@@ -5605,10 +5602,10 @@ doCancel:
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idEpisode")
                     SQLcommand.CommandText = "UPDATE episode SET mark = (?) WHERE idEpisode = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        parMark.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(8).Value))
-                        parID.Value = sRow.Cells(0).Value
+                        parMark.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
+                        parID.Value = sRow.Cells("idEpisode").Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(8).Value = parMark.Value
+                        sRow.Cells("Mark").Value = parMark.Value
                     Next
                 End Using
 
@@ -5616,7 +5613,7 @@ doCancel:
                 Dim MarkCount As Integer = 0
                 Dim NotMarkCount As Integer = 0
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                    If Convert.ToBoolean(sRow.Cells(8).Value) Then
+                    If Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                         MarkCount += 1
                     Else
                         NotMarkCount += 1
@@ -5626,18 +5623,18 @@ doCancel:
                 If MarkCount = 0 OrElse NotMarkCount = 0 Then
                     Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         Dim parSeaMark As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "Mark")
-                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
+                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "idShow")
                         Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                        SQLSeacommand.CommandText = "UPDATE TVSeason SET Mark = (?) WHERE TVShowID = (?) AND Season = (?);"
+                        SQLSeacommand.CommandText = "UPDATE seasons SET Mark = (?) WHERE idShow = (?) AND Season = (?);"
                         If MarkCount = 0 Then
                             parSeaMark.Value = False
                         ElseIf NotMarkCount = 0 Then
                             parSeaMark.Value = True
                         End If
-                        parSeaID.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value)
-                        parSeason.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value)
+                        parSeaID.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
+                        parSeason.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells("Season").Value)
                         SQLSeacommand.ExecuteNonQuery()
-                        Me.dgvTVSeasons.SelectedRows(0).Cells(8).Value = parSeaMark.Value
+                        Me.dgvTVSeasons.SelectedRows(0).Cells("Mark").Value = parSeaMark.Value
                     End Using
                 End If
 
@@ -5657,7 +5654,7 @@ doCancel:
             Dim setMark As Boolean = False
             If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                    If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
+                    If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                         setMark = True
                         Exit For
                     End If
@@ -5667,15 +5664,15 @@ doCancel:
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "TVShowID")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
                     Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                    SQLcommand.CommandText = "UPDATE TVSeason SET mark = (?) WHERE TVShowID = (?) AND Season = (?);"
+                    SQLcommand.CommandText = "UPDATE seasons SET mark = (?) WHERE idShow = (?) AND Season = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                        parMark.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(8).Value))
-                        parID.Value = sRow.Cells(0).Value
-                        parSeason.Value = sRow.Cells(2).Value
+                        parMark.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
+                        parID.Value = sRow.Cells("idShow").Value
+                        parSeason.Value = sRow.Cells("Season").Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(8).Value = parMark.Value
+                        sRow.Cells("Mark").Value = parMark.Value
 
                         Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
@@ -5688,7 +5685,7 @@ doCancel:
                             SQLECommand.ExecuteNonQuery()
 
                             For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                                eRow.Cells(8).Value = parMark.Value
+                                eRow.Cells("Mark").Value = parMark.Value
                             Next
                         End Using
                     Next
@@ -5711,7 +5708,7 @@ doCancel:
                 For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
                     'if any one item is set as unmarked, set menu to mark
                     'else they are all marked, so set menu to unmark
-                    If Not Convert.ToBoolean(sRow.Cells(6).Value) Then
+                    If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                         setMark = True
                         Exit For
                     End If
@@ -5724,21 +5721,21 @@ doCancel:
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
                     SQLcommand.CommandText = "UPDATE tvshow SET mark = (?) WHERE idShow = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                        parMark.Value = If(Me.dgvTVShows.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(6).Value))
-                        parID.Value = sRow.Cells(0).Value
+                        parMark.Value = If(Me.dgvTVShows.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
+                        parID.Value = sRow.Cells("idShow").Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(6).Value = parMark.Value
+                        sRow.Cells("Mark").Value = parMark.Value
 
                         Using SQLSeaCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parSeaMark As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "mark")
-                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
-                            SQLSeaCommand.CommandText = "UPDATE TVSeason SET mark = (?) WHERE TVShowID = (?);"
+                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "idShow")
+                            SQLSeaCommand.CommandText = "UPDATE seasons SET mark = (?) WHERE idShow = (?);"
                             parSeaMark.Value = parMark.Value
                             parSeaID.Value = parID.Value
                             SQLSeaCommand.ExecuteNonQuery()
 
                             For Each eRow As DataGridViewRow In Me.dgvTVSeasons.Rows
-                                eRow.Cells(8).Value = parMark.Value
+                                eRow.Cells("Mark").Value = parMark.Value
                             Next
                         End Using
 
@@ -5751,7 +5748,7 @@ doCancel:
                             SQLECommand.ExecuteNonQuery()
 
                             For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                                eRow.Cells(8).Value = parMark.Value
+                                eRow.Cells("Mark").Value = parMark.Value
                             Next
                         End Using
                     Next
@@ -5830,7 +5827,7 @@ doCancel:
             For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
                 'if any one item is set as unmarked, set menu to mark
                 'else they are all marked, so set menu to unmark
-                If Not Convert.ToBoolean(sRow.Cells(22).Value) Then
+                If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                     setMark = True
                     Exit For
                 End If
@@ -5841,12 +5838,12 @@ doCancel:
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
                 Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
-                SQLcommand.CommandText = "UPDATE Sets SET Mark = (?) WHERE idMovie = (?);"
+                SQLcommand.CommandText = "UPDATE sets SET Mark = (?) WHERE idMovie = (?);"
                 For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
-                    parMark.Value = If(Me.dgvMovieSets.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(22).Value))
-                    parID.Value = sRow.Cells(0).Value
+                    parMark.Value = If(Me.dgvMovieSets.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
+                    parID.Value = sRow.Cells("idSet").Value
                     SQLcommand.ExecuteNonQuery()
-                    sRow.Cells(22).Value = parMark.Value
+                    sRow.Cells("Mark").Value = parMark.Value
                 Next
             End Using
             SQLtransaction.Commit()
@@ -5854,7 +5851,7 @@ doCancel:
 
         setMark = False
         For Each sRow As DataGridViewRow In Me.dgvMovieSets.Rows
-            If Convert.ToBoolean(sRow.Cells(22).Value) Then
+            If Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                 setMark = True
                 Exit For
             End If
@@ -6188,7 +6185,7 @@ doCancel:
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
 
             For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
-                Master.DB.DeleteMovieSetFromDB(Convert.ToInt64(sRow.Cells(0).Value), True)
+                Master.DB.DeleteMovieSetFromDB(Convert.ToInt64(sRow.Cells("idSet").Value), True)
             Next
 
             SQLtransaction.Commit()
@@ -6208,7 +6205,7 @@ doCancel:
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                tFill = Me.RefreshEpisode(Convert.ToInt64(sRow.Cells(0).Value), True)
+                tFill = Me.RefreshEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
                 If tFill Then doFill = True
             Next
 
@@ -6222,7 +6219,7 @@ doCancel:
         Me.dgvTVEpisodes.Cursor = Cursors.Default
         Me.SetControlsEnabled(True)
 
-        If doFill Then FillEpisodes(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value), Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(12).Value))
+        If doFill Then FillEpisodes(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value), Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells("Season").Value))
     End Sub
 
     Private Sub cmnuSeasonReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonReload.Click
@@ -6238,10 +6235,10 @@ doCancel:
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
 
-                    doFill = Me.RefreshSeason(Convert.ToInt32(sRow.Cells(0).Value), Convert.ToInt32(sRow.Cells(2).Value), True)
+                    doFill = Me.RefreshSeason(Convert.ToInt32(sRow.Cells("idShow").Value), Convert.ToInt32(sRow.Cells("Season").Value), True)
 
                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, " AND Missing = 0;")
+                        SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", sRow.Cells("idShow").Value, " AND Season = ", sRow.Cells("Season").Value, " AND Missing = 0;")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLReader.Read
                                 tFill = Me.RefreshEpisode(Convert.ToInt64(SQLReader("idEpisode")), True)
@@ -6262,7 +6259,7 @@ doCancel:
         Me.dgvTVEpisodes.Cursor = Cursors.Default
         Me.SetControlsEnabled(True)
 
-        If doFill Then Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
+        If doFill Then Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
     End Sub
 
     Private Sub cmnuShowReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowReload.Click
@@ -6277,14 +6274,14 @@ doCancel:
         If Me.dgvTVShows.SelectedRows.Count > 1 Then
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                    tFill = Me.RefreshShow(Convert.ToInt64(sRow.Cells(0).Value), True, True, False, True)
+                    tFill = Me.RefreshShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True, False, True)
                     If tFill Then doFill = True
                 Next
                 SQLtransaction.Commit()
             End Using
         ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
             'seperate single refresh so we can have a progress bar
-            tFill = Me.RefreshShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells(0).Value), False, True, False, True)
+            tFill = Me.RefreshShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value), False, True, False, True)
             If tFill Then doFill = True
         End If
 
@@ -6301,13 +6298,13 @@ doCancel:
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells(0).Value), Convert.ToInt32(sRow.Cells(2).Value), True)
+                Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), Convert.ToInt32(sRow.Cells("Season").Value), True)
             Next
             SQLTrans.Commit()
         End Using
 
         If Me.dgvTVSeasons.RowCount > 0 Then
-            Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
+            Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
         End If
 
         Me.SetTVCount()
@@ -6318,10 +6315,10 @@ doCancel:
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                If Not Convert.ToBoolean(sRow.Cells(22).Value) Then
-                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, False, True) 'set the episode as "missing episode"
+                If Not Convert.ToBoolean(sRow.Cells("Missing").Value) Then
+                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells("idEpisode").Value), False, False, True) 'set the episode as "missing episode"
                 Else
-                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), True, False, True) 'remove the "missing episode" from DB
+                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells("idEpisode").Value), True, False, True) 'remove the "missing episode" from DB
                 End If
             Next
 
@@ -6348,7 +6345,7 @@ doCancel:
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
+                Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True)
             Next
             SQLTrans.Commit()
         End Using
@@ -6470,7 +6467,7 @@ doCancel:
 
             If doOpen Then
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                    SeasonPath = Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Convert.ToInt32(sRow.Cells(2).Value))
+                    SeasonPath = Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Convert.ToInt32(sRow.Cells("Season").Value))
 
                     Using Explorer As New Diagnostics.Process
                         If Master.isWindows Then
@@ -6623,7 +6620,7 @@ doCancel:
             Dim MovieId As Int64 = -1
 
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                MovieId = Convert.ToInt64(sRow.Cells(0).Value)
+                MovieId = Convert.ToInt64(sRow.Cells("idEpisode").Value)
                 If Not MoviesToDelete.ContainsKey(MovieId) Then
                     MoviesToDelete.Add(MovieId, 0)
                 End If
@@ -6643,142 +6640,149 @@ doCancel:
     End Sub
 
     Private Sub dgvMovies_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellClick
-        Try
-            If e.ColumnIndex = 3 OrElse e.ColumnIndex = 34 OrElse Not Master.eSettings.MovieClickScrape Then 'Title or Watched Column
-                If Not e.ColumnIndex = 34 Then
-                    If Me.dgvMovies.SelectedRows.Count > 0 Then
-                        If Me.dgvMovies.RowCount > 0 Then
-                            If Me.dgvMovies.SelectedRows.Count > 1 Then
-                                Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMovies.SelectedRows.Count))
-                            ElseIf Me.dgvMovies.SelectedRows.Count = 1 Then
-                                Me.SetStatus(Me.dgvMovies.SelectedRows(0).Cells(1).Value.ToString)
-                            End If
-                        End If
-                        Me.currMovieRow = Me.dgvMovies.SelectedRows(0).Index
-                    End If
-                Else
-                    'TODO: maybe we can merge this to one sub/function together with "Private Sub cmnuMovieWatched_Click"
-                    Try
-                        Dim setWatched As Boolean = False
+        Dim colName As String = Me.dgvMovies.Columns(e.ColumnIndex).Name
+        If String.IsNullOrEmpty(colName) Then
+            Return
+        End If
+
+        If colName = "ListTitle" OrElse colName = "HasWatched" OrElse Not Master.eSettings.MovieClickScrape Then
+            If Not e.ColumnIndex = 34 Then
+                If Me.dgvMovies.SelectedRows.Count > 0 Then
+                    If Me.dgvMovies.RowCount > 0 Then
                         If Me.dgvMovies.SelectedRows.Count > 1 Then
-                            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                                'if any one item is set as not watched, set menu to watched
-                                'else they are all watched so set menu to not watched
-                                If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
-                                    setWatched = True
-                                    Exit For
-                                End If
-                            Next
+                            Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMovies.SelectedRows.Count))
+                        ElseIf Me.dgvMovies.SelectedRows.Count = 1 Then
+                            Me.SetStatus(Me.dgvMovies.SelectedRows(0).Cells("MoviePath").Value.ToString)
                         End If
+                    End If
+                    Me.currMovieRow = Me.dgvMovies.SelectedRows(0).Index
+                End If
+            Else
+                'TODO: maybe we can merge this to one sub/function together with "Private Sub cmnuMovieWatched_Click"
+                Try
+                    Dim setWatched As Boolean = False
+                    If Me.dgvMovies.SelectedRows.Count > 1 Then
+                        For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                            'if any one item is set as not watched, set menu to watched
+                            'else they are all watched so set menu to not watched
+                            If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
+                                setWatched = True
+                                Exit For
+                            End If
+                        Next
+                    End If
 
-                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                                Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
-                                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                                SQLcommand.CommandText = "UPDATE movies SET Playcount = (?) WHERE id = (?);"
-                                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                                    Dim currPlaycount As String = String.Empty
-                                    Dim hasWatched As Boolean = False
-                                    Dim newPlaycount As String = String.Empty
-
-                                    currPlaycount = Convert.ToString(sRow.Cells(33).Value)
-                                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
-
-                                    If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
-                                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
-                                    ElseIf Not hasWatched Then
-                                        newPlaycount = "1"
-                                    Else
-                                        newPlaycount = "0"
-                                    End If
-
-                                    parPlaycount.Value = newPlaycount
-                                    parID.Value = sRow.Cells(0).Value
-                                    SQLcommand.ExecuteNonQuery()
-                                    sRow.Cells(33).Value = newPlaycount
-                                    sRow.Cells(34).Value = If(Me.dgvMovies.SelectedRows.Count > 1, setWatched, Not hasWatched)
-                                Next
-                            End Using
-                            SQLtransaction.Commit()
-
-                        End Using
-
-                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
+                            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
+                            SQLcommand.CommandText = "UPDATE movies SET Playcount = (?) WHERE idMovie = (?);"
                             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                                Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True, True)
+                                Dim currPlaycount As String = String.Empty
+                                Dim hasWatched As Boolean = False
+                                Dim newPlaycount As String = String.Empty
+
+                                currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
+                                hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+
+                                If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
+                                    newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                ElseIf Not hasWatched Then
+                                    newPlaycount = "1"
+                                Else
+                                    newPlaycount = "0"
+                                End If
+
+                                parPlaycount.Value = newPlaycount
+                                parID.Value = sRow.Cells("idMovie").Value
+                                SQLcommand.ExecuteNonQuery()
+                                sRow.Cells("Playcount").Value = newPlaycount
+                                sRow.Cells("HasWatched").Value = If(Me.dgvMovies.SelectedRows.Count > 1, setWatched, Not hasWatched)
                             Next
-                            SQLtransaction.Commit()
                         End Using
+                        SQLtransaction.Commit()
 
-                        Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item("idMovie", Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item("MoviePath", Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
-                        Me.dgvMovies.Invalidate()
+                    End Using
 
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex)
-                    End Try
-                End If
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                            Me.RefreshMovie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, False, True, True)
+                        Next
+                        SQLtransaction.Commit()
+                    End Using
 
-            ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex = 70 AndAlso Not bwMovieScraper.IsBusy Then
-                Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(0).Value, Int32)
-                Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+                    Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item("idMovie", Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item("MoviePath", Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
+                    Me.dgvMovies.Invalidate()
 
-                Me.dgvMovies.ClearSelection()
-                Me.dgvMovies.Rows(objCell.RowIndex).Selected = True
-                Me.currMovieRow = objCell.RowIndex
-
-                Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-                cScrapeOptions.bCollectionID = True
-                Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
-                MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
-
-            ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 70 AndAlso Not bwMovieScraper.IsBusy Then
-                Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(0).Value, Int32)
-                Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
-
-                'EMM not able to scrape subtitles yet.
-                'So don't set status for it, but leave the option open for the future.
-                Me.dgvMovies.ClearSelection()
-                Me.dgvMovies.Rows(objCell.RowIndex).Selected = True
-                Me.currMovieRow = objCell.RowIndex
-                Select Case e.ColumnIndex
-                    Case 4 'Poster
-                        Functions.SetScraperMod(Enums.ModType_Movie.Poster, True)
-                    Case 5 'Fanart
-                        Functions.SetScraperMod(Enums.ModType_Movie.Fanart, True)
-                    Case 6 'Nfo
-                        Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
-                    Case 7 'Trailer
-                        Functions.SetScraperMod(Enums.ModType_Movie.Trailer, True)
-                    Case 8 'Subtitles
-                        'Functions.SetScraperMod(Enums.ModType.Subtitles, True)
-                    Case 9 'Extrathumbs
-                        Functions.SetScraperMod(Enums.ModType_Movie.EThumbs, True)
-                    Case 10 'Metadata - need to add this column to the view.
-                        Functions.SetScraperMod(Enums.ModType_Movie.Meta, True)
-                    Case 49 'Extrafanart
-                        Functions.SetScraperMod(Enums.ModType_Movie.EFanarts, True)
-                    Case 51 'Banner
-                        Functions.SetScraperMod(Enums.ModType_Movie.Banner, True)
-                    Case 53 'Landscape
-                        Functions.SetScraperMod(Enums.ModType_Movie.Landscape, True)
-                    Case 55 'Theme
-                        Functions.SetScraperMod(Enums.ModType_Movie.Theme, True)
-                    Case 57 'DiscArt
-                        Functions.SetScraperMod(Enums.ModType_Movie.DiscArt, True)
-                    Case 59 'ClearLogo
-                        Functions.SetScraperMod(Enums.ModType_Movie.ClearLogo, True)
-                    Case 61 'ClearArt
-                        Functions.SetScraperMod(Enums.ModType_Movie.ClearArt, True)
-                End Select
-                If Master.eSettings.MovieClickScrapeAsk Then
-                    MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
-                Else
-                    MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
-                End If
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+
+        ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
+            Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells("idMovie").Value, Int32)
+            Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+
+            Me.dgvMovies.ClearSelection()
+            Me.dgvMovies.Rows(objCell.RowIndex).Selected = True
+            Me.currMovieRow = objCell.RowIndex
+
+            Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
+            cScrapeOptions.bCollectionID = True
+            Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+            MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+
+        ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso _
+            (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
+            colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
+            colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
+            colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath") AndAlso _
+            Not bwMovieScraper.IsBusy Then
+            Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells("idMovie").Value, Int32)
+            Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+
+            'EMM not able to scrape subtitles yet.
+            'So don't set status for it, but leave the option open for the future.
+            Me.dgvMovies.ClearSelection()
+            Me.dgvMovies.Rows(objCell.RowIndex).Selected = True
+            Me.currMovieRow = objCell.RowIndex
+
+            Select Case colName
+                Case "BannerPath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.Banner, True)
+                Case "ClearArtPath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.ClearArt, True)
+                Case "ClearLogoPath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.ClearLogo, True)
+                Case "DiscArtPath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.DiscArt, True)
+                Case "EFanartsPath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.EFanarts, True)
+                Case "EThumbsPath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.EThumbs, True)
+                Case "FanartPath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.Fanart, True)
+                Case "LandscapePath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.Landscape, True)
+                Case "NfoPath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+                Case "PosterPath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.Poster, True)
+                Case "ThemePath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.Theme, True)
+                Case "TrailerPath"
+                    Functions.SetScraperMod(Enums.ModType_Movie.Trailer, True)
+                Case "HasSub"
+                    'Functions.SetScraperMod(Enums.ModType.Subtitles, True)
+                Case "MetaData" 'Metadata - need to add this column to the view.
+                    Functions.SetScraperMod(Enums.ModType_Movie.Meta, True)
+            End Select
+            If Master.eSettings.MovieClickScrapeAsk Then
+                MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+            Else
+                MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+            End If
+        End If
     End Sub
 
     Private Sub dgvMovies_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellDoubleClick
@@ -6819,160 +6823,179 @@ doCancel:
     End Sub
 
     Private Sub dgvMovies_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellEnter
-        Try
-            If Not Me.tcMain.SelectedIndex = 0 Then Return
+        If Not Me.tcMain.SelectedIndex = 0 Then Return
 
-            Me.tmrWaitShow.Stop()
-            Me.tmrWaitSeason.Stop()
-            Me.tmrWaitEp.Stop()
-            Me.tmrWaitMovieSet.Stop()
-            Me.tmrWaitMovie.Stop()
-            Me.tmrLoadShow.Stop()
-            Me.tmrLoadSeason.Stop()
-            Me.tmrLoadEp.Stop()
-            Me.tmrLoadMovieSet.Stop()
-            Me.tmrLoadMovie.Stop()
+        Me.tmrWaitShow.Stop()
+        Me.tmrWaitSeason.Stop()
+        Me.tmrWaitEp.Stop()
+        Me.tmrWaitMovieSet.Stop()
+        Me.tmrWaitMovie.Stop()
+        Me.tmrLoadShow.Stop()
+        Me.tmrLoadSeason.Stop()
+        Me.tmrLoadEp.Stop()
+        Me.tmrLoadMovieSet.Stop()
+        Me.tmrLoadMovie.Stop()
 
-            Me.currMovieRow = e.RowIndex
-            Me.tmrWaitMovie.Start()
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.currMovieRow = e.RowIndex
+        Me.tmrWaitMovie.Start()
     End Sub
 
     Private Sub dgvMovies_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMovies.CellMouseDown
-        Try
-            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMovies.RowCount > 0 Then
-                If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
-                    Me.cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
-                    Return
-                End If
-
-                Me.cmnuMovie.Enabled = False
-
-
-                If e.RowIndex >= 0 AndAlso dgvMovies.SelectedRows.Count > 0 Then
-
-                    Me.cmnuMovie.Enabled = True
-                    Me.cmnuMovieChange.Visible = False
-                    Me.cmnuMovieChangeAuto.Visible = False
-                    Me.cmnuMovieEdit.Visible = False
-                    Me.cmnuMovieEditMetaData.Visible = False
-                    Me.cmnuMovieReSel.Visible = True
-                    Me.cmnuMovieRescrape.Visible = False
-                    Me.cmnuMovieUpSel.Visible = True
-                    'Me.cmuRenamer.Visible = False
-                    Me.cmnuMovieSep4.Visible = False
-
-                    If Me.dgvMovies.SelectedRows.Count > 1 AndAlso Me.dgvMovies.Rows(e.RowIndex).Selected Then
-                        Dim setMark As Boolean = False
-                        Dim setLock As Boolean = False
-                        Dim setWatched As Boolean = False
-
-                        Me.cmnuMovieTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-
-                        For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                            'if any one item is set as unmarked, set menu to mark
-                            'else they are all marked, so set menu to unmark
-                            If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
-                                setMark = True
-                                If setLock AndAlso setWatched Then Exit For
-                            End If
-                            'if any one item is set as unlocked, set menu to lock
-                            'else they are all locked so set menu to unlock
-                            If Not Convert.ToBoolean(sRow.Cells(14).Value) Then
-                                setLock = True
-                                If setMark AndAlso setWatched Then Exit For
-                            End If
-                            'if any one item is set as unwatched, set menu to watched
-                            'else they are all watched so set menu to not watched
-                            If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
-                                setWatched = True
-                                If setLock AndAlso setMark Then Exit For
-                            End If
-                        Next
-
-                        Me.cmnuMovieMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
-                        Me.cmnuMovieLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
-                        Me.cmnuMovieWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
-
-                        Me.cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
-                        Me.cmnuMovieGenresGenre.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
-                        Me.cmnuMovieGenresAdd.Enabled = False
-                        Me.cmnuMovieGenresSet.Enabled = False
-                        Me.cmnuMovieGenresRemove.Enabled = False
-                    Else
-                        Me.cmnuMovieChange.Visible = True
-                        Me.cmnuMovieChangeAuto.Visible = True
-                        Me.cmnuMovieEdit.Visible = True
-                        Me.cmnuMovieEditMetaData.Visible = True
-                        Me.cmnuMovieReSel.Visible = True
-                        Me.cmnuMovieRescrape.Visible = True
-                        Me.cmnuMovieUpSel.Visible = True
-                        Me.cmnuMovieSep3.Visible = True
-                        Me.cmnuMovieSep4.Visible = True
-
-                        cmnuMovieTitle.Text = String.Concat(">> ", Me.dgvMovies.Item("ListTitle", e.RowIndex).Value, " <<")
-
-                        If Not Me.dgvMovies.Rows(e.RowIndex).Selected Then
-                            Me.prevMovieRow = -1
-                            Me.dgvMovies.CurrentCell = Nothing
-                            Me.dgvMovies.ClearSelection()
-                            Me.dgvMovies.Rows(e.RowIndex).Selected = True
-                            Me.dgvMovies.CurrentCell = Me.dgvMovies.Item("ListTitle", e.RowIndex)
-                        Else
-                            Me.cmnuMovie.Enabled = True
-                        End If
-
-                        Me.cmnuMovieMark.Text = If(Convert.ToBoolean(Me.dgvMovies.Item("Mark", e.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                        Me.cmnuMovieLock.Text = If(Convert.ToBoolean(Me.dgvMovies.Item("Lock", e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-                        Me.cmnuMovieWatched.Text = If(Convert.ToBoolean(Me.dgvMovies.Item("HasWatched", e.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
-
-                        Me.cmnuMovieGenresGenre.Tag = Me.dgvMovies.Item("Genre", e.RowIndex).Value
-                        Me.cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
-                        Me.cmnuMovieGenresGenre.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
-                        Me.cmnuMovieGenresAdd.Enabled = False
-                        Me.cmnuMovieGenresSet.Enabled = False
-                        Me.cmnuMovieGenresRemove.Enabled = False
-                    End If
-                Else
-                    Me.cmnuMovie.Enabled = False
-                    Me.cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
-                End If
+        If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMovies.RowCount > 0 Then
+            If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
+                Me.cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                Return
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+
+            Me.cmnuMovie.Enabled = False
+
+
+            If e.RowIndex >= 0 AndAlso dgvMovies.SelectedRows.Count > 0 Then
+
+                Me.cmnuMovie.Enabled = True
+                Me.cmnuMovieChange.Visible = False
+                Me.cmnuMovieChangeAuto.Visible = False
+                Me.cmnuMovieEdit.Visible = False
+                Me.cmnuMovieEditMetaData.Visible = False
+                Me.cmnuMovieReSel.Visible = True
+                Me.cmnuMovieRescrape.Visible = False
+                Me.cmnuMovieUpSel.Visible = True
+                'Me.cmuRenamer.Visible = False
+                Me.cmnuMovieSep4.Visible = False
+
+                If Me.dgvMovies.SelectedRows.Count > 1 AndAlso Me.dgvMovies.Rows(e.RowIndex).Selected Then
+                    Dim setMark As Boolean = False
+                    Dim setLock As Boolean = False
+                    Dim setWatched As Boolean = False
+
+                    Me.cmnuMovieTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+
+                    For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                        'if any one item is set as unmarked, set menu to mark
+                        'else they are all marked, so set menu to unmark
+                        If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
+                            setMark = True
+                            If setLock AndAlso setWatched Then Exit For
+                        End If
+                        'if any one item is set as unlocked, set menu to lock
+                        'else they are all locked so set menu to unlock
+                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
+                            setLock = True
+                            If setMark AndAlso setWatched Then Exit For
+                        End If
+                        'if any one item is set as unwatched, set menu to watched
+                        'else they are all watched so set menu to not watched
+                        If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
+                            setWatched = True
+                            If setLock AndAlso setMark Then Exit For
+                        End If
+                    Next
+
+                    Me.cmnuMovieMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                    Me.cmnuMovieLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                    Me.cmnuMovieWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
+
+                    Me.cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
+                    Me.cmnuMovieGenresGenre.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
+                    Me.cmnuMovieGenresAdd.Enabled = False
+                    Me.cmnuMovieGenresSet.Enabled = False
+                    Me.cmnuMovieGenresRemove.Enabled = False
+                Else
+                    Me.cmnuMovieChange.Visible = True
+                    Me.cmnuMovieChangeAuto.Visible = True
+                    Me.cmnuMovieEdit.Visible = True
+                    Me.cmnuMovieEditMetaData.Visible = True
+                    Me.cmnuMovieReSel.Visible = True
+                    Me.cmnuMovieRescrape.Visible = True
+                    Me.cmnuMovieUpSel.Visible = True
+                    Me.cmnuMovieSep3.Visible = True
+                    Me.cmnuMovieSep4.Visible = True
+
+                    cmnuMovieTitle.Text = String.Concat(">> ", Me.dgvMovies.Item("ListTitle", e.RowIndex).Value, " <<")
+
+                    If Not Me.dgvMovies.Rows(e.RowIndex).Selected Then
+                        Me.prevMovieRow = -1
+                        Me.dgvMovies.CurrentCell = Nothing
+                        Me.dgvMovies.ClearSelection()
+                        Me.dgvMovies.Rows(e.RowIndex).Selected = True
+                        Me.dgvMovies.CurrentCell = Me.dgvMovies.Item("ListTitle", e.RowIndex)
+                    Else
+                        Me.cmnuMovie.Enabled = True
+                    End If
+
+                    Me.cmnuMovieMark.Text = If(Convert.ToBoolean(Me.dgvMovies.Item("Mark", e.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                    Me.cmnuMovieLock.Text = If(Convert.ToBoolean(Me.dgvMovies.Item("Lock", e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                    Me.cmnuMovieWatched.Text = If(Convert.ToBoolean(Me.dgvMovies.Item("HasWatched", e.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
+
+                    Me.cmnuMovieGenresGenre.Tag = Me.dgvMovies.Item("Genre", e.RowIndex).Value
+                    Me.cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
+                    Me.cmnuMovieGenresGenre.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
+                    Me.cmnuMovieGenresAdd.Enabled = False
+                    Me.cmnuMovieGenresSet.Enabled = False
+                    Me.cmnuMovieGenresRemove.Enabled = False
+                End If
+            Else
+                Me.cmnuMovie.Enabled = False
+                Me.cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+            End If
+        End If
     End Sub
 
     Private Sub dgvMovies_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellMouseEnter
-        If Master.eSettings.MovieClickScrape AndAlso e.RowIndex > 0 AndAlso e.ColumnIndex > 3 AndAlso e.ColumnIndex < 11 AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
+        Dim colName As String = Me.dgvMovies.Columns(e.ColumnIndex).Name
+        If String.IsNullOrEmpty(colName) Then
+            Return
+        End If
+
+        If Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso _
+            (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
+            colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
+            colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
+            colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse _
+            colName = "HasSet" OrElse colName = "HasSub") AndAlso Not bwMovieScraper.IsBusy Then
             oldStatus = GetStatus()
-            Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells(15).Value.ToString
+            Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
             Dim scrapeFor As String = ""
             Dim scrapeType As String = ""
-            Select Case e.ColumnIndex
-                Case 4
-                    scrapeFor = Master.eLang.GetString(72, "Poster Only")
-                Case 5
-                    scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-                Case 6
-                    scrapeFor = Master.eLang.GetString(71, "NFO Only")
-                Case 7
-                    scrapeFor = Master.eLang.GetString(75, "Trailer Only")
-                Case 8
-                    'scrapeFor = Master.eLang.GetString(00, "Subtitles")
-                Case 9
+            Select Case colName
+                Case "BannerPath"
+                    scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                Case "ClearArtPath"
+                    scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                Case "ClearLogoPath"
+                    scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                Case "DiscArtPath"
+                    scrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
+                Case "EFanartsPath"
+                    scrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
+                Case "EThumbsPath"
                     scrapeFor = Master.eLang.GetString(74, "Extrathumbs Only")
-                Case 10
+                Case "FanartPath"
+                    scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                Case "LandscapePath"
+                    scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                Case "NfoPath"
+                    scrapeFor = Master.eLang.GetString(71, "NFO Only")
+                Case "MetaData"
                     scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
+                Case "PosterPath"
+                    scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                Case "ThemePath"
+                    scrapeFor = Master.eLang.GetString(1125, "Theme Only")
+                Case "TrailerPath"
+                    scrapeFor = Master.eLang.GetString(75, "Trailer Only")
+                Case "HasSet"
+                    scrapeFor = Master.eLang.GetString(1345, "MovieSet Informations Only")
+                Case "HasSub"
+                    scrapeFor = Master.eLang.GetString(1346, "Subtitles Only")
             End Select
+
             If Master.eSettings.MovieClickScrapeAsk Then
                 scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
             Else
                 scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
             End If
+
             Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
         Else
             oldStatus = String.Empty
@@ -6984,13 +7007,13 @@ doCancel:
     End Sub
 
     Private Sub dgvMovies_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovies.CellPainting
-        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
-            e.Handled = True
+        Dim colName As String = Me.dgvMovies.Columns(e.ColumnIndex).Name
+        If String.IsNullOrEmpty(colName) Then
             Return
         End If
 
-        Dim colName As String = Me.dgvMovies.Columns(e.ColumnIndex).Name
-        If String.IsNullOrEmpty(colName) Then
+        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            e.Handled = True
             Return
         End If
 
@@ -13729,85 +13752,85 @@ doCancel:
         Else
             Select Case eType
                 Case Enums.ScraperEventType_Movie.BannerItem
-                    dScrapeRow(51) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("BannerPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.ClearArtItem
-                    dScrapeRow(61) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("ClearArtPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.ClearLogoItem
-                    dScrapeRow(59) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("ClearLogoPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.DiscArtItem
-                    dScrapeRow(57) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("DiscArtPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.EFanartsItem
-                    dScrapeRow(49) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("EFanartsPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.EThumbsItem
-                    dScrapeRow(9) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("EThumbsPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.FanartItem
-                    dScrapeRow(5) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("FanartPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.LandscapeItem
-                    dScrapeRow(53) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("LandscapePath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.ListTitle
-                    dScrapeRow(3) = DirectCast(Parameter, String)
+                    dScrapeRow("ListTitle") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.MoviePath
-                    dScrapeRow(1) = DirectCast(Parameter, String)
+                    dScrapeRow("MoviePath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.NFOItem
-                    dScrapeRow(6) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("NFOPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.PosterItem
-                    dScrapeRow(4) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("PosterPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.SortTitle
-                    dScrapeRow(47) = DirectCast(Parameter, String)
+                    dScrapeRow("SortTitle") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.ThemeItem
-                    dScrapeRow(55) = DirectCast(Parameter, Boolean)
-                Case Enums.ScraperEventType_Movie.Title
-                    dScrapeRow(15) = DirectCast(Parameter, String)
+                    dScrapeRow("ThemePath") = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.SortTitle
+                    dScrapeRow("SortTitle") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.TrailerItem
-                    dScrapeRow(7) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("TrailerPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.IMDBID
-                    dScrapeRow(13) = DirectCast(Parameter, String)
+                    dScrapeRow("Imdb") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.OriginalTitle
-                    dScrapeRow(16) = DirectCast(Parameter, String)
+                    dScrapeRow("OriginalTitle") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Year
-                    dScrapeRow(17) = DirectCast(Parameter, String)
+                    dScrapeRow("Year") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Rating
-                    dScrapeRow(18) = DirectCast(Parameter, String)
+                    dScrapeRow("Rating") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Votes
-                    dScrapeRow(19) = DirectCast(Parameter, String)
+                    dScrapeRow("Votes") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.MPAA
-                    dScrapeRow(20) = DirectCast(Parameter, String)
+                    dScrapeRow("MPAA") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Top250
-                    dScrapeRow(21) = DirectCast(Parameter, String)
+                    dScrapeRow("Top250") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Country
-                    dScrapeRow(22) = DirectCast(Parameter, String)
+                    dScrapeRow("Country") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Outline
-                    dScrapeRow(23) = DirectCast(Parameter, String)
+                    dScrapeRow("Outline") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Plot
-                    dScrapeRow(24) = DirectCast(Parameter, String)
+                    dScrapeRow("Plot") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Tagline
-                    dScrapeRow(25) = DirectCast(Parameter, String)
+                    dScrapeRow("Tagline") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Certification
-                    dScrapeRow(26) = DirectCast(Parameter, String)
+                    dScrapeRow("Certification") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Genre
-                    dScrapeRow(27) = DirectCast(Parameter, String)
+                    dScrapeRow("Genre") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Studio
-                    dScrapeRow(28) = DirectCast(Parameter, String)
+                    dScrapeRow("Studio") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Runtime
-                    dScrapeRow(29) = DirectCast(Parameter, String)
+                    dScrapeRow("Runtime") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.ReleaseDate
-                    dScrapeRow(30) = DirectCast(Parameter, String)
+                    dScrapeRow("ReleaseDate") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Director
-                    dScrapeRow(31) = DirectCast(Parameter, String)
+                    dScrapeRow("Director") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Credits
-                    dScrapeRow(32) = DirectCast(Parameter, String)
+                    dScrapeRow("Credits") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Playcount
-                    dScrapeRow(33) = DirectCast(Parameter, String)
+                    dScrapeRow("Playcount") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.Trailer
-                    dScrapeRow(35) = DirectCast(Parameter, String)
+                    dScrapeRow("Trailer") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.TMDBID
-                    dScrapeRow(63) = DirectCast(Parameter, String)
+                    dScrapeRow("TMDB") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.TMDBColID
-                    dScrapeRow(64) = DirectCast(Parameter, String)
+                    dScrapeRow("TMDBColID") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.MovieSet
-                    dScrapeRow(70) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("HasSet") = DirectCast(Parameter, Boolean)
                 Case Enums.ScraperEventType_Movie.DateModified
-                    dScrapeRow(65) = DirectCast(Parameter, Double)
+                    dScrapeRow("DateModified") = DirectCast(Parameter, Double)
             End Select
             Me.dgvMovies.Invalidate()
         End If

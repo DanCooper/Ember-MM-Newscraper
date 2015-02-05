@@ -1199,8 +1199,6 @@
         BEGIN
         DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
         DELETE FROM actorlinkmovie WHERE idMovie=old.idMovie;
-        DELETE FROM MoviesFanart WHERE MovieID=old.idMovie;
-        DELETE FROM MoviesPosters WHERE MovieID=old.idMovie;
         DELETE FROM MoviesSets WHERE MovieID=old.idMovie;
         DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
         DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';

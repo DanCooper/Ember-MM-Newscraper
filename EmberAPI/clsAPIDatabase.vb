@@ -133,10 +133,11 @@ Public Class Database
     Private Sub AddCast(ByVal idMedia As Long, ByVal table As String, ByVal field As String, ByVal cast As List(Of MediaContainers.Person))
         If cast Is Nothing Then Return
 
-        Dim iOrder As Integer = 0
+        Dim iOrder As Integer = 1
         For Each actor As MediaContainers.Person In cast
             Dim idActor = AddActor(actor.Name, actor.ThumbURL, actor.ThumbPath)
             AddLinkToActor(table, idActor, field, idMedia, actor.Role, iOrder)
+            iOrder += 1
         Next
     End Sub
 
@@ -1078,8 +1079,8 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _movieDB.VideoSource = SQLreader("VideoSource").ToString
                     _movieDB.Movie = New MediaContainers.Movie
                     With _movieDB.Movie
-                        If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdded"))).ToString("yyyy-MM-d HH:mm:ss")
-                        If Not DBNull.Value.Equals(SQLreader("DateModified")) Then .DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateModified"))).ToString("yyyy-MM-d HH:mm:ss")
+                        If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdded"))).ToString("yyyy-MM-dd HH:mm:ss")
+                        If Not DBNull.Value.Equals(SQLreader("DateModified")) Then .DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateModified"))).ToString("yyyy-MM-dd HH:mm:ss")
                         If Not DBNull.Value.Equals(SQLreader("IMDB")) Then .ID = SQLreader("IMDB").ToString
                         If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
                         If Not DBNull.Value.Equals(SQLreader("OriginalTitle")) Then .OriginalTitle = SQLreader("OriginalTitle").ToString
@@ -1413,7 +1414,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Director")) Then .Director = SQLreader("Director").ToString
                         If Not DBNull.Value.Equals(SQLreader("Credits")) Then .OldCredits = SQLreader("Credits").ToString
                         If Not DBNull.Value.Equals(SQLreader("Playcount")) Then .Playcount = SQLreader("Playcount").ToString
-                        If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdded"))).ToString("yyyy-MM-d HH:mm:ss")
+                        If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdded"))).ToString("yyyy-MM-dd HH:mm:ss")
                         If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime").ToString
                         If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes").ToString
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
@@ -1932,23 +1933,28 @@ Public Class Database
                             End If
                     End Select
                 End If
-                _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-d HH:mm:ss")
-            Catch ex As Exception
+                _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
+            Catch
                 parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdded)
-                _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-d HH:mm:ss")
+                _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
-            If IsNew AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.DateModified) Then
-                Dim DateTimeDateModified As DateTime = DateTime.ParseExact(_movieDB.Movie.DateModified, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
-                parDateModified.Value = Functions.ConvertToUnixTimestamp(DateTimeDateModified)
-            ElseIf Not IsNew Then
-                parDateModified.Value = Functions.ConvertToUnixTimestamp(Now)
-            End If
-            If Not IsNothing(parDateModified.Value) Then
-                _movieDB.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateModified.Value)).ToString("yyyy-MM-d HH:mm:ss")
-            Else
-                _movieDB.Movie.DateModified = String.Empty
-            End If
+            Try
+                If IsNew AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.DateModified) Then
+                    Dim DateTimeDateModified As DateTime = DateTime.ParseExact(_movieDB.Movie.DateModified, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                    parDateModified.Value = Functions.ConvertToUnixTimestamp(DateTimeDateModified)
+                ElseIf Not IsNew Then
+                    parDateModified.Value = Functions.ConvertToUnixTimestamp(Now)
+                End If
+                If Not IsNothing(parDateModified.Value) Then
+                    _movieDB.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateModified.Value)).ToString("yyyy-MM-dd HH:mm:ss")
+                Else
+                    _movieDB.Movie.DateModified = String.Empty
+                End If
+            Catch
+                parDateModified.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateModified)
+                _movieDB.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
+            End Try
 
             ' First let's save it to NFO, even because we will need the NFO path
             If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
@@ -2259,14 +2265,12 @@ Public Class Database
                             'first check if a Set with same TMDBColID is already existing
                             If Not String.IsNullOrEmpty(s.TMDBColID) Then
                                 Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommandSets.CommandText = String.Concat("SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
-                                                                           "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
-                                                                           "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                           "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM Sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
+                                    SQLcommandSets.CommandText = String.Concat("SELECT idSet, SetName ", _
+                                                                               "FROM sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
                                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                         If SQLreader.HasRows Then
                                             SQLreader.Read()
-                                            If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
+                                            If Not DBNull.Value.Equals(SQLreader("idSet")) Then s.ID = CInt(SQLreader("idSet"))
                                             If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Title = CStr(SQLreader("SetName"))
                                             IsNewSet = False
                                             NFO.SaveMovieToNFO(_movieDB) 'to save the "new" SetName
@@ -2280,14 +2284,12 @@ Public Class Database
                             If IsNewSet Then
                                 'secondly check if a Set with same name is already existing
                                 Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommandSets.CommandText = String.Concat("SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
-                                                                           "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
-                                                                           "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                           "ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM Sets WHERE SetName LIKE """, s.Title, """;")
+                                    SQLcommandSets.CommandText = String.Concat("SELECT idSet ", _
+                                                                               "FROM sets WHERE SetName LIKE """, s.Title, """;")
                                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                         If SQLreader.HasRows Then
                                             SQLreader.Read()
-                                            If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
+                                            If Not DBNull.Value.Equals(SQLreader("idSet")) Then s.ID = CInt(SQLreader("idSet"))
                                             IsNewSet = False
                                         Else
                                             IsNewSet = True
@@ -2314,7 +2316,7 @@ Public Class Database
                             Else
                                 'create new Set
                                 Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO Sets (", _
+                                    SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
                                                                                      "ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                                                      "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                                                      "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
@@ -2376,7 +2378,7 @@ Public Class Database
                                 End Using
 
                                 Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName FROM Sets WHERE SetName LIKE """, s.Title, """;")
+                                    SQLcommandSets.CommandText = String.Concat("SELECT idSet, SetName FROM sets WHERE SetName LIKE """, s.Title, """;")
                                     Using rdrSets As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                         If rdrSets.Read Then
                                             s.ID = Convert.ToInt64(rdrSets(0))
@@ -2692,10 +2694,10 @@ Public Class Database
                             End If
                     End Select
                 End If
-                _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-d HH:mm:ss")
+                _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             Catch ex As Exception
                 parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdded)
-                _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-d HH:mm:ss")
+                _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
             ' First let's save it to NFO, even because we will need the NFO path

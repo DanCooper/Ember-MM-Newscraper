@@ -1434,4 +1434,6 @@
   <string id="1342">Send unwatched movies to trakt.tv watchlist</string>
   <string id="1343">No CharacterArts Found</string>
   <string id="1344">No CharacterArt images could be found. Please check to see if any CharacterArt scrapers are enabled.</string>
+  <string id="1345">MovieSet Informations Only</string>
+  <string id="1346">Subtitles Only</string>
 </strings>
