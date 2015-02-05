@@ -7019,7 +7019,7 @@ doCancel:
 
         'icons
         If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <> 13 AndAlso e.ColumnIndex <> 16 AndAlso e.ColumnIndex <> 17 _
-             AndAlso e.ColumnIndex <> 20 AndAlso e.ColumnIndex <> 63 AndAlso e.ColumnIndex <= 70 AndAlso e.RowIndex = -1 Then
+             AndAlso e.ColumnIndex <> 20 AndAlso e.ColumnIndex <> 56 AndAlso e.ColumnIndex <= 63 AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -7029,21 +7029,21 @@ doCancel:
             pt.Y = 3
             If e.ColumnIndex = 34 Then 'Watched
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 8)
-            ElseIf e.ColumnIndex = 49 Then 'Extrafanarts
+            ElseIf e.ColumnIndex = 47 Then 'Extrafanarts
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 9)
-            ElseIf e.ColumnIndex = 51 Then 'Banner
+            ElseIf e.ColumnIndex = 49 Then 'Banner
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 10)
-            ElseIf e.ColumnIndex = 53 Then 'Landscape
+            ElseIf e.ColumnIndex = 50 Then 'Landscape
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 11)
-            ElseIf e.ColumnIndex = 55 Then 'Theme
+            ElseIf e.ColumnIndex = 51 Then 'Theme
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 12)
-            ElseIf e.ColumnIndex = 57 Then 'DiscArt
+            ElseIf e.ColumnIndex = 53 Then 'DiscArt
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 13)
-            ElseIf e.ColumnIndex = 59 Then 'ClearLogo
+            ElseIf e.ColumnIndex = 54 Then 'ClearLogo
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
-            ElseIf e.ColumnIndex = 61 Then 'ClearArt
+            ElseIf e.ColumnIndex = 55 Then 'ClearArt
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 15)
-            ElseIf e.ColumnIndex = 70 Then 'Inside a Set
+            ElseIf e.ColumnIndex = 63 Then 'Inside a Set
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 17)
             Else 'Poster/Fanart/NFO/Trailer/Subs/Extrathumbs
                 Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
@@ -7064,19 +7064,19 @@ doCancel:
                 e.CellStyle.ForeColor = Color.Green
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
-            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(66, e.RowIndex).Value) Then              'is marked custom 1
+            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(59, e.RowIndex).Value) Then              'is marked custom 1
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
-            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(67, e.RowIndex).Value) Then              'is marked custom 2
+            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(60, e.RowIndex).Value) Then              'is marked custom 2
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
-            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(68, e.RowIndex).Value) Then              'is marked custom 3
+            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(61, e.RowIndex).Value) Then              'is marked custom 3
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
-            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(69, e.RowIndex).Value) Then              'is marked custom 4
+            ElseIf Convert.ToBoolean(Me.dgvMovies.Item(62, e.RowIndex).Value) Then              'is marked custom 4
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
@@ -9003,8 +9003,8 @@ doCancel:
             Me.dgvMovieSets.DataSource = Nothing
             Me.ClearInfo()
             Master.DB.FillDataTable(Me.dtMovieSets, String.Concat("SELECT sets.idSet, sets.ListTitle, sets.HasNfo, sets.NfoPath, sets.HasPoster, sets.PosterPath, sets.HasFanart, ", _
-                                                                       "sets.FanartPath, sets.HasBanner, sets.BannerPath, sets.HasLandscape, sets.LandscapePath, sets.HasDiscArt, ", _
-                                                                       "sets.DiscArtPath, sets.HasClearLogo, sets.ClearLogoPath, sets.HasClearArt, sets.ClearArtPath, sets.TMDBColID, ", _
+                                                                       "sets.FanartPath, sets.HasBanner, sets.HasLandscape, sets.HasDiscArt, ", _
+                                                                       "sets.HasClearLogo, sets.HasClearArt, sets.TMDBColID, ", _
                                                                        "sets.Plot, sets.SetName, sets.New, sets.Mark, sets.Lock, COUNT(MoviesSets.MovieID) AS 'Count' FROM sets ", _
                                                                        "LEFT OUTER JOIN MoviesSets ON sets.idSet = MoviesSets.SetID GROUP BY sets.idSet ORDER BY sets.ListTitle COLLATE NOCASE;"))
         End If
@@ -9031,193 +9031,144 @@ doCancel:
                         .bsMovies.DataSource = .dtMovies
                         .dgvMovies.DataSource = .bsMovies
 
-                        .dgvMovies.Columns(0).Visible = False
-                        .dgvMovies.Columns(1).Visible = False
-                        .dgvMovies.Columns(2).Visible = False
-                        .dgvMovies.Columns(3).Resizable = DataGridViewTriState.True
-                        .dgvMovies.Columns(3).ReadOnly = True
-                        .dgvMovies.Columns(3).MinimumWidth = 83
-                        .dgvMovies.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(3).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(3).Name)
-                        .dgvMovies.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
-                        .dgvMovies.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
-                        .dgvMovies.Columns(4).Width = 20
-                        .dgvMovies.Columns(4).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(4).ReadOnly = True
-                        .dgvMovies.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(4).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(4).Name)
-                        .dgvMovies.Columns(4).ToolTipText = Master.eLang.GetString(148, "Poster")
-                        .dgvMovies.Columns(5).Width = 20
-                        .dgvMovies.Columns(5).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(5).ReadOnly = True
-                        .dgvMovies.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(5).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(5).Name)
-                        .dgvMovies.Columns(5).ToolTipText = Master.eLang.GetString(149, "Fanart")
-                        .dgvMovies.Columns(6).Width = 20
-                        .dgvMovies.Columns(6).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(6).ReadOnly = True
-                        .dgvMovies.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(6).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(6).Name)
-                        .dgvMovies.Columns(6).ToolTipText = Master.eLang.GetString(150, "Nfo")
-                        .dgvMovies.Columns(7).Width = 20
-                        .dgvMovies.Columns(7).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(7).ReadOnly = True
-                        .dgvMovies.Columns(7).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(7).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(7).Name)
-                        .dgvMovies.Columns(7).ToolTipText = Master.eLang.GetString(151, "Trailer")
-                        .dgvMovies.Columns(8).Width = 20
-                        .dgvMovies.Columns(8).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(8).ReadOnly = True
-                        .dgvMovies.Columns(8).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(8).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(8).Name)
-                        .dgvMovies.Columns(8).ToolTipText = Master.eLang.GetString(152, "Subtitles")
-                        .dgvMovies.Columns(9).Width = 20
-                        .dgvMovies.Columns(9).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(9).ReadOnly = True
-                        .dgvMovies.Columns(9).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(9).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(9).Name)
-                        .dgvMovies.Columns(9).ToolTipText = Master.eLang.GetString(153, "Extrathumbs")
-                        .dgvMovies.Columns(10).Visible = False
-                        .dgvMovies.Columns(11).Visible = False
-                        .dgvMovies.Columns(12).Visible = False
-                        .dgvMovies.Columns(13).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(13).ReadOnly = True
-                        .dgvMovies.Columns(13).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(13).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(13).Name)
-                        .dgvMovies.Columns(13).ToolTipText = Master.eLang.GetString(61, "IMDB ID")
-                        .dgvMovies.Columns(13).HeaderText = Master.eLang.GetString(61, "IMDB ID")
-                        .dgvMovies.Columns(13).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                        .dgvMovies.Columns(14).Visible = False
-                        .dgvMovies.Columns(15).Visible = False
-                        .dgvMovies.Columns(16).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(16).ReadOnly = True
-                        .dgvMovies.Columns(16).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(16).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(16).Name)
-                        .dgvMovies.Columns(16).ToolTipText = Master.eLang.GetString(302, "Original Title")
-                        .dgvMovies.Columns(16).HeaderText = Master.eLang.GetString(302, "Original Title")
-                        .dgvMovies.Columns(16).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                        .dgvMovies.Columns(17).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(17).ReadOnly = True
-                        .dgvMovies.Columns(17).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(17).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(17).Name)
-                        .dgvMovies.Columns(17).ToolTipText = Master.eLang.GetString(278, "Year")
-                        .dgvMovies.Columns(17).HeaderText = Master.eLang.GetString(278, "Year")
-                        .dgvMovies.Columns(17).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                        .dgvMovies.Columns(18).Visible = False
-                        .dgvMovies.Columns(19).Visible = False
-                        .dgvMovies.Columns(20).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(20).Width = 70
-                        .dgvMovies.Columns(20).ReadOnly = True
-                        .dgvMovies.Columns(20).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(20).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(20).Name)
-                        .dgvMovies.Columns(20).ToolTipText = Master.eLang.GetString(401, "MPAA")
-                        .dgvMovies.Columns(20).HeaderText = Master.eLang.GetString(401, "MPAA")
-                        '.dgvMovies.Columns(20).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                        .dgvMovies.Columns(21).Visible = False
-                        .dgvMovies.Columns(22).Visible = False
-                        .dgvMovies.Columns(23).Visible = False
-                        .dgvMovies.Columns(24).Visible = False
-                        .dgvMovies.Columns(25).Visible = False
-                        .dgvMovies.Columns(26).Visible = False
-                        .dgvMovies.Columns(27).Visible = False
-                        .dgvMovies.Columns(28).Visible = False
-                        .dgvMovies.Columns(29).Visible = False
-                        .dgvMovies.Columns(30).Visible = False
-                        .dgvMovies.Columns(31).Visible = False
-                        .dgvMovies.Columns(32).Visible = False
-                        .dgvMovies.Columns(33).Visible = False
-                        .dgvMovies.Columns(34).Width = 20
-                        .dgvMovies.Columns(34).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(34).ReadOnly = True
-                        .dgvMovies.Columns(34).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(34).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(34).Name)
-                        .dgvMovies.Columns(34).ToolTipText = Master.eLang.GetString(981, "Watched")
-                        .dgvMovies.Columns(35).Visible = False
-                        .dgvMovies.Columns(36).Visible = False
-                        .dgvMovies.Columns(37).Visible = False
-                        .dgvMovies.Columns(38).Visible = False
-                        .dgvMovies.Columns(39).Visible = False
-                        .dgvMovies.Columns(40).Visible = False
-                        .dgvMovies.Columns(41).Visible = False
-                        .dgvMovies.Columns(42).Visible = False
-                        .dgvMovies.Columns(43).Visible = False
-                        .dgvMovies.Columns(44).Visible = False
-                        .dgvMovies.Columns(45).Visible = False
-                        .dgvMovies.Columns(46).Visible = False
-                        .dgvMovies.Columns(47).Visible = False
-                        .dgvMovies.Columns(48).Visible = False
-                        .dgvMovies.Columns(49).Width = 20
-                        .dgvMovies.Columns(49).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(49).ReadOnly = True
-                        .dgvMovies.Columns(49).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(49).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(49).Name)
-                        .dgvMovies.Columns(49).ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
-                        .dgvMovies.Columns(50).Visible = False
-                        .dgvMovies.Columns(51).Width = 20
-                        .dgvMovies.Columns(51).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(51).ReadOnly = True
-                        .dgvMovies.Columns(51).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(51).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(51).Name)
-                        .dgvMovies.Columns(51).ToolTipText = Master.eLang.GetString(838, "Banner")
-                        .dgvMovies.Columns(52).Visible = False
-                        .dgvMovies.Columns(53).Width = 20
-                        .dgvMovies.Columns(53).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(53).ReadOnly = True
-                        .dgvMovies.Columns(53).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(53).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(53).Name)
-                        .dgvMovies.Columns(53).ToolTipText = Master.eLang.GetString(1035, "Landscape")
-                        .dgvMovies.Columns(54).Visible = False
-                        .dgvMovies.Columns(55).Width = 20
-                        .dgvMovies.Columns(55).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(55).ReadOnly = True
-                        .dgvMovies.Columns(55).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(55).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(55).Name)
-                        .dgvMovies.Columns(55).ToolTipText = Master.eLang.GetString(1118, "Theme")
-                        .dgvMovies.Columns(56).Visible = False
-                        .dgvMovies.Columns(57).Width = 20
-                        .dgvMovies.Columns(57).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(57).ReadOnly = True
-                        .dgvMovies.Columns(57).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(57).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(57).Name)
-                        .dgvMovies.Columns(57).ToolTipText = Master.eLang.GetString(1098, "DiscArt")
-                        .dgvMovies.Columns(58).Visible = False
-                        .dgvMovies.Columns(59).Width = 20
-                        .dgvMovies.Columns(59).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(59).ReadOnly = True
-                        .dgvMovies.Columns(59).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(59).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(59).Name)
-                        .dgvMovies.Columns(59).ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
-                        .dgvMovies.Columns(60).Visible = False
-                        .dgvMovies.Columns(61).Width = 20
-                        .dgvMovies.Columns(61).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(61).ReadOnly = True
-                        .dgvMovies.Columns(61).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(61).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(61).Name)
-                        .dgvMovies.Columns(61).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
-                        .dgvMovies.Columns(62).Visible = False
-                        .dgvMovies.Columns(63).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(63).ReadOnly = True
-                        .dgvMovies.Columns(63).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(63).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(63).Name)
-                        .dgvMovies.Columns(63).ToolTipText = Master.eLang.GetString(933, "TMDB ID")
-                        .dgvMovies.Columns(63).HeaderText = Master.eLang.GetString(933, "TMDB ID")
-                        .dgvMovies.Columns(63).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                        .dgvMovies.Columns(64).Visible = False
-                        .dgvMovies.Columns(65).Visible = False
-                        .dgvMovies.Columns(66).Visible = False
-                        .dgvMovies.Columns(67).Visible = False
-                        .dgvMovies.Columns(68).Visible = False
-                        .dgvMovies.Columns(69).Visible = False
-                        .dgvMovies.Columns(70).Width = 20
-                        .dgvMovies.Columns(70).Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns(70).ReadOnly = True
-                        .dgvMovies.Columns(70).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(70).Visible = Not CheckColumnHide_Movies(.dgvMovies.Columns(70).Name)
-                        .dgvMovies.Columns(70).ToolTipText = Master.eLang.GetString(1295, "Part of a MovieSet")
-
-                        For i As Integer = 71 To .dgvMovies.Columns.Count - 1
+                        For i As Integer = 0 To .dgvMovies.Columns.Count - 1
                             .dgvMovies.Columns(i).Visible = False
                         Next
+
+                        .dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                        .dgvMovies.Columns("ListTitle").ReadOnly = True
+                        .dgvMovies.Columns("ListTitle").MinimumWidth = 83
+                        .dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("ListTitle").Visible = Not CheckColumnHide_Movies("ListTitle")
+                        .dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                        .dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                        .dgvMovies.Columns("HasPoster").Width = 20
+                        .dgvMovies.Columns("HasPoster").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasPoster").ReadOnly = True
+                        .dgvMovies.Columns("HasPoster").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasPoster").Visible = Not CheckColumnHide_Movies("HasPoster")
+                        .dgvMovies.Columns("HasPoster").ToolTipText = Master.eLang.GetString(148, "Poster")
+                        .dgvMovies.Columns("HasFanart").Width = 20
+                        .dgvMovies.Columns("HasFanart").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasFanart").ReadOnly = True
+                        .dgvMovies.Columns("HasFanart").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasFanart").Visible = Not CheckColumnHide_Movies("HasFanart")
+                        .dgvMovies.Columns("HasFanart").ToolTipText = Master.eLang.GetString(149, "Fanart")
+                        .dgvMovies.Columns("HasNfo").Width = 20
+                        .dgvMovies.Columns("HasNfo").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasNfo").ReadOnly = True
+                        .dgvMovies.Columns("HasNfo").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasNfo").Visible = Not CheckColumnHide_Movies("HasNfo")
+                        .dgvMovies.Columns("HasNfo").ToolTipText = Master.eLang.GetString(150, "Nfo")
+                        .dgvMovies.Columns("HasTrailer").Width = 20
+                        .dgvMovies.Columns("HasTrailer").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasTrailer").ReadOnly = True
+                        .dgvMovies.Columns("HasTrailer").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasTrailer").Visible = Not CheckColumnHide_Movies("HasTrailer")
+                        .dgvMovies.Columns("HasTrailer").ToolTipText = Master.eLang.GetString(151, "Trailer")
+                        .dgvMovies.Columns("HasSub").Width = 20
+                        .dgvMovies.Columns("HasSub").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasSub").ReadOnly = True
+                        .dgvMovies.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasSub").Visible = Not CheckColumnHide_Movies("HasSub")
+                        .dgvMovies.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
+                        .dgvMovies.Columns("HasEThumbs").Width = 20
+                        .dgvMovies.Columns("HasEThumbs").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasEThumbs").ReadOnly = True
+                        .dgvMovies.Columns("HasEThumbs").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasEThumbs").Visible = Not CheckColumnHide_Movies("HasEThumbs")
+                        .dgvMovies.Columns("HasEThumbs").ToolTipText = Master.eLang.GetString(153, "Extrathumbs")
+                        .dgvMovies.Columns("Imdb").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("Imdb").ReadOnly = True
+                        .dgvMovies.Columns("Imdb").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
+                        .dgvMovies.Columns("Imdb").ToolTipText = Master.eLang.GetString(61, "IMDB ID")
+                        .dgvMovies.Columns("Imdb").HeaderText = Master.eLang.GetString(61, "IMDB ID")
+                        .dgvMovies.Columns("Imdb").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                        .dgvMovies.Columns("OriginalTitle").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("OriginalTitle").ReadOnly = True
+                        .dgvMovies.Columns("OriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("OriginalTitle").Visible = Not CheckColumnHide_Movies("OriginalTitle")
+                        .dgvMovies.Columns("OriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
+                        .dgvMovies.Columns("OriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
+                        .dgvMovies.Columns("OriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                        .dgvMovies.Columns("Year").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("Year").ReadOnly = True
+                        .dgvMovies.Columns("Year").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("Year").Visible = Not CheckColumnHide_Movies("Year")
+                        .dgvMovies.Columns("Year").ToolTipText = Master.eLang.GetString(278, "Year")
+                        .dgvMovies.Columns("Year").HeaderText = Master.eLang.GetString(278, "Year")
+                        .dgvMovies.Columns("Year").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                        .dgvMovies.Columns("MPAA").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("MPAA").Width = 70
+                        .dgvMovies.Columns("MPAA").ReadOnly = True
+                        .dgvMovies.Columns("MPAA").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("MPAA").Visible = Not CheckColumnHide_Movies("MPAA")
+                        .dgvMovies.Columns("MPAA").ToolTipText = Master.eLang.GetString(401, "MPAA")
+                        .dgvMovies.Columns("MPAA").HeaderText = Master.eLang.GetString(401, "MPAA")
+                        '.dgvMovies.Columns("MPAA").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                        .dgvMovies.Columns("HasWatched").Width = 20
+                        .dgvMovies.Columns("HasWatched").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasWatched").ReadOnly = True
+                        .dgvMovies.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasWatched").Visible = Not CheckColumnHide_Movies("HasWatched")
+                        .dgvMovies.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
+                        .dgvMovies.Columns("HasEFanarts").Width = 20
+                        .dgvMovies.Columns("HasEFanarts").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasEFanarts").ReadOnly = True
+                        .dgvMovies.Columns("HasEFanarts").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasEFanarts").Visible = Not CheckColumnHide_Movies("HasEFanarts")
+                        .dgvMovies.Columns("HasEFanarts").ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
+                        .dgvMovies.Columns("Hasbanner").Width = 20
+                        .dgvMovies.Columns("Hasbanner").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("Hasbanner").ReadOnly = True
+                        .dgvMovies.Columns("Hasbanner").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("Hasbanner").Visible = Not CheckColumnHide_Movies("Hasbanner")
+                        .dgvMovies.Columns("Hasbanner").ToolTipText = Master.eLang.GetString(838, "Banner")
+                        .dgvMovies.Columns("ThemePath").Visible = False
+                        .dgvMovies.Columns("HasLandscape").Width = 20
+                        .dgvMovies.Columns("HasLandscape").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasLandscape").ReadOnly = True
+                        .dgvMovies.Columns("HasLandscape").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasLandscape").Visible = Not CheckColumnHide_Movies("HasLandscape")
+                        .dgvMovies.Columns("HasLandscape").ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                        .dgvMovies.Columns("HasTheme").Width = 20
+                        .dgvMovies.Columns("HasTheme").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasTheme").ReadOnly = True
+                        .dgvMovies.Columns("HasTheme").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasTheme").Visible = Not CheckColumnHide_Movies("HasTheme")
+                        .dgvMovies.Columns("HasTheme").ToolTipText = Master.eLang.GetString(1118, "Theme")
+                        .dgvMovies.Columns("HasDiscArt").Width = 20
+                        .dgvMovies.Columns("HasDiscArt").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasDiscArt").ReadOnly = True
+                        .dgvMovies.Columns("HasDiscArt").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasDiscArt").Visible = Not CheckColumnHide_Movies("HasDiscArt")
+                        .dgvMovies.Columns("HasDiscArt").ToolTipText = Master.eLang.GetString(1098, "DiscArt")
+                        .dgvMovies.Columns("HasClearLogo").Width = 20
+                        .dgvMovies.Columns("HasClearLogo").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasClearLogo").ReadOnly = True
+                        .dgvMovies.Columns("HasClearLogo").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasClearLogo").Visible = Not CheckColumnHide_Movies("HasClearLogo")
+                        .dgvMovies.Columns("HasClearLogo").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
+                        .dgvMovies.Columns("HasClearArt").Width = 20
+                        .dgvMovies.Columns("HasClearArt").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasClearArt").ReadOnly = True
+                        .dgvMovies.Columns("HasClearArt").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasClearArt").Visible = Not CheckColumnHide_Movies("HasClearArt")
+                        .dgvMovies.Columns("HasClearArt").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
+                        .dgvMovies.Columns("TMDB").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("TMDB").ReadOnly = True
+                        .dgvMovies.Columns("TMDB").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("TMDB").Visible = Not CheckColumnHide_Movies("TMDB")
+                        .dgvMovies.Columns("TMDB").ToolTipText = Master.eLang.GetString(933, "TMDB ID")
+                        .dgvMovies.Columns("TMDB").HeaderText = Master.eLang.GetString(933, "TMDB ID")
+                        .dgvMovies.Columns("TMDB").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                        .dgvMovies.Columns("HasSet").Width = 20
+                        .dgvMovies.Columns("HasSet").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("HasSet").ReadOnly = True
+                        .dgvMovies.Columns("HasSet").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("HasSet").Visible = Not CheckColumnHide_Movies("HasSet")
+                        .dgvMovies.Columns("HasSet").ToolTipText = Master.eLang.GetString(1295, "Part of a MovieSet")
 
                         .dgvMovies.Columns(0).ValueType = GetType(Int32)
 
