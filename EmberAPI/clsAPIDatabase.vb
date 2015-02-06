@@ -1340,20 +1340,16 @@ Public Class Database
         _TVDB.TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}
 
         Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommandTVSeason.CommandText = String.Concat("SELECT idShow, Season, SeasonText, HasPoster, HasFanart, PosterPath, FanartPath, Lock, Mark, ", _
-                                                           "New, HasBanner, BannerPath, HasLandscape, LandscapePath FROM seasons WHERE idShow = ", ShowID, " AND Season = 999;")
+            SQLcommandTVSeason.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ShowID, " AND Season = 999;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
                 If SQLReader.HasRows Then
                     SQLReader.Read()
-                    If Not DBNull.Value.Equals(SQLReader("BannerPath")) Then _TVDB.SeasonBannerPath = SQLReader("BannerPath").ToString
-                    If Not DBNull.Value.Equals(SQLReader("FanartPath")) Then _TVDB.SeasonFanartPath = SQLReader("FanartPath").ToString
-                    If Not DBNull.Value.Equals(SQLReader("LandscapePath")) Then _TVDB.SeasonLandscapePath = SQLReader("LandscapePath").ToString
-                    If Not DBNull.Value.Equals(SQLReader("PosterPath")) Then _TVDB.SeasonPosterPath = SQLReader("PosterPath").ToString
+                    If Not DBNull.Value.Equals(SQLReader("idSeason")) Then _TVDB.SeasonID = Convert.ToInt64(SQLReader("idSeason"))
 
-                    '_TVDB.SeasonBannerPath = GetArtForItem(_TVDB.SeasonID, "season", "banner")
-                    '_TVDB.SeasonFanartPath = GetArtForItem(_TVDB.SeasonID, "season", "fanart")
-                    '_TVDB.SeasonLandscapePath = GetArtForItem(_TVDB.SeasonID, "season", "landscape")
-                    '_TVDB.SeasonPosterPath = GetArtForItem(_TVDB.SeasonID, "season", "poster")
+                    _TVDB.SeasonBannerPath = GetArtForItem(_TVDB.SeasonID, "season", "banner")
+                    _TVDB.SeasonFanartPath = GetArtForItem(_TVDB.SeasonID, "season", "fanart")
+                    _TVDB.SeasonLandscapePath = GetArtForItem(_TVDB.SeasonID, "season", "landscape")
+                    _TVDB.SeasonPosterPath = GetArtForItem(_TVDB.SeasonID, "season", "poster")
                 End If
             End Using
         End Using
@@ -1374,7 +1370,7 @@ Public Class Database
 
         _TVDB.EpID = EpID
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT idEpisode, idShow, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, ", _
+            SQLcommand.CommandText = String.Concat("SELECT idEpisode, idShow, Episode, Title, New, Mark, TVEpPathID, Source, Lock, ", _
                                                    "Season, Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount, ", _
                                                    "HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub FROM episode WHERE idEpisode = ", EpID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1388,7 +1384,7 @@ Public Class Database
                     PathID = Convert.ToInt64(SQLreader("TVEpPathid"))
 
                     _TVDB.EpFanartPath = GetArtForItem(_TVDB.EpID, "episode", "fanart")
-                    _TVDB.EpPosterPath = GetArtForItem(_TVDB.EpID, "episode", "poster")
+                    _TVDB.EpPosterPath = GetArtForItem(_TVDB.EpID, "episode", "thumb")
 
                     _TVDB.FilenameID = PathID
                     _TVDB.IsMarkEp = Convert.ToBoolean(SQLreader("Mark"))
@@ -1582,30 +1578,28 @@ Public Class Database
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
-        Try
-            _TVDB.ShowID = ShowID
-            If WithShow Then FillTVShowFromDB(_TVDB)
-            _TVDB.TVEp = New MediaContainers.EpisodeDetails
-            _TVDB.TVEp.Season = iSeason
+        _TVDB.ShowID = ShowID
+        If WithShow Then FillTVShowFromDB(_TVDB)
+        _TVDB.TVEp = New MediaContainers.EpisodeDetails
+        _TVDB.TVEp.Season = iSeason
 
-            Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommandTVSeason.CommandText = String.Concat("SELECT idShow, Season, SeasonText, HasPoster, HasFanart, PosterPath, FanartPath, Lock , Mark , New, HasBanner, BannerPath, HasLandscape, LandscapePath FROM seasons WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
-                Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
-                    If SQLReader.HasRows Then
-                        SQLReader.Read()
-                        If Not DBNull.Value.Equals(SQLReader("BannerPath")) Then _TVDB.SeasonBannerPath = SQLReader("BannerPath").ToString
-                        If Not DBNull.Value.Equals(SQLReader("FanartPath")) Then _TVDB.SeasonFanartPath = SQLReader("FanartPath").ToString
-                        If Not DBNull.Value.Equals(SQLReader("LandscapePath")) Then _TVDB.SeasonLandscapePath = SQLReader("LandscapePath").ToString
-                        If Not DBNull.Value.Equals(SQLReader("PosterPath")) Then _TVDB.SeasonPosterPath = SQLReader("PosterPath").ToString
-                        _TVDB.IsLockSeason = Convert.ToBoolean(SQLReader("Lock"))
-                        _TVDB.IsMarkSeason = Convert.ToBoolean(SQLReader("Mark"))
-                    End If
-                End Using
+        Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommandTVSeason.CommandText = String.Concat("SELECT idSeason, Lock , Mark FROM seasons WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
+            Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
+                If SQLReader.HasRows Then
+                    SQLReader.Read()
+                    _TVDB.SeasonID = Convert.ToInt64(SQLReader("idSeason"))
+                    _TVDB.IsLockSeason = Convert.ToBoolean(SQLReader("Lock"))
+                    _TVDB.IsMarkSeason = Convert.ToBoolean(SQLReader("Mark"))
+
+                    _TVDB.ShowBannerPath = GetArtForItem(_TVDB.SeasonID, "season", "banner")
+                    _TVDB.ShowFanartPath = GetArtForItem(_TVDB.SeasonID, "season", "fanart")
+                    _TVDB.ShowLandscapePath = GetArtForItem(_TVDB.SeasonID, "season", "landscape")
+                    _TVDB.ShowPosterPath = GetArtForItem(_TVDB.SeasonID, "season", "poster")
+                End If
             End Using
+        End Using
 
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
         Return _TVDB
     End Function
     ''' <summary>
@@ -1621,10 +1615,10 @@ Public Class Database
         Try
             _TVDB.ShowID = ShowID
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idShow, ListTitle, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, ", _
+                SQLcommand.CommandText = String.Concat("SELECT idShow, ListTitle, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, ", _
                                                        "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, NeedsSave, Language, Ordering, ", _
-                                                       "HasBanner, HasLandscape, Status, HasTheme, ThemePath, HasCharacterArt, ", _
-                                                       "HasClearLogo, HasClearArt, HasEFanarts, EFanartsPath, Runtime, Title, Votes, EpisodeSorting ", _
+                                                       "Status, ThemePath, ", _
+                                                       "EFanartsPath, Runtime, Title, Votes, EpisodeSorting ", _
                                                        "FROM tvshow WHERE idShow = ", ShowID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
@@ -2076,19 +2070,12 @@ Public Class Database
                 Next
 
                 'Images
-                'Banner
                 SetArtForItem(_movieDB.ID, "movie", "banner", _movieDB.BannerPath)
-                'ClearArt
                 SetArtForItem(_movieDB.ID, "movie", "clearart", _movieDB.ClearArtPath)
-                'ClearLogo
                 SetArtForItem(_movieDB.ID, "movie", "clearlogo", _movieDB.ClearArtPath)
-                'DiscArt
                 SetArtForItem(_movieDB.ID, "movie", "discart", _movieDB.DiscArtPath)
-                'Fanart
                 SetArtForItem(_movieDB.ID, "movie", "fanart", _movieDB.FanartPath)
-                'Landscape
                 SetArtForItem(_movieDB.ID, "movie", "landscape", _movieDB.LandscapePath)
-                'Poster
                 SetArtForItem(_movieDB.ID, "movie", "poster", _movieDB.PosterPath)
 
                 'Studios
@@ -2505,19 +2492,12 @@ Public Class Database
             End Using
 
             'Images
-            'Banner
             SetArtForItem(_moviesetDB.ID, "set", "banner", _moviesetDB.BannerPath)
-            'ClearArt
             SetArtForItem(_moviesetDB.ID, "set", "clearart", _moviesetDB.ClearArtPath)
-            'ClearLogo
             SetArtForItem(_moviesetDB.ID, "set", "clearlogo", _moviesetDB.ClearArtPath)
-            'DiscArt
             SetArtForItem(_moviesetDB.ID, "set", "discart", _moviesetDB.DiscArtPath)
-            'Fanart
             SetArtForItem(_moviesetDB.ID, "set", "fanart", _moviesetDB.FanartPath)
-            'Landscape
             SetArtForItem(_moviesetDB.ID, "set", "landscape", _moviesetDB.LandscapePath)
-            'Poster
             SetArtForItem(_moviesetDB.ID, "set", "poster", _moviesetDB.PosterPath)
 
             If withMovies Then
@@ -2622,26 +2602,23 @@ Public Class Database
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (", _
-                 "idShow, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
+                 "idShow, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
                  "Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount,", _
                  "HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (", _
-                 "idEpisode, idShow, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
+                 "idEpisode, idShow, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
                  "Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount,", _
                  "HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
                 Dim parTVEpID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpID", DbType.UInt64, 0, "idEpisode")
                 parTVEpID.Value = _TVEpDB.EpID
             End If
 
             Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "idShow")
-            Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
-            Dim parHasFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasFanart", DbType.Boolean, 0, "HasFanart")
-            Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasInfo", DbType.Boolean, 0, "HasNfo")
             Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
             Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
             Dim parTVEpPathID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpPathID", DbType.Int64, 0, "TVEpPathID")
@@ -2705,9 +2682,6 @@ Public Class Database
 
             parTVShowID.Value = _TVEpDB.ShowID
             parNfoPath.Value = _TVEpDB.EpNfoPath
-            parHasPoster.Value = Not String.IsNullOrEmpty(_TVEpDB.EpPosterPath)
-            parHasFanart.Value = Not String.IsNullOrEmpty(_TVEpDB.EpFanartPath)
-            parHasNfo.Value = Not String.IsNullOrEmpty(_TVEpDB.EpNfoPath)
             parHasSub.Value = _TVEpDB.EpSubtitles.Count > 0 OrElse _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle.Count > 0
             parHasWatched.Value = Not String.IsNullOrEmpty(_TVEpDB.TVEp.Playcount) AndAlso Not _TVEpDB.TVEp.Playcount = "0"
             parNew.Value = IsNew
@@ -2766,9 +2740,7 @@ Public Class Database
                 AddCast(_TVEpDB.EpID, "episode", "episode", _TVEpDB.TVEp.Actors)
 
                 'Images
-                'Fanart
                 SetArtForItem(_TVEpDB.EpID, "episode", "fanart", _TVEpDB.EpFanartPath)
-                'Poster
                 SetArtForItem(_TVEpDB.EpID, "episode", "thumb", _TVEpDB.EpPosterPath)
 
                 'Writers
@@ -2914,33 +2886,17 @@ Public Class Database
 
         Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommandTVSeason.CommandText = String.Concat("INSERT OR ", If(IsNew, "IGNORE", "REPLACE"), " INTO seasons (", _
-              "idShow, Season, SeasonText, HasPoster, HasFanart, PosterPath, FanartPath, Lock, Mark, New, HasBanner, BannerPath, HasLandscape, LandscapePath", _
+              "idShow, Season, SeasonText, Lock, Mark, New", _
               ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
             Dim par_seasons_idShow As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_idShow", DbType.UInt64, 0, "idShow")
             Dim par_seasons_Season As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_Season", DbType.Int32, 0, "Season")
             Dim par_seasons_SeasonText As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_SeasonText", DbType.String, 0, "SeasonText")
-            Dim par_seasons_HasPoster As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_HasPoster", DbType.Boolean, 0, "HasPoster")
-            Dim par_seasons_HasFanart As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_HasFanart", DbType.Boolean, 0, "HasFanart")
-            Dim par_seasons_PosterPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_PosterPath", DbType.String, 0, "PosterPath")
-            Dim par_seasons_FanartPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_FanartPath", DbType.String, 0, "FanartPath")
             Dim par_seasons_Lock As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_Lock", DbType.Boolean, 0, "Lock")
             Dim par_seasons_Mark As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_Mark", DbType.Boolean, 0, "Mark")
             Dim par_seasons_New As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_New", DbType.Boolean, 0, "New")
-            Dim par_seasons_HasBanner As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_HasBanner", DbType.Boolean, 0, "HasBanner")
-            Dim par_seasons_BannerPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_BannerPath", DbType.String, 0, "BannerPath")
-            Dim par_seasons_HasLandscape As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_HasLandscape", DbType.Boolean, 0, "HasLandscape")
-            Dim par_seasons_LandscapePath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("par_seasons_LandscapePath", DbType.String, 0, "LandscapePath")
             par_seasons_idShow.Value = _TVSeasonDB.ShowID
             par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
             par_seasons_Season.Value = _TVSeasonDB.TVEp.Season
-            par_seasons_HasPoster.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonPosterPath)
-            par_seasons_HasBanner.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonBannerPath)
-            par_seasons_HasFanart.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonFanartPath)
-            par_seasons_HasLandscape.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonLandscapePath)
-            par_seasons_PosterPath.Value = _TVSeasonDB.SeasonPosterPath
-            par_seasons_BannerPath.Value = _TVSeasonDB.SeasonBannerPath
-            par_seasons_FanartPath.Value = _TVSeasonDB.SeasonFanartPath
-            par_seasons_LandscapePath.Value = _TVSeasonDB.SeasonLandscapePath
             par_seasons_Lock.Value = _TVSeasonDB.IsLockSeason
             par_seasons_Mark.Value = _TVSeasonDB.IsMarkSeason
             par_seasons_New.Value = IsNew
@@ -2948,13 +2904,9 @@ Public Class Database
             Dim idSeason As Long
 
             'Images
-            'Banner
             SetArtForItem(idSeason, "season", "banner", _TVSeasonDB.SeasonBannerPath)
-            'Fanart
             SetArtForItem(idSeason, "season", "fanart", _TVSeasonDB.SeasonFanartPath)
-            'Landscape
             SetArtForItem(idSeason, "season", "landscape", _TVSeasonDB.SeasonLandscapePath)
-            'Poster
             SetArtForItem(idSeason, "season", "poster", _TVSeasonDB.SeasonPosterPath)
         End Using
 
@@ -2975,26 +2927,23 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (", _
-                     "TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
+                     "TVShowPath, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
                      "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, NeedsSave, Language, Ordering, ", _
-                     "HasBanner, HasLandscape, Status, HasTheme, ThemePath, HasCharacterArt, ", _
-                     "HasClearLogo, HasClearArt, HasEFanarts, EFanartsPath, Runtime, Title, Votes, EpisodeSorting", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
+                     "Status, ThemePath, ", _
+                     "EFanartsPath, Runtime, Title, Votes, EpisodeSorting", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (", _
-                     "idShow, TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
+                     "idShow, TVShowPath, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
                      "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, NeedsSave, Language, Ordering, ", _
-                     "HasBanner, HasLandscape, Status, HasTheme, ThemePath, HasCharacterArt, ", _
-                     "HasClearLogo, HasClearArt, HasEFanarts, EFanartsPath, Runtime, Title, Votes, EpisodeSorting", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
+                     "Status, ThemePath, ", _
+                     "EFanartsPath, Runtime, Title, Votes, EpisodeSorting", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
                     Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "idShow")
                     parTVShowID.Value = _TVShowDB.ShowID
                 End If
 
                 Dim parTVShowPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowPath", DbType.String, 0, "TVShowPath")
-                Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
-                Dim parHasFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasFanart", DbType.Boolean, 0, "HasFanart")
-                Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasNfo", DbType.Boolean, 0, "HasNfo")
                 Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
                 Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
@@ -3012,15 +2961,8 @@ Public Class Database
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
                 Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
                 Dim parOrdering As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOrdering", DbType.Int16, 0, "Ordering")
-                Dim parHasBanner As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasBanner", DbType.Boolean, 0, "HasBanner")
-                Dim parHasLandscape As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasLandscape", DbType.Boolean, 0, "HasLandscape")
                 Dim parStatus As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStatus", DbType.String, 0, "Status")
-                Dim parHasTheme As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasTheme", DbType.Boolean, 0, "HasTheme")
                 Dim parThemePath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parThemePath", DbType.String, 0, "ThemePath")
-                Dim parHasCharacterArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasCharacterArt", DbType.Boolean, 0, "HasCharacterArt")
-                Dim parHasClearLogo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearLogo", DbType.Boolean, 0, "HasClearLogo")
-                Dim parHasClearArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearArt", DbType.Boolean, 0, "HasClearArt")
-                Dim parHasEFanarts As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasEFanarts", DbType.Boolean, 0, "HasEFanarts")
                 Dim parEFanartsPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEFanartsPath", DbType.String, 0, "EFanartsPath")
                 Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
                 Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "Title")
@@ -3049,16 +2991,6 @@ Public Class Database
                 parNfoPath.Value = _TVShowDB.ShowNfoPath
                 parTVShowPath.Value = _TVShowDB.ShowPath
                 parThemePath.Value = _TVShowDB.ShowThemePath
-                parHasBanner.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowBannerPath)
-                parHasCharacterArt.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowCharacterArtPath)
-                parHasClearArt.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowClearArtPath)
-                parHasClearLogo.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowClearLogoPath)
-                parHasEFanarts.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowEFanartsPath)
-                parHasFanart.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowFanartPath)
-                parHasLandscape.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowLandscapePath)
-                parHasNfo.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowNfoPath)
-                parHasPoster.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowPosterPath)
-                parHasTheme.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowThemePath)
 
                 parNew.Value = IsNew
                 parListTitle.Value = _TVShowDB.ListTitle

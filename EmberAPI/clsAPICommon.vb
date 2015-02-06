@@ -2040,6 +2040,7 @@ Public Class Structures
         Dim Ordering As Enums.Ordering
         Dim SeasonBannerPath As String
         Dim SeasonFanartPath As String
+        Dim SeasonID As Long
         Dim SeasonLandscapePath As String
         Dim SeasonPosterPath As String
         Dim ShowBannerPath As String

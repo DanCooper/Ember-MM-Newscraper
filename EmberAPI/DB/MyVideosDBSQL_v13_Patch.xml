@@ -269,9 +269,6 @@
         CREATE TABLE TVShows01(
         ID,
         ListTitle,
-        HasPoster,
-        HasFanart,
-        HasNfo,
         "New",
         Mark,
         TVShowPath,
@@ -285,26 +282,12 @@
         Studio,
         MPAA,
         Rating,
-        PosterPath,
-        FanartPath,
         NfoPath,
         NeedsSave,
         Language,
         Ordering,
-        HasBanner,
-        BannerPath,
-        HasLandscape,
-        LandscapePath,
         Status,
-        HasTheme,
         ThemePath,
-        HasCharacterArt,
-        CharacterArtPath,
-        HasClearLogo,
-        ClearLogoPath,
-        HasClearArt,
-        ClearArtPath,
-        HasEFanarts,
         EFanartsPath,
         Runtime,
         Title,
@@ -316,9 +299,6 @@
         SELECT
         ID,
         ListTitle,
-        HasPoster,
-        HasFanart,
-        HasNfo,
         "New",
         Mark,
         TVShowPath,
@@ -332,26 +312,12 @@
         Studio,
         MPAA,
         Rating,
-        PosterPath,
-        FanartPath,
         NfoPath,
         NeedsSave,
         Language,
         Ordering,
-        HasBanner,
-        BannerPath,
-        HasLandscape,
-        LandscapePath,
         Status,
-        HasTheme,
         ThemePath,
-        HasCharacterArt,
-        CharacterArtPath,
-        HasClearLogo,
-        ClearLogoPath,
-        HasClearArt,
-        ClearArtPath,
-        HasEFanarts,
         EFanartsPath,
         Runtime,
         Title,
@@ -364,9 +330,6 @@
         CREATE TABLE tvshow (
         idShow            integer PRIMARY KEY AUTOINCREMENT,
         ListTitle         text,
-        HasPoster         bool NOT NULL DEFAULT 0,
-        HasFanart         bool NOT NULL DEFAULT 0,
-        HasNfo            bool NOT NULL DEFAULT 0,
         "New"             bool DEFAULT 0,
         Mark              bool NOT NULL DEFAULT 0,
         TVShowPath        text NOT NULL,
@@ -380,26 +343,12 @@
         Studio            text,
         MPAA              text,
         Rating            text,
-        PosterPath        text,
-        FanartPath        text,
         NfoPath           text,
         NeedsSave         bool NOT NULL DEFAULT 0,
         Language          text,
         Ordering          integer NOT NULL DEFAULT 0,
-        HasBanner         bool NOT NULL DEFAULT 0,
-        BannerPath        text,
-        HasLandscape      bool NOT NULL DEFAULT 0,
-        LandscapePath     text,
         Status            text,
-        HasTheme          bool NOT NULL DEFAULT 0,
         ThemePath         text,
-        HasCharacterArt   bool NOT NULL DEFAULT 0,
-        CharacterArtPath  text,
-        HasClearLogo      bool NOT NULL DEFAULT 0,
-        ClearLogoPath     text,
-        HasClearArt       bool NOT NULL DEFAULT 0,
-        ClearArtPath      text,
-        HasEFanarts       bool NOT NULL DEFAULT 0,
         EFanartsPath      text,
         Runtime           text,
         Title             text,
@@ -414,9 +363,6 @@
         INSERT INTO tvshow
         (idShow,
         ListTitle,
-        HasPoster,
-        HasFanart,
-        HasNfo,
         "New",
         Mark,
         TVShowPath,
@@ -430,26 +376,12 @@
         Studio,
         MPAA,
         Rating,
-        PosterPath,
-        FanartPath,
         NfoPath,
         NeedsSave,
         Language,
         Ordering,
-        HasBanner,
-        BannerPath,
-        HasLandscape,
-        LandscapePath,
         Status,
-        HasTheme,
         ThemePath,
-        HasCharacterArt,
-        CharacterArtPath,
-        HasClearLogo,
-        ClearLogoPath,
-        HasClearArt,
-        ClearArtPath,
-        HasEFanarts,
         EFanartsPath,
         Runtime,
         Title,
@@ -458,9 +390,6 @@
         SELECT
         ID,
         ListTitle,
-        HasPoster,
-        HasFanart,
-        HasNfo,
         "New",
         Mark,
         TVShowPath,
@@ -474,26 +403,12 @@
         Studio,
         MPAA,
         Rating,
-        PosterPath,
-        FanartPath,
         NfoPath,
         NeedsSave,
         Language,
         Ordering,
-        HasBanner,
-        BannerPath,
-        HasLandscape,
-        LandscapePath,
         Status,
-        HasTheme,
         ThemePath,
-        HasCharacterArt,
-        CharacterArtPath,
-        HasClearLogo,
-        ClearLogoPath,
-        HasClearArt,
-        ClearArtPath,
-        HasEFanarts,
         EFanartsPath,
         Runtime,
         Title,
@@ -1232,9 +1147,6 @@
         TVShowID,
         Episode,
         Title,
-        HasPoster,
-        HasFanart,
-        HasNfo,
         "New",
         Mark,
         TVEpPathID,
@@ -1266,9 +1178,6 @@
         TVShowID,
         Episode,
         Title,
-        HasPoster,
-        HasFanart,
-        HasNfo,
         "New",
         Mark,
         TVEpPathID,
@@ -1301,9 +1210,6 @@
         idShow          integer NOT NULL,
         Episode         integer,
         Title           text,
-        HasPoster       bool NOT NULL DEFAULT 0,
-        HasFanart       bool NOT NULL DEFAULT 0,
-        HasNfo          bool NOT NULL DEFAULT 0,
         "New"           bool DEFAULT 0,
         Mark            bool NOT NULL DEFAULT 0,
         TVEpPathID      integer NOT NULL,
@@ -1334,9 +1240,6 @@
         idShow,
         Episode,
         Title,
-        HasPoster,
-        HasFanart,
-        HasNfo,
         "New",
         Mark,
         TVEpPathID,
@@ -1365,9 +1268,6 @@
         TVShowID,
         Episode,
         Title,
-        HasPoster,
-        HasFanart,
-        HasNfo,
         "New",
         Mark,
         TVEpPathID,
@@ -1411,7 +1311,7 @@
       </execute>
     </command>
     <command type="DB">
-      <description>edit/create table seasons</description>
+      <description>edit/create table seasons (step 1 for seasons table)</description>
       <execute>
         CREATE TABLE TVSeason01(
         TVShowID,
@@ -1515,7 +1415,119 @@
       </execute>
     </command>
     <command type="DB">
-      <description>edit/create table set</description>
+      <description>get art paths from seasons (step 2 for seasons table)</description>
+      <execute>
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        idSeason, 'season' AS media_type, 'banner' AS type, BannerPath
+        FROM seasons
+        WHERE NOT BannerPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        idSeason, 'season' AS media_type, 'fanart' AS type, FanartPath
+        FROM seasons
+        WHERE NOT FanartPath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        idSeason, 'season' AS media_type, 'landscape' AS type, LandscapePath
+        FROM seasons
+        WHERE NOT LandscapePath = "";
+
+        INSERT INTO art
+        (media_id,
+        media_type,
+        type,
+        url)
+        SELECT
+        idSeason, 'season' AS media_type, 'poster' AS type, PosterPath
+        FROM seasons
+        WHERE NOT PosterPath = "";
+      </execute>
+    </command>
+    <command type="DB">
+      <description>remove no longer needed rows from seasons (step 3 for seasons table)</description>
+      <execute>
+        CREATE TABLE seasons01(
+        idSeason,
+        idShow,
+        Season,
+        SeasonText,
+        Lock,
+        Mark,
+        "New"
+        );
+
+        INSERT INTO seasons01
+        SELECT
+        idSeason,
+        idShow,
+        Season,
+        SeasonText,
+        Lock,
+        Mark,
+        "New"
+        FROM seasons;
+
+        DROP TABLE seasons;
+
+        CREATE TABLE seasons (
+        idSeason       integer PRIMARY KEY,
+        idShow         integer,
+        Season         integer,
+        SeasonText     text,
+        Lock           bool NOT NULL DEFAULT 0,
+        Mark           bool NOT NULL DEFAULT 0,
+        "New"          bool NOT NULL DEFAULT 0
+        );
+
+        CREATE UNIQUE INDEX ix_seasons
+        ON seasons
+        (idShow, Season);
+
+        CREATE TRIGGER delete_season
+        AFTER DELETE
+        ON seasons
+        BEGIN
+        DELETE FROM art WHERE media_id=old.idSeason AND media_type='season';
+        END;
+
+        INSERT INTO seasons
+        (idSeason,
+        idShow,
+        Season,
+        SeasonText,
+        Lock,
+        Mark,
+        "New")
+        SELECT
+        idSeason,
+        idShow,
+        Season,
+        SeasonText,
+        Lock,
+        Mark,
+        "New"
+        FROM seasons01;
+
+        DROP TABLE seasons01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit/create table sets</description>
       <execute>
         CREATE TABLE Sets01(
         ID,
@@ -1629,54 +1641,29 @@
       </execute>
     </command>
     <command type="DB">
-      <description>get art paths from seasons</description>
-      <execute>
-        INSERT INTO art
-        (media_id,
-        media_type,
-        type,
-        url)
-        SELECT
-        idSeason, 'season' AS media_type, 'banner' AS type, BannerPath
-        FROM seasons
-        WHERE NOT BannerPath = "";
-
-        INSERT INTO art
-        (media_id,
-        media_type,
-        type,
-        url)
-        SELECT
-        idSeason, 'season' AS media_type, 'fanart' AS type, FanartPath
-        FROM seasons
-        WHERE NOT FanartPath = "";
-
-        INSERT INTO art
-        (media_id,
-        media_type,
-        type,
-        url)
-        SELECT
-        idSeason, 'season' AS media_type, 'landscape' AS type, LandscapePath
-        FROM seasons
-        WHERE NOT LandscapePath = "";
-
-        INSERT INTO art
-        (media_id,
-        media_type,
-        type,
-        url)
-        SELECT
-        idSeason, 'season' AS media_type, 'poster' AS type, PosterPath
-        FROM seasons
-        WHERE NOT PosterPath = "";
-      </execute>
-    </command>
-    <command type="DB">
       <description>remove table MoviesFanart/MoviesPosters</description>
       <execute>
         DROP TABLE MoviesFanart;
         DROP TABLE MoviesPosters;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create view episodelist</description>
+      <execute>
+        CREATE VIEW episodelist
+        AS
+        SELECT
+        episode.*,
+        fanart.url AS FanartPath,
+        poster.url AS PosterPath
+        FROM
+        episode
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = episode.idEpisode)
+        AND (fanart.media_type = "episode")
+        AND (fanart.type = "fanart")
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = episode.idEpisode)
+        AND (poster.media_type = "episode")
+        AND (poster.type = "thumb");
       </execute>
     </command>
     <command type="DB">
@@ -1715,6 +1702,72 @@
         AND (landscape.type = "landscape")
         LEFT OUTER JOIN art AS poster ON (poster.media_id = movie.idMovie)
         AND (poster.media_type = "movie")
+        AND (poster.type = "poster");
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create view seasonslist</description>
+      <execute>
+        CREATE VIEW seasonslist
+        AS
+        SELECT
+        seasons.*,
+        banner.url AS BannerPath,
+        fanart.url AS FanartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath
+        FROM
+        seasons
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = seasons.idSeason)
+        AND (banner.media_type = "season")
+        AND (banner.type = "banner")
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = seasons.idSeason)
+        AND (fanart.media_type = "season")
+        AND (fanart.type = "fanart")
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = seasons.idSeason)
+        AND (landscape.media_type = "season")
+        AND (landscape.type = "landscape")
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = seasons.idSeason)
+        AND (poster.media_type = "season")
+        AND (poster.type = "poster");
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create view tvshowlist</description>
+      <execute>
+        CREATE VIEW tvshowlist
+        AS
+        SELECT
+        tvshow.*,
+        banner.url AS BannerPath,
+        characterart.url AS CharacterArtPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        fanart.url AS FanartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath
+        FROM
+        tvshow
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = tvshow.idShow)
+        AND (banner.media_type = "tvshow")
+        AND (banner.type = "banner")
+        LEFT OUTER JOIN art AS characterart ON (characterart.media_id = tvshow.idShow)
+        AND (characterart.media_type = "tvshow")
+        AND (characterart.type = "characterart")
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = tvshow.idShow)
+        AND (clearart.media_type = "tvshow")
+        AND (clearart.type = "clearart")
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = tvshow.idShow)
+        AND (clearlogo.media_type = "tvshow")
+        AND (clearlogo.type = "clearlogo")
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = tvshow.idShow)
+        AND (fanart.media_type = "tvshow")
+        AND (fanart.type = "fanart")
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = tvshow.idShow)
+        AND (landscape.media_type = "tvshow")
+        AND (landscape.type = "landscape")
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = tvshow.idShow)
+        AND (poster.media_type = "tvshow")
         AND (poster.type = "poster");
       </execute>
     </command>
