@@ -180,7 +180,7 @@ Public Class frmMain
     Delegate Sub DelegateEvent_MovieSet(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object)
 
 
-    Delegate Sub MydtListUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
+    Delegate Sub MydtListUpdate(ByVal drow As DataRow, ByVal coulmn As String, ByVal v As Object)
 
     Delegate Sub MySettingsShow(ByVal dlg As dlgSettings)
 
@@ -2804,10 +2804,6 @@ Public Class frmMain
 
                 If bwMovieSetScraper.CancellationPending Then Exit For
 
-                If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-                    MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.NFOItem, True)
-                End If
-
                 NewListTitle = DBScrapeMovieSet.ListTitle
                 NewTitle = DBScrapeMovieSet.MovieSet.Title
                 NewTMDBColID = DBScrapeMovieSet.MovieSet.ID
@@ -2892,7 +2888,7 @@ Public Class frmMain
                                     tURL = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.PosterPath = tURL
-                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.PosterItem, True)
+                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.PosterItem, DBScrapeMovieSet.PosterPath)
                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                         '    DBScrapeMovie.Movie.Thumb = pResults.Posters
                                         'End If
@@ -2914,7 +2910,7 @@ Public Class frmMain
                                                     tURL = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.PosterPath = tURL
-                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.PosterItem, True)
+                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.PosterItem, DBScrapeMovieSet.PosterPath)
                                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                                         '    DBScrapeMovie.Movie.Thumb = pResults.Posters
                                                         'End If
@@ -2950,7 +2946,7 @@ Public Class frmMain
                                     tURL = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.FanartPath = tURL
-                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.FanartItem, True)
+                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.FanartItem, DBScrapeMovieSet.FanartPath)
                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                         '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
                                         'End If
@@ -2974,7 +2970,7 @@ Public Class frmMain
                                                     tURL = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.FanartPath = tURL
-                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.FanartItem, True)
+                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.FanartItem, DBScrapeMovieSet.FanartPath)
                                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                                         '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
                                                         'End If
@@ -3009,7 +3005,7 @@ Public Class frmMain
                                     tURL = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.BannerPath = tURL
-                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.BannerItem, True)
+                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.BannerItem, DBScrapeMovieSet.BannerPath)
                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                         '    DBScrapeMovie.Movie.Thumb = pResults.Posters
                                         'End If
@@ -3031,7 +3027,7 @@ Public Class frmMain
                                                     tURL = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.BannerPath = tURL
-                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.BannerItem, True)
+                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.BannerItem, DBScrapeMovieSet.BannerPath)
                                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                                         '    DBScrapeMovie.Movie.Thumb = pResults.Posters
                                                         'End If
@@ -3066,7 +3062,7 @@ Public Class frmMain
                                     tURL = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.LandscapePath = tURL
-                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.LandscapeItem, True)
+                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.LandscapeItem, DBScrapeMovieSet.LandscapePath)
                                     End If
                                 End If
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
@@ -3085,7 +3081,7 @@ Public Class frmMain
                                                     tURL = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.LandscapePath = tURL
-                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.LandscapeItem, True)
+                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.LandscapeItem, DBScrapeMovieSet.LandscapePath)
                                                     End If
                                                 End If
                                             Else
@@ -3117,7 +3113,7 @@ Public Class frmMain
                                     tURL = ClearArt.WebImage.SaveAsMovieSetClearArt(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.ClearArtPath = tURL
-                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ClearArtItem, True)
+                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ClearArtItem, DBScrapeMovieSet.ClearArtPath)
                                     End If
                                 End If
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
@@ -3136,7 +3132,7 @@ Public Class frmMain
                                                     tURL = ClearArt.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.ClearArtPath = tURL
-                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ClearArtItem, True)
+                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ClearArtItem, DBScrapeMovieSet.ClearArtPath)
                                                     End If
                                                 End If
                                             Else
@@ -3168,7 +3164,7 @@ Public Class frmMain
                                     tURL = ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.ClearLogoPath = tURL
-                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ClearLogoItem, True)
+                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ClearLogoItem, DBScrapeMovieSet.ClearLogoPath)
                                     End If
                                 End If
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
@@ -3187,7 +3183,7 @@ Public Class frmMain
                                                     tURL = ClearLogo.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.ClearLogoPath = tURL
-                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ClearLogoItem, True)
+                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ClearLogoItem, DBScrapeMovieSet.ClearLogoPath)
                                                     End If
                                                 End If
                                             Else
@@ -3219,7 +3215,7 @@ Public Class frmMain
                                     tURL = DiscArt.WebImage.SaveAsMovieSetDiscArt(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.DiscArtPath = tURL
-                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.DiscArtItem, True)
+                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.DiscArtItem, DBScrapeMovieSet.DiscArtPath)
                                     End If
                                 End If
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
@@ -3238,7 +3234,7 @@ Public Class frmMain
                                                     tURL = DiscArt.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.DiscArtPath = tURL
-                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.DiscArtItem, True)
+                                                        MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.DiscArtItem, DBScrapeMovieSet.DiscArtPath)
                                                     End If
                                                 End If
                                             Else
@@ -3257,11 +3253,13 @@ Public Class frmMain
                 If bwMovieScraper.CancellationPending Then Exit For
 
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                    Dim newNfoPath As Structures.DBMovieSet
                     If Not OldTitle = NewTitle OrElse Not OldTMDBColID = NewTMDBColID Then
-                        Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True, True)
+                        newNfoPath = Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True, True)
                     Else
-                        Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True)
+                        newNfoPath = Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True)
                     End If
+                    MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.NFOItem, newNfoPath.NfoPath)
                     'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovieSet)
                     bwMovieSetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                     bwMovieSetScraper.ReportProgress(-2, dScrapeRow.Item("idSet").ToString)
@@ -3418,13 +3416,9 @@ doCancel:
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each KVP As KeyValuePair(Of Long, String) In MovieIDs
-                Try
-                    If Me.bwRefreshMovies.CancellationPending Then Return
-                    Me.bwRefreshMovies.ReportProgress(iCount, KVP.Value)
-                    Me.RefreshMovie(KVP.Key, True)
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
+                If Me.bwRefreshMovies.CancellationPending Then Return
+                Me.bwRefreshMovies.ReportProgress(iCount, KVP.Value)
+                Me.RefreshMovie(KVP.Key, True)
                 iCount += 1
             Next
             SQLtransaction.Commit()
@@ -6877,7 +6871,7 @@ doCancel:
                     Me.cmnuMovieSep3.Visible = True
                     Me.cmnuMovieSep4.Visible = True
 
-                    cmnuMovieTitle.Text = String.Concat(">> ", Me.dgvMovies.Item("ListTitle", e.RowIndex).Value, " <<")
+                    cmnuMovieTitle.Text = String.Concat(">> ", Me.dgvMovies.Item("Title", e.RowIndex).Value, " <<")
 
                     If Not Me.dgvMovies.Rows(e.RowIndex).Selected Then
                         Me.prevMovieRow = -1
@@ -7417,7 +7411,7 @@ doCancel:
                     Me.cmnuMovieSetSep3.Visible = True
                     Me.cmnuMovieSetRescrape.Visible = True
 
-                    cmnuMovieSetTitle.Text = String.Concat(">> ", Me.dgvMovieSets.Item("ListTitle", e.RowIndex).Value, " <<")
+                    cmnuMovieSetTitle.Text = String.Concat(">> ", Me.dgvMovieSets.Item("Title", e.RowIndex).Value, " <<")
 
                     If Not Me.dgvMovieSets.Rows(e.RowIndex).Selected Then
                         Me.prevMovieSetRow = -1
@@ -8584,93 +8578,89 @@ doCancel:
     End Sub
 
     Private Sub dgvTVShows_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVShows.MouseDown
-        Try
-            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVShows.RowCount > 0 Then
+        If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVShows.RowCount > 0 Then
 
-                Me.cmnuShow.Enabled = False
+            Me.cmnuShow.Enabled = False
 
-                Dim dgvHTI As DataGridView.HitTestInfo = dgvTVShows.HitTest(e.X, e.Y)
-                If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+            Dim dgvHTI As DataGridView.HitTestInfo = dgvTVShows.HitTest(e.X, e.Y)
+            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
-                    Me.tmpTitle = Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value.ToString
-                    Me.tmpTVDB = Me.dgvTVShows.Item(9, dgvHTI.RowIndex).Value.ToString
-                    Me.tmpLang = Me.dgvTVShows.Item(22, dgvHTI.RowIndex).Value.ToString
-                    Me.tmpOrdering = DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, dgvHTI.RowIndex).Value), Enums.Ordering)
+                Me.tmpTitle = Me.dgvTVShows.Item("Title", dgvHTI.RowIndex).Value.ToString
+                Me.tmpTVDB = Me.dgvTVShows.Item("TVDB", dgvHTI.RowIndex).Value.ToString
+                Me.tmpLang = Me.dgvTVShows.Item("Language", dgvHTI.RowIndex).Value.ToString
+                Me.tmpOrdering = DirectCast(Convert.ToInt32(Me.dgvTVShows.Item("Ordering", dgvHTI.RowIndex).Value), Enums.Ordering)
 
-                    If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
-                        Dim setMark As Boolean = False
-                        Dim setLock As Boolean = False
+                If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
+                    Dim setMark As Boolean = False
+                    Dim setLock As Boolean = False
 
-                        Me.cmnuShow.Enabled = True
-                        Me.cmnuShowTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                        Me.ToolStripSeparator8.Visible = False
-                        Me.cmnuShowEdit.Visible = False
-                        Me.ToolStripSeparator7.Visible = False
-                        ' Me.cmnuRescrapeShow.Visible = False
-                        Me.cmnuShowChange.Visible = False
-                        Me.cmnuShowOpenFolder.Visible = False
-                        Me.ToolStripSeparator20.Visible = False
+                    Me.cmnuShow.Enabled = True
+                    Me.cmnuShowTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+                    Me.ToolStripSeparator8.Visible = False
+                    Me.cmnuShowEdit.Visible = False
+                    Me.ToolStripSeparator7.Visible = False
+                    ' Me.cmnuRescrapeShow.Visible = False
+                    Me.cmnuShowChange.Visible = False
+                    Me.cmnuShowOpenFolder.Visible = False
+                    Me.ToolStripSeparator20.Visible = False
 
-                        For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                            'if any one item is set as unmarked, set menu to mark
-                            'else they are all marked, so set menu to unmark
-                            If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                                setMark = True
-                                If setLock Then Exit For
-                            End If
-                            'if any one item is set as unlocked, set menu to lock
-                            'else they are all locked so set menu to unlock
-                            If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                                setLock = True
-                                If setMark Then Exit For
-                            End If
-                        Next
-
-                        Me.cmnuShowMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
-                        Me.cmnuShowLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
-
-                        Me.cmnuShowLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
-                        Me.cmnuShowLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
-                        Me.cmnuShowLanguageSet.Enabled = False
-                    Else
-                        Me.ToolStripSeparator8.Visible = True
-                        Me.cmnuShowEdit.Visible = True
-                        Me.ToolStripSeparator7.Visible = True
-                        Me.cmnuShowRefresh.Visible = True
-                        Me.cmnuShowRescrape.Visible = True
-                        Me.cmnuShowChange.Visible = True
-                        Me.cmnuShowOpenFolder.Visible = True
-                        Me.ToolStripSeparator20.Visible = True
-
-                        Me.cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item("ListTitle", dgvHTI.RowIndex).Value, " <<")
-                        Me.cmnuShowMark.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                        Me.cmnuShowLock.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-
-                        If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 0 Then
-                            Me.prevShowRow = -1
-                            Me.currList = 0
-                            Me.dgvTVShows.CurrentCell = Nothing
-                            Me.dgvTVShows.ClearSelection()
-                            Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
-                            Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Item("ListTitle", dgvHTI.RowIndex)
-                        Else
-                            Me.cmnuShow.Enabled = True
+                    For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                        'if any one item is set as unmarked, set menu to mark
+                        'else they are all marked, so set menu to unmark
+                        If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
+                            setMark = True
+                            If setLock Then Exit For
                         End If
+                        'if any one item is set as unlocked, set menu to lock
+                        'else they are all locked so set menu to unlock
+                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
+                            setLock = True
+                            If setMark Then Exit For
+                        End If
+                    Next
 
-                        Dim Lang As String = CStr(Me.dgvTVShows.Item("Language", dgvHTI.RowIndex).Value)
-                        Me.cmnuShowLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
-                        'Me.cmnuShowLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
-                        'Me.cmnuShowLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
-                        Me.cmnuShowLanguageSet.Enabled = False
-                    End If
+                    Me.cmnuShowMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                    Me.cmnuShowLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+
+                    Me.cmnuShowLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
+                    Me.cmnuShowLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
+                    Me.cmnuShowLanguageSet.Enabled = False
                 Else
-                    Me.cmnuShow.Enabled = False
-                    Me.cmnuShowTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                    Me.ToolStripSeparator8.Visible = True
+                    Me.cmnuShowEdit.Visible = True
+                    Me.ToolStripSeparator7.Visible = True
+                    Me.cmnuShowRefresh.Visible = True
+                    Me.cmnuShowRescrape.Visible = True
+                    Me.cmnuShowChange.Visible = True
+                    Me.cmnuShowOpenFolder.Visible = True
+                    Me.ToolStripSeparator20.Visible = True
+
+                    Me.cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item("ListTitle", dgvHTI.RowIndex).Value, " <<")
+                    Me.cmnuShowMark.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                    Me.cmnuShowLock.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+
+                    If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 0 Then
+                        Me.prevShowRow = -1
+                        Me.currList = 0
+                        Me.dgvTVShows.CurrentCell = Nothing
+                        Me.dgvTVShows.ClearSelection()
+                        Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
+                        Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Item("ListTitle", dgvHTI.RowIndex)
+                    Else
+                        Me.cmnuShow.Enabled = True
+                    End If
+
+                    Dim Lang As String = CStr(Me.dgvTVShows.Item("Language", dgvHTI.RowIndex).Value)
+                    Me.cmnuShowLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
+                    'Me.cmnuShowLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
+                    'Me.cmnuShowLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
+                    Me.cmnuShowLanguageSet.Enabled = False
                 End If
+            Else
+                Me.cmnuShow.Enabled = False
+                Me.cmnuShowTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End If
     End Sub
 
     Private Sub dgvTVShows_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVShows.Resize
@@ -8742,8 +8732,8 @@ doCancel:
         Me.dgvMovies.Invalidate()
     End Sub
 
-    Sub dtListUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
-        drow.Item(i) = v
+    Sub dtListUpdate(ByVal drow As DataRow, ByVal column As String, ByVal v As Object)
+        drow.Item(column) = v
     End Sub
 
     Private Sub EnableFilters_Movies(ByVal isEnabled As Boolean)
@@ -9025,11 +9015,8 @@ doCancel:
             Me.bsMovieSets.DataSource = Nothing
             Me.dgvMovieSets.DataSource = Nothing
             Me.ClearInfo()
-            Master.DB.FillDataTable(Me.dtMovieSets, String.Concat("SELECT sets.idSet, sets.ListTitle, sets.HasNfo, sets.NfoPath, sets.HasPoster, sets.HasFanart, ", _
-                                                                       "sets.HasBanner, sets.HasLandscape, sets.HasDiscArt, ", _
-                                                                       "sets.HasClearLogo, sets.HasClearArt, sets.TMDBColID, ", _
-                                                                       "sets.Plot, sets.SetName, sets.New, sets.Mark, sets.Lock, COUNT(MoviesSets.MovieID) AS 'Count' FROM sets ", _
-                                                                       "LEFT OUTER JOIN MoviesSets ON sets.idSet = MoviesSets.SetID GROUP BY sets.idSet ORDER BY sets.ListTitle COLLATE NOCASE;"))
+            Master.DB.FillDataTable(Me.dtMovieSets, String.Concat("SELECT * FROM setslist ", _
+                                                                  "ORDER BY ListTitle COLLATE NOCASE;"))
         End If
 
         If doTVShows Then
@@ -9223,72 +9210,65 @@ doCancel:
                         .bsMovieSets.DataSource = .dtMovieSets
                         .dgvMovieSets.DataSource = .bsMovieSets
 
-                        .dgvMovieSets.Columns(0).Visible = False
-                        .dgvMovieSets.Columns(1).Resizable = DataGridViewTriState.True
-                        .dgvMovieSets.Columns(1).ReadOnly = True
-                        .dgvMovieSets.Columns(1).MinimumWidth = 83
-                        .dgvMovieSets.Columns(1).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovieSets.Columns(1).ToolTipText = Master.eLang.GetString(21, "Title")
-                        .dgvMovieSets.Columns(1).HeaderText = Master.eLang.GetString(21, "Title")
-                        .dgvMovieSets.Columns(2).Width = 20
-                        .dgvMovieSets.Columns(2).Resizable = DataGridViewTriState.False
-                        .dgvMovieSets.Columns(2).ReadOnly = True
-                        .dgvMovieSets.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovieSets.Columns(2).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(2).Name)
-                        .dgvMovieSets.Columns(2).ToolTipText = Master.eLang.GetString(150, "Nfo")
-                        .dgvMovieSets.Columns(3).Visible = False
-                        .dgvMovieSets.Columns(4).Width = 20
-                        .dgvMovieSets.Columns(4).Resizable = DataGridViewTriState.False
-                        .dgvMovieSets.Columns(4).ReadOnly = True
-                        .dgvMovieSets.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovieSets.Columns(4).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(4).Name)
-                        .dgvMovieSets.Columns(4).ToolTipText = Master.eLang.GetString(148, "Poster")
-                        .dgvMovieSets.Columns(5).Visible = False
-                        .dgvMovieSets.Columns(6).Width = 20
-                        .dgvMovieSets.Columns(6).Resizable = DataGridViewTriState.False
-                        .dgvMovieSets.Columns(6).ReadOnly = True
-                        .dgvMovieSets.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovieSets.Columns(6).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(6).Name)
-                        .dgvMovieSets.Columns(6).ToolTipText = Master.eLang.GetString(149, "Fanart")
-                        .dgvMovieSets.Columns(7).Visible = False
-                        .dgvMovieSets.Columns(8).Width = 20
-                        .dgvMovieSets.Columns(8).Resizable = DataGridViewTriState.False
-                        .dgvMovieSets.Columns(8).ReadOnly = True
-                        .dgvMovieSets.Columns(8).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovieSets.Columns(8).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(8).Name)
-                        .dgvMovieSets.Columns(8).ToolTipText = Master.eLang.GetString(838, "Banner")
-                        .dgvMovieSets.Columns(9).Visible = False
-                        .dgvMovieSets.Columns(10).Width = 20
-                        .dgvMovieSets.Columns(10).Resizable = DataGridViewTriState.False
-                        .dgvMovieSets.Columns(10).ReadOnly = True
-                        .dgvMovieSets.Columns(10).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovieSets.Columns(10).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(10).Name)
-                        .dgvMovieSets.Columns(10).ToolTipText = Master.eLang.GetString(1035, "Landscape")
-                        .dgvMovieSets.Columns(11).Visible = False
-                        .dgvMovieSets.Columns(12).Width = 20
-                        .dgvMovieSets.Columns(12).Resizable = DataGridViewTriState.False
-                        .dgvMovieSets.Columns(12).ReadOnly = True
-                        .dgvMovieSets.Columns(12).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovieSets.Columns(12).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(12).Name)
-                        .dgvMovieSets.Columns(12).ToolTipText = Master.eLang.GetString(1098, "DiscArt")
-                        .dgvMovieSets.Columns(13).Visible = False
-                        .dgvMovieSets.Columns(14).Width = 20
-                        .dgvMovieSets.Columns(14).Resizable = DataGridViewTriState.False
-                        .dgvMovieSets.Columns(14).ReadOnly = True
-                        .dgvMovieSets.Columns(14).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovieSets.Columns(14).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(14).Name)
-                        .dgvMovieSets.Columns(14).ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
-                        .dgvMovieSets.Columns(15).Visible = False
-                        .dgvMovieSets.Columns(16).Width = 20
-                        .dgvMovieSets.Columns(16).Resizable = DataGridViewTriState.False
-                        .dgvMovieSets.Columns(16).ReadOnly = True
-                        .dgvMovieSets.Columns(16).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovieSets.Columns(16).Visible = Not CheckColumnHide_MovieSets(.dgvMovieSets.Columns(16).Name)
-                        .dgvMovieSets.Columns(16).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
-
-                        For i As Integer = 17 To .dgvMovieSets.Columns.Count - 1
+                        For i As Integer = 0 To .dgvMovieSets.Columns.Count - 1
                             .dgvMovieSets.Columns(i).Visible = False
                         Next
+
+                        .dgvMovieSets.Columns("BannerPath").Width = 20
+                        .dgvMovieSets.Columns("BannerPath").Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns("BannerPath").ReadOnly = True
+                        .dgvMovieSets.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns("BannerPath").Visible = Not CheckColumnHide_MovieSets("BannerPath")
+                        .dgvMovieSets.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
+                        .dgvMovieSets.Columns("ClearArtPath").Width = 20
+                        .dgvMovieSets.Columns("ClearArtPath").Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns("ClearArtPath").ReadOnly = True
+                        .dgvMovieSets.Columns("ClearArtPath").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns("ClearArtPath").Visible = Not CheckColumnHide_MovieSets("ClearArtPath")
+                        .dgvMovieSets.Columns("ClearArtPath").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
+                        .dgvMovieSets.Columns("ClearLogoPath").Width = 20
+                        .dgvMovieSets.Columns("ClearLogoPath").Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns("ClearLogoPath").ReadOnly = True
+                        .dgvMovieSets.Columns("ClearLogoPath").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns("ClearLogoPath").Visible = Not CheckColumnHide_MovieSets("ClearLogoPath")
+                        .dgvMovieSets.Columns("ClearLogoPath").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
+                        .dgvMovieSets.Columns("DiscArtPath").Width = 20
+                        .dgvMovieSets.Columns("DiscArtPath").Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns("DiscArtPath").ReadOnly = True
+                        .dgvMovieSets.Columns("DiscArtPath").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns("DiscArtPath").Visible = Not CheckColumnHide_MovieSets("DiscArtPath")
+                        .dgvMovieSets.Columns("DiscArtPath").ToolTipText = Master.eLang.GetString(1098, "DiscArt")
+                        .dgvMovieSets.Columns("FanartPath").Width = 20
+                        .dgvMovieSets.Columns("FanartPath").Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns("FanartPath").ReadOnly = True
+                        .dgvMovieSets.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns("FanartPath").Visible = Not CheckColumnHide_MovieSets("FanartPath")
+                        .dgvMovieSets.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
+                        .dgvMovieSets.Columns("LandscapePath").Width = 20
+                        .dgvMovieSets.Columns("LandscapePath").Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns("LandscapePath").ReadOnly = True
+                        .dgvMovieSets.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns("LandscapePath").Visible = Not CheckColumnHide_MovieSets("LandscapePath")
+                        .dgvMovieSets.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                        .dgvMovieSets.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                        .dgvMovieSets.Columns("ListTitle").ReadOnly = True
+                        .dgvMovieSets.Columns("ListTitle").MinimumWidth = 83
+                        .dgvMovieSets.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns("ListTitle").Visible = True
+                        .dgvMovieSets.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                        .dgvMovieSets.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                        .dgvMovieSets.Columns("NfoPath").Width = 20
+                        .dgvMovieSets.Columns("NfoPath").Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns("NfoPath").ReadOnly = True
+                        .dgvMovieSets.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns("NfoPath").Visible = Not CheckColumnHide_MovieSets("NfoPath")
+                        .dgvMovieSets.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
+                        .dgvMovieSets.Columns("PosterPath").Width = 20
+                        .dgvMovieSets.Columns("PosterPath").Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns("PosterPath").ReadOnly = True
+                        .dgvMovieSets.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns("PosterPath").Visible = Not CheckColumnHide_MovieSets("PosterPath")
+                        .dgvMovieSets.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
 
                         .dgvMovieSets.Columns("idSet").ValueType = GetType(Int32)
 
@@ -9296,21 +9276,21 @@ doCancel:
                         ResizeMovieSetsList()
                     End With
 
-                    'Try
-                    '    If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
-                    '        For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
-                    '            Me.dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                    '        Next
-                    '    End If
-                    'Catch ex As Exception
-                    '    logger.Warn("default list for movieset list sorting has been loaded")
-                    '    Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
-                    '    If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
-                    '        For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
-                    '            Me.dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                    '        Next
-                    '    End If
-                    'End Try
+                    Try
+                        If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
+                            For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
+                                Me.dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                            Next
+                        End If
+                    Catch ex As Exception
+                        logger.Warn("default list for movieset list sorting has been loaded")
+                        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
+                        If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
+                            For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
+                                Me.dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                            Next
+                        End If
+                    End Try
 
                     Me.dgvMovieSets.Enabled = True
                 End If
@@ -13398,15 +13378,15 @@ doCancel:
             'create list of movies acording to scrapetype
             For Each drvRow As DataRow In Me.dtMovies.Rows
 
-                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
+                If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
 
                 Select Case sType
                     Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                        If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
+                        If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
                     Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
-                        If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
+                        If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
                     Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                        Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
+                        Dim index As Integer = Me.bsMovies.Find("idMovie", drvRow.Item(0))
                         If Not index >= 0 Then Continue For
                     Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
                         Dim ActorThumbsAllowed As Boolean = Master.eSettings.MovieActorThumbsAnyEnabled
@@ -13423,18 +13403,18 @@ doCancel:
                         Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Trailer)
 
                         If Master.GlobalScrapeMod.ActorThumbs AndAlso Not ActorThumbsAllowed Then Continue For
-                        If Master.GlobalScrapeMod.Banner AndAlso Not (BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(51))) Then Continue For
-                        If Master.GlobalScrapeMod.ClearArt AndAlso Not (ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(61))) Then Continue For
-                        If Master.GlobalScrapeMod.ClearLogo AndAlso Not (ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(59))) Then Continue For
-                        If Master.GlobalScrapeMod.DiscArt AndAlso Not (DiscArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(57))) Then Continue For
-                        If Master.GlobalScrapeMod.EFanarts AndAlso Not (EFanartsAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(49))) Then Continue For
-                        If Master.GlobalScrapeMod.EThumbs AndAlso Not (EThumbsAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(9))) Then Continue For
-                        If Master.GlobalScrapeMod.Fanart AndAlso Not (FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(5))) Then Continue For
-                        If Master.GlobalScrapeMod.Landscape AndAlso Not (LandscapeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(53))) Then Continue For
-                        If Master.GlobalScrapeMod.NFO AndAlso Not (Convert.ToBoolean(drvRow.Item(6))) Then Continue For
-                        If Master.GlobalScrapeMod.Poster AndAlso Not (PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4))) Then Continue For
-                        If Master.GlobalScrapeMod.Theme AndAlso Not (ThemeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(55))) Then Continue For
-                        If Master.GlobalScrapeMod.Trailer AndAlso Not (TrailerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(7))) Then Continue For
+                        If Master.GlobalScrapeMod.Banner AndAlso Not (BannerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.ClearArt AndAlso Not (ClearArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.ClearLogo AndAlso Not (ClearLogoAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.DiscArt AndAlso Not (DiscArtAllowed AndAlso Not String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.EFanarts AndAlso Not (EFanartsAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.EThumbs AndAlso Not (EThumbsAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("EThumbsPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.Fanart AndAlso Not (FanartAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.Landscape AndAlso Not (LandscapeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.NFO AndAlso String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then Continue For
+                        If Master.GlobalScrapeMod.Poster AndAlso Not (PosterAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.Theme AndAlso Not (ThemeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ThemePath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.Trailer AndAlso Not (TrailerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("TrailerPath").ToString)) Then Continue For
                 End Select
 
                 ScrapeList.Add(drvRow)
@@ -13612,37 +13592,37 @@ doCancel:
                 ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
             Next
         Else
-            Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Banner)
-            Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt)
-            Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo)
-            Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt)
-            Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
-            Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Landscape)
-            Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Poster)
-
             'create list of moviesets acording to scrapetype
             For Each drvRow As DataRow In Me.dtMovieSets.Rows
 
-                If Convert.ToBoolean(drvRow.Item(23)) Then Continue For 'locked
+                If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For 'locked
 
                 Select Case sType
                     Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                        If Not Convert.ToBoolean(drvRow.Item(21)) Then Continue For
+                        If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
                     Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
-                        If Not Convert.ToBoolean(drvRow.Item(22)) Then Continue For
+                        If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
                     Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                         'Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
                         'If Not index >= 0 Then Continue For
                         Continue For
                     Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
-                        If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieSetMissingBanner AndAlso BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(8))) OrElse _
-                                (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieSetMissingClearArt AndAlso ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(16))) OrElse _
-                                (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieSetMissingClearLogo AndAlso ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(14))) OrElse _
-                                (Master.GlobalScrapeMod.DiscArt AndAlso Master.eSettings.MovieSetMissingDiscArt AndAlso DiscArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(12))) OrElse _
-                                (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieSetMissingFanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
-                                (Master.GlobalScrapeMod.Landscape AndAlso Master.eSettings.MovieSetMissingLandscape AndAlso LandscapeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(10))) OrElse _
-                                (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieSetMissingNFO AndAlso Not Convert.ToBoolean(drvRow.Item(2))) OrElse _
-                                (Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieSetMissingPoster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4)))) Then
+                        Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Banner)
+                        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt)
+                        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo)
+                        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt)
+                        Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+                        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Landscape)
+                        Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Poster)
+
+                        If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieSetMissingBanner AndAlso BannerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString)) OrElse _
+                                (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieSetMissingClearArt AndAlso ClearArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString)) OrElse _
+                                (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieSetMissingClearLogo AndAlso ClearLogoAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString)) OrElse _
+                                (Master.GlobalScrapeMod.DiscArt AndAlso Master.eSettings.MovieSetMissingDiscArt AndAlso DiscArtAllowed AndAlso Not String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString)) OrElse _
+                                (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieSetMissingFanart AndAlso FanartAllowed AndAlso Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString)) OrElse _
+                                (Master.GlobalScrapeMod.Landscape AndAlso Master.eSettings.MovieSetMissingLandscape AndAlso LandscapeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString)) OrElse _
+                                (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieSetMissingNFO AndAlso String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString)) OrElse _
+                                (Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieSetMissingPoster AndAlso PosterAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString))) Then
                             Continue For
                         End If
                 End Select
@@ -13823,25 +13803,25 @@ doCancel:
         Else
             Select Case eType
                 Case Enums.ScraperEventType_MovieSet.BannerItem
-                    dScrapeRow(8) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("BannerPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_MovieSet.ClearArtItem
-                    dScrapeRow(16) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("ClearArtPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_MovieSet.ClearLogoItem
-                    dScrapeRow(14) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("ClearLogoPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_MovieSet.DiscArtItem
-                    dScrapeRow(12) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("DiscArtPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_MovieSet.FanartItem
-                    dScrapeRow(6) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("FanartPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_MovieSet.LandscapeItem
-                    dScrapeRow(10) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("LandscapePath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_MovieSet.ListTitle
-                    dScrapeRow(1) = DirectCast(Parameter, String)
+                    dScrapeRow("ListTitle") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_MovieSet.NFOItem
-                    dScrapeRow(2) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("NfoPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_MovieSet.PosterItem
-                    dScrapeRow(4) = DirectCast(Parameter, Boolean)
+                    dScrapeRow("PosterPath") = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_MovieSet.Title
-                    dScrapeRow(20) = DirectCast(Parameter, String)
+                    dScrapeRow("SetName") = DirectCast(Parameter, String)
             End Select
             Me.dgvMovieSets.Invalidate()
         End If

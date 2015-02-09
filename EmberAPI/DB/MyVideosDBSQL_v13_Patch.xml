@@ -1532,15 +1532,7 @@
         CREATE TABLE Sets01(
         ID,
         ListTitle,
-        HasNfo,
         NfoPath,
-        HasPoster,
-        HasFanart,
-        HasBanner,
-        HasLandscape,
-        HasDiscArt,
-        HasClearLogo,
-        HasClearArt,
         TMDBColID,
         Plot,
         SetName,
@@ -1553,15 +1545,7 @@
         SELECT
         ID,
         ListTitle,
-        HasNfo,
         NfoPath,
-        HasPoster,
-        HasFanart,
-        HasBanner,
-        HasLandscape,
-        HasDiscArt,
-        HasClearLogo,
-        HasClearArt,
         TMDBColID,
         Plot,
         SetName,
@@ -1575,15 +1559,7 @@
         CREATE TABLE sets (
         idSet          integer PRIMARY KEY AUTOINCREMENT,
         ListTitle      text NOT NULL,
-        HasNfo         bool NOT NULL DEFAULT 0,
         NfoPath        text,
-        HasPoster      bool NOT NULL DEFAULT 0,
-        HasFanart      bool NOT NULL DEFAULT 0,
-        HasBanner      bool NOT NULL DEFAULT 0,
-        HasLandscape   bool NOT NULL DEFAULT 0,
-        HasDiscArt     bool NOT NULL DEFAULT 0,
-        HasClearLogo   bool NOT NULL DEFAULT 0,
-        HasClearArt    bool NOT NULL DEFAULT 0,
         TMDBColID      text,
         Plot           text,
         SetName        text,
@@ -1595,15 +1571,7 @@
         INSERT INTO sets
         (idSet,
         ListTitle,
-        HasNfo,
         NfoPath,
-        HasPoster,
-        HasFanart,
-        HasBanner,
-        HasLandscape,
-        HasDiscArt,
-        HasClearLogo,
-        HasClearArt,
         TMDBColID,
         Plot,
         SetName,
@@ -1613,15 +1581,7 @@
         SELECT
         ID,
         ListTitle,
-        HasNfo,
         NfoPath,
-        HasPoster,
-        HasFanart,
-        HasBanner,
-        HasLandscape,
-        HasDiscArt,
-        HasClearLogo,
-        HasClearArt,
         TMDBColID,
         Plot,
         SetName,
@@ -1703,6 +1663,48 @@
         LEFT OUTER JOIN art AS poster ON (poster.media_id = movie.idMovie)
         AND (poster.media_type = "movie")
         AND (poster.type = "poster");
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create view setslist</description>
+      <execute>
+        CREATE VIEW setslist
+        AS
+        SELECT
+        sets.*,
+        banner.url AS BannerPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        discart.url AS DiscArtPath,
+        fanart.url AS FanartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath,
+        COUNT(MoviesSets.MovieID) AS 'Count'
+        FROM
+        sets
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = sets.idSet)
+        AND (banner.media_type = "set")
+        AND (banner.type = "banner")
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = sets.idSet)
+        AND (clearart.media_type = "set")
+        AND (clearart.type = "clearart")
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = sets.idSet)
+        AND (clearlogo.media_type = "set")
+        AND (clearlogo.type = "clearlogo")
+        LEFT OUTER JOIN art AS discart ON (discart.media_id = sets.idSet)
+        AND (discart.media_type = "set")
+        AND (discart.type = "discart")
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = sets.idSet)
+        AND (fanart.media_type = "set")
+        AND (fanart.type = "fanart")
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = sets.idSet)
+        AND (landscape.media_type = "set")
+        AND (landscape.type = "landscape")
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = sets.idSet)
+        AND (poster.media_type = "set")
+        AND (poster.type = "poster")
+        LEFT OUTER JOIN MoviesSets ON sets.idSet = MoviesSets.SetID
+        GROUP BY sets.idSet;
       </execute>
     </command>
     <command type="DB">

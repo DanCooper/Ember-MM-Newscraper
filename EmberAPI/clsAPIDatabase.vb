@@ -162,7 +162,7 @@ Public Class Database
                 SQLcommand.ExecuteNonQuery()
             Else
                 If Not url = oldURL Then
-                    SQLcommand.CommandText = String.Format("UPDATE art SET url='{0}' where art_id={1}", url, ID)
+                    SQLcommand.CommandText = String.Format("UPDATE art SET url='{0}' WHERE art_id={1}", url, ID)
                     SQLcommand.ExecuteNonQuery()
                 End If
             End If
@@ -767,15 +767,6 @@ Public Class Database
                                     Using SQLECommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                                         If Not Master.eSettings.TVDisplayMissingEpisodes OrElse Force Then
                                             SQLECommand.CommandText = String.Concat("DELETE FROM episode WHERE idEpisode = ", SQLReader("idEpisode"), ";")
-                                            'SQLECommand.ExecuteNonQuery()
-                                            'SQLECommand.CommandText = String.Concat("DELETE FROM TVEpActors WHERE TVEpID = ", SQLReader("ID"), ";")
-                                            'SQLECommand.ExecuteNonQuery()
-                                            'SQLECommand.CommandText = String.Concat("DELETE FROM TVVStreams WHERE TVEpID = ", SQLReader("ID"), ";")
-                                            'SQLECommand.ExecuteNonQuery()
-                                            'SQLECommand.CommandText = String.Concat("DELETE FROM TVAStreams WHERE TVEpID = ", SQLReader("ID"), ";")
-                                            'SQLECommand.ExecuteNonQuery()
-                                            'SQLECommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", SQLReader("ID"), ";")
-                                            'SQLECommand.ExecuteNonQuery()
 
                                             SQLECommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", SQLReader("idShow"), " AND Season = ", SQLReader("Season"), ";")
                                             Using SQLSeasonReader As SQLite.SQLiteDataReader = SQLECommand.ExecuteReader
@@ -1273,9 +1264,7 @@ Public Class Database
         Try
             _moviesetDB.ID = MovieSetID
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idSet, ListTitle, HasNfo, NfoPath, HasPoster, HasFanart, ", _
-                                                       "HasBanner, HasLandscape, ", _
-                                                       "HasDiscArt, HasClearLogo, HasClearArt, ", _
+                SQLcommand.CommandText = String.Concat("SELECT idSet, ListTitle, NfoPath, ", _
                                                        "TMDBColID, Plot, SetName, New, Mark, Lock FROM sets WHERE idSet = ", MovieSetID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
@@ -2070,6 +2059,10 @@ Public Class Database
                 Next
 
                 'Images
+                Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _movieDB.ID, ";")
+                    SQLcommand_art.ExecuteNonQuery()
+                End Using
                 SetArtForItem(_movieDB.ID, "movie", "banner", _movieDB.BannerPath)
                 SetArtForItem(_movieDB.ID, "movie", "clearart", _movieDB.ClearArtPath)
                 SetArtForItem(_movieDB.ID, "movie", "clearlogo", _movieDB.ClearArtPath)
@@ -2419,31 +2412,19 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                     "ListTitle, HasNfo, NfoPath, HasPoster, HasFanart, ", _
-                     "HasBanner, HasLandscape, ", _
-                     "HasDiscArt, HasClearLogo, HasClearArt, ", _
+                     "ListTitle, NfoPath, ", _
                      "TMDBColID, Plot, SetName, New, Mark, Lock", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                     ") VALUES (?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                     "idSet, ListTitle, HasNfo, NfoPath, HasPoster, HasFanart, ", _
-                     "HasBanner, HasLandscape, ", _
-                     "HasDiscArt, HasClearLogo, HasClearArt, ", _
+                     "idSet, ListTitle, NfoPath, ", _
                      "TMDBColID, Plot, SetName, New, Mark, Lock", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                     ") VALUES (?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                     Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.Int32, 0, "idSet")
                     parMovieSetID.Value = _moviesetDB.ID
                 End If
                 Dim parListTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
-                Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasInfo", DbType.Boolean, 0, "HasNfo")
                 Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
-                Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
-                Dim parHasFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasFanart", DbType.Boolean, 0, "HasFanart")
-                Dim parHasBanner As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasBanner", DbType.Boolean, 0, "HasBanner")
-                Dim parHasLandscape As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasLandscape", DbType.Boolean, 0, "HasLandscape")
-                Dim parHasDiscArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasDiscArt", DbType.Boolean, 0, "HasDiscArt")
-                Dim parHasClearLogo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearLogo", DbType.Boolean, 0, "HasClearLogo")
-                Dim parHasClearArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearArt", DbType.Boolean, 0, "HasClearArt")
                 Dim parTMDBColID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDBColID", DbType.String, 0, "TMDBColID")
                 Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
                 Dim parSetName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSetName", DbType.String, 0, "SetName")
@@ -2457,15 +2438,6 @@ Public Class Database
                 If ToNfo Then NFO.SaveMovieSetToNFO(_moviesetDB)
 
                 parNfoPath.Value = _moviesetDB.NfoPath
-
-                parHasBanner.Value = Not String.IsNullOrEmpty(_moviesetDB.BannerPath)
-                parHasClearArt.Value = Not String.IsNullOrEmpty(_moviesetDB.ClearArtPath)
-                parHasClearLogo.Value = Not String.IsNullOrEmpty(_moviesetDB.ClearLogoPath)
-                parHasDiscArt.Value = Not String.IsNullOrEmpty(_moviesetDB.DiscArtPath)
-                parHasFanart.Value = Not String.IsNullOrEmpty(_moviesetDB.FanartPath)
-                parHasLandscape.Value = Not String.IsNullOrEmpty(_moviesetDB.LandscapePath)
-                parHasNfo.Value = Not String.IsNullOrEmpty(_moviesetDB.NfoPath)
-                parHasPoster.Value = Not String.IsNullOrEmpty(_moviesetDB.PosterPath)
 
                 parNew.Value = IsNew
                 parMark.Value = _moviesetDB.IsMark
@@ -2492,6 +2464,10 @@ Public Class Database
             End Using
 
             'Images
+            Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _moviesetDB.ID, ";")
+                SQLcommand_art.ExecuteNonQuery()
+            End Using
             SetArtForItem(_moviesetDB.ID, "set", "banner", _moviesetDB.BannerPath)
             SetArtForItem(_moviesetDB.ID, "set", "clearart", _moviesetDB.ClearArtPath)
             SetArtForItem(_moviesetDB.ID, "set", "clearlogo", _moviesetDB.ClearArtPath)
@@ -2740,6 +2716,10 @@ Public Class Database
                 AddCast(_TVEpDB.EpID, "episode", "episode", _TVEpDB.TVEp.Actors)
 
                 'Images
+                Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVEpDB.EpID, ";")
+                    SQLcommand_art.ExecuteNonQuery()
+                End Using
                 SetArtForItem(_TVEpDB.EpID, "episode", "fanart", _TVEpDB.EpFanartPath)
                 SetArtForItem(_TVEpDB.EpID, "episode", "thumb", _TVEpDB.EpPosterPath)
 
@@ -2904,6 +2884,10 @@ Public Class Database
             Dim idSeason As Long
 
             'Images
+            Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVSeasonDB.SeasonID, ";")
+                SQLcommand_art.ExecuteNonQuery()
+            End Using
             SetArtForItem(idSeason, "season", "banner", _TVSeasonDB.SeasonBannerPath)
             SetArtForItem(idSeason, "season", "fanart", _TVSeasonDB.SeasonFanartPath)
             SetArtForItem(idSeason, "season", "landscape", _TVSeasonDB.SeasonLandscapePath)
@@ -3051,19 +3035,16 @@ Public Class Database
                     Next
 
                     'Images
-                    'Banner
+                    Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                        SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVShowDB.ShowID, ";")
+                        SQLcommand_art.ExecuteNonQuery()
+                    End Using
                     SetArtForItem(_TVShowDB.ShowID, "tvshow", "banner", _TVShowDB.ShowBannerPath)
-                    'CharacterArt
                     SetArtForItem(_TVShowDB.ShowID, "tvshow", "characterart", _TVShowDB.ShowCharacterArtPath)
-                    'ClearArt
                     SetArtForItem(_TVShowDB.ShowID, "tvshow", "clearart", _TVShowDB.ShowClearArtPath)
-                    'ClearLogo
                     SetArtForItem(_TVShowDB.ShowID, "tvshow", "clearlogo", _TVShowDB.ShowClearArtPath)
-                    'Fanart
                     SetArtForItem(_TVShowDB.ShowID, "tvshow", "fanart", _TVShowDB.ShowFanartPath)
-                    'Landscape
                     SetArtForItem(_TVShowDB.ShowID, "tvshow", "landscape", _TVShowDB.ShowLandscapePath)
-                    'Poster
                     SetArtForItem(_TVShowDB.ShowID, "tvshow", "poster", _TVShowDB.ShowPosterPath)
 
                     'Studios
