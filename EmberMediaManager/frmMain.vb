@@ -47,7 +47,6 @@ Public Class frmMain
     Friend WithEvents bwLoadSeasonInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadShowInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMetaInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwMovieSetInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieSetScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
@@ -1648,12 +1647,6 @@ Public Class frmMain
             If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currMovieSet.FanartPath)
             If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currMovieSet.LandscapePath)
             'read nfo if it's there
-
-            'wait for mediainfo to update the nfo
-            While bwMovieSetInfo.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
 
             If bwLoadMovieSetInfo.CancellationPending Then
                 e.Cancel = True
@@ -6081,7 +6074,7 @@ doCancel:
                     'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                 Case Else
                     If Me.InfoCleared Then
-                        Me.LoadMovieSetInfo(ID, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False) 'TODO: check path .Item(1*
+                        Me.LoadMovieSetInfo(ID, True)
                     Else
                         Me.SetControlsEnabled(True)
                     End If
@@ -6347,7 +6340,7 @@ doCancel:
             ScrapeType = Enums.ScrapeType.FullAuto
             Dim ShowLang As String = Me.dgvTVShows.Item("Language", s.Index).Value.ToString
             Dim SourceLang As String = Master.DB.GetTVSourceLanguage(Me.dgvTVShows.Item("Source", s.Index).Value.ToString)
-            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item("idShow", s.Index).Value), Me.dgvTVShows.Item("ListTitle", s.Index).Value.ToString, Me.dgvTVShows.Item("TVDB", s.Index).Value.ToString, If(String.IsNullOrEmpty(ShowLang), SourceLang, ShowLang), SourceLang, DirectCast(Convert.ToInt32(Me.dgvTVShows.Item("Language", s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
+            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item("idShow", s.Index).Value), Me.dgvTVShows.Item("Title", s.Index).Value.ToString, Me.dgvTVShows.Item("TVDB", s.Index).Value.ToString, If(String.IsNullOrEmpty(ShowLang), SourceLang, ShowLang), SourceLang, DirectCast(Convert.ToInt32(Me.dgvTVShows.Item("Ordering", s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
         Next
         Me.SetControlsEnabled(True)
     End Sub
@@ -6365,7 +6358,7 @@ doCancel:
             ScrapeType = Enums.ScrapeType.FullAsk
             Dim ShowLang As String = Me.dgvTVShows.Item("Language", s.Index).Value.ToString
             Dim SourceLang As String = Master.DB.GetTVSourceLanguage(Me.dgvTVShows.Item("Source", s.Index).Value.ToString)
-            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item("idShow", s.Index).Value), Me.dgvTVShows.Item("ListTitle", s.Index).Value.ToString, Me.dgvTVShows.Item("TVDB", s.Index).Value.ToString, If(String.IsNullOrEmpty(ShowLang), SourceLang, ShowLang), SourceLang, DirectCast(Convert.ToInt32(Me.dgvTVShows.Item("Language", s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
+            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item("idShow", s.Index).Value), Me.dgvTVShows.Item("Title", s.Index).Value.ToString, Me.dgvTVShows.Item("TVDB", s.Index).Value.ToString, If(String.IsNullOrEmpty(ShowLang), SourceLang, ShowLang), SourceLang, DirectCast(Convert.ToInt32(Me.dgvTVShows.Item("Ordering", s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
         Next
         Me.SetControlsEnabled(True)
     End Sub
@@ -6461,7 +6454,7 @@ doCancel:
 
     Private Sub cmnuSeasonRescrape_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRescrape.Click
         Me.SetControlsEnabled(False, True)
-        ModulesManager.Instance.TVScrapeSeason(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpOrdering, Master.DefaultTVOptions)
+        ModulesManager.Instance.TVScrapeSeason(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVSeasons.Item("Season", Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpOrdering, Master.DefaultTVOptions)
     End Sub
 
     Private Sub mnuMainToolsSortFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsSortFiles.Click, cmnuTrayToolsSortFiles.Click
@@ -7325,7 +7318,7 @@ doCancel:
                     'Functions.SetScraperMod(Enums.MovieModType.All, True, False)
                     'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                 Case Else
-                    If Me.InfoCleared Then Me.LoadMovieSetInfo(ID, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
+                    If Me.InfoCleared Then Me.LoadMovieSetInfo(ID, True)
             End Select
             'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
         End Using
@@ -7598,7 +7591,7 @@ doCancel:
                 End If
             Next
         ElseIf e.KeyChar = Chr(13) Then
-            If Me.fScanner.IsBusy OrElse Me.bwMovieSetInfo.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse _
+            If Me.fScanner.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse _
             Me.bwLoadMovieSetPosters.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
             Me.bwCleanDB.IsBusy Then Return
 
@@ -7625,7 +7618,7 @@ doCancel:
                         'Functions.SetScraperMod(Enums.MovieModType.All, True, False)
                         'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                     Case Else
-                        If Me.InfoCleared Then Me.LoadMovieSetInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False) 'TODO: Check .Item(1) (Path)
+                        If Me.InfoCleared Then Me.LoadMovieSetInfo(ID, True)
                 End Select
                 'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
             End Using
@@ -7770,7 +7763,7 @@ doCancel:
             OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+        Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
         Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
 
         Using dEditEpisode As New dlgEditEpisode
@@ -7844,10 +7837,11 @@ doCancel:
 
         'text fields
         If (colName = "Aired" OrElse colName = "Episode" OrElse colName = "Season" OrElse _
-            colName = "Title" OrElse colName = "Season") AndAlso e.RowIndex >= 0 Then
+            colName = "Title") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = Color.White
-                e.CellStyle.SelectionBackColor = Color.DarkGray
+                e.CellStyle.ForeColor = Color.Gray
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.LightGray
             ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
@@ -9152,6 +9146,13 @@ doCancel:
                         .dgvMovies.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMovies.Columns("PosterPath").Visible = Not CheckColumnHide_Movies("PosterPath")
                         .dgvMovies.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                        .dgvMovies.Columns("Rating").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("Rating").ReadOnly = True
+                        .dgvMovies.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
+                        .dgvMovies.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
+                        .dgvMovies.Columns("Rating").HeaderText = Master.eLang.GetString(400, "Rating")
+                        .dgvMovies.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                         .dgvMovies.Columns("ThemePath").Width = 20
                         .dgvMovies.Columns("ThemePath").Resizable = DataGridViewTriState.False
                         .dgvMovies.Columns("ThemePath").ReadOnly = True
@@ -11840,25 +11841,22 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub LoadMovieSetInfo(ByVal ID As Integer, ByVal sPath As String, ByVal doInfo As Boolean, ByVal doMI As Boolean, Optional ByVal setEnabled As Boolean = False)
+    Private Sub LoadMovieSetInfo(ByVal ID As Integer, ByVal doInfo As Boolean)
         Try
             Me.dgvMovieSets.SuspendLayout()
             Me.SetControlsEnabled(False, True)
             Me.ShowNoInfo(False)
 
-            If doMI Then
-                If Me.bwMovieSetInfo.IsBusy Then Me.bwMovieSetInfo.CancelAsync()
-
-                Me.txtMetaData.Clear()
-                Me.pbMILoading.Visible = True
-
-                Me.bwMovieSetInfo = New System.ComponentModel.BackgroundWorker
-                Me.bwMovieSetInfo.WorkerSupportsCancellation = True
-                Me.bwMovieSetInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .MovieSet = Master.currMovieSet})
-            End If
-
             If doInfo Then
                 Me.ClearInfo()
+
+                If Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.CancellationPending Then
+                    Me.bwLoadMovieSetInfo.CancelAsync()
+                End If
+
+                While Me.bwLoadMovieSetInfo.IsBusy
+                    Application.DoEvents()
+                End While
 
                 Me.bwLoadMovieSetInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwLoadMovieSetInfo.WorkerSupportsCancellation = True
@@ -13507,7 +13505,7 @@ doCancel:
             If Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) Then 'changed from Master.tmpMovie.Title to Master.currMovie.Movie.Title)
 
                 Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
-                Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+                Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
                 Me.tslLoading.Text = Master.eLang.GetString(1205, "Verifying MovieSet Details:")
                 Application.DoEvents()
@@ -13546,7 +13544,7 @@ doCancel:
                             'Functions.SetScraperMod(Enums.MovieModType.All, True, False)
                             'Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieSetOptions) ', ID, True)
                         Case Else
-                            If Me.InfoCleared Then Me.LoadMovieSetInfo(ID, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
+                            If Me.InfoCleared Then Me.LoadMovieSetInfo(ID, True)
                     End Select
                     'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
                 End Using
@@ -14070,7 +14068,7 @@ doCancel:
                         Me.SetControlsEnabled(False)
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
                         Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
@@ -14109,7 +14107,7 @@ doCancel:
                             Dim newImage As New Images
                             Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
@@ -14211,7 +14209,7 @@ doCancel:
                         Me.SetControlsEnabled(False)
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
                         Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
@@ -14250,7 +14248,7 @@ doCancel:
                             Dim newImage As New Images
                             Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
@@ -14279,8 +14277,8 @@ doCancel:
                             Dim newImage As New Images
                             Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
-                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, indX).Value)
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
+                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
@@ -14322,7 +14320,7 @@ doCancel:
                             Dim newImage As New Images
                             Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
-                            Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+                            Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
 
@@ -14400,7 +14398,7 @@ doCancel:
                         Me.SetControlsEnabled(False)
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
                         Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
@@ -14439,7 +14437,7 @@ doCancel:
                             Dim newImage As New Images
                             Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
@@ -14468,8 +14466,8 @@ doCancel:
                             Dim newImage As New Images
                             Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
-                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, indX).Value)
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
+                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
@@ -14510,7 +14508,7 @@ doCancel:
                             Dim newImage As New Images
                             Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
-                            Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+                            Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
 
@@ -14588,7 +14586,7 @@ doCancel:
                         Me.SetControlsEnabled(False)
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
                         Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
@@ -14627,7 +14625,7 @@ doCancel:
                             Dim newImage As New Images
                             Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
@@ -14656,8 +14654,8 @@ doCancel:
                             Dim newImage As New Images
                             Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
-                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, indX).Value)
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
+                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
@@ -15084,8 +15082,6 @@ doCancel:
         Dim EpisodeChanged As Boolean = False
         Dim ShowID As Integer = -1
 
-        Dim hasFanart As Boolean = False
-        Dim hasPoster As Boolean = False
         Dim hasSubtitles As Boolean = False
         Dim hasWatched As Boolean = False
 
@@ -15132,16 +15128,14 @@ doCancel:
             'assume invalid nfo if no title
             tmpShowDb.EpNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVEp.Title), String.Empty, eContainer.Nfo)
 
-            hasFanart = Not String.IsNullOrEmpty(eContainer.Fanart)
-            hasPoster = Not String.IsNullOrEmpty(eContainer.Poster)
             hasWatched = Not String.IsNullOrEmpty(tmpShowDb.TVEp.Playcount) AndAlso Not tmpShowDb.TVEp.Playcount = "0"
             hasSubtitles = eContainer.Subtitles.Count > 0 OrElse tmpShowDb.TVEp.FileInfo.StreamDetails.Subtitle.Count > 0
 
             Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idEpisode")) = ID Select drvRow
 
             If Not IsNothing(dRow(0)) Then
-                tmpShowDb.IsMarkEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(8))
-                tmpShowDb.IsLockEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
+                tmpShowDb.IsMarkEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item("Mark"))
+                tmpShowDb.IsLockEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item("Lock"))
 
                 If Not Convert.ToInt32(DirectCast(dRow(0), DataRow).Item("Season")) = tmpShowDb.TVEp.Season Then
                     SeasonChanged = True
@@ -15154,25 +15148,41 @@ doCancel:
                 End If
 
                 If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpShowDb.TVEp.Title})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 4, hasPoster})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 5, hasFanart})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 7, False})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 23, tmpShowDb.TVEp.Playcount})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 24, hasWatched})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 30, tmpShowDb.VideoSource})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 31, hasSubtitles})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Aired", tmpShowDb.TVEp.Aired})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Credits", tmpShowDb.TVEp.Credits})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "DateAdded", tmpShowDb.DateAdded})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Director", tmpShowDb.TVEp.Director})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "FanartPath", tmpShowDb.EpFanartPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "HasSub", hasSubtitles})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "HasWatched", hasWatched})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "New", False})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "NfoPath", tmpShowDb.EpNfoPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Playcount", tmpShowDb.TVEp.Playcount})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Plot", tmpShowDb.TVEp.Plot})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "PosterPath", tmpShowDb.EpPosterPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Rating", tmpShowDb.TVEp.Rating})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Runtime", tmpShowDb.TVEp.Runtime})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Title", tmpShowDb.TVEp.Title})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "VideoSource", tmpShowDb.VideoSource})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Votes", tmpShowDb.TVEp.Votes})
                 Else
-                    DirectCast(dRow(0), DataRow).Item(3) = tmpShowDb.TVEp.Title
-                    DirectCast(dRow(0), DataRow).Item(4) = hasPoster
-                    DirectCast(dRow(0), DataRow).Item(5) = hasFanart
-                    DirectCast(dRow(0), DataRow).Item(6) = If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)
-                    DirectCast(dRow(0), DataRow).Item(7) = False
-                    DirectCast(dRow(0), DataRow).Item(23) = tmpShowDb.TVEp.Playcount
-                    DirectCast(dRow(0), DataRow).Item(24) = hasWatched
-                    DirectCast(dRow(0), DataRow).Item(30) = tmpShowDb.VideoSource
-                    DirectCast(dRow(0), DataRow).Item(31) = hasSubtitles
+                    DirectCast(dRow(0), DataRow).Item("Aired") = tmpShowDb.TVEp.Aired
+                    DirectCast(dRow(0), DataRow).Item("Credits") = tmpShowDb.TVEp.Credits
+                    DirectCast(dRow(0), DataRow).Item("DateAdded") = tmpShowDb.DateAdded
+                    DirectCast(dRow(0), DataRow).Item("Director") = tmpShowDb.TVEp.Director
+                    DirectCast(dRow(0), DataRow).Item("FanartPath") = tmpShowDb.EpFanartPath
+                    DirectCast(dRow(0), DataRow).Item("HasSub") = hasSubtitles
+                    DirectCast(dRow(0), DataRow).Item("HasWatched") = hasWatched
+                    DirectCast(dRow(0), DataRow).Item("New") = False
+                    DirectCast(dRow(0), DataRow).Item("NfoPath") = tmpShowDb.EpNfoPath
+                    DirectCast(dRow(0), DataRow).Item("Playcount") = tmpShowDb.TVEp.Playcount
+                    DirectCast(dRow(0), DataRow).Item("Plot") = tmpShowDb.TVEp.Plot
+                    DirectCast(dRow(0), DataRow).Item("PosterPath") = tmpShowDb.EpPosterPath
+                    DirectCast(dRow(0), DataRow).Item("Rating") = tmpShowDb.TVEp.Rating
+                    DirectCast(dRow(0), DataRow).Item("RunTime") = tmpShowDb.TVEp.Runtime
+                    DirectCast(dRow(0), DataRow).Item("Title") = tmpShowDb.TVEp.Title
+                    DirectCast(dRow(0), DataRow).Item("VideoSource") = tmpShowDb.VideoSource
+                    DirectCast(dRow(0), DataRow).Item("Votes") = tmpShowDb.TVEp.Votes
                 End If
             End If
 
@@ -15465,15 +15475,6 @@ doCancel:
         Dim OldTitle As String = String.Empty
         Dim selRow As DataRow = Nothing
 
-        Dim hasBanner As Boolean = False
-        Dim hasClearArt As Boolean = False
-        Dim hasClearLogo As Boolean = False
-        Dim hasDiscArt As Boolean = False
-        Dim hasFanart As Boolean = False
-        Dim hasLandscape As Boolean = False
-        Dim hasNfo As Boolean = False
-        Dim hasPoster As Boolean = False
-
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
         tmpMovieSetDB = Master.DB.LoadMovieSetFromDB(ID)
@@ -15512,66 +15513,41 @@ doCancel:
         tmpMovieSetDB.NfoPath = mContainer.Nfo
         tmpMovieSetDB.PosterPath = mContainer.Poster
 
-        hasBanner = Not String.IsNullOrEmpty(mContainer.Banner)
-        hasClearArt = Not String.IsNullOrEmpty(mContainer.ClearArt)
-        hasClearLogo = Not String.IsNullOrEmpty(mContainer.ClearLogo)
-        hasDiscArt = Not String.IsNullOrEmpty(mContainer.DiscArt)
-        hasFanart = Not String.IsNullOrEmpty(mContainer.Fanart)
-        hasLandscape = Not String.IsNullOrEmpty(mContainer.Landscape)
-        hasNfo = Not String.IsNullOrEmpty(mContainer.Nfo)
-        hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
-
-        Dim dRow = From drvRow In dtMovieSets.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
+        Dim dRow = From drvRow In dtMovieSets.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idSet")) = ID Select drvRow
 
         If Not IsNothing(dRow(0)) Then
             selRow = DirectCast(dRow(0), DataRow)
-            tmpMovieSetDB.IsMark = Convert.ToBoolean(selRow.Item(22))
-            tmpMovieSetDB.IsLock = Convert.ToBoolean(selRow.Item(23))
+            tmpMovieSetDB.IsMark = Convert.ToBoolean(selRow.Item("Mark"))
+            tmpMovieSetDB.IsLock = Convert.ToBoolean(selRow.Item("Lock"))
 
             If Me.InvokeRequired Then
-                Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieSetDB.ListTitle})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 2, hasNfo})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieSetDB.NfoPath})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 4, hasPoster})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 5, tmpMovieSetDB.PosterPath})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 6, hasFanart})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 7, tmpMovieSetDB.FanartPath})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 8, hasBanner})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 9, tmpMovieSetDB.BannerPath})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 10, hasLandscape})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 11, tmpMovieSetDB.LandscapePath})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 12, hasDiscArt})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 13, tmpMovieSetDB.DiscArtPath})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 14, hasClearLogo})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieSetDB.ClearLogoPath})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 16, hasClearArt})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 17, tmpMovieSetDB.ClearArtPath})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 18, tmpMovieSetDB.MovieSet.ID})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 19, tmpMovieSetDB.MovieSet.Plot})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 20, tmpMovieSetDB.MovieSet.Title})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 20, False})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "BannerPath", tmpMovieSetDB.BannerPath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "ClearArtPath", tmpMovieSetDB.ClearArtPath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "ClearLogoPath", tmpMovieSetDB.ClearLogoPath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "DiscArtPath", tmpMovieSetDB.DiscArtPath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "FanartPath", tmpMovieSetDB.FanartPath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "LandscapePath", tmpMovieSetDB.LandscapePath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "ListTitle", tmpMovieSetDB.ListTitle})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "New", False})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "NfoPath", tmpMovieSetDB.NfoPath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "Plot", tmpMovieSetDB.MovieSet.Plot})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "PosterPath", tmpMovieSetDB.PosterPath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "TMDBColID", tmpMovieSetDB.MovieSet.ID})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "SetName", tmpMovieSetDB.MovieSet.Title})
             Else
-                selRow.Item(1) = tmpMovieSetDB.ListTitle
-                selRow.Item(2) = hasNfo
-                selRow.Item(3) = tmpMovieSetDB.NfoPath
-                selRow.Item(4) = hasPoster
-                selRow.Item(5) = tmpMovieSetDB.PosterPath
-                selRow.Item(6) = hasFanart
-                selRow.Item(7) = tmpMovieSetDB.FanartPath
-                selRow.Item(8) = hasBanner
-                selRow.Item(9) = tmpMovieSetDB.BannerPath
-                selRow.Item(10) = hasLandscape
-                selRow.Item(11) = tmpMovieSetDB.LandscapePath
-                selRow.Item(12) = hasDiscArt
-                selRow.Item(13) = tmpMovieSetDB.DiscArtPath
-                selRow.Item(14) = hasClearLogo
-                selRow.Item(15) = tmpMovieSetDB.ClearLogoPath
-                selRow.Item(16) = hasClearArt
-                selRow.Item(17) = tmpMovieSetDB.ClearArtPath
-                selRow.Item(18) = tmpMovieSetDB.MovieSet.ID
-                selRow.Item(19) = tmpMovieSetDB.MovieSet.Plot
-                selRow.Item(20) = tmpMovieSetDB.MovieSet.Title
-                selRow.Item(20) = False
+                selRow.Item("BannerPath") = tmpMovieSetDB.BannerPath
+                selRow.Item("ClearArtPath") = tmpMovieSetDB.ClearArtPath
+                selRow.Item("ClearLogoPath") = tmpMovieSetDB.ClearLogoPath
+                selRow.Item("DiscArtPath") = tmpMovieSetDB.DiscArtPath
+                selRow.Item("FanartPath") = tmpMovieSetDB.FanartPath
+                selRow.Item("LandscapePath") = tmpMovieSetDB.LandscapePath
+                selRow.Item("ListTitle") = tmpMovieSetDB.ListTitle
+                selRow.Item("New") = False
+                selRow.Item("NfoPath") = tmpMovieSetDB.NfoPath
+                selRow.Item("Plot") = tmpMovieSetDB.MovieSet.Plot
+                selRow.Item("PosterPath") = tmpMovieSetDB.PosterPath
+                selRow.Item("TMDBColID") = tmpMovieSetDB.MovieSet.ID
+                selRow.Item("SetName") = tmpMovieSetDB.MovieSet.Title
             End If
         End If
 
@@ -15622,23 +15598,23 @@ doCancel:
         tmpSeasonDb.Filename = Path.Combine(tPath, "file.ext")
         fScanner.GetTVSeasonImages(tmpSeasonDb, Season)
 
-        Dim dRow = From drvRow In dtSeasons.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ShowID AndAlso Convert.ToInt32(DirectCast(drvRow, DataRow).Item(2)) = Season Select drvRow
+        Dim dRow = From drvRow In dtSeasons.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idShow")) = ShowID AndAlso Convert.ToInt32(DirectCast(drvRow, DataRow).Item("Season")) = Season Select drvRow
 
         If Not IsNothing(dRow(0)) Then
             If Me.InvokeRequired Then
-                Me.Invoke(myDelegate, New Object() {dRow(0), 1, StringUtils.FormatSeasonText(Season)})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 9, False})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 10, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonBannerPath), False, True)})
-                Me.Invoke(myDelegate, New Object() {dRow(0), 12, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonLandscapePath), False, True)})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "BannerPath", tmpSeasonDb.SeasonBannerPath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "FanartPath", tmpSeasonDb.SeasonFanartPath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "LandscapePath", tmpSeasonDb.SeasonLandscapePath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "New", False})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "PosterPath", tmpSeasonDb.SeasonPosterPath})
+                Me.Invoke(myDelegate, New Object() {dRow(0), "SeasonText", StringUtils.FormatSeasonText(Season)})
             Else
-                DirectCast(dRow(0), DataRow).Item(1) = StringUtils.FormatSeasonText(Season)
-                DirectCast(dRow(0), DataRow).Item(3) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)
-                DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)
-                DirectCast(dRow(0), DataRow).Item(9) = False
-                DirectCast(dRow(0), DataRow).Item(10) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonBannerPath), False, True)
-                DirectCast(dRow(0), DataRow).Item(12) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonLandscapePath), False, True)
+                DirectCast(dRow(0), DataRow).Item("BannerPath") = tmpSeasonDb.SeasonBannerPath
+                DirectCast(dRow(0), DataRow).Item("FanartPath") = tmpSeasonDb.SeasonFanartPath
+                DirectCast(dRow(0), DataRow).Item("LandscapePath") = tmpSeasonDb.SeasonLandscapePath
+                DirectCast(dRow(0), DataRow).Item("New") = False
+                DirectCast(dRow(0), DataRow).Item("PosterPath") = tmpSeasonDb.SeasonPosterPath
+                DirectCast(dRow(0), DataRow).Item("SeasonText") = StringUtils.FormatSeasonText(Season)
             End If
 
             Master.DB.SaveTVSeasonToDB(tmpSeasonDb, False, False)
@@ -15673,20 +15649,6 @@ doCancel:
 
         Dim tmpShowDb As New Structures.DBTV
         Dim tmpShow As New MediaContainers.TVShow
-
-        Dim hasASBanner As Boolean = False
-        Dim hasASFanart As Boolean = False
-        Dim hasASLandscape As Boolean = False
-        Dim hasASPoster As Boolean = False
-        Dim hasBanner As Boolean = False
-        Dim hasCharacterArt As Boolean = False
-        Dim hasClearArt As Boolean = False
-        Dim hasClearLogo As Boolean = False
-        Dim hasEFanarts As Boolean = False
-        Dim hasFanart As Boolean = False
-        Dim hasLandscape As Boolean = False
-        Dim hasPoster As Boolean = False
-        Dim hasTheme As Boolean = False
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
@@ -15734,52 +15696,68 @@ doCancel:
             'assume invalid nfo if no title
             tmpShowDb.ShowNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVShow.Title), String.Empty, sContainer.ShowNfo)
 
-            hasBanner = Not String.IsNullOrEmpty(sContainer.ShowBanner)
-            hasCharacterArt = Not String.IsNullOrEmpty(sContainer.ShowCharacterArt)
-            hasClearArt = Not String.IsNullOrEmpty(sContainer.ShowClearArt)
-            hasClearLogo = Not String.IsNullOrEmpty(sContainer.ShowClearLogo)
-            hasEFanarts = Not String.IsNullOrEmpty(sContainer.ShowEFanarts)
-            hasFanart = Not String.IsNullOrEmpty(sContainer.ShowFanart)
-            hasLandscape = Not String.IsNullOrEmpty(sContainer.ShowLandscape)
-            hasPoster = Not String.IsNullOrEmpty(sContainer.ShowPoster)
-            hasTheme = Not String.IsNullOrEmpty(sContainer.ShowTheme)
-
-            Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
+            Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idShow")) = ID Select drvRow
 
             If Not IsNothing(dRow(0)) Then
-                tmpShowDb.IsMarkShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(6))
-                tmpShowDb.IsLockShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(10))
+                tmpShowDb.IsMarkShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item("Mark"))
+                tmpShowDb.IsLockShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item("Lock"))
 
                 If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpShowDb.ListTitle})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 2, hasPoster})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, hasFanart})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 5, False})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 22, tmpShowDb.ShowLanguage})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 24, hasBanner})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 26, hasLandscape})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 28, tmpShowDb.TVShow.Status})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 29, hasTheme})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 31, hasCharacterArt})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 33, hasClearLogo})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 35, hasClearArt})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 37, hasEFanarts})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "BannerPath", tmpShowDb.ShowBannerPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "CharacterArtPath", tmpShowDb.ShowCharacterArtPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "ClearArtPath", tmpShowDb.ShowClearArtPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "ClearLogoPath", tmpShowDb.ShowClearLogoPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "EFanartsPath", tmpShowDb.ShowEFanartsPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "EpisodeGuide", tmpShowDb.TVShow.EpisodeGuide})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "EpisodeSorting", tmpShowDb.EpisodeSorting})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "FanartPath", tmpShowDb.ShowFanartPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Genre", tmpShowDb.TVShow.Genre})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "LandscapePath", tmpShowDb.ShowLandscapePath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Language", tmpShowDb.ShowLanguage})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "ListTitle", tmpShowDb.ListTitle})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "MPAA", tmpShowDb.TVShow.MPAA})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "New", False})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "NfoPath", tmpShowDb.ShowNfoPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Ordering", tmpShowDb.Ordering})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Plot", tmpShowDb.TVShow.Plot})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "PosterPath", tmpShowDb.ShowPosterPath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Premiered", tmpShowDb.TVShow.Premiered})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Rating", tmpShowDb.TVShow.Rating})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Runtime", tmpShowDb.TVShow.Runtime})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Status", tmpShowDb.TVShow.Status})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Studio", tmpShowDb.TVShow.Studio})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "ThemePath", tmpShowDb.ShowThemePath})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Title", tmpShowDb.TVShow.Title})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "TVDB", tmpShowDb.TVShow.TVDBID})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), "Votes", tmpShowDb.TVShow.Votes})
                 Else
-                    DirectCast(dRow(0), DataRow).Item(1) = tmpShowDb.ListTitle
-                    DirectCast(dRow(0), DataRow).Item(2) = hasPoster
-                    DirectCast(dRow(0), DataRow).Item(3) = hasFanart
-                    DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)
-                    DirectCast(dRow(0), DataRow).Item(5) = False
-                    DirectCast(dRow(0), DataRow).Item(22) = tmpShowDb.ShowLanguage
-                    DirectCast(dRow(0), DataRow).Item(24) = hasBanner
-                    DirectCast(dRow(0), DataRow).Item(26) = hasLandscape
-                    DirectCast(dRow(0), DataRow).Item(28) = tmpShowDb.TVShow.Status
-                    DirectCast(dRow(0), DataRow).Item(29) = hasTheme
-                    DirectCast(dRow(0), DataRow).Item(31) = hasCharacterArt
-                    DirectCast(dRow(0), DataRow).Item(33) = hasClearLogo
-                    DirectCast(dRow(0), DataRow).Item(35) = hasClearArt
-                    DirectCast(dRow(0), DataRow).Item(37) = hasEFanarts
+                    DirectCast(dRow(0), DataRow).Item("BannerPath") = tmpShowDb.ShowBannerPath
+                    DirectCast(dRow(0), DataRow).Item("CharacterArtPath") = tmpShowDb.ShowCharacterArtPath
+                    DirectCast(dRow(0), DataRow).Item("ClearArtPath") = tmpShowDb.ShowClearArtPath
+                    DirectCast(dRow(0), DataRow).Item("ClearLogoPath") = tmpShowDb.ShowClearLogoPath
+                    DirectCast(dRow(0), DataRow).Item("EFanartsPath") = tmpShowDb.ShowEFanartsPath
+                    DirectCast(dRow(0), DataRow).Item("EpisodeGuide") = tmpShowDb.TVShow.EpisodeGuide
+                    DirectCast(dRow(0), DataRow).Item("EpisodeSorting") = tmpShowDb.EpisodeSorting
+                    DirectCast(dRow(0), DataRow).Item("FanartPath") = tmpShowDb.ShowFanartPath
+                    DirectCast(dRow(0), DataRow).Item("Genre") = tmpShowDb.TVShow.Genre
+                    DirectCast(dRow(0), DataRow).Item("LandscapePath") = tmpShowDb.ShowLandscapePath
+                    DirectCast(dRow(0), DataRow).Item("Language") = tmpShowDb.ShowLanguage
+                    DirectCast(dRow(0), DataRow).Item("ListTitle") = tmpShowDb.ListTitle
+                    DirectCast(dRow(0), DataRow).Item("MPAA") = tmpShowDb.TVShow.MPAA
+                    DirectCast(dRow(0), DataRow).Item("New") = False
+                    DirectCast(dRow(0), DataRow).Item("NfoPath") = tmpShowDb.ShowNfoPath
+                    DirectCast(dRow(0), DataRow).Item("Ordering") = tmpShowDb.Ordering
+                    DirectCast(dRow(0), DataRow).Item("Plot") = tmpShowDb.TVShow.Plot
+                    DirectCast(dRow(0), DataRow).Item("PosterPath") = tmpShowDb.ShowPosterPath
+                    DirectCast(dRow(0), DataRow).Item("Premiered") = tmpShowDb.TVShow.Premiered
+                    DirectCast(dRow(0), DataRow).Item("Rating") = tmpShowDb.TVShow.Rating
+                    DirectCast(dRow(0), DataRow).Item("Runtime") = tmpShowDb.TVShow.Runtime
+                    DirectCast(dRow(0), DataRow).Item("Status") = tmpShowDb.TVShow.Status
+                    DirectCast(dRow(0), DataRow).Item("Studio") = tmpShowDb.TVShow.Studio
+                    DirectCast(dRow(0), DataRow).Item("ThemePath") = tmpShowDb.ShowThemePath
+                    DirectCast(dRow(0), DataRow).Item("Title") = tmpShowDb.TVShow.Title
+                    DirectCast(dRow(0), DataRow).Item("TVDB") = tmpShowDb.TVShow.TVDBID
+                    DirectCast(dRow(0), DataRow).Item("Votes") = tmpShowDb.TVShow.Votes
                 End If
             End If
 
@@ -16382,7 +16360,7 @@ doCancel:
             Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
             Me.fillScreenInfoWithEpisode()
 
-            If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+            If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                 Me.cmnuEpisode.Enabled = True
             End If
         Else
@@ -16701,7 +16679,7 @@ doCancel:
                 Me.cmnuMovie.Enabled = True
             End If
         Else
-            Me.LoadMovieSetInfo(Convert.ToInt32(Me.dgvMovieSets.Item("idSet", iRow).Value), Me.dgvMovieSets.Item(1, iRow).Value.ToString, True, False) 'TODO: check .Item(1 
+            Me.LoadMovieSetInfo(Convert.ToInt32(Me.dgvMovieSets.Item("idSet", iRow).Value), True)
         End If
     End Sub
     ''' <summary>
