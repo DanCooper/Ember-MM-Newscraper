@@ -59,129 +59,6 @@ Public Class Database
 #End Region
 
 #Region "Methods"
-
-    Private Sub AddCountryToMovie(ByVal idMovie As Long, ByVal idCountry As Long)
-        AddToLinkTable("countrylinkmovie", "idCountry", idCountry, "idMovie", idMovie)
-    End Sub
-
-    Private Sub AddDirectorToEpisode(ByVal idEpisode As Long, ByVal idDirector As Long)
-        AddToLinkTable("directorlinkepisode", "idDirector", idDirector, "idEpisode", idEpisode)
-    End Sub
-
-    Private Sub AddDirectorToMovie(ByVal idMovie As Long, ByVal idDirector As Long)
-        AddToLinkTable("directorlinkmovie", "idDirector", idDirector, "idMovie", idMovie)
-    End Sub
-
-    Private Sub AddDirectorToTvShow(ByVal idShow As Long, ByVal idDirector As Long)
-        AddToLinkTable("directorlinktvshow", "idDirector", idDirector, "idShow", idShow)
-    End Sub
-
-    Private Sub AddGenreToMovie(ByVal idMovie As Long, ByVal idGenre As Long)
-        AddToLinkTable("genrelinkmovie", "idGenre", idGenre, "idMovie", idMovie)
-    End Sub
-
-    Private Sub AddGenreToTvShow(ByVal idShow As Long, ByVal idGenre As Long)
-        AddToLinkTable("genrelinktvshow", "idGenre", idGenre, "idShow", idShow)
-    End Sub
-
-    Private Sub AddStudioToMovie(ByVal idMovie As Long, ByVal idStudio As Long)
-        AddToLinkTable("studiolinkmovie", "idStudio", idStudio, "idMovie", idMovie)
-    End Sub
-
-    Private Sub AddStudioToTvShow(ByVal idShow As Long, ByVal idStudio As Long)
-        AddToLinkTable("studiolinktvshow", "idStudio", idStudio, "idShow", idShow)
-    End Sub
-
-    Private Sub AddTagToItem(ByVal idMedia As Long, ByVal idTag As Long, ByVal type As String)
-        If String.IsNullOrEmpty(type) Then Return
-        AddToLinkTable("taglinks", "idTag", idTag, "idMedia", idMedia, "media_type", type)
-    End Sub
-
-    Private Sub AddWriterToEpisode(ByVal idEpisode As Long, ByVal idWriter As Long)
-        AddToLinkTable("writerlinkepisode", "idWriter", idWriter, "idEpisode", idEpisode)
-    End Sub
-
-    Private Sub AddWriterToMovie(ByVal idMovie As Long, ByVal idWriter As Long)
-        AddToLinkTable("writerlinkmovie", "idWriter", idWriter, "idMovie", idMovie)
-    End Sub
-
-    Private Function AddCountry(ByVal strCountry As String) As Long
-        If String.IsNullOrEmpty(strCountry) Then Return -1
-        Return AddToTable("country", "idCountry", "strCountry", strCountry)
-    End Function
-
-    Private Function AddGenre(ByVal strGenre As String) As Long
-        If String.IsNullOrEmpty(strGenre) Then Return -1
-        Return AddToTable("genre", "idGenre", "strGenre", strGenre)
-    End Function
-
-    Private Function AddSet(ByVal strSet As String) As Long
-        If String.IsNullOrEmpty(strSet) Then Return -1
-        Return AddToTable("sets", "idSet", "strSet", strSet)
-    End Function
-
-    Private Function AddStudio(ByVal strStudio As String) As Long
-        If String.IsNullOrEmpty(strStudio) Then Return -1
-        Return AddToTable("studio", "idStudio", "strStudio", strStudio)
-    End Function
-
-    Private Function AddTag(ByVal strTag As String) As Long
-        If String.IsNullOrEmpty(strTag) Then Return -1
-        Return AddToTable("tag", "idTag", "strTag", strTag)
-    End Function
-
-    Private Sub AddCast(ByVal idMedia As Long, ByVal table As String, ByVal field As String, ByVal cast As List(Of MediaContainers.Person))
-        If cast Is Nothing Then Return
-
-        Dim iOrder As Integer = 1
-        For Each actor As MediaContainers.Person In cast
-            Dim idActor = AddActor(actor.Name, actor.ThumbURL, actor.ThumbPath)
-            AddLinkToActor(table, idActor, field, idMedia, actor.Role, iOrder)
-            iOrder += 1
-        Next
-    End Sub
-
-    Private Sub SetArtForItem(ByVal mediaId As Long, ByVal MediaType As String, ByVal artType As String, ByVal url As String)
-        Dim doesExist As Boolean = False
-        Dim ID As Long = -1
-        Dim oldURL As String = String.Empty
-
-        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("SELECT art_id, url FROM art WHERE media_id={0} AND media_type='{1}' AND type='{2}'", mediaId, MediaType, artType)
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    doesExist = True
-                    ID = CInt(SQLreader("art_id"))
-                    oldURL = SQLreader("url").ToString
-                    Exit While
-                End While
-            End Using
-
-            If Not doesExist Then
-                SQLcommand.CommandText = String.Format("INSERT INTO art(media_id, media_type, type, url) VALUES ({0}, '{1}', '{2}', '{3}')", mediaId, MediaType, artType, url)
-                SQLcommand.ExecuteNonQuery()
-            Else
-                If Not url = oldURL Then
-                    SQLcommand.CommandText = String.Format("UPDATE art SET url='{0}' WHERE art_id={1}", url, ID)
-                    SQLcommand.ExecuteNonQuery()
-                End If
-            End If
-        End Using
-    End Sub
-
-    Private Function GetArtForItem(ByVal mediaId As Long, ByVal MediaType As String, ByVal artType As String) As String
-        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("SELECT url FROM art WHERE media_id={0} AND media_type='{1}' AND type='{2}'", mediaId, MediaType, artType)
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Return SQLreader("url").ToString
-                    Exit While
-                End While
-            End Using
-        End Using
-        Return String.Empty
-    End Function
-
     ''' <summary>
     ''' add or update actor
     ''' </summary>
@@ -234,6 +111,62 @@ Public Class Database
         End Using
     End Function
 
+    Private Sub AddArtistToMusicVideo(ByVal idMVideo As Long, ByVal idArtist As Long)
+        AddToLinkTable("artistlinkmusicvideo", "idArtist", idArtist, "idMVideo", idMVideo)
+    End Sub
+
+    Private Sub AddCast(ByVal idMedia As Long, ByVal table As String, ByVal field As String, ByVal cast As List(Of MediaContainers.Person))
+        If cast Is Nothing Then Return
+
+        Dim iOrder As Integer = 0
+        For Each actor As MediaContainers.Person In cast
+            Dim idActor = AddActor(actor.Name, actor.ThumbURL, actor.ThumbPath)
+            AddLinkToActor(table, idActor, field, idMedia, actor.Role, iOrder)
+            iOrder += 1
+        Next
+    End Sub
+
+    Private Function AddCountry(ByVal strCountry As String) As Long
+        If String.IsNullOrEmpty(strCountry) Then Return -1
+        Return AddToTable("country", "idCountry", "strCountry", strCountry)
+    End Function
+
+    Private Sub AddCountryToMovie(ByVal idMovie As Long, ByVal idCountry As Long)
+        AddToLinkTable("countrylinkmovie", "idCountry", idCountry, "idMovie", idMovie)
+    End Sub
+
+    Private Sub AddDirectorToEpisode(ByVal idEpisode As Long, ByVal idDirector As Long)
+        AddToLinkTable("directorlinkepisode", "idDirector", idDirector, "idEpisode", idEpisode)
+    End Sub
+
+    Private Sub AddDirectorToMovie(ByVal idMovie As Long, ByVal idDirector As Long)
+        AddToLinkTable("directorlinkmovie", "idDirector", idDirector, "idMovie", idMovie)
+    End Sub
+
+    Private Sub AddDirectorToMusicVideo(ByVal idMVideo As Long, ByVal idDirector As Long)
+        AddToLinkTable("directorlinkmusicvideo", "idDirector", idDirector, "idMVideo", idMVideo)
+    End Sub
+
+    Private Sub AddDirectorToTvShow(ByVal idShow As Long, ByVal idDirector As Long)
+        AddToLinkTable("directorlinktvshow", "idDirector", idDirector, "idShow", idShow)
+    End Sub
+
+    Private Function AddGenre(ByVal strGenre As String) As Long
+        If String.IsNullOrEmpty(strGenre) Then Return -1
+        Return AddToTable("genre", "idGenre", "strGenre", strGenre)
+    End Function
+
+    Private Sub AddGenreToMovie(ByVal idMovie As Long, ByVal idGenre As Long)
+        AddToLinkTable("genrelinkmovie", "idGenre", idGenre, "idMovie", idMovie)
+    End Sub
+
+    Private Sub AddGenreToMusicVideo(ByVal idMVideo As Long, ByVal idGenre As Long)
+        AddToLinkTable("genrelinkmusicvideo", "idGenre", idGenre, "idMVideo", idMVideo)
+    End Sub
+
+    Private Sub AddGenreToTvShow(ByVal idShow As Long, ByVal idGenre As Long)
+        AddToLinkTable("genrelinktvshow", "idGenre", idGenre, "idShow", idShow)
+    End Sub
     ''' <summary>
     ''' add an actor to an actorlink* table
     ''' </summary>
@@ -271,6 +204,29 @@ Public Class Database
                 Return False
             End If
         End Using
+    End Function
+
+    Private Function AddSet(ByVal strSet As String) As Long
+        If String.IsNullOrEmpty(strSet) Then Return -1
+        Return AddToTable("sets", "idSet", "strSet", strSet)
+    End Function
+
+    Private Function AddStudio(ByVal strStudio As String) As Long
+        If String.IsNullOrEmpty(strStudio) Then Return -1
+        Return AddToTable("studio", "idStudio", "strStudio", strStudio)
+    End Function
+
+    Private Sub AddStudioToMovie(ByVal idMovie As Long, ByVal idStudio As Long)
+        AddToLinkTable("studiolinkmovie", "idStudio", idStudio, "idMovie", idMovie)
+    End Sub
+
+    Private Sub AddStudioToTvShow(ByVal idShow As Long, ByVal idStudio As Long)
+        AddToLinkTable("studiolinktvshow", "idStudio", idStudio, "idShow", idShow)
+    End Sub
+
+    Private Function AddTag(ByVal strTag As String) As Long
+        If String.IsNullOrEmpty(strTag) Then Return -1
+        Return AddToTable("tag", "idTag", "strTag", strTag)
     End Function
 
     Private Function AddToLinkTable(ByVal table As String, ByVal firstField As String, ByVal firstID As Long, ByVal secondField As String, ByVal secondID As Long, _
@@ -324,6 +280,60 @@ Public Class Database
 
             Return ID
         End Using
+    End Function
+
+    Private Sub AddTagToItem(ByVal idMedia As Long, ByVal idTag As Long, ByVal type As String)
+        If String.IsNullOrEmpty(type) Then Return
+        AddToLinkTable("taglinks", "idTag", idTag, "idMedia", idMedia, "media_type", type)
+    End Sub
+
+    Private Sub AddWriterToEpisode(ByVal idEpisode As Long, ByVal idWriter As Long)
+        AddToLinkTable("writerlinkepisode", "idWriter", idWriter, "idEpisode", idEpisode)
+    End Sub
+
+    Private Sub AddWriterToMovie(ByVal idMovie As Long, ByVal idWriter As Long)
+        AddToLinkTable("writerlinkmovie", "idWriter", idWriter, "idMovie", idMovie)
+    End Sub
+
+    Private Sub SetArtForItem(ByVal mediaId As Long, ByVal MediaType As String, ByVal artType As String, ByVal url As String)
+        Dim doesExist As Boolean = False
+        Dim ID As Long = -1
+        Dim oldURL As String = String.Empty
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT art_id, url FROM art WHERE media_id={0} AND media_type='{1}' AND type='{2}'", mediaId, MediaType, artType)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    doesExist = True
+                    ID = CInt(SQLreader("art_id"))
+                    oldURL = SQLreader("url").ToString
+                    Exit While
+                End While
+            End Using
+
+            If Not doesExist Then
+                SQLcommand.CommandText = String.Format("INSERT INTO art(media_id, media_type, type, url) VALUES ({0}, '{1}', '{2}', '{3}')", mediaId, MediaType, artType, url)
+                SQLcommand.ExecuteNonQuery()
+            Else
+                If Not url = oldURL Then
+                    SQLcommand.CommandText = String.Format("UPDATE art SET url='{0}' WHERE art_id={1}", url, ID)
+                    SQLcommand.ExecuteNonQuery()
+                End If
+            End If
+        End Using
+    End Sub
+
+    Private Function GetArtForItem(ByVal mediaId As Long, ByVal MediaType As String, ByVal artType As String) As String
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT url FROM art WHERE media_id={0} AND media_type='{1}' AND type='{2}'", mediaId, MediaType, artType)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Return SQLreader("url").ToString
+                    Exit While
+                End While
+            End Using
+        End Using
+        Return String.Empty
     End Function
 
     ''' <summary>
@@ -1002,7 +1012,6 @@ Public Class Database
 
         Return sLang
     End Function
-
     ''' <summary>
     ''' Load all the information for a movie.
     ''' </summary>
@@ -1092,8 +1101,11 @@ Public Class Database
 
         'Actors
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT A.strRole, B.idActor, B.strActor, B.strThumb FROM actorlinkmovie AS A ", _
-                        "INNER JOIN actors AS B ON (A.idActor = B.idActor) WHERE A.idMovie = ", _movieDB.ID, " ORDER BY A.iOrder;")
+            SQLcommand.CommandText = String.Concat("SELECT A.strRole, B.idActor, B.strActor, B.strThumb, C.url FROM actorlinkmovie AS A ", _
+                        "INNER JOIN actors AS B ON (A.idActor = B.idActor) ", _
+                        "LEFT OUTER JOIN art AS C ON (B.idActor = C.media_id AND C.media_type = 'actor' AND C.type = 'thumb') ", _
+                        "WHERE A.idMovie = ", _movieDB.ID, " ", _
+                        "ORDER BY A.iOrder;")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim person As MediaContainers.Person
                 While SQLreader.Read
@@ -1101,6 +1113,7 @@ Public Class Database
                     person.ID = Convert.ToInt64(SQLreader("idActor"))
                     person.Name = SQLreader("strActor").ToString
                     person.Role = SQLreader("strRole").ToString
+                    person.ThumbPath = SQLreader("url").ToString
                     person.ThumbURL = SQLreader("strThumb").ToString
                     _movieDB.Movie.Actors.Add(person)
                 End While
@@ -1407,8 +1420,11 @@ Public Class Database
 
         'Actors
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT A.strRole, B.idActor, B.strActor, B.strThumb FROM actorlinkepisode AS A ", _
-                        "INNER JOIN actors AS B ON (A.idActor = B.idActor) WHERE A.idEpisode = ", _TVDB.EpID, " ORDER BY A.iOrder;")
+            SQLcommand.CommandText = String.Concat("SELECT A.strRole, B.idActor, B.strActor, B.strThumb, C.url FROM actorlinkepisode AS A ", _
+                                                   "INNER JOIN actors AS B ON (A.idActor = B.idActor) ", _
+                                                   "LEFT OUTER JOIN art AS C ON (B.idActor = C.media_id AND C.media_type = 'actor' AND C.type = 'thumb') ", _
+                                                   "WHERE A.idEpisode = ", _TVDB.EpID, " ", _
+                                                   "ORDER BY A.iOrder;")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim person As MediaContainers.Person
                 While SQLreader.Read
@@ -1416,6 +1432,7 @@ Public Class Database
                     person.ID = Convert.ToInt64(SQLreader("idActor"))
                     person.Name = SQLreader("strActor").ToString
                     person.Role = SQLreader("strRole").ToString
+                    person.ThumbPath = SQLreader("url").ToString
                     person.ThumbURL = SQLreader("strThumb").ToString
                     _TVDB.TVEp.Actors.Add(person)
                 End While
@@ -1641,8 +1658,11 @@ Public Class Database
 
             'Actors
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT A.strRole, B.idActor, B.strActor, B.strThumb FROM actorlinktvshow AS A ", _
-                            "INNER JOIN actors AS B ON (A.idActor = B.idActor) WHERE A.idShow = ", _TVDB.ShowID, " ORDER BY A.iOrder;")
+                SQLcommand.CommandText = String.Concat("SELECT A.strRole, B.idActor, B.strActor, B.strThumb, C.url FROM actorlinktvshow AS A ", _
+                                                       "INNER JOIN actors AS B ON (A.idActor = B.idActor) ", _
+                                                       "LEFT OUTER JOIN art AS C ON (B.idActor = C.media_id AND C.media_type = 'actor' AND C.type = 'thumb') ", _
+                                                       "WHERE A.idShow = ", _TVDB.ShowID, " ", _
+                                                       "ORDER BY A.iOrder;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim person As MediaContainers.Person
                     While SQLreader.Read
@@ -1650,6 +1670,7 @@ Public Class Database
                         person.ID = Convert.ToInt64(SQLreader("idActor"))
                         person.Name = SQLreader("strActor").ToString
                         person.Role = SQLreader("strRole").ToString
+                        person.ThumbPath = SQLreader("url").ToString
                         person.ThumbURL = SQLreader("strThumb").ToString
                         _TVDB.TVShow.Actors.Add(person)
                     End While
@@ -1949,7 +1970,7 @@ Public Class Database
             par_movie_HasSet.Value = _movieDB.Movie.Sets.Count > 0
             par_movie_HasSub.Value = _movieDB.Subtitles.Count > 0 OrElse _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
             par_movie_HasWatched.Value = Not String.IsNullOrEmpty(_movieDB.Movie.PlayCount) AndAlso Not _movieDB.Movie.PlayCount = "0"
-            
+
             par_movie_Lock.Value = _movieDB.IsLock
             par_movie_Mark.Value = _movieDB.IsMark
             par_movie_MarkCustom1.Value = _movieDB.IsMarkCustom1
@@ -1957,7 +1978,7 @@ Public Class Database
             par_movie_MarkCustom3.Value = _movieDB.IsMarkCustom3
             par_movie_MarkCustom4.Value = _movieDB.IsMarkCustom4
             par_movie_New.Value = IsNew
-            
+
             par_movie_Certification.Value = _movieDB.Movie.Certification
             par_movie_Country.Value = _movieDB.Movie.Country
             par_movie_Credits.Value = _movieDB.Movie.OldCredits

@@ -28,6 +28,7 @@ Public Class dlgEditEpisode
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
+    Private ActorThumbsHasChanged As Boolean = False
     Private EpisodeFanart As New Images With {.IsEdit = True}
     Private lvwActorSorter As ListViewColumnSorter
     Private EpisodePoster As New Images With {.IsEdit = True}
@@ -73,6 +74,7 @@ Public Class dlgEditEpisode
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
                 lvItem.SubItems.Add(eActor.ThumbURL)
+                ActorThumbsHasChanged = True
             End If
         Catch ex As Exception
             Logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -417,6 +419,7 @@ Public Class dlgEditEpisode
                 While Me.lvActors.SelectedItems.Count > 0
                     Me.lvActors.Items.Remove(Me.lvActors.SelectedItems(0))
                 End While
+                ActorThumbsHasChanged = True
             End If
         Catch ex As Exception
             Logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -480,6 +483,7 @@ Public Class dlgEditEpisode
                     lvwItem.SubItems(3).Text = eActor.ThumbURL
                     lvwItem.Selected = True
                     lvwItem.EnsureVisible()
+                    ActorThumbsHasChanged = True
                 End If
                 eActor = Nothing
             End If
@@ -938,13 +942,15 @@ Public Class dlgEditEpisode
             Master.currShow.TVEp.Actors.Clear()
 
             If .lvActors.Items.Count > 0 Then
+                Dim iOrder As Integer = 0
                 For Each lviActor As ListViewItem In .lvActors.Items
                     Dim addActor As New MediaContainers.Person
                     addActor.ID = CInt(lviActor.Text.Trim)
                     addActor.Name = lviActor.SubItems(1).Text.Trim
                     addActor.Role = lviActor.SubItems(2).Text.Trim
                     addActor.ThumbURL = lviActor.SubItems(3).Text.Trim
-
+                    addActor.Order = iOrder
+                    iOrder += 1
                     Master.currShow.TVEp.Actors.Add(addActor)
                 Next
             End If
@@ -976,6 +982,28 @@ Public Class dlgEditEpisode
                 '        End If
                 '    Next
                 'End If
+            End If
+
+            If Master.currShow.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
+                For Each a In FileUtils.GetFilenameList.TVEpisode(Master.currShow.Filename, Enums.ModType_TV.ActorThumbs)
+                    Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
+                    If Directory.Exists(tmpPath) Then
+                        FileUtils.Delete.DeleteDirectory(tmpPath)
+                    End If
+                Next
+            End If
+
+            'Actor Thumbs
+            If ActorThumbsHasChanged Then
+                For Each act As MediaContainers.Person In Master.currShow.TVEp.Actors
+                    Dim img As New Images
+                    img.FromWeb(act.ThumbURL)
+                    If Not IsNothing(img.Image) Then
+                        act.ThumbPath = img.SaveAsTVEpisodeActorThumb(act, Master.currShow)
+                    Else
+                        act.ThumbPath = String.Empty
+                    End If
+                Next
             End If
 
             'Episode Fanart

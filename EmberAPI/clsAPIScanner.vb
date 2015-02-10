@@ -66,6 +66,7 @@ Public Class Scanner
     ''' <param name="Movie">MovieContainer object.</param>
     Public Sub GetMovieFolderContents(ByRef Movie As MovieContainer)
         Dim currname As String = String.Empty
+        Dim atList As New List(Of String)   'actor thumbs list
         Dim efList As New List(Of String)   'extrafanart list
         Dim etList As New List(Of String)   'extrathumbs list
         Dim sList As New List(Of String)    'external subtitles files list
@@ -121,6 +122,12 @@ Public Class Scanner
 
             'secondly add files from special folders to filelists
             If Movie.isSingle Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.ActorThumbs)
+                    Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+                    If Directory.Exists(parDir) Then
+                        atList.AddRange(Directory.GetFiles(parDir))
+                    End If
+                Next
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EFanarts)
                     If Directory.Exists(a) Then
                         efList.AddRange(Directory.GetFiles(a))
@@ -141,6 +148,11 @@ Public Class Scanner
                         tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
                     End If
                 Next
+            End If
+
+            'actor thumbs
+            If atList.Count > 0 Then
+                Movie.ActorThumbs.AddRange(atList)
             End If
 
             'banner
@@ -359,6 +371,14 @@ Public Class Scanner
                 fList.AddRange(Directory.GetFiles(Directory.GetParent(Episode.Filename).FullName, String.Concat(Path.GetFileNameWithoutExtension(Episode.Filename), "*.*")))
             Catch
             End Try
+
+            'episode actor thumbs
+            For Each a In FileUtils.GetFilenameList.TVEpisode(Episode.Filename, Enums.ModType_TV.ActorThumbs)
+                Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+                If Directory.Exists(parDir) Then
+                    Episode.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                End If
+            Next
 
             'episode fanart
             If String.IsNullOrEmpty(Episode.Fanart) Then
@@ -653,6 +673,14 @@ Public Class Scanner
             Catch
             End Try
 
+            'show actor thumbs
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ActorThumbs)
+                Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+                If Directory.Exists(parDir) Then
+                    tShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                End If
+            Next
+
             'all-season banner
             If String.IsNullOrEmpty(tShow.AllSeasonsBanner) Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsBanner)
@@ -895,6 +923,14 @@ Public Class Scanner
             End If
 
             If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
+
+                'search local actor thumb for each actor in NFO
+                If tmpMovieDB.Movie.Actors.Count > 0 AndAlso mContainer.ActorThumbs.Count > 0 Then
+                    For Each actor In tmpMovieDB.Movie.Actors
+                        actor.ThumbPath = mContainer.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                    Next
+                End If
+
                 tmpMovieDB.BannerPath = mContainer.Banner
                 tmpMovieDB.ClearArtPath = mContainer.ClearArt
                 tmpMovieDB.ClearLogoPath = mContainer.ClearLogo
@@ -977,6 +1013,12 @@ Public Class Scanner
                 End If
 
                 If Not String.IsNullOrEmpty(tmpTVDB.ListTitle) Then
+                    'search local actor thumb for each actor in NFO
+                    If tmpTVDB.TVShow.Actors.Count > 0 AndAlso TVContainer.ActorThumbs.Count > 0 Then
+                        For Each actor In tmpTVDB.TVShow.Actors
+                            actor.ThumbPath = TVContainer.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                        Next
+                    End If
                     tmpTVDB.ShowBannerPath = TVContainer.ShowBanner
                     tmpTVDB.ShowCharacterArtPath = TVContainer.ShowCharacterArt
                     tmpTVDB.ShowClearArtPath = TVContainer.ShowClearArt
@@ -1004,7 +1046,6 @@ Public Class Scanner
                 For Each Episode In TVContainer.Episodes
                     If Not String.IsNullOrEmpty(Episode.Filename) Then
                         GetTVEpisodeFolderContents(Episode)
-
                         tmpTVDB.EpNfoPath = Episode.Nfo
                         tmpTVDB.EpPosterPath = Episode.Poster
                         tmpTVDB.EpSubtitles = Episode.Subtitles
@@ -1081,6 +1122,13 @@ Public Class Scanner
                                         Episode.Nfo = String.Empty
                                         'set title based on episode file
                                         If Not Master.eSettings.TVEpisodeNoFilter Then tmpTVDB.TVEp.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(Episode.Filename), tmpTVDB.TVShow.Title)
+                                    End If
+
+                                    'search local actor thumb for each actor in NFO
+                                    If tmpTVDB.TVEp.Actors.Count > 0 AndAlso Episode.ActorThumbs.Count > 0 Then
+                                        For Each actor In tmpTVDB.TVEp.Actors
+                                            actor.ThumbPath = Episode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                                        Next
                                     End If
 
                                     If tmpTVDB.TVEp.Season = -999 Then tmpTVDB.TVEp.Season = sSeasons.Season
@@ -1167,6 +1215,13 @@ Public Class Scanner
                                         Episode.Nfo = String.Empty
                                         'set title based on episode file
                                         If Not Master.eSettings.TVEpisodeNoFilter Then tmpTVDB.TVEp.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(Episode.Filename), tmpTVDB.TVShow.Title)
+                                    End If
+
+                                    'search local actor thumb for each actor in NFO
+                                    If tmpTVDB.TVEp.Actors.Count > 0 AndAlso Episode.ActorThumbs.Count > 0 Then
+                                        For Each actor In tmpTVDB.TVEp.Actors
+                                            actor.ThumbPath = Episode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                                        Next
                                     End If
 
                                     If tmpTVDB.TVEp.Season = -999 Then tmpTVDB.TVEp.Season = sSeasons.Season
@@ -1714,6 +1769,7 @@ Public Class Scanner
 
 #Region "Fields"
 
+        Private _actorthumbs As New List(Of String)
         Private _fanart As String
         Private _filename As String
         Private _filenameid As Long
@@ -1733,6 +1789,15 @@ Public Class Scanner
 #End Region 'Constructors
 
 #Region "Properties"
+
+        Public Property ActorThumbs() As List(Of String)
+            Get
+                Return _actorthumbs
+            End Get
+            Set(ByVal value As List(Of String))
+                _actorthumbs = value
+            End Set
+        End Property
 
         Public Property Fanart() As String
             Get
@@ -1802,6 +1867,7 @@ Public Class Scanner
 #Region "Methods"
 
         Public Sub Clear()
+            _actorthumbs.Clear()
             _filename = String.Empty
             _filenameid = -1
             _source = String.Empty
@@ -1819,6 +1885,7 @@ Public Class Scanner
 
 #Region "Fields"
 
+        Private _actorthumbs As New List(Of String)
         Private _banner As String
         Private _clearart As String
         Private _clearlogo As String
@@ -1848,6 +1915,15 @@ Public Class Scanner
 #End Region 'Constructors
 
 #Region "Properties"
+
+        Public Property ActorThumbs() As List(Of String)
+            Get
+                Return _actorthumbs
+            End Get
+            Set(ByVal value As List(Of String))
+                _actorthumbs = value
+            End Set
+        End Property
 
         Public Property Banner() As String
             Get
@@ -2007,6 +2083,7 @@ Public Class Scanner
 #Region "Methods"
 
         Public Sub Clear()
+            _actorthumbs.Clear()
             _banner = String.Empty
             _clearart = String.Empty
             _clearlogo = String.Empty
@@ -2233,6 +2310,7 @@ Public Class Scanner
 
 #Region "Fields"
 
+        Private _actorthumbs As New List(Of String)
         Private _allseasonsbanner As String
         Private _allseasonsfanart As String
         Private _allseasonslandscape As String
@@ -2265,6 +2343,15 @@ Public Class Scanner
 #End Region 'Constructors
 
 #Region "Properties"
+
+        Public Property ActorThumbs() As List(Of String)
+            Get
+                Return Me._actorthumbs
+            End Get
+            Set(ByVal value As List(Of String))
+                Me._actorthumbs = value
+            End Set
+        End Property
 
         Public Property AllSeasonsBanner() As String
             Get
@@ -2451,6 +2538,7 @@ Public Class Scanner
 #Region "Methods"
 
         Public Sub Clear()
+            Me._actorthumbs.Clear()
             Me._allseasonsbanner = String.Empty
             Me._allseasonsfanart = String.Empty
             Me._allseasonslandscape = String.Empty

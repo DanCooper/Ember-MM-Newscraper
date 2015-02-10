@@ -1317,16 +1317,12 @@
         TVShowID,
         SeasonText,
         Season,
-        HasPoster,
-        HasFanart,
         PosterPath,
         FanartPath,
         Lock,
         Mark,
         "New",
-        HasBanner,
         BannerPath,
-        HasLandscape,
         LandscapePath
         );
 
@@ -1335,16 +1331,12 @@
         TVShowID,
         SeasonText,
         Season,
-        HasPoster,
-        HasFanart,
         PosterPath,
         FanartPath,
         Lock,
         Mark,
         "New",
-        HasBanner,
         BannerPath,
-        HasLandscape,
         LandscapePath
         FROM TVSeason;
 
@@ -1355,16 +1347,12 @@
         idShow         integer,
         Season         integer,
         SeasonText     text,
-        HasPoster      bool NOT NULL DEFAULT 0,
-        HasFanart      bool NOT NULL DEFAULT 0,
         PosterPath     text,
         FanartPath     text,
         Lock           bool NOT NULL DEFAULT 0,
         Mark           bool NOT NULL DEFAULT 0,
         "New"          bool NOT NULL DEFAULT 0,
-        HasBanner      bool NOT NULL DEFAULT 0,
         BannerPath     text,
-        HasLandscape   bool NOT NULL DEFAULT 0,
         LandscapePath  text
         );
 
@@ -1372,31 +1360,23 @@
         (idShow,
         Season,
         SeasonText,
-        HasPoster,
-        HasFanart,
         PosterPath,
         FanartPath,
         Lock,
         Mark,
         "New",
-        HasBanner,
         BannerPath,
-        HasLandscape,
         LandscapePath)
         SELECT
         TVShowID,
         Season,
         SeasonText,
-        HasPoster,
-        HasFanart,
         PosterPath,
         FanartPath,
         Lock,
         Mark,
         "New",
-        HasBanner,
         BannerPath,
-        HasLandscape,
         LandscapePath
         FROM TVSeason01;
 

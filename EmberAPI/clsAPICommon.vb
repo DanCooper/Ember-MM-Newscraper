@@ -702,28 +702,29 @@ Public Class Enums
     Public Enum ModType_TV As Integer
         All = 0
         DoSearch = 1
-        AllSeasonsBanner = 2
-        AllSeasonsFanart = 3
-        AllSeasonsLandscape = 4
-        AllSeasonsPoster = 5
-        EpisodeFanart = 6
-        EpisodeMeta = 7
-        EpisodeNfo = 8
-        EpisodePoster = 9
-        SeasonBanner = 10
-        SeasonFanart = 11
-        SeasonLandscape = 12
-        SeasonPoster = 13
-        ShowBanner = 14
-        ShowCharacterArt = 15
-        ShowClearArt = 16
-        ShowClearLogo = 17
-        ShowEFanarts = 18
-        ShowFanart = 19
-        ShowLandscape = 20
-        ShowNfo = 21
-        ShowPoster = 22
-        ShowTheme = 23
+        ActorThumbs = 2
+        AllSeasonsBanner = 3
+        AllSeasonsFanart = 4
+        AllSeasonsLandscape = 5
+        AllSeasonsPoster = 6
+        EpisodeFanart = 7
+        EpisodeMeta = 8
+        EpisodeNfo = 9
+        EpisodePoster = 10
+        SeasonBanner = 11
+        SeasonFanart = 12
+        SeasonLandscape = 13
+        SeasonPoster = 14
+        ShowBanner = 15
+        ShowCharacterArt = 16
+        ShowClearArt = 17
+        ShowClearLogo = 18
+        ShowEFanarts = 19
+        ShowFanart = 20
+        ShowLandscape = 21
+        ShowNfo = 22
+        ShowPoster = 23
+        ShowTheme = 24
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities
@@ -2038,6 +2039,7 @@ Public Class Structures
         Dim IsMarkShow As Boolean
         Dim ListTitle As String
         Dim Ordering As Enums.Ordering
+        Dim RemoveActorThumbs As Boolean
         Dim SeasonBannerPath As String
         Dim SeasonFanartPath As String
         Dim SeasonID As Long

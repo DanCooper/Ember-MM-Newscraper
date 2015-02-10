@@ -307,6 +307,7 @@ Partial Public Class clsXMLSettings
     Private _tvcleandb As Boolean
     Private _tvdisplaymissingepisodes As Boolean
     Private _tvdisplaystatus As Boolean
+    Private _tvepisodeactorthumbsoverwrite As Boolean
     Private _tvepisodeclickscrape As Boolean
     Private _tvepisodeclickscrapeask As Boolean
     Private _tvepisodefanartheight As Integer
@@ -402,6 +403,7 @@ Partial Public Class clsXMLSettings
     Private _tvepisodeposterprefsize As Enums.TVEpisodePosterSize
     Private _tvseasonposterresize As Boolean
     Private _tvseasonposterwidth As Integer
+    Private _tvshowactorthumbsoverwrite As Boolean
     Private _tvshowbannerheight As Integer
     Private _tvshowbanneroverwrite As Boolean
     Private _tvshowbannerpreftype As Enums.TVShowBannerType
@@ -3973,6 +3975,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowActorThumbsOverwrite() As Boolean
+        Get
+            Return Me._tvshowactorthumbsoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowactorthumbsoverwrite = value
+        End Set
+    End Property
+
     Public Property TVShowBannerHeight() As Integer
         Get
             Return Me._tvshowbannerheight
@@ -6094,6 +6105,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvepisodeactorthumbsfrodo = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeActorThumbsOverwrite() As Boolean
+        Get
+            Return Me._tvepisodeactorthumbsoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodeactorthumbsoverwrite = value
         End Set
     End Property
 

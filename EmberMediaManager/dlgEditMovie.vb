@@ -43,6 +43,7 @@ Public Class dlgEditMovie
     Private lvwActorSorter As ListViewColumnSorter
     'Private lvwEThumbsSorter As ListViewColumnSorter
     'Private lvwEFanartsSorter As ListViewColumnSorter
+    Private ActorThumbsHasChanged As Boolean = False
     Private MovieBanner As New Images With {.IsEdit = True}
     Private MovieClearArt As New Images With {.IsEdit = True}
     Private MovieClearLogo As New Images With {.IsEdit = True}
@@ -228,6 +229,7 @@ Public Class dlgEditMovie
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
                 lvItem.SubItems.Add(eActor.ThumbURL)
+                ActorThumbsHasChanged = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1711,6 +1713,7 @@ Public Class dlgEditMovie
                 While Me.lvActors.SelectedItems.Count > 0
                     Me.lvActors.Items.Remove(Me.lvActors.SelectedItems(0))
                 End While
+                ActorThumbsHasChanged = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1907,6 +1910,7 @@ Public Class dlgEditMovie
                     lvwItem.SubItems(3).Text = eActor.ThumbURL
                     lvwItem.Selected = True
                     lvwItem.EnsureVisible()
+                    ActorThumbsHasChanged = True
                 End If
                 eActor = Nothing
             End If
@@ -3023,18 +3027,20 @@ Public Class dlgEditMovie
                 Master.currMovie.Movie.Actors.Clear()
 
                 If .lvActors.Items.Count > 0 Then
+                    Dim iOrder As Integer = 0
                     For Each lviActor As ListViewItem In .lvActors.Items
                         Dim addActor As New MediaContainers.Person
                         addActor.ID = CInt(lviActor.Text)
                         addActor.Name = lviActor.SubItems(1).Text.Trim
                         addActor.Role = lviActor.SubItems(2).Text.Trim
                         addActor.ThumbURL = lviActor.SubItems(3).Text.Trim
-
+                        addActor.Order = iOrder
+                        iOrder += 1
                         Master.currMovie.Movie.Actors.Add(addActor)
                     Next
                 End If
 
-                If Master.currMovie.RemoveActorThumbs Then
+                If Master.currMovie.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
                     For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                         If Directory.Exists(tmpPath) Then
@@ -3079,12 +3085,14 @@ Public Class dlgEditMovie
                     .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
                 End If
 
-                If Master.GlobalScrapeMod.ActorThumbs Then
+                If Master.GlobalScrapeMod.ActorThumbs OrElse ActorThumbsHasChanged Then
                     For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
                         Dim img As New Images
                         img.FromWeb(act.ThumbURL)
                         If Not IsNothing(img.Image) Then
                             act.ThumbPath = img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
+                        Else
+                            act.ThumbPath = String.Empty
                         End If
                     Next
                 End If

@@ -5212,6 +5212,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowActorThumbsOverwrite() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowActorThumbsOverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowActorThumbsOverwrite = value
+        End Set
+    End Property
+
     Public Property TVShowActorThumbsFrodo() As Boolean
         Get
             Return Settings._XMLSettings.TVShowActorThumbsFrodo
@@ -5317,6 +5326,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVEpisodeActorThumbsFrodo = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeActorThumbsOverwrite() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeActorThumbsOverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeActorThumbsOverwrite = value
         End Set
     End Property
 
@@ -5968,6 +5986,7 @@ Public Class Settings
         Me.TVCleanDB = False
         Me.TVDisplayMissingEpisodes = True
         Me.TVDisplayStatus = False
+        Me.TVEpisodeActorThumbsOverwrite = True
         Me.TVEpisodeClickScrape = False
         Me.TVEpisodeClickScrapeAsk = False
         Me.TVEpisodeFanartHeight = 0
@@ -6063,6 +6082,7 @@ Public Class Settings
         Me.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.SD225
         Me.TVSeasonPosterResize = False
         Me.TVSeasonPosterWidth = 0
+        Me.TVShowActorThumbsOverwrite = True
         Me.TVShowBannerHeight = 0
         Me.TVShowBannerOverwrite = True
         Me.TVShowBannerPrefType = Enums.TVShowBannerType.Text
@@ -6447,6 +6467,10 @@ Public Class Settings
         Return TVSeasonPosterFrodo
     End Function
 
+    Public Function TVEpisodeActorThumbsAnyEnabled() As Boolean
+        Return TVEpisodeActorThumbsFrodo
+    End Function
+
     Public Function TVEpisodePosterAnyEnabled() As Boolean
         Return TVEpisodePosterBoxee OrElse TVEpisodePosterFrodo OrElse TVEpisodePosterYAMJ
     End Function
@@ -6469,6 +6493,10 @@ Public Class Settings
 
     Public Function TVSeasonPosterAnyEnabled() As Boolean
         Return TVSeasonPosterBoxee OrElse TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ
+    End Function
+
+    Public Function TVShowActorThumbsAnyEnabled() As Boolean
+        Return TVShowActorThumbsFrodo
     End Function
 
     Public Function TVShowBannerAnyEnabled() As Boolean

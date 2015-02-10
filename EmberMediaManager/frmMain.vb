@@ -9479,7 +9479,13 @@ doCancel:
             If Master.currShow.TVEp.Actors.Count > 0 Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As MediaContainers.Person In Master.currShow.TVEp.Actors
-                    If Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
+                    If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
+                        If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.ThumbPath)
+                        Else
+                            Me.alActors.Add("none")
+                        End If
+                    ElseIf Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
                         If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.ThumbURL)
                         Else
@@ -9750,7 +9756,13 @@ doCancel:
             If Master.currMovie.Movie.Actors.Count > 0 Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As MediaContainers.Person In Master.currMovie.Movie.Actors
-                    If Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
+                    If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
+                        If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.ThumbPath)
+                        Else
+                            Me.alActors.Add("none")
+                        End If
+                    ElseIf Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
                         If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.ThumbURL)
                         Else
@@ -10380,7 +10392,13 @@ doCancel:
             If Master.currShow.TVShow.Actors.Count > 0 Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As MediaContainers.Person In Master.currShow.TVShow.Actors
-                    If Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
+                    If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
+                        If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.ThumbPath)
+                        Else
+                            Me.alActors.Add("none")
+                        End If
+                    ElseIf Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
                         If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.ThumbURL)
                         Else
@@ -10623,7 +10641,13 @@ doCancel:
             If Master.currShow.TVShow.Actors.Count > 0 Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As MediaContainers.Person In Master.currShow.TVShow.Actors
-                    If Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
+                    If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
+                        If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.ThumbPath)
+                        Else
+                            Me.alActors.Add("none")
+                        End If
+                    ElseIf Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
                         If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.ThumbURL)
                         Else
@@ -11922,19 +11946,29 @@ doCancel:
                 Me.pbActors.Image = Nothing
             End If
 
-            Me.pbActLoad.Visible = True
+            If Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString.StartsWith("http") Then
+                Dim imgActor As Image = Image.FromFile(Me.alActors.Item(Me.lstActors.SelectedIndex).ToString)
 
-            If Me.bwDownloadPic.IsBusy Then
-                Me.bwDownloadPic.CancelAsync()
-                While Me.bwDownloadPic.IsBusy
-                    Application.DoEvents()
-                    Threading.Thread.Sleep(50)
-                End While
+                If Not IsNothing(imgActor) Then
+                    Me.pbActors.Image = imgActor
+                Else
+                    Me.pbActors.Image = My.Resources.actor_silhouette
+                End If
+            Else
+                Me.pbActLoad.Visible = True
+
+                If Me.bwDownloadPic.IsBusy Then
+                    Me.bwDownloadPic.CancelAsync()
+                    While Me.bwDownloadPic.IsBusy
+                        Application.DoEvents()
+                        Threading.Thread.Sleep(50)
+                    End While
+                End If
+
+                Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
+                Me.bwDownloadPic.WorkerSupportsCancellation = True
+                Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = Me.alActors.Item(Me.lstActors.SelectedIndex).ToString})
             End If
-
-            Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
-            Me.bwDownloadPic.WorkerSupportsCancellation = True
-            Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = Me.alActors.Item(Me.lstActors.SelectedIndex).ToString})
 
         Else
             Me.pbActors.Image = My.Resources.actor_silhouette

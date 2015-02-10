@@ -1526,9 +1526,15 @@ Namespace FileUtils
             Dim FilenameList As New List(Of String)
 
             Dim fEpisodePath As String = FileUtils.Common.RemoveExtFromPath(EpisodePath)
+            Dim fEpisodeParentPath As String = Directory.GetParent(EpisodePath).FullName
             Dim sSeason As String = mSeason.ToString.PadLeft(2, Convert.ToChar("0"))
 
             Select Case mType
+                Case Enums.ModType_TV.ActorThumbs
+                    With Master.eSettings
+                        If .TVUseFrodo AndAlso .TVEpisodeActorThumbsFrodo Then FilenameList.Add(String.Concat(fEpisodeParentPath, "\.actors", "\<placeholder>.jpg"))
+                    End With
+
                 Case Enums.ModType_TV.EpisodeFanart
                     With Master.eSettings
                     End With
@@ -1635,6 +1641,11 @@ Namespace FileUtils
             Dim fShowFolder As String = Path.GetFileName(fShowPath)
 
             Select Case mType
+                Case Enums.ModType_TV.ActorThumbs
+                    With Master.eSettings
+                        If .TVUseFrodo AndAlso .TVShowActorThumbsFrodo Then FilenameList.Add(String.Concat(fShowPath, "\.actors", "\<placeholder>.jpg"))
+                    End With
+
                 Case Enums.ModType_TV.AllSeasonsBanner
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-all-banner.jpg"))
