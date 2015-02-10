@@ -959,13 +959,13 @@ Public Class Scraper
                     End If
                     Me.bwTVDB.ReportProgress(iProgress, "progress")
 
-                    'If AdvancedSettings.GetBooleanSetting("ScrapeActorsThumbs", False) Then 
-                    'For Each act As MediaContainers.Person In Episode.TVEp.Actors
-                    'Dim img As New Images
-                    'img.FromWeb(act.Thumb)
-                    'img.SaveAsActorThumb(act, Directory.GetParent(Episode.Filename).FullName)
-                    'Next
-                    'End If
+                    If Master.eSettings.TVEpisodeActorThumbsAnyEnabled Then
+                        For Each act As MediaContainers.Person In Episode.TVEp.Actors
+                            Dim img As New Images
+                            img.FromWeb(act.ThumbURL)
+                            act.ThumbPath = img.SaveAsTVEpisodeActorThumb(act, Episode)
+                        Next
+                    End If
 
                     iProgress += 1
                 Next

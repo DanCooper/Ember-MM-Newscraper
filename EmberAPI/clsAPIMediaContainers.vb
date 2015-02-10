@@ -1834,6 +1834,7 @@ Namespace MediaContainers
 
         Private _id As Long
         Private _name As String
+        Private _order As Integer
         Private _role As String
         Private _thumbpath As String
         Private _thumburl As String
@@ -1860,6 +1861,7 @@ Namespace MediaContainers
 
 #Region "Properties"
 
+        <XmlIgnore()> _
         Public Property ID() As Long
             Get
                 Return Me._id
@@ -1876,6 +1878,16 @@ Namespace MediaContainers
             End Get
             Set(ByVal Value As String)
                 Me._name = Value
+            End Set
+        End Property
+
+        <XmlElement("order")> _
+        Public Property Order() As Integer
+            Get
+                Return Me._order
+            End Get
+            Set(ByVal Value As Integer)
+                Me._order = Value
             End Set
         End Property
 
@@ -1899,6 +1911,7 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()> _
         Public Property ThumbPath() As String
             Get
                 Return Me._thumbpath
@@ -1915,6 +1928,7 @@ Namespace MediaContainers
         Public Sub Clean()
             Me._id = -1
             Me._name = String.Empty
+            Me._order = -1
             Me._role = String.Empty
             Me._thumbpath = String.Empty
             Me._thumburl = String.Empty
