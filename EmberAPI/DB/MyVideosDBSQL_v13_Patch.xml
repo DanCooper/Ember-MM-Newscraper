@@ -184,7 +184,7 @@
         type,
         url)
         SELECT
-        ID, 'episode' AS media_type, 'poster' AS type, PosterPath
+        ID, 'episode' AS media_type, 'thumb' AS type, PosterPath
         FROM TVEps
         WHERE NOT PosterPath = "";
       </execute>
@@ -423,11 +423,11 @@
         ON tvshow
         BEGIN
         DELETE FROM actorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM art WHERE media_id=old.idShow AND media_type='tvshow';
         DELETE FROM directorlinktvshow WHERE idShow=old.idShow;
         DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
         DELETE FROM movielinktvshow WHERE idShow=old.idShow;
         DELETE FROM seasons WHERE idShow=old.idShow;
-        DELETE FROM art WHERE media_id=old.idShow AND media_type='tvshow';
         DELETE FROM taglinks WHERE idMedia=old.idShow AND media_type='tvshow';
         END;
       </execute>
@@ -452,7 +452,7 @@
         CREATE UNIQUE INDEX ix_studiolinkmovie_2
         ON studiolinkmovie
         (idMovie, idStudio);
-        
+
         CREATE TABLE studiolinktvshow (
         idStudio  integer,
         idShow    integer
@@ -1112,12 +1112,17 @@
         AFTER DELETE
         ON movie
         BEGIN
-        DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
         DELETE FROM actorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM art WHERE media_id=old.idMovie AND media_type='movie';
+        DELETE FROM countrylinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM directorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM movielinktvshow WHERE idMovie=old.idMovie;
+        DELETE FROM studiolinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM writerlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
         DELETE FROM MoviesSets WHERE MovieID=old.idMovie;
         DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
-        DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
-        DELETE FROM art WHERE media_id=old.idMovie AND media_type='movie';
         DELETE FROM MoviesVStreams WHERE MovieID=old.idMovie;
         END;
       </execute>
@@ -1299,14 +1304,14 @@
         AFTER DELETE
         ON episode
         BEGIN
+        DELETE FROM actorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM art WHERE media_id=old.idEpisode AND media_type='episode';
+        DELETE FROM directorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM writerlinkepisode WHERE idEpisode=old.idEpisode;
         DELETE FROM TVEpPaths WHERE ID=old.TVEpPathID;
         DELETE FROM TVVStreams WHERE TVEpID=old.idEpisode;
         DELETE FROM TVAStreams WHERE TVEpID=old.idEpisode;
         DELETE FROM TVSubs WHERE TVEpID=old.idEpisode;
-        DELETE FROM actorlinkepisode WHERE idEpisode=old.idEpisode;
-        DELETE FROM directorlinkepisode WHERE idEpisode=old.idEpisode;
-        DELETE FROM writerlinkepisode WHERE idEpisode=old.idEpisode;
-        DELETE FROM art WHERE media_id=old.idEpisode AND media_type='episode';
         END;
       </execute>
     </command>
@@ -1599,11 +1604,11 @@
         FROM
         episode
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = episode.idEpisode)
-        AND (fanart.media_type = "episode")
-        AND (fanart.type = "fanart")
+        AND (fanart.media_type = 'episode')
+        AND (fanart.type = 'fanart')
         LEFT OUTER JOIN art AS poster ON (poster.media_id = episode.idEpisode)
-        AND (poster.media_type = "episode")
-        AND (poster.type = "thumb");
+        AND (poster.media_type = 'episode')
+        AND (poster.type = 'thumb');
       </execute>
     </command>
     <command type="DB">
@@ -1623,26 +1628,26 @@
         FROM
         movie
         LEFT OUTER JOIN art AS banner ON (banner.media_id = movie.idMovie)
-        AND (banner.media_type = "movie")
-        AND (banner.type = "banner")
+        AND (banner.media_type = 'movie')
+        AND (banner.type = 'banner')
         LEFT OUTER JOIN art AS clearart ON (clearart.media_id = movie.idMovie)
-        AND (clearart.media_type = "movie")
-        AND (clearart.type = "clearart")
+        AND (clearart.media_type = 'movie')
+        AND (clearart.type = 'clearart')
         LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = movie.idMovie)
-        AND (clearlogo.media_type = "movie")
-        AND (clearlogo.type = "clearlogo")
+        AND (clearlogo.media_type = 'movie')
+        AND (clearlogo.type = 'clearlogo')
         LEFT OUTER JOIN art AS discart ON (discart.media_id = movie.idMovie)
-        AND (discart.media_type = "movie")
-        AND (discart.type = "discart")
+        AND (discart.media_type = 'movie')
+        AND (discart.type = 'discart')
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = movie.idMovie)
-        AND (fanart.media_type = "movie")
-        AND (fanart.type = "fanart")
+        AND (fanart.media_type = 'movie')
+        AND (fanart.type = 'fanart')
         LEFT OUTER JOIN art AS landscape ON (landscape.media_id = movie.idMovie)
-        AND (landscape.media_type = "movie")
-        AND (landscape.type = "landscape")
+        AND (landscape.media_type = 'movie')
+        AND (landscape.type = 'landscape')
         LEFT OUTER JOIN art AS poster ON (poster.media_id = movie.idMovie)
-        AND (poster.media_type = "movie")
-        AND (poster.type = "poster");
+        AND (poster.media_type = 'movie')
+        AND (poster.type = 'poster');
       </execute>
     </command>
     <command type="DB">
@@ -1663,26 +1668,26 @@
         FROM
         sets
         LEFT OUTER JOIN art AS banner ON (banner.media_id = sets.idSet)
-        AND (banner.media_type = "set")
-        AND (banner.type = "banner")
+        AND (banner.media_type = 'set')
+        AND (banner.type = 'banner')
         LEFT OUTER JOIN art AS clearart ON (clearart.media_id = sets.idSet)
-        AND (clearart.media_type = "set")
-        AND (clearart.type = "clearart")
+        AND (clearart.media_type = 'set')
+        AND (clearart.type = 'clearart')
         LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = sets.idSet)
-        AND (clearlogo.media_type = "set")
-        AND (clearlogo.type = "clearlogo")
+        AND (clearlogo.media_type = 'set')
+        AND (clearlogo.type = 'clearlogo')
         LEFT OUTER JOIN art AS discart ON (discart.media_id = sets.idSet)
-        AND (discart.media_type = "set")
-        AND (discart.type = "discart")
+        AND (discart.media_type = 'set')
+        AND (discart.type = 'discart')
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = sets.idSet)
-        AND (fanart.media_type = "set")
-        AND (fanart.type = "fanart")
+        AND (fanart.media_type = 'set')
+        AND (fanart.type = 'fanart')
         LEFT OUTER JOIN art AS landscape ON (landscape.media_id = sets.idSet)
-        AND (landscape.media_type = "set")
-        AND (landscape.type = "landscape")
+        AND (landscape.media_type = 'set')
+        AND (landscape.type = 'landscape')
         LEFT OUTER JOIN art AS poster ON (poster.media_id = sets.idSet)
-        AND (poster.media_type = "set")
-        AND (poster.type = "poster")
+        AND (poster.media_type = 'set')
+        AND (poster.type = 'poster')
         LEFT OUTER JOIN MoviesSets ON sets.idSet = MoviesSets.SetID
         GROUP BY sets.idSet;
       </execute>
@@ -1701,17 +1706,17 @@
         FROM
         seasons
         LEFT OUTER JOIN art AS banner ON (banner.media_id = seasons.idSeason)
-        AND (banner.media_type = "season")
-        AND (banner.type = "banner")
+        AND (banner.media_type = 'season')
+        AND (banner.type = 'banner')
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = seasons.idSeason)
-        AND (fanart.media_type = "season")
-        AND (fanart.type = "fanart")
+        AND (fanart.media_type = 'season')
+        AND (fanart.type = 'fanart')
         LEFT OUTER JOIN art AS landscape ON (landscape.media_id = seasons.idSeason)
-        AND (landscape.media_type = "season")
-        AND (landscape.type = "landscape")
+        AND (landscape.media_type = 'season')
+        AND (landscape.type = 'landscape')
         LEFT OUTER JOIN art AS poster ON (poster.media_id = seasons.idSeason)
-        AND (poster.media_type = "season")
-        AND (poster.type = "poster");
+        AND (poster.media_type = 'season')
+        AND (poster.type = 'poster');
       </execute>
     </command>
     <command type="DB">
@@ -1731,26 +1736,26 @@
         FROM
         tvshow
         LEFT OUTER JOIN art AS banner ON (banner.media_id = tvshow.idShow)
-        AND (banner.media_type = "tvshow")
-        AND (banner.type = "banner")
+        AND (banner.media_type = 'tvshow')
+        AND (banner.type = 'banner')
         LEFT OUTER JOIN art AS characterart ON (characterart.media_id = tvshow.idShow)
-        AND (characterart.media_type = "tvshow")
-        AND (characterart.type = "characterart")
+        AND (characterart.media_type = 'tvshow')
+        AND (characterart.type = 'characterart')
         LEFT OUTER JOIN art AS clearart ON (clearart.media_id = tvshow.idShow)
-        AND (clearart.media_type = "tvshow")
-        AND (clearart.type = "clearart")
+        AND (clearart.media_type = 'tvshow')
+        AND (clearart.type = 'clearart')
         LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = tvshow.idShow)
-        AND (clearlogo.media_type = "tvshow")
-        AND (clearlogo.type = "clearlogo")
+        AND (clearlogo.media_type = 'tvshow')
+        AND (clearlogo.type = 'clearlogo')
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = tvshow.idShow)
-        AND (fanart.media_type = "tvshow")
-        AND (fanart.type = "fanart")
+        AND (fanart.media_type = 'tvshow')
+        AND (fanart.type = 'fanart')
         LEFT OUTER JOIN art AS landscape ON (landscape.media_id = tvshow.idShow)
-        AND (landscape.media_type = "tvshow")
-        AND (landscape.type = "landscape")
+        AND (landscape.media_type = 'tvshow')
+        AND (landscape.type = 'landscape')
         LEFT OUTER JOIN art AS poster ON (poster.media_id = tvshow.idShow)
-        AND (poster.media_type = "tvshow")
-        AND (poster.type = "poster");
+        AND (poster.media_type = 'tvshow')
+        AND (poster.type = 'poster');
       </execute>
     </command>
   </transaction>

@@ -447,11 +447,11 @@ Public Class Database
                         End While
                     End Using
                     'tvshows with no more real episodes
-                    SQLcommand.CommandText = "DELETE FROM tvshow WHERE NOT EXISTS (SELECT episode.idShow FROM episode WHERE episode.idShow = tvshow.idShow AND episode.Missing = 0)"
+                    SQLcommand.CommandText = "DELETE FROM tvshow WHERE NOT EXISTS (SELECT episode.idShow FROM episode WHERE episode.idShow = tvshow.idShow AND episode.Missing = 0);"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = String.Concat("DELETE FROM tvshow WHERE idShow NOT IN (SELECT idShow FROM episode);")
+                    SQLcommand.CommandText = "DELETE FROM tvshow WHERE idShow NOT IN (SELECT idShow FROM episode);"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = String.Concat("DELETE FROM actorlinktvshow WHERE idShow NOT IN (SELECT idShow FROM tvshow);")
+                    SQLcommand.CommandText = "DELETE FROM actorlinktvshow WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "DELETE FROM episode WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                     SQLcommand.ExecuteNonQuery()
@@ -463,7 +463,45 @@ Public Class Database
                 CleanSeasons(True)
             End If
 
+            'global cleaning
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                logger.Info("Cleaning actorlinkepisode table")
+                SQLcommand.CommandText = "DELETE FROM actorlinkepisode WHERE NOT EXISTS (SELECT 1 FROM episode WHERE episode.idEpisode = actorlinkepisode.idEpisode)"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning actorlinkmovie table")
+                SQLcommand.CommandText = "DELETE FROM actorlinkmovie WHERE NOT EXISTS (SELECT 1 FROM movie WHERE movie.idMovie = actorlinkmovie.idMovie)"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning actorlinktvshow table")
+                SQLcommand.CommandText = "DELETE FROM actorlinktvshow WHERE NOT EXISTS (SELECT 1 FROM tvshow WHERE tvshow.idShow = actorlinktvshow.idShow)"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning genre table")
+                SQLcommand.CommandText = String.Concat("DELETE FROM genre ", _
+                                                       "WHERE NOT EXISTS (SELECT 1 FROM genrelinkmovie WHERE genrelinkmovie.idGenre = genre.idGenre) ", _
+                                                         "AND NOT EXISTS (SELECT 1 FROM genrelinktvshow WHERE genrelinktvshow.idGenre = genre.idGenre)")
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning country table")
+                SQLcommand.CommandText = "DELETE FROM country WHERE NOT EXISTS (SELECT 1 FROM countrylinkmovie WHERE countrylinkmovie.idCountry = country.idCountry)"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning actor table of actors, directors and writers")
+                SQLcommand.CommandText = String.Concat("DELETE FROM actors ", _
+                                                       "WHERE NOT EXISTS (SELECT 1 FROM actorlinkmovie WHERE actorlinkmovie.idActor = actors.idActor) ", _
+                                                         "AND NOT EXISTS (SELECT 1 FROM directorlinkmovie WHERE directorlinkmovie.idDirector = actors.idActor) ", _
+                                                         "AND NOT EXISTS (SELECT 1 FROM writerlinkmovie WHERE writerlinkmovie.idWriter = actors.idActor) ", _
+                                                         "AND NOT EXISTS (SELECT 1 FROM actorlinktvshow WHERE actorlinktvshow.idActor = actors.idActor) ", _
+                                                         "AND NOT EXISTS (SELECT 1 FROM actorlinkepisode WHERE actorlinkepisode.idActor = actors.idActor) ", _
+                                                         "AND NOT EXISTS (SELECT 1 FROM directorlinktvshow WHERE directorlinktvshow.idDirector = actors.idActor) ", _
+                                                         "AND NOT EXISTS (SELECT 1 FROM directorlinkepisode WHERE directorlinkepisode.idDirector = actors.idActor) ", _
+                                                         "AND NOT EXISTS (SELECT 1 FROM writerlinkepisode WHERE writerlinkepisode.idWriter = actors.idActor)")
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning studio table")
+                SQLcommand.CommandText = String.Concat("DELETE FROM studio ", _
+                                                       "WHERE NOT EXISTS (SELECT 1 FROM studiolinkmovie WHERE studiolinkmovie.idStudio = studio.idStudio) ", _
+                                                         "AND NOT EXISTS (SELECT 1 FROM studiolinktvshow WHERE studiolinktvshow.idStudio = studio.idStudio)")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+
             SQLtransaction.Commit()
+            logger.Info("Cleaning videodatabase done")
         End Using
 
         ' Housekeeping - consolidate and pack database using vacuum command http://www.sqlite.org/lang_vacuum.html
@@ -601,7 +639,8 @@ Public Class Database
                 Dim oldMyVideosDB As String = String.Format("MyVideos{0}.emm", i)
                 Dim oldMyVideosDBFile As String = FileUtils.Common.ReturnSettingsFile("Settings", oldMyVideosDB)
                 If File.Exists(oldMyVideosDBFile) Then
-                    PatchDatabase(oldMyVideosDBFile, MyVideosDBFile, i, MyVideosDBVersion)
+                    Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1347, "Upgrading database..."))
+                    PatchDatabase_MyVideos(oldMyVideosDBFile, MyVideosDBFile, i, MyVideosDBVersion)
                     Exit For
                 End If
             Next
@@ -782,7 +821,7 @@ Public Class Database
             Using SQLPReader As SQLite.SQLiteDataReader = SQLPCommand.ExecuteReader
                 While SQLPReader.Read
                     Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = String.Concat("SELECT idEpisode, idShow, Season, Missing FROM episode WHERE TVEpPathID = ", SQLPReader("ID"), ";")
+                        SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE TVEpPathID = ", SQLPReader("ID"), ";")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLReader.Read
                                 DeleteTVEpFromDB(CInt(SQLReader("idEpisode")), Force, BatchMode)
@@ -1706,7 +1745,7 @@ Public Class Database
     ''' <param name="cVersion">current version of DB to patch</param>
     ''' <param name="nVersion">lastest version of DB</param>
     ''' <remarks></remarks>
-    Public Sub PatchDatabase(ByVal cPath As String, ByVal nPath As String, ByVal cVersion As Integer, ByVal nVersion As Integer)
+    Public Sub PatchDatabase_MyVideos(ByVal cPath As String, ByVal nPath As String, ByVal cVersion As Integer, ByVal nVersion As Integer)
         Dim xmlSer As XmlSerializer
         Dim _cmds As New Containers.InstallCommands
         Dim TransOk As Boolean
@@ -1782,12 +1821,255 @@ Public Class Database
                 Next
 
             Next
+
+            PrepareDatabaseAfterUpgrade_MyVideosDB(cVersion)
+
             _myvideosDBConn.Close()
             File.Move(tempName, nPath)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
             _myvideosDBConn.Close()
         End Try
+    End Sub
+
+    Public Sub PrepareDatabaseAfterUpgrade_MyVideosDB(ByVal cVersion As Integer)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Select Case cVersion
+            Case Is <= 13
+                PrepareTable_country("idMovie", "movie", True)
+                PrepareTable_director("idEpisode", "episode", True)
+                PrepareTable_director("idMovie", "movie", True)
+                PrepareTable_genre("idMovie", "movie", True)
+                PrepareTable_genre("idShow", "tvshow", True)
+                PrepareTable_studio("idMovie", "movie", True)
+                PrepareTable_studio("idShow", "tvshow", True)
+                PrepareTable_writer("idEpisode", "episode", True)
+                PrepareTable_writer("idMovie", "movie", True)
+        End Select
+
+        SQLtransaction.Commit()
+    End Sub
+
+    Private Sub PrepareTable_country(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT {0}, country FROM {1};", idField, table)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("country")) AndAlso Not String.IsNullOrEmpty(SQLreader("country").ToString) Then
+                        Dim valuelist As New List(Of String)
+                        Dim strValue As String = SQLreader("country").ToString
+                        Dim idMedia As Long = Convert.ToInt64(SQLreader(idField))
+
+                        If strValue.Contains("/") Then
+                            Dim values As String() = strValue.Split(New [Char]() {"/"c})
+                            For Each value As String In values
+                                value = value.Trim
+                                If Not valuelist.Contains(value) Then
+                                    valuelist.Add(value)
+                                End If
+                            Next
+                        Else
+                            strValue = strValue.Trim
+                            If Not valuelist.Contains(strValue) Then
+                                valuelist.Add(strValue.Trim)
+                            End If
+                        End If
+
+                        For Each value As String In valuelist
+                            Select Case table
+                                Case "movie"
+                                    AddCountryToMovie(idMedia, AddCountry(value))
+                            End Select
+                        Next
+                    End If
+                End While
+            End Using
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
+    Private Sub PrepareTable_director(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT {0}, director FROM {1};", idField, table)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("director")) AndAlso Not String.IsNullOrEmpty(SQLreader("director").ToString) Then
+                        Dim valuelist As New List(Of String)
+                        Dim strValue As String = SQLreader("director").ToString
+                        Dim idMedia As Long = Convert.ToInt64(SQLreader(idField))
+
+                        If strValue.Contains("/") Then
+                            Dim values As String() = strValue.Split(New [Char]() {"/"c})
+                            For Each value As String In values
+                                value = value.Trim
+                                If Not valuelist.Contains(value) Then
+                                    valuelist.Add(value)
+                                End If
+                            Next
+                        Else
+                            strValue = strValue.Trim
+                            If Not valuelist.Contains(strValue) Then
+                                valuelist.Add(strValue.Trim)
+                            End If
+                        End If
+
+                        For Each value As String In valuelist
+                            Select Case table
+                                Case "episode"
+                                    AddDirectorToEpisode(idMedia, AddActor(value, "", ""))
+                                Case "movie"
+                                    AddDirectorToMovie(idMedia, AddActor(value, "", ""))
+                                Case "tvshow"
+                                    AddDirectorToTvShow(idMedia, AddActor(value, "", ""))
+                            End Select
+                        Next
+                    End If
+                End While
+            End Using
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
+    Private Sub PrepareTable_genre(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT {0}, genre FROM {1};", idField, table)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("genre")) AndAlso Not String.IsNullOrEmpty(SQLreader("genre").ToString) Then
+                        Dim valuelist As New List(Of String)
+                        Dim strValue As String = SQLreader("genre").ToString
+                        Dim idMedia As Long = Convert.ToInt64(SQLreader(idField))
+
+                        If strValue.Contains("/") Then
+                            Dim values As String() = strValue.Split(New [Char]() {"/"c})
+                            For Each value As String In values
+                                value = value.Trim
+                                If Not valuelist.Contains(value) Then
+                                    valuelist.Add(value)
+                                End If
+                            Next
+                        Else
+                            strValue = strValue.Trim
+                            If Not valuelist.Contains(strValue) Then
+                                valuelist.Add(strValue.Trim)
+                            End If
+                        End If
+
+                        For Each value As String In valuelist
+                            Select Case table
+                                Case "movie"
+                                    AddGenreToMovie(idMedia, AddGenre(value))
+                                Case "tvshow"
+                                    AddGenreToTvShow(idMedia, AddGenre(value))
+                            End Select
+                        Next
+                    End If
+                End While
+            End Using
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
+    Private Sub PrepareTable_studio(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT {0}, studio FROM {1};", idField, table)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("studio")) AndAlso Not String.IsNullOrEmpty(SQLreader("studio").ToString) Then
+                        Dim valuelist As New List(Of String)
+                        Dim strValue As String = SQLreader("studio").ToString
+                        Dim idMedia As Long = Convert.ToInt64(SQLreader(idField))
+
+                        If strValue.Contains("/") Then
+                            Dim values As String() = strValue.Split(New [Char]() {"/"c})
+                            For Each value As String In values
+                                value = value.Trim
+                                If Not valuelist.Contains(value) Then
+                                    valuelist.Add(value)
+                                End If
+                            Next
+                        Else
+                            strValue = strValue.Trim
+                            If Not valuelist.Contains(strValue) Then
+                                valuelist.Add(strValue.Trim)
+                            End If
+                        End If
+
+                        For Each value As String In valuelist
+                            Select Case table
+                                Case "movie"
+                                    AddStudioToMovie(idMedia, AddStudio(value))
+                                Case "tvshow"
+                                    AddStudioToTvShow(idMedia, AddStudio(value))
+                            End Select
+                        Next
+                    End If
+                End While
+            End Using
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
+    Private Sub PrepareTable_writer(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT {0}, credits FROM {1};", idField, table)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("credits")) AndAlso Not String.IsNullOrEmpty(SQLreader("credits").ToString) Then
+                        Dim valuelist As New List(Of String)
+                        Dim strValue As String = SQLreader("credits").ToString
+                        Dim idMedia As Long = Convert.ToInt64(SQLreader(idField))
+
+                        If strValue.Contains("/") Then
+                            Dim values As String() = strValue.Split(New [Char]() {"/"c})
+                            For Each value As String In values
+                                value = value.Trim
+                                If Not valuelist.Contains(value) Then
+                                    valuelist.Add(value)
+                                End If
+                            Next
+                        Else
+                            strValue = strValue.Trim
+                            If Not valuelist.Contains(strValue) Then
+                                valuelist.Add(strValue.Trim)
+                            End If
+                        End If
+
+                        For Each value As String In valuelist
+                            Select Case table
+                                Case "episode"
+                                    AddWriterToEpisode(idMedia, AddActor(value, "", ""))
+                                Case "movie"
+                                    AddWriterToMovie(idMedia, AddActor(value, "", ""))
+                            End Select
+                        Next
+                    End If
+                End While
+            End Using
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
     End Sub
 
     '  Public Function CheckEssentials() As Boolean

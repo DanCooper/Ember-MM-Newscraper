@@ -1436,4 +1436,5 @@
   <string id="1344">No CharacterArt images could be found. Please check to see if any CharacterArt scrapers are enabled.</string>
   <string id="1345">MovieSet Informations Only</string>
   <string id="1346">Subtitles Only</string>
+  <string id="1347">Upgrading database...</string>
 </strings>
