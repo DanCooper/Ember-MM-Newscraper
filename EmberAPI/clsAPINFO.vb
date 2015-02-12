@@ -403,9 +403,13 @@ Public Class NFO
         Next
 
         'Plot for Outline
+        '2015/02/12 Cooctus Fixed 
+        'Before: If there was no outline scraped at all, plot won't be used for outline ever! Also outline was overwritten regardless if it was empty or not before! (Option in Ember is described: Use Plot for Outline if Outline is Empty)
+        'Now: - Instead of checking only the outline we check if new plot or/and outline was set - if one of those was updated, copy plot to outline!
+        '     - Overwrite outline only if outline was empty or if option overwritenglishtext is true!
         If (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso _
-            Master.eSettings.MovieScraperPlotForOutline AndAlso Options.bOutline AndAlso Not new_Outline Then
-            If Not String.IsNullOrEmpty(DBMovie.Movie.Plot) Then
+            Master.eSettings.MovieScraperPlotForOutline AndAlso Options.bOutline AndAlso (new_Plot OrElse new_Outline) Then
+            If Not String.IsNullOrEmpty(DBMovie.Movie.Plot) AndAlso ((Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline)) OrElse String.IsNullOrEmpty(DBMovie.Movie.Outline)) Then
                 DBMovie.Movie.Outline = StringUtils.ShortenOutline(DBMovie.Movie.Plot, Master.eSettings.MovieScraperOutlineLimit)
             End If
         End If
