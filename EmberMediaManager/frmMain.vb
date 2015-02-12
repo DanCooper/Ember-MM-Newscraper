@@ -5030,177 +5030,15 @@ doCancel:
     End Sub
 
     Private Sub cmnuMovieWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieWatched.Click
-        Try
-            Dim setWatched As Boolean = False
-            If Me.dgvMovies.SelectedRows.Count > 1 Then
-                If Me.cmnuMovieWatched.Text = Master.eLang.GetString(981, "Watched") Then
-                    setWatched = True
-                End If
-            End If
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
-                    SQLcommand.CommandText = "UPDATE movie SET Playcount = (?) WHERE idMovie = (?);"
-                    For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                        Dim currPlaycount As String = String.Empty
-                        Dim hasWatched As Boolean = False
-                        Dim newPlaycount As String = String.Empty
-
-                        currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
-                        hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
-
-                        If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
-                            newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
-                        ElseIf Not hasWatched Then
-                            newPlaycount = "1"
-                        Else
-                            newPlaycount = "0"
-                        End If
-
-                        parPlaycount.Value = newPlaycount
-                        parID.Value = sRow.Cells("idMovie").Value
-                        SQLcommand.ExecuteNonQuery()
-                        sRow.Cells("Playcount").Value = newPlaycount
-                        sRow.Cells("HasWatched").Value = If(Me.dgvMovies.SelectedRows.Count > 1, setWatched, Not hasWatched)
-                    Next
-                End Using
-                SQLtransaction.Commit()
-
-            End Using
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                    Me.RefreshMovie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, False, True, True)
-                Next
-                SQLtransaction.Commit()
-            End Using
-
-            Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item("idMovie", Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item("MoviePath", Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
-
-            'If Me.chkFilterLock.Checked Then
-            '    Me.dgvMovies.ClearSelection()
-            '    Me.dgvMovies.CurrentCell = Nothing
-            '    If Me.dgvMovies.RowCount <= 0 Then Me.ClearInfo()
-            'End If
-
-            Me.dgvMovies.Invalidate()
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        SetWatchedStatus_Movie()
     End Sub
 
     Private Sub cmnuEpisodeWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeWatched.Click
-        Dim setWatched As Boolean = False
-        If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
-            If Me.cmnuEpisodeWatched.Text = Master.eLang.GetString(981, "Watched") Then
-                setWatched = True
-            End If
-        End If
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idEpisode")
-                SQLcommand.CommandText = "UPDATE episode SET Playcount = (?) WHERE idEpisode = (?);"
-                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    Dim currPlaycount As String = String.Empty
-                    Dim hasWatched As Boolean = False
-                    Dim newPlaycount As String = String.Empty
-
-                    currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
-                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
-
-                    If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
-                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
-                    ElseIf Not hasWatched Then
-                        newPlaycount = "1"
-                    Else
-                        newPlaycount = "0"
-                    End If
-
-                    parPlaycount.Value = newPlaycount
-                    parID.Value = sRow.Cells("idEpisode").Value
-                    SQLcommand.ExecuteNonQuery()
-                    sRow.Cells("Playcount").Value = newPlaycount
-                    sRow.Cells("HasWatched").Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setWatched, Not hasWatched)
-                Next
-            End Using
-            SQLtransaction.Commit()
-
-        End Using
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                Me.RefreshEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True)
-            Next
-            SQLtransaction.Commit()
-        End Using
-
-        Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", Me.dgvTVEpisodes.CurrentCell.RowIndex).Value)) ', Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.CurrentCell.RowIndex).Value.ToString, True, False)
-
-        'If Me.chkFilterLock.Checked Then
-        '    Me.dgvTVEpisodes.ClearSelection()
-        '    Me.dgvTVEpisodes.CurrentCell = Nothing
-        '    If Me.dgvTVEpisodes.RowCount <= 0 Then Me.ClearInfo()
-        'End If
-
-        Me.dgvTVEpisodes.Invalidate()
+        SetWatchedStatus_Episode()
     End Sub
 
     Private Sub cmnuHasWatchedSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonWatched.Click
-        Try
-            Dim setHasWatched As Boolean = False
-            'If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
-            '    For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-            '        If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
-            '            setHasWatched = True
-            '            Exit For
-            '        End If
-            '    Next
-            'End If
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    Dim parHasWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
-                    Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                    SQLcommand.CommandText = "UPDATE seasons SET mark = (?) WHERE idShow = (?) AND Season = (?);"
-                    For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                        parHasWatched.Value = setHasWatched
-                        'parMark.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setHasWatched, Not Convert.ToBoolean(sRow.Cells(8).Value))
-                        'parID.Value = sRow.Cells(0).Value
-                        'parSeason.Value = sRow.Cells(2).Value
-                        'SQLcommand.ExecuteNonQuery()
-                        'sRow.Cells(8).Value = parMark.Value
-
-                        Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            Dim parEHasWatched As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parHasWatched", DbType.Boolean, 0, "HasWatched")
-                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "idShow")
-                            Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int32, 0, "Season")
-                            SQLECommand.CommandText = "UPDATE episode SET HasWatched = (?) WHERE idShow = (?) AND Season = (?);"
-                            parEHasWatched.Value = parHasWatched.Value
-                            parEID.Value = parID.Value
-                            parESeason.Value = parSeason.Value
-                            SQLECommand.ExecuteNonQuery()
-
-                            For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                                eRow.Cells("HasWatched").Value = parHasWatched.Value
-                            Next
-                        End Using
-                    Next
-                End Using
-                SQLtransaction.Commit()
-            End Using
-
-            Me.dgvTVSeasons.Invalidate()
-            Me.dgvTVEpisodes.Invalidate()
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        SetWatchedStatus_Season()
     End Sub
 
     'Private Sub cmnuHasWatchedShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuHasWatchedShow.Click
@@ -6604,8 +6442,8 @@ doCancel:
             Return
         End If
 
-        If colName = "ListTitle" OrElse colName = "HasWatched" OrElse Not Master.eSettings.MovieClickScrape Then
-            If Not colName = "HasWatched" Then
+        If colName = "ListTitle" OrElse colName = "Playcount" OrElse Not Master.eSettings.MovieClickScrape Then
+            If Not colName = "Playcount" Then
                 If Me.dgvMovies.SelectedRows.Count > 0 Then
                     If Me.dgvMovies.RowCount > 0 Then
                         If Me.dgvMovies.SelectedRows.Count > 1 Then
@@ -6617,59 +6455,7 @@ doCancel:
                     Me.currMovieRow = Me.dgvMovies.SelectedRows(0).Index
                 End If
             Else
-                'TODO: maybe we can merge this to one sub/function together with "Private Sub cmnuMovieWatched_Click"
-                Dim setWatched As Boolean = False
-                If Me.dgvMovies.SelectedRows.Count > 1 Then
-                    For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                        'if any one item is set as not watched, set menu to watched
-                        'else they are all watched so set menu to not watched
-                        If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
-                            setWatched = True
-                            Exit For
-                        End If
-                    Next
-                End If
-
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
-                        Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
-                        SQLcommand.CommandText = "UPDATE movie SET Playcount = (?) WHERE idMovie = (?);"
-                        For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                            Dim currPlaycount As String = String.Empty
-                            Dim hasWatched As Boolean = False
-                            Dim newPlaycount As String = String.Empty
-
-                            currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
-                            hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
-
-                            If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
-                                newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
-                            ElseIf Not hasWatched Then
-                                newPlaycount = "1"
-                            Else
-                                newPlaycount = "0"
-                            End If
-
-                            parPlaycount.Value = newPlaycount
-                            parID.Value = sRow.Cells("idMovie").Value
-                            SQLcommand.ExecuteNonQuery()
-                            sRow.Cells("Playcount").Value = newPlaycount
-                            sRow.Cells("HasWatched").Value = If(Me.dgvMovies.SelectedRows.Count > 1, setWatched, Not hasWatched)
-                        Next
-                    End Using
-                    SQLtransaction.Commit()
-                End Using
-
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                        Me.RefreshMovie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, False, True, True)
-                    Next
-                    SQLtransaction.Commit()
-                End Using
-
-                Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item("idMovie", Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item("MoviePath", Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
-                Me.dgvMovies.Invalidate()
+                SetWatchedStatus_Movie()
             End If
 
         ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
@@ -6736,6 +6522,150 @@ doCancel:
                 MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
             End If
         End If
+    End Sub
+
+    Private Sub SetWatchedStatus_Episode()
+        Dim setWatched As Boolean = False
+        If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                'if any one item is set as not watched, set menu to watched
+                'else they are all watched so set menu to not watched
+                If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
+                    setWatched = True
+                    Exit For
+                End If
+            Next
+        End If
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                Dim par_episode_Playcount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_Playcount", DbType.String, 0, "Playcount")
+                Dim par_episode_idEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_idEpisode", DbType.Int32, 0, "idEpisode")
+                SQLcommand.CommandText = "UPDATE episode SET Playcount = (?) WHERE idEpisode = (?);"
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    Dim currPlaycount As String = String.Empty
+                    Dim hasWatched As Boolean = False
+                    Dim newPlaycount As String = String.Empty
+
+                    currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
+                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+
+                    If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
+                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                    ElseIf Not hasWatched Then
+                        newPlaycount = "1"
+                    Else
+                        newPlaycount = Nothing
+                    End If
+
+                    par_episode_Playcount.Value = newPlaycount
+                    par_episode_idEpisode.Value = sRow.Cells("idEpisode").Value
+                    SQLcommand.ExecuteNonQuery()
+
+                    sRow.Cells("Playcount").Value = newPlaycount
+                Next
+            End Using
+            SQLtransaction.Commit()
+        End Using
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                Me.RefreshEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True)
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", Me.dgvTVEpisodes.CurrentCell.RowIndex).Value)) ', Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.CurrentCell.RowIndex).Value.ToString, True, False)
+        Me.dgvTVEpisodes.Invalidate()
+    End Sub
+
+    Private Sub SetWatchedStatus_Movie()
+        Dim setWatched As Boolean = False
+        If Me.dgvMovies.SelectedRows.Count > 1 Then
+            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                'if any one item is set as not watched, set menu to watched
+                'else they are all watched so set menu to not watched
+                If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
+                    setWatched = True
+                    Exit For
+                End If
+            Next
+        End If
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                Dim par_movie_Playcount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_movie_Playcount", DbType.String, 0, "Playcount")
+                Dim par_movie_idMovie As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_movie_idMovie", DbType.Int32, 0, "idMovie")
+                SQLcommand.CommandText = "UPDATE movie SET Playcount = (?) WHERE idMovie = (?);"
+                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                    Dim hasWatched As Boolean = False
+                    Dim currPlaycount As String = String.Empty
+                    Dim newPlaycount As String = String.Empty
+
+                    currPlaycount = sRow.Cells("Playcount").Value.ToString
+                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+
+                    If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
+                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                    ElseIf Not hasWatched Then
+                        newPlaycount = "1"
+                    Else
+                        newPlaycount = Nothing
+                    End If
+
+                    par_movie_Playcount.Value = newPlaycount
+                    par_movie_idMovie.Value = sRow.Cells("idMovie").Value
+                    SQLcommand.ExecuteNonQuery()
+
+                    sRow.Cells("Playcount").Value = newPlaycount
+                Next
+            End Using
+            SQLtransaction.Commit()
+        End Using
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                Me.RefreshMovie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, False, True, True)
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item("idMovie", Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item("MoviePath", Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
+        Me.dgvMovies.Invalidate()
+    End Sub
+
+    Private Sub SetWatchedStatus_Season()
+        Dim setWatched As Boolean = False
+        Dim SeasonsList As New List(Of Integer)
+        If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
+            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                'if any one item is set as not watched, set menu to watched
+                'else they are all watched so set menu to not watched
+                If Not CBool(sRow.Cells("HasWatched").Value) Then
+                    setWatched = True
+                    Exit For
+                End If
+            Next
+        End If
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLcommand.CommandText = String.Concat("SELECT idEpisode, Playcount FROM episode WHERE idShow = (?) AND Season = (?);")
+                    Dim par_episode_idShow As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_idShow", DbType.Int32, 0, "idShow")
+                    Dim par_episode_Season As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_Season", DbType.Int32, 0, "Season")
+                    par_episode_idShow.Value = sRow.Cells("idShow")
+                    par_episode_Season.Value = sRow.Cells("Season")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+
+                    End Using
+                End Using
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        Me.dgvTVSeasons.Invalidate()
+        Me.dgvTVEpisodes.Invalidate()
     End Sub
 
     Private Sub dgvMovies_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellDoubleClick
@@ -6838,7 +6768,7 @@ doCancel:
                         End If
                         'if any one item is set as unwatched, set menu to watched
                         'else they are all watched so set menu to not watched
-                        If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
+                        If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
                             setWatched = True
                             If setLock AndAlso setMark Then Exit For
                         End If
@@ -6878,7 +6808,7 @@ doCancel:
 
                     Me.cmnuMovieMark.Text = If(Convert.ToBoolean(Me.dgvMovies.Item("Mark", e.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     Me.cmnuMovieLock.Text = If(Convert.ToBoolean(Me.dgvMovies.Item("Lock", e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-                    Me.cmnuMovieWatched.Text = If(Convert.ToBoolean(Me.dgvMovies.Item("HasWatched", e.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
+                    Me.cmnuMovieWatched.Text = If(Not String.IsNullOrEmpty(Me.dgvMovies.Item("Playcount", e.RowIndex).Value.ToString) AndAlso Not Me.dgvMovies.Item("Playcount", e.RowIndex).Value.ToString = "0", Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
 
                     Me.cmnuMovieGenresGenre.Tag = Me.dgvMovies.Item("Genre", e.RowIndex).Value
                     Me.cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
@@ -6975,7 +6905,7 @@ doCancel:
             colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse _
-            colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "HasWatched") AndAlso e.RowIndex = -1 Then
+            colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "Playcount") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -7012,7 +6942,7 @@ doCancel:
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 13)
             ElseIf colName = "HasSub" Then
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
-            ElseIf colName = "HasWatched" Then
+            ElseIf colName = "Playcount" Then
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 17)
             End If
 
@@ -7068,7 +6998,7 @@ doCancel:
                 e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
             End If
 
-            'string fields
+            'path fields
             If colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
                 colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
                 colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
@@ -7084,8 +7014,21 @@ doCancel:
                 e.Handled = True
             End If
 
+            'playcount field
+            If colName = "Playcount" Then
+                e.PaintBackground(e.ClipBounds, True)
+
+                Dim pt As Point = e.CellBounds.Location
+                Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                pt.X += offset
+                pt.Y = e.CellBounds.Top + 3
+                Me.ilColumnIcons.Draw(e.Graphics, pt, If(Not String.IsNullOrEmpty(e.Value.ToString) AndAlso Not e.Value.ToString = "0", 0, 1))
+                e.Handled = True
+            End If
+
             'boolean fields
-            If colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "HasWatched" Then
+            If colName = "HasSet" OrElse colName = "HasSub" Then
                 e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -7556,7 +7499,7 @@ doCancel:
                 e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
             End If
 
-            'string fields
+            'path fields
             If colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
                 colName = "DiscArtPath" OrElse colName = "FanartPath" OrElse colName = "LandscapePath" OrElse _
                 colName = "NfoPath" OrElse colName = "PosterPath" Then
@@ -7653,8 +7596,8 @@ doCancel:
             Return
         End If
 
-        If colName = "Title" OrElse colName = "HasWatched" OrElse Not Master.eSettings.TVEpisodeClickScrape Then 'Title or Watched Column
-            If Not colName = "HasWatched" Then
+        If colName = "Title" OrElse colName = "Playcount" OrElse Not Master.eSettings.TVEpisodeClickScrape Then 'Title or Watched Column
+            If Not colName = "Playcount" Then
                 If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
                     If Me.dgvTVEpisodes.RowCount > 0 Then
                         If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
@@ -7671,59 +7614,7 @@ doCancel:
                     End If
                 End If
             Else
-                'TODO: maybe we can merge this to one sub/function together with "Private Sub cmnuMovieWatched_Click"
-                Dim setWatched As Boolean = False
-                If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
-                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        'if any one item is set as not watched, set menu to watched
-                        'else they are all watched so set menu to not watched
-                        If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
-                            setWatched = True
-                            Exit For
-                        End If
-                    Next
-                End If
-
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
-                        Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idEpisode")
-                        SQLcommand.CommandText = "UPDATE episode SET Playcount = (?) WHERE idEpisode = (?);"
-                        For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                            Dim currPlaycount As String = String.Empty
-                            Dim hasWatched As Boolean = False
-                            Dim newPlaycount As String = String.Empty
-
-                            currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
-                            hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
-
-                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
-                                newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
-                            ElseIf Not hasWatched Then
-                                newPlaycount = "1"
-                            Else
-                                newPlaycount = "0"
-                            End If
-
-                            parPlaycount.Value = newPlaycount
-                            parID.Value = sRow.Cells("idEpisode").Value
-                            SQLcommand.ExecuteNonQuery()
-                            sRow.Cells("Playcount").Value = newPlaycount
-                            sRow.Cells("HasWatched").Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setWatched, Not hasWatched)
-                        Next
-                    End Using
-                    SQLtransaction.Commit()
-                End Using
-
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        Me.RefreshEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True) ', True)
-                    Next
-                    SQLtransaction.Commit()
-                End Using
-
-                Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", Me.dgvTVEpisodes.CurrentCell.RowIndex).Value)) ', Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.CurrentCell.RowIndex).Value.ToString, True, False)
-                Me.dgvMovies.Invalidate()
+                SetWatchedStatus_Episode()
             End If
 
             'ElseIf Master.eSettings.TVEpisodeClickScrape AndAlso e.RowIndex >= 0 Then 'AndAlso Not bwMovieScraper.IsBusy Then
@@ -7810,7 +7701,7 @@ doCancel:
 
         'icons for column header
         If (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
-            colName = "HasSub" OrElse colName = "HasWatched") AndAlso e.RowIndex = -1 Then
+            colName = "HasSub" OrElse colName = "Playcount") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -7827,7 +7718,7 @@ doCancel:
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 12)
             ElseIf colName = "HasSub" Then
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
-            ElseIf colName = "HasWatched" Then
+            ElseIf colName = "Playcount" Then
                 Me.ilColumnIcons.Draw(e.Graphics, pt, 17)
             End If
 
@@ -7871,7 +7762,7 @@ doCancel:
                 e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
             End If
 
-            'string fields
+            'path fields
             If colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" Then
                 e.PaintBackground(e.ClipBounds, True)
 
@@ -7884,8 +7775,21 @@ doCancel:
                 e.Handled = True
             End If
 
+            'playcount field
+            If colName = "Playcount" Then
+                e.PaintBackground(e.ClipBounds, True)
+
+                Dim pt As Point = e.CellBounds.Location
+                Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                pt.X += offset
+                pt.Y = e.CellBounds.Top + 3
+                Me.ilColumnIcons.Draw(e.Graphics, pt, If(Not String.IsNullOrEmpty(e.Value.ToString) AndAlso Not e.Value.ToString = "0", 0, 1))
+                e.Handled = True
+            End If
+
             'boolean fields
-            If colName = "HasSub" OrElse colName = "HasWatched" Then
+            If colName = "HasSub" Then
                 e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -8020,7 +7924,7 @@ doCancel:
                             End If
                             'if any one item is set as unwatched, set menu to watched
                             'else they are all watched so set menu to not watched
-                            If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
+                            If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) AndAlso sRow.Cells("Playcount").Value.ToString = "0" Then
                                 setWatched = True
                                 If setLock AndAlso setMark Then Exit For
                             End If
@@ -8061,7 +7965,7 @@ doCancel:
 
                         Me.cmnuEpisodeMark.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuEpisodeLock.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-                        Me.cmnuEpisodeWatched.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item("HasWatched", dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
+                        Me.cmnuEpisodeWatched.Text = If(Not String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("Playcount", dgvHTI.RowIndex).Value.ToString) AndAlso Not Me.dgvTVEpisodes.Item("Playcount", dgvHTI.RowIndex).Value.ToString = "0", Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
                     End If
 
                 End If
@@ -8087,20 +7991,30 @@ doCancel:
     End Sub
 
     Private Sub dgvTVSeasons_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellClick
-        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
-            If Me.dgvTVSeasons.RowCount > 0 Then
-                If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
-                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count))
-                ElseIf Me.dgvTVSeasons.SelectedRows.Count = 1 Then
-                    Me.SetStatus(Me.dgvTVSeasons.SelectedRows(0).Cells("SeasonText").Value.ToString)
-                End If
-            End If
+        Dim colName As String = Me.dgvTVSeasons.Columns(e.ColumnIndex).Name
+        If String.IsNullOrEmpty(colName) Then
+            Return
+        End If
 
-            Me.currSeasonRow = Me.dgvTVSeasons.SelectedRows(0).Index
-            If Not Me.currList = 1 Then
-                Me.currList = 1
-                Me.prevSeasonRow = -1
-                Me.SelectSeasonRow(Me.dgvTVSeasons.SelectedRows(0).Index)
+        If colName = "SeasonText" OrElse colName = "HasWatched" Then 'OrElse Not Master.eSettings.MovieClickScrape Then
+            If Not colName = "HasWatched" Then
+                If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
+                    If Me.dgvTVSeasons.RowCount > 0 Then
+                        If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
+                            Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count))
+                        ElseIf Me.dgvTVSeasons.SelectedRows.Count = 1 Then
+                            Me.SetStatus(Me.dgvTVSeasons.SelectedRows(0).Cells("SeasonText").Value.ToString)
+                        End If
+                    End If
+                    Me.currSeasonRow = Me.dgvTVSeasons.SelectedRows(0).Index
+                    If Not Me.currList = 1 Then
+                        Me.currList = 1
+                        Me.prevSeasonRow = -1
+                        Me.SelectSeasonRow(Me.dgvTVSeasons.SelectedRows(0).Index)
+                    End If
+                End If
+            Else
+                SetWatchedStatus_Season()
             End If
         End If
     End Sub
@@ -8209,7 +8123,7 @@ doCancel:
                 e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
             End If
 
-            'string fields
+            'path fields
             If colName = "BannerPath" OrElse colName = "FanartPath" OrElse colName = "LandscapePath" OrElse _
                 colName = "NfoPath" OrElse colName = "PosterPath" Then
                 e.PaintBackground(e.ClipBounds, True)
@@ -8501,7 +8415,7 @@ doCancel:
                 e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
             End If
 
-            'string fields
+            'path fields
             If colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
                 colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse _
                 colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
@@ -8902,18 +8816,18 @@ doCancel:
                 .dgvTVEpisodes.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
                 .dgvTVEpisodes.Columns("HasSub").Visible = Not CheckColumnHide_TVEpisodes("HasSub")
                 .dgvTVEpisodes.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
-                .dgvTVEpisodes.Columns("HasWatched").Width = 20
-                .dgvTVEpisodes.Columns("HasWatched").Resizable = DataGridViewTriState.False
-                .dgvTVEpisodes.Columns("HasWatched").ReadOnly = True
-                .dgvTVEpisodes.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns("HasWatched").Visible = Not CheckColumnHide_TVEpisodes("HasWatched")
-                .dgvTVEpisodes.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
                 .dgvTVEpisodes.Columns("NfoPath").Width = 20
                 .dgvTVEpisodes.Columns("NfoPath").Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns("NfoPath").ReadOnly = True
                 .dgvTVEpisodes.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
                 .dgvTVEpisodes.Columns("NfoPath").Visible = Not CheckColumnHide_TVEpisodes("NfoPath")
                 .dgvTVEpisodes.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
+                .dgvTVEpisodes.Columns("Playcount").Width = 20
+                .dgvTVEpisodes.Columns("Playcount").Resizable = DataGridViewTriState.False
+                .dgvTVEpisodes.Columns("Playcount").ReadOnly = True
+                .dgvTVEpisodes.Columns("Playcount").SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVEpisodes.Columns("Playcount").Visible = Not CheckColumnHide_TVEpisodes("Playcount")
+                .dgvTVEpisodes.Columns("Playcount").ToolTipText = Master.eLang.GetString(981, "Watched")
                 .dgvTVEpisodes.Columns("PosterPath").Width = 20
                 .dgvTVEpisodes.Columns("PosterPath").Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns("PosterPath").ReadOnly = True
@@ -9093,12 +9007,6 @@ doCancel:
                         .dgvMovies.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMovies.Columns("HasSub").Visible = Not CheckColumnHide_Movies("HasSub")
                         .dgvMovies.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
-                        .dgvMovies.Columns("HasWatched").Width = 20
-                        .dgvMovies.Columns("HasWatched").Resizable = DataGridViewTriState.False
-                        .dgvMovies.Columns("HasWatched").ReadOnly = True
-                        .dgvMovies.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns("HasWatched").Visible = Not CheckColumnHide_Movies("HasWatched")
-                        .dgvMovies.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
                         .dgvMovies.Columns("Imdb").Resizable = DataGridViewTriState.False
                         .dgvMovies.Columns("Imdb").ReadOnly = True
                         .dgvMovies.Columns("Imdb").SortMode = DataGridViewColumnSortMode.Automatic
@@ -9140,6 +9048,12 @@ doCancel:
                         .dgvMovies.Columns("OriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
                         .dgvMovies.Columns("OriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
                         .dgvMovies.Columns("OriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                        .dgvMovies.Columns("Playcount").Width = 20
+                        .dgvMovies.Columns("Playcount").Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns("Playcount").ReadOnly = True
+                        .dgvMovies.Columns("Playcount").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns("Playcount").Visible = Not CheckColumnHide_Movies("Playcount")
+                        .dgvMovies.Columns("Playcount").ToolTipText = Master.eLang.GetString(981, "Watched")
                         .dgvMovies.Columns("PosterPath").Width = 20
                         .dgvMovies.Columns("PosterPath").Resizable = DataGridViewTriState.False
                         .dgvMovies.Columns("PosterPath").ReadOnly = True
@@ -9344,6 +9258,12 @@ doCancel:
                         .dgvTVShows.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvTVShows.Columns("FanartPath").Visible = Not CheckColumnHide_TVShows("FanartPath")
                         .dgvTVShows.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
+                        .dgvTVShows.Columns("HasWatched").Width = 20
+                        .dgvTVShows.Columns("HasWatched").Resizable = DataGridViewTriState.False
+                        .dgvTVShows.Columns("HasWatched").ReadOnly = True
+                        .dgvTVShows.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvTVShows.Columns("HasWatched").Visible = Not CheckColumnHide_TVShows("HasWatched")
+                        .dgvTVShows.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
                         .dgvTVShows.Columns("LandscapePath").Width = 20
                         .dgvTVShows.Columns("LandscapePath").Resizable = DataGridViewTriState.False
                         .dgvTVShows.Columns("LandscapePath").ReadOnly = True
@@ -10908,13 +10828,11 @@ doCancel:
         If Master.eSettings.TVDisplayMissingEpisodes Then
             Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT * FROM seasonslist WHERE idShow = ", ShowID, " ORDER BY Season;"))
         Else
-            Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT DISTINCT seasons.idShow, seasons.SeasonText, seasons.Season, seasons.HasPoster, ", _
-                                                                "seasons.HasFanart, seasons.PosterPath, seasons.FanartPath, seasons.Lock, seasons.Mark, ", _
-                                                                "seasons.New, seasons.HasBanner, seasons.BannerPath, seasons.HasLandscape, seasons.LandscapePath ", _
-                                                                "FROM seasons LEFT OUTER JOIN episode ON (episode.idShow = seasons.idShow) AND (episode.Season = seasons.Season) ", _
-                                                                "WHERE seasons.idShow = ", ShowID, " AND episode.Missing = 0 ", _
-                                                                "OR seasons.idShow = ", ShowID, " AND seasons.Season = 999 ", _
-                                                                "ORDER BY seasons.Season;"))
+            Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT DISTINCT seasonslist.* ", _
+                                                                "FROM seasonslist ", _
+                                                                "LEFT OUTER JOIN episodelist ON (seasonslist.idShow = episodelist.idShow) AND (seasonslist.Season = episodelist.Season) ", _
+                                                                "WHERE seasonslist.idShow = ", ShowID, " AND (episodelist.Missing = 0 OR seasonslist.Season = 999) ", _
+                                                                "ORDER BY seasonslist.Season;"))
         End If
 
         If Me.dtSeasons.Rows.Count > 0 Then
@@ -10939,6 +10857,12 @@ doCancel:
                 .dgvTVSeasons.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
                 .dgvTVSeasons.Columns("FanartPath").Visible = Not CheckColumnHide_TVSeasons("FanartPath")
                 .dgvTVSeasons.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
+                .dgvTVSeasons.Columns("HasWatched").Width = 20
+                .dgvTVSeasons.Columns("HasWatched").Resizable = DataGridViewTriState.False
+                .dgvTVSeasons.Columns("HasWatched").ReadOnly = True
+                .dgvTVSeasons.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVSeasons.Columns("HasWatched").Visible = Not CheckColumnHide_TVSeasons("HasWatched")
+                .dgvTVSeasons.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
                 .dgvTVSeasons.Columns("LandscapePath").Width = 20
                 .dgvTVSeasons.Columns("LandscapePath").Resizable = DataGridViewTriState.False
                 .dgvTVSeasons.Columns("LandscapePath").ReadOnly = True
@@ -11808,134 +11732,106 @@ doCancel:
     End Sub
 
     Private Sub LoadEpisodeInfo(ByVal ID As Integer)
-        Try
-            Me.dgvTVEpisodes.SuspendLayout()
-            Me.SetControlsEnabled(False, True)
-            Me.ShowNoInfo(False)
+        Me.dgvTVEpisodes.SuspendLayout()
+        Me.SetControlsEnabled(False, True)
+        Me.ShowNoInfo(False)
 
-            If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
+        If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
 
-            Me.ClearInfo()
+        Me.ClearInfo()
 
-            Me.bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
-            Me.bwLoadEpInfo.WorkerSupportsCancellation = True
-            Me.bwLoadEpInfo.RunWorkerAsync(New Arguments With {.ID = ID})
-
-        Catch ex As Exception
-            Me.SetControlsEnabled(True)
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
+        Me.bwLoadEpInfo.WorkerSupportsCancellation = True
+        Me.bwLoadEpInfo.RunWorkerAsync(New Arguments With {.ID = ID})
     End Sub
 
     Private Sub LoadMovieInfo(ByVal ID As Integer, ByVal sPath As String, ByVal doInfo As Boolean, ByVal doMI As Boolean, Optional ByVal setEnabled As Boolean = False)
-        Try
-            Me.dgvMovies.SuspendLayout()
-            Me.SetControlsEnabled(False, True)
-            Me.ShowNoInfo(False)
+        Me.dgvMovies.SuspendLayout()
+        Me.SetControlsEnabled(False, True)
+        Me.ShowNoInfo(False)
 
-            If doMI Then
-                If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
+        If doMI Then
+            If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
 
-                Me.txtMetaData.Clear()
-                Me.pbMILoading.Visible = True
+            Me.txtMetaData.Clear()
+            Me.pbMILoading.Visible = True
 
-                Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
-                Me.bwMetaInfo.WorkerSupportsCancellation = True
-                Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
+            Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
+            Me.bwMetaInfo.WorkerSupportsCancellation = True
+            Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
+        End If
+
+        If doInfo Then
+            Me.ClearInfo()
+
+            If Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.CancellationPending Then
+                Me.bwLoadMovieInfo.CancelAsync()
             End If
 
-            If doInfo Then
-                Me.ClearInfo()
+            While Me.bwLoadMovieInfo.IsBusy
+                Application.DoEvents()
+            End While
 
-                If Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.CancellationPending Then
-                    Me.bwLoadMovieInfo.CancelAsync()
-                End If
-
-                While Me.bwLoadMovieInfo.IsBusy
-                    Application.DoEvents()
-                End While
-
-                Me.bwLoadMovieInfo = New System.ComponentModel.BackgroundWorker
-                Me.bwLoadMovieInfo.WorkerSupportsCancellation = True
-                Me.bwLoadMovieInfo.RunWorkerAsync(New Arguments With {.ID = ID})
-            End If
-        Catch ex As Exception
-            Me.SetControlsEnabled(True)
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            Me.bwLoadMovieInfo = New System.ComponentModel.BackgroundWorker
+            Me.bwLoadMovieInfo.WorkerSupportsCancellation = True
+            Me.bwLoadMovieInfo.RunWorkerAsync(New Arguments With {.ID = ID})
+        End If
     End Sub
 
     Private Sub LoadMovieSetInfo(ByVal ID As Integer, ByVal doInfo As Boolean)
-        Try
-            Me.dgvMovieSets.SuspendLayout()
-            Me.SetControlsEnabled(False, True)
-            Me.ShowNoInfo(False)
+        Me.dgvMovieSets.SuspendLayout()
+        Me.SetControlsEnabled(False, True)
+        Me.ShowNoInfo(False)
 
-            If doInfo Then
-                Me.ClearInfo()
+        If doInfo Then
+            Me.ClearInfo()
 
-                If Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.CancellationPending Then
-                    Me.bwLoadMovieSetInfo.CancelAsync()
-                End If
-
-                While Me.bwLoadMovieSetInfo.IsBusy
-                    Application.DoEvents()
-                End While
-
-                Me.bwLoadMovieSetInfo = New System.ComponentModel.BackgroundWorker
-                Me.bwLoadMovieSetInfo.WorkerSupportsCancellation = True
-                Me.bwLoadMovieSetInfo.RunWorkerAsync(New Arguments With {.ID = ID})
+            If Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.CancellationPending Then
+                Me.bwLoadMovieSetInfo.CancelAsync()
             End If
-        Catch ex As Exception
-            Me.SetControlsEnabled(True)
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+
+            While Me.bwLoadMovieSetInfo.IsBusy
+                Application.DoEvents()
+            End While
+
+            Me.bwLoadMovieSetInfo = New System.ComponentModel.BackgroundWorker
+            Me.bwLoadMovieSetInfo.WorkerSupportsCancellation = True
+            Me.bwLoadMovieSetInfo.RunWorkerAsync(New Arguments With {.ID = ID})
+        End If
     End Sub
 
     Private Sub LoadSeasonInfo(ByVal ShowID As Integer, ByVal Season As Integer)
-        Try
-            Me.dgvTVSeasons.SuspendLayout()
-            Me.SetControlsEnabled(False, True)
-            Me.ShowNoInfo(False)
+        Me.dgvTVSeasons.SuspendLayout()
+        Me.SetControlsEnabled(False, True)
+        Me.ShowNoInfo(False)
 
-            If Not Me.currThemeType = Theming.ThemeType.Show Then
-                Me.ApplyTheme(Theming.ThemeType.Show)
-            End If
+        If Not Me.currThemeType = Theming.ThemeType.Show Then
+            Me.ApplyTheme(Theming.ThemeType.Show)
+        End If
 
-            Me.ClearInfo()
+        Me.ClearInfo()
 
-            Me.bwLoadSeasonInfo = New System.ComponentModel.BackgroundWorker
-            Me.bwLoadSeasonInfo.WorkerSupportsCancellation = True
-            Me.bwLoadSeasonInfo.RunWorkerAsync(New Arguments With {.ID = ShowID, .Season = Season})
+        Me.bwLoadSeasonInfo = New System.ComponentModel.BackgroundWorker
+        Me.bwLoadSeasonInfo.WorkerSupportsCancellation = True
+        Me.bwLoadSeasonInfo.RunWorkerAsync(New Arguments With {.ID = ShowID, .Season = Season})
 
-            Me.FillEpisodes(ShowID, Season)
-
-        Catch ex As Exception
-            Me.SetControlsEnabled(True)
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.FillEpisodes(ShowID, Season)
     End Sub
 
     Private Sub LoadShowInfo(ByVal ID As Integer)
-        Try
-            Me.dgvTVShows.SuspendLayout()
-            Me.SetControlsEnabled(False, True)
-            Me.ShowNoInfo(False)
+        Me.dgvTVShows.SuspendLayout()
+        Me.SetControlsEnabled(False, True)
+        Me.ShowNoInfo(False)
 
-            If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
+        If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
 
-            Me.ClearInfo()
+        Me.ClearInfo()
 
-            Me.bwLoadShowInfo = New System.ComponentModel.BackgroundWorker
-            Me.bwLoadShowInfo.WorkerSupportsCancellation = True
-            Me.bwLoadShowInfo.RunWorkerAsync(New Arguments With {.ID = ID})
+        Me.bwLoadShowInfo = New System.ComponentModel.BackgroundWorker
+        Me.bwLoadShowInfo.WorkerSupportsCancellation = True
+        Me.bwLoadShowInfo.RunWorkerAsync(New Arguments With {.ID = ID})
 
-            Me.FillSeasons(ID)
-
-        Catch ex As Exception
-            Me.SetControlsEnabled(True)
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.FillSeasons(ID)
     End Sub
 
     Private Sub lstActors_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstActors.SelectedValueChanged
@@ -13712,13 +13608,13 @@ doCancel:
         Else
             Select Case sType
                 Case Enums.ScrapeType.FullAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1349, "Scraping Media (Selected MovieSets - Ask):")
                 Case Enums.ScrapeType.FullAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1350, "Scraping Media (Selected MovieSets - Auto):")
                 Case Enums.ScrapeType.FullSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1351, "Scraping Media (Selected MovieSets - Skip):")
                 Case Enums.ScrapeType.SingleField
-                    Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1348, "Scraping Media (Selected MovieSets - Single Field):")
             End Select
         End If
 
@@ -15117,7 +15013,6 @@ doCancel:
         Dim ShowID As Integer = -1
 
         Dim hasSubtitles As Boolean = False
-        Dim hasWatched As Boolean = False
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
@@ -15162,7 +15057,6 @@ doCancel:
             'assume invalid nfo if no title
             tmpShowDb.EpNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVEp.Title), String.Empty, eContainer.Nfo)
 
-            hasWatched = Not String.IsNullOrEmpty(tmpShowDb.TVEp.Playcount) AndAlso Not tmpShowDb.TVEp.Playcount = "0"
             hasSubtitles = eContainer.Subtitles.Count > 0 OrElse tmpShowDb.TVEp.FileInfo.StreamDetails.Subtitle.Count > 0
 
             Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idEpisode")) = ID Select drvRow
@@ -15188,7 +15082,6 @@ doCancel:
                     Me.Invoke(myDelegate, New Object() {dRow(0), "Director", tmpShowDb.TVEp.Director})
                     Me.Invoke(myDelegate, New Object() {dRow(0), "FanartPath", tmpShowDb.EpFanartPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), "HasSub", hasSubtitles})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), "HasWatched", hasWatched})
                     Me.Invoke(myDelegate, New Object() {dRow(0), "New", False})
                     Me.Invoke(myDelegate, New Object() {dRow(0), "NfoPath", tmpShowDb.EpNfoPath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), "Playcount", tmpShowDb.TVEp.Playcount})
@@ -15206,7 +15099,6 @@ doCancel:
                     DirectCast(dRow(0), DataRow).Item("Director") = tmpShowDb.TVEp.Director
                     DirectCast(dRow(0), DataRow).Item("FanartPath") = tmpShowDb.EpFanartPath
                     DirectCast(dRow(0), DataRow).Item("HasSub") = hasSubtitles
-                    DirectCast(dRow(0), DataRow).Item("HasWatched") = hasWatched
                     DirectCast(dRow(0), DataRow).Item("New") = False
                     DirectCast(dRow(0), DataRow).Item("NfoPath") = tmpShowDb.EpNfoPath
                     DirectCast(dRow(0), DataRow).Item("Playcount") = tmpShowDb.TVEp.Playcount
@@ -15256,7 +15148,6 @@ doCancel:
 
         Dim hasSet As Boolean = False
         Dim hasSubtitles As Boolean = False
-        Dim hasWatched As Boolean = False
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
@@ -15361,7 +15252,6 @@ doCancel:
 
             hasSet = tmpMovieDB.Movie.Sets.Count > 0
             hasSubtitles = mContainer.Subtitles.Count > 0 OrElse tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
-            hasWatched = Not String.IsNullOrEmpty(tmpMovieDB.Movie.PlayCount) AndAlso Not tmpMovieDB.Movie.PlayCount = "0"
 
             Dim dRow = From drvRow In dtMovies.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idMovie")) = ID Select drvRow
 
@@ -15391,7 +15281,6 @@ doCancel:
                     Me.Invoke(myDelegate, New Object() {dRow(0), "Genre", tmpMovieDB.Movie.Genre})
                     Me.Invoke(myDelegate, New Object() {dRow(0), "HasSet", hasSet})
                     Me.Invoke(myDelegate, New Object() {dRow(0), "HasSub", hasSubtitles})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), "HasWatched", hasWatched})
                     Me.Invoke(myDelegate, New Object() {dRow(0), "Imdb", tmpMovieDB.Movie.ID})
                     Me.Invoke(myDelegate, New Object() {dRow(0), "LandscapePath", tmpMovieDB.LandscapePath})
                     Me.Invoke(myDelegate, New Object() {dRow(0), "ListTitle", tmpMovieDB.ListTitle})
@@ -15438,7 +15327,6 @@ doCancel:
                     selRow.Item("Genre") = tmpMovieDB.Movie.Genre
                     selRow.Item("HasSet") = hasSet
                     selRow.Item("HasSub") = hasSubtitles
-                    selRow.Item("HasWatched") = hasWatched
                     selRow.Item("Imdb") = tmpMovieDB.Movie.ID
                     selRow.Item("LandscapePath") = tmpMovieDB.LandscapePath
                     selRow.Item("ListTitle") = tmpMovieDB.ListTitle
@@ -16090,7 +15978,7 @@ doCancel:
                 If(CheckColumnHide_Movies("HasSub"), 20, 0) - _
                 If(CheckColumnHide_Movies("HasTheme"), 20, 0) - _
                 If(CheckColumnHide_Movies("HasTrailer"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasWatched"), 20, 0) - _
+                If(CheckColumnHide_Movies("Playcount"), 20, 0) - _
                 If(Me.dgvMovies.DisplayRectangle.Height > Me.dgvMovies.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
@@ -16129,7 +16017,7 @@ doCancel:
                 If(CheckColumnHide_TVShows("HasNfo"), 20, 0) - _
                 If(CheckColumnHide_TVShows("HasPoster"), 20, 0) - _
                 If(CheckColumnHide_TVShows("HasTheme"), 20, 0) - _
-                If(CheckColumnHide_TVShows("HasWatched"), 20, 0) - _
+                If(CheckColumnHide_TVShows("Playcount"), 20, 0) - _
                 If(Me.dgvTVShows.DisplayRectangle.Height > Me.dgvTVShows.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
@@ -16139,7 +16027,7 @@ doCancel:
                 If(CheckColumnHide_TVSeasons("HasFanart"), 20, 0) - _
                 If(CheckColumnHide_TVSeasons("HasLandscape"), 20, 0) - _
                 If(CheckColumnHide_TVSeasons("HasPoster"), 20, 0) - _
-                If(CheckColumnHide_TVSeasons("HasWatched"), 20, 0) - _
+                If(CheckColumnHide_TVSeasons("Playcount"), 20, 0) - _
                 If(Me.dgvTVSeasons.DisplayRectangle.Height > Me.dgvTVSeasons.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
@@ -16149,7 +16037,7 @@ doCancel:
                 If(CheckColumnHide_TVEpisodes("HasNfo"), 20, 0) - _
                 If(CheckColumnHide_TVEpisodes("HasPoster"), 20, 0) - _
                 If(CheckColumnHide_TVEpisodes("HasSub"), 20, 0) - _
-                If(CheckColumnHide_TVEpisodes("HasWatched"), 20, 0) - _
+                If(CheckColumnHide_TVEpisodes("Playcount"), 20, 0) - _
                 If(Me.dgvTVEpisodes.DisplayRectangle.Height > Me.dgvTVEpisodes.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
@@ -17603,12 +17491,12 @@ doCancel:
                 Me.dgvMovies.Columns("FanartPath").Visible = Not CheckColumnHide_Movies("FanartPath")
                 Me.dgvMovies.Columns("HasSet").Visible = Not CheckColumnHide_Movies("HasSet")
                 Me.dgvMovies.Columns("HasSub").Visible = Not CheckColumnHide_Movies("HasSub")
-                Me.dgvMovies.Columns("HasWatched").Visible = Not CheckColumnHide_Movies("HasWatched")
                 Me.dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
                 Me.dgvMovies.Columns("LandscapePath").Visible = Not CheckColumnHide_Movies("LandscapePath")
                 Me.dgvMovies.Columns("MPAA").Visible = Not CheckColumnHide_Movies("MPAA")
                 Me.dgvMovies.Columns("NfoPath").Visible = Not CheckColumnHide_Movies("NfoPath")
                 Me.dgvMovies.Columns("OriginalTitle").Visible = Not CheckColumnHide_Movies("OriginalTitle")
+                Me.dgvMovies.Columns("Playcount").Visible = Not CheckColumnHide_Movies("Playcount")
                 Me.dgvMovies.Columns("PosterPath").Visible = Not CheckColumnHide_Movies("PosterPath")
                 Me.dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
                 Me.dgvMovies.Columns("ThemePath").Visible = Not CheckColumnHide_Movies("ThemePath")
@@ -17653,7 +17541,7 @@ doCancel:
                 Me.dgvTVEpisodes.Columns("FanartPath").Visible = Not CheckColumnHide_TVEpisodes("FanartPath")
                 Me.dgvTVEpisodes.Columns("PosterPath").Visible = Not CheckColumnHide_TVEpisodes("PosterPath")
                 Me.dgvTVEpisodes.Columns("HasSub").Visible = Not CheckColumnHide_TVEpisodes("HasSub")
-                Me.dgvTVEpisodes.Columns("HasWatched").Visible = Not CheckColumnHide_TVEpisodes("HasWatched")
+                Me.dgvTVEpisodes.Columns("Playcount").Visible = Not CheckColumnHide_TVEpisodes("Playcount")
             End If
 
             'might as well wait for these
@@ -19019,130 +18907,108 @@ doCancel:
     End Sub
 
     Private Sub FilterMovement_Movies()
-        Try
-            If Me.FilterRaise_Movies Then
-                Me.pnlFilter_Movies.AutoSize = True
-            Else
-                Me.pnlFilter_Movies.AutoSize = False
-                Me.pnlFilter_Movies.Height = Me.pnlFilterTop_Movies.Height
-            End If
+        If Me.FilterRaise_Movies Then
+            Me.pnlFilter_Movies.AutoSize = True
+        Else
+            Me.pnlFilter_Movies.AutoSize = False
+            Me.pnlFilter_Movies.Height = Me.pnlFilterTop_Movies.Height
+        End If
 
-            If Me.pnlFilter_Movies.Height = Me.pnlFilterTop_Movies.Height Then
-                Me.btnFilterUp_Movies.Enabled = True
-                Me.btnFilterDown_Movies.Enabled = False
-            ElseIf Me.pnlFilter_Movies.AutoSize Then
-                Me.btnFilterUp_Movies.Enabled = False
-                Me.btnFilterDown_Movies.Enabled = True
-            End If
+        If Me.pnlFilter_Movies.Height = Me.pnlFilterTop_Movies.Height Then
+            Me.btnFilterUp_Movies.Enabled = True
+            Me.btnFilterDown_Movies.Enabled = False
+        ElseIf Me.pnlFilter_Movies.AutoSize Then
+            Me.btnFilterUp_Movies.Enabled = False
+            Me.btnFilterDown_Movies.Enabled = True
+        End If
 
-            Me.dgvMovies.Invalidate()
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.dgvMovies.Invalidate()
     End Sub
 
     Private Sub FilterMovement_MovieSets()
-        Try
-            If Me.FilterRaise_MovieSets Then
-                Me.pnlFilter_MovieSets.AutoSize = True
-            Else
-                Me.pnlFilter_MovieSets.AutoSize = False
-                Me.pnlFilter_MovieSets.Height = Me.pnlFilterTop_MovieSets.Height
-            End If
+        If Me.FilterRaise_MovieSets Then
+            Me.pnlFilter_MovieSets.AutoSize = True
+        Else
+            Me.pnlFilter_MovieSets.AutoSize = False
+            Me.pnlFilter_MovieSets.Height = Me.pnlFilterTop_MovieSets.Height
+        End If
 
-            If Me.pnlFilter_MovieSets.Height = Me.pnlFilterTop_MovieSets.Height Then
-                Me.btnFilterUp_MovieSets.Enabled = True
-                Me.btnFilterDown_MovieSets.Enabled = False
-            ElseIf Me.pnlFilter_MovieSets.AutoSize Then
-                Me.btnFilterUp_MovieSets.Enabled = False
-                Me.btnFilterDown_MovieSets.Enabled = True
-            End If
+        If Me.pnlFilter_MovieSets.Height = Me.pnlFilterTop_MovieSets.Height Then
+            Me.btnFilterUp_MovieSets.Enabled = True
+            Me.btnFilterDown_MovieSets.Enabled = False
+        ElseIf Me.pnlFilter_MovieSets.AutoSize Then
+            Me.btnFilterUp_MovieSets.Enabled = False
+            Me.btnFilterDown_MovieSets.Enabled = True
+        End If
 
-            Me.dgvMovieSets.Invalidate()
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.dgvMovieSets.Invalidate()
     End Sub
 
     Private Sub FilterMovement_Shows()
-        Try
-            If Me.FilterRaise_Shows Then
-                Me.pnlFilter_Shows.AutoSize = True
-            Else
-                Me.pnlFilter_Shows.AutoSize = False
-                Me.pnlFilter_Shows.Height = Me.pnlFilterTop_Shows.Height
-            End If
+        If Me.FilterRaise_Shows Then
+            Me.pnlFilter_Shows.AutoSize = True
+        Else
+            Me.pnlFilter_Shows.AutoSize = False
+            Me.pnlFilter_Shows.Height = Me.pnlFilterTop_Shows.Height
+        End If
 
-            If Me.pnlFilter_Shows.Height = Me.pnlFilterTop_Shows.Height Then
-                Me.btnFilterUp_Shows.Enabled = True
-                Me.btnFilterDown_Shows.Enabled = False
-            ElseIf Me.pnlFilter_Shows.AutoSize Then
-                Me.btnFilterUp_Shows.Enabled = False
-                Me.btnFilterDown_Shows.Enabled = True
-            End If
+        If Me.pnlFilter_Shows.Height = Me.pnlFilterTop_Shows.Height Then
+            Me.btnFilterUp_Shows.Enabled = True
+            Me.btnFilterDown_Shows.Enabled = False
+        ElseIf Me.pnlFilter_Shows.AutoSize Then
+            Me.btnFilterUp_Shows.Enabled = False
+            Me.btnFilterDown_Shows.Enabled = True
+        End If
 
-            Me.dgvTVShows.Invalidate()
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Me.dgvTVShows.Invalidate()
     End Sub
 
     Private Sub tmrLoadEp_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadEp.Tick
         Me.tmrWaitEp.Stop()
         Me.tmrLoadEp.Stop()
-        Try
 
-            If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
+        If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
 
-                If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
-                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count))
-                ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
-                    Me.SetStatus(Me.dgvTVEpisodes.SelectedRows(0).Cells("Title").Value.ToString)
-                End If
-
-                Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
+            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+                Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count))
+            ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
+                Me.SetStatus(Me.dgvTVEpisodes.SelectedRows(0).Cells("Title").Value.ToString)
             End If
-        Catch
-        End Try
+
+            Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
+        End If
     End Sub
 
     Private Sub tmrLoadSeason_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadSeason.Tick
         Me.tmrWaitSeason.Stop()
         Me.tmrLoadSeason.Stop()
-        Try
-            If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
 
-                If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
-                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count))
-                ElseIf Me.dgvMovies.SelectedRows.Count = 1 Then
-                    Me.SetStatus(Me.dgvTVSeasons.SelectedRows(0).Cells(1).Value.ToString)
-                End If
+        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
 
-                Me.SelectSeasonRow(Me.dgvTVSeasons.SelectedRows(0).Index)
+            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
+                Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count))
+            ElseIf Me.dgvMovies.SelectedRows.Count = 1 Then
+                Me.SetStatus(Me.dgvTVSeasons.SelectedRows(0).Cells(1).Value.ToString)
             End If
-        Catch
-        End Try
+
+            Me.SelectSeasonRow(Me.dgvTVSeasons.SelectedRows(0).Index)
+        End If
     End Sub
 
     Private Sub tmrLoadShow_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadShow.Tick
         Me.tmrWaitShow.Stop()
         Me.tmrLoadShow.Stop()
-        Try
-            If Me.dgvTVShows.SelectedRows.Count > 0 Then
 
-                If Me.dgvTVShows.SelectedRows.Count > 1 Then
-                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
-                ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
-                    Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells("ListTitle").Value.ToString)
-                End If
+        If Me.dgvTVShows.SelectedRows.Count > 0 Then
 
-                Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
+            If Me.dgvTVShows.SelectedRows.Count > 1 Then
+                Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
+            ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
+                Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells("ListTitle").Value.ToString)
             End If
-        Catch
-        End Try
+
+            Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
+        End If
     End Sub
 
     Private Sub tmrLoadMovie_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadMovie.Tick
@@ -19164,19 +19030,17 @@ doCancel:
     Private Sub tmrLoadMovieSet_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadMovieSet.Tick
         Me.tmrWaitMovieSet.Stop()
         Me.tmrLoadMovieSet.Stop()
-        Try
-            If Me.dgvMovieSets.SelectedRows.Count > 0 Then
 
-                If Me.dgvMovieSets.SelectedRows.Count > 1 Then
-                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMovieSets.SelectedRows.Count))
-                ElseIf Me.dgvMovieSets.SelectedRows.Count = 1 Then
-                    Me.SetStatus(Me.dgvMovieSets.SelectedRows(0).Cells("ListTitle").Value.ToString)
-                End If
+        If Me.dgvMovieSets.SelectedRows.Count > 0 Then
 
-                Me.SelectMovieSetRow(Me.dgvMovieSets.SelectedRows(0).Index)
+            If Me.dgvMovieSets.SelectedRows.Count > 1 Then
+                Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMovieSets.SelectedRows.Count))
+            ElseIf Me.dgvMovieSets.SelectedRows.Count = 1 Then
+                Me.SetStatus(Me.dgvMovieSets.SelectedRows(0).Cells("ListTitle").Value.ToString)
             End If
-        Catch
-        End Try
+
+            Me.SelectMovieSetRow(Me.dgvMovieSets.SelectedRows(0).Index)
+        End If
     End Sub
 
     Private Sub tmrSearchWait_Movies_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_Movies.Tick
@@ -19192,47 +19056,45 @@ doCancel:
         Me.tmrSearchWait_Movies.Enabled = False
         Me.tmrSearch_Movies.Enabled = False
         bDoingSearch_Movies = True
-        Try
-            If Not String.IsNullOrEmpty(Me.txtSearchMovies.Text) Then
+
+        If Not String.IsNullOrEmpty(Me.txtSearchMovies.Text) Then
+            Me.FilterArray_Movies.Remove(Me.filSearch_Movies)
+            Me.filSearch_Movies = String.Empty
+
+            Select Case Me.cbSearchMovies.Text
+                Case Master.eLang.GetString(21, "Title")
+                    Me.filSearch_Movies = String.Concat("Title LIKE '%", Me.txtSearchMovies.Text, "%'")
+                    Me.FilterArray_Movies.Add(Me.filSearch_Movies)
+                Case Master.eLang.GetString(302, "Original Title")
+                    Me.filSearch_Movies = String.Concat("OriginalTitle LIKE '%", Me.txtSearchMovies.Text, "%'")
+                    Me.FilterArray_Movies.Add(Me.filSearch_Movies)
+                Case Master.eLang.GetString(100, "Actor")
+                    Me.filSearch_Movies = Me.txtSearchMovies.Text
+                Case Master.eLang.GetString(233, "Role")
+                    Me.filSearch_Movies = Me.txtSearchMovies.Text
+                Case Master.eLang.GetString(62, "Director")
+                    Me.filSearch_Movies = String.Concat("Director LIKE '%", Me.txtSearchMovies.Text, "%'")
+                    Me.FilterArray_Movies.Add(Me.filSearch_Movies)
+                Case Master.eLang.GetString(729, "Credits")
+                    Me.filSearch_Movies = String.Concat("Credits LIKE '%", Me.txtSearchMovies.Text, "%'")
+                    Me.FilterArray_Movies.Add(Me.filSearch_Movies)
+                Case Master.eLang.GetString(301, "Country")
+                    Me.filSearch_Movies = String.Concat("Country LIKE '%", Me.txtSearchMovies.Text, "%'")
+                    Me.FilterArray_Movies.Add(Me.filSearch_Movies)
+                Case Master.eLang.GetString(395, "Studio")
+                    Me.filSearch_Movies = String.Concat("Studio LIKE '%", Me.txtSearchMovies.Text, "%'")
+                    Me.FilterArray_Movies.Add(Me.filSearch_Movies)
+            End Select
+
+            Me.RunFilter_Movies(Me.cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") OrElse Me.cbSearchMovies.Text = Master.eLang.GetString(233, "Role"))
+
+        Else
+            If Not String.IsNullOrEmpty(Me.filSearch_Movies) Then
                 Me.FilterArray_Movies.Remove(Me.filSearch_Movies)
                 Me.filSearch_Movies = String.Empty
-
-                Select Case Me.cbSearchMovies.Text
-                    Case Master.eLang.GetString(21, "Title")
-                        Me.filSearch_Movies = String.Concat("Title LIKE '%", Me.txtSearchMovies.Text, "%'")
-                        Me.FilterArray_Movies.Add(Me.filSearch_Movies)
-                    Case Master.eLang.GetString(302, "Original Title")
-                        Me.filSearch_Movies = String.Concat("OriginalTitle LIKE '%", Me.txtSearchMovies.Text, "%'")
-                        Me.FilterArray_Movies.Add(Me.filSearch_Movies)
-                    Case Master.eLang.GetString(100, "Actor")
-                        Me.filSearch_Movies = Me.txtSearchMovies.Text
-                    Case Master.eLang.GetString(233, "Role")
-                        Me.filSearch_Movies = Me.txtSearchMovies.Text
-                    Case Master.eLang.GetString(62, "Director")
-                        Me.filSearch_Movies = String.Concat("Director LIKE '%", Me.txtSearchMovies.Text, "%'")
-                        Me.FilterArray_Movies.Add(Me.filSearch_Movies)
-                    Case Master.eLang.GetString(729, "Credits")
-                        Me.filSearch_Movies = String.Concat("Credits LIKE '%", Me.txtSearchMovies.Text, "%'")
-                        Me.FilterArray_Movies.Add(Me.filSearch_Movies)
-                    Case Master.eLang.GetString(301, "Country")
-                        Me.filSearch_Movies = String.Concat("Country LIKE '%", Me.txtSearchMovies.Text, "%'")
-                        Me.FilterArray_Movies.Add(Me.filSearch_Movies)
-                    Case Master.eLang.GetString(395, "Studio")
-                        Me.filSearch_Movies = String.Concat("Studio LIKE '%", Me.txtSearchMovies.Text, "%'")
-                        Me.FilterArray_Movies.Add(Me.filSearch_Movies)
-                End Select
-
-                Me.RunFilter_Movies(Me.cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") OrElse Me.cbSearchMovies.Text = Master.eLang.GetString(233, "Role"))
-
-            Else
-                If Not String.IsNullOrEmpty(Me.filSearch_Movies) Then
-                    Me.FilterArray_Movies.Remove(Me.filSearch_Movies)
-                    Me.filSearch_Movies = String.Empty
-                End If
-                Me.RunFilter_Movies(True)
             End If
-        Catch
-        End Try
+            Me.RunFilter_Movies(True)
+        End If
     End Sub
 
     Private Sub tmrSearchWait_MovieSets_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_MovieSets.Tick
@@ -19248,28 +19110,26 @@ doCancel:
         Me.tmrSearchWait_MovieSets.Enabled = False
         Me.tmrSearch_MovieSets.Enabled = False
         bDoingSearch_MovieSets = True
-        Try
-            If Not String.IsNullOrEmpty(Me.txtSearchMovieSets.Text) Then
+
+        If Not String.IsNullOrEmpty(Me.txtSearchMovieSets.Text) Then
+            Me.FilterArray_MovieSets.Remove(Me.filSearch_MovieSets)
+            Me.filSearch_MovieSets = String.Empty
+
+            Select Case Me.cbSearchMovieSets.Text
+                Case Master.eLang.GetString(21, "Title")
+                    Me.filSearch_MovieSets = String.Concat("SetName LIKE '%", Me.txtSearchMovieSets.Text, "%'")
+                    Me.FilterArray_MovieSets.Add(Me.filSearch_MovieSets)
+            End Select
+
+            Me.RunFilter_MovieSets(False)
+
+        Else
+            If Not String.IsNullOrEmpty(Me.filSearch_MovieSets) Then
                 Me.FilterArray_MovieSets.Remove(Me.filSearch_MovieSets)
                 Me.filSearch_MovieSets = String.Empty
-
-                Select Case Me.cbSearchMovieSets.Text
-                    Case Master.eLang.GetString(21, "Title")
-                        Me.filSearch_MovieSets = String.Concat("SetName LIKE '%", Me.txtSearchMovieSets.Text, "%'")
-                        Me.FilterArray_MovieSets.Add(Me.filSearch_MovieSets)
-                End Select
-
-                Me.RunFilter_MovieSets(False)
-
-            Else
-                If Not String.IsNullOrEmpty(Me.filSearch_MovieSets) Then
-                    Me.FilterArray_MovieSets.Remove(Me.filSearch_MovieSets)
-                    Me.filSearch_MovieSets = String.Empty
-                End If
-                Me.RunFilter_MovieSets(True)
             End If
-        Catch
-        End Try
+            Me.RunFilter_MovieSets(True)
+        End If
     End Sub
 
     Private Sub tmrSearchWait_Shows_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_Shows.Tick

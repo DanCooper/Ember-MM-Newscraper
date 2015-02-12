@@ -1437,4 +1437,8 @@
   <string id="1345">MovieSet Informations Only</string>
   <string id="1346">Subtitles Only</string>
   <string id="1347">Upgrading database...</string>
+  <string id="1348">Scraping Media (Selected Movies - Single Field):</string>
+  <string id="1349">Scraping Media (Selected Movies - Ask):</string>
+  <string id="1350">Scraping Media (Selected Movies - Auto):</string>
+  <string id="1351">Scraping Media (Selected Movies - Skip):</string>
 </strings>

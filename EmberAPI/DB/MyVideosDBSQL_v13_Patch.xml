@@ -860,7 +860,6 @@
         Director,
         Credits,
         Playcount,
-        HasWatched,
         Trailer,
         EThumbsPath,
         NfoPath,
@@ -916,7 +915,6 @@
         Director,
         Credits,
         Playcount,
-        HasWatched,
         Trailer,
         EThumbsPath,
         NfoPath,
@@ -973,7 +971,6 @@
         Director        text,
         Credits         text,
         Playcount       text,
-        HasWatched      bool NOT NULL DEFAULT 0,
         Trailer         text,
         EThumbsPath     text,
         NfoPath         text,
@@ -1028,7 +1025,6 @@
         Director,
         Credits,
         Playcount,
-        HasWatched,
         Trailer,
         EThumbsPath,
         NfoPath,
@@ -1081,7 +1077,6 @@
         Director,
         Credits,
         Playcount,
-        HasWatched,
         Trailer,
         EThumbsPath,
         NfoPath,
@@ -1167,7 +1162,6 @@
         NeedsSave,
         Missing,
         Playcount,
-        HasWatched,
         DisplaySeason,
         DisplayEpisode,
         DateAdded,
@@ -1198,7 +1192,6 @@
         NeedsSave,
         Missing,
         Playcount,
-        HasWatched,
         DisplaySeason,
         DisplayEpisode,
         DateAdded,
@@ -1230,7 +1223,6 @@
         NeedsSave       bool NOT NULL DEFAULT 0,
         Missing         bool NOT NULL DEFAULT 0,
         Playcount       text,
-        HasWatched      bool NOT NULL DEFAULT 0,
         DisplaySeason   integer,
         DisplayEpisode  integer,
         DateAdded       integer,
@@ -1260,7 +1252,6 @@
         NeedsSave,
         Missing,
         Playcount,
-        HasWatched,
         DisplaySeason,
         DisplayEpisode,
         DateAdded,
@@ -1288,7 +1279,6 @@
         NeedsSave,
         Missing,
         Playcount,
-        HasWatched,
         DisplaySeason,
         DisplayEpisode,
         DateAdded,
@@ -1702,7 +1692,10 @@
         banner.url AS BannerPath,
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
-        poster.url AS PosterPath
+        poster.url AS PosterPath,
+        COUNT(DISTINCT episodelist.idEpisode) AS Episodes,
+        COUNT(episodelist.Playcount) AS Playcount,
+        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(episodelist.Playcount) THEN 1 ELSE 0 END AS HasWatched
         FROM
         seasons
         LEFT OUTER JOIN art AS banner ON (banner.media_id = seasons.idSeason)
@@ -1716,7 +1709,12 @@
         AND (landscape.type = 'landscape')
         LEFT OUTER JOIN art AS poster ON (poster.media_id = seasons.idSeason)
         AND (poster.media_type = 'season')
-        AND (poster.type = 'poster');
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN episodelist ON (seasons.Season = episodelist.Season)
+        AND (seasons.idShow = episodelist.idShow)
+        AND (episodelist.Missing = 0)
+        GROUP BY
+        seasons.idSeason;
       </execute>
     </command>
     <command type="DB">
@@ -1732,7 +1730,10 @@
         clearlogo.url AS ClearLogoPath,
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
-        poster.url AS PosterPath
+        poster.url AS PosterPath,
+        COUNT(DISTINCT episodelist.idEpisode) AS Episodes,
+        COUNT(episodelist.Playcount) AS Playcount,
+        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(episodelist.Playcount) THEN 1 ELSE 0 END AS HasWatched
         FROM
         tvshow
         LEFT OUTER JOIN art AS banner ON (banner.media_id = tvshow.idShow)
@@ -1755,7 +1756,11 @@
         AND (landscape.type = 'landscape')
         LEFT OUTER JOIN art AS poster ON (poster.media_id = tvshow.idShow)
         AND (poster.media_type = 'tvshow')
-        AND (poster.type = 'poster');
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN episodelist ON (tvshow.idShow = episodelist.idShow)
+        AND (episodelist.Missing = 0)
+        GROUP BY
+        tvshow.idShow;
       </execute>
     </command>
   </transaction>

@@ -1064,7 +1064,7 @@ Public Class Database
             SQLcommand.CommandText = String.Concat("SELECT idMovie, MoviePath, Type, ListTitle, HasSub, ", _
                                                    "New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, ", _
                                                    "Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
-                                                   "Director, Credits, Playcount, HasWatched, Trailer, EThumbsPath, NfoPath, ", _
+                                                   "Director, Credits, Playcount, Trailer, EThumbsPath, NfoPath, ", _
                                                    "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, ", _
                                                    "DateAdded, EFanartsPath, ", _
                                                    "ThemePath, TMDB, ", _
@@ -1400,7 +1400,7 @@ Public Class Database
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT idEpisode, idShow, Episode, Title, New, Mark, TVEpPathID, Source, Lock, ", _
                                                    "Season, Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount, ", _
-                                                   "HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub FROM episode WHERE idEpisode = ", EpID, ";")
+                                                   "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub FROM episode WHERE idEpisode = ", EpID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     SQLreader.Read()
@@ -1847,6 +1847,8 @@ Public Class Database
                 PrepareTable_studio("idShow", "tvshow", True)
                 PrepareTable_writer("idEpisode", "episode", True)
                 PrepareTable_writer("idMovie", "movie", True)
+                PreparePlaycounts("episode", True)
+                PreparePlaycounts("movie", True)
         End Select
 
         SQLtransaction.Commit()
@@ -2072,6 +2074,18 @@ Public Class Database
         If Not BatchMode Then SQLtransaction.Commit()
     End Sub
 
+    Private Sub PreparePlaycounts(ByVal table As String, ByVal BatchMode As Boolean)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("UPDATE {0} SET Playcount = NULL WHERE Playcount = 0 OR Playcount = """";", table)
+            SQLcommand.ExecuteNonQuery()
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
     '  Public Function CheckEssentials() As Boolean
     'Dim needUpdate As Boolean = False
     'Dim lhttp As New HTTP
@@ -2111,20 +2125,20 @@ Public Class Database
                 SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (", _
                  "MoviePath, Type, ListTitle, HasSub, New, Mark, Source, Imdb, Lock, ", _
                  "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
-                 "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, ", _
+                 "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ", _
                  "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
                  "DateAdded, EFanartsPath, ThemePath, ", _
                  "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
             Else
                 SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (", _
                  "idMovie, MoviePath, Type, ListTitle, HasSub, New, Mark, Source, Imdb, Lock, ", _
                  "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
-                 "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, ", _
+                 "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ", _
                  "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
                  "DateAdded, EFanartsPath, ThemePath, ", _
                  "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
                 Dim parMovieID As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("paridMovie", DbType.Int32, 0, "idMovie")
                 parMovieID.Value = _movieDB.ID
             End If
@@ -2157,7 +2171,6 @@ Public Class Database
             Dim par_movie_Director As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Director", DbType.String, 0, "Director")
             Dim par_movie_Credits As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Credits", DbType.String, 0, "Credits")
             Dim par_movie_Playcount As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Playcount", DbType.String, 0, "Playcount")
-            Dim par_movie_HasWatched As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_HasWatched", DbType.Boolean, 0, "HasWatched")
             Dim par_movie_Trailer As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Trailer", DbType.String, 0, "Trailer")
             Dim par_movie_NfoPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_NfoPath", DbType.String, 0, "NfoPath")
             Dim par_movie_TrailerPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TrailerPath", DbType.String, 0, "TrailerPath")
@@ -2251,7 +2264,6 @@ Public Class Database
 
             par_movie_HasSet.Value = _movieDB.Movie.Sets.Count > 0
             par_movie_HasSub.Value = _movieDB.Subtitles.Count > 0 OrElse _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
-            par_movie_HasWatched.Value = Not String.IsNullOrEmpty(_movieDB.Movie.PlayCount) AndAlso Not _movieDB.Movie.PlayCount = "0"
 
             par_movie_Lock.Value = _movieDB.IsLock
             par_movie_Mark.Value = _movieDB.IsMark
@@ -2261,30 +2273,32 @@ Public Class Database
             par_movie_MarkCustom4.Value = _movieDB.IsMarkCustom4
             par_movie_New.Value = IsNew
 
-            par_movie_Certification.Value = _movieDB.Movie.Certification
-            par_movie_Country.Value = _movieDB.Movie.Country
-            par_movie_Credits.Value = _movieDB.Movie.OldCredits
-            par_movie_Director.Value = _movieDB.Movie.Director
-            par_movie_Genre.Value = _movieDB.Movie.Genre
-            par_movie_Imdb.Value = _movieDB.Movie.IMDBID
-            par_movie_MPAA.Value = _movieDB.Movie.MPAA
-            par_movie_OriginalTitle.Value = _movieDB.Movie.OriginalTitle
-            par_movie_Outline.Value = _movieDB.Movie.Outline
-            par_movie_Playcount.Value = _movieDB.Movie.PlayCount
-            par_movie_Plot.Value = _movieDB.Movie.Plot
-            par_movie_Rating.Value = _movieDB.Movie.Rating
-            par_movie_ReleaseDate.Value = _movieDB.Movie.ReleaseDate
-            par_movie_Runtime.Value = _movieDB.Movie.Runtime
-            par_movie_SortTitle.Value = _movieDB.Movie.SortTitle
-            par_movie_Studio.Value = _movieDB.Movie.Studio
-            par_movie_TMDB.Value = _movieDB.Movie.TMDBID
-            par_movie_TMDBColID.Value = _movieDB.Movie.TMDBColID
-            par_movie_Tagline.Value = _movieDB.Movie.Tagline
-            par_movie_Title.Value = _movieDB.Movie.Title
-            par_movie_Top250.Value = _movieDB.Movie.Top250
-            par_movie_Trailer.Value = _movieDB.Movie.Trailer
-            par_movie_Votes.Value = _movieDB.Movie.Votes
-            par_movie_Year.Value = _movieDB.Movie.Year
+            With _movieDB.Movie
+                par_movie_Certification.Value = .Certification
+                par_movie_Country.Value = .Country
+                par_movie_Credits.Value = .OldCredits
+                par_movie_Director.Value = .Director
+                par_movie_Genre.Value = .Genre
+                par_movie_Imdb.Value = .IMDBID
+                par_movie_MPAA.Value = .MPAA
+                par_movie_OriginalTitle.Value = .OriginalTitle
+                par_movie_Outline.Value = .Outline
+                par_movie_Playcount.Value = If(Not String.IsNullOrEmpty(.PlayCount) AndAlso CInt(.PlayCount) > 0, .PlayCount, Nothing) 'need to be NOTHING instead of "0"
+                par_movie_Plot.Value = .Plot
+                par_movie_Rating.Value = .Rating
+                par_movie_ReleaseDate.Value = .ReleaseDate
+                par_movie_Runtime.Value = .Runtime
+                par_movie_SortTitle.Value = .SortTitle
+                par_movie_Studio.Value = .Studio
+                par_movie_TMDB.Value = .TMDBID
+                par_movie_TMDBColID.Value = .TMDBColID
+                par_movie_Tagline.Value = .Tagline
+                par_movie_Title.Value = .Title
+                par_movie_Top250.Value = .Top250
+                par_movie_Trailer.Value = .Trailer
+                par_movie_Votes.Value = .Votes
+                par_movie_Year.Value = .Year
+            End With
 
             par_movie_NeedsSave.Value = _movieDB.NeedsSave
             par_movie_OutOfTolerance.Value = _movieDB.OutOfTolerance
@@ -2838,15 +2852,15 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (", _
                  "idShow, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
                  "Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount,", _
-                 "HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
+                 "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (", _
                  "idEpisode, idShow, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
                  "Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount,", _
-                 "HasWatched, DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
+                 "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
                 Dim parTVEpID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpID", DbType.UInt64, 0, "idEpisode")
                 parTVEpID.Value = _TVEpDB.EpID
@@ -2870,7 +2884,6 @@ Public Class Database
             Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
             Dim parTVEpMissing As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpMissing", DbType.Boolean, 0, "Missing")
             Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
-            Dim parHasWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasWatched", DbType.Boolean, 0, "HasWatched")
             Dim parDisplaySeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplaySeason", DbType.String, 0, "DisplaySeason")
             Dim parDisplayEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplayEpisode", DbType.String, 0, "DisplayEpisode")
             Dim parDateAdded As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdded", DbType.Int32, 0, "DateAdded")
@@ -2917,7 +2930,6 @@ Public Class Database
             parTVShowID.Value = _TVEpDB.ShowID
             parNfoPath.Value = _TVEpDB.EpNfoPath
             parHasSub.Value = _TVEpDB.EpSubtitles.Count > 0 OrElse _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle.Count > 0
-            parHasWatched.Value = Not String.IsNullOrEmpty(_TVEpDB.TVEp.Playcount) AndAlso Not _TVEpDB.TVEp.Playcount = "0"
             parNew.Value = IsNew
             parMark.Value = _TVEpDB.IsMarkEp
             parTVEpPathID.Value = PathID
@@ -2936,7 +2948,7 @@ Public Class Database
                 parAired.Value = .Aired
                 parDirector.Value = .Director
                 parCredits.Value = .OldCredits
-                parPlaycount.Value = .Playcount
+                parPlaycount.Value = If(Not String.IsNullOrEmpty(.Playcount) AndAlso CInt(.Playcount) > 0, .Playcount, Nothing) 'need to be NOTHING instead of "0"
                 parRuntime.Value = .Runtime
                 parVotes.Value = .Votes
                 If .displaySEset Then
@@ -3610,7 +3622,7 @@ Public Class Database
                 '         SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE imdb = ", watchedMovieIMDBID.Value, ";")
                 SQLcommand.CommandText = String.Concat("SELECT idMovie, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, ", _
                                                        "Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, ", _
-                                                       "Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, ", _
+                                                       "Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, PosterPath, ", _
                                                        "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
                                                        "SortTitle, DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath FROM movie;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -3637,7 +3649,7 @@ Public Class Database
                     Using SQLUpdatecommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                         Dim parPlaycount As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
                         SQLUpdatecommand.CommandText = String.Concat("UPDATE movie SET Playcount = (?) WHERE idMovie = ", _movieDB.ID, ";")
-                        parPlaycount.Value = WatchedMovieData.Value.Value.ToString
+                        parPlaycount.Value = If(Not String.IsNullOrEmpty(WatchedMovieData.Value.Value.ToString) AndAlso CInt(WatchedMovieData.Value.Value.ToString) > 0, WatchedMovieData.Value.Value.ToString, Nothing)
                         SQLUpdatecommand.ExecuteNonQuery()
                     End Using
                     SQLTrans.Commit()
@@ -3699,7 +3711,7 @@ Public Class Database
             'Now we search episodes of the found TV Show
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT idEpisode, idShow, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, ", _
-                                                       "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, ", _
+                                                       "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, ", _
                                                        "DisplaySeason, DisplayEpisode FROM episode WHERE idShow = ", tempTVDBID, ";")
 
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
