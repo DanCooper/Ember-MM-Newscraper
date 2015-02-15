@@ -82,6 +82,7 @@
     <Compile Include="Model\Lists\TraktList.cs" />
     <Compile Include="Model\Lists\TraktListDetail.cs" />
     <Compile Include="Model\Lists\TraktListItem.cs" />
+    <Compile Include="Model\Lists\TraktSyncList.cs" />
     <Compile Include="Model\Movie\TraktMovie.cs" />
     <Compile Include="Model\Movie\TraktMovieBase.cs" />
     <Compile Include="Model\Movie\TraktMovieCollected.cs" />
