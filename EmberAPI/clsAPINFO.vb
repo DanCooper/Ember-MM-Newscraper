@@ -272,7 +272,7 @@ Public Class NFO
             End If
 
             'Outline
-            If (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso Options.bOutline AndAlso _
+            If (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse (Not Master.eSettings.MovieLockOutline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline)))) AndAlso Options.bOutline AndAlso _
                 Not String.IsNullOrEmpty(scrapedmovie.Outline) AndAlso Master.eSettings.MovieScraperOutline AndAlso (Not new_Outline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
                 DBMovie.Movie.Outline = scrapedmovie.Outline
                 new_Outline = True
@@ -285,7 +285,7 @@ Public Class NFO
             End If
 
             'Plot
-            If (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot) AndAlso Options.bPlot AndAlso _
+            If (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse (Not Master.eSettings.MovieLockPlot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot)))) AndAlso Options.bPlot AndAlso _
                 Not String.IsNullOrEmpty(scrapedmovie.Plot) AndAlso Master.eSettings.MovieScraperPlot AndAlso (Not new_Plot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
                 DBMovie.Movie.Plot = scrapedmovie.Plot
                 new_Plot = True
