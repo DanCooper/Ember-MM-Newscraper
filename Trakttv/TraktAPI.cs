@@ -456,9 +456,9 @@ namespace Trakttv
         /// Updates existing list on trakt
         /// </summary>
         /// <param name="user">The user to get</param>
-        public static TraktListDetail UpdateCustomList(TraktListDetail list, string username)
+        public static TraktListDetail UpdateCustomList(TraktListDetail list, string username, string id)
         {
-            var response = ReplaceOnTrakt(string.Format(TraktURIs.SENDListEdit, username), list.ToJSON());
+            var response = ReplaceOnTrakt(string.Format(TraktURIs.SENDListEdit, username,id), list.ToJSON());
             return response.FromJSON<TraktListDetail>();
         }
 

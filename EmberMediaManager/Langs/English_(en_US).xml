@@ -1443,4 +1443,9 @@
   <string id="1351">Remove list from favorites</string>
   <string id="1352">Step 1 (Optional): Load specific lists from trakt.tv</string>
   <string id="1353">Step 2: Load selected list or type URL</string>
+  <string id="1354">Movies removed from trakt.tv watchlist!</string>
+  <string id="1355">No changes made!</string>
+  <string id="1356">Movies added to trakt.tv watchlist!</string>
+  <string id="1357">Edited existing list(s) will be saved with prefix NEWLIST. Please change name of list in dashboard!</string>
+  <string id="1358">Your trakt.tv dashboard</string> 
 </strings>

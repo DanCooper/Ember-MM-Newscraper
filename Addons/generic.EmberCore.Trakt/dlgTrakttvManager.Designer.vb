@@ -23,7 +23,7 @@ Partial Class dlgTrakttvManager
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrakttvManager))
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -71,6 +71,7 @@ Partial Class dlgTrakttvManager
         Me.btntraktWatchlistGetSeries = New System.Windows.Forms.Button()
         Me.tbptraktListsSync = New System.Windows.Forms.TabPage()
         Me.pnltraktLists = New System.Windows.Forms.Panel()
+        Me.lbltraktListsLink = New System.Windows.Forms.LinkLabel()
         Me.gbtraktListsSYNC = New System.Windows.Forms.GroupBox()
         Me.btntraktListsSyncLibrary = New System.Windows.Forms.Button()
         Me.btntraktListsSyncTrakt = New System.Windows.Forms.Button()
@@ -133,6 +134,7 @@ Partial Class dlgTrakttvManager
         Me.coltraktListGenres = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.coltraktListIMDB = New System.Windows.Forms.DataGridViewLinkColumn()
         Me.coltraktListTrailer = New System.Windows.Forms.DataGridViewLinkColumn()
+        Me.lbltraktListsNoticeSync = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlSaving.SuspendLayout()
@@ -674,6 +676,7 @@ Partial Class dlgTrakttvManager
         '
         'pnltraktLists
         '
+        Me.pnltraktLists.Controls.Add(Me.lbltraktListsLink)
         Me.pnltraktLists.Controls.Add(Me.gbtraktListsSYNC)
         Me.pnltraktLists.Controls.Add(Me.gbtraktListsGET)
         Me.pnltraktLists.Controls.Add(Me.lbltraktListsstate)
@@ -682,20 +685,31 @@ Partial Class dlgTrakttvManager
         Me.pnltraktLists.Controls.Add(Me.gbtraktListsMovies)
         Me.pnltraktLists.Controls.Add(Me.gbtraktListsMoviesInLists)
         Me.pnltraktLists.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnltraktLists.Enabled = False
         Me.pnltraktLists.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktLists.Name = "pnltraktLists"
         Me.pnltraktLists.Size = New System.Drawing.Size(1090, 429)
         Me.pnltraktLists.TabIndex = 1
         '
+        'lbltraktListsLink
+        '
+        Me.lbltraktListsLink.AutoSize = True
+        Me.lbltraktListsLink.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktListsLink.Location = New System.Drawing.Point(20, 21)
+        Me.lbltraktListsLink.Name = "lbltraktListsLink"
+        Me.lbltraktListsLink.Size = New System.Drawing.Size(118, 13)
+        Me.lbltraktListsLink.TabIndex = 44
+        Me.lbltraktListsLink.TabStop = True
+        Me.lbltraktListsLink.Text = "Your trakt.tv dashboard"
+        '
         'gbtraktListsSYNC
         '
+        Me.gbtraktListsSYNC.Controls.Add(Me.lbltraktListsNoticeSync)
         Me.gbtraktListsSYNC.Controls.Add(Me.btntraktListsSyncLibrary)
         Me.gbtraktListsSYNC.Controls.Add(Me.btntraktListsSyncTrakt)
         Me.gbtraktListsSYNC.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.gbtraktListsSYNC.Location = New System.Drawing.Point(17, 102)
+        Me.gbtraktListsSYNC.Location = New System.Drawing.Point(17, 141)
         Me.gbtraktListsSYNC.Name = "gbtraktListsSYNC"
-        Me.gbtraktListsSYNC.Size = New System.Drawing.Size(148, 124)
+        Me.gbtraktListsSYNC.Size = New System.Drawing.Size(148, 235)
         Me.gbtraktListsSYNC.TabIndex = 43
         Me.gbtraktListsSYNC.TabStop = False
         Me.gbtraktListsSYNC.Text = "Save personal lists"
@@ -704,7 +718,7 @@ Partial Class dlgTrakttvManager
         '
         Me.btntraktListsSyncLibrary.Enabled = False
         Me.btntraktListsSyncLibrary.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktListsSyncLibrary.Location = New System.Drawing.Point(6, 71)
+        Me.btntraktListsSyncLibrary.Location = New System.Drawing.Point(6, 183)
         Me.btntraktListsSyncLibrary.Name = "btntraktListsSyncLibrary"
         Me.btntraktListsSyncLibrary.Size = New System.Drawing.Size(133, 46)
         Me.btntraktListsSyncLibrary.TabIndex = 41
@@ -715,7 +729,7 @@ Partial Class dlgTrakttvManager
         '
         Me.btntraktListsSyncTrakt.Enabled = False
         Me.btntraktListsSyncTrakt.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktListsSyncTrakt.Location = New System.Drawing.Point(6, 19)
+        Me.btntraktListsSyncTrakt.Location = New System.Drawing.Point(6, 111)
         Me.btntraktListsSyncTrakt.Name = "btntraktListsSyncTrakt"
         Me.btntraktListsSyncTrakt.Size = New System.Drawing.Size(133, 46)
         Me.btntraktListsSyncTrakt.TabIndex = 37
@@ -726,7 +740,7 @@ Partial Class dlgTrakttvManager
         '
         Me.gbtraktListsGET.Controls.Add(Me.btntraktListsGetPersonal)
         Me.gbtraktListsGET.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.gbtraktListsGET.Location = New System.Drawing.Point(17, 12)
+        Me.gbtraktListsGET.Location = New System.Drawing.Point(17, 51)
         Me.gbtraktListsGET.Name = "gbtraktListsGET"
         Me.gbtraktListsGET.Size = New System.Drawing.Size(148, 84)
         Me.gbtraktListsGET.TabIndex = 42
@@ -748,7 +762,7 @@ Partial Class dlgTrakttvManager
         Me.lbltraktListsstate.AutoSize = True
         Me.lbltraktListsstate.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbltraktListsstate.ForeColor = System.Drawing.Color.SteelBlue
-        Me.lbltraktListsstate.Location = New System.Drawing.Point(120, 268)
+        Me.lbltraktListsstate.Location = New System.Drawing.Point(120, 412)
         Me.lbltraktListsstate.Name = "lbltraktListsstate"
         Me.lbltraktListsstate.Size = New System.Drawing.Size(45, 15)
         Me.lbltraktListsstate.TabIndex = 39
@@ -867,6 +881,8 @@ Partial Class dlgTrakttvManager
         '
         'txttraktListsDetailsDescription
         '
+        Me.txttraktListsDetailsDescription.AcceptsReturn = True
+        Me.txttraktListsDetailsDescription.AcceptsTab = True
         Me.txttraktListsDetailsDescription.Location = New System.Drawing.Point(3, 76)
         Me.txttraktListsDetailsDescription.Multiline = True
         Me.txttraktListsDetailsDescription.Name = "txttraktListsDetailsDescription"
@@ -950,7 +966,7 @@ Partial Class dlgTrakttvManager
         '
         'prgtraktLists
         '
-        Me.prgtraktLists.Location = New System.Drawing.Point(17, 242)
+        Me.prgtraktLists.Location = New System.Drawing.Point(17, 386)
         Me.prgtraktLists.Name = "prgtraktLists"
         Me.prgtraktLists.Size = New System.Drawing.Size(148, 23)
         Me.prgtraktLists.TabIndex = 38
@@ -973,8 +989,8 @@ Partial Class dlgTrakttvManager
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeColumns = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle7
         Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -1363,6 +1379,16 @@ Partial Class dlgTrakttvManager
         Me.coltraktListTrailer.Name = "coltraktListTrailer"
         Me.coltraktListTrailer.Text = "Link"
         '
+        'lbltraktListsNoticeSync
+        '
+        Me.lbltraktListsNoticeSync.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktListsNoticeSync.Location = New System.Drawing.Point(6, 18)
+        Me.lbltraktListsNoticeSync.Name = "lbltraktListsNoticeSync"
+        Me.lbltraktListsNoticeSync.Size = New System.Drawing.Size(133, 90)
+        Me.lbltraktListsNoticeSync.TabIndex = 49
+        Me.lbltraktListsNoticeSync.Text = "Edited existing list(s) will be saved with prefix ""NEWLIST_"". Please change name " & _
+    "of list in dashboard!"
+        '
         'dlgTrakttvManager
         '
         Me.AcceptButton = Me.OK_Button
@@ -1531,5 +1557,7 @@ Partial Class dlgTrakttvManager
     Friend WithEvents cbotraktListsScraped As System.Windows.Forms.ComboBox
     Friend WithEvents cbotraktListsFavorites As System.Windows.Forms.ComboBox
     Friend WithEvents lbltraktListsFavorites As System.Windows.Forms.Label
+    Friend WithEvents lbltraktListsLink As System.Windows.Forms.LinkLabel
+    Friend WithEvents lbltraktListsNoticeSync As System.Windows.Forms.Label
 
 End Class
