@@ -1822,7 +1822,24 @@ Public Class Database
 
             Next
 
-            PrepareDatabaseAfterUpgrade_MyVideosDB(cVersion)
+            Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+                Select Case cVersion
+                    Case Is < 14
+                        PrepareTable_country("idMovie", "movie", True)
+                        PrepareTable_director("idEpisode", "episode", True)
+                        PrepareTable_director("idMovie", "movie", True)
+                        PrepareTable_genre("idMovie", "movie", True)
+                        PrepareTable_genre("idShow", "tvshow", True)
+                        PrepareTable_studio("idMovie", "movie", True)
+                        PrepareTable_studio("idShow", "tvshow", True)
+                        PrepareTable_writer("idEpisode", "episode", True)
+                        PrepareTable_writer("idMovie", "movie", True)
+                        PreparePlaycounts("episode", True)
+                        PreparePlaycounts("movie", True)
+                End Select
+
+                SQLtransaction.Commit()
+            End Using
 
             _myvideosDBConn.Close()
             File.Move(tempName, nPath)
@@ -1830,28 +1847,6 @@ Public Class Database
             logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
             _myvideosDBConn.Close()
         End Try
-    End Sub
-
-    Public Sub PrepareDatabaseAfterUpgrade_MyVideosDB(ByVal cVersion As Integer)
-        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-        SQLtransaction = _myvideosDBConn.BeginTransaction()
-
-        Select Case cVersion
-            Case Is <= 13
-                PrepareTable_country("idMovie", "movie", True)
-                PrepareTable_director("idEpisode", "episode", True)
-                PrepareTable_director("idMovie", "movie", True)
-                PrepareTable_genre("idMovie", "movie", True)
-                PrepareTable_genre("idShow", "tvshow", True)
-                PrepareTable_studio("idMovie", "movie", True)
-                PrepareTable_studio("idShow", "tvshow", True)
-                PrepareTable_writer("idEpisode", "episode", True)
-                PrepareTable_writer("idMovie", "movie", True)
-                PreparePlaycounts("episode", True)
-                PreparePlaycounts("movie", True)
-        End Select
-
-        SQLtransaction.Commit()
     End Sub
 
     Private Sub PrepareTable_country(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
@@ -3151,7 +3146,7 @@ Public Class Database
             par_seasons_Mark.Value = _TVSeasonDB.IsMarkSeason
             par_seasons_New.Value = IsNew
             Dim test As Integer = CInt(SQLcommand_seasons.ExecuteScalar())
-            Dim idSeason As Long
+            Dim idSeason As Long = _TVSeasonDB.SeasonID
 
             'Images
             Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()

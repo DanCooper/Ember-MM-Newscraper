@@ -6585,7 +6585,7 @@ doCancel:
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
                 'if any one item is set as not watched, set menu to watched
                 'else they are all watched so set menu to not watched
-                If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
+                If CBool(sRow.Cells("HasWatched").Value) Then
                     setWatched = True
                     Exit For
                 End If
@@ -6636,6 +6636,7 @@ doCancel:
 
     Private Sub SetWatchedStatus_Season()
         Dim setWatched As Boolean = False
+        Dim EpisodeList As New List(Of Integer)
         Dim SeasonsList As New List(Of Integer)
         If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
             For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
@@ -6650,16 +6651,53 @@ doCancel:
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = String.Concat("SELECT idEpisode, Playcount FROM episode WHERE idShow = (?) AND Season = (?);")
-                    Dim par_episode_idShow As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_idShow", DbType.Int32, 0, "idShow")
-                    Dim par_episode_Season As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_Season", DbType.Int32, 0, "Season")
-                    par_episode_idShow.Value = sRow.Cells("idShow")
-                    par_episode_Season.Value = sRow.Cells("Season")
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                Dim hasWatched As Boolean = CBool(sRow.Cells("HasWatched").Value)
+                Dim iSeason As Integer = CInt(sRow.Cells("Season").Value)
+                Dim iShow As Integer = CInt(sRow.Cells("idShow").Value)
+                Using SQLcommand_get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLcommand_get.CommandText = String.Format("SELECT idEpisode, Playcount FROM episode WHERE Missing = 0 AND idShow = {0} AND Season = {1};", iShow, iSeason)
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_get.ExecuteReader()
+                        While SQLreader.Read
+                            EpisodeList.Add(CInt(SQLreader("idEpisode")))
+                            Using SQLcommand_update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand
+                                SQLcommand_update.CommandText = String.Format("UPDATE episode SET Playcount = (?) WHERE idEpisode = (?);")
+                                Dim par_episode_Playcount As SQLite.SQLiteParameter = SQLcommand_update.Parameters.Add("par_episode_Playcount", DbType.String, 0, "Playcount")
+                                Dim par_episode_idEpisode As SQLite.SQLiteParameter = SQLcommand_update.Parameters.Add("par_episode_idEpisode", DbType.Int32, 0, "idEpisode")
 
+                                Dim currPlaycount As String = String.Empty
+                                Dim newPlaycount As String = String.Empty
+
+                                currPlaycount = SQLreader("Playcount").ToString
+
+                                If Me.dgvTVSeasons.SelectedRows.Count > 1 AndAlso setWatched Then
+                                    newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                ElseIf Not hasWatched Then
+                                    newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                Else
+                                    newPlaycount = Nothing
+                                End If
+
+                                par_episode_Playcount.Value = newPlaycount
+                                par_episode_idEpisode.Value = SQLreader("idEpisode")
+                                SQLcommand_update.ExecuteNonQuery()
+                            End Using
+                        End While
                     End Using
                 End Using
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each iEpisode As Integer In EpisodeList
+                Me.RefreshEpisode(iEpisode, True, False, True)
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                Me.RefreshSeason(CInt(sRow.Cells("idShow").Value), CInt(sRow.Cells("Season").Value), True)
             Next
             SQLtransaction.Commit()
         End Using

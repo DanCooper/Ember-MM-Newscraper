@@ -1482,26 +1482,55 @@ Public Class Scanner
             Dim inInfo As DirectoryInfo
             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
 
-            Try
-                'first check if user added a show folder as a source
-                If (dInfo.GetDirectories.Count = 0 AndAlso dInfo.GetFiles.Count > 0) OrElse dInfo.GetDirectories.Where(Function(s) Not Functions.IsSeasonDirectory(s.FullName)).Count = 0 Then
-                    'only files in the folder or all folders match the season regex... assume it's a single show folder
+            'first check if user added a show folder as a source
+            If (dInfo.GetDirectories.Count = 0 AndAlso dInfo.GetFiles.Count > 0) OrElse dInfo.GetDirectories.Where(Function(s) Not Functions.IsSeasonDirectory(s.FullName)).Count = 0 Then
+                'only files in the folder or all folders match the season regex... assume it's a single show folder
+                currShowContainer = New TVShowContainer
+                currShowContainer.EpisodeSorting = sEpisodeSorting
+                currShowContainer.Language = sLang
+                currShowContainer.Ordering = sOrdering
+                currShowContainer.ShowPath = dInfo.FullName
+                currShowContainer.Source = sSource
+                Me.ScanForTVFiles(currShowContainer, dInfo.FullName)
+
+                If Master.eSettings.TVScanOrderModify Then
+                    Try
+                        inList = dInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
+                    Catch
+                    End Try
+                Else
+                    Try
+                        inList = dInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
+                    Catch
+                    End Try
+                End If
+
+                For Each sDirs As DirectoryInfo In inList
+                    Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
+                Next
+
+                LoadTVShow(currShowContainer)
+            Else
+                For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d, True)).OrderBy(Function(d) d.Name)
+
                     currShowContainer = New TVShowContainer
                     currShowContainer.EpisodeSorting = sEpisodeSorting
                     currShowContainer.Language = sLang
                     currShowContainer.Ordering = sOrdering
-                    currShowContainer.ShowPath = dInfo.FullName
+                    currShowContainer.ShowPath = inDir.FullName
                     currShowContainer.Source = sSource
-                    Me.ScanForTVFiles(currShowContainer, dInfo.FullName)
+                    Me.ScanForTVFiles(currShowContainer, inDir.FullName)
+
+                    inInfo = New DirectoryInfo(inDir.FullName)
 
                     If Master.eSettings.TVScanOrderModify Then
                         Try
-                            inList = dInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
+                            inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
                         Catch
                         End Try
                     Else
                         Try
-                            inList = dInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
+                            inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
                         Catch
                         End Try
                     End If
@@ -1511,43 +1540,10 @@ Public Class Scanner
                     Next
 
                     LoadTVShow(currShowContainer)
-                Else
-                    For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d, True)).OrderBy(Function(d) d.Name)
+                Next
 
-                        currShowContainer = New TVShowContainer
-                        currShowContainer.EpisodeSorting = sEpisodeSorting
-                        currShowContainer.Language = sLang
-                        currShowContainer.Ordering = sOrdering
-                        currShowContainer.ShowPath = inDir.FullName
-                        currShowContainer.Source = sSource
-                        Me.ScanForTVFiles(currShowContainer, inDir.FullName)
+            End If
 
-                        inInfo = New DirectoryInfo(inDir.FullName)
-
-                        If Master.eSettings.TVScanOrderModify Then
-                            Try
-                                inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
-                            Catch
-                            End Try
-                        Else
-                            Try
-                                inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
-                            Catch
-                            End Try
-                        End If
-
-                        For Each sDirs As DirectoryInfo In inList
-                            Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
-                        Next
-
-                        LoadTVShow(currShowContainer)
-                    Next
-
-                End If
-
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
             dInfo = Nothing
             inInfo = Nothing
         End If
