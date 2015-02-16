@@ -3396,30 +3396,26 @@ Public Class Database
     ''' <remarks></remarks>
     Public Sub LoadTVSourcesFromDB()
         Master.TVSources.Clear()
-        Try
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT ID, Name, path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources;"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
-                            Dim tvsource As New Structures.TVSource
-                            tvsource.id = SQLreader("ID").ToString
-                            tvsource.Name = SQLreader("Name").ToString
-                            tvsource.Path = SQLreader("Path").ToString
-                            tvsource.Language = SQLreader("Language").ToString
-                            tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
-                            tvsource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
-                            tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
-                            Master.TVSources.Add(tvsource)
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name, ex)
-                        End Try
-                    End While
-                End Using
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT ID, Name, path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
+                        Dim tvsource As New Structures.TVSource
+                        tvsource.id = SQLreader("ID").ToString
+                        tvsource.Name = SQLreader("Name").ToString
+                        tvsource.Path = SQLreader("Path").ToString
+                        tvsource.Language = SQLreader("Language").ToString
+                        tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
+                        tvsource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
+                        tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
+                        Master.TVSources.Add(tvsource)
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                    End Try
+                End While
             End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End Using
     End Sub
     ''' <summary>
     ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of movie Sources
@@ -3427,30 +3423,26 @@ Public Class Database
     ''' <remarks></remarks>
     Public Sub LoadMovieSourcesFromDB()
         Master.MovieSources.Clear()
-        Try
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources;"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
-                            Dim msource As New Structures.MovieSource
-                            msource.id = SQLreader("ID").ToString
-                            msource.Name = SQLreader("Name").ToString
-                            msource.Path = SQLreader("Path").ToString
-                            msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
-                            msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
-                            msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
-                            msource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
-                            Master.MovieSources.Add(msource)
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name, ex)
-                        End Try
-                    End While
-                End Using
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
+                        Dim msource As New Structures.MovieSource
+                        msource.id = SQLreader("ID").ToString
+                        msource.Name = SQLreader("Name").ToString
+                        msource.Path = SQLreader("Path").ToString
+                        msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
+                        msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
+                        msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
+                        msource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
+                        Master.MovieSources.Add(msource)
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                    End Try
+                End While
             End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End Using
     End Sub
     ''' <summary>
     ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of movie Sources

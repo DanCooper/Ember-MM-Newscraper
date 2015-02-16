@@ -824,7 +824,8 @@
         CREATE TRIGGER delete_tag
         AFTER DELETE
         ON taglinks
-        BEGIN DELETE FROM tag WHERE idTag=old.idTag AND idTag NOT IN (SELECT DISTINCT idTag FROM taglinks); END;
+        BEGIN DELETE FROM tag WHERE idTag=old.idTag AND idTag NOT IN (SELECT DISTINCT idTag FROM taglinks);
+        END;
       </execute>
     </command>
     <command type="DB">
