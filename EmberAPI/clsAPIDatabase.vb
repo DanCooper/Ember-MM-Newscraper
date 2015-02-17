@@ -647,7 +647,7 @@ Public Class Database
                 Dim oldMyVideosDB As String = String.Format("MyVideos{0}.emm", i)
                 Dim oldMyVideosDBFile As String = FileUtils.Common.ReturnSettingsFile("Settings", oldMyVideosDB)
                 If File.Exists(oldMyVideosDBFile) Then
-                    Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1347, "Upgrading database..."))
+                    Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1356, "Upgrading database..."))
                     PatchDatabase_MyVideos(oldMyVideosDBFile, MyVideosDBFile, i, MyVideosDBVersion)
                     Exit For
                 End If
