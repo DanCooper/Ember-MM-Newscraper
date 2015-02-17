@@ -226,6 +226,12 @@ Public Class NFO
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedmovie.Actors.Count > 0 Then
                     new_Actors = True
+                    'add numbers for ordering
+                    Dim iOrder As Integer = 0
+                    For Each actor In scrapedmovie.Actors
+                        actor.Order = iOrder
+                        iOrder += 1
+                    Next
                 End If
 
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCast AndAlso Not Master.eSettings.MovieLockActors Then

@@ -1872,23 +1872,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("order")> _
-        Public Property Order() As Integer
-            Get
-                Return Me._order
-            End Get
-            Set(ByVal Value As Integer)
-                Me._order = Value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property OrderSpecified() As Boolean
-            Get
-                Return Me._order > -1
-            End Get
-        End Property
-
         <XmlElement("role")> _
         Public Property Role() As String
             Get
@@ -1903,6 +1886,23 @@ Namespace MediaContainers
         Public ReadOnly Property RoleSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._role)
+            End Get
+        End Property
+
+        <XmlElement("order")> _
+        Public Property Order() As Integer
+            Get
+                Return Me._order
+            End Get
+            Set(ByVal Value As Integer)
+                Me._order = Value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property OrderSpecified() As Boolean
+            Get
+                Return Me._order > -1
             End Get
         End Property
 
