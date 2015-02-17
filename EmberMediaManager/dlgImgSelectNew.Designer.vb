@@ -186,6 +186,7 @@ Partial Class dlgImgSelectNew
         Me.Controls.Add(Me.pnlBottom)
         Me.Controls.Add(Me.pnlTop)
         Me.Name = "dlgImgSelectNew"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Form1"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTopRight.ResumeLayout(False)

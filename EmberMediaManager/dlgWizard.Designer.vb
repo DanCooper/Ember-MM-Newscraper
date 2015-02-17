@@ -289,6 +289,8 @@ Partial Class dlgWizard
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnTVRemoveSource = New System.Windows.Forms.Button()
         Me.btnTVAddSource = New System.Windows.Forms.Button()
         Me.Label9 = New System.Windows.Forms.Label()
@@ -460,8 +462,6 @@ Partial Class dlgWizard
         Me.lblMovieSetBannerExpertParent = New System.Windows.Forms.Label()
         Me.chkMovieSetUseExpert = New System.Windows.Forms.CheckBox()
         Me.Label48 = New System.Windows.Forms.Label()
-        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.tblMovieSettings.SuspendLayout()
@@ -3814,6 +3814,14 @@ Partial Class dlgWizard
         '
         Me.ColumnHeader5.Text = "Ordering"
         '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Exclude"
+        '
+        'ColumnHeader7
+        '
+        Me.ColumnHeader7.Text = "Sorting"
+        '
         'btnTVRemoveSource
         '
         Me.btnTVRemoveSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -5946,14 +5954,6 @@ Partial Class dlgWizard
         Me.Label48.TabIndex = 0
         Me.Label48.Text = resources.GetString("Label48.Text")
         Me.Label48.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'ColumnHeader6
-        '
-        Me.ColumnHeader6.Text = "Exclude"
-        '
-        'ColumnHeader7
-        '
-        Me.ColumnHeader7.Text = "Sorting"
         '
         'dlgWizard
         '

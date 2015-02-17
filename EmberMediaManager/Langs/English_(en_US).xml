@@ -1434,11 +1434,20 @@
   <string id="1342">Send unwatched movies to trakt.tv watchlist</string>
   <string id="1343">No CharacterArts Found</string>
   <string id="1344">No CharacterArt images could be found. Please check to see if any CharacterArt scrapers are enabled.</string>
-  <string id="1345">MovieSet Informations Only</string>
-  <string id="1346">Subtitles Only</string>
-  <string id="1347">Upgrading database...</string>
-  <string id="1348">Scraping Media (Selected Movies - Single Field):</string>
-  <string id="1349">Scraping Media (Selected Movies - Ask):</string>
-  <string id="1350">Scraping Media (Selected Movies - Auto):</string>
-  <string id="1351">Scraping Media (Selected Movies - Skip):</string>
+  <string id="1345">Scrape popular lists</string>
+  <string id="1346">Scrape lists of favorite users</string>
+  <string id="1347">Scrape lists of friends</string>
+  <string id="1348">Favorite lists</string>
+  <string id="1349">Scraped lists</string>
+  <string id="1350">Save list to favorites</string>
+  <string id="1351">Remove list from favorites</string>
+  <string id="1352">Step 1 (Optional): Load specific lists from trakt.tv</string>
+  <string id="1353">Step 2: Load selected list or type URL</string>
+  <string id="1354">MovieSet Informations Only</string>
+  <string id="1355">Subtitles Only</string>
+  <string id="1356">Upgrading database...</string>
+  <string id="1357">Scraping Media (Selected MovieSets - Single Field):</string>
+  <string id="1358">Scraping Media (Selected MovieSets - Ask):</string>
+  <string id="1359">Scraping Media (Selected MovieSets - Auto):</string>
+  <string id="1360">Scraping Media (Selected MovieSets - Skip):</string>
 </strings>

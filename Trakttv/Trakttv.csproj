@@ -93,10 +93,15 @@
     <Compile Include="Model\Movie\TraktSyncMovieWatched.cs" />
     <Compile Include="Model\Other\TraktId.cs" />
     <Compile Include="Model\Other\TraktImage.cs" />
+    <Compile Include="Model\Other\TraktNetworkFriend.cs" />
+    <Compile Include="Model\Other\TraktNetworkUser.cs" />
     <Compile Include="Model\Other\TraktPerson.cs" />
     <Compile Include="Model\Other\TraktPersonId.cs" />
     <Compile Include="Model\Other\TraktPersonImages.cs" />
     <Compile Include="Model\Other\TraktPersonSummary.cs" />
+    <Compile Include="Model\Other\TraktUser.cs" />
+    <Compile Include="Model\Other\TraktUserImages.cs" />
+    <Compile Include="Model\Other\TraktUserSummary.cs" />
     <Compile Include="Model\Rating\TraktMovieRated.cs" />
     <Compile Include="Model\Rating\TraktSyncMovieRated.cs" />
     <Compile Include="Model\Rating\TraktSyncMoviesRated.cs" />

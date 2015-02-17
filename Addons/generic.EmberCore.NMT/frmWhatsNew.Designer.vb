@@ -22,8 +22,8 @@ Partial Class frmWhatsNew
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.OK_Button = New System.Windows.Forms.Button
-        Me.txtWhatsNew = New System.Windows.Forms.TextBox
+        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.txtWhatsNew = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -58,7 +58,7 @@ Partial Class frmWhatsNew
         Me.MinimizeBox = False
         Me.Name = "frmWhatsNew"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "WhatsNew"
         Me.ResumeLayout(False)
         Me.PerformLayout()

@@ -6676,9 +6676,9 @@ doCancel:
                 Case "TrailerPath"
                     scrapeFor = Master.eLang.GetString(75, "Trailer Only")
                 Case "HasSet"
-                    scrapeFor = Master.eLang.GetString(1345, "MovieSet Informations Only")
+                    scrapeFor = Master.eLang.GetString(1354, "MovieSet Informations Only")
                 Case "HasSub"
-                    scrapeFor = Master.eLang.GetString(1346, "Subtitles Only")
+                    scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
             End Select
 
             If Master.eSettings.MovieClickScrapeAsk Then
@@ -13445,13 +13445,13 @@ doCancel:
         Else
             Select Case sType
                 Case Enums.ScrapeType.FullAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(1349, "Scraping Media (Selected MovieSets - Ask):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1358, "Scraping Media (Selected MovieSets - Ask):")
                 Case Enums.ScrapeType.FullAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1350, "Scraping Media (Selected MovieSets - Auto):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1359, "Scraping Media (Selected MovieSets - Auto):")
                 Case Enums.ScrapeType.FullSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1351, "Scraping Media (Selected MovieSets - Skip):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1360, "Scraping Media (Selected MovieSets - Skip):")
                 Case Enums.ScrapeType.SingleField
-                    Me.tslLoading.Text = Master.eLang.GetString(1348, "Scraping Media (Selected MovieSets - Single Field):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1357, "Scraping Media (Selected MovieSets - Single Field):")
             End Select
         End If
 

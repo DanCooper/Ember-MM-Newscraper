@@ -192,7 +192,7 @@
         Me.MinimizeBox = False
         Me.MinimumSize = New System.Drawing.Size(855, 491)
         Me.Name = "dlgTVImageSelect"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "TV Image Selection"
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlStatus.ResumeLayout(False)

@@ -410,7 +410,7 @@ Namespace YouTube
                 VideoTitle = Regex.Replace(VideoTitle, "['?\\:*<>]*", "")
 
                 Dim fmtMatch As Match = Regex.Match(Html, "url_encoded_fmt_stream_map\"": \""(.*?)\"", \""", RegexOptions.IgnoreCase)
-                Dim dashMatch As Match = Regex.Match(Html, "adaptive_fmts\"": \""(.*?)\"", \""", RegexOptions.IgnoreCase)
+                Dim dashMatch As Match = Regex.Match(Html, "(adaptive_fmts"":"".*?"")", RegexOptions.IgnoreCase) '"adaptive_fmts\"": \""(.*?)\"", \""", RegexOptions.IgnoreCase)
 
                 If fmtMatch.Success Then
                     Dim fmtDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(fmtMatch, VideoTitle)
