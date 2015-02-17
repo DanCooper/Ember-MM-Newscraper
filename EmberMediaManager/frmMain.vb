@@ -3576,19 +3576,19 @@ doCancel:
         Me.FilterArray_Movies.Remove(filMissing_Movies)
         If Me.chkFilterMissing_Movies.Checked Then
             With Master.eSettings
-                If .MovieMissingBanner Then MissingFilter.Add("HasBanner = 0")
-                If .MovieMissingClearArt Then MissingFilter.Add("HasClearArt = 0")
-                If .MovieMissingClearLogo Then MissingFilter.Add("HasClearLogo = 0")
-                If .MovieMissingDiscArt Then MissingFilter.Add("HasDiscArt = 0")
-                If .MovieMissingEFanarts Then MissingFilter.Add("HasEFanarts = 0")
-                If .MovieMissingEThumbs Then MissingFilter.Add("HasEThumbs = 0")
-                If .MovieMissingFanart Then MissingFilter.Add("HasFanart = 0")
-                If .MovieMissingLandscape Then MissingFilter.Add("HasLandscape = 0")
-                If .MovieMissingNFO Then MissingFilter.Add("HasNfo = 0")
-                If .MovieMissingPoster Then MissingFilter.Add("HasPoster = 0")
+                If .MovieMissingBanner Then MissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
+                If .MovieMissingClearArt Then MissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
+                If .MovieMissingClearLogo Then MissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
+                If .MovieMissingDiscArt Then MissingFilter.Add("DiscArtPath IS NULL OR DiscArtPath=''")
+                If .MovieMissingEFanarts Then MissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
+                If .MovieMissingEThumbs Then MissingFilter.Add("EThumbsPath IS NULL OR EThumbsPath=''")
+                If .MovieMissingFanart Then MissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
+                If .MovieMissingLandscape Then MissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
+                If .MovieMissingNFO Then MissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
+                If .MovieMissingPoster Then MissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
                 If .MovieMissingSubtitles Then MissingFilter.Add("HasSub = 0")
-                If .MovieMissingTheme Then MissingFilter.Add("HasTheme = 0")
-                If .MovieMissingTrailer Then MissingFilter.Add("HasTrailer = 0")
+                If .MovieMissingTheme Then MissingFilter.Add("ThemePath IS NULL OR ThemePath=''")
+                If .MovieMissingTrailer Then MissingFilter.Add("TrailerPath IS NULL OR TrailerPath=''")
             End With
             filMissing_Movies = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
             If Not IsNothing(filMissing_Movies) Then Me.FilterArray_Movies.Add(filMissing_Movies)
@@ -3601,14 +3601,14 @@ doCancel:
         Me.FilterArray_MovieSets.Remove(filMissing_MovieSets)
         If Me.chkFilterMissing_MovieSets.Checked Then
             With Master.eSettings
-                If .MovieSetMissingBanner Then MissingFilter.Add("HasBanner = 0")
-                If .MovieSetMissingClearArt Then MissingFilter.Add("HasClearArt = 0")
-                If .MovieSetMissingClearLogo Then MissingFilter.Add("HasClearLogo = 0")
-                If .MovieSetMissingDiscArt Then MissingFilter.Add("HasDiscArt = 0")
-                If .MovieSetMissingFanart Then MissingFilter.Add("HasFanart = 0")
-                If .MovieSetMissingLandscape Then MissingFilter.Add("HasLandscape = 0")
-                If .MovieSetMissingNFO Then MissingFilter.Add("HasNfo = 0")
-                If .MovieSetMissingPoster Then MissingFilter.Add("HasPoster = 0")
+                If .MovieSetMissingBanner Then MissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
+                If .MovieSetMissingClearArt Then MissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
+                If .MovieSetMissingClearLogo Then MissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
+                If .MovieSetMissingDiscArt Then MissingFilter.Add("DiscArtPath IS NULL OR DiscArtPath=''")
+                If .MovieSetMissingFanart Then MissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
+                If .MovieSetMissingLandscape Then MissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
+                If .MovieSetMissingNFO Then MissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
+                If .MovieSetMissingPoster Then MissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
             End With
             filMissing_MovieSets = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
             If Not IsNothing(filMissing_MovieSets) Then Me.FilterArray_MovieSets.Add(filMissing_MovieSets)
@@ -3621,16 +3621,16 @@ doCancel:
         Me.FilterArray_Shows.Remove(filMissing_Shows)
         If Me.chkFilterMissing_Shows.Checked Then
             With Master.eSettings
-                If .TVShowMissingBanner Then MissingFilter.Add("HasBanner = 0")
-                If .TVShowMissingCharacterArt Then MissingFilter.Add("HasCharacterArt = 0")
-                If .TVShowMissingClearArt Then MissingFilter.Add("HasClearArt = 0")
-                If .TVShowMissingClearLogo Then MissingFilter.Add("HasClearLogo = 0")
-                If .TVShowMissingEFanarts Then MissingFilter.Add("HasEFanarts = 0")
-                If .TVShowMissingFanart Then MissingFilter.Add("HasFanart = 0")
-                If .TVShowMissingLandscape Then MissingFilter.Add("HasLandscape = 0")
-                If .TVShowMissingNFO Then MissingFilter.Add("HasNfo = 0")
-                If .TVShowMissingPoster Then MissingFilter.Add("HasPoster = 0")
-                If .TVShowMissingTheme Then MissingFilter.Add("HasTheme = 0")
+                If .TVShowMissingBanner Then MissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
+                If .TVShowMissingCharacterArt Then MissingFilter.Add("CharacterArt IS NULL OR CharacterArt=''")
+                If .TVShowMissingClearArt Then MissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
+                If .TVShowMissingClearLogo Then MissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
+                If .TVShowMissingEFanarts Then MissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
+                If .TVShowMissingFanart Then MissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
+                If .TVShowMissingLandscape Then MissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
+                If .TVShowMissingNFO Then MissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
+                If .TVShowMissingPoster Then MissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
+                If .TVShowMissingTheme Then MissingFilter.Add("ThemePath IS NULL OR ThemePath=''")
             End With
             filMissing_Shows = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
             If Not IsNothing(filMissing_Shows) Then Me.FilterArray_Shows.Add(filMissing_Shows)
@@ -7155,7 +7155,7 @@ doCancel:
                     Me.cmnuMovieSetSep3.Visible = True
                     Me.cmnuMovieSetRescrape.Visible = True
 
-                    cmnuMovieSetTitle.Text = String.Concat(">> ", Me.dgvMovieSets.Item("Title", e.RowIndex).Value, " <<")
+                    cmnuMovieSetTitle.Text = String.Concat(">> ", Me.dgvMovieSets.Item("SetName", e.RowIndex).Value, " <<")
 
                     If Not Me.dgvMovieSets.Rows(e.RowIndex).Selected Then
                         Me.prevMovieSetRow = -1
@@ -15669,43 +15669,39 @@ doCancel:
     End Sub
 
     Private Sub RunFilter_Movies(Optional ByVal doFill As Boolean = False)
-        Try
-            If Me.Visible Then
+        If Me.Visible Then
 
-                Me.ClearInfo()
+            Me.ClearInfo()
 
-                Me.prevMovieRow = -2
-                Me.currMovieRow = -1
-                Me.dgvMovies.ClearSelection()
-                Me.dgvMovies.CurrentCell = Nothing
+            Me.prevMovieRow = -2
+            Me.currMovieRow = -1
+            Me.dgvMovies.ClearSelection()
+            Me.dgvMovies.CurrentCell = Nothing
 
-                If FilterArray_Movies.Count > 0 Then
-                    Dim FilterString As String = String.Empty
+            If FilterArray_Movies.Count > 0 Then
+                Dim FilterString As String = String.Empty
 
-                    If rbFilterAnd_Movies.Checked Then
-                        FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Movies.ToArray, " AND ")
-                    Else
-                        FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Movies.ToArray, " OR ")
-                    End If
-
-                    bsMovies.Filter = FilterString
-                    ModulesManager.Instance.RuntimeObjects.FilterMovies = FilterString
+                If rbFilterAnd_Movies.Checked Then
+                    FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Movies.ToArray, " AND ")
                 Else
-                    bsMovies.RemoveFilter()
-                    ModulesManager.Instance.RuntimeObjects.FilterMovies = String.Empty
+                    FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Movies.ToArray, " OR ")
                 End If
 
-                If doFill Then
-                    Me.FillList(True, False, False)
-                    ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch = Me.txtSearchMovies.Text
-                    ModulesManager.Instance.RuntimeObjects.FilterMoviesType = Me.cbSearchMovies.Text
-                Else
-                    Me.txtSearchMovies.Focus()
-                End If
+                bsMovies.Filter = FilterString
+                ModulesManager.Instance.RuntimeObjects.FilterMovies = FilterString
+            Else
+                bsMovies.RemoveFilter()
+                ModulesManager.Instance.RuntimeObjects.FilterMovies = String.Empty
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+
+            If doFill Then
+                Me.FillList(True, False, False)
+                ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch = Me.txtSearchMovies.Text
+                ModulesManager.Instance.RuntimeObjects.FilterMoviesType = Me.cbSearchMovies.Text
+            Else
+                Me.txtSearchMovies.Focus()
+            End If
+        End If
     End Sub
 
     Private Sub RunFilter_MovieSets(Optional ByVal doFill As Boolean = False)
@@ -15741,54 +15737,49 @@ doCancel:
     End Sub
 
     Private Sub RunFilter_Shows(Optional ByVal doFill As Boolean = False)
-        Try
-            If Me.Visible Then
+        If Me.Visible Then
 
-                Me.ClearInfo()
+            Me.ClearInfo()
 
-                Me.prevShowRow = -2
-                Me.currShowRow = -1
-                Me.dgvTVShows.ClearSelection()
-                Me.dgvTVShows.CurrentCell = Nothing
+            Me.prevShowRow = -2
+            Me.currShowRow = -1
+            Me.dgvTVShows.ClearSelection()
+            Me.dgvTVShows.CurrentCell = Nothing
 
-                Me.dgvTVSeasons.ClearSelection()
-                Me.dgvTVSeasons.CurrentCell = Nothing
-                Me.bsSeasons.DataSource = Nothing
-                Me.dgvTVEpisodes.DataSource = Nothing
+            Me.dgvTVSeasons.ClearSelection()
+            Me.dgvTVSeasons.CurrentCell = Nothing
+            Me.bsSeasons.DataSource = Nothing
+            Me.dgvTVEpisodes.DataSource = Nothing
 
-                Me.dgvTVEpisodes.ClearSelection()
-                Me.dgvTVEpisodes.CurrentCell = Nothing
-                Me.bsEpisodes.DataSource = Nothing
-                Me.dgvTVEpisodes.DataSource = Nothing
+            Me.dgvTVEpisodes.ClearSelection()
+            Me.dgvTVEpisodes.CurrentCell = Nothing
+            Me.bsEpisodes.DataSource = Nothing
+            Me.dgvTVEpisodes.DataSource = Nothing
 
-                If FilterArray_Shows.Count > 0 Then
-                    Dim FilterString As String = String.Empty
+            If FilterArray_Shows.Count > 0 Then
+                Dim FilterString As String = String.Empty
 
-                    If rbFilterAnd_Movies.Checked Then
-                        FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Shows.ToArray, " AND ")
-                    Else
-                        FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Shows.ToArray, " OR ")
-                    End If
-
-                    bsShows.Filter = FilterString
-                    ModulesManager.Instance.RuntimeObjects.FilterShows = FilterString
+                If rbFilterAnd_Movies.Checked Then
+                    FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Shows.ToArray, " AND ")
                 Else
-                    bsShows.RemoveFilter()
-                    ModulesManager.Instance.RuntimeObjects.FilterShows = String.Empty
+                    FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Shows.ToArray, " OR ")
                 End If
 
-                If doFill Then
-                    Me.FillList(False, False, True)
-                    ModulesManager.Instance.RuntimeObjects.FilterShowsSearch = Me.txtSearchShows.Text
-                    ModulesManager.Instance.RuntimeObjects.FilterShowsType = Me.cbSearchShows.Text
-                Else
-                    Me.txtSearchShows.Focus()
-                End If
+                bsShows.Filter = FilterString
+                ModulesManager.Instance.RuntimeObjects.FilterShows = FilterString
+            Else
+                bsShows.RemoveFilter()
+                ModulesManager.Instance.RuntimeObjects.FilterShows = String.Empty
             End If
 
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            If doFill Then
+                Me.FillList(False, False, True)
+                ModulesManager.Instance.RuntimeObjects.FilterShowsSearch = Me.txtSearchShows.Text
+                ModulesManager.Instance.RuntimeObjects.FilterShowsType = Me.cbSearchShows.Text
+            Else
+                Me.txtSearchShows.Focus()
+            End If
+        End If
     End Sub
 
     ''' <summary>
@@ -15796,20 +15787,16 @@ doCancel:
     ''' </summary>
     ''' <remarks>Cocotus 2014/09/06 Sort filters in main view are now saved and reloaded after database refreshes</remarks>
     Private Sub RestoreFilter_Movies()
-        Try
-            With Master.eSettings
-                If .GeneralMainFilterSortColumn_Movies = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
-                    .GeneralMainFilterSortColumn_Movies = 1         'ListTitle
-                    .GeneralMainFilterSortOrder_Movies = 0          'ASC
-                End If
+        With Master.eSettings
+            If .GeneralMainFilterSortColumn_Movies = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
+                .GeneralMainFilterSortColumn_Movies = 1         'ListTitle
+                .GeneralMainFilterSortOrder_Movies = 0          'ASC
+            End If
 
-                If Not IsNothing(Me.dgvMovies.DataSource) Then
-                    Me.dgvMovies.Sort(Me.dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
-                End If
-            End With
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            If Not IsNothing(Me.dgvMovies.DataSource) Then
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
+            End If
+        End With
     End Sub
 
     Private Sub SaveFilter_Movies()
@@ -16444,7 +16431,7 @@ doCancel:
                     par_episode_Playcount.Value = newPlaycount
                     par_episode_idEpisode.Value = sRow.Cells("idEpisode").Value
                     SQLcommand.ExecuteNonQuery()
-                    
+
                     Me.RefreshEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True)
                 Next
             End Using
@@ -16492,7 +16479,7 @@ doCancel:
                     par_movie_Playcount.Value = newPlaycount
                     par_movie_idMovie.Value = sRow.Cells("idMovie").Value
                     SQLcommand.ExecuteNonQuery()
-                    
+
                     Me.RefreshMovie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, False, True, True)
                 Next
             End Using
