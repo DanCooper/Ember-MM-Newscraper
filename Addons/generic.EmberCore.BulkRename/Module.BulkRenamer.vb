@@ -411,12 +411,7 @@ Public Class BulkRenamerModule
                     dBulkRename.FilterMoviesType = ModulesManager.Instance.RuntimeObjects.FilterMoviesType
                     dBulkRename.txtFilePattern.Text = MySettings.FilesPattern_Movies
                     dBulkRename.txtFolderPattern.Text = MySettings.FoldersPattern_Movies
-                    Try
-                        If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                            ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
-                        End If
-                    Catch ex As Exception
-                    End Try
+                    dBulkRename.ShowDialog()
                 End Using
             Case 2
                 Using dBulkRename As New dlgBulkRenamer_TV
@@ -426,12 +421,7 @@ Public Class BulkRenamerModule
                     dBulkRename.txtFilePatternEpisodes.Text = MySettings.FilesPattern_Episodes
                     dBulkRename.txtFolderPatternSeasons.Text = MySettings.FoldersPattern_Seasons
                     dBulkRename.txtFolderPatternShows.Text = MySettings.FoldersPattern_Shows
-                    Try
-                        If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                            ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.TV = True}, String.Empty)
-                        End If
-                    Catch ex As Exception
-                    End Try
+                    dBulkRename.ShowDialog()
                 End Using
         End Select
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))

@@ -138,20 +138,16 @@ Public Class FileFolderRenamer
         Dim iProg As Integer = 0
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                For Each f As FileFolderRenamer.FileRename In _episodes
-                    If f.IsRenamed AndAlso Not f.FileExist Then
-                        iProg += 1
-                        If Not f.IsLocked Then
-                            If Not f.ID = -1 Then
-                                _tvDB = Master.DB.LoadTVEpFromDB(f.ID, True)
-                            Else
-                                _tvDB = Nothing
-                            End If
+                For Each f As FileFolderRenamer.FileRename In _episodes.Where(Function(s) s.IsRenamed AndAlso Not s.FileExist AndAlso Not s.IsLocked)
+                    iProg += 1
+                    If Not f.ID = -1 Then
+                        _tvDB = Master.DB.LoadTVEpFromDB(f.ID, True)
+                    Else
+                        _tvDB = Nothing
+                    End If
 
-                            If Not IsNothing(_tvDB) Then
-                                DoRenameSingle_Episode(f, _tvDB, True, False, False, False, sfunction, iProg)
-                            End If
-                        End If
+                    If Not IsNothing(_tvDB) Then
+                        DoRenameSingle_Episode(f, _tvDB, True, False, False, True, sfunction, iProg)
                     End If
                 Next
                 SQLtransaction.Commit()
@@ -165,20 +161,16 @@ Public Class FileFolderRenamer
         Dim _movieDB As Structures.DBMovie = Nothing
         Dim iProg As Integer = 0
         Try
-            For Each f As FileFolderRenamer.FileRename In _movies
-                If f.IsRenamed AndAlso Not f.FileExist Then
-                    iProg += 1
-                    If Not f.IsLocked Then
-                        If Not f.ID = -1 Then
-                            _movieDB = Master.DB.LoadMovieFromDB(f.ID)
-                        Else
-                            _movieDB = Nothing
-                        End If
+            For Each f As FileFolderRenamer.FileRename In _movies.Where(Function(s) s.IsRenamed AndAlso Not s.FileExist AndAlso Not s.IsLocked)
+                iProg += 1
+                If Not f.ID = -1 Then
+                    _movieDB = Master.DB.LoadMovieFromDB(f.ID)
+                Else
+                    _movieDB = Nothing
+                End If
 
-                        If Not IsNothing(_movieDB) Then
-                            DoRenameSingle_Movie(f, _movieDB, True, False, False, False, sfunction, iProg)
-                        End If
-                    End If
+                If Not IsNothing(_movieDB) Then
+                    DoRenameSingle_Movie(f, _movieDB, True, False, False, True, sfunction, iProg)
                 End If
             Next
         Catch ex As Exception
@@ -1675,7 +1667,13 @@ Public Class FileFolderRenamer
         Return String.Empty
     End Function
 
-    Public Sub SetIsLocked(ByVal path As String, ByVal filename As String, ByVal lock As Boolean)
+    Public Sub SetIsLocked_Episodes(ByVal path As String, ByVal filename As String, ByVal lock As Boolean)
+        For Each f As FileRename In _episodes
+            If (f.Path = path AndAlso f.FileName = filename) OrElse filename = String.Empty Then f.IsLocked = lock
+        Next
+    End Sub
+
+    Public Sub SetIsLocked_Movies(ByVal path As String, ByVal filename As String, ByVal lock As Boolean)
         For Each f As FileRename In _movies
             If (f.Path = path AndAlso f.FileName = filename) OrElse filename = String.Empty Then f.IsLocked = lock
         Next

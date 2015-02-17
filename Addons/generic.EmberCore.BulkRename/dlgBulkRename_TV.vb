@@ -366,7 +366,7 @@ Public Class dlgBulkRenamer_TV
 
     Sub setLock(ByVal lock As Boolean)
         For Each row As DataGridViewRow In dgvEpisodesList.SelectedRows
-            FFRenamer.SetIsLocked(row.Cells(1).Value.ToString, row.Cells(2).Value.ToString, lock)
+            FFRenamer.SetIsLocked_Episodes(row.Cells(1).Value.ToString, row.Cells(2).Value.ToString, lock)
             row.Cells(5).Value = lock
         Next
 
@@ -380,7 +380,7 @@ Public Class dlgBulkRenamer_TV
 
     Sub setLockAll(ByVal lock As Boolean)
         Try
-            FFRenamer.SetIsLocked(String.Empty, String.Empty, False)
+            FFRenamer.SetIsLocked_Episodes(String.Empty, String.Empty, False)
             For Each row As DataGridViewRow In dgvEpisodesList.Rows
                 row.Cells(5).Value = lock
             Next
