@@ -1147,6 +1147,27 @@ Public Class Images
         End Try
     End Sub
     ''' <summary>
+    ''' Save the image as an actor thumbnail
+    ''' </summary>
+    ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
+    ''' <param name="fpath"><c>String</c> representing the movie path</param>
+    ''' <param name="aMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieActorThumb(ByVal actor As MediaContainers.Person, ByVal fpath As String, ByVal aMovie As Structures.DBMovie) As String
+        'TODO 2013/11/26 Dekker500 - This should be re-factored to remove the fPath argument. All callers pass the same string derived from the provided DBMovie, so why do it twice?
+        Dim tPath As String = String.Empty
+
+        For Each a In FileUtils.GetFilenameList.Movie(aMovie.Filename, aMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
+            tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
+            If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.MovieActorThumbsOverwrite) Then
+                Save(tPath)
+            End If
+        Next
+
+        Return tPath
+    End Function
+    ''' <summary>
     ''' Save the image as a movie banner
     ''' </summary>
     ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
@@ -1182,27 +1203,6 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
-    End Function
-    ''' <summary>
-    ''' Save the image as an actor thumbnail
-    ''' </summary>
-    ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
-    ''' <param name="fpath"><c>String</c> representing the movie path</param>
-    ''' <param name="aMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
-    ''' <returns><c>String</c> path to the saved image</returns>
-    ''' <remarks></remarks>
-    Public Function SaveAsMovieActorThumb(ByVal actor As MediaContainers.Person, ByVal fpath As String, ByVal aMovie As Structures.DBMovie) As String
-        'TODO 2013/11/26 Dekker500 - This should be re-factored to remove the fPath argument. All callers pass the same string derived from the provided DBMovie, so why do it twice?
-        Dim tPath As String = String.Empty
-
-        For Each a In FileUtils.GetFilenameList.Movie(aMovie.Filename, aMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
-            tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
-            If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.MovieActorThumbsOverwrite) Then
-                Save(tPath)
-            End If
-        Next
-
-        Return tPath
     End Function
     ''' <summary>
     ''' Save the image as a movie ClearArt

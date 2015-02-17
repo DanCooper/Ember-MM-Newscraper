@@ -963,7 +963,9 @@ Public Class Scraper
                         For Each act As MediaContainers.Person In Episode.TVEp.Actors
                             Dim img As New Images
                             img.FromWeb(act.ThumbURL)
-                            act.ThumbPath = img.SaveAsTVEpisodeActorThumb(act, Episode)
+                            If Not IsNothing(img.Image) Then
+                                act.ThumbPath = img.SaveAsTVEpisodeActorThumb(act, Episode)
+                            End If
                         Next
                     End If
 
