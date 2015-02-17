@@ -5579,8 +5579,8 @@ doCancel:
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
-                SQLcommand.CommandText = "UPDATE sets SET Mark = (?) WHERE idMovie = (?);"
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idSet")
+                SQLcommand.CommandText = "UPDATE sets SET Mark = (?) WHERE idSet = (?);"
                 For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
                     parMark.Value = If(Me.dgvMovieSets.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
                     parID.Value = sRow.Cells("idSet").Value
@@ -13378,9 +13378,8 @@ doCancel:
                     Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
                         If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
                     Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                        'Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
-                        'If Not index >= 0 Then Continue For
-                        Continue For
+                        Dim index As Integer = Me.bsMovieSets.Find("idSet", drvRow.Item(0))
+                        If Not index >= 0 Then Continue For
                     Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
                         If Master.GlobalScrapeMod.Banner AndAlso Not (BannerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString)) Then Continue For
                         If Master.GlobalScrapeMod.ClearArt AndAlso Not (ClearArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString)) Then Continue For
