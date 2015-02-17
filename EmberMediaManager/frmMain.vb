@@ -5007,21 +5007,23 @@ doCancel:
             If doOpen Then
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", sRow.Cells("idEpisode").Value.ToString, ";")
-                        ePath = SQLCommand.ExecuteScalar.ToString
+                        If Not CBool(sRow.Cells("Missing").Value) Then
+                            SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", sRow.Cells("TVEpPathID").Value.ToString, ";")
+                            ePath = SQLCommand.ExecuteScalar.ToString
 
-                        If Not String.IsNullOrEmpty(ePath) Then
-                            Using Explorer As New Diagnostics.Process
+                            If Not String.IsNullOrEmpty(ePath) Then
+                                Using Explorer As New Diagnostics.Process
 
-                                If Master.isWindows Then
-                                    Explorer.StartInfo.FileName = "explorer.exe"
-                                    Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", ePath)
-                                Else
-                                    Explorer.StartInfo.FileName = "xdg-open"
-                                    Explorer.StartInfo.Arguments = String.Format("""{0}""", ePath)
-                                End If
-                                Explorer.Start()
-                            End Using
+                                    If Master.isWindows Then
+                                        Explorer.StartInfo.FileName = "explorer.exe"
+                                        Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", ePath)
+                                    Else
+                                        Explorer.StartInfo.FileName = "xdg-open"
+                                        Explorer.StartInfo.Arguments = String.Format("""{0}""", ePath)
+                                    End If
+                                    Explorer.Start()
+                                End Using
+                            End If
                         End If
                     Next
                 End Using
@@ -7000,7 +7002,7 @@ doCancel:
                     If Me.dgvMovieSets.SelectedRows.Count > 1 Then
                         Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMovieSets.SelectedRows.Count))
                     ElseIf Me.dgvMovieSets.SelectedRows.Count = 1 Then
-                        Me.SetStatus(Me.dgvMovieSets.SelectedRows(0).Cells("ListTitle").Value.ToString)
+                        Me.SetStatus(Me.dgvMovieSets.SelectedRows(0).Cells("SetName").Value.ToString)
                     End If
                 End If
                 Me.currMovieSetRow = Me.dgvMovieSets.SelectedRows(0).Index
@@ -8105,7 +8107,7 @@ doCancel:
                         If Me.dgvTVShows.SelectedRows.Count > 1 Then
                             Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
                         ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
-                            Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells("ListTitle").Value.ToString)
+                            Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells("TVShowPath").Value.ToString)
                         End If
                     End If
 
@@ -18816,7 +18818,7 @@ doCancel:
             If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
                 Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count))
             ElseIf Me.dgvMovies.SelectedRows.Count = 1 Then
-                Me.SetStatus(Me.dgvTVSeasons.SelectedRows(0).Cells(1).Value.ToString)
+                Me.SetStatus(Me.dgvTVSeasons.SelectedRows(0).Cells("SeasonText").Value.ToString)
             End If
 
             Me.SelectSeasonRow(Me.dgvTVSeasons.SelectedRows(0).Index)
@@ -18832,7 +18834,7 @@ doCancel:
             If Me.dgvTVShows.SelectedRows.Count > 1 Then
                 Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
             ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
-                Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells("ListTitle").Value.ToString)
+                Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells("TVShowPath").Value.ToString)
             End If
 
             Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
@@ -18864,7 +18866,7 @@ doCancel:
             If Me.dgvMovieSets.SelectedRows.Count > 1 Then
                 Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMovieSets.SelectedRows.Count))
             ElseIf Me.dgvMovieSets.SelectedRows.Count = 1 Then
-                Me.SetStatus(Me.dgvMovieSets.SelectedRows(0).Cells("ListTitle").Value.ToString)
+                Me.SetStatus(Me.dgvMovieSets.SelectedRows(0).Cells("SetName").Value.ToString)
             End If
 
             Me.SelectMovieSetRow(Me.dgvMovieSets.SelectedRows(0).Index)
