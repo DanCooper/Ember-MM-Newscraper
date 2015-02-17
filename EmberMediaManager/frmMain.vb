@@ -13142,6 +13142,18 @@ doCancel:
                 ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
             Next
         Else
+            Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Banner)
+            Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt)
+            Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo)
+            Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt)
+            Dim EFanartsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+            Dim EThumbsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+            Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+            Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Landscape)
+            Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Poster)
+            Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Theme)
+            Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Trailer)
+
             'create list of movies acording to scrapetype
             For Each drvRow As DataRow In Me.dtMovies.Rows
 
@@ -13157,18 +13169,6 @@ doCancel:
                         If Not index >= 0 Then Continue For
                     Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
                         Dim ActorThumbsAllowed As Boolean = Master.eSettings.MovieActorThumbsAnyEnabled
-                        Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Banner)
-                        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt)
-                        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo)
-                        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt)
-                        Dim EFanartsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
-                        Dim EThumbsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
-                        Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
-                        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Landscape)
-                        Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Poster)
-                        Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Theme)
-                        Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Trailer)
-
                         If Master.GlobalScrapeMod.ActorThumbs AndAlso Not ActorThumbsAllowed Then Continue For
                         If Master.GlobalScrapeMod.Banner AndAlso Not (BannerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString)) Then Continue For
                         If Master.GlobalScrapeMod.ClearArt AndAlso Not (ClearArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString)) Then Continue For
@@ -13178,7 +13178,7 @@ doCancel:
                         If Master.GlobalScrapeMod.EThumbs AndAlso Not (EThumbsAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("EThumbsPath").ToString)) Then Continue For
                         If Master.GlobalScrapeMod.Fanart AndAlso Not (FanartAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString)) Then Continue For
                         If Master.GlobalScrapeMod.Landscape AndAlso Not (LandscapeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString)) Then Continue For
-                        If Master.GlobalScrapeMod.NFO AndAlso String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then Continue For
+                        If Master.GlobalScrapeMod.NFO AndAlso Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then Continue For
                         If Master.GlobalScrapeMod.Poster AndAlso Not (PosterAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString)) Then Continue For
                         If Master.GlobalScrapeMod.Theme AndAlso Not (ThemeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ThemePath").ToString)) Then Continue For
                         If Master.GlobalScrapeMod.Trailer AndAlso Not (TrailerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("TrailerPath").ToString)) Then Continue For
