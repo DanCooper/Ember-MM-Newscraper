@@ -5041,69 +5041,9 @@ doCancel:
         SetWatchedStatus_Season()
     End Sub
 
-    'Private Sub cmnuHasWatchedShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuHasWatchedShow.Click
-    '    Try
-    '        Dim setMark As Boolean = False
-    '        If Me.dgvTVShows.SelectedRows.Count > 1 Then
-    '            For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-    '                'if any one item is set as unmarked, set menu to mark
-    '                'else they are all marked, so set menu to unmark
-    '                If Not Convert.ToBoolean(sRow.Cells(6).Value) Then
-    '                    setMark = True
-    '                    Exit For
-    '                End If
-    '            Next
-    '        End If
-
-    '        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-    '            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-    '                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-    '                SQLcommand.CommandText = "UPDATE TVShows SET mark = (?) WHERE id = (?);"
-    '                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-    '                    parMark.Value = If(Me.dgvTVShows.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(6).Value))
-    '                    parID.Value = sRow.Cells(0).Value
-    '                    SQLcommand.ExecuteNonQuery()
-    '                    sRow.Cells(6).Value = parMark.Value
-
-    '                    Using SQLSeaCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                        Dim parSeaMark As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "mark")
-    '                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
-    '                        SQLSeaCommand.CommandText = "UPDATE TVSeason SET mark = (?) WHERE TVShowID = (?);"
-    '                        parSeaMark.Value = parMark.Value
-    '                        parSeaID.Value = parID.Value
-    '                        SQLSeaCommand.ExecuteNonQuery()
-
-    '                        For Each eRow As DataGridViewRow In Me.dgvTVSeasons.Rows
-    '                            eRow.Cells(8).Value = parMark.Value
-    '                        Next
-    '                    End Using
-
-    '                    Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                        Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
-    '                        Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
-    '                        SQLECommand.CommandText = "UPDATE TVEps SET mark = (?) WHERE TVShowID = (?);"
-    '                        parEMark.Value = parMark.Value
-    '                        parEID.Value = parID.Value
-    '                        SQLECommand.ExecuteNonQuery()
-
-    '                        For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-    '                            eRow.Cells(8).Value = parMark.Value
-    '                        Next
-    '                    End Using
-    '                Next
-    '            End Using
-    '            SQLtransaction.Commit()
-    '        End Using
-
-    '        Me.dgvTVShows.Invalidate()
-    '        Me.dgvTVSeasons.Invalidate()
-    '        Me.dgvTVEpisodes.Invalidate()
-
-    '    Catch ex As Exception
-    '        logger.Error(New StackFrame().GetMethod().Name, ex)
-    '    End Try
-    'End Sub
+    Private Sub cmnuShowWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowWatched.Click
+        SetWatchedStatus_Show()
+    End Sub
 
     Private Sub cmnuEpisodeLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeLock.Click
         Try
@@ -6032,7 +5972,7 @@ doCancel:
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
 
-                    doFill = Me.RefreshSeason(Convert.ToInt32(sRow.Cells("idSeason").Value), Convert.ToInt32(sRow.Cells("Season").Value), True)
+                    doFill = Me.RefreshSeason(Convert.ToInt32(sRow.Cells("idShow").Value), Convert.ToInt32(sRow.Cells("Season").Value), True)
 
                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", sRow.Cells("idShow").Value, " AND Season = ", sRow.Cells("Season").Value, " AND Missing = 0;")
@@ -6534,188 +6474,6 @@ doCancel:
                 MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
             End If
         End If
-    End Sub
-
-    Private Sub SetWatchedStatus_Episode()
-        Dim setWatched As Boolean = False
-        If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
-            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                'if any one item is set as not watched, set menu to watched
-                'else they are all watched so set menu to not watched
-                If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
-                    setWatched = True
-                    Exit For
-                End If
-            Next
-        End If
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim par_episode_Playcount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_Playcount", DbType.String, 0, "Playcount")
-                Dim par_episode_idEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_idEpisode", DbType.Int32, 0, "idEpisode")
-                SQLcommand.CommandText = "UPDATE episode SET Playcount = (?) WHERE idEpisode = (?);"
-                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    Dim currPlaycount As String = String.Empty
-                    Dim hasWatched As Boolean = False
-                    Dim newPlaycount As String = String.Empty
-
-                    currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
-                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
-
-                    If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
-                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
-                    ElseIf Not hasWatched Then
-                        newPlaycount = "1"
-                    Else
-                        newPlaycount = Nothing
-                    End If
-
-                    par_episode_Playcount.Value = newPlaycount
-                    par_episode_idEpisode.Value = sRow.Cells("idEpisode").Value
-                    SQLcommand.ExecuteNonQuery()
-
-                    sRow.Cells("Playcount").Value = newPlaycount
-                Next
-            End Using
-            SQLtransaction.Commit()
-        End Using
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                Me.RefreshEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True)
-            Next
-            SQLtransaction.Commit()
-        End Using
-
-        Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", Me.dgvTVEpisodes.CurrentCell.RowIndex).Value)) ', Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.CurrentCell.RowIndex).Value.ToString, True, False)
-        Me.dgvTVEpisodes.Invalidate()
-    End Sub
-
-    Private Sub SetWatchedStatus_Movie()
-        Dim setWatched As Boolean = False
-        If Me.dgvMovies.SelectedRows.Count > 1 Then
-            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                'if any one item is set as not watched, set menu to watched
-                'else they are all watched so set menu to not watched
-                If CBool(sRow.Cells("HasWatched").Value) Then
-                    setWatched = True
-                    Exit For
-                End If
-            Next
-        End If
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim par_movie_Playcount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_movie_Playcount", DbType.String, 0, "Playcount")
-                Dim par_movie_idMovie As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_movie_idMovie", DbType.Int32, 0, "idMovie")
-                SQLcommand.CommandText = "UPDATE movie SET Playcount = (?) WHERE idMovie = (?);"
-                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                    Dim hasWatched As Boolean = False
-                    Dim currPlaycount As String = String.Empty
-                    Dim newPlaycount As String = String.Empty
-
-                    currPlaycount = sRow.Cells("Playcount").Value.ToString
-                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
-
-                    If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
-                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
-                    ElseIf Not hasWatched Then
-                        newPlaycount = "1"
-                    Else
-                        newPlaycount = Nothing
-                    End If
-
-                    par_movie_Playcount.Value = newPlaycount
-                    par_movie_idMovie.Value = sRow.Cells("idMovie").Value
-                    SQLcommand.ExecuteNonQuery()
-
-                    sRow.Cells("Playcount").Value = newPlaycount
-                Next
-            End Using
-            SQLtransaction.Commit()
-        End Using
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Me.RefreshMovie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, False, True, True)
-            Next
-            SQLtransaction.Commit()
-        End Using
-
-        Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item("idMovie", Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item("MoviePath", Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
-        Me.dgvMovies.Invalidate()
-    End Sub
-
-    Private Sub SetWatchedStatus_Season()
-        Dim setWatched As Boolean = False
-        Dim EpisodeList As New List(Of Integer)
-        Dim SeasonsList As New List(Of Integer)
-        If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
-            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                'if any one item is set as not watched, set menu to watched
-                'else they are all watched so set menu to not watched
-                If Not CBool(sRow.Cells("HasWatched").Value) Then
-                    setWatched = True
-                    Exit For
-                End If
-            Next
-        End If
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                Dim hasWatched As Boolean = CBool(sRow.Cells("HasWatched").Value)
-                Dim iSeason As Integer = CInt(sRow.Cells("Season").Value)
-                Dim iShow As Integer = CInt(sRow.Cells("idShow").Value)
-                Using SQLcommand_get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand_get.CommandText = String.Format("SELECT idEpisode, Playcount FROM episode WHERE Missing = 0 AND idShow = {0} AND Season = {1};", iShow, iSeason)
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_get.ExecuteReader()
-                        While SQLreader.Read
-                            EpisodeList.Add(CInt(SQLreader("idEpisode")))
-                            Using SQLcommand_update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand
-                                SQLcommand_update.CommandText = String.Format("UPDATE episode SET Playcount = (?) WHERE idEpisode = (?);")
-                                Dim par_episode_Playcount As SQLite.SQLiteParameter = SQLcommand_update.Parameters.Add("par_episode_Playcount", DbType.String, 0, "Playcount")
-                                Dim par_episode_idEpisode As SQLite.SQLiteParameter = SQLcommand_update.Parameters.Add("par_episode_idEpisode", DbType.Int32, 0, "idEpisode")
-
-                                Dim currPlaycount As String = String.Empty
-                                Dim newPlaycount As String = String.Empty
-
-                                currPlaycount = SQLreader("Playcount").ToString
-
-                                If Me.dgvTVSeasons.SelectedRows.Count > 1 AndAlso setWatched Then
-                                    newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
-                                ElseIf Not hasWatched Then
-                                    newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
-                                Else
-                                    newPlaycount = Nothing
-                                End If
-
-                                par_episode_Playcount.Value = newPlaycount
-                                par_episode_idEpisode.Value = SQLreader("idEpisode")
-                                SQLcommand_update.ExecuteNonQuery()
-                            End Using
-                        End While
-                    End Using
-                End Using
-            Next
-            SQLtransaction.Commit()
-        End Using
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each iEpisode As Integer In EpisodeList
-                Me.RefreshEpisode(iEpisode, True, False, True)
-            Next
-            SQLtransaction.Commit()
-        End Using
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                Me.RefreshSeason(CInt(sRow.Cells("idShow").Value), CInt(sRow.Cells("Season").Value), True)
-            Next
-            SQLtransaction.Commit()
-        End Using
-
-        Me.dgvTVSeasons.Invalidate()
-        Me.dgvTVEpisodes.Invalidate()
     End Sub
 
     Private Sub dgvMovies_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellDoubleClick
@@ -7646,7 +7404,7 @@ doCancel:
             Return
         End If
 
-        If colName = "Title" OrElse colName = "Playcount" OrElse Not Master.eSettings.TVEpisodeClickScrape Then 'Title or Watched Column
+        If colName = "Title" OrElse colName = "Playcount" OrElse Not Master.eSettings.TVEpisodeClickScrape Then
             If Not colName = "Playcount" Then
                 If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
                     If Me.dgvTVEpisodes.RowCount > 0 Then
@@ -8046,7 +7804,7 @@ doCancel:
             Return
         End If
 
-        If colName = "SeasonText" OrElse colName = "HasWatched" Then 'OrElse Not Master.eSettings.MovieClickScrape Then
+        If colName = "SeasonText" OrElse colName = "HasWatched" OrElse Not Master.eSettings.TVSeasonClickScrape Then
             If Not colName = "HasWatched" Then
                 If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
                     If Me.dgvTVSeasons.RowCount > 0 Then
@@ -8248,6 +8006,7 @@ doCancel:
                 If Me.dgvTVSeasons.SelectedRows.Count > 1 AndAlso Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
                     Dim setMark As Boolean = False
                     Dim setLock As Boolean = False
+                    Dim setWatched As Boolean = False
 
                     Me.cmnuSeason.Enabled = True
                     Me.cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
@@ -8263,18 +8022,25 @@ doCancel:
                         'else they are all marked, so set menu to unmark
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                             setMark = True
-                            If setLock Then Exit For
+                            If setLock AndAlso setWatched Then Exit For
                         End If
                         'if any one item is set as unlocked, set menu to lock
                         'else they are all locked so set menu to unlock
                         If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                             setLock = True
-                            If setMark Then Exit For
+                            If setMark AndAlso setWatched Then Exit For
+                        End If
+                        'if any one item is set as unwatched, set menu to watched
+                        'else they are all watched so set menu to not watched
+                        If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
+                            setWatched = True
+                            If setLock AndAlso setMark Then Exit For
                         End If
                     Next
 
                     Me.cmnuSeasonMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                     Me.cmnuSeasonLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                    Me.cmnuSeasonWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
 
                 Else
                     Me.ToolStripSeparator16.Visible = True
@@ -8287,6 +8053,7 @@ doCancel:
                     Me.cmnuSeasonTitle.Text = String.Concat(">> ", Me.dgvTVSeasons.Item("SeasonText", dgvHTI.RowIndex).Value, " <<")
                     Me.cmnuSeasonMark.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     Me.cmnuSeasonLock.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                    Me.cmnuSeasonWatched.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
                     Me.cmnuSeasonChangeImages.Enabled = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
 
                     If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 1 Then
@@ -8322,24 +8089,35 @@ doCancel:
     End Sub
 
     Private Sub dgvTVShows_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellClick
-        If Me.dgvTVShows.SelectedRows.Count > 0 Then
-            If Me.dgvTVShows.RowCount > 0 Then
-                Me.tmpTitle = Me.dgvTVShows.SelectedRows(0).Cells("ListTitle").Value.ToString
-                Me.tmpTVDB = Me.dgvTVShows.SelectedRows(0).Cells("TVDB").Value.ToString
-                Me.tmpLang = Me.dgvTVShows.SelectedRows(0).Cells("Language").Value.ToString
-                Me.tmpOrdering = DirectCast(Convert.ToInt32(Me.dgvTVShows.SelectedRows(0).Cells("Ordering").Value), Enums.Ordering)
-                If Me.dgvTVShows.SelectedRows.Count > 1 Then
-                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
-                ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
-                    Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells("ListTitle").Value.ToString)
-                End If
-            End If
+        Dim colName As String = Me.dgvTVShows.Columns(e.ColumnIndex).Name
+        If String.IsNullOrEmpty(colName) Then
+            Return
+        End If
 
-            Me.currShowRow = Me.dgvTVShows.SelectedRows(0).Index
-            If Not Me.currList = 0 Then
-                Me.currList = 0
-                Me.prevShowRow = -1
-                Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
+        If colName = "SeasonText" OrElse colName = "HasWatched" OrElse Not Master.eSettings.TVShowClickScrape Then
+            If Not colName = "HasWatched" Then
+                If Me.dgvTVShows.SelectedRows.Count > 0 Then
+                    If Me.dgvTVShows.RowCount > 0 Then
+                        Me.tmpTitle = Me.dgvTVShows.SelectedRows(0).Cells("ListTitle").Value.ToString
+                        Me.tmpTVDB = Me.dgvTVShows.SelectedRows(0).Cells("TVDB").Value.ToString
+                        Me.tmpLang = Me.dgvTVShows.SelectedRows(0).Cells("Language").Value.ToString
+                        Me.tmpOrdering = DirectCast(Convert.ToInt32(Me.dgvTVShows.SelectedRows(0).Cells("Ordering").Value), Enums.Ordering)
+                        If Me.dgvTVShows.SelectedRows.Count > 1 Then
+                            Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
+                        ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
+                            Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells("ListTitle").Value.ToString)
+                        End If
+                    End If
+
+                    Me.currShowRow = Me.dgvTVShows.SelectedRows(0).Index
+                    If Not Me.currList = 0 Then
+                        Me.currList = 0
+                        Me.prevShowRow = -1
+                        Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
+                    End If
+                End If
+            Else
+                SetWatchedStatus_Show()
             End If
         End If
     End Sub
@@ -8551,6 +8329,7 @@ doCancel:
                 If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
                     Dim setMark As Boolean = False
                     Dim setLock As Boolean = False
+                    Dim setWatched As Boolean = False
 
                     Me.cmnuShow.Enabled = True
                     Me.cmnuShowTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
@@ -8567,18 +8346,25 @@ doCancel:
                         'else they are all marked, so set menu to unmark
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                             setMark = True
-                            If setLock Then Exit For
+                            If setLock AndAlso setWatched Then Exit For
                         End If
                         'if any one item is set as unlocked, set menu to lock
                         'else they are all locked so set menu to unlock
                         If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                             setLock = True
-                            If setMark Then Exit For
+                            If setMark AndAlso setWatched Then Exit For
+                        End If
+                        'if any one item is set as unwatched, set menu to watched
+                        'else they are all watched so set menu to not watched
+                        If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
+                            setWatched = True
+                            If setLock AndAlso setMark Then Exit For
                         End If
                     Next
 
                     Me.cmnuShowMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                     Me.cmnuShowLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                    Me.cmnuShowWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
 
                     Me.cmnuShowLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
                     Me.cmnuShowLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
@@ -8596,6 +8382,7 @@ doCancel:
                     Me.cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item("ListTitle", dgvHTI.RowIndex).Value, " <<")
                     Me.cmnuShowMark.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     Me.cmnuShowLock.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                    Me.cmnuShowWatched.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item("HasWatched", dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
 
                     If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 0 Then
                         Me.prevShowRow = -1
@@ -16618,6 +16405,223 @@ doCancel:
             Me.dgvTVSeasons.Enabled = isEnabled
             Me.dgvTVEpisodes.Enabled = isEnabled
         End If
+    End Sub
+
+    Private Sub SetWatchedStatus_Episode()
+        Dim setWatched As Boolean = False
+        If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                'if any one item is set as not watched, set menu to watched
+                'else they are all watched so set menu to not watched
+                If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
+                    setWatched = True
+                    Exit For
+                End If
+            Next
+        End If
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                Dim par_episode_Playcount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_Playcount", DbType.String, 0, "Playcount")
+                Dim par_episode_idEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_idEpisode", DbType.Int32, 0, "idEpisode")
+                SQLcommand.CommandText = "UPDATE episode SET Playcount = (?) WHERE idEpisode = (?);"
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    Dim currPlaycount As String = String.Empty
+                    Dim hasWatched As Boolean = False
+                    Dim newPlaycount As String = String.Empty
+
+                    currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
+                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+
+                    If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
+                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                    ElseIf Not hasWatched Then
+                        newPlaycount = "1"
+                    Else
+                        newPlaycount = Nothing
+                    End If
+
+                    par_episode_Playcount.Value = newPlaycount
+                    par_episode_idEpisode.Value = sRow.Cells("idEpisode").Value
+                    SQLcommand.ExecuteNonQuery()
+                    
+                    Me.RefreshEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True)
+                Next
+            End Using
+            SQLtransaction.Commit()
+        End Using
+
+        Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", Me.dgvTVEpisodes.CurrentCell.RowIndex).Value)) ', Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.CurrentCell.RowIndex).Value.ToString, True, False)
+        Me.dgvTVEpisodes.Invalidate()
+    End Sub
+
+    Private Sub SetWatchedStatus_Movie()
+        Dim setWatched As Boolean = False
+        If Me.dgvMovies.SelectedRows.Count > 1 Then
+            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                'if any one item is set as not watched, set menu to watched
+                'else they are all watched so set menu to not watched
+                If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
+                    setWatched = True
+                    Exit For
+                End If
+            Next
+        End If
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                Dim par_movie_Playcount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_movie_Playcount", DbType.String, 0, "Playcount")
+                Dim par_movie_idMovie As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_movie_idMovie", DbType.Int32, 0, "idMovie")
+                SQLcommand.CommandText = "UPDATE movie SET Playcount = (?) WHERE idMovie = (?);"
+                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                    Dim hasWatched As Boolean = False
+                    Dim currPlaycount As String = String.Empty
+                    Dim newPlaycount As String = String.Empty
+
+                    currPlaycount = sRow.Cells("Playcount").Value.ToString
+                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+
+                    If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
+                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                    ElseIf Not hasWatched Then
+                        newPlaycount = "1"
+                    Else
+                        newPlaycount = Nothing
+                    End If
+
+                    par_movie_Playcount.Value = newPlaycount
+                    par_movie_idMovie.Value = sRow.Cells("idMovie").Value
+                    SQLcommand.ExecuteNonQuery()
+                    
+                    Me.RefreshMovie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, False, True, True)
+                Next
+            End Using
+            SQLtransaction.Commit()
+        End Using
+
+        Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item("idMovie", Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item("MoviePath", Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
+        Me.dgvMovies.Invalidate()
+    End Sub
+
+    Private Sub SetWatchedStatus_Season()
+        Dim setWatched As Boolean = False
+        If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
+            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                'if any one item is set as not watched, set menu to watched
+                'else they are all watched so set menu to not watched
+                If Not CBool(sRow.Cells("HasWatched").Value) Then
+                    setWatched = True
+                    Exit For
+                End If
+            Next
+        End If
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                Dim hasWatched As Boolean = CBool(sRow.Cells("HasWatched").Value)
+                Dim iSeason As Integer = CInt(sRow.Cells("Season").Value)
+                Dim iShow As Integer = CInt(sRow.Cells("idShow").Value)
+                Using SQLcommand_get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLcommand_get.CommandText = String.Format("SELECT idEpisode, Playcount FROM episode WHERE Missing = 0 AND idShow = {0} AND Season = {1};", iShow, iSeason)
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_get.ExecuteReader()
+                        While SQLreader.Read
+                            Using SQLcommand_update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand
+                                SQLcommand_update.CommandText = String.Format("UPDATE episode SET Playcount = (?) WHERE idEpisode = (?);")
+                                Dim par_episode_Playcount As SQLite.SQLiteParameter = SQLcommand_update.Parameters.Add("par_episode_Playcount", DbType.String, 0, "Playcount")
+                                Dim par_episode_idEpisode As SQLite.SQLiteParameter = SQLcommand_update.Parameters.Add("par_episode_idEpisode", DbType.Int32, 0, "idEpisode")
+
+                                Dim currPlaycount As String = String.Empty
+                                Dim newPlaycount As String = String.Empty
+
+                                currPlaycount = SQLreader("Playcount").ToString
+
+                                If Me.dgvTVSeasons.SelectedRows.Count > 1 AndAlso setWatched Then
+                                    newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                ElseIf Not hasWatched Then
+                                    newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                Else
+                                    newPlaycount = Nothing
+                                End If
+
+                                par_episode_Playcount.Value = newPlaycount
+                                par_episode_idEpisode.Value = SQLreader("idEpisode")
+                                SQLcommand_update.ExecuteNonQuery()
+
+                                Me.RefreshEpisode(CInt(SQLreader("idEpisode")), True, False, True)
+                            End Using
+                        End While
+                    End Using
+                End Using
+                Me.RefreshSeason(iShow, iSeason, True)
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        Me.dgvTVSeasons.Invalidate()
+        Me.dgvTVEpisodes.Invalidate()
+    End Sub
+
+    Private Sub SetWatchedStatus_Show()
+        Dim setWatched As Boolean = False
+        Dim SeasonsList As New List(Of Integer)
+        If Me.dgvTVShows.SelectedRows.Count > 1 Then
+            For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                'if any one item is set as not watched, set menu to watched
+                'else they are all watched so set menu to not watched
+                If Not CBool(sRow.Cells("HasWatched").Value) Then
+                    setWatched = True
+                    Exit For
+                End If
+            Next
+        End If
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                Dim hasWatched As Boolean = CBool(sRow.Cells("HasWatched").Value)
+                Dim iShow As Integer = CInt(sRow.Cells("idShow").Value)
+                Using SQLcommand_get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLcommand_get.CommandText = String.Format("SELECT idEpisode, Season, Playcount FROM episode WHERE Missing = 0 AND idShow = {0};", iShow)
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_get.ExecuteReader()
+                        While SQLreader.Read
+                            If Not SeasonsList.Contains(CInt(SQLreader("Season"))) Then SeasonsList.Add(CInt(SQLreader("Season")))
+                            Using SQLcommand_update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand
+                                SQLcommand_update.CommandText = String.Format("UPDATE episode SET Playcount = (?) WHERE idEpisode = (?);")
+                                Dim par_episode_Playcount As SQLite.SQLiteParameter = SQLcommand_update.Parameters.Add("par_episode_Playcount", DbType.String, 0, "Playcount")
+                                Dim par_episode_idEpisode As SQLite.SQLiteParameter = SQLcommand_update.Parameters.Add("par_episode_idEpisode", DbType.Int32, 0, "idEpisode")
+
+                                Dim currPlaycount As String = String.Empty
+                                Dim newPlaycount As String = String.Empty
+
+                                currPlaycount = SQLreader("Playcount").ToString
+
+                                If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso setWatched Then
+                                    newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                ElseIf Not hasWatched Then
+                                    newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                Else
+                                    newPlaycount = Nothing
+                                End If
+
+                                par_episode_Playcount.Value = newPlaycount
+                                par_episode_idEpisode.Value = SQLreader("idEpisode")
+                                SQLcommand_update.ExecuteNonQuery()
+
+                                Me.RefreshEpisode(CInt(SQLreader("idEpisode")), True, False, True)
+                            End Using
+                        End While
+                    End Using
+                End Using
+                For Each iSeason In SeasonsList
+                    Me.RefreshSeason(iShow, iSeason, True)
+                Next
+                Me.RefreshShow(iShow, True, False, False, False)
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        Me.dgvTVShows.Invalidate()
+        Me.dgvTVSeasons.Invalidate()
+        Me.dgvTVEpisodes.Invalidate()
     End Sub
 
     Private Sub cmnuMovieGenresSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieGenresSet.Click
