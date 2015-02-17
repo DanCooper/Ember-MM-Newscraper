@@ -252,6 +252,18 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <Obsolete("This property is depreciated. Use Episode.Credits [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property OldCredits() As String
+            Get
+                Return String.Join(" / ", _credits.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _credits.Clear()
+                AddCredit(value)
+            End Set
+        End Property
+
         <XmlElement("credits")> _
         Public Property Credits() As List(Of String)
             Get
@@ -263,18 +275,6 @@ Namespace MediaContainers
                 Else
                     _credits = value
                 End If
-            End Set
-        End Property
-
-        <Obsolete("This property is depreciated. Use Movie.Genres [List(Of String)] instead.")> _
-        <XmlIgnore()> _
-        Public Property OldCredits() As String
-            Get
-                Return String.Join(" / ", _credits.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _credits.Clear()
-                AddCredit(value)
             End Set
         End Property
 
@@ -302,6 +302,18 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <Obsolete("This property is depreciated. Use Episode.Directors [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property Director() As String
+            Get
+                Return String.Join(" / ", _directors.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _directors.Clear()
+                AddDirector(value)
+            End Set
+        End Property
+
         <XmlElement("director")> _
         Public Property Directors() As List(Of String)
             Get
@@ -313,18 +325,6 @@ Namespace MediaContainers
                 Else
                     _directors = value
                 End If
-            End Set
-        End Property
-
-        <Obsolete("This property is depreciated. Use Movie.Directors [List(Of String)] instead.")> _
-        <XmlIgnore()> _
-        Public Property Director() As String
-            Get
-                Return String.Join(" / ", _directors.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _directors.Clear()
-                AddDirector(value)
             End Set
         End Property
 
@@ -816,6 +816,18 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <Obsolete("This property is depreciated. Use Movie.Countries [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property Country() As String
+            Get
+                Return String.Join(" / ", _countries.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _countries.Clear()
+                AddCountry(value)
+            End Set
+        End Property
+
         <XmlElement("country")> _
         Public Property Countries() As List(Of String)
             Get
@@ -830,35 +842,11 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Countries instead.")> _
-        <XmlIgnore()> _
-        Public Property LCountry() As List(Of String)
-            Get
-                Return Countries
-            End Get
-            Set(ByVal value As List(Of String))
-                Countries = value
-            End Set
-        End Property
-
         <XmlIgnore()> _
         Public ReadOnly Property CountriesSpecified() As Boolean
             Get
                 Return Me._countries.Count > 0
             End Get
-        End Property
-
-
-        <Obsolete("This property is depreciated. Use Movie.Countries [List(Of String)] instead.")> _
-        <XmlIgnore()> _
-        Public Property Country() As String
-            Get
-                Return String.Join(" / ", _countries.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _countries.Clear()
-                AddCountry(value)
-            End Set
         End Property
 
         <XmlElement("rating")> _
@@ -959,6 +947,25 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property TagsSpecified() As Boolean
+            Get
+                Return Me._tags.Count > 0
+            End Get
+        End Property
+
+        <Obsolete("This property is depreciated. Use Movie.Genres [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property Genre() As String
+            Get
+                Return String.Join(" / ", _genres.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _genres.Clear()
+                AddGenre(value)
+            End Set
+        End Property
+
         <XmlElement("genre")> _
         Public Property Genres() As List(Of String)
             Get
@@ -973,34 +980,11 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Genres.Count instead.")> _
-        <XmlIgnore()> _
-        Public Property LGenre() As List(Of String)
-            Get
-                Return Genres
-            End Get
-            Set(ByVal value As List(Of String))
-                Genres = value
-            End Set
-        End Property
-
         <XmlIgnore()> _
         Public ReadOnly Property GenresSpecified() As Boolean
             Get
                 Return Me._genres.Count > 0
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use Movie.Genres [List(Of String)] instead.")> _
-        <XmlIgnore()> _
-        Public Property Genre() As String
-            Get
-                Return String.Join(" / ", _genres.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _genres.Clear()
-                AddGenre(value)
-            End Set
         End Property
 
         <Obsolete("This property is depreciated. Use Movie.Studios [List(Of String)] instead.")> _
@@ -1036,6 +1020,18 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <Obsolete("This property is depreciated. Use Movie.Directors [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property Director() As String
+            Get
+                Return String.Join(" / ", _directors.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _directors.Clear()
+                AddDirector(value)
+            End Set
+        End Property
+
         <XmlElement("director")> _
         Public Property Directors() As List(Of String)
             Get
@@ -1050,23 +1046,23 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Directors [List(Of String)] instead.")> _
-        <XmlIgnore()> _
-        Public Property Director() As String
-            Get
-                Return String.Join(" / ", _directors.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _directors.Clear()
-                AddDirector(value)
-            End Set
-        End Property
-
         <XmlIgnore()> _
         Public ReadOnly Property DirectorsSpecified() As Boolean
             Get
                 Return Me._directors.Count > 0
             End Get
+        End Property
+
+        <Obsolete("This property is depreciated. Use Movie.Credits [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property OldCredits() As String
+            Get
+                Return String.Join(" / ", _credits.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _credits.Clear()
+                AddCredit(value)
+            End Set
         End Property
 
         <XmlElement("credits")> _
@@ -1080,18 +1076,6 @@ Namespace MediaContainers
                 Else
                     _credits = value
                 End If
-            End Set
-        End Property
-
-        <Obsolete("This property is depreciated. Use Movie.Genres [List(Of String)] instead.")> _
-        <XmlIgnore()> _
-        Public Property OldCredits() As String
-            Get
-                Return String.Join(" / ", _credits.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _credits.Clear()
-                AddCredit(value)
             End Set
         End Property
 
@@ -1113,6 +1097,13 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
+        Public ReadOnly Property TaglineSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tagline)
+            End Get
+        End Property
+
+        <XmlIgnore()> _
         Public Property Scrapersource() As String
             Get
                 Return Me._scrapersource
@@ -1120,13 +1111,6 @@ Namespace MediaContainers
             Set(ByVal value As String)
                 Me._scrapersource = value
             End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property TaglineSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._tagline)
-            End Get
         End Property
 
         <XmlElement("outline")> _
@@ -1210,7 +1194,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property PlayCountSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._playcount)
+                Return Not String.IsNullOrEmpty(Me._playcount) AndAlso Not Me._playcount = "0"
             End Get
         End Property
 
@@ -1881,6 +1865,13 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property NameSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._name)
+            End Get
+        End Property
+
         <XmlElement("order")> _
         Public Property Order() As Integer
             Get
@@ -1891,6 +1882,13 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property OrderSpecified() As Boolean
+            Get
+                Return Me._order > -1
+            End Get
+        End Property
+
         <XmlElement("role")> _
         Public Property Role() As String
             Get
@@ -1899,6 +1897,13 @@ Namespace MediaContainers
             Set(ByVal Value As String)
                 Me._role = Value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property RoleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._role)
+            End Get
         End Property
 
         <XmlElement("thumb")> _
@@ -1912,6 +1917,13 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
+        Public ReadOnly Property ThumbURLSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._thumburl)
+            End Get
+        End Property
+
+        <XmlIgnore()> _
         Public Property ThumbPath() As String
             Get
                 Return Me._thumbpath
@@ -1919,6 +1931,13 @@ Namespace MediaContainers
             Set(ByVal Value As String)
                 Me._thumbpath = Value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property ThumbPathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._thumbpath)
+            End Get
         End Property
 
 #End Region 'Properties
@@ -2106,7 +2125,7 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property BoxeeIDSpecified() As Boolean
+        Public ReadOnly Property BoxeeTvDbSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._boxeeTvDb)
             End Get
@@ -2163,6 +2182,18 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <Obsolete("This property is depreciated. Use TVShow.Genres [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property Genre() As String
+            Get
+                Return String.Join(" / ", _genres.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _genres.Clear()
+                AddGenre(value)
+            End Set
+        End Property
+
         <XmlElement("genre")> _
         Public Property Genres() As List(Of String)
             Get
@@ -2177,35 +2208,11 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <Obsolete("This property is depreciated. Use TVShow.Genres.Count instead.")> _
         <XmlIgnore()> _
-        Public Property LGenre() As List(Of String)
+        Public ReadOnly Property GenresSpecified() As Boolean
             Get
-                Return Genres
+                Return _genres.Count > 0
             End Get
-            Set(ByVal value As List(Of String))
-                Genres = value
-            End Set
-        End Property
-
-        <Obsolete("This property is depreciated. Use 'TVShow.Genres.Count > 0' instead.")> _
-        <XmlIgnore()> _
-        Public ReadOnly Property LGenreSpecified() As Boolean
-            Get
-                Return (_genres.Count > 0)
-            End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use TVShow.Genres [List(Of String)] instead.")> _
-        <XmlIgnore()> _
-        Public Property Genre() As String
-            Get
-                Return String.Join(" / ", _genres.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _genres.Clear()
-                AddGenre(value)
-            End Set
         End Property
 
         <XmlElement("director")> _
@@ -2263,16 +2270,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("studio")> _
-        Public Property Studios() As List(Of String)
-            Get
-                Return Me._studios
-            End Get
-            Set(ByVal value As List(Of String))
-                Me._studios = value
-            End Set
-        End Property
-
         <Obsolete("This property is depreciated. Use TVShow.Studios [List(Of String)] instead.")> _
         <XmlIgnore()> _
         Public Property Studio() As String
@@ -2282,6 +2279,16 @@ Namespace MediaContainers
             Set(ByVal value As String)
                 _studios.Clear()
                 AddStudio(value)
+            End Set
+        End Property
+
+        <XmlElement("studio")> _
+        Public Property Studios() As List(Of String)
+            Get
+                Return Me._studios
+            End Get
+            Set(ByVal value As List(Of String))
+                Me._studios = value
             End Set
         End Property
 

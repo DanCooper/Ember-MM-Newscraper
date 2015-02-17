@@ -471,7 +471,7 @@ Public Class NFO
 
     Public Shared Function CleanNFO_Movies(ByVal mNFO As MediaContainers.Movie) As MediaContainers.Movie
         If Not IsNothing(mNFO) Then
-            mNFO.Genre = Strings.Join(mNFO.LGenre.ToArray, " / ")
+            mNFO.Genre = Strings.Join(mNFO.Genres.ToArray, " / ")
             mNFO.Outline = mNFO.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             If mNFO.FileInfoSpecified Then
@@ -1334,7 +1334,7 @@ Public Class NFO
                     Using xmlSR As StreamReader = New StreamReader(sPath)
                         xmlSer = New XmlSerializer(GetType(MediaContainers.TVShow))
                         xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.TVShow)
-                        xmlShow.Genre = Strings.Join(xmlShow.LGenre.ToArray, " / ")
+                        xmlShow.Genre = Strings.Join(xmlShow.Genres.ToArray, " / ")
                     End Using
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
@@ -1360,7 +1360,7 @@ Public Class NFO
 
             'Boxee support
             If Master.eSettings.TVUseBoxee Then
-                If xmlShow.BoxeeIDSpecified() Then
+                If xmlShow.BoxeeTvDbSpecified() Then
                     xmlShow.ID = xmlShow.BoxeeTvDb
                     xmlShow.BlankBoxeeId()
                 End If
