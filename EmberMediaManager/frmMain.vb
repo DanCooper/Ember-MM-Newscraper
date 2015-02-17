@@ -13142,6 +13142,7 @@ doCancel:
                 ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
             Next
         Else
+            Dim ActorThumbsAllowed As Boolean = Master.eSettings.MovieActorThumbsAnyEnabled
             Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Banner)
             Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt)
             Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo)
@@ -13168,7 +13169,6 @@ doCancel:
                         Dim index As Integer = Me.bsMovies.Find("idMovie", drvRow.Item(0))
                         If Not index >= 0 Then Continue For
                     Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
-                        Dim ActorThumbsAllowed As Boolean = Master.eSettings.MovieActorThumbsAnyEnabled
                         If Master.GlobalScrapeMod.ActorThumbs AndAlso Not ActorThumbsAllowed Then Continue For
                         If Master.GlobalScrapeMod.Banner AndAlso Not (BannerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString)) Then Continue For
                         If Master.GlobalScrapeMod.ClearArt AndAlso Not (ClearArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString)) Then Continue For
@@ -13359,6 +13359,14 @@ doCancel:
                 ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
             Next
         Else
+            Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Banner)
+            Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt)
+            Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo)
+            Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt)
+            Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
+            Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Landscape)
+            Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Poster)
+
             'create list of moviesets acording to scrapetype
             For Each drvRow As DataRow In Me.dtMovieSets.Rows
 
@@ -13374,24 +13382,14 @@ doCancel:
                         'If Not index >= 0 Then Continue For
                         Continue For
                     Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
-                        Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Banner)
-                        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt)
-                        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo)
-                        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt)
-                        Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Fanart)
-                        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Landscape)
-                        Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Poster)
-
-                        If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieSetMissingBanner AndAlso BannerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString)) OrElse _
-                                (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieSetMissingClearArt AndAlso ClearArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString)) OrElse _
-                                (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieSetMissingClearLogo AndAlso ClearLogoAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString)) OrElse _
-                                (Master.GlobalScrapeMod.DiscArt AndAlso Master.eSettings.MovieSetMissingDiscArt AndAlso DiscArtAllowed AndAlso Not String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString)) OrElse _
-                                (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieSetMissingFanart AndAlso FanartAllowed AndAlso Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString)) OrElse _
-                                (Master.GlobalScrapeMod.Landscape AndAlso Master.eSettings.MovieSetMissingLandscape AndAlso LandscapeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString)) OrElse _
-                                (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieSetMissingNFO AndAlso String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString)) OrElse _
-                                (Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieSetMissingPoster AndAlso PosterAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString))) Then
-                            Continue For
-                        End If
+                        If Master.GlobalScrapeMod.Banner AndAlso Not (BannerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.ClearArt AndAlso Not (ClearArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.ClearLogo AndAlso Not (ClearLogoAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.DiscArt AndAlso Not (DiscArtAllowed AndAlso Not String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.Fanart AndAlso Not (FanartAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.Landscape AndAlso Not (LandscapeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString)) Then Continue For
+                        If Master.GlobalScrapeMod.NFO AndAlso Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then Continue For
+                        If Master.GlobalScrapeMod.Poster AndAlso Not (PosterAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString)) Then Continue For
                 End Select
 
                 ScrapeList.Add(drvRow)
