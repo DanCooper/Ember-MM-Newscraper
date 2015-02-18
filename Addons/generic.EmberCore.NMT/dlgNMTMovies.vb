@@ -82,22 +82,22 @@ Public Class dlgNMTMovies
             Me.SetUp()
             'If dtMovieMedia Is Nothing Then
             dtMovieMedia = New DataTable
-            Master.DB.FillDataTable(dtMovieMedia, "SELECT idMovie, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, SortTitle, DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movie ORDER BY ListTitle COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtMovieMedia, "SELECT * FROM movie ORDER BY ListTitle COLLATE NOCASE;")
             'End If
             'If dtShows Is Nothing Then
             dtShows = New DataTable
-            Master.DB.FillDataTable(dtShows, "SELECT idShow, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath FROM tvshow ORDER BY Title COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtShows, "SELECT * FROM tvshow ORDER BY Title COLLATE NOCASE;")
             'End If
             'If dtSeasons Is Nothing Then
             dtSeasons = New DataTable
-            Master.DB.FillDataTable(dtSeasons, "SELECT TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock , Mark , New, HasBanner, BannerPath, HasLandscape, LandscapePath FROM TVSeason ORDER BY Season COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtSeasons, "SELECT * FROM seasons ORDER BY Season COLLATE NOCASE;")
             'End If
             'If dtEpisodes Is Nothing Then
             dtEpisodes = New DataTable
-            Master.DB.FillDataTable(dtEpisodes, "SELECT idEpisode, idShow, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode FROM episode ORDER BY Episode COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtEpisodes, "SELECT * FROM episode ORDER BY Episode COLLATE NOCASE;")
             'End If
             dtEpisodesPaths = New DataTable
-            Master.DB.FillDataTable(dtEpisodesPaths, "SELECT ID, TVEpPath FROM TVEpPaths;")
+            Master.DB.FillDataTable(dtEpisodesPaths, "SELECT * FROM TVEpPaths;")
 
             txtOutputFolder.Text = clsAdvancedSettings.GetSetting("BasePath", "")
             Dim fxml As String

@@ -3663,11 +3663,7 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 'TODO: This statement (directly filter IMDB) doesn't work ?! This is bad, cause right now I have to get all movies and search through them!
                 '         SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE imdb = ", watchedMovieIMDBID.Value, ";")
-                SQLcommand.CommandText = String.Concat("SELECT idMovie, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, ", _
-                                                       "Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, ", _
-                                                       "Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, PosterPath, ", _
-                                                       "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
-                                                       "SortTitle, DateAdded, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath FROM movie;")
+                SQLcommand.CommandText = String.Concat("SELECT idMovie, MoviePath, Imdb, Playcount FROM movie;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
                         If Not DBNull.Value.Equals(SQLreader("IMDB")) Then
@@ -3737,12 +3733,11 @@ Public Class Database
 
             'First get the internal ID of TVSHOW using the TVDBID info
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idShow, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, ", _
-                                                       "Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering FROM tvshow WHERE tvdb = ", TVDBID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT idShow FROM tvshow WHERE tvdb = ", TVDBID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        If Not DBNull.Value.Equals(SQLreader("id")) Then
-                            tempTVDBID = SQLreader("id").ToString
+                        If Not DBNull.Value.Equals(SQLreader("idShow")) Then
+                            tempTVDBID = SQLreader("idShow").ToString
                             Exit While
                         End If
                     End While
@@ -3753,14 +3748,12 @@ Public Class Database
             If String.IsNullOrEmpty(tempTVDBID) Then Exit Sub
             'Now we search episodes of the found TV Show
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idEpisode, idShow, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, ", _
-                                                       "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, ", _
-                                                       "DisplaySeason, DisplayEpisode FROM episode WHERE idShow = ", tempTVDBID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT idEpisode, Episode, Season, Playcount FROM episode WHERE idShow = ", tempTVDBID, ";")
 
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
                         If SQLreader("Season").ToString.Equals(Season) AndAlso SQLreader("Episode").ToString.Equals(episode) Then
-                            _TVEpDB.EpID = CLng(SQLreader("id").ToString)
+                            _TVEpDB.EpID = CLng(SQLreader("idEpisode").ToString)
                             'Only if playcount is not set we update
                             If DBNull.Value.Equals(SQLreader("Playcount")) Or SQLreader("Playcount").Equals("0") Or SQLreader("Playcount").Equals("") Then
                                 PlaycountStored = False
