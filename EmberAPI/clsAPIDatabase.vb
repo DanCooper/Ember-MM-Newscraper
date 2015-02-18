@@ -628,7 +628,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 14
+        Dim MyVideosDBVersion As Integer = 15
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -1658,10 +1658,10 @@ Public Class Database
                     _TVDB.IsLockSeason = CBool(SQLReader("Lock"))
                     _TVDB.IsMarkSeason = CBool(SQLReader("Mark"))
 
-                    _TVDB.ShowBannerPath = GetArtForItem(_TVDB.SeasonID, "season", "banner")
-                    _TVDB.ShowFanartPath = GetArtForItem(_TVDB.SeasonID, "season", "fanart")
-                    _TVDB.ShowLandscapePath = GetArtForItem(_TVDB.SeasonID, "season", "landscape")
-                    _TVDB.ShowPosterPath = GetArtForItem(_TVDB.SeasonID, "season", "poster")
+                    _TVDB.SeasonBannerPath = GetArtForItem(_TVDB.SeasonID, "season", "banner")
+                    _TVDB.SeasonFanartPath = GetArtForItem(_TVDB.SeasonID, "season", "fanart")
+                    _TVDB.SeasonLandscapePath = GetArtForItem(_TVDB.SeasonID, "season", "landscape")
+                    _TVDB.SeasonPosterPath = GetArtForItem(_TVDB.SeasonID, "season", "poster")
                 End If
             End Using
         End Using

@@ -3922,51 +3922,48 @@ doCancel:
     End Sub
 
     Private Sub chkFilterNew_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNew_Movies.Click
-        Try
-            If Me.chkFilterNew_Movies.Checked Then
-                Me.FilterArray_Movies.Add("new = 1")
-            Else
-                Me.FilterArray_Movies.Remove("new = 1")
-            End If
-            Me.RunFilter_Movies()
-        Catch
-        End Try
+        If Me.chkFilterNew_Movies.Checked Then
+            Me.FilterArray_Movies.Add("new = 1")
+        Else
+            Me.FilterArray_Movies.Remove("new = 1")
+        End If
+        Me.RunFilter_Movies()
     End Sub
 
     Private Sub chkFilterNew_Moviesets_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNew_MovieSets.Click
-        Try
-            If Me.chkFilterNew_MovieSets.Checked Then
-                Me.FilterArray_MovieSets.Add("new = 1")
-            Else
-                Me.FilterArray_MovieSets.Remove("new = 1")
-            End If
-            Me.RunFilter_MovieSets()
-        Catch
-        End Try
+        If Me.chkFilterNew_MovieSets.Checked Then
+            Me.FilterArray_MovieSets.Add("new = 1")
+        Else
+            Me.FilterArray_MovieSets.Remove("new = 1")
+        End If
+        Me.RunFilter_MovieSets()
     End Sub
 
-    Private Sub chkFilterNew_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNew_Shows.Click
-        Try
-            If Me.chkFilterNew_Shows.Checked Then
-                Me.FilterArray_Shows.Add("new = 1")
-            Else
-                Me.FilterArray_Shows.Remove("new = 1")
-            End If
-            Me.RunFilter_Shows()
-        Catch
-        End Try
+    Private Sub chkFilterNewEpisodes_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNewEpisodes_Shows.Click
+        If Me.chkFilterNewEpisodes_Shows.Checked Then
+            Me.FilterArray_Shows.Add("NewEpisodes > 0")
+        Else
+            Me.FilterArray_Shows.Remove("NewEpisodes > 0")
+        End If
+        Me.RunFilter_Shows()
+    End Sub
+
+    Private Sub chkFilterNewShows_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNewShows_Shows.Click
+        If Me.chkFilterNewShows_Shows.Checked Then
+            Me.FilterArray_Shows.Add("new = 1")
+        Else
+            Me.FilterArray_Shows.Remove("new = 1")
+        End If
+        Me.RunFilter_Shows()
     End Sub
 
     Private Sub chkFilterTolerance_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterTolerance_Movies.Click
-        Try
-            If Me.chkFilterTolerance_Movies.Checked Then
-                Me.FilterArray_Movies.Add("OutOfTolerance = 1")
-            Else
-                Me.FilterArray_Movies.Remove("OutOfTolerance = 1")
-            End If
-            Me.RunFilter_Movies()
-        Catch
-        End Try
+        If Me.chkFilterTolerance_Movies.Checked Then
+            Me.FilterArray_Movies.Add("OutOfTolerance = 1")
+        Else
+            Me.FilterArray_Movies.Remove("OutOfTolerance = 1")
+        End If
+        Me.RunFilter_Movies()
     End Sub
 
     Private Sub chkMovieMissingBanner_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingBanner.CheckedChanged
@@ -4706,7 +4703,8 @@ doCancel:
             'Me.chkFilterMarkCustom2.Checked = False
             'Me.chkFilterMarkCustom3.Checked = False
             'Me.chkFilterMarkCustom4.Checked = False
-            Me.chkFilterNew_Shows.Checked = False
+            Me.chkFilterNewEpisodes_Shows.Checked = False
+            Me.chkFilterNewShows_Shows.Checked = False
             Me.chkFilterLock_Shows.Checked = False
             Me.pnlFilterMissingItems_Shows.Visible = False
             Me.rbFilterOr_Shows.Checked = False
@@ -7911,7 +7909,8 @@ doCancel:
                 e.CellStyle.ForeColor = Color.Crimson
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
-            ElseIf Convert.ToBoolean(Me.dgvTVSeasons.Item("New", e.RowIndex).Value) Then
+            ElseIf Convert.ToBoolean(Me.dgvTVSeasons.Item("New", e.RowIndex).Value) OrElse _
+                Not String.IsNullOrEmpty(Me.dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(Me.dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
                 e.CellStyle.ForeColor = Color.Green
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
@@ -8223,7 +8222,8 @@ doCancel:
                 e.CellStyle.ForeColor = Color.Crimson
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
-            ElseIf Convert.ToBoolean(Me.dgvTVShows.Item("New", e.RowIndex).Value) Then
+            ElseIf Convert.ToBoolean(Me.dgvTVShows.Item("New", e.RowIndex).Value) OrElse _
+                Not String.IsNullOrEmpty(Me.dgvTVShows.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(Me.dgvTVShows.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
                 e.CellStyle.ForeColor = Color.Green
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
@@ -8565,7 +8565,8 @@ doCancel:
         'Me.chkFilterMarkCustom3.Enabled = isEnabled
         'Me.chkFilterMarkCustom4.Enabled = isEnabled
         Me.chkFilterMissing_Shows.Enabled = If(Master.eSettings.TVShowMissingItemsAnyEnabled, isEnabled, False)
-        Me.chkFilterNew_Shows.Enabled = isEnabled
+        Me.chkFilterNewEpisodes_Shows.Enabled = isEnabled
+        Me.chkFilterNewShows_Shows.Enabled = isEnabled
         'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
         Me.pnlFilterMissingItems_Shows.Visible = If(Not isEnabled, False, Me.pnlFilterMissingItems_Shows.Visible)
         Me.rbFilterAnd_Shows.Enabled = isEnabled
@@ -14604,8 +14605,9 @@ doCancel:
         '    Me.FilterArray_Movies.Add(Me.filCountry_Movies)
         'End If
 
-        If Me.clbFilterGenres_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Shows.Checked OrElse Me.chkFilterNew_Shows.Checked OrElse Me.chkFilterLock_Shows.Checked OrElse Not _
-            Me.clbFilterSource_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMissing_Shows.Checked Then Me.RunFilter_Shows()
+        If Me.clbFilterGenres_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Shows.Checked OrElse Me.chkFilterNewEpisodes_Shows.Checked OrElse _
+            Me.chkFilterNewShows_Shows.Checked OrElse Me.chkFilterLock_Shows.Checked OrElse Not Me.clbFilterSource_Shows.CheckedItems.Count > 0 OrElse _
+            Me.chkFilterMissing_Shows.Checked Then Me.RunFilter_Shows()
     End Sub
 
     Private Sub rbFilterOr_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_Movies.Click
@@ -14735,8 +14737,9 @@ doCancel:
         '    Me.FilterArray_Movies.Add(Me.filCountry_Movies)
         'End If
 
-        If Me.clbFilterGenres_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Shows.Checked OrElse Me.chkFilterNew_Shows.Checked OrElse Me.chkFilterLock_Shows.Checked OrElse Not _
-            Me.clbFilterSource_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMissing_Shows.Checked Then Me.RunFilter_Shows()
+        If Me.clbFilterGenres_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Shows.Checked OrElse Me.chkFilterNewEpisodes_Shows.Checked OrElse _
+            Me.chkFilterNewShows_Shows.Checked OrElse Me.chkFilterLock_Shows.Checked OrElse Not Me.clbFilterSource_Shows.CheckedItems.Count > 0 OrElse _
+            Me.chkFilterMissing_Shows.Checked Then Me.RunFilter_Shows()
     End Sub
 
     Private Sub RefreshAllMovies()
@@ -15773,7 +15776,7 @@ doCancel:
             If FilterArray_Shows.Count > 0 Then
                 Dim FilterString As String = String.Empty
 
-                If rbFilterAnd_Movies.Checked Then
+                If rbFilterAnd_Shows.Checked Then
                     FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Shows.ToArray, " AND ")
                 Else
                     FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Shows.ToArray, " OR ")
@@ -18152,7 +18155,8 @@ doCancel:
                 .chkFilterMarkCustom4_Movies.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker4Name), Master.eSettings.MovieGeneralCustomMarker4Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #4"))
                 .chkFilterNew_Movies.Text = Master.eLang.GetString(47, "New")
                 .chkFilterNew_MovieSets.Text = .chkFilterNew_Movies.Text
-                .chkFilterNew_Shows.Text = .chkFilterNew_Movies.Text
+                .chkFilterNewEpisodes_Shows.Text = Master.eLang.GetString(1361, "New Episode(s)")
+                .chkFilterNewShows_Shows.Text = Master.eLang.GetString(1362, "New Show(s)")
                 .chkFilterOne_MovieSets.Text = Master.eLang.GetString(1289, "Only One Movie")
                 .chkFilterTolerance_Movies.Text = Master.eLang.GetString(39, "Out of Tolerance")
 
@@ -18368,7 +18372,7 @@ doCancel:
                 .gbFilterDataField_Movies.Text = String.Concat(Master.eLang.GetString(1290, "Data Field"), ":")
                 .gbFilterGeneral_Movies.Text = Master.eLang.GetString(38, "General")
                 .gbFilterGeneral_MovieSets.Text = .gbFilterGeneral_Movies.Text
-                .gbFilterGeneral_Shows.Text = .gbFilterGeneral_Movies.Text
+                .gbFilterGeneral_Shows.Text = Master.eLang.GetString(680, "Shows")
                 .gbFilterModifier_Movies.Text = Master.eLang.GetString(44, "Modifier")
                 .gbFilterModifier_MovieSets.Text = .gbFilterModifier_Movies.Text
                 .gbFilterModifier_Shows.Text = .gbFilterModifier_Movies.Text
