@@ -3445,7 +3445,7 @@ Public Class Database
         End Using
     End Sub
     ''' <summary>
-    ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of movie Sources
+    ''' Load excluded directories from the DB. This populates the Master.ExcludeDirs list
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub LoadExcludeDirsFromDB()

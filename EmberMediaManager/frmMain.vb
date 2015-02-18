@@ -3622,7 +3622,7 @@ doCancel:
         If Me.chkFilterMissing_Shows.Checked Then
             With Master.eSettings
                 If .TVShowMissingBanner Then MissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
-                If .TVShowMissingCharacterArt Then MissingFilter.Add("CharacterArt IS NULL OR CharacterArt=''")
+                If .TVShowMissingCharacterArt Then MissingFilter.Add("CharacterArtPath IS NULL OR CharacterArtPath=''")
                 If .TVShowMissingClearArt Then MissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
                 If .TVShowMissingClearLogo Then MissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
                 If .TVShowMissingEFanarts Then MissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
@@ -8623,6 +8623,26 @@ doCancel:
                 .bsEpisodes.DataSource = .dtEpisodes
                 .dgvTVEpisodes.DataSource = .bsEpisodes
 
+                Try
+                    If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
+                            Me.dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
+                Catch ex As Exception
+                    logger.Warn("default list for episode list sorting has been loaded")
+                    Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeListSorting, True)
+                    If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
+                            Me.dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
+                End Try
+
+                Me.dgvTVEpisodes.Columns("Season").DisplayIndex = 0
+                Me.dgvTVEpisodes.Columns("Episode").DisplayIndex = 1
+                Me.dgvTVEpisodes.Columns("Aired").DisplayIndex = 2
+
                 For i As Integer = 0 To .dgvTVEpisodes.Columns.Count - 1
                     .dgvTVEpisodes.Columns(i).Visible = False
                 Next
@@ -8702,26 +8722,6 @@ doCancel:
                 .dgvTVEpisodes.CurrentCell = Nothing
 
             End With
-
-            Try
-                If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
-                    For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
-                        Me.dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                    Next
-                End If
-            Catch ex As Exception
-                logger.Warn("default list for episode list sorting has been loaded")
-                Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeListSorting, True)
-                If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
-                    For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
-                        Me.dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                    Next
-                End If
-            End Try
-
-            Me.dgvTVEpisodes.Columns("Season").DisplayIndex = 0
-            Me.dgvTVEpisodes.Columns("Episode").DisplayIndex = 1
-            Me.dgvTVEpisodes.Columns("Aired").DisplayIndex = 2
         End If
 
         Me.dgvTVEpisodes.Enabled = True
@@ -8787,6 +8787,22 @@ doCancel:
                     With Me
                         .bsMovies.DataSource = .dtMovies
                         .dgvMovies.DataSource = .bsMovies
+
+                        Try
+                            If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
+                                For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
+                                    Me.dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                                Next
+                            End If
+                        Catch ex As Exception
+                            logger.Warn("default list for movie list sorting has been loaded")
+                            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieListSorting, True)
+                            If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
+                                For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
+                                    Me.dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                                Next
+                            End If
+                        End Try
 
                         For i As Integer = 0 To .dgvMovies.Columns.Count - 1
                             .dgvMovies.Columns(i).Visible = False
@@ -8938,22 +8954,6 @@ doCancel:
                         If Master.isWindows Then .dgvMovies.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeMoviesList()
                     End With
-
-                    Try
-                        If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
-                                Me.dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    Catch ex As Exception
-                        logger.Warn("default list for movie list sorting has been loaded")
-                        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieListSorting, True)
-                        If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
-                                Me.dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    End Try
                 End If
             End If
 
@@ -8963,6 +8963,22 @@ doCancel:
                     With Me
                         .bsMovieSets.DataSource = .dtMovieSets
                         .dgvMovieSets.DataSource = .bsMovieSets
+
+                        Try
+                            If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
+                                For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
+                                    Me.dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                                Next
+                            End If
+                        Catch ex As Exception
+                            logger.Warn("default list for movieset list sorting has been loaded")
+                            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
+                            If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
+                                For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
+                                    Me.dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                                Next
+                            End If
+                        End Try
 
                         For i As Integer = 0 To .dgvMovieSets.Columns.Count - 1
                             .dgvMovieSets.Columns(i).Visible = False
@@ -9030,22 +9046,6 @@ doCancel:
                         ResizeMovieSetsList()
                     End With
 
-                    Try
-                        If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
-                                Me.dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    Catch ex As Exception
-                        logger.Warn("default list for movieset list sorting has been loaded")
-                        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
-                        If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
-                                Me.dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    End Try
-
                     Me.dgvMovieSets.Enabled = True
                 End If
             End If
@@ -9056,6 +9056,22 @@ doCancel:
                     With Me
                         .bsShows.DataSource = .dtShows
                         .dgvTVShows.DataSource = .bsShows
+
+                        Try
+                            If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
+                                For Each mColumn In Master.eSettings.TVGeneralShowListSorting
+                                    Me.dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                                Next
+                            End If
+                        Catch ex As Exception
+                            logger.Warn("default list for tv show list sorting has been loaded")
+                            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowListSorting, True)
+                            If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
+                                For Each mColumn In Master.eSettings.TVGeneralShowListSorting
+                                    Me.dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                                Next
+                            End If
+                        End Try
 
                         For i As Integer = 0 To .dgvTVShows.Columns.Count - 1
                             .dgvTVShows.Columns(i).Visible = False
@@ -9147,22 +9163,6 @@ doCancel:
                         If Master.isWindows Then .dgvTVShows.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeTVLists(.dgvTVShows.Columns("ListTitle").Index)
                     End With
-
-                    Try
-                        If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.TVGeneralShowListSorting
-                                Me.dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    Catch ex As Exception
-                        logger.Warn("default list for tv show list sorting has been loaded")
-                        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowListSorting, True)
-                        If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.TVGeneralShowListSorting
-                                Me.dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    End Try
 
                     Me.dgvTVShows.Enabled = True
                 End If
@@ -10680,6 +10680,24 @@ doCancel:
                 .bsSeasons.DataSource = .dtSeasons
                 .dgvTVSeasons.DataSource = .bsSeasons
 
+                If Me.dgvTVSeasons.Columns.Count > 0 Then
+                    Try
+                        If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
+                            For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
+                                Me.dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                            Next
+                        End If
+                    Catch ex As Exception
+                        logger.Warn("default list for season list sorting has been loaded")
+                        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSeasonListSorting, True)
+                        If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
+                            For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
+                                Me.dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                            Next
+                        End If
+                    End Try
+                End If
+
                 For i As Integer = 0 To .dgvTVSeasons.Columns.Count - 1
                     .dgvTVSeasons.Columns(i).Visible = False
                 Next
@@ -10731,24 +10749,7 @@ doCancel:
                 .dgvTVSeasons.Sort(.dgvTVSeasons.Columns("SeasonText"), ComponentModel.ListSortDirection.Ascending)
 
                 Me.FillEpisodes(ShowID, Convert.ToInt32(.dgvTVSeasons.Item("Season", 0).Value))
-
             End With
-
-            Try
-                If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
-                    For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
-                        Me.dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                    Next
-                End If
-            Catch ex As Exception
-                logger.Warn("default list for season list sorting has been loaded")
-                Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSeasonListSorting, True)
-                If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
-                    For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
-                        Me.dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                    Next
-                End If
-            End Try
         End If
 
         Me.dgvTVSeasons.Enabled = True
@@ -11206,6 +11207,13 @@ doCancel:
                                     Master.currMovie.TrailerPath = sFile.Trailer
                                     Master.currMovie.UseFolder = sFile.UseFolder
                                     Master.currMovie.IsSingle = sFile.isSingle
+
+                                    'search local actor thumb for each actor in NFO
+                                    If Master.currMovie.Movie.Actors.Count > 0 AndAlso sFile.ActorThumbs.Count > 0 Then
+                                        For Each actor In Master.currMovie.Movie.Actors
+                                            actor.ThumbPath = sFile.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                                        Next
+                                    End If
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
@@ -15051,6 +15059,13 @@ doCancel:
             tmpMovieDB.ThemePath = mContainer.Theme
             tmpMovieDB.TrailerPath = mContainer.Trailer
 
+            'search local actor thumb for each actor in NFO
+            If tmpMovieDB.Movie.Actors.Count > 0 AndAlso mContainer.ActorThumbs.Count > 0 Then
+                For Each actor In tmpMovieDB.Movie.Actors
+                    actor.ThumbPath = mContainer.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                Next
+            End If
+
             Master.DB.SaveMovieToDB(tmpMovieDB, False, BatchMode, ToNfo)
 
             Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", ID))
@@ -15587,20 +15602,20 @@ doCancel:
             If Me.dgvMovies.ColumnCount > 0 Then
                 Me.dgvMovies.Columns(3).Width = Me.dgvMovies.Width - _
                 If(CheckColumnHide_Movies("Year"), dgvMovies.Columns(17).Width, 0) - _
-                If(CheckColumnHide_Movies("HasBanner"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasClearArt"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasClearLogo"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasDiscArt"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasEFanarts"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasEThumbs"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasFanart"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasLandscape"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasNfo"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasPoster"), 20, 0) - _
+                If(CheckColumnHide_Movies("BannerPath"), 20, 0) - _
+                If(CheckColumnHide_Movies("ClearArtPath"), 20, 0) - _
+                If(CheckColumnHide_Movies("ClearLogoPath"), 20, 0) - _
+                If(CheckColumnHide_Movies("DiscArtPath"), 20, 0) - _
+                If(CheckColumnHide_Movies("EFanartsPath"), 20, 0) - _
+                If(CheckColumnHide_Movies("EThumbsPath"), 20, 0) - _
+                If(CheckColumnHide_Movies("FanartPath"), 20, 0) - _
+                If(CheckColumnHide_Movies("LandscapePath"), 20, 0) - _
+                If(CheckColumnHide_Movies("NfoPath"), 20, 0) - _
+                If(CheckColumnHide_Movies("PosterPath"), 20, 0) - _
                 If(CheckColumnHide_Movies("HasSet"), 20, 0) - _
                 If(CheckColumnHide_Movies("HasSub"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasTheme"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasTrailer"), 20, 0) - _
+                If(CheckColumnHide_Movies("ThemePath"), 20, 0) - _
+                If(CheckColumnHide_Movies("TrailerPath"), 20, 0) - _
                 If(CheckColumnHide_Movies("Playcount"), 20, 0) - _
                 If(Me.dgvMovies.DisplayRectangle.Height > Me.dgvMovies.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
@@ -15611,14 +15626,14 @@ doCancel:
         If Not Master.isWindows Then
             If Me.dgvMovieSets.ColumnCount > 0 Then
                 Me.dgvMovieSets.Columns(0).Width = Me.dgvMovieSets.Width - _
-                If(CheckColumnHide_MovieSets("HasNfo"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("HasPoster"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("HasFanart"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("HasBanner"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("HasLandscape"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("HasDiscArt"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("HasClearLogo"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("HasClearArt"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("NfoPath"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("PosterPath"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("FanartPath"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("BannerPath"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("LandscapePath"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("DiscArtPath"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("ClearLogoPath"), 20, 0) - _
+                If(CheckColumnHide_MovieSets("ClearArtPath"), 20, 0) - _
                 If(Me.dgvMovieSets.DisplayRectangle.Height > Me.dgvMovieSets.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
@@ -15630,35 +15645,35 @@ doCancel:
         If Not Master.isWindows Then
             If (iType = 0 OrElse iType = 1) AndAlso Me.dgvTVShows.ColumnCount > 0 Then
                 Me.dgvTVShows.Columns(1).Width = Me.dgvTVShows.Width - _
-                If(CheckColumnHide_TVShows("HasBanner"), 20, 0) - _
-                If(CheckColumnHide_TVShows("HasCharacterArt"), 20, 0) - _
-                If(CheckColumnHide_TVShows("HasClearArt"), 20, 0) - _
-                If(CheckColumnHide_TVShows("HasClearLogo"), 20, 0) - _
-                If(CheckColumnHide_TVShows("HasEFanarts"), 20, 0) - _
-                If(CheckColumnHide_TVShows("HasFanart"), 20, 0) - _
-                If(CheckColumnHide_TVShows("HasLandscape"), 20, 0) - _
-                If(CheckColumnHide_TVShows("HasNfo"), 20, 0) - _
-                If(CheckColumnHide_TVShows("HasPoster"), 20, 0) - _
-                If(CheckColumnHide_TVShows("HasTheme"), 20, 0) - _
+                If(CheckColumnHide_TVShows("BannerPath"), 20, 0) - _
+                If(CheckColumnHide_TVShows("CharacterArtPath"), 20, 0) - _
+                If(CheckColumnHide_TVShows("ClearArtPath"), 20, 0) - _
+                If(CheckColumnHide_TVShows("ClearLogoPath"), 20, 0) - _
+                If(CheckColumnHide_TVShows("EFanartsPath"), 20, 0) - _
+                If(CheckColumnHide_TVShows("FanartPath"), 20, 0) - _
+                If(CheckColumnHide_TVShows("LandscapePath"), 20, 0) - _
+                If(CheckColumnHide_TVShows("NfoPath"), 20, 0) - _
+                If(CheckColumnHide_TVShows("PosterPath"), 20, 0) - _
+                If(CheckColumnHide_TVShows("ThemePath"), 20, 0) - _
                 If(CheckColumnHide_TVShows("Playcount"), 20, 0) - _
                 If(Me.dgvTVShows.DisplayRectangle.Height > Me.dgvTVShows.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
             If (iType = 0 OrElse iType = 2) AndAlso Me.dgvTVSeasons.ColumnCount > 0 Then
                 Me.dgvTVSeasons.Columns(1).Width = Me.dgvTVSeasons.Width - _
-                If(CheckColumnHide_TVSeasons("HasBanner"), 20, 0) - _
-                If(CheckColumnHide_TVSeasons("HasFanart"), 20, 0) - _
-                If(CheckColumnHide_TVSeasons("HasLandscape"), 20, 0) - _
-                If(CheckColumnHide_TVSeasons("HasPoster"), 20, 0) - _
+                If(CheckColumnHide_TVSeasons("BannerPath"), 20, 0) - _
+                If(CheckColumnHide_TVSeasons("FanartPath"), 20, 0) - _
+                If(CheckColumnHide_TVSeasons("LandscapePath"), 20, 0) - _
+                If(CheckColumnHide_TVSeasons("PosterPath"), 20, 0) - _
                 If(CheckColumnHide_TVSeasons("Playcount"), 20, 0) - _
                 If(Me.dgvTVSeasons.DisplayRectangle.Height > Me.dgvTVSeasons.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
             If (iType = 0 OrElse iType = 3) AndAlso Me.dgvTVEpisodes.ColumnCount > 0 Then
                 Me.dgvTVEpisodes.Columns(2).Width = Me.dgvTVEpisodes.Width - 40 - _
-                If(CheckColumnHide_TVEpisodes("HasFanart"), 20, 0) - _
-                If(CheckColumnHide_TVEpisodes("HasNfo"), 20, 0) - _
-                If(CheckColumnHide_TVEpisodes("HasPoster"), 20, 0) - _
+                If(CheckColumnHide_TVEpisodes("FanartPath"), 20, 0) - _
+                If(CheckColumnHide_TVEpisodes("NfoPath"), 20, 0) - _
+                If(CheckColumnHide_TVEpisodes("PosterPath"), 20, 0) - _
                 If(CheckColumnHide_TVEpisodes("HasSub"), 20, 0) - _
                 If(CheckColumnHide_TVEpisodes("Playcount"), 20, 0) - _
                 If(Me.dgvTVEpisodes.DisplayRectangle.Height > Me.dgvTVEpisodes.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
