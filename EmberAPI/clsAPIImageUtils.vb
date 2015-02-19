@@ -187,6 +187,8 @@ Public Class ImageUtils
 
         If Not IsNothing(pbSource.Image) Then
             Try
+                If Not pbDestination.Image Is Nothing Then pbDestination.Image.Dispose()
+
                 pbDestination.SizeMode = PictureBoxSizeMode.Normal
                 Dim sPropPerc As Single = 1.0 'no default scaling
 
@@ -217,7 +219,6 @@ Public Class ImageUtils
                                          bmDest.Width + 1, _
                                          bmDest.Height + 1)
                         ' Display the result.
-                        If Not pbDestination.Image Is Nothing Then pbDestination.Image.Dispose()
                         pbDestination.Image = bmDest
 
                         'tweak pb after resizing pic

@@ -358,8 +358,10 @@ Public Class frmMain
                 End If
                 .pnlMPAA.Visible = False
 
+                .lblFanartSmallBottom.Text = String.Empty
                 .lblTitle.Text = String.Empty
                 .lblOriginalTitle.Text = String.Empty
+                .lblPosterBottom.Text = String.Empty
                 .lblRating.Text = String.Empty
                 .lblRuntime.Text = String.Empty
                 .pnlTop250.Visible = False
@@ -9304,22 +9306,22 @@ doCancel:
             Me.txtMetaData.Text = NFO.FIToString(Master.currShow.TVEp.FileInfo, True)
 
             If Not IsNothing(Me.MainPoster.Image) Then
+                Me.lblPosterBottom.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
                 If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
-                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbPoster.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                    Me.lblPosterBottom.Visible = True
+                Else
+                    Me.lblPosterBottom.Visible = False
                 End If
 
-                Me.pbPoster.Location = New Point(4, 4)
+                If Master.eSettings.GeneralShowImgNames Then
+                    Me.lblPosterTop.Visible = True
+                Else
+                    Me.lblPosterTop.Visible = False
+                End If
             Else
                 If Not IsNothing(Me.pbPoster.Image) Then
                     Me.pbPoster.Image.Dispose()
@@ -9328,23 +9330,23 @@ doCancel:
             End If
 
             If Not IsNothing(Me.MainFanartSmall.Image) Then
+                Me.lblFanartSmallBottom.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
                 Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
                 ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
                 If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-                Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
-                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
+                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
 
                 If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbFanartSmall.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), Me.pbFanartSmall.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), Me.pbFanartSmall.Height - 20)
+                    Me.lblFanartSmallBottom.Visible = True
+                Else
+                    Me.lblFanartSmallBottom.Visible = False
                 End If
 
-                Me.pbFanartSmall.Location = New Point(4, 4)
+                If Master.eSettings.GeneralShowImgNames Then
+                    Me.lblFanartSmallTop.Visible = True
+                Else
+                    Me.lblFanartSmallTop.Visible = False
+                End If
             Else
                 If Not IsNothing(Me.pbFanartSmall.Image) Then
                     Me.pbFanartSmall.Image.Dispose()
@@ -9598,32 +9600,22 @@ doCancel:
             Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo, False)
 
             If Not IsNothing(Me.MainPoster.Image) Then
+                Me.lblPosterBottom.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
                 If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
-                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbPoster.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                    Me.lblPosterBottom.Visible = True
+                Else
+                    Me.lblPosterBottom.Visible = False
                 End If
 
                 If Master.eSettings.GeneralShowImgNames Then
-                    g = Graphics.FromImage(pbPoster.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = Master.eLang.GetString(148, "Poster")
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), 7)
+                    Me.lblPosterTop.Visible = True
+                Else
+                    Me.lblPosterTop.Visible = False
                 End If
-
-                Me.pbPoster.Location = New Point(4, 4)
             Else
                 If Not IsNothing(Me.pbPoster.Image) Then
                     Me.pbPoster.Image.Dispose()
@@ -9632,33 +9624,23 @@ doCancel:
             End If
 
             If Not IsNothing(Me.MainFanartSmall.Image) Then
+                Me.lblFanartSmallBottom.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
                 Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
                 ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
                 If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-                Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
-                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
+                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
 
                 If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbFanartSmall.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), Me.pbFanartSmall.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), Me.pbFanartSmall.Height - 20)
+                    Me.lblFanartSmallBottom.Visible = True
+                Else
+                    Me.lblFanartSmallBottom.Visible = False
                 End If
 
                 If Master.eSettings.GeneralShowImgNames Then
-                    g = Graphics.FromImage(pbFanartSmall.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = Master.eLang.GetString(149, "Fanart")
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), 7)
+                    Me.lblFanartSmallTop.Visible = True
+                Else
+                    Me.lblFanartSmallTop.Visible = False
                 End If
-
-                Me.pbFanartSmall.Location = New Point(4, 4)
             Else
                 If Not IsNothing(Me.pbFanartSmall.Image) Then
                     Me.pbFanartSmall.Image.Dispose()
@@ -9917,32 +9899,22 @@ doCancel:
             'Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo, False)
 
             If Not IsNothing(Me.MainPoster.Image) Then
+                Me.lblPosterBottom.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
                 If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
-                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbPoster.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                    Me.lblPosterBottom.Visible = True
+                Else
+                    Me.lblPosterBottom.Visible = False
                 End If
 
                 If Master.eSettings.GeneralShowImgNames Then
-                    g = Graphics.FromImage(pbPoster.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = Master.eLang.GetString(148, "Poster")
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), 7)
+                    Me.lblPosterTop.Visible = True
+                Else
+                    Me.lblPosterTop.Visible = False
                 End If
-
-                Me.pbPoster.Location = New Point(4, 4)
             Else
                 If Not IsNothing(Me.pbPoster.Image) Then
                     Me.pbPoster.Image.Dispose()
@@ -9951,33 +9923,23 @@ doCancel:
             End If
 
             If Not IsNothing(Me.MainFanartSmall.Image) Then
+                Me.lblFanartSmallBottom.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
                 Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
                 ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
                 If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-                Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
-                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
+                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
 
                 If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbFanartSmall.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), Me.pbFanartSmall.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), Me.pbFanartSmall.Height - 20)
+                    Me.lblFanartSmallBottom.Visible = True
+                Else
+                    Me.lblFanartSmallBottom.Visible = False
                 End If
 
                 If Master.eSettings.GeneralShowImgNames Then
-                    g = Graphics.FromImage(pbFanartSmall.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = Master.eLang.GetString(149, "Fanart")
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), 7)
+                    Me.lblFanartSmallTop.Visible = True
+                Else
+                    Me.lblFanartSmallTop.Visible = False
                 End If
-
-                Me.pbFanartSmall.Location = New Point(4, 4)
             Else
                 If Not IsNothing(Me.pbFanartSmall.Image) Then
                     Me.pbFanartSmall.Image.Dispose()
@@ -10206,32 +10168,22 @@ doCancel:
             Me.pbStudio.Left = 0
 
             If Not IsNothing(Me.MainPoster.Image) Then
+                Me.lblPosterBottom.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
                 If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
-                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbPoster.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                    Me.lblPosterBottom.Visible = True
+                Else
+                    Me.lblPosterBottom.Visible = False
                 End If
 
                 If Master.eSettings.GeneralShowImgNames Then
-                    g = Graphics.FromImage(pbPoster.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = Master.eLang.GetString(148, "Poster")
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), 7)
+                    Me.lblPosterTop.Visible = True
+                Else
+                    Me.lblPosterTop.Visible = False
                 End If
-
-                Me.pbPoster.Location = New Point(4, 4)
             Else
                 If Not IsNothing(Me.pbPoster.Image) Then
                     Me.pbPoster.Image.Dispose()
@@ -10240,33 +10192,23 @@ doCancel:
             End If
 
             If Not IsNothing(Me.MainFanartSmall.Image) Then
+                Me.lblFanartSmallBottom.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
                 Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
                 ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
                 If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-                Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
-                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
+                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
 
                 If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbFanartSmall.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), Me.pbFanartSmall.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), Me.pbFanartSmall.Height - 20)
+                    Me.lblFanartSmallBottom.Visible = True
+                Else
+                    Me.lblFanartSmallBottom.Visible = False
                 End If
 
                 If Master.eSettings.GeneralShowImgNames Then
-                    g = Graphics.FromImage(pbFanartSmall.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = Master.eLang.GetString(149, "Fanart")
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), 7)
+                    Me.lblFanartSmallTop.Visible = True
+                Else
+                    Me.lblFanartSmallTop.Visible = False
                 End If
-
-                Me.pbFanartSmall.Location = New Point(4, 4)
             Else
                 If Not IsNothing(Me.pbFanartSmall.Image) Then
                     Me.pbFanartSmall.Image.Dispose()
@@ -10455,32 +10397,22 @@ doCancel:
             Me.pbStudio.Left = 0
 
             If Not IsNothing(Me.MainPoster.Image) Then
+                Me.lblPosterBottom.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
                 If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
-                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbPoster.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                    Me.lblPosterBottom.Visible = True
+                Else
+                    Me.lblPosterBottom.Visible = False
                 End If
 
                 If Master.eSettings.GeneralShowImgNames Then
-                    g = Graphics.FromImage(pbPoster.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = Master.eLang.GetString(148, "Poster")
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), 7)
+                    Me.lblPosterTop.Visible = True
+                Else
+                    Me.lblPosterTop.Visible = False
                 End If
-
-                Me.pbPoster.Location = New Point(4, 4)
             Else
                 If Not IsNothing(Me.pbPoster.Image) Then
                     Me.pbPoster.Image.Dispose()
@@ -10489,33 +10421,23 @@ doCancel:
             End If
 
             If Not IsNothing(Me.MainFanartSmall.Image) Then
+                Me.lblFanartSmallBottom.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
                 Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
                 ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
                 If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-                Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
-                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
+                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
 
                 If Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbFanartSmall.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), Me.pbFanartSmall.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), Me.pbFanartSmall.Height - 20)
+                    Me.lblFanartSmallBottom.Visible = True
+                Else
+                    Me.lblFanartSmallBottom.Visible = False
                 End If
 
                 If Master.eSettings.GeneralShowImgNames Then
-                    g = Graphics.FromImage(pbFanartSmall.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = Master.eLang.GetString(149, "Fanart")
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), 2, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), 7)
+                    Me.lblFanartSmallTop.Visible = True
+                Else
+                    Me.lblFanartSmallTop.Visible = False
                 End If
-
-                Me.pbFanartSmall.Location = New Point(4, 4)
             Else
                 If Not IsNothing(Me.pbFanartSmall.Image) Then
                     Me.pbFanartSmall.Image.Dispose()
@@ -13930,7 +13852,7 @@ doCancel:
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick, pbFanartSmall.MouseDoubleClick
+    Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If Not IsNothing(Me.pbFanartCache.Image) Then
@@ -18446,6 +18368,7 @@ doCancel:
                 .lblMoviesInSetHeader.Text = Master.eLang.GetString(367, "Movies In Set")
                 .lblOutlineHeader.Text = Master.eLang.GetString(64, "Plot Outline")
                 .lblPlotHeader.Text = Master.eLang.GetString(65, "Plot")
+                .lblPosterTop.Text = Master.eLang.GetString(148, "Poster")
                 .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
                 .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
                 .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")

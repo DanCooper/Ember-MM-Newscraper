@@ -539,10 +539,14 @@ Partial Class frmMain
         Me.lblInfoPanelHeader = New System.Windows.Forms.Label()
         Me.pnlPoster = New System.Windows.Forms.Panel()
         Me.pbPoster = New System.Windows.Forms.PictureBox()
+        Me.pnlPosterBottom = New System.Windows.Forms.Panel()
+        Me.tblPosterBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblPosterBottom = New System.Windows.Forms.Label()
+        Me.pnlPosterTop = New System.Windows.Forms.Panel()
+        Me.tblPosterTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblPosterTop = New System.Windows.Forms.Label()
         Me.pbPosterCache = New System.Windows.Forms.PictureBox()
         Me.pbFanartSmallCache = New System.Windows.Forms.PictureBox()
-        Me.pnlFanartSmall = New System.Windows.Forms.Panel()
-        Me.pbFanartSmall = New System.Windows.Forms.PictureBox()
         Me.pnlLandscape = New System.Windows.Forms.Panel()
         Me.pbLandscape = New System.Windows.Forms.PictureBox()
         Me.pbLandscapeCache = New System.Windows.Forms.PictureBox()
@@ -1096,6 +1100,18 @@ Partial Class frmMain
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
+        Me.pnlPosterMain = New System.Windows.Forms.Panel()
+        Me.tblPosterMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlFanartSmall = New System.Windows.Forms.Panel()
+        Me.pnlFanartSmallMain = New System.Windows.Forms.Panel()
+        Me.tblFanartSmallMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.pbFanartSmall = New System.Windows.Forms.PictureBox()
+        Me.pnlFanartSmallBottom = New System.Windows.Forms.Panel()
+        Me.tblFanartSmallBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblFanartSmallBottom = New System.Windows.Forms.Label()
+        Me.pnlFanartSmallTop = New System.Windows.Forms.Panel()
+        Me.tblFanartSmallTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblFanartSmallTop = New System.Windows.Forms.Label()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1251,10 +1267,12 @@ Partial Class frmMain
         CType(Me.pbTop250,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlPoster.SuspendLayout
         CType(Me.pbPoster,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlPosterBottom.SuspendLayout
+        Me.tblPosterBottom.SuspendLayout
+        Me.pnlPosterTop.SuspendLayout
+        Me.tblPosterTop.SuspendLayout
         CType(Me.pbPosterCache,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.pbFanartSmallCache,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlFanartSmall.SuspendLayout
-        CType(Me.pbFanartSmall,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlLandscape.SuspendLayout
         CType(Me.pbLandscape,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.pbLandscapeCache,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1270,6 +1288,16 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.SuspendLayout
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlLoadSettings.SuspendLayout
+        Me.pnlPosterMain.SuspendLayout
+        Me.tblPosterMain.SuspendLayout
+        Me.pnlFanartSmall.SuspendLayout
+        Me.pnlFanartSmallMain.SuspendLayout
+        Me.tblFanartSmallMain.SuspendLayout
+        CType(Me.pbFanartSmall,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlFanartSmallBottom.SuspendLayout
+        Me.tblFanartSmallBottom.SuspendLayout
+        Me.pnlFanartSmallTop.SuspendLayout
+        Me.tblFanartSmallTop.SuspendLayout
         Me.SuspendLayout
         '
         'BottomToolStripPanel
@@ -1639,14 +1667,14 @@ Partial Class frmMain
         'scMain.Panel2
         '
         Me.scMain.Panel2.BackColor = System.Drawing.SystemColors.Control
+        Me.scMain.Panel2.Controls.Add(Me.pnlFanartSmall)
+        Me.scMain.Panel2.Controls.Add(Me.pnlPoster)
         Me.scMain.Panel2.Controls.Add(Me.pnlTop)
         Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
         Me.scMain.Panel2.Controls.Add(Me.pnlNoInfo)
         Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
-        Me.scMain.Panel2.Controls.Add(Me.pnlPoster)
         Me.scMain.Panel2.Controls.Add(Me.pbPosterCache)
         Me.scMain.Panel2.Controls.Add(Me.pbFanartSmallCache)
-        Me.scMain.Panel2.Controls.Add(Me.pnlFanartSmall)
         Me.scMain.Panel2.Controls.Add(Me.pnlLandscape)
         Me.scMain.Panel2.Controls.Add(Me.pbLandscapeCache)
         Me.scMain.Panel2.Controls.Add(Me.pnlClearArt)
@@ -2917,7 +2945,7 @@ Partial Class frmMain
         '
         Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.cmnuMovieSep1, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieMarkAs, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.cmnuMovieSep2, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuMovieSep3, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieUpSel, Me.cmnuMovieChange, Me.cmnuMovieChangeAuto, Me.cmnuMovieSep4, Me.cmnuMovieBrowseIMDB, Me.cmnuMovieBrowseTMDB, Me.cmnuMovieOpenFolder, Me.cmnuMovieSep5, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
-        Me.cmnuMovie.Size = New System.Drawing.Size(247, 452)
+        Me.cmnuMovie.Size = New System.Drawing.Size(247, 430)
         '
         'cmnuMovieTitle
         '
@@ -3328,121 +3356,121 @@ Partial Class frmMain
         'cmnuMovieUpSelActors
         '
         Me.cmnuMovieUpSelActors.Name = "cmnuMovieUpSelActors"
-        Me.cmnuMovieUpSelActors.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelActors.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelActors.Text = "Actors"
         '
         'cmnuMovieUpSelCert
         '
         Me.cmnuMovieUpSelCert.Name = "cmnuMovieUpSelCert"
-        Me.cmnuMovieUpSelCert.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelCert.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelCert.Text = "Certification"
         '
         'cmnuMovieUpSelCountry
         '
         Me.cmnuMovieUpSelCountry.Name = "cmnuMovieUpSelCountry"
-        Me.cmnuMovieUpSelCountry.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelCountry.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelCountry.Text = "Country"
         '
         'cmnuMovieUpSelDirector
         '
         Me.cmnuMovieUpSelDirector.Name = "cmnuMovieUpSelDirector"
-        Me.cmnuMovieUpSelDirector.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelDirector.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelDirector.Text = "Director"
         '
         'cmnuMovieUpSelGenre
         '
         Me.cmnuMovieUpSelGenre.Name = "cmnuMovieUpSelGenre"
-        Me.cmnuMovieUpSelGenre.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelGenre.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelGenre.Text = "Genre"
         '
         'cmnuMovieUpSelMPAA
         '
         Me.cmnuMovieUpSelMPAA.Name = "cmnuMovieUpSelMPAA"
-        Me.cmnuMovieUpSelMPAA.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelMPAA.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelMPAA.Text = "MPAA"
         '
         'cmnuMovieUpSelOriginalTitle
         '
         Me.cmnuMovieUpSelOriginalTitle.Name = "cmnuMovieUpSelOriginalTitle"
-        Me.cmnuMovieUpSelOriginalTitle.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelOriginalTitle.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelOriginalTitle.Text = "Original Title"
         '
         'cmnuMovieUpSelPlot
         '
         Me.cmnuMovieUpSelPlot.Name = "cmnuMovieUpSelPlot"
-        Me.cmnuMovieUpSelPlot.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelPlot.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelPlot.Text = "Plot"
         '
         'cmnuMovieUpSelOutline
         '
         Me.cmnuMovieUpSelOutline.Name = "cmnuMovieUpSelOutline"
-        Me.cmnuMovieUpSelOutline.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelOutline.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelOutline.Text = "Plot Outline"
         '
         'cmnuMovieUpSelProducers
         '
         Me.cmnuMovieUpSelProducers.Name = "cmnuMovieUpSelProducers"
-        Me.cmnuMovieUpSelProducers.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelProducers.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelProducers.Text = "Producers"
         '
         'cmnuMovieUpSelRating
         '
         Me.cmnuMovieUpSelRating.Name = "cmnuMovieUpSelRating"
-        Me.cmnuMovieUpSelRating.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelRating.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelRating.Text = "Rating / Votes"
         '
         'cmnuMovieUpSelRelease
         '
         Me.cmnuMovieUpSelRelease.Name = "cmnuMovieUpSelRelease"
-        Me.cmnuMovieUpSelRelease.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelRelease.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelRelease.Text = "Release Date"
         '
         'cmnuMovieUpSelRuntime
         '
         Me.cmnuMovieUpSelRuntime.Name = "cmnuMovieUpSelRuntime"
-        Me.cmnuMovieUpSelRuntime.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelRuntime.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelRuntime.Text = "Runtime"
         '
         'cmnuMovieUpSelStudio
         '
         Me.cmnuMovieUpSelStudio.Name = "cmnuMovieUpSelStudio"
-        Me.cmnuMovieUpSelStudio.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelStudio.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelStudio.Text = "Studio"
         '
         'cmnuMovieUpSelTagline
         '
         Me.cmnuMovieUpSelTagline.Name = "cmnuMovieUpSelTagline"
-        Me.cmnuMovieUpSelTagline.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelTagline.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelTagline.Text = "Tagline"
         '
         'cmnuMovieUpSelTitle
         '
         Me.cmnuMovieUpSelTitle.Name = "cmnuMovieUpSelTitle"
-        Me.cmnuMovieUpSelTitle.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelTitle.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelTitle.Text = "Title"
         '
         'cmnuMovieUpSelTop250
         '
         Me.cmnuMovieUpSelTop250.Name = "cmnuMovieUpSelTop250"
-        Me.cmnuMovieUpSelTop250.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelTop250.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelTop250.Text = "Top 250"
         '
         'cmnuMovieUpSelTrailer
         '
         Me.cmnuMovieUpSelTrailer.Name = "cmnuMovieUpSelTrailer"
-        Me.cmnuMovieUpSelTrailer.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelTrailer.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelTrailer.Text = "Trailer"
         '
         'cmnuMovieUpSelWriter
         '
         Me.cmnuMovieUpSelWriter.Name = "cmnuMovieUpSelWriter"
-        Me.cmnuMovieUpSelWriter.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelWriter.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelWriter.Text = "Writer"
         '
         'cmnuMovieUpSelYear
         '
         Me.cmnuMovieUpSelYear.Name = "cmnuMovieUpSelYear"
-        Me.cmnuMovieUpSelYear.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelYear.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelYear.Text = "Year"
         '
         'cmnuMovieChange
@@ -6848,23 +6876,114 @@ Partial Class frmMain
         '
         'pnlPoster
         '
+        Me.pnlPoster.AutoSize = true
+        Me.pnlPoster.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlPoster.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlPoster.Controls.Add(Me.pbPoster)
-        Me.pnlPoster.Location = New System.Drawing.Point(9, 136)
+        Me.pnlPoster.Controls.Add(Me.pnlPosterMain)
+        Me.pnlPoster.Controls.Add(Me.pnlPosterBottom)
+        Me.pnlPoster.Controls.Add(Me.pnlPosterTop)
+        Me.pnlPoster.Location = New System.Drawing.Point(4, 130)
         Me.pnlPoster.Name = "pnlPoster"
-        Me.pnlPoster.Size = New System.Drawing.Size(131, 169)
+        Me.pnlPoster.Padding = New System.Windows.Forms.Padding(2)
+        Me.pnlPoster.Size = New System.Drawing.Size(56, 82)
         Me.pnlPoster.TabIndex = 2
         Me.pnlPoster.Visible = false
         '
         'pbPoster
         '
         Me.pbPoster.BackColor = System.Drawing.SystemColors.Control
-        Me.pbPoster.Location = New System.Drawing.Point(4, 4)
+        Me.pbPoster.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pbPoster.Location = New System.Drawing.Point(0, 0)
+        Me.pbPoster.Margin = New System.Windows.Forms.Padding(0)
         Me.pbPoster.Name = "pbPoster"
-        Me.pbPoster.Size = New System.Drawing.Size(121, 159)
+        Me.pbPoster.Size = New System.Drawing.Size(50, 50)
         Me.pbPoster.TabIndex = 0
         Me.pbPoster.TabStop = false
+        '
+        'pnlPosterBottom
+        '
+        Me.pnlPosterBottom.AutoSize = true
+        Me.pnlPosterBottom.BackColor = System.Drawing.Color.DimGray
+        Me.pnlPosterBottom.Controls.Add(Me.tblPosterBottom)
+        Me.pnlPosterBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlPosterBottom.Location = New System.Drawing.Point(2, 65)
+        Me.pnlPosterBottom.Name = "pnlPosterBottom"
+        Me.pnlPosterBottom.Size = New System.Drawing.Size(50, 13)
+        Me.pnlPosterBottom.TabIndex = 2
+        '
+        'tblPosterBottom
+        '
+        Me.tblPosterBottom.AutoSize = true
+        Me.tblPosterBottom.ColumnCount = 3
+        Me.tblPosterBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblPosterBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblPosterBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblPosterBottom.Controls.Add(Me.lblPosterBottom, 1, 0)
+        Me.tblPosterBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblPosterBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblPosterBottom.Name = "tblPosterBottom"
+        Me.tblPosterBottom.RowCount = 2
+        Me.tblPosterBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblPosterBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblPosterBottom.Size = New System.Drawing.Size(50, 13)
+        Me.tblPosterBottom.TabIndex = 0
+        '
+        'lblPosterBottom
+        '
+        Me.lblPosterBottom.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblPosterBottom.AutoSize = true
+        Me.lblPosterBottom.BackColor = System.Drawing.Color.Transparent
+        Me.lblPosterBottom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblPosterBottom.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblPosterBottom.Location = New System.Drawing.Point(11, 0)
+        Me.lblPosterBottom.Name = "lblPosterBottom"
+        Me.lblPosterBottom.Size = New System.Drawing.Size(27, 13)
+        Me.lblPosterBottom.TabIndex = 2
+        Me.lblPosterBottom.Text = "Size"
+        Me.lblPosterBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'pnlPosterTop
+        '
+        Me.pnlPosterTop.AutoSize = true
+        Me.pnlPosterTop.BackColor = System.Drawing.Color.DimGray
+        Me.pnlPosterTop.Controls.Add(Me.tblPosterTop)
+        Me.pnlPosterTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlPosterTop.Location = New System.Drawing.Point(2, 2)
+        Me.pnlPosterTop.Name = "pnlPosterTop"
+        Me.pnlPosterTop.Size = New System.Drawing.Size(50, 13)
+        Me.pnlPosterTop.TabIndex = 1
+        '
+        'tblPosterTop
+        '
+        Me.tblPosterTop.AutoSize = true
+        Me.tblPosterTop.ColumnCount = 3
+        Me.tblPosterTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblPosterTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblPosterTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblPosterTop.Controls.Add(Me.lblPosterTop, 1, 0)
+        Me.tblPosterTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblPosterTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblPosterTop.Name = "tblPosterTop"
+        Me.tblPosterTop.RowCount = 2
+        Me.tblPosterTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblPosterTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblPosterTop.Size = New System.Drawing.Size(50, 13)
+        Me.tblPosterTop.TabIndex = 0
+        '
+        'lblPosterTop
+        '
+        Me.lblPosterTop.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblPosterTop.AutoSize = true
+        Me.lblPosterTop.BackColor = System.Drawing.Color.Transparent
+        Me.lblPosterTop.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblPosterTop.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblPosterTop.Location = New System.Drawing.Point(5, 0)
+        Me.lblPosterTop.Name = "lblPosterTop"
+        Me.lblPosterTop.Size = New System.Drawing.Size(40, 13)
+        Me.lblPosterTop.TabIndex = 1
+        Me.lblPosterTop.Text = "Poster"
+        Me.lblPosterTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'pbPosterCache
         '
@@ -6883,26 +7002,6 @@ Partial Class frmMain
         Me.pbFanartSmallCache.TabIndex = 15
         Me.pbFanartSmallCache.TabStop = false
         Me.pbFanartSmallCache.Visible = false
-        '
-        'pnlFanartSmall
-        '
-        Me.pnlFanartSmall.BackColor = System.Drawing.Color.Gainsboro
-        Me.pnlFanartSmall.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFanartSmall.Controls.Add(Me.pbFanartSmall)
-        Me.pnlFanartSmall.Location = New System.Drawing.Point(146, 136)
-        Me.pnlFanartSmall.Name = "pnlFanartSmall"
-        Me.pnlFanartSmall.Size = New System.Drawing.Size(293, 169)
-        Me.pnlFanartSmall.TabIndex = 14
-        Me.pnlFanartSmall.Visible = false
-        '
-        'pbFanartSmall
-        '
-        Me.pbFanartSmall.BackColor = System.Drawing.SystemColors.Control
-        Me.pbFanartSmall.Location = New System.Drawing.Point(4, 4)
-        Me.pbFanartSmall.Name = "pbFanartSmall"
-        Me.pbFanartSmall.Size = New System.Drawing.Size(283, 159)
-        Me.pbFanartSmall.TabIndex = 0
-        Me.pbFanartSmall.TabStop = false
         '
         'pnlLandscape
         '
@@ -10773,6 +10872,165 @@ Partial Class frmMain
         '
         Me.tmrSearch_Shows.Interval = 250
         '
+        'pnlPosterMain
+        '
+        Me.pnlPosterMain.AutoSize = true
+        Me.pnlPosterMain.Controls.Add(Me.tblPosterMain)
+        Me.pnlPosterMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlPosterMain.Location = New System.Drawing.Point(2, 15)
+        Me.pnlPosterMain.Name = "pnlPosterMain"
+        Me.pnlPosterMain.Size = New System.Drawing.Size(50, 50)
+        Me.pnlPosterMain.TabIndex = 3
+        '
+        'tblPosterMain
+        '
+        Me.tblPosterMain.AutoSize = true
+        Me.tblPosterMain.ColumnCount = 1
+        Me.tblPosterMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblPosterMain.Controls.Add(Me.pbPoster, 0, 0)
+        Me.tblPosterMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblPosterMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblPosterMain.Name = "tblPosterMain"
+        Me.tblPosterMain.RowCount = 1
+        Me.tblPosterMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblPosterMain.Size = New System.Drawing.Size(50, 50)
+        Me.tblPosterMain.TabIndex = 1
+        '
+        'pnlFanartSmall
+        '
+        Me.pnlFanartSmall.AutoSize = true
+        Me.pnlFanartSmall.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.pnlFanartSmall.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlFanartSmall.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFanartSmall.Controls.Add(Me.pnlFanartSmallMain)
+        Me.pnlFanartSmall.Controls.Add(Me.pnlFanartSmallBottom)
+        Me.pnlFanartSmall.Controls.Add(Me.pnlFanartSmallTop)
+        Me.pnlFanartSmall.Location = New System.Drawing.Point(62, 130)
+        Me.pnlFanartSmall.Name = "pnlFanartSmall"
+        Me.pnlFanartSmall.Padding = New System.Windows.Forms.Padding(2)
+        Me.pnlFanartSmall.Size = New System.Drawing.Size(56, 82)
+        Me.pnlFanartSmall.TabIndex = 14
+        Me.pnlFanartSmall.Visible = false
+        '
+        'pnlFanartSmallMain
+        '
+        Me.pnlFanartSmallMain.AutoSize = true
+        Me.pnlFanartSmallMain.Controls.Add(Me.tblFanartSmallMain)
+        Me.pnlFanartSmallMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFanartSmallMain.Location = New System.Drawing.Point(2, 15)
+        Me.pnlFanartSmallMain.Name = "pnlFanartSmallMain"
+        Me.pnlFanartSmallMain.Size = New System.Drawing.Size(50, 50)
+        Me.pnlFanartSmallMain.TabIndex = 3
+        '
+        'tblFanartSmallMain
+        '
+        Me.tblFanartSmallMain.AutoSize = true
+        Me.tblFanartSmallMain.ColumnCount = 1
+        Me.tblFanartSmallMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFanartSmallMain.Controls.Add(Me.pbFanartSmall, 0, 0)
+        Me.tblFanartSmallMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFanartSmallMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblFanartSmallMain.Name = "tblFanartSmallMain"
+        Me.tblFanartSmallMain.RowCount = 1
+        Me.tblFanartSmallMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFanartSmallMain.Size = New System.Drawing.Size(50, 50)
+        Me.tblFanartSmallMain.TabIndex = 1
+        '
+        'pbFanartSmall
+        '
+        Me.pbFanartSmall.BackColor = System.Drawing.SystemColors.Control
+        Me.pbFanartSmall.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pbFanartSmall.Location = New System.Drawing.Point(0, 0)
+        Me.pbFanartSmall.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbFanartSmall.Name = "pbFanartSmall"
+        Me.pbFanartSmall.Size = New System.Drawing.Size(50, 50)
+        Me.pbFanartSmall.TabIndex = 0
+        Me.pbFanartSmall.TabStop = false
+        '
+        'pnlFanartSmallBottom
+        '
+        Me.pnlFanartSmallBottom.AutoSize = true
+        Me.pnlFanartSmallBottom.BackColor = System.Drawing.Color.DimGray
+        Me.pnlFanartSmallBottom.Controls.Add(Me.tblFanartSmallBottom)
+        Me.pnlFanartSmallBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlFanartSmallBottom.Location = New System.Drawing.Point(2, 65)
+        Me.pnlFanartSmallBottom.Name = "pnlFanartSmallBottom"
+        Me.pnlFanartSmallBottom.Size = New System.Drawing.Size(50, 13)
+        Me.pnlFanartSmallBottom.TabIndex = 2
+        '
+        'tblFanartSmallBottom
+        '
+        Me.tblFanartSmallBottom.AutoSize = true
+        Me.tblFanartSmallBottom.ColumnCount = 3
+        Me.tblFanartSmallBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblFanartSmallBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFanartSmallBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblFanartSmallBottom.Controls.Add(Me.lblFanartSmallBottom, 1, 0)
+        Me.tblFanartSmallBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFanartSmallBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblFanartSmallBottom.Name = "tblFanartSmallBottom"
+        Me.tblFanartSmallBottom.RowCount = 2
+        Me.tblFanartSmallBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFanartSmallBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFanartSmallBottom.Size = New System.Drawing.Size(50, 13)
+        Me.tblFanartSmallBottom.TabIndex = 0
+        '
+        'lblFanartSmallBottom
+        '
+        Me.lblFanartSmallBottom.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblFanartSmallBottom.AutoSize = true
+        Me.lblFanartSmallBottom.BackColor = System.Drawing.Color.Transparent
+        Me.lblFanartSmallBottom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblFanartSmallBottom.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFanartSmallBottom.Location = New System.Drawing.Point(11, 0)
+        Me.lblFanartSmallBottom.Name = "lblFanartSmallBottom"
+        Me.lblFanartSmallBottom.Size = New System.Drawing.Size(27, 13)
+        Me.lblFanartSmallBottom.TabIndex = 2
+        Me.lblFanartSmallBottom.Text = "Size"
+        Me.lblFanartSmallBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'pnlFanartSmallTop
+        '
+        Me.pnlFanartSmallTop.AutoSize = true
+        Me.pnlFanartSmallTop.BackColor = System.Drawing.Color.DimGray
+        Me.pnlFanartSmallTop.Controls.Add(Me.tblFanartSmallTop)
+        Me.pnlFanartSmallTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlFanartSmallTop.Location = New System.Drawing.Point(2, 2)
+        Me.pnlFanartSmallTop.Name = "pnlFanartSmallTop"
+        Me.pnlFanartSmallTop.Size = New System.Drawing.Size(50, 13)
+        Me.pnlFanartSmallTop.TabIndex = 1
+        '
+        'tblFanartSmallTop
+        '
+        Me.tblFanartSmallTop.AutoSize = true
+        Me.tblFanartSmallTop.ColumnCount = 3
+        Me.tblFanartSmallTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblFanartSmallTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFanartSmallTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblFanartSmallTop.Controls.Add(Me.lblFanartSmallTop, 1, 0)
+        Me.tblFanartSmallTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFanartSmallTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblFanartSmallTop.Name = "tblFanartSmallTop"
+        Me.tblFanartSmallTop.RowCount = 2
+        Me.tblFanartSmallTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFanartSmallTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFanartSmallTop.Size = New System.Drawing.Size(50, 13)
+        Me.tblFanartSmallTop.TabIndex = 0
+        '
+        'lblFanartSmallTop
+        '
+        Me.lblFanartSmallTop.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblFanartSmallTop.AutoSize = true
+        Me.lblFanartSmallTop.BackColor = System.Drawing.Color.Transparent
+        Me.lblFanartSmallTop.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblFanartSmallTop.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFanartSmallTop.Location = New System.Drawing.Point(5, 0)
+        Me.lblFanartSmallTop.Name = "lblFanartSmallTop"
+        Me.lblFanartSmallTop.Size = New System.Drawing.Size(40, 13)
+        Me.lblFanartSmallTop.TabIndex = 1
+        Me.lblFanartSmallTop.Text = "Fanart"
+        Me.lblFanartSmallTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
@@ -11024,11 +11282,18 @@ Partial Class frmMain
         Me.pnlTop250.ResumeLayout(false)
         CType(Me.pbTop250,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlPoster.ResumeLayout(false)
+        Me.pnlPoster.PerformLayout
         CType(Me.pbPoster,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlPosterBottom.ResumeLayout(false)
+        Me.pnlPosterBottom.PerformLayout
+        Me.tblPosterBottom.ResumeLayout(false)
+        Me.tblPosterBottom.PerformLayout
+        Me.pnlPosterTop.ResumeLayout(false)
+        Me.pnlPosterTop.PerformLayout
+        Me.tblPosterTop.ResumeLayout(false)
+        Me.tblPosterTop.PerformLayout
         CType(Me.pbPosterCache,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.pbFanartSmallCache,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlFanartSmall.ResumeLayout(false)
-        CType(Me.pbFanartSmall,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlLandscape.ResumeLayout(false)
         CType(Me.pbLandscape,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.pbLandscapeCache,System.ComponentModel.ISupportInitialize).EndInit
@@ -11046,6 +11311,23 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.ResumeLayout(false)
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlLoadSettings.ResumeLayout(false)
+        Me.pnlPosterMain.ResumeLayout(false)
+        Me.pnlPosterMain.PerformLayout
+        Me.tblPosterMain.ResumeLayout(false)
+        Me.pnlFanartSmall.ResumeLayout(false)
+        Me.pnlFanartSmall.PerformLayout
+        Me.pnlFanartSmallMain.ResumeLayout(false)
+        Me.pnlFanartSmallMain.PerformLayout
+        Me.tblFanartSmallMain.ResumeLayout(false)
+        CType(Me.pbFanartSmall,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlFanartSmallBottom.ResumeLayout(false)
+        Me.pnlFanartSmallBottom.PerformLayout
+        Me.tblFanartSmallBottom.ResumeLayout(false)
+        Me.tblFanartSmallBottom.PerformLayout
+        Me.pnlFanartSmallTop.ResumeLayout(false)
+        Me.pnlFanartSmallTop.PerformLayout
+        Me.tblFanartSmallTop.ResumeLayout(false)
+        Me.tblFanartSmallTop.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -11510,8 +11792,6 @@ End Sub
     Friend WithEvents pbStar1 As System.Windows.Forms.PictureBox
     Friend WithEvents lblRating As System.Windows.Forms.Label
     Friend WithEvents lblOriginalTitle As System.Windows.Forms.Label
-    Friend WithEvents pnlFanartSmall As System.Windows.Forms.Panel
-    Friend WithEvents pbFanartSmall As System.Windows.Forms.PictureBox
     Friend WithEvents pbFanartSmallCache As System.Windows.Forms.PictureBox
     Friend WithEvents mnuMovieAllAutoActor As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMovieMarkAutoActor As System.Windows.Forms.ToolStripMenuItem
@@ -12118,4 +12398,22 @@ End Sub
     Friend WithEvents cmnuMovieUpSelGenre As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieUpSelOriginalTitle As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieUpSelRuntime As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents pnlPosterBottom As System.Windows.Forms.Panel
+    Friend WithEvents tblPosterBottom As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblPosterBottom As System.Windows.Forms.Label
+    Friend WithEvents pnlPosterTop As System.Windows.Forms.Panel
+    Friend WithEvents tblPosterTop As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblPosterTop As System.Windows.Forms.Label
+    Friend WithEvents pnlPosterMain As System.Windows.Forms.Panel
+    Friend WithEvents tblPosterMain As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlFanartSmall As System.Windows.Forms.Panel
+    Friend WithEvents pnlFanartSmallMain As System.Windows.Forms.Panel
+    Friend WithEvents tblFanartSmallMain As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pbFanartSmall As System.Windows.Forms.PictureBox
+    Friend WithEvents pnlFanartSmallBottom As System.Windows.Forms.Panel
+    Friend WithEvents tblFanartSmallBottom As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblFanartSmallBottom As System.Windows.Forms.Label
+    Friend WithEvents pnlFanartSmallTop As System.Windows.Forms.Panel
+    Friend WithEvents tblFanartSmallTop As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblFanartSmallTop As System.Windows.Forms.Label
 End Class
