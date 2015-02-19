@@ -228,15 +228,19 @@ Partial Class frmMain
         Me.cmnuMovieReSelSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSel = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieUpSelActors = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelCert = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelCountry = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelDirector = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieUpSelGenre = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelMPAA = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieUpSelOriginalTitle = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelPlot = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelOutline = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelProducers = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelRelease = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelRating = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieUpSelRelease = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieUpSelRuntime = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelStudio = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelTagline = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelTitle = New System.Windows.Forms.ToolStripMenuItem()
@@ -1092,10 +1096,6 @@ Partial Class frmMain
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
-        Me.cmnuMovieUpSelRuntime = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelGenres = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelActors = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelOriginalTitle = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -3320,10 +3320,16 @@ Partial Class frmMain
         '
         'cmnuMovieUpSel
         '
-        Me.cmnuMovieUpSel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieUpSelActors, Me.cmnuMovieUpSelCert, Me.cmnuMovieUpSelCountry, Me.cmnuMovieUpSelDirector, Me.cmnuMovieUpSelGenres, Me.cmnuMovieUpSelMPAA, Me.cmnuMovieUpSelOriginalTitle, Me.cmnuMovieUpSelPlot, Me.cmnuMovieUpSelOutline, Me.cmnuMovieUpSelProducers, Me.cmnuMovieUpSelRating, Me.cmnuMovieUpSelRelease, Me.cmnuMovieUpSelRuntime, Me.cmnuMovieUpSelStudio, Me.cmnuMovieUpSelTagline, Me.cmnuMovieUpSelTitle, Me.cmnuMovieUpSelTop250, Me.cmnuMovieUpSelTrailer, Me.cmnuMovieUpSelWriter, Me.cmnuMovieUpSelYear})
+        Me.cmnuMovieUpSel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieUpSelActors, Me.cmnuMovieUpSelCert, Me.cmnuMovieUpSelCountry, Me.cmnuMovieUpSelDirector, Me.cmnuMovieUpSelGenre, Me.cmnuMovieUpSelMPAA, Me.cmnuMovieUpSelOriginalTitle, Me.cmnuMovieUpSelPlot, Me.cmnuMovieUpSelOutline, Me.cmnuMovieUpSelProducers, Me.cmnuMovieUpSelRating, Me.cmnuMovieUpSelRelease, Me.cmnuMovieUpSelRuntime, Me.cmnuMovieUpSelStudio, Me.cmnuMovieUpSelTagline, Me.cmnuMovieUpSelTitle, Me.cmnuMovieUpSelTop250, Me.cmnuMovieUpSelTrailer, Me.cmnuMovieUpSelWriter, Me.cmnuMovieUpSelYear})
         Me.cmnuMovieUpSel.Name = "cmnuMovieUpSel"
         Me.cmnuMovieUpSel.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieUpSel.Text = "Update Single Data Field"
+        '
+        'cmnuMovieUpSelActors
+        '
+        Me.cmnuMovieUpSelActors.Name = "cmnuMovieUpSelActors"
+        Me.cmnuMovieUpSelActors.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelActors.Text = "Actors"
         '
         'cmnuMovieUpSelCert
         '
@@ -3343,11 +3349,23 @@ Partial Class frmMain
         Me.cmnuMovieUpSelDirector.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelDirector.Text = "Director"
         '
+        'cmnuMovieUpSelGenre
+        '
+        Me.cmnuMovieUpSelGenre.Name = "cmnuMovieUpSelGenre"
+        Me.cmnuMovieUpSelGenre.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelGenre.Text = "Genre"
+        '
         'cmnuMovieUpSelMPAA
         '
         Me.cmnuMovieUpSelMPAA.Name = "cmnuMovieUpSelMPAA"
         Me.cmnuMovieUpSelMPAA.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelMPAA.Text = "MPAA"
+        '
+        'cmnuMovieUpSelOriginalTitle
+        '
+        Me.cmnuMovieUpSelOriginalTitle.Name = "cmnuMovieUpSelOriginalTitle"
+        Me.cmnuMovieUpSelOriginalTitle.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelOriginalTitle.Text = "Original Title"
         '
         'cmnuMovieUpSelPlot
         '
@@ -3367,17 +3385,23 @@ Partial Class frmMain
         Me.cmnuMovieUpSelProducers.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelProducers.Text = "Producers"
         '
+        'cmnuMovieUpSelRating
+        '
+        Me.cmnuMovieUpSelRating.Name = "cmnuMovieUpSelRating"
+        Me.cmnuMovieUpSelRating.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelRating.Text = "Rating / Votes"
+        '
         'cmnuMovieUpSelRelease
         '
         Me.cmnuMovieUpSelRelease.Name = "cmnuMovieUpSelRelease"
         Me.cmnuMovieUpSelRelease.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelRelease.Text = "Release Date"
         '
-        'cmnuMovieUpSelRating
+        'cmnuMovieUpSelRuntime
         '
-        Me.cmnuMovieUpSelRating.Name = "cmnuMovieUpSelRating"
-        Me.cmnuMovieUpSelRating.Size = New System.Drawing.Size(152, 22)
-        Me.cmnuMovieUpSelRating.Text = "Rating / Votes"
+        Me.cmnuMovieUpSelRuntime.Name = "cmnuMovieUpSelRuntime"
+        Me.cmnuMovieUpSelRuntime.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelRuntime.Text = "Runtime"
         '
         'cmnuMovieUpSelStudio
         '
@@ -10749,30 +10773,6 @@ Partial Class frmMain
         '
         Me.tmrSearch_Shows.Interval = 250
         '
-        'cmnuMovieUpSelRuntime
-        '
-        Me.cmnuMovieUpSelRuntime.Name = "cmnuMovieUpSelRuntime"
-        Me.cmnuMovieUpSelRuntime.Size = New System.Drawing.Size(152, 22)
-        Me.cmnuMovieUpSelRuntime.Text = "Runtime"
-        '
-        'cmnuMovieUpSelGenres
-        '
-        Me.cmnuMovieUpSelGenres.Name = "cmnuMovieUpSelGenres"
-        Me.cmnuMovieUpSelGenres.Size = New System.Drawing.Size(152, 22)
-        Me.cmnuMovieUpSelGenres.Text = "Genres"
-        '
-        'cmnuMovieUpSelActors
-        '
-        Me.cmnuMovieUpSelActors.Name = "cmnuMovieUpSelActors"
-        Me.cmnuMovieUpSelActors.Size = New System.Drawing.Size(152, 22)
-        Me.cmnuMovieUpSelActors.Text = "Actors"
-        '
-        'cmnuMovieUpSelOriginalTitle
-        '
-        Me.cmnuMovieUpSelOriginalTitle.Name = "cmnuMovieUpSelOriginalTitle"
-        Me.cmnuMovieUpSelOriginalTitle.Size = New System.Drawing.Size(152, 22)
-        Me.cmnuMovieUpSelOriginalTitle.Text = "Original Title"
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
@@ -12115,7 +12115,7 @@ End Sub
     Friend WithEvents chkShowMissingTheme As System.Windows.Forms.CheckBox
     Friend WithEvents chkFilterNewEpisodes_Shows As System.Windows.Forms.CheckBox
     Friend WithEvents cmnuMovieUpSelActors As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelGenres As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieUpSelGenre As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieUpSelOriginalTitle As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieUpSelRuntime As System.Windows.Forms.ToolStripMenuItem
 End Class

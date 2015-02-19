@@ -16091,7 +16091,7 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
-    Private Sub cmnuMovieUpSelGenres_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelGenres.Click
+    Private Sub cmnuMovieUpSelGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelGenre.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
         cScrapeOptions.bGenre = True
         Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
@@ -18354,15 +18354,19 @@ doCancel:
                 .cmnuMovieSetEdit.Text = Master.eLang.GetString(1131, "Edit MovieSet")
                 .cmnuMovieSetNew.Text = Master.eLang.GetString(208, "Add New Set")
                 .cmnuMovieSetRescrape.Text = Master.eLang.GetString(1233, "(Re)Scrape MovieSet")
+                .cmnuMovieUpSelActors.Text = Master.eLang.GetString(725, "Actors")
                 .cmnuMovieUpSelCert.Text = Master.eLang.GetString(56, "Certification")
                 .cmnuMovieUpSelCountry.Text = Master.eLang.GetString(301, "Country")
                 .cmnuMovieUpSelDirector.Text = Master.eLang.GetString(62, "Director")
+                .cmnuMovieUpSelGenre.Text = Master.eLang.GetString(20, "Genre")
                 .cmnuMovieUpSelMPAA.Text = Master.eLang.GetString(401, "MPAA")
+                .cmnuMovieUpSelOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
                 .cmnuMovieUpSelOutline.Text = Master.eLang.GetString(64, "Plot Outline")
                 .cmnuMovieUpSelPlot.Text = Master.eLang.GetString(65, "Plot")
                 .cmnuMovieUpSelProducers.Text = Master.eLang.GetString(393, "Producers")
                 .cmnuMovieUpSelRating.Text = String.Concat(Master.eLang.GetString(400, "Rating"), " / ", Master.eLang.GetString(399, "Votes"))
                 .cmnuMovieUpSelRelease.Text = Master.eLang.GetString(57, "Release Date")
+                .cmnuMovieUpSelRuntime.Text = Master.eLang.GetString(396, "Runtime")
                 .cmnuMovieUpSelStudio.Text = Master.eLang.GetString(395, "Studio")
                 .cmnuMovieUpSelTagline.Text = Master.eLang.GetString(397, "Tagline")
                 .cmnuMovieUpSelTitle.Text = Master.eLang.GetString(21, "Title")
