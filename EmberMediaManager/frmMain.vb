@@ -16063,6 +16063,13 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullSkip, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub cmnuMovieUpSelActors_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelActors.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
+        cScrapeOptions.bCast = True
+        Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
     Private Sub cmnuMovieUpSelCert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCert.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
         cScrapeOptions.bCert = True
@@ -16084,9 +16091,23 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
+    Private Sub cmnuMovieUpSelGenres_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelGenres.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
+        cScrapeOptions.bGenre = True
+        Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
     Private Sub cmnuMovieUpSelMPAA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelMPAA.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
         cScrapeOptions.bMPAA = True
+        Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelOriginalTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelOriginalTitle.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
+        cScrapeOptions.bOriginalTitle = True
         Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
@@ -16123,6 +16144,13 @@ doCancel:
     Private Sub cmnuMovieUpSelRelease_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRelease.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
         cScrapeOptions.bRelease = True
+        Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelRuntime_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRuntime.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
+        cScrapeOptions.bRuntime = True
         Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
