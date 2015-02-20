@@ -2400,7 +2400,7 @@ Public Class Database
                 End Using
                 If Not String.IsNullOrEmpty(_movieDB.BannerPath) Then SetArtForItem(_movieDB.ID, "movie", "banner", _movieDB.BannerPath)
                 If Not String.IsNullOrEmpty(_movieDB.ClearArtPath) Then SetArtForItem(_movieDB.ID, "movie", "clearart", _movieDB.ClearArtPath)
-                If Not String.IsNullOrEmpty(_movieDB.ClearArtPath) Then SetArtForItem(_movieDB.ID, "movie", "clearlogo", _movieDB.ClearArtPath)
+                If Not String.IsNullOrEmpty(_movieDB.ClearLogoPath) Then SetArtForItem(_movieDB.ID, "movie", "clearlogo", _movieDB.ClearLogoPath)
                 If Not String.IsNullOrEmpty(_movieDB.DiscArtPath) Then SetArtForItem(_movieDB.ID, "movie", "discart", _movieDB.DiscArtPath)
                 If Not String.IsNullOrEmpty(_movieDB.FanartPath) Then SetArtForItem(_movieDB.ID, "movie", "fanart", _movieDB.FanartPath)
                 If Not String.IsNullOrEmpty(_movieDB.LandscapePath) Then SetArtForItem(_movieDB.ID, "movie", "landscape", _movieDB.LandscapePath)
@@ -2773,7 +2773,7 @@ Public Class Database
             End Using
             If Not String.IsNullOrEmpty(_moviesetDB.BannerPath) Then SetArtForItem(_moviesetDB.ID, "set", "banner", _moviesetDB.BannerPath)
             If Not String.IsNullOrEmpty(_moviesetDB.ClearArtPath) Then SetArtForItem(_moviesetDB.ID, "set", "clearart", _moviesetDB.ClearArtPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ClearArtPath) Then SetArtForItem(_moviesetDB.ID, "set", "clearlogo", _moviesetDB.ClearArtPath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ClearLogoPath) Then SetArtForItem(_moviesetDB.ID, "set", "clearlogo", _moviesetDB.ClearLogoPath)
             If Not String.IsNullOrEmpty(_moviesetDB.DiscArtPath) Then SetArtForItem(_moviesetDB.ID, "set", "discart", _moviesetDB.DiscArtPath)
             If Not String.IsNullOrEmpty(_moviesetDB.FanartPath) Then SetArtForItem(_moviesetDB.ID, "set", "fanart", _moviesetDB.FanartPath)
             If Not String.IsNullOrEmpty(_moviesetDB.LandscapePath) Then SetArtForItem(_moviesetDB.ID, "set", "landscape", _moviesetDB.LandscapePath)
@@ -3362,7 +3362,7 @@ Public Class Database
                 If Not String.IsNullOrEmpty(_TVShowDB.ShowBannerPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "banner", _TVShowDB.ShowBannerPath)
                 If Not String.IsNullOrEmpty(_TVShowDB.ShowCharacterArtPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "characterart", _TVShowDB.ShowCharacterArtPath)
                 If Not String.IsNullOrEmpty(_TVShowDB.ShowClearArtPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "clearart", _TVShowDB.ShowClearArtPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.ShowClearArtPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "clearlogo", _TVShowDB.ShowClearArtPath)
+                If Not String.IsNullOrEmpty(_TVShowDB.ShowClearLogoPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "clearlogo", _TVShowDB.ShowClearLogoPath)
                 If Not String.IsNullOrEmpty(_TVShowDB.ShowFanartPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "fanart", _TVShowDB.ShowFanartPath)
                 If Not String.IsNullOrEmpty(_TVShowDB.ShowLandscapePath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "landscape", _TVShowDB.ShowLandscapePath)
                 If Not String.IsNullOrEmpty(_TVShowDB.ShowPosterPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "poster", _TVShowDB.ShowPosterPath)
