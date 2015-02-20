@@ -6711,56 +6711,63 @@ doCancel:
             Return
         End If
 
-        If Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso _
-            (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
+        Me.dgvMovies.ShowCellToolTips = True
+
+        If (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
             colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse _
-            colName = "HasSet" OrElse colName = "HasSub") AndAlso Not bwMovieScraper.IsBusy Then
-            oldStatus = GetStatus()
-            Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
-            Dim scrapeFor As String = ""
-            Dim scrapeType As String = ""
-            Select Case colName
-                Case "BannerPath"
-                    scrapeFor = Master.eLang.GetString(1060, "Banner Only")
-                Case "ClearArtPath"
-                    scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
-                Case "ClearLogoPath"
-                    scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
-                Case "DiscArtPath"
-                    scrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
-                Case "EFanartsPath"
-                    scrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
-                Case "EThumbsPath"
-                    scrapeFor = Master.eLang.GetString(74, "Extrathumbs Only")
-                Case "FanartPath"
-                    scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-                Case "LandscapePath"
-                    scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
-                Case "NfoPath"
-                    scrapeFor = Master.eLang.GetString(71, "NFO Only")
-                Case "MetaData"
-                    scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
-                Case "PosterPath"
-                    scrapeFor = Master.eLang.GetString(72, "Poster Only")
-                Case "ThemePath"
-                    scrapeFor = Master.eLang.GetString(1125, "Theme Only")
-                Case "TrailerPath"
-                    scrapeFor = Master.eLang.GetString(75, "Trailer Only")
-                Case "HasSet"
-                    scrapeFor = Master.eLang.GetString(1354, "MovieSet Informations Only")
-                Case "HasSub"
-                    scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
-            End Select
+            colName = "HasSet" OrElse colName = "HasSub") AndAlso e.RowIndex >= 0 Then
+            Me.dgvMovies.ShowCellToolTips = False
 
-            If Master.eSettings.MovieClickScrapeAsk Then
-                scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+            If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
+                oldStatus = GetStatus()
+                Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
+                Dim scrapeFor As String = ""
+                Dim scrapeType As String = ""
+                Select Case colName
+                    Case "BannerPath"
+                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                    Case "ClearArtPath"
+                        scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                    Case "ClearLogoPath"
+                        scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                    Case "DiscArtPath"
+                        scrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
+                    Case "EFanartsPath"
+                        scrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
+                    Case "EThumbsPath"
+                        scrapeFor = Master.eLang.GetString(74, "Extrathumbs Only")
+                    Case "FanartPath"
+                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                    Case "LandscapePath"
+                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                    Case "NfoPath"
+                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
+                    Case "MetaData"
+                        scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
+                    Case "PosterPath"
+                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                    Case "ThemePath"
+                        scrapeFor = Master.eLang.GetString(1125, "Theme Only")
+                    Case "TrailerPath"
+                        scrapeFor = Master.eLang.GetString(75, "Trailer Only")
+                    Case "HasSet"
+                        scrapeFor = Master.eLang.GetString(1354, "MovieSet Informations Only")
+                    Case "HasSub"
+                        scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
+                End Select
+
+                If Master.eSettings.MovieClickScrapeAsk Then
+                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                Else
+                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                End If
+
+                Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
             Else
-                scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                oldStatus = String.Empty
             End If
-
-            Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
         Else
             oldStatus = String.Empty
         End If
@@ -7266,38 +7273,44 @@ doCancel:
             Return
         End If
 
-        If Master.eSettings.MovieClickScrape AndAlso e.RowIndex > 0 AndAlso _
-            (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse _
-             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso _
-            Not bwMovieScraper.IsBusy Then
-            oldStatus = GetStatus()
-            Dim movieSetName As String = Me.dgvMovieSets.Rows(e.RowIndex).Cells("SetName").Value.ToString
-            Dim scrapeFor As String = ""
-            Dim scrapeType As String = ""
-            Select Case colName
-                Case "BannerPath"
-                    scrapeFor = Master.eLang.GetString(1060, "Banner Only")
-                Case "ClearArtPath"
-                    scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
-                Case "ClearLogoPath"
-                    scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
-                Case "DiscArtPath"
-                    scrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
-                Case "FanartPath"
-                    scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-                Case "LandscapePath"
-                    scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
-                Case "NfoPath"
-                    scrapeFor = Master.eLang.GetString(71, "NFO Only")
-                Case "PosterPath"
-                    scrapeFor = Master.eLang.GetString(72, "Poster Only")
-            End Select
-            If Master.eSettings.MovieClickScrapeAsk Then
-                scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+        Me.dgvMovieSets.ShowCellToolTips = True
+
+        If (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse _
+             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso e.RowIndex >= 0 Then
+            Me.dgvMovieSets.ShowCellToolTips = False
+
+            If Master.eSettings.MovieSetClickScrape AndAlso Not bwMovieSetScraper.IsBusy Then
+                oldStatus = GetStatus()
+                Dim movieSetName As String = Me.dgvMovieSets.Rows(e.RowIndex).Cells("SetName").Value.ToString
+                Dim scrapeFor As String = ""
+                Dim scrapeType As String = ""
+                Select Case colName
+                    Case "BannerPath"
+                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                    Case "ClearArtPath"
+                        scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                    Case "ClearLogoPath"
+                        scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                    Case "DiscArtPath"
+                        scrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
+                    Case "FanartPath"
+                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                    Case "LandscapePath"
+                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                    Case "NfoPath"
+                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
+                    Case "PosterPath"
+                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                End Select
+                If Master.eSettings.MovieSetClickScrapeAsk Then
+                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                Else
+                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                End If
+                Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieSetName, scrapeFor, scrapeType))
             Else
-                scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                oldStatus = String.Empty
             End If
-            Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieSetName, scrapeFor, scrapeType))
         Else
             oldStatus = String.Empty
         End If
@@ -7567,6 +7580,55 @@ doCancel:
 
         Me.currEpRow = e.RowIndex
         Me.tmrWaitEp.Start()
+    End Sub
+
+    Private Sub dgvTVEpisodes_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellMouseEnter
+        Dim colName As String = Me.dgvTVEpisodes.Columns(e.ColumnIndex).Name
+        If String.IsNullOrEmpty(colName) Then
+            Return
+        End If
+
+        Me.dgvTVEpisodes.ShowCellToolTips = True
+
+        If (colName = "FanartPath" OrElse colName = "NfoPath" OrElse _
+            colName = "PosterPath" OrElse colName = "HasSub") AndAlso e.RowIndex >= 0 Then
+            Me.dgvTVEpisodes.ShowCellToolTips = False
+
+            'If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
+            '    oldStatus = GetStatus()
+            '    Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
+            '    Dim scrapeFor As String = ""
+            '    Dim scrapeType As String = ""
+            '    Select Case colName
+            '        Case "FanartPath"
+            '            scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+            '        Case "NfoPath"
+            '            scrapeFor = Master.eLang.GetString(71, "NFO Only")
+            '        Case "MetaData"
+            '            scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
+            '        Case "PosterPath"
+            '            scrapeFor = Master.eLang.GetString(72, "Poster Only")
+            '        Case "HasSub"
+            '            scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
+            '    End Select
+
+            '    If Master.eSettings.MovieClickScrapeAsk Then
+            '        scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+            '    Else
+            '        scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+            '    End If
+
+            '    Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
+            'Else
+            '    oldStatus = String.Empty
+            'End If
+        Else
+            oldStatus = String.Empty
+        End If
+    End Sub
+
+    Private Sub dgvTVEpisodes_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellMouseLeave
+        If Not String.IsNullOrEmpty(oldStatus) Then Me.SetStatus(oldStatus)
     End Sub
 
     Private Sub dgvTVEpisodes_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVEpisodes.CellPainting
@@ -7938,6 +8000,53 @@ doCancel:
         Me.tmrWaitSeason.Start()
     End Sub
 
+    Private Sub dgvTVSeasons_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellMouseEnter
+        Dim colName As String = Me.dgvTVSeasons.Columns(e.ColumnIndex).Name
+        If String.IsNullOrEmpty(colName) Then
+            Return
+        End If
+
+        Me.dgvTVSeasons.ShowCellToolTips = True
+
+        If (colName = "BannerPath" OrElse colName = "FanartPath" OrElse _
+            colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso e.RowIndex >= 0 Then
+            Me.dgvTVSeasons.ShowCellToolTips = False
+
+            'If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
+            '    oldStatus = GetStatus()
+            '    Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
+            '    Dim scrapeFor As String = ""
+            '    Dim scrapeType As String = ""
+            '    Select Case colName
+            '        Case "BannerPath"
+            '            scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+            '        Case "FanartPath"
+            '            scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+            '        Case "LandscapePath"
+            '            scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+            '        Case "PosterPath"
+            '            scrapeFor = Master.eLang.GetString(72, "Poster Only")
+            '    End Select
+
+            '    If Master.eSettings.MovieClickScrapeAsk Then
+            '        scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+            '    Else
+            '        scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+            '    End If
+
+            '    Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
+            'Else
+            '    oldStatus = String.Empty
+            'End If
+        Else
+            oldStatus = String.Empty
+        End If
+    End Sub
+
+    Private Sub dgvTVSeasons_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellMouseLeave
+        If Not String.IsNullOrEmpty(oldStatus) Then Me.SetStatus(oldStatus)
+    End Sub
+
     Private Sub dgvTVSeasons_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVSeasons.CellPainting
         Dim colName As String = Me.dgvTVSeasons.Columns(e.ColumnIndex).Name
         If String.IsNullOrEmpty(colName) Then
@@ -8235,6 +8344,65 @@ doCancel:
 
         Me.currShowRow = e.RowIndex
         Me.tmrWaitShow.Start()
+    End Sub
+
+    Private Sub dgvTVShows_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellMouseEnter
+        Dim colName As String = Me.dgvTVShows.Columns(e.ColumnIndex).Name
+        If String.IsNullOrEmpty(colName) Then
+            Return
+        End If
+
+        Me.dgvTVShows.ShowCellToolTips = True
+
+        If (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
+            colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse _
+            colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
+            colName = "ThemePath") AndAlso e.RowIndex >= 0 Then
+            Me.dgvTVShows.ShowCellToolTips = False
+
+            'If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
+            '    oldStatus = GetStatus()
+            '    Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
+            '    Dim scrapeFor As String = ""
+            '    Dim scrapeType As String = ""
+            '    Select Case colName
+            '        Case "BannerPath"
+            '            scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+            '        Case "ClearArtPath"
+            '            scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+            '        Case "ClearLogoPath"
+            '            scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+            '        Case "EFanartsPath"
+            '            scrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
+            '        Case "FanartPath"
+            '            scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+            '        Case "LandscapePath"
+            '            scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+            '        Case "NfoPath"
+            '            scrapeFor = Master.eLang.GetString(71, "NFO Only")
+            '        Case "PosterPath"
+            '            scrapeFor = Master.eLang.GetString(72, "Poster Only")
+            '        Case "ThemePath"
+            '            scrapeFor = Master.eLang.GetString(1125, "Theme Only")
+            '    End Select
+
+            '    If Master.eSettings.MovieClickScrapeAsk Then
+            '        scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+            '    Else
+            '        scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+            '    End If
+
+            '    Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
+            'Else
+            '    oldStatus = String.Empty
+            'End If
+        Else
+            oldStatus = String.Empty
+        End If
+    End Sub
+
+    Private Sub dgvTVShows_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellMouseLeave
+        If Not String.IsNullOrEmpty(oldStatus) Then Me.SetStatus(oldStatus)
     End Sub
 
     Private Sub dgvTVShows_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVShows.CellPainting
@@ -13769,7 +13937,7 @@ doCancel:
         DirectCast(sender, PictureBox).Image = GenreImage
     End Sub
 
-    Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
+    Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearArt.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If Not IsNothing(Me.pbClearArtCache.Image) Then
@@ -14287,7 +14455,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
+    Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbLandscape.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If Not IsNothing(Me.pbLandscapeCache.Image) Then
