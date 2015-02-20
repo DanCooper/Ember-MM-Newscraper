@@ -82,6 +82,7 @@ Public Class frmMain
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
     Private LoadingDone As Boolean = False
+    Private MainBanner As New Images
     Private MainCharacterArt As New Images
     Private MainClearArt As New Images
     Private MainClearLogo As New Images
@@ -153,6 +154,8 @@ Public Class frmMain
     Private prevTextSearch_Shows As String = String.Empty
 
     'Theme Information
+    Private _bannermaxheight As Integer = 160
+    Private _bannermaxwidth As Integer = 285
     Private _characterartmaxheight As Integer = 160
     Private _characterartmaxwidth As Integer = 160
     Private _clearartmaxheight As Integer = 160
@@ -220,6 +223,24 @@ Public Class frmMain
         End Get
         Set(ByVal value As Integer)
             _ipup = value
+        End Set
+    End Property
+
+    Public Property BannerMaxHeight() As Integer
+        Get
+            Return _bannermaxheight
+        End Get
+        Set(ByVal value As Integer)
+            _bannermaxheight = value
+        End Set
+    End Property
+
+    Public Property BannerMaxWidth() As Integer
+        Get
+            Return _bannermaxwidth
+        End Get
+        Set(ByVal value As Integer)
+            _bannermaxwidth = value
         End Set
     End Property
 
@@ -378,6 +399,13 @@ Public Class frmMain
                     .pbFanart.Image = Nothing
                 End If
                 .MainFanart.Clear()
+
+                If Not IsNothing(.pbBanner.Image) Then
+                    .pbBanner.Image.Dispose()
+                    .pbBanner.Image = Nothing
+                End If
+                .pnlBanner.Visible = False
+                .MainBanner.Clear()
 
                 If Not IsNothing(.pbCharacterArt.Image) Then
                     .pbCharacterArt.Image.Dispose()
@@ -1559,6 +1587,7 @@ Public Class frmMain
 
     Private Sub bwLoadEpInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadEpInfo.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainBanner.Clear()
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
         Me.MainClearLogo.Clear()
@@ -1580,8 +1609,8 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.EpPosterPath)
         If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.EpFanartPath)
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.EpPosterPath)
 
         If bwLoadEpInfo.CancellationPending Then
             e.Cancel = True
@@ -1634,6 +1663,7 @@ Public Class frmMain
 
     Private Sub bwLoadMovieInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMovieInfo.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainBanner.Clear()
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
         Me.MainClearLogo.Clear()
@@ -1654,7 +1684,8 @@ Public Class frmMain
             e.Cancel = True
             Return
         End If
-        
+
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner.FromFile(Master.currMovie.BannerPath)
         If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currMovie.ClearArtPath)
         If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo.FromFile(Master.currMovie.ClearLogoPath)
         If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt.FromFile(Master.currMovie.DiscArtPath)
@@ -1696,6 +1727,7 @@ Public Class frmMain
 
     Private Sub bwLoadMovieSetInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMovieSetInfo.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainBanner.Clear()
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
         Me.MainClearLogo.Clear()
@@ -1717,6 +1749,7 @@ Public Class frmMain
             Return
         End If
 
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner.FromFile(Master.currMovieSet.BannerPath)
         If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currMovieSet.ClearArtPath)
         If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo.FromFile(Master.currMovieSet.ClearLogoPath)
         If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt.FromFile(Master.currMovieSet.DiscArtPath)
@@ -1820,6 +1853,7 @@ Public Class frmMain
 
     Private Sub bwLoadSeasonInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadSeasonInfo.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainBanner.Clear()
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
         Me.MainClearLogo.Clear()
@@ -1836,9 +1870,10 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.SeasonPosterPath)
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner.FromFile(Master.currShow.SeasonBannerPath)
         If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.SeasonFanartPath)
         If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currShow.SeasonLandscapePath)
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.SeasonPosterPath)
 
         If bwLoadSeasonInfo.CancellationPending Then
             e.Cancel = True
@@ -1884,6 +1919,7 @@ Public Class frmMain
 
     Private Sub bwLoadShowInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadShowInfo.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainBanner.Clear()
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
         Me.MainClearLogo.Clear()
@@ -1910,6 +1946,7 @@ Public Class frmMain
             Return
         End If
 
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner.FromFile(Master.currShow.ShowBannerPath)
         If Not Master.eSettings.GeneralHideCharacterArt Then Me.MainCharacterArt.FromFile(Master.currShow.ShowCharacterArtPath)
         If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currShow.ShowClearArtPath)
         If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo.FromFile(Master.currShow.ShowClearLogoPath)
@@ -9465,12 +9502,239 @@ doCancel:
         End If
     End Sub
 
-    Private Sub fillScreenInfoWithEpisode()
+    Private Sub fillScreenInfoWithImages()
         Dim g As Graphics
         Dim strSize As String
         Dim lenSize As Integer
         Dim rect As Rectangle
 
+        If Not IsNothing(Me.MainPoster.Image) Then
+            Me.lblPosterSize.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
+            Me.pbPosterCache.Image = Me.MainPoster.Image
+            ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
+
+            If Master.eSettings.GeneralShowImgDims Then
+                Me.lblPosterSize.Visible = True
+            Else
+                Me.lblPosterSize.Visible = False
+            End If
+
+            If Master.eSettings.GeneralShowImgNames Then
+                Me.lblPosterTitle.Visible = True
+            Else
+                Me.lblPosterTitle.Visible = False
+            End If
+        Else
+            If Not IsNothing(Me.pbPoster.Image) Then
+                Me.pbPoster.Image.Dispose()
+                Me.pbPoster.Image = Nothing
+            End If
+        End If
+
+        If Not IsNothing(Me.MainFanartSmall.Image) Then
+            Me.lblFanartSmallSize.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
+            Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
+            ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
+            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
+            Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
+
+            If Master.eSettings.GeneralShowImgDims Then
+                Me.lblFanartSmallSize.Visible = True
+            Else
+                Me.lblFanartSmallSize.Visible = False
+            End If
+
+            If Master.eSettings.GeneralShowImgNames Then
+                Me.lblFanartSmallTitle.Visible = True
+            Else
+                Me.lblFanartSmallTitle.Visible = False
+            End If
+        Else
+            If Not IsNothing(Me.pbFanartSmall.Image) Then
+                Me.pbFanartSmall.Image.Dispose()
+                Me.pbFanartSmall.Image = Nothing
+            End If
+        End If
+
+        If Not IsNothing(Me.MainLandscape.Image) Then
+            Me.lblLandscapeSize.Text = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
+            Me.pbLandscapeCache.Image = Me.MainLandscape.Image
+            ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
+            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
+            Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
+
+            If Master.eSettings.GeneralShowImgDims Then
+                Me.lblLandscapeSize.Visible = True
+            Else
+                Me.lblLandscapeSize.Visible = False
+            End If
+
+            If Master.eSettings.GeneralShowImgNames Then
+                Me.lblLandscapeTitle.Visible = True
+            Else
+                Me.lblLandscapeTitle.Visible = False
+            End If
+        Else
+            If Not IsNothing(Me.pbLandscape.Image) Then
+                Me.pbLandscape.Image.Dispose()
+                Me.pbLandscape.Image = Nothing
+            End If
+        End If
+
+        If Not IsNothing(Me.MainClearArt.Image) Then
+            Me.lblClearArtSize.Text = String.Format("{0} x {1}", Me.MainClearArt.Image.Width, Me.MainClearArt.Image.Height)
+            Me.pbClearArtCache.Image = Me.MainClearArt.Image
+            ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
+            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearArt)
+            Me.pnlClearArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 5, Me.pnlLandscape.Location.Y)
+
+            If Master.eSettings.GeneralShowImgDims Then
+                Me.lblClearArtSize.Visible = True
+            Else
+                Me.lblClearArtSize.Visible = False
+            End If
+
+            If Master.eSettings.GeneralShowImgNames Then
+                Me.lblClearArtTitle.Visible = True
+            Else
+                Me.lblClearArtTitle.Visible = False
+            End If
+        Else
+            If Not IsNothing(Me.pbClearArt.Image) Then
+                Me.pbClearArt.Image.Dispose()
+                Me.pbClearArt.Image = Nothing
+            End If
+        End If
+
+        If Not IsNothing(Me.MainCharacterArt.Image) Then
+            Me.lblCharacterArtSize.Text = String.Format("{0} x {1}", Me.MainCharacterArt.Image.Width, Me.MainCharacterArt.Image.Height)
+            Me.pbCharacterArtCache.Image = Me.MainCharacterArt.Image
+            ImageUtils.ResizePB(Me.pbCharacterArt, Me.pbCharacterArtCache, Me.CharacterArtMaxHeight, Me.CharacterArtMaxWidth)
+            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbCharacterArt)
+            Me.pnlCharacterArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
+
+            If Master.eSettings.GeneralShowImgDims Then
+                Me.lblCharacterArtSize.Visible = True
+            Else
+                Me.lblCharacterArtSize.Visible = False
+            End If
+
+            If Master.eSettings.GeneralShowImgNames Then
+                Me.lblCharacterArtTitle.Visible = True
+            Else
+                Me.lblCharacterArtTitle.Visible = False
+            End If
+        Else
+            If Not IsNothing(Me.pbCharacterArt.Image) Then
+                Me.pbCharacterArt.Image.Dispose()
+                Me.pbCharacterArt.Image = Nothing
+            End If
+        End If
+
+        If Not IsNothing(Me.MainDiscArt.Image) Then
+            Me.lblDiscArtSize.Text = String.Format("{0} x {1}", Me.MainDiscArt.Image.Width, Me.MainDiscArt.Image.Height)
+            Me.pbDiscArtCache.Image = Me.MainDiscArt.Image
+            ImageUtils.ResizePB(Me.pbDiscArt, Me.pbDiscArtCache, Me.DiscArtMaxHeight, Me.DiscArtMaxWidth)
+            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbDiscArt)
+            Me.pnlDiscArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
+
+            If Master.eSettings.GeneralShowImgDims Then
+                Me.lblDiscArtSize.Visible = True
+            Else
+                Me.lblDiscArtSize.Visible = False
+            End If
+
+            If Master.eSettings.GeneralShowImgNames Then
+                Me.lblDiscArtTitle.Visible = True
+            Else
+                Me.lblDiscArtTitle.Visible = False
+            End If
+        Else
+            If Not IsNothing(Me.pbDiscArt.Image) Then
+                Me.pbDiscArt.Image.Dispose()
+                Me.pbDiscArt.Image = Nothing
+            End If
+        End If
+
+        If Not IsNothing(Me.MainBanner.Image) Then
+            Me.lblBannerSize.Text = String.Format("{0} x {1}", Me.MainBanner.Image.Width, Me.MainBanner.Image.Height)
+            Me.pbBannerCache.Image = Me.MainBanner.Image
+            ImageUtils.ResizePB(Me.pbBanner, Me.pbBannerCache, Me.BannerMaxHeight, Me.BannerMaxWidth)
+            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbBanner)
+            Me.pnlBanner.Location = New Point(Me.pnlFanartSmall.Location.X, Me.pnlFanartSmall.Location.Y + Me.pnlFanartSmall.Height + 5)
+
+            If Master.eSettings.GeneralShowImgDims Then
+                Me.lblBannerSize.Visible = True
+            Else
+                Me.lblBannerSize.Visible = False
+            End If
+
+            If Master.eSettings.GeneralShowImgNames Then
+                Me.lblBannerTitle.Visible = True
+            Else
+                Me.lblBannerTitle.Visible = False
+            End If
+        Else
+            If Not IsNothing(Me.pbBanner.Image) Then
+                Me.pbBanner.Image.Dispose()
+                Me.pbBanner.Image = Nothing
+            End If
+        End If
+
+        If Not IsNothing(Me.MainClearLogo.Image) Then
+            Me.lblClearLogoSize.Text = String.Format("{0} x {1}", Me.MainClearLogo.Image.Width, Me.MainClearLogo.Image.Height)
+            Me.pbClearLogoCache.Image = Me.MainClearLogo.Image
+            ImageUtils.ResizePB(Me.pbClearLogo, Me.pbClearLogoCache, Me.ClearLogoMaxHeight, Me.ClearLogoMaxWidth)
+            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearLogo)
+            Me.pnlClearLogo.Location = New Point(Me.pnlLandscape.Location.X, Me.pnlLandscape.Location.Y + Me.pnlLandscape.Height + 5)
+
+            If Master.eSettings.GeneralShowImgDims Then
+                Me.lblClearLogoSize.Visible = True
+            Else
+                Me.lblClearLogoSize.Visible = False
+            End If
+
+            If Master.eSettings.GeneralShowImgNames Then
+                Me.lblClearLogoTitle.Visible = True
+            Else
+                Me.lblClearLogoTitle.Visible = False
+            End If
+        Else
+            If Not IsNothing(Me.pbClearLogo.Image) Then
+                Me.pbClearLogo.Image.Dispose()
+                Me.pbClearLogo.Image = Nothing
+            End If
+        End If
+
+        If Not IsNothing(Me.MainFanart.Image) Then
+            Me.pbFanartCache.Image = Me.MainFanart.Image
+
+            ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+            Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
+            If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.GeneralShowImgDims Then
+                g = Graphics.FromImage(pbFanart.Image)
+                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                rect = New Rectangle(Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2 - 15), Me.pbFanart.Height - 25, lenSize + 30, 25)
+                ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((Me.pbFanart.Image.Width - lenSize) / 2), Me.pbFanart.Height - 20)
+            End If
+        Else
+            If Not IsNothing(Me.pbFanartCache.Image) Then
+                Me.pbFanartCache.Image.Dispose()
+                Me.pbFanartCache.Image = Nothing
+            End If
+            If Not IsNothing(Me.pbFanart.Image) Then
+                Me.pbFanart.Image.Dispose()
+                Me.pbFanart.Image = Nothing
+            End If
+        End If
+    End Sub
+
+    Private Sub fillScreenInfoWithEpisode()
         Try
             Me.SuspendLayout()
             Me.lblTitle.Text = If(String.IsNullOrEmpty(Master.currShow.Filename), String.Concat(Master.currShow.TVEp.Title, " ", Master.eLang.GetString(689, "[MISSING]")), Master.currShow.TVEp.Title)
@@ -9568,105 +9832,7 @@ doCancel:
 
             Me.txtMetaData.Text = NFO.FIToString(Master.currShow.TVEp.FileInfo, True)
 
-            If Not IsNothing(Me.MainPoster.Image) Then
-                Me.lblPosterSize.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                Me.pbPosterCache.Image = Me.MainPoster.Image
-                ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblPosterSize.Visible = True
-                Else
-                    Me.lblPosterSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblPosterTitle.Visible = True
-                Else
-                    Me.lblPosterTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbPoster.Image) Then
-                    Me.pbPoster.Image.Dispose()
-                    Me.pbPoster.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainFanartSmall.Image) Then
-                Me.lblFanartSmallSize.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
-                Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
-                ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblFanartSmallSize.Visible = True
-                Else
-                    Me.lblFanartSmallSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblFanartSmallTitle.Visible = True
-                Else
-                    Me.lblFanartSmallTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbFanartSmall.Image) Then
-                    Me.pbFanartSmall.Image.Dispose()
-                    Me.pbFanartSmall.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainLandscape.Image) Then
-                Me.lblLandscapeSize.Text = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
-                Me.pbLandscapeCache.Image = Me.MainLandscape.Image
-                ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
-                Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblLandscapeSize.Visible = True
-                Else
-                    Me.lblLandscapeSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblLandscapeTitle.Visible = True
-                Else
-                    Me.lblLandscapeTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbLandscape.Image) Then
-                    Me.pbLandscape.Image.Dispose()
-                    Me.pbLandscape.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainFanart.Image) Then
-                Me.pbFanartCache.Image = Me.MainFanart.Image
-
-                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
-
-                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbFanart.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2 - 15), Me.pbFanart.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((Me.pbFanart.Image.Width - lenSize) / 2), Me.pbFanart.Height - 20)
-                End If
-            Else
-                If Not IsNothing(Me.pbFanartCache.Image) Then
-                    Me.pbFanartCache.Image.Dispose()
-                    Me.pbFanartCache.Image = Nothing
-                End If
-                If Not IsNothing(Me.pbFanart.Image) Then
-                    Me.pbFanart.Image.Dispose()
-                    Me.pbFanart.Image = Nothing
-                End If
-            End If
+            fillScreenInfoWithImages()
 
             Me.InfoCleared = False
 
@@ -9683,8 +9849,8 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
-            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
+            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -9697,11 +9863,6 @@ doCancel:
     End Sub
 
     Private Sub fillScreenInfoWithMovie()
-        Dim g As Graphics
-        Dim strSize As String
-        Dim lenSize As Integer
-        Dim rect As Rectangle
-
         Try
             Me.SuspendLayout()
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
@@ -9835,180 +9996,7 @@ doCancel:
 
             Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo, False)
 
-            If Not IsNothing(Me.MainPoster.Image) Then
-                Me.lblPosterSize.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                Me.pbPosterCache.Image = Me.MainPoster.Image
-                ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblPosterSize.Visible = True
-                Else
-                    Me.lblPosterSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblPosterTitle.Visible = True
-                Else
-                    Me.lblPosterTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbPoster.Image) Then
-                    Me.pbPoster.Image.Dispose()
-                    Me.pbPoster.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainFanartSmall.Image) Then
-                Me.lblFanartSmallSize.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
-                Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
-                ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblFanartSmallSize.Visible = True
-                Else
-                    Me.lblFanartSmallSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblFanartSmallTitle.Visible = True
-                Else
-                    Me.lblFanartSmallTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbFanartSmall.Image) Then
-                    Me.pbFanartSmall.Image.Dispose()
-                    Me.pbFanartSmall.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainLandscape.Image) Then
-                Me.lblLandscapeSize.Text = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
-                Me.pbLandscapeCache.Image = Me.MainLandscape.Image
-                ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
-                Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblLandscapeSize.Visible = True
-                Else
-                    Me.lblLandscapeSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblLandscapeTitle.Visible = True
-                Else
-                    Me.lblLandscapeTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbLandscape.Image) Then
-                    Me.pbLandscape.Image.Dispose()
-                    Me.pbLandscape.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainClearArt.Image) Then
-                Me.lblClearArtSize.Text = String.Format("{0} x {1}", Me.MainClearArt.Image.Width, Me.MainClearArt.Image.Height)
-                Me.pbClearArtCache.Image = Me.MainClearArt.Image
-                ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearArt)
-                Me.pnlClearArt.Location = New Point(Me.pnlFanartSmall.Location.X, Me.pnlFanartSmall.Location.Y + Me.pnlFanartSmall.Height + 5)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblClearArtSize.Visible = True
-                Else
-                    Me.lblClearArtSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblClearArtTitle.Visible = True
-                Else
-                    Me.lblClearArtTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbClearArt.Image) Then
-                    Me.pbClearArt.Image.Dispose()
-                    Me.pbClearArt.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainClearLogo.Image) Then
-                Me.lblClearLogoSize.Text = String.Format("{0} x {1}", Me.MainClearLogo.Image.Width, Me.MainClearLogo.Image.Height)
-                Me.pbClearLogoCache.Image = Me.MainClearLogo.Image
-                ImageUtils.ResizePB(Me.pbClearLogo, Me.pbClearLogoCache, Me.ClearLogoMaxHeight, Me.ClearLogoMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearLogo)
-                Me.pnlClearLogo.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblClearLogoSize.Visible = True
-                Else
-                    Me.lblClearLogoSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblClearLogoTitle.Visible = True
-                Else
-                    Me.lblClearLogoTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbClearLogo.Image) Then
-                    Me.pbClearLogo.Image.Dispose()
-                    Me.pbClearLogo.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainDiscArt.Image) Then
-                Me.lblDiscArtSize.Text = String.Format("{0} x {1}", Me.MainDiscArt.Image.Width, Me.MainDiscArt.Image.Height)
-                Me.pbDiscArtCache.Image = Me.MainDiscArt.Image
-                ImageUtils.ResizePB(Me.pbDiscArt, Me.pbDiscArtCache, Me.DiscArtMaxHeight, Me.DiscArtMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbDiscArt)
-                Me.pnlDiscArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 5, Me.pnlLandscape.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblDiscArtSize.Visible = True
-                Else
-                    Me.lblDiscArtSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblDiscArtTitle.Visible = True
-                Else
-                    Me.lblDiscArtTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbDiscArt.Image) Then
-                    Me.pbDiscArt.Image.Dispose()
-                    Me.pbDiscArt.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainFanart.Image) Then
-                Me.pbFanartCache.Image = Me.MainFanart.Image
-
-                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
-
-                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbFanart.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2 - 15), Me.pbFanart.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((Me.pbFanart.Image.Width - lenSize) / 2), Me.pbFanart.Height - 20)
-                End If
-            Else
-                If Not IsNothing(Me.pbFanartCache.Image) Then
-                    Me.pbFanartCache.Image.Dispose()
-                    Me.pbFanartCache.Image = Nothing
-                End If
-                If Not IsNothing(Me.pbFanart.Image) Then
-                    Me.pbFanart.Image.Dispose()
-                    Me.pbFanart.Image = Nothing
-                End If
-            End If
+            fillScreenInfoWithImages()
 
             Me.InfoCleared = False
 
@@ -10030,12 +10018,13 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
+            If Not IsNothing(Me.pbBanner.Image) Then Me.pnlBanner.Visible = True
             If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
             If Not IsNothing(Me.pbClearLogo.Image) Then Me.pnlClearLogo.Visible = True
             If Not IsNothing(Me.pbDiscArt.Image) Then Me.pnlDiscArt.Visible = True
-            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
             If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
+            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -10048,11 +10037,6 @@ doCancel:
     End Sub
 
     Private Sub fillScreenInfoWithMovieSet()
-        Dim g As Graphics
-        Dim strSize As String
-        Dim lenSize As Integer
-        Dim rect As Rectangle
-
         Try
             Me.SuspendLayout()
             If Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) AndAlso Not IsNothing(Master.currMovieSet.Movies) AndAlso Master.currMovieSet.Movies.Count > 0 Then
@@ -10166,155 +10150,7 @@ doCancel:
 
             'Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo, False)
 
-            If Not IsNothing(Me.MainPoster.Image) Then
-                Me.lblPosterSize.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                Me.pbPosterCache.Image = Me.MainPoster.Image
-                ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblPosterSize.Visible = True
-                Else
-                    Me.lblPosterSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblPosterTitle.Visible = True
-                Else
-                    Me.lblPosterTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbPoster.Image) Then
-                    Me.pbPoster.Image.Dispose()
-                    Me.pbPoster.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainFanartSmall.Image) Then
-                Me.lblFanartSmallSize.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
-                Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
-                ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblFanartSmallSize.Visible = True
-                Else
-                    Me.lblFanartSmallSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblFanartSmallTitle.Visible = True
-                Else
-                    Me.lblFanartSmallTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbFanartSmall.Image) Then
-                    Me.pbFanartSmall.Image.Dispose()
-                    Me.pbFanartSmall.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainLandscape.Image) Then
-                Me.lblLandscapeSize.Text = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
-                Me.pbLandscapeCache.Image = Me.MainLandscape.Image
-                ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
-                Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblLandscapeSize.Visible = True
-                Else
-                    Me.lblLandscapeSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblLandscapeTitle.Visible = True
-                Else
-                    Me.lblLandscapeTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbLandscape.Image) Then
-                    Me.pbLandscape.Image.Dispose()
-                    Me.pbLandscape.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainClearArt.Image) Then
-                Me.lblClearArtSize.Text = String.Format("{0} x {1}", Me.MainClearArt.Image.Width, Me.MainClearArt.Image.Height)
-                Me.pbClearArtCache.Image = Me.MainClearArt.Image
-                ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearArt)
-                Me.pnlClearArt.Location = New Point(Me.pnlFanartSmall.Location.X, Me.pnlFanartSmall.Location.Y + Me.pnlFanartSmall.Height + 5)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblClearArtSize.Visible = True
-                Else
-                    Me.lblClearArtSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblClearArtTitle.Visible = True
-                Else
-                    Me.lblClearArtTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbClearArt.Image) Then
-                    Me.pbClearArt.Image.Dispose()
-                    Me.pbClearArt.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainDiscArt.Image) Then
-                Me.lblDiscArtSize.Text = String.Format("{0} x {1}", Me.MainDiscArt.Image.Width, Me.MainDiscArt.Image.Height)
-                Me.pbDiscArtCache.Image = Me.MainDiscArt.Image
-                ImageUtils.ResizePB(Me.pbDiscArt, Me.pbDiscArtCache, Me.DiscArtMaxHeight, Me.DiscArtMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbDiscArt)
-                Me.pnlDiscArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 5, Me.pnlLandscape.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblDiscArtSize.Visible = True
-                Else
-                    Me.lblDiscArtSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblDiscArtTitle.Visible = True
-                Else
-                    Me.lblDiscArtTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbDiscArt.Image) Then
-                    Me.pbDiscArt.Image.Dispose()
-                    Me.pbDiscArt.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainFanart.Image) Then
-                Me.pbFanartCache.Image = Me.MainFanart.Image
-
-                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
-
-                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbFanart.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2 - 15), Me.pbFanart.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((Me.pbFanart.Image.Width - lenSize) / 2), Me.pbFanart.Height - 20)
-                End If
-            Else
-                If Not IsNothing(Me.pbFanartCache.Image) Then
-                    Me.pbFanartCache.Image.Dispose()
-                    Me.pbFanartCache.Image = Nothing
-                End If
-                If Not IsNothing(Me.pbFanart.Image) Then
-                    Me.pbFanart.Image.Dispose()
-                    Me.pbFanart.Image = Nothing
-                End If
-            End If
+            fillScreenInfoWithImages()
 
             Me.InfoCleared = False
 
@@ -10336,12 +10172,13 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
+            If Not IsNothing(Me.pbBanner.Image) Then Me.pnlBanner.Visible = True
             If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
             If Not IsNothing(Me.pbClearLogo.Image) Then Me.pnlClearLogo.Visible = True
             If Not IsNothing(Me.pbDiscArt.Image) Then Me.pnlDiscArt.Visible = True
-            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
             If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
+            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -10354,11 +10191,6 @@ doCancel:
     End Sub
 
     Private Sub fillScreenInfoWithSeason()
-        Dim g As Graphics
-        Dim strSize As String
-        Dim lenSize As Integer
-        Dim rect As Rectangle
-
         Try
             Me.SuspendLayout()
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then
@@ -10442,105 +10274,7 @@ doCancel:
             Me.pnlInfoIcons.Width = pbStudio.Width + 1
             Me.pbStudio.Left = 0
 
-            If Not IsNothing(Me.MainPoster.Image) Then
-                Me.lblPosterSize.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                Me.pbPosterCache.Image = Me.MainPoster.Image
-                ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblPosterSize.Visible = True
-                Else
-                    Me.lblPosterSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblPosterTitle.Visible = True
-                Else
-                    Me.lblPosterTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbPoster.Image) Then
-                    Me.pbPoster.Image.Dispose()
-                    Me.pbPoster.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainFanartSmall.Image) Then
-                Me.lblFanartSmallSize.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
-                Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
-                ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblFanartSmallSize.Visible = True
-                Else
-                    Me.lblFanartSmallSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblFanartSmallTitle.Visible = True
-                Else
-                    Me.lblFanartSmallTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbFanartSmall.Image) Then
-                    Me.pbFanartSmall.Image.Dispose()
-                    Me.pbFanartSmall.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainLandscape.Image) Then
-                Me.lblLandscapeSize.Text = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
-                Me.pbLandscapeCache.Image = Me.MainLandscape.Image
-                ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
-                Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblLandscapeSize.Visible = True
-                Else
-                    Me.lblLandscapeSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblLandscapeTitle.Visible = True
-                Else
-                    Me.lblLandscapeTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbLandscape.Image) Then
-                    Me.pbLandscape.Image.Dispose()
-                    Me.pbLandscape.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainFanart.Image) Then
-                Me.pbFanartCache.Image = Me.MainFanart.Image
-
-                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
-
-                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbFanart.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2 - 15), Me.pbFanart.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((Me.pbFanart.Image.Width - lenSize) / 2), Me.pbFanart.Height - 20)
-                End If
-            Else
-                If Not IsNothing(Me.pbFanartCache.Image) Then
-                    Me.pbFanartCache.Image.Dispose()
-                    Me.pbFanartCache.Image = Nothing
-                End If
-                If Not IsNothing(Me.pbFanart.Image) Then
-                    Me.pbFanart.Image.Dispose()
-                    Me.pbFanart.Image = Nothing
-                End If
-            End If
+            fillScreenInfoWithImages()
 
             Me.InfoCleared = False
 
@@ -10557,9 +10291,10 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
-            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
+            If Not IsNothing(Me.pbBanner.Image) Then Me.pnlBanner.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
             If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
+            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -10572,11 +10307,6 @@ doCancel:
     End Sub
 
     Private Sub fillScreenInfoWithShow()
-        Dim g As Graphics
-        Dim strSize As String
-        Dim lenSize As Integer
-        Dim rect As Rectangle
-
         Try
             Me.SuspendLayout()
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then
@@ -10661,155 +10391,7 @@ doCancel:
             Me.pnlInfoIcons.Width = pbStudio.Width + 1
             Me.pbStudio.Left = 0
 
-            If Not IsNothing(Me.MainPoster.Image) Then
-                Me.lblPosterSize.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                Me.pbPosterCache.Image = Me.MainPoster.Image
-                ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblPosterSize.Visible = True
-                Else
-                    Me.lblPosterSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblPosterTitle.Visible = True
-                Else
-                    Me.lblPosterTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbPoster.Image) Then
-                    Me.pbPoster.Image.Dispose()
-                    Me.pbPoster.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainFanartSmall.Image) Then
-                Me.lblFanartSmallSize.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
-                Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
-                ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblFanartSmallSize.Visible = True
-                Else
-                    Me.lblFanartSmallSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblFanartSmallTitle.Visible = True
-                Else
-                    Me.lblFanartSmallTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbFanartSmall.Image) Then
-                    Me.pbFanartSmall.Image.Dispose()
-                    Me.pbFanartSmall.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainLandscape.Image) Then
-                Me.lblLandscapeSize.Text = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
-                Me.pbLandscapeCache.Image = Me.MainLandscape.Image
-                ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
-                Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblLandscapeSize.Visible = True
-                Else
-                    Me.lblLandscapeSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblLandscapeTitle.Visible = True
-                Else
-                    Me.lblLandscapeTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbLandscape.Image) Then
-                    Me.pbLandscape.Image.Dispose()
-                    Me.pbLandscape.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainClearArt.Image) Then
-                Me.lblClearArtSize.Text = String.Format("{0} x {1}", Me.MainClearArt.Image.Width, Me.MainClearArt.Image.Height)
-                Me.pbClearArtCache.Image = Me.MainClearArt.Image
-                ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearArt)
-                Me.pnlClearArt.Location = New Point(Me.pnlFanartSmall.Location.X, Me.pnlFanartSmall.Location.Y + Me.pnlFanartSmall.Height + 5)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblClearArtSize.Visible = True
-                Else
-                    Me.lblClearArtSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblClearArtTitle.Visible = True
-                Else
-                    Me.lblClearArtTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbClearArt.Image) Then
-                    Me.pbClearArt.Image.Dispose()
-                    Me.pbClearArt.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainCharacterArt.Image) Then
-                Me.lblCharacterArtSize.Text = String.Format("{0} x {1}", Me.MainCharacterArt.Image.Width, Me.MainCharacterArt.Image.Height)
-                Me.pbCharacterArtCache.Image = Me.MainCharacterArt.Image
-                ImageUtils.ResizePB(Me.pbCharacterArt, Me.pbCharacterArtCache, Me.CharacterArtMaxHeight, Me.CharacterArtMaxWidth)
-                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbCharacterArt)
-                Me.pnlCharacterArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 5, Me.pnlLandscape.Location.Y)
-
-                If Master.eSettings.GeneralShowImgDims Then
-                    Me.lblCharacterArtSize.Visible = True
-                Else
-                    Me.lblCharacterArtSize.Visible = False
-                End If
-
-                If Master.eSettings.GeneralShowImgNames Then
-                    Me.lblCharacterArtTitle.Visible = True
-                Else
-                    Me.lblCharacterArtTitle.Visible = False
-                End If
-            Else
-                If Not IsNothing(Me.pbCharacterArt.Image) Then
-                    Me.pbCharacterArt.Image.Dispose()
-                    Me.pbCharacterArt.Image = Nothing
-                End If
-            End If
-
-            If Not IsNothing(Me.MainFanart.Image) Then
-                Me.pbFanartCache.Image = Me.MainFanart.Image
-
-                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
-
-                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.GeneralShowImgDims Then
-                    g = Graphics.FromImage(pbFanart.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle(Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2 - 15), Me.pbFanart.Height - 25, lenSize + 30, 25)
-                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((Me.pbFanart.Image.Width - lenSize) / 2), Me.pbFanart.Height - 20)
-                End If
-            Else
-                If Not IsNothing(Me.pbFanartCache.Image) Then
-                    Me.pbFanartCache.Image.Dispose()
-                    Me.pbFanartCache.Image = Nothing
-                End If
-                If Not IsNothing(Me.pbFanart.Image) Then
-                    Me.pbFanart.Image.Dispose()
-                    Me.pbFanart.Image = Nothing
-                End If
-            End If
+            fillScreenInfoWithImages()
 
             Me.InfoCleared = False
 
@@ -10832,11 +10414,13 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
+            If Not IsNothing(Me.pbBanner.Image) Then Me.pnlBanner.Visible = True
             If Not IsNothing(Me.pbCharacterArt.Image) Then Me.pnlCharacterArt.Visible = True
             If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
-            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
+            If Not IsNothing(Me.pbClearLogo.Image) Then Me.pnlClearLogo.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
             If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
+            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -13986,6 +13570,230 @@ doCancel:
         DirectCast(sender, PictureBox).Image = GenreImage
     End Sub
 
+    Private Sub pbBanner_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbBanner.MouseDoubleClick
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+                If Not IsNothing(Me.pbBannerCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbBannerCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+                Select Case tcMain.SelectedIndex
+                    Case 0 'Movies list
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Banner, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieBanner(Master.currMovie)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovie(ID, False, False, True)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1057, "No Banner images could be found. Please check to see if any Banner scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1363, "No Banners Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 1 'MovieSets list
+                        If Me.dgvMovieSets.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.Banner, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieSetBanner(Master.currMovieSet)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovieSet(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1057, "No Banner images could be found. Please check to see if any Banner scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1363, "No Banners Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 2 'TV list
+                        'TV Show list
+                        If Me.dgvTVShows.Focused Then
+                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.ShowBannerPath) Then
+                                oldImage.FromFile(Master.currShow.ShowBannerPath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVShowBanner(Master.currShow)
+                                Me.SetShowListItemAfterEdit(ShowID, indX)
+                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                    Me.FillList(False, False, True)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Season list
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
+                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.SeasonBannerPath) Then
+                                oldImage.FromFile(Master.currShow.SeasonBannerPath)
+                            End If
+
+                            Dim tImage As New Images
+
+                            If Season = 999 Then
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                    newImage = tImage
+                                    newImage.IsEdit = True
+                                    newImage.SaveAsTVASBanner(Master.currShow)
+                                    If Me.RefreshSeason(ShowID, Season, False) Then
+                                        Me.FillSeasons(ShowID)
+                                    End If
+                                End If
+                            Else
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonBanner, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                    newImage = tImage
+                                    newImage.IsEdit = True
+                                    newImage.SaveAsTVSeasonBanner(Master.currShow)
+                                    If Me.RefreshSeason(ShowID, Season, False) Then
+                                        Me.FillSeasons(ShowID)
+                                    End If
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Episode list
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            Return
+                        End If
+                End Select
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Me.SetControlsEnabled(True)
+        End Try
+    End Sub
+
+    Private Sub pbCharacterArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbCharacterArt.MouseDoubleClick
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+                If Not IsNothing(Me.pbCharacterArtCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbCharacterArtCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+                Select Case tcMain.SelectedIndex
+                    Case 0 'Movies list
+                        Return
+                    Case 1 'MovieSets list
+                        Return
+                    Case 2 'TV list
+                        'TV Show list
+                        If Me.dgvTVShows.Focused Then
+                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.ShowCharacterArtPath) Then
+                                oldImage.FromFile(Master.currShow.ShowCharacterArtPath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowCharacterArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVShowCharacterArt(Master.currShow)
+                                Me.SetShowListItemAfterEdit(ShowID, indX)
+                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                    Me.FillList(False, False, True)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Season list
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            Return
+
+                            'TV Episode list
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            Return
+                        End If
+                End Select
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Me.SetControlsEnabled(True)
+        End Try
+    End Sub
+
     Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearArt.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
@@ -14098,17 +13906,238 @@ doCancel:
 
                             'TV Season list
                         ElseIf Me.dgvTVSeasons.Focused Then
-                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
-                            'not supportet
-                            Me.SetControlsEnabled(True)
+                            Return
 
                             'TV Episode list
                         ElseIf Me.dgvTVEpisodes.Focused Then
-                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+                            Return
+                        End If
+                End Select
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Me.SetControlsEnabled(True)
+        End Try
+    End Sub
+
+    Private Sub pbClearLogo_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearLogo.MouseDoubleClick
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+                If Not IsNothing(Me.pbClearLogoCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbClearLogoCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+                Select Case tcMain.SelectedIndex
+                    Case 0 'Movies list
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.ClearLogo, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieClearLogo(Master.currMovie)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovie(ID, False, False, True)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1103, "No ClearLogos Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 1 'MovieSets list
+                        If Me.dgvMovieSets.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.ClearLogo, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieSetClearLogo(Master.currMovieSet)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovieSet(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1103, "No ClearLogos Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 2 'TV list
+                        'TV Show list
+                        If Me.dgvTVShows.Focused Then
+                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
                             Me.SetControlsEnabled(False)
-                            'not supportet
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.ShowClearLogoPath) Then
+                                oldImage.FromFile(Master.currShow.ShowClearLogoPath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearLogo, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVShowClearLogo(Master.currShow)
+                                Me.SetShowListItemAfterEdit(ShowID, indX)
+                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                    Me.FillList(False, False, True)
+                                End If
+                            End If
                             Me.SetControlsEnabled(True)
+
+                            'TV Season list
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            Return
+
+                            'TV Episode list
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            Return
+                        End If
+                End Select
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Me.SetControlsEnabled(True)
+        End Try
+    End Sub
+
+    Private Sub pbDiscArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbDiscArt.MouseDoubleClick
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+                If Not IsNothing(Me.pbDiscArtCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbDiscArtCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+                Select Case tcMain.SelectedIndex
+                    Case 0 'Movies list
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.DiscArt, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieDiscArt(Master.currMovie)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovie(ID, False, False, True)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1104, "No DiscArts Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 1 'MovieSets list
+                        If Me.dgvMovieSets.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.DiscArt, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieSetDiscArt(Master.currMovieSet)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovieSet(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1104, "No DiscArts Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 2 'TV list
+                        'TV Show list
+                        If Me.dgvTVShows.Focused Then
+                            Return
+
+                            'TV Season list
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            Return
+
+                            'TV Episode list
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            Return
                         End If
                 End Select
             End If
@@ -14123,7 +14152,7 @@ doCancel:
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick
+    Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick, pbFanartSmall.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If Not IsNothing(Me.pbFanartCache.Image) Then
@@ -14168,7 +14197,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
+                                MsgBox(Master.eLang.GetString(969, "No Fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanarts Found"))
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14203,7 +14232,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
+                                MsgBox(Master.eLang.GetString(969, "No Fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanarts Found"))
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14307,6 +14336,170 @@ doCancel:
                                 End If
                             End If
                             Me.SetControlsEnabled(True)
+                        End If
+                End Select
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Me.SetControlsEnabled(True)
+        End Try
+    End Sub
+
+    Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbLandscape.MouseDoubleClick
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+                If Not IsNothing(Me.pbLandscapeCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbLandscapeCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+                Select Case tcMain.SelectedIndex
+                    Case 0 'Movies list
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Landscape, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieLandscape(Master.currMovie)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovie(ID, False, False, True)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1197, "No Landscapes Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 1 'MovieSets list
+                        If Me.dgvMovieSets.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.Landscape, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieSetLandscape(Master.currMovieSet)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovieSet(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1197, "No Landscapes Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 2 'TV list
+                        'TV Show list
+                        If Me.dgvTVShows.Focused Then
+                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.ShowLandscapePath) Then
+                                oldImage.FromFile(Master.currShow.ShowLandscapePath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVShowLandscape(Master.currShow)
+                                Me.SetShowListItemAfterEdit(ShowID, indX)
+                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                    Me.FillList(False, False, True)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Season list
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
+                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.SeasonLandscapePath) Then
+                                oldImage.FromFile(Master.currShow.SeasonLandscapePath)
+                            End If
+
+                            Dim tImage As New Images
+
+                            If Season = 999 Then
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                    newImage = tImage
+                                    newImage.IsEdit = True
+                                    newImage.SaveAsTVASLandscape(Master.currShow)
+                                    If Me.RefreshSeason(ShowID, Season, False) Then
+                                        Me.FillSeasons(ShowID)
+                                    End If
+                                End If
+                            Else
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                    newImage = tImage
+                                    newImage.IsEdit = True
+                                    newImage.SaveAsTVSeasonLandscape(Master.currShow)
+                                    If Me.RefreshSeason(ShowID, Season, False) Then
+                                        Me.FillSeasons(ShowID)
+                                    End If
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Episode list
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            Return
                         End If
                 End Select
             End If
@@ -14494,173 +14687,6 @@ doCancel:
                                     Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                                 End If
                             End If
-                            Me.SetControlsEnabled(True)
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Me.SetControlsEnabled(True)
-        End Try
-    End Sub
-
-    Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbLandscape.MouseDoubleClick
-        Try
-            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
-                If Not IsNothing(Me.pbLandscapeCache.Image) Then
-                    Using dImgView As New dlgImgView
-                        dImgView.ShowDialog(Me.pbLandscapeCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
-                Select Case tcMain.SelectedIndex
-                    Case 0 'Movies list
-                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
-                        Me.SetControlsEnabled(False)
-
-                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-
-                        Dim dlgImgS As dlgImgSelect
-                        Dim aList As New List(Of MediaContainers.Image)
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
-                            If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Landscape, aList, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieLandscape(Master.currMovie)
-                                        Cursor = Cursors.Default
-                                        Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.RefreshMovie(ID, False, False, True)
-                                    End If
-                                End If
-                            Else
-                                MsgBox(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1197, "No Landscape Found"))
-                            End If
-                        End If
-                        Me.SetControlsEnabled(True)
-                    Case 1 'MovieSets list
-                        If Me.dgvMovieSets.SelectedRows.Count > 1 Then Return
-                        Me.SetControlsEnabled(False)
-
-                        Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
-
-                        Dim dlgImgS As dlgImgSelect
-                        Dim aList As New List(Of MediaContainers.Image)
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
-                            If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.Landscape, aList, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieSetLandscape(Master.currMovieSet)
-                                        Cursor = Cursors.Default
-                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
-                                        Me.RefreshMovieSet(ID, False, False, False, False)
-                                    End If
-                                End If
-                            Else
-                                MsgBox(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1197, "No Landscape Found"))
-                            End If
-                        End If
-                        Me.SetControlsEnabled(True)
-                    Case 2 'TV list
-                        'TV Show list
-                        If Me.dgvTVShows.Focused Then
-                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
-
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
-
-                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
-
-                            If Not String.IsNullOrEmpty(Master.currShow.ShowLandscapePath) Then
-                                oldImage.FromFile(Master.currShow.ShowLandscapePath)
-                            End If
-
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-                                newImage = tImage
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVShowLandscape(Master.currShow)
-                                Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
-                                    Me.FillList(False, False, True)
-                                End If
-                            End If
-                            Me.SetControlsEnabled(True)
-
-                            'TV Season list
-                        ElseIf Me.dgvTVSeasons.Focused Then
-                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
-
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
-                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
-
-                            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
-
-                            If Not String.IsNullOrEmpty(Master.currShow.SeasonLandscapePath) Then
-                                oldImage.FromFile(Master.currShow.SeasonLandscapePath)
-                            End If
-
-                            Dim tImage As New Images
-
-                            If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-                                    newImage = tImage
-                                    newImage.IsEdit = True
-                                    newImage.SaveAsTVASLandscape(Master.currShow)
-                                    If Me.RefreshSeason(ShowID, Season, False) Then
-                                        Me.FillSeasons(ShowID)
-                                    End If
-                                End If
-                            Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-                                    newImage = tImage
-                                    newImage.IsEdit = True
-                                    newImage.SaveAsTVSeasonLandscape(Master.currShow)
-                                    If Me.RefreshSeason(ShowID, Season, False) Then
-                                        Me.FillSeasons(ShowID)
-                                    End If
-                                End If
-                            End If
-                            Me.SetControlsEnabled(True)
-
-                            'TV Episode list
-                        ElseIf Me.dgvTVEpisodes.Focused Then
-                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
-                            'not supportet
                             Me.SetControlsEnabled(True)
                         End If
                 End Select

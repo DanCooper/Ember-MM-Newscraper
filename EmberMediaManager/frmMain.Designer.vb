@@ -453,6 +453,17 @@ Partial Class frmMain
         Me.lblFilter_Shows = New System.Windows.Forms.Label()
         Me.btnFilterUp_Shows = New System.Windows.Forms.Button()
         Me.btnFilterDown_Shows = New System.Windows.Forms.Button()
+        Me.pbCache = New System.Windows.Forms.PictureBox()
+        Me.pnlClearLogo = New System.Windows.Forms.Panel()
+        Me.pnlClearLogoMain = New System.Windows.Forms.Panel()
+        Me.tblClearLogoMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.pbClearLogo = New System.Windows.Forms.PictureBox()
+        Me.pnlClearLogoBottom = New System.Windows.Forms.Panel()
+        Me.tblClearLogoBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblClearLogoSize = New System.Windows.Forms.Label()
+        Me.pnlClearLogoTop = New System.Windows.Forms.Panel()
+        Me.tblClearLogoTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblClearLogoTitle = New System.Windows.Forms.Label()
         Me.pnlCharacterArt = New System.Windows.Forms.Panel()
         Me.pnlCharacterArtMain = New System.Windows.Forms.Panel()
         Me.tblCharacterArtMain = New System.Windows.Forms.TableLayoutPanel()
@@ -1151,17 +1162,17 @@ Partial Class frmMain
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
-        Me.pnlClearLogo = New System.Windows.Forms.Panel()
-        Me.pnlClearLogoMain = New System.Windows.Forms.Panel()
-        Me.tblClearLogoMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.pbClearLogo = New System.Windows.Forms.PictureBox()
-        Me.pnlClearLogoBottom = New System.Windows.Forms.Panel()
-        Me.tblClearLogoBottom = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblClearLogoSize = New System.Windows.Forms.Label()
-        Me.pnlClearLogoTop = New System.Windows.Forms.Panel()
-        Me.tblClearLogoTop = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblClearLogoTitle = New System.Windows.Forms.Label()
-        Me.pbCache = New System.Windows.Forms.PictureBox()
+        Me.pnlBanner = New System.Windows.Forms.Panel()
+        Me.pnlBannerMain = New System.Windows.Forms.Panel()
+        Me.tblBannerMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.pbBanner = New System.Windows.Forms.PictureBox()
+        Me.pnlBannerBottom = New System.Windows.Forms.Panel()
+        Me.tblBannerBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblBannerSize = New System.Windows.Forms.Label()
+        Me.pnlBannerTop = New System.Windows.Forms.Panel()
+        Me.tblBannerTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblBannerTitle = New System.Windows.Forms.Label()
+        Me.pbBannerCache = New System.Windows.Forms.PictureBox()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1269,6 +1280,15 @@ Partial Class frmMain
         Me.tblFilterSpecificData_Shows.SuspendLayout
         Me.pnlFilterTop_Shows.SuspendLayout
         Me.tblFilterTop_Shows.SuspendLayout
+        CType(Me.pbCache,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlClearLogo.SuspendLayout
+        Me.pnlClearLogoMain.SuspendLayout
+        Me.tblClearLogoMain.SuspendLayout
+        CType(Me.pbClearLogo,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlClearLogoBottom.SuspendLayout
+        Me.tblClearLogoBottom.SuspendLayout
+        Me.pnlClearLogoTop.SuspendLayout
+        Me.tblClearLogoTop.SuspendLayout
         Me.pnlCharacterArt.SuspendLayout
         Me.pnlCharacterArtMain.SuspendLayout
         Me.tblCharacterArtMain.SuspendLayout
@@ -1379,15 +1399,15 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.SuspendLayout
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlLoadSettings.SuspendLayout
-        Me.pnlClearLogo.SuspendLayout
-        Me.pnlClearLogoMain.SuspendLayout
-        Me.tblClearLogoMain.SuspendLayout
-        CType(Me.pbClearLogo,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlClearLogoBottom.SuspendLayout
-        Me.tblClearLogoBottom.SuspendLayout
-        Me.pnlClearLogoTop.SuspendLayout
-        Me.tblClearLogoTop.SuspendLayout
-        CType(Me.pbCache,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlBanner.SuspendLayout
+        Me.pnlBannerMain.SuspendLayout
+        Me.tblBannerMain.SuspendLayout
+        CType(Me.pbBanner,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlBannerBottom.SuspendLayout
+        Me.tblBannerBottom.SuspendLayout
+        Me.pnlBannerTop.SuspendLayout
+        Me.tblBannerTop.SuspendLayout
+        CType(Me.pbBannerCache,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'BottomToolStripPanel
@@ -1757,6 +1777,8 @@ Partial Class frmMain
         'scMain.Panel2
         '
         Me.scMain.Panel2.BackColor = System.Drawing.SystemColors.Control
+        Me.scMain.Panel2.Controls.Add(Me.pbBannerCache)
+        Me.scMain.Panel2.Controls.Add(Me.pnlBanner)
         Me.scMain.Panel2.Controls.Add(Me.pbCache)
         Me.scMain.Panel2.Controls.Add(Me.pnlClearLogo)
         Me.scMain.Panel2.Controls.Add(Me.pnlCharacterArt)
@@ -5961,6 +5983,150 @@ Partial Class frmMain
         Me.btnFilterDown_Shows.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnFilterDown_Shows.UseVisualStyleBackColor = false
         '
+        'pbCache
+        '
+        Me.pbCache.Location = New System.Drawing.Point(740, 130)
+        Me.pbCache.Name = "pbCache"
+        Me.pbCache.Size = New System.Drawing.Size(50, 50)
+        Me.pbCache.TabIndex = 26
+        Me.pbCache.TabStop = false
+        Me.pbCache.Visible = false
+        '
+        'pnlClearLogo
+        '
+        Me.pnlClearLogo.AutoSize = true
+        Me.pnlClearLogo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.pnlClearLogo.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlClearLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlClearLogo.Controls.Add(Me.pnlClearLogoMain)
+        Me.pnlClearLogo.Controls.Add(Me.pnlClearLogoBottom)
+        Me.pnlClearLogo.Controls.Add(Me.pnlClearLogoTop)
+        Me.pnlClearLogo.Location = New System.Drawing.Point(116, 215)
+        Me.pnlClearLogo.Name = "pnlClearLogo"
+        Me.pnlClearLogo.Padding = New System.Windows.Forms.Padding(2)
+        Me.pnlClearLogo.Size = New System.Drawing.Size(56, 82)
+        Me.pnlClearLogo.TabIndex = 25
+        Me.pnlClearLogo.Visible = false
+        '
+        'pnlClearLogoMain
+        '
+        Me.pnlClearLogoMain.AutoSize = true
+        Me.pnlClearLogoMain.Controls.Add(Me.tblClearLogoMain)
+        Me.pnlClearLogoMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlClearLogoMain.Location = New System.Drawing.Point(2, 15)
+        Me.pnlClearLogoMain.Name = "pnlClearLogoMain"
+        Me.pnlClearLogoMain.Size = New System.Drawing.Size(50, 50)
+        Me.pnlClearLogoMain.TabIndex = 3
+        '
+        'tblClearLogoMain
+        '
+        Me.tblClearLogoMain.AutoSize = true
+        Me.tblClearLogoMain.ColumnCount = 1
+        Me.tblClearLogoMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblClearLogoMain.Controls.Add(Me.pbClearLogo, 0, 0)
+        Me.tblClearLogoMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblClearLogoMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblClearLogoMain.Name = "tblClearLogoMain"
+        Me.tblClearLogoMain.RowCount = 1
+        Me.tblClearLogoMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblClearLogoMain.Size = New System.Drawing.Size(50, 50)
+        Me.tblClearLogoMain.TabIndex = 1
+        '
+        'pbClearLogo
+        '
+        Me.pbClearLogo.BackColor = System.Drawing.Color.Gray
+        Me.pbClearLogo.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pbClearLogo.Location = New System.Drawing.Point(0, 0)
+        Me.pbClearLogo.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbClearLogo.Name = "pbClearLogo"
+        Me.pbClearLogo.Size = New System.Drawing.Size(50, 50)
+        Me.pbClearLogo.TabIndex = 0
+        Me.pbClearLogo.TabStop = false
+        '
+        'pnlClearLogoBottom
+        '
+        Me.pnlClearLogoBottom.AutoSize = true
+        Me.pnlClearLogoBottom.BackColor = System.Drawing.Color.DimGray
+        Me.pnlClearLogoBottom.Controls.Add(Me.tblClearLogoBottom)
+        Me.pnlClearLogoBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlClearLogoBottom.Location = New System.Drawing.Point(2, 65)
+        Me.pnlClearLogoBottom.Name = "pnlClearLogoBottom"
+        Me.pnlClearLogoBottom.Size = New System.Drawing.Size(50, 13)
+        Me.pnlClearLogoBottom.TabIndex = 2
+        '
+        'tblClearLogoBottom
+        '
+        Me.tblClearLogoBottom.AutoSize = true
+        Me.tblClearLogoBottom.ColumnCount = 3
+        Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearLogoBottom.Controls.Add(Me.lblClearLogoSize, 1, 0)
+        Me.tblClearLogoBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblClearLogoBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblClearLogoBottom.Name = "tblClearLogoBottom"
+        Me.tblClearLogoBottom.RowCount = 2
+        Me.tblClearLogoBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblClearLogoBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblClearLogoBottom.Size = New System.Drawing.Size(50, 13)
+        Me.tblClearLogoBottom.TabIndex = 0
+        '
+        'lblClearLogoSize
+        '
+        Me.lblClearLogoSize.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblClearLogoSize.AutoSize = true
+        Me.lblClearLogoSize.BackColor = System.Drawing.Color.Transparent
+        Me.lblClearLogoSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblClearLogoSize.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblClearLogoSize.Location = New System.Drawing.Point(11, 0)
+        Me.lblClearLogoSize.Name = "lblClearLogoSize"
+        Me.lblClearLogoSize.Size = New System.Drawing.Size(27, 13)
+        Me.lblClearLogoSize.TabIndex = 2
+        Me.lblClearLogoSize.Text = "Size"
+        Me.lblClearLogoSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'pnlClearLogoTop
+        '
+        Me.pnlClearLogoTop.AutoSize = true
+        Me.pnlClearLogoTop.BackColor = System.Drawing.Color.DimGray
+        Me.pnlClearLogoTop.Controls.Add(Me.tblClearLogoTop)
+        Me.pnlClearLogoTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlClearLogoTop.Location = New System.Drawing.Point(2, 2)
+        Me.pnlClearLogoTop.Name = "pnlClearLogoTop"
+        Me.pnlClearLogoTop.Size = New System.Drawing.Size(50, 13)
+        Me.pnlClearLogoTop.TabIndex = 1
+        '
+        'tblClearLogoTop
+        '
+        Me.tblClearLogoTop.AutoSize = true
+        Me.tblClearLogoTop.ColumnCount = 3
+        Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearLogoTop.Controls.Add(Me.lblClearLogoTitle, 1, 0)
+        Me.tblClearLogoTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblClearLogoTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblClearLogoTop.Name = "tblClearLogoTop"
+        Me.tblClearLogoTop.RowCount = 2
+        Me.tblClearLogoTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblClearLogoTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblClearLogoTop.Size = New System.Drawing.Size(50, 13)
+        Me.tblClearLogoTop.TabIndex = 0
+        '
+        'lblClearLogoTitle
+        '
+        Me.lblClearLogoTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblClearLogoTitle.AutoSize = true
+        Me.lblClearLogoTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblClearLogoTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblClearLogoTitle.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblClearLogoTitle.Location = New System.Drawing.Point(-5, 0)
+        Me.lblClearLogoTitle.Name = "lblClearLogoTitle"
+        Me.lblClearLogoTitle.Size = New System.Drawing.Size(60, 13)
+        Me.lblClearLogoTitle.TabIndex = 1
+        Me.lblClearLogoTitle.Text = "ClearLogo"
+        Me.lblClearLogoTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'pnlCharacterArt
         '
         Me.pnlCharacterArt.AutoSize = true
@@ -6003,7 +6169,7 @@ Partial Class frmMain
         '
         'pbCharacterArt
         '
-        Me.pbCharacterArt.BackColor = System.Drawing.Color.Gainsboro
+        Me.pbCharacterArt.BackColor = System.Drawing.Color.Gray
         Me.pbCharacterArt.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pbCharacterArt.Location = New System.Drawing.Point(0, 0)
         Me.pbCharacterArt.Margin = New System.Windows.Forms.Padding(0)
@@ -6098,7 +6264,7 @@ Partial Class frmMain
         '
         'pbCharacterArtCache
         '
-        Me.pbCharacterArtCache.Location = New System.Drawing.Point(740, 258)
+        Me.pbCharacterArtCache.Location = New System.Drawing.Point(740, 130)
         Me.pbCharacterArtCache.Name = "pbCharacterArtCache"
         Me.pbCharacterArtCache.Size = New System.Drawing.Size(50, 50)
         Me.pbCharacterArtCache.TabIndex = 23
@@ -6147,7 +6313,7 @@ Partial Class frmMain
         '
         'pbDiscArt
         '
-        Me.pbDiscArt.BackColor = System.Drawing.Color.Gainsboro
+        Me.pbDiscArt.BackColor = System.Drawing.Color.Gray
         Me.pbDiscArt.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pbDiscArt.Location = New System.Drawing.Point(0, 0)
         Me.pbDiscArt.Margin = New System.Windows.Forms.Padding(0)
@@ -6242,7 +6408,7 @@ Partial Class frmMain
         '
         'pbDiscArtCache
         '
-        Me.pbDiscArtCache.Location = New System.Drawing.Point(740, 242)
+        Me.pbDiscArtCache.Location = New System.Drawing.Point(740, 130)
         Me.pbDiscArtCache.Name = "pbDiscArtCache"
         Me.pbDiscArtCache.Size = New System.Drawing.Size(50, 50)
         Me.pbDiscArtCache.TabIndex = 21
@@ -6251,7 +6417,7 @@ Partial Class frmMain
         '
         'pbClearLogoCache
         '
-        Me.pbClearLogoCache.Location = New System.Drawing.Point(739, 211)
+        Me.pbClearLogoCache.Location = New System.Drawing.Point(740, 130)
         Me.pbClearLogoCache.Name = "pbClearLogoCache"
         Me.pbClearLogoCache.Size = New System.Drawing.Size(50, 50)
         Me.pbClearLogoCache.TabIndex = 20
@@ -6870,7 +7036,7 @@ Partial Class frmMain
         '
         'pbClearArt
         '
-        Me.pbClearArt.BackColor = System.Drawing.Color.Gainsboro
+        Me.pbClearArt.BackColor = System.Drawing.Color.Gray
         Me.pbClearArt.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pbClearArt.Location = New System.Drawing.Point(0, 0)
         Me.pbClearArt.Margin = New System.Windows.Forms.Padding(0)
@@ -7005,7 +7171,7 @@ Partial Class frmMain
         '
         'pbLandscape
         '
-        Me.pbLandscape.BackColor = System.Drawing.Color.Gainsboro
+        Me.pbLandscape.BackColor = System.Drawing.Color.Gray
         Me.pbLandscape.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pbLandscape.Location = New System.Drawing.Point(0, 0)
         Me.pbLandscape.Margin = New System.Windows.Forms.Padding(0)
@@ -7140,7 +7306,7 @@ Partial Class frmMain
         '
         'pbFanartSmall
         '
-        Me.pbFanartSmall.BackColor = System.Drawing.Color.Gainsboro
+        Me.pbFanartSmall.BackColor = System.Drawing.Color.Gray
         Me.pbFanartSmall.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pbFanartSmall.Location = New System.Drawing.Point(0, 0)
         Me.pbFanartSmall.Margin = New System.Windows.Forms.Padding(0)
@@ -7275,7 +7441,7 @@ Partial Class frmMain
         '
         'pbPoster
         '
-        Me.pbPoster.BackColor = System.Drawing.Color.Gainsboro
+        Me.pbPoster.BackColor = System.Drawing.Color.Gray
         Me.pbPoster.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pbPoster.Location = New System.Drawing.Point(0, 0)
         Me.pbPoster.Margin = New System.Windows.Forms.Padding(0)
@@ -7810,7 +7976,7 @@ Partial Class frmMain
         '
         'pbPosterCache
         '
-        Me.pbPosterCache.Location = New System.Drawing.Point(739, 127)
+        Me.pbPosterCache.Location = New System.Drawing.Point(740, 130)
         Me.pbPosterCache.Name = "pbPosterCache"
         Me.pbPosterCache.Size = New System.Drawing.Size(50, 50)
         Me.pbPosterCache.TabIndex = 12
@@ -7819,7 +7985,7 @@ Partial Class frmMain
         '
         'pbFanartSmallCache
         '
-        Me.pbFanartSmallCache.Location = New System.Drawing.Point(739, 191)
+        Me.pbFanartSmallCache.Location = New System.Drawing.Point(740, 130)
         Me.pbFanartSmallCache.Name = "pbFanartSmallCache"
         Me.pbFanartSmallCache.Size = New System.Drawing.Size(50, 50)
         Me.pbFanartSmallCache.TabIndex = 15
@@ -7828,7 +7994,7 @@ Partial Class frmMain
         '
         'pbLandscapeCache
         '
-        Me.pbLandscapeCache.Location = New System.Drawing.Point(739, 203)
+        Me.pbLandscapeCache.Location = New System.Drawing.Point(740, 130)
         Me.pbLandscapeCache.Name = "pbLandscapeCache"
         Me.pbLandscapeCache.Size = New System.Drawing.Size(50, 50)
         Me.pbLandscapeCache.TabIndex = 16
@@ -7866,7 +8032,7 @@ Partial Class frmMain
         '
         'pbFanartCache
         '
-        Me.pbFanartCache.Location = New System.Drawing.Point(739, 137)
+        Me.pbFanartCache.Location = New System.Drawing.Point(740, 130)
         Me.pbFanartCache.Name = "pbFanartCache"
         Me.pbFanartCache.Size = New System.Drawing.Size(50, 50)
         Me.pbFanartCache.TabIndex = 3
@@ -11655,149 +11821,149 @@ Partial Class frmMain
         '
         Me.tmrSearch_Shows.Interval = 250
         '
-        'pnlClearLogo
+        'pnlBanner
         '
-        Me.pnlClearLogo.AutoSize = true
-        Me.pnlClearLogo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.pnlClearLogo.BackColor = System.Drawing.Color.Gainsboro
-        Me.pnlClearLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlClearLogo.Controls.Add(Me.pnlClearLogoMain)
-        Me.pnlClearLogo.Controls.Add(Me.pnlClearLogoBottom)
-        Me.pnlClearLogo.Controls.Add(Me.pnlClearLogoTop)
-        Me.pnlClearLogo.Location = New System.Drawing.Point(116, 215)
-        Me.pnlClearLogo.Name = "pnlClearLogo"
-        Me.pnlClearLogo.Padding = New System.Windows.Forms.Padding(2)
-        Me.pnlClearLogo.Size = New System.Drawing.Size(56, 82)
-        Me.pnlClearLogo.TabIndex = 25
-        Me.pnlClearLogo.Visible = false
+        Me.pnlBanner.AutoSize = true
+        Me.pnlBanner.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.pnlBanner.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlBanner.Controls.Add(Me.pnlBannerMain)
+        Me.pnlBanner.Controls.Add(Me.pnlBannerBottom)
+        Me.pnlBanner.Controls.Add(Me.pnlBannerTop)
+        Me.pnlBanner.Location = New System.Drawing.Point(172, 215)
+        Me.pnlBanner.Name = "pnlBanner"
+        Me.pnlBanner.Padding = New System.Windows.Forms.Padding(2)
+        Me.pnlBanner.Size = New System.Drawing.Size(56, 82)
+        Me.pnlBanner.TabIndex = 27
+        Me.pnlBanner.Visible = false
         '
-        'pnlClearLogoMain
+        'pnlBannerMain
         '
-        Me.pnlClearLogoMain.AutoSize = true
-        Me.pnlClearLogoMain.Controls.Add(Me.tblClearLogoMain)
-        Me.pnlClearLogoMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlClearLogoMain.Location = New System.Drawing.Point(2, 15)
-        Me.pnlClearLogoMain.Name = "pnlClearLogoMain"
-        Me.pnlClearLogoMain.Size = New System.Drawing.Size(50, 50)
-        Me.pnlClearLogoMain.TabIndex = 3
+        Me.pnlBannerMain.AutoSize = true
+        Me.pnlBannerMain.Controls.Add(Me.tblBannerMain)
+        Me.pnlBannerMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlBannerMain.Location = New System.Drawing.Point(2, 15)
+        Me.pnlBannerMain.Name = "pnlBannerMain"
+        Me.pnlBannerMain.Size = New System.Drawing.Size(50, 50)
+        Me.pnlBannerMain.TabIndex = 3
         '
-        'tblClearLogoMain
+        'tblBannerMain
         '
-        Me.tblClearLogoMain.AutoSize = true
-        Me.tblClearLogoMain.ColumnCount = 1
-        Me.tblClearLogoMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblClearLogoMain.Controls.Add(Me.pbClearLogo, 0, 0)
-        Me.tblClearLogoMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblClearLogoMain.Location = New System.Drawing.Point(0, 0)
-        Me.tblClearLogoMain.Name = "tblClearLogoMain"
-        Me.tblClearLogoMain.RowCount = 1
-        Me.tblClearLogoMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblClearLogoMain.Size = New System.Drawing.Size(50, 50)
-        Me.tblClearLogoMain.TabIndex = 1
+        Me.tblBannerMain.AutoSize = true
+        Me.tblBannerMain.ColumnCount = 1
+        Me.tblBannerMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBannerMain.Controls.Add(Me.pbBanner, 0, 0)
+        Me.tblBannerMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBannerMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblBannerMain.Name = "tblBannerMain"
+        Me.tblBannerMain.RowCount = 1
+        Me.tblBannerMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBannerMain.Size = New System.Drawing.Size(50, 50)
+        Me.tblBannerMain.TabIndex = 1
         '
-        'pbClearLogo
+        'pbBanner
         '
-        Me.pbClearLogo.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbClearLogo.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pbClearLogo.Location = New System.Drawing.Point(0, 0)
-        Me.pbClearLogo.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbClearLogo.Name = "pbClearLogo"
-        Me.pbClearLogo.Size = New System.Drawing.Size(50, 50)
-        Me.pbClearLogo.TabIndex = 0
-        Me.pbClearLogo.TabStop = false
+        Me.pbBanner.BackColor = System.Drawing.Color.Gray
+        Me.pbBanner.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pbBanner.Location = New System.Drawing.Point(0, 0)
+        Me.pbBanner.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbBanner.Name = "pbBanner"
+        Me.pbBanner.Size = New System.Drawing.Size(50, 50)
+        Me.pbBanner.TabIndex = 0
+        Me.pbBanner.TabStop = false
         '
-        'pnlClearLogoBottom
+        'pnlBannerBottom
         '
-        Me.pnlClearLogoBottom.AutoSize = true
-        Me.pnlClearLogoBottom.BackColor = System.Drawing.Color.DimGray
-        Me.pnlClearLogoBottom.Controls.Add(Me.tblClearLogoBottom)
-        Me.pnlClearLogoBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlClearLogoBottom.Location = New System.Drawing.Point(2, 65)
-        Me.pnlClearLogoBottom.Name = "pnlClearLogoBottom"
-        Me.pnlClearLogoBottom.Size = New System.Drawing.Size(50, 13)
-        Me.pnlClearLogoBottom.TabIndex = 2
+        Me.pnlBannerBottom.AutoSize = true
+        Me.pnlBannerBottom.BackColor = System.Drawing.Color.DimGray
+        Me.pnlBannerBottom.Controls.Add(Me.tblBannerBottom)
+        Me.pnlBannerBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlBannerBottom.Location = New System.Drawing.Point(2, 65)
+        Me.pnlBannerBottom.Name = "pnlBannerBottom"
+        Me.pnlBannerBottom.Size = New System.Drawing.Size(50, 13)
+        Me.pnlBannerBottom.TabIndex = 2
         '
-        'tblClearLogoBottom
+        'tblBannerBottom
         '
-        Me.tblClearLogoBottom.AutoSize = true
-        Me.tblClearLogoBottom.ColumnCount = 3
-        Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblClearLogoBottom.Controls.Add(Me.lblClearLogoSize, 1, 0)
-        Me.tblClearLogoBottom.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblClearLogoBottom.Location = New System.Drawing.Point(0, 0)
-        Me.tblClearLogoBottom.Name = "tblClearLogoBottom"
-        Me.tblClearLogoBottom.RowCount = 2
-        Me.tblClearLogoBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblClearLogoBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblClearLogoBottom.Size = New System.Drawing.Size(50, 13)
-        Me.tblClearLogoBottom.TabIndex = 0
+        Me.tblBannerBottom.AutoSize = true
+        Me.tblBannerBottom.ColumnCount = 3
+        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerBottom.Controls.Add(Me.lblBannerSize, 1, 0)
+        Me.tblBannerBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBannerBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblBannerBottom.Name = "tblBannerBottom"
+        Me.tblBannerBottom.RowCount = 2
+        Me.tblBannerBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBannerBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBannerBottom.Size = New System.Drawing.Size(50, 13)
+        Me.tblBannerBottom.TabIndex = 0
         '
-        'lblClearLogoSize
+        'lblBannerSize
         '
-        Me.lblClearLogoSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblClearLogoSize.AutoSize = true
-        Me.lblClearLogoSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblClearLogoSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblClearLogoSize.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblClearLogoSize.Location = New System.Drawing.Point(11, 0)
-        Me.lblClearLogoSize.Name = "lblClearLogoSize"
-        Me.lblClearLogoSize.Size = New System.Drawing.Size(27, 13)
-        Me.lblClearLogoSize.TabIndex = 2
-        Me.lblClearLogoSize.Text = "Size"
-        Me.lblClearLogoSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblBannerSize.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblBannerSize.AutoSize = true
+        Me.lblBannerSize.BackColor = System.Drawing.Color.Transparent
+        Me.lblBannerSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblBannerSize.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblBannerSize.Location = New System.Drawing.Point(11, 0)
+        Me.lblBannerSize.Name = "lblBannerSize"
+        Me.lblBannerSize.Size = New System.Drawing.Size(27, 13)
+        Me.lblBannerSize.TabIndex = 2
+        Me.lblBannerSize.Text = "Size"
+        Me.lblBannerSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'pnlClearLogoTop
+        'pnlBannerTop
         '
-        Me.pnlClearLogoTop.AutoSize = true
-        Me.pnlClearLogoTop.BackColor = System.Drawing.Color.DimGray
-        Me.pnlClearLogoTop.Controls.Add(Me.tblClearLogoTop)
-        Me.pnlClearLogoTop.Dock = System.Windows.Forms.DockStyle.Top
-        Me.pnlClearLogoTop.Location = New System.Drawing.Point(2, 2)
-        Me.pnlClearLogoTop.Name = "pnlClearLogoTop"
-        Me.pnlClearLogoTop.Size = New System.Drawing.Size(50, 13)
-        Me.pnlClearLogoTop.TabIndex = 1
+        Me.pnlBannerTop.AutoSize = true
+        Me.pnlBannerTop.BackColor = System.Drawing.Color.DimGray
+        Me.pnlBannerTop.Controls.Add(Me.tblBannerTop)
+        Me.pnlBannerTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlBannerTop.Location = New System.Drawing.Point(2, 2)
+        Me.pnlBannerTop.Name = "pnlBannerTop"
+        Me.pnlBannerTop.Size = New System.Drawing.Size(50, 13)
+        Me.pnlBannerTop.TabIndex = 1
         '
-        'tblClearLogoTop
+        'tblBannerTop
         '
-        Me.tblClearLogoTop.AutoSize = true
-        Me.tblClearLogoTop.ColumnCount = 3
-        Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblClearLogoTop.Controls.Add(Me.lblClearLogoTitle, 1, 0)
-        Me.tblClearLogoTop.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblClearLogoTop.Location = New System.Drawing.Point(0, 0)
-        Me.tblClearLogoTop.Name = "tblClearLogoTop"
-        Me.tblClearLogoTop.RowCount = 2
-        Me.tblClearLogoTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblClearLogoTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblClearLogoTop.Size = New System.Drawing.Size(50, 13)
-        Me.tblClearLogoTop.TabIndex = 0
+        Me.tblBannerTop.AutoSize = true
+        Me.tblBannerTop.ColumnCount = 3
+        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerTop.Controls.Add(Me.lblBannerTitle, 1, 0)
+        Me.tblBannerTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBannerTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblBannerTop.Name = "tblBannerTop"
+        Me.tblBannerTop.RowCount = 2
+        Me.tblBannerTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBannerTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBannerTop.Size = New System.Drawing.Size(50, 13)
+        Me.tblBannerTop.TabIndex = 0
         '
-        'lblClearLogoTitle
+        'lblBannerTitle
         '
-        Me.lblClearLogoTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblClearLogoTitle.AutoSize = true
-        Me.lblClearLogoTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblClearLogoTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblClearLogoTitle.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblClearLogoTitle.Location = New System.Drawing.Point(-5, 0)
-        Me.lblClearLogoTitle.Name = "lblClearLogoTitle"
-        Me.lblClearLogoTitle.Size = New System.Drawing.Size(60, 13)
-        Me.lblClearLogoTitle.TabIndex = 1
-        Me.lblClearLogoTitle.Text = "ClearLogo"
-        Me.lblClearLogoTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblBannerTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblBannerTitle.AutoSize = true
+        Me.lblBannerTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblBannerTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblBannerTitle.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblBannerTitle.Location = New System.Drawing.Point(3, 0)
+        Me.lblBannerTitle.Name = "lblBannerTitle"
+        Me.lblBannerTitle.Size = New System.Drawing.Size(44, 13)
+        Me.lblBannerTitle.TabIndex = 1
+        Me.lblBannerTitle.Text = "Banner"
+        Me.lblBannerTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'pbCache
+        'pbBannerCache
         '
-        Me.pbCache.Location = New System.Drawing.Point(740, 297)
-        Me.pbCache.Name = "pbCache"
-        Me.pbCache.Size = New System.Drawing.Size(50, 50)
-        Me.pbCache.TabIndex = 26
-        Me.pbCache.TabStop = false
-        Me.pbCache.Visible = false
+        Me.pbBannerCache.Location = New System.Drawing.Point(740, 130)
+        Me.pbBannerCache.Name = "pbBannerCache"
+        Me.pbBannerCache.Size = New System.Drawing.Size(50, 50)
+        Me.pbBannerCache.TabIndex = 28
+        Me.pbBannerCache.TabStop = false
+        Me.pbBannerCache.Visible = false
         '
         'frmMain
         '
@@ -11999,6 +12165,21 @@ Partial Class frmMain
         Me.pnlFilterTop_Shows.PerformLayout
         Me.tblFilterTop_Shows.ResumeLayout(false)
         Me.tblFilterTop_Shows.PerformLayout
+        CType(Me.pbCache,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlClearLogo.ResumeLayout(false)
+        Me.pnlClearLogo.PerformLayout
+        Me.pnlClearLogoMain.ResumeLayout(false)
+        Me.pnlClearLogoMain.PerformLayout
+        Me.tblClearLogoMain.ResumeLayout(false)
+        CType(Me.pbClearLogo,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlClearLogoBottom.ResumeLayout(false)
+        Me.pnlClearLogoBottom.PerformLayout
+        Me.tblClearLogoBottom.ResumeLayout(false)
+        Me.tblClearLogoBottom.PerformLayout
+        Me.pnlClearLogoTop.ResumeLayout(false)
+        Me.pnlClearLogoTop.PerformLayout
+        Me.tblClearLogoTop.ResumeLayout(false)
+        Me.tblClearLogoTop.PerformLayout
         Me.pnlCharacterArt.ResumeLayout(false)
         Me.pnlCharacterArt.PerformLayout
         Me.pnlCharacterArtMain.ResumeLayout(false)
@@ -12151,21 +12332,21 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.ResumeLayout(false)
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlLoadSettings.ResumeLayout(false)
-        Me.pnlClearLogo.ResumeLayout(false)
-        Me.pnlClearLogo.PerformLayout
-        Me.pnlClearLogoMain.ResumeLayout(false)
-        Me.pnlClearLogoMain.PerformLayout
-        Me.tblClearLogoMain.ResumeLayout(false)
-        CType(Me.pbClearLogo,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlClearLogoBottom.ResumeLayout(false)
-        Me.pnlClearLogoBottom.PerformLayout
-        Me.tblClearLogoBottom.ResumeLayout(false)
-        Me.tblClearLogoBottom.PerformLayout
-        Me.pnlClearLogoTop.ResumeLayout(false)
-        Me.pnlClearLogoTop.PerformLayout
-        Me.tblClearLogoTop.ResumeLayout(false)
-        Me.tblClearLogoTop.PerformLayout
-        CType(Me.pbCache,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlBanner.ResumeLayout(false)
+        Me.pnlBanner.PerformLayout
+        Me.pnlBannerMain.ResumeLayout(false)
+        Me.pnlBannerMain.PerformLayout
+        Me.tblBannerMain.ResumeLayout(false)
+        CType(Me.pbBanner,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlBannerBottom.ResumeLayout(false)
+        Me.pnlBannerBottom.PerformLayout
+        Me.tblBannerBottom.ResumeLayout(false)
+        Me.tblBannerBottom.PerformLayout
+        Me.pnlBannerTop.ResumeLayout(false)
+        Me.pnlBannerTop.PerformLayout
+        Me.tblBannerTop.ResumeLayout(false)
+        Me.tblBannerTop.PerformLayout
+        CType(Me.pbBannerCache,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -13304,4 +13485,15 @@ End Sub
     Friend WithEvents tblClearLogoTop As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblClearLogoTitle As System.Windows.Forms.Label
     Friend WithEvents pbCache As System.Windows.Forms.PictureBox
+    Friend WithEvents pnlBanner As System.Windows.Forms.Panel
+    Friend WithEvents pnlBannerMain As System.Windows.Forms.Panel
+    Friend WithEvents tblBannerMain As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pbBanner As System.Windows.Forms.PictureBox
+    Friend WithEvents pnlBannerBottom As System.Windows.Forms.Panel
+    Friend WithEvents tblBannerBottom As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblBannerSize As System.Windows.Forms.Label
+    Friend WithEvents pnlBannerTop As System.Windows.Forms.Panel
+    Friend WithEvents tblBannerTop As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblBannerTitle As System.Windows.Forms.Label
+    Friend WithEvents pbBannerCache As System.Windows.Forms.PictureBox
 End Class
