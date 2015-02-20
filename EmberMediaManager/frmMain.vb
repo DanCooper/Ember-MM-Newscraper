@@ -154,9 +154,11 @@ Public Class frmMain
 
     'Theme Information
     Private _characterartmaxheight As Integer = 160
-    Private _characterartmaxwidth As Integer = 285
+    Private _characterartmaxwidth As Integer = 160
     Private _clearartmaxheight As Integer = 160
     Private _clearartmaxwidth As Integer = 285
+    Private _clearlogomaxheight As Integer = 160
+    Private _clearlogomaxwidth As Integer = 285
     Private _discartmaxheight As Integer = 160
     Private _discartmaxwidth As Integer = 160
     Private _postermaxheight As Integer = 160
@@ -254,6 +256,24 @@ Public Class frmMain
         End Get
         Set(ByVal value As Integer)
             _clearartmaxwidth = value
+        End Set
+    End Property
+
+    Public Property ClearLogoMaxHeight() As Integer
+        Get
+            Return _clearlogomaxheight
+        End Get
+        Set(ByVal value As Integer)
+            _clearlogomaxheight = value
+        End Set
+    End Property
+
+    Public Property ClearLogoMaxWidth() As Integer
+        Get
+            Return _clearlogomaxwidth
+        End Get
+        Set(ByVal value As Integer)
+            _clearlogomaxwidth = value
         End Set
     End Property
 
@@ -372,6 +392,13 @@ Public Class frmMain
                 End If
                 .pnlClearArt.Visible = False
                 .MainClearArt.Clear()
+
+                If Not IsNothing(.pbClearLogo.Image) Then
+                    .pbClearLogo.Image.Dispose()
+                    .pbClearLogo.Image = Nothing
+                End If
+                .pnlClearLogo.Visible = False
+                .MainClearLogo.Clear()
 
                 If Not IsNothing(.pbPoster.Image) Then
                     .pbPoster.Image.Dispose()
@@ -1531,70 +1558,64 @@ Public Class frmMain
     End Sub
 
     Private Sub bwLoadEpInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadEpInfo.DoWork
-        Try
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainCharacterArt.Clear()
+        Me.MainClearArt.Clear()
+        Me.MainClearLogo.Clear()
+        Me.MainDiscArt.Clear()
+        Me.MainFanart.Clear()
+        Me.MainFanartSmall.Clear()
+        Me.MainLandscape.Clear()
+        Me.MainPoster.Clear()
 
-            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-            Me.MainCharacterArt.Clear()
-            Me.MainClearArt.Clear()
-            Me.MainDiscArt.Clear()
-            Me.MainPoster.Clear()
-            Me.MainFanart.Clear()
-            Me.MainFanartSmall.Clear()
-            Me.MainLandscape.Clear()
-
-            If bwLoadEpInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-            Master.currShow = Master.DB.LoadTVEpFromDB(Args.ID, True)
-
-            If bwLoadEpInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-            If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.EpPosterPath)
-            If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.EpFanartPath)
-
-            If bwLoadEpInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-            If Not Master.eSettings.GeneralHideFanart Then
-                Dim NeedsGS As Boolean = False
-                If Not String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then
-                    Me.MainFanart.FromFile(Master.currShow.EpFanartPath)
-                Else
-                    Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
-                    NeedsGS = True
-                End If
-
-                If Not IsNothing(Me.MainFanart.Image) Then
-                    If String.IsNullOrEmpty(Master.currShow.Filename) Then
-                        Me.MainFanart = ImageUtils.AddMissingStamp(Me.MainFanart)
-                    ElseIf NeedsGS Then
-                        Me.MainFanart = ImageUtils.GrayScale(Me.MainFanart)
-                    End If
-                End If
-            End If
-
-            'wait for mediainfo to update the nfo
-            While bwMetaInfo.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
-
-            If bwLoadEpInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+        If bwLoadEpInfo.CancellationPending Then
             e.Cancel = True
-        End Try
+            Return
+        End If
+
+        Master.currShow = Master.DB.LoadTVEpFromDB(Args.ID, True)
+
+        If bwLoadEpInfo.CancellationPending Then
+            e.Cancel = True
+            Return
+        End If
+
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.EpPosterPath)
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.EpFanartPath)
+
+        If bwLoadEpInfo.CancellationPending Then
+            e.Cancel = True
+            Return
+        End If
+
+        If Not Master.eSettings.GeneralHideFanart Then
+            Dim NeedsGS As Boolean = False
+            If Not String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then
+                Me.MainFanart.FromFile(Master.currShow.EpFanartPath)
+            Else
+                Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
+                NeedsGS = True
+            End If
+
+            If Not IsNothing(Me.MainFanart.Image) Then
+                If String.IsNullOrEmpty(Master.currShow.Filename) Then
+                    Me.MainFanart = ImageUtils.AddMissingStamp(Me.MainFanart)
+                ElseIf NeedsGS Then
+                    Me.MainFanart = ImageUtils.GrayScale(Me.MainFanart)
+                End If
+            End If
+        End If
+
+        'wait for mediainfo to update the nfo
+        While bwMetaInfo.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        If bwLoadEpInfo.CancellationPending Then
+            e.Cancel = True
+            Return
+        End If
     End Sub
 
     Private Sub bwLoadEpInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadEpInfo.RunWorkerCompleted
@@ -1615,11 +1636,12 @@ Public Class frmMain
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
+        Me.MainClearLogo.Clear()
         Me.MainDiscArt.Clear()
         Me.MainFanart.Clear()
-        Me.MainPoster.Clear()
         Me.MainFanartSmall.Clear()
         Me.MainLandscape.Clear()
+        Me.MainPoster.Clear()
 
         If bwLoadMovieInfo.CancellationPending Then
             e.Cancel = True
@@ -1632,19 +1654,14 @@ Public Class frmMain
             e.Cancel = True
             Return
         End If
-
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currMovie.FanartPath)
-
-        If bwLoadMovieInfo.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
+        
         If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currMovie.ClearArtPath)
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo.FromFile(Master.currMovie.ClearLogoPath)
         If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt.FromFile(Master.currMovie.DiscArtPath)
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currMovie.PosterPath)
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currMovie.FanartPath)
         If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currMovie.FanartPath)
         If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currMovie.LandscapePath)
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currMovie.PosterPath)
         'read nfo if it's there
 
         'wait for mediainfo to update the nfo
@@ -1678,52 +1695,41 @@ Public Class frmMain
     End Sub
 
     Private Sub bwLoadMovieSetInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMovieSetInfo.DoWork
-        Try
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainCharacterArt.Clear()
+        Me.MainClearArt.Clear()
+        Me.MainClearLogo.Clear()
+        Me.MainDiscArt.Clear()
+        Me.MainFanart.Clear()
+        Me.MainFanartSmall.Clear()
+        Me.MainLandscape.Clear()
+        Me.MainPoster.Clear()
 
-            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-            Me.MainCharacterArt.Clear()
-            Me.MainClearArt.Clear()
-            Me.MainDiscArt.Clear()
-            Me.MainFanart.Clear()
-            Me.MainPoster.Clear()
-            Me.MainFanartSmall.Clear()
-            Me.MainLandscape.Clear()
-
-            If bwLoadMovieSetInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-            Master.currMovieSet = Master.DB.LoadMovieSetFromDB(Args.ID)
-
-            If bwLoadMovieSetInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-            If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currMovieSet.FanartPath)
-
-            If bwLoadMovieSetInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-            If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currMovieSet.ClearArtPath)
-            If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt.FromFile(Master.currMovieSet.DiscArtPath)
-            If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currMovieSet.PosterPath)
-            If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currMovieSet.FanartPath)
-            If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currMovieSet.LandscapePath)
-            'read nfo if it's there
-
-            If bwLoadMovieSetInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+        If bwLoadMovieSetInfo.CancellationPending Then
             e.Cancel = True
-        End Try
+            Return
+        End If
+
+        Master.currMovieSet = Master.DB.LoadMovieSetFromDB(Args.ID)
+
+        If bwLoadMovieSetInfo.CancellationPending Then
+            e.Cancel = True
+            Return
+        End If
+
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currMovieSet.ClearArtPath)
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo.FromFile(Master.currMovieSet.ClearLogoPath)
+        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt.FromFile(Master.currMovieSet.DiscArtPath)
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currMovieSet.FanartPath)
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currMovieSet.FanartPath)
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currMovieSet.LandscapePath)
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currMovieSet.PosterPath)
+        'read nfo if it's there
+
+        If bwLoadMovieSetInfo.CancellationPending Then
+            e.Cancel = True
+            Return
+        End If
     End Sub
 
     Private Sub bwLoadMovieSetInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadMovieSetInfo.RunWorkerCompleted
@@ -1813,51 +1819,54 @@ Public Class frmMain
     End Sub
 
     Private Sub bwLoadSeasonInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadSeasonInfo.DoWork
-        Try
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainCharacterArt.Clear()
+        Me.MainClearArt.Clear()
+        Me.MainClearLogo.Clear()
+        Me.MainDiscArt.Clear()
+        Me.MainFanart.Clear()
+        Me.MainFanartSmall.Clear()
+        Me.MainLandscape.Clear()
+        Me.MainPoster.Clear()
 
-            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-            Me.MainCharacterArt.Clear()
-            Me.MainClearArt.Clear()
-            Me.MainDiscArt.Clear()
-            Me.MainPoster.Clear()
-            Me.MainFanart.Clear()
-            Me.MainFanartSmall.Clear()
-            Me.MainLandscape.Clear()
+        Master.currShow = Master.DB.LoadTVSeasonFromDB(Args.ID, Args.Season, True)
 
-            Master.currShow = Master.DB.LoadTVSeasonFromDB(Args.ID, Args.Season, True)
+        If bwLoadSeasonInfo.CancellationPending Then
+            e.Cancel = True
+            Return
+        End If
 
-            If bwLoadSeasonInfo.CancellationPending Then
-                e.Cancel = True
-                Return
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.SeasonPosterPath)
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.SeasonFanartPath)
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currShow.SeasonLandscapePath)
+
+        If bwLoadSeasonInfo.CancellationPending Then
+            e.Cancel = True
+            Return
+        End If
+
+        If Not Master.eSettings.GeneralHideFanart Then
+            Dim NeedsGS As Boolean = False
+            If Not String.IsNullOrEmpty(Master.currShow.SeasonFanartPath) Then
+                Me.MainFanart.FromFile(Master.currShow.SeasonFanartPath)
+            Else
+                Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
+                NeedsGS = True
             End If
 
-            If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.SeasonPosterPath)
-            If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.SeasonFanartPath)
-            If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currShow.SeasonLandscapePath)
-
-            If bwLoadSeasonInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-            If Not Master.eSettings.GeneralHideFanart Then
-                If Not String.IsNullOrEmpty(Master.currShow.SeasonFanartPath) Then
-                    Me.MainFanart.FromFile(Master.currShow.SeasonFanartPath)
-                Else
-                    Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
-                    If Not IsNothing(Me.MainFanart.Image) Then Me.MainFanart = ImageUtils.GrayScale(Me.MainFanart)
+            If Not IsNothing(Me.MainFanart.Image) Then
+                If Not Args.setEnabled Then
+                    Me.MainFanart = ImageUtils.AddMissingStamp(Me.MainFanart)
+                ElseIf NeedsGS Then
+                    Me.MainFanart = ImageUtils.GrayScale(Me.MainFanart)
                 End If
             End If
+        End If
 
-            If bwLoadSeasonInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+        If bwLoadSeasonInfo.CancellationPending Then
             e.Cancel = True
-        End Try
+            Return
+        End If
     End Sub
 
     Private Sub bwLoadSeasonInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadSeasonInfo.RunWorkerCompleted
@@ -1874,57 +1883,45 @@ Public Class frmMain
     End Sub
 
     Private Sub bwLoadShowInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadShowInfo.DoWork
-        Try
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainCharacterArt.Clear()
+        Me.MainClearArt.Clear()
+        Me.MainClearLogo.Clear()
+        Me.MainDiscArt.Clear()
+        Me.MainFanart.Clear()
+        Me.MainFanartSmall.Clear()
+        Me.MainLandscape.Clear()
+        Me.MainPoster.Clear()
 
-            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-            Me.MainCharacterArt.Clear()
-            Me.MainClearArt.Clear()
-            Me.MainDiscArt.Clear()
-            Me.MainFanart.Clear()
-            Me.MainPoster.Clear()
-            Me.MainFanartSmall.Clear()
-            Me.MainLandscape.Clear()
-
-            If bwLoadShowInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-            Master.currShow = Master.DB.LoadTVFullShowFromDB(Args.ID)
-
-            Me.tmpTitle = Master.currShow.ListTitle
-            Me.tmpTVDB = Master.currShow.TVShow.TVDBID
-            Me.tmpLang = Master.currShow.ShowLanguage
-            Me.tmpOrdering = Master.currShow.Ordering
-
-            If bwLoadShowInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-            If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
-
-            If bwLoadShowInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-            If Not Master.eSettings.GeneralHideCharacterArt Then Me.MainCharacterArt.FromFile(Master.currShow.ShowCharacterArtPath)
-            If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currShow.ShowClearArtPath)
-            If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt.FromFile(Master.currMovieSet.DiscArtPath)
-            If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
-            If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.ShowFanartPath)
-            If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currShow.ShowLandscapePath)
-
-            If bwLoadShowInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+        If bwLoadShowInfo.CancellationPending Then
             e.Cancel = True
-        End Try
+            Return
+        End If
+
+        Master.currShow = Master.DB.LoadTVFullShowFromDB(Args.ID)
+
+        Me.tmpTitle = Master.currShow.ListTitle
+        Me.tmpTVDB = Master.currShow.TVShow.TVDBID
+        Me.tmpLang = Master.currShow.ShowLanguage
+        Me.tmpOrdering = Master.currShow.Ordering
+
+        If bwLoadShowInfo.CancellationPending Then
+            e.Cancel = True
+            Return
+        End If
+
+        If Not Master.eSettings.GeneralHideCharacterArt Then Me.MainCharacterArt.FromFile(Master.currShow.ShowCharacterArtPath)
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currShow.ShowClearArtPath)
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo.FromFile(Master.currShow.ShowClearLogoPath)
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.ShowFanartPath)
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currShow.ShowLandscapePath)
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
+
+        If bwLoadShowInfo.CancellationPending Then
+            e.Cancel = True
+            Return
+        End If
     End Sub
 
     Private Sub bwLoadShowInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadShowInfo.RunWorkerCompleted
@@ -8087,7 +8084,11 @@ doCancel:
 
         'text fields
         If (colName = "SeasonText") AndAlso e.RowIndex >= 0 Then
-            If Convert.ToBoolean(Me.dgvTVSeasons.Item("Mark", e.RowIndex).Value) Then
+            If Convert.ToBoolean(Me.dgvTVSeasons.Item("Missing", e.RowIndex).Value) AndAlso Not CInt(Me.dgvTVSeasons.Item("Season", e.RowIndex).Value) = 999 Then
+                e.CellStyle.ForeColor = Color.Gray
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.LightGray
+            ElseIf Convert.ToBoolean(Me.dgvTVSeasons.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
@@ -9659,10 +9660,8 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
-            If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
-            If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -9912,6 +9911,31 @@ doCancel:
                 End If
             End If
 
+            If Not IsNothing(Me.MainClearLogo.Image) Then
+                Me.lblClearLogoSize.Text = String.Format("{0} x {1}", Me.MainClearLogo.Image.Width, Me.MainClearLogo.Image.Height)
+                Me.pbClearLogoCache.Image = Me.MainClearLogo.Image
+                ImageUtils.ResizePB(Me.pbClearLogo, Me.pbClearLogoCache, Me.ClearLogoMaxHeight, Me.ClearLogoMaxWidth)
+                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearLogo)
+                Me.pnlClearLogo.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
+
+                If Master.eSettings.GeneralShowImgDims Then
+                    Me.lblClearLogoSize.Visible = True
+                Else
+                    Me.lblClearLogoSize.Visible = False
+                End If
+
+                If Master.eSettings.GeneralShowImgNames Then
+                    Me.lblClearLogoTitle.Visible = True
+                Else
+                    Me.lblClearLogoTitle.Visible = False
+                End If
+            Else
+                If Not IsNothing(Me.pbClearLogo.Image) Then
+                    Me.pbClearLogo.Image.Dispose()
+                    Me.pbClearLogo.Image = Nothing
+                End If
+            End If
+
             If Not IsNothing(Me.MainDiscArt.Image) Then
                 Me.lblDiscArtSize.Text = String.Format("{0} x {1}", Me.MainDiscArt.Image.Width, Me.MainDiscArt.Image.Height)
                 Me.pbDiscArtCache.Image = Me.MainDiscArt.Image
@@ -9984,6 +10008,7 @@ doCancel:
 
             Me.pnlTop.Visible = True
             If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
+            If Not IsNothing(Me.pbClearLogo.Image) Then Me.pnlClearLogo.Visible = True
             If Not IsNothing(Me.pbDiscArt.Image) Then Me.pnlDiscArt.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
@@ -10289,6 +10314,7 @@ doCancel:
 
             Me.pnlTop.Visible = True
             If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
+            If Not IsNothing(Me.pbClearLogo.Image) Then Me.pnlClearLogo.Visible = True
             If Not IsNothing(Me.pbDiscArt.Image) Then Me.pnlDiscArt.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
@@ -11792,7 +11818,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub LoadSeasonInfo(ByVal ShowID As Integer, ByVal Season As Integer)
+    Private Sub LoadSeasonInfo(ByVal ShowID As Integer, ByVal Season As Integer, Optional ByVal isMissing As Boolean = False)
         Me.dgvTVSeasons.SuspendLayout()
         Me.SetControlsEnabled(False, True)
         Me.ShowNoInfo(False)
@@ -11805,7 +11831,7 @@ doCancel:
 
         Me.bwLoadSeasonInfo = New System.ComponentModel.BackgroundWorker
         Me.bwLoadSeasonInfo.WorkerSupportsCancellation = True
-        Me.bwLoadSeasonInfo.RunWorkerAsync(New Arguments With {.ID = ShowID, .Season = Season})
+        Me.bwLoadSeasonInfo.RunWorkerAsync(New Arguments With {.ID = ShowID, .Season = Season, .setEnabled = Not isMissing})
 
         Me.FillEpisodes(ShowID, Season)
     End Sub
@@ -16047,7 +16073,8 @@ doCancel:
             Threading.Thread.Sleep(50)
         End While
 
-        If String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) Then
+        If String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso _
+            String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) Then
             Me.ClearInfo()
             Me.ShowNoInfo(True, 2)
 
@@ -16418,17 +16445,21 @@ doCancel:
         Me.ClearInfo()
 
         If String.IsNullOrEmpty(Me.dgvTVSeasons.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVSeasons.Item("FanartPath", iRow).Value.ToString) AndAlso _
-            String.IsNullOrEmpty(Me.dgvTVSeasons.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVSeasons.Item("PosterPath", iRow).Value.ToString) Then
+            String.IsNullOrEmpty(Me.dgvTVSeasons.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVSeasons.Item("PosterPath", iRow).Value.ToString) AndAlso _
+            Not Convert.ToBoolean(Me.dgvTVSeasons.Item("Missing", iRow).Value) Then
             If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
             Me.ShowNoInfo(True, 1)
             Master.currShow = Master.DB.LoadTVSeasonFromDB(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item("Season", iRow).Value), True)
             Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item("Season", iRow).Value))
 
-            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso _
+                Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso _
+                Not Me.bwRefreshMovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                 Me.cmnuSeason.Enabled = True
             End If
         Else
-            Me.LoadSeasonInfo(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item("Season", iRow).Value))
+            Me.LoadSeasonInfo(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item("Season", iRow).Value), _
+                              If(CInt(Me.dgvTVSeasons.Item("Season", iRow).Value) = 999, False, CBool(Me.dgvTVSeasons.Item("Missing", iRow).Value)))
         End If
     End Sub
     ''' <summary>
@@ -18559,7 +18590,12 @@ doCancel:
                 .lblActorsHeader.Text = Master.eLang.GetString(63, "Cast")
                 .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
                 .lblCertsHeader.Text = Master.eLang.GetString(56, "Certification(s)")
+                .lblCharacterArtTitle.Text = Master.eLang.GetString(1140, "CharacterArt")
+                .lblClearArtTitle.Text = Master.eLang.GetString(1096, "ClearArt")
+                .lblClearLogoTitle.Text = Master.eLang.GetString(1097, "ClearLogo")
                 .lblDirectorHeader.Text = Master.eLang.GetString(62, "Director")
+                .lblDiscArtTitle.Text = Master.eLang.GetString(1098, "DiscArt")
+                .lblFanartSmallTitle.Text = Master.eLang.GetString(149, "Fanart")
                 .lblFilePathHeader.Text = Master.eLang.GetString(60, "File Path")
                 .lblFilter_Movies.Text = Master.eLang.GetString(52, "Filters")
                 .lblFilter_MovieSets.Text = .lblFilter_Movies.Text
@@ -18585,6 +18621,7 @@ doCancel:
                 .lblFilterSourcesClose_Shows.Text = .lblFilterGenresClose_Movies.Text
                 .lblIMDBHeader.Text = Master.eLang.GetString(61, "IMDB ID")
                 .lblInfoPanelHeader.Text = Master.eLang.GetString(66, "Info")
+                .lblLandscapeTitle.Text = Master.eLang.GetString(1035, "Landscape")
                 .lblLoadSettings.Text = Master.eLang.GetString(484, "Loading Settings...")
                 .lblMetaDataHeader.Text = Master.eLang.GetString(59, "Meta Data")
                 .lblMoviesInSetHeader.Text = Master.eLang.GetString(367, "Movies In Set")
