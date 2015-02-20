@@ -2166,6 +2166,29 @@ Public Class frmMain
 
                 '-----
 
+                'remove all images/other content if needed and scrapeType is not SingleScrape (SingleScrape do remove that in Edit Movie" window)
+                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                    If DBScrapeMovie.RemoveActorThumbs Then
+                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
+                            Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
+                            If Directory.Exists(tmpPath) Then
+                                FileUtils.Delete.DeleteDirectory(tmpPath)
+                            End If
+                        Next
+                    End If
+                    If DBScrapeMovie.RemoveBanner Then Banner.WebImage.DeleteMovieBanner(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveClearArt Then ClearArt.WebImage.DeleteMovieClearArt(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveClearLogo Then ClearLogo.WebImage.DeleteMovieClearLogo(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveDiscArt Then DiscArt.WebImage.DeleteMovieDiscArt(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveEFanarts Then EFanarts.WebImage.DeleteMovieEFanarts(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveEThumbs Then EThumbs.WebImage.DeleteMovieEThumbs(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveFanart Then Fanart.WebImage.DeleteMovieFanart(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveLandscape Then Landscape.WebImage.DeleteMovieLandscape(DBScrapeMovie)
+                    If DBScrapeMovie.RemovePoster Then Poster.WebImage.DeleteMoviePoster(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveTheme Then Theme.WebTheme.DeleteMovieTheme(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveTrailer Then Trailer.WebTrailer.DeleteMovieTrailer(DBScrapeMovie)
+                End If
+
                 'Poster
                 If Master.GlobalScrapeMod.Poster Then
                     Poster.Clear()
