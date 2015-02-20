@@ -5769,7 +5769,7 @@ Public Class Settings
         Me.MovieDiscArtOverwrite = True
         Me.MovieDisplayYear = False
         Me.MovieEFanartsHeight = 0
-        Me.MovieEFanartsLimit = 0
+        Me.MovieEFanartsLimit = 4
         Me.MovieEFanartsOverwrite = True
         Me.MovieEFanartsPrefOnly = False
         Me.MovieEFanartsPrefSize = Enums.FanartSize.Xlrg
