@@ -35,6 +35,8 @@ Public Class Database
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
+    Friend WithEvents bwPatchDB As New System.ComponentModel.BackgroundWorker
+
     ReadOnly _connStringTemplate As String = "Data Source=""{0}"";Version=3;Compress=True"
     Protected _myvideosDBConn As SQLiteConnection
     ' NOTE: This will use another DB because: can grow alot, Don't want to stress Media DB with this stuff
@@ -1772,32 +1774,26 @@ Public Class Database
         End Try
         Return _TVDB
     End Function
-    ''' <summary>
-    ''' Execute arbitrary SQL commands against the database. Commands are retrieved from fname. 
-    ''' Commands are serialized Containers.InstallCommands. Only commands marked as CommandType DB are executed.
-    ''' </summary>
-    ''' <param name="cPath">path to current DB</param>
-    ''' <param name="nPath">path for new DB</param>
-    ''' <param name="cVersion">current version of DB to patch</param>
-    ''' <param name="nVersion">lastest version of DB</param>
-    ''' <remarks></remarks>
-    Public Sub PatchDatabase_MyVideos(ByVal cPath As String, ByVal nPath As String, ByVal cVersion As Integer, ByVal nVersion As Integer)
+
+    Private Sub bwPatchDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPatchDB.DoWork
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+
         Dim xmlSer As XmlSerializer
         Dim _cmds As New Containers.InstallCommands
         Dim TransOk As Boolean
         Dim tempName As String = String.Empty
 
-        tempName = String.Concat(nPath, "_tmp")
+        tempName = String.Concat(Args.newDBPath, "_tmp")
         If File.Exists(tempName) Then
             File.Delete(tempName)
         End If
-        File.Copy(cPath, tempName)
+        File.Copy(Args.currDBPath, tempName)
 
         Try
             _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, tempName))
             _myvideosDBConn.Open()
 
-            For i As Integer = cVersion To nVersion - 1
+            For i As Integer = Args.currVersion To Args.newVersion - 1
 
                 Dim patchpath As String = FileUtils.Common.ReturnSettingsFile("DB", String.Format("MyVideosDBSQL_v{0}_Patch.xml", i))
 
@@ -1859,7 +1855,7 @@ Public Class Database
             Next
 
             Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
-                Select Case cVersion
+                Select Case Args.currVersion
                     Case Is < 14
                         PrepareTable_country("idMovie", "movie", True)
                         PrepareTable_director("idEpisode", "episode", True)
@@ -1878,14 +1874,49 @@ Public Class Database
             End Using
 
             _myvideosDBConn.Close()
-            File.Move(tempName, nPath)
+            File.Move(tempName, Args.newDBPath)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
             _myvideosDBConn.Close()
         End Try
     End Sub
 
+    Private Sub bwPatchDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwPatchDB.ProgressChanged
+        If e.ProgressPercentage = -1 Then
+            Master.fLoading.SetLoadingMesg(e.UserState.ToString)
+        End If
+    End Sub
+
+    Private Sub bwPatchDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwPatchDB.RunWorkerCompleted
+        Return
+    End Sub
+    ''' <summary>
+    ''' Execute arbitrary SQL commands against the database. Commands are retrieved from fname. 
+    ''' Commands are serialized Containers.InstallCommands. Only commands marked as CommandType DB are executed.
+    ''' </summary>
+    ''' <param name="cPath">path to current DB</param>
+    ''' <param name="nPath">path for new DB</param>
+    ''' <param name="cVersion">current version of DB to patch</param>
+    ''' <param name="nVersion">lastest version of DB</param>
+    ''' <remarks></remarks>
+    Public Sub PatchDatabase_MyVideos(ByVal cPath As String, ByVal nPath As String, ByVal cVersion As Integer, ByVal nVersion As Integer)
+
+        Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+
+        Me.bwPatchDB = New System.ComponentModel.BackgroundWorker
+        Me.bwPatchDB.WorkerReportsProgress = True
+        Me.bwPatchDB.WorkerSupportsCancellation = False
+        Me.bwPatchDB.RunWorkerAsync(New Arguments With {.currDBPath = cPath, .currVersion = cVersion, .newDBPath = nPath, .newVersion = nVersion})
+
+        While bwPatchDB.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+    End Sub
+
     Private Sub PrepareTable_country(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Get countries...")
+
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
@@ -1928,6 +1959,8 @@ Public Class Database
     End Sub
 
     Private Sub PrepareTable_director(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Get directors...")
+
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
@@ -1974,6 +2007,8 @@ Public Class Database
     End Sub
 
     Private Sub PrepareTable_genre(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Get genres...")
+
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
@@ -2018,6 +2053,8 @@ Public Class Database
     End Sub
 
     Private Sub PrepareTable_studio(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Get studios...")
+
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
@@ -2062,6 +2099,8 @@ Public Class Database
     End Sub
 
     Private Sub PrepareTable_writer(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Get writers...")
+
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
@@ -2106,6 +2145,8 @@ Public Class Database
     End Sub
 
     Private Sub PreparePlaycounts(ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Fixing Playcounts...")
+
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
@@ -3795,6 +3836,19 @@ Public Class Database
 #End Region 'Methods
 
 #Region "Nested Types"
+
+    Private Structure Arguments
+
+#Region "Fields"
+
+        Dim currDBPath As String
+        Dim currVersion As Integer
+        Dim newDBPath As String
+        Dim newVersion As Integer
+
+#End Region 'Fields
+
+    End Structure
     ''' <summary>
     ''' Class representing a media Source
     ''' </summary>
