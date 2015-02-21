@@ -155,7 +155,7 @@ Public Class HDTrailersNet_Trailer
             tTitle = DBMovie.Movie.OriginalTitle
         End If
 
-        Dim tHDTrailersNetTrailer As New HDTrailersNet.Scraper(tTitle)
+        Dim tHDTrailersNetTrailer As New HDTrailersNet.Scraper(tTitle, DBMovie.Movie.Title)
 
         If tHDTrailersNetTrailer.TrailerList.Count > 0 Then
             URLList = tHDTrailersNetTrailer.TrailerList
