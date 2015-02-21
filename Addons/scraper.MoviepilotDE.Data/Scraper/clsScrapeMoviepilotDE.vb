@@ -195,12 +195,22 @@ Namespace MoviepilotDE
 
                         If Not String.IsNullOrEmpty(strSearchResults) Then
                             'get search results
+
+
                             Dim resPattern As String = "<div class='trackable' data-track-position=.*?<\/span>.<a href=""(?<URL>.*?)"".*?>(?<TITLE>.*?)<\/a>.*?(?<YEAR>\d{4}).*?<\/li>"
                             Dim resResult As MatchCollection = Regex.Matches(strSearchResults, resPattern, RegexOptions.Singleline)
 
+                            If resResult.Count = 0 Then
+                                resPattern = "www.moviepilot.de/movies/(?<URL>.*?)"""
+                                resResult = Regex.Matches(strSearchResults, resPattern, RegexOptions.Singleline)
+                                strURL = String.Concat("http://www.moviepilot.de/movies/", resResult.Item(0).Groups(1).Value).Trim
+                            End If
+
                             'Only one search result or no Year to filter
                             If resResult.Count = 1 OrElse (filterResult.Count > 0 AndAlso String.IsNullOrEmpty(strYear)) Then
-                                strURL = String.Concat("http://www.moviepilot.de", resResult.Item(0).Groups(1).Value).Trim
+                                If strURL = String.Empty Then
+                                    strURL = String.Concat("http://www.moviepilot.de", resResult.Item(0).Groups(1).Value).Trim
+                                End If
                             ElseIf resResult.Count > 0 Then
                                 ' Try to find a search result with same Year
                                 For ctr As Integer = 0 To resResult.Count - 1
