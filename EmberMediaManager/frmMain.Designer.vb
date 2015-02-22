@@ -453,6 +453,17 @@ Partial Class frmMain
         Me.lblFilter_Shows = New System.Windows.Forms.Label()
         Me.btnFilterUp_Shows = New System.Windows.Forms.Button()
         Me.btnFilterDown_Shows = New System.Windows.Forms.Button()
+        Me.pbBannerCache = New System.Windows.Forms.PictureBox()
+        Me.pnlBanner = New System.Windows.Forms.Panel()
+        Me.pnlBannerMain = New System.Windows.Forms.Panel()
+        Me.tblBannerMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.pbBanner = New System.Windows.Forms.PictureBox()
+        Me.pnlBannerBottom = New System.Windows.Forms.Panel()
+        Me.tblBannerBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblBannerSize = New System.Windows.Forms.Label()
+        Me.pnlBannerTop = New System.Windows.Forms.Panel()
+        Me.tblBannerTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblBannerTitle = New System.Windows.Forms.Label()
         Me.pbCache = New System.Windows.Forms.PictureBox()
         Me.pnlClearLogo = New System.Windows.Forms.Panel()
         Me.pnlClearLogoMain = New System.Windows.Forms.Panel()
@@ -1162,17 +1173,6 @@ Partial Class frmMain
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
-        Me.pnlBanner = New System.Windows.Forms.Panel()
-        Me.pnlBannerMain = New System.Windows.Forms.Panel()
-        Me.tblBannerMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.pbBanner = New System.Windows.Forms.PictureBox()
-        Me.pnlBannerBottom = New System.Windows.Forms.Panel()
-        Me.tblBannerBottom = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblBannerSize = New System.Windows.Forms.Label()
-        Me.pnlBannerTop = New System.Windows.Forms.Panel()
-        Me.tblBannerTop = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblBannerTitle = New System.Windows.Forms.Label()
-        Me.pbBannerCache = New System.Windows.Forms.PictureBox()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1280,6 +1280,15 @@ Partial Class frmMain
         Me.tblFilterSpecificData_Shows.SuspendLayout
         Me.pnlFilterTop_Shows.SuspendLayout
         Me.tblFilterTop_Shows.SuspendLayout
+        CType(Me.pbBannerCache,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlBanner.SuspendLayout
+        Me.pnlBannerMain.SuspendLayout
+        Me.tblBannerMain.SuspendLayout
+        CType(Me.pbBanner,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlBannerBottom.SuspendLayout
+        Me.tblBannerBottom.SuspendLayout
+        Me.pnlBannerTop.SuspendLayout
+        Me.tblBannerTop.SuspendLayout
         CType(Me.pbCache,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlClearLogo.SuspendLayout
         Me.pnlClearLogoMain.SuspendLayout
@@ -1399,15 +1408,6 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.SuspendLayout
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlLoadSettings.SuspendLayout
-        Me.pnlBanner.SuspendLayout
-        Me.pnlBannerMain.SuspendLayout
-        Me.tblBannerMain.SuspendLayout
-        CType(Me.pbBanner,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlBannerBottom.SuspendLayout
-        Me.tblBannerBottom.SuspendLayout
-        Me.pnlBannerTop.SuspendLayout
-        Me.tblBannerTop.SuspendLayout
-        CType(Me.pbBannerCache,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'BottomToolStripPanel
@@ -1777,6 +1777,9 @@ Partial Class frmMain
         'scMain.Panel2
         '
         Me.scMain.Panel2.BackColor = System.Drawing.SystemColors.Control
+        Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
+        Me.scMain.Panel2.Controls.Add(Me.pnlNoInfo)
+        Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
         Me.scMain.Panel2.Controls.Add(Me.pbBannerCache)
         Me.scMain.Panel2.Controls.Add(Me.pnlBanner)
         Me.scMain.Panel2.Controls.Add(Me.pbCache)
@@ -1786,9 +1789,6 @@ Partial Class frmMain
         Me.scMain.Panel2.Controls.Add(Me.pnlDiscArt)
         Me.scMain.Panel2.Controls.Add(Me.pbDiscArtCache)
         Me.scMain.Panel2.Controls.Add(Me.pbClearLogoCache)
-        Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
-        Me.scMain.Panel2.Controls.Add(Me.pnlNoInfo)
-        Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
         Me.scMain.Panel2.Controls.Add(Me.pnlClearArt)
         Me.scMain.Panel2.Controls.Add(Me.pnlLandscape)
         Me.scMain.Panel2.Controls.Add(Me.pnlFanartSmall)
@@ -5983,6 +5983,150 @@ Partial Class frmMain
         Me.btnFilterDown_Shows.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnFilterDown_Shows.UseVisualStyleBackColor = false
         '
+        'pbBannerCache
+        '
+        Me.pbBannerCache.Location = New System.Drawing.Point(740, 130)
+        Me.pbBannerCache.Name = "pbBannerCache"
+        Me.pbBannerCache.Size = New System.Drawing.Size(50, 50)
+        Me.pbBannerCache.TabIndex = 28
+        Me.pbBannerCache.TabStop = false
+        Me.pbBannerCache.Visible = false
+        '
+        'pnlBanner
+        '
+        Me.pnlBanner.AutoSize = true
+        Me.pnlBanner.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.pnlBanner.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlBanner.Controls.Add(Me.pnlBannerMain)
+        Me.pnlBanner.Controls.Add(Me.pnlBannerBottom)
+        Me.pnlBanner.Controls.Add(Me.pnlBannerTop)
+        Me.pnlBanner.Location = New System.Drawing.Point(172, 215)
+        Me.pnlBanner.Name = "pnlBanner"
+        Me.pnlBanner.Padding = New System.Windows.Forms.Padding(2)
+        Me.pnlBanner.Size = New System.Drawing.Size(56, 82)
+        Me.pnlBanner.TabIndex = 27
+        Me.pnlBanner.Visible = false
+        '
+        'pnlBannerMain
+        '
+        Me.pnlBannerMain.AutoSize = true
+        Me.pnlBannerMain.Controls.Add(Me.tblBannerMain)
+        Me.pnlBannerMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlBannerMain.Location = New System.Drawing.Point(2, 15)
+        Me.pnlBannerMain.Name = "pnlBannerMain"
+        Me.pnlBannerMain.Size = New System.Drawing.Size(50, 50)
+        Me.pnlBannerMain.TabIndex = 3
+        '
+        'tblBannerMain
+        '
+        Me.tblBannerMain.AutoSize = true
+        Me.tblBannerMain.ColumnCount = 1
+        Me.tblBannerMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBannerMain.Controls.Add(Me.pbBanner, 0, 0)
+        Me.tblBannerMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBannerMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblBannerMain.Name = "tblBannerMain"
+        Me.tblBannerMain.RowCount = 1
+        Me.tblBannerMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBannerMain.Size = New System.Drawing.Size(50, 50)
+        Me.tblBannerMain.TabIndex = 1
+        '
+        'pbBanner
+        '
+        Me.pbBanner.BackColor = System.Drawing.Color.Gray
+        Me.pbBanner.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pbBanner.Location = New System.Drawing.Point(0, 0)
+        Me.pbBanner.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbBanner.Name = "pbBanner"
+        Me.pbBanner.Size = New System.Drawing.Size(50, 50)
+        Me.pbBanner.TabIndex = 0
+        Me.pbBanner.TabStop = false
+        '
+        'pnlBannerBottom
+        '
+        Me.pnlBannerBottom.AutoSize = true
+        Me.pnlBannerBottom.BackColor = System.Drawing.Color.DimGray
+        Me.pnlBannerBottom.Controls.Add(Me.tblBannerBottom)
+        Me.pnlBannerBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlBannerBottom.Location = New System.Drawing.Point(2, 65)
+        Me.pnlBannerBottom.Name = "pnlBannerBottom"
+        Me.pnlBannerBottom.Size = New System.Drawing.Size(50, 13)
+        Me.pnlBannerBottom.TabIndex = 2
+        '
+        'tblBannerBottom
+        '
+        Me.tblBannerBottom.AutoSize = true
+        Me.tblBannerBottom.ColumnCount = 3
+        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerBottom.Controls.Add(Me.lblBannerSize, 1, 0)
+        Me.tblBannerBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBannerBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblBannerBottom.Name = "tblBannerBottom"
+        Me.tblBannerBottom.RowCount = 2
+        Me.tblBannerBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBannerBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBannerBottom.Size = New System.Drawing.Size(50, 13)
+        Me.tblBannerBottom.TabIndex = 0
+        '
+        'lblBannerSize
+        '
+        Me.lblBannerSize.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblBannerSize.AutoSize = true
+        Me.lblBannerSize.BackColor = System.Drawing.Color.Transparent
+        Me.lblBannerSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblBannerSize.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblBannerSize.Location = New System.Drawing.Point(11, 0)
+        Me.lblBannerSize.Name = "lblBannerSize"
+        Me.lblBannerSize.Size = New System.Drawing.Size(27, 13)
+        Me.lblBannerSize.TabIndex = 2
+        Me.lblBannerSize.Text = "Size"
+        Me.lblBannerSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'pnlBannerTop
+        '
+        Me.pnlBannerTop.AutoSize = true
+        Me.pnlBannerTop.BackColor = System.Drawing.Color.DimGray
+        Me.pnlBannerTop.Controls.Add(Me.tblBannerTop)
+        Me.pnlBannerTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlBannerTop.Location = New System.Drawing.Point(2, 2)
+        Me.pnlBannerTop.Name = "pnlBannerTop"
+        Me.pnlBannerTop.Size = New System.Drawing.Size(50, 13)
+        Me.pnlBannerTop.TabIndex = 1
+        '
+        'tblBannerTop
+        '
+        Me.tblBannerTop.AutoSize = true
+        Me.tblBannerTop.ColumnCount = 3
+        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerTop.Controls.Add(Me.lblBannerTitle, 1, 0)
+        Me.tblBannerTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBannerTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblBannerTop.Name = "tblBannerTop"
+        Me.tblBannerTop.RowCount = 2
+        Me.tblBannerTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBannerTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBannerTop.Size = New System.Drawing.Size(50, 13)
+        Me.tblBannerTop.TabIndex = 0
+        '
+        'lblBannerTitle
+        '
+        Me.lblBannerTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblBannerTitle.AutoSize = true
+        Me.lblBannerTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblBannerTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblBannerTitle.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblBannerTitle.Location = New System.Drawing.Point(3, 0)
+        Me.lblBannerTitle.Name = "lblBannerTitle"
+        Me.lblBannerTitle.Size = New System.Drawing.Size(44, 13)
+        Me.lblBannerTitle.TabIndex = 1
+        Me.lblBannerTitle.Text = "Banner"
+        Me.lblBannerTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'pbCache
         '
         Me.pbCache.Location = New System.Drawing.Point(740, 130)
@@ -6453,7 +6597,7 @@ Partial Class frmMain
         Me.lblCanceling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblCanceling.Location = New System.Drawing.Point(4, 12)
         Me.lblCanceling.Name = "lblCanceling"
-        Me.lblCanceling.Size = New System.Drawing.Size(128, 17)
+        Me.lblCanceling.Size = New System.Drawing.Size(129, 17)
         Me.lblCanceling.TabIndex = 1
         Me.lblCanceling.Text = "Canceling Scraper..."
         Me.lblCanceling.Visible = false
@@ -11821,150 +11965,6 @@ Partial Class frmMain
         '
         Me.tmrSearch_Shows.Interval = 250
         '
-        'pnlBanner
-        '
-        Me.pnlBanner.AutoSize = true
-        Me.pnlBanner.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.pnlBanner.BackColor = System.Drawing.Color.Gainsboro
-        Me.pnlBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlBanner.Controls.Add(Me.pnlBannerMain)
-        Me.pnlBanner.Controls.Add(Me.pnlBannerBottom)
-        Me.pnlBanner.Controls.Add(Me.pnlBannerTop)
-        Me.pnlBanner.Location = New System.Drawing.Point(172, 215)
-        Me.pnlBanner.Name = "pnlBanner"
-        Me.pnlBanner.Padding = New System.Windows.Forms.Padding(2)
-        Me.pnlBanner.Size = New System.Drawing.Size(56, 82)
-        Me.pnlBanner.TabIndex = 27
-        Me.pnlBanner.Visible = false
-        '
-        'pnlBannerMain
-        '
-        Me.pnlBannerMain.AutoSize = true
-        Me.pnlBannerMain.Controls.Add(Me.tblBannerMain)
-        Me.pnlBannerMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlBannerMain.Location = New System.Drawing.Point(2, 15)
-        Me.pnlBannerMain.Name = "pnlBannerMain"
-        Me.pnlBannerMain.Size = New System.Drawing.Size(50, 50)
-        Me.pnlBannerMain.TabIndex = 3
-        '
-        'tblBannerMain
-        '
-        Me.tblBannerMain.AutoSize = true
-        Me.tblBannerMain.ColumnCount = 1
-        Me.tblBannerMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblBannerMain.Controls.Add(Me.pbBanner, 0, 0)
-        Me.tblBannerMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblBannerMain.Location = New System.Drawing.Point(0, 0)
-        Me.tblBannerMain.Name = "tblBannerMain"
-        Me.tblBannerMain.RowCount = 1
-        Me.tblBannerMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblBannerMain.Size = New System.Drawing.Size(50, 50)
-        Me.tblBannerMain.TabIndex = 1
-        '
-        'pbBanner
-        '
-        Me.pbBanner.BackColor = System.Drawing.Color.Gray
-        Me.pbBanner.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pbBanner.Location = New System.Drawing.Point(0, 0)
-        Me.pbBanner.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbBanner.Name = "pbBanner"
-        Me.pbBanner.Size = New System.Drawing.Size(50, 50)
-        Me.pbBanner.TabIndex = 0
-        Me.pbBanner.TabStop = false
-        '
-        'pnlBannerBottom
-        '
-        Me.pnlBannerBottom.AutoSize = true
-        Me.pnlBannerBottom.BackColor = System.Drawing.Color.DimGray
-        Me.pnlBannerBottom.Controls.Add(Me.tblBannerBottom)
-        Me.pnlBannerBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBannerBottom.Location = New System.Drawing.Point(2, 65)
-        Me.pnlBannerBottom.Name = "pnlBannerBottom"
-        Me.pnlBannerBottom.Size = New System.Drawing.Size(50, 13)
-        Me.pnlBannerBottom.TabIndex = 2
-        '
-        'tblBannerBottom
-        '
-        Me.tblBannerBottom.AutoSize = true
-        Me.tblBannerBottom.ColumnCount = 3
-        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblBannerBottom.Controls.Add(Me.lblBannerSize, 1, 0)
-        Me.tblBannerBottom.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblBannerBottom.Location = New System.Drawing.Point(0, 0)
-        Me.tblBannerBottom.Name = "tblBannerBottom"
-        Me.tblBannerBottom.RowCount = 2
-        Me.tblBannerBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblBannerBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblBannerBottom.Size = New System.Drawing.Size(50, 13)
-        Me.tblBannerBottom.TabIndex = 0
-        '
-        'lblBannerSize
-        '
-        Me.lblBannerSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblBannerSize.AutoSize = true
-        Me.lblBannerSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblBannerSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblBannerSize.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblBannerSize.Location = New System.Drawing.Point(11, 0)
-        Me.lblBannerSize.Name = "lblBannerSize"
-        Me.lblBannerSize.Size = New System.Drawing.Size(27, 13)
-        Me.lblBannerSize.TabIndex = 2
-        Me.lblBannerSize.Text = "Size"
-        Me.lblBannerSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'pnlBannerTop
-        '
-        Me.pnlBannerTop.AutoSize = true
-        Me.pnlBannerTop.BackColor = System.Drawing.Color.DimGray
-        Me.pnlBannerTop.Controls.Add(Me.tblBannerTop)
-        Me.pnlBannerTop.Dock = System.Windows.Forms.DockStyle.Top
-        Me.pnlBannerTop.Location = New System.Drawing.Point(2, 2)
-        Me.pnlBannerTop.Name = "pnlBannerTop"
-        Me.pnlBannerTop.Size = New System.Drawing.Size(50, 13)
-        Me.pnlBannerTop.TabIndex = 1
-        '
-        'tblBannerTop
-        '
-        Me.tblBannerTop.AutoSize = true
-        Me.tblBannerTop.ColumnCount = 3
-        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblBannerTop.Controls.Add(Me.lblBannerTitle, 1, 0)
-        Me.tblBannerTop.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblBannerTop.Location = New System.Drawing.Point(0, 0)
-        Me.tblBannerTop.Name = "tblBannerTop"
-        Me.tblBannerTop.RowCount = 2
-        Me.tblBannerTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblBannerTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblBannerTop.Size = New System.Drawing.Size(50, 13)
-        Me.tblBannerTop.TabIndex = 0
-        '
-        'lblBannerTitle
-        '
-        Me.lblBannerTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblBannerTitle.AutoSize = true
-        Me.lblBannerTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblBannerTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblBannerTitle.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblBannerTitle.Location = New System.Drawing.Point(3, 0)
-        Me.lblBannerTitle.Name = "lblBannerTitle"
-        Me.lblBannerTitle.Size = New System.Drawing.Size(44, 13)
-        Me.lblBannerTitle.TabIndex = 1
-        Me.lblBannerTitle.Text = "Banner"
-        Me.lblBannerTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'pbBannerCache
-        '
-        Me.pbBannerCache.Location = New System.Drawing.Point(740, 130)
-        Me.pbBannerCache.Name = "pbBannerCache"
-        Me.pbBannerCache.Size = New System.Drawing.Size(50, 50)
-        Me.pbBannerCache.TabIndex = 28
-        Me.pbBannerCache.TabStop = false
-        Me.pbBannerCache.Visible = false
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
@@ -12165,6 +12165,21 @@ Partial Class frmMain
         Me.pnlFilterTop_Shows.PerformLayout
         Me.tblFilterTop_Shows.ResumeLayout(false)
         Me.tblFilterTop_Shows.PerformLayout
+        CType(Me.pbBannerCache,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlBanner.ResumeLayout(false)
+        Me.pnlBanner.PerformLayout
+        Me.pnlBannerMain.ResumeLayout(false)
+        Me.pnlBannerMain.PerformLayout
+        Me.tblBannerMain.ResumeLayout(false)
+        CType(Me.pbBanner,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlBannerBottom.ResumeLayout(false)
+        Me.pnlBannerBottom.PerformLayout
+        Me.tblBannerBottom.ResumeLayout(false)
+        Me.tblBannerBottom.PerformLayout
+        Me.pnlBannerTop.ResumeLayout(false)
+        Me.pnlBannerTop.PerformLayout
+        Me.tblBannerTop.ResumeLayout(false)
+        Me.tblBannerTop.PerformLayout
         CType(Me.pbCache,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlClearLogo.ResumeLayout(false)
         Me.pnlClearLogo.PerformLayout
@@ -12332,21 +12347,6 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.ResumeLayout(false)
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlLoadSettings.ResumeLayout(false)
-        Me.pnlBanner.ResumeLayout(false)
-        Me.pnlBanner.PerformLayout
-        Me.pnlBannerMain.ResumeLayout(false)
-        Me.pnlBannerMain.PerformLayout
-        Me.tblBannerMain.ResumeLayout(false)
-        CType(Me.pbBanner,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlBannerBottom.ResumeLayout(false)
-        Me.pnlBannerBottom.PerformLayout
-        Me.tblBannerBottom.ResumeLayout(false)
-        Me.tblBannerBottom.PerformLayout
-        Me.pnlBannerTop.ResumeLayout(false)
-        Me.pnlBannerTop.PerformLayout
-        Me.tblBannerTop.ResumeLayout(false)
-        Me.tblBannerTop.PerformLayout
-        CType(Me.pbBannerCache,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
 
