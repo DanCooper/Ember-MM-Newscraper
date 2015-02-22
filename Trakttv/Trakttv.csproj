@@ -82,6 +82,7 @@
     <Compile Include="Model\Lists\TraktList.cs" />
     <Compile Include="Model\Lists\TraktListDetail.cs" />
     <Compile Include="Model\Lists\TraktListItem.cs" />
+    <Compile Include="Model\Lists\TraktSyncList.cs" />
     <Compile Include="Model\Movie\TraktMovie.cs" />
     <Compile Include="Model\Movie\TraktMovieBase.cs" />
     <Compile Include="Model\Movie\TraktMovieCollected.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Model\Movie\TraktSyncMovies.cs" />
     <Compile Include="Model\Movie\TraktSyncMoviesWatched.cs" />
     <Compile Include="Model\Movie\TraktSyncMovieWatched.cs" />
+    <Compile Include="Model\Movie\TraktSyncMovieWatchedRated.cs" />
     <Compile Include="Model\Other\TraktId.cs" />
     <Compile Include="Model\Other\TraktImage.cs" />
     <Compile Include="Model\Other\TraktNetworkFriend.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Model\Show\TraktSyncEpisodesWatched.cs" />
     <Compile Include="Model\Show\TraktSyncEpisodeWatched.cs" />
     <Compile Include="Model\Show\TraktSyncShowEx.cs" />
+    <Compile Include="Model\Show\TraktShowProgress.cs" />
     <Compile Include="Model\Show\TraktSyncShows.cs" />
     <Compile Include="Model\Show\TraktSyncShowsEx.cs" />
     <Compile Include="Model\Show\TraktSyncShowsWatchedEx.cs" />
