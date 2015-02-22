@@ -2036,15 +2036,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperOutlinePlotEnglishOverwrite() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieScraperOutlinePlotEnglishOverwrite
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieScraperOutlinePlotEnglishOverwrite = value
-        End Set
-    End Property
-
     Public Property TVASBannerOverwrite() As Boolean
         Get
             Return Settings._XMLSettings.TVASBannerOverwrite
@@ -5877,7 +5868,6 @@ Public Class Settings
         Me.MovieScraperCertOnlyValue = False
         Me.MovieScraperOutline = True
         Me.MovieScraperOutlineLimit = 350
-        Me.MovieScraperOutlinePlotEnglishOverwrite = False
         Me.MovieScraperPlot = True
         Me.MovieScraperPlotForOutline = False
         Me.MovieScraperRating = True

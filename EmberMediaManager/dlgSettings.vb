@@ -2386,10 +2386,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieScraperOutlinePlotEnglishOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperOutlinePlotEnglishOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieScraperOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperOutline.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3663,7 +3659,6 @@ Public Class dlgSettings
             Me.chkMovieScraperOriginalTitle.Checked = .MovieScraperOriginalTitle
             Me.chkMovieScraperDetailView.Checked = .MovieScraperUseDetailView
             Me.chkMovieScraperOutline.Checked = .MovieScraperOutline
-            Me.chkMovieScraperOutlinePlotEnglishOverwrite.Checked = .MovieScraperOutlinePlotEnglishOverwrite
             Me.chkMovieScraperPlot.Checked = .MovieScraperPlot
             Me.chkMovieScraperPlotForOutline.Checked = .MovieScraperPlotForOutline
             Me.chkMovieScraperRating.Checked = .MovieScraperRating
@@ -5348,7 +5343,6 @@ Public Class dlgSettings
             Else
                 .MovieScraperOutlineLimit = 0
             End If
-            .MovieScraperOutlinePlotEnglishOverwrite = Me.chkMovieScraperOutlinePlotEnglishOverwrite.Checked
             .MovieScraperPlot = Me.chkMovieScraperPlot.Checked
             .MovieScraperPlotForOutline = Me.chkMovieScraperPlotForOutline.Checked
             .MovieScraperRating = Me.chkMovieScraperRating.Checked
@@ -6607,7 +6601,6 @@ Public Class dlgSettings
         Me.chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         Me.chkMovieScraperCertOnlyValue.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
-        Me.chkMovieScraperOutlinePlotEnglishOverwrite.Text = Master.eLang.GetString(1005, "Only overwrite english Outline and Plot")
         Me.chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Outline if Outline is Empty")
         Me.chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
         Me.chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")

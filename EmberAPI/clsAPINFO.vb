@@ -247,11 +247,6 @@ Public Class NFO
                 DBMovie.Movie.Tagline = String.Empty
             End If
 
-            'Director
-            'If (String.IsNullOrEmpty(DBMovie.Movie.Director) OrElse Not Master.eSettings.MovieLockDirector) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Director) AndAlso Master.eSettings.MovieScraperDirector Then
-            '    DBMovie.Movie.Director = scrapedmovie.Director
-            'End If
-
             'Directors
             If (DBMovie.Movie.Directors.Count < 1 OrElse Not Master.eSettings.MovieLockDirector) AndAlso Options.bDirector AndAlso _
                 scrapedmovie.Directors.Count > 0 AndAlso Master.eSettings.MovieScraperDirector AndAlso Not new_Directors Then
@@ -261,11 +256,6 @@ Public Class NFO
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperDirector AndAlso Not Master.eSettings.MovieLockDirector Then
                 DBMovie.Movie.Directors.Clear()
             End If
-
-            'Country
-            'If (String.IsNullOrEmpty(DBMovie.Movie.Country) OrElse Not Master.eSettings.MovieLockCountry) AndAlso Not String.IsNullOrEmpty(scrapedmovie.Country) AndAlso Master.eSettings.MovieScraperCountry Then
-            '    DBMovie.Movie.Country = scrapedmovie.Country
-            'End If
 
             'Countries
             If (DBMovie.Movie.Countries.Count < 1 OrElse Not Master.eSettings.MovieLockCountry) AndAlso Options.bCountry AndAlso _
@@ -279,7 +269,7 @@ Public Class NFO
 
             'Outline
             If (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso Options.bOutline AndAlso _
-                Not String.IsNullOrEmpty(scrapedmovie.Outline) AndAlso Master.eSettings.MovieScraperOutline AndAlso (Not new_Outline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
+                Not String.IsNullOrEmpty(scrapedmovie.Outline) AndAlso Master.eSettings.MovieScraperOutline AndAlso Not new_Outline Then
                 DBMovie.Movie.Outline = scrapedmovie.Outline
                 new_Outline = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOutline AndAlso Not Master.eSettings.MovieLockOutline Then
@@ -292,7 +282,7 @@ Public Class NFO
 
             'Plot
             If (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot) AndAlso Options.bPlot AndAlso _
-                Not String.IsNullOrEmpty(scrapedmovie.Plot) AndAlso Master.eSettings.MovieScraperPlot AndAlso (Not new_Plot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
+                Not String.IsNullOrEmpty(scrapedmovie.Plot) AndAlso Master.eSettings.MovieScraperPlot AndAlso Not new_Plot Then
                 DBMovie.Movie.Plot = scrapedmovie.Plot
                 new_Plot = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperPlot AndAlso Not Master.eSettings.MovieLockPlot Then

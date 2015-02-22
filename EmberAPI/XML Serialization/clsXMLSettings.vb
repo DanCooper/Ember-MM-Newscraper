@@ -198,7 +198,6 @@ Partial Public Class clsXMLSettings
     Private _moviescrapercertonlyvalue As Boolean
     Private _moviescraperoutline As Boolean
     Private _moviescraperoutlinelimit As Integer
-    Private _moviescraperoutlineplotenglishoverwrite As Boolean
     Private _moviescraperplot As Boolean
     Private _moviescraperplotforoutline As Boolean
     Private _moviescraperrating As Boolean
@@ -2811,15 +2810,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescrapercertonlyvalue = value
-        End Set
-    End Property
-
-    Public Property MovieScraperOutlinePlotEnglishOverwrite() As Boolean
-        Get
-            Return Me._moviescraperoutlineplotenglishoverwrite
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviescraperoutlineplotenglishoverwrite = value
         End Set
     End Property
 
