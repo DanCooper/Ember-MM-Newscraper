@@ -9042,17 +9042,20 @@ doCancel:
             Me.dgvMovies.DataSource = Nothing
             Me.ClearInfo()
             If Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
-                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movie ", _
-                                                                   "WHERE idMovie IN (SELECT idMovie FROM actorlinkmovie WHERE strActor LIKE '%", Me.filSearch_Movies, "%') ", _
-                                                                   "ORDER BY ListTitle COLLATE NOCASE;"))
+                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT movielist.* FROM actors ", _
+                                                                   "LEFT OUTER JOIN actorlinkmovie ON (actors.idActor = actorlinkmovie.idActor) ", _
+                                                                   "INNER JOIN movielist ON (actorlinkmovie.idMovie = movielist.idMovie) ", _
+                                                                   "WHERE actors.strActor LIKE '%", Me.filSearch_Movies, "%' ", _
+                                                                   "ORDER BY movielist.ListTitle COLLATE NOCASE;"))
             ElseIf Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
-                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movie ", _
-                                                                   "WHERE idMovie IN (SELECT idMovie FROM actorlinkmovie WHERE strRole LIKE '%", Me.filSearch_Movies, "%') ", _
-                                                                   "ORDER BY ListTitle COLLATE NOCASE;"))
+                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT movielist.* FROM actorlinkmovie ", _
+                                                                   "INNER JOIN movielist ON (actorlinkmovie.idMovie = movielist.idMovie) ", _
+                                                                   "actorlinkmovie.strRole LIKE '%", Me.filSearch_Movies, "%' ", _
+                                                                   "ORDER BY movielist.ListTitle COLLATE NOCASE;"))
             Else
                 If Me.chkFilterDuplicates_Movies.Checked Then
-                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movie ", _
-                                                                       "WHERE imdb IN (SELECT imdb FROM movie WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ", _
+                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ", _
+                                                                       "WHERE imdb IN (SELECT imdb FROM movielist WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ", _
                                                                        "ORDER BY ListTitle COLLATE NOCASE;"))
                 Else
                     Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ", _
