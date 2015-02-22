@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -68,6 +68,8 @@ namespace Trakttv
         {
             logger.Info("[READFromTrakt] Address: " + address);
 
+            // no SSL for now... -> faster
+            //address = address.Replace("https://", "http://");
             if (OnDataSend != null)
                 OnDataSend(address, null);
 
@@ -76,11 +78,12 @@ namespace Trakttv
             request.KeepAlive = true;
             request.Method = type;
             request.ContentLength = 0;
-            request.Timeout = 120000;
+            // set request timeout to 15s
+            request.Timeout = 15000;
             request.ContentType = "application/json";
             request.UserAgent = TraktSettings.UserAgent;
 
-            // v2 API, add required headers for authorisation
+            // v2 API, add required headers
             request.Headers.Add("trakt-api-version", "2");
             request.Headers.Add("trakt-api-key", TraktSettings.ApiKey);
 
@@ -147,10 +150,17 @@ namespace Trakttv
         static string SENDToTrakt(string address, string uploadstring, bool oAuth = true, string method = "POST")
         
         {
+
+           // address = address.Replace("https://", "http://");
             logger.Info("[SENDToTrakt] Address: " + address);
             logger.Info("[SENDToTrakt] Post: " + uploadstring);
+
+          
             if (OnDataSend != null && oAuth)
                 OnDataSend(address, uploadstring);
+
+            if (uploadstring == null)
+                uploadstring = string.Empty;
 
             byte[] data = new UTF8Encoding().GetBytes(uploadstring);
 
@@ -159,7 +169,7 @@ namespace Trakttv
 
             request.Method = method;
             request.ContentLength = data.Length;
-            request.Timeout = 120000;
+            request.Timeout = 15000;
             request.ContentType = "application/json";
             request.UserAgent = TraktSettings.UserAgent;
 
@@ -377,6 +387,21 @@ namespace Trakttv
 
         #endregion
 
+        #region GET ShowProgress
+        /// <summary>
+        /// Returns progress of a specific show
+        /// <param name="ID">The ID of the show</param>
+        /// </summary>
+        public static TraktShowProgress GetProgressShow(string ID)
+        {
+            var response = READFromTrakt(string.Format(TraktURIs.GETProgressShow, ID));
+
+            if (response == null) return null;
+            return response.FromJSON<TraktShowProgress>();
+        }
+
+        #endregion
+
         #region GET Watchlists (Movies/TVShows/Episodes)
 
         /// <summary>
@@ -456,9 +481,9 @@ namespace Trakttv
         /// Updates existing list on trakt
         /// </summary>
         /// <param name="user">The user to get</param>
-        public static TraktListDetail UpdateCustomList(TraktListDetail list, string username)
+        public static TraktListDetail UpdateCustomList(TraktListDetail list, string username, string id)
         {
-            var response = ReplaceOnTrakt(string.Format(TraktURIs.SENDListEdit, username), list.ToJSON());
+            var response = ReplaceOnTrakt(string.Format(TraktURIs.SENDListEdit, username,id), list.ToJSON());
             return response.FromJSON<TraktListDetail>();
         }
 

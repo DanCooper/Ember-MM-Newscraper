@@ -1453,4 +1453,14 @@
   <string id="1361">New Episode(s)</string>
   <string id="1362">New Show(s)</string>
   <string id="1363">No Banners Found</string>
+  <string id="1364">Movies removed from trakt.tv watchlist!</string>
+  <string id="1365">No changes made!</string>
+  <string id="1366">Movies added to trakt.tv watchlist!</string>
+  <string id="1367">Edited existing list(s) will be saved with prefix NEWLIST. Please change name of list in dashboard!</string>
+  <string id="1368">Your trakt.tv dashboard</string> 
+  <string id="1369">Last watched</string> 
+  <string id="1370">Progress</string> 
+  <string id="1371">Submit ratings to trakt.tv</string> 
+  <string id="1372">Added ratings to trakt.tv!</string> 
+  <string id="1373">No ratings submitted!</string> 
 </strings>
