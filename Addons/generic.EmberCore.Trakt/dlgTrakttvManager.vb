@@ -2677,9 +2677,9 @@ Public Class dlgTrakttvManager
     ''' 2014/10/31 Cocotus - First implementation
     Private Sub dgvtraktList_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvtraktList.CellContentClick
         If e.RowIndex > -1 AndAlso e.ColumnIndex = 4 AndAlso dgvtraktList.CurrentCell.RowIndex > -1 Then
-            If dgvtraktList(e.ColumnIndex, e.RowIndex).Value.ToString().StartsWith("http") Then
-                System.Diagnostics.Process.Start("http://www.imdb.com/title/" & dgvtraktList.CurrentCell.Value.ToString())
-            End If
+            System.Diagnostics.Process.Start("http://www.imdb.com/title/" & dgvtraktList.CurrentCell.Value.ToString())
+        ElseIf e.RowIndex > -1 AndAlso e.ColumnIndex = 5 AndAlso dgvtraktList.CurrentCell.RowIndex > -1 Then
+            System.Diagnostics.Process.Start(dgvtraktList.CurrentCell.Value.ToString())
         End If
     End Sub
 
