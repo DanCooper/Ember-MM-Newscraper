@@ -470,8 +470,9 @@ Namespace TMDB
 
                 If bwTMDB.CancellationPending Then Return Nothing
 
-                'Actors
                 Dim aCast As WatTmdb.V3.TmdbMovieCast = Nothing
+
+                'Actors
                 If Options.bCast Then
                     aCast = _TMDBApi.GetMovieCast(Movie.id)
                     If Not IsNothing(aCast) AndAlso Not IsNothing(aCast.cast) Then
@@ -500,6 +501,40 @@ Namespace TMDB
                     'only update nMovie if scraped result is not empty/nothing!
                     If Cast.Count > 0 Then
                         nMovie.Actors = Cast
+                    End If
+                End If
+
+                If bwTMDB.CancellationPending Then Return Nothing
+
+                'Use TMDB other infos?
+                If FullCrew Or Options.bWriters Or Options.bDirector Then
+                    'Get All Other Info
+                    If IsNothing(aCast) Then
+                        aCast = _TMDBApi.GetMovieCast(Movie.id)
+                        If Not IsNothing(aCast) AndAlso Not IsNothing(aCast.cast) Then
+                            If (aCast.crew.Count = 0) AndAlso _MySettings.FallBackEng Then
+                                aCast = _TMDBApiE.GetMovieCast(Movie.id)
+                            End If
+                        Else
+                            If _MySettings.FallBackEng Then
+                                aCast = _TMDBApiE.GetMovieCast(Movie.id)
+                            End If
+                        End If
+                    End If
+
+                    If Not IsNothing(aCast.crew) Then
+                        For Each aAc As WatTmdb.V3.Crew In aCast.crew
+                            If Options.bWriters Then
+                                If aAc.department = "Writing" AndAlso aAc.job = "Writer" Then
+                                    nMovie.Credits.Add(aAc.name)
+                                End If
+                            End If
+                            If Options.bDirector Then
+                                If aAc.department = "Directing" AndAlso aAc.job = "Director" Then
+                                    nMovie.Directors.Add(aAc.name)
+                                End If
+                            End If
+                        Next
                     End If
                 End If
 
@@ -601,41 +636,6 @@ Namespace TMDB
                     'If Not String.IsNullOrEmpty(tStr) Then
                     '    nMovie.Studio = tStr
                     'End If
-                End If
-
-                If bwTMDB.CancellationPending Then Return Nothing
-
-                'Use TMDB other infos?
-                If FullCrew Or Options.bWriters Or Options.bDirector Then
-                    'Get All Other Info
-                    If IsNothing(aCast) Then
-                        aCast = _TMDBApi.GetMovieCast(Movie.id)
-                        If Not IsNothing(aCast) AndAlso Not IsNothing(aCast.cast) Then
-                            If (aCast.crew.Count = 0) AndAlso _MySettings.FallBackEng Then
-                                aCast = _TMDBApiE.GetMovieCast(Movie.id)
-                            End If
-                        Else
-                            If _MySettings.FallBackEng Then
-                                aCast = _TMDBApiE.GetMovieCast(Movie.id)
-                            End If
-                        End If
-                    End If
-
-                    If Not IsNothing(aCast.crew) Then
-                        For Each aAc As WatTmdb.V3.Crew In aCast.crew
-
-                            If Options.bWriters Then
-                                If aAc.department = "Writing" AndAlso aAc.job = "Writer" Then
-                                    nMovie.Credits.Add(aAc.name)
-                                End If
-                            End If
-                            If Options.bDirector Then
-                                If aAc.job = "Director" Then
-                                    nMovie.Directors.Add(aAc.name)
-                                End If
-                            End If
-                        Next
-                    End If
                 End If
 
                 If bwTMDB.CancellationPending Then Return Nothing
