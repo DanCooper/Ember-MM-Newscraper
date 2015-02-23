@@ -16668,6 +16668,7 @@ doCancel:
 
     Private Sub SetWatchedStatus_Episode()
         Dim setWatched As Boolean = False
+        Dim SeasonsList As New List(Of Integer)
         If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
                 'if any one item is set as not watched, set menu to watched
@@ -16684,7 +16685,9 @@ doCancel:
                 Dim par_episode_Playcount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_Playcount", DbType.String, 0, "Playcount")
                 Dim par_episode_idEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_episode_idEpisode", DbType.Int32, 0, "idEpisode")
                 SQLcommand.CommandText = "UPDATE episode SET Playcount = (?) WHERE idEpisode = (?);"
+                Dim iShow As Integer = CInt(Me.dgvTVEpisodes.SelectedRows(0).Cells("idShow").Value)
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
                     Dim currPlaycount As String = String.Empty
                     Dim hasWatched As Boolean = False
                     Dim newPlaycount As String = String.Empty
@@ -16706,6 +16709,10 @@ doCancel:
 
                     Me.RefreshEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True)
                 Next
+                For Each iSeason In SeasonsList
+                    Me.RefreshSeason(iShow, iSeason, True)
+                Next
+                Me.RefreshShow(iShow, True, False, False, False)
             End Using
             SQLtransaction.Commit()
         End Using
