@@ -525,7 +525,7 @@ Namespace TMDB
                     If Not IsNothing(aCast.crew) Then
                         For Each aAc As WatTmdb.V3.Crew In aCast.crew
                             If Options.bWriters Then
-                                If aAc.department = "Writing" AndAlso aAc.job = "Screenplay" Then
+                                If aAc.department = "Writing" AndAlso (aAc.job = "Author" OrElse aAc.job = "Screenplay" OrElse aAc.job = "Writer") Then
                                     nMovie.Credits.Add(aAc.name)
                                 End If
                             End If
