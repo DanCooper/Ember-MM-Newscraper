@@ -6156,9 +6156,9 @@ doCancel:
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                    Me.tspbLoading.Value += 1
                     tFill = Me.RefreshShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True, False, True)
                     If tFill Then doFill = True
-                    Me.tspbLoading.Value += 1
                 Next
                 SQLtransaction.Commit()
             End Using
@@ -15094,7 +15094,7 @@ doCancel:
 
         tmpShowDb = Master.DB.LoadTVEpFromDB(ID, True)
 
-        If Directory.Exists(tmpShowDb.ShowPath) Then
+        If File.Exists(tmpShowDb.Filename) Then
 
             If FromNfo Then
                 If String.IsNullOrEmpty(tmpShowDb.EpNfoPath) Then
@@ -15132,7 +15132,7 @@ doCancel:
             tmpShowDb.EpSubtitles = eContainer.Subtitles
             'assume invalid nfo if no title
             tmpShowDb.EpNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVEp.Title), String.Empty, eContainer.Nfo)
-            
+
             Master.DB.SaveTVEpToDB(tmpShowDb, False, False, BatchMode, ToNfo)
 
             Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM episodelist WHERE idEpisode={0}", ID))
@@ -15480,7 +15480,7 @@ doCancel:
 
             Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLCommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS COUNT FROM episode WHERE idShow = ", ID, " AND Missing = 0;")
-                Me.tspbLoading.Maximum = Convert.ToInt32(SQLCommand.ExecuteScalar) + 1
+                Me.tspbLoading.Maximum = Convert.ToInt32(SQLCommand.ExecuteScalar)
             End Using
 
             Me.tslLoading.Text = Master.eLang.GetString(731, "Refreshing Show:")
