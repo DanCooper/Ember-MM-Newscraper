@@ -631,6 +631,7 @@ Public Class frmMain
             End If
 
             If Scan.TV Then
+                Me.currList = 0
                 Me.prevShowRow = -1
                 Me.prevSeasonRow = -1
                 Me.prevEpRow = -1
