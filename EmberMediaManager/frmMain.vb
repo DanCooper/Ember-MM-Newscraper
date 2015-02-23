@@ -621,14 +621,19 @@ Public Class frmMain
             Me.fScanner.CancelAndWait()
 
             If Scan.Movies Then
+                Me.prevMovieRow = -1
                 Me.dgvMovies.DataSource = Nothing
             End If
 
             If Scan.MovieSets Then
+                Me.prevMovieSetRow = -1
                 Me.dgvMovieSets.DataSource = Nothing
             End If
 
             If Scan.TV Then
+                Me.prevShowRow = -1
+                Me.prevSeasonRow = -1
+                Me.prevEpRow = -1
                 Me.dgvTVShows.DataSource = Nothing
                 Me.dgvTVSeasons.DataSource = Nothing
                 Me.dgvTVEpisodes.DataSource = Nothing
