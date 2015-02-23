@@ -3694,143 +3694,79 @@ Public Class Database
     ''' Old-> Public Sub SaveMoviePlayCountInDatabase(ByVal myWatchedMovies As Dictionary(Of String, KeyValuePair(Of String, String)))
     ''' </remarks>
     Public Sub SaveMoviePlayCountInDatabase(ByVal WatchedMovieData As KeyValuePair(Of String, KeyValuePair(Of String, Integer)))
-        Try
-            Dim PlaycountStored As Boolean = True
-            Dim _movieDB As New Structures.DBMovie
-            _movieDB.Movie = New MediaContainers.Movie
-            ''not using Loop here, only do one movie a time (call function repeatedly!)!
-            '  For Each watchedMovieData In myWatchedMovies
-
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                'TODO: This statement (directly filter IMDB) doesn't work ?! This is bad, cause right now I have to get all movies and search through them!
-                '         SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE imdb = ", watchedMovieIMDBID.Value, ";")
-                SQLcommand.CommandText = String.Concat("SELECT idMovie, MoviePath, Imdb, Playcount FROM movie;")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT idMovie, Playcount FROM movie WHERE Imdb = '{0}';", WatchedMovieData.Value.Key)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
                     While SQLreader.Read
-                        If Not DBNull.Value.Equals(SQLreader("IMDB")) Then
-                            If SQLreader("IMDB").ToString.Equals(WatchedMovieData.Value.Key) Then
-                                _movieDB.ID = CLng(SQLreader("idMovie").ToString)
-                                _movieDB.Movie.IMDBID = SQLreader("IMDB").ToString
-                                If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.Filename = SQLreader("MoviePath").ToString
-                                If Not DBNull.Value.Equals(SQLreader("Playcount")) Then _movieDB.Movie.PlayCount = SQLreader("Playcount").ToString
-                                If DBNull.Value.Equals(SQLreader("Playcount")) Or SQLreader("Playcount").Equals("0") Or SQLreader("Playcount").Equals("") Or Not (SQLreader("Playcount").Equals(WatchedMovieData.Value.Value.ToString)) Then
+                        Dim currPlaycount As String = If(Not DBNull.Value.Equals(SQLreader("Playcount")), SQLreader("Playcount").ToString, Nothing) 'Playcount is always Nothing or > 0
+                        If currPlaycount Is Nothing OrElse Not CInt(currPlaycount) = WatchedMovieData.Value.Value Then
+                            Dim _movieSavetoNFO = Master.DB.LoadMovieFromDB(CInt(SQLreader("idMovie")))
+                            _movieSavetoNFO.Movie.PlayCount = WatchedMovieData.Value.Value.ToString
+                            Master.DB.SaveMovieToDB(_movieSavetoNFO, False, False, True)
 
-                                    PlaycountStored = False
-                                End If
-                                Exit While
+                            'create .watched files
+                            If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+                                For Each a In FileUtils.GetFilenameList.Movie(_movieSavetoNFO.Filename, False, Enums.ModType_Movie.WatchedFile)
+                                    If Not File.Exists(a) Then
+                                        Dim fs As FileStream = File.Create(a)
+                                        fs.Close()
+                                    End If
+                                Next
                             End If
                         End If
                     End While
-                End Using
-            End Using
-
-            If PlaycountStored = False Then
-                Using SQLTrans As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
-                    Using SQLUpdatecommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        Dim parPlaycount As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
-                        SQLUpdatecommand.CommandText = String.Concat("UPDATE movie SET Playcount = (?) WHERE idMovie = ", _movieDB.ID, ";")
-                        parPlaycount.Value = If(Not String.IsNullOrEmpty(WatchedMovieData.Value.Value.ToString) AndAlso CInt(WatchedMovieData.Value.Value.ToString) > 0, WatchedMovieData.Value.Value.ToString, Nothing)
-                        SQLUpdatecommand.ExecuteNonQuery()
-                    End Using
-                    SQLTrans.Commit()
-                End Using
-                'Save to NFO!
-                Dim _movieSavetoNFO As New Structures.DBMovie
-                _movieSavetoNFO = Master.DB.LoadMovieFromDB(_movieDB.ID)
-                Master.DB.SaveMovieToDB(_movieSavetoNFO, False, False, True)
-                'create .watched files
-                If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                    For Each a In FileUtils.GetFilenameList.Movie(_movieSavetoNFO.Filename, False, Enums.ModType_Movie.WatchedFile)
-                        If Not File.Exists(a) Then
-                            Dim fs As FileStream = File.Create(a)
-                            fs.Close()
-                        End If
-                    Next
                 End If
-            End If
-            ''not using Loop here, only do one movie a time (call function repeatedly!)!
-            '    Next
-        Catch ex As Exception
-
-        End Try
+            End Using
+        End Using
     End Sub
     ''' <summary>
-    ''' Savethe PlayCount Tag for watched episode into Ember database /NFO if not already set
+    ''' Save the PlayCount Tag for watched episode into Ember database /NFO if not already set
     ''' </summary>
-    ''' <param name="TVDBID">TVDBID for TV Show identification</param>
-    ''' <param name="Season">Season Number</param>
-    ''' <param name="episode">Episode Number</param>
+    ''' <param name="strTVDBID">TVDBID for TV Show identification</param>
+    ''' <param name="strSeason">Season Number</param>
+    ''' <param name="strEpisode">Episode Number</param>
     ''' <remarks>
     ''' cocotus 2013/03 Trakt.tv syncing - Episodes
     ''' not using loop here, only do one episode a time (call function repeatedly!)!
     '''</remarks>
-    Public Sub SaveEpisodePlayCountInDatabase(ByVal TVDBID As String, ByVal Season As String, ByVal episode As String)
-        'TODO PlaycountStored is set to False if db value is 0 or not set. What conditions might cause that to happen? If DB Version issues, should be resolved elsewhere first!
-        Try
-            Dim PlaycountStored As Boolean = True
-            Dim _TVEpDB As New Structures.DBTV
-            Dim tempTVDBID As String = ""
-            Dim tempPlaycount As String = ""
+    Public Sub SaveEpisodePlayCountInDatabase(ByVal strTVDBID As String, ByVal strSeason As String, ByVal strEpisode As String)
+        Dim tempTVDBID As String = String.Empty
 
-            'First get the internal ID of TVSHOW using the TVDBID info
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idShow FROM tvshow WHERE tvdb = ", TVDBID, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+        'First get the internal ID of TVShow using the TVDBID info
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT idShow FROM tvshow WHERE tvdb = '{0}';", strTVDBID)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
                     While SQLreader.Read
                         If Not DBNull.Value.Equals(SQLreader("idShow")) Then
                             tempTVDBID = SQLreader("idShow").ToString
                             Exit While
                         End If
                     End While
-                End Using
+                Else
+                    'No ID --> TV Show doesn't Exist in Ember --> Exit no updates!
+                    Exit Sub
+                End If
             End Using
+        End Using
 
-            'No ID --> TV Show doesn't Exist in Ember --> Exit no updates!
-            If String.IsNullOrEmpty(tempTVDBID) Then Exit Sub
-            'Now we search episodes of the found TV Show
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idEpisode, Episode, Season, Playcount FROM episode WHERE idShow = ", tempTVDBID, ";")
-
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+        'Now we search episodes of the found TV Show
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT idEpisode, Playcount FROM episode WHERE idShow = {0} AND Season = {1} AND Episode = {2};", tempTVDBID, strSeason, strEpisode)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
                     While SQLreader.Read
-                        If SQLreader("Season").ToString.Equals(Season) AndAlso SQLreader("Episode").ToString.Equals(episode) Then
-                            _TVEpDB.EpID = CLng(SQLreader("idEpisode").ToString)
-                            'Only if playcount is not set we update
-                            If DBNull.Value.Equals(SQLreader("Playcount")) Or SQLreader("Playcount").Equals("0") Or SQLreader("Playcount").Equals("") Then
-                                PlaycountStored = False
-                            Else
-                                tempPlaycount = SQLreader("playcount").ToString
-                            End If
-                            Exit While
+                        Dim currPlaycount As String = If(Not DBNull.Value.Equals(SQLreader("Playcount")), SQLreader("Playcount").ToString, Nothing) 'Playcount is always Nothing or > 0
+                        If currPlaycount Is Nothing Then
+                            Dim _episodeSavetoNFO = Master.DB.LoadTVEpFromDB(CInt(SQLreader("idEpisode")), True)
+                            _episodeSavetoNFO.TVEp.Playcount = "1"
+                            Master.DB.SaveTVEpToDB(_episodeSavetoNFO, False, False, True)
                         End If
                     End While
-                End Using
+                End If
             End Using
-            'Updating Playcount in database
-            If PlaycountStored = False Then
-                Using SQLTrans As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
-                    Using SQLUpdatecommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        Dim parPlaycount As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
-                        If Not String.IsNullOrEmpty(CStr(_TVEpDB.EpID)) Then
-                            SQLUpdatecommand.CommandText = String.Concat("UPDATE episode SET Playcount = (?) WHERE idEpisode = ", _TVEpDB.EpID, ";")
-                            parPlaycount.Value = "1"
-                            SQLUpdatecommand.ExecuteNonQuery()
-                        Else
-                            Exit Sub
-                        End If
-                    End Using
-                    SQLTrans.Commit()
-                End Using
-                'Save to NFO!
-                Dim _episodeSavetoNFO As New Structures.DBTV
-                _episodeSavetoNFO = Master.DB.LoadTVEpFromDB(_TVEpDB.EpID, True)
-                SaveTVEpToDB(_episodeSavetoNFO, False, False, False, True)
-
-            End If
-
-        Catch ex As Exception
-
-        End Try
+        End Using
     End Sub
 
 #End Region 'Methods

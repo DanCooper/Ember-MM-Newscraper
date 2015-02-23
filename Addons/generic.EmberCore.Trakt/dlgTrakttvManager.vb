@@ -1011,18 +1011,18 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktPlaycountSyncLibrary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btntraktPlaycountSyncLibrary.Click
 
-            'check if playcount(s) of movies or episodes should be saved - only one type will be done!
-            If Not myWatchedMovies Is Nothing Then
-                'Save movie playcount!
-                prgtraktPlaycount.Value = 0
-                prgtraktPlaycount.Maximum = myWatchedMovies.Count
-                prgtraktPlaycount.Minimum = 0
-                prgtraktPlaycount.Step = 1
-                btntraktPlaycountSyncLibrary.Enabled = False
-                Dim traktthread As Threading.Thread
-                traktthread = New Threading.Thread(AddressOf SaveMoviePlaycount)
-                traktthread.IsBackground = True
-                traktthread.Start()
+        'check if playcount(s) of movies or episodes should be saved - only one type will be done!
+        If Not myWatchedMovies Is Nothing Then
+            'Save movie playcount!
+            prgtraktPlaycount.Value = 0
+            prgtraktPlaycount.Maximum = myWatchedMovies.Count
+            prgtraktPlaycount.Minimum = 0
+            prgtraktPlaycount.Step = 1
+            btntraktPlaycountSyncLibrary.Enabled = False
+            Dim traktthread As Threading.Thread
+            traktthread = New Threading.Thread(AddressOf SaveMoviePlaycount)
+            traktthread.IsBackground = True
+            traktthread.Start()
         ElseIf Not mydictWatchedEpisodes Is Nothing Then
             'save episodes playcount!
             prgtraktPlaycount.Value = 0
@@ -1038,7 +1038,7 @@ Public Class dlgTrakttvManager
             traktthread = New Threading.Thread(AddressOf SaveEpisodePlaycount)
             traktthread.IsBackground = True
             traktthread.Start()
-            End If
+        End If
     End Sub
 
     ''' <summary>
@@ -1050,7 +1050,7 @@ Public Class dlgTrakttvManager
     Private Sub SaveMoviePlaycount()
             Dim i As Integer = 0
         For Each watchedMovieData In mydictWatchedMovies
-            i = i + 1
+            i += 1
             '  logger.Info("[SaveMoviePlaycount] MovieID" & watchedMovieData.Value.Key & " Playcount: " & watchedMovieData.Value.Value.ToString)
             Master.DB.SaveMoviePlayCountInDatabase(watchedMovieData)
             ' Invoke to update UI from thread...
@@ -1069,7 +1069,7 @@ Public Class dlgTrakttvManager
 
         Dim i As Integer = 0
         For Each watchedShowData In mydictWatchedEpisodes
-            i = i + 1
+            i += 1
 
             '  loop through every season of certain tvshow
             For z = 0 To watchedShowData.Value.Count - 1
