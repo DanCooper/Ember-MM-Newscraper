@@ -16777,6 +16777,7 @@ doCancel:
 
     Private Sub SetWatchedStatus_Season()
         Dim setWatched As Boolean = False
+        Dim ShowsList As New List(Of Integer)
         If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
             For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
                 'if any one item is set as not watched, set menu to watched
@@ -16793,6 +16794,7 @@ doCancel:
                 Dim hasWatched As Boolean = CBool(sRow.Cells("HasWatched").Value)
                 Dim iSeason As Integer = CInt(sRow.Cells("Season").Value)
                 Dim iShow As Integer = CInt(sRow.Cells("idShow").Value)
+                If Not ShowsList.Contains(iShow) Then ShowsList.Add(iShow)
                 Using SQLcommand_get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLcommand_get.CommandText = String.Format("SELECT idEpisode, Playcount FROM episode WHERE Missing = 0 AND idShow = {0} AND Season = {1};", iShow, iSeason)
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_get.ExecuteReader()
@@ -16825,6 +16827,9 @@ doCancel:
                     End Using
                 End Using
                 Me.RefreshSeason(iShow, iSeason, True)
+            Next
+            For Each iShowID In ShowsList
+                Me.RefreshShow(iShowID, True, False, False, False)
             Next
             SQLtransaction.Commit()
         End Using
