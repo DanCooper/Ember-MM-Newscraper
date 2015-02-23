@@ -9050,7 +9050,7 @@ doCancel:
             ElseIf Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
                 Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT movielist.* FROM actorlinkmovie ", _
                                                                    "INNER JOIN movielist ON (actorlinkmovie.idMovie = movielist.idMovie) ", _
-                                                                   "actorlinkmovie.strRole LIKE '%", Me.filSearch_Movies, "%' ", _
+                                                                   "WHERE actorlinkmovie.strRole LIKE '%", Me.filSearch_Movies, "%' ", _
                                                                    "ORDER BY movielist.ListTitle COLLATE NOCASE;"))
             Else
                 If Me.chkFilterDuplicates_Movies.Checked Then
