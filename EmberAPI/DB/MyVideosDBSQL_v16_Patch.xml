@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v16_to_v15">
+    <command type="DB">
+      <description>edit view seasonslist</description>
+      <execute>
+        DROP VIEW seasonslist;
+
+        CREATE VIEW seasonslist
+        AS
+        SELECT
+        seasons.*,
+        banner.url AS BannerPath,
+        fanart.url AS FanartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath,
+        CASE WHEN seasons.Season IS NOT 999 THEN COUNT(DISTINCT episodelist.idEpisode) ELSE NULL END AS Episodes,
+        COUNT(episodelist.Playcount) AS Playcount,
+        CASE WHEN seasons.Season IS NOT 999 THEN CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(episodelist.Playcount) THEN 1 ELSE 0 END ELSE NULL END AS HasWatched,
+        SUM(episodelist.New) AS NewEpisodes,
+        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 THEN 0 ELSE 1 END AS Missing
+        FROM
+        seasons
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = seasons.idSeason)
+        AND (banner.media_type = 'season')
+        AND (banner.type = 'banner')
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = seasons.idSeason)
+        AND (fanart.media_type = 'season')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = seasons.idSeason)
+        AND (landscape.media_type = 'season')
+        AND (landscape.type = 'landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = seasons.idSeason)
+        AND (poster.media_type = 'season')
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN episodelist ON (seasons.Season = episodelist.Season)
+        AND (seasons.idShow = episodelist.idShow)
+        AND (episodelist.Missing = 0)
+        GROUP BY
+        seasons.idSeason;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>
