@@ -9122,6 +9122,7 @@ doCancel:
             Me.LoadingDone = True
         Else
             If doMovies Then
+                Me.prevMovieRow = -2
                 If Me.dtMovies.Rows.Count > 0 Then
                     With Me
                         .bsMovies.DataSource = .dtMovies
@@ -9297,6 +9298,7 @@ doCancel:
             End If
 
             If doMovieSets Then
+                Me.prevMovieSetRow = -2
                 Me.dgvMovieSets.Enabled = False
                 If Me.dtMovieSets.Rows.Count > 0 Then
                     With Me
@@ -9390,6 +9392,10 @@ doCancel:
             End If
 
             If doTVShows Then
+                Me.currList = 0
+                Me.prevEpRow = -2
+                Me.prevSeasonRow = -2
+                Me.prevShowRow = -2
                 Me.dgvTVShows.Enabled = False
                 If Me.dtShows.Rows.Count > 0 Then
                     With Me
