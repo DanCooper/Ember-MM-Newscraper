@@ -3761,7 +3761,7 @@ Public Class Database
                         If currPlaycount Is Nothing Then
                             Dim _episodeSavetoNFO = Master.DB.LoadTVEpFromDB(CInt(SQLreader("idEpisode")), True)
                             _episodeSavetoNFO.TVEp.Playcount = "1"
-                            Master.DB.SaveTVEpToDB(_episodeSavetoNFO, False, False, True)
+                            Master.DB.SaveTVEpToDB(_episodeSavetoNFO, False, False, False, True)
                         End If
                     End While
                 End If
