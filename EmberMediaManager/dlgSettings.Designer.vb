@@ -175,6 +175,7 @@ Partial Class dlgSettings
         Me.tblMovieGeneralMediaListOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieGeneralMediaListSortTokensOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieGeneralSortTokensOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnMovieSortTokenReset = New System.Windows.Forms.Button()
         Me.btnMovieSortTokenRemove = New System.Windows.Forms.Button()
         Me.lstMovieSortTokens = New System.Windows.Forms.ListBox()
         Me.btnMovieSortTokenAdd = New System.Windows.Forms.Button()
@@ -1341,6 +1342,8 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnMovieSetSortTokenReset = New System.Windows.Forms.Button()
+        Me.btnTVSortTokenReset = New System.Windows.Forms.Button()
         Me.gbGeneralMiscOpts.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
@@ -3637,11 +3640,13 @@ Partial Class dlgSettings
         'tblMovieGeneralSortTokensOpts
         '
         Me.tblMovieGeneralSortTokensOpts.AutoSize = true
-        Me.tblMovieGeneralSortTokensOpts.ColumnCount = 4
+        Me.tblMovieGeneralSortTokensOpts.ColumnCount = 5
         Me.tblMovieGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieGeneralSortTokensOpts.Controls.Add(Me.btnMovieSortTokenReset, 3, 1)
         Me.tblMovieGeneralSortTokensOpts.Controls.Add(Me.btnMovieSortTokenRemove, 2, 1)
         Me.tblMovieGeneralSortTokensOpts.Controls.Add(Me.lstMovieSortTokens, 0, 0)
         Me.tblMovieGeneralSortTokensOpts.Controls.Add(Me.btnMovieSortTokenAdd, 1, 1)
@@ -3656,11 +3661,21 @@ Partial Class dlgSettings
         Me.tblMovieGeneralSortTokensOpts.Size = New System.Drawing.Size(206, 78)
         Me.tblMovieGeneralSortTokensOpts.TabIndex = 11
         '
+        'btnMovieSortTokenReset
+        '
+        Me.btnMovieSortTokenReset.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnMovieSortTokenReset.Image = CType(resources.GetObject("btnMovieSortTokenReset.Image"),System.Drawing.Image)
+        Me.btnMovieSortTokenReset.Location = New System.Drawing.Point(180, 52)
+        Me.btnMovieSortTokenReset.Name = "btnMovieSortTokenReset"
+        Me.btnMovieSortTokenReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieSortTokenReset.TabIndex = 9
+        Me.btnMovieSortTokenReset.UseVisualStyleBackColor = true
+        '
         'btnMovieSortTokenRemove
         '
         Me.btnMovieSortTokenRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnMovieSortTokenRemove.Image = CType(resources.GetObject("btnMovieSortTokenRemove.Image"),System.Drawing.Image)
-        Me.btnMovieSortTokenRemove.Location = New System.Drawing.Point(180, 52)
+        Me.btnMovieSortTokenRemove.Location = New System.Drawing.Point(99, 52)
         Me.btnMovieSortTokenRemove.Name = "btnMovieSortTokenRemove"
         Me.btnMovieSortTokenRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieSortTokenRemove.TabIndex = 3
@@ -3668,7 +3683,7 @@ Partial Class dlgSettings
         '
         'lstMovieSortTokens
         '
-        Me.tblMovieGeneralSortTokensOpts.SetColumnSpan(Me.lstMovieSortTokens, 3)
+        Me.tblMovieGeneralSortTokensOpts.SetColumnSpan(Me.lstMovieSortTokens, 4)
         Me.lstMovieSortTokens.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lstMovieSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lstMovieSortTokens.FormattingEnabled = true
@@ -3979,7 +3994,7 @@ Partial Class dlgSettings
         Me.lblSettingsTopDetails.ForeColor = System.Drawing.Color.White
         Me.lblSettingsTopDetails.Location = New System.Drawing.Point(61, 38)
         Me.lblSettingsTopDetails.Name = "lblSettingsTopDetails"
-        Me.lblSettingsTopDetails.Size = New System.Drawing.Size(246, 13)
+        Me.lblSettingsTopDetails.Size = New System.Drawing.Size(245, 13)
         Me.lblSettingsTopDetails.TabIndex = 1
         Me.lblSettingsTopDetails.Text = "Configure Ember's appearance and operation."
         '
@@ -4360,7 +4375,7 @@ Partial Class dlgSettings
         Me.pnlMovieGeneral.Controls.Add(Me.tblMovieGeneral)
         Me.pnlMovieGeneral.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieGeneral.Name = "pnlMovieGeneral"
-        Me.pnlMovieGeneral.Size = New System.Drawing.Size(733, 622)
+        Me.pnlMovieGeneral.Size = New System.Drawing.Size(733, 643)
         Me.pnlMovieGeneral.TabIndex = 15
         Me.pnlMovieGeneral.Visible = false
         '
@@ -4390,7 +4405,7 @@ Partial Class dlgSettings
         Me.tblMovieGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieGeneral.Size = New System.Drawing.Size(733, 622)
+        Me.tblMovieGeneral.Size = New System.Drawing.Size(733, 643)
         Me.tblMovieGeneral.TabIndex = 10
         '
         'gbMovieGeneralFiltersOpts
@@ -6431,7 +6446,7 @@ Partial Class dlgSettings
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Name = "gbMovieSourcesFileNamingNMTDefaultsOpts"
         Me.tblMovieSourcesFileNamingNMT.SetRowSpan(Me.gbMovieSourcesFileNamingNMTDefaultsOpts, 2)
-        Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(143, 161)
+        Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(142, 161)
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.TabIndex = 3
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.TabStop = false
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Text = "Defaults"
@@ -6476,7 +6491,7 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(137, 140)
+        Me.tblMovieSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(136, 140)
         Me.tblMovieSourcesFileNamingNMTDefaultsOpts.TabIndex = 9
         '
         'lblMovieSourcesFileNamingNMTDefaultsBanner
@@ -6495,7 +6510,7 @@ Partial Class dlgSettings
         Me.chkMovieTrailerNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieTrailerNMJ.AutoSize = true
         Me.chkMovieTrailerNMJ.Enabled = false
-        Me.chkMovieTrailerNMJ.Location = New System.Drawing.Point(110, 123)
+        Me.chkMovieTrailerNMJ.Location = New System.Drawing.Point(109, 123)
         Me.chkMovieTrailerNMJ.Name = "chkMovieTrailerNMJ"
         Me.chkMovieTrailerNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieTrailerNMJ.TabIndex = 14
@@ -6539,7 +6554,7 @@ Partial Class dlgSettings
         Me.chkMoviePosterNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMoviePosterNMJ.AutoSize = true
         Me.chkMoviePosterNMJ.Enabled = false
-        Me.chkMoviePosterNMJ.Location = New System.Drawing.Point(110, 103)
+        Me.chkMoviePosterNMJ.Location = New System.Drawing.Point(109, 103)
         Me.chkMoviePosterNMJ.Name = "chkMoviePosterNMJ"
         Me.chkMoviePosterNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMoviePosterNMJ.TabIndex = 12
@@ -6552,7 +6567,7 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Location = New System.Drawing.Point(58, 3)
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Name = "lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ"
-        Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Size = New System.Drawing.Size(38, 13)
+        Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Size = New System.Drawing.Size(37, 13)
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.TabIndex = 1
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Text = "YAMJ"
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.TextAlign = System.Drawing.ContentAlignment.TopCenter
@@ -6573,7 +6588,7 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.AutoSize = true
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Location = New System.Drawing.Point(102, 3)
+        Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Location = New System.Drawing.Point(101, 3)
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Name = "lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ"
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Size = New System.Drawing.Size(32, 13)
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.TabIndex = 2
@@ -6639,7 +6654,7 @@ Partial Class dlgSettings
         Me.chkMovieNFONMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieNFONMJ.AutoSize = true
         Me.chkMovieNFONMJ.Enabled = false
-        Me.chkMovieNFONMJ.Location = New System.Drawing.Point(110, 83)
+        Me.chkMovieNFONMJ.Location = New System.Drawing.Point(109, 83)
         Me.chkMovieNFONMJ.Name = "chkMovieNFONMJ"
         Me.chkMovieNFONMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieNFONMJ.TabIndex = 11
@@ -6650,7 +6665,7 @@ Partial Class dlgSettings
         Me.chkMovieFanartNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieFanartNMJ.AutoSize = true
         Me.chkMovieFanartNMJ.Enabled = false
-        Me.chkMovieFanartNMJ.Location = New System.Drawing.Point(110, 63)
+        Me.chkMovieFanartNMJ.Location = New System.Drawing.Point(109, 63)
         Me.chkMovieFanartNMJ.Name = "chkMovieFanartNMJ"
         Me.chkMovieFanartNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieFanartNMJ.TabIndex = 13
@@ -6672,7 +6687,7 @@ Partial Class dlgSettings
         Me.chkMovieBannerNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieBannerNMJ.AutoSize = true
         Me.chkMovieBannerNMJ.Enabled = false
-        Me.chkMovieBannerNMJ.Location = New System.Drawing.Point(110, 43)
+        Me.chkMovieBannerNMJ.Location = New System.Drawing.Point(109, 43)
         Me.chkMovieBannerNMJ.Name = "chkMovieBannerNMJ"
         Me.chkMovieBannerNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieBannerNMJ.TabIndex = 15
@@ -6682,7 +6697,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieUseNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieUseNMJ.AutoSize = true
-        Me.chkMovieUseNMJ.Location = New System.Drawing.Point(110, 23)
+        Me.chkMovieUseNMJ.Location = New System.Drawing.Point(109, 23)
         Me.chkMovieUseNMJ.Name = "chkMovieUseNMJ"
         Me.chkMovieUseNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieUseNMJ.TabIndex = 16
@@ -6704,7 +6719,7 @@ Partial Class dlgSettings
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Controls.Add(Me.tblMovieSourcesFileNamingNMTOptionalOpts)
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.gbMovieSourcesFileNamingNMTOptionalOpts.Location = New System.Drawing.Point(152, 3)
+        Me.gbMovieSourcesFileNamingNMTOptionalOpts.Location = New System.Drawing.Point(151, 3)
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Name = "gbMovieSourcesFileNamingNMTOptionalOpts"
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Size = New System.Drawing.Size(261, 95)
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.TabIndex = 18
@@ -9188,11 +9203,13 @@ Partial Class dlgSettings
         'tblTVGeneralMediaListSortTokensOpts
         '
         Me.tblTVGeneralMediaListSortTokensOpts.AutoSize = true
-        Me.tblTVGeneralMediaListSortTokensOpts.ColumnCount = 4
+        Me.tblTVGeneralMediaListSortTokensOpts.ColumnCount = 5
         Me.tblTVGeneralMediaListSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVGeneralMediaListSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVGeneralMediaListSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVGeneralMediaListSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVGeneralMediaListSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVGeneralMediaListSortTokensOpts.Controls.Add(Me.btnTVSortTokenReset, 3, 1)
         Me.tblTVGeneralMediaListSortTokensOpts.Controls.Add(Me.btnTVSortTokenRemove, 2, 1)
         Me.tblTVGeneralMediaListSortTokensOpts.Controls.Add(Me.lstTVSortTokens, 0, 0)
         Me.tblTVGeneralMediaListSortTokensOpts.Controls.Add(Me.btnTVSortTokenAdd, 1, 1)
@@ -9211,7 +9228,7 @@ Partial Class dlgSettings
         '
         Me.btnTVSortTokenRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnTVSortTokenRemove.Image = CType(resources.GetObject("btnTVSortTokenRemove.Image"),System.Drawing.Image)
-        Me.btnTVSortTokenRemove.Location = New System.Drawing.Point(180, 52)
+        Me.btnTVSortTokenRemove.Location = New System.Drawing.Point(128, 52)
         Me.btnTVSortTokenRemove.Name = "btnTVSortTokenRemove"
         Me.btnTVSortTokenRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSortTokenRemove.TabIndex = 3
@@ -9219,7 +9236,7 @@ Partial Class dlgSettings
         '
         'lstTVSortTokens
         '
-        Me.tblTVGeneralMediaListSortTokensOpts.SetColumnSpan(Me.lstTVSortTokens, 3)
+        Me.tblTVGeneralMediaListSortTokensOpts.SetColumnSpan(Me.lstTVSortTokens, 4)
         Me.lstTVSortTokens.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lstTVSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lstTVSortTokens.FormattingEnabled = true
@@ -10753,7 +10770,7 @@ Partial Class dlgSettings
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Location = New System.Drawing.Point(115, 3)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ"
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Size = New System.Drawing.Size(38, 13)
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Size = New System.Drawing.Size(37, 13)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.TabIndex = 0
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Text = "YAMJ"
         '
@@ -16230,7 +16247,7 @@ Partial Class dlgSettings
         Me.pnlMovieScraper.AutoSize = true
         Me.pnlMovieScraper.BackColor = System.Drawing.Color.White
         Me.pnlMovieScraper.Controls.Add(Me.tblMovieScraper)
-        Me.pnlMovieScraper.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMovieScraper.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
         Me.pnlMovieScraper.Size = New System.Drawing.Size(701, 621)
         Me.pnlMovieScraper.TabIndex = 14
@@ -16478,7 +16495,7 @@ Partial Class dlgSettings
         Me.lblMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieTrailerMinQual.Location = New System.Drawing.Point(3, 119)
         Me.lblMovieTrailerMinQual.Name = "lblMovieTrailerMinQual"
-        Me.lblMovieTrailerMinQual.Size = New System.Drawing.Size(98, 13)
+        Me.lblMovieTrailerMinQual.Size = New System.Drawing.Size(97, 13)
         Me.lblMovieTrailerMinQual.TabIndex = 8
         Me.lblMovieTrailerMinQual.Text = "Minimum Quality:"
         '
@@ -16489,7 +16506,7 @@ Partial Class dlgSettings
         Me.lblMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieTrailerPrefQual.Location = New System.Drawing.Point(3, 72)
         Me.lblMovieTrailerPrefQual.Name = "lblMovieTrailerPrefQual"
-        Me.lblMovieTrailerPrefQual.Size = New System.Drawing.Size(97, 13)
+        Me.lblMovieTrailerPrefQual.Size = New System.Drawing.Size(96, 13)
         Me.lblMovieTrailerPrefQual.TabIndex = 6
         Me.lblMovieTrailerPrefQual.Text = "Preferred Quality:"
         '
@@ -16799,11 +16816,13 @@ Partial Class dlgSettings
         'tblMovieSetGeneralSortTokensOpts
         '
         Me.tblMovieSetGeneralSortTokensOpts.AutoSize = true
-        Me.tblMovieSetGeneralSortTokensOpts.ColumnCount = 4
+        Me.tblMovieSetGeneralSortTokensOpts.ColumnCount = 5
         Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieSetGeneralSortTokensOpts.Controls.Add(Me.btnMovieSetSortTokenReset, 3, 1)
         Me.tblMovieSetGeneralSortTokensOpts.Controls.Add(Me.btnMovieSetSortTokenRemove, 2, 1)
         Me.tblMovieSetGeneralSortTokensOpts.Controls.Add(Me.lstMovieSetSortTokens, 0, 0)
         Me.tblMovieSetGeneralSortTokensOpts.Controls.Add(Me.btnMovieSetSortTokenAdd, 1, 1)
@@ -16822,7 +16841,7 @@ Partial Class dlgSettings
         '
         Me.btnMovieSetSortTokenRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnMovieSetSortTokenRemove.Image = CType(resources.GetObject("btnMovieSetSortTokenRemove.Image"),System.Drawing.Image)
-        Me.btnMovieSetSortTokenRemove.Location = New System.Drawing.Point(180, 52)
+        Me.btnMovieSetSortTokenRemove.Location = New System.Drawing.Point(99, 52)
         Me.btnMovieSetSortTokenRemove.Name = "btnMovieSetSortTokenRemove"
         Me.btnMovieSetSortTokenRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieSetSortTokenRemove.TabIndex = 3
@@ -16830,7 +16849,7 @@ Partial Class dlgSettings
         '
         'lstMovieSetSortTokens
         '
-        Me.tblMovieSetGeneralSortTokensOpts.SetColumnSpan(Me.lstMovieSetSortTokens, 3)
+        Me.tblMovieSetGeneralSortTokensOpts.SetColumnSpan(Me.lstMovieSetSortTokens, 4)
         Me.lstMovieSetSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lstMovieSetSortTokens.FormattingEnabled = true
         Me.lstMovieSetSortTokens.Location = New System.Drawing.Point(3, 3)
@@ -18079,7 +18098,7 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterPrefOnly.AutoSize = true
         Me.tblMovieSetImagesPosterOpts.SetColumnSpan(Me.chkMovieSetPosterPrefOnly, 2)
         Me.chkMovieSetPosterPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieSetPosterPrefOnly.Location = New System.Drawing.Point(158, 25)
+        Me.chkMovieSetPosterPrefOnly.Location = New System.Drawing.Point(186, 25)
         Me.chkMovieSetPosterPrefOnly.Name = "chkMovieSetPosterPrefOnly"
         Me.chkMovieSetPosterPrefOnly.Size = New System.Drawing.Size(50, 17)
         Me.chkMovieSetPosterPrefOnly.TabIndex = 2
@@ -18660,6 +18679,26 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1097, 74)
         Me.tblSettingsFooter.TabIndex = 0
+        '
+        'btnMovieSetSortTokenReset
+        '
+        Me.btnMovieSetSortTokenReset.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnMovieSetSortTokenReset.Image = CType(resources.GetObject("btnMovieSetSortTokenReset.Image"),System.Drawing.Image)
+        Me.btnMovieSetSortTokenReset.Location = New System.Drawing.Point(180, 52)
+        Me.btnMovieSetSortTokenReset.Name = "btnMovieSetSortTokenReset"
+        Me.btnMovieSetSortTokenReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieSetSortTokenReset.TabIndex = 10
+        Me.btnMovieSetSortTokenReset.UseVisualStyleBackColor = true
+        '
+        'btnTVSortTokenReset
+        '
+        Me.btnTVSortTokenReset.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVSortTokenReset.Image = CType(resources.GetObject("btnTVSortTokenReset.Image"),System.Drawing.Image)
+        Me.btnTVSortTokenReset.Location = New System.Drawing.Point(180, 52)
+        Me.btnTVSortTokenReset.Name = "btnTVSortTokenReset"
+        Me.btnTVSortTokenReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVSortTokenReset.TabIndex = 11
+        Me.btnTVSortTokenReset.UseVisualStyleBackColor = true
         '
         'dlgSettings
         '
@@ -20663,4 +20702,7 @@ End Sub
     Friend WithEvents colTVShowRegexAired As System.Windows.Forms.ColumnHeader
     Friend WithEvents chkTVEpisodeAired As System.Windows.Forms.CheckBox
     Friend WithEvents lblTVEpisodeAired As System.Windows.Forms.Label
+    Friend WithEvents btnMovieSortTokenReset As System.Windows.Forms.Button
+    Friend WithEvents btnTVSortTokenReset As System.Windows.Forms.Button
+    Friend WithEvents btnMovieSetSortTokenReset As System.Windows.Forms.Button
 End Class

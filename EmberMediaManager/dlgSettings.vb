@@ -1508,7 +1508,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVShowFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterReset.Click
+    Private Sub btnTVShowFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterReset.Click, btnMovieFilterReset.Click
         If MsgBox(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
             Me.RefreshTVShowFilters()
@@ -1524,7 +1524,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnMovieFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieFilterReset.Click
+    Private Sub btnMovieFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If MsgBox(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieFilters, True)
             Me.RefreshMovieFilters()
@@ -1657,12 +1657,30 @@ Public Class dlgSettings
         Me.RemoveMovieSortToken()
     End Sub
 
+    Private Sub btnMovieSortTokenReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSortTokenReset.Click
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSortTokens, True)
+        Me.RefreshMovieSortTokens()
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub btnMovieSetSortTokenRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetSortTokenRemove.Click
         Me.RemoveMovieSetSortToken()
     End Sub
 
+    Private Sub btnMovieSetSortTokenReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetSortTokenReset.Click
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetSortTokens, True)
+        Me.RefreshMovieSetSortTokens()
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub btnTVSortTokenRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSortTokenRemove.Click
         Me.RemoveTVSortToken()
+    End Sub
+
+    Private Sub btnTVSortTokenReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSortTokenReset.Click
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSortTokens, True)
+        Me.RefreshTVSortTokens()
+        Me.SetApplyButton(True)
     End Sub
 
     Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
@@ -3813,9 +3831,6 @@ Public Class dlgSettings
             Me.chkTVShowProperCase.Checked = .TVShowProperCase
             Me.lstFileSystemCleanerWhitelist.Items.AddRange(.FileSystemCleanerWhitelistExts.ToArray)
             Me.lstFileSystemNoStackExts.Items.AddRange(.FileSystemNoStackExts.ToArray)
-            Me.lstMovieSortTokens.Items.AddRange(.MovieSortTokens.ToArray)
-            Me.lstMovieSetSortTokens.Items.AddRange(.MovieSetSortTokens.ToArray)
-            Me.lstTVSortTokens.Items.AddRange(.TVSortTokens.ToArray)
             Me.tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, Me.tpFileSystemCleanerExpert, Me.tpFileSystemCleanerStandard)
             Me.txtGeneralDaemonPath.Text = .GeneralDaemonPath.ToString
             Me.txtMovieSourcesBackdropsFolderPath.Text = .MovieBackdropsPath.ToString
@@ -3915,8 +3930,11 @@ Public Class dlgSettings
             Me.txtMovieScraperDurationRuntimeFormat.Enabled = .MovieScraperUseMDDuration
             Me.txtTVScraperDurationRuntimeFormat.Enabled = .TVScraperUseMDDuration
 
+            Me.RefreshMovieSetSortTokens()
+            Me.RefreshMovieSortTokens()
             Me.RefreshMovieSources()
             Me.RefreshTVSources()
+            Me.RefreshTVSortTokens()
             Me.RefreshTVShowFilters()
             Me.RefreshTVEpisodeFilters()
             Me.RefreshMovieFilters()
@@ -4818,9 +4836,24 @@ Public Class dlgSettings
         Me.lstMovieFilters.Items.AddRange(Master.eSettings.MovieFilterCustom.ToArray)
     End Sub
 
+    Private Sub RefreshMovieSortTokens()
+        Me.lstMovieSortTokens.Items.Clear()
+        Me.lstMovieSortTokens.Items.AddRange(Master.eSettings.MovieSortTokens.ToArray)
+    End Sub
+
+    Private Sub RefreshMovieSetSortTokens()
+        Me.lstMovieSetSortTokens.Items.Clear()
+        Me.lstMovieSetSortTokens.Items.AddRange(Master.eSettings.MovieSetSortTokens.ToArray)
+    End Sub
+
     Private Sub RefreshTVShowFilters()
         Me.lstTVShowFilter.Items.Clear()
         Me.lstTVShowFilter.Items.AddRange(Master.eSettings.TVShowFilterCustom.ToArray)
+    End Sub
+
+    Private Sub RefreshTVSortTokens()
+        Me.lstTVSortTokens.Items.Clear()
+        Me.lstTVSortTokens.Items.AddRange(Master.eSettings.TVSortTokens.ToArray)
     End Sub
 
     Private Sub RefreshMovieSources()

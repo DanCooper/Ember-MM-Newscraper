@@ -643,6 +643,9 @@ Public Class Enums
         TVEpisodeListSorting = 11
         TVSeasonListSorting = 12
         TVShowListSorting = 13
+        MovieSortTokens = 14
+        MovieSetSortTokens = 15
+        TVSortTokens = 16
     End Enum
 
     Public Enum DelType As Integer
