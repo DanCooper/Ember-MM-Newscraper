@@ -766,7 +766,8 @@ Public Class dlgTrakttvManager
             mydictWatchedEpisodes = Nothing
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
-
+            myWatchedMovies = Nothing
+            mydictWatchedMovies = Nothing
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             'Get watched movies of user
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -814,7 +815,9 @@ Public Class dlgTrakttvManager
                             Else
                                 logger.Info("No ratings of movies scraped from trakt.tv!")
                             End If
-            
+                            If myWatchedMovies Is Nothing Then
+                                myWatchedMovies = New List(Of TraktAPI.Model.TraktMovieWatchedRated)
+                            End If
                             myWatchedMovies.Add(tmpwatchedratedmovie)
                             'Now store imdbid, title and playcount information into dictionary (for now no other info needed...)
                             If Item.Movie.Ids.Imdb.Length > 2 AndAlso Item.Movie.Ids.Imdb.Substring(0, 2) = "tt" Then
@@ -876,7 +879,9 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktPlaycountGetSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btntraktPlaycountGetSeries.Click
         Try
+            mydictWatchedEpisodes = Nothing
             mydictWatchedMovies = Nothing
+            myWatchedMovies = Nothing
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
 
