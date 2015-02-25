@@ -1581,6 +1581,14 @@ Public Class FileFolderRenamer
             ProccessFiles_Episodes(folderPatternSeasons, filePatternEpisodes)
             DoRename_Episodes()
 
+            'set the status back to "New"
+            Using SQLcommand_update_episode As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                For Each episode In _episodes
+                    SQLcommand_update_episode.CommandText = String.Format("UPDATE episode SET 'New'=1 WHERE idEpisode={0}", episode.ID)
+                    SQLcommand_update_episode.ExecuteNonQuery()
+                Next
+            End Using
+
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
