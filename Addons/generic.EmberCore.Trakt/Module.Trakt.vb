@@ -181,6 +181,7 @@ Public Class Trakt_Generic
         End Using
 
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
     End Sub
     Sub LoadSettings()
         MySettings.Username = clsAdvancedSettings.GetSetting("Username", "")

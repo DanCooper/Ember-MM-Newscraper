@@ -763,6 +763,7 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktPlaycountGetMovies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btntraktPlaycountGetMovies.Click
         Try
+            Me.Cursor = Cursors.WaitCursor
             mydictWatchedEpisodes = Nothing
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
@@ -861,14 +862,15 @@ Public Class dlgTrakttvManager
             Else
                 btntraktPlaycountSyncLibrary.Enabled = False
             End If
+            Me.Cursor = Cursors.Default
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             mydictWatchedEpisodes = Nothing
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
             btntraktPlaycountSyncLibrary.Enabled = False
+            Me.Cursor = Cursors.Default
         End Try
-
     End Sub
 
     ''' <summary>
@@ -879,6 +881,7 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktPlaycountGetSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btntraktPlaycountGetSeries.Click
         Try
+            Me.Cursor = Cursors.WaitCursor
             mydictWatchedEpisodes = Nothing
             mydictWatchedMovies = Nothing
             myWatchedMovies = Nothing
@@ -946,15 +949,15 @@ Public Class dlgTrakttvManager
                     btntraktPlaycountSyncLibrary.Enabled = False
                 End If
             End If
-
+            Me.Cursor = Cursors.Default
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             mydictWatchedMovies = Nothing
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
             btntraktPlaycountSyncLibrary.Enabled = False
+            Me.Cursor = Cursors.Default
         End Try
-
     End Sub
 
     ''' <summary>

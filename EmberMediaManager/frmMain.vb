@@ -11319,6 +11319,8 @@ doCancel:
                 Select Case _params(0).ToString
                     Case "controlsenabled"
                         Me.SetControlsEnabled(Convert.ToBoolean(_params(1)), If(_params.Count = 3, Convert.ToBoolean(_params(2)), False))
+                    Case "filllist"
+                        Me.FillList(CBool(_params(1)), CBool(_params(2)), CBool(_params(3)))
                 End Select
             Case Enums.ModuleEventType.Notification
                 Select Case _params(0).ToString
