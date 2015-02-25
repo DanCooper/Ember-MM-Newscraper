@@ -3761,7 +3761,7 @@ Public Class Database
 
         'Now we search episodes of the found TV Show
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("SELECT idEpisode, Playcount FROM episode WHERE idShow = {0} AND Season = {1} AND Episode = {2};", tempTVDBID, strSeason, strEpisode)
+            SQLcommand.CommandText = String.Format("SELECT idEpisode, Playcount FROM episode WHERE idShow = {0} AND Season = {1} AND Episode = {2} AND Missing = 0;", tempTVDBID, strSeason, strEpisode)
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     While SQLreader.Read
