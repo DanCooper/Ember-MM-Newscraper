@@ -15246,7 +15246,7 @@ doCancel:
 
         OldTitle = tmpMovieDB.Movie.Title
 
-        If Directory.Exists(Directory.GetParent(tmpMovieDB.Filename).FullName) Then
+        If File.Exists(tmpMovieDB.Filename) Then
 
             If FromNfo Then
                 If String.IsNullOrEmpty(tmpMovieDB.NfoPath) Then
