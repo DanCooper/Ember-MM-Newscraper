@@ -187,6 +187,7 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
     End Sub
 
     Sub SetUp()
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkGetBlankImages.Text = Master.eLang.GetString(1207, "Also Get Blank Images")
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
