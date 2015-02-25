@@ -75,8 +75,8 @@ Public Class Database
 
         Using SQLcommand_select_actors As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand_select_actors.CommandText = String.Format("SELECT idActor FROM actors WHERE strActor LIKE ?", strActor)
-            Dim par_get_actors_strActor As SQLite.SQLiteParameter = SQLcommand_select_actors.Parameters.Add("par_actors_strActor", DbType.String, 0, "strActor")
-            par_get_actors_strActor.Value = strActor
+            Dim par_select_actors_strActor As SQLite.SQLiteParameter = SQLcommand_select_actors.Parameters.Add("par_select_actors_strActor", DbType.String, 0, "strActor")
+            par_select_actors_strActor.Value = strActor
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_select_actors.ExecuteReader()
                 While SQLreader.Read
                     doesExist = True
@@ -84,33 +84,33 @@ Public Class Database
                     Exit While
                 End While
             End Using
-
-            If Not doesExist Then
-                Using SQLcommand_insert_actors As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_insert_actors.CommandText = "INSERT INTO actors (idActor, strActor, strThumb) VALUES (NULL,?,?); SELECT LAST_INSERT_ROWID() FROM actors;"
-                    Dim par_insert_actors_strActor As SQLite.SQLiteParameter = SQLcommand_insert_actors.Parameters.Add("par_actors_strActor", DbType.String, 0, "strActor")
-                    Dim par_insert_actors_strThumb As SQLite.SQLiteParameter = SQLcommand_insert_actors.Parameters.Add("par_actors_strThumb", DbType.String, 0, "strThumb")
-                    par_insert_actors_strActor.Value = strActor
-                    par_insert_actors_strThumb.Value = thumbURLs
-                    ID = CInt(SQLcommand_insert_actors.ExecuteScalar())
-                End Using
-            Else
-                Using SQLcommand_update_actors As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_update_actors.CommandText = String.Format("UPDATE actors SET strThumb=? WHERE idActor={0}", ID)
-                    Dim par_update_actors_strThumb As SQLite.SQLiteParameter = SQLcommand_update_actors.Parameters.Add("par_actors_strThumb", DbType.String, 0, "strThumb")
-                    par_update_actors_strThumb.Value = thumbURLs
-                    SQLcommand_update_actors.ExecuteNonQuery()
-                End Using
-            End If
-
-            If Not ID = -1 Then
-                If Not String.IsNullOrEmpty(thumb) Then
-                    SetArtForItem(ID, "actor", "thumb", thumb)
-                End If
-            End If
-
-            Return ID
         End Using
+
+        If Not doesExist Then
+            Using SQLcommand_insert_actors As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_insert_actors.CommandText = "INSERT INTO actors (idActor, strActor, strThumb) VALUES (NULL,?,?); SELECT LAST_INSERT_ROWID() FROM actors;"
+                Dim par_insert_actors_strActor As SQLite.SQLiteParameter = SQLcommand_insert_actors.Parameters.Add("par_actors_strActor", DbType.String, 0, "strActor")
+                Dim par_insert_actors_strThumb As SQLite.SQLiteParameter = SQLcommand_insert_actors.Parameters.Add("par_actors_strThumb", DbType.String, 0, "strThumb")
+                par_insert_actors_strActor.Value = strActor
+                par_insert_actors_strThumb.Value = thumbURLs
+                ID = CInt(SQLcommand_insert_actors.ExecuteScalar())
+            End Using
+        Else
+            Using SQLcommand_update_actors As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_update_actors.CommandText = String.Format("UPDATE actors SET strThumb=? WHERE idActor={0}", ID)
+                Dim par_update_actors_strThumb As SQLite.SQLiteParameter = SQLcommand_update_actors.Parameters.Add("par_actors_strThumb", DbType.String, 0, "strThumb")
+                par_update_actors_strThumb.Value = thumbURLs
+                SQLcommand_update_actors.ExecuteNonQuery()
+            End Using
+        End If
+
+        If Not ID = -1 Then
+            If Not String.IsNullOrEmpty(thumb) Then
+                SetArtForItem(ID, "actor", "thumb", thumb)
+            End If
+        End If
+
+        Return ID
     End Function
 
     Private Sub AddArtistToMusicVideo(ByVal idMVideo As Long, ByVal idArtist As Long)
@@ -193,19 +193,19 @@ Public Class Database
                     Exit While
                 End While
             End Using
-
-            If Not doesExist Then
-                Using SQLcommand_insert_actorlink As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_insert_actorlink.CommandText = String.Format("INSERT INTO actorlink{0} (idActor, id{1}, strRole, iOrder) VALUES ({2},{3},?,{4})", table, field, actorID, secondID, order)
-                    Dim par_insert_actors_strRole As SQLite.SQLiteParameter = SQLcommand_insert_actorlink.Parameters.Add("par_actors_strActor", DbType.String, 0, "strRole")
-                    par_insert_actors_strRole.Value = role
-                    SQLcommand_insert_actorlink.ExecuteNonQuery()
-                End Using
-                Return True
-            Else
-                Return False
-            End If
         End Using
+
+        If Not doesExist Then
+            Using SQLcommand_insert_actorlink As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_insert_actorlink.CommandText = String.Format("INSERT INTO actorlink{0} (idActor, id{1}, strRole, iOrder) VALUES ({2},{3},?,{4})", table, field, actorID, secondID, order)
+                Dim par_insert_actors_strRole As SQLite.SQLiteParameter = SQLcommand_insert_actorlink.Parameters.Add("par_insert_actors_strRole", DbType.String, 0, "strRole")
+                par_insert_actors_strRole.Value = role
+                SQLcommand_insert_actorlink.ExecuteNonQuery()
+            End Using
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
     Private Function AddSet(ByVal strSet As String) As Long
@@ -235,53 +235,61 @@ Public Class Database
                                Optional ByVal typeField As String = "", Optional ByVal type As String = "") As Boolean
         Dim doesExist As Boolean = False
 
-        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("SELECT * FROM {0} WHERE {1}={2} AND {3}={4}", table, firstField, firstID, secondField, secondID)
+        Using SQLcommand_select As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand_select.CommandText = String.Format("SELECT * FROM {0} WHERE {1}={2} AND {3}={4}", table, firstField, firstID, secondField, secondID)
             If Not String.IsNullOrEmpty(typeField) AndAlso Not String.IsNullOrEmpty(type) Then
-                SQLcommand.CommandText = String.Concat(SQLcommand.CommandText, String.Format(" AND {0}={1}", typeField, type))
+                SQLcommand_select.CommandText = String.Concat(SQLcommand_select.CommandText, String.Format(" AND {0}='{1}'", typeField, type))
             End If
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_select.ExecuteReader()
                 While SQLreader.Read
                     doesExist = True
                     Exit While
                 End While
             End Using
-
-            If Not doesExist Then
-                If String.IsNullOrEmpty(typeField) AndAlso String.IsNullOrEmpty(type) Then
-                    SQLcommand.CommandText = String.Format("INSERT INTO {0} ({1},{2}) VALUES ({3},{4})", table, firstField, secondField, firstID, secondID)
-                Else
-                    SQLcommand.CommandText = String.Format("INSERT INTO {0} ({1},{2},{3}) VALUES ({4},{5},{6})", table, firstField, secondField, typeField, firstID, secondID, type)
-                End If
-                SQLcommand.ExecuteNonQuery()
-                Return True
-            Else
-                Return False
-            End If
         End Using
+
+        If Not doesExist Then
+            Using SQLcommand_insert As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                If String.IsNullOrEmpty(typeField) AndAlso String.IsNullOrEmpty(type) Then
+                    SQLcommand_insert.CommandText = String.Format("INSERT INTO {0} ({1},{2}) VALUES ({3},{4})", table, firstField, secondField, firstID, secondID)
+                Else
+                    SQLcommand_insert.CommandText = String.Format("INSERT INTO {0} ({1},{2},{3}) VALUES ({4},{5},'{6}')", table, firstField, secondField, typeField, firstID, secondID, type)
+                End If
+                SQLcommand_insert.ExecuteNonQuery()
+                Return True
+            End Using
+        Else
+            Return False
+        End If
     End Function
 
     Private Function AddToTable(ByVal table As String, ByVal firstField As String, ByVal secondField As String, ByVal value As String) As Long
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
 
-        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("SELECT {0} FROM {1} WHERE {2} LIKE ""{3}""", firstField, table, secondField, value)
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+        Using SQLcommand_select As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand_select.CommandText = String.Format("SELECT {0} FROM {1} WHERE {2} LIKE ?", firstField, table, secondField)
+            Dim par_select_secondField As SQLite.SQLiteParameter = SQLcommand_select.Parameters.Add("par_select_secondField", DbType.String, 0, secondField)
+            par_select_secondField.Value = value
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_select.ExecuteReader()
                 While SQLreader.Read
                     doesExist = True
                     ID = CInt(SQLreader(firstField))
                     Exit While
                 End While
             End Using
-
-            If Not doesExist Then
-                SQLcommand.CommandText = String.Format("INSERT INTO {0} ({1}, {2}) VALUES (NULL, ""{3}""); SELECT LAST_INSERT_ROWID() FROM {0};", table, firstField, secondField, value)
-                ID = CInt(SQLcommand.ExecuteScalar())
-            End If
-
-            Return ID
         End Using
+
+        If Not doesExist Then
+            Using SQLcommand_insert As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_insert.CommandText = String.Format("INSERT INTO {0} ({1}, {2}) VALUES (NULL, ?); SELECT LAST_INSERT_ROWID() FROM {0};", table, firstField, secondField)
+                Dim par_insert_secondField As SQLite.SQLiteParameter = SQLcommand_insert.Parameters.Add("par_insert_secondField", DbType.String, 0, secondField)
+                par_insert_secondField.Value = value
+                ID = CInt(SQLcommand_insert.ExecuteScalar())
+            End Using
+        End If
+
+        Return ID
     End Function
 
     Private Sub AddTagToItem(ByVal idMedia As Long, ByVal idTag As Long, ByVal type As String)
@@ -312,25 +320,25 @@ Public Class Database
                     Exit While
                 End While
             End Using
-
-            If Not doesExist Then
-                Using SQLcommand_insert_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_insert_art.CommandText = String.Format("INSERT INTO art(media_id, media_type, type, url) VALUES ({0}, '{1}', '{2}', (?))", mediaId, MediaType, artType)
-                    Dim par_insert_art_url As SQLite.SQLiteParameter = SQLcommand_insert_art.Parameters.Add("par_insert_art_url", DbType.String, 0, "url")
-                    par_insert_art_url.Value = url
-                    SQLcommand_insert_art.ExecuteNonQuery()
-                End Using
-            Else
-                If Not url = oldURL Then
-                    Using SQLcommand_update_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLcommand_update_art.CommandText = String.Format("UPDATE art SET url=(?) WHERE art_id={0}", ID)
-                        Dim par_update_art_url As SQLite.SQLiteParameter = SQLcommand_update_art.Parameters.Add("par_update_art_url", DbType.String, 0, "url")
-                        par_update_art_url.Value = url
-                        SQLcommand_update_art.ExecuteNonQuery()
-                    End Using
-                End If
-            End If
         End Using
+
+        If Not doesExist Then
+            Using SQLcommand_insert_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_insert_art.CommandText = String.Format("INSERT INTO art(media_id, media_type, type, url) VALUES ({0}, '{1}', '{2}', ?)", mediaId, MediaType, artType)
+                Dim par_insert_art_url As SQLite.SQLiteParameter = SQLcommand_insert_art.Parameters.Add("par_insert_art_url", DbType.String, 0, "url")
+                par_insert_art_url.Value = url
+                SQLcommand_insert_art.ExecuteNonQuery()
+            End Using
+        Else
+            If Not url = oldURL Then
+                Using SQLcommand_update_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_update_art.CommandText = String.Format("UPDATE art SET url=(?) WHERE art_id={0}", ID)
+                    Dim par_update_art_url As SQLite.SQLiteParameter = SQLcommand_update_art.Parameters.Add("par_update_art_url", DbType.String, 0, "url")
+                    par_update_art_url.Value = url
+                    SQLcommand_update_art.ExecuteNonQuery()
+                End Using
+            End If
+        End If
     End Sub
 
     Private Function GetArtForItem(ByVal mediaId As Long, ByVal MediaType As String, ByVal artType As String) As String
