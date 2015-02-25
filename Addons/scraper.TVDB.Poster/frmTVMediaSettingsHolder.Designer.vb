@@ -24,7 +24,7 @@ Partial Class frmTVMediaSettingsHolder
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTVMediaSettingsHolder))
         Me.lblVersion = New System.Windows.Forms.Label()
-        Me.cbEnabled = New System.Windows.Forms.CheckBox()
+        Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.lblScraperOrder = New System.Windows.Forms.Label()
         Me.btnDown = New System.Windows.Forms.Button()
@@ -43,7 +43,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.txtTVDBMirror = New System.Windows.Forms.TextBox()
         Me.pbTVDB = New System.Windows.Forms.PictureBox()
         Me.lblTVDBApiKey = New System.Windows.Forms.Label()
-        Me.txtTVDBApiKey = New System.Windows.Forms.TextBox()
+        Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.lblModuleInfo = New System.Windows.Forms.Label()
         Me.pbModuleLogo = New System.Windows.Forms.PictureBox()
         Me.Panel1.SuspendLayout()
@@ -63,15 +63,15 @@ Partial Class frmTVMediaSettingsHolder
         Me.lblVersion.TabIndex = 74
         Me.lblVersion.Text = "Version:"
         '
-        'cbEnabled
+        'chkEnabled
         '
-        Me.cbEnabled.AutoSize = True
-        Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
-        Me.cbEnabled.Name = "cbEnabled"
-        Me.cbEnabled.Size = New System.Drawing.Size(68, 17)
-        Me.cbEnabled.TabIndex = 0
-        Me.cbEnabled.Text = "Enabled"
-        Me.cbEnabled.UseVisualStyleBackColor = True
+        Me.chkEnabled.AutoSize = True
+        Me.chkEnabled.Location = New System.Drawing.Point(10, 5)
+        Me.chkEnabled.Name = "chkEnabled"
+        Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
+        Me.chkEnabled.TabIndex = 0
+        Me.chkEnabled.Text = "Enabled"
+        Me.chkEnabled.UseVisualStyleBackColor = True
         '
         'Panel1
         '
@@ -80,7 +80,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Panel1.Controls.Add(Me.lblScraperOrder)
         Me.Panel1.Controls.Add(Me.btnDown)
-        Me.Panel1.Controls.Add(Me.cbEnabled)
+        Me.Panel1.Controls.Add(Me.chkEnabled)
         Me.Panel1.Controls.Add(Me.btnUp)
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
@@ -173,7 +173,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.gbTVDB.Controls.Add(Me.txtTVDBMirror)
         Me.gbTVDB.Controls.Add(Me.pbTVDB)
         Me.gbTVDB.Controls.Add(Me.lblTVDBApiKey)
-        Me.gbTVDB.Controls.Add(Me.txtTVDBApiKey)
+        Me.gbTVDB.Controls.Add(Me.txtApiKey)
         Me.gbTVDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVDB.Location = New System.Drawing.Point(11, 31)
         Me.gbTVDB.Name = "gbTVDB"
@@ -186,9 +186,9 @@ Partial Class frmTVMediaSettingsHolder
         '
         Me.lblEMMAPI.AutoSize = True
         Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblEMMAPI.Location = New System.Drawing.Point(142, 35)
+        Me.lblEMMAPI.Location = New System.Drawing.Point(142, 16)
         Me.lblEMMAPI.Name = "lblEMMAPI"
-        Me.lblEMMAPI.Size = New System.Drawing.Size(142, 13)
+        Me.lblEMMAPI.Size = New System.Drawing.Size(162, 13)
         Me.lblEMMAPI.TabIndex = 78
         Me.lblEMMAPI.Text = "Ember Media Manager API key"
         '
@@ -269,15 +269,13 @@ Partial Class frmTVMediaSettingsHolder
         Me.lblTVDBApiKey.TabIndex = 0
         Me.lblTVDBApiKey.Text = "TVDB API Key:"
         '
-        'txtTVDBApiKey
+        'txtApiKey
         '
-        Me.txtTVDBApiKey.Enabled = False
-        Me.txtTVDBApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVDBApiKey.Location = New System.Drawing.Point(145, 32)
-        Me.txtTVDBApiKey.Name = "txtTVDBApiKey"
-        Me.txtTVDBApiKey.Size = New System.Drawing.Size(234, 22)
-        Me.txtTVDBApiKey.TabIndex = 1
-        Me.txtTVDBApiKey.Visible = False
+        Me.txtApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtApiKey.Location = New System.Drawing.Point(145, 32)
+        Me.txtApiKey.Name = "txtApiKey"
+        Me.txtApiKey.Size = New System.Drawing.Size(234, 22)
+        Me.txtApiKey.TabIndex = 1
         '
         'lblModuleInfo
         '
@@ -335,7 +333,7 @@ Partial Class frmTVMediaSettingsHolder
 
     End Sub
     Friend WithEvents lblVersion As System.Windows.Forms.Label
-    Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents btnDown As System.Windows.Forms.Button
@@ -346,7 +344,7 @@ Partial Class frmTVMediaSettingsHolder
     Friend WithEvents gbTVDB As System.Windows.Forms.GroupBox
     Friend WithEvents pbTVDB As System.Windows.Forms.PictureBox
     Friend WithEvents lblTVDBApiKey As System.Windows.Forms.Label
-    Friend WithEvents txtTVDBApiKey As System.Windows.Forms.TextBox
+    Friend WithEvents txtApiKey As System.Windows.Forms.TextBox
     Friend WithEvents lblTVDBMirror As System.Windows.Forms.Label
     Friend WithEvents txtTVDBMirror As System.Windows.Forms.TextBox
     Friend WithEvents gbLanguage As System.Windows.Forms.GroupBox

@@ -53,7 +53,7 @@ Public Class frmTVMediaSettingsHolder
         If order < ModulesManager.Instance.externalScrapersModules_TV.Where(Function(y) y.ProcessorModule.IsScraper).Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 1)
+            RaiseEvent SetupPostScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
@@ -63,13 +63,13 @@ Public Class frmTVMediaSettingsHolder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, -1)
+            RaiseEvent SetupPostScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 0)
+    Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent SetupPostScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
     Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVScraperLanguage.SelectedIndexChanged
@@ -110,35 +110,43 @@ Public Class frmTVMediaSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.lblTVDBApiKey.Text = Master.eLang.GetString(932, "TVDB API Key")
-        Me.lblModuleInfo.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
-        Me.chkOnlyTVImagesLanguage.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
-        Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
-        Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
-        Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
-
         Me.cbTVScraperLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
+        Me.chkOnlyTVImagesLanguage.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
+        Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
+        Me.lblModuleInfo.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.lblTVDBApiKey.Text = Master.eLang.GetString(932, "TVDB API Key")
+        Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
     End Sub
 
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
-        Me.lblEMMAPI.Visible = False
-        Me.txtTVDBApiKey.Enabled = True
-        Me.txtTVDBApiKey.Visible = True
-    End Sub
-
-    Private Sub txtTVDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.Enter
-        _api = txtTVDBApiKey.Text
+        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            Me.lblEMMAPI.Visible = False
+            Me.txtApiKey.Enabled = True
+        Else
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+            Me.lblEMMAPI.Visible = True
+            Me.txtApiKey.Enabled = False
+            Me.txtApiKey.Text = String.Empty
+        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtTVDBApiKey_TestValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.Validated
-        If Not (_api = txtTVDBApiKey.Text) Then
+    Private Sub txtApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
+        _api = txtApiKey.Text
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub txtApiKey_TestValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Validated
+        If Not (_api = txtApiKey.Text) Then
             RaiseEvent SetupNeedsRestart()
         End If
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged

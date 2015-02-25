@@ -166,14 +166,21 @@ Public Class TVDB_Data_Poster
     Public Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_TV.InjectSetupPostScraper
         Dim SPanel As New Containers.SettingsPanel
         _setupPost = New frmTVMediaSettingsHolder
-        _setupPost.txtTVDBApiKey.Text = strPrivateAPIKey
-        _setupPost.cbEnabled.Checked = _PostScraperEnabled
+        _setupPost.txtApiKey.Text = strPrivateAPIKey
+        _setupPost.chkEnabled.Checked = _PostScraperEnabled
 
         _setupPost.chkOnlyTVImagesLanguage.Checked = CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True"))
         _setupPost.chkGetEnglishImages.Checked = CBool(clsAdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))
         If _setupPost.cbTVScraperLanguage.Items.Count > 0 Then
             _setupPost.cbTVScraperLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = _Lang).name
         End If
+
+        If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
+            _setupPost.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            _setupPost.lblEMMAPI.Visible = False
+            _setupPost.txtApiKey.Enabled = True
+        End If
+
         _setupPost.txtTVDBMirror.Text = _TVDBMirror
 
 
@@ -194,8 +201,8 @@ Public Class TVDB_Data_Poster
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmTVInfoSettingsHolder
         LoadSettings()
-        _setup.txtTVDBApiKey.Text = strPrivateAPIKey
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.txtApiKey.Text = strPrivateAPIKey
+        _setup.chkEnabled.Checked = _ScraperEnabled
 
         If _setup.cbTVScraperLanguage.Items.Count > 0 Then
             _setup.cbTVScraperLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = _Lang).name
@@ -225,6 +232,12 @@ Public Class TVDB_Data_Poster
         _setup.chkScraperEpActors.Checked = ConfigOptions.bEpActors
         _setup.chkScraperEpVotes.Checked = ConfigOptions.bEpVotes
 
+        If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
+            _setup.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            _setup.lblEMMAPI.Visible = False
+            _setup.txtApiKey.Enabled = True
+        End If
+
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(941, "TVDB")
         SPanel.Prefix = "TVDBMedia_"
@@ -240,20 +253,26 @@ Public Class TVDB_Data_Poster
     End Function
 
     Private Sub Handle_ModuleSettingsChanged()
-        strPrivateAPIKey = _setup.txtTVDBApiKey.Text
+        strPrivateAPIKey = _setup.txtApiKey.Text
         _TVDBMirror = _setup.txtTVDBMirror.Text
         _Lang = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = _setup.cbTVScraperLanguage.Text).abbreviation
-        _setupPost.txtTVDBApiKey.Text = _setup.txtTVDBApiKey.Text
+        _setupPost.btnUnlockAPI.Text = _setup.btnUnlockAPI.Text
+        _setupPost.txtApiKey.Text = _setup.txtApiKey.Text
+        _setupPost.txtApiKey.Enabled = _setup.txtApiKey.Enabled
+        _setupPost.lblEMMAPI.Visible = _setup.lblEMMAPI.Visible
         _setupPost.txtTVDBMirror = _setup.txtTVDBMirror
         _setupPost.cbTVScraperLanguage.Text = _setup.cbTVScraperLanguage.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub Handle_PostModuleSettingsChanged()
-        strPrivateAPIKey = _setupPost.txtTVDBApiKey.Text
+        strPrivateAPIKey = _setupPost.txtApiKey.Text
         _Lang = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = _setupPost.cbTVScraperLanguage.Text).abbreviation
         _TVDBMirror = _setupPost.txtTVDBMirror.Text
-        _setup.txtTVDBApiKey.Text = _setupPost.txtTVDBApiKey.Text
+        _setup.btnUnlockAPI.Text = _setupPost.btnUnlockAPI.Text
+        _setup.txtApiKey.Text = _setupPost.txtApiKey.Text
+        _setup.txtApiKey.Enabled = _setupPost.txtApiKey.Enabled
+        _setup.lblEMMAPI.Visible = _setupPost.lblEMMAPI.Visible
         _setup.txtTVDBMirror = _setupPost.txtTVDBMirror
         _setup.cbTVScraperLanguage.Text = _setupPost.cbTVScraperLanguage.Text
         RaiseEvent ModuleSettingsChanged()
