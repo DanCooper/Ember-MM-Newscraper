@@ -605,5 +605,21 @@
   <string control="Core_txtMovieLandscapeExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-landscape.jpg. You can also enter multiple file names separated by a comma.</string>
   <string control="Core_txtMovieNFOExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;.nfo. You can also enter multiple file names separated by a comma.</string>
   <string control="Core_txtMoviePosterExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-poster.jpg. You can also enter multiple file names separated by a comma.</string>
-  <string control="Core_txtMovieTrailerExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-trailer (without a file name extension). You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieTrailerExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-trailer (without a file name extension). You can also enter multiple file names separated by a comma.</string>  
+  <string control="Core_txtMovieSetBannerExpertSingle">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-banner.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetClearArtExpertSingle">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-clearart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetClearLogoExpertSingle">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-clearlogo.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetDiscArtExpertSingle">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-discart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetFanartExpertSingle">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-fanart.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetLandscapeExpertSingle">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-landscape.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetNFOExpertSingle">You can use &lt;setname&gt;, e.g. &lt;setname&gt;.nfo. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetPosterExpertSingle">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-poster.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetBannerExpertParent">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-banner.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetClearArtExpertParent">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-clearart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetClearLogoExpertParent">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-clearlogo.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetDiscArtExpertParent">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-discart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetFanartExpertParent">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-fanart.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetLandscapeExpertParent">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-landscape.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetNFOExpertParent">You can use &lt;setname&gt;, e.g. &lt;setname&gt;.nfo. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtMovieSetPosterExpertParent">You can use &lt;setname&gt;, e.g. &lt;setname&gt;-poster.jpg. You can also enter multiple file names separated by a comma.</string>
 </strings>
