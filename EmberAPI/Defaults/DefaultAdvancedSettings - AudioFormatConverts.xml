@@ -5,16 +5,13 @@
       <Item Name="a_aac">aac</Item>
       <Item Name="a_ac3">ac3</Item>
       <Item Name="a_dts">dca</Item>
-      <Item Name="e-ac-3">eac3</Item>
-
+      <Item Name="a_mpeg/l3">mp3</Item>
       <Item Name="a_vorbis">vorbis</Item>
       <Item Name="ac-3">ac3</Item>
-      <Item Name="dts.*">dca</Item>
-      <Item Name="ma.*">dtshd_ma</Item>
-      <Item Name="hra.*">dtshd_hra</Item>
-      <Item Name="truehd.*">truehd</Item>
-      <Item Name="vorbis.*">vorbis</Item>
-      <Item Name="flac.*">flac</Item>
+      <Item Name="e-ac-3">eac3</Item>
+      <Item Name="hra / core">dtshd_hra</Item>
+      <Item Name="ma / core">dtshd_ma</Item>
+      <Item Name="truehd / ac-3">truehd</Item>
     </Table>
   </ComplexSettings>
 </AdvancedSettings>

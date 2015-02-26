@@ -385,81 +385,46 @@ Public Class MediaInfo
         Handle = Nothing
     End Sub
 
-    Private Function ConvertAFormat(ByVal sFormat As String, Optional ByVal sProfile As String = "") As String
-        If Not String.IsNullOrEmpty(sFormat) Then
+    Private Function ConvertAFormat(ByVal sCodecID As String, ByVal sFormat As String, ByVal sCodecHint As String, ByVal sProfile As String) As String
+        Dim tCodec As String = String.Empty
+
+        If Not String.IsNullOrEmpty(sCodecID) AndAlso Not IsNumeric(sCodecID) Then
+            tCodec = sCodecID.ToLower
+        ElseIf Not String.IsNullOrEmpty(sCodecHint) Then
+            tCodec = sCodecHint.ToLower
+        ElseIf sFormat.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(sProfile) Then
+            tCodec = String.Concat("mp", sProfile.Replace("Layer", String.Empty).Trim).Trim
+        ElseIf sFormat.ToLower.Contains("dts") AndAlso Not String.IsNullOrEmpty(sProfile) Then
+            tCodec = sProfile.ToLower
+        ElseIf Not String.IsNullOrEmpty(sFormat) Then
+            tCodec = sFormat.ToLower
+        End If
+
+        If Not String.IsNullOrEmpty(tCodec) Then
             Dim myconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
             myconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts")
             If Not myconversions Is Nothing Then
-                'if theres more than one "solution" in converttable use mediainfo default value
-                Dim returncodec As String = ""
                 For Each k In myconversions
-                    If Regex.IsMatch(sFormat.ToLower, k.Name) Then
-                        If returncodec = "" Then
-                            returncodec = k.Value
-                            'happens when there's more than one match
-                        Else
-                            returncodec = ""
-                            Exit For
-                        End If
+                    If tCodec = k.Name.ToLower Then
+                        Return k.Value.ToLower
                     End If
                 Next
-                If returncodec <> "" Then
-                    Return returncodec
-                Else
-                    Return sFormat.ToLower
-                End If
+                Return tCodec
             Else
-                Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
-            End If
-            'cocotus, 2013/02 Fix2 for DTS Scan
-        ElseIf Not String.IsNullOrEmpty(sProfile) Then
-            If sProfile.ToUpper.Contains("MA") Then
-                sFormat = "dtshd_ma" 'Master Audio
-            ElseIf sProfile.ToUpper.Contains("HRA") Then
-                sFormat = "dtshd_hra" 'high resolution
-            ElseIf sProfile.ToLower.Contains("truehd") Then
-                sFormat = "truehd" 'Dolby TrueHD
-            ElseIf sFormat.ToLower.Contains("vorbis") Then
-                sFormat = "vorbis" 'Vorbis
-            ElseIf sFormat.ToLower.Contains("eac3") Then
-                sFormat = "dolbydigital" 'EAC3
-            ElseIf sFormat.ToLower.Contains("flac") Then
-                sFormat = "flac" 'flac
-            End If
-            Dim myconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            myconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts")
-            If Not myconversions Is Nothing Then
-                'if theres more than one "solution" in converttable use mediainfo default value
-                Dim returncodec As String = ""
-                For Each k In myconversions
-                    If Regex.IsMatch(sFormat.ToLower, k.Name) Then
-                        If returncodec = "" Then
-                            returncodec = k.Value
-                            'happens when there's more than one match
-                        Else
-                            returncodec = ""
-                            Exit For
-                        End If
-                    End If
-                Next
-                If returncodec <> "" Then
-                    Return returncodec
-                Else
-                    Return sFormat.ToLower
-                End If
-            Else
-                Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
+                Return tCodec
             End If
         Else
             Return String.Empty
         End If
     End Function
 
-    Private Function ConvertVFormat(ByVal sCodecID As String, ByVal sFormat As String) As String
+    Private Function ConvertVFormat(ByVal sCodecID As String, ByVal sFormat As String, ByVal sVersion As String) As String
         Dim tCodec As String = String.Empty
 
         If Not String.IsNullOrEmpty(sCodecID) AndAlso Not IsNumeric(sCodecID) Then
             tCodec = sCodecID.ToLower
+        ElseIf sFormat.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(sVersion) Then
+            tCodec = String.Concat("mpeg", sVersion.Replace("Version", String.Empty).Trim, "video").Trim
         ElseIf Not String.IsNullOrEmpty(sFormat) Then
             tCodec = sFormat.ToLower
         End If
@@ -595,13 +560,8 @@ Public Class MediaInfo
 
         For a As Integer = 0 To AudioStreams - 1
             miAudio = New Audio
-
-            a_Profile = Me.Get_(StreamKind.Audio, a, "Format_Profile")
-            miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), a_Profile)
-            If String.IsNullOrEmpty(miAudio.Codec) OrElse IsNumeric(miAudio.Codec) Then
-                miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), a_Profile)
-                miAudio.Codec = If(IsNumeric(miAudio.Codec) OrElse String.IsNullOrEmpty(miAudio.Codec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format"), a_Profile), miAudio.Codec)
-            End If
+            miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), Me.Get_(StreamKind.Audio, a, "Format"), _
+                                           Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), Me.Get_(StreamKind.Audio, a, "Format_Profile"))
             miAudio.Channels = FormatAudioChannel(Me.Get_(StreamKind.Audio, a, "Channel(s)"))
 
             'cocotus, 2013/02 Added support for new MediaInfo-fields
@@ -795,8 +755,8 @@ Public Class MediaInfo
 
                     miVideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
                     miVideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
-                    miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID"), Me.Get_(StreamKind.Visual, v, "Format"))
-
+                    miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID"), Me.Get_(StreamKind.Visual, v, "Format"), _
+                                                   Me.Get_(StreamKind.Visual, v, "Format_Version"))
 
                     'IFO Scan results (used when scanning VIDEO_TS files)
                     If fiIFO.StreamDetails.Video.Count > 0 Then
@@ -843,18 +803,8 @@ Public Class MediaInfo
 
                 For a As Integer = 0 To AudioStreams - 1
                     miAudio = New Audio
-
-                    Dim FormatProfile As String = Me.Get_(StreamKind.Audio, a, "Format_Profile")
-                    Dim Format As String = Me.Get_(StreamKind.Audio, a, "Format")
-                    Dim CodecID As String = Me.Get_(StreamKind.Audio, a, "CodecID")
-                    Dim CodecIDhint As String = Me.Get_(StreamKind.Audio, a, "CodecID/Hint")
-
-                    a_Profile = Me.Get_(StreamKind.Audio, a, "Format_Profile")
-                    miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), a_Profile)
-                    If String.IsNullOrEmpty(miAudio.Codec) OrElse IsNumeric(miAudio.Codec) Then
-                        miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), a_Profile)
-                        miAudio.Codec = If(IsNumeric(miAudio.Codec) OrElse String.IsNullOrEmpty(miAudio.Codec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format"), a_Profile), miAudio.Codec)
-                    End If
+                    miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), Me.Get_(StreamKind.Audio, a, "Format"), _
+                                                   Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), Me.Get_(StreamKind.Audio, a, "Format_Profile"))
                     miAudio.Channels = FormatAudioChannel(Me.Get_(StreamKind.Audio, a, "Channel(s)"))
 
                     'cocotus, 2013/02 Added support for new MediaInfo-fields
