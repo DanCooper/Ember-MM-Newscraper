@@ -90,9 +90,16 @@ fixed: issue while searching movie if "Year" is empty
 [HDTrailers.net]
 changed: improved match rate
 
+[MoviePilot]
+fixed: MoviePilot scraping
+
 [Trakt.tv]
+changed: upgraded to trakt.tv v2API
+added: sync  watchlist tab for syncing trakt.tv watchlist with watched movies in Ember
 added: userlist explorer
 fixed: movie/episode watched state syncing
+added: send rating of movies to trakt.tv account
+added: sync trakt.tv lists
 
 [Renamer]
 added: episode renamer (beta)
