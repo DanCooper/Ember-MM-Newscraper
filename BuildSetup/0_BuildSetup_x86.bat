@@ -6,7 +6,7 @@ SET EMM_APPNAME=Ember Media Manager BETA
 SET EMM_ROOT=%CD%\..
 SET EMM_FOLDER=EmberMM - Release - x86
 SET EMM_SYSTEM=x86
-SET EMM_REVISION=1.4.0.7
+SET EMM_REVISION=1.4.0.8
 SET EMM_BRANCH=Master
 SET EMM_SETUPFILE=%EMM_APPNAME% %EMM_REVISION% %EMM_SYSTEM%.exe
 SET EMM_OUTFILE=Builds\%EMM_SETUPFILE%
@@ -29,7 +29,6 @@ IF NOT EXIST %HOMEPATH%\.transifexrc CALL txAccount.bat
 rem downloading additional language files from transifex
 CALL txDownload.bat
 CLS
-PAUSE
 ECHO *******************************************
 ECHO *           Get NSIS EXE Path...          *
 ECHO *******************************************
