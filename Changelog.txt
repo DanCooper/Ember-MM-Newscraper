@@ -10,8 +10,9 @@ added: filter "_[->] " to default movie filter list (to replace _ with space)
 added: all HD formats can be downloaded from YouTube (also 1080p and 4K)
 added: new episode regex to recognize files like "ep_102.ext" (same rules like Kodi)
 added: new episode regex to recognize files by aired date like "ep_2015-02-25.ext" and "ep_25-02-2015.ext" (same rules like Kodi)
-added: new episode ordering "Day-Of-Year" (very special solution for Pr.Sinister ;-)
-added: display episodes by season/episode number or aired date
+added: new episode ordering "Day-Of-Year" (very special solution for Pr.Sinister ;-), 2015-01-01 = Season 2015 EP 1, 2015-12-31 = Season 2015 EP 365)
+added: display episodes by season/episode number or aired date (displays "Aired Date" instead of season/episode #)
+added: "* All Seasons" display season and episode # in episode list
 added: scrape MovieSets by current filters
 added: new filter "New Episode" to filter tv show list to tv shows with new episodes after DB update
 added: more options to filter year to main movie filter
@@ -21,8 +22,8 @@ added: change Watched state for hole tv show/season
 added: buttons to reset Movie/MovieSet/TV sort tokens
 added: german articles to default sort tokens lists
 added: display number of episodes in tv show and seasons lists
-fixed: can't read tvshow.nfo woth new Kodi <episodeguide> node
-fixed: Outline shorting
+fixed: can't read tvshow.nfo's with new Kodi <episodeguide> node
+fixed: Outline shorting (now Outline is always cutted on the end of a sentence)
 fixed: missing episode handling
 fixed: rating is rounded if no vaotes are available
 fixed: displaying wrong rating and votes in main window
@@ -51,6 +52,8 @@ fixed: image preview resizing
 fixed: refresh movie/episode does not remove no longer available movies/episodes
 fixed: "Change Movie (Auto)" does not remove old images/theme/trailer
 changed: optimized DB
+changed: Audio/Video Codec Mapping from regex to string comparison
+changed: Ember tries to load local actor thumb images instead of fetching URLs
 changed: moved "Missing Items" settings to filter panels
 changed: removed VLC from main code (VLC is now available as separate module and can be enabled or disabled)
 changed: set TelevisionTunes as new default theme scraper for movies
