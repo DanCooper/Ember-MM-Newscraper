@@ -201,7 +201,7 @@ Namespace MoviepilotDE
                             Dim resResult As MatchCollection = Regex.Matches(strSearchResults, resPattern, RegexOptions.Singleline)
 
                             If resResult.Count = 0 Then
-                                resPattern = "www.moviepilot.de/movies/(?<URL>.*?)"""
+                                resPattern = "(?<URL>http:\/\/www\.moviepilot\.de\/movies\/.*?)"".*?class=""h3"">(?<TITLE>.*?)<\/a>.*?(?<YEAR>\d{4})"
                                 resResult = Regex.Matches(strSearchResults, resPattern, RegexOptions.Singleline)
                                 strURL = String.Concat("http://www.moviepilot.de/movies/", resResult.Item(0).Groups(1).Value).Trim
                             End If
@@ -215,7 +215,7 @@ Namespace MoviepilotDE
                                 ' Try to find a search result with same Year
                                 For ctr As Integer = 0 To resResult.Count - 1
                                     If resResult.Item(ctr).Groups(3).Value = strYear Then
-                                        strURL = String.Concat("http://www.moviepilot.de", resResult.Item(ctr).Groups(1).Value).Trim
+                                        strURL = resResult.Item(ctr).Groups(1).Value.Trim
                                         Return strURL
                                     End If
                                 Next
