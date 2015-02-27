@@ -32,6 +32,9 @@ Public Class dlgExportMovies
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwSaveAll As New System.ComponentModel.BackgroundWorker
 
+    Private AllTVShowList As String = String.Empty
+    Private allTVShows As New List(Of String)
+    Private alSets As New List(Of String)
     Private base_template As String
     Private bCancelled As Boolean = False
     Private bexportFanart As Boolean = False
@@ -47,7 +50,6 @@ Public Class dlgExportMovies
     Private workerCanceled As Boolean = False
     Private _movies As New List(Of Structures.DBMovie)
 
-    Private AllTVShowList As String = ""
 #End Region 'Fields
 
 #Region "Methods"
@@ -446,111 +448,83 @@ Public Class dlgExportMovies
         End Try
 
     End Function
-    Private alSets As New List(Of String)
-    '  Private lMovies As New List(Of Movies)
+
     Private Function GetAllMovieSets() As String
-        '//
-        ' Start thread to load movie information from nfo
-        '\\
-
-
-
         Dim ReturnString As String = ""
-        Try
-
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT SetName FROM MoviesSets;")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        While SQLreader.Read()
-                            If Not alSets.Contains(SQLreader("SetName").ToString) AndAlso Not String.IsNullOrEmpty(SQLreader("SetName").ToString) Then
-                                alSets.Add(SQLreader("SetName").ToString)
-                            End If
-                        End While
-                    End If
-                End Using
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT SetName FROM sets;")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    While SQLreader.Read()
+                        If Not alSets.Contains(SQLreader("SetName").ToString) AndAlso Not String.IsNullOrEmpty(SQLreader("SetName").ToString) Then
+                            alSets.Add(SQLreader("SetName").ToString)
+                        End If
+                    End While
+                End If
             End Using
-            If alSets.Count > 0 Then
-                For i = 0 To alSets.Count - 1
-                    If i > 0 Then
-                        ReturnString = ReturnString + "|" + alSets(i)
-                    Else
-                        ReturnString = alSets(i)
-                    End If
-                Next
-            End If
-            Return ReturnString
-        Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return ""
-        End Try
+        End Using
+        If alSets.Count > 0 Then
+            For i = 0 To alSets.Count - 1
+                If i > 0 Then
+                    ReturnString = ReturnString + "|" + alSets(i)
+                Else
+                    ReturnString = alSets(i)
+                End If
+            Next
+        End If
+        Return ReturnString
     End Function
 
-    Private allTVShows As New List(Of String)
-    '  Private lMovies As New List(Of Movies)
     Private Function GetAllTVShows() As String
-        '//
-        ' Start thread to load movie information from nfo
-        '\\
         Dim ReturnString As String = ""
-        Try
-
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT * FROM tvshow ORDER BY Title COLLATE NOCASE;")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        While SQLreader.Read()
-                            If Not allTVShows.Contains(SQLreader("Title").ToString) AndAlso Not String.IsNullOrEmpty(SQLreader("Title").ToString) Then
-                                If Not String.IsNullOrEmpty(SQLreader("idShow").ToString) Then
-                                    allTVShows.Add(SQLreader("idShow").ToString & "*" & SQLreader("Title").ToString & GetSeasonInfo(SQLreader("idShow").ToString))
-                                End If
+        allTVShows.Clear()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT * FROM tvshow ORDER BY ListTitle COLLATE NOCASE;")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    While SQLreader.Read()
+                        If Not String.IsNullOrEmpty(SQLreader("Title").ToString) Then
+                            If Not String.IsNullOrEmpty(SQLreader("idShow").ToString) Then
+                                allTVShows.Add(SQLreader("idShow").ToString & "*" & SQLreader("Title").ToString & GetSeasonInfo(SQLreader("idShow").ToString))
                             End If
-                        End While
-                    End If
-                End Using
+                        End If
+                    End While
+                End If
             End Using
-            If allTVShows.Count > 0 Then
-                For i = 0 To allTVShows.Count - 1
-                    If i > 0 Then
-                        ReturnString = ReturnString + "|" + allTVShows(i)
-                    Else
-                        ReturnString = allTVShows(i)
-                    End If
-                Next
-            End If
-            Return ReturnString
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return ""
-        End Try
+        End Using
+        If allTVShows.Count > 0 Then
+            For i = 0 To allTVShows.Count - 1
+                If i > 0 Then
+                    ReturnString = ReturnString + "|" + allTVShows(i)
+                Else
+                    ReturnString = allTVShows(i)
+                End If
+            Next
+        End If
+        Return ReturnString
     End Function
     Private Function GetSeasonInfo(ByVal Id As String) As String
         Dim ReturnString As String = ""
-        Try
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                SQLcommand.CommandText = "SELECT * FROM TVSeason WHERE TVShowID = (?);"
-                parID.Value = Id
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        While SQLreader.Read()
 
-                            If Not String.IsNullOrEmpty(SQLreader("Season").ToString) AndAlso Not SQLreader("Season").ToString.Contains("999") Then
-                                If Not String.IsNullOrEmpty(SQLreader("PosterPath").ToString) Then
-                                    ExportSeasonImage(SQLreader("TVShowID").ToString & "s" & SQLreader("Season").ToString, SQLreader("PosterPath").ToString, TempPath)
-                                End If
-                                ReturnString = ReturnString + "*" + SQLreader("TVShowID").ToString & "s" & SQLreader("Season").ToString
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
+            SQLcommand.CommandText = "SELECT * FROM seasonslist WHERE idShow = (?);"
+            parID.Value = Id
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    While SQLreader.Read()
+
+                        If Not String.IsNullOrEmpty(SQLreader("Season").ToString) AndAlso Not SQLreader("Season").ToString.Contains("999") Then
+                            If Not String.IsNullOrEmpty(SQLreader("PosterPath").ToString) Then
+                                ExportSeasonImage(SQLreader("idShow").ToString & "s" & SQLreader("Season").ToString, SQLreader("PosterPath").ToString, TempPath)
                             End If
-                        End While
-                    End If
-                End Using
+                            ReturnString = ReturnString + "*" + SQLreader("idShow").ToString & "s" & SQLreader("Season").ToString
+                        End If
+                    End While
+                End If
             End Using
-            Return ReturnString
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return ReturnString
-        End Try
-
+        End Using
+        Return ReturnString
     End Function
 
     Private Sub ExportSeasonImage(ByVal filename As String, ByVal source As String, ByVal temppath As String)
@@ -610,45 +584,37 @@ Public Class dlgExportMovies
 
 
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
-        '//
-        ' Thread to load movieinformation (from nfo)
-        '\\
-        Try
-            ' Clean up Movies List if any
-            _movies.Clear()
-            ' Load nfo movies using path from DB
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim _tmpMovie As New Structures.DBMovie
-                Dim _ID As Integer
-                Dim iProg As Integer = 0
-                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
-                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    SQLcount.Read()
-                    Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
-                End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY SortTitle COLLATE NOCASE;")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        While SQLreader.Read()
-                            _ID = Convert.ToInt32(SQLreader("ID"))
-                            _tmpMovie = Master.DB.LoadMovieFromDB(_ID)
-                            _movies.Add(_tmpMovie)
-                            Me.bwLoadInfo.ReportProgress(iProg, _tmpMovie.ListTitle) '  show File
-                            iProg += 1
-                            If bwLoadInfo.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
-                        End While
-                        e.Result = True
-                    Else
-                        e.Cancel = True
-                    End If
-                End Using
+        _movies.Clear()
+        ' Load nfo movies using path from DB
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            Dim _tmpMovie As New Structures.DBMovie
+            Dim _ID As Integer
+            Dim iProg As Integer = 0
+            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS mcount FROM movie;")
+            Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                SQLcount.Read()
+                Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
             End Using
-        Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            SQLNewcommand.CommandText = String.Concat("SELECT idMovie FROM movie ORDER BY ListTitle COLLATE NOCASE;")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    While SQLreader.Read()
+                        _ID = Convert.ToInt32(SQLreader("idMovie"))
+                        _tmpMovie = Master.DB.LoadMovieFromDB(_ID)
+                        _movies.Add(_tmpMovie)
+                        Me.bwLoadInfo.ReportProgress(iProg, _tmpMovie.ListTitle) '  show File
+                        iProg += 1
+                        If bwLoadInfo.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+                    End While
+                    e.Result = True
+                Else
+                    e.Cancel = True
+                End If
+            End Using
+        End Using
     End Sub
 
     Private Sub bwLoadInfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadInfo.ProgressChanged
@@ -731,7 +697,7 @@ Public Class dlgExportMovies
                 myStream.Close()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -876,7 +842,7 @@ Public Class dlgExportMovies
                 End If
             Next
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -936,7 +902,7 @@ Public Class dlgExportMovies
 
             Next
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -999,7 +965,7 @@ Public Class dlgExportMovies
                 End If
 
             Catch ex As Exception
-                Logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
         Return line
