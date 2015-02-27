@@ -4439,7 +4439,7 @@ Public Class dlgSettings
                 Case Settings.EpRetrieve.FromSeasonResult
                     lvItem.SubItems.Add("Result")
             End Select
-            lvItem.SubItems.Add(If(rShow.byDate, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(If(rShow.byDate, "Yes", "No"))
             Me.lvTVShowRegex.Items.Add(lvItem)
         Next
     End Sub
