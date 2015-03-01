@@ -60,20 +60,15 @@ Public Class dlgRenameManual_TVEpisode
             Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currShow.Filename))
             Dim stackMark As String = Path.GetFileNameWithoutExtension(Master.currShow.Filename).Replace(FileName, String.Empty).ToLower
             If Not FileName.ToLower = "video_ts" Then
-                If Not stackMark = String.Empty AndAlso Master.currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
-                    FileName = Path.GetFileNameWithoutExtension(Master.currMovie.Filename)
+                If Not stackMark = String.Empty AndAlso Master.currShow.TVEp.Title.ToLower.EndsWith(stackMark) Then
+                    FileName = Path.GetFileNameWithoutExtension(Master.currShow.Filename)
                 End If
-                If Master.currMovie.IsSingle Then
-                    txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
-                Else
-                    txtFolder.Text = "$D"
-                    txtFolder.Visible = False
-                End If
+                txtFolder.Text = Directory.GetParent(Master.currShow.Filename).Name
                 txtFile.Text = FileName
             Else
                 txtFile.Text = "$F"
                 txtFile.Visible = False
-                txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
+                txtFolder.Text = Directory.GetParent(Master.currShow.Filename).Name
             End If
         End If
     End Sub
@@ -91,14 +86,14 @@ Public Class dlgRenameManual_TVEpisode
     End Sub
 
     Sub SetUp()
-        Me.Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", Master.currMovie.Movie.Title)
+        Me.Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", Master.currShow.TVEp.Title)
         Me.Label1.Text = Master.eLang.GetString(13, "Folder Name")
         Me.Label2.Text = Master.eLang.GetString(15, "File Name")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
         Me.Label3.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
-        Me.txtTitle.Text = Master.currMovie.Movie.Title
+        Me.txtTitle.Text = Master.currShow.TVEp.Title
     End Sub
 
     Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFile.TextChanged
