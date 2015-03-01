@@ -82,6 +82,7 @@ Public Class frmMain
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
     Private LoadingDone As Boolean = False
+    Private MainActors As New Images
     Private MainBanner As New Images
     Private MainCharacterArt As New Images
     Private MainClearArt As New Images
@@ -508,6 +509,7 @@ Public Class frmMain
                     .pbActors.Image.Dispose()
                     .pbActors.Image = Nothing
                 End If
+                .MainActors.Clear()
                 .lblDirector.Text = String.Empty
                 .lblReleaseDate.Text = String.Empty
                 .txtCerts.Text = String.Empty
@@ -1595,6 +1597,7 @@ Public Class frmMain
 
     Private Sub bwLoadEpInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadEpInfo.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainActors.Clear()
         Me.MainBanner.Clear()
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
@@ -1671,6 +1674,7 @@ Public Class frmMain
 
     Private Sub bwLoadMovieInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMovieInfo.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainActors.Clear()
         Me.MainBanner.Clear()
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
@@ -1735,6 +1739,7 @@ Public Class frmMain
 
     Private Sub bwLoadMovieSetInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMovieSetInfo.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainActors.Clear()
         Me.MainBanner.Clear()
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
@@ -1861,6 +1866,7 @@ Public Class frmMain
 
     Private Sub bwLoadSeasonInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadSeasonInfo.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainActors.Clear()
         Me.MainBanner.Clear()
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
@@ -1927,6 +1933,7 @@ Public Class frmMain
 
     Private Sub bwLoadShowInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadShowInfo.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Me.MainActors.Clear()
         Me.MainBanner.Clear()
         Me.MainCharacterArt.Clear()
         Me.MainClearArt.Clear()
@@ -11532,10 +11539,10 @@ doCancel:
             End If
 
             If Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString.StartsWith("http") Then
-                Dim imgActor As Image = Image.FromFile(Me.alActors.Item(Me.lstActors.SelectedIndex).ToString)
+                Me.MainActors.FromFile(Me.alActors.Item(Me.lstActors.SelectedIndex).ToString)
 
-                If Not IsNothing(imgActor) Then
-                    Me.pbActors.Image = imgActor
+                If Not IsNothing(Me.MainActors.Image) Then
+                    Me.pbActors.Image = Me.MainActors.Image
                 Else
                     Me.pbActors.Image = My.Resources.actor_silhouette
                 End If
