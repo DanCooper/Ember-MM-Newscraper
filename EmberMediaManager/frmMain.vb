@@ -762,10 +762,12 @@ Public Class frmMain
     Private Sub mnuMainToolsExportMovies_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportMovies.Click
         Try
             Dim table As New DataTable
+            Dim ds As New DataSet
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "Select * from movie;"
+                SQLcommand.CommandText = "SELECT * FROM movie INNER JOIN MoviesVStreams ON (MoviesVStreams.MovieID = movie.idMovie) INNER JOIN MoviesAStreams ON (MoviesAStreams.MovieID = movie.idMovie);"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    'Load the SqlDataReader object to the DataTable object as follows. 
+                    ds.Tables.Add(table)
+                    ds.EnforceConstraints = False
                     table.Load(SQLreader)
                 End Using
             End Using
