@@ -1,3 +1,21 @@
+Changelog 1.4.0.9 (2015-03-02)
+
+[Main]
+fixed: episode file names with "720p" will be recognize as s7e20
+fixed: episode regex issues (partially fixed)
+fixed: seasons are partially lost after scraping
+fixed: loading movies from DB in "Edit MovieSet" window is not possible
+added: Video/Audio informations to Movie Export CVS
+
+[Moviepilot]
+fixed: plot and outline scraping
+
+[Renamer]
+fixed: renamer does not work
+fixed: manual episode rename dialog
+added: $2 tag for Aired date (episode only)
+
+
 Changelog 1.4.0.8 Beta (2015-02-25)
 
 [Main]
