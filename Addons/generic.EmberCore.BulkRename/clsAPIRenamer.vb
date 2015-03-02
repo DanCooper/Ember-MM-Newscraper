@@ -783,6 +783,11 @@ Public Class FileFolderRenamer
 
             EpisodeFile.ID = CInt(_tmpTVEpisode.EpID)
 
+            'Aired
+            If _tmpTVEpisode.TVEp.AiredSpecified Then
+                EpisodeFile.Aired = _tmpTVEpisode.TVEp.Aired
+            End If
+
             'Lock
             If Not IsNothing(_tmpTVEpisode.IsLockEp) Then
                 EpisodeFile.IsLocked = _tmpTVEpisode.IsLockEp
@@ -1234,6 +1239,7 @@ Public Class FileFolderRenamer
                         strNoFlags = strCond
                         strBase = strCond
                         strCond = ApplyPattern(strCond, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
+                        strCond = ApplyPattern(strCond, "2", f.Aired)
                         strCond = ApplyPattern(strCond, "A", f.AudioChannels)
                         strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
                         strCond = ApplyPattern(strCond, "C", f.Director)
@@ -1286,7 +1292,7 @@ Public Class FileFolderRenamer
                                 strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
                             End If
                         End If
-                        strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJKLMNOPQRSTVWY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                        strNoFlags = Regex.Replace(strNoFlags, "\$((?:[12ABCDEFHIJKLMNOPQRSTVWY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                         If strCond.Trim = strNoFlags.Trim Then
                             strCond = String.Empty
                         Else
@@ -1301,6 +1307,7 @@ Public Class FileFolderRenamer
                     nextEB = pattern.IndexOf("}")
                 End While
                 pattern = ApplyPattern(pattern, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
+                pattern = ApplyPattern(pattern, "2", f.Aired)
                 pattern = ApplyPattern(pattern, "A", f.AudioChannels)
                 pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
                 pattern = ApplyPattern(pattern, "C", f.Director)
@@ -1755,6 +1762,7 @@ Public Class FileFolderRenamer
 
 #Region "Fields"
 
+        Private _aired As String
         Private _audiochannels As String
         Private _audiocodec As String
         Private _basePath As String
@@ -1786,7 +1794,7 @@ Public Class FileFolderRenamer
         Private _path As String
         Private _rating As String
         Private _resolution As String
-        Private _seasonsepisodes As List(Of SeasonsEpisodes)
+        Private _seasonsepisodes As New List(Of SeasonsEpisodes)
         Private _showpath As String
         Private _showtitle As String
         Private _sorttitle As String
@@ -1800,6 +1808,15 @@ Public Class FileFolderRenamer
 #End Region 'Fields
 
 #Region "Properties"
+
+        Public Property Aired() As String
+            Get
+                Return Me._aired
+            End Get
+            Set(ByVal value As String)
+                Me._aired = value
+            End Set
+        End Property
 
         Public Property AudioChannels() As String
             Get
@@ -2175,50 +2192,11 @@ Public Class FileFolderRenamer
 #Region "Methods"
 
         Public Sub New()
-            _audiochannels = String.Empty
-            _audiocodec = String.Empty
-            _basePath = String.Empty
-            _collection = String.Empty
-            _country = String.Empty
-            _dirExist = False
-            _director = String.Empty
-            _extension = String.Empty
-            _fileExist = False
-            _fileName = String.Empty
-            _videosource = String.Empty
-            _genre = String.Empty
-            _id = -1
-            _imdbid = String.Empty
-            _ismultiepisode = False
-            _isRenamed = False
-            _isSingle = False
-            _isbdmv = False
-            _islocked = False
-            _isvideo_ts = False
-            _listtitle = String.Empty
-            _mpaa = String.Empty
-            _multiviewcount = String.Empty
-            _multiviewlayout = String.Empty
-            _newFileName = String.Empty
-            _newPath = String.Empty
-            _oldpath = String.Empty
-            _originalTitle = String.Empty
-            _parent = String.Empty
-            _path = String.Empty
-            _rating = String.Empty
-            _resolution = String.Empty
-            _seasonsepisodes = New List(Of SeasonsEpisodes)
-            _showpath = String.Empty
-            _showtitle = String.Empty
-            _sorttitle = String.Empty
-            _status = String.Empty
-            _title = String.Empty
-            _tvdbid = String.Empty
-            _videocodec = String.Empty
-            _year = String.Empty
+            Clear()
         End Sub
 
         Public Sub Clear()
+            _aired = String.Empty
             _audiochannels = String.Empty
             _audiocodec = String.Empty
             _basePath = String.Empty
