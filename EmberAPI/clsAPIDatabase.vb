@@ -792,13 +792,28 @@ Public Class Database
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function DeleteTVEpFromDB(ByVal ID As Long, ByVal Force As Boolean, ByVal DoCleanSeasons As Boolean, Optional ByVal BatchMode As Boolean = False) As Boolean
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        Dim doesExist As Boolean = False
+
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT TVEpPathID, Missing FROM episode WHERE idEpisode = ", ID, ";")
+            SQLcommand.CommandText = String.Concat("SELECT TVEpPathID, Missing, Episode, Season, idShow FROM episode WHERE idEpisode = ", ID, ";")
             Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader
                 While SQLReader.Read
                     Using SQLECommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        If Force Then
+
+                        If Not Force Then
+                            'check if there is another episode with same season and episode number (in this case we don't need a another "Missing" episode)
+                            Using SQLcommand_select As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand
+                                SQLcommand_select.CommandText = String.Format("SELECT COUNT(episode.idEpisode) AS Count FROM episode WHERE NOT idEpisode = {0} AND Season = {1} AND Episode = {2} AND idShow = {3}", ID, SQLReader("Season"), SQLReader("Episode"), SQLReader("idShow"))
+                                Using SQLReader_select As SQLite.SQLiteDataReader = SQLcommand_select.ExecuteReader
+                                    While SQLReader_select.Read
+                                        If CInt(SQLReader_select("Count")) > 0 Then doesExist = True
+                                    End While
+                                End Using
+                            End Using
+                        End If
+
+                        If Force OrElse doesExist Then
                             SQLECommand.CommandText = String.Concat("DELETE FROM episode WHERE idEpisode = ", ID, ";")
                             SQLECommand.ExecuteNonQuery()
 
@@ -907,13 +922,7 @@ Public Class Database
                 End Using
                 SQLcommand.CommandText = String.Concat("DELETE FROM tvshow WHERE idShow = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
-                'SQLcommand.CommandText = String.Concat("DELETE FROM actorlinktvshow WHERE idShow = ", ID, ";")
-                'SQLcommand.ExecuteNonQuery()
-                'SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", ID, ";")
-                'SQLcommand.ExecuteNonQuery()
             End Using
-
-            CleanSeasons(True)
 
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
