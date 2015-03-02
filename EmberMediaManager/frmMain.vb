@@ -6223,7 +6223,7 @@ doCancel:
                 End If
             Next
 
-            Master.DB.CleanSeasons(True)
+            'Master.DB.CleanSeasons(True)
 
             For Each iSeason In SeasonsList
                 Me.RefreshSeason(idShow, iSeason, True)
@@ -15510,7 +15510,7 @@ doCancel:
         tmpSeasonDb.Filename = Path.Combine(tPath, "file.ext")
         fScanner.GetTVSeasonImages(tmpSeasonDb, Season)
 
-        Master.DB.SaveTVSeasonToDB(tmpSeasonDb, False, False)
+        Master.DB.SaveTVSeasonToDB(tmpSeasonDb, False)
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM seasonslist WHERE idShow={0} AND Season={1}", ShowID, Season))
         Dim newRow = newTable.Rows.Item(0)
@@ -15622,7 +15622,7 @@ doCancel:
                 tmpShowDb.SeasonFanartPath = sContainer.AllSeasonsFanart
                 tmpShowDb.SeasonLandscapePath = sContainer.AllSeasonsLandscape
                 tmpShowDb.SeasonPosterPath = sContainer.AllSeasonsPoster
-                Master.DB.SaveTVSeasonToDB(tmpShowDb, False, False)
+                Master.DB.SaveTVSeasonToDB(tmpShowDb, False)
             End If
 
             'If Not BatchMode Then

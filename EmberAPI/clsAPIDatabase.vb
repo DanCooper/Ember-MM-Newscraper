@@ -842,7 +842,7 @@ Public Class Database
                         SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE TVEpPathID = ", SQLPReader("ID"), ";")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLReader.Read
-                                DeleteTVEpFromDB(CInt(SQLReader("idEpisode")), Force, BatchMode)
+                                DeleteTVEpFromDB(CInt(SQLReader("idEpisode")), Force, False, BatchMode)
                             End While
                         End Using
                     End Using
@@ -948,6 +948,7 @@ Public Class Database
         _TVDB.IsMarkSeason = _tmpTVDB.IsMarkSeason
         _TVDB.SeasonBannerPath = _tmpTVDB.SeasonBannerPath
         _TVDB.SeasonFanartPath = _tmpTVDB.SeasonFanartPath
+        _TVDB.SeasonID = _tmpTVDB.SeasonID
         _TVDB.SeasonLandscapePath = _tmpTVDB.SeasonLandscapePath
         _TVDB.SeasonPosterPath = _tmpTVDB.SeasonPosterPath
     End Sub
@@ -3196,7 +3197,7 @@ Public Class Database
                     Next
                 End Using
 
-                If WithSeason Then SaveTVSeasonToDB(_TVEpDB, IsNew, True)
+                If WithSeason Then SaveTVSeasonToDB(_TVEpDB, True)
             End If
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
@@ -3205,64 +3206,67 @@ Public Class Database
     ''' Stores information for a single season to the database
     ''' </summary>
     ''' <param name="_TVSeasonDB">Structures.DBTV representing the season to be stored.</param>
-    ''' <param name="IsNew"></param>
     ''' <param name="BatchMode"></param>
     ''' <remarks>Note that this stores the season information, not the individual episodes within that season</remarks>
-    Public Sub SaveTVSeasonToDB(ByRef _TVSeasonDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False)
-        'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
-        'TODO Break this method into smaller chunks. Too important to be this complex
+    Public Sub SaveTVSeasonToDB(ByRef _TVSeasonDB As Structures.DBTV, Optional ByVal BatchMode As Boolean = False)
+        Dim doesExist As Boolean = False
+        Dim ID As Long = -1
+
+        Using SQLcommand_select_seasons As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand_select_seasons.CommandText = String.Format("SELECT idSeason FROM seasons WHERE idShow = {0} AND Season = {1}", _TVSeasonDB.ShowID, _TVSeasonDB.TVEp.Season)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_select_seasons.ExecuteReader()
+                While SQLreader.Read
+                    doesExist = True
+                    ID = CInt(SQLreader("idSeason"))
+                    Exit While
+                End While
+            End Using
+        End Using
+
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
-        Using SQLcommand_seasons As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            If IsNew Then
-                SQLcommand_seasons.CommandText = String.Concat("INSERT OR IGNORE INTO seasons (", _
-                  "idShow, Season, SeasonText, Lock, Mark, New", _
-                  ") VALUES (?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM seasons;")
-            Else
-                SQLcommand_seasons.CommandText = String.Concat("INSERT OR REPLACE INTO seasons (", _
-                  "idSeason, idShow, Season, SeasonText, Lock, Mark, New", _
-                  ") VALUES (?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM seasons;")
-                Dim par_seasons_idSeason As SQLite.SQLiteParameter = SQLcommand_seasons.Parameters.Add("par_seasons_idSeason", DbType.UInt64, 0, "idSeason")
-                par_seasons_idSeason.Value = _TVSeasonDB.SeasonID
-            End If
-            Dim par_seasons_idShow As SQLite.SQLiteParameter = SQLcommand_seasons.Parameters.Add("par_seasons_idShow", DbType.UInt64, 0, "idShow")
-            Dim par_seasons_Season As SQLite.SQLiteParameter = SQLcommand_seasons.Parameters.Add("par_seasons_Season", DbType.Int32, 0, "Season")
-            Dim par_seasons_SeasonText As SQLite.SQLiteParameter = SQLcommand_seasons.Parameters.Add("par_seasons_SeasonText", DbType.String, 0, "SeasonText")
-            Dim par_seasons_Lock As SQLite.SQLiteParameter = SQLcommand_seasons.Parameters.Add("par_seasons_Lock", DbType.Boolean, 0, "Lock")
-            Dim par_seasons_Mark As SQLite.SQLiteParameter = SQLcommand_seasons.Parameters.Add("par_seasons_Mark", DbType.Boolean, 0, "Mark")
-            Dim par_seasons_New As SQLite.SQLiteParameter = SQLcommand_seasons.Parameters.Add("par_seasons_New", DbType.Boolean, 0, "New")
-            par_seasons_idShow.Value = _TVSeasonDB.ShowID
-            par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
-            par_seasons_Season.Value = _TVSeasonDB.TVEp.Season
-            par_seasons_Lock.Value = _TVSeasonDB.IsLockSeason
-            par_seasons_Mark.Value = _TVSeasonDB.IsMarkSeason
-            par_seasons_New.Value = IsNew
-
-            If IsNew Then
-                Using rdrTVEp As SQLite.SQLiteDataReader = SQLcommand_seasons.ExecuteReader()
-                    If rdrTVEp.Read Then
-                        _TVSeasonDB.SeasonID = Convert.ToInt64(rdrTVEp(0))
-                    Else
-                        logger.Error("Something very wrong here: SaveTVSeasonToDB", _TVSeasonDB.ToString, "Error")
-                        _TVSeasonDB.SeasonID = -1
-                        Exit Sub
-                    End If
-                End Using
-            Else
-                SQLcommand_seasons.ExecuteNonQuery()
-            End If
-
-            'Images
-            Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVSeasonDB.SeasonID, " AND media_type = 'season';")
-                SQLcommand_art.ExecuteNonQuery()
+        If Not doesExist Then
+            Using SQLcommand_insert_seasons As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_insert_seasons.CommandText = "INSERT INTO seasons (idSeason, idShow, Season, SeasonText, Lock, Mark, New) VALUES (NULL,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM seasons;"
+                Dim par_seasons_idShow As SQLite.SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_idShow", DbType.UInt64, 0, "idShow")
+                Dim par_seasons_Season As SQLite.SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Season", DbType.Int32, 0, "Season")
+                Dim par_seasons_SeasonText As SQLite.SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_SeasonText", DbType.String, 0, "SeasonText")
+                Dim par_seasons_Lock As SQLite.SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Lock", DbType.Boolean, 0, "Lock")
+                Dim par_seasons_Mark As SQLite.SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Mark", DbType.Boolean, 0, "Mark")
+                Dim par_seasons_New As SQLite.SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_New", DbType.Boolean, 0, "New")
+                par_seasons_idShow.Value = _TVSeasonDB.ShowID
+                par_seasons_Season.Value = _TVSeasonDB.TVEp.Season
+                par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
+                par_seasons_Lock.Value = _TVSeasonDB.IsLockSeason
+                par_seasons_Mark.Value = _TVSeasonDB.IsMarkSeason
+                par_seasons_New.Value = True
+                ID = CInt(SQLcommand_insert_seasons.ExecuteScalar())
             End Using
-            If Not String.IsNullOrEmpty(_TVSeasonDB.SeasonBannerPath) Then SetArtForItem(_TVSeasonDB.SeasonID, "season", "banner", _TVSeasonDB.SeasonBannerPath)
-            If Not String.IsNullOrEmpty(_TVSeasonDB.SeasonFanartPath) Then SetArtForItem(_TVSeasonDB.SeasonID, "season", "fanart", _TVSeasonDB.SeasonFanartPath)
-            If Not String.IsNullOrEmpty(_TVSeasonDB.SeasonLandscapePath) Then SetArtForItem(_TVSeasonDB.SeasonID, "season", "landscape", _TVSeasonDB.SeasonLandscapePath)
-            If Not String.IsNullOrEmpty(_TVSeasonDB.SeasonPosterPath) Then SetArtForItem(_TVSeasonDB.SeasonID, "season", "poster", _TVSeasonDB.SeasonPosterPath)
+        Else
+            Using SQLcommand_update_seasons As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_update_seasons.CommandText = String.Format("UPDATE seasons SET SeasonText=?, Lock=?, Mark=?, New=? WHERE idSeason={0}", ID)
+                Dim par_seasons_SeasonText As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_SeasonText", DbType.String, 0, "SeasonText")
+                Dim par_seasons_Lock As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_Lock", DbType.Boolean, 0, "Lock")
+                Dim par_seasons_Mark As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_Mark", DbType.Boolean, 0, "Mark")
+                Dim par_seasons_New As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_New", DbType.Boolean, 0, "New")
+                par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
+                par_seasons_Lock.Value = _TVSeasonDB.IsLockSeason
+                par_seasons_Mark.Value = _TVSeasonDB.IsMarkSeason
+                par_seasons_New.Value = False
+                SQLcommand_update_seasons.ExecuteNonQuery()
+            End Using
+        End If
+
+        'Images
+        Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVSeasonDB.SeasonID, " AND media_type = 'season';")
+            SQLcommand_art.ExecuteNonQuery()
         End Using
+        If Not String.IsNullOrEmpty(_TVSeasonDB.SeasonBannerPath) Then SetArtForItem(_TVSeasonDB.SeasonID, "season", "banner", _TVSeasonDB.SeasonBannerPath)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.SeasonFanartPath) Then SetArtForItem(_TVSeasonDB.SeasonID, "season", "fanart", _TVSeasonDB.SeasonFanartPath)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.SeasonLandscapePath) Then SetArtForItem(_TVSeasonDB.SeasonID, "season", "landscape", _TVSeasonDB.SeasonLandscapePath)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.SeasonPosterPath) Then SetArtForItem(_TVSeasonDB.SeasonID, "season", "poster", _TVSeasonDB.SeasonPosterPath)
 
         If Not BatchMode Then SQLtransaction.Commit()
     End Sub

@@ -457,7 +457,7 @@ Public Class FileFolderRenamer
 
                     If toDB Then
                         Master.DB.SaveTVShowToDB(_tv, False, BatchMode, toNfo)
-                        Master.DB.SaveTVSeasonToDB(_tv, False, BatchMode)
+                        Master.DB.SaveTVSeasonToDB(_tv, BatchMode)
                     End If
 
                     Try
@@ -477,7 +477,7 @@ Public Class FileFolderRenamer
                             Dim tmpTV As New Structures.DBTV
                             tmpTV = Master.DB.LoadTVSeasonFromDB(_tv.ShowID, aSeason, False)
                             UpdatePaths_Show(tmpTV, srcDir, destDir)
-                            Master.DB.SaveTVSeasonToDB(tmpTV, False, BatchMode)
+                            Master.DB.SaveTVSeasonToDB(tmpTV, BatchMode)
                         Next
 
                         'second step: get all list of all episode paths
