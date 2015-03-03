@@ -109,9 +109,9 @@ Public Class dlgBulkRenamer_TV
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE Missing = 0;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episodelist WHERE Missing = 0;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE Missing = 0 AND {0};", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(idEpisode) AS mcount FROM episodelist WHERE Missing = 0 AND {0};", dbFilter)
                 End If
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
@@ -119,9 +119,9 @@ Public Class dlgBulkRenamer_TV
                     End If
                 End Using
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE Missing = 0 ORDER BY idShow ASC, Season ASC, Episode ASC;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episodelist WHERE Missing = 0 ORDER BY idShow ASC, Season ASC, Episode ASC;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, idEpisode FROM episode WHERE Missing = 0 AND {0} ORDER BY idShow ASC, Season ASC, Episode ASC;", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, idEpisode FROM episodelist WHERE Missing = 0 AND {0} ORDER BY idShow ASC, Season ASC, Episode ASC;", dbFilter)
                 End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then

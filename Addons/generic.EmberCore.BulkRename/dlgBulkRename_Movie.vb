@@ -89,9 +89,10 @@ Public Class dlgBulkRenamer_Movie
             If Not String.IsNullOrEmpty(Me.FilterMoviesSearch) AndAlso Not String.IsNullOrEmpty(Me.FilterMoviesType) Then
                 Select Case Me.FilterMoviesType
                     Case Master.eLang.GetString(100, "Actor")
-                        dbFilter = String.Concat("ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.FilterMoviesSearch, "%')")
+                        dbFilter = String.Concat("idMovie IN (SELECT actorlinkmovie.idMovie FROM actorlinkmovie ", _
+                                                 "WHERE idActor IN (SELECT actors.idActor FROM actors WHERE strActor LIKE '%", Me.FilterMoviesSearch, "%'))")
                     Case Master.eLang.GetString(233, "Role")
-                        dbFilter = String.Concat("ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.FilterMoviesSearch, "%')")
+                        dbFilter = String.Concat("idMovie IN (SELECT idMovie FROM actorlinkmovie WHERE strRole LIKE '%", Me.FilterMoviesSearch, "%')")
                 End Select
                 hasFilter = True
             End If
@@ -110,9 +111,9 @@ Public Class dlgBulkRenamer_Movie
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS mcount FROM movielist;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(id) AS mcount FROM movies WHERE {0};", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(idMovie) AS mcount FROM movielist WHERE {0};", dbFilter)
                 End If
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
@@ -120,20 +121,20 @@ Public Class dlgBulkRenamer_Movie
                     End If
                 End Using
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, id FROM movies ORDER BY ListTitle ASC;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idMovie FROM movielist ORDER BY Title ASC;")
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, id FROM movies WHERE {0} ORDER BY ListTitle ASC;", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, idMovie FROM movielist WHERE {0} ORDER BY Title ASC;", dbFilter)
                 End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             Try
-                                If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("id")) Then
+                                If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("idMovie")) Then
                                     _tmpPath = SQLreader("NfoPath").ToString
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
 
                                         MovieFile = New FileFolderRenamer.FileRename
-                                        _currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("id")))
+                                        _currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
 
                                         If Not _currMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_currMovie.Filename) Then
                                             MovieFile = FileFolderRenamer.GetInfo_Movie(_currMovie)
