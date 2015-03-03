@@ -70,6 +70,14 @@ Public Class dlgOfflineHolder
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Private Sub AddDVDProfilerCollectionMovie(ByVal cMovieList As List(Of DVDProfiler.cDVD))
         txtFolderNameDVDProfiler.Text = String.Concat(cMovieList.Item(0).Title, " [Offline]")
         txtCaseType.Text = cMovieList.Item(0).CaseType
@@ -246,7 +254,7 @@ Public Class dlgOfflineHolder
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -295,7 +303,7 @@ Public Class dlgOfflineHolder
                 AddDVDProfilerMovie(tMovie)
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1873,7 +1881,7 @@ Public Class dlgOfflineHolder
                 txtTop.Text = (RealImage_H - 30).ToString
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

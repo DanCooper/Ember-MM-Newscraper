@@ -11146,6 +11146,7 @@ doCancel:
                 Me.Location = Master.eSettings.GeneralWindowLoc
                 Me.Size = Master.eSettings.GeneralWindowSize
                 Me.WindowState = Master.eSettings.GeneralWindowState
+                Master.AppPos = Me.Bounds
 
                 Me.aniMovieType = Master.eSettings.GeneralMovieInfoPanelState
                 Select Case Me.aniMovieType
@@ -11245,7 +11246,7 @@ doCancel:
                     If Master.DB.ConnectMyVideosDB() Then
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
                     End If
-                    If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    If dlgWizard.ShowDialog() = Windows.Forms.DialogResult.OK Then
                         Application.DoEvents()
                         Me.SetUp(False) 'just in case user changed languages
                         Me.Visible = True
@@ -11272,6 +11273,10 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
+
+    Private Sub frmMain_Move(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Move
+        Master.AppPos = Me.Bounds
+    End Sub
     ''' <summary>
     ''' The form has been resized, so re-position those controls that need to be re-located
     ''' </summary>
@@ -11280,6 +11285,7 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub frmMain_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
         If Me.Created Then
+            Master.AppPos = Me.Bounds
             Me.MoveMPAA()
             Me.MoveGenres()
             ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
@@ -13128,7 +13134,7 @@ doCancel:
         'Dim aList As New List(Of MediaContainers.Image)
 
         Try
-            If Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) Then 'changed from Master.tmpMovie.Title to Master.currMovie.Movie.Title)
+            If Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) Then
 
                 Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
@@ -13614,6 +13620,7 @@ doCancel:
         End Try
 
     End Sub
+
     Private Sub OpenImageViewer(ByVal _Image As Image)
         Using dImgView As New dlgImgView
             dImgView.ShowDialog(_Image)
@@ -13658,7 +13665,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -13667,7 +13673,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Banner, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -13693,7 +13699,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -13702,7 +13707,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.Banner, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -13882,7 +13887,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -13891,7 +13895,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.ClearArt, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -13917,7 +13921,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -13926,7 +13929,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.ClearArt, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -14008,7 +14011,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -14017,7 +14019,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.ClearLogo, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -14043,7 +14045,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -14052,7 +14053,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.ClearLogo, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -14134,7 +14135,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -14143,7 +14143,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.DiscArt, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -14169,7 +14169,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -14178,7 +14177,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.DiscArt, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -14244,7 +14243,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -14253,7 +14251,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Fanart, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -14279,7 +14277,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -14288,7 +14285,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.Fanart, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -14433,7 +14430,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -14442,7 +14438,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Landscape, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -14468,7 +14464,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -14477,7 +14472,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.Landscape, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -14597,7 +14592,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -14606,7 +14600,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Poster, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -14632,7 +14626,6 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim dlgImgS As dlgImgSelect
                         Dim aList As New List(Of MediaContainers.Image)
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
@@ -14641,7 +14634,7 @@ doCancel:
 
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
                             If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ImageType_Movie.Poster, aList, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
@@ -17809,7 +17802,7 @@ doCancel:
 
     End Sub
 
-    Private Sub SettingsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainEditSettings.Click, cmnuTraySettings.Click
+    Private Sub mnuMainEditSettings_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainEditSettings.Click, cmnuTraySettings.Click
         Try
             Me.SetControlsEnabled(False)
             Me.pnlLoadSettings.Visible = True
@@ -19514,7 +19507,7 @@ doCancel:
                         Me.tslLoading.Visible = True
                         Using dEditEp As New dlgEditEpisode
                             AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEp.GenericRunCallBack
-                            If dEditEp.ShowDialog = Windows.Forms.DialogResult.OK Then
+                            If dEditEp.ShowDialog() = Windows.Forms.DialogResult.OK Then
                                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperSingle_TVEpisode, Nothing, Nothing, False, , Master.currShow)
                                 Me.RefreshEpisode(Master.currShow.EpID)
                             End If

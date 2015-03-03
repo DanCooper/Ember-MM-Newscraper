@@ -377,7 +377,6 @@ Partial Class dlgBulkRenamer_TV
         Me.MinimizeBox = False
         Me.Name = "dlgBulkRenamer_TV"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "TV Bulk Renamer"
         CType(Me.dgvEpisodesList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.cmsEpisodeList.ResumeLayout(False)

@@ -54,6 +54,14 @@ Public Class dlgSettings
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Public Overloads Function ShowDialog() As Structures.SettingsResult
         MyBase.ShowDialog()
         Return Me.sResult

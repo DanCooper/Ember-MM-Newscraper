@@ -413,7 +413,7 @@ Partial Class dlgBulkRenamer_Movie
         Me.tlpButtons.Size = New System.Drawing.Size(146, 29)
         Me.tlpButtons.TabIndex = 15
         '
-        'dlgBulkRenamer
+        'dlgBulkRenamer_Movie
         '
         Me.AcceptButton = Me.Rename_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -439,9 +439,8 @@ Partial Class dlgBulkRenamer_Movie
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.MinimumSize = New System.Drawing.Size(1008, 511)
-        Me.Name = "dlgBulkRenamer"
+        Me.Name = "dlgBulkRenamer_Movie"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Bulk Renamer"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()

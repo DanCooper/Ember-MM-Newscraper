@@ -57,6 +57,7 @@ Partial Class dlgEditEpisode
         Me.btnRemove = New System.Windows.Forms.Button()
         Me.lblActors = New System.Windows.Forms.Label()
         Me.lvActors = New System.Windows.Forms.ListView()
+        Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colRole = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colThumb = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -110,7 +111,6 @@ Partial Class dlgEditEpisode
         Me.chkWatched = New System.Windows.Forms.CheckBox()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditEpisode.SuspendLayout()
@@ -484,6 +484,10 @@ Partial Class dlgEditEpisode
         Me.lvActors.TabIndex = 16
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
+        '
+        'colID
+        '
+        Me.colID.Width = 0
         '
         'colName
         '
@@ -1004,10 +1008,6 @@ Partial Class dlgEditEpisode
         Me.tsFilename.Size = New System.Drawing.Size(55, 17)
         Me.tsFilename.Text = "Filename"
         '
-        'colID
-        '
-        Me.colID.Width = 0
-        '
         'dlgEditEpisode
         '
         Me.AcceptButton = Me.OK_Button
@@ -1028,7 +1028,6 @@ Partial Class dlgEditEpisode
         Me.MinimizeBox = False
         Me.Name = "dlgEditEpisode"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Edit Episode"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()

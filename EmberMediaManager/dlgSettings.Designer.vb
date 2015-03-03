@@ -613,6 +613,7 @@ Partial Class dlgSettings
         Me.chkTVDisplayStatus = New System.Windows.Forms.CheckBox()
         Me.gbTVGeneralMediaListSortTokensOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVGeneralMediaListSortTokensOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnTVSortTokenReset = New System.Windows.Forms.Button()
         Me.btnTVSortTokenRemove = New System.Windows.Forms.Button()
         Me.lstTVSortTokens = New System.Windows.Forms.ListBox()
         Me.btnTVSortTokenAdd = New System.Windows.Forms.Button()
@@ -1203,6 +1204,7 @@ Partial Class dlgSettings
         Me.btnMovieSetGeneralMediaListSortingReset = New System.Windows.Forms.Button()
         Me.gbMovieSetGeneralMediaListSortTokensOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSetGeneralSortTokensOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnMovieSetSortTokenReset = New System.Windows.Forms.Button()
         Me.btnMovieSetSortTokenRemove = New System.Windows.Forms.Button()
         Me.lstMovieSetSortTokens = New System.Windows.Forms.ListBox()
         Me.btnMovieSetSortTokenAdd = New System.Windows.Forms.Button()
@@ -1342,8 +1344,6 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnMovieSetSortTokenReset = New System.Windows.Forms.Button()
-        Me.btnTVSortTokenReset = New System.Windows.Forms.Button()
         Me.gbGeneralMiscOpts.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
@@ -9224,6 +9224,16 @@ Partial Class dlgSettings
         Me.tblTVGeneralMediaListSortTokensOpts.Size = New System.Drawing.Size(206, 78)
         Me.tblTVGeneralMediaListSortTokensOpts.TabIndex = 74
         '
+        'btnTVSortTokenReset
+        '
+        Me.btnTVSortTokenReset.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVSortTokenReset.Image = CType(resources.GetObject("btnTVSortTokenReset.Image"),System.Drawing.Image)
+        Me.btnTVSortTokenReset.Location = New System.Drawing.Point(180, 52)
+        Me.btnTVSortTokenReset.Name = "btnTVSortTokenReset"
+        Me.btnTVSortTokenReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVSortTokenReset.TabIndex = 11
+        Me.btnTVSortTokenReset.UseVisualStyleBackColor = true
+        '
         'btnTVSortTokenRemove
         '
         Me.btnTVSortTokenRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
@@ -16837,6 +16847,16 @@ Partial Class dlgSettings
         Me.tblMovieSetGeneralSortTokensOpts.Size = New System.Drawing.Size(206, 78)
         Me.tblMovieSetGeneralSortTokensOpts.TabIndex = 8
         '
+        'btnMovieSetSortTokenReset
+        '
+        Me.btnMovieSetSortTokenReset.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnMovieSetSortTokenReset.Image = CType(resources.GetObject("btnMovieSetSortTokenReset.Image"),System.Drawing.Image)
+        Me.btnMovieSetSortTokenReset.Location = New System.Drawing.Point(180, 52)
+        Me.btnMovieSetSortTokenReset.Name = "btnMovieSetSortTokenReset"
+        Me.btnMovieSetSortTokenReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieSetSortTokenReset.TabIndex = 10
+        Me.btnMovieSetSortTokenReset.UseVisualStyleBackColor = true
+        '
         'btnMovieSetSortTokenRemove
         '
         Me.btnMovieSetSortTokenRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
@@ -18680,26 +18700,6 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1097, 74)
         Me.tblSettingsFooter.TabIndex = 0
         '
-        'btnMovieSetSortTokenReset
-        '
-        Me.btnMovieSetSortTokenReset.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnMovieSetSortTokenReset.Image = CType(resources.GetObject("btnMovieSetSortTokenReset.Image"),System.Drawing.Image)
-        Me.btnMovieSetSortTokenReset.Location = New System.Drawing.Point(180, 52)
-        Me.btnMovieSetSortTokenReset.Name = "btnMovieSetSortTokenReset"
-        Me.btnMovieSetSortTokenReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnMovieSetSortTokenReset.TabIndex = 10
-        Me.btnMovieSetSortTokenReset.UseVisualStyleBackColor = true
-        '
-        'btnTVSortTokenReset
-        '
-        Me.btnTVSortTokenReset.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnTVSortTokenReset.Image = CType(resources.GetObject("btnTVSortTokenReset.Image"),System.Drawing.Image)
-        Me.btnTVSortTokenReset.Location = New System.Drawing.Point(180, 52)
-        Me.btnTVSortTokenReset.Name = "btnTVSortTokenReset"
-        Me.btnTVSortTokenReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVSortTokenReset.TabIndex = 11
-        Me.btnTVSortTokenReset.UseVisualStyleBackColor = true
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -18731,7 +18731,6 @@ Partial Class dlgSettings
         Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
         Me.MinimizeBox = false
         Me.Name = "dlgSettings"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Settings"
         Me.gbGeneralMiscOpts.ResumeLayout(false)
         Me.gbGeneralMiscOpts.PerformLayout

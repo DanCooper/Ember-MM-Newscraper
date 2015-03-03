@@ -223,7 +223,6 @@ Partial Class dlgFileInfo
         Me.MinimizeBox = False
         Me.Name = "dlgFileInfo"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Meta Data Editor"
         Me.ResumeLayout(False)
 

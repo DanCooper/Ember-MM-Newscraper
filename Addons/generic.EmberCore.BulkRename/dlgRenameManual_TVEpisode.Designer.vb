@@ -192,7 +192,7 @@ Partial Class dlgRenameManual_TVEpisode
         Me.Panel1.Size = New System.Drawing.Size(415, 96)
         Me.Panel1.TabIndex = 1
         '
-        'dlgRenameManual
+        'dlgRenameManual_TVEpisode
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -205,9 +205,8 @@ Partial Class dlgRenameManual_TVEpisode
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgRenameManual"
+        Me.Name = "dlgRenameManual_TVEpisode"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Manual Rename"
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

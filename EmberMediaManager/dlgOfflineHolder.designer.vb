@@ -1081,7 +1081,6 @@ Partial Class dlgOfflineHolder
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgOfflineHolder"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Offline Media Manager"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()

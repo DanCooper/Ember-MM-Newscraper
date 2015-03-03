@@ -567,7 +567,6 @@ Partial Class dlgNMTMovies
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgNMTMovies"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "NMT Jukebox Builder"
         Me.pnlCancel.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)

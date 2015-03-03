@@ -526,7 +526,6 @@ Partial Class dlgEditSeason
         Me.MinimizeBox = False
         Me.Name = "dlgEditSeason"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Edit Season"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()

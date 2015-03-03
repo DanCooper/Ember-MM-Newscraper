@@ -73,7 +73,7 @@
         Me.pnlImages.BackColor = System.Drawing.SystemColors.Control
         Me.pnlImages.Location = New System.Drawing.Point(222, 4)
         Me.pnlImages.Name = "pnlImages"
-        Me.pnlImages.Size = New System.Drawing.Size(622, 421)
+        Me.pnlImages.Size = New System.Drawing.Size(622, 441)
         Me.pnlImages.TabIndex = 3
         '
         'pbCurrent
@@ -120,7 +120,7 @@
         'btnOK
         '
         Me.btnOK.Enabled = False
-        Me.btnOK.Location = New System.Drawing.Point(708, 431)
+        Me.btnOK.Location = New System.Drawing.Point(701, 451)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(65, 22)
         Me.btnOK.TabIndex = 0
@@ -130,7 +130,7 @@
         'btnCancel
         '
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(779, 431)
+        Me.btnCancel.Location = New System.Drawing.Point(772, 451)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(65, 22)
         Me.btnCancel.TabIndex = 1
@@ -174,7 +174,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(849, 485)
+        Me.ClientSize = New System.Drawing.Size(854, 486)
         Me.ControlBox = False
         Me.Controls.Add(Me.lblCurrentImage)
         Me.Controls.Add(Me.pbUndo)
@@ -187,12 +187,11 @@
         Me.Controls.Add(Me.tvList)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.MinimumSize = New System.Drawing.Size(855, 491)
+        Me.MinimumSize = New System.Drawing.Size(870, 525)
         Me.Name = "dlgTVImageSelect"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "TV Image Selection"
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlStatus.ResumeLayout(False)

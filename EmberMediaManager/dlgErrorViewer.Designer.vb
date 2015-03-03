@@ -123,7 +123,6 @@ Partial Class dlgErrorViewer
         Me.MinimizeBox = False
         Me.Name = "dlgErrorViewer"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Error Log Viewer"
         Me.ResumeLayout(False)
         Me.PerformLayout()

@@ -37,6 +37,14 @@ Public Class dlgAddEditActor
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Public Sub SetUp()
         Me.lblName.Text = Master.eLang.GetString(154, "Actor Name:")
         Me.lblRole.Text = Master.eLang.GetString(155, "Actor Role:")
@@ -87,7 +95,7 @@ Public Class dlgAddEditActor
                 MsgBox(Master.eLang.GetString(161, "Please enter a URL to verify."), MsgBoxStyle.Exclamation, Master.eLang.GetString(162, "No Thumb URL Specified"))
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

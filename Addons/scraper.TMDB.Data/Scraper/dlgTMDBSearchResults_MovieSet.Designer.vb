@@ -346,7 +346,6 @@ Partial Class dlgTMDBSearchResults_MovieSet
         Me.MinimumSize = New System.Drawing.Size(670, 500)
         Me.Name = "dlgTMDBSearchResults_MovieSet"
         Me.ShowIcon = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Search Results"
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTop.ResumeLayout(False)

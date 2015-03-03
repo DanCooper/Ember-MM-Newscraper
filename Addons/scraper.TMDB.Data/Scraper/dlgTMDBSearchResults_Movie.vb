@@ -52,6 +52,9 @@ Public Class dlgTMDBSearchResults_Movie
     Public Sub New(_MySettings As TMDB.Scraper.sMySettings_ForScraper, _TMDB As TMDB.Scraper)
         ' This call is required by the designer.
         InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
         MySettings = _MySettings
         TMDB = _TMDB
     End Sub

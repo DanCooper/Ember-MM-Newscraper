@@ -112,7 +112,6 @@ Partial Class dlgNewSet
         Me.Name = "dlgNewSet"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Add New Set"
         Me.tlpButtons.ResumeLayout(False)
         Me.pnlNewSet.ResumeLayout(False)

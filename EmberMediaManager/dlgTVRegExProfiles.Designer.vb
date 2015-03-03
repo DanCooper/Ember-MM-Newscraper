@@ -135,7 +135,6 @@ Partial Class dlgTVRegExProfiles
         Me.MinimizeBox = False
         Me.Name = "dlgTVRegExProfiles"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "TV RegEx Profiles"
         Me.tlpButtons.ResumeLayout(False)
         Me.pnlTVRegExProfiles.ResumeLayout(False)

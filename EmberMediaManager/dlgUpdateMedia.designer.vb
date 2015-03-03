@@ -108,6 +108,7 @@ Partial Class dlgUpdateMedia
         Me.chkModAll = New System.Windows.Forms.CheckBox()
         Me.Update_Button = New System.Windows.Forms.Button()
         Me.gbOptions = New System.Windows.Forms.GroupBox()
+        Me.chkOptsOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.chkOptsCollectionID = New System.Windows.Forms.CheckBox()
         Me.btnOptsNone = New System.Windows.Forms.Button()
         Me.chkOptsAll = New System.Windows.Forms.CheckBox()
@@ -134,7 +135,6 @@ Partial Class dlgUpdateMedia
         Me.chkOptsYear = New System.Windows.Forms.CheckBox()
         Me.chkOptsTitle = New System.Windows.Forms.CheckBox()
         Me.pnlUpdateMedia = New System.Windows.Forms.Panel()
-        Me.chkOptsOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
@@ -602,6 +602,20 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Options"
         '
+        'chkOptsOriginalTitle
+        '
+        Me.chkOptsOriginalTitle.AutoSize = True
+        Me.chkOptsOriginalTitle.Checked = True
+        Me.chkOptsOriginalTitle.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsOriginalTitle.Enabled = False
+        Me.chkOptsOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsOriginalTitle.Location = New System.Drawing.Point(147, 267)
+        Me.chkOptsOriginalTitle.Name = "chkOptsOriginalTitle"
+        Me.chkOptsOriginalTitle.Size = New System.Drawing.Size(92, 17)
+        Me.chkOptsOriginalTitle.TabIndex = 24
+        Me.chkOptsOriginalTitle.Text = "Original Title"
+        Me.chkOptsOriginalTitle.UseVisualStyleBackColor = True
+        '
         'chkOptsCollectionID
         '
         Me.chkOptsCollectionID.AutoSize = True
@@ -959,20 +973,6 @@ Partial Class dlgUpdateMedia
         Me.pnlUpdateMedia.Size = New System.Drawing.Size(568, 385)
         Me.pnlUpdateMedia.TabIndex = 3
         '
-        'chkOptsOriginalTitle
-        '
-        Me.chkOptsOriginalTitle.AutoSize = True
-        Me.chkOptsOriginalTitle.Checked = True
-        Me.chkOptsOriginalTitle.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkOptsOriginalTitle.Enabled = False
-        Me.chkOptsOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkOptsOriginalTitle.Location = New System.Drawing.Point(147, 267)
-        Me.chkOptsOriginalTitle.Name = "chkOptsOriginalTitle"
-        Me.chkOptsOriginalTitle.Size = New System.Drawing.Size(92, 17)
-        Me.chkOptsOriginalTitle.TabIndex = 24
-        Me.chkOptsOriginalTitle.Text = "Original Title"
-        Me.chkOptsOriginalTitle.UseVisualStyleBackColor = True
-        '
         'dlgUpdateMedia
         '
         Me.AcceptButton = Me.Update_Button
@@ -989,7 +989,6 @@ Partial Class dlgUpdateMedia
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgUpdateMedia"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Custom Scraper"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()

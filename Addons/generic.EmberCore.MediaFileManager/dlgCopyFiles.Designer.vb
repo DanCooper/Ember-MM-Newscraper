@@ -92,7 +92,6 @@ Partial Class dlgCopyFiles
         Me.MinimizeBox = False
         Me.Name = "dlgCopyFiles"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "dlgCopyFiles"
         Me.TopMost = True
         Me.pnlStatus.ResumeLayout(False)

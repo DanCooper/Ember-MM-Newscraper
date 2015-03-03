@@ -129,7 +129,6 @@ Partial Class dlgImgManual
         Me.MinimizeBox = False
         Me.Name = "dlgImgManual"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Manual Image Entry"
         Me.tlpButtons.ResumeLayout(False)
         Me.pnlManualPosterEntry.ResumeLayout(False)

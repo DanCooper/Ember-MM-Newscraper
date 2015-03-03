@@ -75,6 +75,7 @@ Public Class dlgImgSelect
 #End Region 'Fields
 
 #Region "Properties"
+
     Public Property Results As MediaContainers.Image
         Get
             Return _results
@@ -101,7 +102,8 @@ Public Class dlgImgSelect
             _etList = value
         End Set
     End Property
-#End Region
+
+#End Region 'Properties
 
     '#Region "Events"
 
@@ -114,6 +116,9 @@ Public Class dlgImgSelect
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
     End Sub
     ''' <summary>
     ''' 

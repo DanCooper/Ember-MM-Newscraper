@@ -267,7 +267,6 @@ Partial Class dlgExportMovies
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgExportMovies"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Export Movies"
         Me.pnlBottomMain.ResumeLayout(False)
         Me.pnlBottomMain.PerformLayout()

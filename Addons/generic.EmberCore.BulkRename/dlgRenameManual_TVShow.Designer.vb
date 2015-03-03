@@ -215,7 +215,6 @@ Partial Class dlgRenameManual_TVShow
         Me.MinimizeBox = False
         Me.Name = "dlgRenameManual_TVShow"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Manual Rename"
         Me.pnlStatus.ResumeLayout(False)
         Me.pnlMain.ResumeLayout(False)

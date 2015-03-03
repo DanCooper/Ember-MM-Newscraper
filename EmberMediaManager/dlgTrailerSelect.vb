@@ -58,6 +58,14 @@ Public Class dlgTrailerSelect
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Private Sub dlgTrailerSelect_FormClosing(sender As Object, e As System.EventArgs) Handles Me.FormClosing
         RemoveHandler Trailers.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
@@ -102,6 +110,7 @@ Public Class dlgTrailerSelect
             Me.lvTrailers.Select()
             Me.lvTrailers.Items(0).Selected = True
         End If
+
         Return MyBase.ShowDialog()
     End Function
 

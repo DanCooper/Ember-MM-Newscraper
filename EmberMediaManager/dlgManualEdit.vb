@@ -45,6 +45,14 @@ Public Class dlgManualEdit
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Public Overloads Function ShowDialog(ByVal nfoPath As String) As Windows.Forms.DialogResult
         Me.currFile = nfoPath
 
@@ -78,7 +86,7 @@ Public Class dlgManualEdit
             ElementName += ">"
 
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return ElementName
@@ -130,7 +138,7 @@ Public Class dlgManualEdit
                     End If
                     XmlViewer.Process(True)
                 Catch ex As Exception
-                    Logger.Error(New StackFrame().GetMethod().Name,ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
                 ParseFile(True)
                 Me.Cursor = System.Windows.Forms.Cursors.Default
@@ -327,7 +335,7 @@ Public Class dlgManualEdit
             XmlViewer.Process(True)
             Me.Cursor = System.Windows.Forms.Cursors.Default
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -389,7 +397,7 @@ Public Class dlgManualEdit
                     ListBox1.Items.Add(ErrStr)
 
                 Catch ex As Exception
-                    Logger.Error(New StackFrame().GetMethod().Name,ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                     Exit Do
                 End Try
 

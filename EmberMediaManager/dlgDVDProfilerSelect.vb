@@ -32,7 +32,7 @@ Public Class dlgDVDProfilerSelect
     Private _results As New List(Of DVDProfiler.cDVD)
     Dim xmlMov As New DVDProfiler.Collection
 
-#End Region
+#End Region 'Fields
 
 #Region "Properties"
 
@@ -49,6 +49,14 @@ Public Class dlgDVDProfilerSelect
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Private Sub AddCollection(ByVal fPath As String)
         Dim xmlSer As XmlSerializer = Nothing
 
@@ -60,7 +68,7 @@ Public Class dlgDVDProfilerSelect
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Dim ID As Integer = 1
@@ -92,7 +100,7 @@ Public Class dlgDVDProfilerSelect
                 AddCollection(ofdCollectionXML.FileName)
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -108,7 +116,7 @@ Public Class dlgDVDProfilerSelect
         For Each Movie As ListViewItem In Me.lvCollection.SelectedItems
             _results.Add(xmlMov.DVD(Movie.Index))
         Next
-            Return _results
+        Return _results
     End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click

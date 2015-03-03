@@ -583,7 +583,6 @@ Partial Class dlgSetsManager
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgSetsManager"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Sets Manager"
         Me.gbMovies.ResumeLayout(False)
         Me.gbSets.ResumeLayout(False)

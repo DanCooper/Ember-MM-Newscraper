@@ -172,7 +172,6 @@ Partial Class dlgThemeSelect
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgThemeSelect"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "dlgThemeSelect"
         Me.gbSelectTheme.ResumeLayout(False)
         Me.pnlStatus.ResumeLayout(False)

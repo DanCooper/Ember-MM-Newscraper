@@ -52,6 +52,7 @@ Partial Class dlgEditShow
         Me.btnRemove = New System.Windows.Forms.Button()
         Me.lblActors = New System.Windows.Forms.Label()
         Me.lvActors = New System.Windows.Forms.ListView()
+        Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colRole = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colThumb = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -161,7 +162,6 @@ Partial Class dlgEditShow
         Me.lblOrdering = New System.Windows.Forms.Label()
         Me.cbEpisodeSorting = New System.Windows.Forms.ComboBox()
         Me.lblEpisodeSorting = New System.Windows.Forms.Label()
-        Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditShow.SuspendLayout()
@@ -530,6 +530,11 @@ Partial Class dlgEditShow
         Me.lvActors.TabIndex = 10
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
+        '
+        'colID
+        '
+        Me.colID.Text = "ID"
+        Me.colID.Width = 0
         '
         'colName
         '
@@ -1798,11 +1803,6 @@ Partial Class dlgEditShow
         Me.lblEpisodeSorting.Text = "Episode Sorted by:"
         Me.lblEpisodeSorting.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'colID
-        '
-        Me.colID.Text = "ID"
-        Me.colID.Width = 0
-        '
         'dlgEditShow
         '
         Me.AcceptButton = Me.OK_Button
@@ -1825,7 +1825,6 @@ Partial Class dlgEditShow
         Me.MinimizeBox = False
         Me.Name = "dlgEditShow"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Edit Show"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()

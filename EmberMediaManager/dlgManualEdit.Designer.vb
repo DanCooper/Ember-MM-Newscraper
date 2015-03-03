@@ -165,7 +165,6 @@ Partial Class dlgManualEdit
         Me.Menu = Me.MainMenu1
         Me.MinimizeBox = False
         Me.Name = "dlgManualEdit"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Manual NFO Editor"
         Me.Panel1.ResumeLayout(False)
         Me.Panel3.ResumeLayout(False)

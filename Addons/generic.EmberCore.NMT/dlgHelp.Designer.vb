@@ -59,7 +59,6 @@ Partial Class dlgHelp
         Me.MinimizeBox = False
         Me.Name = "dlgHelp"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Help"
         Me.ResumeLayout(False)
         Me.PerformLayout()

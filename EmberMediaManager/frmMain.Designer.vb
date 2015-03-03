@@ -453,6 +453,50 @@ Partial Class frmMain
         Me.lblFilter_Shows = New System.Windows.Forms.Label()
         Me.btnFilterUp_Shows = New System.Windows.Forms.Button()
         Me.btnFilterDown_Shows = New System.Windows.Forms.Button()
+        Me.pnlCancel = New System.Windows.Forms.Panel()
+        Me.prbCanceling = New System.Windows.Forms.ProgressBar()
+        Me.lblCanceling = New System.Windows.Forms.Label()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.pnlNoInfo = New System.Windows.Forms.Panel()
+        Me.pnlNoInfoBG = New System.Windows.Forms.Panel()
+        Me.pbNoInfo = New System.Windows.Forms.PictureBox()
+        Me.lblNoInfo = New System.Windows.Forms.Label()
+        Me.pnlInfoPanel = New System.Windows.Forms.Panel()
+        Me.pnlMoviesInSet = New System.Windows.Forms.Panel()
+        Me.lvMoviesInSet = New System.Windows.Forms.ListView()
+        Me.ilMoviesInSet = New System.Windows.Forms.ImageList(Me.components)
+        Me.lblMoviesInSetHeader = New System.Windows.Forms.Label()
+        Me.txtCerts = New System.Windows.Forms.TextBox()
+        Me.lblCertsHeader = New System.Windows.Forms.Label()
+        Me.lblReleaseDate = New System.Windows.Forms.Label()
+        Me.lblReleaseDateHeader = New System.Windows.Forms.Label()
+        Me.btnMid = New System.Windows.Forms.Button()
+        Me.pbMILoading = New System.Windows.Forms.PictureBox()
+        Me.btnMetaDataRefresh = New System.Windows.Forms.Button()
+        Me.lblMetaDataHeader = New System.Windows.Forms.Label()
+        Me.txtMetaData = New System.Windows.Forms.TextBox()
+        Me.btnPlay = New System.Windows.Forms.Button()
+        Me.txtFilePath = New System.Windows.Forms.TextBox()
+        Me.lblFilePathHeader = New System.Windows.Forms.Label()
+        Me.txtIMDBID = New System.Windows.Forms.TextBox()
+        Me.lblIMDBHeader = New System.Windows.Forms.Label()
+        Me.lblDirector = New System.Windows.Forms.Label()
+        Me.lblDirectorHeader = New System.Windows.Forms.Label()
+        Me.pnlActors = New System.Windows.Forms.Panel()
+        Me.pbActLoad = New System.Windows.Forms.PictureBox()
+        Me.lstActors = New System.Windows.Forms.ListBox()
+        Me.pbActors = New System.Windows.Forms.PictureBox()
+        Me.lblActorsHeader = New System.Windows.Forms.Label()
+        Me.lblOutlineHeader = New System.Windows.Forms.Label()
+        Me.txtOutline = New System.Windows.Forms.TextBox()
+        Me.pnlTop250 = New System.Windows.Forms.Panel()
+        Me.lblTop250 = New System.Windows.Forms.Label()
+        Me.pbTop250 = New System.Windows.Forms.PictureBox()
+        Me.lblPlotHeader = New System.Windows.Forms.Label()
+        Me.txtPlot = New System.Windows.Forms.TextBox()
+        Me.btnDown = New System.Windows.Forms.Button()
+        Me.btnUp = New System.Windows.Forms.Button()
+        Me.lblInfoPanelHeader = New System.Windows.Forms.Label()
         Me.pbBannerCache = New System.Windows.Forms.PictureBox()
         Me.pnlBanner = New System.Windows.Forms.Panel()
         Me.pnlBannerMain = New System.Windows.Forms.Panel()
@@ -498,50 +542,6 @@ Partial Class frmMain
         Me.lblDiscArtTitle = New System.Windows.Forms.Label()
         Me.pbDiscArtCache = New System.Windows.Forms.PictureBox()
         Me.pbClearLogoCache = New System.Windows.Forms.PictureBox()
-        Me.pnlCancel = New System.Windows.Forms.Panel()
-        Me.prbCanceling = New System.Windows.Forms.ProgressBar()
-        Me.lblCanceling = New System.Windows.Forms.Label()
-        Me.btnCancel = New System.Windows.Forms.Button()
-        Me.pnlNoInfo = New System.Windows.Forms.Panel()
-        Me.pnlNoInfoBG = New System.Windows.Forms.Panel()
-        Me.pbNoInfo = New System.Windows.Forms.PictureBox()
-        Me.lblNoInfo = New System.Windows.Forms.Label()
-        Me.pnlInfoPanel = New System.Windows.Forms.Panel()
-        Me.pnlMoviesInSet = New System.Windows.Forms.Panel()
-        Me.lvMoviesInSet = New System.Windows.Forms.ListView()
-        Me.ilMoviesInSet = New System.Windows.Forms.ImageList(Me.components)
-        Me.lblMoviesInSetHeader = New System.Windows.Forms.Label()
-        Me.txtCerts = New System.Windows.Forms.TextBox()
-        Me.lblCertsHeader = New System.Windows.Forms.Label()
-        Me.lblReleaseDate = New System.Windows.Forms.Label()
-        Me.lblReleaseDateHeader = New System.Windows.Forms.Label()
-        Me.btnMid = New System.Windows.Forms.Button()
-        Me.pbMILoading = New System.Windows.Forms.PictureBox()
-        Me.btnMetaDataRefresh = New System.Windows.Forms.Button()
-        Me.lblMetaDataHeader = New System.Windows.Forms.Label()
-        Me.txtMetaData = New System.Windows.Forms.TextBox()
-        Me.btnPlay = New System.Windows.Forms.Button()
-        Me.txtFilePath = New System.Windows.Forms.TextBox()
-        Me.lblFilePathHeader = New System.Windows.Forms.Label()
-        Me.txtIMDBID = New System.Windows.Forms.TextBox()
-        Me.lblIMDBHeader = New System.Windows.Forms.Label()
-        Me.lblDirector = New System.Windows.Forms.Label()
-        Me.lblDirectorHeader = New System.Windows.Forms.Label()
-        Me.pnlActors = New System.Windows.Forms.Panel()
-        Me.pbActLoad = New System.Windows.Forms.PictureBox()
-        Me.lstActors = New System.Windows.Forms.ListBox()
-        Me.pbActors = New System.Windows.Forms.PictureBox()
-        Me.lblActorsHeader = New System.Windows.Forms.Label()
-        Me.lblOutlineHeader = New System.Windows.Forms.Label()
-        Me.txtOutline = New System.Windows.Forms.TextBox()
-        Me.pnlTop250 = New System.Windows.Forms.Panel()
-        Me.lblTop250 = New System.Windows.Forms.Label()
-        Me.pbTop250 = New System.Windows.Forms.PictureBox()
-        Me.lblPlotHeader = New System.Windows.Forms.Label()
-        Me.txtPlot = New System.Windows.Forms.TextBox()
-        Me.btnDown = New System.Windows.Forms.Button()
-        Me.btnUp = New System.Windows.Forms.Button()
-        Me.lblInfoPanelHeader = New System.Windows.Forms.Label()
         Me.pnlClearArt = New System.Windows.Forms.Panel()
         Me.pnlClearArtMain = New System.Windows.Forms.Panel()
         Me.tblClearArtMain = New System.Windows.Forms.TableLayoutPanel()
@@ -1280,6 +1280,18 @@ Partial Class frmMain
         Me.tblFilterSpecificData_Shows.SuspendLayout
         Me.pnlFilterTop_Shows.SuspendLayout
         Me.tblFilterTop_Shows.SuspendLayout
+        Me.pnlCancel.SuspendLayout
+        Me.pnlNoInfo.SuspendLayout
+        Me.pnlNoInfoBG.SuspendLayout
+        CType(Me.pbNoInfo,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlInfoPanel.SuspendLayout
+        Me.pnlMoviesInSet.SuspendLayout
+        CType(Me.pbMILoading,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlActors.SuspendLayout
+        CType(Me.pbActLoad,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbActors,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlTop250.SuspendLayout
+        CType(Me.pbTop250,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.pbBannerCache,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlBanner.SuspendLayout
         Me.pnlBannerMain.SuspendLayout
@@ -1317,18 +1329,6 @@ Partial Class frmMain
         Me.tblDiscArtTop.SuspendLayout
         CType(Me.pbDiscArtCache,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.pbClearLogoCache,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlCancel.SuspendLayout
-        Me.pnlNoInfo.SuspendLayout
-        Me.pnlNoInfoBG.SuspendLayout
-        CType(Me.pbNoInfo,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlInfoPanel.SuspendLayout
-        Me.pnlMoviesInSet.SuspendLayout
-        CType(Me.pbMILoading,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlActors.SuspendLayout
-        CType(Me.pbActLoad,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbActors,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlTop250.SuspendLayout
-        CType(Me.pbTop250,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlClearArt.SuspendLayout
         Me.pnlClearArtMain.SuspendLayout
         Me.tblClearArtMain.SuspendLayout
@@ -3657,10 +3657,10 @@ Partial Class frmMain
         Me.cmnuMovieRemoveFromDB.Size = New System.Drawing.Size(225, 22)
         Me.cmnuMovieRemoveFromDB.Text = "Remove from Database"
         '
-        'cmnuMovieRemoveFromDisc
+        'cmnuMovieRemoveFromDisk
         '
-        Me.cmnuMovieRemoveFromDisk.Image = CType(resources.GetObject("cmnuMovieRemoveFromDisc.Image"),System.Drawing.Image)
-        Me.cmnuMovieRemoveFromDisk.Name = "cmnuMovieRemoveFromDisc"
+        Me.cmnuMovieRemoveFromDisk.Image = CType(resources.GetObject("cmnuMovieRemoveFromDisk.Image"),System.Drawing.Image)
+        Me.cmnuMovieRemoveFromDisk.Name = "cmnuMovieRemoveFromDisk"
         Me.cmnuMovieRemoveFromDisk.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete),System.Windows.Forms.Keys)
         Me.cmnuMovieRemoveFromDisk.Size = New System.Drawing.Size(225, 22)
         Me.cmnuMovieRemoveFromDisk.Text = "Delete Movie"
@@ -5983,6 +5983,576 @@ Partial Class frmMain
         Me.btnFilterDown_Shows.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnFilterDown_Shows.UseVisualStyleBackColor = false
         '
+        'pnlCancel
+        '
+        Me.pnlCancel.BackColor = System.Drawing.Color.LightGray
+        Me.pnlCancel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlCancel.Controls.Add(Me.prbCanceling)
+        Me.pnlCancel.Controls.Add(Me.lblCanceling)
+        Me.pnlCancel.Controls.Add(Me.btnCancel)
+        Me.pnlCancel.Location = New System.Drawing.Point(273, 124)
+        Me.pnlCancel.Name = "pnlCancel"
+        Me.pnlCancel.Size = New System.Drawing.Size(214, 63)
+        Me.pnlCancel.TabIndex = 8
+        Me.pnlCancel.Visible = false
+        '
+        'prbCanceling
+        '
+        Me.prbCanceling.Location = New System.Drawing.Point(5, 32)
+        Me.prbCanceling.MarqueeAnimationSpeed = 25
+        Me.prbCanceling.Name = "prbCanceling"
+        Me.prbCanceling.Size = New System.Drawing.Size(203, 20)
+        Me.prbCanceling.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.prbCanceling.TabIndex = 2
+        Me.prbCanceling.Visible = false
+        '
+        'lblCanceling
+        '
+        Me.lblCanceling.AutoSize = true
+        Me.lblCanceling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblCanceling.Location = New System.Drawing.Point(4, 12)
+        Me.lblCanceling.Name = "lblCanceling"
+        Me.lblCanceling.Size = New System.Drawing.Size(128, 17)
+        Me.lblCanceling.TabIndex = 1
+        Me.lblCanceling.Text = "Canceling Scraper..."
+        Me.lblCanceling.Visible = false
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"),System.Drawing.Image)
+        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnCancel.Location = New System.Drawing.Point(4, 4)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(205, 55)
+        Me.btnCancel.TabIndex = 0
+        Me.btnCancel.TabStop = false
+        Me.btnCancel.Text = "Cancel Scraper"
+        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnCancel.UseVisualStyleBackColor = true
+        '
+        'pnlNoInfo
+        '
+        Me.pnlNoInfo.BackColor = System.Drawing.Color.LightGray
+        Me.pnlNoInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlNoInfo.Controls.Add(Me.pnlNoInfoBG)
+        Me.pnlNoInfo.Location = New System.Drawing.Point(241, 300)
+        Me.pnlNoInfo.Name = "pnlNoInfo"
+        Me.pnlNoInfo.Size = New System.Drawing.Size(259, 143)
+        Me.pnlNoInfo.TabIndex = 8
+        Me.pnlNoInfo.Visible = false
+        '
+        'pnlNoInfoBG
+        '
+        Me.pnlNoInfoBG.BackColor = System.Drawing.Color.White
+        Me.pnlNoInfoBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlNoInfoBG.Controls.Add(Me.pbNoInfo)
+        Me.pnlNoInfoBG.Controls.Add(Me.lblNoInfo)
+        Me.pnlNoInfoBG.Location = New System.Drawing.Point(3, 4)
+        Me.pnlNoInfoBG.Name = "pnlNoInfoBG"
+        Me.pnlNoInfoBG.Size = New System.Drawing.Size(251, 133)
+        Me.pnlNoInfoBG.TabIndex = 0
+        '
+        'pbNoInfo
+        '
+        Me.pbNoInfo.Image = CType(resources.GetObject("pbNoInfo.Image"),System.Drawing.Image)
+        Me.pbNoInfo.Location = New System.Drawing.Point(7, 38)
+        Me.pbNoInfo.Name = "pbNoInfo"
+        Me.pbNoInfo.Size = New System.Drawing.Size(63, 63)
+        Me.pbNoInfo.TabIndex = 1
+        Me.pbNoInfo.TabStop = false
+        '
+        'lblNoInfo
+        '
+        Me.lblNoInfo.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblNoInfo.Location = New System.Drawing.Point(71, 29)
+        Me.lblNoInfo.Name = "lblNoInfo"
+        Me.lblNoInfo.Size = New System.Drawing.Size(173, 78)
+        Me.lblNoInfo.TabIndex = 0
+        Me.lblNoInfo.Text = "No Information is Available for This Movie"
+        Me.lblNoInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'pnlInfoPanel
+        '
+        Me.pnlInfoPanel.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlInfoPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlInfoPanel.Controls.Add(Me.pnlMoviesInSet)
+        Me.pnlInfoPanel.Controls.Add(Me.txtCerts)
+        Me.pnlInfoPanel.Controls.Add(Me.lblCertsHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.lblReleaseDate)
+        Me.pnlInfoPanel.Controls.Add(Me.lblReleaseDateHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.btnMid)
+        Me.pnlInfoPanel.Controls.Add(Me.pbMILoading)
+        Me.pnlInfoPanel.Controls.Add(Me.btnMetaDataRefresh)
+        Me.pnlInfoPanel.Controls.Add(Me.lblMetaDataHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.txtMetaData)
+        Me.pnlInfoPanel.Controls.Add(Me.btnPlay)
+        Me.pnlInfoPanel.Controls.Add(Me.txtFilePath)
+        Me.pnlInfoPanel.Controls.Add(Me.lblFilePathHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.txtIMDBID)
+        Me.pnlInfoPanel.Controls.Add(Me.lblIMDBHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.lblDirector)
+        Me.pnlInfoPanel.Controls.Add(Me.lblDirectorHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.pnlActors)
+        Me.pnlInfoPanel.Controls.Add(Me.lblOutlineHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.txtOutline)
+        Me.pnlInfoPanel.Controls.Add(Me.pnlTop250)
+        Me.pnlInfoPanel.Controls.Add(Me.lblPlotHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.txtPlot)
+        Me.pnlInfoPanel.Controls.Add(Me.btnDown)
+        Me.pnlInfoPanel.Controls.Add(Me.btnUp)
+        Me.pnlInfoPanel.Controls.Add(Me.lblInfoPanelHeader)
+        Me.pnlInfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlInfoPanel.Location = New System.Drawing.Point(0, 345)
+        Me.pnlInfoPanel.Name = "pnlInfoPanel"
+        Me.pnlInfoPanel.Size = New System.Drawing.Size(773, 342)
+        Me.pnlInfoPanel.TabIndex = 10
+        '
+        'pnlMoviesInSet
+        '
+        Me.pnlMoviesInSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.pnlMoviesInSet.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlMoviesInSet.Controls.Add(Me.lvMoviesInSet)
+        Me.pnlMoviesInSet.Controls.Add(Me.lblMoviesInSetHeader)
+        Me.pnlMoviesInSet.Location = New System.Drawing.Point(0, 493)
+        Me.pnlMoviesInSet.Name = "pnlMoviesInSet"
+        Me.pnlMoviesInSet.Size = New System.Drawing.Size(773, 244)
+        Me.pnlMoviesInSet.TabIndex = 41
+        '
+        'lvMoviesInSet
+        '
+        Me.lvMoviesInSet.LargeImageList = Me.ilMoviesInSet
+        Me.lvMoviesInSet.Location = New System.Drawing.Point(3, 23)
+        Me.lvMoviesInSet.Name = "lvMoviesInSet"
+        Me.lvMoviesInSet.Size = New System.Drawing.Size(765, 182)
+        Me.lvMoviesInSet.TabIndex = 41
+        Me.lvMoviesInSet.UseCompatibleStateImageBehavior = false
+        '
+        'ilMoviesInSet
+        '
+        Me.ilMoviesInSet.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+        Me.ilMoviesInSet.ImageSize = New System.Drawing.Size(16, 16)
+        Me.ilMoviesInSet.TransparentColor = System.Drawing.Color.Transparent
+        '
+        'lblMoviesInSetHeader
+        '
+        Me.lblMoviesInSetHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblMoviesInSetHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblMoviesInSetHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMoviesInSetHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMoviesInSetHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblMoviesInSetHeader.Location = New System.Drawing.Point(3, 3)
+        Me.lblMoviesInSetHeader.Name = "lblMoviesInSetHeader"
+        Me.lblMoviesInSetHeader.Size = New System.Drawing.Size(765, 17)
+        Me.lblMoviesInSetHeader.TabIndex = 40
+        Me.lblMoviesInSetHeader.Text = "Movies in Set"
+        Me.lblMoviesInSetHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'txtCerts
+        '
+        Me.txtCerts.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtCerts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtCerts.Location = New System.Drawing.Point(117, 208)
+        Me.txtCerts.Name = "txtCerts"
+        Me.txtCerts.ReadOnly = true
+        Me.txtCerts.Size = New System.Drawing.Size(337, 22)
+        Me.txtCerts.TabIndex = 3
+        Me.txtCerts.TabStop = false
+        '
+        'lblCertsHeader
+        '
+        Me.lblCertsHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblCertsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblCertsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblCertsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblCertsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblCertsHeader.Location = New System.Drawing.Point(117, 188)
+        Me.lblCertsHeader.Name = "lblCertsHeader"
+        Me.lblCertsHeader.Size = New System.Drawing.Size(337, 17)
+        Me.lblCertsHeader.TabIndex = 2
+        Me.lblCertsHeader.Text = "Certifications"
+        Me.lblCertsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblReleaseDate
+        '
+        Me.lblReleaseDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblReleaseDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblReleaseDate.ForeColor = System.Drawing.Color.Black
+        Me.lblReleaseDate.Location = New System.Drawing.Point(288, 48)
+        Me.lblReleaseDate.Name = "lblReleaseDate"
+        Me.lblReleaseDate.Size = New System.Drawing.Size(105, 16)
+        Me.lblReleaseDate.TabIndex = 39
+        Me.lblReleaseDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblReleaseDateHeader
+        '
+        Me.lblReleaseDateHeader.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblReleaseDateHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblReleaseDateHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblReleaseDateHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblReleaseDateHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblReleaseDateHeader.Location = New System.Drawing.Point(288, 27)
+        Me.lblReleaseDateHeader.Name = "lblReleaseDateHeader"
+        Me.lblReleaseDateHeader.Size = New System.Drawing.Size(105, 17)
+        Me.lblReleaseDateHeader.TabIndex = 38
+        Me.lblReleaseDateHeader.Text = "Release Date"
+        Me.lblReleaseDateHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnMid
+        '
+        Me.btnMid.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnMid.BackColor = System.Drawing.SystemColors.Control
+        Me.btnMid.Location = New System.Drawing.Point(702, 1)
+        Me.btnMid.Name = "btnMid"
+        Me.btnMid.Size = New System.Drawing.Size(30, 22)
+        Me.btnMid.TabIndex = 37
+        Me.btnMid.TabStop = false
+        Me.btnMid.Text = "-"
+        Me.btnMid.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnMid.UseVisualStyleBackColor = false
+        '
+        'pbMILoading
+        '
+        Me.pbMILoading.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.pbMILoading.Image = CType(resources.GetObject("pbMILoading.Image"),System.Drawing.Image)
+        Me.pbMILoading.Location = New System.Drawing.Point(604, 374)
+        Me.pbMILoading.Name = "pbMILoading"
+        Me.pbMILoading.Size = New System.Drawing.Size(41, 39)
+        Me.pbMILoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbMILoading.TabIndex = 36
+        Me.pbMILoading.TabStop = false
+        Me.pbMILoading.Visible = false
+        '
+        'btnMetaDataRefresh
+        '
+        Me.btnMetaDataRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnMetaDataRefresh.Location = New System.Drawing.Point(691, 278)
+        Me.btnMetaDataRefresh.Name = "btnMetaDataRefresh"
+        Me.btnMetaDataRefresh.Size = New System.Drawing.Size(75, 23)
+        Me.btnMetaDataRefresh.TabIndex = 9
+        Me.btnMetaDataRefresh.TabStop = false
+        Me.btnMetaDataRefresh.Text = "Refresh"
+        Me.btnMetaDataRefresh.UseVisualStyleBackColor = true
+        '
+        'lblMetaDataHeader
+        '
+        Me.lblMetaDataHeader.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblMetaDataHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblMetaDataHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMetaDataHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMetaDataHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblMetaDataHeader.Location = New System.Drawing.Point(467, 282)
+        Me.lblMetaDataHeader.Name = "lblMetaDataHeader"
+        Me.lblMetaDataHeader.Size = New System.Drawing.Size(294, 17)
+        Me.lblMetaDataHeader.TabIndex = 8
+        Me.lblMetaDataHeader.Text = "Meta Data"
+        Me.lblMetaDataHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'txtMetaData
+        '
+        Me.txtMetaData.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtMetaData.BackColor = System.Drawing.Color.Gainsboro
+        Me.txtMetaData.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.txtMetaData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMetaData.ForeColor = System.Drawing.Color.Black
+        Me.txtMetaData.Location = New System.Drawing.Point(467, 303)
+        Me.txtMetaData.Multiline = true
+        Me.txtMetaData.Name = "txtMetaData"
+        Me.txtMetaData.ReadOnly = true
+        Me.txtMetaData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtMetaData.Size = New System.Drawing.Size(296, 184)
+        Me.txtMetaData.TabIndex = 10
+        Me.txtMetaData.TabStop = false
+        '
+        'btnPlay
+        '
+        Me.btnPlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnPlay.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
+        Me.btnPlay.Location = New System.Drawing.Point(435, 254)
+        Me.btnPlay.Name = "btnPlay"
+        Me.btnPlay.Size = New System.Drawing.Size(20, 20)
+        Me.btnPlay.TabIndex = 6
+        Me.btnPlay.TabStop = false
+        Me.btnPlay.UseVisualStyleBackColor = true
+        '
+        'txtFilePath
+        '
+        Me.txtFilePath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtFilePath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFilePath.Location = New System.Drawing.Point(3, 254)
+        Me.txtFilePath.Name = "txtFilePath"
+        Me.txtFilePath.ReadOnly = true
+        Me.txtFilePath.Size = New System.Drawing.Size(429, 22)
+        Me.txtFilePath.TabIndex = 5
+        Me.txtFilePath.TabStop = false
+        '
+        'lblFilePathHeader
+        '
+        Me.lblFilePathHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblFilePathHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblFilePathHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilePathHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblFilePathHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilePathHeader.Location = New System.Drawing.Point(3, 234)
+        Me.lblFilePathHeader.Name = "lblFilePathHeader"
+        Me.lblFilePathHeader.Size = New System.Drawing.Size(451, 17)
+        Me.lblFilePathHeader.TabIndex = 4
+        Me.lblFilePathHeader.Text = "File Path"
+        Me.lblFilePathHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'txtIMDBID
+        '
+        Me.txtIMDBID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtIMDBID.Location = New System.Drawing.Point(3, 208)
+        Me.txtIMDBID.Name = "txtIMDBID"
+        Me.txtIMDBID.ReadOnly = true
+        Me.txtIMDBID.Size = New System.Drawing.Size(108, 22)
+        Me.txtIMDBID.TabIndex = 1
+        Me.txtIMDBID.TabStop = false
+        '
+        'lblIMDBHeader
+        '
+        Me.lblIMDBHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblIMDBHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblIMDBHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblIMDBHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblIMDBHeader.Location = New System.Drawing.Point(3, 188)
+        Me.lblIMDBHeader.Name = "lblIMDBHeader"
+        Me.lblIMDBHeader.Size = New System.Drawing.Size(108, 17)
+        Me.lblIMDBHeader.TabIndex = 0
+        Me.lblIMDBHeader.Text = "IMDB ID"
+        Me.lblIMDBHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblDirector
+        '
+        Me.lblDirector.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblDirector.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblDirector.ForeColor = System.Drawing.Color.Black
+        Me.lblDirector.Location = New System.Drawing.Point(3, 48)
+        Me.lblDirector.Name = "lblDirector"
+        Me.lblDirector.Size = New System.Drawing.Size(280, 16)
+        Me.lblDirector.TabIndex = 27
+        Me.lblDirector.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblDirectorHeader
+        '
+        Me.lblDirectorHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblDirectorHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblDirectorHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblDirectorHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblDirectorHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblDirectorHeader.Location = New System.Drawing.Point(3, 27)
+        Me.lblDirectorHeader.Name = "lblDirectorHeader"
+        Me.lblDirectorHeader.Size = New System.Drawing.Size(279, 17)
+        Me.lblDirectorHeader.TabIndex = 21
+        Me.lblDirectorHeader.Text = "Director"
+        Me.lblDirectorHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'pnlActors
+        '
+        Me.pnlActors.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.pnlActors.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlActors.Controls.Add(Me.pbActLoad)
+        Me.pnlActors.Controls.Add(Me.lstActors)
+        Me.pnlActors.Controls.Add(Me.pbActors)
+        Me.pnlActors.Controls.Add(Me.lblActorsHeader)
+        Me.pnlActors.Location = New System.Drawing.Point(466, 29)
+        Me.pnlActors.Name = "pnlActors"
+        Me.pnlActors.Size = New System.Drawing.Size(302, 244)
+        Me.pnlActors.TabIndex = 19
+        '
+        'pbActLoad
+        '
+        Me.pbActLoad.Image = CType(resources.GetObject("pbActLoad.Image"),System.Drawing.Image)
+        Me.pbActLoad.Location = New System.Drawing.Point(240, 111)
+        Me.pbActLoad.Name = "pbActLoad"
+        Me.pbActLoad.Size = New System.Drawing.Size(41, 39)
+        Me.pbActLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbActLoad.TabIndex = 26
+        Me.pbActLoad.TabStop = false
+        Me.pbActLoad.Visible = false
+        '
+        'lstActors
+        '
+        Me.lstActors.BackColor = System.Drawing.Color.Gainsboro
+        Me.lstActors.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.lstActors.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lstActors.ForeColor = System.Drawing.Color.Black
+        Me.lstActors.FormattingEnabled = true
+        Me.lstActors.Location = New System.Drawing.Point(3, 21)
+        Me.lstActors.Name = "lstActors"
+        Me.lstActors.Size = New System.Drawing.Size(214, 221)
+        Me.lstActors.TabIndex = 28
+        Me.lstActors.TabStop = false
+        '
+        'pbActors
+        '
+        Me.pbActors.Image = Global.Ember_Media_Manager.My.Resources.Resources.actor_silhouette
+        Me.pbActors.Location = New System.Drawing.Point(220, 75)
+        Me.pbActors.Name = "pbActors"
+        Me.pbActors.Size = New System.Drawing.Size(81, 106)
+        Me.pbActors.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbActors.TabIndex = 27
+        Me.pbActors.TabStop = false
+        '
+        'lblActorsHeader
+        '
+        Me.lblActorsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblActorsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblActorsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblActorsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblActorsHeader.Location = New System.Drawing.Point(0, 0)
+        Me.lblActorsHeader.Name = "lblActorsHeader"
+        Me.lblActorsHeader.Size = New System.Drawing.Size(301, 17)
+        Me.lblActorsHeader.TabIndex = 18
+        Me.lblActorsHeader.Text = "Cast"
+        Me.lblActorsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblOutlineHeader
+        '
+        Me.lblOutlineHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblOutlineHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblOutlineHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblOutlineHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblOutlineHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblOutlineHeader.Location = New System.Drawing.Point(3, 81)
+        Me.lblOutlineHeader.Name = "lblOutlineHeader"
+        Me.lblOutlineHeader.Size = New System.Drawing.Size(451, 17)
+        Me.lblOutlineHeader.TabIndex = 17
+        Me.lblOutlineHeader.Text = "Plot Outline"
+        Me.lblOutlineHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'txtOutline
+        '
+        Me.txtOutline.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtOutline.BackColor = System.Drawing.Color.Gainsboro
+        Me.txtOutline.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.txtOutline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtOutline.ForeColor = System.Drawing.Color.Black
+        Me.txtOutline.Location = New System.Drawing.Point(3, 103)
+        Me.txtOutline.Multiline = true
+        Me.txtOutline.Name = "txtOutline"
+        Me.txtOutline.ReadOnly = true
+        Me.txtOutline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtOutline.Size = New System.Drawing.Size(451, 78)
+        Me.txtOutline.TabIndex = 16
+        Me.txtOutline.TabStop = false
+        '
+        'pnlTop250
+        '
+        Me.pnlTop250.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.pnlTop250.Controls.Add(Me.lblTop250)
+        Me.pnlTop250.Controls.Add(Me.pbTop250)
+        Me.pnlTop250.Location = New System.Drawing.Point(397, 27)
+        Me.pnlTop250.Name = "pnlTop250"
+        Me.pnlTop250.Size = New System.Drawing.Size(56, 48)
+        Me.pnlTop250.TabIndex = 15
+        '
+        'lblTop250
+        '
+        Me.lblTop250.BackColor = System.Drawing.Color.Gainsboro
+        Me.lblTop250.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTop250.ForeColor = System.Drawing.Color.Black
+        Me.lblTop250.Location = New System.Drawing.Point(1, 30)
+        Me.lblTop250.Name = "lblTop250"
+        Me.lblTop250.Size = New System.Drawing.Size(52, 17)
+        Me.lblTop250.TabIndex = 15
+        Me.lblTop250.Text = "# 250"
+        Me.lblTop250.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'pbTop250
+        '
+        Me.pbTop250.Image = CType(resources.GetObject("pbTop250.Image"),System.Drawing.Image)
+        Me.pbTop250.Location = New System.Drawing.Point(1, 1)
+        Me.pbTop250.Name = "pbTop250"
+        Me.pbTop250.Size = New System.Drawing.Size(54, 30)
+        Me.pbTop250.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbTop250.TabIndex = 14
+        Me.pbTop250.TabStop = false
+        '
+        'lblPlotHeader
+        '
+        Me.lblPlotHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblPlotHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblPlotHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblPlotHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblPlotHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblPlotHeader.Location = New System.Drawing.Point(3, 282)
+        Me.lblPlotHeader.Name = "lblPlotHeader"
+        Me.lblPlotHeader.Size = New System.Drawing.Size(451, 17)
+        Me.lblPlotHeader.TabIndex = 6
+        Me.lblPlotHeader.Text = "Plot"
+        Me.lblPlotHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'txtPlot
+        '
+        Me.txtPlot.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtPlot.BackColor = System.Drawing.Color.Gainsboro
+        Me.txtPlot.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.txtPlot.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtPlot.ForeColor = System.Drawing.Color.Black
+        Me.txtPlot.Location = New System.Drawing.Point(3, 303)
+        Me.txtPlot.Multiline = true
+        Me.txtPlot.Name = "txtPlot"
+        Me.txtPlot.ReadOnly = true
+        Me.txtPlot.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtPlot.Size = New System.Drawing.Size(451, 184)
+        Me.txtPlot.TabIndex = 7
+        Me.txtPlot.TabStop = false
+        '
+        'btnDown
+        '
+        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnDown.BackColor = System.Drawing.SystemColors.Control
+        Me.btnDown.Location = New System.Drawing.Point(733, 1)
+        Me.btnDown.Name = "btnDown"
+        Me.btnDown.Size = New System.Drawing.Size(30, 22)
+        Me.btnDown.TabIndex = 6
+        Me.btnDown.TabStop = false
+        Me.btnDown.Text = "v"
+        Me.btnDown.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnDown.UseVisualStyleBackColor = false
+        '
+        'btnUp
+        '
+        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnUp.BackColor = System.Drawing.SystemColors.Control
+        Me.btnUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.btnUp.Location = New System.Drawing.Point(670, 1)
+        Me.btnUp.Name = "btnUp"
+        Me.btnUp.Size = New System.Drawing.Size(30, 22)
+        Me.btnUp.TabIndex = 1
+        Me.btnUp.TabStop = false
+        Me.btnUp.Text = "^"
+        Me.btnUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnUp.UseVisualStyleBackColor = false
+        '
+        'lblInfoPanelHeader
+        '
+        Me.lblInfoPanelHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblInfoPanelHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblInfoPanelHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblInfoPanelHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblInfoPanelHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblInfoPanelHeader.Location = New System.Drawing.Point(3, 3)
+        Me.lblInfoPanelHeader.Name = "lblInfoPanelHeader"
+        Me.lblInfoPanelHeader.Size = New System.Drawing.Size(765, 17)
+        Me.lblInfoPanelHeader.TabIndex = 0
+        Me.lblInfoPanelHeader.Text = "Info"
+        Me.lblInfoPanelHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'pbBannerCache
         '
         Me.pbBannerCache.Location = New System.Drawing.Point(740, 130)
@@ -6567,576 +7137,6 @@ Partial Class frmMain
         Me.pbClearLogoCache.TabIndex = 20
         Me.pbClearLogoCache.TabStop = false
         Me.pbClearLogoCache.Visible = false
-        '
-        'pnlCancel
-        '
-        Me.pnlCancel.BackColor = System.Drawing.Color.LightGray
-        Me.pnlCancel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlCancel.Controls.Add(Me.prbCanceling)
-        Me.pnlCancel.Controls.Add(Me.lblCanceling)
-        Me.pnlCancel.Controls.Add(Me.btnCancel)
-        Me.pnlCancel.Location = New System.Drawing.Point(273, 124)
-        Me.pnlCancel.Name = "pnlCancel"
-        Me.pnlCancel.Size = New System.Drawing.Size(214, 63)
-        Me.pnlCancel.TabIndex = 8
-        Me.pnlCancel.Visible = false
-        '
-        'prbCanceling
-        '
-        Me.prbCanceling.Location = New System.Drawing.Point(5, 32)
-        Me.prbCanceling.MarqueeAnimationSpeed = 25
-        Me.prbCanceling.Name = "prbCanceling"
-        Me.prbCanceling.Size = New System.Drawing.Size(203, 20)
-        Me.prbCanceling.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.prbCanceling.TabIndex = 2
-        Me.prbCanceling.Visible = false
-        '
-        'lblCanceling
-        '
-        Me.lblCanceling.AutoSize = true
-        Me.lblCanceling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblCanceling.Location = New System.Drawing.Point(4, 12)
-        Me.lblCanceling.Name = "lblCanceling"
-        Me.lblCanceling.Size = New System.Drawing.Size(129, 17)
-        Me.lblCanceling.TabIndex = 1
-        Me.lblCanceling.Text = "Canceling Scraper..."
-        Me.lblCanceling.Visible = false
-        '
-        'btnCancel
-        '
-        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"),System.Drawing.Image)
-        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(4, 4)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(205, 55)
-        Me.btnCancel.TabIndex = 0
-        Me.btnCancel.TabStop = false
-        Me.btnCancel.Text = "Cancel Scraper"
-        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCancel.UseVisualStyleBackColor = true
-        '
-        'pnlNoInfo
-        '
-        Me.pnlNoInfo.BackColor = System.Drawing.Color.LightGray
-        Me.pnlNoInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlNoInfo.Controls.Add(Me.pnlNoInfoBG)
-        Me.pnlNoInfo.Location = New System.Drawing.Point(241, 300)
-        Me.pnlNoInfo.Name = "pnlNoInfo"
-        Me.pnlNoInfo.Size = New System.Drawing.Size(259, 143)
-        Me.pnlNoInfo.TabIndex = 8
-        Me.pnlNoInfo.Visible = false
-        '
-        'pnlNoInfoBG
-        '
-        Me.pnlNoInfoBG.BackColor = System.Drawing.Color.White
-        Me.pnlNoInfoBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlNoInfoBG.Controls.Add(Me.pbNoInfo)
-        Me.pnlNoInfoBG.Controls.Add(Me.lblNoInfo)
-        Me.pnlNoInfoBG.Location = New System.Drawing.Point(3, 4)
-        Me.pnlNoInfoBG.Name = "pnlNoInfoBG"
-        Me.pnlNoInfoBG.Size = New System.Drawing.Size(251, 133)
-        Me.pnlNoInfoBG.TabIndex = 0
-        '
-        'pbNoInfo
-        '
-        Me.pbNoInfo.Image = CType(resources.GetObject("pbNoInfo.Image"),System.Drawing.Image)
-        Me.pbNoInfo.Location = New System.Drawing.Point(7, 38)
-        Me.pbNoInfo.Name = "pbNoInfo"
-        Me.pbNoInfo.Size = New System.Drawing.Size(63, 63)
-        Me.pbNoInfo.TabIndex = 1
-        Me.pbNoInfo.TabStop = false
-        '
-        'lblNoInfo
-        '
-        Me.lblNoInfo.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblNoInfo.Location = New System.Drawing.Point(71, 29)
-        Me.lblNoInfo.Name = "lblNoInfo"
-        Me.lblNoInfo.Size = New System.Drawing.Size(173, 78)
-        Me.lblNoInfo.TabIndex = 0
-        Me.lblNoInfo.Text = "No Information is Available for This Movie"
-        Me.lblNoInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'pnlInfoPanel
-        '
-        Me.pnlInfoPanel.BackColor = System.Drawing.Color.Gainsboro
-        Me.pnlInfoPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlInfoPanel.Controls.Add(Me.pnlMoviesInSet)
-        Me.pnlInfoPanel.Controls.Add(Me.txtCerts)
-        Me.pnlInfoPanel.Controls.Add(Me.lblCertsHeader)
-        Me.pnlInfoPanel.Controls.Add(Me.lblReleaseDate)
-        Me.pnlInfoPanel.Controls.Add(Me.lblReleaseDateHeader)
-        Me.pnlInfoPanel.Controls.Add(Me.btnMid)
-        Me.pnlInfoPanel.Controls.Add(Me.pbMILoading)
-        Me.pnlInfoPanel.Controls.Add(Me.btnMetaDataRefresh)
-        Me.pnlInfoPanel.Controls.Add(Me.lblMetaDataHeader)
-        Me.pnlInfoPanel.Controls.Add(Me.txtMetaData)
-        Me.pnlInfoPanel.Controls.Add(Me.btnPlay)
-        Me.pnlInfoPanel.Controls.Add(Me.txtFilePath)
-        Me.pnlInfoPanel.Controls.Add(Me.lblFilePathHeader)
-        Me.pnlInfoPanel.Controls.Add(Me.txtIMDBID)
-        Me.pnlInfoPanel.Controls.Add(Me.lblIMDBHeader)
-        Me.pnlInfoPanel.Controls.Add(Me.lblDirector)
-        Me.pnlInfoPanel.Controls.Add(Me.lblDirectorHeader)
-        Me.pnlInfoPanel.Controls.Add(Me.pnlActors)
-        Me.pnlInfoPanel.Controls.Add(Me.lblOutlineHeader)
-        Me.pnlInfoPanel.Controls.Add(Me.txtOutline)
-        Me.pnlInfoPanel.Controls.Add(Me.pnlTop250)
-        Me.pnlInfoPanel.Controls.Add(Me.lblPlotHeader)
-        Me.pnlInfoPanel.Controls.Add(Me.txtPlot)
-        Me.pnlInfoPanel.Controls.Add(Me.btnDown)
-        Me.pnlInfoPanel.Controls.Add(Me.btnUp)
-        Me.pnlInfoPanel.Controls.Add(Me.lblInfoPanelHeader)
-        Me.pnlInfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlInfoPanel.Location = New System.Drawing.Point(0, 345)
-        Me.pnlInfoPanel.Name = "pnlInfoPanel"
-        Me.pnlInfoPanel.Size = New System.Drawing.Size(773, 342)
-        Me.pnlInfoPanel.TabIndex = 10
-        '
-        'pnlMoviesInSet
-        '
-        Me.pnlMoviesInSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.pnlMoviesInSet.BackColor = System.Drawing.Color.Gainsboro
-        Me.pnlMoviesInSet.Controls.Add(Me.lvMoviesInSet)
-        Me.pnlMoviesInSet.Controls.Add(Me.lblMoviesInSetHeader)
-        Me.pnlMoviesInSet.Location = New System.Drawing.Point(0, 493)
-        Me.pnlMoviesInSet.Name = "pnlMoviesInSet"
-        Me.pnlMoviesInSet.Size = New System.Drawing.Size(773, 244)
-        Me.pnlMoviesInSet.TabIndex = 41
-        '
-        'lvMoviesInSet
-        '
-        Me.lvMoviesInSet.LargeImageList = Me.ilMoviesInSet
-        Me.lvMoviesInSet.Location = New System.Drawing.Point(3, 23)
-        Me.lvMoviesInSet.Name = "lvMoviesInSet"
-        Me.lvMoviesInSet.Size = New System.Drawing.Size(765, 182)
-        Me.lvMoviesInSet.TabIndex = 41
-        Me.lvMoviesInSet.UseCompatibleStateImageBehavior = false
-        '
-        'ilMoviesInSet
-        '
-        Me.ilMoviesInSet.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
-        Me.ilMoviesInSet.ImageSize = New System.Drawing.Size(16, 16)
-        Me.ilMoviesInSet.TransparentColor = System.Drawing.Color.Transparent
-        '
-        'lblMoviesInSetHeader
-        '
-        Me.lblMoviesInSetHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblMoviesInSetHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblMoviesInSetHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblMoviesInSetHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMoviesInSetHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblMoviesInSetHeader.Location = New System.Drawing.Point(3, 3)
-        Me.lblMoviesInSetHeader.Name = "lblMoviesInSetHeader"
-        Me.lblMoviesInSetHeader.Size = New System.Drawing.Size(765, 17)
-        Me.lblMoviesInSetHeader.TabIndex = 40
-        Me.lblMoviesInSetHeader.Text = "Movies in Set"
-        Me.lblMoviesInSetHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'txtCerts
-        '
-        Me.txtCerts.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.txtCerts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtCerts.Location = New System.Drawing.Point(117, 208)
-        Me.txtCerts.Name = "txtCerts"
-        Me.txtCerts.ReadOnly = true
-        Me.txtCerts.Size = New System.Drawing.Size(337, 22)
-        Me.txtCerts.TabIndex = 3
-        Me.txtCerts.TabStop = false
-        '
-        'lblCertsHeader
-        '
-        Me.lblCertsHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblCertsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblCertsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblCertsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblCertsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblCertsHeader.Location = New System.Drawing.Point(117, 188)
-        Me.lblCertsHeader.Name = "lblCertsHeader"
-        Me.lblCertsHeader.Size = New System.Drawing.Size(337, 17)
-        Me.lblCertsHeader.TabIndex = 2
-        Me.lblCertsHeader.Text = "Certifications"
-        Me.lblCertsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lblReleaseDate
-        '
-        Me.lblReleaseDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblReleaseDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblReleaseDate.ForeColor = System.Drawing.Color.Black
-        Me.lblReleaseDate.Location = New System.Drawing.Point(288, 48)
-        Me.lblReleaseDate.Name = "lblReleaseDate"
-        Me.lblReleaseDate.Size = New System.Drawing.Size(105, 16)
-        Me.lblReleaseDate.TabIndex = 39
-        Me.lblReleaseDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'lblReleaseDateHeader
-        '
-        Me.lblReleaseDateHeader.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblReleaseDateHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblReleaseDateHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblReleaseDateHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblReleaseDateHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblReleaseDateHeader.Location = New System.Drawing.Point(288, 27)
-        Me.lblReleaseDateHeader.Name = "lblReleaseDateHeader"
-        Me.lblReleaseDateHeader.Size = New System.Drawing.Size(105, 17)
-        Me.lblReleaseDateHeader.TabIndex = 38
-        Me.lblReleaseDateHeader.Text = "Release Date"
-        Me.lblReleaseDateHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'btnMid
-        '
-        Me.btnMid.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnMid.BackColor = System.Drawing.SystemColors.Control
-        Me.btnMid.Location = New System.Drawing.Point(702, 1)
-        Me.btnMid.Name = "btnMid"
-        Me.btnMid.Size = New System.Drawing.Size(30, 22)
-        Me.btnMid.TabIndex = 37
-        Me.btnMid.TabStop = false
-        Me.btnMid.Text = "-"
-        Me.btnMid.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnMid.UseVisualStyleBackColor = false
-        '
-        'pbMILoading
-        '
-        Me.pbMILoading.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.pbMILoading.Image = CType(resources.GetObject("pbMILoading.Image"),System.Drawing.Image)
-        Me.pbMILoading.Location = New System.Drawing.Point(604, 374)
-        Me.pbMILoading.Name = "pbMILoading"
-        Me.pbMILoading.Size = New System.Drawing.Size(41, 39)
-        Me.pbMILoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbMILoading.TabIndex = 36
-        Me.pbMILoading.TabStop = false
-        Me.pbMILoading.Visible = false
-        '
-        'btnMetaDataRefresh
-        '
-        Me.btnMetaDataRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnMetaDataRefresh.Location = New System.Drawing.Point(691, 278)
-        Me.btnMetaDataRefresh.Name = "btnMetaDataRefresh"
-        Me.btnMetaDataRefresh.Size = New System.Drawing.Size(75, 23)
-        Me.btnMetaDataRefresh.TabIndex = 9
-        Me.btnMetaDataRefresh.TabStop = false
-        Me.btnMetaDataRefresh.Text = "Refresh"
-        Me.btnMetaDataRefresh.UseVisualStyleBackColor = true
-        '
-        'lblMetaDataHeader
-        '
-        Me.lblMetaDataHeader.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblMetaDataHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblMetaDataHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblMetaDataHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMetaDataHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblMetaDataHeader.Location = New System.Drawing.Point(467, 282)
-        Me.lblMetaDataHeader.Name = "lblMetaDataHeader"
-        Me.lblMetaDataHeader.Size = New System.Drawing.Size(294, 17)
-        Me.lblMetaDataHeader.TabIndex = 8
-        Me.lblMetaDataHeader.Text = "Meta Data"
-        Me.lblMetaDataHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'txtMetaData
-        '
-        Me.txtMetaData.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.txtMetaData.BackColor = System.Drawing.Color.Gainsboro
-        Me.txtMetaData.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.txtMetaData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtMetaData.ForeColor = System.Drawing.Color.Black
-        Me.txtMetaData.Location = New System.Drawing.Point(467, 303)
-        Me.txtMetaData.Multiline = true
-        Me.txtMetaData.Name = "txtMetaData"
-        Me.txtMetaData.ReadOnly = true
-        Me.txtMetaData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtMetaData.Size = New System.Drawing.Size(296, 184)
-        Me.txtMetaData.TabIndex = 10
-        Me.txtMetaData.TabStop = false
-        '
-        'btnPlay
-        '
-        Me.btnPlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnPlay.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlay.Location = New System.Drawing.Point(435, 254)
-        Me.btnPlay.Name = "btnPlay"
-        Me.btnPlay.Size = New System.Drawing.Size(20, 20)
-        Me.btnPlay.TabIndex = 6
-        Me.btnPlay.TabStop = false
-        Me.btnPlay.UseVisualStyleBackColor = true
-        '
-        'txtFilePath
-        '
-        Me.txtFilePath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.txtFilePath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilePath.Location = New System.Drawing.Point(3, 254)
-        Me.txtFilePath.Name = "txtFilePath"
-        Me.txtFilePath.ReadOnly = true
-        Me.txtFilePath.Size = New System.Drawing.Size(429, 22)
-        Me.txtFilePath.TabIndex = 5
-        Me.txtFilePath.TabStop = false
-        '
-        'lblFilePathHeader
-        '
-        Me.lblFilePathHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblFilePathHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilePathHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilePathHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblFilePathHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilePathHeader.Location = New System.Drawing.Point(3, 234)
-        Me.lblFilePathHeader.Name = "lblFilePathHeader"
-        Me.lblFilePathHeader.Size = New System.Drawing.Size(451, 17)
-        Me.lblFilePathHeader.TabIndex = 4
-        Me.lblFilePathHeader.Text = "File Path"
-        Me.lblFilePathHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'txtIMDBID
-        '
-        Me.txtIMDBID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIMDBID.Location = New System.Drawing.Point(3, 208)
-        Me.txtIMDBID.Name = "txtIMDBID"
-        Me.txtIMDBID.ReadOnly = true
-        Me.txtIMDBID.Size = New System.Drawing.Size(108, 22)
-        Me.txtIMDBID.TabIndex = 1
-        Me.txtIMDBID.TabStop = false
-        '
-        'lblIMDBHeader
-        '
-        Me.lblIMDBHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblIMDBHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblIMDBHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblIMDBHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblIMDBHeader.Location = New System.Drawing.Point(3, 188)
-        Me.lblIMDBHeader.Name = "lblIMDBHeader"
-        Me.lblIMDBHeader.Size = New System.Drawing.Size(108, 17)
-        Me.lblIMDBHeader.TabIndex = 0
-        Me.lblIMDBHeader.Text = "IMDB ID"
-        Me.lblIMDBHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lblDirector
-        '
-        Me.lblDirector.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblDirector.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblDirector.ForeColor = System.Drawing.Color.Black
-        Me.lblDirector.Location = New System.Drawing.Point(3, 48)
-        Me.lblDirector.Name = "lblDirector"
-        Me.lblDirector.Size = New System.Drawing.Size(280, 16)
-        Me.lblDirector.TabIndex = 27
-        Me.lblDirector.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lblDirectorHeader
-        '
-        Me.lblDirectorHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblDirectorHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblDirectorHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblDirectorHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblDirectorHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblDirectorHeader.Location = New System.Drawing.Point(3, 27)
-        Me.lblDirectorHeader.Name = "lblDirectorHeader"
-        Me.lblDirectorHeader.Size = New System.Drawing.Size(279, 17)
-        Me.lblDirectorHeader.TabIndex = 21
-        Me.lblDirectorHeader.Text = "Director"
-        Me.lblDirectorHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'pnlActors
-        '
-        Me.pnlActors.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.pnlActors.BackColor = System.Drawing.Color.Gainsboro
-        Me.pnlActors.Controls.Add(Me.pbActLoad)
-        Me.pnlActors.Controls.Add(Me.lstActors)
-        Me.pnlActors.Controls.Add(Me.pbActors)
-        Me.pnlActors.Controls.Add(Me.lblActorsHeader)
-        Me.pnlActors.Location = New System.Drawing.Point(466, 29)
-        Me.pnlActors.Name = "pnlActors"
-        Me.pnlActors.Size = New System.Drawing.Size(302, 244)
-        Me.pnlActors.TabIndex = 19
-        '
-        'pbActLoad
-        '
-        Me.pbActLoad.Image = CType(resources.GetObject("pbActLoad.Image"),System.Drawing.Image)
-        Me.pbActLoad.Location = New System.Drawing.Point(240, 111)
-        Me.pbActLoad.Name = "pbActLoad"
-        Me.pbActLoad.Size = New System.Drawing.Size(41, 39)
-        Me.pbActLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbActLoad.TabIndex = 26
-        Me.pbActLoad.TabStop = false
-        Me.pbActLoad.Visible = false
-        '
-        'lstActors
-        '
-        Me.lstActors.BackColor = System.Drawing.Color.Gainsboro
-        Me.lstActors.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.lstActors.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lstActors.ForeColor = System.Drawing.Color.Black
-        Me.lstActors.FormattingEnabled = true
-        Me.lstActors.Location = New System.Drawing.Point(3, 21)
-        Me.lstActors.Name = "lstActors"
-        Me.lstActors.Size = New System.Drawing.Size(214, 221)
-        Me.lstActors.TabIndex = 28
-        Me.lstActors.TabStop = false
-        '
-        'pbActors
-        '
-        Me.pbActors.Image = Global.Ember_Media_Manager.My.Resources.Resources.actor_silhouette
-        Me.pbActors.Location = New System.Drawing.Point(220, 75)
-        Me.pbActors.Name = "pbActors"
-        Me.pbActors.Size = New System.Drawing.Size(81, 106)
-        Me.pbActors.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbActors.TabIndex = 27
-        Me.pbActors.TabStop = false
-        '
-        'lblActorsHeader
-        '
-        Me.lblActorsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblActorsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblActorsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblActorsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblActorsHeader.Location = New System.Drawing.Point(0, 0)
-        Me.lblActorsHeader.Name = "lblActorsHeader"
-        Me.lblActorsHeader.Size = New System.Drawing.Size(301, 17)
-        Me.lblActorsHeader.TabIndex = 18
-        Me.lblActorsHeader.Text = "Cast"
-        Me.lblActorsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lblOutlineHeader
-        '
-        Me.lblOutlineHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblOutlineHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblOutlineHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblOutlineHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblOutlineHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblOutlineHeader.Location = New System.Drawing.Point(3, 81)
-        Me.lblOutlineHeader.Name = "lblOutlineHeader"
-        Me.lblOutlineHeader.Size = New System.Drawing.Size(451, 17)
-        Me.lblOutlineHeader.TabIndex = 17
-        Me.lblOutlineHeader.Text = "Plot Outline"
-        Me.lblOutlineHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'txtOutline
-        '
-        Me.txtOutline.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.txtOutline.BackColor = System.Drawing.Color.Gainsboro
-        Me.txtOutline.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.txtOutline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtOutline.ForeColor = System.Drawing.Color.Black
-        Me.txtOutline.Location = New System.Drawing.Point(3, 103)
-        Me.txtOutline.Multiline = true
-        Me.txtOutline.Name = "txtOutline"
-        Me.txtOutline.ReadOnly = true
-        Me.txtOutline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtOutline.Size = New System.Drawing.Size(451, 78)
-        Me.txtOutline.TabIndex = 16
-        Me.txtOutline.TabStop = false
-        '
-        'pnlTop250
-        '
-        Me.pnlTop250.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.pnlTop250.Controls.Add(Me.lblTop250)
-        Me.pnlTop250.Controls.Add(Me.pbTop250)
-        Me.pnlTop250.Location = New System.Drawing.Point(397, 27)
-        Me.pnlTop250.Name = "pnlTop250"
-        Me.pnlTop250.Size = New System.Drawing.Size(56, 48)
-        Me.pnlTop250.TabIndex = 15
-        '
-        'lblTop250
-        '
-        Me.lblTop250.BackColor = System.Drawing.Color.Gainsboro
-        Me.lblTop250.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTop250.ForeColor = System.Drawing.Color.Black
-        Me.lblTop250.Location = New System.Drawing.Point(1, 30)
-        Me.lblTop250.Name = "lblTop250"
-        Me.lblTop250.Size = New System.Drawing.Size(52, 17)
-        Me.lblTop250.TabIndex = 15
-        Me.lblTop250.Text = "# 250"
-        Me.lblTop250.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'pbTop250
-        '
-        Me.pbTop250.Image = CType(resources.GetObject("pbTop250.Image"),System.Drawing.Image)
-        Me.pbTop250.Location = New System.Drawing.Point(1, 1)
-        Me.pbTop250.Name = "pbTop250"
-        Me.pbTop250.Size = New System.Drawing.Size(54, 30)
-        Me.pbTop250.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbTop250.TabIndex = 14
-        Me.pbTop250.TabStop = false
-        '
-        'lblPlotHeader
-        '
-        Me.lblPlotHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblPlotHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblPlotHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblPlotHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblPlotHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblPlotHeader.Location = New System.Drawing.Point(3, 282)
-        Me.lblPlotHeader.Name = "lblPlotHeader"
-        Me.lblPlotHeader.Size = New System.Drawing.Size(451, 17)
-        Me.lblPlotHeader.TabIndex = 6
-        Me.lblPlotHeader.Text = "Plot"
-        Me.lblPlotHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'txtPlot
-        '
-        Me.txtPlot.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.txtPlot.BackColor = System.Drawing.Color.Gainsboro
-        Me.txtPlot.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.txtPlot.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtPlot.ForeColor = System.Drawing.Color.Black
-        Me.txtPlot.Location = New System.Drawing.Point(3, 303)
-        Me.txtPlot.Multiline = true
-        Me.txtPlot.Name = "txtPlot"
-        Me.txtPlot.ReadOnly = true
-        Me.txtPlot.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtPlot.Size = New System.Drawing.Size(451, 184)
-        Me.txtPlot.TabIndex = 7
-        Me.txtPlot.TabStop = false
-        '
-        'btnDown
-        '
-        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnDown.BackColor = System.Drawing.SystemColors.Control
-        Me.btnDown.Location = New System.Drawing.Point(733, 1)
-        Me.btnDown.Name = "btnDown"
-        Me.btnDown.Size = New System.Drawing.Size(30, 22)
-        Me.btnDown.TabIndex = 6
-        Me.btnDown.TabStop = false
-        Me.btnDown.Text = "v"
-        Me.btnDown.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnDown.UseVisualStyleBackColor = false
-        '
-        'btnUp
-        '
-        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnUp.BackColor = System.Drawing.SystemColors.Control
-        Me.btnUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.btnUp.Location = New System.Drawing.Point(670, 1)
-        Me.btnUp.Name = "btnUp"
-        Me.btnUp.Size = New System.Drawing.Size(30, 22)
-        Me.btnUp.TabIndex = 1
-        Me.btnUp.TabStop = false
-        Me.btnUp.Text = "^"
-        Me.btnUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnUp.UseVisualStyleBackColor = false
-        '
-        'lblInfoPanelHeader
-        '
-        Me.lblInfoPanelHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblInfoPanelHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblInfoPanelHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblInfoPanelHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblInfoPanelHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblInfoPanelHeader.Location = New System.Drawing.Point(3, 3)
-        Me.lblInfoPanelHeader.Name = "lblInfoPanelHeader"
-        Me.lblInfoPanelHeader.Size = New System.Drawing.Size(765, 17)
-        Me.lblInfoPanelHeader.TabIndex = 0
-        Me.lblInfoPanelHeader.Text = "Info"
-        Me.lblInfoPanelHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'pnlClearArt
         '
@@ -12165,6 +12165,20 @@ Partial Class frmMain
         Me.pnlFilterTop_Shows.PerformLayout
         Me.tblFilterTop_Shows.ResumeLayout(false)
         Me.tblFilterTop_Shows.PerformLayout
+        Me.pnlCancel.ResumeLayout(false)
+        Me.pnlCancel.PerformLayout
+        Me.pnlNoInfo.ResumeLayout(false)
+        Me.pnlNoInfoBG.ResumeLayout(false)
+        CType(Me.pbNoInfo,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlInfoPanel.ResumeLayout(false)
+        Me.pnlInfoPanel.PerformLayout
+        Me.pnlMoviesInSet.ResumeLayout(false)
+        CType(Me.pbMILoading,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlActors.ResumeLayout(false)
+        CType(Me.pbActLoad,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbActors,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlTop250.ResumeLayout(false)
+        CType(Me.pbTop250,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.pbBannerCache,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlBanner.ResumeLayout(false)
         Me.pnlBanner.PerformLayout
@@ -12226,20 +12240,6 @@ Partial Class frmMain
         Me.tblDiscArtTop.PerformLayout
         CType(Me.pbDiscArtCache,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.pbClearLogoCache,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlCancel.ResumeLayout(false)
-        Me.pnlCancel.PerformLayout
-        Me.pnlNoInfo.ResumeLayout(false)
-        Me.pnlNoInfoBG.ResumeLayout(false)
-        CType(Me.pbNoInfo,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlInfoPanel.ResumeLayout(false)
-        Me.pnlInfoPanel.PerformLayout
-        Me.pnlMoviesInSet.ResumeLayout(false)
-        CType(Me.pbMILoading,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlActors.ResumeLayout(false)
-        CType(Me.pbActLoad,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbActors,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlTop250.ResumeLayout(false)
-        CType(Me.pbTop250,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlClearArt.ResumeLayout(false)
         Me.pnlClearArt.PerformLayout
         Me.pnlClearArtMain.ResumeLayout(false)

@@ -58,14 +58,14 @@ Partial Class dlgFIStreamEditor
         Me.lblAudioLanguage = New System.Windows.Forms.Label()
         Me.cbAudioLanguage = New System.Windows.Forms.ComboBox()
         Me.gbSubtitleStreams = New System.Windows.Forms.GroupBox()
+        Me.txtSubtitleType = New System.Windows.Forms.TextBox()
+        Me.txtSubtitlePath = New System.Windows.Forms.TextBox()
         Me.chkSubtitleForced = New System.Windows.Forms.CheckBox()
         Me.lblSubtitleLanguage = New System.Windows.Forms.Label()
         Me.cbSubtitleLanguage = New System.Windows.Forms.ComboBox()
         Me.pnlStreamEditor = New System.Windows.Forms.Panel()
         Me.txtEncodingSettings = New System.Windows.Forms.TextBox()
         Me.lblEncoding = New System.Windows.Forms.Label()
-        Me.txtSubtitlePath = New System.Windows.Forms.TextBox()
-        Me.txtSubtitleType = New System.Windows.Forms.TextBox()
         Me.tlpButtons.SuspendLayout()
         Me.gbVideoStreams.SuspendLayout()
         Me.gbAudioStreams.SuspendLayout()
@@ -472,6 +472,24 @@ Partial Class dlgFIStreamEditor
         Me.gbSubtitleStreams.Text = "Subtitle  Streams"
         Me.gbSubtitleStreams.Visible = False
         '
+        'txtSubtitleType
+        '
+        Me.txtSubtitleType.Enabled = False
+        Me.txtSubtitleType.Location = New System.Drawing.Point(189, 44)
+        Me.txtSubtitleType.Name = "txtSubtitleType"
+        Me.txtSubtitleType.Size = New System.Drawing.Size(54, 22)
+        Me.txtSubtitleType.TabIndex = 25
+        Me.txtSubtitleType.Visible = False
+        '
+        'txtSubtitlePath
+        '
+        Me.txtSubtitlePath.Enabled = False
+        Me.txtSubtitlePath.Location = New System.Drawing.Point(248, 44)
+        Me.txtSubtitlePath.Name = "txtSubtitlePath"
+        Me.txtSubtitlePath.Size = New System.Drawing.Size(54, 22)
+        Me.txtSubtitlePath.TabIndex = 24
+        Me.txtSubtitlePath.Visible = False
+        '
         'chkSubtitleForced
         '
         Me.chkSubtitleForced.AutoSize = True
@@ -537,24 +555,6 @@ Partial Class dlgFIStreamEditor
         Me.lblEncoding.Text = "Encoding Settings"
         Me.lblEncoding.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         '
-        'txtSubtitlePath
-        '
-        Me.txtSubtitlePath.Enabled = False
-        Me.txtSubtitlePath.Location = New System.Drawing.Point(248, 44)
-        Me.txtSubtitlePath.Name = "txtSubtitlePath"
-        Me.txtSubtitlePath.Size = New System.Drawing.Size(54, 22)
-        Me.txtSubtitlePath.TabIndex = 24
-        Me.txtSubtitlePath.Visible = False
-        '
-        'txtSubtitleType
-        '
-        Me.txtSubtitleType.Enabled = False
-        Me.txtSubtitleType.Location = New System.Drawing.Point(189, 44)
-        Me.txtSubtitleType.Name = "txtSubtitleType"
-        Me.txtSubtitleType.Size = New System.Drawing.Size(54, 22)
-        Me.txtSubtitleType.TabIndex = 25
-        Me.txtSubtitleType.Visible = False
-        '
         'dlgFIStreamEditor
         '
         Me.AcceptButton = Me.OK_Button
@@ -572,7 +572,6 @@ Partial Class dlgFIStreamEditor
         Me.MinimizeBox = False
         Me.Name = "dlgFIStreamEditor"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Stream Editor"
         Me.tlpButtons.ResumeLayout(False)
         Me.gbVideoStreams.ResumeLayout(False)

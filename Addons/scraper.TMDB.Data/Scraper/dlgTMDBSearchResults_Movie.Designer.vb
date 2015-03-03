@@ -185,7 +185,7 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(654, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(664, 64)
         Me.pnlTop.TabIndex = 8
         '
         'Label2
@@ -393,13 +393,13 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.txtFileName.Size = New System.Drawing.Size(598, 22)
         Me.txtFileName.TabIndex = 24
         '
-        'dlgTMDBSearchResults
+        'dlgTMDBSearchResults_Movie
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(654, 461)
+        Me.ClientSize = New System.Drawing.Size(664, 494)
         Me.ControlBox = False
         Me.Controls.Add(Me.btnOpenFolder)
         Me.Controls.Add(Me.txtFileName)
@@ -432,9 +432,8 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.MinimumSize = New System.Drawing.Size(670, 500)
-        Me.Name = "dlgTMDBSearchResults"
+        Me.Name = "dlgTMDBSearchResults_Movie"
         Me.ShowIcon = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Search Results"
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTop.ResumeLayout(False)

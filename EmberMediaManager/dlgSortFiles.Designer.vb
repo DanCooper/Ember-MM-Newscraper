@@ -146,7 +146,6 @@ Partial Class dlgSortFiles
         Me.MinimizeBox = False
         Me.Name = "dlgSortFiles"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Sort Files Into Folders"
         Me.gbStatus.ResumeLayout(False)
         Me.gbStatus.PerformLayout()

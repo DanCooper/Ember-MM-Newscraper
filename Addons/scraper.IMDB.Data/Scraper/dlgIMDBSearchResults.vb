@@ -50,6 +50,14 @@ Public Class dlgIMDBSearchResults
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieYear As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250

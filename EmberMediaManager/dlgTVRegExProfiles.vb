@@ -4,8 +4,24 @@ Imports System.Xml.Serialization
 Imports EmberAPI
 
 Public Class dlgTVRegExProfiles
+
+#Region "Fields"
+
     Public ShowRegex As New List(Of Settings.TVShowRegEx)
     Private MyTVShowRegExProfiles As New TVShowRegExProfiles
+
+#End Region 'Fields
+
+#Region "Methods"
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
             If lvProfiles.SelectedItems.Count > 0 Then
@@ -28,6 +44,7 @@ Public Class dlgTVRegExProfiles
         GetProfiles()
         PopulateList()
     End Sub
+
     Private Sub lstProfiles_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvProfiles.SelectedIndexChanged
         If lvProfiles.SelectedItems.Count > 0 Then
             Try
@@ -60,6 +77,7 @@ Public Class dlgTVRegExProfiles
             End Using
         End If
     End Function
+
     Sub SetUp()
         Me.Text = Master.eLang.GetString(819, "TV RegEx Profiles")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
@@ -67,6 +85,11 @@ Public Class dlgTVRegExProfiles
         lvProfiles.Columns(0).Text = Master.eLang.GetString(820, "RegEx Profile")
         Me.lblDescription.Text = Master.eLang.GetString(172, "Description:")
     End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
     Class TVShowRegExProfiles
         Public Profiles As New List(Of TVShowRegExProfile)
     End Class
@@ -75,4 +98,7 @@ Public Class dlgTVRegExProfiles
         Public Description As String
         Public ShowRegex As New List(Of Settings.TVShowRegEx)
     End Class
+
+#End Region 'Nested Types
+
 End Class

@@ -158,7 +158,6 @@ Partial Class dlgTrailerFormat
         Me.Name = "dlgTrailerFormat"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Format"
         Me.gbVideoFormats.ResumeLayout(False)
         Me.pnlStatus.ResumeLayout(False)

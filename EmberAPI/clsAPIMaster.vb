@@ -54,6 +54,7 @@ Public Class Master
     Public Shared MovieSources As New List(Of Structures.MovieSource)
     Public Shared TVSources As New List(Of Structures.TVSource)
     Public Shared ExcludeDirs As New List(Of String)
+    Public Shared AppPos As New Drawing.Rectangle
 
 #End Region 'Fields
 

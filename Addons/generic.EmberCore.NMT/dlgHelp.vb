@@ -20,8 +20,15 @@
 
 Imports System.Windows.Forms
 Imports System.IO
+Imports EmberAPI
 
 Public Class dlgHelp
+
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+    End Sub
+
     Public Overloads Function ShowDialog(ByVal fpath As String) As Windows.Forms.DialogResult
         If File.Exists(Path.Combine(fpath, "help.txt")) Then
             txtHelp.Text = File.ReadAllText(Path.Combine(fpath, "help.txt"))

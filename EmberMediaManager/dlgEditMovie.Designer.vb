@@ -74,6 +74,7 @@ Partial Class dlgEditMovie
         Me.btnRemove = New System.Windows.Forms.Button()
         Me.lblActors = New System.Windows.Forms.Label()
         Me.lvActors = New System.Windows.Forms.ListView()
+        Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colRole = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colThumb = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -223,7 +224,6 @@ Partial Class dlgEditMovie
         Me.chkWatched = New System.Windows.Forms.CheckBox()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditMovie.SuspendLayout()
@@ -823,6 +823,11 @@ Partial Class dlgEditMovie
         Me.lvActors.TabIndex = 30
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
+        '
+        'colID
+        '
+        Me.colID.Text = "ID"
+        Me.colID.Width = 0
         '
         'colName
         '
@@ -2478,11 +2483,6 @@ Partial Class dlgEditMovie
         Me.tsFilename.Size = New System.Drawing.Size(55, 17)
         Me.tsFilename.Text = "Filename"
         '
-        'colID
-        '
-        Me.colID.Text = "ID"
-        Me.colID.Width = 0
-        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -2505,7 +2505,6 @@ Partial Class dlgEditMovie
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgEditMovie"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Edit Movie"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()

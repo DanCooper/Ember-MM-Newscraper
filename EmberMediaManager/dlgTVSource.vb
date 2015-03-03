@@ -40,6 +40,14 @@ Public Class dlgTVSource
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
         Me._id = id
 
@@ -67,7 +75,7 @@ Public Class dlgTVSource
                 End If
             End With
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -120,7 +128,7 @@ Public Class dlgTVSource
                 End Using
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso _
@@ -160,7 +168,7 @@ Public Class dlgTVSource
                 Me.cbSourceOrdering.SelectedIndex = Enums.Ordering.Standard
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -208,7 +216,7 @@ Public Class dlgTVSource
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         End Try
 

@@ -49,7 +49,6 @@ Partial Class dlgHelpTips
         Me.MinimizeBox = False
         Me.Name = "dlgHelpTips"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.TopMost = True
         Me.ResumeLayout(False)
         Me.PerformLayout()

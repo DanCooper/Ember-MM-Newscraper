@@ -65,6 +65,14 @@ Public Class dlgTVImageSelect
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Public Function SetDefaults() As Boolean
         Dim iSeason As Integer = -1
         Dim iEpisode As Integer = -1
@@ -1172,15 +1180,15 @@ Public Class dlgTVImageSelect
 
     Private Sub bwLoadImages_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadImages.ProgressChanged
         If e.UserState.ToString = "progress" Then
-                Me.pbStatus.Value = e.ProgressPercentage
-            ElseIf e.UserState.ToString = "defaults" Then
-                Me.lblStatus.Text = Master.eLang.GetString(955, "Setting Defaults...")
-                Me.pbStatus.Value = 0
-                Me.pbStatus.Maximum = e.ProgressPercentage
-            Else
-                Me.pbStatus.Value = 0
-                Me.pbStatus.Maximum = e.ProgressPercentage
-            End If
+            Me.pbStatus.Value = e.ProgressPercentage
+        ElseIf e.UserState.ToString = "defaults" Then
+            Me.lblStatus.Text = Master.eLang.GetString(955, "Setting Defaults...")
+            Me.pbStatus.Value = 0
+            Me.pbStatus.Maximum = e.ProgressPercentage
+        Else
+            Me.pbStatus.Value = 0
+            Me.pbStatus.Maximum = e.ProgressPercentage
+        End If
     End Sub
 
     Private Sub bwLoadImages_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadImages.RunWorkerCompleted
@@ -1551,7 +1559,7 @@ Public Class dlgTVImageSelect
             Next
         End If
 
-            'Show ClearLogo
+        'Show ClearLogo
         If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearLogo Then
             For Each tImg As Scraper.TVDBShowClearLogo In Scraper.tmpTVDBShow.ShowClearLogos
                 If File.Exists(tImg.LocalThumb) Then
@@ -1587,7 +1595,7 @@ Public Class dlgTVImageSelect
             Next
         End If
 
-            'Show/AllSeason Landscape
+        'Show/AllSeason Landscape
         If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowLandscape OrElse Me._type = Enums.ImageType_TV.AllSeasonsLandscape Then
             For Each tImg As Scraper.TVDBShowLandscape In Scraper.tmpTVDBShow.ShowLandscapes
                 If File.Exists(tImg.LocalThumb) Then
@@ -1623,7 +1631,7 @@ Public Class dlgTVImageSelect
             Next
         End If
 
-            'Show/AllSeason/Season/Episode Fanart
+        'Show/AllSeason/Season/Episode Fanart
         If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowFanart OrElse Me._type = Enums.ImageType_TV.AllSeasonsFanart OrElse Me._type = Enums.ImageType_TV.SeasonFanart OrElse Me._type = Enums.ImageType_TV.EpisodeFanart Then
             For Each tImg As Scraper.TVDBFanart In Scraper.tmpTVDBShow.Fanarts
                 If File.Exists(tImg.LocalThumb) Then

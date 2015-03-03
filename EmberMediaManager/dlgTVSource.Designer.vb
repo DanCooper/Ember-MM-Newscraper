@@ -37,14 +37,14 @@ Partial Class dlgTVSource
         Me.tmrPathWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
         Me.pnlTVSource = New System.Windows.Forms.Panel()
+        Me.lblSourceEpisodeSorting = New System.Windows.Forms.Label()
+        Me.cbSourceEpisodeSorting = New System.Windows.Forms.ComboBox()
         Me.gbSourceOptions = New System.Windows.Forms.GroupBox()
         Me.chkExclude = New System.Windows.Forms.CheckBox()
         Me.lblSourceLanguage = New System.Windows.Forms.Label()
         Me.lblSourceOrdering = New System.Windows.Forms.Label()
         Me.cbSourceOrdering = New System.Windows.Forms.ComboBox()
         Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
-        Me.lblSourceEpisodeSorting = New System.Windows.Forms.Label()
-        Me.cbSourceEpisodeSorting = New System.Windows.Forms.ComboBox()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTVSource.SuspendLayout()
         Me.gbSourceOptions.SuspendLayout()
@@ -166,6 +166,27 @@ Partial Class dlgTVSource
         Me.pnlTVSource.Size = New System.Drawing.Size(427, 185)
         Me.pnlTVSource.TabIndex = 2
         '
+        'lblSourceEpisodeSorting
+        '
+        Me.lblSourceEpisodeSorting.AutoSize = True
+        Me.lblSourceEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.lblSourceEpisodeSorting.Location = New System.Drawing.Point(9, 154)
+        Me.lblSourceEpisodeSorting.Name = "lblSourceEpisodeSorting"
+        Me.lblSourceEpisodeSorting.Size = New System.Drawing.Size(104, 13)
+        Me.lblSourceEpisodeSorting.TabIndex = 14
+        Me.lblSourceEpisodeSorting.Text = "Show Episodes by:"
+        Me.lblSourceEpisodeSorting.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'cbSourceEpisodeSorting
+        '
+        Me.cbSourceEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSourceEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbSourceEpisodeSorting.FormattingEnabled = True
+        Me.cbSourceEpisodeSorting.Location = New System.Drawing.Point(215, 151)
+        Me.cbSourceEpisodeSorting.Name = "cbSourceEpisodeSorting"
+        Me.cbSourceEpisodeSorting.Size = New System.Drawing.Size(172, 21)
+        Me.cbSourceEpisodeSorting.TabIndex = 15
+        '
         'gbSourceOptions
         '
         Me.gbSourceOptions.Controls.Add(Me.chkExclude)
@@ -228,27 +249,6 @@ Partial Class dlgTVSource
         Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
         Me.cbSourceLanguage.TabIndex = 9
         '
-        'lblSourceEpisodeSorting
-        '
-        Me.lblSourceEpisodeSorting.AutoSize = True
-        Me.lblSourceEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.lblSourceEpisodeSorting.Location = New System.Drawing.Point(9, 154)
-        Me.lblSourceEpisodeSorting.Name = "lblSourceEpisodeSorting"
-        Me.lblSourceEpisodeSorting.Size = New System.Drawing.Size(104, 13)
-        Me.lblSourceEpisodeSorting.TabIndex = 14
-        Me.lblSourceEpisodeSorting.Text = "Show Episodes by:"
-        Me.lblSourceEpisodeSorting.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        '
-        'cbSourceEpisodeSorting
-        '
-        Me.cbSourceEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbSourceEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbSourceEpisodeSorting.FormattingEnabled = True
-        Me.cbSourceEpisodeSorting.Location = New System.Drawing.Point(215, 151)
-        Me.cbSourceEpisodeSorting.Name = "cbSourceEpisodeSorting"
-        Me.cbSourceEpisodeSorting.Size = New System.Drawing.Size(172, 21)
-        Me.cbSourceEpisodeSorting.TabIndex = 15
-        '
         'dlgTVSource
         '
         Me.AcceptButton = Me.OK_Button
@@ -265,7 +265,6 @@ Partial Class dlgTVSource
         Me.MinimizeBox = False
         Me.Name = "dlgTVSource"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "TV Source"
         Me.TopMost = True
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).EndInit()

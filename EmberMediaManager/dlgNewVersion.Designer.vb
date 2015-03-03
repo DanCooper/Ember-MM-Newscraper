@@ -202,7 +202,6 @@ Partial Class dlgNewVersion
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgNewVersion"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "A New Version Is Available"
         CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlUpgrade.ResumeLayout(False)

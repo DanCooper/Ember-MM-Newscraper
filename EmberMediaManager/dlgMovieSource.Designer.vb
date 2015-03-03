@@ -31,6 +31,7 @@ Partial Class dlgMovieSource
         Me.txtSourcePath = New System.Windows.Forms.TextBox()
         Me.btnBrowse = New System.Windows.Forms.Button()
         Me.gbSourceOptions = New System.Windows.Forms.GroupBox()
+        Me.chkExclude = New System.Windows.Forms.CheckBox()
         Me.chkSingle = New System.Windows.Forms.CheckBox()
         Me.chkUseFolderName = New System.Windows.Forms.CheckBox()
         Me.chkScanRecursive = New System.Windows.Forms.CheckBox()
@@ -42,7 +43,6 @@ Partial Class dlgMovieSource
         Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
         Me.lblHint = New System.Windows.Forms.Label()
         Me.pnlMovieSource = New System.Windows.Forms.Panel()
-        Me.chkExclude = New System.Windows.Forms.CheckBox()
         Me.gbSourceOptions.SuspendLayout()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMovieSource.SuspendLayout()
@@ -127,6 +127,17 @@ Partial Class dlgMovieSource
         Me.gbSourceOptions.TabIndex = 5
         Me.gbSourceOptions.TabStop = False
         Me.gbSourceOptions.Text = "Source Options"
+        '
+        'chkExclude
+        '
+        Me.chkExclude.AutoSize = True
+        Me.chkExclude.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkExclude.Location = New System.Drawing.Point(6, 82)
+        Me.chkExclude.Name = "chkExclude"
+        Me.chkExclude.Size = New System.Drawing.Size(199, 17)
+        Me.chkExclude.TabIndex = 3
+        Me.chkExclude.Text = "Exclude path from library updates"
+        Me.chkExclude.UseVisualStyleBackColor = True
         '
         'chkSingle
         '
@@ -220,17 +231,6 @@ Partial Class dlgMovieSource
         Me.pnlMovieSource.Size = New System.Drawing.Size(436, 156)
         Me.pnlMovieSource.TabIndex = 2
         '
-        'chkExclude
-        '
-        Me.chkExclude.AutoSize = True
-        Me.chkExclude.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkExclude.Location = New System.Drawing.Point(6, 82)
-        Me.chkExclude.Name = "chkExclude"
-        Me.chkExclude.Size = New System.Drawing.Size(199, 17)
-        Me.chkExclude.TabIndex = 3
-        Me.chkExclude.Text = "Exclude path from library updates"
-        Me.chkExclude.UseVisualStyleBackColor = True
-        '
         'dlgMovieSource
         '
         Me.AcceptButton = Me.OK_Button
@@ -249,7 +249,6 @@ Partial Class dlgMovieSource
         Me.Name = "dlgMovieSource"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Movie Source"
         Me.TopMost = True
         Me.gbSourceOptions.ResumeLayout(False)

@@ -43,6 +43,14 @@ Public Class dlgSetsManager
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
         Try
             Dim lMov As New Movies
@@ -67,7 +75,7 @@ Public Class dlgSetsManager
 
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -87,7 +95,7 @@ Public Class dlgSetsManager
                 Me.lbMoviesInSet.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -105,7 +113,7 @@ Public Class dlgSetsManager
                 End If
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -129,7 +137,7 @@ Public Class dlgSetsManager
                 Me.lbMoviesInSet.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -183,7 +191,7 @@ Public Class dlgSetsManager
                 End Using
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -339,7 +347,7 @@ Public Class dlgSetsManager
                 End Using
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -358,7 +366,7 @@ Public Class dlgSetsManager
 
             Me.lbMovies.ResumeLayout()
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -473,7 +481,7 @@ Public Class dlgSetsManager
             Me.FillMovies()
 
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -493,7 +501,7 @@ Public Class dlgSetsManager
             Me.btnDown.Enabled = False
             Me.btnRemove.Enabled = False
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -527,7 +535,7 @@ Public Class dlgSetsManager
             Master.DB.SaveMovieToDB(lMov.DBMovie, False, False, True)
             If Not isEdit Then Me.currSet.Movies.Remove(lMov)
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -546,7 +554,7 @@ Public Class dlgSetsManager
             Me.btnEditSet.Enabled = False
             Me.btnRemoveSet.Enabled = False
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -569,7 +577,7 @@ Public Class dlgSetsManager
 
             Me.SetControlsEnabled(True)
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

@@ -53,11 +53,11 @@ Partial Class dlgTrailerSelect
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog()
         Me.pnlTrailerSelect = New System.Windows.Forms.Panel()
         Me.gbPreview = New System.Windows.Forms.GroupBox()
-        Me.btnPlayInBrowser = New System.Windows.Forms.Button()
         Me.pnlTrailerPreview = New System.Windows.Forms.Panel()
         Me.pnlTrailerPreviewNoPlayer = New System.Windows.Forms.Panel()
         Me.tblTrailerPreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
         Me.lblTrailerPreviewNoPlayer = New System.Windows.Forms.Label()
+        Me.btnPlayInBrowser = New System.Windows.Forms.Button()
         Me.gbSelectTrailer.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.gbYouTubeSearch.SuspendLayout()
@@ -328,16 +328,6 @@ Partial Class dlgTrailerSelect
         Me.gbPreview.TabStop = False
         Me.gbPreview.Text = "Preview"
         '
-        'btnPlayInBrowser
-        '
-        Me.btnPlayInBrowser.Enabled = False
-        Me.btnPlayInBrowser.Location = New System.Drawing.Point(12, 500)
-        Me.btnPlayInBrowser.Name = "btnPlayInBrowser"
-        Me.btnPlayInBrowser.Size = New System.Drawing.Size(120, 23)
-        Me.btnPlayInBrowser.TabIndex = 4
-        Me.btnPlayInBrowser.Text = "Open In Browser"
-        Me.btnPlayInBrowser.UseVisualStyleBackColor = True
-        '
         'pnlTrailerPreview
         '
         Me.pnlTrailerPreview.BackColor = System.Drawing.Color.DimGray
@@ -382,6 +372,16 @@ Partial Class dlgTrailerSelect
         Me.lblTrailerPreviewNoPlayer.TabIndex = 0
         Me.lblTrailerPreviewNoPlayer.Text = "no Media Player enabled"
         '
+        'btnPlayInBrowser
+        '
+        Me.btnPlayInBrowser.Enabled = False
+        Me.btnPlayInBrowser.Location = New System.Drawing.Point(12, 500)
+        Me.btnPlayInBrowser.Name = "btnPlayInBrowser"
+        Me.btnPlayInBrowser.Size = New System.Drawing.Size(120, 23)
+        Me.btnPlayInBrowser.TabIndex = 4
+        Me.btnPlayInBrowser.Text = "Open In Browser"
+        Me.btnPlayInBrowser.UseVisualStyleBackColor = True
+        '
         'dlgTrailerSelect
         '
         Me.AcceptButton = Me.OK_Button
@@ -400,7 +400,6 @@ Partial Class dlgTrailerSelect
         Me.MinimizeBox = False
         Me.Name = "dlgTrailerSelect"
         Me.ShowIcon = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Trailer"
         Me.gbSelectTrailer.ResumeLayout(False)
         Me.pnlStatus.ResumeLayout(False)

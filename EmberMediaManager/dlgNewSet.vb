@@ -24,6 +24,14 @@ Public Class dlgNewSet
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Public Overloads Function ShowDialog(Optional ByVal SetName As String = "") As String
         If Not String.IsNullOrEmpty(SetName) Then
             txtSetName.Text = SetName

@@ -201,7 +201,6 @@ Partial Class dlgAddEditActor
         Me.Name = "dlgAddEditActor"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "New Actor"
         Me.tlpButtons.ResumeLayout(False)
         CType(Me.pbActLoad, System.ComponentModel.ISupportInitialize).EndInit()

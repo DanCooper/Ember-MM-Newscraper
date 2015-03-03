@@ -35,6 +35,14 @@ Public Class dlgDeleteConfirm
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
     Public Overloads Function ShowDialog(ByVal ItemsToDelete As Dictionary(Of Long, Long), ByVal DelType As Enums.DelType) As System.Windows.Forms.DialogResult
         Me._deltype = DelType
         Populate_FileList(ItemsToDelete)
@@ -48,7 +56,7 @@ Public Class dlgDeleteConfirm
             NewNode.ImageKey = "FILE"
             NewNode.SelectedImageKey = "FILE"
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Throw
         End Try
     End Sub
@@ -72,7 +80,7 @@ Public Class dlgDeleteConfirm
                 AddFileNode(NewNode, item)
             Next
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Throw
         End Try
     End Sub
@@ -138,7 +146,7 @@ Public Class dlgDeleteConfirm
             End With
             Return result
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Function
 
@@ -330,7 +338,7 @@ Public Class dlgDeleteConfirm
 
             End With
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

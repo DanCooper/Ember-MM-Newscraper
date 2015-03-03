@@ -38,9 +38,9 @@ Partial Class dlgImgSelect
         Me.lblDL2 = New System.Windows.Forms.Label()
         Me.pnlDLStatus = New System.Windows.Forms.Panel()
         Me.pnlDwld = New System.Windows.Forms.Panel()
-        Me.pbDL1 = New System.Windows.Forms.ProgressBar()
-        Me.lblDL1 = New System.Windows.Forms.Label()
         Me.lblDL1Status = New System.Windows.Forms.Label()
+        Me.lblDL1 = New System.Windows.Forms.Label()
+        Me.pbDL1 = New System.Windows.Forms.ProgressBar()
         Me.pnlBG = New System.Windows.Forms.Panel()
         Me.tlpButtons.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
@@ -232,13 +232,13 @@ Partial Class dlgImgSelect
         Me.pnlDwld.Size = New System.Drawing.Size(321, 75)
         Me.pnlDwld.TabIndex = 10
         '
-        'pbDL1
+        'lblDL1Status
         '
-        Me.pbDL1.Location = New System.Drawing.Point(6, 52)
-        Me.pbDL1.Name = "pbDL1"
-        Me.pbDL1.Size = New System.Drawing.Size(309, 19)
-        Me.pbDL1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.pbDL1.TabIndex = 6
+        Me.lblDL1Status.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblDL1Status.Location = New System.Drawing.Point(5, 34)
+        Me.lblDL1Status.Name = "lblDL1Status"
+        Me.lblDL1Status.Size = New System.Drawing.Size(310, 13)
+        Me.lblDL1Status.TabIndex = 8
         '
         'lblDL1
         '
@@ -249,13 +249,13 @@ Partial Class dlgImgSelect
         Me.lblDL1.TabIndex = 7
         Me.lblDL1.Text = "Performing Preliminary Tasks..."
         '
-        'lblDL1Status
+        'pbDL1
         '
-        Me.lblDL1Status.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblDL1Status.Location = New System.Drawing.Point(5, 34)
-        Me.lblDL1Status.Name = "lblDL1Status"
-        Me.lblDL1Status.Size = New System.Drawing.Size(310, 13)
-        Me.lblDL1Status.TabIndex = 8
+        Me.pbDL1.Location = New System.Drawing.Point(6, 52)
+        Me.pbDL1.Name = "pbDL1"
+        Me.pbDL1.Size = New System.Drawing.Size(309, 19)
+        Me.pbDL1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        Me.pbDL1.TabIndex = 6
         '
         'pnlBG
         '
@@ -285,7 +285,6 @@ Partial Class dlgImgSelect
         Me.MinimizeBox = False
         Me.Name = "dlgImgSelect"
         Me.ShowIcon = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Poster"
         Me.tlpButtons.ResumeLayout(False)
         Me.pnlBottomMain.ResumeLayout(False)

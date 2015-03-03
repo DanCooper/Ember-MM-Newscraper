@@ -23,13 +23,13 @@ Partial Class dlgTrakttvManager
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrakttvManager))
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -52,6 +52,11 @@ Partial Class dlgTrakttvManager
         Me.btntraktPlaycountSyncRating = New System.Windows.Forms.Button()
         Me.btntraktPlaycountGetMovies = New System.Windows.Forms.Button()
         Me.dgvtraktPlaycount = New System.Windows.Forms.DataGridView()
+        Me.coltraktPlaycountTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktPlaycountPlayed = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktPlaycountLastWatched = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktPlaycountProgress = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktPlaycountRating = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.lbltraktPlaycountstate = New System.Windows.Forms.Label()
         Me.prgtraktPlaycount = New System.Windows.Forms.ProgressBar()
         Me.lbltraktPlaycounthelp = New System.Windows.Forms.Label()
@@ -65,6 +70,10 @@ Partial Class dlgTrakttvManager
         Me.btntraktWatchlistSendEmberUnwatched = New System.Windows.Forms.Button()
         Me.btntraktWatchlistGetMovies = New System.Windows.Forms.Button()
         Me.dgvtraktWatchlist = New System.Windows.Forms.DataGridView()
+        Me.coltraktWatchlistTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktWatchlistYear = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktWatchlistListedAt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktWatchlistIMDB = New System.Windows.Forms.DataGridViewLinkColumn()
         Me.lbltraktWatchliststate = New System.Windows.Forms.Label()
         Me.prgtraktWatchlist = New System.Windows.Forms.ProgressBar()
         Me.lbltraktWatchlisthelp = New System.Windows.Forms.Label()
@@ -130,15 +139,6 @@ Partial Class dlgTrakttvManager
         Me.btntraktListsSaveList = New System.Windows.Forms.Button()
         Me.btntraktListsSaveListCompare = New System.Windows.Forms.Button()
         Me.dgvtraktList = New System.Windows.Forms.DataGridView()
-        Me.coltraktWatchlistTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktWatchlistYear = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktWatchlistListedAt = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktWatchlistIMDB = New System.Windows.Forms.DataGridViewLinkColumn()
-        Me.coltraktPlaycountTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktPlaycountPlayed = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktPlaycountLastWatched = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktPlaycountProgress = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktPlaycountRating = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.coltraktListTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.coltraktListYear = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.coltraktListRating = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -440,6 +440,52 @@ Partial Class dlgTrakttvManager
         Me.dgvtraktPlaycount.Size = New System.Drawing.Size(612, 400)
         Me.dgvtraktPlaycount.TabIndex = 32
         '
+        'coltraktPlaycountTitle
+        '
+        Me.coltraktPlaycountTitle.Frozen = True
+        Me.coltraktPlaycountTitle.HeaderText = "Title"
+        Me.coltraktPlaycountTitle.Name = "coltraktPlaycountTitle"
+        Me.coltraktPlaycountTitle.ReadOnly = True
+        Me.coltraktPlaycountTitle.Width = 250
+        '
+        'coltraktPlaycountPlayed
+        '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktPlaycountPlayed.DefaultCellStyle = DataGridViewCellStyle1
+        Me.coltraktPlaycountPlayed.Frozen = True
+        Me.coltraktPlaycountPlayed.HeaderText = "Played"
+        Me.coltraktPlaycountPlayed.Name = "coltraktPlaycountPlayed"
+        Me.coltraktPlaycountPlayed.ReadOnly = True
+        Me.coltraktPlaycountPlayed.Width = 75
+        '
+        'coltraktPlaycountLastWatched
+        '
+        Me.coltraktPlaycountLastWatched.Frozen = True
+        Me.coltraktPlaycountLastWatched.HeaderText = "Last watched"
+        Me.coltraktPlaycountLastWatched.Name = "coltraktPlaycountLastWatched"
+        Me.coltraktPlaycountLastWatched.ReadOnly = True
+        '
+        'coltraktPlaycountProgress
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktPlaycountProgress.DefaultCellStyle = DataGridViewCellStyle2
+        Me.coltraktPlaycountProgress.HeaderText = "Progress"
+        Me.coltraktPlaycountProgress.Name = "coltraktPlaycountProgress"
+        Me.coltraktPlaycountProgress.ReadOnly = True
+        Me.coltraktPlaycountProgress.Width = 90
+        '
+        'coltraktPlaycountRating
+        '
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.Format = "N0"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.coltraktPlaycountRating.DefaultCellStyle = DataGridViewCellStyle3
+        Me.coltraktPlaycountRating.HeaderText = "Rating"
+        Me.coltraktPlaycountRating.Name = "coltraktPlaycountRating"
+        Me.coltraktPlaycountRating.Width = 90
+        '
         'lbltraktPlaycountstate
         '
         Me.lbltraktPlaycountstate.AutoSize = True
@@ -592,6 +638,39 @@ Partial Class dlgTrakttvManager
         Me.dgvtraktWatchlist.ShowRowErrors = False
         Me.dgvtraktWatchlist.Size = New System.Drawing.Size(747, 400)
         Me.dgvtraktWatchlist.TabIndex = 32
+        '
+        'coltraktWatchlistTitle
+        '
+        Me.coltraktWatchlistTitle.Frozen = True
+        Me.coltraktWatchlistTitle.HeaderText = "Title"
+        Me.coltraktWatchlistTitle.Name = "coltraktWatchlistTitle"
+        Me.coltraktWatchlistTitle.ReadOnly = True
+        Me.coltraktWatchlistTitle.Width = 250
+        '
+        'coltraktWatchlistYear
+        '
+        Me.coltraktWatchlistYear.Frozen = True
+        Me.coltraktWatchlistYear.HeaderText = "Year"
+        Me.coltraktWatchlistYear.Name = "coltraktWatchlistYear"
+        Me.coltraktWatchlistYear.ReadOnly = True
+        '
+        'coltraktWatchlistListedAt
+        '
+        Me.coltraktWatchlistListedAt.Frozen = True
+        Me.coltraktWatchlistListedAt.HeaderText = "Listed At"
+        Me.coltraktWatchlistListedAt.Name = "coltraktWatchlistListedAt"
+        Me.coltraktWatchlistListedAt.ReadOnly = True
+        Me.coltraktWatchlistListedAt.Width = 130
+        '
+        'coltraktWatchlistIMDB
+        '
+        Me.coltraktWatchlistIMDB.Frozen = True
+        Me.coltraktWatchlistIMDB.HeaderText = "IMDB"
+        Me.coltraktWatchlistIMDB.Name = "coltraktWatchlistIMDB"
+        Me.coltraktWatchlistIMDB.ReadOnly = True
+        Me.coltraktWatchlistIMDB.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.coltraktWatchlistIMDB.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.coltraktWatchlistIMDB.Width = 264
         '
         'lbltraktWatchliststate
         '
@@ -979,8 +1058,8 @@ Partial Class dlgTrakttvManager
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeColumns = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -1331,85 +1410,6 @@ Partial Class dlgTrakttvManager
         Me.dgvtraktList.Size = New System.Drawing.Size(626, 407)
         Me.dgvtraktList.TabIndex = 46
         '
-        'coltraktWatchlistTitle
-        '
-        Me.coltraktWatchlistTitle.Frozen = True
-        Me.coltraktWatchlistTitle.HeaderText = "Title"
-        Me.coltraktWatchlistTitle.Name = "coltraktWatchlistTitle"
-        Me.coltraktWatchlistTitle.ReadOnly = True
-        Me.coltraktWatchlistTitle.Width = 250
-        '
-        'coltraktWatchlistYear
-        '
-        Me.coltraktWatchlistYear.Frozen = True
-        Me.coltraktWatchlistYear.HeaderText = "Year"
-        Me.coltraktWatchlistYear.Name = "coltraktWatchlistYear"
-        Me.coltraktWatchlistYear.ReadOnly = True
-        '
-        'coltraktWatchlistListedAt
-        '
-        Me.coltraktWatchlistListedAt.Frozen = True
-        Me.coltraktWatchlistListedAt.HeaderText = "Listed At"
-        Me.coltraktWatchlistListedAt.Name = "coltraktWatchlistListedAt"
-        Me.coltraktWatchlistListedAt.ReadOnly = True
-        Me.coltraktWatchlistListedAt.Width = 130
-        '
-        'coltraktWatchlistIMDB
-        '
-        Me.coltraktWatchlistIMDB.Frozen = True
-        Me.coltraktWatchlistIMDB.HeaderText = "IMDB"
-        Me.coltraktWatchlistIMDB.Name = "coltraktWatchlistIMDB"
-        Me.coltraktWatchlistIMDB.ReadOnly = True
-        Me.coltraktWatchlistIMDB.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.coltraktWatchlistIMDB.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.coltraktWatchlistIMDB.Width = 264
-        '
-        'coltraktPlaycountTitle
-        '
-        Me.coltraktPlaycountTitle.Frozen = True
-        Me.coltraktPlaycountTitle.HeaderText = "Title"
-        Me.coltraktPlaycountTitle.Name = "coltraktPlaycountTitle"
-        Me.coltraktPlaycountTitle.ReadOnly = True
-        Me.coltraktPlaycountTitle.Width = 250
-        '
-        'coltraktPlaycountPlayed
-        '
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktPlaycountPlayed.DefaultCellStyle = DataGridViewCellStyle9
-        Me.coltraktPlaycountPlayed.Frozen = True
-        Me.coltraktPlaycountPlayed.HeaderText = "Played"
-        Me.coltraktPlaycountPlayed.Name = "coltraktPlaycountPlayed"
-        Me.coltraktPlaycountPlayed.ReadOnly = True
-        Me.coltraktPlaycountPlayed.Width = 75
-        '
-        'coltraktPlaycountLastWatched
-        '
-        Me.coltraktPlaycountLastWatched.Frozen = True
-        Me.coltraktPlaycountLastWatched.HeaderText = "Last watched"
-        Me.coltraktPlaycountLastWatched.Name = "coltraktPlaycountLastWatched"
-        Me.coltraktPlaycountLastWatched.ReadOnly = True
-        '
-        'coltraktPlaycountProgress
-        '
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktPlaycountProgress.DefaultCellStyle = DataGridViewCellStyle10
-        Me.coltraktPlaycountProgress.HeaderText = "Progress"
-        Me.coltraktPlaycountProgress.Name = "coltraktPlaycountProgress"
-        Me.coltraktPlaycountProgress.ReadOnly = True
-        Me.coltraktPlaycountProgress.Width = 90
-        '
-        'coltraktPlaycountRating
-        '
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle11.Format = "N0"
-        DataGridViewCellStyle11.NullValue = Nothing
-        Me.coltraktPlaycountRating.DefaultCellStyle = DataGridViewCellStyle11
-        Me.coltraktPlaycountRating.HeaderText = "Rating"
-        Me.coltraktPlaycountRating.Name = "coltraktPlaycountRating"
-        Me.coltraktPlaycountRating.Width = 90
-        '
         'coltraktListTitle
         '
         Me.coltraktListTitle.Frozen = True
@@ -1420,8 +1420,8 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListYear
         '
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktListYear.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktListYear.DefaultCellStyle = DataGridViewCellStyle5
         Me.coltraktListYear.Frozen = True
         Me.coltraktListYear.HeaderText = "Year"
         Me.coltraktListYear.Name = "coltraktListYear"
@@ -1430,9 +1430,9 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListRating
         '
-        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle13.NullValue = Nothing
-        Me.coltraktListRating.DefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.coltraktListRating.DefaultCellStyle = DataGridViewCellStyle6
         Me.coltraktListRating.HeaderText = "Rating"
         Me.coltraktListRating.Name = "coltraktListRating"
         Me.coltraktListRating.ReadOnly = True
@@ -1447,8 +1447,8 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListIMDB
         '
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktListIMDB.DefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktListIMDB.DefaultCellStyle = DataGridViewCellStyle7
         Me.coltraktListIMDB.HeaderText = "IMDB"
         Me.coltraktListIMDB.Name = "coltraktListIMDB"
         Me.coltraktListIMDB.ReadOnly = True
@@ -1478,7 +1478,6 @@ Partial Class dlgTrakttvManager
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgTrakttvManager"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Trakt.tv Manager"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
