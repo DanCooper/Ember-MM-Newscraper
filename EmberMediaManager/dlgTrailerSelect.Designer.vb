@@ -51,28 +51,32 @@ Partial Class dlgTrailerSelect
         Me.txtManualTrailerLink = New System.Windows.Forms.TextBox()
         Me.lblManualTrailerLink = New System.Windows.Forms.Label()
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog()
-        Me.pnlTrailerSelect = New System.Windows.Forms.Panel()
+        Me.pnlMain = New System.Windows.Forms.Panel()
         Me.gbPreview = New System.Windows.Forms.GroupBox()
         Me.pnlTrailerPreview = New System.Windows.Forms.Panel()
         Me.pnlTrailerPreviewNoPlayer = New System.Windows.Forms.Panel()
         Me.tblTrailerPreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
         Me.lblTrailerPreviewNoPlayer = New System.Windows.Forms.Label()
         Me.btnPlayInBrowser = New System.Windows.Forms.Button()
+        Me.pblBottom = New System.Windows.Forms.Panel()
+        Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.gbSelectTrailer.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.gbYouTubeSearch.SuspendLayout()
         Me.gbManualTrailer.SuspendLayout()
-        Me.pnlTrailerSelect.SuspendLayout()
+        Me.pnlMain.SuspendLayout()
         Me.gbPreview.SuspendLayout()
         Me.pnlTrailerPreview.SuspendLayout()
         Me.pnlTrailerPreviewNoPlayer.SuspendLayout()
         Me.tblTrailerPreviewNoPlayer.SuspendLayout()
+        Me.pblBottom.SuspendLayout()
+        Me.tblBottom.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Enabled = False
-        Me.OK_Button.Location = New System.Drawing.Point(758, 500)
+        Me.OK_Button.Location = New System.Drawing.Point(752, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(120, 23)
         Me.OK_Button.TabIndex = 6
@@ -81,7 +85,7 @@ Partial Class dlgTrailerSelect
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(884, 500)
+        Me.Cancel_Button.Location = New System.Drawing.Point(878, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(120, 23)
         Me.Cancel_Button.TabIndex = 7
@@ -230,16 +234,16 @@ Partial Class dlgTrailerSelect
         Me.gbManualTrailer.Controls.Add(Me.btnPlayLocalTrailer)
         Me.gbManualTrailer.Controls.Add(Me.txtManualTrailerLink)
         Me.gbManualTrailer.Controls.Add(Me.lblManualTrailerLink)
-        Me.gbManualTrailer.Location = New System.Drawing.Point(6, 294)
+        Me.gbManualTrailer.Location = New System.Drawing.Point(597, 309)
         Me.gbManualTrailer.Name = "gbManualTrailer"
-        Me.gbManualTrailer.Size = New System.Drawing.Size(384, 140)
+        Me.gbManualTrailer.Size = New System.Drawing.Size(396, 140)
         Me.gbManualTrailer.TabIndex = 3
         Me.gbManualTrailer.TabStop = False
         Me.gbManualTrailer.Text = "Manual Trailer Entry"
         '
         'btnClearManualTrailerLink
         '
-        Me.btnClearManualTrailerLink.Location = New System.Drawing.Point(352, 28)
+        Me.btnClearManualTrailerLink.Location = New System.Drawing.Point(365, 27)
         Me.btnClearManualTrailerLink.Name = "btnClearManualTrailerLink"
         Me.btnClearManualTrailerLink.Size = New System.Drawing.Size(25, 23)
         Me.btnClearManualTrailerLink.TabIndex = 5
@@ -248,7 +252,7 @@ Partial Class dlgTrailerSelect
         '
         'btnBrowseLocalTrailer
         '
-        Me.btnBrowseLocalTrailer.Location = New System.Drawing.Point(352, 81)
+        Me.btnBrowseLocalTrailer.Location = New System.Drawing.Point(365, 81)
         Me.btnBrowseLocalTrailer.Name = "btnBrowseLocalTrailer"
         Me.btnBrowseLocalTrailer.Size = New System.Drawing.Size(25, 23)
         Me.btnBrowseLocalTrailer.TabIndex = 4
@@ -261,7 +265,7 @@ Partial Class dlgTrailerSelect
         Me.txtLocalTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtLocalTrailer.Location = New System.Drawing.Point(9, 82)
         Me.txtLocalTrailer.Name = "txtLocalTrailer"
-        Me.txtLocalTrailer.Size = New System.Drawing.Size(337, 22)
+        Me.txtLocalTrailer.Size = New System.Drawing.Size(350, 22)
         Me.txtLocalTrailer.TabIndex = 3
         '
         'lblLocalTrailer
@@ -293,7 +297,7 @@ Partial Class dlgTrailerSelect
         Me.txtManualTrailerLink.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtManualTrailerLink.Location = New System.Drawing.Point(9, 28)
         Me.txtManualTrailerLink.Name = "txtManualTrailerLink"
-        Me.txtManualTrailerLink.Size = New System.Drawing.Size(337, 22)
+        Me.txtManualTrailerLink.Size = New System.Drawing.Size(350, 22)
         Me.txtManualTrailerLink.TabIndex = 1
         '
         'lblManualTrailerLink
@@ -306,24 +310,26 @@ Partial Class dlgTrailerSelect
         Me.lblManualTrailerLink.TabIndex = 0
         Me.lblManualTrailerLink.Text = "Direct Link, YouTube, IMDB or Apple Trailer URL:"
         '
-        'pnlTrailerSelect
+        'pnlMain
         '
-        Me.pnlTrailerSelect.BackColor = System.Drawing.Color.White
-        Me.pnlTrailerSelect.Controls.Add(Me.gbPreview)
-        Me.pnlTrailerSelect.Controls.Add(Me.gbSelectTrailer)
-        Me.pnlTrailerSelect.Location = New System.Drawing.Point(3, 3)
-        Me.pnlTrailerSelect.Name = "pnlTrailerSelect"
-        Me.pnlTrailerSelect.Size = New System.Drawing.Size(1001, 462)
-        Me.pnlTrailerSelect.TabIndex = 2
+        Me.pnlMain.AutoScroll = True
+        Me.pnlMain.BackColor = System.Drawing.Color.White
+        Me.pnlMain.Controls.Add(Me.gbPreview)
+        Me.pnlMain.Controls.Add(Me.gbManualTrailer)
+        Me.pnlMain.Controls.Add(Me.gbSelectTrailer)
+        Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlMain.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMain.Name = "pnlMain"
+        Me.pnlMain.Size = New System.Drawing.Size(1001, 484)
+        Me.pnlMain.TabIndex = 2
         '
         'gbPreview
         '
         Me.gbPreview.Controls.Add(Me.pnlTrailerPreview)
-        Me.gbPreview.Controls.Add(Me.gbManualTrailer)
         Me.gbPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbPreview.Location = New System.Drawing.Point(597, 9)
         Me.gbPreview.Name = "gbPreview"
-        Me.gbPreview.Size = New System.Drawing.Size(396, 440)
+        Me.gbPreview.Size = New System.Drawing.Size(396, 250)
         Me.gbPreview.TabIndex = 9
         Me.gbPreview.TabStop = False
         Me.gbPreview.Text = "Preview"
@@ -375,12 +381,42 @@ Partial Class dlgTrailerSelect
         'btnPlayInBrowser
         '
         Me.btnPlayInBrowser.Enabled = False
-        Me.btnPlayInBrowser.Location = New System.Drawing.Point(12, 500)
+        Me.btnPlayInBrowser.Location = New System.Drawing.Point(3, 3)
         Me.btnPlayInBrowser.Name = "btnPlayInBrowser"
         Me.btnPlayInBrowser.Size = New System.Drawing.Size(120, 23)
         Me.btnPlayInBrowser.TabIndex = 4
         Me.btnPlayInBrowser.Text = "Open In Browser"
         Me.btnPlayInBrowser.UseVisualStyleBackColor = True
+        '
+        'pblBottom
+        '
+        Me.pblBottom.AutoSize = True
+        Me.pblBottom.Controls.Add(Me.tblBottom)
+        Me.pblBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pblBottom.Location = New System.Drawing.Point(0, 455)
+        Me.pblBottom.Name = "pblBottom"
+        Me.pblBottom.Size = New System.Drawing.Size(1001, 29)
+        Me.pblBottom.TabIndex = 8
+        '
+        'tblBottom
+        '
+        Me.tblBottom.AutoSize = True
+        Me.tblBottom.ColumnCount = 4
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.Controls.Add(Me.btnPlayInBrowser, 0, 0)
+        Me.tblBottom.Controls.Add(Me.OK_Button, 2, 0)
+        Me.tblBottom.Controls.Add(Me.Cancel_Button, 3, 0)
+        Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblBottom.Name = "tblBottom"
+        Me.tblBottom.RowCount = 1
+        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblBottom.Size = New System.Drawing.Size(1001, 29)
+        Me.tblBottom.TabIndex = 0
         '
         'dlgTrailerSelect
         '
@@ -388,14 +424,10 @@ Partial Class dlgTrailerSelect
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(1008, 535)
-        Me.ControlBox = False
-        Me.Controls.Add(Me.pnlTrailerSelect)
-        Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.OK_Button)
-        Me.Controls.Add(Me.btnPlayInBrowser)
+        Me.ClientSize = New System.Drawing.Size(1001, 484)
+        Me.Controls.Add(Me.pblBottom)
+        Me.Controls.Add(Me.pnlMain)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgTrailerSelect"
@@ -408,14 +440,18 @@ Partial Class dlgTrailerSelect
         Me.gbYouTubeSearch.PerformLayout()
         Me.gbManualTrailer.ResumeLayout(False)
         Me.gbManualTrailer.PerformLayout()
-        Me.pnlTrailerSelect.ResumeLayout(False)
+        Me.pnlMain.ResumeLayout(False)
         Me.gbPreview.ResumeLayout(False)
         Me.pnlTrailerPreview.ResumeLayout(False)
         Me.pnlTrailerPreviewNoPlayer.ResumeLayout(False)
         Me.pnlTrailerPreviewNoPlayer.PerformLayout()
         Me.tblTrailerPreviewNoPlayer.ResumeLayout(False)
         Me.tblTrailerPreviewNoPlayer.PerformLayout()
+        Me.pblBottom.ResumeLayout(False)
+        Me.pblBottom.PerformLayout()
+        Me.tblBottom.ResumeLayout(False)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
@@ -432,7 +468,7 @@ Partial Class dlgTrailerSelect
     Friend WithEvents txtLocalTrailer As System.Windows.Forms.TextBox
     Friend WithEvents lblLocalTrailer As System.Windows.Forms.Label
     Friend WithEvents ofdTrailer As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents pnlTrailerSelect As System.Windows.Forms.Panel
+    Friend WithEvents pnlMain As System.Windows.Forms.Panel
     Friend WithEvents btnPlayInBrowser As System.Windows.Forms.Button
     Friend WithEvents lvTrailers As System.Windows.Forms.ListView
     Friend WithEvents gbPreview As System.Windows.Forms.GroupBox
@@ -453,5 +489,7 @@ Partial Class dlgTrailerSelect
     Friend WithEvents pnlTrailerPreviewNoPlayer As System.Windows.Forms.Panel
     Friend WithEvents tblTrailerPreviewNoPlayer As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblTrailerPreviewNoPlayer As System.Windows.Forms.Label
+    Friend WithEvents pblBottom As System.Windows.Forms.Panel
+    Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
 
 End Class
