@@ -44,7 +44,7 @@ Partial Class dlgTrakttvManager
         Me.lblCanceling = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
-        Me.pnlTrakt = New System.Windows.Forms.Panel()
+        Me.pnlMain = New System.Windows.Forms.Panel()
         Me.tbTrakt = New System.Windows.Forms.TabControl()
         Me.tbptraktPlaycount = New System.Windows.Forms.TabPage()
         Me.pnltraktPlaycount = New System.Windows.Forms.Panel()
@@ -145,11 +145,13 @@ Partial Class dlgTrakttvManager
         Me.coltraktListGenres = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.coltraktListIMDB = New System.Windows.Forms.DataGridViewLinkColumn()
         Me.coltraktListTrailer = New System.Windows.Forms.DataGridViewLinkColumn()
+        Me.pnlBottom = New System.Windows.Forms.Panel()
+        Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlTop.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlSaving.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlTrakt.SuspendLayout()
+        Me.pnlMain.SuspendLayout()
         Me.tbTrakt.SuspendLayout()
         Me.tbptraktPlaycount.SuspendLayout()
         Me.pnltraktPlaycount.SuspendLayout()
@@ -175,12 +177,14 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsViewerStep2.SuspendLayout()
         Me.gbtraktListsViewerStep1.SuspendLayout()
         CType(Me.dgvtraktList, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlBottom.SuspendLayout()
+        Me.tblBottom.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(5, 542)
+        Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(84, 32)
         Me.OK_Button.TabIndex = 0
@@ -197,7 +201,7 @@ Partial Class dlgTrakttvManager
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(1104, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(1107, 64)
         Me.pnlTop.TabIndex = 1
         '
         'lblTopDetails
@@ -335,13 +339,14 @@ Partial Class dlgTrakttvManager
         Me.pbTopLogo.TabIndex = 0
         Me.pbTopLogo.TabStop = False
         '
-        'pnlTrakt
+        'pnlMain
         '
-        Me.pnlTrakt.Controls.Add(Me.tbTrakt)
-        Me.pnlTrakt.Location = New System.Drawing.Point(0, 64)
-        Me.pnlTrakt.Name = "pnlTrakt"
-        Me.pnlTrakt.Size = New System.Drawing.Size(1104, 472)
-        Me.pnlTrakt.TabIndex = 16
+        Me.pnlMain.Controls.Add(Me.tbTrakt)
+        Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlMain.Location = New System.Drawing.Point(0, 64)
+        Me.pnlMain.Name = "pnlMain"
+        Me.pnlMain.Size = New System.Drawing.Size(1107, 470)
+        Me.pnlMain.TabIndex = 16
         '
         'tbTrakt
         '
@@ -349,12 +354,12 @@ Partial Class dlgTrakttvManager
         Me.tbTrakt.Controls.Add(Me.tbptraktWatchlist)
         Me.tbTrakt.Controls.Add(Me.tbptraktListsSync)
         Me.tbTrakt.Controls.Add(Me.tbptraktListViewer)
-        Me.tbTrakt.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.tbTrakt.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tbTrakt.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbTrakt.Location = New System.Drawing.Point(0, 6)
+        Me.tbTrakt.Location = New System.Drawing.Point(0, 0)
         Me.tbTrakt.Name = "tbTrakt"
         Me.tbTrakt.SelectedIndex = 0
-        Me.tbTrakt.Size = New System.Drawing.Size(1104, 466)
+        Me.tbTrakt.Size = New System.Drawing.Size(1107, 470)
         Me.tbTrakt.TabIndex = 1
         '
         'tbptraktPlaycount
@@ -363,7 +368,7 @@ Partial Class dlgTrakttvManager
         Me.tbptraktPlaycount.Location = New System.Drawing.Point(4, 27)
         Me.tbptraktPlaycount.Name = "tbptraktPlaycount"
         Me.tbptraktPlaycount.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbptraktPlaycount.Size = New System.Drawing.Size(1096, 435)
+        Me.tbptraktPlaycount.Size = New System.Drawing.Size(1099, 514)
         Me.tbptraktPlaycount.TabIndex = 0
         Me.tbptraktPlaycount.Text = "Sync Playcount"
         Me.tbptraktPlaycount.UseVisualStyleBackColor = True
@@ -374,7 +379,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktPlaycount.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnltraktPlaycount.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktPlaycount.Name = "pnltraktPlaycount"
-        Me.pnltraktPlaycount.Size = New System.Drawing.Size(1090, 429)
+        Me.pnltraktPlaycount.Size = New System.Drawing.Size(1093, 508)
         Me.pnltraktPlaycount.TabIndex = 41
         '
         'gbtraktPlaycount
@@ -391,7 +396,7 @@ Partial Class dlgTrakttvManager
         Me.gbtraktPlaycount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
         Me.gbtraktPlaycount.Location = New System.Drawing.Point(0, 0)
         Me.gbtraktPlaycount.Name = "gbtraktPlaycount"
-        Me.gbtraktPlaycount.Size = New System.Drawing.Size(1090, 429)
+        Me.gbtraktPlaycount.Size = New System.Drawing.Size(1093, 508)
         Me.gbtraktPlaycount.TabIndex = 41
         Me.gbtraktPlaycount.TabStop = False
         Me.gbtraktPlaycount.Text = "Sync Playcount"
@@ -541,7 +546,7 @@ Partial Class dlgTrakttvManager
         Me.tbptraktWatchlist.Location = New System.Drawing.Point(4, 27)
         Me.tbptraktWatchlist.Name = "tbptraktWatchlist"
         Me.tbptraktWatchlist.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbptraktWatchlist.Size = New System.Drawing.Size(1096, 435)
+        Me.tbptraktWatchlist.Size = New System.Drawing.Size(1099, 439)
         Me.tbptraktWatchlist.TabIndex = 3
         Me.tbptraktWatchlist.Text = "Watchlist"
         Me.tbptraktWatchlist.UseVisualStyleBackColor = True
@@ -552,7 +557,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktWatchlist.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnltraktWatchlist.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktWatchlist.Name = "pnltraktWatchlist"
-        Me.pnltraktWatchlist.Size = New System.Drawing.Size(1090, 429)
+        Me.pnltraktWatchlist.Size = New System.Drawing.Size(1093, 433)
         Me.pnltraktWatchlist.TabIndex = 42
         '
         'gbtraktWatchlist
@@ -569,7 +574,7 @@ Partial Class dlgTrakttvManager
         Me.gbtraktWatchlist.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
         Me.gbtraktWatchlist.Location = New System.Drawing.Point(0, 0)
         Me.gbtraktWatchlist.Name = "gbtraktWatchlist"
-        Me.gbtraktWatchlist.Size = New System.Drawing.Size(1090, 429)
+        Me.gbtraktWatchlist.Size = New System.Drawing.Size(1093, 433)
         Me.gbtraktWatchlist.TabIndex = 41
         Me.gbtraktWatchlist.TabStop = False
         Me.gbtraktWatchlist.Text = "Sync Watchlist"
@@ -728,7 +733,7 @@ Partial Class dlgTrakttvManager
         Me.tbptraktListsSync.Location = New System.Drawing.Point(4, 27)
         Me.tbptraktListsSync.Name = "tbptraktListsSync"
         Me.tbptraktListsSync.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbptraktListsSync.Size = New System.Drawing.Size(1096, 435)
+        Me.tbptraktListsSync.Size = New System.Drawing.Size(1099, 514)
         Me.tbptraktListsSync.TabIndex = 1
         Me.tbptraktListsSync.Text = "Sync Lists/Tags"
         Me.tbptraktListsSync.UseVisualStyleBackColor = True
@@ -746,7 +751,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktLists.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnltraktLists.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktLists.Name = "pnltraktLists"
-        Me.pnltraktLists.Size = New System.Drawing.Size(1090, 429)
+        Me.pnltraktLists.Size = New System.Drawing.Size(1093, 508)
         Me.pnltraktLists.TabIndex = 1
         '
         'lbltraktListsLink
@@ -1142,7 +1147,7 @@ Partial Class dlgTrakttvManager
         Me.tbptraktListViewer.Location = New System.Drawing.Point(4, 27)
         Me.tbptraktListViewer.Name = "tbptraktListViewer"
         Me.tbptraktListViewer.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbptraktListViewer.Size = New System.Drawing.Size(1096, 435)
+        Me.tbptraktListViewer.Size = New System.Drawing.Size(1099, 514)
         Me.tbptraktListViewer.TabIndex = 2
         Me.tbptraktListViewer.Text = "List viewer"
         Me.tbptraktListViewer.UseVisualStyleBackColor = True
@@ -1153,7 +1158,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktListsComparer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnltraktListsComparer.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktListsComparer.Name = "pnltraktListsComparer"
-        Me.pnltraktListsComparer.Size = New System.Drawing.Size(1090, 429)
+        Me.pnltraktListsComparer.Size = New System.Drawing.Size(1093, 508)
         Me.pnltraktListsComparer.TabIndex = 0
         '
         'gbtraktListsViewer
@@ -1173,7 +1178,7 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsViewer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
         Me.gbtraktListsViewer.Location = New System.Drawing.Point(0, 0)
         Me.gbtraktListsViewer.Name = "gbtraktListsViewer"
-        Me.gbtraktListsViewer.Size = New System.Drawing.Size(1090, 429)
+        Me.gbtraktListsViewer.Size = New System.Drawing.Size(1093, 508)
         Me.gbtraktListsViewer.TabIndex = 43
         Me.gbtraktListsViewer.TabStop = False
         Me.gbtraktListsViewer.Text = "List viewer"
@@ -1462,18 +1467,43 @@ Partial Class dlgTrakttvManager
         Me.coltraktListTrailer.ReadOnly = True
         Me.coltraktListTrailer.Text = "Link"
         '
+        'pnlBottom
+        '
+        Me.pnlBottom.AutoSize = True
+        Me.pnlBottom.Controls.Add(Me.tblBottom)
+        Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlBottom.Location = New System.Drawing.Point(0, 534)
+        Me.pnlBottom.Name = "pnlBottom"
+        Me.pnlBottom.Size = New System.Drawing.Size(1107, 38)
+        Me.pnlBottom.TabIndex = 17
+        '
+        'tblBottom
+        '
+        Me.tblBottom.AutoSize = True
+        Me.tblBottom.ColumnCount = 2
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.Controls.Add(Me.OK_Button, 0, 0)
+        Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblBottom.Name = "tblBottom"
+        Me.tblBottom.RowCount = 1
+        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblBottom.Size = New System.Drawing.Size(1107, 38)
+        Me.tblBottom.TabIndex = 0
+        '
         'dlgTrakttvManager
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(1104, 579)
+        Me.ClientSize = New System.Drawing.Size(1107, 572)
         Me.ControlBox = False
-        Me.Controls.Add(Me.pnlTrakt)
+        Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTop)
-        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.pnlBottom)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -1485,7 +1515,7 @@ Partial Class dlgTrakttvManager
         Me.pnlSaving.ResumeLayout(False)
         Me.pnlSaving.PerformLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pnlTrakt.ResumeLayout(False)
+        Me.pnlMain.ResumeLayout(False)
         Me.tbTrakt.ResumeLayout(False)
         Me.tbptraktPlaycount.ResumeLayout(False)
         Me.pnltraktPlaycount.ResumeLayout(False)
@@ -1517,7 +1547,11 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsViewerStep2.PerformLayout()
         Me.gbtraktListsViewerStep1.ResumeLayout(False)
         CType(Me.dgvtraktList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlBottom.ResumeLayout(False)
+        Me.pnlBottom.PerformLayout()
+        Me.tblBottom.ResumeLayout(False)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
@@ -1525,7 +1559,7 @@ Partial Class dlgTrakttvManager
     Friend WithEvents lblTopDetails As System.Windows.Forms.Label
     Friend WithEvents lblTopTitle As System.Windows.Forms.Label
     Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
-    Friend WithEvents pnlTrakt As System.Windows.Forms.Panel
+    Friend WithEvents pnlMain As System.Windows.Forms.Panel
     Friend WithEvents tbTrakt As System.Windows.Forms.TabControl
     Friend WithEvents tbptraktPlaycount As System.Windows.Forms.TabPage
     Friend WithEvents pnltraktPlaycount As System.Windows.Forms.Panel
@@ -1635,5 +1669,7 @@ Partial Class dlgTrakttvManager
     Friend WithEvents coltraktListGenres As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents coltraktListIMDB As System.Windows.Forms.DataGridViewLinkColumn
     Friend WithEvents coltraktListTrailer As System.Windows.Forms.DataGridViewLinkColumn
+    Friend WithEvents pnlBottom As System.Windows.Forms.Panel
+    Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
 
 End Class
