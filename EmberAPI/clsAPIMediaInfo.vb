@@ -388,14 +388,14 @@ Public Class MediaInfo
     Private Function ConvertAFormat(ByVal sCodecID As String, ByVal sFormat As String, ByVal sCodecHint As String, ByVal sProfile As String) As String
         Dim tCodec As String = String.Empty
 
-        If Not String.IsNullOrEmpty(sCodecID) AndAlso Not IsNumeric(sCodecID) Then
+        If sFormat.ToLower.Contains("dts") AndAlso (sProfile.ToLower = "hra / core" OrElse sProfile.ToLower = "ma / core") Then
+            tCodec = sProfile.ToLower
+        ElseIf Not String.IsNullOrEmpty(sCodecID) AndAlso Not IsNumeric(sCodecID) Then
             tCodec = sCodecID.ToLower
         ElseIf Not String.IsNullOrEmpty(sCodecHint) Then
             tCodec = sCodecHint.ToLower
         ElseIf sFormat.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(sProfile) Then
             tCodec = String.Concat("mp", sProfile.Replace("Layer", String.Empty).Trim).Trim
-        ElseIf sFormat.ToLower.Contains("dts") AndAlso Not String.IsNullOrEmpty(sProfile) Then
-            tCodec = sProfile.ToLower
         ElseIf Not String.IsNullOrEmpty(sFormat) Then
             tCodec = sFormat.ToLower
         End If
