@@ -118,7 +118,7 @@ Public Class dlgTagManager
         lbTags.Items.Clear()
         globalMovieTags.Clear()
         dtMovieTags.Clear()
-        pnlTag.Enabled = False
+        pnlMain.Enabled = False
 
         'load existing tags from database into datatable
         Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM tag ", _
@@ -175,7 +175,7 @@ Public Class dlgTagManager
 
         'enable controls again
         dgvMovies.Enabled = True
-        pnlTag.Enabled = True
+        pnlMain.Enabled = True
         lbTags.Enabled = True
         btnNewTag.Enabled = True
         Me.lbMoviesInTag.Enabled = True
