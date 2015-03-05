@@ -1,3 +1,25 @@
+Changelog 1.4.2.0 (2015-03-05)
+
+[Main]
+fixed: dialogs/windows size
+fixed: DTS-MA and DTS-HRA identification
+fixed: refresh tv show does not refresh seasons
+added: <tag> manager
+
+[TVDB]
+fixed: image downloading on new tv show
+
+[Tag Manager]
+added: first release
+
+[Moviepilot]
+fixed: plot and outline scraping
+
+[Renamer]
+fixed: fixed: files will not be renamed while scraping if not NFO scraping is active in the current scraping process
+added: patter to control season/episode number padding
+
+
 Changelog 1.4.1.0 (2015-03-03)
 
 [Main]
