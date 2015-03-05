@@ -203,7 +203,7 @@ Namespace MoviepilotDE
                             If resResult.Count = 0 Then
                                 resPattern = "(?<URL>http:\/\/www\.moviepilot\.de\/movies\/.*?)"".*?class=""h3"">(?<TITLE>.*?)<\/a>.*?(?<YEAR>\d{4})"
                                 resResult = Regex.Matches(strSearchResults, resPattern, RegexOptions.Singleline)
-                                strURL = String.Concat("http://www.moviepilot.de/movies/", resResult.Item(0).Groups(1).Value).Trim
+                                strURL = resResult.Item(0).Groups(1).Value.Trim
                             End If
 
                             'Only one search result or no Year to filter
