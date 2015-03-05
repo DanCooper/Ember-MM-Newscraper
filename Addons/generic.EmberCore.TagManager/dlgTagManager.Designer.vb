@@ -90,11 +90,7 @@ Partial Class dlgTagManager
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-<<<<<<< HEAD
-        Me.pnlTop.Size = New System.Drawing.Size(750, 64)
-=======
         Me.pnlTop.Size = New System.Drawing.Size(754, 64)
->>>>>>> pr/139
         Me.pnlTop.TabIndex = 1
         '
         'picTopTitle
@@ -233,31 +229,20 @@ Partial Class dlgTagManager
         Me.btnCancel.UseVisualStyleBackColor = True
         '
         'pnlMain
-        '
-<<<<<<< HEAD
-=======
         Me.pnlMain.AutoSize = True
         Me.pnlMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
->>>>>>> pr/139
         Me.pnlMain.Controls.Add(Me.tblMain)
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 64)
         Me.pnlMain.Name = "pnlMain"
-<<<<<<< HEAD
-        Me.pnlMain.Size = New System.Drawing.Size(750, 430)
-=======
         Me.pnlMain.Size = New System.Drawing.Size(754, 444)
->>>>>>> pr/139
         Me.pnlMain.TabIndex = 16
         '
         'tblMain
         '
         Me.tblMain.AutoScroll = True
-<<<<<<< HEAD
-=======
         Me.tblMain.AutoSize = True
         Me.tblMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
->>>>>>> pr/139
         Me.tblMain.ColumnCount = 4
         Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -272,11 +257,7 @@ Partial Class dlgTagManager
         Me.tblMain.RowCount = 2
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-<<<<<<< HEAD
-        Me.tblMain.Size = New System.Drawing.Size(750, 430)
-=======
         Me.tblMain.Size = New System.Drawing.Size(754, 444)
->>>>>>> pr/139
         Me.tblMain.TabIndex = 3
         '
         'gbMovies
@@ -290,38 +271,6 @@ Partial Class dlgTagManager
         Me.gbMovies.TabIndex = 7
         Me.gbMovies.TabStop = False
         Me.gbMovies.Text = "Avalaible Movies"
-<<<<<<< HEAD
-        '
-        'dgvMovies
-        '
-        Me.dgvMovies.AllowUserToAddRows = False
-        Me.dgvMovies.AllowUserToDeleteRows = False
-        Me.dgvMovies.AllowUserToResizeColumns = False
-        Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
-        Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
-        Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
-        Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
-        Me.dgvMovies.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
-        Me.dgvMovies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvMovies.Enabled = False
-        Me.dgvMovies.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.dgvMovies.Location = New System.Drawing.Point(8, 21)
-        Me.dgvMovies.Name = "dgvMovies"
-        Me.dgvMovies.ReadOnly = True
-        Me.dgvMovies.RowHeadersVisible = False
-        Me.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvMovies.ShowCellErrors = False
-        Me.dgvMovies.ShowRowErrors = False
-        Me.dgvMovies.Size = New System.Drawing.Size(243, 352)
-        Me.dgvMovies.StandardTab = True
-        Me.dgvMovies.TabIndex = 51
-        '
-        'btnAddMovie
-        '
-=======
         '
         'dgvMovies
         '
@@ -352,7 +301,6 @@ Partial Class dlgTagManager
         '
         'btnAddMovie
         '
->>>>>>> pr/139
         Me.btnAddMovie.Enabled = False
         Me.btnAddMovie.Image = CType(resources.GetObject("btnAddMovie.Image"), System.Drawing.Image)
         Me.btnAddMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -484,15 +432,9 @@ Partial Class dlgTagManager
         Me.pnlBottom.AutoSize = True
         Me.pnlBottom.Controls.Add(Me.tblBottom)
         Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-<<<<<<< HEAD
-        Me.pnlBottom.Location = New System.Drawing.Point(0, 494)
-        Me.pnlBottom.Name = "pnlBottom"
-        Me.pnlBottom.Size = New System.Drawing.Size(750, 38)
-=======
         Me.pnlBottom.Location = New System.Drawing.Point(0, 508)
         Me.pnlBottom.Name = "pnlBottom"
         Me.pnlBottom.Size = New System.Drawing.Size(754, 38)
->>>>>>> pr/139
         Me.pnlBottom.TabIndex = 18
         '
         'tblBottom
@@ -509,11 +451,7 @@ Partial Class dlgTagManager
         Me.tblBottom.Name = "tblBottom"
         Me.tblBottom.RowCount = 1
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-<<<<<<< HEAD
-        Me.tblBottom.Size = New System.Drawing.Size(750, 38)
-=======
         Me.tblBottom.Size = New System.Drawing.Size(754, 38)
->>>>>>> pr/139
         Me.tblBottom.TabIndex = 0
         '
         'dlgTagManager
@@ -521,11 +459,7 @@ Partial Class dlgTagManager
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-<<<<<<< HEAD
-        Me.ClientSize = New System.Drawing.Size(750, 532)
-=======
         Me.ClientSize = New System.Drawing.Size(754, 546)
->>>>>>> pr/139
         Me.ControlBox = False
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTop)
@@ -536,26 +470,6 @@ Partial Class dlgTagManager
         Me.MinimizeBox = False
         Me.Name = "dlgTagManager"
         Me.Text = "Tag Manager"
-<<<<<<< HEAD
-        Me.pnlTop.ResumeLayout(false)
-        Me.pnlTop.PerformLayout
-        CType(Me.picTopTitle,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlCancel.ResumeLayout(false)
-        Me.pnlSaving.ResumeLayout(false)
-        Me.pnlSaving.PerformLayout
-        Me.pnlMain.ResumeLayout(false)
-        Me.tblMain.ResumeLayout(false)
-        Me.gbMovies.ResumeLayout(false)
-        CType(Me.dgvMovies,System.ComponentModel.ISupportInitialize).EndInit
-        Me.gbTags.ResumeLayout(false)
-        Me.gbTags.PerformLayout
-        Me.gbMoviesInTag.ResumeLayout(false)
-        Me.pnlBottom.ResumeLayout(false)
-        Me.pnlBottom.PerformLayout
-        Me.tblBottom.ResumeLayout(false)
-        Me.ResumeLayout(false)
-        Me.PerformLayout
-=======
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.picTopTitle, System.ComponentModel.ISupportInitialize).EndInit()
@@ -575,8 +489,6 @@ Partial Class dlgTagManager
         Me.tblBottom.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
->>>>>>> pr/139
-
 End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
@@ -607,14 +519,7 @@ End Sub
     Friend WithEvents lbMoviesInTag As System.Windows.Forms.ListBox
     Friend WithEvents picTopTitle As System.Windows.Forms.PictureBox
     Friend WithEvents btnglobalTagsSync As System.Windows.Forms.Button
-<<<<<<< HEAD
-    Friend WithEvents pnlBottom As System.Windows.Forms.Panel
-    Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents tblMain As System.Windows.Forms.TableLayoutPanel
-=======
     Friend WithEvents tblMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlBottom As System.Windows.Forms.Panel
     Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
->>>>>>> pr/139
-
 End Class
