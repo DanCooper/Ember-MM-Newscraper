@@ -11544,7 +11544,7 @@ doCancel:
                 Me.pbActors.Image = Nothing
             End If
 
-            If Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString.StartsWith("http") Then
+            If Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString.Trim.StartsWith("http") Then
                 Me.MainActors.FromFile(Me.alActors.Item(Me.lstActors.SelectedIndex).ToString)
 
                 If Not IsNothing(Me.MainActors.Image) Then

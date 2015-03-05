@@ -2017,6 +2017,17 @@ Public Class Structures
         Dim MovieSet As MediaContainers.MovieSet
         Dim Movies As List(Of Structures.DBMovie)
     End Structure
+
+    ''' <summary>
+    ''' Structure representing a tag in the database
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Structure DBMovieTag
+        Dim ID As Integer
+        Dim Title As String
+        Dim Movies As List(Of Structures.DBMovie)
+    End Structure
+
     ''' <summary>
     ''' Structure representing a TV show in the database
     ''' </summary>

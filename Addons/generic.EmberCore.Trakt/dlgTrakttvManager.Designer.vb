@@ -84,7 +84,7 @@ Partial Class dlgTrakttvManager
         Me.lbltraktListsLink = New System.Windows.Forms.LinkLabel()
         Me.gbtraktListsSYNC = New System.Windows.Forms.GroupBox()
         Me.lbltraktListsNoticeSync = New System.Windows.Forms.Label()
-        Me.btntraktListsSyncLibrary = New System.Windows.Forms.Button()
+        Me.btntraktListsSaveToDatabase = New System.Windows.Forms.Button()
         Me.btntraktListsSyncTrakt = New System.Windows.Forms.Button()
         Me.gbtraktListsGET = New System.Windows.Forms.GroupBox()
         Me.btntraktListsGetPersonal = New System.Windows.Forms.Button()
@@ -368,7 +368,7 @@ Partial Class dlgTrakttvManager
         Me.tbptraktPlaycount.Location = New System.Drawing.Point(4, 27)
         Me.tbptraktPlaycount.Name = "tbptraktPlaycount"
         Me.tbptraktPlaycount.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbptraktPlaycount.Size = New System.Drawing.Size(1099, 514)
+        Me.tbptraktPlaycount.Size = New System.Drawing.Size(1099, 439)
         Me.tbptraktPlaycount.TabIndex = 0
         Me.tbptraktPlaycount.Text = "Sync Playcount"
         Me.tbptraktPlaycount.UseVisualStyleBackColor = True
@@ -379,7 +379,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktPlaycount.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnltraktPlaycount.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktPlaycount.Name = "pnltraktPlaycount"
-        Me.pnltraktPlaycount.Size = New System.Drawing.Size(1093, 508)
+        Me.pnltraktPlaycount.Size = New System.Drawing.Size(1093, 433)
         Me.pnltraktPlaycount.TabIndex = 41
         '
         'gbtraktPlaycount
@@ -396,7 +396,7 @@ Partial Class dlgTrakttvManager
         Me.gbtraktPlaycount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
         Me.gbtraktPlaycount.Location = New System.Drawing.Point(0, 0)
         Me.gbtraktPlaycount.Name = "gbtraktPlaycount"
-        Me.gbtraktPlaycount.Size = New System.Drawing.Size(1093, 508)
+        Me.gbtraktPlaycount.Size = New System.Drawing.Size(1093, 433)
         Me.gbtraktPlaycount.TabIndex = 41
         Me.gbtraktPlaycount.TabStop = False
         Me.gbtraktPlaycount.Text = "Sync Playcount"
@@ -733,7 +733,7 @@ Partial Class dlgTrakttvManager
         Me.tbptraktListsSync.Location = New System.Drawing.Point(4, 27)
         Me.tbptraktListsSync.Name = "tbptraktListsSync"
         Me.tbptraktListsSync.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbptraktListsSync.Size = New System.Drawing.Size(1099, 514)
+        Me.tbptraktListsSync.Size = New System.Drawing.Size(1099, 439)
         Me.tbptraktListsSync.TabIndex = 1
         Me.tbptraktListsSync.Text = "Sync Lists/Tags"
         Me.tbptraktListsSync.UseVisualStyleBackColor = True
@@ -751,7 +751,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktLists.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnltraktLists.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktLists.Name = "pnltraktLists"
-        Me.pnltraktLists.Size = New System.Drawing.Size(1093, 508)
+        Me.pnltraktLists.Size = New System.Drawing.Size(1093, 433)
         Me.pnltraktLists.TabIndex = 1
         '
         'lbltraktListsLink
@@ -768,7 +768,7 @@ Partial Class dlgTrakttvManager
         'gbtraktListsSYNC
         '
         Me.gbtraktListsSYNC.Controls.Add(Me.lbltraktListsNoticeSync)
-        Me.gbtraktListsSYNC.Controls.Add(Me.btntraktListsSyncLibrary)
+        Me.gbtraktListsSYNC.Controls.Add(Me.btntraktListsSaveToDatabase)
         Me.gbtraktListsSYNC.Controls.Add(Me.btntraktListsSyncTrakt)
         Me.gbtraktListsSYNC.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
         Me.gbtraktListsSYNC.Location = New System.Drawing.Point(17, 141)
@@ -788,16 +788,16 @@ Partial Class dlgTrakttvManager
         Me.lbltraktListsNoticeSync.Text = "Edited existing list(s) will be saved with prefix ""NEWLIST_"". Please change name " & _
     "of list in dashboard!"
         '
-        'btntraktListsSyncLibrary
+        'btntraktListsSaveToDatabase
         '
-        Me.btntraktListsSyncLibrary.Enabled = False
-        Me.btntraktListsSyncLibrary.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktListsSyncLibrary.Location = New System.Drawing.Point(6, 183)
-        Me.btntraktListsSyncLibrary.Name = "btntraktListsSyncLibrary"
-        Me.btntraktListsSyncLibrary.Size = New System.Drawing.Size(133, 46)
-        Me.btntraktListsSyncLibrary.TabIndex = 41
-        Me.btntraktListsSyncLibrary.Text = "Save tags to database/Nfo"
-        Me.btntraktListsSyncLibrary.UseVisualStyleBackColor = True
+        Me.btntraktListsSaveToDatabase.Enabled = False
+        Me.btntraktListsSaveToDatabase.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktListsSaveToDatabase.Location = New System.Drawing.Point(6, 183)
+        Me.btntraktListsSaveToDatabase.Name = "btntraktListsSaveToDatabase"
+        Me.btntraktListsSaveToDatabase.Size = New System.Drawing.Size(133, 46)
+        Me.btntraktListsSaveToDatabase.TabIndex = 41
+        Me.btntraktListsSaveToDatabase.Text = "Save tag to database/Nfo"
+        Me.btntraktListsSaveToDatabase.UseVisualStyleBackColor = True
         '
         'btntraktListsSyncTrakt
         '
@@ -1147,7 +1147,7 @@ Partial Class dlgTrakttvManager
         Me.tbptraktListViewer.Location = New System.Drawing.Point(4, 27)
         Me.tbptraktListViewer.Name = "tbptraktListViewer"
         Me.tbptraktListViewer.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbptraktListViewer.Size = New System.Drawing.Size(1099, 514)
+        Me.tbptraktListViewer.Size = New System.Drawing.Size(1099, 439)
         Me.tbptraktListViewer.TabIndex = 2
         Me.tbptraktListViewer.Text = "List viewer"
         Me.tbptraktListViewer.UseVisualStyleBackColor = True
@@ -1158,7 +1158,7 @@ Partial Class dlgTrakttvManager
         Me.pnltraktListsComparer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnltraktListsComparer.Location = New System.Drawing.Point(3, 3)
         Me.pnltraktListsComparer.Name = "pnltraktListsComparer"
-        Me.pnltraktListsComparer.Size = New System.Drawing.Size(1093, 508)
+        Me.pnltraktListsComparer.Size = New System.Drawing.Size(1093, 433)
         Me.pnltraktListsComparer.TabIndex = 0
         '
         'gbtraktListsViewer
@@ -1178,7 +1178,7 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsViewer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
         Me.gbtraktListsViewer.Location = New System.Drawing.Point(0, 0)
         Me.gbtraktListsViewer.Name = "gbtraktListsViewer"
-        Me.gbtraktListsViewer.Size = New System.Drawing.Size(1093, 508)
+        Me.gbtraktListsViewer.Size = New System.Drawing.Size(1093, 433)
         Me.gbtraktListsViewer.TabIndex = 43
         Me.gbtraktListsViewer.TabStop = False
         Me.gbtraktListsViewer.Text = "List viewer"
@@ -1573,7 +1573,7 @@ Partial Class dlgTrakttvManager
     Friend WithEvents tbptraktListsSync As System.Windows.Forms.TabPage
     Friend WithEvents pnltraktLists As System.Windows.Forms.Panel
     Friend WithEvents gbtraktListsSYNC As System.Windows.Forms.GroupBox
-    Friend WithEvents btntraktListsSyncLibrary As System.Windows.Forms.Button
+    Friend WithEvents btntraktListsSaveToDatabase As System.Windows.Forms.Button
     Friend WithEvents btntraktListsSyncTrakt As System.Windows.Forms.Button
     Friend WithEvents gbtraktListsGET As System.Windows.Forms.GroupBox
     Friend WithEvents btntraktListsGetPersonal As System.Windows.Forms.Button

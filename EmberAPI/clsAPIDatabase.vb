@@ -785,6 +785,71 @@ Public Class Database
     End Function
 
     ''' <summary>
+    ''' Remove all information related to a tag from the database.
+    ''' </summary>
+    ''' <param name="ID">Internal TagID of the tag to remove, as stored in the database.</param>
+    ''' <param name="Mode">1=tag of a movie, 2=tag of a show</param>
+    ''' <param name="BatchMode">Is this function already part of a transaction?</param>
+    ''' <returns>True if successful, false if deletion failed.</returns>
+    Public Function DeleteTagFromDB(ByVal ID As Long, ByVal Mode As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
+        Try
+            'first get a list of all movies in the tag to remove the tag information from NFO
+            Dim moviesToSave As New List(Of Structures.DBMovie)
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            Dim tagName As String = ""
+            If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT strTag FROM tag ", _
+                                                       "WHERE idTag = ", ID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        If Not DBNull.Value.Equals(SQLreader("strTag")) Then tagName = CStr(SQLreader("strTag"))
+                    End While
+                End Using
+            End Using
+
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT idMedia FROM taglinks ", _
+                                                       "WHERE idTag = ", ID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        If Mode = 1 Then
+                            'tag is for movie
+                            Dim movie As New Structures.DBMovie
+                            If Not DBNull.Value.Equals(SQLreader("idMedia")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("idMedia")))
+                            moviesToSave.Add(movie)
+                        End If
+                    End While
+                End Using
+            End Using
+
+            'remove the tag from movie and write new movie NFOs
+            If moviesToSave.Count > 0 Then
+                For Each movie In moviesToSave
+                    movie.Movie.Tags.Remove(tagName)
+                    SaveMovieToDB(movie, False, BatchMode, True)
+                Next
+            End If
+
+            'remove the tag entry
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("DELETE FROM tag WHERE idTag = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("DELETE FROM taglinks WHERE idTag = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            If Not BatchMode Then SQLtransaction.Commit()
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return False
+        End Try
+        Return True
+    End Function
+
+    ''' <summary>
     ''' Remove all information related to a TV episode from the database.
     ''' </summary>
     ''' <param name="ID">ID of the episode to remove, as stored in the database.</param>
@@ -1377,6 +1442,41 @@ Public Class Database
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _moviesetDB
+    End Function
+
+    ''' <summary>
+    ''' Load all the information for a movietag.
+    ''' </summary>
+    ''' <param name="TagID">ID of the movietag to load, as stored in the database</param>
+    ''' <returns>Structures.DBMovieTag object</returns>
+    Public Function LoadMovieTagFromDB(ByVal TagID As Integer) As Structures.DBMovieTag
+        Dim _tagDB As New Structures.DBMovieTag
+        _tagDB.ID = TagID
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT idTag, strTag FROM tag WHERE idTag = ", TagID, ";")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    SQLreader.Read()
+                    If Not DBNull.Value.Equals(SQLreader("strTag")) Then _tagDB.Title = SQLreader("strTag").ToString
+                    If Not DBNull.Value.Equals(SQLreader("idTag")) Then _tagDB.ID = CInt(SQLreader("idTag"))
+                End If
+            End Using
+        End Using
+
+        _tagDB.Movies = New List(Of Structures.DBMovie)
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT idMedia, idTag FROM taglinks ", _
+                        "WHERE idTag = ", _tagDB.ID, " AND media_type = 'movie';")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                Dim movie As Structures.DBMovie
+                While SQLreader.Read
+                    movie = New Structures.DBMovie
+                    movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("idMedia")))
+                    _tagDB.Movies.Add(movie)
+                End While
+            End Using
+        End Using
+        Return _tagDB
     End Function
 
     ''' <summary>
@@ -2353,7 +2453,11 @@ Public Class Database
             End If
 
             par_movie_HasSet.Value = _movieDB.Movie.Sets.Count > 0
-            par_movie_HasSub.Value = _movieDB.Subtitles.Count > 0 OrElse _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
+            If _movieDB.Subtitles Is Nothing = False Then
+                par_movie_HasSub.Value = _movieDB.Subtitles.Count > 0 OrElse _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
+            Else
+                par_movie_HasSub.Value = Nothing
+            End If
 
             par_movie_Lock.Value = _movieDB.IsLock
             par_movie_Mark.Value = _movieDB.IsMark
@@ -2872,6 +2976,116 @@ Public Class Database
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _moviesetDB
+    End Function
+
+    ''' <summary>
+    ''' Saves all information from a Structures.DBMovieSet object to the database
+    ''' </summary>
+    ''' <param name="_tagDB">Media.Movie object to save to the database</param>
+    ''' <param name="IsNew">Is this a new movieset (not already present in database)?</param>
+    ''' <param name="BatchMode">Is the function already part of a transaction?</param>
+    ''' <param name="ToNfo">Save the information to an nfo file?</param>
+    ''' <param name="withMovies">Save the information also to all linked movies?</param>
+    ''' <returns>Structures.DBMovieSet object</returns>
+    Public Function SaveMovieTagToDB(ByVal _tagDB As Structures.DBMovieTag, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Structures.DBMovieTag
+        'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
+        'TODO Break this method into smaller chunks. Too important to be this complex
+
+        If _tagDB.ID = -1 Then IsNew = True
+
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            If IsNew Then
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tag (strTag) VALUES (?); SELECT LAST_INSERT_ROWID() FROM tag;")
+            Else
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tag (", _
+                          "idTag, strTag) VALUES (?,?); SELECT LAST_INSERT_ROWID() FROM tag;")
+                Dim parTagID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTagID", DbType.Int32, 0, "idTag")
+                parTagID.Value = _tagDB.ID
+            End If
+            Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "strTag")
+
+            parTitle.Value = _tagDB.Title
+
+            If IsNew Then
+                Using rdrMovieTag As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If rdrMovieTag.Read Then
+                        _tagDB.ID = CInt(Convert.ToInt64(rdrMovieTag(0)))
+                    Else
+                        logger.Error("Something very wrong here: SaveMovieSetToDB", _tagDB.ToString, "Error")
+                        _tagDB.Title = "SETERROR"
+                        Return _tagDB
+                    End If
+                End Using
+            Else
+                SQLcommand.ExecuteNonQuery()
+            End If
+        End Using
+
+
+        If withMovies Then
+            'Update all movies for this tag: if there are movies in linktag-table which aren't in current tag.movies object then remove movie-tag link from linktable and nfo for those movies
+
+            'old state of tag in database
+            Dim MoviesInTagOld As New List(Of Structures.DBMovie)
+            'new/updatend state of tag
+            Dim MoviesInTagNew As New List(Of Structures.DBMovie)
+            MoviesInTagNew.AddRange(_tagDB.Movies.ToArray)
+
+
+
+
+
+            'get all movies linked to this tag from database (old state)
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT idMedia, idTag FROM taglinks ", _
+                   "WHERE idTag = ", _tagDB.ID, " AND media_type = 'movie';")
+
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Dim movie As New Structures.DBMovie
+                        If Not DBNull.Value.Equals(SQLreader("idMedia")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("idMedia")))
+                        MoviesInTagOld.Add(movie)
+                    End While
+                End Using
+            End Using
+
+            'check if there are movies in linktable which aren't in current tag - those are old entries which meed to be removed from linktag table and nfo of movies
+            For i = MoviesInTagOld.Count - 1 To 0 Step -1
+                For Each movienew In MoviesInTagNew
+                    If MoviesInTagOld(i).Movie.IMDBID = movienew.Movie.IMDBID Then
+                        MoviesInTagOld.RemoveAt(i)
+                        Exit For
+                    End If
+                Next
+            Next
+
+            'write tag information into nfo (add tag)
+            If MoviesInTagNew.Count > 0 Then
+                For Each tMovie In MoviesInTagNew
+                    Dim mMovie As New Structures.DBMovie
+                    mMovie = LoadMovieFromDB(tMovie.ID)
+                    tMovie = mMovie
+                    mMovie.Movie.AddTag(_tagDB.Title)
+                    Master.DB.SaveMovieToDB(mMovie, False, BatchMode, True)
+                Next
+            End If
+            'clean nfo of movies who aren't part of tag anymore (remove tag)
+            If MoviesInTagOld.Count > 0 Then
+                For Each tMovie In MoviesInTagOld
+                    Dim mMovie As New Structures.DBMovie
+                    mMovie = LoadMovieFromDB(tMovie.ID)
+                    tMovie = mMovie
+                    mMovie.Movie.Tags.Remove(_tagDB.Title)
+                    Master.DB.SaveMovieToDB(mMovie, False, BatchMode, True)
+                Next
+            End If
+        End If
+
+        If Not BatchMode Then SQLtransaction.Commit()
+
+        Return _tagDB
     End Function
 
     ''' <summary>

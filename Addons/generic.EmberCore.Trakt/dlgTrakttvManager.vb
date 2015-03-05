@@ -91,9 +91,6 @@ Public Class dlgTrakttvManager
     Sub New()
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
         SetUp()
     End Sub
 
@@ -163,7 +160,7 @@ Public Class dlgTrakttvManager
             btntraktListsGetDatabase.Text = Master.eLang.GetString(1311, "Add list to trakt.tv")
             btntraktListsGetPersonal.Text = Master.eLang.GetString(1312, "Load trakt.tv lists")
             btntraktListsSyncTrakt.Text = Master.eLang.GetString(1313, "Sync to trakt.tv")
-            btntraktListsSyncLibrary.Text = Master.eLang.GetString(1314, "Save tags to database/Nfo")
+            btntraktListsSaveToDatabase.Text = Master.eLang.GetString(1314, "Save tag to database/Nfo")
             btntraktListsDetailsUpdate.Text = Master.eLang.GetString(1315, "Update listdetails")
             lbltraktListsDetailsName.Text = Master.eLang.GetString(232, "Name")
             lbltraktListsDetailsDescription.Text = Master.eLang.GetString(979, "Description")
@@ -279,7 +276,7 @@ Public Class dlgTrakttvManager
                 Dim updatedsettings As New List(Of AdvancedSettingsComplexSettingsTableItem)
                 For i = 0 To setting_name.Count - 1
                     updatedsettings.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = setting_name.Item(i), .Value = setting_value.Item(i)})
-                Next
+                Next  
                 settings.SetComplexSetting("TraktFavoriteLists", updatedsettings, "generic.EmberCore.Trakt")
                 btntraktListRemoveFavorite.Enabled = False
                 cbotraktListsFavorites.Enabled = True
@@ -735,25 +732,25 @@ Public Class dlgTrakttvManager
     ''' TODO: Needs some testing (error handling..)!? Idea: Can be executed via commandline to update/sync playcounts of movies and episodes
     ''' </remarks>
     Public Shared Sub CLSyncPlaycount()
-        Dim MySelf As New dlgTrakttvManager
-        If Master.eSettings.UseTrakt = False Then
-            Return
-        End If
-        MySelf.isCL = True
-        MySelf.bwLoad = New System.ComponentModel.BackgroundWorker
-        MySelf.bwLoad.WorkerSupportsCancellation = True
-        MySelf.bwLoad.WorkerReportsProgress = True
-        MySelf.bwLoad.RunWorkerAsync()
-        While MySelf.bwLoad.IsBusy
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
-        'Sync movie playcounts
-        MySelf.btntraktPlaycountGetMovies_Click(Nothing, Nothing)
-        MySelf.btntraktPlaycountSyncLibrary_Click(Nothing, Nothing)
-        'Sync episodes playcounts
-        MySelf.btntraktPlaycountGetSeries_Click(Nothing, Nothing)
-        MySelf.btntraktPlaycountSyncLibrary_Click(Nothing, Nothing)
+            Dim MySelf As New dlgTrakttvManager
+            If Master.eSettings.UseTrakt = False Then
+                Return
+            End If
+            MySelf.isCL = True
+            MySelf.bwLoad = New System.ComponentModel.BackgroundWorker
+            MySelf.bwLoad.WorkerSupportsCancellation = True
+            MySelf.bwLoad.WorkerReportsProgress = True
+            MySelf.bwLoad.RunWorkerAsync()
+            While MySelf.bwLoad.IsBusy
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+            'Sync movie playcounts
+            MySelf.btntraktPlaycountGetMovies_Click(Nothing, Nothing)
+            MySelf.btntraktPlaycountSyncLibrary_Click(Nothing, Nothing)
+            'Sync episodes playcounts
+            MySelf.btntraktPlaycountGetSeries_Click(Nothing, Nothing)
+            MySelf.btntraktPlaycountSyncLibrary_Click(Nothing, Nothing)
     End Sub
 
 
@@ -1059,7 +1056,7 @@ Public Class dlgTrakttvManager
     ''' Used in thread: Saves playcount to database
     ''' </remarks>
     Private Sub SaveMoviePlaycount()
-        Dim i As Integer = 0
+            Dim i As Integer = 0
         For Each watchedMovieData In mydictWatchedMovies
             i += 1
             '  logger.Info("[SaveMoviePlaycount] MovieID" & watchedMovieData.Value.Key & " Playcount: " & watchedMovieData.Value.Value.ToString)
@@ -1308,20 +1305,14 @@ Public Class dlgTrakttvManager
 
 
             If lbDBLists.Items.Count = 0 Then
-                'TODO: Change from SET to TAG once tag support is here!! 
                 'fill lbDBLists(Listbox) - all lists/tags from Ember database!
-                'Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT Sets.ID, Sets.ListTitle, Sets.HasNfo, Sets.NfoPath, Sets.HasPoster, Sets.PosterPath, Sets.HasFanart, ", _
-                '                                                           "Sets.FanartPath, Sets.HasBanner, Sets.BannerPath, Sets.HasLandscape, Sets.LandscapePath, Sets.HasDiscArt, ", _
-                '                                                           "Sets.DiscArtPath, Sets.HasClearLogo, Sets.ClearLogoPath, Sets.HasClearArt, Sets.ClearArtPath, Sets.TMDBColID, ", _
-                '                                                           "Sets.Plot, Sets.SetName, Sets.New, Sets.Mark, Sets.Lock, COUNT(MoviesSets.MovieID) AS 'Count' FROM Sets ", _
-                '                                                           "LEFT OUTER JOIN MoviesSets ON Sets.ID = MoviesSets.SetID GROUP BY Sets.ID ORDER BY Sets.ListTitle COLLATE NOCASE;"))
-                Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM setslist ", _
-                                                                  "ORDER BY ListTitle COLLATE NOCASE;"))
-
+                Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM tag ", _
+                                                                  "ORDER BY strTag COLLATE NOCASE;"))
+               
 
                 For Each sRow As DataRow In dtMovieTags.Rows
-                    If Not String.IsNullOrEmpty(sRow.Item("ListTitle").ToString) Then
-                        lbDBLists.Items.Add(sRow.Item("ListTitle").ToString)
+                    If Not String.IsNullOrEmpty(sRow.Item("strTag").ToString) Then
+                        lbDBLists.Items.Add(sRow.Item("strTag").ToString)
                     End If
                 Next
 
@@ -1504,86 +1495,75 @@ Public Class dlgTrakttvManager
 
     ''' </remarks>
     ''' <summary>
-    ''' Save trakt.tv list configuration to Ember database/Nfo of movies
+    ''' Save a trakt.tv list to Ember database/Nfo of movies
     ''' </summary>
     ''' <param name="sender">"Save list to database/Nfo"-Button in Form</param>
     ''' <remarks>
-    ''' TODO needs to be adapted to TAG instead of SETs!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    '''  This sub  handles saving of trakt.tv listconfiguration into tag-structure of movies
+    '''  This sub  handles saving of trakt.tv list into tag-structure of Ember
     ''' 2014/10/12 Cocotus - First implementation
     ''' 2015/02/09 Cocotus - Fixed for API v2
+    ''' 2015/03/01 Cocotus - Switched to new tag model in Ember database
     ''' </remarks>
     ''' 
-    Private Sub btntraktListsSyncLibrary_Click(sender As Object, e As EventArgs) Handles btntraktListsSyncLibrary.Click
-        Dim listDBID As String = ""
-        Dim listdescription As String = ""
-        Dim listname As String = ""
-        'Contents of trakt.traklist will be written to Ember database/NFO
-        For Each traktlist In traktLists
-            listdescription = ""
-            listname = ""
-            listDBID = ""
-            'Check if information is stored...
-            If Not traktlist.Name Is Nothing Then
+    Private Sub btntraktListsSaveToDatabase_Click(sender As Object, e As EventArgs) Handles btntraktListsSaveToDatabase.Click
+        Dim listDBID As Integer = -1
 
-                'Step 1: First retrieve important list information (name,description,ID (if already exists)) before creating/editing existing tag/list of EmberDB
-                listname = traktlist.Name
-                'check if there's any description, if yes then use trakt.tv description for plot/list description for Ember
-                If Not traktlist.Name Is Nothing Then
-                    listdescription = traktlist.Description
-                End If
-                'go through each Ember DBList/Tag and check if current traktlist is already in Ember DB. Get TagID of tag if thats the case
-                For Each sRow As DataRow In dtMovieTags.Rows
-                    If Not String.IsNullOrEmpty(sRow.Item("ListTitle").ToString) AndAlso sRow.Item("ListTitle").ToString = listname Then
-                        listDBID = sRow.Item("ID").ToString
-                        Exit For
-                    End If
-                Next
-
-                'Step 2: create new DBTag object to store current trakt list in
-                Dim currMovieTag As New Structures.DBMovieSet
-                If String.IsNullOrEmpty(listDBID) Then
-                    'if tag is new and doesn't exist in Ember, create new one with basic information!
-                    currMovieTag.MovieSet = New MediaContainers.MovieSet
-                    currMovieTag.ID = -1
-                    currMovieTag.MovieSet.Title = listname
-                    currMovieTag.MovieSet.Plot = listdescription
-                Else
-                    'tag already in DB, just edit it! 
-                    'load tag from database
-                    currMovieTag = Master.DB.LoadMovieSetFromDB(CLng(listDBID))
-                    '..and update description!
-                    currMovieTag.MovieSet.Plot = listdescription
-                    'delete existing movies from tag (we will add again in next step!)
-                    If Not IsNothing(currMovieTag.Movies) AndAlso currMovieTag.Movies.Count > 0 Then
-                        'clear all movies!
-                        currMovieTag.Movies.Clear()
-                    End If
-                End If
-
-                'Step 3: go through each movie in current traktlist and add movie to list
-                For Each listmovie In traktlist.Movies
-                    'If movie is part of DB in Ember (compare IMDB) add it - else ignore!
-                    For Each sRow As DataRow In dtMovies.Rows
-                        If Not String.IsNullOrEmpty(sRow.Item("ID").ToString) AndAlso sRow.Item("IMDBID").ToString = listmovie.Ids.Imdb Then
-                            Dim tmpMovie As New Structures.DBMovie
-                            tmpMovie = Master.DB.LoadMovieFromDB(sRow.Item("ID").ToString)
-                            currMovieTag.Movies.Add(tmpMovie)
+        'check if list was selected
+        If Me.lbtraktLists.SelectedItems.Count = 1 Then
+            'search selected list in globalist
+            For Each list In traktLists
+                listDBID = -1
+                If list.Name = Me.lbtraktLists.SelectedItem.ToString Then
+                    'go through each Ember DBList/Tag and check if current traktlist is already in Ember DB. Get TagID of tag if thats the case
+                    For Each sRow As DataRow In dtMovieTags.Rows
+                        If Not String.IsNullOrEmpty(sRow.Item("strTag").ToString) AndAlso sRow.Item("strTag").ToString = list.Name Then
+                            listDBID = CInt(sRow.Item("idTag"))
                             Exit For
                         End If
                     Next
-                Next
 
-                'Step 4: save tag to DB
-                If String.IsNullOrEmpty(listDBID) = False Then
-                    Master.DB.SaveMovieSetToDB(currMovieTag, False, False, True, True)
-                Else
-                    Master.DB.SaveMovieSetToDB(currMovieTag, True, False, True, True)
+                    'Step 2: create new DBTag object to store current trakt list in
+                    Dim currMovieTag As New Structures.DBMovieTag
+                    If listDBID = -1 Then
+                        'if tag is new and doesn't exist in Ember, create new one with basic information!
+                        currMovieTag.ID = -1
+                        currMovieTag.Title = list.Name
+                        currMovieTag.Movies = New List(Of Structures.DBMovie)
+                    Else
+                        'tag already in DB, just edit it! 
+                        'load tag from database
+                        currMovieTag = Master.DB.LoadMovieTagFromDB(listDBID)
+                        'delete existing movies from tag (we will add again in next step!)
+                        If Not IsNothing(currMovieTag.Movies) AndAlso currMovieTag.Movies.Count > 0 Then
+                            'clear all movies!
+                            currMovieTag.Movies.Clear()
+                        End If
+                    End If
+
+                    'Step 3: go through each movie in current traktlist and add movie to list
+                    For Each listmovie In list.Movies
+                        'If movie is part of DB in Ember (compare IMDB) add it - else ignore!
+                        For Each sRow As DataRow In dtMovies.Rows
+                            If Not String.IsNullOrEmpty(sRow.Item("idMovie").ToString) AndAlso "tt" & sRow.Item("Imdb").ToString = listmovie.Ids.Imdb Then
+                                Dim tmpMovie As New Structures.DBMovie
+                                tmpMovie = Master.DB.LoadMovieFromDB(CLng(sRow.Item("idMovie")))
+                                currMovieTag.Movies.Add(tmpMovie)
+                                Exit For
+                            End If
+                        Next
+                    Next
+
+                    'Step 4: save tag to DB
+                    If listDBID > -1 Then
+                        Master.DB.SaveMovieTagToDB(currMovieTag, False, False, True, True)
+                    Else
+                        Master.DB.SaveMovieTagToDB(currMovieTag, True, False, True, True)
+                    End If
+                    Exit For
                 End If
-            Else
-                'no name !
-            End If
-        Next
+            Next
+
+        End If
     End Sub
 
     ''' <summary>
@@ -1717,17 +1697,12 @@ Public Class dlgTrakttvManager
                 traktlistitem.Movie.Ids = New TraktAPI.Model.TraktMovieBase
                 traktlistitem.Movie.Ids.Imdb = DBMovie.Movie.IMDBID
             End If
-            'ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) AndAlso IsNumeric(DBMovie.Movie.TMDBID) Then
-            '    traktlistitem.Movie.Ids = New TraktAPI.Model.TraktMovieBase
-            '    traktlistitem.Movie.Ids.Tmdb = CType(DBMovie.Movie.TMDBID, Integer?)
         Else
             Return Nothing
         End If
         'year
         If Not String.IsNullOrEmpty(DBMovie.Movie.Year) AndAlso IsNumeric(DBMovie.Movie.Year) Then
             traktlistitem.Movie.Year = CInt(DBMovie.Movie.Year)
-        Else
-            Return Nothing
         End If
         Return traktlistitem
     End Function
@@ -1764,6 +1739,7 @@ Public Class dlgTrakttvManager
                     Me.btntraktListsEditList.Enabled = True
                     Me.btntraktListsRemoveList.Enabled = True
                     Me.btntraktListsAddMovie.Enabled = True
+                    Me.btntraktListsSaveToDatabase.Enabled = True
                     txttraktListsEditList.Enabled = True
                     txttraktListsEditList.Text = Me.lbtraktLists.SelectedItem.ToString
                     foundlist = True
@@ -1778,6 +1754,7 @@ Public Class dlgTrakttvManager
                 Me.btntraktListsRemoveList.Enabled = False
                 Me.btntraktListsAddMovie.Enabled = False
                 Me.btntraktListsRemove.Enabled = False
+                Me.btntraktListsSaveToDatabase.Enabled = False
                 txttraktListsEditList.Text = ""
             End If
 
@@ -1790,6 +1767,7 @@ Public Class dlgTrakttvManager
             Me.btntraktListsRemove.Enabled = False
             txttraktListsEditList.Text = ""
             gbtraktListsDetails.Enabled = False
+            Me.btntraktListsSaveToDatabase.Enabled = False
         End If
 
 
@@ -1944,56 +1922,47 @@ Public Class dlgTrakttvManager
                     End If
                 Next
 
-
-                'TODO Has to be changed for TAG!!!
                 'go through each movie and look if it's part of selected list - if thats the case then create traktlistitem and add to newlist
-                Dim TagID As String = ""
+                Dim TagID As Integer = -1
                 For Each sRow As DataRow In dtMovieTags.Rows
-                    If sRow.Item("ListTitle").ToString = Me.lbDBLists.SelectedItem.ToString Then
-                        TagID = sRow.Item("idSet").ToString
+                    If sRow.Item("strTag").ToString = Me.lbDBLists.SelectedItem.ToString Then
+                        TagID = CInt(sRow.Item("idTag"))
                         Exit For
                     End If
                 Next
-                If Not String.IsNullOrEmpty(TagID) Then
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim tmpMovie As New Structures.DBMovie
-                        Dim iProg As Integer = 0
-                        SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets WHERE SetID = ", TagID, " ORDER BY SetOrder ASC;")
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            If SQLreader.HasRows Then
-                                While SQLreader.Read()
-                                    tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
-                                    If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
-                                        'create new traktlistitem of selected movie
-                                        Dim newTraktListItem As New TraktAPI.Model.TraktListItem
-                                        newTraktListItem = createTraktListItem(tmpMovie)
-                                        'add new movie to list
-                                        If Not newTraktListItem Is Nothing Then
-                                            Dim addmovietolist As Boolean = True
-                                            For Each movie In newList.Movies
-                                                If movie.Title = tmpMovie.Movie.Title Then
-                                                    addmovietolist = False
-                                                    Exit For
-                                                End If
-                                            Next
-                                            If addmovietolist = True Then
-                                                newList.TraktListItems.Add(newTraktListItem)
-                                                'valid movie!
-                                                Dim tmplistmovie As New TraktAPI.Model.TraktMovie
-                                                tmplistmovie.Ids = newTraktListItem.Movie.Ids
-                                                tmplistmovie.Title = newTraktListItem.Movie.Title
-                                                tmplistmovie.Year = newTraktListItem.Movie.Year
-                                                newList.Movies.Add(tmplistmovie)
-                                                newList.ListItemsModified = True
-                                            End If
-                                        Else
-                                            logger.Info("[" & Me.lbDBLists.SelectedItem.ToString & "] " & tmpMovie.Movie.Title & " Created Listitem is invalid! Error when trying to add movie to list!")
-                                        End If
+                If TagID > -1 Then
+                    Dim tmpMovie As New Structures.DBMovie
+                    Dim iProg As Integer = 0
+                    Dim tmpTag = Master.DB.LoadMovieTagFromDB(TagID)
+                    For Each tmpMovie In tmpTag.Movies
+                        If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
+                            'create new traktlistitem of selected movie
+                            Dim newTraktListItem As New TraktAPI.Model.TraktListItem
+                            newTraktListItem = createTraktListItem(tmpMovie)
+                            'add new movie to list
+                            If Not newTraktListItem Is Nothing Then
+                                Dim addmovietolist As Boolean = True
+                                For Each movie In newList.Movies
+                                    If movie.Title = tmpMovie.Movie.Title Then
+                                        addmovietolist = False
+                                        Exit For
                                     End If
-                                End While
+                                Next
+                                If addmovietolist = True Then
+                                    newList.TraktListItems.Add(newTraktListItem)
+                                    'valid movie!
+                                    Dim tmplistmovie As New TraktAPI.Model.TraktMovie
+                                    tmplistmovie.Ids = newTraktListItem.Movie.Ids
+                                    tmplistmovie.Title = newTraktListItem.Movie.Title
+                                    tmplistmovie.Year = newTraktListItem.Movie.Year
+                                    newList.Movies.Add(tmplistmovie)
+                                    newList.ListItemsModified = True
+                                End If
+                            Else
+                                logger.Info("[" & Me.lbDBLists.SelectedItem.ToString & "] " & tmpMovie.Movie.Title & " Created Listitem is invalid! Error when trying to add movie to list!")
                             End If
-                        End Using
-                    End Using
+                        End If
+                    Next
                 End If
 
                 'add created list to existing globallist, remove if already exist to avoid duplicate
@@ -2387,8 +2356,8 @@ Public Class dlgTrakttvManager
                         End If
 
                     Else
-                        logger.Info("[" & txttraktListURL.Text & "] Movie with Index: " & debugcount.ToString & " Invalid entry could not be added. Not a valid movie!")
-                        userListItems.RemoveAt(i)
+                    logger.Info("[" & txttraktListURL.Text & "] Movie with Index: " & debugcount.ToString & " Invalid entry could not be added. Not a valid movie!")
+                    userListItems.RemoveAt(i)
                     End If
                 Next
 
@@ -2732,6 +2701,7 @@ Public Class dlgTrakttvManager
 #End Region 'Trakt.tv Listviewer
 
 #End Region 'Methods
+
 
 End Class
 
