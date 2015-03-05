@@ -82,9 +82,9 @@ Public Class dlgTagManager
             Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
             Me.lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
             gbMovies.Text = Master.eLang.GetString(36, "Movies")
-            Me.lblTopDetails.Text = Master.eLang.GetString(9999, "Manage XBMC tags")
+        Me.lblTopDetails.Text = Master.eLang.GetString(1374, "Manage XBMC tags")
             gbTags.Text = Master.eLang.GetString(9999, "Tags")
-        gbMoviesInTag.Text = Master.eLang.GetString(9999, "Movies In Tag")
+        gbMoviesInTag.Text = Master.eLang.GetString(1375, "Movies in tag")
 
         'load existing movies from database into datatable
         Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ", _
@@ -520,7 +520,7 @@ Public Class dlgTagManager
             End If
         Next
         RefreshModule()
-        MessageBox.Show(Master.eLang.GetString(9999, "Saved changes to tags!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
+        MessageBox.Show(Master.eLang.GetString(1376, "Saved changes") & "!", Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
     End Sub
 
 
