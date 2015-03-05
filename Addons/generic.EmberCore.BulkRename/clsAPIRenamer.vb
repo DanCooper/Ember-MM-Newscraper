@@ -1341,12 +1341,16 @@ Public Class FileFolderRenamer
                     If pattern.Length > nextC + 2 Then
                         Dim ePattern As String = String.Empty
                         Dim ePrefix As String = String.Empty
+                        Dim ePadding As Integer = 1
+                        Dim eFormat As String = "{0:0}"
                         Dim eSeparator As String = String.Empty
                         Dim fPattern As String = String.Empty
                         Dim sPattern As String = String.Empty
                         Dim sPrefix As String = String.Empty
                         Dim sSeparator As String = String.Empty
                         Dim seString As String = String.Empty
+                        Dim sPadding As Integer = 1
+                        Dim sFormat As String = "{0:0}"
 
                         strBase = pattern.Substring(nextC)
                         nextIB = strBase.IndexOf("?")
@@ -1354,7 +1358,21 @@ Public Class FileFolderRenamer
                             nextEB = strBase.IndexOf("?", nextIB + 1)
                             If nextEB > -1 Then
                                 sPattern = strBase.Substring(2, nextIB - 2)
+                                If Not String.IsNullOrEmpty(sPattern) AndAlso IsNumeric(sPattern.Substring(0, 1)) Then
+                                    sPadding = CInt(sPattern.Substring(0, 1))
+                                    sPattern = sPattern.Substring(1)
+                                    If Not sPadding > 0 Then
+                                        sPadding = 1
+                                    End If
+                                End If
                                 ePattern = strBase.Substring(nextIB + 1, nextEB - nextIB - 1)
+                                If Not String.IsNullOrEmpty(ePattern) AndAlso IsNumeric(ePattern.Substring(0, 1)) Then
+                                    ePadding = CInt(ePattern.Substring(0, 1))
+                                    ePattern = ePattern.Substring(1)
+                                    If Not ePadding > 0 Then
+                                        ePadding = 1
+                                    End If
+                                End If
                                 fPattern = strBase.Substring(0, nextEB + 1)
                             End If
                         End If
@@ -1366,6 +1384,10 @@ Public Class FileFolderRenamer
                             sPrefix = sPattern
                         End If
 
+                        For i As Integer = 1 To sPadding - 1
+                            sFormat = sFormat.Insert(sFormat.Length - 1, "0")
+                        Next
+
                         If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
                             eSeparator = ePattern.Substring(0, 1)
                             ePrefix = ePattern.Remove(0, 1)
@@ -1373,10 +1395,14 @@ Public Class FileFolderRenamer
                             ePrefix = ePattern
                         End If
 
+                        For i As Integer = 1 To ePadding - 1
+                            eFormat = eFormat.Insert(eFormat.Length - 1, "0")
+                        Next
+
                         For Each season As SeasonsEpisodes In f.SeasonsEpisodes
-                            seString = String.Concat(seString, sSeparator, sPrefix, String.Format("{0:00}", season.Season))
+                            seString = String.Concat(seString, sSeparator, sPrefix, String.Format(sFormat, season.Season))
                             For Each episode In season.Episodes
-                                seString = String.Concat(seString, eSeparator, ePrefix, String.Format("{0:00}", episode.Episode))
+                                seString = String.Concat(seString, eSeparator, ePrefix, String.Format(eFormat, episode.Episode))
                             Next
                         Next
 
@@ -1394,11 +1420,20 @@ Public Class FileFolderRenamer
                         Dim sSeparator As String = String.Empty
                         Dim fPattern As String = String.Empty
                         Dim sString As String = String.Empty
+                        Dim sPadding As Integer = 1
+                        Dim sFormat As String = "{0:0}"
 
                         strBase = pattern.Substring(nextC)
                         nextIB = strBase.IndexOf("?")
                         If nextIB > -1 Then
                             sPattern = strBase.Substring(2, nextIB - 2)
+                            If Not String.IsNullOrEmpty(sPattern) AndAlso IsNumeric(sPattern.Substring(0, 1)) Then
+                                sPadding = CInt(sPattern.Substring(0, 1))
+                                sPattern = sPattern.Substring(1)
+                                If Not sPadding > 0 Then
+                                    sPadding = 1
+                                End If
+                            End If
                             fPattern = strBase.Substring(0, nextIB + 1)
                         End If
 
@@ -1409,8 +1444,12 @@ Public Class FileFolderRenamer
                             sPrefix = sPattern
                         End If
 
+                        For i As Integer = 1 To sPadding - 1
+                            sFormat = sFormat.Insert(sFormat.Length - 1, "0")
+                        Next
+
                         For Each season As SeasonsEpisodes In f.SeasonsEpisodes
-                            sString = String.Concat(sString, sSeparator, sPrefix, String.Format("{0:00}", season.Season))
+                            sString = String.Concat(sString, sSeparator, sPrefix, String.Format(sFormat, season.Season))
                         Next
 
                         If Not String.IsNullOrEmpty(sSeparator) AndAlso sString.StartsWith(sSeparator) Then sString = sString.Remove(0, 1)
@@ -1427,11 +1466,20 @@ Public Class FileFolderRenamer
                         Dim eSeparator As String = String.Empty
                         Dim fPattern As String = String.Empty
                         Dim eString As String = String.Empty
+                        Dim ePadding As Integer = 1
+                        Dim eFormat As String = "{0:0}"
 
                         strBase = pattern.Substring(nextC)
                         nextIB = strBase.IndexOf("?")
                         If nextIB > -1 Then
                             ePattern = strBase.Substring(2, nextIB - 2)
+                            If Not String.IsNullOrEmpty(ePattern) AndAlso IsNumeric(ePattern.Substring(0, 1)) Then
+                                ePadding = CInt(ePattern.Substring(0, 1))
+                                ePattern = ePattern.Substring(1)
+                                If Not ePadding > 0 Then
+                                    ePadding = 1
+                                End If
+                            End If
                             fPattern = strBase.Substring(0, nextIB + 1)
                         End If
 
@@ -1442,9 +1490,13 @@ Public Class FileFolderRenamer
                             ePrefix = ePattern
                         End If
 
+                        For i As Integer = 1 To ePadding - 1
+                            eFormat = eFormat.Insert(eFormat.Length - 1, "0")
+                        Next
+
                         For Each season As SeasonsEpisodes In f.SeasonsEpisodes
                             For Each episode In season.Episodes
-                                eString = String.Concat(eString, eSeparator, ePrefix, String.Format("{0:00}", episode.Episode))
+                                eString = String.Concat(eString, eSeparator, ePrefix, String.Format(eFormat, episode.Episode))
                             Next
                         Next
 
