@@ -30,6 +30,7 @@ Partial Class dlgTrakttvManager
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -1071,6 +1072,14 @@ Partial Class dlgTrakttvManager
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
         Me.dgvMovies.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvMovies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvMovies.DefaultCellStyle = DataGridViewCellStyle5
         Me.dgvMovies.Enabled = False
         Me.dgvMovies.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.dgvMovies.Location = New System.Drawing.Point(8, 21)
@@ -1425,8 +1434,8 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListYear
         '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktListYear.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktListYear.DefaultCellStyle = DataGridViewCellStyle6
         Me.coltraktListYear.Frozen = True
         Me.coltraktListYear.HeaderText = "Year"
         Me.coltraktListYear.Name = "coltraktListYear"
@@ -1435,9 +1444,9 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListRating
         '
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle6.NullValue = Nothing
-        Me.coltraktListRating.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle7.NullValue = Nothing
+        Me.coltraktListRating.DefaultCellStyle = DataGridViewCellStyle7
         Me.coltraktListRating.HeaderText = "Rating"
         Me.coltraktListRating.Name = "coltraktListRating"
         Me.coltraktListRating.ReadOnly = True
@@ -1452,8 +1461,8 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListIMDB
         '
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktListIMDB.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktListIMDB.DefaultCellStyle = DataGridViewCellStyle8
         Me.coltraktListIMDB.HeaderText = "IMDB"
         Me.coltraktListIMDB.Name = "coltraktListIMDB"
         Me.coltraktListIMDB.ReadOnly = True

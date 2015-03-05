@@ -1462,5 +1462,8 @@
   <string id="1370">Progress</string> 
   <string id="1371">Submit ratings to trakt.tv</string> 
   <string id="1372">Added ratings to trakt.tv!</string> 
-  <string id="1373">No ratings submitted!</string> 
+  <string id="1373">No ratings submitted!</string>
+  <string id="1374">Manage XBMC tags</string>
+  <string id="1375">Movies in tag</string>
+  <string id="1376">Saved changes</string>
 </strings>

@@ -79,6 +79,7 @@ Public Class dlgTagManager
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
     Sub SetUp()
+<<<<<<< HEAD
         Me.lblTopTitle.Text = Me.Text
         Me.OK_Button.Text = Master.eLang.GetString(19, "Close")
         Me.lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
@@ -89,6 +90,18 @@ Public Class dlgTagManager
         Me.lblTopDetails.Text = Master.eLang.GetString(9999, "Manage XBMC tags")
         gbTags.Text = Master.eLang.GetString(9999, "Tags")
         gbMoviesInTag.Text = Master.eLang.GetString(9999, "Movies In Tag")
+=======
+            Me.lblTopTitle.Text = Me.Text
+            Me.OK_Button.Text = Master.eLang.GetString(19, "Close")
+            Me.lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
+            Me.lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
+            Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+            Me.lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
+            gbMovies.Text = Master.eLang.GetString(36, "Movies")
+        Me.lblTopDetails.Text = Master.eLang.GetString(1374, "Manage XBMC tags")
+            gbTags.Text = Master.eLang.GetString(9999, "Tags")
+        gbMoviesInTag.Text = Master.eLang.GetString(1375, "Movies in tag")
+>>>>>>> pr/139
 
         'load existing movies from database into datatable
         Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ", _
@@ -524,7 +537,7 @@ Public Class dlgTagManager
             End If
         Next
         RefreshModule()
-        MessageBox.Show(Master.eLang.GetString(9999, "Saved changes to tags!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
+        MessageBox.Show(Master.eLang.GetString(1376, "Saved changes") & "!", Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
     End Sub
 
 
