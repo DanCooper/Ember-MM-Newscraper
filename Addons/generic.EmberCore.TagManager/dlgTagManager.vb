@@ -54,9 +54,13 @@ Public Class dlgTagManager
 #End Region 'Fields
 
 #Region "Constructors"
+
     Sub New()
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
         SetUp()
     End Sub
 
@@ -75,15 +79,15 @@ Public Class dlgTagManager
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
     Sub SetUp()
-            Me.lblTopTitle.Text = Me.Text
-            Me.OK_Button.Text = Master.eLang.GetString(19, "Close")
-            Me.lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
-            Me.lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
-            Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-            Me.lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
-            gbMovies.Text = Master.eLang.GetString(36, "Movies")
-            Me.lblTopDetails.Text = Master.eLang.GetString(9999, "Manage XBMC tags")
-            gbTags.Text = Master.eLang.GetString(9999, "Tags")
+        Me.lblTopTitle.Text = Me.Text
+        Me.OK_Button.Text = Master.eLang.GetString(19, "Close")
+        Me.lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
+        Me.lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
+        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        Me.lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
+        gbMovies.Text = Master.eLang.GetString(36, "Movies")
+        Me.lblTopDetails.Text = Master.eLang.GetString(9999, "Manage XBMC tags")
+        gbTags.Text = Master.eLang.GetString(9999, "Tags")
         gbMoviesInTag.Text = Master.eLang.GetString(9999, "Movies In Tag")
 
         'load existing movies from database into datatable
@@ -118,7 +122,7 @@ Public Class dlgTagManager
         lbTags.Items.Clear()
         globalMovieTags.Clear()
         dtMovieTags.Clear()
-        pnlTag.Enabled = False
+        pnlMain.Enabled = False
 
         'load existing tags from database into datatable
         Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM tag ", _
@@ -175,7 +179,7 @@ Public Class dlgTagManager
 
         'enable controls again
         dgvMovies.Enabled = True
-        pnlTag.Enabled = True
+        pnlMain.Enabled = True
         lbTags.Enabled = True
         btnNewTag.Enabled = True
         Me.lbMoviesInTag.Enabled = True

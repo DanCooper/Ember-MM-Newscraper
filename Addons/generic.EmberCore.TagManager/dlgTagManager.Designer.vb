@@ -39,37 +39,41 @@ Partial Class dlgTagManager
         Me.lblCanceling = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.pnlMain = New System.Windows.Forms.Panel()
-        Me.pnlTag = New System.Windows.Forms.Panel()
+        Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbMovies = New System.Windows.Forms.GroupBox()
+        Me.dgvMovies = New System.Windows.Forms.DataGridView()
+        Me.btnAddMovie = New System.Windows.Forms.Button()
         Me.gbTags = New System.Windows.Forms.GroupBox()
         Me.txtEditTag = New System.Windows.Forms.TextBox()
         Me.btnRemoveTag = New System.Windows.Forms.Button()
         Me.btnEditTag = New System.Windows.Forms.Button()
         Me.btnNewTag = New System.Windows.Forms.Button()
         Me.lbTags = New System.Windows.Forms.ListBox()
-        Me.gbMovies = New System.Windows.Forms.GroupBox()
-        Me.dgvMovies = New System.Windows.Forms.DataGridView()
-        Me.btnAddMovie = New System.Windows.Forms.Button()
         Me.gbMoviesInTag = New System.Windows.Forms.GroupBox()
         Me.lblCurrentTag = New System.Windows.Forms.Label()
         Me.btnRemoveMovie = New System.Windows.Forms.Button()
         Me.lbMoviesInTag = New System.Windows.Forms.ListBox()
         Me.btnglobalTagsSync = New System.Windows.Forms.Button()
+        Me.pnlBottom = New System.Windows.Forms.Panel()
+        Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlTop.SuspendLayout()
         CType(Me.picTopTitle, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlCancel.SuspendLayout()
         Me.pnlSaving.SuspendLayout()
         Me.pnlMain.SuspendLayout()
-        Me.pnlTag.SuspendLayout()
-        Me.gbTags.SuspendLayout()
+        Me.tblMain.SuspendLayout()
         Me.gbMovies.SuspendLayout()
         CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbTags.SuspendLayout()
         Me.gbMoviesInTag.SuspendLayout()
+        Me.pnlBottom.SuspendLayout()
+        Me.tblBottom.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(5, 542)
+        Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(84, 32)
         Me.OK_Button.TabIndex = 0
@@ -86,7 +90,7 @@ Partial Class dlgTagManager
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(780, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(750, 64)
         Me.pnlTop.TabIndex = 1
         '
         'picTopTitle
@@ -226,21 +230,83 @@ Partial Class dlgTagManager
         '
         'pnlMain
         '
-        Me.pnlMain.Controls.Add(Me.pnlTag)
+        Me.pnlMain.Controls.Add(Me.tblMain)
+        Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 64)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(769, 472)
+        Me.pnlMain.Size = New System.Drawing.Size(750, 430)
         Me.pnlMain.TabIndex = 16
         '
-        'pnlTag
+        'tblMain
         '
-        Me.pnlTag.Controls.Add(Me.gbTags)
-        Me.pnlTag.Controls.Add(Me.gbMovies)
-        Me.pnlTag.Controls.Add(Me.gbMoviesInTag)
-        Me.pnlTag.Location = New System.Drawing.Point(12, 14)
-        Me.pnlTag.Name = "pnlTag"
-        Me.pnlTag.Size = New System.Drawing.Size(747, 429)
-        Me.pnlTag.TabIndex = 2
+        Me.tblMain.AutoScroll = True
+        Me.tblMain.ColumnCount = 4
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.Controls.Add(Me.gbMovies, 2, 0)
+        Me.tblMain.Controls.Add(Me.gbTags, 0, 0)
+        Me.tblMain.Controls.Add(Me.gbMoviesInTag, 1, 0)
+        Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblMain.Name = "tblMain"
+        Me.tblMain.RowCount = 2
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.Size = New System.Drawing.Size(750, 430)
+        Me.tblMain.TabIndex = 3
+        '
+        'gbMovies
+        '
+        Me.gbMovies.Controls.Add(Me.dgvMovies)
+        Me.gbMovies.Controls.Add(Me.btnAddMovie)
+        Me.gbMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovies.Location = New System.Drawing.Point(470, 3)
+        Me.gbMovies.Name = "gbMovies"
+        Me.gbMovies.Size = New System.Drawing.Size(259, 411)
+        Me.gbMovies.TabIndex = 7
+        Me.gbMovies.TabStop = False
+        Me.gbMovies.Text = "Avalaible Movies"
+        '
+        'dgvMovies
+        '
+        Me.dgvMovies.AllowUserToAddRows = False
+        Me.dgvMovies.AllowUserToDeleteRows = False
+        Me.dgvMovies.AllowUserToResizeColumns = False
+        Me.dgvMovies.AllowUserToResizeRows = False
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
+        Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
+        Me.dgvMovies.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
+        Me.dgvMovies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvMovies.Enabled = False
+        Me.dgvMovies.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.dgvMovies.Location = New System.Drawing.Point(8, 21)
+        Me.dgvMovies.Name = "dgvMovies"
+        Me.dgvMovies.ReadOnly = True
+        Me.dgvMovies.RowHeadersVisible = False
+        Me.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvMovies.ShowCellErrors = False
+        Me.dgvMovies.ShowRowErrors = False
+        Me.dgvMovies.Size = New System.Drawing.Size(243, 352)
+        Me.dgvMovies.StandardTab = True
+        Me.dgvMovies.TabIndex = 51
+        '
+        'btnAddMovie
+        '
+        Me.btnAddMovie.Enabled = False
+        Me.btnAddMovie.Image = CType(resources.GetObject("btnAddMovie.Image"), System.Drawing.Image)
+        Me.btnAddMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAddMovie.Location = New System.Drawing.Point(8, 382)
+        Me.btnAddMovie.Name = "btnAddMovie"
+        Me.btnAddMovie.Size = New System.Drawing.Size(23, 23)
+        Me.btnAddMovie.TabIndex = 1
+        Me.btnAddMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnAddMovie.UseVisualStyleBackColor = True
         '
         'gbTags
         '
@@ -250,7 +316,7 @@ Partial Class dlgTagManager
         Me.gbTags.Controls.Add(Me.btnNewTag)
         Me.gbTags.Controls.Add(Me.lbTags)
         Me.gbTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTags.Location = New System.Drawing.Point(6, 12)
+        Me.gbTags.Location = New System.Drawing.Point(3, 3)
         Me.gbTags.Name = "gbTags"
         Me.gbTags.Size = New System.Drawing.Size(221, 411)
         Me.gbTags.TabIndex = 5
@@ -304,64 +370,13 @@ Partial Class dlgTagManager
         Me.lbTags.Sorted = True
         Me.lbTags.TabIndex = 0
         '
-        'gbMovies
-        '
-        Me.gbMovies.Controls.Add(Me.dgvMovies)
-        Me.gbMovies.Controls.Add(Me.btnAddMovie)
-        Me.gbMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovies.Location = New System.Drawing.Point(473, 12)
-        Me.gbMovies.Name = "gbMovies"
-        Me.gbMovies.Size = New System.Drawing.Size(259, 411)
-        Me.gbMovies.TabIndex = 7
-        Me.gbMovies.TabStop = False
-        Me.gbMovies.Text = "Avalaible Movies"
-        '
-        'dgvMovies
-        '
-        Me.dgvMovies.AllowUserToAddRows = False
-        Me.dgvMovies.AllowUserToDeleteRows = False
-        Me.dgvMovies.AllowUserToResizeColumns = False
-        Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
-        Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
-        Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
-        Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
-        Me.dgvMovies.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
-        Me.dgvMovies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvMovies.Enabled = False
-        Me.dgvMovies.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.dgvMovies.Location = New System.Drawing.Point(8, 21)
-        Me.dgvMovies.Name = "dgvMovies"
-        Me.dgvMovies.ReadOnly = True
-        Me.dgvMovies.RowHeadersVisible = False
-        Me.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvMovies.ShowCellErrors = False
-        Me.dgvMovies.ShowRowErrors = False
-        Me.dgvMovies.Size = New System.Drawing.Size(243, 352)
-        Me.dgvMovies.StandardTab = True
-        Me.dgvMovies.TabIndex = 51
-        '
-        'btnAddMovie
-        '
-        Me.btnAddMovie.Enabled = False
-        Me.btnAddMovie.Image = CType(resources.GetObject("btnAddMovie.Image"), System.Drawing.Image)
-        Me.btnAddMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddMovie.Location = New System.Drawing.Point(8, 382)
-        Me.btnAddMovie.Name = "btnAddMovie"
-        Me.btnAddMovie.Size = New System.Drawing.Size(23, 23)
-        Me.btnAddMovie.TabIndex = 1
-        Me.btnAddMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnAddMovie.UseVisualStyleBackColor = True
-        '
         'gbMoviesInTag
         '
         Me.gbMoviesInTag.Controls.Add(Me.lblCurrentTag)
         Me.gbMoviesInTag.Controls.Add(Me.btnRemoveMovie)
         Me.gbMoviesInTag.Controls.Add(Me.lbMoviesInTag)
         Me.gbMoviesInTag.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMoviesInTag.Location = New System.Drawing.Point(233, 12)
+        Me.gbMoviesInTag.Location = New System.Drawing.Point(230, 3)
         Me.gbMoviesInTag.Name = "gbMoviesInTag"
         Me.gbMoviesInTag.Size = New System.Drawing.Size(234, 411)
         Me.gbMoviesInTag.TabIndex = 6
@@ -403,47 +418,75 @@ Partial Class dlgTagManager
         'btnglobalTagsSync
         '
         Me.btnglobalTagsSync.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnglobalTagsSync.Location = New System.Drawing.Point(95, 542)
+        Me.btnglobalTagsSync.Location = New System.Drawing.Point(93, 3)
         Me.btnglobalTagsSync.Name = "btnglobalTagsSync"
         Me.btnglobalTagsSync.Size = New System.Drawing.Size(164, 32)
         Me.btnglobalTagsSync.TabIndex = 17
         Me.btnglobalTagsSync.Text = "Save to database/NFO"
+        '
+        'pnlBottom
+        '
+        Me.pnlBottom.AutoSize = True
+        Me.pnlBottom.Controls.Add(Me.tblBottom)
+        Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlBottom.Location = New System.Drawing.Point(0, 494)
+        Me.pnlBottom.Name = "pnlBottom"
+        Me.pnlBottom.Size = New System.Drawing.Size(750, 38)
+        Me.pnlBottom.TabIndex = 18
+        '
+        'tblBottom
+        '
+        Me.tblBottom.AutoSize = True
+        Me.tblBottom.ColumnCount = 3
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.Controls.Add(Me.OK_Button, 0, 0)
+        Me.tblBottom.Controls.Add(Me.btnglobalTagsSync, 1, 0)
+        Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblBottom.Name = "tblBottom"
+        Me.tblBottom.RowCount = 1
+        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBottom.Size = New System.Drawing.Size(750, 38)
+        Me.tblBottom.TabIndex = 0
         '
         'dlgTagManager
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(780, 579)
+        Me.ClientSize = New System.Drawing.Size(750, 532)
         Me.ControlBox = False
-        Me.Controls.Add(Me.btnglobalTagsSync)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTop)
-        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.pnlBottom)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgTagManager"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Tag Manager"
-        Me.pnlTop.ResumeLayout(False)
-        Me.pnlTop.PerformLayout()
-        CType(Me.picTopTitle, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pnlCancel.ResumeLayout(False)
-        Me.pnlSaving.ResumeLayout(False)
-        Me.pnlSaving.PerformLayout()
-        Me.pnlMain.ResumeLayout(False)
-        Me.pnlTag.ResumeLayout(False)
-        Me.gbTags.ResumeLayout(False)
-        Me.gbTags.PerformLayout()
-        Me.gbMovies.ResumeLayout(False)
-        CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.gbMoviesInTag.ResumeLayout(False)
-        Me.ResumeLayout(False)
+        Me.pnlTop.ResumeLayout(false)
+        Me.pnlTop.PerformLayout
+        CType(Me.picTopTitle,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlCancel.ResumeLayout(false)
+        Me.pnlSaving.ResumeLayout(false)
+        Me.pnlSaving.PerformLayout
+        Me.pnlMain.ResumeLayout(false)
+        Me.tblMain.ResumeLayout(false)
+        Me.gbMovies.ResumeLayout(false)
+        CType(Me.dgvMovies,System.ComponentModel.ISupportInitialize).EndInit
+        Me.gbTags.ResumeLayout(false)
+        Me.gbTags.PerformLayout
+        Me.gbMoviesInTag.ResumeLayout(false)
+        Me.pnlBottom.ResumeLayout(false)
+        Me.pnlBottom.PerformLayout
+        Me.tblBottom.ResumeLayout(false)
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
     Friend WithEvents lblTopDetails As System.Windows.Forms.Label
@@ -458,7 +501,6 @@ Partial Class dlgTagManager
     Friend WithEvents lblFile As System.Windows.Forms.Label
     Friend WithEvents lblCanceling As System.Windows.Forms.Label
     Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents pnlTag As System.Windows.Forms.Panel
     Friend WithEvents gbTags As System.Windows.Forms.GroupBox
     Friend WithEvents txtEditTag As System.Windows.Forms.TextBox
     Friend WithEvents btnRemoveTag As System.Windows.Forms.Button
@@ -474,5 +516,8 @@ Partial Class dlgTagManager
     Friend WithEvents lbMoviesInTag As System.Windows.Forms.ListBox
     Friend WithEvents picTopTitle As System.Windows.Forms.PictureBox
     Friend WithEvents btnglobalTagsSync As System.Windows.Forms.Button
+    Friend WithEvents pnlBottom As System.Windows.Forms.Panel
+    Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblMain As System.Windows.Forms.TableLayoutPanel
 
 End Class
