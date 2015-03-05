@@ -16,7 +16,7 @@ added: first release
 fixed: plot and outline scraping
 
 [Renamer]
-fixed: fixed: files will not be renamed while scraping if not NFO scraping is active in the current scraping process
+fixed: files will not be renamed while scraping if not NFO scraping is active in the current scraping process
 added: patter to control season/episode number padding
 
 
