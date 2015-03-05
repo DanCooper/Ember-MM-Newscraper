@@ -88,9 +88,13 @@ Public Class dlgTrakttvManager
 #End Region 'Fields
 
 #Region "Constructors"
+
     Sub New()
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
+        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
+        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
+        Me.StartPosition = FormStartPosition.Manual
         SetUp()
     End Sub
 
@@ -276,7 +280,7 @@ Public Class dlgTrakttvManager
                 Dim updatedsettings As New List(Of AdvancedSettingsComplexSettingsTableItem)
                 For i = 0 To setting_name.Count - 1
                     updatedsettings.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = setting_name.Item(i), .Value = setting_value.Item(i)})
-                Next  
+                Next
                 settings.SetComplexSetting("TraktFavoriteLists", updatedsettings, "generic.EmberCore.Trakt")
                 btntraktListRemoveFavorite.Enabled = False
                 cbotraktListsFavorites.Enabled = True
@@ -732,25 +736,25 @@ Public Class dlgTrakttvManager
     ''' TODO: Needs some testing (error handling..)!? Idea: Can be executed via commandline to update/sync playcounts of movies and episodes
     ''' </remarks>
     Public Shared Sub CLSyncPlaycount()
-            Dim MySelf As New dlgTrakttvManager
-            If Master.eSettings.UseTrakt = False Then
-                Return
-            End If
-            MySelf.isCL = True
-            MySelf.bwLoad = New System.ComponentModel.BackgroundWorker
-            MySelf.bwLoad.WorkerSupportsCancellation = True
-            MySelf.bwLoad.WorkerReportsProgress = True
-            MySelf.bwLoad.RunWorkerAsync()
-            While MySelf.bwLoad.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
-            'Sync movie playcounts
-            MySelf.btntraktPlaycountGetMovies_Click(Nothing, Nothing)
-            MySelf.btntraktPlaycountSyncLibrary_Click(Nothing, Nothing)
-            'Sync episodes playcounts
-            MySelf.btntraktPlaycountGetSeries_Click(Nothing, Nothing)
-            MySelf.btntraktPlaycountSyncLibrary_Click(Nothing, Nothing)
+        Dim MySelf As New dlgTrakttvManager
+        If Master.eSettings.UseTrakt = False Then
+            Return
+        End If
+        MySelf.isCL = True
+        MySelf.bwLoad = New System.ComponentModel.BackgroundWorker
+        MySelf.bwLoad.WorkerSupportsCancellation = True
+        MySelf.bwLoad.WorkerReportsProgress = True
+        MySelf.bwLoad.RunWorkerAsync()
+        While MySelf.bwLoad.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+        'Sync movie playcounts
+        MySelf.btntraktPlaycountGetMovies_Click(Nothing, Nothing)
+        MySelf.btntraktPlaycountSyncLibrary_Click(Nothing, Nothing)
+        'Sync episodes playcounts
+        MySelf.btntraktPlaycountGetSeries_Click(Nothing, Nothing)
+        MySelf.btntraktPlaycountSyncLibrary_Click(Nothing, Nothing)
     End Sub
 
 
@@ -1056,7 +1060,7 @@ Public Class dlgTrakttvManager
     ''' Used in thread: Saves playcount to database
     ''' </remarks>
     Private Sub SaveMoviePlaycount()
-            Dim i As Integer = 0
+        Dim i As Integer = 0
         For Each watchedMovieData In mydictWatchedMovies
             i += 1
             '  logger.Info("[SaveMoviePlaycount] MovieID" & watchedMovieData.Value.Key & " Playcount: " & watchedMovieData.Value.Value.ToString)
@@ -1308,7 +1312,7 @@ Public Class dlgTrakttvManager
                 'fill lbDBLists(Listbox) - all lists/tags from Ember database!
                 Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM tag ", _
                                                                   "ORDER BY strTag COLLATE NOCASE;"))
-               
+
 
                 For Each sRow As DataRow In dtMovieTags.Rows
                     If Not String.IsNullOrEmpty(sRow.Item("strTag").ToString) Then
@@ -2356,8 +2360,8 @@ Public Class dlgTrakttvManager
                         End If
 
                     Else
-                    logger.Info("[" & txttraktListURL.Text & "] Movie with Index: " & debugcount.ToString & " Invalid entry could not be added. Not a valid movie!")
-                    userListItems.RemoveAt(i)
+                        logger.Info("[" & txttraktListURL.Text & "] Movie with Index: " & debugcount.ToString & " Invalid entry could not be added. Not a valid movie!")
+                        userListItems.RemoveAt(i)
                     End If
                 Next
 
