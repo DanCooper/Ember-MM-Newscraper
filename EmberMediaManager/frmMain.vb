@@ -15071,7 +15071,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub RefreshAllShows(ByVal withEpisodes As Boolean)
+    Private Sub RefreshAllShows(ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean)
         If Me.dtShows.Rows.Count > 0 Then
             Me.Cursor = Cursors.WaitCursor
             Me.SetControlsEnabled(False, True)
@@ -15088,7 +15088,7 @@ doCancel:
             Application.DoEvents()
             Me.bwRefreshShows.WorkerReportsProgress = True
             Me.bwRefreshShows.WorkerSupportsCancellation = True
-            Me.bwRefreshShows.RunWorkerAsync(New Arguments With {.withEpisodes = withEpisodes})
+            Me.bwRefreshShows.RunWorkerAsync(New Arguments With {.withEpisodes = withEpisodes, .withSeasons = withSeasons})
         Else
             Me.SetControlsEnabled(True)
         End If
@@ -17776,7 +17776,7 @@ doCancel:
                             Application.DoEvents()
                             'Threading.Thread.Sleep(50)
                         End While
-                        Me.RefreshAllShows(False)
+                        Me.RefreshAllShows(False, False)
                     End If
                 End If
                 If dresult.NeedsUpdate Then
