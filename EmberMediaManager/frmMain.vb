@@ -3629,7 +3629,7 @@ doCancel:
                 Try
                     If Me.bwRefreshShows.CancellationPending Then Return
                     Me.bwRefreshShows.ReportProgress(iCount, KVP.Value)
-                    Me.RefreshShow(KVP.Key, True, False, False, Args.withEpisodes)
+                    Me.RefreshShow(KVP.Key, True, False, False, Args.withSeasons, Args.withEpisodes)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
@@ -5126,7 +5126,7 @@ doCancel:
             Select Case dEditShow.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
                     Me.SetShowListItemAfterEdit(ID, indX)
-                    If Me.RefreshShow(ID, False, True, False, False) Then
+                    If Me.RefreshShow(ID, False, True, False, False, False) Then
                         Me.FillList(False, False, True)
                     Else
                         Me.SetControlsEnabled(True)
@@ -6166,7 +6166,7 @@ doCancel:
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
                     Me.tspbLoading.Value += 1
-                    tFill = Me.RefreshShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True, False, True)
+                    tFill = Me.RefreshShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True, False, True, True)
                     If tFill Then doFill = True
                 Next
                 SQLtransaction.Commit()
@@ -6175,7 +6175,7 @@ doCancel:
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
         ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
-            tFill = Me.RefreshShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value), False, True, False, True)
+            tFill = Me.RefreshShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value), False, True, False, True, True)
             If tFill Then doFill = True
         End If
 
@@ -6197,7 +6197,7 @@ doCancel:
                     Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), Convert.ToInt32(sRow.Cells("Season").Value), True)
                 End If
             Next
-            Me.RefreshShow(idShow, True, False, False, False)
+            Me.RefreshShow(idShow, True, False, False, False, False)
             SQLTrans.Commit()
         End Using
 
@@ -6228,7 +6228,7 @@ doCancel:
             For Each iSeason In SeasonsList
                 Me.RefreshSeason(idShow, iSeason, True)
             Next
-            Me.RefreshShow(idShow, True, False, False, False)
+            Me.RefreshShow(idShow, True, False, False, False, False)
 
             SQLTrans.Commit()
         End Using
@@ -8423,7 +8423,7 @@ doCancel:
             Select Case dEditShow.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
                     Me.SetShowListItemAfterEdit(ID, indX)
-                    If Me.RefreshShow(ID, False, True, False, False) Then
+                    If Me.RefreshShow(ID, False, True, False, False, False) Then
                         Me.FillList(False, False, True)
                     End If
             End Select
@@ -8650,7 +8650,7 @@ doCancel:
                 Select Case dEditShow.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
                         Me.SetShowListItemAfterEdit(ID, indX)
-                        If Me.RefreshShow(ID, False, True, False, False) Then
+                        If Me.RefreshShow(ID, False, True, False, False, False) Then
                             Me.FillList(False, False, True)
                         End If
                 End Select
@@ -13750,7 +13750,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowBanner(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Me.RefreshShow(ShowID, False, True, False, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -13848,7 +13848,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowCharacterArt(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Me.RefreshShow(ShowID, False, True, False, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -13972,7 +13972,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearArt(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Me.RefreshShow(ShowID, False, True, False, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -14096,7 +14096,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearLogo(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Me.RefreshShow(ShowID, False, True, False, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -14328,7 +14328,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowFanart(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Me.RefreshShow(ShowID, False, True, False, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -14515,7 +14515,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowLandscape(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Me.RefreshShow(ShowID, False, True, False, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -14677,7 +14677,7 @@ doCancel:
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowPoster(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                If Me.RefreshShow(ShowID, False, True, False, False, False) Then
                                     Me.FillList(False, False, True)
                                 End If
                             End If
@@ -15528,7 +15528,7 @@ doCancel:
         Return False
     End Function
 
-    Private Function RefreshShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal FromNfo As Boolean, ByVal ToNfo As Boolean, ByVal WithEpisodes As Boolean) As Boolean
+    Private Function RefreshShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal FromNfo As Boolean, ByVal ToNfo As Boolean, ByVal WithSeasons As Boolean, ByVal WithEpisodes As Boolean) As Boolean
         If Not BatchMode Then
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.tspbLoading.Value = 0
@@ -15536,6 +15536,8 @@ doCancel:
             Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLCommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS COUNT FROM episode WHERE idShow = ", ID, " AND Missing = 0;")
                 Me.tspbLoading.Maximum = Convert.ToInt32(SQLCommand.ExecuteScalar)
+                SQLCommand.CommandText = String.Concat("SELECT COUNT(idSeason) AS COUNT FROM seasons WHERE idShow = ", ID, ";")
+                Me.tspbLoading.Maximum = Me.tspbLoading.Maximum + Convert.ToInt32(SQLCommand.ExecuteScalar)
             End Using
 
             Me.tslLoading.Text = Master.eLang.GetString(731, "Refreshing Show:")
@@ -15600,7 +15602,7 @@ doCancel:
             Dim newRow = newTable.Rows.Item(0)
 
             Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idShow")) = ID Select drvRow
-            
+
             If dRow(0) IsNot Nothing AndAlso newRow IsNot Nothing Then
                 If Me.InvokeRequired Then
                     Me.Invoke(myDelegate, New Object() {dRow(0), newRow})
@@ -15623,6 +15625,22 @@ doCancel:
             '    Application.DoEvents()
             'End If
 
+            If WithSeasons Then
+                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLCommand.CommandText = String.Concat("SELECT idShow, Season FROM seasons WHERE idShow = ", ID, ";")
+                    Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                        While SQLReader.Read
+                            If Not BatchMode Then
+                                Me.tspbLoading.Value += 1
+                                Application.DoEvents()
+                                Threading.Thread.Sleep(50)
+                            End If
+                            Me.RefreshSeason(Convert.ToInt32(SQLReader("idShow")), Convert.ToInt32(SQLReader("Season")), True)
+                        End While
+                    End Using
+                End Using
+            End If
+
             If WithEpisodes Then
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", ID, " AND Missing = 0;")
@@ -15640,7 +15658,6 @@ doCancel:
 
                 Master.DB.CleanSeasons(True)
             End If
-
         Else
             Master.DB.DeleteTVShowFromDB(ID, WithEpisodes)
             Return True
@@ -16774,7 +16791,7 @@ doCancel:
                 For Each iSeason In SeasonsList
                     Me.RefreshSeason(iShow, iSeason, True)
                 Next
-                Me.RefreshShow(iShow, True, False, False, False)
+                Me.RefreshShow(iShow, True, False, False, False, False)
             End Using
             SQLtransaction.Commit()
         End Using
@@ -16889,7 +16906,7 @@ doCancel:
                 End If
             Next
             For Each iShowID In ShowsList
-                Me.RefreshShow(iShowID, True, False, False, False)
+                Me.RefreshShow(iShowID, True, False, False, False, False)
             Next
             SQLtransaction.Commit()
         End Using
@@ -16951,7 +16968,7 @@ doCancel:
                 For Each iSeason In SeasonsList
                     Me.RefreshSeason(iShow, iSeason, True)
                 Next
-                Me.RefreshShow(iShow, True, False, False, False)
+                Me.RefreshShow(iShow, True, False, False, False, False)
             Next
             SQLtransaction.Commit()
         End Using
@@ -17003,7 +17020,7 @@ doCancel:
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                Me.RefreshShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, False, True, False)
+                Me.RefreshShow(Convert.ToInt32(sRow.Cells("idShow").Value), True, False, True, False, False)
             Next
             SQLtransaction.Commit()
         End Using
@@ -19446,7 +19463,7 @@ doCancel:
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case Enums.ScraperEventType_TV.ScraperDone
-                Me.RefreshShow(Master.currShow.ShowID, False, False, False, True)
+                Me.RefreshShow(Master.currShow.ShowID, False, False, False, True, True)
 
                 Me.tspbLoading.Visible = False
                 Me.tslLoading.Visible = False
@@ -19867,6 +19884,7 @@ doCancel:
         Dim TVShow As Structures.DBTV
         Dim SetName As String
         Dim withEpisodes As Boolean
+        Dim withSeasons As Boolean
 
 #End Region 'Fields
 
