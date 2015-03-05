@@ -6,16 +6,16 @@ Imports System.Runtime.InteropServices
 ' set of attributes. Change these attribute values to modify the information
 ' associated with an assembly.
 ' Review the values of the assembly attributes
-<Assembly: AssemblyTitle("generic.EmberCore.Trakt")> 
+<Assembly: AssemblyTitle("generic.EmberCore.TagManager")> 
 <Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
 <Assembly: AssemblyCompany("Ember Media Manager")> 
-<Assembly: AssemblyProduct("generic.EmberCore.Trakt")> 
+<Assembly: AssemblyProduct("generic.EmberCore.TagManager")> 
 <Assembly: AssemblyCopyright("Copyright © 2015")> 
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("9CE128D4-31A8-4350-842A-B461DAFEED69")> 
+<Assembly: Guid("9CE128D4-31A8-4350-842A-B461DAFEED77")> 
 
 ' Version information for an assembly consists of the following four values:
 '

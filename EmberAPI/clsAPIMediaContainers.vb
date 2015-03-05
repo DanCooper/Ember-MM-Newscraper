@@ -1504,6 +1504,13 @@ Namespace MediaContainers
             Sets.Add(New [Set] With {.ID = SetID, .Title = SetName, .Order = If(Order > 0, Order.ToString, String.Empty), .TMDBColID = SetTMDBColID})
         End Sub
 
+        Public Sub AddTag(ByVal value As String)
+            If String.IsNullOrEmpty(value) Then Return
+            If Not _tags.Contains(value) Then
+                _tags.Add(value.Trim)
+            End If
+        End Sub
+
         Public Sub AddCertification(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
 
