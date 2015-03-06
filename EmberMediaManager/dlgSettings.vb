@@ -726,12 +726,12 @@ Public Class dlgSettings
     Private Sub btnTVShowRegexAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexAdd.Click
         If String.IsNullOrEmpty(Me.btnTVShowRegexAdd.Tag.ToString) Then
             Dim lID = (From lRegex As Settings.TVShowRegEx In Me.TVShowRegex Select lRegex.ID).Max
-            Me.TVShowRegex.Add(New Settings.TVShowRegEx With {.ID = Convert.ToInt32(lID) + 1, .SeasonRegex = Me.txtTVSeasonRegex.Text, .SeasonFromDirectory = Not Convert.ToBoolean(Me.cbTVSeasonRetrieve.SelectedIndex), .EpisodeRegex = Me.txtTVEpisodeRegex.Text, .EpisodeRetrieve = CType(Me.cbTVEpisodeRetrieve.SelectedValue, Settings.EpRetrieve), .byDate = Me.chkTVEpisodeAired.Checked})
+            Me.TVShowRegex.Add(New Settings.TVShowRegEx With {.ID = Convert.ToInt32(lID) + 1, .SeasonRegex = Me.txtTVSeasonRegex.Text, .SeasonFromDirectory = If(CType(Me.cbTVSeasonRetrieve.SelectedValue, Settings.EpRetrieve) = Settings.EpRetrieve.FromDirectory, True, False), .EpisodeRegex = Me.txtTVEpisodeRegex.Text, .EpisodeRetrieve = CType(Me.cbTVEpisodeRetrieve.SelectedValue, Settings.EpRetrieve), .byDate = Me.chkTVEpisodeAired.Checked})
         Else
             Dim selRex = From lRegex As Settings.TVShowRegEx In Me.TVShowRegex Where lRegex.ID = Convert.ToInt32(Me.btnTVShowRegexAdd.Tag)
             If selRex.Count > 0 Then
                 selRex(0).SeasonRegex = Me.txtTVSeasonRegex.Text
-                selRex(0).SeasonFromDirectory = Not Convert.ToBoolean(Me.cbTVSeasonRetrieve.SelectedIndex)
+                selRex(0).SeasonFromDirectory = If(CType(Me.cbTVSeasonRetrieve.SelectedValue, Settings.EpRetrieve) = Settings.EpRetrieve.FromDirectory, True, False)
                 selRex(0).EpisodeRegex = Me.txtTVEpisodeRegex.Text
                 selRex(0).EpisodeRetrieve = CType(Me.cbTVEpisodeRetrieve.SelectedValue, Settings.EpRetrieve)
                 selRex(0).byDate = Me.chkTVEpisodeAired.Checked
@@ -3385,20 +3385,20 @@ Public Class dlgSettings
 
         Select Case lItem.SubItems(2).Text
             Case "Folder"
-                Me.cbTVSeasonRetrieve.SelectedIndex = 0
+                Me.cbTVSeasonRetrieve.SelectedValue = Settings.EpRetrieve.FromDirectory
             Case "File"
-                Me.cbTVSeasonRetrieve.SelectedIndex = 1
+                Me.cbTVSeasonRetrieve.SelectedValue = Settings.EpRetrieve.FromFilename
         End Select
 
         Me.txtTVEpisodeRegex.Text = lItem.SubItems(3).Text
 
         Select Case lItem.SubItems(4).Text
             Case "Folder"
-                Me.cbTVEpisodeRetrieve.SelectedIndex = 0
+                Me.cbTVEpisodeRetrieve.SelectedValue = Settings.EpRetrieve.FromDirectory
             Case "File"
-                Me.cbTVEpisodeRetrieve.SelectedIndex = 1
+                Me.cbTVEpisodeRetrieve.SelectedValue = Settings.EpRetrieve.FromFilename
             Case "Result"
-                Me.cbTVEpisodeRetrieve.SelectedIndex = 2
+                Me.cbTVEpisodeRetrieve.SelectedValue = Settings.EpRetrieve.FromSeasonResult
         End Select
 
         Select Case lItem.SubItems(5).Text
@@ -4649,6 +4649,25 @@ Public Class dlgSettings
         Me.cbTVShowBannerPrefType.DataSource = items.ToList
         Me.cbTVShowBannerPrefType.DisplayMember = "Key"
         Me.cbTVShowBannerPrefType.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadTVSeasonRetrieve()
+        Dim items As New Dictionary(Of String, Settings.EpRetrieve)
+        items.Add(Master.eLang.GetString(13, "Folder Name"), Settings.EpRetrieve.FromDirectory)
+        items.Add(Master.eLang.GetString(15, "File Name"), Settings.EpRetrieve.FromFilename)
+        Me.cbTVSeasonRetrieve.DataSource = items.ToList
+        Me.cbTVSeasonRetrieve.DisplayMember = "Key"
+        Me.cbTVSeasonRetrieve.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadTVEpisodeRetrieve()
+        Dim items As New Dictionary(Of String, Settings.EpRetrieve)
+        items.Add(Master.eLang.GetString(13, "Folder Name"), Settings.EpRetrieve.FromDirectory)
+        items.Add(Master.eLang.GetString(15, "File Name"), Settings.EpRetrieve.FromFilename)
+        items.Add(Master.eLang.GetString(16, "Season Result"), Settings.EpRetrieve.FromSeasonResult)
+        Me.cbTVEpisodeRetrieve.DataSource = items.ToList
+        Me.cbTVEpisodeRetrieve.DisplayMember = "Key"
+        Me.cbTVEpisodeRetrieve.ValueMember = "Value"
     End Sub
 
     Private Sub LoadTVMetadata()
@@ -6793,12 +6812,6 @@ Public Class dlgSettings
         Me.lblTVSkipLessThan.Text = Me.lblMovieSkipLessThan.Text
         Me.lblTVSkipLessThanMB.Text = Me.lblMovieSkipLessThanMB.Text
 
-        Me.cbTVSeasonRetrieve.Items.Clear()
-        Me.cbTVSeasonRetrieve.Items.AddRange(New String() {Master.eLang.GetString(13, "Folder Name"), Master.eLang.GetString(15, "File Name")})
-
-        Me.cbTVEpisodeRetrieve.Items.Clear()
-        Me.cbTVEpisodeRetrieve.Items.AddRange(New String() {Master.eLang.GetString(13, "Folder Name"), Master.eLang.GetString(15, "File Name"), Master.eLang.GetString(16, "Season Result")})
-
         Me.LoadGeneralDateTime()
         Me.LoadGenericFanartSizes()
         Me.LoadGenericPosterSizes()
@@ -6810,6 +6823,8 @@ Public Class dlgSettings
         Me.LoadTVScraperUpdateTime()
         Me.LoadTVSeasonBannerTypes()
         Me.LoadTVShowBannerTypes()
+        Me.LoadTVSeasonRetrieve()
+        Me.LoadTVEpisodeRetrieve()
     End Sub
 
     Private Sub tcFileSystemCleaner_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcFileSystemCleaner.SelectedIndexChanged
