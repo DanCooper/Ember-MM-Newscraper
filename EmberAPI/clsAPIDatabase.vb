@@ -483,6 +483,7 @@ Public Class Database
 
             'global cleaning
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                'clean all link tables
                 logger.Info("Cleaning actorlinkepisode table")
                 SQLcommand.CommandText = "DELETE FROM actorlinkepisode WHERE NOT EXISTS (SELECT 1 FROM episode WHERE episode.idEpisode = actorlinkepisode.idEpisode)"
                 SQLcommand.ExecuteNonQuery()
@@ -492,13 +493,44 @@ Public Class Database
                 logger.Info("Cleaning actorlinktvshow table")
                 SQLcommand.CommandText = "DELETE FROM actorlinktvshow WHERE NOT EXISTS (SELECT 1 FROM tvshow WHERE tvshow.idShow = actorlinktvshow.idShow)"
                 SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning countrylinkmovie table")
+                SQLcommand.CommandText = "DELETE FROM countrylinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning directorlinkepisode table")
+                SQLcommand.CommandText = "DELETE FROM directorlinkepisode WHERE idEpisode NOT IN (SELECT idEpisode FROM episode);"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning directorlinkmovie table")
+                SQLcommand.CommandText = "DELETE FROM directorlinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning directorlinktvshow table")
+                SQLcommand.CommandText = "DELETE FROM directorlinktvshow WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning genrelinkmovie table")
+                SQLcommand.CommandText = "DELETE FROM genrelinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning genrelinktvshow table")
+                SQLcommand.CommandText = "DELETE FROM genrelinktvshow WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning MoviesSets table")
+                SQLcommand.CommandText = "DELETE FROM MoviesSets WHERE MovieID NOT IN (SELECT idMovie FROM movie);"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning studiolinkmovie table")
+                SQLcommand.CommandText = "DELETE FROM studiolinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning studiolinktvshow table")
+                SQLcommand.CommandText = "DELETE FROM studiolinktvshow WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning writerlinkepisode table")
+                SQLcommand.CommandText = "DELETE FROM writerlinkepisode WHERE idEpisode NOT IN (SELECT idEpisode FROM episode);"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning writerlinkmovie table")
+                SQLcommand.CommandText = "DELETE FROM writerlinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+                SQLcommand.ExecuteNonQuery()
+                'clean all main tables
                 logger.Info("Cleaning genre table")
                 SQLcommand.CommandText = String.Concat("DELETE FROM genre ", _
                                                        "WHERE NOT EXISTS (SELECT 1 FROM genrelinkmovie WHERE genrelinkmovie.idGenre = genre.idGenre) ", _
                                                          "AND NOT EXISTS (SELECT 1 FROM genrelinktvshow WHERE genrelinktvshow.idGenre = genre.idGenre)")
-                SQLcommand.ExecuteNonQuery()
-                logger.Info("Cleaning country table")
-                SQLcommand.CommandText = "DELETE FROM country WHERE NOT EXISTS (SELECT 1 FROM countrylinkmovie WHERE countrylinkmovie.idCountry = country.idCountry)"
                 SQLcommand.ExecuteNonQuery()
                 logger.Info("Cleaning actor table of actors, directors and writers")
                 SQLcommand.CommandText = String.Concat("DELETE FROM actors ", _
@@ -510,6 +542,14 @@ Public Class Database
                                                          "AND NOT EXISTS (SELECT 1 FROM directorlinktvshow WHERE directorlinktvshow.idDirector = actors.idActor) ", _
                                                          "AND NOT EXISTS (SELECT 1 FROM directorlinkepisode WHERE directorlinkepisode.idDirector = actors.idActor) ", _
                                                          "AND NOT EXISTS (SELECT 1 FROM writerlinkepisode WHERE writerlinkepisode.idWriter = actors.idActor)")
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning country table")
+                SQLcommand.CommandText = "DELETE FROM country WHERE NOT EXISTS (SELECT 1 FROM countrylinkmovie WHERE countrylinkmovie.idCountry = country.idCountry)"
+                SQLcommand.ExecuteNonQuery()
+                logger.Info("Cleaning genre table")
+                SQLcommand.CommandText = String.Concat("DELETE FROM genre ", _
+                                                       "WHERE NOT EXISTS (SELECT 1 FROM genrelinkmovie WHERE genrelinkmovie.idGenre = genre.idGenre) ", _
+                                                         "AND NOT EXISTS (SELECT 1 FROM genrelinktvshow WHERE genrelinktvshow.idGenre = genre.idGenre)")
                 SQLcommand.ExecuteNonQuery()
                 logger.Info("Cleaning studio table")
                 SQLcommand.CommandText = String.Concat("DELETE FROM studio ", _
