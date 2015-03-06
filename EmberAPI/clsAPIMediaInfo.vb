@@ -389,15 +389,15 @@ Public Class MediaInfo
         Dim tCodec As String = String.Empty
 
         If sFormat.ToLower.Contains("dts") AndAlso (sProfile.ToLower = "hra / core" OrElse sProfile.ToLower = "ma / core") Then
-            tCodec = sProfile.ToLower
+            tCodec = sProfile
         ElseIf Not String.IsNullOrEmpty(sCodecID) AndAlso Not IsNumeric(sCodecID) Then
-            tCodec = sCodecID.ToLower
+            tCodec = sCodecID
         ElseIf Not String.IsNullOrEmpty(sCodecHint) Then
-            tCodec = sCodecHint.ToLower
+            tCodec = sCodecHint
         ElseIf sFormat.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(sProfile) Then
             tCodec = String.Concat("mp", sProfile.Replace("Layer", String.Empty).Trim).Trim
         ElseIf Not String.IsNullOrEmpty(sFormat) Then
-            tCodec = sFormat.ToLower
+            tCodec = sFormat
         End If
 
         If Not String.IsNullOrEmpty(tCodec) Then
@@ -405,8 +405,8 @@ Public Class MediaInfo
             myconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts")
             If Not myconversions Is Nothing Then
                 For Each k In myconversions
-                    If tCodec = k.Name.ToLower Then
-                        Return k.Value.ToLower
+                    If tCodec.ToLower = k.Name.ToLower Then
+                        Return k.Value
                     End If
                 Next
                 Return tCodec
@@ -422,11 +422,11 @@ Public Class MediaInfo
         Dim tCodec As String = String.Empty
 
         If Not String.IsNullOrEmpty(sCodecID) AndAlso Not IsNumeric(sCodecID) Then
-            tCodec = sCodecID.ToLower
+            tCodec = sCodecID
         ElseIf sFormat.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(sVersion) Then
             tCodec = String.Concat("mpeg", sVersion.Replace("Version", String.Empty).Trim, "video").Trim
         ElseIf Not String.IsNullOrEmpty(sFormat) Then
-            tCodec = sFormat.ToLower
+            tCodec = sFormat
         End If
 
         If Not String.IsNullOrEmpty(tCodec) Then
@@ -434,8 +434,8 @@ Public Class MediaInfo
             myconversions = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts")
             If Not myconversions Is Nothing Then
                 For Each k In myconversions
-                    If tCodec = k.Name.ToLower Then
-                        Return k.Value.ToLower
+                    If tCodec.ToLower = k.Name.ToLower Then
+                        Return k.Value
                     End If
                 Next
                 Return tCodec
