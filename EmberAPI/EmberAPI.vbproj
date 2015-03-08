@@ -198,6 +198,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="XML Serialization\clsXMLFilter.vb" />
     <Compile Include="XML Serialization\clsXMLRestartScraper.vb" />
     <Compile Include="XML Serialization\clsXMLAdvancedSettings.vb" />
     <Compile Include="XML Serialization\clsXMLGenres.vb" />
