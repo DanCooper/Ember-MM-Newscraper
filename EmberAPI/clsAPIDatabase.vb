@@ -4044,6 +4044,30 @@ Public Class Database
         End Using
     End Sub
 
+    ''' <summary>
+    ''' Check if provided querystring is valid SQL
+    ''' </summary>
+    ''' <param name="Query">The SQL query to check</param>
+    ''' <returns>true: valid query, false: invalid sql (check log!)</returns>
+    ''' <remarks>    
+    ''' cocotus 2015/03/07 Check for valid sql syntax, used for custom filter module
+    ''' </remarks>
+    Public Function IsValid_SQL(ByVal Query As String) As Boolean
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = Query
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                End Using
+            End Using
+            Return True
+        Catch ex As Exception
+            Dim response As String = ""
+            response = Master.eLang.GetString(1386, "Invalid SQL!") & Environment.NewLine & ex.Message
+            MessageBox.Show(ex.Message, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
+            Return False
+        End Try
+    End Function
+
 #End Region 'Methods
 
 #Region "Nested Types"

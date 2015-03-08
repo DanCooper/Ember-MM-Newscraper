@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberMediaManager", "EmberMediaManager\EmberMediaManager.vbproj", "{9B57D3AB-AF12-4012-B945-284C2448DC81}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -111,6 +111,8 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.VLC", "Addons\generic.EmberCore.VLC\generic.EmberCore.VLC.vbproj", "{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.TagManager", "Addons\generic.EmberCore.TagManager\generic.EmberCore.TagManager.vbproj", "{E5B54E27-B13B-4C5D-BD3E-941837C4A598}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.FilterEditor", "Addons\generic.EmberCore.FilterEditor\generic.EmberCore.FilterEditor.vbproj", "{34933AD1-8691-44B9-BDB4-4BF022C34552}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -405,6 +407,14 @@ Global
 		{E5B54E27-B13B-4C5D-BD3E-941837C4A598}.Release|x64.Build.0 = Release|x64
 		{E5B54E27-B13B-4C5D-BD3E-941837C4A598}.Release|x86.ActiveCfg = Release|x86
 		{E5B54E27-B13B-4C5D-BD3E-941837C4A598}.Release|x86.Build.0 = Release|x86
+		{34933AD1-8691-44B9-BDB4-4BF022C34552}.Debug|x64.ActiveCfg = Debug|x64
+		{34933AD1-8691-44B9-BDB4-4BF022C34552}.Debug|x64.Build.0 = Debug|x64
+		{34933AD1-8691-44B9-BDB4-4BF022C34552}.Debug|x86.ActiveCfg = Debug|x86
+		{34933AD1-8691-44B9-BDB4-4BF022C34552}.Debug|x86.Build.0 = Debug|x86
+		{34933AD1-8691-44B9-BDB4-4BF022C34552}.Release|x64.ActiveCfg = Release|x64
+		{34933AD1-8691-44B9-BDB4-4BF022C34552}.Release|x64.Build.0 = Release|x64
+		{34933AD1-8691-44B9-BDB4-4BF022C34552}.Release|x86.ActiveCfg = Release|x86
+		{34933AD1-8691-44B9-BDB4-4BF022C34552}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -440,5 +450,6 @@ Global
 		{2113C1FB-C2C9-437C-AAC3-D72507739F14} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{E5B54E27-B13B-4C5D-BD3E-941837C4A598} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
+		{34933AD1-8691-44B9-BDB4-4BF022C34552} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 	EndGlobalSection
 EndGlobal

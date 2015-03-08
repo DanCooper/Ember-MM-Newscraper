@@ -3715,6 +3715,22 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
+    Private Sub cbFilterCustom_Movies_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbFilterCustom_Movies.SelectedIndexChanged
+            While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+        End While
+        If Not String.IsNullOrEmpty(cbFilterCustom_Movies.Text) Then
+            Dim result = From t In APIXML.FilterXML.filter.Where(Function(f) f.name = cbFilterCustom_Movies.Text)
+            If result.Count > 0 Then
+                Me.RunFilter_MovieCustom(result(0).query)
+            Else
+                Me.RunFilter_Movies()
+            End If
+        Else
+            Me.RunFilter_Movies()
+        End If
+    End Sub
 
     Private Sub SetFilterMissing_Movies()
         Dim MissingFilter As New List(Of String)
@@ -4747,6 +4763,12 @@ doCancel:
                 Me.cbFilterVideoSource_Movies.SelectedIndex = 0
             End If
             AddHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
+
+            RemoveHandler cbFilterCustom_Movies.SelectedIndexChanged, AddressOf cbFilterCustom_Movies_SelectedIndexChanged
+            If Me.cbFilterCustom_Movies.Items.Count > 0 Then
+                Me.cbFilterCustom_Movies.SelectedIndex = 0
+            End If
+            AddHandler cbFilterCustom_Movies.SelectedIndexChanged, AddressOf cbFilterCustom_Movies_SelectedIndexChanged
 
             If Reload Then Me.FillList(True, False, False)
 
@@ -8837,6 +8859,7 @@ doCancel:
         Me.btnFilterSortYear_Movies.Enabled = isEnabled
         Me.cbFilterDataField_Movies.Enabled = isEnabled
         Me.cbFilterVideoSource_Movies.Enabled = isEnabled
+        Me.cbFilterCustom_Movies.Enabled = isEnabled
         Me.cbFilterYearFrom_Movies.Enabled = isEnabled
         Me.cbFilterYearModFrom_Movies.Enabled = isEnabled
         Me.cbSearchMovies.Enabled = isEnabled
@@ -14835,7 +14858,7 @@ doCancel:
             Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
             Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse _
             Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterDuplicates_Movies.Checked OrElse _
-            Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
+            Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All OrElse Not Me.cbFilterCustom_Movies.SelectedIndex = 0 Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterAnd_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_MovieSets.Click
@@ -14967,7 +14990,7 @@ doCancel:
             Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
             Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse _
             Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterDuplicates_Movies.Checked OrElse _
-            Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
+            Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All OrElse Not Me.cbFilterCustom_Movies.SelectedIndex = 0 Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterOr_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_MovieSets.Click
@@ -15983,6 +16006,60 @@ doCancel:
             End If
 
         End If
+    End Sub
+
+
+    Private Sub RunFilter_MovieCustom(ByVal CustomFilterString As String)
+        Try
+            If Me.Visible Then
+                Dim table As New DataTable
+                Dim ds As New DataSet
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLcommand.CommandText = CustomFilterString
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        ds.Tables.Add(table)
+                        ds.EnforceConstraints = False
+                        table.Load(SQLreader)
+                    End Using
+                End Using
+                Dim filterstring As String = ""
+                Dim idColumnname As String = ""
+                If table.Columns.Contains("idMovie") Then
+                    idColumnname = "idMovie"
+                ElseIf table.Columns.Contains("idMedia") Then
+                    idColumnname = "idMedia"
+                End If
+                If Not String.IsNullOrEmpty(idColumnname) Then
+                    For Each resultrow As DataRow In table.Rows
+                        If Not String.IsNullOrEmpty(resultrow.Item(idColumnname).ToString) Then
+                            If String.IsNullOrEmpty(filterstring) Then
+                                filterstring = filterstring & "idMovie = " & resultrow.Item(idColumnname).ToString
+                            Else
+                                filterstring = filterstring & " OR " & "idMovie  = " & resultrow.Item(idColumnname).ToString
+                            End If
+
+                        End If
+                    Next
+                Else
+                    logger.Warn("[RunFilter_MovieCustom] Query: " & CustomFilterString & " doesn't return idMovie/idMedia field!")
+                End If
+
+                Me.ClearInfo()
+                Me.prevMovieRow = -2
+                Me.currMovieRow = -1
+                Me.dgvMovies.ClearSelection()
+                Me.dgvMovies.CurrentCell = Nothing
+                'in case there are no results for custom filter, don't display any movies by creating dummy filter
+                If String.IsNullOrEmpty(filterstring) Then
+                    filterstring = "Title LIKE '%Oh my nothing found, but Ember rocks anyway!%'"
+                End If
+                bsMovies.Filter = filterstring
+                ModulesManager.Instance.RuntimeObjects.FilterMovies = filterstring
+                Me.txtSearchMovies.Focus()
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     Private Sub RunFilter_Movies(Optional ByVal doFill As Boolean = False)
@@ -17627,6 +17704,13 @@ doCancel:
                 Me.cbFilterVideoSource_Movies.SelectedIndex = 0
                 AddHandler Me.cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf Me.cbFilterVideoSource_Movies_SelectedIndexChanged
 
+
+                RemoveHandler Me.cbFilterCustom_Movies.SelectedIndexChanged, AddressOf Me.cbFilterCustom_Movies_SelectedIndexChanged
+                Me.cbFilterCustom_Movies.Items.Clear()
+                Me.cbFilterCustom_Movies.Items.Add("")
+                Me.cbFilterCustom_Movies.Items.AddRange((From fname In APIXML.FilterXML.filter Where fname.type = "movie" Select fname.name).ToArray)
+                Me.cbFilterVideoSource_Movies.SelectedIndex = 0
+                AddHandler Me.cbFilterCustom_Movies.SelectedIndexChanged, AddressOf Me.cbFilterCustom_Movies_SelectedIndexChanged
             End If
 
         End With
@@ -19960,5 +20044,6 @@ doCancel:
     End Class
 
 #End Region 'Nested Types
+
 
 End Class

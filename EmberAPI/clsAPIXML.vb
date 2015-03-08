@@ -41,6 +41,7 @@ Public Class APIXML
     Public Shared MovieCertLanguagesXML As New clsXMLMovieCertLanguages
     Public Shared RatingXML As New clsXMLRatings
     Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
+    Public Shared FilterXML As New clsXMLFilter
 
 #End Region 'Fields
 
@@ -171,6 +172,27 @@ Public Class APIXML
 
                 Try
                     File.Copy(cPathD, cPath)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
+            End If
+
+            Dim filterPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Queries.xml")
+            If File.Exists(filterPath) Then
+                objStreamReader = New StreamReader(filterPath)
+                Dim xFilter As New XmlSerializer(FilterXML.GetType)
+
+                FilterXML = CType(xFilter.Deserialize(objStreamReader), clsXMLFilter)
+                objStreamReader.Close()
+            Else
+                Dim filterPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultQueries.xml")
+                objStreamReader = New StreamReader(filterPathD)
+                Dim xFilter As New XmlSerializer(FilterXML.GetType)
+
+                FilterXML = CType(xFilter.Deserialize(objStreamReader), clsXMLFilter)
+                objStreamReader.Close()
+                Try
+                    File.Copy(filterPathD, filterPath)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try

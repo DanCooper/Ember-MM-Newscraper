@@ -369,6 +369,7 @@ Partial Class frmMain
         Me.btnClearFilters_Movies = New System.Windows.Forms.Button()
         Me.gbFilterSpecific_Movies = New System.Windows.Forms.GroupBox()
         Me.tblFilterSpecific_Movies = New System.Windows.Forms.TableLayoutPanel()
+        Me.cbFilterCustom_Movies = New System.Windows.Forms.ComboBox()
         Me.gbFilterModifier_Movies = New System.Windows.Forms.GroupBox()
         Me.tblFilterModifier_Movies = New System.Windows.Forms.TableLayoutPanel()
         Me.rbFilterOr_Movies = New System.Windows.Forms.RadioButton()
@@ -4768,7 +4769,7 @@ Partial Class frmMain
         Me.gbFilterSpecific_Movies.Location = New System.Drawing.Point(133, 3)
         Me.gbFilterSpecific_Movies.Name = "gbFilterSpecific_Movies"
         Me.tblFilter_Movies.SetRowSpan(Me.gbFilterSpecific_Movies, 3)
-        Me.gbFilterSpecific_Movies.Size = New System.Drawing.Size(405, 265)
+        Me.gbFilterSpecific_Movies.Size = New System.Drawing.Size(416, 265)
         Me.gbFilterSpecific_Movies.TabIndex = 6
         Me.gbFilterSpecific_Movies.TabStop = false
         Me.gbFilterSpecific_Movies.Text = "Specific"
@@ -4780,6 +4781,7 @@ Partial Class frmMain
         Me.tblFilterSpecific_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterSpecific_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterSpecific_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterSpecific_Movies.Controls.Add(Me.cbFilterCustom_Movies, 0, 8)
         Me.tblFilterSpecific_Movies.Controls.Add(Me.gbFilterModifier_Movies, 0, 0)
         Me.tblFilterSpecific_Movies.Controls.Add(Me.tblFilterSpecificData_Movies, 1, 0)
         Me.tblFilterSpecific_Movies.Controls.Add(Me.chkFilterNew_Movies, 0, 1)
@@ -4802,8 +4804,19 @@ Partial Class frmMain
         Me.tblFilterSpecific_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecific_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecific_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterSpecific_Movies.Size = New System.Drawing.Size(399, 244)
+        Me.tblFilterSpecific_Movies.Size = New System.Drawing.Size(410, 244)
         Me.tblFilterSpecific_Movies.TabIndex = 40
+        '
+        'cbFilterCustom_Movies
+        '
+        Me.cbFilterCustom_Movies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterCustom_Movies.Enabled = false
+        Me.cbFilterCustom_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbFilterCustom_Movies.FormattingEnabled = true
+        Me.cbFilterCustom_Movies.Location = New System.Drawing.Point(3, 214)
+        Me.cbFilterCustom_Movies.Name = "cbFilterCustom_Movies"
+        Me.cbFilterCustom_Movies.Size = New System.Drawing.Size(113, 21)
+        Me.cbFilterCustom_Movies.TabIndex = 42
         '
         'gbFilterModifier_Movies
         '
@@ -4812,7 +4825,7 @@ Partial Class frmMain
         Me.gbFilterModifier_Movies.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbFilterModifier_Movies.Location = New System.Drawing.Point(3, 3)
         Me.gbFilterModifier_Movies.Name = "gbFilterModifier_Movies"
-        Me.gbFilterModifier_Movies.Size = New System.Drawing.Size(102, 44)
+        Me.gbFilterModifier_Movies.Size = New System.Drawing.Size(113, 44)
         Me.gbFilterModifier_Movies.TabIndex = 3
         Me.gbFilterModifier_Movies.TabStop = false
         Me.gbFilterModifier_Movies.Text = "Modifier"
@@ -4832,7 +4845,7 @@ Partial Class frmMain
         Me.tblFilterModifier_Movies.RowCount = 2
         Me.tblFilterModifier_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterModifier_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterModifier_Movies.Size = New System.Drawing.Size(96, 23)
+        Me.tblFilterModifier_Movies.Size = New System.Drawing.Size(107, 23)
         Me.tblFilterModifier_Movies.TabIndex = 40
         '
         'rbFilterOr_Movies
@@ -4882,7 +4895,7 @@ Partial Class frmMain
         Me.tblFilterSpecificData_Movies.Controls.Add(Me.cbFilterYearFrom_Movies, 2, 3)
         Me.tblFilterSpecificData_Movies.Controls.Add(Me.cbFilterYearTo_Movies, 2, 4)
         Me.tblFilterSpecificData_Movies.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblFilterSpecificData_Movies.Location = New System.Drawing.Point(111, 3)
+        Me.tblFilterSpecificData_Movies.Location = New System.Drawing.Point(122, 3)
         Me.tblFilterSpecificData_Movies.Name = "tblFilterSpecificData_Movies"
         Me.tblFilterSpecificData_Movies.RowCount = 8
         Me.tblFilterSpecific_Movies.SetRowSpan(Me.tblFilterSpecificData_Movies, 9)
@@ -13496,4 +13509,5 @@ End Sub
     Friend WithEvents tblBannerTop As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblBannerTitle As System.Windows.Forms.Label
     Friend WithEvents pbBannerCache As System.Windows.Forms.PictureBox
+    Friend WithEvents cbFilterCustom_Movies As System.Windows.Forms.ComboBox
 End Class
