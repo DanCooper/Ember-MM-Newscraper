@@ -540,11 +540,15 @@ Public Class Scanner
         Dim retSeason As New List(Of Seasons)
         Dim cSeason As Seasons
 
-        For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes
+        For Each rShow As Settings.regexp In Master.eSettings.TVShowMatching
             Try
-                For Each sMatch As Match In Regex.Matches(If(rShow.SeasonFromDirectory, Directory.GetParent(sPath).Name, Path.GetFileNameWithoutExtension(sPath)), rShow.SeasonRegex, RegexOptions.IgnoreCase)
+                For Each sMatch As Match In Regex.Matches(sPath.ToLower, rShow.Regexp, RegexOptions.IgnoreCase)
                     Try
                         cSeason = New Seasons
+                        Dim group1 As String = sMatch.Groups(0).Value
+                        Dim group2 As String = sMatch.Groups(1).Value
+                        Dim group3 As String = sMatch.Groups(2).Value
+                        Dim group4 As String = sMatch.Groups(3).Value
 
                         If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
                             If IsNumeric(sMatch.Groups("season").Value) Then
@@ -578,44 +582,44 @@ Public Class Scanner
                             Next
                         End If
 
-                        If rShow.byDate Then
-                            For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                                If Not String.IsNullOrEmpty(eMatch.Groups("aired").Value) Then
-                                    If Regex.IsMatch(eMatch.Groups("aired").Value, "(([0-9]{4})[\.-](0[1-9]|1[0-2])[\.-](0[1-9]|[1-2][0-9]|3[0-1]))", RegexOptions.IgnoreCase) Then
-                                        cSeason.Aired.Add(Replace(eMatch.Groups("aired").Value, ".", "-"))
-                                        cSeason.byDate = True
-                                    ElseIf Regex.IsMatch(eMatch.Groups("aired").Value, "((0[1-9]|[1-2][0-9]|3[0-1])[\.-](0[1-9]|1[0-2])[\.-]([0-9]{4}))", RegexOptions.IgnoreCase) Then
-                                        Dim aDate As Date = DateTime.ParseExact(Replace(eMatch.Groups("aired").Value, ".", "-"), "dd-MM-yyyy", Globalization.CultureInfo.InvariantCulture)
-                                        cSeason.Aired.Add(aDate.ToString("yyyy-MM-dd"))
-                                        cSeason.byDate = True
-                                    End If
-                                End If
-                            Next
-                        Else
-                            Select Case rShow.EpisodeRetrieve
-                                Case Settings.EpRetrieve.FromDirectory
-                                    For Each eMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                                        If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
-                                    Next
-                                Case Settings.EpRetrieve.FromFilename
-                                    For Each eMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                                        If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
-                                    Next
-                                Case Settings.EpRetrieve.FromSeasonResult
-                                    If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
-                                        For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                                            If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
-                                        Next
-                                    End If
-                            End Select
+                        'If rShow.byDate Then
+                        '    For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                        '        If Not String.IsNullOrEmpty(eMatch.Groups("aired").Value) Then
+                        '            If Regex.IsMatch(eMatch.Groups("aired").Value, "(([0-9]{4})[\.-](0[1-9]|1[0-2])[\.-](0[1-9]|[1-2][0-9]|3[0-1]))", RegexOptions.IgnoreCase) Then
+                        '                cSeason.Aired.Add(Replace(eMatch.Groups("aired").Value, ".", "-"))
+                        '                cSeason.byDate = True
+                        '            ElseIf Regex.IsMatch(eMatch.Groups("aired").Value, "((0[1-9]|[1-2][0-9]|3[0-1])[\.-](0[1-9]|1[0-2])[\.-]([0-9]{4}))", RegexOptions.IgnoreCase) Then
+                        '                Dim aDate As Date = DateTime.ParseExact(Replace(eMatch.Groups("aired").Value, ".", "-"), "dd-MM-yyyy", Globalization.CultureInfo.InvariantCulture)
+                        '                cSeason.Aired.Add(aDate.ToString("yyyy-MM-dd"))
+                        '                cSeason.byDate = True
+                        '            End If
+                        '        End If
+                        '    Next
+                        'Else
+                        '    Select Case rShow.EpisodeRetrieve
+                        '        Case Settings.EpRetrieve.FromDirectory
+                        '            For Each eMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                        '                If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                        '            Next
+                        '        Case Settings.EpRetrieve.FromFilename
+                        '            For Each eMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                        '                If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                        '            Next
+                        '        Case Settings.EpRetrieve.FromSeasonResult
+                        '            If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
+                        '                For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                        '                    If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                        '                Next
+                        '            End If
+                        '    End Select
 
-                            If cSeason.Episodes.Count = 0 Then
-                                cSeason.Episodes.Add(MinEp)
-                                MinEp += -1
-                            End If
-                        End If
+                        '    If cSeason.Episodes.Count = 0 Then
+                        '        cSeason.Episodes.Add(MinEp)
+                        '        MinEp += -1
+                        '    End If
+                        'End If
 
-                        retSeason.Add(cSeason)
+                        'retSeason.Add(cSeason)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try

@@ -430,6 +430,7 @@ Partial Public Class clsXMLSettings
     Private _tvshowfiltercustom As List(Of String)
     Private _tvshowfiltercustomisempty As Boolean
     Private _tvshowlandscapeoverwrite As Boolean
+    Private _tvshowmatching As List(Of regexp)
     Private _tvshowmissingbanner As Boolean
     Private _tvshowmissingcharacterart As Boolean
     Private _tvshowmissingclearart As Boolean
@@ -4396,6 +4397,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscanordermodify = value
+        End Set
+    End Property
+
+    Public Property TVShowMatching() As List(Of regexp)
+        Get
+            Return Me._tvshowmatching
+        End Get
+        Set(ByVal value As List(Of regexp))
+            Me._tvshowmatching = value
         End Set
     End Property
 

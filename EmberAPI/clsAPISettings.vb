@@ -3610,6 +3610,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowMatching() As List(Of regexp)
+        Get
+            Return Settings._XMLSettings.TVShowMatching
+        End Get
+        Set(ByVal value As List(Of regexp))
+            Settings._XMLSettings.TVShowMatching = value
+        End Set
+    End Property
+
     Public Property TVShowRegexes() As List(Of TVShowRegEx)
         Get
             Return Settings._XMLSettings.TVShowRegexes
@@ -6118,6 +6127,7 @@ Public Class Settings
         Me.TVShowFilterCustom = New List(Of String)
         Me.TVShowFilterCustomIsEmpty = False
         Me.TVShowLandscapeOverwrite = True
+        Me.TVShowMatching = New List(Of regexp)
         Me.TVShowMissingBanner = False
         Me.TVShowMissingCharacterArt = False
         Me.TVShowMissingClearArt = False
@@ -6288,6 +6298,17 @@ Public Class Settings
             Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 6, .SeasonRegex = "(?<season>specials?)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^a-zA-Z]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename, .byDate = False})
             Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 7, .SeasonRegex = "^(s(eason)?)?[\W_]*(?<season>[0-9]+)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^a-zA-Z]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename, .byDate = False})
             Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 8, .SeasonRegex = "[^\w]s(eason)?[\W_]*(?<season>[0-9]+)", .SeasonFromDirectory = True, .EpisodeRegex = "[^a-zA-Z]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename, .byDate = False})
+        End If
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowRegex) AndAlso (Force OrElse Master.eSettings.TVShowMatching.Count <= 0) Then
+            Master.eSettings.TVShowMatching.Clear()
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 0, .byDate = False, .defaultSeason = -1, .Regexp = "s([0-9]+)[ ._-]*e([0-9]+(?:(?:[a-i]|\\.[1-9])(?![0-9]))?)([^\\\\/]*)$"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 1, .byDate = False, .defaultSeason = -1, .Regexp = "[\\._ -]()e(?:p[ ._-]?)?([0-9]+(?:(?:[a-i]|\\.[1-9])(?![0-9]))?)([^\\\\/]*)$"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 2, .byDate = True, .defaultSeason = -1, .Regexp = "([0-9]{4})[\\.-]([0-9]{2})[\\.-]([0-9]{2})"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 3, .byDate = True, .defaultSeason = -1, .Regexp = "([0-9]{2})[\\.-]([0-9]{2})[\\.-]([0-9]{4})"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 3, .byDate = False, .defaultSeason = -1, .Regexp = "[\\\\/\\._ \\[\\(-]([0-9]+)x([0-9]+(?:(?:[a-i]|\\.[1-9])(?![0-9]))?)([^\\\\/]*)$"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 4, .byDate = False, .defaultSeason = -1, .Regexp = "[\\\\/\\._ -]([0-9]+)([0-9][0-9](?:(?:[a-i]|\\.[1-9])(?![0-9]))?)([\\._ -][^\\\\/]*)$"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 5, .byDate = False, .defaultSeason = -1, .Regexp = "[\\/._ -]p(?:ar)?t[_. -]()([ivx]+|[0-9]+)([._ -][^\\/]*)$"})
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieListSorting) AndAlso (Force OrElse Master.eSettings.MovieGeneralMediaListSorting.Count <= 0) Then
@@ -6898,6 +6919,78 @@ Public Class Settings
             Me._seasonfromdirectory = True
             Me._episoderegex = String.Empty
             Me._episoderetrieve = EpRetrieve.FromSeasonResult
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class regexp
+
+#Region "Fields"
+
+        Private _bydate As Boolean
+        Private _defaultSeason As Integer
+        Private _id As Integer
+        Private _regexp As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property byDate() As Boolean
+            Get
+                Return Me._bydate
+            End Get
+            Set(ByVal value As Boolean)
+                Me._bydate = value
+            End Set
+        End Property
+
+        Public Property defaultSeason() As Integer
+            Get
+                Return Me._defaultSeason
+            End Get
+            Set(ByVal value As Integer)
+                Me._defaultSeason = value
+            End Set
+        End Property
+
+        Public Property ID() As Integer
+            Get
+                Return _id
+            End Get
+            Set(ByVal value As Integer)
+                _id = value
+            End Set
+        End Property
+
+        Public Property Regexp() As String
+            Get
+                Return Me._regexp
+            End Get
+            Set(ByVal value As String)
+                Me._regexp = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._bydate = False
+            Me._defaultSeason = -1
+            Me._id = -1
+            Me._regexp = String.Empty
         End Sub
 
 #End Region 'Methods
