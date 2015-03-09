@@ -52,7 +52,7 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.Director = ""
         _fDummyMultiEpisode.DirExist = False
         _fDummyMultiEpisode.FileExist = False
-        _fDummyMultiEpisode.FileName = ""
+        _fDummyMultiEpisode.FileName = "OldFileName"
         _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
         _fDummyMultiEpisode.ID = -1
         _fDummyMultiEpisode.IMDBID = ""
@@ -70,7 +70,7 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.NewPath = ""
         _fDummyMultiEpisode.OldPath = ""
         _fDummyMultiEpisode.OriginalTitle = ""
-        _fDummyMultiEpisode.Parent = ""
+        _fDummyMultiEpisode.Parent = "OldDirectoryName"
         _fDummyMultiEpisode.Path = ""
         _fDummyMultiEpisode.Rating = "7.3"
         _fDummyMultiEpisode.Resolution = "720p"
@@ -97,7 +97,7 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.Director = ""
         _fDummyMultiSeason.DirExist = False
         _fDummyMultiSeason.FileExist = False
-        _fDummyMultiSeason.FileName = ""
+        _fDummyMultiSeason.FileName = "OldFileName"
         _fDummyMultiSeason.Genre = "Comedy / Lovestory"
         _fDummyMultiSeason.ID = -1
         _fDummyMultiSeason.IMDBID = ""
@@ -115,7 +115,7 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.NewPath = ""
         _fDummyMultiSeason.OldPath = ""
         _fDummyMultiSeason.OriginalTitle = ""
-        _fDummyMultiSeason.Parent = ""
+        _fDummyMultiSeason.Parent = "OldDirectoryName"
         _fDummyMultiSeason.Path = ""
         _fDummyMultiSeason.Rating = "7.3"
         _fDummyMultiSeason.Resolution = "720p"
@@ -148,7 +148,7 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.Director = ""
         _fDummySingleEpisode.DirExist = False
         _fDummySingleEpisode.FileExist = False
-        _fDummySingleEpisode.FileName = ""
+        _fDummySingleEpisode.FileName = "OldFileName"
         _fDummySingleEpisode.Genre = "Comedy / Lovestory"
         _fDummySingleEpisode.ID = -1
         _fDummySingleEpisode.IMDBID = ""
@@ -166,7 +166,7 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.NewPath = ""
         _fDummySingleEpisode.OldPath = ""
         _fDummySingleEpisode.OriginalTitle = ""
-        _fDummySingleEpisode.Parent = ""
+        _fDummySingleEpisode.Parent = "OldDirectoryName"
         _fDummySingleEpisode.Path = ""
         _fDummySingleEpisode.Rating = "7.3"
         _fDummySingleEpisode.Resolution = "720p"
@@ -191,7 +191,7 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.Director = "Joss Whedon"
         _fDummySingleMovie.DirExist = False
         _fDummySingleMovie.FileExist = False
-        _fDummySingleMovie.FileName = ""
+        _fDummySingleMovie.FileName = "OldFileName"
         _fDummySingleMovie.Genre = "Action / Sci-Fi"
         _fDummySingleMovie.ID = -1
         _fDummySingleMovie.IMDBID = "0848228"
@@ -209,7 +209,7 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.NewPath = ""
         _fDummySingleMovie.OldPath = ""
         _fDummySingleMovie.OriginalTitle = "Marvel's The Avengers"
-        _fDummySingleMovie.Parent = ""
+        _fDummySingleMovie.Parent = "OldDirectoryName"
         _fDummySingleMovie.Path = ""
         _fDummySingleMovie.Rating = "7.3"
         _fDummySingleMovie.Resolution = "1080p"
