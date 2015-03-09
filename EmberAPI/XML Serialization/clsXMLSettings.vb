@@ -194,6 +194,7 @@ Partial Public Class clsXMLSettings
     Private _moviescrapermetadataifoscan As Boolean
     Private _moviescrapermetadatascan As Boolean
     Private _moviescrapermpaa As Boolean
+    Private _moviescrapermpaanotrated As String
     Private _moviescraperoriginaltitle As Boolean
     Private _moviescrapercertonlyvalue As Boolean
     Private _moviescraperoutline As Boolean
@@ -368,6 +369,7 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowepiguideurl As Boolean
     Private _tvscrapershowgenre As Boolean
     Private _tvscrapershowmpaa As Boolean
+    Private _tvscrapershowmpaanotrated As String
     Private _tvscrapershowplot As Boolean
     Private _tvscrapershowpremiered As Boolean
     Private _tvscrapershowrating As Boolean
@@ -1582,6 +1584,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescrapermpaa = value
+        End Set
+    End Property
+
+    Public Property MovieScraperMPAANotRated() As String
+        Get
+            Return Me._moviescrapermpaanotrated
+        End Get
+        Set(ByVal value As String)
+            Me._moviescrapermpaanotrated = value
         End Set
     End Property
 
@@ -3791,6 +3802,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscrapershowmpaa = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowMPAANotRated() As String
+        Get
+            Return Me._tvscrapershowmpaanotrated
+        End Get
+        Set(ByVal value As String)
+            Me._tvscrapershowmpaanotrated = value
         End Set
     End Property
 

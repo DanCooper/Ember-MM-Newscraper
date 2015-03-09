@@ -1039,6 +1039,8 @@ Partial Class dlgSettings
         Me.chkTVScraperUseSRuntimeForEp = New System.Windows.Forms.CheckBox()
         Me.lblTVScraperUpdateTime = New System.Windows.Forms.Label()
         Me.cbTVScraperUpdateTime = New System.Windows.Forms.ComboBox()
+        Me.txtTVScraperShowMPAANotRated = New System.Windows.Forms.TextBox()
+        Me.lblTVScraperShowMPAANotRated = New System.Windows.Forms.Label()
         Me.cbMovieScraperCertLang = New System.Windows.Forms.ComboBox()
         Me.lblMovieScraperOutlineLimit = New System.Windows.Forms.Label()
         Me.txtMovieScraperOutlineLimit = New System.Windows.Forms.TextBox()
@@ -1157,6 +1159,8 @@ Partial Class dlgSettings
         Me.chkMovieScraperCertFSK = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCertForMPAAFallback = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCertForMPAA = New System.Windows.Forms.CheckBox()
+        Me.txtMovieScraperMPAANotRated = New System.Windows.Forms.TextBox()
+        Me.lblMovieScraperMPAANotRated = New System.Windows.Forms.Label()
         Me.pnlMovieScraper = New System.Windows.Forms.Panel()
         Me.tblMovieScraper = New System.Windows.Forms.TableLayoutPanel()
         Me.tsSettingsTopMenu = New System.Windows.Forms.ToolStrip()
@@ -14634,7 +14638,7 @@ Partial Class dlgSettings
         Me.gbTVScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbTVScraperMiscOpts.Location = New System.Drawing.Point(237, 220)
         Me.gbTVScraperMiscOpts.Name = "gbTVScraperMiscOpts"
-        Me.gbTVScraperMiscOpts.Size = New System.Drawing.Size(446, 98)
+        Me.gbTVScraperMiscOpts.Size = New System.Drawing.Size(446, 126)
         Me.gbTVScraperMiscOpts.TabIndex = 5
         Me.gbTVScraperMiscOpts.TabStop = false
         Me.gbTVScraperMiscOpts.Text = "Miscellaneous"
@@ -14651,16 +14655,18 @@ Partial Class dlgSettings
         Me.tblTVScraperMiscOpts.Controls.Add(Me.chkTVScraperUseSRuntimeForEp, 0, 0)
         Me.tblTVScraperMiscOpts.Controls.Add(Me.lblTVScraperUpdateTime, 0, 1)
         Me.tblTVScraperMiscOpts.Controls.Add(Me.cbTVScraperUpdateTime, 1, 1)
+        Me.tblTVScraperMiscOpts.Controls.Add(Me.txtTVScraperShowMPAANotRated, 1, 3)
+        Me.tblTVScraperMiscOpts.Controls.Add(Me.lblTVScraperShowMPAANotRated, 0, 3)
         Me.tblTVScraperMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVScraperMiscOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVScraperMiscOpts.Name = "tblTVScraperMiscOpts"
-        Me.tblTVScraperMiscOpts.RowCount = 4
+        Me.tblTVScraperMiscOpts.RowCount = 5
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblTVScraperMiscOpts.Size = New System.Drawing.Size(440, 77)
+        Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVScraperMiscOpts.Size = New System.Drawing.Size(440, 105)
         Me.tblTVScraperMiscOpts.TabIndex = 6
         '
         'cbTVScraperRatingRegion
@@ -14720,6 +14726,25 @@ Partial Class dlgSettings
         Me.cbTVScraperUpdateTime.Name = "cbTVScraperUpdateTime"
         Me.cbTVScraperUpdateTime.Size = New System.Drawing.Size(160, 21)
         Me.cbTVScraperUpdateTime.TabIndex = 6
+        '
+        'txtTVScraperShowMPAANotRated
+        '
+        Me.txtTVScraperShowMPAANotRated.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVScraperShowMPAANotRated.Location = New System.Drawing.Point(214, 80)
+        Me.txtTVScraperShowMPAANotRated.Name = "txtTVScraperShowMPAANotRated"
+        Me.txtTVScraperShowMPAANotRated.Size = New System.Drawing.Size(160, 22)
+        Me.txtTVScraperShowMPAANotRated.TabIndex = 7
+        '
+        'lblTVScraperShowMPAANotRated
+        '
+        Me.lblTVScraperShowMPAANotRated.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVScraperShowMPAANotRated.AutoSize = true
+        Me.lblTVScraperShowMPAANotRated.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVScraperShowMPAANotRated.Location = New System.Drawing.Point(3, 84)
+        Me.lblTVScraperShowMPAANotRated.Name = "lblTVScraperShowMPAANotRated"
+        Me.lblTVScraperShowMPAANotRated.Size = New System.Drawing.Size(190, 13)
+        Me.lblTVScraperShowMPAANotRated.TabIndex = 5
+        Me.lblTVScraperShowMPAANotRated.Text = "MPAA value if no rating is available:"
         '
         'cbMovieScraperCertLang
         '
@@ -15030,7 +15055,7 @@ Partial Class dlgSettings
         Me.gbMovieScraperGlobalOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieScraperGlobalOpts.Name = "gbMovieScraperGlobalOpts"
         Me.tblMovieScraper.SetRowSpan(Me.gbMovieScraperGlobalOpts, 3)
-        Me.gbMovieScraperGlobalOpts.Size = New System.Drawing.Size(243, 575)
+        Me.gbMovieScraperGlobalOpts.Size = New System.Drawing.Size(243, 597)
         Me.gbMovieScraperGlobalOpts.TabIndex = 1
         Me.gbMovieScraperGlobalOpts.TabStop = false
         Me.gbMovieScraperGlobalOpts.Text = "Scraper Fields - Global"
@@ -15154,7 +15179,7 @@ Partial Class dlgSettings
         Me.tblMovieScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperGlobalOpts.Size = New System.Drawing.Size(237, 554)
+        Me.tblMovieScraperGlobalOpts.Size = New System.Drawing.Size(237, 576)
         Me.tblMovieScraperGlobalOpts.TabIndex = 0
         '
         'chkMovieLockCollectionID
@@ -16172,7 +16197,7 @@ Partial Class dlgSettings
         Me.gbMovieScraperCertificationOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbMovieScraperCertificationOpts.Location = New System.Drawing.Point(252, 459)
         Me.gbMovieScraperCertificationOpts.Name = "gbMovieScraperCertificationOpts"
-        Me.gbMovieScraperCertificationOpts.Size = New System.Drawing.Size(446, 119)
+        Me.gbMovieScraperCertificationOpts.Size = New System.Drawing.Size(446, 141)
         Me.gbMovieScraperCertificationOpts.TabIndex = 77
         Me.gbMovieScraperCertificationOpts.TabStop = false
         Me.gbMovieScraperCertificationOpts.Text = "Certification"
@@ -16187,16 +16212,19 @@ Partial Class dlgSettings
         Me.tblMovieScraperCertificationOpts.Controls.Add(Me.chkMovieScraperCertFSK, 0, 2)
         Me.tblMovieScraperCertificationOpts.Controls.Add(Me.chkMovieScraperCertForMPAAFallback, 0, 1)
         Me.tblMovieScraperCertificationOpts.Controls.Add(Me.chkMovieScraperCertForMPAA, 0, 0)
+        Me.tblMovieScraperCertificationOpts.Controls.Add(Me.txtMovieScraperMPAANotRated, 1, 4)
+        Me.tblMovieScraperCertificationOpts.Controls.Add(Me.lblMovieScraperMPAANotRated, 0, 4)
         Me.tblMovieScraperCertificationOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieScraperCertificationOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieScraperCertificationOpts.Name = "tblMovieScraperCertificationOpts"
-        Me.tblMovieScraperCertificationOpts.RowCount = 5
+        Me.tblMovieScraperCertificationOpts.RowCount = 6
         Me.tblMovieScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperCertificationOpts.Size = New System.Drawing.Size(440, 98)
+        Me.tblMovieScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieScraperCertificationOpts.Size = New System.Drawing.Size(440, 120)
         Me.tblMovieScraperCertificationOpts.TabIndex = 78
         '
         'chkMovieScraperCertOnlyValue
@@ -16251,6 +16279,25 @@ Partial Class dlgSettings
         Me.chkMovieScraperCertForMPAA.TabIndex = 6
         Me.chkMovieScraperCertForMPAA.Text = "Use Certification for MPAA (XBMC users)"
         Me.chkMovieScraperCertForMPAA.UseVisualStyleBackColor = true
+        '
+        'txtMovieScraperMPAANotRated
+        '
+        Me.txtMovieScraperMPAANotRated.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieScraperMPAANotRated.Location = New System.Drawing.Point(240, 95)
+        Me.txtMovieScraperMPAANotRated.Name = "txtMovieScraperMPAANotRated"
+        Me.txtMovieScraperMPAANotRated.Size = New System.Drawing.Size(190, 22)
+        Me.txtMovieScraperMPAANotRated.TabIndex = 69
+        '
+        'lblMovieScraperMPAANotRated
+        '
+        Me.lblMovieScraperMPAANotRated.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieScraperMPAANotRated.AutoSize = true
+        Me.lblMovieScraperMPAANotRated.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblMovieScraperMPAANotRated.Location = New System.Drawing.Point(3, 99)
+        Me.lblMovieScraperMPAANotRated.Name = "lblMovieScraperMPAANotRated"
+        Me.lblMovieScraperMPAANotRated.Size = New System.Drawing.Size(190, 13)
+        Me.lblMovieScraperMPAANotRated.TabIndex = 68
+        Me.lblMovieScraperMPAANotRated.Text = "MPAA value if no rating is available:"
         '
         'pnlMovieScraper
         '
@@ -20704,4 +20751,8 @@ End Sub
     Friend WithEvents btnMovieSortTokenReset As System.Windows.Forms.Button
     Friend WithEvents btnTVSortTokenReset As System.Windows.Forms.Button
     Friend WithEvents btnMovieSetSortTokenReset As System.Windows.Forms.Button
+    Friend WithEvents txtTVScraperShowMPAANotRated As System.Windows.Forms.TextBox
+    Friend WithEvents lblTVScraperShowMPAANotRated As System.Windows.Forms.Label
+    Friend WithEvents txtMovieScraperMPAANotRated As System.Windows.Forms.TextBox
+    Friend WithEvents lblMovieScraperMPAANotRated As System.Windows.Forms.Label
 End Class

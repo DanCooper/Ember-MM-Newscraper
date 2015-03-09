@@ -806,6 +806,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieScraperMPAANotRated() As String
+        Get
+            Return Settings._XMLSettings.MovieScraperMPAANotRated
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieScraperMPAANotRated = value
+        End Set
+    End Property
+
     Public Property MovieScraperDirector() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperDirector
@@ -3013,6 +3022,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVScraperShowMPAA = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowMPAANotRated() As String
+        Get
+            Return Settings._XMLSettings.TVScraperShowMPAANotRated
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVScraperShowMPAANotRated = value
         End Set
     End Property
 
@@ -5864,6 +5882,7 @@ Public Class Settings
         Me.MovieScraperMetaDataIFOScan = True
         Me.MovieScraperMetaDataScan = True
         Me.MovieScraperMPAA = True
+        Me.MovieScraperMPAANotRated = String.Empty
         Me.MovieScraperOriginalTitle = True
         Me.MovieScraperCertOnlyValue = False
         Me.MovieScraperOutline = True
@@ -6038,6 +6057,7 @@ Public Class Settings
         Me.TVScraperShowEpiGuideURL = False
         Me.TVScraperShowGenre = True
         Me.TVScraperShowMPAA = True
+        Me.TVScraperShowMPAANotRated = String.Empty
         Me.TVScraperShowPlot = True
         Me.TVScraperShowPremiered = True
         Me.TVScraperShowRating = True

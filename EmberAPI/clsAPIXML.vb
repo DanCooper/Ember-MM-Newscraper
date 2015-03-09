@@ -532,48 +532,32 @@ Public Class APIXML
     'End Function
 
     Public Shared Function GetRatingImage(ByVal strRating As String) As Image
-        '//
-        ' Parse the floating Rating box
-        '\\
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
-        Dim v = From e In RatingXML.movies.Where(Function(f) f.searchstring = strRating)
-        If v.Count > 0 Then
-            imgRatingStr = Path.Combine(mePath, v(0).icon)
-        Else
-            v = From e In RatingXML.movies Where strRating.ToLower.StartsWith(e.searchstring.ToLower)
+        If Not strRating = Master.eSettings.MovieScraperMPAANotRated Then
+            Dim v = From e In RatingXML.movies.Where(Function(f) f.searchstring = strRating)
             If v.Count > 0 Then
                 imgRatingStr = Path.Combine(mePath, v(0).icon)
+            Else
+                v = From e In RatingXML.movies Where strRating.ToLower.StartsWith(e.searchstring.ToLower)
+                If v.Count > 0 Then
+                    imgRatingStr = Path.Combine(mePath, v(0).icon)
+                End If
             End If
+        Else
+            imgRatingStr = Path.Combine(mePath, "movienr.png")
         End If
-        'If RatingXML.Nodes.Count > 0 Then
-        '    Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
 
         Try
-
-            '        If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "USA" AndAlso Not IsNothing(RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)) AndAlso RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)...<movie>.Descendants.Count > 0 Then
-            '            Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)...<movie>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower OrElse strRating.ToLower = xRat.@searchstring.ToLower.Split(Convert.ToChar(":"))(1) Select xRat.<icon>.Value
-            '            If xRating.Count > 0 Then
-            '                imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
-            '            End If
-            '        Else
-            '            Dim xRating = From xRat In RatingXML...<usa>...<movie>...<name> Where strRating.ToLower.StartsWith(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
-            '            If xRating.Count > 0 Then
-            '                imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
-            '            End If
-            '        End If
-
             If Not String.IsNullOrEmpty(imgRatingStr) AndAlso File.Exists(imgRatingStr) Then
                 Using fsImage As New FileStream(imgRatingStr, FileMode.Open, FileAccess.Read)
                     imgRating = Image.FromStream(fsImage)
                 End Using
             End If
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-        'End If
 
         Return imgRating
     End Function
@@ -625,13 +609,21 @@ Public Class APIXML
     End Function
 
     Public Shared Function GetTVRatingImage(ByVal strRating As String) As Image
+        Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
-
-        Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
-        Dim v = From e In RatingXML.tv.Where(Function(f) f.searchstring = strRating)
-        If v.Count > 0 Then
-            imgRatingStr = Path.Combine(mePath, v(0).icon)
+        If Not strRating = Master.eSettings.TVScraperShowMPAANotRated Then
+            Dim v = From e In RatingXML.tv.Where(Function(f) f.searchstring = strRating)
+            If v.Count > 0 Then
+                imgRatingStr = Path.Combine(mePath, v(0).icon)
+            Else
+                v = From e In RatingXML.tv Where strRating.ToLower.StartsWith(e.searchstring.ToLower)
+                If v.Count > 0 Then
+                    imgRatingStr = Path.Combine(mePath, v(0).icon)
+                End If
+            End If
+        Else
+            imgRatingStr = Path.Combine(mePath, "tvnr.png")
         End If
 
         Try
@@ -640,7 +632,6 @@ Public Class APIXML
                     imgRating = Image.FromStream(fsImage)
                 End Using
             End If
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try

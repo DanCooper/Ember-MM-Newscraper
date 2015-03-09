@@ -2328,6 +2328,7 @@ Public Class dlgEditMovie
 
     Private Sub LoadRatings()
         Me.lbMPAA.Items.Add(Master.eLang.None)
+        If Not String.IsNullOrEmpty(Master.eSettings.MovieScraperMPAANotRated) Then Me.lbMPAA.Items.Add(Master.eSettings.MovieScraperMPAANotRated)
         Me.lbMPAA.Items.AddRange(APIXML.GetRatingList)
     End Sub
 
@@ -2894,7 +2895,7 @@ Public Class dlgEditMovie
                     Next
                 Else
                     Dim i As Integer = 0
-                    For ctr As Integer = 0 To Me.lbMPAA.Items.Count
+                    For ctr As Integer = 0 To Me.lbMPAA.Items.Count - 1
                         If Master.currMovie.Movie.MPAA.ToLower.StartsWith(Me.lbMPAA.Items.Item(ctr).ToString.ToLower) Then
                             i = ctr
                             Exit For

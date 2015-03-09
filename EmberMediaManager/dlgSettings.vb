@@ -1987,6 +1987,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub txtMovieScraperMPAANotRated_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieScraperMPAANotRated.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieScraperCertForMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertForMPAA.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -2830,6 +2834,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkTVScraperShowMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowMPAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtTVScraperShowMPAANotRated_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVScraperShowMPAANotRated.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3682,6 +3690,7 @@ Public Class dlgSettings
             Me.chkMovieScraperMetaDataIFOScan.Checked = .MovieScraperMetaDataIFOScan
             Me.chkMovieScraperMetaDataScan.Checked = .MovieScraperMetaDataScan
             Me.chkMovieScraperMPAA.Checked = .MovieScraperMPAA
+            Me.txtMovieScraperMPAANotRated.Text = .MovieScraperMPAANotRated
             Me.chkMovieScraperOriginalTitle.Checked = .MovieScraperOriginalTitle
             Me.chkMovieScraperDetailView.Checked = .MovieScraperUseDetailView
             Me.chkMovieScraperOutline.Checked = .MovieScraperOutline
@@ -3778,6 +3787,7 @@ Public Class dlgSettings
             Me.chkTVScraperShowEpiGuideURL.Checked = .TVScraperShowEpiGuideURL
             Me.chkTVScraperShowGenre.Checked = .TVScraperShowGenre
             Me.chkTVScraperShowMPAA.Checked = .TVScraperShowMPAA
+            Me.txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
             Me.chkTVScraperShowPlot.Checked = .TVScraperShowPlot
             Me.chkTVScraperShowPremiered.Checked = .TVScraperShowPremiered
             Me.chkTVScraperShowRating.Checked = .TVScraperShowRating
@@ -5396,6 +5406,7 @@ Public Class dlgSettings
             .MovieScraperMetaDataIFOScan = Me.chkMovieScraperMetaDataIFOScan.Checked
             .MovieScraperMetaDataScan = Me.chkMovieScraperMetaDataScan.Checked
             .MovieScraperMPAA = Me.chkMovieScraperMPAA.Checked
+            .MovieScraperMPAANotRated = Me.txtMovieScraperMPAANotRated.Text
             .MovieScraperOriginalTitle = Me.chkMovieScraperOriginalTitle.Checked
             .MovieScraperOutline = Me.chkMovieScraperOutline.Checked
             If Not String.IsNullOrEmpty(Me.txtMovieScraperOutlineLimit.Text) Then
@@ -5534,6 +5545,7 @@ Public Class dlgSettings
             .TVScraperShowEpiGuideURL = Me.chkTVScraperShowEpiGuideURL.Checked
             .TVScraperShowGenre = Me.chkTVScraperShowGenre.Checked
             .TVScraperShowMPAA = Me.chkTVScraperShowMPAA.Checked
+            .TVScraperShowMPAANotRated = Me.txtTVScraperShowMPAANotRated.Text
             .TVScraperShowPlot = Me.chkTVScraperShowPlot.Checked
             .TVScraperShowPremiered = Me.chkTVScraperShowPremiered.Checked
             .TVScraperShowRating = Me.chkTVScraperShowRating.Checked

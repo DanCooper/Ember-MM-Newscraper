@@ -1539,6 +1539,16 @@ Public Class dlgEditShow
         End If
     End Sub
 
+    Private Sub lbMPAA_DoubleClick(sender As Object, e As EventArgs) Handles lbMPAA.DoubleClick
+        If Me.lbMPAA.SelectedItems.Count = 1 Then
+            If Me.lbMPAA.SelectedIndex = 0 Then
+                Me.txtMPAA.Text = String.Empty
+            Else
+                Me.txtMPAA.Text = Me.lbMPAA.SelectedItem.ToString
+            End If
+        End If
+    End Sub
+
     Private Sub LoadEFanarts()
         Dim EF_tPath As String = String.Empty
         Dim EF_lFI As New List(Of String)
@@ -1606,7 +1616,7 @@ Public Class dlgEditShow
 
     Private Sub LoadRatings()
         Me.lbMPAA.Items.Add(Master.eLang.None)
-
+        If Not String.IsNullOrEmpty(Master.eSettings.TVScraperShowMPAANotRated) Then Me.lbMPAA.Items.Add(Master.eSettings.TVScraperShowMPAANotRated)
         Me.lbMPAA.Items.AddRange(APIXML.GetTVRatingList)
     End Sub
 
@@ -2233,28 +2243,27 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub SelectMPAA()
-        If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
-            Try
-                If Not APIXML.RatingXML.movies.FindAll(Function(f) f.country = Master.eSettings.MovieScraperCertLang.ToLower).Count > 0 Then
-                    Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currShow.TVShow.MPAA))
-                    Me.lbMPAA.SelectedIndex = l
-                    If Me.lbMPAA.SelectedItems.Count = 0 Then
-                        Me.lbMPAA.SelectedIndex = 0
+        Try
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
+                Dim i As Integer = 0
+                For ctr As Integer = 0 To Me.lbMPAA.Items.Count - 1
+                    If Master.currShow.TVShow.MPAA.ToLower.StartsWith(Me.lbMPAA.Items.Item(ctr).ToString.ToLower) Then
+                        i = ctr
+                        Exit For
                     End If
+                Next
+                Me.lbMPAA.SelectedIndex = i
+                Me.lbMPAA.TopIndex = i
+                Me.txtMPAA.Text = Master.currShow.TVShow.MPAA
+            End If
 
-                    Me.lbMPAA.TopIndex = 0
-
-                Else
-
-                    Me.lbMPAA.SelectedIndex = 0
-                End If
-
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        Else
-            Me.lbMPAA.SelectedIndex = 0
-        End If
+            If Me.lbMPAA.SelectedItems.Count = 0 Then
+                Me.lbMPAA.SelectedIndex = 0
+                Me.lbMPAA.TopIndex = 0
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     Private Sub txtPlot_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
@@ -2284,12 +2293,8 @@ Public Class dlgEditShow
                         Master.currShow.ListTitle = StringUtils.FilterTokens_TV(.txtTitle.Text.Trim)
                     End If
                 End If
-
-                If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
-                    Master.currShow.TVShow.MPAA = .lbMPAA.SelectedItem.ToString
-                Else
-                    Master.currShow.TVShow.MPAA = String.Empty
-                End If
+                
+                Master.currShow.TVShow.MPAA = .txtMPAA.Text.Trim
 
                 Master.currShow.TVShow.Rating = .tmpRating
 

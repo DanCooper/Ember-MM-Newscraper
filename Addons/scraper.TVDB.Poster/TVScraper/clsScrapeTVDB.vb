@@ -1156,6 +1156,7 @@ Public Class Scraper
                                     If sInfo.Options.bShowStudio AndAlso (String.IsNullOrEmpty(.Studio) OrElse Not Master.eSettings.TVLockShowStudio) Then .Studio = If(xS(0).Element("Network") Is Nothing, .Studio, xS(0).Element("Network").Value)
                                     If sInfo.Options.bShowVotes AndAlso (String.IsNullOrEmpty(.Votes) OrElse Not Master.eSettings.TVLockShowVotes) Then .Votes = If(xS(0).Element("RatingCount") Is Nothing, .Votes, xS(0).Element("RatingCount").Value)
                                     If sInfo.Options.bShowActors Then .Actors = Actors
+                                    If String.IsNullOrEmpty(.MPAA) AndAlso Not String.IsNullOrEmpty(Master.eSettings.TVScraperShowMPAANotRated) Then .MPAA = Master.eSettings.TVScraperShowMPAANotRated
                                 End With
                             End If
 

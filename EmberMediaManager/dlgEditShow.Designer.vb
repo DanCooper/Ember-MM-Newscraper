@@ -162,6 +162,7 @@ Partial Class dlgEditShow
         Me.lblOrdering = New System.Windows.Forms.Label()
         Me.cbEpisodeSorting = New System.Windows.Forms.ComboBox()
         Me.lblEpisodeSorting = New System.Windows.Forms.Label()
+        Me.txtMPAA = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditShow.SuspendLayout()
@@ -213,7 +214,7 @@ Partial Class dlgEditShow
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(854, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(853, 64)
         Me.pnlTop.TabIndex = 2
         '
         'lblTopDetails
@@ -270,11 +271,12 @@ Partial Class dlgEditShow
         Me.tcEditShow.Location = New System.Drawing.Point(4, 70)
         Me.tcEditShow.Name = "tcEditShow"
         Me.tcEditShow.SelectedIndex = 0
-        Me.tcEditShow.Size = New System.Drawing.Size(844, 478)
+        Me.tcEditShow.Size = New System.Drawing.Size(844, 489)
         Me.tcEditShow.TabIndex = 3
         '
         'tpShowDetails
         '
+        Me.tpShowDetails.Controls.Add(Me.txtMPAA)
         Me.tpShowDetails.Controls.Add(Me.txtVotes)
         Me.tpShowDetails.Controls.Add(Me.lblVotes)
         Me.tpShowDetails.Controls.Add(Me.lblRuntime)
@@ -315,7 +317,7 @@ Partial Class dlgEditShow
         Me.tpShowDetails.Location = New System.Drawing.Point(4, 22)
         Me.tpShowDetails.Name = "tpShowDetails"
         Me.tpShowDetails.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpShowDetails.Size = New System.Drawing.Size(836, 452)
+        Me.tpShowDetails.Size = New System.Drawing.Size(836, 463)
         Me.tpShowDetails.TabIndex = 0
         Me.tpShowDetails.Text = "Details"
         Me.tpShowDetails.UseVisualStyleBackColor = True
@@ -324,7 +326,7 @@ Partial Class dlgEditShow
         '
         Me.txtVotes.BackColor = System.Drawing.SystemColors.Window
         Me.txtVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVotes.Location = New System.Drawing.Point(738, 392)
+        Me.txtVotes.Location = New System.Drawing.Point(738, 403)
         Me.txtVotes.Name = "txtVotes"
         Me.txtVotes.Size = New System.Drawing.Size(66, 22)
         Me.txtVotes.TabIndex = 81
@@ -333,7 +335,7 @@ Partial Class dlgEditShow
         '
         Me.lblVotes.AutoSize = True
         Me.lblVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVotes.Location = New System.Drawing.Point(735, 377)
+        Me.lblVotes.Location = New System.Drawing.Point(735, 388)
         Me.lblVotes.Name = "lblVotes"
         Me.lblVotes.Size = New System.Drawing.Size(38, 13)
         Me.lblVotes.TabIndex = 80
@@ -343,7 +345,7 @@ Partial Class dlgEditShow
         '
         Me.lblRuntime.AutoSize = True
         Me.lblRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblRuntime.Location = New System.Drawing.Point(635, 376)
+        Me.lblRuntime.Location = New System.Drawing.Point(635, 387)
         Me.lblRuntime.Name = "lblRuntime"
         Me.lblRuntime.Size = New System.Drawing.Size(54, 13)
         Me.lblRuntime.TabIndex = 78
@@ -353,7 +355,7 @@ Partial Class dlgEditShow
         '
         Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
         Me.txtRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtRuntime.Location = New System.Drawing.Point(635, 392)
+        Me.txtRuntime.Location = New System.Drawing.Point(635, 403)
         Me.txtRuntime.Name = "txtRuntime"
         Me.txtRuntime.Size = New System.Drawing.Size(66, 22)
         Me.txtRuntime.TabIndex = 79
@@ -402,7 +404,7 @@ Partial Class dlgEditShow
         '
         Me.lblStatus.AutoSize = True
         Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblStatus.Location = New System.Drawing.Point(635, 330)
+        Me.lblStatus.Location = New System.Drawing.Point(635, 346)
         Me.lblStatus.Name = "lblStatus"
         Me.lblStatus.Size = New System.Drawing.Size(42, 13)
         Me.lblStatus.TabIndex = 68
@@ -411,7 +413,7 @@ Partial Class dlgEditShow
         'txtStatus
         '
         Me.txtStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtStatus.Location = New System.Drawing.Point(635, 346)
+        Me.txtStatus.Location = New System.Drawing.Point(635, 362)
         Me.txtStatus.Name = "txtStatus"
         Me.txtStatus.Size = New System.Drawing.Size(193, 22)
         Me.txtStatus.TabIndex = 69
@@ -419,7 +421,7 @@ Partial Class dlgEditShow
         'btnActorDown
         '
         Me.btnActorDown.Image = CType(resources.GetObject("btnActorDown.Image"), System.Drawing.Image)
-        Me.btnActorDown.Location = New System.Drawing.Point(434, 420)
+        Me.btnActorDown.Location = New System.Drawing.Point(434, 431)
         Me.btnActorDown.Name = "btnActorDown"
         Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
         Me.btnActorDown.TabIndex = 14
@@ -428,7 +430,7 @@ Partial Class dlgEditShow
         'btnActorUp
         '
         Me.btnActorUp.Image = CType(resources.GetObject("btnActorUp.Image"), System.Drawing.Image)
-        Me.btnActorUp.Location = New System.Drawing.Point(410, 420)
+        Me.btnActorUp.Location = New System.Drawing.Point(410, 431)
         Me.btnActorUp.Name = "btnActorUp"
         Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
         Me.btnActorUp.TabIndex = 13
@@ -450,7 +452,7 @@ Partial Class dlgEditShow
         Me.clbGenre.IntegralHeight = False
         Me.clbGenre.Location = New System.Drawing.Point(7, 160)
         Me.clbGenre.Name = "clbGenre"
-        Me.clbGenre.Size = New System.Drawing.Size(192, 283)
+        Me.clbGenre.Size = New System.Drawing.Size(192, 297)
         Me.clbGenre.Sorted = True
         Me.clbGenre.TabIndex = 6
         '
@@ -458,7 +460,7 @@ Partial Class dlgEditShow
         '
         Me.lblStudio.AutoSize = True
         Me.lblStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblStudio.Location = New System.Drawing.Point(635, 273)
+        Me.lblStudio.Location = New System.Drawing.Point(635, 305)
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(44, 13)
         Me.lblStudio.TabIndex = 18
@@ -467,7 +469,7 @@ Partial Class dlgEditShow
         'txtStudio
         '
         Me.txtStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtStudio.Location = New System.Drawing.Point(635, 289)
+        Me.txtStudio.Location = New System.Drawing.Point(635, 321)
         Me.txtStudio.Name = "txtStudio"
         Me.txtStudio.Size = New System.Drawing.Size(193, 22)
         Me.txtStudio.TabIndex = 19
@@ -475,7 +477,7 @@ Partial Class dlgEditShow
         'btnEditActor
         '
         Me.btnEditActor.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
-        Me.btnEditActor.Location = New System.Drawing.Point(246, 420)
+        Me.btnEditActor.Location = New System.Drawing.Point(246, 431)
         Me.btnEditActor.Name = "btnEditActor"
         Me.btnEditActor.Size = New System.Drawing.Size(23, 23)
         Me.btnEditActor.TabIndex = 12
@@ -484,7 +486,7 @@ Partial Class dlgEditShow
         'btnAddActor
         '
         Me.btnAddActor.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
-        Me.btnAddActor.Location = New System.Drawing.Point(217, 420)
+        Me.btnAddActor.Location = New System.Drawing.Point(217, 431)
         Me.btnAddActor.Name = "btnAddActor"
         Me.btnAddActor.Size = New System.Drawing.Size(23, 23)
         Me.btnAddActor.TabIndex = 11
@@ -493,7 +495,7 @@ Partial Class dlgEditShow
         'btnManual
         '
         Me.btnManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnManual.Location = New System.Drawing.Point(738, 423)
+        Me.btnManual.Location = New System.Drawing.Point(738, 434)
         Me.btnManual.Name = "btnManual"
         Me.btnManual.Size = New System.Drawing.Size(92, 23)
         Me.btnManual.TabIndex = 20
@@ -503,7 +505,7 @@ Partial Class dlgEditShow
         'btnRemove
         '
         Me.btnRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
-        Me.btnRemove.Location = New System.Drawing.Point(602, 420)
+        Me.btnRemove.Location = New System.Drawing.Point(602, 431)
         Me.btnRemove.Name = "btnRemove"
         Me.btnRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnRemove.TabIndex = 15
@@ -526,7 +528,7 @@ Partial Class dlgEditShow
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(217, 155)
         Me.lvActors.Name = "lvActors"
-        Me.lvActors.Size = New System.Drawing.Size(408, 259)
+        Me.lvActors.Size = New System.Drawing.Size(408, 270)
         Me.lvActors.TabIndex = 10
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
@@ -1750,7 +1752,7 @@ Partial Class dlgEditShow
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(781, 553)
+        Me.Cancel_Button.Location = New System.Drawing.Point(781, 565)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -1758,7 +1760,7 @@ Partial Class dlgEditShow
         '
         'OK_Button
         '
-        Me.OK_Button.Location = New System.Drawing.Point(708, 553)
+        Me.OK_Button.Location = New System.Drawing.Point(708, 565)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -1769,7 +1771,7 @@ Partial Class dlgEditShow
         Me.cbOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbOrdering.FormattingEnabled = True
-        Me.cbOrdering.Location = New System.Drawing.Point(111, 553)
+        Me.cbOrdering.Location = New System.Drawing.Point(111, 565)
         Me.cbOrdering.Name = "cbOrdering"
         Me.cbOrdering.Size = New System.Drawing.Size(166, 21)
         Me.cbOrdering.TabIndex = 5
@@ -1777,7 +1779,7 @@ Partial Class dlgEditShow
         'lblOrdering
         '
         Me.lblOrdering.AutoSize = True
-        Me.lblOrdering.Location = New System.Drawing.Point(5, 558)
+        Me.lblOrdering.Location = New System.Drawing.Point(5, 570)
         Me.lblOrdering.Name = "lblOrdering"
         Me.lblOrdering.Size = New System.Drawing.Size(101, 13)
         Me.lblOrdering.TabIndex = 4
@@ -1788,7 +1790,7 @@ Partial Class dlgEditShow
         Me.cbEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbEpisodeSorting.FormattingEnabled = True
-        Me.cbEpisodeSorting.Location = New System.Drawing.Point(440, 553)
+        Me.cbEpisodeSorting.Location = New System.Drawing.Point(440, 565)
         Me.cbEpisodeSorting.Name = "cbEpisodeSorting"
         Me.cbEpisodeSorting.Size = New System.Drawing.Size(166, 21)
         Me.cbEpisodeSorting.TabIndex = 5
@@ -1796,12 +1798,21 @@ Partial Class dlgEditShow
         'lblEpisodeSorting
         '
         Me.lblEpisodeSorting.AutoSize = True
-        Me.lblEpisodeSorting.Location = New System.Drawing.Point(330, 558)
+        Me.lblEpisodeSorting.Location = New System.Drawing.Point(330, 570)
         Me.lblEpisodeSorting.Name = "lblEpisodeSorting"
         Me.lblEpisodeSorting.Size = New System.Drawing.Size(103, 13)
         Me.lblEpisodeSorting.TabIndex = 4
         Me.lblEpisodeSorting.Text = "Episode Sorted by:"
         Me.lblEpisodeSorting.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'txtMPAA
+        '
+        Me.txtMPAA.BackColor = System.Drawing.SystemColors.Window
+        Me.txtMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtMPAA.Location = New System.Drawing.Point(635, 269)
+        Me.txtMPAA.Name = "txtMPAA"
+        Me.txtMPAA.Size = New System.Drawing.Size(193, 22)
+        Me.txtMPAA.TabIndex = 82
         '
         'dlgEditShow
         '
@@ -1809,7 +1820,7 @@ Partial Class dlgEditShow
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(854, 582)
+        Me.ClientSize = New System.Drawing.Size(853, 600)
         Me.Controls.Add(Me.lblEpisodeSorting)
         Me.Controls.Add(Me.cbEpisodeSorting)
         Me.Controls.Add(Me.lblOrdering)
@@ -2010,5 +2021,6 @@ Partial Class dlgEditShow
     Friend WithEvents cbEpisodeSorting As System.Windows.Forms.ComboBox
     Friend WithEvents lblEpisodeSorting As System.Windows.Forms.Label
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
+    Friend WithEvents txtMPAA As System.Windows.Forms.TextBox
 
 End Class
