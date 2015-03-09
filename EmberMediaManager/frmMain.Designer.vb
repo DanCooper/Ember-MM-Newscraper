@@ -4794,7 +4794,8 @@ Partial Class frmMain
         Me.tblFilterSpecific_Movies.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblFilterSpecific_Movies.Location = New System.Drawing.Point(3, 18)
         Me.tblFilterSpecific_Movies.Name = "tblFilterSpecific_Movies"
-        Me.tblFilterSpecific_Movies.RowCount = 8
+        Me.tblFilterSpecific_Movies.RowCount = 10
+        Me.tblFilterSpecific_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecific_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecific_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecific_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -4810,9 +4811,9 @@ Partial Class frmMain
         'cbFilterCustom_Movies
         '
         Me.cbFilterCustom_Movies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterCustom_Movies.Enabled = false
-        Me.cbFilterCustom_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbFilterCustom_Movies.FormattingEnabled = true
+        Me.cbFilterCustom_Movies.Enabled = False
+        Me.cbFilterCustom_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbFilterCustom_Movies.FormattingEnabled = True
         Me.cbFilterCustom_Movies.Location = New System.Drawing.Point(3, 214)
         Me.cbFilterCustom_Movies.Name = "cbFilterCustom_Movies"
         Me.cbFilterCustom_Movies.Size = New System.Drawing.Size(113, 21)
@@ -4820,19 +4821,19 @@ Partial Class frmMain
         '
         'gbFilterModifier_Movies
         '
-        Me.gbFilterModifier_Movies.AutoSize = true
+        Me.gbFilterModifier_Movies.AutoSize = True
         Me.gbFilterModifier_Movies.Controls.Add(Me.tblFilterModifier_Movies)
         Me.gbFilterModifier_Movies.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbFilterModifier_Movies.Location = New System.Drawing.Point(3, 3)
         Me.gbFilterModifier_Movies.Name = "gbFilterModifier_Movies"
         Me.gbFilterModifier_Movies.Size = New System.Drawing.Size(113, 44)
         Me.gbFilterModifier_Movies.TabIndex = 3
-        Me.gbFilterModifier_Movies.TabStop = false
+        Me.gbFilterModifier_Movies.TabStop = False
         Me.gbFilterModifier_Movies.Text = "Modifier"
         '
         'tblFilterModifier_Movies
         '
-        Me.tblFilterModifier_Movies.AutoSize = true
+        Me.tblFilterModifier_Movies.AutoSize = True
         Me.tblFilterModifier_Movies.ColumnCount = 3
         Me.tblFilterModifier_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterModifier_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -4850,31 +4851,31 @@ Partial Class frmMain
         '
         'rbFilterOr_Movies
         '
-        Me.rbFilterOr_Movies.AutoSize = true
-        Me.rbFilterOr_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.rbFilterOr_Movies.AutoSize = True
+        Me.rbFilterOr_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbFilterOr_Movies.Location = New System.Drawing.Point(55, 3)
         Me.rbFilterOr_Movies.Name = "rbFilterOr_Movies"
         Me.rbFilterOr_Movies.Size = New System.Drawing.Size(38, 17)
         Me.rbFilterOr_Movies.TabIndex = 1
         Me.rbFilterOr_Movies.Text = "Or"
-        Me.rbFilterOr_Movies.UseVisualStyleBackColor = true
+        Me.rbFilterOr_Movies.UseVisualStyleBackColor = True
         '
         'rbFilterAnd_Movies
         '
-        Me.rbFilterAnd_Movies.AutoSize = true
-        Me.rbFilterAnd_Movies.Checked = true
-        Me.rbFilterAnd_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.rbFilterAnd_Movies.AutoSize = True
+        Me.rbFilterAnd_Movies.Checked = True
+        Me.rbFilterAnd_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbFilterAnd_Movies.Location = New System.Drawing.Point(3, 3)
         Me.rbFilterAnd_Movies.Name = "rbFilterAnd_Movies"
         Me.rbFilterAnd_Movies.Size = New System.Drawing.Size(46, 17)
         Me.rbFilterAnd_Movies.TabIndex = 0
-        Me.rbFilterAnd_Movies.TabStop = true
+        Me.rbFilterAnd_Movies.TabStop = True
         Me.rbFilterAnd_Movies.Text = "And"
-        Me.rbFilterAnd_Movies.UseVisualStyleBackColor = true
+        Me.rbFilterAnd_Movies.UseVisualStyleBackColor = True
         '
         'tblFilterSpecificData_Movies
         '
-        Me.tblFilterSpecificData_Movies.AutoSize = true
+        Me.tblFilterSpecificData_Movies.AutoSize = True
         Me.tblFilterSpecificData_Movies.ColumnCount = 4
         Me.tblFilterSpecificData_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterSpecificData_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -4907,8 +4908,8 @@ Partial Class frmMain
         Me.tblFilterSpecificData_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecificData_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecificData_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterSpecificData_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblFilterSpecificData_Movies.Size = New System.Drawing.Size(285, 238)
+        Me.tblFilterSpecificData_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterSpecificData_Movies.Size = New System.Drawing.Size(285, 232)
         Me.tblFilterSpecificData_Movies.TabIndex = 7
         '
         'gbFilterDataField_Movies

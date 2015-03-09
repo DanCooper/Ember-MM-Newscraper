@@ -109,7 +109,7 @@ Public Class frmFilterEditor
             End If
 
             btnRemoveFilter.Enabled = True
-            If Not xmlFilter Is Nothing Then
+            If xmlFilter IsNot Nothing Then
                 For Each sett As xFilter In xmlFilter.listOfFilter.Where(Function(y) y.name.Equals(txt_FilterName.Text))
                     sett.name = txt_FilterName.Text
                     sett.query = txt_FilterQuery.Text
@@ -126,6 +126,8 @@ Public Class frmFilterEditor
                     MessageBox.Show(Master.eLang.GetString(1376, "Saved changes") & "!", Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
                     Exit Sub
                 Next
+            Else
+                xmlFilter = New xFilters
             End If
             Dim g As New xFilter
             g.name = txt_FilterName.Text
