@@ -349,6 +349,7 @@ Partial Public Class clsXMLSettings
     Private _tvlockshowtitle As Boolean
     Private _tvlockshowvotes As Boolean
     Private _tvmetadataperfiletype As List(Of MetadataPerType)
+    Private _tvmultipartmatching As String
     Private _tvscanordermodify As Boolean
     Private _tvscraperdurationruntimeformat As String
     Private _tvscraperepisodeactors As Boolean
@@ -4397,6 +4398,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscanordermodify = value
+        End Set
+    End Property
+
+    Public Property TVMultiPartMatching() As String
+        Get
+            Return Me._tvmultipartmatching
+        End Get
+        Set(ByVal value As String)
+            Me._tvmultipartmatching = value
         End Set
     End Property
 

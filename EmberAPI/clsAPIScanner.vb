@@ -536,114 +536,197 @@ Public Class Scanner
         fList = Nothing
     End Sub
 
+    Private Shared Function GetEpisodeAndSeasonFromRegExp(ByVal reg As Match, ByRef cSeason As Seasons, ByVal defaultSeason As Integer) As Boolean
+        Dim tSeason As String = reg.Groups(1).Value
+        Dim tEpisode As String = reg.Groups(2).Value
+
+        If Not String.IsNullOrEmpty(tSeason) OrElse Not String.IsNullOrEmpty(tEpisode) Then
+            If String.IsNullOrEmpty(tSeason) AndAlso Not String.IsNullOrEmpty(tEpisode) Then
+                'no season specified -> assume defaultSeason
+                cSeason.Season = defaultSeason
+                cSeason.Episodes.Add(CInt(tEpisode))
+            ElseIf Not String.IsNullOrEmpty(tSeason) AndAlso String.IsNullOrEmpty(tEpisode) Then
+                'no episode specification -> assume defaultSeason
+                cSeason.Season = defaultSeason
+                cSeason.Episodes.Add(CInt(tEpisode))
+            Else
+                'season and episode specified
+                cSeason.Season = CInt(tSeason)
+                cSeason.Episodes.Add(CInt(tEpisode))
+            End If
+            Return True
+        End If
+
+        Return False
+    End Function
+
     Public Shared Function GetTVSeasons(ByVal sPath As String, ByVal ShowID As Long, ByVal MinEp As Integer) As List(Of Seasons)
         Dim retSeason As New List(Of Seasons)
         Dim cSeason As Seasons
 
         For Each rShow As Settings.regexp In Master.eSettings.TVShowMatching
-            Try
-                For Each sMatch As Match In Regex.Matches(sPath.ToLower, rShow.Regexp, RegexOptions.IgnoreCase)
-                    Try
-                        cSeason = New Seasons
-                        Dim group1 As String = sMatch.Groups(0).Value
-                        Dim group2 As String = sMatch.Groups(1).Value
-                        Dim group3 As String = sMatch.Groups(2).Value
-                        Dim group4 As String = sMatch.Groups(3).Value
+            Dim reg As Match = Regex.Match(sPath.ToLower, rShow.Regexp, RegexOptions.IgnoreCase)
 
-                        If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
-                            If IsNumeric(sMatch.Groups("season").Value) Then
-                                cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
-                            ElseIf Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
-                                cSeason.Season = 0
-                            Else
-                                For Each sShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(r) r.SeasonFromDirectory = True)
-                                    For Each sfMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, sShow.SeasonRegex, RegexOptions.IgnoreCase)
-                                        If IsNumeric(sfMatch.Groups("season").Value) Then
-                                            cSeason.Season = Convert.ToInt32(sfMatch.Groups("season").Value)
-                                        ElseIf Regex.IsMatch(sfMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
-                                            cSeason.Season = 0
-                                        Else
-                                            cSeason.Season = -1
-                                        End If
-                                    Next
-                                Next
-                            End If
-                        Else
-                            For Each sShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(r) r.SeasonFromDirectory = True)
-                                For Each sfMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, sShow.SeasonRegex, RegexOptions.IgnoreCase)
-                                    If IsNumeric(sfMatch.Groups("season").Value) Then
-                                        cSeason.Season = Convert.ToInt32(sfMatch.Groups("season").Value)
-                                    ElseIf Regex.IsMatch(sfMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
-                                        cSeason.Season = 0
-                                    Else
-                                        cSeason.Season = -1
-                                    End If
-                                Next
-                            Next
-                        End If
+            If reg.Success Then
+                Dim regexppos As Integer = reg.Index
+                Dim defaultSeason As Integer = rShow.defaultSeason
 
-                        'If rShow.byDate Then
-                        '    For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                        '        If Not String.IsNullOrEmpty(eMatch.Groups("aired").Value) Then
-                        '            If Regex.IsMatch(eMatch.Groups("aired").Value, "(([0-9]{4})[\.-](0[1-9]|1[0-2])[\.-](0[1-9]|[1-2][0-9]|3[0-1]))", RegexOptions.IgnoreCase) Then
-                        '                cSeason.Aired.Add(Replace(eMatch.Groups("aired").Value, ".", "-"))
-                        '                cSeason.byDate = True
-                        '            ElseIf Regex.IsMatch(eMatch.Groups("aired").Value, "((0[1-9]|[1-2][0-9]|3[0-1])[\.-](0[1-9]|1[0-2])[\.-]([0-9]{4}))", RegexOptions.IgnoreCase) Then
-                        '                Dim aDate As Date = DateTime.ParseExact(Replace(eMatch.Groups("aired").Value, ".", "-"), "dd-MM-yyyy", Globalization.CultureInfo.InvariantCulture)
-                        '                cSeason.Aired.Add(aDate.ToString("yyyy-MM-dd"))
-                        '                cSeason.byDate = True
-                        '            End If
-                        '        End If
-                        '    Next
-                        'Else
-                        '    Select Case rShow.EpisodeRetrieve
-                        '        Case Settings.EpRetrieve.FromDirectory
-                        '            For Each eMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                        '                If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
-                        '            Next
-                        '        Case Settings.EpRetrieve.FromFilename
-                        '            For Each eMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                        '                If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
-                        '            Next
-                        '        Case Settings.EpRetrieve.FromSeasonResult
-                        '            If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
-                        '                For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                        '                    If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
-                        '                Next
-                        '            End If
-                        '    End Select
+                If rShow.byDate Then
 
-                        '    If cSeason.Episodes.Count = 0 Then
-                        '        cSeason.Episodes.Add(MinEp)
-                        '        MinEp += -1
-                        '    End If
-                        'End If
-
-                        'retSeason.Add(cSeason)
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex)
-                    End Try
-                Next
-
-                If retSeason.Count > 0 Then
-                    'clean entries
-
-                    'first check if we have at least one "real" season with "real" episodes
-                    If retSeason.Where(Function(s) s.Season >= 0 AndAlso s.Episodes.Where(Function(e) e >= 0).Count > 0).Count > 0 Then
-                        'there is at least one season, so lets clean out all the unknown seasons or seasons with unknown episodes
-                        For i As Integer = retSeason.Count - 1 To 0 Step -1
-                            'remove any unknown season or seasons where all episodes are unknown
-                            If retSeason(i).Season < 0 OrElse retSeason(i).Episodes.Where(Function(e) e < 0).Count = retSeason(i).Episodes.Count Then retSeason.Remove(retSeason(i))
-                        Next
-                    End If
-
-                    'if we still have something left, lets use it
-                    If retSeason.Count > 0 Then Return retSeason
+                Else
+                    If Not GetEpisodeAndSeasonFromRegExp(reg, cSeason, defaultSeason) Then Continue For
+                    logger.Info(String.Format("VideoInfoScanner: Found episode match {0} (s{1}e{2}) [{3}]", sPath, cSeason.Season, cSeason.Episodes.Item(0).ToString, rShow.Regexp))
                 End If
+
+                Dim remainder As String = reg.Groups(3).Value.ToString
+                Dim reg2 As Match = Regex.Match(remainder, Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase)
+            End If
+
+            Try
+                cSeason = New Seasons
+                Dim group1 As String = sMatch.Groups(0).Value
+                Dim tSeason As String = sMatch.Groups(1).Value
+                Dim tEpisode As String = sMatch.Groups(2).Value
+                Dim remainder As String = sMatch.Groups(3).Value
+                Dim regexp2pos As Integer
+
+                If rShow.byDate Then
+
+                Else
+                    If Not GetEpisodeAndSeasonFromRegExp(sMatch, cSeason, rShow.defaultSeason) Then Continue For
+                    logger.Info(String.Format("VideoInfoScanner: Found episode match {0} (s{1}e{2}) [{3}]", sPath, cSeason.Season, cSeason.Episodes.Item(0).ToString, rShow.Regexp))
+                End If
+
+                Dim mMatch As Match = Regex.Match(remainder, Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase)
+                regexppos = sMatch.Index
+                regexp2pos = mMatch.Index
+
+                If Not rShow.byDate AndAlso mMatch.Success Then
+                    Dim offset As Integer = 0
+
+                    While ((regexp2pos + offset) > -1) OrElse (regexppos + offset > -1)
+                        If (((regexppos <= regexp2pos) AndAlso Not regexp2pos = -1) OrElse _
+                            (regexppos >= 0 AndAlso regexp2pos = -1)) Then
+                            GetEpisodeAndSeasonFromRegExp(sMatch, cSeason, rShow.defaultSeason)
+                            logger.Info(String.Format("VideoInfoScanner: Adding new season {0}, multipart episode {1} [{2}]", cSeason.Season, cSeason.Episodes(0), rShow.Regexp))
+                        ElseIf (((regexp2pos < regexppos) AndAlso Not regexp2pos = -1) OrElse _
+                                (regexp2pos >= 0 AndAlso regexppos = -1)) Then
+                            cSeason.Episodes.Add(CInt(mMatch.Groups(1).Value))
+                        End If
+                    End While
+
+
+                    While Regex.IsMatch(remainder, rShow.Regexp, RegexOptions.IgnoreCase) OrElse _
+                        Regex.IsMatch(remainder, Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase)
+                        If Regex.IsMatch(remainder, rShow.Regexp, RegexOptions.IgnoreCase) Then
+                            GetEpisodeAndSeasonFromRegExp(sMatch, cSeason, rShow.defaultSeason)
+                            logger.Info(String.Format("VideoInfoScanner: Adding new season {0}, multipart episode {1} [{2}]", cSeason.Season, cSeason.Episodes.Item(0).ToString, rShow.Regexp))
+                            remainder = Regex.Match(remainder, rShow.Regexp, RegexOptions.IgnoreCase).Groups(3).Value
+                        ElseIf Regex.IsMatch(remainder, Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase) Then
+                            cSeason.Episodes.Add(CInt(Regex.Match(remainder, Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase).Groups(1).Value))
+                            logger.Info(String.Format("VideoInfoScanner: Adding multipart episode {0} [{1}]", cSeason.Episodes.Item(0).ToString, Master.eSettings.TVMultiPartMatching))
+                        End If
+                    End While
+                End If
+
+
+
+
+                'If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
+                '    If IsNumeric(sMatch.Groups("season").Value) Then
+                '        cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
+                '    ElseIf Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
+                '        cSeason.Season = 0
+                '    Else
+                '        For Each sShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(r) r.SeasonFromDirectory = True)
+                '            For Each sfMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, sShow.SeasonRegex, RegexOptions.IgnoreCase)
+                '                If IsNumeric(sfMatch.Groups("season").Value) Then
+                '                    cSeason.Season = Convert.ToInt32(sfMatch.Groups("season").Value)
+                '                ElseIf Regex.IsMatch(sfMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
+                '                    cSeason.Season = 0
+                '                Else
+                '                    cSeason.Season = -1
+                '                End If
+                '            Next
+                '        Next
+                '    End If
+                'Else
+                '    For Each sShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(r) r.SeasonFromDirectory = True)
+                '        For Each sfMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, sShow.SeasonRegex, RegexOptions.IgnoreCase)
+                '            If IsNumeric(sfMatch.Groups("season").Value) Then
+                '                cSeason.Season = Convert.ToInt32(sfMatch.Groups("season").Value)
+                '            ElseIf Regex.IsMatch(sfMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
+                '                cSeason.Season = 0
+                '            Else
+                '                cSeason.Season = -1
+                '            End If
+                '        Next
+                '    Next
+                'End If
+
+                'If rShow.byDate Then
+                '    For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                '        If Not String.IsNullOrEmpty(eMatch.Groups("aired").Value) Then
+                '            If Regex.IsMatch(eMatch.Groups("aired").Value, "(([0-9]{4})[\.-](0[1-9]|1[0-2])[\.-](0[1-9]|[1-2][0-9]|3[0-1]))", RegexOptions.IgnoreCase) Then
+                '                cSeason.Aired.Add(Replace(eMatch.Groups("aired").Value, ".", "-"))
+                '                cSeason.byDate = True
+                '            ElseIf Regex.IsMatch(eMatch.Groups("aired").Value, "((0[1-9]|[1-2][0-9]|3[0-1])[\.-](0[1-9]|1[0-2])[\.-]([0-9]{4}))", RegexOptions.IgnoreCase) Then
+                '                Dim aDate As Date = DateTime.ParseExact(Replace(eMatch.Groups("aired").Value, ".", "-"), "dd-MM-yyyy", Globalization.CultureInfo.InvariantCulture)
+                '                cSeason.Aired.Add(aDate.ToString("yyyy-MM-dd"))
+                '                cSeason.byDate = True
+                '            End If
+                '        End If
+                '    Next
+                'Else
+                '    Select Case rShow.EpisodeRetrieve
+                '        Case Settings.EpRetrieve.FromDirectory
+                '            For Each eMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                '                If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                '            Next
+                '        Case Settings.EpRetrieve.FromFilename
+                '            For Each eMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                '                If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                '            Next
+                '        Case Settings.EpRetrieve.FromSeasonResult
+                '            If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
+                '                For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                '                    If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                '                Next
+                '            End If
+                '    End Select
+
+                '    If cSeason.Episodes.Count = 0 Then
+                '        cSeason.Episodes.Add(MinEp)
+                '        MinEp += -1
+                '    End If
+                'End If
+
+                retSeason.Add(cSeason)
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
-                Continue For
             End Try
+        Next
+
+        If retSeason.Count > 0 Then
+            'clean entries
+
+            'first check if we have at least one "real" season with "real" episodes
+            If retSeason.Where(Function(s) s.Season >= 0 AndAlso s.Episodes.Where(Function(e) e >= 0).Count > 0).Count > 0 Then
+                'there is at least one season, so lets clean out all the unknown seasons or seasons with unknown episodes
+                For i As Integer = retSeason.Count - 1 To 0 Step -1
+                    'remove any unknown season or seasons where all episodes are unknown
+                    If retSeason(i).Season < 0 OrElse retSeason(i).Episodes.Where(Function(e) e < 0).Count = retSeason(i).Episodes.Count Then retSeason.Remove(retSeason(i))
+                Next
+            End If
+
+            'if we still have something left, lets use it
+            If retSeason.Count > 0 Then Return retSeason
+        End If
+
+            Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Continue For
+        End Try
         Next
 
         'nothing found
