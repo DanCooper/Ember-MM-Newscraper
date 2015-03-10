@@ -16456,6 +16456,13 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
+    Private Sub cmnuMovieUpSelCollectionID_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCollectionID.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
+        cScrapeOptions.bCollectionID = True
+        Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
     Private Sub cmnuMovieUpSelCountry_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCountry.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
         cScrapeOptions.bCountry = True
@@ -18762,6 +18769,7 @@ doCancel:
                 .cmnuMovieSetRescrape.Text = Master.eLang.GetString(1233, "(Re)Scrape MovieSet")
                 .cmnuMovieUpSelActors.Text = Master.eLang.GetString(725, "Actors")
                 .cmnuMovieUpSelCert.Text = Master.eLang.GetString(56, "Certification")
+                .cmnuMovieUpSelCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
                 .cmnuMovieUpSelCountry.Text = Master.eLang.GetString(301, "Country")
                 .cmnuMovieUpSelDirector.Text = Master.eLang.GetString(62, "Director")
                 .cmnuMovieUpSelGenre.Text = Master.eLang.GetString(20, "Genre")
