@@ -4987,6 +4987,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieSetDiscArtExpertSingle() As String
+        Get
+            Return Settings._XMLSettings.MovieSetDiscArtExpertSingle
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetDiscArtExpertSingle = value
+        End Set
+    End Property
+
     Public Property MovieSetFanartExpertSingle() As String
         Get
             Return Settings._XMLSettings.MovieSetFanartExpertSingle
@@ -5056,6 +5065,15 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Settings._XMLSettings.MovieSetClearLogoExpertParent = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtExpertParent() As String
+        Get
+            Return Settings._XMLSettings.MovieSetDiscArtExpertParent
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetDiscArtExpertParent = value
         End Set
     End Property
 
@@ -6436,31 +6454,31 @@ Public Class Settings
 
     Public Function MovieSetBannerAnyEnabled() As Boolean
         Return MovieSetBannerMSAA OrElse _
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetPosterExpertSingle)))
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
     End Function
 
     Public Function MovieSetClearArtAnyEnabled() As Boolean
         Return MovieSetClearArtMSAA OrElse _
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearArtExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle)))
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle))))
     End Function
 
     Public Function MovieSetClearLogoAnyEnabled() As Boolean
         Return MovieSetClearLogoMSAA OrElse _
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearLogoExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle)))
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearLogoExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle))))
     End Function
 
     Public Function MovieSetDiscArtAnyEnabled() As Boolean
-        Return False
+        Return (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetDiscArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetDiscArtExpertSingle))))
     End Function
 
     Public Function MovieSetFanartAnyEnabled() As Boolean
         Return MovieSetFanartMSAA OrElse _
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetFanartExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetFanartExpertSingle)))
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetFanartExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetFanartExpertSingle))))
     End Function
 
     Public Function MovieSetLandscapeAnyEnabled() As Boolean
         Return MovieSetLandscapeMSAA OrElse _
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetLandscapeExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle)))
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetLandscapeExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle))))
     End Function
 
     Public Function MovieSetMissingItemsAnyEnabled() As Boolean
@@ -6470,7 +6488,7 @@ Public Class Settings
 
     Public Function MovieSetPosterAnyEnabled() As Boolean
         Return MovieSetPosterMSAA OrElse _
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse Not String.IsNullOrEmpty(MovieSetPosterExpertSingle)))
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
     End Function
 
     Public Function TVASAnyEnabled() As Boolean

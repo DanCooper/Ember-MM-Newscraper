@@ -634,6 +634,8 @@ Partial Public Class clsXMLSettings
     Private _moviesetclearartexpertsingle As String
     Private _moviesetclearlogoexpertparent As String
     Private _moviesetclearlogoexpertsingle As String
+    Private _moviesetdiscartexpertparent As String
+    Private _moviesetdiscartexpertsingle As String
     Private _moviesetfanartexpertparent As String
     Private _moviesetfanartexpertsingle As String
     Private _moviesetlandscapeexpertparent As String
@@ -4786,6 +4788,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieSetDiscArtExpertSingle() As String
+        Get
+            Return Me._moviesetdiscartexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetdiscartexpertsingle = value
+        End Set
+    End Property
+
     Public Property MovieSetFanartExpertSingle() As String
         Get
             Return Me._moviesetfanartexpertsingle
@@ -4855,6 +4866,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As String)
             Me._moviesetclearlogoexpertparent = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtExpertParent() As String
+        Get
+            Return Me._moviesetdiscartexpertparent
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetdiscartexpertparent = value
         End Set
     End Property
 

@@ -1264,6 +1264,8 @@ Partial Class dlgSettings
         Me.lblMovieSetPathExpertSingle = New System.Windows.Forms.Label()
         Me.txtMovieSetPathExpertSingle = New System.Windows.Forms.TextBox()
         Me.btnMovieSetPathExpertSingleBrowse = New System.Windows.Forms.Button()
+        Me.lblMovieSetDiscArtExpertSingle = New System.Windows.Forms.Label()
+        Me.txtMovieSetDiscArtExpertSingle = New System.Windows.Forms.TextBox()
         Me.tpMovieSetFileNamingExpertParent = New System.Windows.Forms.TabPage()
         Me.tblMovieSetSourcesFileNamingExpertParent = New System.Windows.Forms.TableLayoutPanel()
         Me.txtMovieSetLandscapeExpertParent = New System.Windows.Forms.TextBox()
@@ -1280,6 +1282,8 @@ Partial Class dlgSettings
         Me.lblMovieSetPosterExpertParent = New System.Windows.Forms.Label()
         Me.lblMovieSetFanartExpertParent = New System.Windows.Forms.Label()
         Me.lblMovieSetBannerExpertParent = New System.Windows.Forms.Label()
+        Me.lblMovieSetDiscArtExpertParent = New System.Windows.Forms.Label()
+        Me.txtMovieSetDiscArtExpertParent = New System.Windows.Forms.TextBox()
         Me.chkMovieSetUseExpert = New System.Windows.Forms.CheckBox()
         Me.pnlMovieSetScraper = New System.Windows.Forms.Panel()
         Me.tblMovieSetScraper = New System.Windows.Forms.TableLayoutPanel()
@@ -17021,7 +17025,7 @@ Partial Class dlgSettings
         Me.pnlMovieSetSources.Controls.Add(Me.tblMovieSetSources)
         Me.pnlMovieSetSources.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieSetSources.Name = "pnlMovieSetSources"
-        Me.pnlMovieSetSources.Size = New System.Drawing.Size(568, 466)
+        Me.pnlMovieSetSources.Size = New System.Drawing.Size(579, 477)
         Me.pnlMovieSetSources.TabIndex = 25
         Me.pnlMovieSetSources.Visible = false
         '
@@ -17042,7 +17046,7 @@ Partial Class dlgSettings
         Me.tblMovieSetSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetSources.Size = New System.Drawing.Size(568, 466)
+        Me.tblMovieSetSources.Size = New System.Drawing.Size(579, 477)
         Me.tblMovieSetSources.TabIndex = 10
         '
         'gbMovieSetSourcesMiscOpts
@@ -17107,7 +17111,7 @@ Partial Class dlgSettings
         Me.gbMovieSetFileNamingOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbMovieSetFileNamingOpts.Location = New System.Drawing.Point(3, 76)
         Me.gbMovieSetFileNamingOpts.Name = "gbMovieSetFileNamingOpts"
-        Me.gbMovieSetFileNamingOpts.Size = New System.Drawing.Size(562, 387)
+        Me.gbMovieSetFileNamingOpts.Size = New System.Drawing.Size(562, 397)
         Me.gbMovieSetFileNamingOpts.TabIndex = 8
         Me.gbMovieSetFileNamingOpts.TabStop = false
         Me.gbMovieSetFileNamingOpts.Text = "File Naming"
@@ -17125,7 +17129,7 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingOpts.RowCount = 2
         Me.tblMovieSetSourcesFileNamingOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetSourcesFileNamingOpts.Size = New System.Drawing.Size(556, 366)
+        Me.tblMovieSetSourcesFileNamingOpts.Size = New System.Drawing.Size(556, 376)
         Me.tblMovieSetSourcesFileNamingOpts.TabIndex = 11
         '
         'tcMovieSetFileNaming
@@ -17136,7 +17140,7 @@ Partial Class dlgSettings
         Me.tcMovieSetFileNaming.Location = New System.Drawing.Point(3, 3)
         Me.tcMovieSetFileNaming.Name = "tcMovieSetFileNaming"
         Me.tcMovieSetFileNaming.SelectedIndex = 0
-        Me.tcMovieSetFileNaming.Size = New System.Drawing.Size(550, 360)
+        Me.tcMovieSetFileNaming.Size = New System.Drawing.Size(550, 370)
         Me.tcMovieSetFileNaming.TabIndex = 7
         '
         'tpMovieSetFileNamingXBMC
@@ -17327,7 +17331,7 @@ Partial Class dlgSettings
         Me.tpMovieSetFileNamingExpert.Controls.Add(Me.tblMovieSetSourcesFileNamingExpert)
         Me.tpMovieSetFileNamingExpert.Location = New System.Drawing.Point(4, 22)
         Me.tpMovieSetFileNamingExpert.Name = "tpMovieSetFileNamingExpert"
-        Me.tpMovieSetFileNamingExpert.Size = New System.Drawing.Size(542, 334)
+        Me.tpMovieSetFileNamingExpert.Size = New System.Drawing.Size(542, 344)
         Me.tpMovieSetFileNamingExpert.TabIndex = 2
         Me.tpMovieSetFileNamingExpert.Text = "Expert"
         Me.tpMovieSetFileNamingExpert.UseVisualStyleBackColor = true
@@ -17345,7 +17349,7 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingExpert.RowCount = 2
         Me.tblMovieSetSourcesFileNamingExpert.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpert.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetSourcesFileNamingExpert.Size = New System.Drawing.Size(542, 334)
+        Me.tblMovieSetSourcesFileNamingExpert.Size = New System.Drawing.Size(542, 344)
         Me.tblMovieSetSourcesFileNamingExpert.TabIndex = 10
         '
         'gbMovieSetSourcesFileNamingExpertOpts
@@ -17356,7 +17360,7 @@ Partial Class dlgSettings
         Me.gbMovieSetSourcesFileNamingExpertOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.gbMovieSetSourcesFileNamingExpertOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSetSourcesFileNamingExpertOpts.Name = "gbMovieSetSourcesFileNamingExpertOpts"
-        Me.gbMovieSetSourcesFileNamingExpertOpts.Size = New System.Drawing.Size(536, 328)
+        Me.gbMovieSetSourcesFileNamingExpertOpts.Size = New System.Drawing.Size(536, 340)
         Me.gbMovieSetSourcesFileNamingExpertOpts.TabIndex = 8
         Me.gbMovieSetSourcesFileNamingExpertOpts.TabStop = false
         Me.gbMovieSetSourcesFileNamingExpertOpts.Text = "Expert Settings"
@@ -17376,7 +17380,7 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingExpertOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetSourcesFileNamingExpertOpts.Size = New System.Drawing.Size(530, 307)
+        Me.tblMovieSetSourcesFileNamingExpertOpts.Size = New System.Drawing.Size(530, 319)
         Me.tblMovieSetSourcesFileNamingExpertOpts.TabIndex = 10
         '
         'tcMovieSetFileNamingExpert
@@ -17387,7 +17391,7 @@ Partial Class dlgSettings
         Me.tcMovieSetFileNamingExpert.Location = New System.Drawing.Point(3, 26)
         Me.tcMovieSetFileNamingExpert.Name = "tcMovieSetFileNamingExpert"
         Me.tcMovieSetFileNamingExpert.SelectedIndex = 0
-        Me.tcMovieSetFileNamingExpert.Size = New System.Drawing.Size(508, 267)
+        Me.tcMovieSetFileNamingExpert.Size = New System.Drawing.Size(508, 290)
         Me.tcMovieSetFileNamingExpert.TabIndex = 2
         '
         'tpMovieSetFileNamingExpertSingle
@@ -17396,7 +17400,7 @@ Partial Class dlgSettings
         Me.tpMovieSetFileNamingExpertSingle.Location = New System.Drawing.Point(4, 22)
         Me.tpMovieSetFileNamingExpertSingle.Name = "tpMovieSetFileNamingExpertSingle"
         Me.tpMovieSetFileNamingExpertSingle.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpMovieSetFileNamingExpertSingle.Size = New System.Drawing.Size(500, 241)
+        Me.tpMovieSetFileNamingExpertSingle.Size = New System.Drawing.Size(500, 264)
         Me.tpMovieSetFileNamingExpertSingle.TabIndex = 0
         Me.tpMovieSetFileNamingExpertSingle.Text = "Single Folder"
         Me.tpMovieSetFileNamingExpertSingle.UseVisualStyleBackColor = true
@@ -17408,27 +17412,29 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingExpertSingle.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingExpertSingle.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingExpertSingle.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetNFOExpertSingle, 0, 5)
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetNFOExpertSingle, 1, 5)
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetPosterExpertSingle, 0, 6)
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetLandscapeExpertSingle, 1, 4)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetNFOExpertSingle, 0, 6)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetNFOExpertSingle, 1, 6)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetPosterExpertSingle, 0, 7)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetLandscapeExpertSingle, 1, 5)
         Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetClearArtExpertSingle, 1, 1)
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetLandscapeExpertSingle, 0, 4)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetLandscapeExpertSingle, 0, 5)
         Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetClearArtExpertSingle, 0, 1)
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetPosterExpertSingle, 1, 6)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetPosterExpertSingle, 1, 7)
         Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetClearLogoExpertSingle, 1, 2)
         Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetBannerExpertSingle, 0, 0)
         Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetBannerExpertSingle, 1, 0)
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetFanartExpertSingle, 0, 3)
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetFanartExpertSingle, 1, 3)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetFanartExpertSingle, 0, 4)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetFanartExpertSingle, 1, 4)
         Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetClearLogoExpertSingle, 0, 2)
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetPathExpertSingle, 0, 7)
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetPathExpertSingle, 1, 7)
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.btnMovieSetPathExpertSingleBrowse, 2, 7)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetPathExpertSingle, 0, 8)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetPathExpertSingle, 1, 8)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.btnMovieSetPathExpertSingleBrowse, 2, 8)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.lblMovieSetDiscArtExpertSingle, 0, 3)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Controls.Add(Me.txtMovieSetDiscArtExpertSingle, 1, 3)
         Me.tblMovieSetSourcesFileNamingExpertSingle.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSetSourcesFileNamingExpertSingle.Location = New System.Drawing.Point(3, 3)
         Me.tblMovieSetSourcesFileNamingExpertSingle.Name = "tblMovieSetSourcesFileNamingExpertSingle"
-        Me.tblMovieSetSourcesFileNamingExpertSingle.RowCount = 9
+        Me.tblMovieSetSourcesFileNamingExpertSingle.RowCount = 10
         Me.tblMovieSetSourcesFileNamingExpertSingle.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertSingle.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertSingle.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -17438,14 +17444,15 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingExpertSingle.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertSingle.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertSingle.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetSourcesFileNamingExpertSingle.Size = New System.Drawing.Size(494, 235)
+        Me.tblMovieSetSourcesFileNamingExpertSingle.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieSetSourcesFileNamingExpertSingle.Size = New System.Drawing.Size(494, 258)
         Me.tblMovieSetSourcesFileNamingExpertSingle.TabIndex = 10
         '
         'lblMovieSetNFOExpertSingle
         '
         Me.lblMovieSetNFOExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetNFOExpertSingle.AutoSize = true
-        Me.lblMovieSetNFOExpertSingle.Location = New System.Drawing.Point(3, 147)
+        Me.lblMovieSetNFOExpertSingle.Location = New System.Drawing.Point(3, 175)
         Me.lblMovieSetNFOExpertSingle.Name = "lblMovieSetNFOExpertSingle"
         Me.lblMovieSetNFOExpertSingle.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSetNFOExpertSingle.TabIndex = 9
@@ -17455,7 +17462,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieSetNFOExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetNFOExpertSingle.Enabled = false
-        Me.txtMovieSetNFOExpertSingle.Location = New System.Drawing.Point(70, 143)
+        Me.txtMovieSetNFOExpertSingle.Location = New System.Drawing.Point(70, 171)
         Me.txtMovieSetNFOExpertSingle.Name = "txtMovieSetNFOExpertSingle"
         Me.txtMovieSetNFOExpertSingle.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetNFOExpertSingle.TabIndex = 3
@@ -17464,7 +17471,7 @@ Partial Class dlgSettings
         '
         Me.lblMovieSetPosterExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetPosterExpertSingle.AutoSize = true
-        Me.lblMovieSetPosterExpertSingle.Location = New System.Drawing.Point(3, 175)
+        Me.lblMovieSetPosterExpertSingle.Location = New System.Drawing.Point(3, 203)
         Me.lblMovieSetPosterExpertSingle.Name = "lblMovieSetPosterExpertSingle"
         Me.lblMovieSetPosterExpertSingle.Size = New System.Drawing.Size(39, 13)
         Me.lblMovieSetPosterExpertSingle.TabIndex = 10
@@ -17474,7 +17481,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieSetLandscapeExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetLandscapeExpertSingle.Enabled = false
-        Me.txtMovieSetLandscapeExpertSingle.Location = New System.Drawing.Point(70, 115)
+        Me.txtMovieSetLandscapeExpertSingle.Location = New System.Drawing.Point(70, 143)
         Me.txtMovieSetLandscapeExpertSingle.Name = "txtMovieSetLandscapeExpertSingle"
         Me.txtMovieSetLandscapeExpertSingle.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetLandscapeExpertSingle.TabIndex = 11
@@ -17492,7 +17499,7 @@ Partial Class dlgSettings
         '
         Me.lblMovieSetLandscapeExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetLandscapeExpertSingle.AutoSize = true
-        Me.lblMovieSetLandscapeExpertSingle.Location = New System.Drawing.Point(3, 119)
+        Me.lblMovieSetLandscapeExpertSingle.Location = New System.Drawing.Point(3, 147)
         Me.lblMovieSetLandscapeExpertSingle.Name = "lblMovieSetLandscapeExpertSingle"
         Me.lblMovieSetLandscapeExpertSingle.Size = New System.Drawing.Size(61, 13)
         Me.lblMovieSetLandscapeExpertSingle.TabIndex = 19
@@ -17512,7 +17519,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieSetPosterExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetPosterExpertSingle.Enabled = false
-        Me.txtMovieSetPosterExpertSingle.Location = New System.Drawing.Point(70, 171)
+        Me.txtMovieSetPosterExpertSingle.Location = New System.Drawing.Point(70, 199)
         Me.txtMovieSetPosterExpertSingle.Name = "txtMovieSetPosterExpertSingle"
         Me.txtMovieSetPosterExpertSingle.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetPosterExpertSingle.TabIndex = 4
@@ -17549,7 +17556,7 @@ Partial Class dlgSettings
         '
         Me.lblMovieSetFanartExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetFanartExpertSingle.AutoSize = true
-        Me.lblMovieSetFanartExpertSingle.Location = New System.Drawing.Point(3, 91)
+        Me.lblMovieSetFanartExpertSingle.Location = New System.Drawing.Point(3, 119)
         Me.lblMovieSetFanartExpertSingle.Name = "lblMovieSetFanartExpertSingle"
         Me.lblMovieSetFanartExpertSingle.Size = New System.Drawing.Size(40, 13)
         Me.lblMovieSetFanartExpertSingle.TabIndex = 11
@@ -17559,7 +17566,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieSetFanartExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetFanartExpertSingle.Enabled = false
-        Me.txtMovieSetFanartExpertSingle.Location = New System.Drawing.Point(70, 87)
+        Me.txtMovieSetFanartExpertSingle.Location = New System.Drawing.Point(70, 115)
         Me.txtMovieSetFanartExpertSingle.Name = "txtMovieSetFanartExpertSingle"
         Me.txtMovieSetFanartExpertSingle.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetFanartExpertSingle.TabIndex = 5
@@ -17578,7 +17585,7 @@ Partial Class dlgSettings
         '
         Me.lblMovieSetPathExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetPathExpertSingle.AutoSize = true
-        Me.lblMovieSetPathExpertSingle.Location = New System.Drawing.Point(3, 203)
+        Me.lblMovieSetPathExpertSingle.Location = New System.Drawing.Point(3, 231)
         Me.lblMovieSetPathExpertSingle.Name = "lblMovieSetPathExpertSingle"
         Me.lblMovieSetPathExpertSingle.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSetPathExpertSingle.TabIndex = 31
@@ -17589,7 +17596,7 @@ Partial Class dlgSettings
         Me.txtMovieSetPathExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetPathExpertSingle.Enabled = false
         Me.txtMovieSetPathExpertSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtMovieSetPathExpertSingle.Location = New System.Drawing.Point(70, 199)
+        Me.txtMovieSetPathExpertSingle.Location = New System.Drawing.Point(70, 227)
         Me.txtMovieSetPathExpertSingle.Name = "txtMovieSetPathExpertSingle"
         Me.txtMovieSetPathExpertSingle.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetPathExpertSingle.TabIndex = 29
@@ -17599,12 +17606,31 @@ Partial Class dlgSettings
         Me.btnMovieSetPathExpertSingleBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.btnMovieSetPathExpertSingleBrowse.Enabled = false
         Me.btnMovieSetPathExpertSingleBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnMovieSetPathExpertSingleBrowse.Location = New System.Drawing.Point(296, 199)
+        Me.btnMovieSetPathExpertSingleBrowse.Location = New System.Drawing.Point(296, 227)
         Me.btnMovieSetPathExpertSingleBrowse.Name = "btnMovieSetPathExpertSingleBrowse"
         Me.btnMovieSetPathExpertSingleBrowse.Size = New System.Drawing.Size(25, 22)
         Me.btnMovieSetPathExpertSingleBrowse.TabIndex = 30
         Me.btnMovieSetPathExpertSingleBrowse.Text = "..."
         Me.btnMovieSetPathExpertSingleBrowse.UseVisualStyleBackColor = true
+        '
+        'lblMovieSetDiscArtExpertSingle
+        '
+        Me.lblMovieSetDiscArtExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetDiscArtExpertSingle.AutoSize = true
+        Me.lblMovieSetDiscArtExpertSingle.Location = New System.Drawing.Point(3, 91)
+        Me.lblMovieSetDiscArtExpertSingle.Name = "lblMovieSetDiscArtExpertSingle"
+        Me.lblMovieSetDiscArtExpertSingle.Size = New System.Drawing.Size(43, 13)
+        Me.lblMovieSetDiscArtExpertSingle.TabIndex = 11
+        Me.lblMovieSetDiscArtExpertSingle.Text = "DiscArt"
+        '
+        'txtMovieSetDiscArtExpertSingle
+        '
+        Me.txtMovieSetDiscArtExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtMovieSetDiscArtExpertSingle.Enabled = false
+        Me.txtMovieSetDiscArtExpertSingle.Location = New System.Drawing.Point(70, 87)
+        Me.txtMovieSetDiscArtExpertSingle.Name = "txtMovieSetDiscArtExpertSingle"
+        Me.txtMovieSetDiscArtExpertSingle.Size = New System.Drawing.Size(220, 22)
+        Me.txtMovieSetDiscArtExpertSingle.TabIndex = 5
         '
         'tpMovieSetFileNamingExpertParent
         '
@@ -17624,24 +17650,27 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingExpertParent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingExpertParent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingExpertParent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetLandscapeExpertParent, 1, 4)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetLandscapeExpertParent, 1, 5)
         Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetClearLogoExpertParent, 1, 2)
-        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetLandscapeExpertParent, 0, 4)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetLandscapeExpertParent, 0, 5)
         Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetBannerExpertParent, 1, 0)
         Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetClearArtExpertParent, 1, 1)
-        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetFanartExpertParent, 1, 3)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetFanartExpertParent, 1, 4)
         Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetClearLogoExpertParent, 0, 2)
-        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetPosterExpertParent, 1, 6)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetPosterExpertParent, 1, 7)
         Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetClearArtExpertParent, 0, 1)
-        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetNFOExpertParent, 0, 5)
-        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetNFOExpertParent, 1, 5)
-        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetPosterExpertParent, 0, 6)
-        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetFanartExpertParent, 0, 3)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetNFOExpertParent, 0, 6)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetNFOExpertParent, 1, 6)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetPosterExpertParent, 0, 7)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetFanartExpertParent, 0, 4)
         Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetBannerExpertParent, 0, 0)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.lblMovieSetDiscArtExpertParent, 0, 3)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Controls.Add(Me.txtMovieSetDiscArtExpertParent, 1, 3)
         Me.tblMovieSetSourcesFileNamingExpertParent.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSetSourcesFileNamingExpertParent.Location = New System.Drawing.Point(3, 3)
         Me.tblMovieSetSourcesFileNamingExpertParent.Name = "tblMovieSetSourcesFileNamingExpertParent"
-        Me.tblMovieSetSourcesFileNamingExpertParent.RowCount = 8
+        Me.tblMovieSetSourcesFileNamingExpertParent.RowCount = 9
+        Me.tblMovieSetSourcesFileNamingExpertParent.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertParent.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertParent.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertParent.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -17657,7 +17686,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieSetLandscapeExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetLandscapeExpertParent.Enabled = false
-        Me.txtMovieSetLandscapeExpertParent.Location = New System.Drawing.Point(70, 115)
+        Me.txtMovieSetLandscapeExpertParent.Location = New System.Drawing.Point(70, 143)
         Me.txtMovieSetLandscapeExpertParent.Name = "txtMovieSetLandscapeExpertParent"
         Me.txtMovieSetLandscapeExpertParent.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetLandscapeExpertParent.TabIndex = 9
@@ -17675,7 +17704,7 @@ Partial Class dlgSettings
         '
         Me.lblMovieSetLandscapeExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetLandscapeExpertParent.AutoSize = true
-        Me.lblMovieSetLandscapeExpertParent.Location = New System.Drawing.Point(3, 119)
+        Me.lblMovieSetLandscapeExpertParent.Location = New System.Drawing.Point(3, 147)
         Me.lblMovieSetLandscapeExpertParent.Name = "lblMovieSetLandscapeExpertParent"
         Me.lblMovieSetLandscapeExpertParent.Size = New System.Drawing.Size(61, 13)
         Me.lblMovieSetLandscapeExpertParent.TabIndex = 42
@@ -17703,7 +17732,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieSetFanartExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetFanartExpertParent.Enabled = false
-        Me.txtMovieSetFanartExpertParent.Location = New System.Drawing.Point(70, 87)
+        Me.txtMovieSetFanartExpertParent.Location = New System.Drawing.Point(70, 115)
         Me.txtMovieSetFanartExpertParent.Name = "txtMovieSetFanartExpertParent"
         Me.txtMovieSetFanartExpertParent.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetFanartExpertParent.TabIndex = 3
@@ -17722,7 +17751,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieSetPosterExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetPosterExpertParent.Enabled = false
-        Me.txtMovieSetPosterExpertParent.Location = New System.Drawing.Point(70, 171)
+        Me.txtMovieSetPosterExpertParent.Location = New System.Drawing.Point(70, 199)
         Me.txtMovieSetPosterExpertParent.Name = "txtMovieSetPosterExpertParent"
         Me.txtMovieSetPosterExpertParent.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetPosterExpertParent.TabIndex = 2
@@ -17741,7 +17770,7 @@ Partial Class dlgSettings
         '
         Me.lblMovieSetNFOExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetNFOExpertParent.AutoSize = true
-        Me.lblMovieSetNFOExpertParent.Location = New System.Drawing.Point(3, 147)
+        Me.lblMovieSetNFOExpertParent.Location = New System.Drawing.Point(3, 175)
         Me.lblMovieSetNFOExpertParent.Name = "lblMovieSetNFOExpertParent"
         Me.lblMovieSetNFOExpertParent.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSetNFOExpertParent.TabIndex = 35
@@ -17751,7 +17780,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieSetNFOExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetNFOExpertParent.Enabled = false
-        Me.txtMovieSetNFOExpertParent.Location = New System.Drawing.Point(70, 143)
+        Me.txtMovieSetNFOExpertParent.Location = New System.Drawing.Point(70, 171)
         Me.txtMovieSetNFOExpertParent.Name = "txtMovieSetNFOExpertParent"
         Me.txtMovieSetNFOExpertParent.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetNFOExpertParent.TabIndex = 1
@@ -17760,7 +17789,7 @@ Partial Class dlgSettings
         '
         Me.lblMovieSetPosterExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetPosterExpertParent.AutoSize = true
-        Me.lblMovieSetPosterExpertParent.Location = New System.Drawing.Point(3, 175)
+        Me.lblMovieSetPosterExpertParent.Location = New System.Drawing.Point(3, 203)
         Me.lblMovieSetPosterExpertParent.Name = "lblMovieSetPosterExpertParent"
         Me.lblMovieSetPosterExpertParent.Size = New System.Drawing.Size(39, 13)
         Me.lblMovieSetPosterExpertParent.TabIndex = 36
@@ -17770,7 +17799,7 @@ Partial Class dlgSettings
         '
         Me.lblMovieSetFanartExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetFanartExpertParent.AutoSize = true
-        Me.lblMovieSetFanartExpertParent.Location = New System.Drawing.Point(3, 91)
+        Me.lblMovieSetFanartExpertParent.Location = New System.Drawing.Point(3, 119)
         Me.lblMovieSetFanartExpertParent.Name = "lblMovieSetFanartExpertParent"
         Me.lblMovieSetFanartExpertParent.Size = New System.Drawing.Size(40, 13)
         Me.lblMovieSetFanartExpertParent.TabIndex = 37
@@ -17785,6 +17814,25 @@ Partial Class dlgSettings
         Me.lblMovieSetBannerExpertParent.Size = New System.Drawing.Size(44, 13)
         Me.lblMovieSetBannerExpertParent.TabIndex = 40
         Me.lblMovieSetBannerExpertParent.Text = "Banner"
+        '
+        'lblMovieSetDiscArtExpertParent
+        '
+        Me.lblMovieSetDiscArtExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetDiscArtExpertParent.AutoSize = true
+        Me.lblMovieSetDiscArtExpertParent.Location = New System.Drawing.Point(3, 91)
+        Me.lblMovieSetDiscArtExpertParent.Name = "lblMovieSetDiscArtExpertParent"
+        Me.lblMovieSetDiscArtExpertParent.Size = New System.Drawing.Size(43, 13)
+        Me.lblMovieSetDiscArtExpertParent.TabIndex = 38
+        Me.lblMovieSetDiscArtExpertParent.Text = "DiscArt"
+        '
+        'txtMovieSetDiscArtExpertParent
+        '
+        Me.txtMovieSetDiscArtExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtMovieSetDiscArtExpertParent.Enabled = false
+        Me.txtMovieSetDiscArtExpertParent.Location = New System.Drawing.Point(70, 87)
+        Me.txtMovieSetDiscArtExpertParent.Name = "txtMovieSetDiscArtExpertParent"
+        Me.txtMovieSetDiscArtExpertParent.Size = New System.Drawing.Size(220, 22)
+        Me.txtMovieSetDiscArtExpertParent.TabIndex = 6
         '
         'chkMovieSetUseExpert
         '
@@ -20755,4 +20803,8 @@ End Sub
     Friend WithEvents lblTVScraperShowMPAANotRated As System.Windows.Forms.Label
     Friend WithEvents txtMovieScraperMPAANotRated As System.Windows.Forms.TextBox
     Friend WithEvents lblMovieScraperMPAANotRated As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetDiscArtExpertSingle As System.Windows.Forms.Label
+    Friend WithEvents txtMovieSetDiscArtExpertSingle As System.Windows.Forms.TextBox
+    Friend WithEvents lblMovieSetDiscArtExpertParent As System.Windows.Forms.Label
+    Friend WithEvents txtMovieSetDiscArtExpertParent As System.Windows.Forms.TextBox
 End Class

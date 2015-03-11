@@ -4121,6 +4121,7 @@ Public Class dlgSettings
             Me.txtMovieSetBannerExpertSingle.Text = .MovieSetBannerExpertSingle
             Me.txtMovieSetClearArtExpertSingle.Text = .MovieSetClearArtExpertSingle
             Me.txtMovieSetClearLogoExpertSingle.Text = .MovieSetClearLogoExpertSingle
+            Me.txtMovieSetDiscArtExpertSingle.Text = .MovieSetDiscArtExpertSingle
             Me.txtMovieSetFanartExpertSingle.Text = .MovieSetFanartExpertSingle
             Me.txtMovieSetLandscapeExpertSingle.Text = .MovieSetLandscapeExpertSingle
             Me.txtMovieSetNFOExpertSingle.Text = .MovieSetNFOExpertSingle
@@ -4131,6 +4132,7 @@ Public Class dlgSettings
             Me.txtMovieSetBannerExpertParent.Text = .MovieSetBannerExpertParent
             Me.txtMovieSetClearArtExpertParent.Text = .MovieSetClearArtExpertParent
             Me.txtMovieSetClearLogoExpertParent.Text = .MovieSetClearLogoExpertParent
+            Me.txtMovieSetDiscArtExpertParent.Text = .MovieSetDiscArtExpertParent
             Me.txtMovieSetFanartExpertParent.Text = .MovieSetFanartExpertParent
             Me.txtMovieSetLandscapeExpertParent.Text = .MovieSetLandscapeExpertParent
             Me.txtMovieSetNFOExpertParent.Text = .MovieSetNFOExpertParent
@@ -5846,6 +5848,7 @@ Public Class dlgSettings
             .MovieSetBannerExpertSingle = Me.txtMovieSetBannerExpertSingle.Text
             .MovieSetClearArtExpertSingle = Me.txtMovieSetClearArtExpertSingle.Text
             .MovieSetClearLogoExpertSingle = Me.txtMovieSetClearLogoExpertSingle.Text
+            .MovieSetDiscArtExpertSingle = Me.txtMovieSetDiscArtExpertSingle.Text
             .MovieSetFanartExpertSingle = Me.txtMovieSetFanartExpertSingle.Text
             .MovieSetLandscapeExpertSingle = Me.txtMovieSetLandscapeExpertSingle.Text
             .MovieSetNFOExpertSingle = Me.txtMovieSetNFOExpertSingle.Text
@@ -5856,6 +5859,7 @@ Public Class dlgSettings
             .MovieSetBannerExpertParent = Me.txtMovieSetBannerExpertParent.Text
             .MovieSetClearArtExpertParent = Me.txtMovieSetClearArtExpertParent.Text
             .MovieSetClearLogoExpertParent = Me.txtMovieSetClearLogoExpertParent.Text
+            .MovieSetDiscArtExpertParent = Me.txtMovieSetDiscArtExpertParent.Text
             .MovieSetFanartExpertParent = Me.txtMovieSetFanartExpertParent.Text
             .MovieSetLandscapeExpertParent = Me.txtMovieSetLandscapeExpertParent.Text
             .MovieSetNFOExpertParent = Me.txtMovieSetNFOExpertParent.Text
@@ -7723,6 +7727,8 @@ Public Class dlgSettings
         Me.txtMovieSetClearArtExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
         Me.txtMovieSetClearLogoExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
         Me.txtMovieSetClearLogoExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetDiscArtExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
+        Me.txtMovieSetDiscArtExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
         Me.txtMovieSetFanartExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
         Me.txtMovieSetFanartExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
         Me.txtMovieSetLandscapeExpertParent.Enabled = Me.chkMovieSetUseExpert.Checked
@@ -7743,6 +7749,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtMovieSetClearLogoExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetClearLogoExpertSingle.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetDiscArtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetDiscArtExpertSingle.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -7771,6 +7781,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtMovieSetClearLogoExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetClearLogoExpertParent.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetDiscArtExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetDiscArtExpertParent.TextChanged
         Me.SetApplyButton(True)
     End Sub
 

@@ -275,6 +275,15 @@ Namespace FileUtils
             End Try
         End Sub
 
+        'Public Function GetItemsToDelete_Episode(ByVal isCleaner As Boolean, ByVal mEpisode As Structures.DBTV) As List(Of IO.FileSystemInfo)
+        '    Dim ItemsToDelete As New List(Of FileSystemInfo)
+        '    Dim fScanner As New Scanner
+
+
+
+        'End Function
+
+
         ''' <summary>
         ''' Gather a list of all files to be deleted for display in a confirmation dialog.
         ''' </summary>
@@ -489,7 +498,7 @@ Namespace FileUtils
                 ioFi = Nothing
                 dirInfo = Nothing
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
             Return ItemsToDelete
         End Function
@@ -1505,6 +1514,11 @@ Namespace FileUtils
                 Case Enums.ModType_Movie.DiscArt
                     With Master.eSettings
                         'If .MovieSetUseMSAA AndAlso .MovieSetDiscArtMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-discart.png")))
+                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetDiscArtExpertSingle) Then
+                            For Each a In .MovieSetDiscArtExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_Movie.Landscape
@@ -1537,6 +1551,14 @@ Namespace FileUtils
 
                 Case Enums.ModType_TV.EpisodeFanart
                     With Master.eSettings
+                    End With
+
+                Case Enums.ModType_TV.EpisodeNfo
+                    With Master.eSettings
+                        If .TVUseBoxee Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
+                        If .TVUseEden Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
+                        If .TVUseFrodo Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
+                        If .TVUseYAMJ Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
                     End With
 
                 Case Enums.ModType_TV.EpisodePoster
