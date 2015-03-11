@@ -15786,34 +15786,37 @@ Partial Class dlgSettings
         Me.lblMovieScraperGlobalTags.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieScraperGlobalTags.TabIndex = 68
         Me.lblMovieScraperGlobalTags.Text = "Tags"
+        Me.lblMovieScraperGlobalTags.Visible = False
         '
         'chkMovieScraperTags
         '
         Me.chkMovieScraperTags.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieScraperTags.AutoSize = true
-        Me.chkMovieScraperTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperTags.AutoSize = True
+        Me.chkMovieScraperTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperTags.Location = New System.Drawing.Point(106, 293)
         Me.chkMovieScraperTags.Name = "chkMovieScraperTags"
         Me.chkMovieScraperTags.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieScraperTags.TabIndex = 27
-        Me.chkMovieScraperTags.UseVisualStyleBackColor = true
+        Me.chkMovieScraperTags.UseVisualStyleBackColor = True
+        Me.chkMovieScraperTags.Visible = False
         '
         'chkMovieLockTags
         '
         Me.chkMovieLockTags.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieLockTags.AutoSize = true
-        Me.chkMovieLockTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockTags.AutoSize = True
+        Me.chkMovieLockTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockTags.Location = New System.Drawing.Point(135, 293)
         Me.chkMovieLockTags.Name = "chkMovieLockTags"
         Me.chkMovieLockTags.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieLockTags.TabIndex = 64
-        Me.chkMovieLockTags.UseVisualStyleBackColor = true
+        Me.chkMovieLockTags.UseVisualStyleBackColor = True
+        Me.chkMovieLockTags.Visible = False
         '
         'lblMovieScraperGlobalTrailer
         '
         Me.lblMovieScraperGlobalTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieScraperGlobalTrailer.AutoSize = true
-        Me.lblMovieScraperGlobalTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblMovieScraperGlobalTrailer.AutoSize = True
+        Me.lblMovieScraperGlobalTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMovieScraperGlobalTrailer.Location = New System.Drawing.Point(3, 313)
         Me.lblMovieScraperGlobalTrailer.Name = "lblMovieScraperGlobalTrailer"
         Me.lblMovieScraperGlobalTrailer.Size = New System.Drawing.Size(38, 13)
@@ -15823,30 +15826,30 @@ Partial Class dlgSettings
         'chkMovieScraperTrailer
         '
         Me.chkMovieScraperTrailer.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieScraperTrailer.AutoSize = true
-        Me.chkMovieScraperTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperTrailer.AutoSize = True
+        Me.chkMovieScraperTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperTrailer.Location = New System.Drawing.Point(106, 313)
         Me.chkMovieScraperTrailer.Name = "chkMovieScraperTrailer"
         Me.chkMovieScraperTrailer.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieScraperTrailer.TabIndex = 5
-        Me.chkMovieScraperTrailer.UseVisualStyleBackColor = true
+        Me.chkMovieScraperTrailer.UseVisualStyleBackColor = True
         '
         'chkMovieLockTrailer
         '
         Me.chkMovieLockTrailer.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieLockTrailer.AutoSize = true
-        Me.chkMovieLockTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockTrailer.AutoSize = True
+        Me.chkMovieLockTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockTrailer.Location = New System.Drawing.Point(135, 313)
         Me.chkMovieLockTrailer.Name = "chkMovieLockTrailer"
         Me.chkMovieLockTrailer.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieLockTrailer.TabIndex = 46
-        Me.chkMovieLockTrailer.UseVisualStyleBackColor = true
+        Me.chkMovieLockTrailer.UseVisualStyleBackColor = True
         '
         'lblMovieScraperGlobalGenre
         '
         Me.lblMovieScraperGlobalGenre.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieScraperGlobalGenre.AutoSize = true
-        Me.lblMovieScraperGlobalGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblMovieScraperGlobalGenre.AutoSize = True
+        Me.lblMovieScraperGlobalGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMovieScraperGlobalGenre.Location = New System.Drawing.Point(3, 337)
         Me.lblMovieScraperGlobalGenre.Name = "lblMovieScraperGlobalGenre"
         Me.lblMovieScraperGlobalGenre.Size = New System.Drawing.Size(38, 13)
@@ -15856,30 +15859,30 @@ Partial Class dlgSettings
         'chkMovieScraperGenre
         '
         Me.chkMovieScraperGenre.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieScraperGenre.AutoSize = true
-        Me.chkMovieScraperGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperGenre.AutoSize = True
+        Me.chkMovieScraperGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperGenre.Location = New System.Drawing.Point(106, 337)
         Me.chkMovieScraperGenre.Name = "chkMovieScraperGenre"
         Me.chkMovieScraperGenre.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieScraperGenre.TabIndex = 10
-        Me.chkMovieScraperGenre.UseVisualStyleBackColor = true
+        Me.chkMovieScraperGenre.UseVisualStyleBackColor = True
         '
         'chkMovieLockGenre
         '
         Me.chkMovieLockGenre.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieLockGenre.AutoSize = true
-        Me.chkMovieLockGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockGenre.AutoSize = True
+        Me.chkMovieLockGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockGenre.Location = New System.Drawing.Point(135, 337)
         Me.chkMovieLockGenre.Name = "chkMovieLockGenre"
         Me.chkMovieLockGenre.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieLockGenre.TabIndex = 7
-        Me.chkMovieLockGenre.UseVisualStyleBackColor = true
+        Me.chkMovieLockGenre.UseVisualStyleBackColor = True
         '
         'txtMovieScraperGenreLimit
         '
         Me.txtMovieScraperGenreLimit.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtMovieScraperGenreLimit.Enabled = false
-        Me.txtMovieScraperGenreLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieScraperGenreLimit.Enabled = False
+        Me.txtMovieScraperGenreLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieScraperGenreLimit.Location = New System.Drawing.Point(179, 333)
         Me.txtMovieScraperGenreLimit.Name = "txtMovieScraperGenreLimit"
         Me.txtMovieScraperGenreLimit.Size = New System.Drawing.Size(39, 22)
@@ -15888,8 +15891,8 @@ Partial Class dlgSettings
         'lblMovieScraperGlobalCast
         '
         Me.lblMovieScraperGlobalCast.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieScraperGlobalCast.AutoSize = true
-        Me.lblMovieScraperGlobalCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblMovieScraperGlobalCast.AutoSize = True
+        Me.lblMovieScraperGlobalCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMovieScraperGlobalCast.Location = New System.Drawing.Point(3, 365)
         Me.lblMovieScraperGlobalCast.Name = "lblMovieScraperGlobalCast"
         Me.lblMovieScraperGlobalCast.Size = New System.Drawing.Size(39, 13)
@@ -15899,30 +15902,30 @@ Partial Class dlgSettings
         'chkMovieScraperCast
         '
         Me.chkMovieScraperCast.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieScraperCast.AutoSize = true
-        Me.chkMovieScraperCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCast.AutoSize = True
+        Me.chkMovieScraperCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCast.Location = New System.Drawing.Point(106, 365)
         Me.chkMovieScraperCast.Name = "chkMovieScraperCast"
         Me.chkMovieScraperCast.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieScraperCast.TabIndex = 7
-        Me.chkMovieScraperCast.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCast.UseVisualStyleBackColor = True
         '
         'chkMovieLockActors
         '
         Me.chkMovieLockActors.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieLockActors.AutoSize = true
-        Me.chkMovieLockActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockActors.AutoSize = True
+        Me.chkMovieLockActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockActors.Location = New System.Drawing.Point(135, 365)
         Me.chkMovieLockActors.Name = "chkMovieLockActors"
         Me.chkMovieLockActors.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieLockActors.TabIndex = 50
-        Me.chkMovieLockActors.UseVisualStyleBackColor = true
+        Me.chkMovieLockActors.UseVisualStyleBackColor = True
         '
         'txtMovieScraperCastLimit
         '
         Me.txtMovieScraperCastLimit.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtMovieScraperCastLimit.Enabled = false
-        Me.txtMovieScraperCastLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieScraperCastLimit.Enabled = False
+        Me.txtMovieScraperCastLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieScraperCastLimit.Location = New System.Drawing.Point(179, 361)
         Me.txtMovieScraperCastLimit.Name = "txtMovieScraperCastLimit"
         Me.txtMovieScraperCastLimit.Size = New System.Drawing.Size(39, 22)
@@ -15931,8 +15934,8 @@ Partial Class dlgSettings
         'lblMovieScraperGlobalCountry
         '
         Me.lblMovieScraperGlobalCountry.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieScraperGlobalCountry.AutoSize = true
-        Me.lblMovieScraperGlobalCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblMovieScraperGlobalCountry.AutoSize = True
+        Me.lblMovieScraperGlobalCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMovieScraperGlobalCountry.Location = New System.Drawing.Point(3, 429)
         Me.lblMovieScraperGlobalCountry.Name = "lblMovieScraperGlobalCountry"
         Me.lblMovieScraperGlobalCountry.Size = New System.Drawing.Size(48, 13)
@@ -15942,30 +15945,30 @@ Partial Class dlgSettings
         'chkMovieScraperCountry
         '
         Me.chkMovieScraperCountry.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieScraperCountry.AutoSize = true
-        Me.chkMovieScraperCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCountry.AutoSize = True
+        Me.chkMovieScraperCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCountry.Location = New System.Drawing.Point(106, 429)
         Me.chkMovieScraperCountry.Name = "chkMovieScraperCountry"
         Me.chkMovieScraperCountry.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieScraperCountry.TabIndex = 25
-        Me.chkMovieScraperCountry.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCountry.UseVisualStyleBackColor = True
         '
         'chkMovieLockCountry
         '
         Me.chkMovieLockCountry.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieLockCountry.AutoSize = true
-        Me.chkMovieLockCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockCountry.AutoSize = True
+        Me.chkMovieLockCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockCountry.Location = New System.Drawing.Point(135, 429)
         Me.chkMovieLockCountry.Name = "chkMovieLockCountry"
         Me.chkMovieLockCountry.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieLockCountry.TabIndex = 63
-        Me.chkMovieLockCountry.UseVisualStyleBackColor = true
+        Me.chkMovieLockCountry.UseVisualStyleBackColor = True
         '
         'lblMovieScraperGlobalDirector
         '
         Me.lblMovieScraperGlobalDirector.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieScraperGlobalDirector.AutoSize = true
-        Me.lblMovieScraperGlobalDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblMovieScraperGlobalDirector.AutoSize = True
+        Me.lblMovieScraperGlobalDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMovieScraperGlobalDirector.Location = New System.Drawing.Point(3, 389)
         Me.lblMovieScraperGlobalDirector.Name = "lblMovieScraperGlobalDirector"
         Me.lblMovieScraperGlobalDirector.Size = New System.Drawing.Size(48, 13)
@@ -15975,30 +15978,30 @@ Partial Class dlgSettings
         'chkMovieScraperDirector
         '
         Me.chkMovieScraperDirector.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieScraperDirector.AutoSize = true
-        Me.chkMovieScraperDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperDirector.AutoSize = True
+        Me.chkMovieScraperDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperDirector.Location = New System.Drawing.Point(106, 389)
         Me.chkMovieScraperDirector.Name = "chkMovieScraperDirector"
         Me.chkMovieScraperDirector.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieScraperDirector.TabIndex = 9
-        Me.chkMovieScraperDirector.UseVisualStyleBackColor = true
+        Me.chkMovieScraperDirector.UseVisualStyleBackColor = True
         '
         'chkMovieLockDirector
         '
         Me.chkMovieLockDirector.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieLockDirector.AutoSize = true
-        Me.chkMovieLockDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockDirector.AutoSize = True
+        Me.chkMovieLockDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockDirector.Location = New System.Drawing.Point(135, 389)
         Me.chkMovieLockDirector.Name = "chkMovieLockDirector"
         Me.chkMovieLockDirector.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieLockDirector.TabIndex = 57
-        Me.chkMovieLockDirector.UseVisualStyleBackColor = true
+        Me.chkMovieLockDirector.UseVisualStyleBackColor = True
         '
         'lblMovieScraperGlobalCredits
         '
         Me.lblMovieScraperGlobalCredits.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieScraperGlobalCredits.AutoSize = true
-        Me.lblMovieScraperGlobalCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblMovieScraperGlobalCredits.AutoSize = True
+        Me.lblMovieScraperGlobalCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMovieScraperGlobalCredits.Location = New System.Drawing.Point(3, 409)
         Me.lblMovieScraperGlobalCredits.Name = "lblMovieScraperGlobalCredits"
         Me.lblMovieScraperGlobalCredits.Size = New System.Drawing.Size(43, 13)
@@ -16008,41 +16011,41 @@ Partial Class dlgSettings
         'chkMovieScraperCredits
         '
         Me.chkMovieScraperCredits.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieScraperCredits.AutoSize = true
-        Me.chkMovieScraperCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCredits.AutoSize = True
+        Me.chkMovieScraperCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCredits.Location = New System.Drawing.Point(106, 409)
         Me.chkMovieScraperCredits.Name = "chkMovieScraperCredits"
         Me.chkMovieScraperCredits.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieScraperCredits.TabIndex = 15
-        Me.chkMovieScraperCredits.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCredits.UseVisualStyleBackColor = True
         '
         'chkMovieLockCredits
         '
         Me.chkMovieLockCredits.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieLockCredits.AutoSize = true
-        Me.chkMovieLockCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieLockCredits.AutoSize = True
+        Me.chkMovieLockCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieLockCredits.Location = New System.Drawing.Point(135, 409)
         Me.chkMovieLockCredits.Name = "chkMovieLockCredits"
         Me.chkMovieLockCredits.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieLockCredits.TabIndex = 58
-        Me.chkMovieLockCredits.UseVisualStyleBackColor = true
+        Me.chkMovieLockCredits.UseVisualStyleBackColor = True
         '
         'gbMovieScraperMiscOpts
         '
-        Me.gbMovieScraperMiscOpts.AutoSize = true
+        Me.gbMovieScraperMiscOpts.AutoSize = True
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.tblMovieScraperMiscOpts)
         Me.gbMovieScraperMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperMiscOpts.Location = New System.Drawing.Point(252, 220)
         Me.gbMovieScraperMiscOpts.Name = "gbMovieScraperMiscOpts"
         Me.gbMovieScraperMiscOpts.Size = New System.Drawing.Size(446, 233)
         Me.gbMovieScraperMiscOpts.TabIndex = 0
-        Me.gbMovieScraperMiscOpts.TabStop = false
+        Me.gbMovieScraperMiscOpts.TabStop = False
         Me.gbMovieScraperMiscOpts.Text = "Miscellaneous"
         '
         'tblMovieScraperMiscOpts
         '
-        Me.tblMovieScraperMiscOpts.AutoSize = true
+        Me.tblMovieScraperMiscOpts.AutoSize = True
         Me.tblMovieScraperMiscOpts.ColumnCount = 4
         Me.tblMovieScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16073,117 +16076,117 @@ Partial Class dlgSettings
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMovieScraperMiscOpts.Size = New System.Drawing.Size(440, 212)
         Me.tblMovieScraperMiscOpts.TabIndex = 78
         '
         'chkMovieScraperCleanPlotOutline
         '
         Me.chkMovieScraperCleanPlotOutline.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperCleanPlotOutline.AutoSize = true
+        Me.chkMovieScraperCleanPlotOutline.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperCleanPlotOutline, 3)
-        Me.chkMovieScraperCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCleanPlotOutline.Location = New System.Drawing.Point(3, 123)
         Me.chkMovieScraperCleanPlotOutline.Name = "chkMovieScraperCleanPlotOutline"
         Me.chkMovieScraperCleanPlotOutline.Size = New System.Drawing.Size(121, 17)
         Me.chkMovieScraperCleanPlotOutline.TabIndex = 76
         Me.chkMovieScraperCleanPlotOutline.Text = "Clean Plot/Outline"
-        Me.chkMovieScraperCleanPlotOutline.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCleanPlotOutline.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCollectionsAuto
         '
         Me.chkMovieScraperCollectionsAuto.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperCollectionsAuto.AutoSize = true
+        Me.chkMovieScraperCollectionsAuto.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperCollectionsAuto, 3)
-        Me.chkMovieScraperCollectionsAuto.Enabled = false
-        Me.chkMovieScraperCollectionsAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCollectionsAuto.Enabled = False
+        Me.chkMovieScraperCollectionsAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCollectionsAuto.Location = New System.Drawing.Point(3, 146)
         Me.chkMovieScraperCollectionsAuto.Name = "chkMovieScraperCollectionsAuto"
         Me.chkMovieScraperCollectionsAuto.Size = New System.Drawing.Size(226, 17)
         Me.chkMovieScraperCollectionsAuto.TabIndex = 80
         Me.chkMovieScraperCollectionsAuto.Text = "Add Movie automatically to Collections"
-        Me.chkMovieScraperCollectionsAuto.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCollectionsAuto.UseVisualStyleBackColor = True
         '
         'chkMovieScraperReleaseFormat
         '
         Me.chkMovieScraperReleaseFormat.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperReleaseFormat.AutoSize = true
+        Me.chkMovieScraperReleaseFormat.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperReleaseFormat, 3)
-        Me.chkMovieScraperReleaseFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperReleaseFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperReleaseFormat.Location = New System.Drawing.Point(3, 169)
         Me.chkMovieScraperReleaseFormat.Name = "chkMovieScraperReleaseFormat"
         Me.chkMovieScraperReleaseFormat.Size = New System.Drawing.Size(218, 17)
         Me.chkMovieScraperReleaseFormat.TabIndex = 81
         Me.chkMovieScraperReleaseFormat.Text = "Date format Releasedate: yyyy-mm-dd"
-        Me.chkMovieScraperReleaseFormat.UseVisualStyleBackColor = true
+        Me.chkMovieScraperReleaseFormat.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCleanFields
         '
         Me.chkMovieScraperCleanFields.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperCleanFields.AutoSize = true
+        Me.chkMovieScraperCleanFields.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperCleanFields, 3)
-        Me.chkMovieScraperCleanFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCleanFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCleanFields.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieScraperCleanFields.Name = "chkMovieScraperCleanFields"
         Me.chkMovieScraperCleanFields.Size = New System.Drawing.Size(147, 17)
         Me.chkMovieScraperCleanFields.TabIndex = 79
         Me.chkMovieScraperCleanFields.Text = "Cleanup disabled fields"
-        Me.chkMovieScraperCleanFields.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCleanFields.UseVisualStyleBackColor = True
         '
         'chkMovieScraperStudioWithImg
         '
         Me.chkMovieScraperStudioWithImg.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperStudioWithImg.AutoSize = true
+        Me.chkMovieScraperStudioWithImg.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperStudioWithImg, 3)
-        Me.chkMovieScraperStudioWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperStudioWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperStudioWithImg.Location = New System.Drawing.Point(3, 72)
         Me.chkMovieScraperStudioWithImg.Name = "chkMovieScraperStudioWithImg"
         Me.chkMovieScraperStudioWithImg.Size = New System.Drawing.Size(196, 17)
         Me.chkMovieScraperStudioWithImg.TabIndex = 82
         Me.chkMovieScraperStudioWithImg.Text = "Scrape Only Studios With Images"
-        Me.chkMovieScraperStudioWithImg.UseVisualStyleBackColor = true
+        Me.chkMovieScraperStudioWithImg.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCastWithImg
         '
         Me.chkMovieScraperCastWithImg.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperCastWithImg.AutoSize = true
+        Me.chkMovieScraperCastWithImg.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperCastWithImg, 3)
-        Me.chkMovieScraperCastWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCastWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCastWithImg.Location = New System.Drawing.Point(3, 49)
         Me.chkMovieScraperCastWithImg.Name = "chkMovieScraperCastWithImg"
         Me.chkMovieScraperCastWithImg.Size = New System.Drawing.Size(189, 17)
         Me.chkMovieScraperCastWithImg.TabIndex = 1
         Me.chkMovieScraperCastWithImg.Text = "Scrape Only Actors With Images"
-        Me.chkMovieScraperCastWithImg.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCastWithImg.UseVisualStyleBackColor = True
         '
         'chkMovieScraperDetailView
         '
         Me.chkMovieScraperDetailView.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperDetailView.AutoSize = true
+        Me.chkMovieScraperDetailView.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperDetailView, 3)
-        Me.chkMovieScraperDetailView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperDetailView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperDetailView.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieScraperDetailView.Name = "chkMovieScraperDetailView"
         Me.chkMovieScraperDetailView.Size = New System.Drawing.Size(219, 17)
         Me.chkMovieScraperDetailView.TabIndex = 78
         Me.chkMovieScraperDetailView.Text = "Show scraped results in detailed view"
-        Me.chkMovieScraperDetailView.UseVisualStyleBackColor = true
+        Me.chkMovieScraperDetailView.UseVisualStyleBackColor = True
         '
         'chkMovieScraperPlotForOutline
         '
         Me.chkMovieScraperPlotForOutline.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperPlotForOutline.AutoSize = true
-        Me.chkMovieScraperPlotForOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperPlotForOutline.AutoSize = True
+        Me.chkMovieScraperPlotForOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperPlotForOutline.Location = New System.Drawing.Point(3, 97)
         Me.chkMovieScraperPlotForOutline.Name = "chkMovieScraperPlotForOutline"
         Me.chkMovieScraperPlotForOutline.Size = New System.Drawing.Size(228, 17)
         Me.chkMovieScraperPlotForOutline.TabIndex = 68
         Me.chkMovieScraperPlotForOutline.Text = "Use Plot  for Outline if Outline is Empty"
-        Me.chkMovieScraperPlotForOutline.UseVisualStyleBackColor = true
+        Me.chkMovieScraperPlotForOutline.UseVisualStyleBackColor = True
         '
         'chkMovieScraperXBMCTrailerFormat
         '
-        Me.chkMovieScraperXBMCTrailerFormat.AutoSize = true
+        Me.chkMovieScraperXBMCTrailerFormat.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperXBMCTrailerFormat, 3)
         Me.chkMovieScraperXBMCTrailerFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.chkMovieScraperXBMCTrailerFormat.Location = New System.Drawing.Point(3, 192)
@@ -16191,24 +16194,24 @@ Partial Class dlgSettings
         Me.chkMovieScraperXBMCTrailerFormat.Size = New System.Drawing.Size(304, 17)
         Me.chkMovieScraperXBMCTrailerFormat.TabIndex = 83
         Me.chkMovieScraperXBMCTrailerFormat.Text = "Save YouTube-Trailer-Links in XBMC compatible format"
-        Me.chkMovieScraperXBMCTrailerFormat.UseVisualStyleBackColor = true
+        Me.chkMovieScraperXBMCTrailerFormat.UseVisualStyleBackColor = True
         '
         'gbMovieScraperCertificationOpts
         '
-        Me.gbMovieScraperCertificationOpts.AutoSize = true
+        Me.gbMovieScraperCertificationOpts.AutoSize = True
         Me.gbMovieScraperCertificationOpts.Controls.Add(Me.tblMovieScraperCertificationOpts)
         Me.gbMovieScraperCertificationOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieScraperCertificationOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieScraperCertificationOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieScraperCertificationOpts.Location = New System.Drawing.Point(252, 459)
         Me.gbMovieScraperCertificationOpts.Name = "gbMovieScraperCertificationOpts"
         Me.gbMovieScraperCertificationOpts.Size = New System.Drawing.Size(446, 141)
         Me.gbMovieScraperCertificationOpts.TabIndex = 77
-        Me.gbMovieScraperCertificationOpts.TabStop = false
+        Me.gbMovieScraperCertificationOpts.TabStop = False
         Me.gbMovieScraperCertificationOpts.Text = "Certification"
         '
         'tblMovieScraperCertificationOpts
         '
-        Me.tblMovieScraperCertificationOpts.AutoSize = true
+        Me.tblMovieScraperCertificationOpts.AutoSize = True
         Me.tblMovieScraperCertificationOpts.ColumnCount = 2
         Me.tblMovieScraperCertificationOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraperCertificationOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16234,59 +16237,59 @@ Partial Class dlgSettings
         'chkMovieScraperCertOnlyValue
         '
         Me.chkMovieScraperCertOnlyValue.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperCertOnlyValue.AutoSize = true
-        Me.chkMovieScraperCertOnlyValue.Enabled = false
-        Me.chkMovieScraperCertOnlyValue.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCertOnlyValue.AutoSize = True
+        Me.chkMovieScraperCertOnlyValue.Enabled = False
+        Me.chkMovieScraperCertOnlyValue.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCertOnlyValue.Location = New System.Drawing.Point(3, 72)
         Me.chkMovieScraperCertOnlyValue.Name = "chkMovieScraperCertOnlyValue"
         Me.chkMovieScraperCertOnlyValue.Size = New System.Drawing.Size(231, 17)
         Me.chkMovieScraperCertOnlyValue.TabIndex = 66
         Me.chkMovieScraperCertOnlyValue.Text = "MPAA: Save only number (only for YAMJ)"
-        Me.chkMovieScraperCertOnlyValue.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCertOnlyValue.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCertFSK
         '
         Me.chkMovieScraperCertFSK.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperCertFSK.AutoSize = true
-        Me.chkMovieScraperCertFSK.Enabled = false
-        Me.chkMovieScraperCertFSK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCertFSK.AutoSize = True
+        Me.chkMovieScraperCertFSK.Enabled = False
+        Me.chkMovieScraperCertFSK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCertFSK.Location = New System.Drawing.Point(3, 49)
         Me.chkMovieScraperCertFSK.Name = "chkMovieScraperCertFSK"
         Me.chkMovieScraperCertFSK.Size = New System.Drawing.Size(213, 17)
         Me.chkMovieScraperCertFSK.TabIndex = 67
         Me.chkMovieScraperCertFSK.Text = "Use MPAA as Fallback for FSK Rating"
-        Me.chkMovieScraperCertFSK.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCertFSK.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCertForMPAAFallback
         '
         Me.chkMovieScraperCertForMPAAFallback.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperCertForMPAAFallback.AutoSize = true
-        Me.chkMovieScraperCertForMPAAFallback.Enabled = false
-        Me.chkMovieScraperCertForMPAAFallback.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCertForMPAAFallback.AutoSize = True
+        Me.chkMovieScraperCertForMPAAFallback.Enabled = False
+        Me.chkMovieScraperCertForMPAAFallback.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCertForMPAAFallback.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieScraperCertForMPAAFallback.Name = "chkMovieScraperCertForMPAAFallback"
         Me.chkMovieScraperCertForMPAAFallback.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkMovieScraperCertForMPAAFallback.Size = New System.Drawing.Size(176, 17)
         Me.chkMovieScraperCertForMPAAFallback.TabIndex = 68
         Me.chkMovieScraperCertForMPAAFallback.Text = "Only if no MPAA is found"
-        Me.chkMovieScraperCertForMPAAFallback.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCertForMPAAFallback.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCertForMPAA
         '
         Me.chkMovieScraperCertForMPAA.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperCertForMPAA.AutoSize = true
-        Me.chkMovieScraperCertForMPAA.Enabled = false
-        Me.chkMovieScraperCertForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCertForMPAA.AutoSize = True
+        Me.chkMovieScraperCertForMPAA.Enabled = False
+        Me.chkMovieScraperCertForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCertForMPAA.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieScraperCertForMPAA.Name = "chkMovieScraperCertForMPAA"
         Me.chkMovieScraperCertForMPAA.Size = New System.Drawing.Size(231, 17)
         Me.chkMovieScraperCertForMPAA.TabIndex = 6
         Me.chkMovieScraperCertForMPAA.Text = "Use Certification for MPAA (XBMC users)"
-        Me.chkMovieScraperCertForMPAA.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCertForMPAA.UseVisualStyleBackColor = True
         '
         'txtMovieScraperMPAANotRated
         '
-        Me.txtMovieScraperMPAANotRated.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieScraperMPAANotRated.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieScraperMPAANotRated.Location = New System.Drawing.Point(240, 95)
         Me.txtMovieScraperMPAANotRated.Name = "txtMovieScraperMPAANotRated"
         Me.txtMovieScraperMPAANotRated.Size = New System.Drawing.Size(190, 22)
@@ -16295,8 +16298,8 @@ Partial Class dlgSettings
         'lblMovieScraperMPAANotRated
         '
         Me.lblMovieScraperMPAANotRated.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieScraperMPAANotRated.AutoSize = true
-        Me.lblMovieScraperMPAANotRated.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblMovieScraperMPAANotRated.AutoSize = True
+        Me.lblMovieScraperMPAANotRated.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMovieScraperMPAANotRated.Location = New System.Drawing.Point(3, 99)
         Me.lblMovieScraperMPAANotRated.Name = "lblMovieScraperMPAANotRated"
         Me.lblMovieScraperMPAANotRated.Size = New System.Drawing.Size(190, 13)
@@ -16305,19 +16308,19 @@ Partial Class dlgSettings
         '
         'pnlMovieScraper
         '
-        Me.pnlMovieScraper.AutoSize = true
+        Me.pnlMovieScraper.AutoSize = True
         Me.pnlMovieScraper.BackColor = System.Drawing.Color.White
         Me.pnlMovieScraper.Controls.Add(Me.tblMovieScraper)
         Me.pnlMovieScraper.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
         Me.pnlMovieScraper.Size = New System.Drawing.Size(701, 621)
         Me.pnlMovieScraper.TabIndex = 14
-        Me.pnlMovieScraper.Visible = false
+        Me.pnlMovieScraper.Visible = False
         '
         'tblMovieScraper
         '
-        Me.tblMovieScraper.AutoScroll = true
-        Me.tblMovieScraper.AutoSize = true
+        Me.tblMovieScraper.AutoScroll = True
+        Me.tblMovieScraper.AutoSize = True
         Me.tblMovieScraper.ColumnCount = 3
         Me.tblMovieScraper.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraper.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16339,14 +16342,14 @@ Partial Class dlgSettings
         '
         'tsSettingsTopMenu
         '
-        Me.tsSettingsTopMenu.AllowMerge = false
+        Me.tsSettingsTopMenu.AllowMerge = False
         Me.tsSettingsTopMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.tsSettingsTopMenu.ImageScalingSize = New System.Drawing.Size(32, 32)
         Me.tsSettingsTopMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsSettingsTopMenu.Location = New System.Drawing.Point(0, 64)
         Me.tsSettingsTopMenu.Name = "tsSettingsTopMenu"
         Me.tsSettingsTopMenu.Size = New System.Drawing.Size(1104, 25)
-        Me.tsSettingsTopMenu.Stretch = true
+        Me.tsSettingsTopMenu.Stretch = True
         Me.tsSettingsTopMenu.TabIndex = 4
         Me.tsSettingsTopMenu.Text = "ToolStrip1"
         '
@@ -16366,27 +16369,27 @@ Partial Class dlgSettings
         Me.gbSettingsHelp.Controls.Add(Me.pbSettingsHelpLogo)
         Me.gbSettingsHelp.Controls.Add(Me.lblHelp)
         Me.gbSettingsHelp.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSettingsHelp.Location = New System.Drawing.Point(0, 0)
         Me.gbSettingsHelp.Name = "gbSettingsHelp"
         Me.gbSettingsHelp.Size = New System.Drawing.Size(677, 66)
         Me.gbSettingsHelp.TabIndex = 0
-        Me.gbSettingsHelp.TabStop = false
+        Me.gbSettingsHelp.TabStop = False
         Me.gbSettingsHelp.Text = "     Help"
         '
         'pbSettingsHelpLogo
         '
-        Me.pbSettingsHelpLogo.Image = CType(resources.GetObject("pbSettingsHelpLogo.Image"),System.Drawing.Image)
+        Me.pbSettingsHelpLogo.Image = CType(resources.GetObject("pbSettingsHelpLogo.Image"), System.Drawing.Image)
         Me.pbSettingsHelpLogo.Location = New System.Drawing.Point(6, 0)
         Me.pbSettingsHelpLogo.Name = "pbSettingsHelpLogo"
         Me.pbSettingsHelpLogo.Size = New System.Drawing.Size(16, 16)
         Me.pbSettingsHelpLogo.TabIndex = 1
-        Me.pbSettingsHelpLogo.TabStop = false
+        Me.pbSettingsHelpLogo.TabStop = False
         '
         'lblHelp
         '
         Me.lblHelp.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblHelp.Location = New System.Drawing.Point(3, 18)
         Me.lblHelp.Name = "lblHelp"
         Me.lblHelp.Size = New System.Drawing.Size(671, 45)
@@ -16398,7 +16401,7 @@ Partial Class dlgSettings
         Me.pnlSettingsHelp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlSettingsHelp.Controls.Add(Me.gbSettingsHelp)
         Me.pnlSettingsHelp.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlSettingsHelp.Location = New System.Drawing.Point(3, 3)
         Me.pnlSettingsHelp.Name = "pnlSettingsHelp"
         Me.pnlSettingsHelp.Size = New System.Drawing.Size(679, 68)
@@ -16406,20 +16409,20 @@ Partial Class dlgSettings
         '
         'pnlMovieTrailers
         '
-        Me.pnlMovieTrailers.AutoSize = true
+        Me.pnlMovieTrailers.AutoSize = True
         Me.pnlMovieTrailers.BackColor = System.Drawing.Color.White
         Me.pnlMovieTrailers.Controls.Add(Me.tblMovieTrailers)
-        Me.pnlMovieTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlMovieTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlMovieTrailers.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieTrailers.Name = "pnlMovieTrailers"
         Me.pnlMovieTrailers.Size = New System.Drawing.Size(200, 238)
         Me.pnlMovieTrailers.TabIndex = 21
-        Me.pnlMovieTrailers.Visible = false
+        Me.pnlMovieTrailers.Visible = False
         '
         'tblMovieTrailers
         '
-        Me.tblMovieTrailers.AutoScroll = true
-        Me.tblMovieTrailers.AutoSize = true
+        Me.tblMovieTrailers.AutoScroll = True
+        Me.tblMovieTrailers.AutoSize = True
         Me.tblMovieTrailers.ColumnCount = 2
         Me.tblMovieTrailers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieTrailers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16435,19 +16438,19 @@ Partial Class dlgSettings
         '
         'gbMovieTrailerOpts
         '
-        Me.gbMovieTrailerOpts.AutoSize = true
+        Me.gbMovieTrailerOpts.AutoSize = True
         Me.gbMovieTrailerOpts.Controls.Add(Me.tblMovieTrailerOpts)
         Me.gbMovieTrailerOpts.Dock = System.Windows.Forms.DockStyle.Top
         Me.gbMovieTrailerOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieTrailerOpts.Name = "gbMovieTrailerOpts"
         Me.gbMovieTrailerOpts.Size = New System.Drawing.Size(194, 232)
         Me.gbMovieTrailerOpts.TabIndex = 1
-        Me.gbMovieTrailerOpts.TabStop = false
+        Me.gbMovieTrailerOpts.TabStop = False
         Me.gbMovieTrailerOpts.Text = "Trailers"
         '
         'tblMovieTrailerOpts
         '
-        Me.tblMovieTrailerOpts.AutoSize = true
+        Me.tblMovieTrailerOpts.AutoSize = True
         Me.tblMovieTrailerOpts.ColumnCount = 2
         Me.tblMovieTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16467,11 +16470,11 @@ Partial Class dlgSettings
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieTrailerOpts.Size = New System.Drawing.Size(188, 211)
@@ -16489,8 +16492,8 @@ Partial Class dlgSettings
         'lblMovieTrailerDefaultSearch
         '
         Me.lblMovieTrailerDefaultSearch.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieTrailerDefaultSearch.AutoSize = true
-        Me.lblMovieTrailerDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieTrailerDefaultSearch.AutoSize = True
+        Me.lblMovieTrailerDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieTrailerDefaultSearch.Location = New System.Drawing.Point(3, 166)
         Me.lblMovieTrailerDefaultSearch.Name = "lblMovieTrailerDefaultSearch"
         Me.lblMovieTrailerDefaultSearch.Size = New System.Drawing.Size(139, 13)
@@ -16500,35 +16503,35 @@ Partial Class dlgSettings
         'chkMovieTrailerEnable
         '
         Me.chkMovieTrailerEnable.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieTrailerEnable.AutoSize = true
-        Me.chkMovieTrailerEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieTrailerEnable.AutoSize = True
+        Me.chkMovieTrailerEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieTrailerEnable.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieTrailerEnable.Name = "chkMovieTrailerEnable"
         Me.chkMovieTrailerEnable.Size = New System.Drawing.Size(140, 17)
         Me.chkMovieTrailerEnable.TabIndex = 0
         Me.chkMovieTrailerEnable.Text = "Enable Trailer Support"
-        Me.chkMovieTrailerEnable.UseVisualStyleBackColor = true
+        Me.chkMovieTrailerEnable.UseVisualStyleBackColor = True
         '
         'chkMovieTrailerOverwrite
         '
         Me.chkMovieTrailerOverwrite.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieTrailerOverwrite.AutoSize = true
-        Me.chkMovieTrailerOverwrite.Enabled = false
-        Me.chkMovieTrailerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieTrailerOverwrite.AutoSize = True
+        Me.chkMovieTrailerOverwrite.Enabled = False
+        Me.chkMovieTrailerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieTrailerOverwrite.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieTrailerOverwrite.Name = "chkMovieTrailerOverwrite"
         Me.chkMovieTrailerOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieTrailerOverwrite.TabIndex = 4
         Me.chkMovieTrailerOverwrite.Text = "Overwrite Existing"
-        Me.chkMovieTrailerOverwrite.UseVisualStyleBackColor = true
+        Me.chkMovieTrailerOverwrite.UseVisualStyleBackColor = True
         '
         'cbMovieTrailerMinVideoQual
         '
         Me.cbMovieTrailerMinVideoQual.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.cbMovieTrailerMinVideoQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieTrailerMinVideoQual.Enabled = false
-        Me.cbMovieTrailerMinVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieTrailerMinVideoQual.FormattingEnabled = true
+        Me.cbMovieTrailerMinVideoQual.Enabled = False
+        Me.cbMovieTrailerMinVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieTrailerMinVideoQual.FormattingEnabled = True
         Me.cbMovieTrailerMinVideoQual.Location = New System.Drawing.Point(3, 139)
         Me.cbMovieTrailerMinVideoQual.Name = "cbMovieTrailerMinVideoQual"
         Me.cbMovieTrailerMinVideoQual.Size = New System.Drawing.Size(125, 21)
@@ -16537,23 +16540,23 @@ Partial Class dlgSettings
         'chkMovieTrailerDeleteExisting
         '
         Me.chkMovieTrailerDeleteExisting.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieTrailerDeleteExisting.AutoSize = true
+        Me.chkMovieTrailerDeleteExisting.AutoSize = True
         Me.chkMovieTrailerDeleteExisting.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieTrailerDeleteExisting.Enabled = false
-        Me.chkMovieTrailerDeleteExisting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieTrailerDeleteExisting.Enabled = False
+        Me.chkMovieTrailerDeleteExisting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieTrailerDeleteExisting.Location = New System.Drawing.Point(3, 49)
         Me.chkMovieTrailerDeleteExisting.Name = "chkMovieTrailerDeleteExisting"
         Me.chkMovieTrailerDeleteExisting.Size = New System.Drawing.Size(118, 17)
         Me.chkMovieTrailerDeleteExisting.TabIndex = 5
         Me.chkMovieTrailerDeleteExisting.Text = "Delete All Existing"
         Me.chkMovieTrailerDeleteExisting.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieTrailerDeleteExisting.UseVisualStyleBackColor = true
+        Me.chkMovieTrailerDeleteExisting.UseVisualStyleBackColor = True
         '
         'lblMovieTrailerMinQual
         '
         Me.lblMovieTrailerMinQual.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieTrailerMinQual.AutoSize = true
-        Me.lblMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieTrailerMinQual.AutoSize = True
+        Me.lblMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieTrailerMinQual.Location = New System.Drawing.Point(3, 119)
         Me.lblMovieTrailerMinQual.Name = "lblMovieTrailerMinQual"
         Me.lblMovieTrailerMinQual.Size = New System.Drawing.Size(97, 13)
@@ -16563,8 +16566,8 @@ Partial Class dlgSettings
         'lblMovieTrailerPrefQual
         '
         Me.lblMovieTrailerPrefQual.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieTrailerPrefQual.AutoSize = true
-        Me.lblMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieTrailerPrefQual.AutoSize = True
+        Me.lblMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieTrailerPrefQual.Location = New System.Drawing.Point(3, 72)
         Me.lblMovieTrailerPrefQual.Name = "lblMovieTrailerPrefQual"
         Me.lblMovieTrailerPrefQual.Size = New System.Drawing.Size(96, 13)
@@ -16575,9 +16578,9 @@ Partial Class dlgSettings
         '
         Me.cbMovieTrailerPrefVideoQual.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.cbMovieTrailerPrefVideoQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieTrailerPrefVideoQual.Enabled = false
-        Me.cbMovieTrailerPrefVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieTrailerPrefVideoQual.FormattingEnabled = true
+        Me.cbMovieTrailerPrefVideoQual.Enabled = False
+        Me.cbMovieTrailerPrefVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieTrailerPrefVideoQual.FormattingEnabled = True
         Me.cbMovieTrailerPrefVideoQual.Location = New System.Drawing.Point(3, 92)
         Me.cbMovieTrailerPrefVideoQual.Name = "cbMovieTrailerPrefVideoQual"
         Me.cbMovieTrailerPrefVideoQual.Size = New System.Drawing.Size(125, 21)
@@ -16585,20 +16588,20 @@ Partial Class dlgSettings
         '
         'pnlMovieThemes
         '
-        Me.pnlMovieThemes.AutoSize = true
+        Me.pnlMovieThemes.AutoSize = True
         Me.pnlMovieThemes.BackColor = System.Drawing.Color.White
         Me.pnlMovieThemes.Controls.Add(Me.tblMovieThemes)
-        Me.pnlMovieThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlMovieThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlMovieThemes.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieThemes.Name = "pnlMovieThemes"
         Me.pnlMovieThemes.Size = New System.Drawing.Size(160, 73)
         Me.pnlMovieThemes.TabIndex = 22
-        Me.pnlMovieThemes.Visible = false
+        Me.pnlMovieThemes.Visible = False
         '
         'tblMovieThemes
         '
-        Me.tblMovieThemes.AutoScroll = true
-        Me.tblMovieThemes.AutoSize = true
+        Me.tblMovieThemes.AutoScroll = True
+        Me.tblMovieThemes.AutoSize = True
         Me.tblMovieThemes.ColumnCount = 2
         Me.tblMovieThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16614,19 +16617,19 @@ Partial Class dlgSettings
         '
         'gbMovieThemeOpts
         '
-        Me.gbMovieThemeOpts.AutoSize = true
+        Me.gbMovieThemeOpts.AutoSize = True
         Me.gbMovieThemeOpts.Controls.Add(Me.tblMovieThemeOpts)
         Me.gbMovieThemeOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieThemeOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieThemeOpts.Name = "gbMovieThemeOpts"
         Me.gbMovieThemeOpts.Size = New System.Drawing.Size(154, 67)
         Me.gbMovieThemeOpts.TabIndex = 2
-        Me.gbMovieThemeOpts.TabStop = false
+        Me.gbMovieThemeOpts.TabStop = False
         Me.gbMovieThemeOpts.Text = "Themes"
         '
         'tblMovieThemeOpts
         '
-        Me.tblMovieThemeOpts.AutoSize = true
+        Me.tblMovieThemeOpts.AutoSize = True
         Me.tblMovieThemeOpts.ColumnCount = 2
         Me.tblMovieThemeOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieThemeOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16645,42 +16648,42 @@ Partial Class dlgSettings
         'chkMovieThemeOverwrite
         '
         Me.chkMovieThemeOverwrite.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieThemeOverwrite.AutoSize = true
-        Me.chkMovieThemeOverwrite.Enabled = false
-        Me.chkMovieThemeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieThemeOverwrite.AutoSize = True
+        Me.chkMovieThemeOverwrite.Enabled = False
+        Me.chkMovieThemeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieThemeOverwrite.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieThemeOverwrite.Name = "chkMovieThemeOverwrite"
         Me.chkMovieThemeOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieThemeOverwrite.TabIndex = 4
         Me.chkMovieThemeOverwrite.Text = "Overwrite Existing"
-        Me.chkMovieThemeOverwrite.UseVisualStyleBackColor = true
+        Me.chkMovieThemeOverwrite.UseVisualStyleBackColor = True
         '
         'chkMovieThemeEnable
         '
         Me.chkMovieThemeEnable.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieThemeEnable.AutoSize = true
-        Me.chkMovieThemeEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieThemeEnable.AutoSize = True
+        Me.chkMovieThemeEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieThemeEnable.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieThemeEnable.Name = "chkMovieThemeEnable"
         Me.chkMovieThemeEnable.Size = New System.Drawing.Size(142, 17)
         Me.chkMovieThemeEnable.TabIndex = 0
         Me.chkMovieThemeEnable.Text = "Enable Theme Support"
-        Me.chkMovieThemeEnable.UseVisualStyleBackColor = true
+        Me.chkMovieThemeEnable.UseVisualStyleBackColor = True
         '
         'pnlTVThemes
         '
         Me.pnlTVThemes.BackColor = System.Drawing.Color.White
         Me.pnlTVThemes.Controls.Add(Me.Label2)
-        Me.pnlTVThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlTVThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlTVThemes.Location = New System.Drawing.Point(900, 900)
         Me.pnlTVThemes.Name = "pnlTVThemes"
         Me.pnlTVThemes.Size = New System.Drawing.Size(750, 500)
         Me.pnlTVThemes.TabIndex = 23
-        Me.pnlTVThemes.Visible = false
+        Me.pnlTVThemes.Visible = False
         '
         'Label2
         '
-        Me.Label2.AutoSize = true
+        Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(206, 235)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(131, 13)
@@ -16689,19 +16692,19 @@ Partial Class dlgSettings
         '
         'pnlMovieSetGeneral
         '
-        Me.pnlMovieSetGeneral.AutoSize = true
+        Me.pnlMovieSetGeneral.AutoSize = True
         Me.pnlMovieSetGeneral.BackColor = System.Drawing.Color.White
         Me.pnlMovieSetGeneral.Controls.Add(Me.tblMovieSetGeneral)
         Me.pnlMovieSetGeneral.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieSetGeneral.Name = "pnlMovieSetGeneral"
         Me.pnlMovieSetGeneral.Size = New System.Drawing.Size(230, 570)
         Me.pnlMovieSetGeneral.TabIndex = 24
-        Me.pnlMovieSetGeneral.Visible = false
+        Me.pnlMovieSetGeneral.Visible = False
         '
         'tblMovieSetGeneral
         '
-        Me.tblMovieSetGeneral.AutoScroll = true
-        Me.tblMovieSetGeneral.AutoSize = true
+        Me.tblMovieSetGeneral.AutoScroll = True
+        Me.tblMovieSetGeneral.AutoSize = True
         Me.tblMovieSetGeneral.ColumnCount = 2
         Me.tblMovieSetGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16719,26 +16722,26 @@ Partial Class dlgSettings
         '
         'gbMovieSetGeneralMediaListOpts
         '
-        Me.gbMovieSetGeneralMediaListOpts.AutoSize = true
+        Me.gbMovieSetGeneralMediaListOpts.AutoSize = True
         Me.gbMovieSetGeneralMediaListOpts.Controls.Add(Me.tblMovieSetGeneralMediaListOpts)
         Me.gbMovieSetGeneralMediaListOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSetGeneralMediaListOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetGeneralMediaListOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieSetGeneralMediaListOpts.Location = New System.Drawing.Point(3, 99)
         Me.gbMovieSetGeneralMediaListOpts.Name = "gbMovieSetGeneralMediaListOpts"
         Me.gbMovieSetGeneralMediaListOpts.Size = New System.Drawing.Size(224, 438)
         Me.gbMovieSetGeneralMediaListOpts.TabIndex = 4
-        Me.gbMovieSetGeneralMediaListOpts.TabStop = false
+        Me.gbMovieSetGeneralMediaListOpts.TabStop = False
         Me.gbMovieSetGeneralMediaListOpts.Text = "Media List Options"
         '
         'tblMovieSetGeneralMediaListOpts
         '
-        Me.tblMovieSetGeneralMediaListOpts.AutoSize = true
+        Me.tblMovieSetGeneralMediaListOpts.AutoSize = True
         Me.tblMovieSetGeneralMediaListOpts.ColumnCount = 2
         Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSetGeneralMediaListOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.gbMovieSetGeneralMediaListSorting, 0, 1)
         Me.tblMovieSetGeneralMediaListOpts.Controls.Add(Me.gbMovieSetGeneralMediaListSortTokensOpts, 0, 0)
         Me.tblMovieSetGeneralMediaListOpts.Dock = System.Windows.Forms.DockStyle.Fill
@@ -16748,20 +16751,20 @@ Partial Class dlgSettings
         Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSetGeneralMediaListOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMovieSetGeneralMediaListOpts.Size = New System.Drawing.Size(218, 417)
         Me.tblMovieSetGeneralMediaListOpts.TabIndex = 7
         '
         'gbMovieSetGeneralMediaListSorting
         '
-        Me.gbMovieSetGeneralMediaListSorting.AutoSize = true
+        Me.gbMovieSetGeneralMediaListSorting.AutoSize = True
         Me.tblMovieSetGeneralMediaListOpts.SetColumnSpan(Me.gbMovieSetGeneralMediaListSorting, 2)
         Me.gbMovieSetGeneralMediaListSorting.Controls.Add(Me.tblMovieSetGeneralMediaListSorting)
         Me.gbMovieSetGeneralMediaListSorting.Dock = System.Windows.Forms.DockStyle.Fill
@@ -16769,12 +16772,12 @@ Partial Class dlgSettings
         Me.gbMovieSetGeneralMediaListSorting.Name = "gbMovieSetGeneralMediaListSorting"
         Me.gbMovieSetGeneralMediaListSorting.Size = New System.Drawing.Size(212, 306)
         Me.gbMovieSetGeneralMediaListSorting.TabIndex = 84
-        Me.gbMovieSetGeneralMediaListSorting.TabStop = false
+        Me.gbMovieSetGeneralMediaListSorting.TabStop = False
         Me.gbMovieSetGeneralMediaListSorting.Text = "Media List Sorting"
         '
         'tblMovieSetGeneralMediaListSorting
         '
-        Me.tblMovieSetGeneralMediaListSorting.AutoSize = true
+        Me.tblMovieSetGeneralMediaListSorting.AutoSize = True
         Me.tblMovieSetGeneralMediaListSorting.ColumnCount = 6
         Me.tblMovieSetGeneralMediaListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetGeneralMediaListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16799,36 +16802,36 @@ Partial Class dlgSettings
         'btnMovieSetGeneralMediaListSortingDown
         '
         Me.btnMovieSetGeneralMediaListSortingDown.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnMovieSetGeneralMediaListSortingDown.Image = CType(resources.GetObject("btnMovieSetGeneralMediaListSortingDown.Image"),System.Drawing.Image)
+        Me.btnMovieSetGeneralMediaListSortingDown.Image = CType(resources.GetObject("btnMovieSetGeneralMediaListSortingDown.Image"), System.Drawing.Image)
         Me.btnMovieSetGeneralMediaListSortingDown.Location = New System.Drawing.Point(91, 259)
         Me.btnMovieSetGeneralMediaListSortingDown.Name = "btnMovieSetGeneralMediaListSortingDown"
         Me.btnMovieSetGeneralMediaListSortingDown.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieSetGeneralMediaListSortingDown.TabIndex = 12
-        Me.btnMovieSetGeneralMediaListSortingDown.UseVisualStyleBackColor = true
+        Me.btnMovieSetGeneralMediaListSortingDown.UseVisualStyleBackColor = True
         '
         'btnMovieSetGeneralMediaListSortingUp
         '
         Me.btnMovieSetGeneralMediaListSortingUp.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnMovieSetGeneralMediaListSortingUp.Image = CType(resources.GetObject("btnMovieSetGeneralMediaListSortingUp.Image"),System.Drawing.Image)
+        Me.btnMovieSetGeneralMediaListSortingUp.Image = CType(resources.GetObject("btnMovieSetGeneralMediaListSortingUp.Image"), System.Drawing.Image)
         Me.btnMovieSetGeneralMediaListSortingUp.Location = New System.Drawing.Point(62, 259)
         Me.btnMovieSetGeneralMediaListSortingUp.Name = "btnMovieSetGeneralMediaListSortingUp"
         Me.btnMovieSetGeneralMediaListSortingUp.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieSetGeneralMediaListSortingUp.TabIndex = 13
-        Me.btnMovieSetGeneralMediaListSortingUp.UseVisualStyleBackColor = true
+        Me.btnMovieSetGeneralMediaListSortingUp.UseVisualStyleBackColor = True
         '
         'lvMovieSetGeneralMediaListSorting
         '
         Me.lvMovieSetGeneralMediaListSorting.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colMovieSetGeneralMediaListSortingDisplayIndex, Me.colMovieSetGeneralMediaListSortingColumn, Me.colMovieSetGeneralMediaListSortingLabel, Me.colMovieSetGeneralMediaListSortingHide})
         Me.tblMovieSetGeneralMediaListSorting.SetColumnSpan(Me.lvMovieSetGeneralMediaListSorting, 5)
         Me.lvMovieSetGeneralMediaListSorting.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lvMovieSetGeneralMediaListSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lvMovieSetGeneralMediaListSorting.FullRowSelect = true
-        Me.lvMovieSetGeneralMediaListSorting.HideSelection = false
+        Me.lvMovieSetGeneralMediaListSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvMovieSetGeneralMediaListSorting.FullRowSelect = True
+        Me.lvMovieSetGeneralMediaListSorting.HideSelection = False
         Me.lvMovieSetGeneralMediaListSorting.Location = New System.Drawing.Point(3, 3)
         Me.lvMovieSetGeneralMediaListSorting.Name = "lvMovieSetGeneralMediaListSorting"
         Me.lvMovieSetGeneralMediaListSorting.Size = New System.Drawing.Size(200, 250)
         Me.lvMovieSetGeneralMediaListSorting.TabIndex = 10
-        Me.lvMovieSetGeneralMediaListSorting.UseCompatibleStateImageBehavior = false
+        Me.lvMovieSetGeneralMediaListSorting.UseCompatibleStateImageBehavior = False
         Me.lvMovieSetGeneralMediaListSorting.View = System.Windows.Forms.View.Details
         '
         'colMovieSetGeneralMediaListSortingDisplayIndex
@@ -16853,30 +16856,30 @@ Partial Class dlgSettings
         'btnMovieSetGeneralMediaListSortingReset
         '
         Me.btnMovieSetGeneralMediaListSortingReset.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnMovieSetGeneralMediaListSortingReset.Image = CType(resources.GetObject("btnMovieSetGeneralMediaListSortingReset.Image"),System.Drawing.Image)
+        Me.btnMovieSetGeneralMediaListSortingReset.Image = CType(resources.GetObject("btnMovieSetGeneralMediaListSortingReset.Image"), System.Drawing.Image)
         Me.btnMovieSetGeneralMediaListSortingReset.Location = New System.Drawing.Point(180, 259)
         Me.btnMovieSetGeneralMediaListSortingReset.Name = "btnMovieSetGeneralMediaListSortingReset"
         Me.btnMovieSetGeneralMediaListSortingReset.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieSetGeneralMediaListSortingReset.TabIndex = 11
-        Me.btnMovieSetGeneralMediaListSortingReset.UseVisualStyleBackColor = true
+        Me.btnMovieSetGeneralMediaListSortingReset.UseVisualStyleBackColor = True
         '
         'gbMovieSetGeneralMediaListSortTokensOpts
         '
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.AutoSize = true
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.AutoSize = True
         Me.tblMovieSetGeneralMediaListOpts.SetColumnSpan(Me.gbMovieSetGeneralMediaListSortTokensOpts, 2)
         Me.gbMovieSetGeneralMediaListSortTokensOpts.Controls.Add(Me.tblMovieSetGeneralSortTokensOpts)
         Me.gbMovieSetGeneralMediaListSortTokensOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieSetGeneralMediaListSortTokensOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSetGeneralMediaListSortTokensOpts.Name = "gbMovieSetGeneralMediaListSortTokensOpts"
         Me.gbMovieSetGeneralMediaListSortTokensOpts.Size = New System.Drawing.Size(212, 99)
         Me.gbMovieSetGeneralMediaListSortTokensOpts.TabIndex = 83
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.TabStop = false
+        Me.gbMovieSetGeneralMediaListSortTokensOpts.TabStop = False
         Me.gbMovieSetGeneralMediaListSortTokensOpts.Text = "Sort Tokens to Ignore"
         '
         'tblMovieSetGeneralSortTokensOpts
         '
-        Me.tblMovieSetGeneralSortTokensOpts.AutoSize = true
+        Me.tblMovieSetGeneralSortTokensOpts.AutoSize = True
         Me.tblMovieSetGeneralSortTokensOpts.ColumnCount = 5
         Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16901,49 +16904,49 @@ Partial Class dlgSettings
         'btnMovieSetSortTokenReset
         '
         Me.btnMovieSetSortTokenReset.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnMovieSetSortTokenReset.Image = CType(resources.GetObject("btnMovieSetSortTokenReset.Image"),System.Drawing.Image)
+        Me.btnMovieSetSortTokenReset.Image = CType(resources.GetObject("btnMovieSetSortTokenReset.Image"), System.Drawing.Image)
         Me.btnMovieSetSortTokenReset.Location = New System.Drawing.Point(180, 52)
         Me.btnMovieSetSortTokenReset.Name = "btnMovieSetSortTokenReset"
         Me.btnMovieSetSortTokenReset.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieSetSortTokenReset.TabIndex = 10
-        Me.btnMovieSetSortTokenReset.UseVisualStyleBackColor = true
+        Me.btnMovieSetSortTokenReset.UseVisualStyleBackColor = True
         '
         'btnMovieSetSortTokenRemove
         '
         Me.btnMovieSetSortTokenRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnMovieSetSortTokenRemove.Image = CType(resources.GetObject("btnMovieSetSortTokenRemove.Image"),System.Drawing.Image)
+        Me.btnMovieSetSortTokenRemove.Image = CType(resources.GetObject("btnMovieSetSortTokenRemove.Image"), System.Drawing.Image)
         Me.btnMovieSetSortTokenRemove.Location = New System.Drawing.Point(99, 52)
         Me.btnMovieSetSortTokenRemove.Name = "btnMovieSetSortTokenRemove"
         Me.btnMovieSetSortTokenRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieSetSortTokenRemove.TabIndex = 3
-        Me.btnMovieSetSortTokenRemove.UseVisualStyleBackColor = true
+        Me.btnMovieSetSortTokenRemove.UseVisualStyleBackColor = True
         '
         'lstMovieSetSortTokens
         '
         Me.tblMovieSetGeneralSortTokensOpts.SetColumnSpan(Me.lstMovieSetSortTokens, 4)
-        Me.lstMovieSetSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lstMovieSetSortTokens.FormattingEnabled = true
+        Me.lstMovieSetSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstMovieSetSortTokens.FormattingEnabled = True
         Me.lstMovieSetSortTokens.Location = New System.Drawing.Point(3, 3)
         Me.lstMovieSetSortTokens.Name = "lstMovieSetSortTokens"
         Me.lstMovieSetSortTokens.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lstMovieSetSortTokens.Size = New System.Drawing.Size(200, 43)
-        Me.lstMovieSetSortTokens.Sorted = true
+        Me.lstMovieSetSortTokens.Sorted = True
         Me.lstMovieSetSortTokens.TabIndex = 0
         '
         'btnMovieSetSortTokenAdd
         '
         Me.btnMovieSetSortTokenAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnMovieSetSortTokenAdd.Image = CType(resources.GetObject("btnMovieSetSortTokenAdd.Image"),System.Drawing.Image)
+        Me.btnMovieSetSortTokenAdd.Image = CType(resources.GetObject("btnMovieSetSortTokenAdd.Image"), System.Drawing.Image)
         Me.btnMovieSetSortTokenAdd.Location = New System.Drawing.Point(70, 52)
         Me.btnMovieSetSortTokenAdd.Name = "btnMovieSetSortTokenAdd"
         Me.btnMovieSetSortTokenAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieSetSortTokenAdd.TabIndex = 2
-        Me.btnMovieSetSortTokenAdd.UseVisualStyleBackColor = true
+        Me.btnMovieSetSortTokenAdd.UseVisualStyleBackColor = True
         '
         'txtMovieSetSortToken
         '
         Me.txtMovieSetSortToken.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetSortToken.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieSetSortToken.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieSetSortToken.Location = New System.Drawing.Point(3, 52)
         Me.txtMovieSetSortToken.Name = "txtMovieSetSortToken"
         Me.txtMovieSetSortToken.Size = New System.Drawing.Size(61, 22)
@@ -16951,20 +16954,20 @@ Partial Class dlgSettings
         '
         'gbMovieSetGeneralMiscOpts
         '
-        Me.gbMovieSetGeneralMiscOpts.AutoSize = true
+        Me.gbMovieSetGeneralMiscOpts.AutoSize = True
         Me.gbMovieSetGeneralMiscOpts.Controls.Add(Me.tblMovieSetGeneralMiscOpts)
         Me.gbMovieSetGeneralMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSetGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieSetGeneralMiscOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSetGeneralMiscOpts.Name = "gbMovieSetGeneralMiscOpts"
         Me.gbMovieSetGeneralMiscOpts.Size = New System.Drawing.Size(224, 90)
         Me.gbMovieSetGeneralMiscOpts.TabIndex = 1
-        Me.gbMovieSetGeneralMiscOpts.TabStop = false
+        Me.gbMovieSetGeneralMiscOpts.TabStop = False
         Me.gbMovieSetGeneralMiscOpts.Text = "Miscellaneous"
         '
         'tblMovieSetGeneralMiscOpts
         '
-        Me.tblMovieSetGeneralMiscOpts.AutoSize = true
+        Me.tblMovieSetGeneralMiscOpts.AutoSize = True
         Me.tblMovieSetGeneralMiscOpts.ColumnCount = 2
         Me.tblMovieSetGeneralMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetGeneralMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -16984,55 +16987,55 @@ Partial Class dlgSettings
         '
         'chkMovieSetClickScrapeAsk
         '
-        Me.chkMovieSetClickScrapeAsk.AutoSize = true
-        Me.chkMovieSetClickScrapeAsk.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkMovieSetClickScrapeAsk.AutoSize = True
+        Me.chkMovieSetClickScrapeAsk.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieSetClickScrapeAsk.Location = New System.Drawing.Point(3, 49)
         Me.chkMovieSetClickScrapeAsk.Name = "chkMovieSetClickScrapeAsk"
         Me.chkMovieSetClickScrapeAsk.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkMovieSetClickScrapeAsk.Size = New System.Drawing.Size(147, 17)
         Me.chkMovieSetClickScrapeAsk.TabIndex = 64
         Me.chkMovieSetClickScrapeAsk.Text = "Ask On Click Scrape"
-        Me.chkMovieSetClickScrapeAsk.UseVisualStyleBackColor = true
+        Me.chkMovieSetClickScrapeAsk.UseVisualStyleBackColor = True
         '
         'chkMovieSetClickScrape
         '
         Me.chkMovieSetClickScrape.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetClickScrape.AutoSize = true
-        Me.chkMovieSetClickScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkMovieSetClickScrape.AutoSize = True
+        Me.chkMovieSetClickScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieSetClickScrape.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieSetClickScrape.Name = "chkMovieSetClickScrape"
         Me.chkMovieSetClickScrape.Size = New System.Drawing.Size(125, 17)
         Me.chkMovieSetClickScrape.TabIndex = 65
         Me.chkMovieSetClickScrape.Text = "Enable Click Scrape"
-        Me.chkMovieSetClickScrape.UseVisualStyleBackColor = true
+        Me.chkMovieSetClickScrape.UseVisualStyleBackColor = True
         '
         'chkMovieSetGeneralMarkNew
         '
         Me.chkMovieSetGeneralMarkNew.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetGeneralMarkNew.AutoSize = true
-        Me.chkMovieSetGeneralMarkNew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetGeneralMarkNew.AutoSize = True
+        Me.chkMovieSetGeneralMarkNew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetGeneralMarkNew.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieSetGeneralMarkNew.Name = "chkMovieSetGeneralMarkNew"
         Me.chkMovieSetGeneralMarkNew.Size = New System.Drawing.Size(133, 17)
         Me.chkMovieSetGeneralMarkNew.TabIndex = 66
         Me.chkMovieSetGeneralMarkNew.Text = "Mark New MovieSets"
-        Me.chkMovieSetGeneralMarkNew.UseVisualStyleBackColor = true
+        Me.chkMovieSetGeneralMarkNew.UseVisualStyleBackColor = True
         '
         'pnlMovieSetSources
         '
-        Me.pnlMovieSetSources.AutoSize = true
+        Me.pnlMovieSetSources.AutoSize = True
         Me.pnlMovieSetSources.BackColor = System.Drawing.Color.White
         Me.pnlMovieSetSources.Controls.Add(Me.tblMovieSetSources)
         Me.pnlMovieSetSources.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieSetSources.Name = "pnlMovieSetSources"
         Me.pnlMovieSetSources.Size = New System.Drawing.Size(579, 477)
         Me.pnlMovieSetSources.TabIndex = 25
-        Me.pnlMovieSetSources.Visible = false
+        Me.pnlMovieSetSources.Visible = False
         '
         'tblMovieSetSources
         '
-        Me.tblMovieSetSources.AutoScroll = true
-        Me.tblMovieSetSources.AutoSize = true
+        Me.tblMovieSetSources.AutoScroll = True
+        Me.tblMovieSetSources.AutoSize = True
         Me.tblMovieSetSources.ColumnCount = 3
         Me.tblMovieSetSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -17051,20 +17054,20 @@ Partial Class dlgSettings
         '
         'gbMovieSetSourcesMiscOpts
         '
-        Me.gbMovieSetSourcesMiscOpts.AutoSize = true
+        Me.gbMovieSetSourcesMiscOpts.AutoSize = True
         Me.gbMovieSetSourcesMiscOpts.Controls.Add(Me.tblMovieSetSourcesMiscOpts)
         Me.gbMovieSetSourcesMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSetSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieSetSourcesMiscOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSetSourcesMiscOpts.Name = "gbMovieSetSourcesMiscOpts"
         Me.gbMovieSetSourcesMiscOpts.Size = New System.Drawing.Size(252, 67)
         Me.gbMovieSetSourcesMiscOpts.TabIndex = 9
-        Me.gbMovieSetSourcesMiscOpts.TabStop = false
+        Me.gbMovieSetSourcesMiscOpts.TabStop = False
         Me.gbMovieSetSourcesMiscOpts.Text = "Miscellaneous Options"
         '
         'tblMovieSetSourcesMiscOpts
         '
-        Me.tblMovieSetSourcesMiscOpts.AutoSize = true
+        Me.tblMovieSetSourcesMiscOpts.AutoSize = True
         Me.tblMovieSetSourcesMiscOpts.ColumnCount = 2
         Me.tblMovieSetSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -17082,43 +17085,43 @@ Partial Class dlgSettings
         '
         'chkMovieSetCleanDB
         '
-        Me.chkMovieSetCleanDB.AutoSize = true
-        Me.chkMovieSetCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetCleanDB.AutoSize = True
+        Me.chkMovieSetCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetCleanDB.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieSetCleanDB.Name = "chkMovieSetCleanDB"
         Me.chkMovieSetCleanDB.Size = New System.Drawing.Size(218, 17)
         Me.chkMovieSetCleanDB.TabIndex = 9
         Me.chkMovieSetCleanDB.Text = "Clean database after updating library"
-        Me.chkMovieSetCleanDB.UseVisualStyleBackColor = true
+        Me.chkMovieSetCleanDB.UseVisualStyleBackColor = True
         '
         'chkMovieSetCleanFiles
         '
-        Me.chkMovieSetCleanFiles.AutoSize = true
-        Me.chkMovieSetCleanFiles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetCleanFiles.AutoSize = True
+        Me.chkMovieSetCleanFiles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSetCleanFiles.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieSetCleanFiles.Name = "chkMovieSetCleanFiles"
         Me.chkMovieSetCleanFiles.Size = New System.Drawing.Size(240, 17)
         Me.chkMovieSetCleanFiles.TabIndex = 8
         Me.chkMovieSetCleanFiles.Text = "Remove Images and NFOs with MovieSets"
-        Me.chkMovieSetCleanFiles.UseVisualStyleBackColor = true
+        Me.chkMovieSetCleanFiles.UseVisualStyleBackColor = True
         '
         'gbMovieSetFileNamingOpts
         '
-        Me.gbMovieSetFileNamingOpts.AutoSize = true
+        Me.gbMovieSetFileNamingOpts.AutoSize = True
         Me.tblMovieSetSources.SetColumnSpan(Me.gbMovieSetFileNamingOpts, 2)
         Me.gbMovieSetFileNamingOpts.Controls.Add(Me.tblMovieSetSourcesFileNamingOpts)
         Me.gbMovieSetFileNamingOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSetFileNamingOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieSetFileNamingOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSetFileNamingOpts.Location = New System.Drawing.Point(3, 76)
         Me.gbMovieSetFileNamingOpts.Name = "gbMovieSetFileNamingOpts"
         Me.gbMovieSetFileNamingOpts.Size = New System.Drawing.Size(562, 397)
         Me.gbMovieSetFileNamingOpts.TabIndex = 8
-        Me.gbMovieSetFileNamingOpts.TabStop = false
+        Me.gbMovieSetFileNamingOpts.TabStop = False
         Me.gbMovieSetFileNamingOpts.Text = "File Naming"
         '
         'tblMovieSetSourcesFileNamingOpts
         '
-        Me.tblMovieSetSourcesFileNamingOpts.AutoSize = true
+        Me.tblMovieSetSourcesFileNamingOpts.AutoSize = True
         Me.tblMovieSetSourcesFileNamingOpts.ColumnCount = 2
         Me.tblMovieSetSourcesFileNamingOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -17149,14 +17152,14 @@ Partial Class dlgSettings
         Me.tpMovieSetFileNamingXBMC.Location = New System.Drawing.Point(4, 22)
         Me.tpMovieSetFileNamingXBMC.Name = "tpMovieSetFileNamingXBMC"
         Me.tpMovieSetFileNamingXBMC.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpMovieSetFileNamingXBMC.Size = New System.Drawing.Size(542, 334)
+        Me.tpMovieSetFileNamingXBMC.Size = New System.Drawing.Size(542, 344)
         Me.tpMovieSetFileNamingXBMC.TabIndex = 1
         Me.tpMovieSetFileNamingXBMC.Text = "XBMC"
-        Me.tpMovieSetFileNamingXBMC.UseVisualStyleBackColor = true
+        Me.tpMovieSetFileNamingXBMC.UseVisualStyleBackColor = True
         '
         'tblMovieSetSourcesFileNamingXBMC
         '
-        Me.tblMovieSetSourcesFileNamingXBMC.AutoSize = true
+        Me.tblMovieSetSourcesFileNamingXBMC.AutoSize = True
         Me.tblMovieSetSourcesFileNamingXBMC.ColumnCount = 3
         Me.tblMovieSetSourcesFileNamingXBMC.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingXBMC.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -17171,28 +17174,28 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingXBMC.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingXBMC.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingXBMC.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetSourcesFileNamingXBMC.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblMovieSetSourcesFileNamingXBMC.Size = New System.Drawing.Size(536, 328)
+        Me.tblMovieSetSourcesFileNamingXBMC.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSetSourcesFileNamingXBMC.Size = New System.Drawing.Size(536, 338)
         Me.tblMovieSetSourcesFileNamingXBMC.TabIndex = 11
         '
         'gbMovieSetMSAA
         '
-        Me.gbMovieSetMSAA.AutoSize = true
+        Me.gbMovieSetMSAA.AutoSize = True
         Me.gbMovieSetMSAA.Controls.Add(Me.tblMovieSetSourcesFileNamingMSAA)
         Me.gbMovieSetMSAA.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSetMSAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieSetMSAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSetMSAA.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSetMSAA.MinimumSize = New System.Drawing.Size(200, 0)
         Me.gbMovieSetMSAA.Name = "gbMovieSetMSAA"
         Me.tblMovieSetSourcesFileNamingXBMC.SetRowSpan(Me.gbMovieSetMSAA, 2)
         Me.gbMovieSetMSAA.Size = New System.Drawing.Size(200, 205)
         Me.gbMovieSetMSAA.TabIndex = 0
-        Me.gbMovieSetMSAA.TabStop = false
+        Me.gbMovieSetMSAA.TabStop = False
         Me.gbMovieSetMSAA.Text = "Movie Set Artwork Automator"
         '
         'tblMovieSetSourcesFileNamingMSAA
         '
-        Me.tblMovieSetSourcesFileNamingMSAA.AutoSize = true
+        Me.tblMovieSetSourcesFileNamingMSAA.AutoSize = True
         Me.tblMovieSetSourcesFileNamingMSAA.ColumnCount = 2
         Me.tblMovieSetSourcesFileNamingMSAA.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingMSAA.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -17223,97 +17226,97 @@ Partial Class dlgSettings
         'chkMovieSetLandscapeMSAA
         '
         Me.chkMovieSetLandscapeMSAA.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetLandscapeMSAA.AutoSize = true
-        Me.chkMovieSetLandscapeMSAA.Enabled = false
+        Me.chkMovieSetLandscapeMSAA.AutoSize = True
+        Me.chkMovieSetLandscapeMSAA.Enabled = False
         Me.chkMovieSetLandscapeMSAA.Location = New System.Drawing.Point(3, 118)
         Me.chkMovieSetLandscapeMSAA.Name = "chkMovieSetLandscapeMSAA"
         Me.chkMovieSetLandscapeMSAA.Size = New System.Drawing.Size(80, 17)
         Me.chkMovieSetLandscapeMSAA.TabIndex = 9
         Me.chkMovieSetLandscapeMSAA.Text = "Landscape"
-        Me.chkMovieSetLandscapeMSAA.UseVisualStyleBackColor = true
+        Me.chkMovieSetLandscapeMSAA.UseVisualStyleBackColor = True
         '
         'chkMovieSetUseMSAA
         '
         Me.chkMovieSetUseMSAA.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetUseMSAA.AutoSize = true
+        Me.chkMovieSetUseMSAA.AutoSize = True
         Me.chkMovieSetUseMSAA.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieSetUseMSAA.Name = "chkMovieSetUseMSAA"
         Me.chkMovieSetUseMSAA.Size = New System.Drawing.Size(45, 17)
         Me.chkMovieSetUseMSAA.TabIndex = 10
         Me.chkMovieSetUseMSAA.Text = "Use"
-        Me.chkMovieSetUseMSAA.UseVisualStyleBackColor = true
+        Me.chkMovieSetUseMSAA.UseVisualStyleBackColor = True
         '
         'chkMovieSetClearLogoMSAA
         '
         Me.chkMovieSetClearLogoMSAA.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetClearLogoMSAA.AutoSize = true
-        Me.chkMovieSetClearLogoMSAA.Enabled = false
+        Me.chkMovieSetClearLogoMSAA.AutoSize = True
+        Me.chkMovieSetClearLogoMSAA.Enabled = False
         Me.chkMovieSetClearLogoMSAA.Location = New System.Drawing.Point(3, 72)
         Me.chkMovieSetClearLogoMSAA.Name = "chkMovieSetClearLogoMSAA"
         Me.chkMovieSetClearLogoMSAA.Size = New System.Drawing.Size(78, 17)
         Me.chkMovieSetClearLogoMSAA.TabIndex = 5
         Me.chkMovieSetClearLogoMSAA.Text = "ClearLogo"
-        Me.chkMovieSetClearLogoMSAA.UseVisualStyleBackColor = true
+        Me.chkMovieSetClearLogoMSAA.UseVisualStyleBackColor = True
         '
         'chkMovieSetClearArtMSAA
         '
         Me.chkMovieSetClearArtMSAA.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetClearArtMSAA.AutoSize = true
-        Me.chkMovieSetClearArtMSAA.Enabled = false
+        Me.chkMovieSetClearArtMSAA.AutoSize = True
+        Me.chkMovieSetClearArtMSAA.Enabled = False
         Me.chkMovieSetClearArtMSAA.Location = New System.Drawing.Point(3, 49)
         Me.chkMovieSetClearArtMSAA.Name = "chkMovieSetClearArtMSAA"
         Me.chkMovieSetClearArtMSAA.Size = New System.Drawing.Size(67, 17)
         Me.chkMovieSetClearArtMSAA.TabIndex = 6
         Me.chkMovieSetClearArtMSAA.Text = "ClearArt"
-        Me.chkMovieSetClearArtMSAA.UseVisualStyleBackColor = true
+        Me.chkMovieSetClearArtMSAA.UseVisualStyleBackColor = True
         '
         'chkMovieSetBannerMSAA
         '
         Me.chkMovieSetBannerMSAA.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetBannerMSAA.AutoSize = true
-        Me.chkMovieSetBannerMSAA.Enabled = false
+        Me.chkMovieSetBannerMSAA.AutoSize = True
+        Me.chkMovieSetBannerMSAA.Enabled = False
         Me.chkMovieSetBannerMSAA.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieSetBannerMSAA.Name = "chkMovieSetBannerMSAA"
         Me.chkMovieSetBannerMSAA.Size = New System.Drawing.Size(63, 17)
         Me.chkMovieSetBannerMSAA.TabIndex = 8
         Me.chkMovieSetBannerMSAA.Text = "Banner"
-        Me.chkMovieSetBannerMSAA.UseVisualStyleBackColor = true
+        Me.chkMovieSetBannerMSAA.UseVisualStyleBackColor = True
         '
         'chkMovieSetFanartMSAA
         '
         Me.chkMovieSetFanartMSAA.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetFanartMSAA.AutoSize = true
-        Me.chkMovieSetFanartMSAA.Enabled = false
+        Me.chkMovieSetFanartMSAA.AutoSize = True
+        Me.chkMovieSetFanartMSAA.Enabled = False
         Me.chkMovieSetFanartMSAA.Location = New System.Drawing.Point(3, 95)
         Me.chkMovieSetFanartMSAA.Name = "chkMovieSetFanartMSAA"
         Me.chkMovieSetFanartMSAA.Size = New System.Drawing.Size(59, 17)
         Me.chkMovieSetFanartMSAA.TabIndex = 2
         Me.chkMovieSetFanartMSAA.Text = "Fanart"
-        Me.chkMovieSetFanartMSAA.UseVisualStyleBackColor = true
+        Me.chkMovieSetFanartMSAA.UseVisualStyleBackColor = True
         '
         'chkMovieSetNFOMSAA
         '
         Me.chkMovieSetNFOMSAA.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetNFOMSAA.AutoSize = true
-        Me.chkMovieSetNFOMSAA.Enabled = false
+        Me.chkMovieSetNFOMSAA.AutoSize = True
+        Me.chkMovieSetNFOMSAA.Enabled = False
         Me.chkMovieSetNFOMSAA.Location = New System.Drawing.Point(3, 141)
         Me.chkMovieSetNFOMSAA.Name = "chkMovieSetNFOMSAA"
         Me.chkMovieSetNFOMSAA.Size = New System.Drawing.Size(49, 17)
         Me.chkMovieSetNFOMSAA.TabIndex = 0
         Me.chkMovieSetNFOMSAA.Text = "NFO"
-        Me.chkMovieSetNFOMSAA.UseVisualStyleBackColor = true
+        Me.chkMovieSetNFOMSAA.UseVisualStyleBackColor = True
         '
         'chkMovieSetPosterMSAA
         '
         Me.chkMovieSetPosterMSAA.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetPosterMSAA.AutoSize = true
-        Me.chkMovieSetPosterMSAA.Enabled = false
+        Me.chkMovieSetPosterMSAA.AutoSize = True
+        Me.chkMovieSetPosterMSAA.Enabled = False
         Me.chkMovieSetPosterMSAA.Location = New System.Drawing.Point(3, 164)
         Me.chkMovieSetPosterMSAA.Name = "chkMovieSetPosterMSAA"
         Me.chkMovieSetPosterMSAA.Size = New System.Drawing.Size(58, 17)
         Me.chkMovieSetPosterMSAA.TabIndex = 1
         Me.chkMovieSetPosterMSAA.Text = "Poster"
-        Me.chkMovieSetPosterMSAA.UseVisualStyleBackColor = true
+        Me.chkMovieSetPosterMSAA.UseVisualStyleBackColor = True
         '
         'pbMSAAInfo
         '
@@ -17324,7 +17327,7 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingXBMC.SetRowSpan(Me.pbMSAAInfo, 2)
         Me.pbMSAAInfo.Size = New System.Drawing.Size(250, 250)
         Me.pbMSAAInfo.TabIndex = 8
-        Me.pbMSAAInfo.TabStop = false
+        Me.pbMSAAInfo.TabStop = False
         '
         'tpMovieSetFileNamingExpert
         '
@@ -17334,11 +17337,11 @@ Partial Class dlgSettings
         Me.tpMovieSetFileNamingExpert.Size = New System.Drawing.Size(542, 344)
         Me.tpMovieSetFileNamingExpert.TabIndex = 2
         Me.tpMovieSetFileNamingExpert.Text = "Expert"
-        Me.tpMovieSetFileNamingExpert.UseVisualStyleBackColor = true
+        Me.tpMovieSetFileNamingExpert.UseVisualStyleBackColor = True
         '
         'tblMovieSetSourcesFileNamingExpert
         '
-        Me.tblMovieSetSourcesFileNamingExpert.AutoSize = true
+        Me.tblMovieSetSourcesFileNamingExpert.AutoSize = True
         Me.tblMovieSetSourcesFileNamingExpert.ColumnCount = 2
         Me.tblMovieSetSourcesFileNamingExpert.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingExpert.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -17354,7 +17357,7 @@ Partial Class dlgSettings
         '
         'gbMovieSetSourcesFileNamingExpertOpts
         '
-        Me.gbMovieSetSourcesFileNamingExpertOpts.AutoSize = true
+        Me.gbMovieSetSourcesFileNamingExpertOpts.AutoSize = True
         Me.gbMovieSetSourcesFileNamingExpertOpts.Controls.Add(Me.tblMovieSetSourcesFileNamingExpertOpts)
         Me.gbMovieSetSourcesFileNamingExpertOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetSourcesFileNamingExpertOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
@@ -17362,12 +17365,12 @@ Partial Class dlgSettings
         Me.gbMovieSetSourcesFileNamingExpertOpts.Name = "gbMovieSetSourcesFileNamingExpertOpts"
         Me.gbMovieSetSourcesFileNamingExpertOpts.Size = New System.Drawing.Size(536, 340)
         Me.gbMovieSetSourcesFileNamingExpertOpts.TabIndex = 8
-        Me.gbMovieSetSourcesFileNamingExpertOpts.TabStop = false
+        Me.gbMovieSetSourcesFileNamingExpertOpts.TabStop = False
         Me.gbMovieSetSourcesFileNamingExpertOpts.Text = "Expert Settings"
         '
         'tblMovieSetSourcesFileNamingExpertOpts
         '
-        Me.tblMovieSetSourcesFileNamingExpertOpts.AutoSize = true
+        Me.tblMovieSetSourcesFileNamingExpertOpts.AutoSize = True
         Me.tblMovieSetSourcesFileNamingExpertOpts.ColumnCount = 2
         Me.tblMovieSetSourcesFileNamingExpertOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingExpertOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -17403,11 +17406,11 @@ Partial Class dlgSettings
         Me.tpMovieSetFileNamingExpertSingle.Size = New System.Drawing.Size(500, 264)
         Me.tpMovieSetFileNamingExpertSingle.TabIndex = 0
         Me.tpMovieSetFileNamingExpertSingle.Text = "Single Folder"
-        Me.tpMovieSetFileNamingExpertSingle.UseVisualStyleBackColor = true
+        Me.tpMovieSetFileNamingExpertSingle.UseVisualStyleBackColor = True
         '
         'tblMovieSetSourcesFileNamingExpertSingle
         '
-        Me.tblMovieSetSourcesFileNamingExpertSingle.AutoSize = true
+        Me.tblMovieSetSourcesFileNamingExpertSingle.AutoSize = True
         Me.tblMovieSetSourcesFileNamingExpertSingle.ColumnCount = 3
         Me.tblMovieSetSourcesFileNamingExpertSingle.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingExpertSingle.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -17451,7 +17454,7 @@ Partial Class dlgSettings
         'lblMovieSetNFOExpertSingle
         '
         Me.lblMovieSetNFOExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieSetNFOExpertSingle.AutoSize = true
+        Me.lblMovieSetNFOExpertSingle.AutoSize = True
         Me.lblMovieSetNFOExpertSingle.Location = New System.Drawing.Point(3, 175)
         Me.lblMovieSetNFOExpertSingle.Name = "lblMovieSetNFOExpertSingle"
         Me.lblMovieSetNFOExpertSingle.Size = New System.Drawing.Size(30, 13)
@@ -17461,7 +17464,7 @@ Partial Class dlgSettings
         'txtMovieSetNFOExpertSingle
         '
         Me.txtMovieSetNFOExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetNFOExpertSingle.Enabled = false
+        Me.txtMovieSetNFOExpertSingle.Enabled = False
         Me.txtMovieSetNFOExpertSingle.Location = New System.Drawing.Point(70, 171)
         Me.txtMovieSetNFOExpertSingle.Name = "txtMovieSetNFOExpertSingle"
         Me.txtMovieSetNFOExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -17470,7 +17473,7 @@ Partial Class dlgSettings
         'lblMovieSetPosterExpertSingle
         '
         Me.lblMovieSetPosterExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieSetPosterExpertSingle.AutoSize = true
+        Me.lblMovieSetPosterExpertSingle.AutoSize = True
         Me.lblMovieSetPosterExpertSingle.Location = New System.Drawing.Point(3, 203)
         Me.lblMovieSetPosterExpertSingle.Name = "lblMovieSetPosterExpertSingle"
         Me.lblMovieSetPosterExpertSingle.Size = New System.Drawing.Size(39, 13)
@@ -17480,7 +17483,7 @@ Partial Class dlgSettings
         'txtMovieSetLandscapeExpertSingle
         '
         Me.txtMovieSetLandscapeExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetLandscapeExpertSingle.Enabled = false
+        Me.txtMovieSetLandscapeExpertSingle.Enabled = False
         Me.txtMovieSetLandscapeExpertSingle.Location = New System.Drawing.Point(70, 143)
         Me.txtMovieSetLandscapeExpertSingle.Name = "txtMovieSetLandscapeExpertSingle"
         Me.txtMovieSetLandscapeExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -17489,7 +17492,7 @@ Partial Class dlgSettings
         'txtMovieSetClearArtExpertSingle
         '
         Me.txtMovieSetClearArtExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetClearArtExpertSingle.Enabled = false
+        Me.txtMovieSetClearArtExpertSingle.Enabled = False
         Me.txtMovieSetClearArtExpertSingle.Location = New System.Drawing.Point(70, 31)
         Me.txtMovieSetClearArtExpertSingle.Name = "txtMovieSetClearArtExpertSingle"
         Me.txtMovieSetClearArtExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -17498,7 +17501,7 @@ Partial Class dlgSettings
         'lblMovieSetLandscapeExpertSingle
         '
         Me.lblMovieSetLandscapeExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieSetLandscapeExpertSingle.AutoSize = true
+        Me.lblMovieSetLandscapeExpertSingle.AutoSize = True
         Me.lblMovieSetLandscapeExpertSingle.Location = New System.Drawing.Point(3, 147)
         Me.lblMovieSetLandscapeExpertSingle.Name = "lblMovieSetLandscapeExpertSingle"
         Me.lblMovieSetLandscapeExpertSingle.Size = New System.Drawing.Size(61, 13)
@@ -17508,7 +17511,7 @@ Partial Class dlgSettings
         'lblMovieSetClearArtExpertSingle
         '
         Me.lblMovieSetClearArtExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieSetClearArtExpertSingle.AutoSize = true
+        Me.lblMovieSetClearArtExpertSingle.AutoSize = True
         Me.lblMovieSetClearArtExpertSingle.Location = New System.Drawing.Point(3, 35)
         Me.lblMovieSetClearArtExpertSingle.Name = "lblMovieSetClearArtExpertSingle"
         Me.lblMovieSetClearArtExpertSingle.Size = New System.Drawing.Size(48, 13)
@@ -17518,7 +17521,7 @@ Partial Class dlgSettings
         'txtMovieSetPosterExpertSingle
         '
         Me.txtMovieSetPosterExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetPosterExpertSingle.Enabled = false
+        Me.txtMovieSetPosterExpertSingle.Enabled = False
         Me.txtMovieSetPosterExpertSingle.Location = New System.Drawing.Point(70, 199)
         Me.txtMovieSetPosterExpertSingle.Name = "txtMovieSetPosterExpertSingle"
         Me.txtMovieSetPosterExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -17527,7 +17530,7 @@ Partial Class dlgSettings
         'txtMovieSetClearLogoExpertSingle
         '
         Me.txtMovieSetClearLogoExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetClearLogoExpertSingle.Enabled = false
+        Me.txtMovieSetClearLogoExpertSingle.Enabled = False
         Me.txtMovieSetClearLogoExpertSingle.Location = New System.Drawing.Point(70, 59)
         Me.txtMovieSetClearLogoExpertSingle.Name = "txtMovieSetClearLogoExpertSingle"
         Me.txtMovieSetClearLogoExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -17536,7 +17539,7 @@ Partial Class dlgSettings
         'lblMovieSetBannerExpertSingle
         '
         Me.lblMovieSetBannerExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieSetBannerExpertSingle.AutoSize = true
+        Me.lblMovieSetBannerExpertSingle.AutoSize = True
         Me.lblMovieSetBannerExpertSingle.Location = New System.Drawing.Point(3, 7)
         Me.lblMovieSetBannerExpertSingle.Name = "lblMovieSetBannerExpertSingle"
         Me.lblMovieSetBannerExpertSingle.Size = New System.Drawing.Size(44, 13)
@@ -17546,7 +17549,7 @@ Partial Class dlgSettings
         'txtMovieSetBannerExpertSingle
         '
         Me.txtMovieSetBannerExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetBannerExpertSingle.Enabled = false
+        Me.txtMovieSetBannerExpertSingle.Enabled = False
         Me.txtMovieSetBannerExpertSingle.Location = New System.Drawing.Point(70, 3)
         Me.txtMovieSetBannerExpertSingle.Name = "txtMovieSetBannerExpertSingle"
         Me.txtMovieSetBannerExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -17555,7 +17558,7 @@ Partial Class dlgSettings
         'lblMovieSetFanartExpertSingle
         '
         Me.lblMovieSetFanartExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieSetFanartExpertSingle.AutoSize = true
+        Me.lblMovieSetFanartExpertSingle.AutoSize = True
         Me.lblMovieSetFanartExpertSingle.Location = New System.Drawing.Point(3, 119)
         Me.lblMovieSetFanartExpertSingle.Name = "lblMovieSetFanartExpertSingle"
         Me.lblMovieSetFanartExpertSingle.Size = New System.Drawing.Size(40, 13)
@@ -17565,7 +17568,7 @@ Partial Class dlgSettings
         'txtMovieSetFanartExpertSingle
         '
         Me.txtMovieSetFanartExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetFanartExpertSingle.Enabled = false
+        Me.txtMovieSetFanartExpertSingle.Enabled = False
         Me.txtMovieSetFanartExpertSingle.Location = New System.Drawing.Point(70, 115)
         Me.txtMovieSetFanartExpertSingle.Name = "txtMovieSetFanartExpertSingle"
         Me.txtMovieSetFanartExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -17574,7 +17577,7 @@ Partial Class dlgSettings
         'lblMovieSetClearLogoExpertSingle
         '
         Me.lblMovieSetClearLogoExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieSetClearLogoExpertSingle.AutoSize = true
+        Me.lblMovieSetClearLogoExpertSingle.AutoSize = True
         Me.lblMovieSetClearLogoExpertSingle.Location = New System.Drawing.Point(3, 63)
         Me.lblMovieSetClearLogoExpertSingle.Name = "lblMovieSetClearLogoExpertSingle"
         Me.lblMovieSetClearLogoExpertSingle.Size = New System.Drawing.Size(59, 13)
@@ -17584,7 +17587,7 @@ Partial Class dlgSettings
         'lblMovieSetPathExpertSingle
         '
         Me.lblMovieSetPathExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieSetPathExpertSingle.AutoSize = true
+        Me.lblMovieSetPathExpertSingle.AutoSize = True
         Me.lblMovieSetPathExpertSingle.Location = New System.Drawing.Point(3, 231)
         Me.lblMovieSetPathExpertSingle.Name = "lblMovieSetPathExpertSingle"
         Me.lblMovieSetPathExpertSingle.Size = New System.Drawing.Size(30, 13)
@@ -17594,8 +17597,8 @@ Partial Class dlgSettings
         'txtMovieSetPathExpertSingle
         '
         Me.txtMovieSetPathExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetPathExpertSingle.Enabled = false
-        Me.txtMovieSetPathExpertSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieSetPathExpertSingle.Enabled = False
+        Me.txtMovieSetPathExpertSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMovieSetPathExpertSingle.Location = New System.Drawing.Point(70, 227)
         Me.txtMovieSetPathExpertSingle.Name = "txtMovieSetPathExpertSingle"
         Me.txtMovieSetPathExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -17604,19 +17607,19 @@ Partial Class dlgSettings
         'btnMovieSetPathExpertSingleBrowse
         '
         Me.btnMovieSetPathExpertSingleBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnMovieSetPathExpertSingleBrowse.Enabled = false
-        Me.btnMovieSetPathExpertSingleBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnMovieSetPathExpertSingleBrowse.Enabled = False
+        Me.btnMovieSetPathExpertSingleBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnMovieSetPathExpertSingleBrowse.Location = New System.Drawing.Point(296, 227)
         Me.btnMovieSetPathExpertSingleBrowse.Name = "btnMovieSetPathExpertSingleBrowse"
         Me.btnMovieSetPathExpertSingleBrowse.Size = New System.Drawing.Size(25, 22)
         Me.btnMovieSetPathExpertSingleBrowse.TabIndex = 30
         Me.btnMovieSetPathExpertSingleBrowse.Text = "..."
-        Me.btnMovieSetPathExpertSingleBrowse.UseVisualStyleBackColor = true
+        Me.btnMovieSetPathExpertSingleBrowse.UseVisualStyleBackColor = True
         '
         'lblMovieSetDiscArtExpertSingle
         '
         Me.lblMovieSetDiscArtExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieSetDiscArtExpertSingle.AutoSize = true
+        Me.lblMovieSetDiscArtExpertSingle.AutoSize = True
         Me.lblMovieSetDiscArtExpertSingle.Location = New System.Drawing.Point(3, 91)
         Me.lblMovieSetDiscArtExpertSingle.Name = "lblMovieSetDiscArtExpertSingle"
         Me.lblMovieSetDiscArtExpertSingle.Size = New System.Drawing.Size(43, 13)
@@ -17626,7 +17629,7 @@ Partial Class dlgSettings
         'txtMovieSetDiscArtExpertSingle
         '
         Me.txtMovieSetDiscArtExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetDiscArtExpertSingle.Enabled = false
+        Me.txtMovieSetDiscArtExpertSingle.Enabled = False
         Me.txtMovieSetDiscArtExpertSingle.Location = New System.Drawing.Point(70, 87)
         Me.txtMovieSetDiscArtExpertSingle.Name = "txtMovieSetDiscArtExpertSingle"
         Me.txtMovieSetDiscArtExpertSingle.Size = New System.Drawing.Size(220, 22)
@@ -17638,14 +17641,14 @@ Partial Class dlgSettings
         Me.tpMovieSetFileNamingExpertParent.Location = New System.Drawing.Point(4, 22)
         Me.tpMovieSetFileNamingExpertParent.Name = "tpMovieSetFileNamingExpertParent"
         Me.tpMovieSetFileNamingExpertParent.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpMovieSetFileNamingExpertParent.Size = New System.Drawing.Size(500, 241)
+        Me.tpMovieSetFileNamingExpertParent.Size = New System.Drawing.Size(500, 264)
         Me.tpMovieSetFileNamingExpertParent.TabIndex = 1
         Me.tpMovieSetFileNamingExpertParent.Text = "Parent Folder"
-        Me.tpMovieSetFileNamingExpertParent.UseVisualStyleBackColor = true
+        Me.tpMovieSetFileNamingExpertParent.UseVisualStyleBackColor = True
         '
         'tblMovieSetSourcesFileNamingExpertParent
         '
-        Me.tblMovieSetSourcesFileNamingExpertParent.AutoSize = true
+        Me.tblMovieSetSourcesFileNamingExpertParent.AutoSize = True
         Me.tblMovieSetSourcesFileNamingExpertParent.ColumnCount = 3
         Me.tblMovieSetSourcesFileNamingExpertParent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetSourcesFileNamingExpertParent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -17679,7 +17682,7 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingExpertParent.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertParent.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetSourcesFileNamingExpertParent.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetSourcesFileNamingExpertParent.Size = New System.Drawing.Size(494, 235)
+        Me.tblMovieSetSourcesFileNamingExpertParent.Size = New System.Drawing.Size(494, 258)
         Me.tblMovieSetSourcesFileNamingExpertParent.TabIndex = 10
         '
         'txtMovieSetLandscapeExpertParent
