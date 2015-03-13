@@ -448,7 +448,6 @@ Partial Public Class clsXMLSettings
     Private _tvshowposterresize As Boolean
     Private _tvshowposterwidth As Integer
     Private _tvshowpropercase As Boolean
-    Private _tvshowregexes As List(Of TVShowRegEx)
     Private _tvskiplessthan As Integer
     Private _tvsorttokens As List(Of String)
     Private _tvsorttokensisempty As Boolean
@@ -4416,15 +4415,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As List(Of regexp))
             Me._tvshowmatching = value
-        End Set
-    End Property
-
-    Public Property TVShowRegexes() As List(Of TVShowRegEx)
-        Get
-            Return Me._tvshowregexes
-        End Get
-        Set(ByVal value As List(Of TVShowRegEx))
-            Me._tvshowregexes = value
         End Set
     End Property
 

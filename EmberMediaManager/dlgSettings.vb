@@ -44,7 +44,7 @@ Public Class dlgSettings
     Private TVGeneralShowListSorting As New List(Of Settings.ListSorting)
     Private NoUpdate As Boolean = True
     Private SettingsPanels As New List(Of Containers.SettingsPanel)
-    Private TVShowRegex As New List(Of Settings.TVShowRegEx)
+    Private TVShowMatching As New List(Of Settings.regexp)
     Private sResult As New Structures.SettingsResult
     'Private tLangList As New List(Of Containers.TVLanguage)
     Private TVMeta As New List(Of Settings.MetadataPerType)
@@ -723,24 +723,25 @@ Public Class dlgSettings
         Me.txtTVShowFilter.Focus()
     End Sub
 
-    Private Sub btnTVShowRegexAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexAdd.Click
-        If String.IsNullOrEmpty(Me.btnTVShowRegexAdd.Tag.ToString) Then
-            Dim lID = (From lRegex As Settings.TVShowRegEx In Me.TVShowRegex Select lRegex.ID).Max
-            Me.TVShowRegex.Add(New Settings.TVShowRegEx With {.ID = Convert.ToInt32(lID) + 1, .SeasonRegex = Me.txtTVSeasonRegex.Text, .SeasonFromDirectory = If(CType(Me.cbTVSeasonRetrieve.SelectedValue, Settings.EpRetrieve) = Settings.EpRetrieve.FromDirectory, True, False), .EpisodeRegex = Me.txtTVEpisodeRegex.Text, .EpisodeRetrieve = CType(Me.cbTVEpisodeRetrieve.SelectedValue, Settings.EpRetrieve), .byDate = Me.chkTVEpisodeAired.Checked})
+    Private Sub btnTVSourcesRegexTVShowMatchingAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingAdd.Click
+        If String.IsNullOrEmpty(Me.btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then
+            Dim lID = (From lRegex As Settings.regexp In Me.TVShowMatching Select lRegex.ID).Max
+            Me.TVShowMatching.Add(New Settings.regexp With {.ID = Convert.ToInt32(lID) + 1, _
+                                                            .Regexp = Me.txtTVSourcesRegexTVShowMatchingRegex.Text, _
+                                                            .defaultSeason = If(String.IsNullOrEmpty(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text) OrElse Not IsNumeric(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text), -1, CInt(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text)), _
+                                                            .byDate = Me.chkTVSourcesRegexTVShowMatchingByDate.Checked})
         Else
-            Dim selRex = From lRegex As Settings.TVShowRegEx In Me.TVShowRegex Where lRegex.ID = Convert.ToInt32(Me.btnTVShowRegexAdd.Tag)
+            Dim selRex = From lRegex As Settings.regexp In Me.TVShowMatching Where lRegex.ID = Convert.ToInt32(Me.btnTVSourcesRegexTVShowMatchingAdd.Tag)
             If selRex.Count > 0 Then
-                selRex(0).SeasonRegex = Me.txtTVSeasonRegex.Text
-                selRex(0).SeasonFromDirectory = If(CType(Me.cbTVSeasonRetrieve.SelectedValue, Settings.EpRetrieve) = Settings.EpRetrieve.FromDirectory, True, False)
-                selRex(0).EpisodeRegex = Me.txtTVEpisodeRegex.Text
-                selRex(0).EpisodeRetrieve = CType(Me.cbTVEpisodeRetrieve.SelectedValue, Settings.EpRetrieve)
-                selRex(0).byDate = Me.chkTVEpisodeAired.Checked
+                selRex(0).Regexp = Me.txtTVSourcesRegexTVShowMatchingRegex.Text
+                selRex(0).defaultSeason = CInt(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text)
+                selRex(0).byDate = Me.chkTVSourcesRegexTVShowMatchingByDate.Checked
             End If
         End If
 
-        Me.ClearTVRegex()
+        Me.ClearTVShowMatching()
         Me.SetApplyButton(True)
-        Me.LoadTVShowRegex()
+        Me.LoadTVShowMatching()
     End Sub
 
     Private Sub btnMovieSortTokenAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSortTokenAdd.Click
@@ -824,8 +825,8 @@ Public Class dlgSettings
         Me.Close()
     End Sub
 
-    Private Sub btnTVShowRegexClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexClear.Click
-        Me.ClearTVRegex()
+    Private Sub btnTVSourcesRegexTVShowMatchingClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingClear.Click
+        Me.ClearTVShowMatching()
     End Sub
 
     Private Sub btnMovieFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieFilterDown.Click
@@ -910,8 +911,8 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub btnTVShowRegexEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexEdit.Click
-        If Me.lvTVShowRegex.SelectedItems.Count > 0 Then Me.EditShowRegex(lvTVShowRegex.SelectedItems(0))
+    Private Sub btnTVSourcesRegexTVShowMatchingEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingEdit.Click
+        If Me.lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 Then Me.EditTVShowMatching(lvTVSourcesRegexTVShowMatching.SelectedItems(0))
     End Sub
 
     Private Sub btnMovieSourceEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSourceEdit.Click
@@ -1052,54 +1053,54 @@ Public Class dlgSettings
         Me.Close()
     End Sub
 
-    Private Sub btnTVShowRegexUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexUp.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingUp.Click
         Try
-            If Me.lvTVShowRegex.Items.Count > 0 AndAlso Me.lvTVShowRegex.SelectedItems.Count > 0 AndAlso Not Me.lvTVShowRegex.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.TVShowRegEx = Me.TVShowRegex.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(Me.lvTVShowRegex.SelectedItems(0).Text))
+            If Me.lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso Me.lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso Not Me.lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index = 0 Then
+                Dim selItem As Settings.regexp = Me.TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(Me.lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
 
                 If Not IsNothing(selItem) Then
-                    Me.lvTVShowRegex.SuspendLayout()
-                    Dim iIndex As Integer = Me.TVShowRegex.IndexOf(selItem)
-                    Dim selIndex As Integer = Me.lvTVShowRegex.SelectedIndices(0)
-                    Me.TVShowRegex.Remove(selItem)
-                    Me.TVShowRegex.Insert(iIndex - 1, selItem)
+                    Me.lvTVSourcesRegexTVShowMatching.SuspendLayout()
+                    Dim iIndex As Integer = Me.TVShowMatching.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvTVSourcesRegexTVShowMatching.SelectedIndices(0)
+                    Me.TVShowMatching.Remove(selItem)
+                    Me.TVShowMatching.Insert(iIndex - 1, selItem)
 
-                    Me.RenumberTVShowRegex()
-                    Me.LoadTVShowRegex()
+                    Me.RenumberTVShowMatching()
+                    Me.LoadTVShowMatching()
 
-                    Me.lvTVShowRegex.Items(selIndex - 1).Selected = True
-                    Me.lvTVShowRegex.ResumeLayout()
+                    Me.lvTVSourcesRegexTVShowMatching.Items(selIndex - 1).Selected = True
+                    Me.lvTVSourcesRegexTVShowMatching.ResumeLayout()
                 End If
 
                 Me.SetApplyButton(True)
-                Me.lvTVShowRegex.Focus()
+                Me.lvTVSourcesRegexTVShowMatching.Focus()
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnTVShowRegexDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexDown.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingDown.Click
         Try
-            If Me.lvTVShowRegex.Items.Count > 0 AndAlso Me.lvTVShowRegex.SelectedItems.Count > 0 AndAlso Me.lvTVShowRegex.SelectedItems(0).Index < (Me.lvTVShowRegex.Items.Count - 1) Then
-                Dim selItem As Settings.TVShowRegEx = Me.TVShowRegex.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(Me.lvTVShowRegex.SelectedItems(0).Text))
+            If Me.lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso Me.lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso Me.lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index < (Me.lvTVSourcesRegexTVShowMatching.Items.Count - 1) Then
+                Dim selItem As Settings.regexp = Me.TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(Me.lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
 
                 If Not IsNothing(selItem) Then
-                    Me.lvTVShowRegex.SuspendLayout()
-                    Dim iIndex As Integer = Me.TVShowRegex.IndexOf(selItem)
-                    Dim selIndex As Integer = Me.lvTVShowRegex.SelectedIndices(0)
-                    Me.TVShowRegex.Remove(selItem)
-                    Me.TVShowRegex.Insert(iIndex + 1, selItem)
+                    Me.lvTVSourcesRegexTVShowMatching.SuspendLayout()
+                    Dim iIndex As Integer = Me.TVShowMatching.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvTVSourcesRegexTVShowMatching.SelectedIndices(0)
+                    Me.TVShowMatching.Remove(selItem)
+                    Me.TVShowMatching.Insert(iIndex + 1, selItem)
 
-                    Me.RenumberTVShowRegex()
-                    Me.LoadTVShowRegex()
+                    Me.RenumberTVShowMatching()
+                    Me.LoadTVShowMatching()
 
-                    Me.lvTVShowRegex.Items(selIndex + 1).Selected = True
-                    Me.lvTVShowRegex.ResumeLayout()
+                    Me.lvTVSourcesRegexTVShowMatching.Items(selIndex + 1).Selected = True
+                    Me.lvTVSourcesRegexTVShowMatching.ResumeLayout()
                 End If
 
                 Me.SetApplyButton(True)
-                Me.lvTVShowRegex.Focus()
+                Me.lvTVSourcesRegexTVShowMatching.Focus()
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1564,25 +1565,30 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVShowRegexGet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexGet.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingGet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingGet.Click
         Using dd As New dlgTVRegExProfiles
             If dd.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Me.TVShowRegex.Clear()
-                Me.TVShowRegex.AddRange(dd.ShowRegex)
-                Me.LoadTVShowRegex()
+                Me.TVShowMatching.Clear()
+                Me.TVShowMatching.AddRange(dd.ShowRegex)
+                Me.LoadTVShowMatching()
                 Me.SetApplyButton(True)
             End If
         End Using
     End Sub
 
-    Private Sub btnTVShowRegexReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexReset.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingReset.Click
         If MsgBox(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowRegex, True)
-            Me.TVShowRegex.Clear()
-            Me.TVShowRegex.AddRange(Master.eSettings.TVShowRegexes)
-            Me.LoadTVShowRegex()
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowMatching, True)
+            Me.TVShowMatching.Clear()
+            Me.TVShowMatching.AddRange(Master.eSettings.TVShowMatching)
+            Me.LoadTVShowMatching()
             Me.SetApplyButton(True)
         End If
+    End Sub
+
+    Private Sub btnTVSourcesRegexMultiPartMatchingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexMultiPartMatchingReset.Click
+        Me.txtTVSourcesRegexMultiPartMatching.Text = "^[-_ex]+([0-9]+(?:(?:[a-i]|\\.[1-9])(?![0-9]))?)"
+        Me.SetApplyButton(True)
     End Sub
 
     Private Sub btnMovieGeneralMediaListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieGeneralMediaListSortingReset.Click
@@ -1657,8 +1663,8 @@ Public Class dlgSettings
         Me.RemoveTVShowFilter()
     End Sub
 
-    Private Sub btnTVShowRegexRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexRemove.Click
-        Me.RemoveTVShowRegex()
+    Private Sub btnTVSourcesRegexTVShowMatchingRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingRemove.Click
+        Me.RemoveTVShowMatching()
     End Sub
 
     Private Sub btnMovieSortTokenRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSortTokenRemove.Click
@@ -1818,14 +1824,6 @@ Public Class dlgSettings
 
     Private Sub cbTVScraperOptionsOrdering_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVScraperOptionsOrdering.SelectedIndexChanged
         Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVEpisodeRetrieve_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVEpisodeRetrieve.SelectedIndexChanged
-        Me.ValidateRegex()
-    End Sub
-
-    Private Sub cbTVSeasonRetrieve_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVSeasonRetrieve.SelectedIndexChanged
-        Me.ValidateRegex()
     End Sub
 
     Private Sub cbTVLanguageOverlay_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguageOverlay.SelectedIndexChanged
@@ -3370,50 +3368,31 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub ClearTVRegex()
-        Me.btnTVShowRegexAdd.Text = Master.eLang.GetString(115, "Add Regex")
-        Me.btnTVShowRegexAdd.Tag = String.Empty
-        Me.btnTVShowRegexAdd.Enabled = False
-        Me.txtTVSeasonRegex.Text = String.Empty
-        Me.cbTVSeasonRetrieve.SelectedIndex = -1
-        Me.txtTVEpisodeRegex.Text = String.Empty
-        Me.cbTVEpisodeRetrieve.SelectedIndex = -1
-        Me.chkTVEpisodeAired.Checked = False
+    Private Sub ClearTVShowMatching()
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(115, "Add Regex")
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Tag = String.Empty
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Enabled = False
+        Me.txtTVSourcesRegexTVShowMatchingRegex.Text = String.Empty
+        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text = String.Empty
+        Me.chkTVSourcesRegexTVShowMatchingByDate.Checked = False
     End Sub
 
     Private Sub dlgSettings_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
     End Sub
 
-    Private Sub EditShowRegex(ByVal lItem As ListViewItem)
-        Me.btnTVShowRegexAdd.Text = Master.eLang.GetString(124, "Update Regex")
-        Me.btnTVShowRegexAdd.Tag = lItem.Text
+    Private Sub EditTVShowMatching(ByVal lItem As ListViewItem)
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(124, "Update Regex")
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Tag = lItem.Text
 
-        Me.txtTVSeasonRegex.Text = lItem.SubItems(1).Text.ToString
+        Me.txtTVSourcesRegexTVShowMatchingRegex.Text = lItem.SubItems(1).Text.ToString
+        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text = lItem.SubItems(2).Text
 
-        Select Case lItem.SubItems(2).Text
-            Case "Folder"
-                Me.cbTVSeasonRetrieve.SelectedValue = Settings.EpRetrieve.FromDirectory
-            Case "File"
-                Me.cbTVSeasonRetrieve.SelectedValue = Settings.EpRetrieve.FromFilename
-        End Select
-
-        Me.txtTVEpisodeRegex.Text = lItem.SubItems(3).Text
-
-        Select Case lItem.SubItems(4).Text
-            Case "Folder"
-                Me.cbTVEpisodeRetrieve.SelectedValue = Settings.EpRetrieve.FromDirectory
-            Case "File"
-                Me.cbTVEpisodeRetrieve.SelectedValue = Settings.EpRetrieve.FromFilename
-            Case "Result"
-                Me.cbTVEpisodeRetrieve.SelectedValue = Settings.EpRetrieve.FromSeasonResult
-        End Select
-
-        Select Case lItem.SubItems(5).Text
+        Select Case lItem.SubItems(3).Text
             Case "Yes"
-                Me.chkTVEpisodeAired.Checked = True
+                Me.chkTVSourcesRegexTVShowMatchingByDate.Checked = True
             Case "No"
-                Me.chkTVEpisodeAired.Checked = False
+                Me.chkTVSourcesRegexTVShowMatchingByDate.Checked = False
         End Select
     End Sub
 
@@ -3868,6 +3847,7 @@ Public Class dlgSettings
             Me.txtMovieTrailerDefaultSearch.Text = .MovieTrailerDefaultSearch.ToString
             Me.txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat.ToString
             Me.txtTVShowEFanartsLimit.Text = .TVShowEFanartsLimit.ToString
+            Me.txtTVSourcesRegexMultiPartMatching.Text = .TVMultiPartMatching
             Me.txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
 
             FillGenres()
@@ -3900,8 +3880,8 @@ Public Class dlgSettings
             Me.TVMeta.AddRange(.TVMetadataPerFileType)
             Me.LoadTVMetadata()
 
-            Me.TVShowRegex.AddRange(.TVShowRegexes)
-            Me.LoadTVShowRegex()
+            Me.TVShowMatching.AddRange(.TVShowMatching)
+            Me.LoadTVShowMatching()
 
             Try
                 Me.cbMovieScraperCertLang.Items.Clear()
@@ -4441,24 +4421,15 @@ Public Class dlgSettings
         Me.cbTVScraperRatingRegion.Items.AddRange(APIXML.GetTVRatingRegions)
     End Sub
 
-    Private Sub LoadTVShowRegex()
+    Private Sub LoadTVShowMatching()
         Dim lvItem As ListViewItem
-        lvTVShowRegex.Items.Clear()
-        For Each rShow As Settings.TVShowRegEx In Me.TVShowRegex
+        lvTVSourcesRegexTVShowMatching.Items.Clear()
+        For Each rShow As Settings.regexp In Me.TVShowMatching
             lvItem = New ListViewItem(rShow.ID.ToString)
-            lvItem.SubItems.Add(rShow.SeasonRegex)
-            lvItem.SubItems.Add(If(rShow.SeasonFromDirectory, "Folder", "File"))
-            lvItem.SubItems.Add(rShow.EpisodeRegex)
-            Select Case rShow.EpisodeRetrieve
-                Case Settings.EpRetrieve.FromDirectory
-                    lvItem.SubItems.Add("Folder")
-                Case Settings.EpRetrieve.FromFilename
-                    lvItem.SubItems.Add("File")
-                Case Settings.EpRetrieve.FromSeasonResult
-                    lvItem.SubItems.Add("Result")
-            End Select
+            lvItem.SubItems.Add(rShow.Regexp)
+            lvItem.SubItems.Add(rShow.defaultSeason.ToString)
             lvItem.SubItems.Add(If(rShow.byDate, "Yes", "No"))
-            Me.lvTVShowRegex.Items.Add(lvItem)
+            Me.lvTVSourcesRegexTVShowMatching.Items.Add(lvItem)
         Next
     End Sub
 
@@ -4661,25 +4632,6 @@ Public Class dlgSettings
         Me.cbTVShowBannerPrefType.ValueMember = "Value"
     End Sub
 
-    Private Sub LoadTVSeasonRetrieve()
-        Dim items As New Dictionary(Of String, Settings.EpRetrieve)
-        items.Add(Master.eLang.GetString(13, "Folder Name"), Settings.EpRetrieve.FromDirectory)
-        items.Add(Master.eLang.GetString(15, "File Name"), Settings.EpRetrieve.FromFilename)
-        Me.cbTVSeasonRetrieve.DataSource = items.ToList
-        Me.cbTVSeasonRetrieve.DisplayMember = "Key"
-        Me.cbTVSeasonRetrieve.ValueMember = "Value"
-    End Sub
-
-    Private Sub LoadTVEpisodeRetrieve()
-        Dim items As New Dictionary(Of String, Settings.EpRetrieve)
-        items.Add(Master.eLang.GetString(13, "Folder Name"), Settings.EpRetrieve.FromDirectory)
-        items.Add(Master.eLang.GetString(15, "File Name"), Settings.EpRetrieve.FromFilename)
-        items.Add(Master.eLang.GetString(16, "Season Result"), Settings.EpRetrieve.FromSeasonResult)
-        Me.cbTVEpisodeRetrieve.DataSource = items.ToList
-        Me.cbTVEpisodeRetrieve.DisplayMember = "Key"
-        Me.cbTVEpisodeRetrieve.ValueMember = "Value"
-    End Sub
-
     Private Sub LoadTVMetadata()
         Me.lstTVScraperDefFIExt.Items.Clear()
         For Each x As Settings.MetadataPerType In TVMeta
@@ -4825,16 +4777,16 @@ Public Class dlgSettings
         If e.KeyCode = Keys.Delete Then Me.RemoveMovieSource()
     End Sub
 
-    Private Sub lvTVShowRegex_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVShowRegex.DoubleClick
-        If Me.lvTVShowRegex.SelectedItems.Count > 0 Then Me.EditShowRegex(lvTVShowRegex.SelectedItems(0))
+    Private Sub lvTVSourcesRegexTVShowMatching_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSourcesRegexTVShowMatching.DoubleClick
+        If Me.lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 Then Me.EditTVShowMatching(lvTVSourcesRegexTVShowMatching.SelectedItems(0))
     End Sub
 
-    Private Sub lvTVShowRegex_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvTVShowRegex.KeyDown
-        If e.KeyCode = Keys.Delete Then Me.RemoveTVShowRegex()
+    Private Sub lvTVSourcesRegexTVShowMatching_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvTVSourcesRegexTVShowMatching.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveTVShowMatching()
     End Sub
 
-    Private Sub lvTVShowRegex_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVShowRegex.SelectedIndexChanged
-        If Not String.IsNullOrEmpty(Me.btnTVShowRegexAdd.Tag.ToString) Then Me.ClearTVRegex()
+    Private Sub lvTVSourcesRegexTVShowMatching_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSourcesRegexTVShowMatching.SelectedIndexChanged
+        If Not String.IsNullOrEmpty(Me.btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then Me.ClearTVShowMatching()
     End Sub
 
     Private Sub lvTVSources_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvTVSources.ColumnClick
@@ -5066,17 +5018,17 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub RemoveTVShowRegex()
+    Private Sub RemoveTVShowMatching()
         Dim ID As Integer
-        For Each lItem As ListViewItem In lvTVShowRegex.SelectedItems
+        For Each lItem As ListViewItem In lvTVSourcesRegexTVShowMatching.SelectedItems
             ID = Convert.ToInt32(lItem.Text)
-            Dim selRex = From lRegex As Settings.TVShowRegEx In Me.TVShowRegex Where lRegex.ID = ID
+            Dim selRex = From lRegex As Settings.regexp In Me.TVShowMatching Where lRegex.ID = ID
             If selRex.Count > 0 Then
-                Me.TVShowRegex.Remove(selRex(0))
+                Me.TVShowMatching.Remove(selRex(0))
                 Me.SetApplyButton(True)
             End If
         Next
-        Me.LoadTVShowRegex()
+        Me.LoadTVShowMatching()
     End Sub
 
     Private Sub RemoveTVShowFilter()
@@ -5165,9 +5117,9 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub RenumberTVShowRegex()
-        For i As Integer = 0 To Me.TVShowRegex.Count - 1
-            Me.TVShowRegex(i).ID = i
+    Private Sub RenumberTVShowMatching()
+        For i As Integer = 0 To Me.TVShowMatching.Count - 1
+            Me.TVShowMatching(i).ID = i
         Next
     End Sub
 
@@ -5521,6 +5473,7 @@ Public Class dlgSettings
             .TVLockShowVotes = Me.chkTVLockShowVotes.Checked
             .TVMetadataPerFileType.Clear()
             .TVMetadataPerFileType.AddRange(Me.TVMeta)
+            .TVMultiPartMatching = Me.txtTVSourcesRegexMultiPartMatching.Text
             .TVScanOrderModify = Me.chkTVScanOrderModify.Checked
             .TVScraperDurationRuntimeFormat = Me.txtTVScraperDurationRuntimeFormat.Text
             .TVScraperEpisodeActors = Me.chkTVScraperEpisodeActors.Checked
@@ -5604,8 +5557,8 @@ Public Class dlgSettings
             .TVShowPosterResize = Me.chkTVShowPosterResize.Checked
             .TVShowPosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVShowPosterWidth.Text), Convert.ToInt32(Me.txtTVShowPosterWidth.Text), 0)
             .TVShowProperCase = Me.chkTVShowProperCase.Checked
-            .TVShowRegexes.Clear()
-            .TVShowRegexes.AddRange(Me.TVShowRegex)
+            .TVShowMatching.Clear()
+            .TVShowMatching.AddRange(Me.TVShowMatching)
             If Not String.IsNullOrEmpty(Me.txtTVSkipLessThan.Text) AndAlso IsNumeric(Me.txtTVSkipLessThan.Text) Then
                 .TVSkipLessThan = Convert.ToInt32(Me.txtTVSkipLessThan.Text)
             Else
@@ -6624,11 +6577,11 @@ Public Class dlgSettings
         Me.btnOK.Text = Master.eLang.GetString(179, "OK")
         Me.btnRemTVSource.Text = Master.eLang.GetString(30, "Remove")
         Me.btnTVGeneralLangFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
-        Me.btnTVShowRegexAdd.Tag = String.Empty
-        Me.btnTVShowRegexAdd.Text = Master.eLang.GetString(690, "Edit Regex")
-        Me.btnTVShowRegexClear.Text = Master.eLang.GetString(123, "Clear")
-        Me.btnTVShowRegexEdit.Text = Master.eLang.GetString(690, "Edit Regex")
-        Me.btnTVShowRegexRemove.Text = Master.eLang.GetString(30, "Remove")
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Tag = String.Empty
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(690, "Edit Regex")
+        Me.btnTVSourcesRegexTVShowMatchingClear.Text = Master.eLang.GetString(123, "Clear")
+        Me.btnTVSourcesRegexTVShowMatchingEdit.Text = Master.eLang.GetString(690, "Edit Regex")
+        Me.btnTVSourcesRegexTVShowMatchingRemove.Text = Master.eLang.GetString(30, "Remove")
         Me.btnTVSourceEdit.Text = Master.eLang.GetString(535, "Edit Source")
         Me.chkFileSystemCleanerWhitelist.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
         Me.chkGeneralCheckUpdates.Text = Master.eLang.GetString(432, "Check for Updates")
@@ -6740,7 +6693,7 @@ Public Class dlgSettings
         Me.gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
         Me.gbTVScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
         Me.gbTVShowFilterOpts.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
-        Me.gbTVSourcesRegexMatch.Text = Master.eLang.GetString(691, "Show Match Regex")
+        Me.gbTVSourcesRegexTVShowMatching.Text = Master.eLang.GetString(691, "Show Match Regex")
         Me.lblFileSystemCleanerWarning.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
         Me.lblFileSystemCleanerWhitelist.Text = Master.eLang.GetString(441, "Whitelisted Extensions:")
         Me.lblGeneralDaemonDrive.Text = Master.eLang.GetString(989, "Driveletter")
@@ -6770,23 +6723,22 @@ Public Class dlgSettings
         Me.lblProxyURI.Text = Master.eLang.GetString(674, "Proxy URL:")
         Me.lblProxyUsername.Text = Master.eLang.GetString(425, "Username:")
         Me.lblSettingsTopDetails.Text = Master.eLang.GetString(518, "Configure Ember's appearance and operation.")
-        Me.lblTVEpisodeMatch.Text = Master.eLang.GetString(693, "Episode Match Regex:")
         Me.lblTVSourcesDefaultsOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
         Me.lblTVScraperRatingRegion.Text = Master.eLang.GetString(679, "TV Rating Region")
         Me.lblTVScraperUpdateTime.Text = Master.eLang.GetString(740, "Re-download Show Information Every:")
-        Me.lblTVSeasonMatch.Text = Master.eLang.GetString(692, "Season Match Regex:")
-        Me.lblTVSeasonRetrieve.Text = String.Concat(Master.eLang.GetString(694, "Apply To"), ":")
+        Me.lblTVSourcesRegexTVShowMatchingRegex.Text = Master.eLang.GetString(692, "Season Match Regex:")
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Text = String.Concat(Master.eLang.GetString(694, "Apply To"), ":")
         Me.lvMovieSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvMovieSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
         Me.lvMovieSources.Columns(3).Text = Master.eLang.GetString(411, "Recursive")
         Me.lvMovieSources.Columns(4).Text = Master.eLang.GetString(412, "Use Folder Name")
         Me.lvMovieSources.Columns(5).Text = Master.eLang.GetString(413, "Single Video")
         Me.lvMovieSources.Columns(6).Text = Master.eLang.GetString(264, "Exclude")
-        Me.lvTVShowRegex.Columns(1).Text = Master.eLang.GetString(696, "Season Regex")
-        Me.lvTVShowRegex.Columns(2).Text = Master.eLang.GetString(694, "Apply To")
-        Me.lvTVShowRegex.Columns(3).Text = Master.eLang.GetString(697, "Episode Regex")
-        Me.lvTVShowRegex.Columns(4).Text = Master.eLang.GetString(694, "Apply To")
-        Me.lvTVShowRegex.Columns(5).Text = Master.eLang.GetString(728, "Aired")
+        'Me.lvTVShowRegex.Columns(1).Text = Master.eLang.GetString(696, "Season Regex")
+        'Me.lvTVShowRegex.Columns(2).Text = Master.eLang.GetString(694, "Apply To")
+        'Me.lvTVShowRegex.Columns(3).Text = Master.eLang.GetString(697, "Episode Regex")
+        'Me.lvTVShowRegex.Columns(4).Text = Master.eLang.GetString(694, "Apply To")
+        'Me.lvTVShowRegex.Columns(5).Text = Master.eLang.GetString(728, "Aired")
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
         Me.lvTVSources.Columns(3).Text = Master.eLang.GetString(610, "Language")
@@ -6819,7 +6771,6 @@ Public Class dlgSettings
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
         Me.gbTVScraperDefFIExtOpts.Text = Me.gbTVScraperDefFIExtOpts.Text
         Me.lblSettingsTopTitle.Text = Me.Text
-        Me.lblTVEpisodeRetrieve.Text = Me.lblTVSeasonRetrieve.Text
         Me.lblTVLanguageOverlay.Text = Me.lblMovieLanguageOverlay.Text
         Me.lblTVSkipLessThan.Text = Me.lblMovieSkipLessThan.Text
         Me.lblTVSkipLessThanMB.Text = Me.lblMovieSkipLessThanMB.Text
@@ -6835,8 +6786,6 @@ Public Class dlgSettings
         Me.LoadTVScraperUpdateTime()
         Me.LoadTVSeasonBannerTypes()
         Me.LoadTVShowBannerTypes()
-        Me.LoadTVSeasonRetrieve()
-        Me.LoadTVEpisodeRetrieve()
     End Sub
 
     Private Sub tcFileSystemCleaner_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcFileSystemCleaner.SelectedIndexChanged
@@ -6975,10 +6924,6 @@ Public Class dlgSettings
 
     Private Sub txtTVEpisodePosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVEpisodePosterWidth.TextChanged
         Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtTVEpisodeRegex_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVEpisodeRegex.TextChanged
-        Me.ValidateRegex()
     End Sub
 
     Private Sub txtMovieBannerHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieBannerHeight.KeyPress
@@ -7219,8 +7164,12 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtTVSeasonRegex_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTVSeasonRegex.TextChanged
-        Me.ValidateRegex()
+    Private Sub txtTVSourcesRegexTVShowMatchingRegex_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTVSourcesRegexTVShowMatchingRegex.TextChanged
+        Me.ValidateTVShowMatching()
+    End Sub
+
+    Private Sub txtTVSourcesRegexTVShowMatchingDefaultSeason_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTVSourcesRegexTVShowMatchingDefaultSeason.TextChanged
+        Me.ValidateTVShowMatching()
     End Sub
 
     Private Sub txtTVShowBannerHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowBannerHeight.KeyPress
@@ -7301,13 +7250,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub ValidateRegex()
-        If Not String.IsNullOrEmpty(Me.txtTVSeasonRegex.Text) AndAlso Not String.IsNullOrEmpty(Me.txtTVEpisodeRegex.Text) Then
-            If Me.cbTVSeasonRetrieve.SelectedIndex > -1 AndAlso Me.cbTVEpisodeRetrieve.SelectedIndex > -1 Then
-                Me.btnTVShowRegexAdd.Enabled = True
-            Else
-                Me.btnTVShowRegexAdd.Enabled = False
-            End If
+    Private Sub ValidateTVShowMatching()
+        If Not String.IsNullOrEmpty(Me.txtTVSourcesRegexTVShowMatchingRegex.Text) AndAlso (String.IsNullOrEmpty(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text) OrElse IsNumeric(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text)) Then
+            Me.btnTVSourcesRegexTVShowMatchingAdd.Enabled = True
+        Else
+            Me.btnTVSourcesRegexTVShowMatchingAdd.Enabled = False
         End If
     End Sub
 
