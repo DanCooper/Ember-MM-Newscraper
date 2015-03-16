@@ -142,11 +142,6 @@ Public Class FileFolderRenamer
                     iProg += 1
                     If Not f.ID = -1 Then
                         _tvDB = Master.DB.LoadTVEpFromDB(f.ID, True)
-                    Else
-                        _tvDB = Nothing
-                    End If
-
-                    If Not IsNothing(_tvDB) Then
                         DoRenameSingle_Episode(f, _tvDB, True, False, False, True, sfunction, iProg)
                     End If
                 Next
@@ -165,11 +160,6 @@ Public Class FileFolderRenamer
                 iProg += 1
                 If Not f.ID = -1 Then
                     _movieDB = Master.DB.LoadMovieFromDB(f.ID)
-                Else
-                    _movieDB = Nothing
-                End If
-
-                If Not IsNothing(_movieDB) Then
                     DoRenameSingle_Movie(f, _movieDB, True, False, False, True, sfunction, iProg)
                 End If
             Next
@@ -202,7 +192,7 @@ Public Class FileFolderRenamer
                         End If
                     Catch ex As Exception
                         If ShowError Then
-                            MsgBox(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(165, "Unable to Rename Directory"))
+                            MessageBox.Show(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), Environment.NewLine, ex.Message), Master.eLang.GetString(165, "Unable to Rename Directory"), MessageBoxButtons.OK, MessageBoxIcon.Error)
                         Else
                             logger.Error("Dir: <{0}> - <{1}>", srcDir, destDir)
                         End If
@@ -246,7 +236,7 @@ Public Class FileFolderRenamer
 
                                     Catch ex As Exception
                                         If ShowError Then
-                                            MsgBox(String.Format(Master.eLang.GetString(166, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(171, "Unable to Rename File"))
+                                            MessageBox.Show(String.Format(Master.eLang.GetString(166, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), Environment.NewLine, ex.Message), Master.eLang.GetString(171, "Unable to Rename File"), MessageBoxButtons.OK, MessageBoxIcon.Error)
                                         Else
                                             logger.Error("File <{0}> - <{1}>", srcFile, dstFile)
                                         End If
@@ -288,7 +278,7 @@ Public Class FileFolderRenamer
                 End If
             Else
                 If ShowError Then
-                    MsgBox("Error", MsgBoxStyle.Critical, Master.eLang.GetString(171, "Unable to Rename File"))
+                    MessageBox.Show("Error", Master.eLang.GetString(171, "Unable to Rename File"), MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
             End If
         Catch ex As Exception
@@ -325,7 +315,7 @@ Public Class FileFolderRenamer
                         End If
                     Catch ex As Exception
                         If ShowError Then
-                            MsgBox(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(165, "Unable to Rename Directory"))
+                            MessageBox.Show(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), Environment.NewLine, ex.Message), Master.eLang.GetString(165, "Unable to Rename Directory"), MessageBoxButtons.OK, MessageBoxIcon.Error)
                         Else
                             logger.Error("Dir: <{0}> - <{1}>", srcDir, destDir)
                         End If
@@ -373,7 +363,7 @@ Public Class FileFolderRenamer
 
                                     Catch ex As Exception
                                         If ShowError Then
-                                            MsgBox(String.Format(Master.eLang.GetString(166, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(171, "Unable to Rename File"))
+                                            MessageBox.Show(String.Format(Master.eLang.GetString(166, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), Environment.NewLine, ex.Message), Master.eLang.GetString(171, "Unable to Rename File"), MessageBoxButtons.OK, MessageBoxIcon.Error)
                                         Else
                                             logger.Error("File <{0}> - <{1}>", srcFile, dstFile)
                                         End If
@@ -417,7 +407,7 @@ Public Class FileFolderRenamer
                 End If
             Else
                 If ShowError Then
-                    MsgBox("Error", MsgBoxStyle.Critical, Master.eLang.GetString(171, "Unable to Rename File"))
+                    MessageBox.Show("Error", Master.eLang.GetString(171, "Unable to Rename File"), MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
             End If
         Catch ex As Exception
@@ -444,7 +434,7 @@ Public Class FileFolderRenamer
                         End If
                     Catch ex As Exception
                         If ShowError Then
-                            MsgBox(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(165, "Unable to Rename Directory"))
+                            MessageBox.Show(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), Environment.NewLine, ex.Message), Master.eLang.GetString(165, "Unable to Rename Directory"), MessageBoxButtons.OK, MessageBoxIcon.Error)
                         Else
                             logger.Error("Dir: <{0}> - <{1}>", srcDir, destDir)
                         End If
@@ -542,7 +532,7 @@ Public Class FileFolderRenamer
                 End If
             Else
                 If ShowError Then
-                    MsgBox("Error", MsgBoxStyle.Critical, Master.eLang.GetString(171, "Unable to Rename File"))
+                    MessageBox.Show("Error", Master.eLang.GetString(171, "Unable to Rename File"), MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
             End If
         Catch ex As Exception
@@ -789,18 +779,16 @@ Public Class FileFolderRenamer
             End If
 
             'Lock
-            If Not IsNothing(_tmpTVEpisode.IsLockEp) Then
-                EpisodeFile.IsLocked = _tmpTVEpisode.IsLockEp
-            End If
+            EpisodeFile.IsLocked = _tmpTVEpisode.IsLockEp
 
             'Show ListTitle
-            If Not IsNothing(_tmpTVEpisode.ListTitle) Then
+            If _tmpTVEpisode.ListTitle IsNot Nothing Then
                 EpisodeFile.ListTitle = _tmpTVEpisode.ListTitle
             End If
 
             'Rating
             If Not EpisodeFile.IsMultiEpisode Then
-                If Not IsNothing(_tmpTVEpisode.TVEp.Rating) Then
+                If _tmpTVEpisode.TVEp.Rating IsNot Nothing Then
                     EpisodeFile.Rating = _tmpTVEpisode.TVEp.Rating
                 End If
             Else
@@ -809,7 +797,7 @@ Public Class FileFolderRenamer
 
             'Episode Title
             If Not EpisodeFile.IsMultiEpisode Then
-                If Not IsNothing(_tmpTVEpisode.TVEp.Title) Then
+                If _tmpTVEpisode.TVEp.Title IsNot Nothing Then
                     EpisodeFile.Title = _tmpTVEpisode.TVEp.Title
                 End If
             Else
@@ -823,16 +811,16 @@ Public Class FileFolderRenamer
             End If
 
             'Show Title
-            If Not IsNothing(_tmpTVEpisode.TVShow.Title) Then
+            If _tmpTVEpisode.TVShow.Title IsNot Nothing Then
                 EpisodeFile.ShowTitle = _tmpTVEpisode.TVShow.Title
             End If
 
             'VideoSource
-            If Not IsNothing(_tmpTVEpisode.TVEp.VideoSource) Then
+            If _tmpTVEpisode.TVEp.VideoSource IsNot Nothing Then
                 EpisodeFile.VideoSource = _tmpTVEpisode.TVEp.VideoSource
             End If
 
-            If Not IsNothing(_tmpTVEpisode.TVEp.FileInfo) Then
+            If _tmpTVEpisode.TVEp.FileInfo IsNot Nothing Then
                 Try
                     'Resolution
                     If _tmpTVEpisode.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
@@ -954,66 +942,62 @@ Public Class FileFolderRenamer
             End If
 
             'MovieSets
-            If Not IsNothing(_tmpMovie.Movie.Sets) AndAlso _tmpMovie.Movie.Sets.Count > 0 Then
+            If _tmpMovie.Movie.Sets IsNot Nothing AndAlso _tmpMovie.Movie.Sets.Count > 0 Then
                 MovieFile.Collection = _tmpMovie.Movie.Sets.Item(0).Title
             End If
 
             'Director
-            If Not IsNothing(_tmpMovie.Movie.Director) Then
+            If _tmpMovie.Movie.Director IsNot Nothing Then
                 MovieFile.Director = _tmpMovie.Movie.Director
             End If
 
             'VideoSource
-            If Not IsNothing(_tmpMovie.Movie.VideoSource) Then
+            If _tmpMovie.Movie.VideoSource IsNot Nothing Then
                 MovieFile.VideoSource = _tmpMovie.Movie.VideoSource
             End If
 
             'Genres
-            If Not IsNothing(_tmpMovie.Movie.Genre) Then
+            If _tmpMovie.Movie.Genre IsNot Nothing Then
                 MovieFile.Genre = _tmpMovie.Movie.Genre
             End If
 
             'IMDBID
-            If Not IsNothing(_tmpMovie.Movie.IMDBID) Then
+            If _tmpMovie.Movie.IMDBID IsNot Nothing Then
                 MovieFile.IMDBID = _tmpMovie.Movie.IMDBID
             End If
 
             'IsLock
-            If Not IsNothing(_tmpMovie.IsLock) Then
-                MovieFile.IsLocked = _tmpMovie.IsLock
-            End If
+            MovieFile.IsLocked = _tmpMovie.IsLock
 
             'IsSingle
-            If Not IsNothing(_tmpMovie.IsSingle) Then
-                MovieFile.IsSingle = _tmpMovie.IsSingle
-            End If
+            MovieFile.IsSingle = _tmpMovie.IsSingle
 
             'ListTitle
-            If Not IsNothing(_tmpMovie.ListTitle) Then
+            If _tmpMovie.ListTitle IsNot Nothing Then
                 MovieFile.ListTitle = _tmpMovie.ListTitle
             End If
 
             'MPAA
-            If Not IsNothing(_tmpMovie.Movie.MPAA) Then
+            If _tmpMovie.Movie.MPAA IsNot Nothing Then
                 MovieFile.MPAA = FileFolderRenamer.SelectMPAA(_tmpMovie.Movie.MPAA)
             End If
 
             'OriginalTitle
-            If Not IsNothing(_tmpMovie.Movie.OriginalTitle) Then
+            If _tmpMovie.Movie.OriginalTitle IsNot Nothing Then
                 MovieFile.OriginalTitle = If(_tmpMovie.Movie.OriginalTitle <> _tmpMovie.Movie.Title, _tmpMovie.Movie.OriginalTitle, String.Empty)
             End If
 
             'Rating
-            If Not IsNothing(_tmpMovie.Movie.Rating) Then
+            If _tmpMovie.Movie.Rating IsNot Nothing Then
                 MovieFile.Rating = _tmpMovie.Movie.Rating
             End If
 
             'Year
-            If Not IsNothing(_tmpMovie.Movie.Year) Then
+            If _tmpMovie.Movie.Year IsNot Nothing Then
                 MovieFile.Year = _tmpMovie.Movie.Year
             End If
 
-            If Not IsNothing(_tmpMovie.Movie.FileInfo) Then
+            If _tmpMovie.Movie.FileInfo IsNot Nothing Then
                 Try
                     If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                         Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpMovie.Movie.FileInfo)
@@ -1128,31 +1112,29 @@ Public Class FileFolderRenamer
 
         Try
             ShowFile.ID = CInt(_tmpTVShow.ShowID)
+            ShowFile.IsLocked = _tmpTVShow.IsLockShow
 
             If String.IsNullOrEmpty(_tmpTVShow.TVShow.Title) Then
                 ShowFile.Title = _tmpTVShow.ListTitle
             Else
                 ShowFile.Title = _tmpTVShow.TVShow.Title
             End If
-            If Not IsNothing(_tmpTVShow.TVShow.Title) Then
+            If _tmpTVShow.TVShow.Title IsNot Nothing Then
                 ShowFile.ShowTitle = _tmpTVShow.TVShow.Title
             End If
-            If Not IsNothing(_tmpTVShow.TVShow.Genre) Then
+            If _tmpTVShow.TVShow.Genre IsNot Nothing Then
                 ShowFile.Genre = _tmpTVShow.TVShow.Genre
             End If
-            If Not IsNothing(_tmpTVShow.TVShow.TVDBID) Then
+            If _tmpTVShow.TVShow.TVDBID IsNot Nothing Then
                 ShowFile.TVDBID = _tmpTVShow.TVShow.TVDBID
             End If
-            If Not IsNothing(_tmpTVShow.IsLockShow) Then
-                ShowFile.IsLocked = _tmpTVShow.IsLockShow
-            End If
-            If Not IsNothing(_tmpTVShow.ListTitle) Then
+            If _tmpTVShow.ListTitle IsNot Nothing Then
                 ShowFile.ListTitle = _tmpTVShow.ListTitle
             End If
-            If Not IsNothing(_tmpTVShow.TVShow.MPAA) Then
+            If _tmpTVShow.TVShow.MPAA IsNot Nothing Then
                 ShowFile.MPAA = FileFolderRenamer.SelectMPAA(_tmpTVShow.TVShow.MPAA)
             End If
-            If Not IsNothing(_tmpTVShow.TVShow.Rating) Then
+            If _tmpTVShow.TVShow.Rating IsNot Nothing Then
                 ShowFile.Rating = _tmpTVShow.TVShow.Rating
             End If
 
@@ -1358,7 +1340,7 @@ Public Class FileFolderRenamer
                             nextEB = strBase.IndexOf("?", nextIB + 1)
                             If nextEB > -1 Then
                                 sPattern = strBase.Substring(2, nextIB - 2)
-                                If Not String.IsNullOrEmpty(sPattern) AndAlso IsNumeric(sPattern.Substring(0, 1)) Then
+                                If Not String.IsNullOrEmpty(sPattern) AndAlso Integer.TryParse(sPattern.Substring(0, 1), 0) Then
                                     sPadding = CInt(sPattern.Substring(0, 1))
                                     sPattern = sPattern.Substring(1)
                                     If Not sPadding > 0 Then
@@ -1366,7 +1348,7 @@ Public Class FileFolderRenamer
                                     End If
                                 End If
                                 ePattern = strBase.Substring(nextIB + 1, nextEB - nextIB - 1)
-                                If Not String.IsNullOrEmpty(ePattern) AndAlso IsNumeric(ePattern.Substring(0, 1)) Then
+                                If Not String.IsNullOrEmpty(ePattern) AndAlso Integer.TryParse(ePattern.Substring(0, 1), 0) Then
                                     ePadding = CInt(ePattern.Substring(0, 1))
                                     ePattern = ePattern.Substring(1)
                                     If Not ePadding > 0 Then
@@ -1427,7 +1409,7 @@ Public Class FileFolderRenamer
                         nextIB = strBase.IndexOf("?")
                         If nextIB > -1 Then
                             sPattern = strBase.Substring(2, nextIB - 2)
-                            If Not String.IsNullOrEmpty(sPattern) AndAlso IsNumeric(sPattern.Substring(0, 1)) Then
+                            If Not String.IsNullOrEmpty(sPattern) AndAlso Integer.TryParse(sPattern.Substring(0, 1), 0) Then
                                 sPadding = CInt(sPattern.Substring(0, 1))
                                 sPattern = sPattern.Substring(1)
                                 If Not sPadding > 0 Then
@@ -1473,7 +1455,7 @@ Public Class FileFolderRenamer
                         nextIB = strBase.IndexOf("?")
                         If nextIB > -1 Then
                             ePattern = strBase.Substring(2, nextIB - 2)
-                            If Not String.IsNullOrEmpty(ePattern) AndAlso IsNumeric(ePattern.Substring(0, 1)) Then
+                            If Not String.IsNullOrEmpty(ePattern) AndAlso Integer.TryParse(ePattern.Substring(0, 1), 0) Then
                                 ePadding = CInt(ePattern.Substring(0, 1))
                                 ePattern = ePattern.Substring(1)
                                 If Not ePadding > 0 Then
@@ -1781,25 +1763,25 @@ Public Class FileFolderRenamer
     End Sub
 
     Private Shared Sub UpdatePaths_Show(ByRef _DBE As Structures.DBTV, ByVal oldPath As String, ByVal newPath As String)
-        If Not IsNothing(_DBE.EpNfoPath) AndAlso Not String.IsNullOrEmpty(_DBE.EpNfoPath) Then _DBE.EpNfoPath = _DBE.EpNfoPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.EpFanartPath) AndAlso Not String.IsNullOrEmpty(_DBE.EpFanartPath) Then _DBE.EpFanartPath = _DBE.EpFanartPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.EpPosterPath) AndAlso Not String.IsNullOrEmpty(_DBE.EpPosterPath) Then _DBE.EpPosterPath = _DBE.EpPosterPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.SeasonBannerPath) AndAlso Not String.IsNullOrEmpty(_DBE.SeasonBannerPath) Then _DBE.SeasonBannerPath = _DBE.SeasonBannerPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.SeasonFanartPath) AndAlso Not String.IsNullOrEmpty(_DBE.SeasonFanartPath) Then _DBE.SeasonFanartPath = _DBE.SeasonFanartPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.SeasonLandscapePath) AndAlso Not String.IsNullOrEmpty(_DBE.SeasonLandscapePath) Then _DBE.SeasonLandscapePath = _DBE.SeasonLandscapePath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.SeasonPosterPath) AndAlso Not String.IsNullOrEmpty(_DBE.SeasonPosterPath) Then _DBE.SeasonPosterPath = _DBE.SeasonPosterPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowBannerPath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowBannerPath) Then _DBE.ShowBannerPath = _DBE.ShowBannerPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowCharacterArtPath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowCharacterArtPath) Then _DBE.ShowCharacterArtPath = _DBE.ShowCharacterArtPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowClearArtPath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowClearArtPath) Then _DBE.ShowClearArtPath = _DBE.ShowClearArtPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowClearLogoPath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowClearLogoPath) Then _DBE.ShowClearLogoPath = _DBE.ShowClearLogoPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowEFanartsPath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowEFanartsPath) Then _DBE.ShowEFanartsPath = _DBE.ShowEFanartsPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowFanartPath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowFanartPath) Then _DBE.ShowFanartPath = _DBE.ShowFanartPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowLandscapePath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowLandscapePath) Then _DBE.ShowLandscapePath = _DBE.ShowLandscapePath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowNfoPath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowNfoPath) Then _DBE.ShowNfoPath = _DBE.ShowNfoPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowPath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowPath) Then _DBE.ShowPath = _DBE.ShowPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowPosterPath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowPosterPath) Then _DBE.ShowPosterPath = _DBE.ShowPosterPath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.ShowThemePath) AndAlso Not String.IsNullOrEmpty(_DBE.ShowThemePath) Then _DBE.ShowThemePath = _DBE.ShowThemePath.Replace(oldPath, newPath)
-        If Not IsNothing(_DBE.EpSubtitles) AndAlso _DBE.EpSubtitles.Count > 0 Then
+        If _DBE.EpNfoPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.EpNfoPath) Then _DBE.EpNfoPath = _DBE.EpNfoPath.Replace(oldPath, newPath)
+        If _DBE.EpFanartPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.EpFanartPath) Then _DBE.EpFanartPath = _DBE.EpFanartPath.Replace(oldPath, newPath)
+        If _DBE.EpPosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.EpPosterPath) Then _DBE.EpPosterPath = _DBE.EpPosterPath.Replace(oldPath, newPath)
+        If _DBE.SeasonBannerPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.SeasonBannerPath) Then _DBE.SeasonBannerPath = _DBE.SeasonBannerPath.Replace(oldPath, newPath)
+        If _DBE.SeasonFanartPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.SeasonFanartPath) Then _DBE.SeasonFanartPath = _DBE.SeasonFanartPath.Replace(oldPath, newPath)
+        If _DBE.SeasonLandscapePath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.SeasonLandscapePath) Then _DBE.SeasonLandscapePath = _DBE.SeasonLandscapePath.Replace(oldPath, newPath)
+        If _DBE.SeasonPosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.SeasonPosterPath) Then _DBE.SeasonPosterPath = _DBE.SeasonPosterPath.Replace(oldPath, newPath)
+        If _DBE.ShowBannerPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowBannerPath) Then _DBE.ShowBannerPath = _DBE.ShowBannerPath.Replace(oldPath, newPath)
+        If _DBE.ShowCharacterArtPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowCharacterArtPath) Then _DBE.ShowCharacterArtPath = _DBE.ShowCharacterArtPath.Replace(oldPath, newPath)
+        If _DBE.ShowClearArtPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowClearArtPath) Then _DBE.ShowClearArtPath = _DBE.ShowClearArtPath.Replace(oldPath, newPath)
+        If _DBE.ShowClearLogoPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowClearLogoPath) Then _DBE.ShowClearLogoPath = _DBE.ShowClearLogoPath.Replace(oldPath, newPath)
+        If _DBE.ShowEFanartsPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowEFanartsPath) Then _DBE.ShowEFanartsPath = _DBE.ShowEFanartsPath.Replace(oldPath, newPath)
+        If _DBE.ShowFanartPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowFanartPath) Then _DBE.ShowFanartPath = _DBE.ShowFanartPath.Replace(oldPath, newPath)
+        If _DBE.ShowLandscapePath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowLandscapePath) Then _DBE.ShowLandscapePath = _DBE.ShowLandscapePath.Replace(oldPath, newPath)
+        If _DBE.ShowNfoPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowNfoPath) Then _DBE.ShowNfoPath = _DBE.ShowNfoPath.Replace(oldPath, newPath)
+        If _DBE.ShowPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowPath) Then _DBE.ShowPath = _DBE.ShowPath.Replace(oldPath, newPath)
+        If _DBE.ShowPosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowPosterPath) Then _DBE.ShowPosterPath = _DBE.ShowPosterPath.Replace(oldPath, newPath)
+        If _DBE.ShowThemePath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowThemePath) Then _DBE.ShowThemePath = _DBE.ShowThemePath.Replace(oldPath, newPath)
+        If _DBE.EpSubtitles IsNot Nothing AndAlso _DBE.EpSubtitles.Count > 0 Then
             For Each subtitle In _DBE.EpSubtitles
                 subtitle.SubsPath = subtitle.SubsPath.Replace(oldPath, newPath)
             Next
