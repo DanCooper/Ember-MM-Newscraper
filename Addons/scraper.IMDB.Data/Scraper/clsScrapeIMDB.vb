@@ -146,7 +146,7 @@ Namespace IMDB
         Public Sub CancelAsync()
 
             If bwIMDB.IsBusy Then
-                If Not IsNothing(intHTTP) Then
+                If intHTTP IsNot Nothing Then
                     intHTTP.Cancel()
                 End If
                 bwIMDB.CancelAsync()
@@ -332,8 +332,7 @@ Namespace IMDB
                                 Let m3 = Regex.Match(Regex.Match(M.ToString, TD_PATTERN_3).ToString, IMG_PATTERN) _
                                 Select New MediaContainers.Person(Web.HttpUtility.HtmlDecode(m1.Groups("name").ToString.Trim), _
                                 Web.HttpUtility.HtmlDecode(m2.ToString.Trim), _
-                                If(m3.Groups("thumb").ToString.IndexOf("addtiny") > 0 OrElse m3.Groups("thumb").ToString.IndexOf("no_photo") > 0, String.Empty, Strings.Replace(Web.HttpUtility.HtmlDecode(m3.Groups("thumb").ToString.Trim), _
-                                "._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg")))) Take 999999
+                                If(m3.Groups("thumb").ToString.IndexOf("addtiny") > 0 OrElse m3.Groups("thumb").ToString.IndexOf("no_photo") > 0, String.Empty, Web.HttpUtility.HtmlDecode(m3.Groups("thumb").ToString.Trim).Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg")))) Take 999999
 
                     Dim Cast As List(Of MediaContainers.Person) = Cast1.ToList
 
@@ -363,7 +362,7 @@ Namespace IMDB
                     Dim lHtmlIndexOf As Integer = If(D > 0, HTML.IndexOf("<a class=""tn15more inline""", D), 0)
                     Dim TagLineEnd As Integer = If(lHtmlIndexOf > 0, lHtmlIndexOf, 0)
                     If D > 0 Then W = If(TagLineEnd > 0, TagLineEnd, HTML.IndexOf("</div>", D))
-                    nMovie.Tagline = If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Replace("<h5>Tagline:</h5>", String.Empty).Split(vbCrLf.ToCharArray)(1)).Trim, String.Empty)
+                    nMovie.Tagline = If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Replace("<h5>Tagline:</h5>", String.Empty).Split(Environment.NewLine.ToCharArray)(1)).Trim, String.Empty)
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
@@ -406,8 +405,8 @@ Namespace IMDB
                         If Cou.Count > 0 Then
                             If CountryAbbreviation = False Then
                                 For Each entry In Cou
-                                    entry = Replace(entry, "USA", "United States of America")
-                                    entry = Replace(entry, "UK", "United Kingdom")
+                                    entry = entry.Replace("USA", "United States of America")
+                                    entry = entry.Replace("UK", "United Kingdom")
                                     nMovie.Countries.Add(entry)
                                 Next
                             Else
@@ -433,14 +432,7 @@ Namespace IMDB
                             Dim Gen = From M In rGenres _
                                       Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString) Where Not N.Contains("more") Take 999999
                             If Gen.Count > 0 Then
-                                Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
-                                'we don't use language filter here - instead do this in MergeScraperResult function
-                                '       tGenre = StringUtils.GenreFilter(tGenre)
-                                'only update nMovie if scraped result is not empty/nothing!
-                                If Not String.IsNullOrEmpty(tGenre) Then
-                                    '  nMovie.Genre = Strings.Join(tGenre.Split(Convert.ToChar("/")), " / ").Trim
-                                    nMovie.Genres.AddRange(Gen.ToList)
-                                End If
+                                nMovie.Genres.AddRange(Gen.ToList)
                             End If
                         End If
                     End If
@@ -775,7 +767,7 @@ mPlot:          'Plot
             i = tmpname.LastIndexOf(" ")
             If i >= 0 Then
                 tmpyear = tmpname.Substring(i + 1, tmpname.Length - i - 1)
-                If IsNumeric(tmpyear) AndAlso Convert.ToInt32(tmpyear) > 1950 Then 'let's assume there are no movies older then 1950
+                If Integer.TryParse(tmpyear, 0) AndAlso Convert.ToInt32(tmpyear) > 1950 Then 'let's assume there are no movies older then 1950
                     For c = 0 To lst.Count - 1
                         If lst(c).Year = tmpyear Then
                             ret = c

@@ -122,7 +122,7 @@ Public Class dlgIMDBSearchResults
             IMDB.CancelAsync()
             IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), _nMovie, pOpt)
         Else
-            MsgBox(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
+            MessageBox.Show(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), Master.eLang.GetString(292, "Invalid Entry"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End If
     End Sub
 
@@ -173,7 +173,7 @@ Public Class dlgIMDBSearchResults
         Dim fPath As String = Directory.GetParent(Me.txtFileName.Text).FullName
 
         If Not String.IsNullOrEmpty(fPath) Then
-            Shell("Explorer.exe " & fPath, vbNormalFocus)
+            Process.Start("Explorer.exe", fPath)
         End If
     End Sub
 
@@ -255,10 +255,10 @@ Public Class dlgIMDBSearchResults
         Try
             If Me.chkManual.Checked AndAlso Me.btnVerify.Enabled Then
                 If Not Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
-                    MsgBox(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
+                    MessageBox.Show(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), Master.eLang.GetString(292, "Invalid Entry"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     Exit Sub
                 Else
-                    If MsgBox(String.Concat(Master.eLang.GetString(821, "You have manually entered an IMDB ID but have not verified it is correct."), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.YesNo, Master.eLang.GetString(823, "Continue without verification?")) = MsgBoxResult.No Then
+                    If MessageBox.Show(String.Concat(Master.eLang.GetString(821, "You have manually entered an IMDB ID but have not verified it is correct."), Environment.NewLine, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), Master.eLang.GetString(823, "Continue without verification?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then
                         Exit Sub
                     Else
                         _nMovie.IMDBID = Me.txtIMDBID.Text.Replace("tt", String.Empty)
@@ -318,7 +318,7 @@ Public Class dlgIMDBSearchResults
                 Me.btnVerify.Enabled = False
             Else
                 If Me.chkManual.Checked Then
-                    MsgBox(Master.eLang.GetString(825, "Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(826, "Verification Failed"))
+                    MessageBox.Show(Master.eLang.GetString(825, "Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again."), Master.eLang.GetString(826, "Verification Failed"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     Me.btnVerify.Enabled = True
                 End If
             End If
@@ -335,7 +335,7 @@ Public Class dlgIMDBSearchResults
         Try
             Me.tvResults.Nodes.Clear()
             Me.ClearInfo()
-            If Not IsNothing(M) Then
+            If M IsNot Nothing Then
                 If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 OrElse M.TvTitles.Count > 0 OrElse M.ExactMatches.Count > 0 OrElse M.VideoTitles.Count > 0 Then
                     Dim TnP As New TreeNode(String.Format(Master.eLang.GetString(827, "Partial Matches ({0})"), M.PartialMatches.Count))
                     Dim selNode As New TreeNode
@@ -507,7 +507,7 @@ Public Class dlgIMDBSearchResults
             Me.ClearInfo()
             Me.OK_Button.Enabled = False
 
-            If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
+            If Me.tvResults.SelectedNode.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
                 Me._currnode = Me.tvResults.SelectedNode.Index
 
                 'check if this movie is in the cache already
