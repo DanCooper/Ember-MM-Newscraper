@@ -85,8 +85,8 @@ Namespace OFDB
                     ElseIf FSK.Contains("o.A") Then
                         FSK = "0"
                     End If
-                    If Not IsNumeric(FSK) Then
-                        FSK = ""
+                    If Not Integer.TryParse(FSK, 0) Then
+                        FSK = String.Empty
                     End If
 
                     If Not String.IsNullOrEmpty(FSK) Then
@@ -202,7 +202,7 @@ Namespace OFDB
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping ODFB (too many connections?):" & strIMDBID, ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "Error scraping ODFB (too many connections?):" & strIMDBID, ex)
             End Try
 
             Return strURL
