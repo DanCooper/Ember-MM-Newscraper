@@ -224,6 +224,7 @@ Public Class TVDB_Data_Poster
         _setup.chkScraperEpTitle.Checked = ConfigOptions.bEpTitle
         _setup.chkScraperEpSeason.Checked = ConfigOptions.bEpSeason
         _setup.chkScraperEpEpisode.Checked = ConfigOptions.bEpEpisode
+        _setup.chkScraperEpGuestStars.Checked = ConfigOptions.bEpGuestStars
         _setup.chkScraperEpAired.Checked = ConfigOptions.bEpAired
         _setup.chkScraperEpRating.Checked = ConfigOptions.bEpRating
         _setup.chkScraperEpPlot.Checked = ConfigOptions.bEpPlot
@@ -294,6 +295,7 @@ Public Class TVDB_Data_Poster
         ConfigOptions.bEpCredits = clsAdvancedSettings.GetBooleanSetting("ScraperEpCredits", True)
         ConfigOptions.bEpDirector = clsAdvancedSettings.GetBooleanSetting("ScraperEpDirector", True)
         ConfigOptions.bEpEpisode = clsAdvancedSettings.GetBooleanSetting("ScraperEpEpisode", True)
+        ConfigOptions.bEpGuestStars = clsAdvancedSettings.GetBooleanSetting("ScraperEpGuestStars", True)
         ConfigOptions.bEpPlot = clsAdvancedSettings.GetBooleanSetting("ScraperEpPlot", True)
         ConfigOptions.bEpRating = clsAdvancedSettings.GetBooleanSetting("ScraperEpRating", True)
         ConfigOptions.bEpSeason = clsAdvancedSettings.GetBooleanSetting("ScraperEpSeason", True)
@@ -380,6 +382,7 @@ Public Class TVDB_Data_Poster
             settings.SetBooleanSetting("ScraperEpRating", _setup.chkScraperEpRating.Checked)
             settings.SetBooleanSetting("ScraperEpPlot", _setup.chkScraperEpPlot.Checked)
             settings.SetBooleanSetting("ScraperEpDirector", _setup.chkScraperEpDirector.Checked)
+            settings.SetBooleanSetting("ScraperEpGuestStars", _setup.chkScraperEpGuestStars.Checked)
             settings.SetBooleanSetting("ScraperEpCredits", _setup.chkScraperEpCredits.Checked)
             settings.SetBooleanSetting("ScraperEpActors", _setup.chkScraperEpActors.Checked)
             settings.SetBooleanSetting("ScraperEpVotes", _setup.chkScraperEpVotes.Checked)

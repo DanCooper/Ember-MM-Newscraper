@@ -1254,7 +1254,11 @@ Public Class Scraper
                                         If sInfo.Options.bEpPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) Then .Plot = If(xE.Element("Overview") Is Nothing, .Plot, xE.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
                                         If sInfo.Options.bEpDirector Then .Director = If(xE.Element("Director") Is Nothing, .Director, Strings.Join(xE.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                         If sInfo.Options.bEpCredits Then .OldCredits = If(xE.Element("Writer") Is Nothing, .OldCredits, Strings.Join(xE.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
-                                        If sInfo.Options.bEpActors Then .Actors = Actors
+                                        If sInfo.Options.bEpActors Then
+                                            .Actors.Clear()
+                                            .Actors.AddRange(Actors)
+                                        End If
+                                        If sInfo.Options.bEpGuestStars Then .Actors.AddRange(GuestStarsToActors(xE.Element("GuestStars").Value))
                                         .PosterURL = If(xE.Element("filename") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, xE.Element("filename").Value))
                                         .LocalFile = If(xE.Element("filename") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, xE.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
                                     End With
@@ -1493,6 +1497,20 @@ Public Class Scraper
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
+
+        Private Function GuestStarsToActors(ByVal sGStars As String) As List(Of MediaContainers.Person)
+            Dim gActors As New List(Of MediaContainers.Person)
+            Dim gRole As String = Master.eLang.GetString(947, "Guest Star")
+
+            If Not String.IsNullOrEmpty(sGStars) Then
+                For Each gStar In sGStars.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))
+                    If Not String.IsNullOrEmpty(gStar) Then
+                        gActors.Add(New MediaContainers.Person With {.Name = gStar, .Role = gRole})
+                    End If
+                Next
+            End If
+            Return gActors
+        End Function
 
         Private Function StringToSeasonPosterType(ByVal sType As String) As Enums.TVSeasonPosterType
             Select Case sType.ToLower

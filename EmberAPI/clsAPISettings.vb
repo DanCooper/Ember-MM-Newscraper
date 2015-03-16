@@ -2935,6 +2935,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeGuestStars() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperEpisodeGuestStars
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperEpisodeGuestStars = value
+        End Set
+    End Property
+
     Public Property TVScraperEpisodePlot() As Boolean
         Get
             Return Settings._XMLSettings.TVScraperEpisodePlot
@@ -6062,6 +6071,7 @@ Public Class Settings
         Me.TVScraperEpisodeCredits = True
         Me.TVScraperEpisodeDirector = True
         Me.TVScraperEpisodeEpisode = True
+        Me.TVScraperEpisodeGuestStars = True
         Me.TVScraperEpisodePlot = True
         Me.TVScraperEpisodeRating = True
         Me.TVScraperEpisodeRuntime = True

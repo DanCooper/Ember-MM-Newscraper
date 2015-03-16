@@ -2797,6 +2797,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkTVScraperEpisodeGuestStars_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeGuestStars.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkTVScraperEpisodePlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodePlot.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3776,6 +3780,7 @@ Public Class dlgSettings
             Me.chkTVScraperEpisodeCredits.Checked = .TVScraperEpisodeCredits
             Me.chkTVScraperEpisodeDirector.Checked = .TVScraperEpisodeDirector
             Me.chkTVScraperEpisodeEpisode.Checked = .TVScraperEpisodeEpisode
+            Me.chkTVScraperEpisodeGuestStars.Checked = .TVScraperEpisodeGuestStars
             Me.chkTVScraperEpisodePlot.Checked = .TVScraperEpisodePlot
             Me.chkTVScraperEpisodeRating.Checked = .TVScraperEpisodeRating
             Me.chkTVScraperEpisodeRuntime.Checked = .TVScraperEpisodeRuntime
@@ -5561,6 +5566,7 @@ Public Class dlgSettings
             .TVScraperEpisodeCredits = Me.chkTVScraperEpisodeCredits.Checked
             .TVScraperEpisodeDirector = Me.chkTVScraperEpisodeDirector.Checked
             .TVScraperEpisodeEpisode = Me.chkTVScraperEpisodeEpisode.Checked
+            .TVScraperEpisodeGuestStars = Me.chkTVScraperEpisodeGuestStars.Checked
             .TVScraperEpisodePlot = Me.chkTVScraperEpisodePlot.Checked
             .TVScraperEpisodeRating = Me.chkTVScraperEpisodeRating.Checked
             .TVScraperEpisodeRuntime = Me.chkTVScraperEpisodeRuntime.Checked
@@ -6827,6 +6833,7 @@ Public Class dlgSettings
         Me.lblSettingsTopDetails.Text = Master.eLang.GetString(518, "Configure Ember's appearance and operation.")
         Me.lblTVEpisodeMatch.Text = Master.eLang.GetString(693, "Episode Match Regex:")
         Me.lblTVSourcesDefaultsOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
+        Me.lblTVScraperGlobalGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
         Me.lblTVScraperRatingRegion.Text = Master.eLang.GetString(679, "TV Rating Region")
         Me.lblTVScraperUpdateTime.Text = Master.eLang.GetString(740, "Re-download Show Information Every:")
         Me.lblTVSeasonMatch.Text = Master.eLang.GetString(692, "Season Match Regex:")

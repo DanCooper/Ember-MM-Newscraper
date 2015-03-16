@@ -1336,6 +1336,7 @@ Public Class Functions
             .bEpCredits = Master.eSettings.TVScraperEpisodeCredits
             .bEpDirector = Master.eSettings.TVScraperEpisodeDirector
             .bEpEpisode = Master.eSettings.TVScraperEpisodeEpisode
+            .bEpGuestStars = Master.eSettings.TVScraperEpisodeGuestStars
             .bEpPlot = Master.eSettings.TVScraperEpisodePlot
             .bEpRating = Master.eSettings.TVScraperEpisodeRating
             .bEpRuntime = Master.eSettings.TVScraperEpisodeRuntime
@@ -1650,6 +1651,7 @@ Public Class Functions
         filterOptions.bEpCredits = Options.bEpCredits AndAlso Options2.bEpCredits
         filterOptions.bEpDirector = Options.bEpDirector AndAlso Options2.bEpDirector
         filterOptions.bEpEpisode = Options.bEpEpisode AndAlso Options2.bEpEpisode
+        filterOptions.bEpGuestStars = Options.bEpGuestStars AndAlso Options2.bEpGuestStars
         filterOptions.bEpPlot = Options.bEpPlot AndAlso Options2.bEpPlot
         filterOptions.bEpRating = Options.bEpRating AndAlso Options2.bEpRating
         filterOptions.bEpRuntime = Options.bEpRuntime AndAlso Options2.bEpRuntime
@@ -2206,6 +2208,7 @@ Public Class Structures
         Dim bEpCredits As Boolean
         Dim bEpDirector As Boolean
         Dim bEpEpisode As Boolean
+        Dim bEpGuestStars As Boolean
         Dim bEpPlot As Boolean
         Dim bEpRating As Boolean
         Dim bEpRuntime As Boolean

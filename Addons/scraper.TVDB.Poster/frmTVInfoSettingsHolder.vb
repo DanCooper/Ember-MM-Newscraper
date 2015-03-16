@@ -108,6 +108,10 @@ Public Class frmTVInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkScraperEpGuestStars_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpGuestStars.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkScraperEpPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpPlot.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -208,6 +212,7 @@ Public Class frmTVInfoSettingsHolder
         Me.chkScraperEpCredits.Text = Master.eLang.GetString(729, "Credits")
         Me.chkScraperEpDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkScraperEpEpisode.Text = Master.eLang.GetString(755, "Episode #")
+        Me.chkScraperEpGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
         Me.chkScraperEpPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkScraperEpRating.Text = Master.eLang.GetString(400, "Rating")
         Me.chkScraperEpSeason.Text = Master.eLang.GetString(650, "Season")

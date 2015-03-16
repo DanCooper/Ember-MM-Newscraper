@@ -68,6 +68,7 @@ Partial Class frmTVInfoSettingsHolder
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.lblModuleInfo = New System.Windows.Forms.Label()
         Me.pbModuleLogo = New System.Windows.Forms.PictureBox()
+        Me.chkScraperEpGuestStars = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraperFields.SuspendLayout()
@@ -309,6 +310,7 @@ Partial Class frmTVInfoSettingsHolder
         '
         'gbScraperFieldsEpisode
         '
+        Me.gbScraperFieldsEpisode.Controls.Add(Me.chkScraperEpGuestStars)
         Me.gbScraperFieldsEpisode.Controls.Add(Me.chkScraperEpVotes)
         Me.gbScraperFieldsEpisode.Controls.Add(Me.chkScraperEpActors)
         Me.gbScraperFieldsEpisode.Controls.Add(Me.chkScraperEpCredits)
@@ -565,6 +567,17 @@ Partial Class frmTVInfoSettingsHolder
         Me.pbModuleLogo.TabIndex = 96
         Me.pbModuleLogo.TabStop = False
         '
+        'chkScraperEpGuestStars
+        '
+        Me.chkScraperEpGuestStars.AutoSize = True
+        Me.chkScraperEpGuestStars.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkScraperEpGuestStars.Location = New System.Drawing.Point(6, 94)
+        Me.chkScraperEpGuestStars.Name = "chkScraperEpGuestStars"
+        Me.chkScraperEpGuestStars.Size = New System.Drawing.Size(84, 17)
+        Me.chkScraperEpGuestStars.TabIndex = 10
+        Me.chkScraperEpGuestStars.Text = "Guest Stars"
+        Me.chkScraperEpGuestStars.UseVisualStyleBackColor = True
+        '
         'frmTVInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -587,6 +600,7 @@ Partial Class frmTVInfoSettingsHolder
         Me.gbScraperFields.ResumeLayout(False)
         Me.gbScraperFieldsShow.ResumeLayout(False)
         Me.gbScraperFieldsEpisode.ResumeLayout(False)
+        Me.gbScraperFieldsEpisode.PerformLayout()
         Me.gbTMDB.ResumeLayout(False)
         Me.gbTMDB.PerformLayout()
         Me.gbLanguage.ResumeLayout(False)
@@ -641,5 +655,6 @@ Partial Class frmTVInfoSettingsHolder
     Friend WithEvents chkScraperShowRuntime As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperShowVotes As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperEpVotes As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScraperEpGuestStars As System.Windows.Forms.CheckBox
 
 End Class

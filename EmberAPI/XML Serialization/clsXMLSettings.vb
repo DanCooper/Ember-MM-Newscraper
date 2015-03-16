@@ -356,6 +356,7 @@ Partial Public Class clsXMLSettings
     Private _tvscraperepisodecredits As Boolean
     Private _tvscraperepisodedirector As Boolean
     Private _tvscraperepisodeepisode As Boolean
+    Private _tvscraperepisodegueststars As Boolean
     Private _tvscraperepisodeplot As Boolean
     Private _tvscraperepisoderating As Boolean
     Private _tvscraperepisoderuntime As Boolean
@@ -3714,6 +3715,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscraperepisodeepisode = value
+        End Set
+    End Property
+
+    Public Property TVScraperEpisodeGuestStars() As Boolean
+        Get
+            Return Me._tvscraperepisodegueststars
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscraperepisodegueststars = value
         End Set
     End Property
 
