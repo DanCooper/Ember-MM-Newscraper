@@ -68,7 +68,7 @@ Public Class frmTVExtrator
     End Sub
 
     Private Sub btnFrameSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSave.Click
-        If Not IsNothing(pbFrame.Image) Then
+        If pbFrame.Image IsNot Nothing Then
             RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_TVEpisode, Nothing)
         End If
     End Sub

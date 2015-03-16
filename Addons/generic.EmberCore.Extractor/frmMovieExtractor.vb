@@ -240,7 +240,7 @@ Public Class frmMovieExtractor
 
     Private Sub btnFrameSaveAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsFanart.Click
         Try
-            If Not IsNothing(pbFrame.Image) Then
+            If pbFrame.Image IsNot Nothing Then
                 RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"FanartToSave"}))
             End If
         Catch ex As Exception
@@ -264,7 +264,7 @@ Public Class frmMovieExtractor
             '    pnlFrameProgress.Visible = False
             '    RaiseEvent GenericEvent(Enums.ModuleEventType.MovieFrameExtrator, Nothing)
             'End If
-            MsgBox("This feature is currently unavailable", MsgBoxStyle.OkOnly, "No Beta Feature") 'TODO: re-add autothumbs
+            MessageBox.Show("This feature is currently unavailable", "No Beta Feature", MessageBoxButtons.OK, MessageBoxIcon.Information) 'TODO: re-add autothumbs
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
