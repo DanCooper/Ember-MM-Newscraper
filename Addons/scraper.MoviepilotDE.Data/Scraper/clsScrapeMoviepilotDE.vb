@@ -49,7 +49,7 @@ Namespace MoviepilotDE
                     Dim strFSKPattern As String = "FSK (?<FSK>\d?\d)"
                     FSK = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strFSKPattern, RegexOptions.Singleline).Groups(1).Value).Trim
 
-                    If Not IsNumeric(FSK) Then
+                    If Not Integer.TryParse(FSK, 0) Then
                         FSK = String.Empty
                     Else
                         FSK = String.Concat("Germany:", FSK)

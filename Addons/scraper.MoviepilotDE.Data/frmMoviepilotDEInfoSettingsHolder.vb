@@ -95,7 +95,7 @@ Public Class frmMoviepilotDEInfoSettingsHolder
         Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
-        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
