@@ -107,7 +107,7 @@ Namespace Davestrailerpage
                     'Step 1: Build URL to movie on http://www.davestrailerpage.co.uk/!
                     'depending on beginning letter of movietitle we need to scrape different HTML site
 
-                    If IsNumeric(searchtitle(0)) Then
+                    If Integer.TryParse(searchtitle(0), 0) Then
                         searchtitle = "0to9.html"
                     ElseIf searchtitle(0).ToString.ToLower = "x" OrElse searchtitle(0).ToString.ToLower = "z" OrElse searchtitle(0).ToString.ToLower = "y" Then
                         searchtitle = "xyz.html"
