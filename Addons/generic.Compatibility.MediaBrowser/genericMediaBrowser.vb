@@ -169,7 +169,7 @@ Public Class genericMediaBrowser
     End Sub
 
     Sub SyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If mType = Enums.ModuleEventType.SyncModuleSettings AndAlso Not IsNothing(Me.fMediaBrowser) Then
+        If mType = Enums.ModuleEventType.SyncModuleSettings AndAlso Me.fMediaBrowser IsNot Nothing Then
             RemoveHandler fMediaBrowser.GenericEvent, AddressOf DeploySyncSettings
             'Me.fMediaBrowser.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
             AddHandler fMediaBrowser.GenericEvent, AddressOf DeploySyncSettings
@@ -177,7 +177,7 @@ Public Class genericMediaBrowser
     End Sub
 
     Sub DeploySyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If Not IsNothing(Me.fMediaBrowser) Then
+        If Me.fMediaBrowser IsNot Nothing Then
             'Master.eSettings.VideoTSParent = Me.fMediaBrowser.chkVideoTSParent.Checked
             RaiseEvent GenericEvent(mType, _params)
         End If
