@@ -33,11 +33,11 @@ Public Class clsVLC
     Public Shared Function DoTest(Optional ByVal withDialog As Boolean = False) As Boolean
         Try
             Dim VLCPlayer As New AXVLC.VLCPlugin2
-            If withDialog Then MsgBox("Looking good", MsgBoxStyle.OkOnly, "OK")
+            If withDialog Then MessageBox.Show("Looking good", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return True
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
-            MsgBox("VLC ActiveX plugin is not registred", MsgBoxStyle.Critical, "Error")
+            MessageBox.Show("VLC ActiveX plugin is not registred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return False
         End Try
     End Function
