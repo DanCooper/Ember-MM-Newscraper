@@ -64,11 +64,11 @@ Namespace IMDB
                     If mcIMDB.Count > 0 Then
                         'just use the first one if more are found
                         aStr = mcIMDB(0).Value.Substring(mcIMDB(0).Value.LastIndexOf("/") + 1, mcIMDB(0).Value.Length - (mcIMDB(0).Value.LastIndexOf("/") + 1))
-                        aPar = Split(aStr, ",")
+                        aPar = aStr.Split(","c)
                         'URLs can now look like this as well:
                         'http://ia.media-imdb.com/images/M/MV5BMTI5MTgxMzIzMl5BMl5BanBnXkFtZTcwNDA5MTYyMQ@@._V1_SY295_SX197_.jpg
                         If aPar.Length = 1 Then
-                            aPar2 = Split(aPar(0), ".")
+                            aPar2 = aPar(0).Split("."c)
                             aParentID = aPar2(0)
                             Dim mSYSX As Match = Regex.Match(aPar(0), "\._V\d+?_SY(\d+?)_SX(\d+?)_")
                             If mSYSX.Success Then
@@ -77,7 +77,7 @@ Namespace IMDB
                                 logger.Error("Unknown IMDB Poster URL")
                             End If
                         Else
-                            aPar2 = Split(aPar(0), ".")
+                            aPar2 = aPar(0).Split("."c)
                             aParentID = aPar2(0)
                             aPar(3) = aPar(3).Substring(0, aPar(3).LastIndexOf("_"))
                             alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(0).description, .URL = mcIMDB(0).Value, .Width = aPar(2), .Height = aPar(3), .ParentID = aParentID})
