@@ -261,7 +261,7 @@ Public Class dlgTrakttvManager
     Private Sub btntraktListRemoveFavorite_Click(sender As Object, e As EventArgs) Handles btntraktListRemoveFavorite.Click
         Dim mylists As New List(Of AdvancedSettingsComplexSettingsTableItem)
         mylists = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
-        If Not IsNothing(mylists) Then
+        If mylists IsNot Nothing Then
             For i = mylists.Count - 1 To 0 Step -1
                 If mylists(i).Value = txttraktListURL.Text Then
                     mylists.RemoveAt(i)
@@ -309,7 +309,7 @@ Public Class dlgTrakttvManager
         Dim mylists As New List(Of AdvancedSettingsComplexSettingsTableItem)
         mylists = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
         Using settings = New clsAdvancedSettings()
-            If Not IsNothing(mylists) Then
+            If mylists IsNot Nothing Then
                 If mylists.FindIndex(Function(f) f.Value = txttraktListURL.Text) = -1 Then
                     mylists.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = Me.cbotraktListsScraped.SelectedItem.ToString, .Value = txttraktListURL.Text})
 
@@ -572,7 +572,7 @@ Public Class dlgTrakttvManager
                     If String.IsNullOrEmpty(sRow.Item("Imdb").ToString) Then
                         logger.Warn("[btntraktWatchlistSendEmberUnwatched_Click] IMDB of movie " & sRow.Item("Title").ToString & " is not valid, can't add that information!")
                     Else
-                        If IsNumeric(sRow.Item("Imdb").ToString) Then
+                        If Integer.TryParse(sRow.Item("Imdb").ToString, 0) Then
                             tmptraktbasemovie.Imdb = "tt" & sRow.Item("Imdb").ToString
                         Else
                             tmptraktbasemovie.Imdb = sRow.Item("Imdb").ToString
@@ -1111,7 +1111,7 @@ Public Class dlgTrakttvManager
             For Each watchedMovieData In myWatchedMovies
                 If dgvtraktPlaycount.Rows(dgvtraktPlaycount.CurrentCell.RowIndex).Cells(0).Value.Equals(watchedMovieData.Movie.Title) Then
                     Dim tmpeditedrating As String = CStr(dgvtraktPlaycount.Rows(dgvtraktPlaycount.CurrentCell.RowIndex).Cells(4).Value)
-                    If IsNumeric(tmpeditedrating) Then
+                    If Integer.TryParse(tmpeditedrating, 0) Then
                         watchedMovieData.Rating = CInt(tmpeditedrating)
                         dgvtraktPlaycount.Rows(dgvtraktPlaycount.CurrentCell.RowIndex).Cells(4).Value = CInt(tmpeditedrating)
                     Else
@@ -1538,7 +1538,7 @@ Public Class dlgTrakttvManager
                         'load tag from database
                         currMovieTag = Master.DB.LoadMovieTagFromDB(listDBID)
                         'delete existing movies from tag (we will add again in next step!)
-                        If Not IsNothing(currMovieTag.Movies) AndAlso currMovieTag.Movies.Count > 0 Then
+                        If currMovieTag.Movies IsNot Nothing AndAlso currMovieTag.Movies.Count > 0 Then
                             'clear all movies!
                             currMovieTag.Movies.Clear()
                         End If
@@ -1693,7 +1693,7 @@ Public Class dlgTrakttvManager
             Return Nothing
         End If
         'Imdbid
-        If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso IsNumeric(DBMovie.Movie.IMDBID) Then
+        If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Integer.TryParse(DBMovie.Movie.IMDBID, 0) Then
             If Not DBMovie.Movie.IMDBID.StartsWith("tt") Then
                 traktlistitem.Movie.Ids = New TraktAPI.Model.TraktMovieBase
                 traktlistitem.Movie.Ids.Imdb = "tt" & DBMovie.Movie.IMDBID
@@ -1705,7 +1705,7 @@ Public Class dlgTrakttvManager
             Return Nothing
         End If
         'year
-        If Not String.IsNullOrEmpty(DBMovie.Movie.Year) AndAlso IsNumeric(DBMovie.Movie.Year) Then
+        If Not String.IsNullOrEmpty(DBMovie.Movie.Year) AndAlso Integer.TryParse(DBMovie.Movie.Year, 0) Then
             traktlistitem.Movie.Year = CInt(DBMovie.Movie.Year)
         End If
         Return traktlistitem
@@ -2463,7 +2463,7 @@ Public Class dlgTrakttvManager
                             If item.Movie.Genres Is Nothing Then
                                 HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & "" & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
                             Else
-                                HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & Strings.Join(item.Movie.Genres.ToArray, "/").Trim & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
+                                HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & String.Join("/", item.Movie.Genres.ToArray).Trim & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
                             End If
                         Else
                             If item.Movie.Genres Is Nothing Then
@@ -2496,7 +2496,7 @@ Public Class dlgTrakttvManager
                         If item.Movie.Genres Is Nothing Then
                             HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & "" & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
                         Else
-                            HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & Strings.Join(item.Movie.Genres.ToArray, "/").Trim & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
+                            HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & String.Join("/", item.Movie.Genres.ToArray).Trim & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
                         End If
                     Else
                         If item.Movie.Genres Is Nothing Then
@@ -2560,7 +2560,7 @@ Public Class dlgTrakttvManager
                             If item.Movie.Genres Is Nothing Then
                                 dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", "", item.Movie.Ids.Imdb, item.Movie.Trailer})
                             Else
-                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", Strings.Join(item.Movie.Genres.ToArray, "/").Trim, item.Movie.Ids.Imdb, item.Movie.Trailer})
+                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", String.Join("/", item.Movie.Genres.ToArray).Trim, item.Movie.Ids.Imdb, item.Movie.Trailer})
                             End If
                         Else
                             If item.Movie.Genres Is Nothing Then
@@ -2595,7 +2595,7 @@ Public Class dlgTrakttvManager
                         If item.Movie.Genres Is Nothing Then
                             dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", "", item.Movie.Ids.Imdb, item.Movie.Trailer})
                         Else
-                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", Strings.Join(item.Movie.Genres.ToArray, "/").Trim, item.Movie.Ids.Imdb, item.Movie.Trailer})
+                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", String.Join("/", item.Movie.Genres.ToArray).Trim, item.Movie.Ids.Imdb, item.Movie.Trailer})
                         End If
                     Else
                         If item.Movie.Genres Is Nothing Then
@@ -2638,7 +2638,7 @@ Public Class dlgTrakttvManager
                 btntraktListSaveFavorite.Enabled = True
             End If
             Dim mylists As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
-            If Not IsNothing(mylists) Then
+            If mylists IsNot Nothing Then
                 Using settings = New clsAdvancedSettings()
                     For Each sett In mylists
                         If sett.Value = txttraktListURL.Text Then
@@ -2676,7 +2676,7 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub cbotraktListsFavorites_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbotraktListsFavorites.SelectedIndexChanged
         Dim mylists As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
-        If Not IsNothing(mylists) Then
+        If mylists IsNot Nothing Then
             Using settings = New clsAdvancedSettings()
                 For Each sett In mylists
                     If sett.Name = cbotraktListsFavorites.SelectedItem.ToString Then
