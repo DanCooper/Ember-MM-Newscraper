@@ -295,7 +295,7 @@ Public Class dlgExportMovies
                         'cocotus end
 
                         Dim _audDetails As String = String.Empty
-                        If Not IsNothing(_curMovie.Movie.FileInfo) Then
+                        If _curMovie.Movie.FileInfo IsNot Nothing Then
                             If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                                 tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
                                 tRes = NFO.GetResFromDimensions(tVid)
@@ -700,7 +700,7 @@ Public Class dlgExportMovies
                 End If
             End If
             Dim myStream As Stream = File.OpenWrite(Args.destPath)
-            If Not IsNothing(myStream) Then
+            If myStream IsNot Nothing Then
                 myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
                 myStream.Close()
             End If
@@ -922,52 +922,52 @@ Public Class dlgExportMovies
                 Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, False)
 
                 Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
-                If Not IsNothing(vresFlag) Then
+                If vresFlag IsNot Nothing Then
                     line = line.Replace("<$FLAG_VRES>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
                 Else
                     vresFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoResolution)
-                    If Not IsNothing(vresFlag) Then
+                    If vresFlag IsNot Nothing Then
                         line = line.Replace("<$FLAG_VRES>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
                     End If
                 End If
 
                 'Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = APIXML.GetFileSource(AVMovie.Filename) AndAlso f.Type = APIXML.FlagType.VideoSource)
                 Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name.ToLower = AVMovie.VideoSource AndAlso f.Type = APIXML.FlagType.VideoSource)
-                If Not IsNothing(vsourceFlag) Then
+                If vsourceFlag IsNot Nothing Then
                     line = line.Replace("<$FLAG_VSOURCE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
                 Else
                     vsourceFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoSource)
-                    If Not IsNothing(vsourceFlag) Then
+                    If vsourceFlag IsNot Nothing Then
                         line = line.Replace("<$FLAG_VSOURCE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
                     End If
                 End If
 
                 Dim vcodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = APIXML.FlagType.VideoCodec)
-                If Not IsNothing(vcodecFlag) Then
+                If vcodecFlag IsNot Nothing Then
                     line = line.Replace("<$FLAG_VTYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
                 Else
                     vcodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoCodec)
-                    If Not IsNothing(vcodecFlag) Then
+                    If vcodecFlag IsNot Nothing Then
                         line = line.Replace("<$FLAG_VTYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
                     End If
                 End If
 
                 Dim acodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = APIXML.FlagType.AudioCodec)
-                If Not IsNothing(acodecFlag) Then
+                If acodecFlag IsNot Nothing Then
                     line = line.Replace("<$FLAG_ATYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
                 Else
                     acodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioCodec)
-                    If Not IsNothing(acodecFlag) Then
+                    If acodecFlag IsNot Nothing Then
                         line = line.Replace("<$FLAG_ATYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
                     End If
                 End If
 
                 Dim achanFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = APIXML.FlagType.AudioChan)
-                If Not IsNothing(achanFlag) Then
+                If achanFlag IsNot Nothing Then
                     line = line.Replace("<$FLAG_ACHAN>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
                 Else
                     achanFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioChan)
-                    If Not IsNothing(achanFlag) Then
+                    If achanFlag IsNot Nothing Then
                         line = line.Replace("<$FLAG_ACHAN>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
                     End If
                 End If
@@ -1022,7 +1022,7 @@ Public Class dlgExportMovies
                 End If
 
                 For Each File As String In sFile
-                    MovieFilesSize += FileLen(File)
+                    MovieFilesSize += File.Length
                 Next
             Catch ex As Exception
             End Try
