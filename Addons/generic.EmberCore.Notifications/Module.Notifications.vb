@@ -125,7 +125,7 @@ Public Class NotificationsModule
                     dNotify = New frmNotify
                     AddHandler dNotify.NotifierClicked, AddressOf Me.Handle_NotifierClicked
                     AddHandler dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
-                    dNotify.Show(_params(0).ToString, Convert.ToInt32(_params(1)), _params(2).ToString, _params(3).ToString, If(Not IsNothing(_params(4)), DirectCast(_params(4), Image), Nothing))
+                    dNotify.Show(_params(0).ToString, Convert.ToInt32(_params(1)), _params(2).ToString, _params(3).ToString, If(_params(4) IsNot Nothing, DirectCast(_params(4), Image), Nothing))
                 End If
             End If
         Catch ex As Exception

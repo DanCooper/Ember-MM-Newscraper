@@ -63,7 +63,7 @@ Public Class frmNotify
 
     Public Overloads Sub Show(ByVal _type As String, ByVal _icon As Integer, ByVal _title As String, ByVal _message As String, ByVal _customicon As Image)
         Me._type = _type
-        If Not IsNothing(_customicon) Then
+        If _customicon IsNot Nothing Then
             Me.pbIcon.Image = _customicon
         Else
             Select Case _icon
