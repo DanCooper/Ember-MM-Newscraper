@@ -189,6 +189,7 @@ Partial Public Class clsXMLSettings
     Private _moviescraperdirector As Boolean
     Private _moviescraperdurationruntimeformat As String
     Private _moviescraperreleaseformat As Boolean
+    Private _moviescrapervotesseparator As Boolean
     Private _moviescrapergenre As Boolean
     Private _moviescrapergenrelimit As Integer
     Private _moviescrapermetadataifoscan As Boolean
@@ -1613,6 +1614,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescraperreleaseformat = value
+        End Set
+    End Property
+
+    Public Property MovieScraperVotesSeparator() As Boolean
+        Get
+            Return Me._moviescrapervotesseparator
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescrapervotesseparator = value
         End Set
     End Property
 

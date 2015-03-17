@@ -2027,6 +2027,10 @@ Public Class dlgSettings
     Private Sub chkMovieScraperReleaseFormat_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperReleaseFormat.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub chkMovieScraperVotesSeperator_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperVotesSeperator.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
     Private Sub chkMovieLevTolerance_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLevTolerance.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -3699,6 +3703,7 @@ Public Class dlgSettings
             Me.chkMovieScraperRating.Checked = .MovieScraperRating
             Me.chkMovieScraperRelease.Checked = .MovieScraperRelease
             Me.chkMovieScraperReleaseFormat.Checked = .MovieScraperReleaseFormat
+            Me.chkMovieScraperVotesSeperator.Checked = .MovieScraperVotesSeparator
             Me.chkMovieScraperRuntime.Checked = .MovieScraperRuntime
             Me.chkMovieScraperStudio.Checked = .MovieScraperStudio
             Me.chkMovieScraperStudioWithImg.Checked = .MovieScraperStudioWithImgOnly
@@ -5439,6 +5444,7 @@ Public Class dlgSettings
             .MovieScraperPlotForOutline = Me.chkMovieScraperPlotForOutline.Checked
             .MovieScraperRating = Me.chkMovieScraperRating.Checked
             .MovieScraperRelease = Me.chkMovieScraperRelease.Checked
+            .MovieScraperVotesSeparator = Me.chkMovieScraperVotesSeperator.Checked
             .MovieScraperReleaseFormat = Me.chkMovieScraperReleaseFormat.Checked
             .MovieScraperRuntime = Me.chkMovieScraperRuntime.Checked
             .MovieScraperStudio = Me.chkMovieScraperStudio.Checked
@@ -6723,6 +6729,7 @@ Public Class dlgSettings
         Me.chkMovieScraperCleanFields.Text = Master.eLang.GetString(125, "Cleanup disabled fields")
         Me.chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
         Me.chkMovieScraperCollectionsAuto.Text = Master.eLang.GetString(1266, "Add Movie automatically to Collections")
+        Me.chkMovieScraperVotesSeperator.Text = Master.eLang.GetString(1387, "Use thousands separator for votes")
         Me.chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
         Me.chkMovieScraperReleaseFormat.Text = Master.eLang.GetString(1272, "Date format Releasedate: yyyy-mm-dd")
         Me.chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
@@ -8295,5 +8302,6 @@ Public Class dlgSettings
     End Sub
 
 #End Region 'Methods
+
 
 End Class

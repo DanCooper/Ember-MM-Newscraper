@@ -1166,6 +1166,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieScraperVotesSeparator() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperVotesSeparator
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperVotesSeparator = value
+        End Set
+    End Property
+
     Public Property MovieLockOutline() As Boolean
         Get
             Return Settings._XMLSettings.MovieLockOutline
@@ -5895,6 +5904,7 @@ Public Class Settings
         Me.MovieScraperDirector = True
         Me.MovieScraperDurationRuntimeFormat = "<m>"
         Me.MovieScraperReleaseFormat = False
+        Me.MovieScraperVotesSeparator = False
         Me.MovieScraperGenre = True
         Me.MovieScraperGenreLimit = 0
         Me.MovieScraperMetaDataIFOScan = True

@@ -191,7 +191,12 @@ Public Class NFO
             'Votes
             If (String.IsNullOrEmpty(DBMovie.Movie.Votes) OrElse DBMovie.Movie.Runtime = "0" OrElse Not Master.eSettings.MovieLockVotes) AndAlso Options.bVotes AndAlso _
                 Not String.IsNullOrEmpty(scrapedmovie.Votes) AndAlso Not scrapedmovie.Votes = "0" AndAlso Master.eSettings.MovieScraperVotes AndAlso Not new_Votes Then
-                DBMovie.Movie.Votes = scrapedmovie.Votes
+                'optional: add thousand separator i.e. 14,423 instead of 14423
+                If Master.eSettings.MovieScraperVotesSeparator Then
+                    DBMovie.Movie.Votes = Convert.ToDouble(scrapedmovie.Votes).ToString("N0", Globalization.CultureInfo.GetCultureInfo("en-US"))
+                Else
+                    DBMovie.Movie.Votes = scrapedmovie.Votes
+                End If
                 new_Votes = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperVotes AndAlso Not Master.eSettings.MovieLockVotes Then
                 DBMovie.Movie.Votes = String.Empty

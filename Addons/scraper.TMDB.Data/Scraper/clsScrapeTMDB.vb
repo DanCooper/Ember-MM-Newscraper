@@ -464,7 +464,8 @@ Namespace TMDB
                     scrapedresult = CStr(IIf(IsNothing(Movie.vote_count) AndAlso Movie.vote_count = 0 AndAlso _MySettings.FallBackEng, MovieE.vote_count.ToString(), Movie.vote_count.ToString()))
                     'only update nMovie if scraped result is not empty/nothing!
                     If Not String.IsNullOrEmpty(scrapedresult) Then
-                        nMovie.Votes = scrapedresult
+                        'Votes at this point should have no thousands separator (we handle that in MergeScraperResult)
+                        nMovie.Votes = scrapedresult.Replace(".", "").Replace(",", "")
                     End If
                 End If
 
