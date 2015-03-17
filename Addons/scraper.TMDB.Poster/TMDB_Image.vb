@@ -312,7 +312,7 @@ Public Class TMDB_Image
         LoadSettings_MovieSet()
 
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
-            If Not IsNothing(DBMovieSet.Movies) AndAlso DBMovieSet.Movies.Count > 0 Then
+            If DBMovieSet.Movies IsNot Nothing AndAlso DBMovieSet.Movies.Count > 0 Then
                 DBMovieSet.MovieSet.ID = ModulesManager.Instance.GetMovieCollectionID(DBMovieSet.Movies.Item(0).Movie.ID)
             End If
         End If
