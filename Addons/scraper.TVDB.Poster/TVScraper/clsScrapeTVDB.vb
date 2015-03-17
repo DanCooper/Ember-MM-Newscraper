@@ -257,7 +257,7 @@ Public Class Scraper
                     Return dChangeEp.ShowDialog(tEpisodes)
                 End Using
             Else
-                MsgBox(Master.eLang.GetString(943, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(944, "No Known Episodes"))
+                MessageBox.Show(Master.eLang.GetString(943, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), Master.eLang.GetString(944, "No Known Episodes"), MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
 
             Return Nothing
@@ -283,11 +283,11 @@ Public Class Scraper
                 Case Enums.TVScraperUpdateTime.Never
                     doDownload = False
                 Case Enums.TVScraperUpdateTime.Week
-                    If fExists AndAlso File.GetCreationTime(fPath).AddDays(7) < Now Then doDownload = True
+                    If fExists AndAlso File.GetCreationTime(fPath).AddDays(7) < Date.Now Then doDownload = True
                 Case Enums.TVScraperUpdateTime.BiWeekly
-                    If fExists AndAlso File.GetCreationTime(fPath).AddDays(14) < Now Then doDownload = True
+                    If fExists AndAlso File.GetCreationTime(fPath).AddDays(14) < Date.Now Then doDownload = True
                 Case Enums.TVScraperUpdateTime.Month
-                    If fExists AndAlso File.GetCreationTime(fPath).AddMonths(1) < Now Then doDownload = True
+                    If fExists AndAlso File.GetCreationTime(fPath).AddMonths(1) < Date.Now Then doDownload = True
             End Select
 
             If doDownload OrElse Not fExists Then
@@ -420,9 +420,9 @@ Public Class Scraper
                                         .Aired = If(Episode.Element("FirstAired") Is Nothing, String.Empty, Episode.Element("FirstAired").Value)
                                         .Rating = If(Episode.Element("Rating") Is Nothing, String.Empty, Episode.Element("Rating").Value)
                                         .Votes = If(Episode.Element("RatingCount") Is Nothing, String.Empty, Episode.Element("RatingCount").Value)
-                                        .Plot = If(Episode.Element("Overview") Is Nothing, String.Empty, Episode.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
-                                        .Director = If(Episode.Element("Director") Is Nothing, String.Empty, Strings.Join(Episode.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
-                                        .OldCredits = If(Episode.Element("Writer") Is Nothing, String.Empty, Strings.Join(Episode.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
+                                        .Plot = If(Episode.Element("Overview") Is Nothing, String.Empty, Episode.Element("Overview").Value.ToString.Trim)
+                                        .Director = If(Episode.Element("Director") Is Nothing, String.Empty, String.Join(" / ", Episode.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))))
+                                        .OldCredits = If(Episode.Element("Writer") Is Nothing, String.Empty, String.Join(" / ", Episode.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))))
                                         .Actors = Actors
                                         .PosterURL = If(Episode.Element("filename") Is Nothing, String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Episode.Element("filename").Value))
                                         .LocalFile = If(Episode.Element("filename") Is Nothing, String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, Episode.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
@@ -509,7 +509,7 @@ Public Class Scraper
                                         End If
                                     End Using
                                 Else
-                                    MsgBox(Master.eLang.GetString(945, "There is no poster available for this episode."), MsgBoxStyle.OkOnly, Master.eLang.GetString(946, "No Posters Found"))
+                                    MessageBox.Show(Master.eLang.GetString(945, "There is no poster available for this episode."), Master.eLang.GetString(946, "No Posters Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     RetImage.Dispose()
                                 End If
                             Else
@@ -539,7 +539,7 @@ Public Class Scraper
                                 End If
                             End Using
                         Else
-                            MsgBox(Master.eLang.GetString(945, "There is no poster available for this episode."), MsgBoxStyle.OkOnly, Master.eLang.GetString(946, "No Posters Found"))
+                            MessageBox.Show(Master.eLang.GetString(945, "There is no poster available for this episode."), Master.eLang.GetString(946, "No Posters Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             RetImage.Dispose()
                         End If
                     Else
@@ -963,7 +963,7 @@ Public Class Scraper
                         For Each act As MediaContainers.Person In Episode.TVEp.Actors
                             Dim img As New Images
                             img.FromWeb(act.ThumbURL)
-                            If Not IsNothing(img.Image) Then
+                            If img.Image IsNot Nothing Then
                                 act.ThumbPath = img.SaveAsTVEpisodeActorThumb(act, Episode)
                             End If
                         Next
@@ -1058,7 +1058,7 @@ Public Class Scraper
                                         Continue For
                                     End If
                                     cResult.Aired = If(tSer.Element("FirstAired") IsNot Nothing, tSer.Element("FirstAired").Value, String.Empty)
-                                    cResult.Overview = If(tSer.Element("Overview") IsNot Nothing, tSer.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf), String.Empty)
+                                    cResult.Overview = If(tSer.Element("Overview") IsNot Nothing, tSer.Element("Overview").Value.ToString.Trim, String.Empty)
                                     cResult.Banner = If(tSer.Element("banner") IsNot Nothing, tSer.Element("banner").Value, String.Empty)
                                     If Not String.IsNullOrEmpty(cResult.Name) AndAlso Not String.IsNullOrEmpty(sLang) AndAlso xSer.Where(Function(s) s.Element("seriesid").Value.ToString = cResult.ID.ToString AndAlso s.Element("language").Value.ToString = sLang).Count = 0 Then
                                         cResult.Lev = StringUtils.ComputeLevenshtein(sInfo.ShowTitle, cResult.Name)
@@ -1086,7 +1086,7 @@ Public Class Scraper
                             Continue For
                         End If
                         cResult.Aired = If(xS.Element("FirstAired") IsNot Nothing, xS.Element("FirstAired").Value, String.Empty)
-                        cResult.Overview = If(xS.Element("Overview") IsNot Nothing, xS.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf), String.Empty)
+                        cResult.Overview = If(xS.Element("Overview") IsNot Nothing, xS.Element("Overview").Value.ToString.Trim, String.Empty)
                         cResult.Banner = If(xS.Element("banner") IsNot Nothing, xS.Element("banner").Value, String.Empty)
                         If Not String.IsNullOrEmpty(cResult.Name) AndAlso Not String.IsNullOrEmpty(sLang) Then
                             cResult.Lev = StringUtils.ComputeLevenshtein(sInfo.ShowTitle, cResult.Name)
@@ -1146,9 +1146,9 @@ Public Class Scraper
                                     .ID = sID
                                     If sInfo.Options.bShowTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.TVLockShowTitle) Then .Title = If(xS(0).Element("SeriesName") Is Nothing, .Title, xS(0).Element("SeriesName").Value)
                                     If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuide.URL = If(Not String.IsNullOrEmpty(clsAdvancedSettings.GetSetting("TVDBAPIKey", "")), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, clsAdvancedSettings.GetSetting("TVDBAPIKey", ""), sID, clsAdvancedSettings.GetSetting("TVDBLanguage", "en")), String.Empty)
-                                    If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.TVLockShowGenre) Then .Genre = If(xS(0).Element("Genre") Is Nothing, .Genre, Strings.Join(xS(0).Element("Genre").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
+                                    If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.TVLockShowGenre) Then .Genre = If(xS(0).Element("Genre") Is Nothing, .Genre, String.Join(" / ", xS(0).Element("Genre").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))))
                                     If sInfo.Options.bShowMPAA Then .MPAA = If(xS(0).Element("ContentRating") Is Nothing, .MPAA, xS(0).Element("ContentRating").Value)
-                                    If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockShowPlot) Then .Plot = If(xS(0).Element("Overview") Is Nothing, .Plot, xS(0).Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
+                                    If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockShowPlot) Then .Plot = If(xS(0).Element("Overview") Is Nothing, .Plot, xS(0).Element("Overview").Value.ToString.Trim)
                                     If sInfo.Options.bShowPremiered Then .Premiered = If(xS(0).Element("FirstAired") Is Nothing, .Premiered, xS(0).Element("FirstAired").Value)
                                     If sInfo.Options.bShowRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.TVLockShowRating) Then .Rating = If(xS(0).Element("Rating") Is Nothing, .Rating, xS(0).Element("Rating").Value)
                                     If sInfo.Options.bShowRuntime AndAlso (String.IsNullOrEmpty(.Runtime) OrElse Not Master.eSettings.TVLockShowRuntime) Then .Runtime = If(xS(0).Element("Runtime") Is Nothing, .Runtime, xS(0).Element("Runtime").Value)
@@ -1251,9 +1251,9 @@ Public Class Scraper
                                         If sInfo.Options.bEpAired Then .Aired = If(xE.Element("FirstAired") Is Nothing, .Aired, xE.Element("FirstAired").Value)
                                         If sInfo.Options.bEpRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.TVLockEpisodeRating) Then .Rating = If(xE.Element("Rating") Is Nothing, .Rating, xE.Element("Rating").Value)
                                         If sInfo.Options.bEpVotes AndAlso (String.IsNullOrEmpty(.Votes) OrElse Not Master.eSettings.TVLockEpisodeVotes) Then .Votes = If(xE.Element("RatingCount") Is Nothing, .Votes, xE.Element("RatingCount").Value)
-                                        If sInfo.Options.bEpPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) Then .Plot = If(xE.Element("Overview") Is Nothing, .Plot, xE.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
-                                        If sInfo.Options.bEpDirector Then .Director = If(xE.Element("Director") Is Nothing, .Director, Strings.Join(xE.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
-                                        If sInfo.Options.bEpCredits Then .OldCredits = If(xE.Element("Writer") Is Nothing, .OldCredits, Strings.Join(xE.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
+                                        If sInfo.Options.bEpPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) Then .Plot = If(xE.Element("Overview") Is Nothing, .Plot, xE.Element("Overview").Value.ToString.Trim)
+                                        If sInfo.Options.bEpDirector Then .Director = If(xE.Element("Director") Is Nothing, .Director, String.Join(" / ", xE.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))))
+                                        If sInfo.Options.bEpCredits Then .OldCredits = If(xE.Element("Writer") Is Nothing, .OldCredits, String.Join(" / ", xE.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))))
                                         If sInfo.Options.bEpActors Then
                                             .Actors.Clear()
                                             .Actors.AddRange(Actors)

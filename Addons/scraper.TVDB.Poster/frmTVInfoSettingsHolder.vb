@@ -138,7 +138,7 @@ Public Class frmTVInfoSettingsHolder
 
     Private Sub chkScraperShowEGU_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowEGU.CheckedChanged
         If String.IsNullOrEmpty(txtApiKey.Text) AndAlso chkScraperShowEGU.Checked Then
-            MsgBox(Master.eLang.GetString(1133, "You need your own API key for that"), MsgBoxStyle.OkOnly, Master.eLang.GetString(1134, "Error"))
+            MessageBox.Show(Master.eLang.GetString(1133, "You need your own API key for that"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Information)
             chkScraperShowEGU.Checked = False
         End If
         RaiseEvent ModuleSettingsChanged()
@@ -236,7 +236,7 @@ Public Class frmTVInfoSettingsHolder
         Me.gbScraperFieldsShow.Text = Master.eLang.GetString(743, "Show")
         Me.gbTMDB.Text = Master.eLang.GetString(941, "TVDB")
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
-        Me.lblModuleInfo.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblModuleInfo.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         Me.lblScrapeOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.lblTVDBApiKey.Text = Master.eLang.GetString(932, "TVDB API Key")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")

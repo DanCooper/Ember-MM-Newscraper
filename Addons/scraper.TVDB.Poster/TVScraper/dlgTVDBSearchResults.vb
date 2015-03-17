@@ -85,7 +85,7 @@ Public Class dlgTVDBSearchResults
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-        If IsNumeric(Me.txtTVDBID.Text) AndAlso Me.txtTVDBID.Text.Length >= 5 Then
+        If Integer.TryParse(Me.txtTVDBID.Text, 0) AndAlso Me.txtTVDBID.Text.Length >= 5 Then
             Dim tmpXML As XDocument = Nothing
             Dim sLang As String = String.Empty
 
@@ -101,23 +101,23 @@ Public Class dlgTVDBSearchResults
                 Catch
                 End Try
 
-                If Not IsNothing(tmpXML) Then
+                If tmpXML IsNot Nothing Then
                     Dim tSer As XElement = tmpXML.Descendants("Series").FirstOrDefault(Function(s) s.HasElements)
 
-                    If Not IsNothing(tSer) Then
+                    If tSer IsNot Nothing Then
                         Me._manualresult = New Scraper.TVSearchResults
                         Me._manualresult.ID = Convert.ToInt32(tSer.Element("id").Value)
-                        Me._manualresult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
-                        If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
+                        Me._manualresult.Name = If(tSer.Element("SeriesName") IsNot Nothing, tSer.Element("SeriesName").Value, String.Empty)
+                        If tSer.Element("Language") IsNot Nothing AndAlso Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
                             sLang = tSer.Element("Language").Value
                             Me._manualresult.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(s) s.abbreviation = sLang)
-                        ElseIf Not IsNothing(tSer.Element("Language")) Then
+                        ElseIf tSer.Element("Language") IsNot Nothing Then
                             sLang = tSer.Element("Language").Value
                             Me._manualresult.Language = New TVDBLanguagesLanguage With {.name = String.Format("Unknown ({0})", sLang), .abbreviation = sLang, .id = 0}
                         End If
-                        Me._manualresult.Aired = If(Not IsNothing(tSer.Element("FirstAired")), tSer.Element("FirstAired").Value, String.Empty)
-                        Me._manualresult.Overview = If(Not IsNothing(tSer.Element("Overview")), tSer.Element("Overview").Value, String.Empty)
-                        Me._manualresult.Banner = If(Not IsNothing(tSer.Element("banner")), tSer.Element("banner").Value, String.Empty)
+                        Me._manualresult.Aired = If(tSer.Element("FirstAired") IsNot Nothing, tSer.Element("FirstAired").Value, String.Empty)
+                        Me._manualresult.Overview = If(tSer.Element("Overview") IsNot Nothing, tSer.Element("Overview").Value, String.Empty)
+                        Me._manualresult.Banner = If(tSer.Element("banner") IsNot Nothing, tSer.Element("banner").Value, String.Empty)
                         If Not String.IsNullOrEmpty(Me._manualresult.Name) AndAlso Not String.IsNullOrEmpty(sLang) Then
                             If Not String.IsNullOrEmpty(Me._manualresult.Banner) Then
                                 If Me.bwDownloadPic.IsBusy Then
@@ -150,7 +150,7 @@ Public Class dlgTVDBSearchResults
             End If
 
         Else
-            MsgBox(Master.eLang.GetString(949, "The ID you entered is not a valid TVDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
+            MessageBox.Show(Master.eLang.GetString(949, "The ID you entered is not a valid TVDB ID."), Master.eLang.GetString(292, "Invalid Entry"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End If
     End Sub
 
@@ -294,7 +294,7 @@ Public Class dlgTVDBSearchResults
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             End If
-        ElseIf Me.chkManual.Checked AndAlso Not IsNothing(Me._manualresult) Then
+        ElseIf Me.chkManual.Checked AndAlso Me._manualresult IsNot Nothing Then
             Me.sInfo.TVDBID = Me._manualresult.ID.ToString
             Me.sInfo.ShowLang = Me._manualresult.Language.abbreviation
 
@@ -330,7 +330,7 @@ Public Class dlgTVDBSearchResults
 
                 Me.lvSearchResults.Items.Clear()
 
-                If Not IsNothing(sResults) AndAlso sResults.Count > 0 Then
+                If sResults IsNot Nothing AndAlso sResults.Count > 0 Then
                     For Each sRes As Scraper.TVSearchResults In sResults.OrderBy(Function(r) r.Lev)
                         lItem = New ListViewItem(sRes.Name)
                         lItem.SubItems.Add(sRes.Language.name)

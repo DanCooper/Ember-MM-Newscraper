@@ -84,19 +84,19 @@ Public Class dlgTVChangeEp
 
     Private Sub lvEpisodes_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvEpisodes.SelectedIndexChanged
         Me.ClearInfo()
-        If lvEpisodes.SelectedItems.Count > 0 AndAlso Not IsNothing(lvEpisodes.SelectedItems(0).Tag) Then
+        If lvEpisodes.SelectedItems.Count > 0 AndAlso lvEpisodes.SelectedItems(0).Tag IsNot Nothing Then
             Me._episode = DirectCast(lvEpisodes.SelectedItems(0).Tag, MediaContainers.EpisodeDetails)
 
-            If Not IsNothing(Me._episode.Poster.Image) Then
+            If Me._episode.Poster.Image IsNot Nothing Then
                 Me.pbPreview.Image = Me._episode.Poster.Image
             ElseIf Not String.IsNullOrEmpty(Me._episode.LocalFile) AndAlso File.Exists(Me._episode.LocalFile) Then
                 Me._episode.Poster.FromFile(Me._episode.LocalFile)
-                If Not IsNothing(Me._episode.Poster.Image) Then
+                If Me._episode.Poster.Image IsNot Nothing Then
                     Me.pbPreview.Image = Me._episode.Poster.Image
                 End If
             ElseIf Not String.IsNullOrEmpty(Me._episode.PosterURL) Then
                 Me._episode.Poster.FromWeb(Me._episode.PosterURL)
-                If Not IsNothing(Me._episode.Poster.Image) Then
+                If Me._episode.Poster.Image IsNot Nothing Then
                     Directory.CreateDirectory(Directory.GetParent(Me._episode.LocalFile).FullName)
                     Me._episode.Poster.Save(Me._episode.LocalFile)
                     Me.pbPreview.Image = Me._episode.Poster.Image

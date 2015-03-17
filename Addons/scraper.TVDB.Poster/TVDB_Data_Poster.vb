@@ -336,7 +336,7 @@ Public Class TVDB_Data_Poster
             End If
 
             If Not String.IsNullOrEmpty(_TVDBMirror) Then
-                settings.SetSetting("TVDBMirror", Strings.Replace(_TVDBMirror, "http://", String.Empty))
+                settings.SetSetting("TVDBMirror", _TVDBMirror.Replace("http://", String.Empty))
             Else
                 settings.SetSetting("TVDBMirror", "thetvdb.com")
             End If
@@ -360,7 +360,7 @@ Public Class TVDB_Data_Poster
             End If
 
             If Not String.IsNullOrEmpty(_TVDBMirror) Then
-                settings.SetSetting("TVDBMirror", Strings.Replace(_TVDBMirror, "http://", String.Empty))
+                settings.SetSetting("TVDBMirror", _TVDBMirror.Replace("http://", String.Empty))
             Else
                 settings.SetSetting("TVDBMirror", "thetvdb.com")
             End If
