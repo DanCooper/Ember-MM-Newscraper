@@ -76,7 +76,7 @@ Public Class frmGoEarInfoSettingsHolder
     Private Sub SetUp()
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
     End Sub
 
 #End Region 'Methods
