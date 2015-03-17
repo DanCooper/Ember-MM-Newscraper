@@ -639,7 +639,7 @@ Public Class FanartTV_Image
         LoadSettings_MovieSet()
 
         If String.IsNullOrEmpty(DBMovieset.MovieSet.ID) Then
-            If Not IsNothing(DBMovieset.Movies) AndAlso DBMovieset.Movies.Count > 0 Then
+            If DBMovieset.Movies IsNot Nothing AndAlso DBMovieset.Movies.Count > 0 Then
                 DBMovieset.MovieSet.ID = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.Movies.Item(0).Movie.ID)
             End If
         End If

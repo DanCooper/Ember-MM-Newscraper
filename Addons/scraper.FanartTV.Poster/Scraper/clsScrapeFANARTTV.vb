@@ -107,8 +107,8 @@ Namespace FanartTVs
                 FanartTv.API.cKey = Settings.ApiKey
 
                 Dim Results = New FanartTv.Movies.Movie(imdbID_tmdbID)
-                If IsNothing(Results) OrElse FanartTv.API.ErrorOccurred Then
-                    If Not IsNothing(FanartTv.API.ErrorMessage) Then
+                If Results Is Nothing OrElse FanartTv.API.ErrorOccurred Then
+                    If FanartTv.API.ErrorMessage IsNot Nothing Then
                         logger.Error(FanartTv.API.ErrorMessage)
                     End If
                     Return Nothing
@@ -117,7 +117,7 @@ Namespace FanartTVs
 
                 'Banner
                 If Type = Enums.ScraperCapabilities_Movie_MovieSet.Banner Then
-                    If IsNothing(Results.List.Moviebanner) Then Return alPosters
+                    If Results.List.Moviebanner Is Nothing Then Return alPosters
                     For Each image In Results.List.Moviebanner
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         If image.Lang = Settings.PrefLanguage Then
@@ -143,8 +143,8 @@ Namespace FanartTVs
 
                     'ClearArt
                 ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.ClearArt Then
-                    If ((IsNothing(Results.List.Hdmovieclearart) AndAlso Settings.ClearArtOnlyHD) OrElse (IsNothing(Results.List.Hdmovieclearart) AndAlso IsNothing(Results.List.Movieart))) Then Return alPosters
-                    If Not IsNothing(Results.List.Hdmovieclearart) Then
+                    If ((Results.List.Hdmovieclearart Is Nothing AndAlso Settings.ClearArtOnlyHD) OrElse (Results.List.Hdmovieclearart Is Nothing AndAlso Results.List.Movieart Is Nothing)) Then Return alPosters
+                    If Results.List.Hdmovieclearart IsNot Nothing Then
                         For Each image In Results.List.Hdmovieclearart
                             ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                             If image.Lang = Settings.PrefLanguage Then
@@ -168,7 +168,7 @@ Namespace FanartTVs
                             End If
                         Next
                     End If
-                    If Not IsNothing(Results.List.Movieart) AndAlso Not Settings.ClearArtOnlyHD Then
+                    If Results.List.Movieart IsNot Nothing AndAlso Not Settings.ClearArtOnlyHD Then
                         For Each image In Results.List.Movieart
                             ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                             If image.Lang = Settings.PrefLanguage Then
@@ -195,8 +195,8 @@ Namespace FanartTVs
 
                     'ClearLogo
                 ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo Then
-                    If ((IsNothing(Results.List.Hdmovielogo) AndAlso Settings.ClearLogoOnlyHD) OrElse (IsNothing(Results.List.Hdmovielogo) AndAlso IsNothing(Results.List.Movielogo))) Then Return alPosters
-                    If Not IsNothing(Results.List.Hdmovielogo) Then
+                    If ((Results.List.Hdmovielogo Is Nothing AndAlso Settings.ClearLogoOnlyHD) OrElse (Results.List.Hdmovielogo Is Nothing AndAlso Results.List.Movielogo Is Nothing)) Then Return alPosters
+                    If Results.List.Hdmovielogo IsNot Nothing Then
                         For Each image In Results.List.Hdmovielogo
                             ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                             If image.Lang = Settings.PrefLanguage Then
@@ -221,7 +221,7 @@ Namespace FanartTVs
                         Next
                     End If
 
-                    If Not IsNothing(Results.List.Movielogo) AndAlso Not Settings.ClearLogoOnlyHD Then
+                    If Results.List.Movielogo IsNot Nothing AndAlso Not Settings.ClearLogoOnlyHD Then
                         For Each image In Results.List.Movielogo
                             ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                             If image.Lang = Settings.PrefLanguage Then
@@ -248,7 +248,7 @@ Namespace FanartTVs
 
                     'DiscArt
                 ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.DiscArt Then
-                    If IsNothing(Results.List.Moviedisc.Count) Then Return alPosters
+                    If Results.List.Moviedisc Is Nothing Then Return alPosters
                     For Each image In Results.List.Moviedisc
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         If image.Lang = Settings.PrefLanguage Then
@@ -274,7 +274,7 @@ Namespace FanartTVs
 
                     'Fanart
                 ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.Fanart Then
-                    If IsNothing(Results.List.Moviebackground) Then Return alPosters
+                    If Results.List.Moviebackground Is Nothing Then Return alPosters
                     For Each image In Results.List.Moviebackground
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(3).description, .URL = image.Url, .Width = "1920", .Height = "1080", .ParentID = image.Url, .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
@@ -283,7 +283,7 @@ Namespace FanartTVs
 
                     'Landscape
                 ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.Landscape Then
-                    If IsNothing(Results.List.Moviethumb) Then Return alPosters
+                    If Results.List.Moviethumb Is Nothing Then Return alPosters
                     For Each image In Results.List.Moviethumb
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         If image.Lang = Settings.PrefLanguage Then
@@ -309,7 +309,7 @@ Namespace FanartTVs
 
                     'Poster
                 ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.Poster Then
-                    If IsNothing(Results.List.Movieposter) Then Return alPosters
+                    If Results.List.Movieposter Is Nothing Then Return alPosters
                     For Each image In Results.List.Movieposter
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         If image.Lang = Settings.PrefLanguage Then
@@ -364,8 +364,8 @@ Namespace FanartTVs
                 FanartTv.API.cKey = Settings.ApiKey
 
                 Dim Results = New FanartTv.TV.Show(tvdbID)
-                If IsNothing(Results) OrElse FanartTv.API.ErrorOccurred Then
-                    If Not IsNothing(FanartTv.API.ErrorMessage) Then
+                If Results Is Nothing OrElse FanartTv.API.ErrorOccurred Then
+                    If FanartTv.API.ErrorMessage IsNot Nothing Then
                         logger.Error(FanartTv.API.ErrorMessage)
                     End If
                     Return Nothing
@@ -374,7 +374,7 @@ Namespace FanartTVs
 
                 'Banner AllSeasons/Show
                 If Type = Enums.ScraperCapabilities_TV.AllSeasonsBanner OrElse Type = Enums.ScraperCapabilities_TV.ShowBanner Then
-                    If IsNothing(Results.List.Tvbanner) Then Return alPosters
+                    If Results.List.Tvbanner Is Nothing Then Return alPosters
                     For Each image In Results.List.Tvbanner
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         If image.Lang = Settings.PrefLanguage Then
@@ -400,7 +400,7 @@ Namespace FanartTVs
 
                     'Banner Season
                 ElseIf Type = Enums.ScraperCapabilities_TV.SeasonBanner Then
-                    If IsNothing(Results.List.Seasonbanner) Then Return alPosters
+                    If Results.List.Seasonbanner Is Nothing Then Return alPosters
                     For Each image In Results.List.Seasonbanner
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         If image.Lang = Settings.PrefLanguage Then
@@ -426,7 +426,7 @@ Namespace FanartTVs
 
                     'CharacterArt Show
                 ElseIf Type = Enums.ScraperCapabilities_TV.ShowCharacterArt Then
-                    If IsNothing(Results.List.Characterart) Then Return alPosters
+                    If Results.List.Characterart Is Nothing Then Return alPosters
                     For Each image In Results.List.Characterart
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         If image.Lang = Settings.PrefLanguage Then
@@ -452,8 +452,8 @@ Namespace FanartTVs
 
                     'ClearArt Show
                 ElseIf Type = Enums.ScraperCapabilities_TV.ShowClearArt Then
-                    If ((IsNothing(Results.List.Hdclearart) AndAlso Settings.ClearArtOnlyHD) OrElse (IsNothing(Results.List.Hdclearart) AndAlso IsNothing(Results.List.Clearart))) Then Return alPosters
-                    If Not IsNothing(Results.List.Hdclearart) Then
+                    If ((Results.List.Hdclearart Is Nothing AndAlso Settings.ClearArtOnlyHD) OrElse (Results.List.Hdclearart Is Nothing AndAlso Results.List.Clearart Is Nothing)) Then Return alPosters
+                    If Results.List.Hdclearart IsNot Nothing Then
                         For Each image In Results.List.Hdclearart
                             ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                             If image.Lang = Settings.PrefLanguage Then
@@ -477,7 +477,7 @@ Namespace FanartTVs
                             End If
                         Next
                     End If
-                    If Not IsNothing(Results.List.Clearart) AndAlso Not Settings.ClearArtOnlyHD Then
+                    If Results.List.Clearart IsNot Nothing AndAlso Not Settings.ClearArtOnlyHD Then
                         For Each image In Results.List.Clearart
                             ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                             If image.Lang = Settings.PrefLanguage Then
@@ -504,8 +504,8 @@ Namespace FanartTVs
 
                     'ClearLogo Show
                 ElseIf Type = Enums.ScraperCapabilities_TV.ShowClearLogo Then
-                    If ((IsNothing(Results.List.HdTListvlogo) AndAlso Settings.ClearLogoOnlyHD) OrElse (IsNothing(Results.List.HdTListvlogo) AndAlso IsNothing(Results.List.Clearlogo))) Then Return alPosters
-                    If Not IsNothing(Results.List.HdTListvlogo) Then
+                    If ((Results.List.HdTListvlogo Is Nothing AndAlso Settings.ClearLogoOnlyHD) OrElse (Results.List.HdTListvlogo Is Nothing AndAlso Results.List.Clearlogo Is Nothing)) Then Return alPosters
+                    If Results.List.HdTListvlogo IsNot Nothing Then
                         For Each Image In Results.List.HdTListvlogo
                             ParentID = Image.Url.Substring(Image.Url.LastIndexOf("/") + 1, Image.Url.Length - (Image.Url.LastIndexOf("/") + 1))
                             If Image.Lang = Settings.PrefLanguage Then
@@ -529,7 +529,7 @@ Namespace FanartTVs
                             End If
                         Next
                     End If
-                    If Not IsNothing(Results.List.Clearlogo) AndAlso Not Settings.ClearLogoOnlyHD Then
+                    If Results.List.Clearlogo IsNot Nothing AndAlso Not Settings.ClearLogoOnlyHD Then
                         For Each Image In Results.List.Clearlogo
                             ParentID = Image.Url.Substring(Image.Url.LastIndexOf("/") + 1, Image.Url.Length - (Image.Url.LastIndexOf("/") + 1))
                             If Image.Lang = Settings.PrefLanguage Then
@@ -556,7 +556,7 @@ Namespace FanartTVs
 
                     'Fanart AllSeasons/Season/Show
                 ElseIf Type = Enums.ScraperCapabilities_TV.AllSeasonsFanart OrElse Type = Enums.ScraperCapabilities_TV.SeasonFanart OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart Then
-                    If IsNothing(Results.List.Showbackground) Then Return alPosters
+                    If Results.List.Showbackground Is Nothing Then Return alPosters
                     For Each image In Results.List.Showbackground
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(3).description, .URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ParentID = image.Url, .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
@@ -565,7 +565,7 @@ Namespace FanartTVs
 
                     'Landscape AllSeasons/Show
                 ElseIf Type = Enums.ScraperCapabilities_TV.AllSeasonsLandscape OrElse Type = Enums.ScraperCapabilities_TV.ShowLandscape Then
-                    If IsNothing(Results.List.Tvthumb) Then Return alPosters
+                    If Results.List.Tvthumb Is Nothing Then Return alPosters
                     For Each Image In Results.List.Tvthumb
                         ParentID = Image.Url.Substring(Image.Url.LastIndexOf("/") + 1, Image.Url.Length - (Image.Url.LastIndexOf("/") + 1))
                         If Image.Lang = Settings.PrefLanguage Then
@@ -591,7 +591,7 @@ Namespace FanartTVs
 
                     'Landscape Season
                 ElseIf Type = Enums.ScraperCapabilities_TV.SeasonLandscape Then
-                    If IsNothing(Results.List.Seasonthumb) Then Return alPosters
+                    If Results.List.Seasonthumb Is Nothing Then Return alPosters
                     For Each Image In Results.List.Seasonthumb
                         ParentID = Image.Url.Substring(Image.Url.LastIndexOf("/") + 1, Image.Url.Length - (Image.Url.LastIndexOf("/") + 1))
                         If Image.Lang = Settings.PrefLanguage Then
@@ -617,7 +617,7 @@ Namespace FanartTVs
 
                     'Poster AllSeasons/Show
                 ElseIf Type = Enums.ScraperCapabilities_TV.AllSeasonsPoster OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster Then
-                    If IsNothing(Results.List.Tvposter) Then Return alPosters
+                    If Results.List.Tvposter Is Nothing Then Return alPosters
                     For Each image In Results.List.Tvposter
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         If image.Lang = Settings.PrefLanguage Then
@@ -643,7 +643,7 @@ Namespace FanartTVs
 
                     'Poster Season
                 ElseIf Type = Enums.ScraperCapabilities_TV.SeasonPoster Then
-                    If IsNothing(Results.List.Seasonposter) Then Return alPosters
+                    If Results.List.Seasonposter Is Nothing Then Return alPosters
                     For Each image In Results.List.Seasonposter
                         ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         If image.Lang = Settings.PrefLanguage Then
