@@ -204,7 +204,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
-        If Me.lvActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
+        If Me.lvActors.SelectedItems.Count > 0 AndAlso Me.lvActors.SelectedItems(0) IsNot Nothing AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
             Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
             Me.lvActors.Items.Insert(iIndex + 2, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
             Me.lvActors.Items.RemoveAt(iIndex)
@@ -215,7 +215,7 @@ Public Class dlgEditMovie
 
     Private Sub btnActorUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorUp.Click
         Try
-            If Me.lvActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) > 0 Then
+            If Me.lvActors.SelectedItems.Count > 0 AndAlso Me.lvActors.SelectedItems(0) IsNot Nothing AndAlso Me.lvActors.SelectedIndices(0) > 0 Then
                 Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
                 Me.lvActors.Items.Insert(iIndex - 1, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
                 Me.lvActors.Items.RemoveAt(iIndex + 1)
@@ -233,7 +233,7 @@ Public Class dlgEditMovie
             Using dAddEditActor As New dlgAddEditActor
                 eActor = dAddEditActor.ShowDialog(True)
             End Using
-            If Not IsNothing(eActor) Then
+            If eActor IsNot Nothing Then
                 Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.ID.ToString)
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
@@ -330,7 +330,7 @@ Public Class dlgEditMovie
             If Not String.IsNullOrEmpty(tPath) Then
                 If Master.isWindows Then
                     If Regex.IsMatch(tPath, "plugin:\/\/plugin\.video\.youtube\/\?action=play_video&videoid=") Then
-                        tPath = Replace(tPath, "plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")
+                        tPath = tPath.Replace("plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")
                     End If
                     Process.Start(tPath)
                 Else
@@ -343,7 +343,7 @@ Public Class dlgEditMovie
             End If
 
         Catch
-            MsgBox(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(271, "Error Playing Trailer"))
+            MessageBox.Show(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End Try
     End Sub
 
@@ -370,7 +370,7 @@ Public Class dlgEditMovie
             End If
 
         Catch
-            MsgBox(Master.eLang.GetString(1078, "The theme could not be played. This could due be you don't have the proper player to play the theme type."), MsgBoxStyle.Critical, Master.eLang.GetString(1079, "Error Playing Theme"))
+            MessageBox.Show(Master.eLang.GetString(1078, "The theme could not be played. This could due be you don't have the proper player to play the theme type."), Master.eLang.GetString(1079, "Error Playing Theme"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End Try
     End Sub
 
@@ -467,7 +467,7 @@ Public Class dlgEditMovie
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         MovieBanner = tImage
                         Me.pbMovieBanner.Image = MovieBanner.Image
                         Me.pbMovieBanner.Tag = MovieBanner
@@ -498,7 +498,7 @@ Public Class dlgEditMovie
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
-                            If Not IsNothing(pResults.WebImage.Image) Then
+                            If pResults.WebImage.Image IsNot Nothing Then
                                 pbMovieBanner.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
                                 Me.lblMovieBannerSize.Visible = True
@@ -508,7 +508,7 @@ Public Class dlgEditMovie
                         MovieBanner = pResults.WebImage
                     End If
                 Else
-                    MsgBox(Master.eLang.GetString(1057, "No banner images could be found. Please check to see if any banner scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Banners Found"))
+                    MessageBox.Show(Master.eLang.GetString(1057, "No banner images could be found. Please check to see if any banner scrapers are enabled."), Master.eLang.GetString(972, "No Banners Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -543,7 +543,7 @@ Public Class dlgEditMovie
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         MovieClearArt = tImage
                         Me.pbMovieClearArt.Image = MovieClearArt.Image
                         Me.pbMovieClearArt.Tag = MovieClearArt
@@ -574,7 +574,7 @@ Public Class dlgEditMovie
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
-                            If Not IsNothing(pResults.WebImage.Image) Then
+                            If pResults.WebImage.Image IsNot Nothing Then
                                 pbMovieClearArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearArt.Image.Width, Me.pbMovieClearArt.Image.Height)
                                 Me.lblMovieClearArtSize.Visible = True
@@ -584,7 +584,7 @@ Public Class dlgEditMovie
                         MovieClearArt = pResults.WebImage
                     End If
                 Else
-                    MsgBox(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1102, "No ClearArts Found"))
+                    MessageBox.Show(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), Master.eLang.GetString(1102, "No ClearArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -619,7 +619,7 @@ Public Class dlgEditMovie
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         MovieClearLogo = tImage
                         Me.pbMovieClearLogo.Image = MovieClearLogo.Image
                         Me.pbMovieClearLogo.Tag = MovieClearLogo
@@ -650,7 +650,7 @@ Public Class dlgEditMovie
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
-                            If Not IsNothing(pResults.WebImage.Image) Then
+                            If pResults.WebImage.Image IsNot Nothing Then
                                 pbMovieClearLogo.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearLogo.Image.Width, Me.pbMovieClearLogo.Image.Height)
                                 Me.lblMovieClearLogoSize.Visible = True
@@ -660,7 +660,7 @@ Public Class dlgEditMovie
                         MovieClearLogo = pResults.WebImage
                     End If
                 Else
-                    MsgBox(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1103, "No ClearLogos Found"))
+                    MessageBox.Show(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), Master.eLang.GetString(1103, "No ClearLogos Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -695,7 +695,7 @@ Public Class dlgEditMovie
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         MovieDiscArt = tImage
                         Me.pbMovieDiscArt.Image = MovieDiscArt.Image
                         Me.pbMovieDiscArt.Tag = MovieDiscArt
@@ -726,7 +726,7 @@ Public Class dlgEditMovie
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
-                            If Not IsNothing(pResults.WebImage.Image) Then
+                            If pResults.WebImage.Image IsNot Nothing Then
                                 pbMovieDiscArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieDiscArt.Image.Width, Me.pbMovieDiscArt.Image.Height)
                                 Me.lblMovieDiscArtSize.Visible = True
@@ -736,7 +736,7 @@ Public Class dlgEditMovie
                         MovieDiscArt = pResults.WebImage
                     End If
                 Else
-                    MsgBox(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1104, "No DiscArts Found"))
+                    MessageBox.Show(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), Master.eLang.GetString(1104, "No DiscArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -771,7 +771,7 @@ Public Class dlgEditMovie
         Else
             MovieFanart.FromFile(Me.EThumbsList.Item(Me.EThumbsIndex).Path)
         End If
-        If Not IsNothing(MovieFanart.Image) Then
+        If MovieFanart.Image IsNot Nothing Then
             Me.pbMovieFanart.Image = MovieFanart.Image
             Me.pbMovieFanart.Tag = MovieFanart
 
@@ -786,7 +786,7 @@ Public Class dlgEditMovie
         Else
             MovieFanart.FromFile(Me.EFanartsList.Item(Me.EFanartsIndex).Path)
         End If
-        If Not IsNothing(MovieFanart.Image) Then
+        If MovieFanart.Image IsNot Nothing Then
             Me.pbMovieFanart.Image = MovieFanart.Image
             Me.pbMovieFanart.Tag = MovieFanart
 
@@ -801,7 +801,7 @@ Public Class dlgEditMovie
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         MovieFanart = tImage
                         Me.pbMovieFanart.Image = MovieFanart.Image
                         Me.pbMovieFanart.Tag = MovieFanart
@@ -843,7 +843,7 @@ Public Class dlgEditMovie
                         MovieFanart = pResults.WebImage
                     End If
                 Else
-                    MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
+                    MessageBox.Show(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), Master.eLang.GetString(970, "No Fanart Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
 
@@ -881,7 +881,7 @@ Public Class dlgEditMovie
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         MovieLandscape = tImage
                         Me.pbMovieLandscape.Image = MovieLandscape.Image
                         Me.pbMovieLandscape.Tag = MovieLandscape
@@ -912,7 +912,7 @@ Public Class dlgEditMovie
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
-                            If Not IsNothing(pResults.WebImage.Image) Then
+                            If pResults.WebImage.Image IsNot Nothing Then
                                 pbMovieLandscape.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
                                 Me.lblMovieLandscapeSize.Visible = True
@@ -922,7 +922,7 @@ Public Class dlgEditMovie
                         MovieLandscape = pResults.WebImage
                     End If
                 Else
-                    MsgBox(Master.eLang.GetString(1058, "No landscape images could be found. Please check to see if any landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Landscapes Found"))
+                    MessageBox.Show(Master.eLang.GetString(1058, "No landscape images could be found. Please check to see if any landscape scrapers are enabled."), Master.eLang.GetString(972, "No Landscapes Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -957,7 +957,7 @@ Public Class dlgEditMovie
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         MoviePoster = tImage
                         Me.pbMoviePoster.Image = MoviePoster.Image
                         Me.pbMoviePoster.Tag = MoviePoster
@@ -988,7 +988,7 @@ Public Class dlgEditMovie
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
-                            If Not IsNothing(pResults.WebImage.Image) Then
+                            If pResults.WebImage.Image IsNot Nothing Then
                                 pbMoviePoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
                                 Me.lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMoviePoster.Image.Width, Me.pbMoviePoster.Image.Height)
                                 Me.lblMoviePosterSize.Visible = True
@@ -998,7 +998,7 @@ Public Class dlgEditMovie
                         MoviePoster = pResults.WebImage
                     End If
                 Else
-                    MsgBox(Master.eLang.GetString(971, "No poster images could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Posters Found"))
+                    MessageBox.Show(Master.eLang.GetString(971, "No poster images could be found. Please check to see if any poster scrapers are enabled."), Master.eLang.GetString(972, "No Posters Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -1060,7 +1060,7 @@ Public Class dlgEditMovie
                         ThemeAddToPlayer(MovieTheme)
                     End If
                 Else
-                    MsgBox(Master.eLang.GetString(1162, "No themes could be found. Please check to see if any theme scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1163, "No Themes Found"))
+                    MessageBox.Show(Master.eLang.GetString(1162, "No themes could be found. Please check to see if any theme scrapers are enabled."), Master.eLang.GetString(1163, "No Themes Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
 
@@ -1513,7 +1513,7 @@ Public Class dlgEditMovie
                         If Not String.IsNullOrEmpty(thumb) Then
                             ETImage.FromWeb(thumb.Substring(1, thumb.Length - 1))
                         End If
-                        If Not IsNothing(ETImage.Image) Then
+                        If ETImage.Image IsNot Nothing Then
                             EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
                             ET_i += 1
                             If ET_i >= ET_max Then Exit For
@@ -1539,7 +1539,7 @@ Public Class dlgEditMovie
             End If
 
             If ET_i >= ET_max AndAlso EThumbsWarning Then
-                MsgBox(String.Format(Master.eLang.GetString(1120, "To prevent a memory overflow will not display more than {0} Extrathumbs."), ET_max), MsgBoxStyle.OkOnly, Master.eLang.GetString(356, "Warning"))
+                MessageBox.Show(String.Format(Master.eLang.GetString(1120, "To prevent a memory overflow will not display more than {0} Extrathumbs."), ET_max), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 EThumbsWarning = False 'show warning only one time
             End If
 
@@ -1587,7 +1587,7 @@ Public Class dlgEditMovie
                         If Not String.IsNullOrEmpty(fanart) Then
                             EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
                         End If
-                        If Not IsNothing(EFImage.Image) Then
+                        If EFImage.Image IsNot Nothing Then
                             EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
                             EF_i += 1
                             If EF_i >= EF_max Then Exit For
@@ -1613,7 +1613,7 @@ Public Class dlgEditMovie
             End If
 
             If EF_i >= EF_max AndAlso EFanartsWarning Then
-                MsgBox(String.Format(Master.eLang.GetString(1119, "To prevent a memory overflow will not display more than {0} Extrafanarts."), EF_max), MsgBoxStyle.OkOnly, Master.eLang.GetString(356, "Warning"))
+                MessageBox.Show(String.Format(Master.eLang.GetString(1119, "To prevent a memory overflow will not display more than {0} Extrafanarts."), EF_max), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 EFanartsWarning = False 'show warning only one time
             End If
 
@@ -1684,23 +1684,23 @@ Public Class dlgEditMovie
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "DashTrailer"))
             End If
 
-            If Not IsNothing(Me.pnlETImage) Then
+            If Me.pnlETImage IsNot Nothing Then
                 For Each Pan In Me.pnlETImage
                     CType(Pan.Tag, Images).Dispose()
                 Next
             End If
-            If Not IsNothing(Me.pbETImage) Then
+            If Me.pbETImage IsNot Nothing Then
                 For Each Pan In Me.pbETImage
                     CType(Pan.Tag, Images).Dispose()
                     Pan.Image.Dispose()
                 Next
             End If
-            If Not IsNothing(Me.pnlEFImage) Then
+            If Me.pnlEFImage IsNot Nothing Then
                 For Each Pan In Me.pnlEFImage
                     CType(Pan.Tag, Images).Dispose()
                 Next
             End If
-            If Not IsNothing(Me.pbEFImage) Then
+            If Me.pbEFImage IsNot Nothing Then
                 For Each Pan In Me.pbEFImage
                     CType(Pan.Tag, Images).Dispose()
                     Pan.Image.Dispose()
@@ -1800,7 +1800,7 @@ Public Class dlgEditMovie
         Me.MovieTrailer.Dispose()
         Me.MovieTrailer = Nothing
 
-        If Not IsNothing(EFanartsList) Then
+        If EFanartsList IsNot Nothing Then
             For Each Image In Me.EFanartsList
                 Image.Image.Dispose()
                 Image.Image = Nothing
@@ -1808,7 +1808,7 @@ Public Class dlgEditMovie
             EFanartsList = Nothing
         End If
 
-        If Not IsNothing(EThumbsList) Then
+        If EThumbsList IsNot Nothing Then
             For Each Image In Me.EThumbsList
                 Image.Image.Dispose()
                 Image.Image = Nothing
@@ -1912,7 +1912,7 @@ Public Class dlgEditMovie
                 Using dAddEditActor As New dlgAddEditActor
                     eActor = dAddEditActor.ShowDialog(False, eActor)
                 End Using
-                If Not IsNothing(eActor) Then
+                If eActor IsNot Nothing Then
                     lvwItem.Text = eActor.ID.ToString
                     lvwItem.SubItems(1).Text = eActor.Name
                     lvwItem.SubItems(2).Text = eActor.Role
@@ -2186,7 +2186,7 @@ Public Class dlgEditMovie
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.BannerPath) Then
                         MovieBanner.FromFile(Master.currMovie.BannerPath)
                     End If
-                    If Not IsNothing(MovieBanner.Image) Then
+                    If MovieBanner.Image IsNot Nothing Then
                         .pbMovieBanner.Image = MovieBanner.Image
                         .pbMovieBanner.Tag = MovieBanner
                         .lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieBanner.Image.Width, .pbMovieBanner.Image.Height)
@@ -2198,7 +2198,7 @@ Public Class dlgEditMovie
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.ClearArtPath) Then
                         MovieClearArt.FromFile(Master.currMovie.ClearArtPath)
                     End If
-                    If Not IsNothing(MovieClearArt.Image) Then
+                    If MovieClearArt.Image IsNot Nothing Then
                         .pbMovieClearArt.Image = MovieClearArt.Image
                         .pbMovieClearArt.Tag = MovieClearArt
                         .lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieClearArt.Image.Width, .pbMovieClearArt.Image.Height)
@@ -2210,7 +2210,7 @@ Public Class dlgEditMovie
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.ClearLogoPath) Then
                         MovieClearLogo.FromFile(Master.currMovie.ClearLogoPath)
                     End If
-                    If Not IsNothing(MovieClearLogo.Image) Then
+                    If MovieClearLogo.Image IsNot Nothing Then
                         .pbMovieClearLogo.Image = MovieClearLogo.Image
                         .pbMovieClearLogo.Tag = MovieClearLogo
                         .lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieClearLogo.Image.Width, .pbMovieClearLogo.Image.Height)
@@ -2222,7 +2222,7 @@ Public Class dlgEditMovie
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.DiscArtPath) Then
                         MovieDiscArt.FromFile(Master.currMovie.DiscArtPath)
                     End If
-                    If Not IsNothing(MovieDiscArt.Image) Then
+                    If MovieDiscArt.Image IsNot Nothing Then
                         .pbMovieDiscArt.Image = MovieDiscArt.Image
                         .pbMovieDiscArt.Tag = MovieDiscArt
                         .lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieDiscArt.Image.Width, .pbMovieDiscArt.Image.Height)
@@ -2234,7 +2234,7 @@ Public Class dlgEditMovie
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.FanartPath) Then
                         MovieFanart.FromFile(Master.currMovie.FanartPath)
                     End If
-                    If Not IsNothing(MovieFanart.Image) Then
+                    If MovieFanart.Image IsNot Nothing Then
                         .pbMovieFanart.Image = MovieFanart.Image
                         .pbMovieFanart.Tag = MovieFanart
                         .lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieFanart.Image.Width, .pbMovieFanart.Image.Height)
@@ -2246,7 +2246,7 @@ Public Class dlgEditMovie
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.LandscapePath) Then
                         MovieLandscape.FromFile(Master.currMovie.LandscapePath)
                     End If
-                    If Not IsNothing(MovieLandscape.Image) Then
+                    If MovieLandscape.Image IsNot Nothing Then
                         .pbMovieLandscape.Image = MovieLandscape.Image
                         .pbMovieLandscape.Tag = MovieLandscape
                         .lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieLandscape.Image.Width, .pbMovieLandscape.Image.Height)
@@ -2258,7 +2258,7 @@ Public Class dlgEditMovie
                     ElseIf Not String.IsNullOrEmpty(Master.currMovie.PosterPath) Then
                         MoviePoster.FromFile(Master.currMovie.PosterPath)
                     End If
-                    If Not IsNothing(MoviePoster.Image) Then
+                    If MoviePoster.Image IsNot Nothing Then
                         .pbMoviePoster.Image = MoviePoster.Image
                         .pbMoviePoster.Tag = MoviePoster
                         .lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMoviePoster.Image.Width, .pbMoviePoster.Image.Height)
@@ -2387,7 +2387,7 @@ Public Class dlgEditMovie
 
     Private Sub pbMovieBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieBanner.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             MovieBanner = tImage
             Me.pbMovieBanner.Image = MovieBanner.Image
             Me.pbMovieBanner.Tag = MovieBanner
@@ -2406,7 +2406,7 @@ Public Class dlgEditMovie
 
     Private Sub pbMovieClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieClearArt.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             MovieClearArt = tImage
             Me.pbMovieClearArt.Image = MovieClearArt.Image
             Me.pbMovieClearArt.Tag = MovieClearArt
@@ -2425,7 +2425,7 @@ Public Class dlgEditMovie
 
     Private Sub pbMovieClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieClearLogo.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             MovieClearLogo = tImage
             Me.pbMovieClearLogo.Image = MovieClearLogo.Image
             Me.pbMovieClearLogo.Tag = MovieClearLogo
@@ -2444,7 +2444,7 @@ Public Class dlgEditMovie
 
     Private Sub pbMovieDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieDiscArt.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             MovieDiscArt = tImage
             Me.pbMovieDiscArt.Image = MovieDiscArt.Image
             Me.pbMovieDiscArt.Tag = MovieDiscArt
@@ -2463,7 +2463,7 @@ Public Class dlgEditMovie
 
     Private Sub pbMovieFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieFanart.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             MovieFanart = tImage
             Me.pbMovieFanart.Image = MovieFanart.Image
             Me.pbMovieFanart.Tag = MovieFanart
@@ -2482,7 +2482,7 @@ Public Class dlgEditMovie
 
     Private Sub pbMovieLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieLandscape.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             MovieLandscape = tImage
             Me.pbMovieLandscape.Image = MovieLandscape.Image
             Me.pbMovieLandscape.Tag = MovieLandscape
@@ -2501,7 +2501,7 @@ Public Class dlgEditMovie
 
     Private Sub pbMoviePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbMoviePoster.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             MoviePoster = tImage
             Me.pbMoviePoster.Image = MoviePoster.Image
             Me.pbMoviePoster.Tag = MoviePoster
@@ -2983,8 +2983,8 @@ Public Class dlgEditMovie
                 Master.currMovie.Movie.Studio = .txtStudio.Text.Trim
 
                 If Master.eSettings.MovieScraperXBMCTrailerFormat Then
-                    Master.currMovie.Movie.Trailer = Replace(.txtTrailer.Text.Trim, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                    Master.currMovie.Movie.Trailer = Replace(Master.currMovie.Movie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                    Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim.Replace("http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                    Master.currMovie.Movie.Trailer = Master.currMovie.Movie.Trailer.Replace("http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                 Else
                     Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
                 End If
@@ -3007,7 +3007,7 @@ Public Class dlgEditMovie
                     End If
                 Else
                     'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                    If IsNumeric(Master.currMovie.Movie.PlayCount) AndAlso CInt(Master.currMovie.Movie.PlayCount) > 0 Then
+                    If Integer.TryParse(Master.currMovie.Movie.PlayCount, 0) AndAlso CInt(Master.currMovie.Movie.PlayCount) > 0 Then
                         Master.currMovie.Movie.PlayCount = ""
                     End If
 
@@ -3029,7 +3029,7 @@ Public Class dlgEditMovie
                         Dim strGenre As String = String.Empty
                         Dim isFirst As Boolean = True
                         Dim iChecked = From iCheck In .clbGenre.CheckedItems
-                        strGenre = Strings.Join(iChecked.ToArray, " / ")
+                        strGenre = String.Join(" / ", iChecked.ToArray)
                         Master.currMovie.Movie.Genre = strGenre.Trim
                     End If
                 End If
@@ -3099,7 +3099,7 @@ Public Class dlgEditMovie
                     For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
                         Dim img As New Images
                         img.FromWeb(act.ThumbURL)
-                        If Not IsNothing(img.Image) Then
+                        If img.Image IsNot Nothing Then
                             act.ThumbPath = img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
                         Else
                             act.ThumbPath = String.Empty
@@ -3107,7 +3107,7 @@ Public Class dlgEditMovie
                     Next
                 End If
 
-                If Not IsNothing(.MovieBanner.Image) Then
+                If .MovieBanner.Image IsNot Nothing Then
                     Dim fPath As String = .MovieBanner.SaveAsMovieBanner(Master.currMovie)
                     Master.currMovie.BannerPath = fPath
                 Else
@@ -3115,7 +3115,7 @@ Public Class dlgEditMovie
                     Master.currMovie.BannerPath = String.Empty
                 End If
 
-                If Not IsNothing(.MovieClearArt.Image) Then
+                If .MovieClearArt.Image IsNot Nothing Then
                     Dim fPath As String = .MovieClearArt.SaveAsMovieClearArt(Master.currMovie)
                     Master.currMovie.ClearArtPath = fPath
                 Else
@@ -3123,7 +3123,7 @@ Public Class dlgEditMovie
                     Master.currMovie.ClearArtPath = String.Empty
                 End If
 
-                If Not IsNothing(.MovieClearLogo.Image) Then
+                If .MovieClearLogo.Image IsNot Nothing Then
                     Dim fPath As String = .MovieClearLogo.SaveAsMovieClearLogo(Master.currMovie)
                     Master.currMovie.ClearLogoPath = fPath
                 Else
@@ -3131,7 +3131,7 @@ Public Class dlgEditMovie
                     Master.currMovie.ClearLogoPath = String.Empty
                 End If
 
-                If Not IsNothing(.MovieDiscArt.Image) Then
+                If .MovieDiscArt.Image IsNot Nothing Then
                     Dim fPath As String = .MovieDiscArt.SaveAsMovieDiscArt(Master.currMovie)
                     Master.currMovie.DiscArtPath = fPath
                 Else
@@ -3139,7 +3139,7 @@ Public Class dlgEditMovie
                     Master.currMovie.DiscArtPath = String.Empty
                 End If
 
-                If Not IsNothing(.MovieFanart.Image) Then
+                If .MovieFanart.Image IsNot Nothing Then
                     Dim fPath As String = .MovieFanart.SaveAsMovieFanart(Master.currMovie)
                     Master.currMovie.FanartPath = fPath
                 Else
@@ -3147,7 +3147,7 @@ Public Class dlgEditMovie
                     Master.currMovie.FanartPath = String.Empty
                 End If
 
-                If Not IsNothing(.MovieLandscape.Image) Then
+                If .MovieLandscape.Image IsNot Nothing Then
                     Dim fPath As String = .MovieLandscape.SaveAsMovieLandscape(Master.currMovie)
                     Master.currMovie.LandscapePath = fPath
                 Else
@@ -3155,7 +3155,7 @@ Public Class dlgEditMovie
                     Master.currMovie.LandscapePath = String.Empty
                 End If
 
-                If Not IsNothing(.MoviePoster.Image) Then
+                If .MoviePoster.Image IsNot Nothing Then
                     Dim pPath As String = .MoviePoster.SaveAsMoviePoster(Master.currMovie)
                     Master.currMovie.PosterPath = pPath
                 Else
@@ -3327,10 +3327,10 @@ Public Class dlgEditMovie
     End Sub
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If mType = Enums.ModuleEventType.FrameExtrator_Movie AndAlso Not IsNothing(_params) Then
+        If mType = Enums.ModuleEventType.FrameExtrator_Movie AndAlso _params IsNot Nothing Then
             If _params(0).ToString = "FanartToSave" Then
                 MovieFanart.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
-                If Not IsNothing(MovieFanart.Image) Then
+                If MovieFanart.Image IsNot Nothing Then
                     Me.pbMovieFanart.Image = MovieFanart.Image
                     Me.pbMovieFanart.Tag = MovieFanart
 

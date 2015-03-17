@@ -56,7 +56,7 @@ Public Class dlgSortFiles
         '\\
 
         If Not String.IsNullOrEmpty(Me.txtPath.Text) AndAlso Directory.Exists(Me.txtPath.Text) Then
-            If MsgBox(String.Concat(Master.eLang.GetString(220, "WARNING: If you continue, all files will be sorted into separate folders."), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
+            If MessageBox.Show(String.Concat(Master.eLang.GetString(220, "WARNING: If you continue, all files will be sorted into separate folders."), Environment.NewLine, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), Master.eLang.GetString(104, "Are you sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                 Me._hitgo = True
                 FileUtils.FileSorter.SortFiles(Me.txtPath.Text)
                 lblStatus.Text = "Done!"
@@ -65,7 +65,7 @@ Public Class dlgSortFiles
                 Master.eSettings.SortPath = Me.txtPath.Text
             End If
         Else
-            MsgBox(Master.eLang.GetString(221, "The folder you entered does not exist. Please enter a valid path."), MsgBoxStyle.Exclamation, Master.eLang.GetString(222, "Directory Not Found"))
+            MessageBox.Show(Master.eLang.GetString(221, "The folder you entered does not exist. Please enter a valid path."), Master.eLang.GetString(222, "Directory Not Found"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Me.txtPath.Focus()
         End If
     End Sub

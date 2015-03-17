@@ -89,10 +89,10 @@ Public Class dlgAddEditActor
                     Me.bwDownloadPic.WorkerSupportsCancellation = True
                     Me.bwDownloadPic.RunWorkerAsync()
                 Else
-                    MsgBox(Master.eLang.GetString(159, "Specified URL is not valid."), MsgBoxStyle.Exclamation, Master.eLang.GetString(160, "Invalid URL"))
+                    MessageBox.Show(Master.eLang.GetString(159, "Specified URL is not valid."), Master.eLang.GetString(160, "Invalid URL"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 End If
             Else
-                MsgBox(Master.eLang.GetString(161, "Please enter a URL to verify."), MsgBoxStyle.Exclamation, Master.eLang.GetString(162, "No Thumb URL Specified"))
+                MessageBox.Show(Master.eLang.GetString(161, "Please enter a URL to verify."), Master.eLang.GetString(162, "No Thumb URL Specified"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)

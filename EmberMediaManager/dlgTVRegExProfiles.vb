@@ -61,7 +61,7 @@ Public Class dlgTVRegExProfiles
     Sub PopulateList()
         lvProfiles.Items.Clear()
         For Each s As TVShowRegExProfile In MyTVShowRegExProfiles.Profiles
-            lvProfiles.Items.Add(s.Name).Tag = s.Description.Replace("\n", vbCrLf)
+            lvProfiles.Items.Add(s.Name).Tag = s.Description.Replace("\n", Environment.NewLine)
         Next
     End Sub
 

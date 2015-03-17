@@ -72,7 +72,7 @@ Public Class dlgEditSeason
             Dim tImage As Images
             If dImgManual.ShowDialog() = DialogResult.OK Then
                 tImage = dImgManual.Results
-                If Not IsNothing(tImage.Image) Then
+                If tImage.Image IsNot Nothing Then
                     SeasonBanner = tImage
                     Me.pbSeasonBanner.Image = SeasonBanner.Image
                     Me.pbSeasonBanner.Tag = SeasonBanner
@@ -93,7 +93,7 @@ Public Class dlgEditSeason
             tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonBanner, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonBanner, Images))
         End If
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             SeasonBanner = tImage
             Me.pbSeasonBanner.Image = SeasonBanner.Image
             Me.pbSeasonBanner.Tag = SeasonBanner
@@ -125,7 +125,7 @@ Public Class dlgEditSeason
             Dim tImage As Images
             If dImgManual.ShowDialog() = DialogResult.OK Then
                 tImage = dImgManual.Results
-                If Not IsNothing(tImage.Image) Then
+                If tImage.Image IsNot Nothing Then
                     SeasonFanart = tImage
                     Me.pbSeasonFanart.Image = SeasonFanart.Image
                     Me.pbSeasonFanart.Tag = SeasonFanart
@@ -146,7 +146,7 @@ Public Class dlgEditSeason
             tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonFanart, Images))
         End If
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             SeasonFanart = tImage
             Me.pbSeasonFanart.Image = SeasonFanart.Image
             Me.pbSeasonFanart.Tag = SeasonFanart
@@ -178,7 +178,7 @@ Public Class dlgEditSeason
             Dim tImage As Images
             If dImgManual.ShowDialog() = DialogResult.OK Then
                 tImage = dImgManual.Results
-                If Not IsNothing(tImage.Image) Then
+                If tImage.Image IsNot Nothing Then
                     SeasonLandscape = tImage
                     Me.pbSeasonLandscape.Image = SeasonLandscape.Image
                     Me.pbSeasonLandscape.Tag = SeasonLandscape
@@ -199,7 +199,7 @@ Public Class dlgEditSeason
             tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonLandscape, Images))
         End If
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             SeasonLandscape = tImage
             Me.pbSeasonLandscape.Image = SeasonLandscape.Image
             Me.pbSeasonLandscape.Tag = SeasonLandscape
@@ -231,7 +231,7 @@ Public Class dlgEditSeason
             Dim tImage As Images
             If dImgManual.ShowDialog() = DialogResult.OK Then
                 tImage = dImgManual.Results
-                If Not IsNothing(tImage.Image) Then
+                If tImage.Image IsNot Nothing Then
                     SeasonPoster = tImage
                     Me.pbSeasonPoster.Image = SeasonPoster.Image
                     Me.pbSeasonPoster.Tag = SeasonPoster
@@ -252,7 +252,7 @@ Public Class dlgEditSeason
             tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonPoster, Images))
         End If
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             SeasonPoster = tImage
             Me.pbSeasonPoster.Image = SeasonPoster.Image
             Me.pbSeasonPoster.Tag = SeasonPoster
@@ -310,7 +310,7 @@ Public Class dlgEditSeason
         With Me
             If Master.eSettings.TVSeasonBannerAnyEnabled Then
                 SeasonBanner.FromFile(Master.currShow.SeasonBannerPath)
-                If Not IsNothing(SeasonBanner.Image) Then
+                If SeasonBanner.Image IsNot Nothing Then
                     .pbSeasonBanner.Image = SeasonBanner.Image
                     .pbSeasonBanner.Tag = SeasonBanner
 
@@ -321,7 +321,7 @@ Public Class dlgEditSeason
 
             If Master.eSettings.TVSeasonFanartAnyEnabled Then
                 SeasonFanart.FromFile(Master.currShow.SeasonFanartPath)
-                If Not IsNothing(SeasonFanart.Image) Then
+                If SeasonFanart.Image IsNot Nothing Then
                     .pbSeasonFanart.Image = SeasonFanart.Image
                     .pbSeasonFanart.Tag = SeasonFanart
 
@@ -332,7 +332,7 @@ Public Class dlgEditSeason
 
             If Master.eSettings.TVSeasonLandscapeAnyEnabled Then
                 SeasonLandscape.FromFile(Master.currShow.SeasonLandscapePath)
-                If Not IsNothing(SeasonLandscape.Image) Then
+                If SeasonLandscape.Image IsNot Nothing Then
                     .pbSeasonLandscape.Image = SeasonLandscape.Image
                     .pbSeasonLandscape.Tag = SeasonLandscape
 
@@ -343,7 +343,7 @@ Public Class dlgEditSeason
 
             If Master.eSettings.TVSeasonPosterAnyEnabled Then
                 SeasonPoster.FromFile(Master.currShow.SeasonPosterPath)
-                If Not IsNothing(SeasonPoster.Image) Then
+                If SeasonPoster.Image IsNot Nothing Then
                     .pbSeasonPoster.Image = SeasonPoster.Image
                     .pbSeasonPoster.Tag = SeasonPoster
 
@@ -365,7 +365,7 @@ Public Class dlgEditSeason
 
     Private Sub pbSeasonBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonBanner.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             SeasonBanner = tImage
             Me.pbSeasonBanner.Image = SeasonBanner.Image
             Me.pbSeasonBanner.Tag = SeasonBanner
@@ -384,7 +384,7 @@ Public Class dlgEditSeason
 
     Private Sub pbSeasonFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonFanart.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             SeasonFanart = tImage
             Me.pbSeasonFanart.Image = SeasonFanart.Image
             Me.pbSeasonFanart.Tag = SeasonFanart
@@ -403,7 +403,7 @@ Public Class dlgEditSeason
 
     Private Sub pbSeasonLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonLandscape.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             SeasonLandscape = tImage
             Me.pbSeasonLandscape.Image = SeasonLandscape.Image
             Me.pbSeasonLandscape.Tag = SeasonLandscape
@@ -422,7 +422,7 @@ Public Class dlgEditSeason
 
     Private Sub pbSeasonPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonPoster.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             SeasonPoster = tImage
             Me.pbSeasonPoster.Image = SeasonPoster.Image
             Me.pbSeasonPoster.Tag = SeasonPoster
@@ -444,7 +444,7 @@ Public Class dlgEditSeason
 
             'Banner
             If Master.currShow.TVEp.Season = 999 Then
-                If Not IsNothing(.SeasonBanner.Image) Then
+                If .SeasonBanner.Image IsNot Nothing Then
                     'AllSeasons Banner
                     Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVASBanner(Master.currShow, "")
                 Else
@@ -453,7 +453,7 @@ Public Class dlgEditSeason
                 End If
             Else
                 'Season Banner
-                If Not IsNothing(.SeasonBanner.Image) Then
+                If .SeasonBanner.Image IsNot Nothing Then
                     Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVSeasonBanner(Master.currShow)
                 Else
                     .SeasonBanner.DeleteTVSeasonBanner(Master.currShow)
@@ -463,7 +463,7 @@ Public Class dlgEditSeason
 
             'Fanart
             If Master.currShow.TVEp.Season = 999 Then
-                If Not IsNothing(.SeasonFanart.Image) Then
+                If .SeasonFanart.Image IsNot Nothing Then
                     'AllSeasons Fanart
                     Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVASFanart(Master.currShow, "")
                 Else
@@ -472,7 +472,7 @@ Public Class dlgEditSeason
                 End If
             Else
                 'Season Fanart
-                If Not IsNothing(.SeasonFanart.Image) Then
+                If .SeasonFanart.Image IsNot Nothing Then
                     Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVSeasonFanart(Master.currShow)
                 Else
                     .SeasonFanart.DeleteTVSeasonFanart(Master.currShow)
@@ -482,7 +482,7 @@ Public Class dlgEditSeason
 
             'Landscape
             If Master.currShow.TVEp.Season = 999 Then
-                If Not IsNothing(.SeasonLandscape.Image) Then
+                If .SeasonLandscape.Image IsNot Nothing Then
                     'AllSeasons Landscape
                     Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVASLandscape(Master.currShow, "")
                 Else
@@ -491,7 +491,7 @@ Public Class dlgEditSeason
                 End If
             Else
                 'Season Landscape
-                If Not IsNothing(.SeasonLandscape.Image) Then
+                If .SeasonLandscape.Image IsNot Nothing Then
                     Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVSeasonLandscape(Master.currShow)
                 Else
                     .SeasonLandscape.DeleteTVSeasonLandscape(Master.currShow)
@@ -501,7 +501,7 @@ Public Class dlgEditSeason
 
             'Poster
             If Master.currShow.TVEp.Season = 999 Then
-                If Not IsNothing(.SeasonPoster.Image) Then
+                If .SeasonPoster.Image IsNot Nothing Then
                     'AllSeasons Poster
                     Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVASPoster(Master.currShow, "")
                 Else
@@ -510,7 +510,7 @@ Public Class dlgEditSeason
                 End If
             Else
                 'Season Poster
-                If Not IsNothing(.SeasonPoster.Image) Then
+                If .SeasonPoster.Image IsNot Nothing Then
                     Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVSeasonPoster(Master.currShow)
                 Else
                     .SeasonPoster.DeleteTVSeasonPoster(Master.currShow)

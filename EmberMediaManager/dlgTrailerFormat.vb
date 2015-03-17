@@ -131,7 +131,7 @@ Public Class dlgTrailerFormat
                             Me.lbAudioFormats.Enabled = True
                         End If
                     Else
-                        MsgBox(Master.eLang.GetString(1170, "Trailer could not be parsed"), MsgBoxStyle.Information, Master.eLang.GetString(1134, "Error"))
+                        MessageBox.Show(Master.eLang.GetString(1170, "Trailer could not be parsed"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                     End If
                 ElseIf Me._isIMDb Then
                     If IMDb.VideoLinks.Count > 0 Then
@@ -148,11 +148,11 @@ Public Class dlgTrailerFormat
                         End If
                         Me.lbVideoFormats.Enabled = True
                     Else
-                        MsgBox(Master.eLang.GetString(1170, "Trailer could not be parsed"), MsgBoxStyle.Information, Master.eLang.GetString(1134, "Error"))
+                        MessageBox.Show(Master.eLang.GetString(1170, "Trailer could not be parsed"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     End If
                 End If
             Else
-                MsgBox(Master.eLang.GetString(1170, "Trailer could not be parsed"), MsgBoxStyle.Information, Master.eLang.GetString(1134, "Error"))
+                MessageBox.Show(Master.eLang.GetString(1170, "Trailer could not be parsed"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             End If
         End If
         Me.pnlStatus.Visible = False
@@ -174,7 +174,7 @@ Public Class dlgTrailerFormat
             IMDb = New IMDb.Scraper
 
         Catch ex As Exception
-            MsgBox(Master.eLang.GetString(921, "The video format links could not be retrieved."), MsgBoxStyle.Critical, Master.eLang.GetString(72, "Error Retrieving Video Format Links"))
+            MessageBox.Show(Master.eLang.GetString(921, "The video format links could not be retrieved."), Master.eLang.GetString(72, "Error Retrieving Video Format Links"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End Try
     End Sub
 

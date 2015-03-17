@@ -110,7 +110,7 @@ Public Class dlgSettings
             End If
 
             For Each item As ToolStripItem In Me.tsSettingsTopMenu.Items
-                If Not IsNothing(item.Tag) AndAlso item.Tag.ToString = "spacer" Then
+                If item.Tag IsNot Nothing AndAlso item.Tag.ToString = "spacer" Then
                     item.Text = sSpacer
                 End If
             Next
@@ -210,7 +210,7 @@ Public Class dlgSettings
             End If
 
             For Each item As ToolStripItem In Me.tsSettingsTopMenu.Items
-                If Not IsNothing(item.Tag) AndAlso item.Tag.ToString = "spacer" Then
+                If item.Tag IsNot Nothing AndAlso item.Tag.ToString = "spacer" Then
                     item.Text = sSpacer
                 End If
             Next
@@ -662,7 +662,7 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidVideoExtsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemValidVideoExts.Text) Then
-            If Not Strings.Left(txtFileSystemValidVideoExts.Text, 1) = "." Then txtFileSystemValidVideoExts.Text = String.Concat(".", txtFileSystemValidVideoExts.Text)
+            If Not txtFileSystemValidVideoExts.Text.Substring(0, 1) = "." Then txtFileSystemValidVideoExts.Text = String.Concat(".", txtFileSystemValidVideoExts.Text)
             If Not lstFileSystemValidVideoExts.Items.Contains(txtFileSystemValidVideoExts.Text.ToLower) Then
                 lstFileSystemValidVideoExts.Items.Add(txtFileSystemValidVideoExts.Text.ToLower)
                 Me.SetApplyButton(True)
@@ -675,7 +675,7 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidSubtitlesExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidSubtitlesExtsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemValidSubtitlesExts.Text) Then
-            If Not Strings.Left(txtFileSystemValidSubtitlesExts.Text, 1) = "." Then txtFileSystemValidSubtitlesExts.Text = String.Concat(".", txtFileSystemValidSubtitlesExts.Text)
+            If Not txtFileSystemValidSubtitlesExts.Text.Substring(0, 1) = "." Then txtFileSystemValidSubtitlesExts.Text = String.Concat(".", txtFileSystemValidSubtitlesExts.Text)
             If Not lstFileSystemValidSubtitlesExts.Items.Contains(txtFileSystemValidSubtitlesExts.Text.ToLower) Then
                 lstFileSystemValidSubtitlesExts.Items.Add(txtFileSystemValidSubtitlesExts.Text.ToLower)
                 Me.SetApplyButton(True)
@@ -688,7 +688,7 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidThemeExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemValidThemeExts.Text) Then
-            If Not Strings.Left(txtFileSystemValidThemeExts.Text, 1) = "." Then txtFileSystemValidThemeExts.Text = String.Concat(".", txtFileSystemValidThemeExts.Text)
+            If Not txtFileSystemValidThemeExts.Text.Substring(0, 1) = "." Then txtFileSystemValidThemeExts.Text = String.Concat(".", txtFileSystemValidThemeExts.Text)
             If Not lstFileSystemValidThemeExts.Items.Contains(txtFileSystemValidThemeExts.Text.ToLower) Then
                 lstFileSystemValidThemeExts.Items.Add(txtFileSystemValidThemeExts.Text.ToLower)
                 Me.SetApplyButton(True)
@@ -701,7 +701,7 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemNoStackExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemNoStackExtsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemNoStackExts.Text) Then
-            If Not Strings.Left(txtFileSystemNoStackExts.Text, 1) = "." Then txtFileSystemNoStackExts.Text = String.Concat(".", txtFileSystemNoStackExts.Text)
+            If Not txtFileSystemNoStackExts.Text.Substring(0, 1) = "." Then txtFileSystemNoStackExts.Text = String.Concat(".", txtFileSystemNoStackExts.Text)
             If Not lstFileSystemNoStackExts.Items.Contains(txtFileSystemNoStackExts.Text) Then
                 lstFileSystemNoStackExts.Items.Add(txtFileSystemNoStackExts.Text)
                 Me.SetApplyButton(True)
@@ -791,7 +791,7 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemCleanerWhitelistAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemCleanerWhitelistAdd.Click
         If Not String.IsNullOrEmpty(Me.txtFileSystemCleanerWhitelist.Text) Then
-            If Not Strings.Left(txtFileSystemCleanerWhitelist.Text, 1) = "." Then txtFileSystemCleanerWhitelist.Text = String.Concat(".", txtFileSystemCleanerWhitelist.Text)
+            If Not txtFileSystemCleanerWhitelist.Text.Substring(0, 1) = "." Then txtFileSystemCleanerWhitelist.Text = String.Concat(".", txtFileSystemCleanerWhitelist.Text)
             If Not lstFileSystemCleanerWhitelist.Items.Contains(txtFileSystemCleanerWhitelist.Text.ToLower) Then
                 lstFileSystemCleanerWhitelist.Items.Add(txtFileSystemCleanerWhitelist.Text.ToLower)
                 Me.SetApplyButton(True)
@@ -830,7 +830,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieFilterDown.Click
         Try
-            If Me.lstMovieFilters.Items.Count > 0 AndAlso Not IsNothing(Me.lstMovieFilters.SelectedItem) AndAlso Me.lstMovieFilters.SelectedIndex < (Me.lstMovieFilters.Items.Count - 1) Then
+            If Me.lstMovieFilters.Items.Count > 0 AndAlso Me.lstMovieFilters.SelectedItem IsNot Nothing AndAlso Me.lstMovieFilters.SelectedIndex < (Me.lstMovieFilters.Items.Count - 1) Then
                 Dim iIndex As Integer = Me.lstMovieFilters.SelectedIndices(0)
                 Me.lstMovieFilters.Items.Insert(iIndex + 2, Me.lstMovieFilters.SelectedItems(0))
                 Me.lstMovieFilters.Items.RemoveAt(iIndex)
@@ -962,7 +962,7 @@ Public Class dlgSettings
 
     Private Sub btnTVEpisodeFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVEpisodeFilterDown.Click
         Try
-            If Me.lstTVEpisodeFilter.Items.Count > 0 AndAlso Not IsNothing(Me.lstTVEpisodeFilter.SelectedItem) AndAlso Me.lstTVEpisodeFilter.SelectedIndex < (Me.lstTVEpisodeFilter.Items.Count - 1) Then
+            If Me.lstTVEpisodeFilter.Items.Count > 0 AndAlso Me.lstTVEpisodeFilter.SelectedItem IsNot Nothing AndAlso Me.lstTVEpisodeFilter.SelectedIndex < (Me.lstTVEpisodeFilter.Items.Count - 1) Then
                 Dim iIndex As Integer = Me.lstTVEpisodeFilter.SelectedIndices(0)
                 Me.lstTVEpisodeFilter.Items.Insert(iIndex + 2, Me.lstTVEpisodeFilter.SelectedItems(0))
                 Me.lstTVEpisodeFilter.Items.RemoveAt(iIndex)
@@ -978,7 +978,7 @@ Public Class dlgSettings
 
     Private Sub btnTVEpisodeFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVEpisodeFilterUp.Click
         Try
-            If Me.lstTVEpisodeFilter.Items.Count > 0 AndAlso Not IsNothing(Me.lstTVEpisodeFilter.SelectedItem) AndAlso Me.lstTVEpisodeFilter.SelectedIndex > 0 Then
+            If Me.lstTVEpisodeFilter.Items.Count > 0 AndAlso Me.lstTVEpisodeFilter.SelectedItem IsNot Nothing AndAlso Me.lstTVEpisodeFilter.SelectedIndex > 0 Then
                 Dim iIndex As Integer = Me.lstTVEpisodeFilter.SelectedIndices(0)
                 Me.lstTVEpisodeFilter.Items.Insert(iIndex - 1, Me.lstTVEpisodeFilter.SelectedItems(0))
                 Me.lstTVEpisodeFilter.Items.RemoveAt(iIndex + 1)
@@ -1057,7 +1057,7 @@ Public Class dlgSettings
             If Me.lvTVShowRegex.Items.Count > 0 AndAlso Me.lvTVShowRegex.SelectedItems.Count > 0 AndAlso Not Me.lvTVShowRegex.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.TVShowRegEx = Me.TVShowRegex.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(Me.lvTVShowRegex.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvTVShowRegex.SuspendLayout()
                     Dim iIndex As Integer = Me.TVShowRegex.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvTVShowRegex.SelectedIndices(0)
@@ -1084,7 +1084,7 @@ Public Class dlgSettings
             If Me.lvTVShowRegex.Items.Count > 0 AndAlso Me.lvTVShowRegex.SelectedItems.Count > 0 AndAlso Me.lvTVShowRegex.SelectedItems(0).Index < (Me.lvTVShowRegex.Items.Count - 1) Then
                 Dim selItem As Settings.TVShowRegEx = Me.TVShowRegex.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(Me.lvTVShowRegex.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvTVShowRegex.SuspendLayout()
                     Dim iIndex As Integer = Me.TVShowRegex.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvTVShowRegex.SelectedIndices(0)
@@ -1111,7 +1111,7 @@ Public Class dlgSettings
             If Me.lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not Me.lvMovieGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.ListSorting = Me.MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvMovieGeneralMediaListSorting.SuspendLayout()
                     Dim iIndex As Integer = Me.MovieGeneralMediaListSorting.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvMovieGeneralMediaListSorting.SelectedIndices(0)
@@ -1141,7 +1141,7 @@ Public Class dlgSettings
             If Me.lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not Me.lvMovieSetGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.ListSorting = Me.MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvMovieSetGeneralMediaListSorting.SuspendLayout()
                     Dim iIndex As Integer = Me.MovieSetGeneralMediaListSorting.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvMovieSetGeneralMediaListSorting.SelectedIndices(0)
@@ -1171,7 +1171,7 @@ Public Class dlgSettings
             If Me.lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 AndAlso Not Me.lvTVGeneralEpisodeListSorting.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.ListSorting = Me.TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvTVGeneralEpisodeListSorting.SuspendLayout()
                     Dim iIndex As Integer = Me.TVGeneralEpisodeListSorting.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvTVGeneralEpisodeListSorting.SelectedIndices(0)
@@ -1201,7 +1201,7 @@ Public Class dlgSettings
             If Me.lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 AndAlso Not Me.lvTVGeneralSeasonListSorting.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.ListSorting = Me.TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvTVGeneralSeasonListSorting.SuspendLayout()
                     Dim iIndex As Integer = Me.TVGeneralSeasonListSorting.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvTVGeneralSeasonListSorting.SelectedIndices(0)
@@ -1231,7 +1231,7 @@ Public Class dlgSettings
             If Me.lvTVGeneralShowListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralShowListSorting.SelectedItems.Count > 0 AndAlso Not Me.lvTVGeneralShowListSorting.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.ListSorting = Me.TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralShowListSorting.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvTVGeneralShowListSorting.SuspendLayout()
                     Dim iIndex As Integer = Me.TVGeneralShowListSorting.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvTVGeneralShowListSorting.SelectedIndices(0)
@@ -1261,7 +1261,7 @@ Public Class dlgSettings
             If Me.lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Me.lvMovieGeneralMediaListSorting.SelectedItems(0).Index < (Me.lvMovieGeneralMediaListSorting.Items.Count - 1) Then
                 Dim selItem As Settings.ListSorting = Me.MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvMovieGeneralMediaListSorting.SuspendLayout()
                     Dim iIndex As Integer = Me.MovieGeneralMediaListSorting.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvMovieGeneralMediaListSorting.SelectedIndices(0)
@@ -1291,7 +1291,7 @@ Public Class dlgSettings
             If Me.lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Me.lvMovieSetGeneralMediaListSorting.SelectedItems(0).Index < (Me.lvMovieSetGeneralMediaListSorting.Items.Count - 1) Then
                 Dim selItem As Settings.ListSorting = Me.MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvMovieSetGeneralMediaListSorting.SuspendLayout()
                     Dim iIndex As Integer = Me.MovieSetGeneralMediaListSorting.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvMovieSetGeneralMediaListSorting.SelectedIndices(0)
@@ -1321,7 +1321,7 @@ Public Class dlgSettings
             If Me.lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 AndAlso Me.lvTVGeneralEpisodeListSorting.SelectedItems(0).Index < (Me.lvTVGeneralEpisodeListSorting.Items.Count - 1) Then
                 Dim selItem As Settings.ListSorting = Me.TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvTVGeneralEpisodeListSorting.SuspendLayout()
                     Dim iIndex As Integer = Me.TVGeneralEpisodeListSorting.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvTVGeneralEpisodeListSorting.SelectedIndices(0)
@@ -1351,7 +1351,7 @@ Public Class dlgSettings
             If Me.lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 AndAlso Me.lvTVGeneralSeasonListSorting.SelectedItems(0).Index < (Me.lvTVGeneralSeasonListSorting.Items.Count - 1) Then
                 Dim selItem As Settings.ListSorting = Me.TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvTVGeneralSeasonListSorting.SuspendLayout()
                     Dim iIndex As Integer = Me.TVGeneralSeasonListSorting.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvTVGeneralSeasonListSorting.SelectedIndices(0)
@@ -1381,7 +1381,7 @@ Public Class dlgSettings
             If Me.lvTVGeneralShowListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralShowListSorting.SelectedItems.Count > 0 AndAlso Me.lvTVGeneralShowListSorting.SelectedItems(0).Index < (Me.lvTVGeneralShowListSorting.Items.Count - 1) Then
                 Dim selItem As Settings.ListSorting = Me.TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralShowListSorting.SelectedItems(0).Text))
 
-                If Not IsNothing(selItem) Then
+                If selItem IsNot Nothing Then
                     Me.lvTVGeneralShowListSorting.SuspendLayout()
                     Dim iIndex As Integer = Me.TVGeneralShowListSorting.IndexOf(selItem)
                     Dim selIndex As Integer = Me.lvTVGeneralShowListSorting.SelectedIndices(0)
@@ -1410,7 +1410,7 @@ Public Class dlgSettings
         If Me.lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 Then
             Dim selItem As Settings.ListSorting = Me.MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
 
-            If Not IsNothing(selItem) Then
+            If selItem IsNot Nothing Then
                 Me.lvMovieGeneralMediaListSorting.SuspendLayout()
                 selItem.Hide = Not selItem.Hide
                 Dim topIndex As Integer = Me.lvMovieGeneralMediaListSorting.TopItem.Index
@@ -1432,7 +1432,7 @@ Public Class dlgSettings
         If Me.lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso Me.lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 Then
             Dim selItem As Settings.ListSorting = Me.MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
 
-            If Not IsNothing(selItem) Then
+            If selItem IsNot Nothing Then
                 Me.lvMovieSetGeneralMediaListSorting.SuspendLayout()
                 selItem.Hide = Not selItem.Hide
                 Dim topIndex As Integer = Me.lvMovieSetGeneralMediaListSorting.TopItem.Index
@@ -1454,7 +1454,7 @@ Public Class dlgSettings
         If Me.lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 Then
             Dim selItem As Settings.ListSorting = Me.TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
 
-            If Not IsNothing(selItem) Then
+            If selItem IsNot Nothing Then
                 Me.lvTVGeneralEpisodeListSorting.SuspendLayout()
                 selItem.Hide = Not selItem.Hide
                 Dim topIndex As Integer = Me.lvTVGeneralEpisodeListSorting.TopItem.Index
@@ -1476,7 +1476,7 @@ Public Class dlgSettings
         If Me.lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 Then
             Dim selItem As Settings.ListSorting = Me.TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
 
-            If Not IsNothing(selItem) Then
+            If selItem IsNot Nothing Then
                 Me.lvTVGeneralSeasonListSorting.SuspendLayout()
                 selItem.Hide = Not selItem.Hide
                 Dim topIndex As Integer = Me.lvTVGeneralSeasonListSorting.TopItem.Index
@@ -1498,7 +1498,7 @@ Public Class dlgSettings
         If Me.lvTVGeneralShowListSorting.Items.Count > 0 AndAlso Me.lvTVGeneralShowListSorting.SelectedItems.Count > 0 Then
             Dim selItem As Settings.ListSorting = Me.TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(Me.lvTVGeneralShowListSorting.SelectedItems(0).Text))
 
-            If Not IsNothing(selItem) Then
+            If selItem IsNot Nothing Then
                 Me.lvTVGeneralShowListSorting.SuspendLayout()
                 selItem.Hide = Not selItem.Hide
                 Dim topIndex As Integer = Me.lvTVGeneralShowListSorting.TopItem.Index
@@ -1517,7 +1517,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVShowFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterReset.Click, btnMovieFilterReset.Click
-        If MsgBox(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
             Me.RefreshTVShowFilters()
             Me.SetApplyButton(True)
@@ -1525,7 +1525,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVEpisodeFilterReset.Click
-        If MsgBox(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.EpFilters, True)
             Me.RefreshTVEpisodeFilters()
             Me.SetApplyButton(True)
@@ -1533,7 +1533,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        If MsgBox(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieFilters, True)
             Me.RefreshMovieFilters()
             Me.SetApplyButton(True)
@@ -1541,7 +1541,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnFileSystemValidExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
-        If MsgBox(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidExts, True)
             Me.RefreshFileSystemValidExts()
             Me.SetApplyButton(True)
@@ -1549,7 +1549,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click, btnFileSystemValidVideoExtsReset.Click
-        If MsgBox(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidSubtitleExts, True)
             Me.RefreshFileSystemValidSubtitlesExts()
             Me.SetApplyButton(True)
@@ -1557,7 +1557,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
-        If MsgBox(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidThemeExts, True)
             Me.RefreshFileSystemValidThemeExts()
             Me.SetApplyButton(True)
@@ -1576,7 +1576,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVShowRegexReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexReset.Click
-        If MsgBox(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowRegex, True)
             Me.TVShowRegex.Clear()
             Me.TVShowRegex.AddRange(Master.eSettings.TVShowRegexes)
@@ -1721,7 +1721,7 @@ Public Class dlgSettings
 
     Private Sub btnTVShowFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterDown.Click
         Try
-            If Me.lstTVShowFilter.Items.Count > 0 AndAlso Not IsNothing(Me.lstTVShowFilter.SelectedItem) AndAlso Me.lstTVShowFilter.SelectedIndex < (Me.lstTVShowFilter.Items.Count - 1) Then
+            If Me.lstTVShowFilter.Items.Count > 0 AndAlso Me.lstTVShowFilter.SelectedItem IsNot Nothing AndAlso Me.lstTVShowFilter.SelectedIndex < (Me.lstTVShowFilter.Items.Count - 1) Then
                 Dim iIndex As Integer = Me.lstTVShowFilter.SelectedIndices(0)
                 Me.lstTVShowFilter.Items.Insert(iIndex + 2, Me.lstTVShowFilter.SelectedItems(0))
                 Me.lstTVShowFilter.Items.RemoveAt(iIndex)
@@ -1737,7 +1737,7 @@ Public Class dlgSettings
 
     Private Sub btnTVShowFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterUp.Click
         Try
-            If Me.lstTVShowFilter.Items.Count > 0 AndAlso Not IsNothing(Me.lstTVShowFilter.SelectedItem) AndAlso Me.lstTVShowFilter.SelectedIndex > 0 Then
+            If Me.lstTVShowFilter.Items.Count > 0 AndAlso Me.lstTVShowFilter.SelectedItem IsNot Nothing AndAlso Me.lstTVShowFilter.SelectedIndex > 0 Then
                 Dim iIndex As Integer = Me.lstTVShowFilter.SelectedIndices(0)
                 Me.lstTVShowFilter.Items.Insert(iIndex - 1, Me.lstTVShowFilter.SelectedItems(0))
                 Me.lstTVShowFilter.Items.RemoveAt(iIndex + 1)
@@ -1754,7 +1754,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieFilterUp.Click
         Try
-            If Me.lstMovieFilters.Items.Count > 0 AndAlso Not IsNothing(Me.lstMovieFilters.SelectedItem) AndAlso Me.lstMovieFilters.SelectedIndex > 0 Then
+            If Me.lstMovieFilters.Items.Count > 0 AndAlso Me.lstMovieFilters.SelectedItem IsNot Nothing AndAlso Me.lstMovieFilters.SelectedIndex > 0 Then
                 Dim iIndex As Integer = Me.lstMovieFilters.SelectedIndices(0)
                 Me.lstMovieFilters.Items.Insert(iIndex - 1, Me.lstMovieFilters.SelectedItems(0))
                 Me.lstMovieFilters.Items.RemoveAt(iIndex + 1)
@@ -3424,9 +3424,9 @@ Public Class dlgSettings
     Private Sub FillGenres()
         If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
             Dim genreArray() As String
-            genreArray = Strings.Split(Master.eSettings.GenreFilter, ",")
-            For g As Integer = 0 To UBound(genreArray)
-                If Me.clbMovieGenre.FindString(Strings.Trim(genreArray(g))) > 0 Then Me.clbMovieGenre.SetItemChecked(Me.clbMovieGenre.FindString(Strings.Trim(genreArray(g))), True)
+            genreArray = Master.eSettings.GenreFilter.Split(","c)
+            For g As Integer = 0 To genreArray.Count - 1
+                If Me.clbMovieGenre.FindString(genreArray(g).Trim) > 0 Then Me.clbMovieGenre.SetItemChecked(Me.clbMovieGenre.FindString(genreArray(g).Trim), True)
             Next
 
             If Me.clbMovieGenre.CheckedItems.Count = 0 Then
@@ -4268,7 +4268,7 @@ Public Class dlgSettings
         Me.SuspendLayout()
         tSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = Name)
 
-        If Not IsNothing(tSetPan) Then
+        If tSetPan IsNot Nothing Then
             tSetPan.ImageIndex = If(State, 9, 10)
 
             Try
@@ -4281,11 +4281,11 @@ Public Class dlgSettings
                         Dim i As Integer = t(0).Index
                         If diffOrder < 0 AndAlso Not t(0).PrevNode Is Nothing Then
                             oSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = t(0).PrevNode.Name)
-                            If Not IsNothing(oSetPan) Then oSetPan.Order = i + (diffOrder * -1)
+                            If oSetPan IsNot Nothing Then oSetPan.Order = i + (diffOrder * -1)
                         End If
                         If diffOrder > 0 AndAlso Not t(0).NextNode Is Nothing Then
                             oSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = t(0).NextNode.Name)
-                            If Not IsNothing(oSetPan) Then oSetPan.Order = i + (diffOrder * -1)
+                            If oSetPan IsNot Nothing Then oSetPan.Order = i + (diffOrder * -1)
                         End If
                         p.Nodes.Remove(t(0))
                         p.Nodes.Insert(i + diffOrder, t(0))
@@ -5030,7 +5030,7 @@ Public Class dlgSettings
 
     Private Sub RemoveMovieSource()
         If Me.lvMovieSources.SelectedItems.Count > 0 Then
-            If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+            If MessageBox.Show(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                 Me.lvMovieSources.BeginUpdate()
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -5142,7 +5142,7 @@ Public Class dlgSettings
 
     Private Sub RemoveTVSource()
         If Me.lvTVSources.SelectedItems.Count > 0 Then
-            If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the TV Shows from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+            If MessageBox.Show(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the TV Shows from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                 Me.lvTVSources.BeginUpdate()
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -5315,7 +5315,7 @@ Public Class dlgSettings
             .MovieGeneralMediaListSorting.Clear()
             .MovieGeneralMediaListSorting.AddRange(Me.MovieGeneralMediaListSorting)
             If Not String.IsNullOrEmpty(Me.txtMovieIMDBURL.Text) Then
-                .MovieIMDBURL = Strings.Replace(Me.txtMovieIMDBURL.Text, "http://", String.Empty)
+                .MovieIMDBURL = Me.txtMovieIMDBURL.Text.Replace("http://", String.Empty).Trim
             Else
                 .MovieIMDBURL = "akas.imdb.com"
             End If
@@ -5463,7 +5463,7 @@ Public Class dlgSettings
             .MovieScraperCredits = Me.chkMovieScraperCredits.Checked
             .MovieScraperXBMCTrailerFormat = Me.chkMovieScraperXBMCTrailerFormat.Checked
             .MovieScraperYear = Me.chkMovieScraperYear.Checked
-            If Not String.IsNullOrEmpty(Me.txtMovieSkipLessThan.Text) AndAlso IsNumeric(Me.txtMovieSkipLessThan.Text) Then
+            If Not String.IsNullOrEmpty(Me.txtMovieSkipLessThan.Text) AndAlso Integer.TryParse(Me.txtMovieSkipLessThan.Text, 0) Then
                 .MovieSkipLessThan = Convert.ToInt32(Me.txtMovieSkipLessThan.Text)
             Else
                 .MovieSkipLessThan = 0
@@ -5665,7 +5665,7 @@ Public Class dlgSettings
             .TVShowProperCase = Me.chkTVShowProperCase.Checked
             .TVShowRegexes.Clear()
             .TVShowRegexes.AddRange(Me.TVShowRegex)
-            If Not String.IsNullOrEmpty(Me.txtTVSkipLessThan.Text) AndAlso IsNumeric(Me.txtTVSkipLessThan.Text) Then
+            If Not String.IsNullOrEmpty(Me.txtTVSkipLessThan.Text) AndAlso Integer.TryParse(Me.txtTVSkipLessThan.Text, 0) Then
                 .TVSkipLessThan = Convert.ToInt32(Me.txtTVSkipLessThan.Text)
             Else
                 .TVSkipLessThan = 0
@@ -5717,7 +5717,7 @@ Public Class dlgSettings
                 Else
                     Dim strGenre As String = String.Empty
                     Dim iChecked = From iCheck In Me.clbMovieGenre.CheckedItems
-                    strGenre = Strings.Join(iChecked.ToArray, ",")
+                    strGenre = String.Join(",", iChecked.ToArray)
                     .GenreFilter = strGenre.Trim
                 End If
             End If
@@ -6236,7 +6236,7 @@ Public Class dlgSettings
         Me.gbTVScraperDurationFormatOpts.Text = strDurationFormat
 
         'Duration Runtime Format
-        Dim strDurationRuntimeFormat As String = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), vbNewLine)
+        Dim strDurationRuntimeFormat As String = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), Environment.NewLine)
         Me.lblMovieScraperDurationRuntimeFormat.Text = strDurationRuntimeFormat
         Me.lblTVScraperDurationRuntimeFormat.Text = strDurationRuntimeFormat
 
@@ -6819,7 +6819,7 @@ Public Class dlgSettings
         Me.lblMovieIMDBMirror.Text = Master.eLang.GetString(884, "IMDB Mirror:")
         Me.lblMovieLanguageOverlay.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
         Me.lblMovieLevTolerance.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
-        Me.lblMovieScraperDurationRuntimeFormat.Text = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), vbNewLine)
+        Me.lblMovieScraperDurationRuntimeFormat.Text = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), Environment.NewLine)
         Me.lblMovieSkipLessThan.Text = Master.eLang.GetString(540, "Skip files smaller than:")
         Me.lblMovieSkipLessThanMB.Text = Master.eLang.GetString(539, "MB")
         Me.lblMovieTrailerDefaultSearch.Text = Master.eLang.GetString(1172, "Default Search Parameter:")

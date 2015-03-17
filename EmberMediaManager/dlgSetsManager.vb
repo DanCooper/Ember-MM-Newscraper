@@ -60,7 +60,7 @@ Public Class dlgSetsManager
                     If Not Me.lbMoviesInSet.Items.Contains(lbMovies.SelectedItems(0)) Then
                         Me.sListTitle = lbMovies.SelectedItems(0).ToString
                         lMov = lMovies.Find(AddressOf FindMovie)
-                        If Not IsNothing(lMov) Then
+                        If lMov IsNot Nothing Then
                             Me.currSet.AddMovie(lMov, Me.currSet.Movies.Count + 1)
                             needsSave = True
                             Me.lbMovies.Items.Remove(lbMovies.SelectedItems(0))
@@ -85,7 +85,7 @@ Public Class dlgSetsManager
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
         Try
-            If Me.lbMoviesInSet.Items.Count > 0 AndAlso Not IsNothing(Me.lbMoviesInSet.SelectedItem) AndAlso Me.lbMoviesInSet.SelectedIndex < (Me.lbMoviesInSet.Items.Count - 1) Then
+            If Me.lbMoviesInSet.Items.Count > 0 AndAlso Me.lbMoviesInSet.SelectedItem IsNot Nothing AndAlso Me.lbMoviesInSet.SelectedIndex < (Me.lbMoviesInSet.Items.Count - 1) Then
                 needsSave = True
                 Dim iIndex As Integer = Me.lbMoviesInSet.SelectedIndex
                 Me.currSet.Movies(iIndex).Order += 1
@@ -127,7 +127,7 @@ Public Class dlgSetsManager
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
         Try
-            If Me.lbMoviesInSet.Items.Count > 0 AndAlso Not IsNothing(Me.lbMoviesInSet.SelectedItem) AndAlso Me.lbMoviesInSet.SelectedIndex > 0 Then
+            If Me.lbMoviesInSet.Items.Count > 0 AndAlso Me.lbMoviesInSet.SelectedItem IsNot Nothing AndAlso Me.lbMoviesInSet.SelectedIndex > 0 Then
                 needsSave = True
                 Dim iIndex As Integer = Me.lbMoviesInSet.SelectedIndex
                 Me.currSet.Movies(iIndex).Order -= 1
@@ -235,7 +235,7 @@ Public Class dlgSetsManager
             While Me.lbMoviesInSet.SelectedItems.Count > 0
                 Me.sListTitle = Me.lbMoviesInSet.SelectedItems(0).ToString
                 lMov = Me.currSet.Movies.Find(AddressOf FindMovie)
-                If Not IsNothing(lMov) Then
+                If lMov IsNot Nothing Then
                     'cocotus 2014018 Remove also from tempMovielist
                     For i = 0 To lMoviesinSets.Count - 1
                         If lMoviesinSets(i) = lMov.ListTitle Then
@@ -421,7 +421,7 @@ Public Class dlgSetsManager
 
                 If IO.File.Exists(collectionartwork_path & currSet.Set & "-fanart.jpg") Then
                     Fanart.FromFile(collectionartwork_path & currSet.Set & "-fanart.jpg")
-                    If Not IsNothing(Fanart.Image) Then
+                    If Fanart.Image IsNot Nothing Then
                         pbFanart.Image = Fanart.Image
                         pbFanart.Tag = Fanart
                         lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
@@ -438,7 +438,7 @@ Public Class dlgSetsManager
                 End If
                 If IO.File.Exists(collectionartwork_path & currSet.Set & "-poster.jpg") Then
                     Poster.FromFile(collectionartwork_path & currSet.Set & "-poster.jpg")
-                    If Not IsNothing(Poster.Image) Then
+                    If Poster.Image IsNot Nothing Then
                         pbPoster.Image = Poster.Image
                         pbPoster.Tag = Poster
                         lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
@@ -449,7 +449,7 @@ Public Class dlgSetsManager
                     End If
                 ElseIf IO.File.Exists(collectionartwork_path & currSet.Set & "-poster.png") Then
                     Poster.FromFile(collectionartwork_path & currSet.Set & "-poster.png")
-                    If Not IsNothing(Poster.Image) Then
+                    If Poster.Image IsNot Nothing Then
                         pbPoster.Image = Poster.Image
                         pbPoster.Tag = Poster
                         lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
@@ -804,7 +804,7 @@ Public Class dlgSetsManager
                             Poster = pResults.WebImage
                         End If
                     Else
-                        MsgBox(Master.eLang.GetString(971, "No poster images could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Posters Found"))
+                        MessageBox.Show(Master.eLang.GetString(971, "No poster images could be found. Please check to see if any poster scrapers are enabled."), Master.eLang.GetString(972, "No Posters Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                     End If
                 End If
             End If
@@ -840,7 +840,7 @@ Public Class dlgSetsManager
                             Fanart = pResults.WebImage
                         End If
                     Else
-                        MsgBox(Master.eLang.GetString(971, "No Fanart images could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Fanart Found"))
+                        MessageBox.Show(Master.eLang.GetString(971, "No Fanart images could be found. Please check to see if any poster scrapers are enabled."), Master.eLang.GetString(972, "No Fanart Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                     End If
                 End If
             End If
@@ -853,7 +853,7 @@ Public Class dlgSetsManager
     Private Sub btSave_Click(sender As Object, e As EventArgs) Handles btSave.Click
 
         If Not String.IsNullOrEmpty(collectionartwork_path) AndAlso IO.Directory.Exists(collectionartwork_path) Then
-            If Not IsNothing(Fanart.Image) Then
+            If Fanart.Image IsNot Nothing Then
                 'Dim fPath As String = Fanart.SaveAsMovieCollectionFanart(collectionartwork_path, currSet.Set)
                 ' Master.currMovie.FanartPath = fPath
             Else
@@ -861,7 +861,7 @@ Public Class dlgSetsManager
                 Master.currMovie.FanartPath = String.Empty
             End If
 
-            If Not IsNothing(Poster.Image) Then
+            If Poster.Image IsNot Nothing Then
                 'Dim pPath As String = Poster.SaveAsMovieCollectionPoster(collectionartwork_path, currSet.Set)
                 ' Master.currMovie.PosterPath = pPath
             Else
@@ -872,13 +872,13 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub pbPoster_BackgroundImageChanged(sender As Object, e As EventArgs) Handles pbPoster.BackgroundImageChanged
-        If IsNothing(Poster.Image) Then
+        If Poster.Image Is Nothing Then
             btnRemovePoster.Enabled = False
         Else
             btnRemovePoster.Enabled = True
         End If
 
-        If IsNothing(Fanart.Image) AndAlso IsNothing(Poster.Image) Then
+        If Fanart.Image Is Nothing AndAlso Poster.Image Is Nothing Then
             btSave.Enabled = False
         Else
             btSave.Enabled = True
@@ -886,13 +886,13 @@ Public Class dlgSetsManager
     End Sub
     Private Sub pbFanart_BackgroundImageChanged(sender As Object, e As EventArgs) Handles pbFanart.BackgroundImageChanged
 
-        If IsNothing(Fanart.Image) Then
+        If Fanart.Image Is Nothing Then
             btnRemoveFanart.Enabled = False
         Else
             btnRemoveFanart.Enabled = True
         End If
 
-        If IsNothing(Fanart.Image) AndAlso IsNothing(Poster.Image) Then
+        If Fanart.Image Is Nothing AndAlso Poster.Image Is Nothing Then
             btSave.Enabled = False
         Else
             btSave.Enabled = True
@@ -916,7 +916,7 @@ Public Class dlgSetsManager
                 Me.lblPosterSize.Visible = True
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     Private Sub btnSetFanart_Click(sender As Object, e As EventArgs) Handles btnSetFanart.Click
@@ -936,7 +936,7 @@ Public Class dlgSetsManager
                 Me.lblFanartSize.Visible = True
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

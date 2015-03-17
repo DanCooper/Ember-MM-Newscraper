@@ -210,7 +210,7 @@ Public Class dlgOfflineHolder
     Private Sub btnFont_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFont.Click
         With Me.fdFont
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                If Not IsNothing(.Font) Then
+                If .Font IsNot Nothing Then
                     Me.drawFont = .Font
                     Me.CreateDummyMoviePreview()
                 End If
@@ -391,7 +391,7 @@ Public Class dlgOfflineHolder
         End If
         Directory.CreateDirectory(buildPath)
 
-        If Not IsNothing(Preview) Then
+        If Preview IsNot Nothing Then
             imgTemp = Preview
         Else
             imgTemp = New Bitmap(Video_Width, Video_Height)
@@ -687,7 +687,7 @@ Public Class dlgOfflineHolder
                 Video_Aspect = "NotWide"
         End Select
         SetPreview(Not chkUseFanart.Checked, fPath)
-        If Not chkUseFanart.Checked AndAlso Not IsNothing(Preview) Then
+        If Not chkUseFanart.Checked AndAlso Preview IsNot Nothing Then
             If Video_Aspect = "Wide" Then
                 txtTop.Text = Convert.ToUInt16(Preview.Height - (167 / (1920 / Video_Width)) - (textHeight.Height / 2)).ToString
             Else
@@ -1683,7 +1683,7 @@ Public Class dlgOfflineHolder
                                         Fanart.WebImage.FromWeb(Fanart.URL)
                                     End If
                                     ' needs local fanart for dummy movie
-                                    'If Not IsNothing(Fanart.WebImage.Image) Then
+                                    'If Fanart.WebImage.Image IsNot Nothing Then
                                     '    fPath = Fanart.WebImage.SaveAsMovieFanart(sMovie)
                                     'End If
                                 End If
@@ -1866,7 +1866,7 @@ Public Class dlgOfflineHolder
                 newGraphics.DrawImage(tmpImg, New Rectangle(0, 0, RealImage_W, RealImage_H), New Rectangle(0, 0, tmpImg.Width, tmpImg.Height), GraphicsUnit.Pixel)
                 'Dont need this one anymore
                 tmpImg.Dispose()
-                If Not IsNothing(drawFont) Then
+                If drawFont IsNot Nothing Then
                     textHeight = newGraphics.MeasureString(txtTagline.Text, drawFont)
                 Else
                     drawFont = New Font("Arial", Convert.ToUInt16(22 / (1920 / Video_Width)), FontStyle.Bold)

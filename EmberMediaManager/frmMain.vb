@@ -395,62 +395,62 @@ Public Class frmMain
                     Threading.Thread.Sleep(50)
                 End While
 
-                If Not IsNothing(.pbFanart.Image) Then
+                If .pbFanart.Image IsNot Nothing Then
                     .pbFanart.Image.Dispose()
                     .pbFanart.Image = Nothing
                 End If
                 .MainFanart.Clear()
 
-                If Not IsNothing(.pbBanner.Image) Then
+                If .pbBanner.Image IsNot Nothing Then
                     .pbBanner.Image.Dispose()
                     .pbBanner.Image = Nothing
                 End If
                 .pnlBanner.Visible = False
                 .MainBanner.Clear()
 
-                If Not IsNothing(.pbCharacterArt.Image) Then
+                If .pbCharacterArt.Image IsNot Nothing Then
                     .pbCharacterArt.Image.Dispose()
                     .pbCharacterArt.Image = Nothing
                 End If
                 .pnlCharacterArt.Visible = False
                 .MainCharacterArt.Clear()
 
-                If Not IsNothing(.pbClearArt.Image) Then
+                If .pbClearArt.Image IsNot Nothing Then
                     .pbClearArt.Image.Dispose()
                     .pbClearArt.Image = Nothing
                 End If
                 .pnlClearArt.Visible = False
                 .MainClearArt.Clear()
 
-                If Not IsNothing(.pbClearLogo.Image) Then
+                If .pbClearLogo.Image IsNot Nothing Then
                     .pbClearLogo.Image.Dispose()
                     .pbClearLogo.Image = Nothing
                 End If
                 .pnlClearLogo.Visible = False
                 .MainClearLogo.Clear()
 
-                If Not IsNothing(.pbPoster.Image) Then
+                If .pbPoster.Image IsNot Nothing Then
                     .pbPoster.Image.Dispose()
                     .pbPoster.Image = Nothing
                 End If
                 .pnlPoster.Visible = False
                 .MainPoster.Clear()
 
-                If Not IsNothing(.pbFanartSmall.Image) Then
+                If .pbFanartSmall.Image IsNot Nothing Then
                     .pbFanartSmall.Image.Dispose()
                     .pbFanartSmall.Image = Nothing
                 End If
                 .pnlFanartSmall.Visible = False
                 .MainFanartSmall.Clear()
 
-                If Not IsNothing(.pbLandscape.Image) Then
+                If .pbLandscape.Image IsNot Nothing Then
                     .pbLandscape.Image.Dispose()
                     .pbLandscape.Image = Nothing
                 End If
                 .pnlLandscape.Visible = False
                 .MainLandscape.Clear()
 
-                If Not IsNothing(.pbDiscArt.Image) Then
+                If .pbDiscArt.Image IsNot Nothing Then
                     .pbDiscArt.Image.Dispose()
                     .pbDiscArt.Image = Nothing
                 End If
@@ -459,14 +459,14 @@ Public Class frmMain
 
                 'remove all the current genres
                 Try
-                    For iDel As Integer = UBound(.pnlGenre) To 0 Step -1
+                    For iDel As Integer = 0 To .pnlGenre.Count - 1
                         .scMain.Panel2.Controls.Remove(.pbGenre(iDel))
                         .scMain.Panel2.Controls.Remove(.pnlGenre(iDel))
                     Next
                 Catch
                 End Try
 
-                If Not IsNothing(.pbMPAA.Image) Then
+                If .pbMPAA.Image IsNot Nothing Then
                     .pbMPAA.Image = Nothing
                 End If
                 .pnlMPAA.Visible = False
@@ -501,11 +501,11 @@ Public Class frmMain
                 ToolTips.SetToolTip(pbStar10, "")
 
                 .lstActors.Items.Clear()
-                If Not IsNothing(.alActors) Then
+                If .alActors IsNot Nothing Then
                     .alActors.Clear()
                     .alActors = Nothing
                 End If
-                If Not IsNothing(.pbActors.Image) Then
+                If .pbActors.Image IsNot Nothing Then
                     .pbActors.Image.Dispose()
                     .pbActors.Image = Nothing
                 End If
@@ -518,7 +518,7 @@ Public Class frmMain
                 .txtOutline.Text = String.Empty
                 .txtPlot.Text = String.Empty
                 .lblTagline.Text = String.Empty
-                If Not IsNothing(.pbMPAA.Image) Then
+                If .pbMPAA.Image IsNot Nothing Then
                     .pbMPAA.Image.Dispose()
                     .pbMPAA.Image = Nothing
                 End If
@@ -1587,7 +1587,7 @@ Public Class frmMain
         Else
             Dim Res As Results = DirectCast(e.Result, Results)
 
-            If Not IsNothing(Res.Result) Then
+            If Res.Result IsNot Nothing Then
                 Me.pbActors.Image = Res.Result
             Else
                 Me.pbActors.Image = My.Resources.actor_silhouette
@@ -1637,7 +1637,7 @@ Public Class frmMain
                 NeedsGS = True
             End If
 
-            If Not IsNothing(Me.MainFanart.Image) Then
+            If Me.MainFanart.Image IsNot Nothing Then
                 If String.IsNullOrEmpty(Master.currShow.Filename) Then
                     Me.MainFanart = ImageUtils.AddMissingStamp(Me.MainFanart)
                 ElseIf NeedsGS Then
@@ -1800,7 +1800,7 @@ Public Class frmMain
         Dim Posters As New List(Of MovieInSetPoster)
 
         Try
-            If Not IsNothing(Master.currMovieSet.Movies) AndAlso Master.currMovieSet.Movies.Count > 0 Then
+            If Master.currMovieSet.Movies IsNot Nothing AndAlso Master.currMovieSet.Movies.Count > 0 Then
                 Try
                     For Each Movie As Structures.DBMovie In Master.currMovieSet.Movies
                         If bwLoadMovieSetPosters.CancellationPending Then
@@ -1813,7 +1813,7 @@ Public Class frmMain
                         If Not String.IsNullOrEmpty(Movie.PosterPath) Then
                             Poster.FromFile(Movie.PosterPath)
                         End If
-                        If Not IsNothing(Poster.Image) Then
+                        If Poster.Image IsNot Nothing Then
                             ResImg = CType(Poster.Image.Clone(), Image)
                             ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
                             Posters.Add(New MovieInSetPoster With {.MovieTitle = Movie.Movie.Title, .MoviePoster = ResImg})
@@ -1847,10 +1847,10 @@ Public Class frmMain
             Try
                 Dim Res As Results = DirectCast(e.Result, Results)
 
-                If Not IsNothing(Res.MovieInSetPosters) AndAlso Res.MovieInSetPosters.Count > 0 Then
+                If Res.MovieInSetPosters IsNot Nothing AndAlso Res.MovieInSetPosters.Count > 0 Then
                     Me.lvMoviesInSet.BeginUpdate()
                     For Each tPoster As MovieInSetPoster In Res.MovieInSetPosters
-                        If Not IsNothing(tPoster) Then
+                        If tPoster IsNot Nothing Then
                             Me.ilMoviesInSet.Images.Add(tPoster.MoviePoster)
                             Me.lvMoviesInSet.Items.Add(tPoster.MovieTitle, Me.ilMoviesInSet.Images.Count - 1)
                         End If
@@ -1903,7 +1903,7 @@ Public Class frmMain
                 NeedsGS = True
             End If
 
-            If Not IsNothing(Me.MainFanart.Image) Then
+            If Me.MainFanart.Image IsNot Nothing Then
                 If Not Args.setEnabled Then
                     Me.MainFanart = ImageUtils.AddMissingStamp(Me.MainFanart)
                 ElseIf NeedsGS Then
@@ -2192,7 +2192,7 @@ Public Class frmMain
                     MovieScraperEvent(Enums.ScraperEventType_Movie.Director, DBScrapeMovie.Movie.Director)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.Genre, DBScrapeMovie.Movie.Genre)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.IMDBID, DBScrapeMovie.Movie.ID)
-                    MovieScraperEvent(Enums.ScraperEventType_Movie.DateModified, Functions.ConvertToUnixTimestamp(Now))
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.DateModified, Functions.ConvertToUnixTimestamp(DateTime.Now))
                     MovieScraperEvent(Enums.ScraperEventType_Movie.ListTitle, DBScrapeMovie.ListTitle)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.MPAA, DBScrapeMovie.Movie.MPAA)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.OriginalTitle, DBScrapeMovie.Movie.OriginalTitle)
@@ -2249,10 +2249,10 @@ Public Class frmMain
                     If Poster.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.Poster) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMoviePoster(aList, Poster) Then
-                                If Not String.IsNullOrEmpty(Poster.URL) AndAlso IsNothing(Poster.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
                                     Poster.WebImage.FromWeb(Poster.URL)
                                 End If
-                                If Not IsNothing(Poster.WebImage.Image) Then
+                                If Poster.WebImage.Image IsNot Nothing Then
                                     tURL = Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.PosterPath = tURL
@@ -2265,16 +2265,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType_Movie.Poster, aList, etList, efList) = DialogResult.OK Then
                                             Poster = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(Poster.URL) AndAlso IsNothing(Poster.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
                                                     Poster.WebImage.FromWeb(Poster.URL)
                                                 End If
-                                                If Not IsNothing(Poster.WebImage.Image) Then
+                                                If Poster.WebImage.Image IsNot Nothing Then
                                                     tURL = Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.PosterPath = tURL
@@ -2307,10 +2307,10 @@ Public Class frmMain
                     If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.Fanart) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieFanart(aList, Fanart) Then
-                                If Not String.IsNullOrEmpty(Fanart.URL) AndAlso IsNothing(Fanart.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
                                     Fanart.WebImage.FromWeb(Fanart.URL)
                                 End If
-                                If Not IsNothing(Fanart.WebImage.Image) Then
+                                If Fanart.WebImage.Image IsNot Nothing Then
                                     tURL = Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.FanartPath = tURL
@@ -2323,7 +2323,7 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
+                                        MessageBox.Show(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size:"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType_Movie.Fanart, aList, efList, etList) = DialogResult.OK Then
@@ -2331,10 +2331,10 @@ Public Class frmMain
                                             efList = dImgSelect.efList
                                             etList = dImgSelect.etList
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(Fanart.URL) AndAlso IsNothing(Fanart.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
                                                     Fanart.WebImage.FromWeb(Fanart.URL)
                                                 End If
-                                                If Not IsNothing(Fanart.WebImage.Image) Then
+                                                If Fanart.WebImage.Image IsNot Nothing Then
                                                     tURL = Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.FanartPath = tURL
@@ -2368,10 +2368,10 @@ Public Class frmMain
                         If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Banner) Then 'TODO: Check if we need PreferredBanner
                                 If aList.Count > 0 Then Banner = aList.Item(0)
-                                If Not String.IsNullOrEmpty(Banner.URL) AndAlso IsNothing(Banner.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
                                     Banner.WebImage.FromWeb(Banner.URL)
                                 End If
-                                If Not IsNothing(Banner.WebImage.Image) Then
+                                If Banner.WebImage.Image IsNot Nothing Then
                                     tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.BannerPath = tURL
@@ -2384,16 +2384,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType_Movie.Banner, aList, etList, efList) = DialogResult.OK Then
                                             Banner = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(Banner.URL) AndAlso IsNothing(Banner.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
                                                     Banner.WebImage.FromWeb(Banner.URL)
                                                 End If
-                                                If Not IsNothing(Banner.WebImage.Image) Then
+                                                If Banner.WebImage.Image IsNot Nothing Then
                                                     tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.BannerPath = tURL
@@ -2425,10 +2425,10 @@ Public Class frmMain
                         If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
                                 If aList.Count > 0 Then Landscape = aList.Item(0)
-                                If Not String.IsNullOrEmpty(Landscape.URL) AndAlso IsNothing(Landscape.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
                                     Landscape.WebImage.FromWeb(Landscape.URL)
                                 End If
-                                If Not IsNothing(Landscape.WebImage.Image) Then
+                                If Landscape.WebImage.Image IsNot Nothing Then
                                     tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.LandscapePath = tURL
@@ -2438,16 +2438,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(1063, "A landscape of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(1063, "A landscape of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType_Movie.Landscape, aList, etList, efList) = DialogResult.OK Then
                                             Landscape = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(Landscape.URL) AndAlso IsNothing(Landscape.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
                                                     Landscape.WebImage.FromWeb(Landscape.URL)
                                                 End If
-                                                If Not IsNothing(Landscape.WebImage.Image) Then
+                                                If Landscape.WebImage.Image IsNot Nothing Then
                                                     tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.LandscapePath = tURL
@@ -2476,10 +2476,10 @@ Public Class frmMain
                         If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
                                 If aList.Count > 0 Then ClearArt = aList.Item(0)
-                                If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso IsNothing(ClearArt.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
                                     ClearArt.WebImage.FromWeb(ClearArt.URL)
                                 End If
-                                If Not IsNothing(ClearArt.WebImage.Image) Then
+                                If ClearArt.WebImage.Image IsNot Nothing Then
                                     tURL = ClearArt.WebImage.SaveAsMovieClearArt(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.ClearArtPath = tURL
@@ -2489,16 +2489,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(1106, "A ClearArt of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(1106, "A ClearArt of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType_Movie.ClearArt, aList, etList, efList) = DialogResult.OK Then
                                             ClearArt = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso IsNothing(ClearArt.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
                                                     ClearArt.WebImage.FromWeb(ClearArt.URL)
                                                 End If
-                                                If Not IsNothing(ClearArt.WebImage.Image) Then
+                                                If ClearArt.WebImage.Image IsNot Nothing Then
                                                     tURL = ClearArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.ClearArtPath = tURL
@@ -2527,10 +2527,10 @@ Public Class frmMain
                         If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
                                 If aList.Count > 0 Then ClearLogo = aList.Item(0)
-                                If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso IsNothing(ClearLogo.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
                                     ClearLogo.WebImage.FromWeb(ClearLogo.URL)
                                 End If
-                                If Not IsNothing(ClearLogo.WebImage.Image) Then
+                                If ClearLogo.WebImage.Image IsNot Nothing Then
                                     tURL = ClearLogo.WebImage.SaveAsMovieClearLogo(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.ClearLogoPath = tURL
@@ -2540,16 +2540,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(1107, "A ClearLogo of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(1107, "A ClearLogo of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType_Movie.ClearLogo, aList, etList, efList) = DialogResult.OK Then
                                             ClearLogo = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso IsNothing(ClearLogo.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
                                                     ClearLogo.WebImage.FromWeb(ClearLogo.URL)
                                                 End If
-                                                If Not IsNothing(ClearLogo.WebImage.Image) Then
+                                                If ClearLogo.WebImage.Image IsNot Nothing Then
                                                     tURL = ClearLogo.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.ClearLogoPath = tURL
@@ -2578,10 +2578,10 @@ Public Class frmMain
                         If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
                                 If aList.Count > 0 Then DiscArt = aList.Item(0)
-                                If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso IsNothing(DiscArt.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
                                     DiscArt.WebImage.FromWeb(DiscArt.URL)
                                 End If
-                                If Not IsNothing(DiscArt.WebImage.Image) Then
+                                If DiscArt.WebImage.Image IsNot Nothing Then
                                     tURL = DiscArt.WebImage.SaveAsMovieDiscArt(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.DiscArtPath = tURL
@@ -2591,16 +2591,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(1108, "A DiscArt of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(1108, "A DiscArt of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType_Movie.DiscArt, aList, etList, efList) = DialogResult.OK Then
                                             DiscArt = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso IsNothing(DiscArt.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
                                                     DiscArt.WebImage.FromWeb(DiscArt.URL)
                                                 End If
-                                                If Not IsNothing(DiscArt.WebImage.Image) Then
+                                                If DiscArt.WebImage.Image IsNot Nothing Then
                                                     tURL = DiscArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.DiscArtPath = tURL
@@ -2631,7 +2631,7 @@ Public Class frmMain
                                 If tUrlList.Count > 0 Then
                                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                                         Theme.WebTheme.FromWeb(tUrlList.Item(0).URL, tUrlList.Item(0).WebURL)
-                                        If Not IsNothing(Theme.WebTheme) Then 'TODO: fix check
+                                        If Theme.WebTheme IsNot Nothing Then 'TODO: fix check
                                             tURL = Theme.WebTheme.SaveAsMovieTheme(DBScrapeMovie)
                                             If Not String.IsNullOrEmpty(tURL) Then
                                                 DBScrapeMovie.ThemePath = tURL
@@ -2703,7 +2703,7 @@ Public Class frmMain
                                     Next
                                 ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
+                                        MessageBox.Show(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size:"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dTrailerSelect As New dlgTrailerSelect
                                         If dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList, False, True, False) = DialogResult.OK Then
@@ -2742,7 +2742,7 @@ Public Class frmMain
                                     For Each lItem As String In etList
                                         Dim EThumb As New Images
                                         EThumb.FromWeb(lItem)
-                                        If Not IsNothing(EThumb.Image) Then
+                                        If EThumb.Image IsNot Nothing Then
                                             Dim etPath As String = EThumb.SaveAsMovieExtrathumb(DBScrapeMovie)
                                             If Not String.IsNullOrEmpty(etPath) Then
                                                 DBScrapeMovie.EThumbsPath = etPath
@@ -2774,7 +2774,7 @@ Public Class frmMain
                                     For Each lItem As String In efList
                                         Dim EFanart As New Images
                                         EFanart.FromWeb(lItem)
-                                        If Not IsNothing(EFanart.Image) Then
+                                        If EFanart.Image IsNot Nothing Then
                                             Dim efPath As String = EFanart.SaveAsMovieExtrafanart(DBScrapeMovie, Path.GetFileName(lItem))
                                             If Not String.IsNullOrEmpty(efPath) Then
                                                 DBScrapeMovie.EFanartsPath = efPath
@@ -2798,7 +2798,7 @@ Public Class frmMain
                         For Each act As MediaContainers.Person In DBScrapeMovie.Movie.Actors
                             Dim img As New Images
                             img.FromWeb(act.ThumbURL)
-                            If Not IsNothing(img.Image) Then
+                            If img.Image IsNot Nothing Then
                                 act.ThumbPath = img.SaveAsMovieActorThumb(act, Directory.GetParent(DBScrapeMovie.Filename).FullName, DBScrapeMovie)
                             End If
                         Next
@@ -3019,10 +3019,10 @@ Public Class frmMain
                     If Poster.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.ImageType_Movie.Poster) Then
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetPoster(aList, Poster) Then
-                                If Not String.IsNullOrEmpty(Poster.URL) AndAlso IsNothing(Poster.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
                                     Poster.WebImage.FromWeb(Poster.URL)
                                 End If
-                                If Not IsNothing(Poster.WebImage.Image) Then
+                                If Poster.WebImage.Image IsNot Nothing Then
                                     tURL = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.PosterPath = tURL
@@ -3035,16 +3035,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ImageType_Movie.Poster, aList, etList, efList) = DialogResult.OK Then
                                             Poster = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(Poster.URL) AndAlso IsNothing(Poster.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
                                                     Poster.WebImage.FromWeb(Poster.URL)
                                                 End If
-                                                If Not IsNothing(Poster.WebImage.Image) Then
+                                                If Poster.WebImage.Image IsNot Nothing Then
                                                     tURL = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.PosterPath = tURL
@@ -3077,10 +3077,10 @@ Public Class frmMain
                     If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.ImageType_Movie.Fanart) Then
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetFanart(aList, Fanart) Then
-                                If Not String.IsNullOrEmpty(Fanart.URL) AndAlso IsNothing(Fanart.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
                                     Fanart.WebImage.FromWeb(Fanart.URL)
                                 End If
-                                If Not IsNothing(Fanart.WebImage.Image) Then
+                                If Fanart.WebImage.Image IsNot Nothing Then
                                     tURL = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.FanartPath = tURL
@@ -3093,7 +3093,7 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
+                                        MessageBox.Show(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size:"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ImageType_Movie.Fanart, aList, efList, etList) = DialogResult.OK Then
@@ -3101,10 +3101,10 @@ Public Class frmMain
                                             efList = dImgSelect.efList
                                             etList = dImgSelect.etList
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(Fanart.URL) AndAlso IsNothing(Fanart.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
                                                     Fanart.WebImage.FromWeb(Fanart.URL)
                                                 End If
-                                                If Not IsNothing(Fanart.WebImage.Image) Then
+                                                If Fanart.WebImage.Image IsNot Nothing Then
                                                     tURL = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.FanartPath = tURL
@@ -3136,10 +3136,10 @@ Public Class frmMain
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Banner) Then 'TODO: Check if we need PreferredBanner
                                 If aList.Count > 0 Then Banner = aList.Item(0)
-                                If Not String.IsNullOrEmpty(Banner.URL) AndAlso IsNothing(Banner.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
                                     Banner.WebImage.FromWeb(Banner.URL)
                                 End If
-                                If Not IsNothing(Banner.WebImage.Image) Then
+                                If Banner.WebImage.Image IsNot Nothing Then
                                     tURL = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.BannerPath = tURL
@@ -3152,16 +3152,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ImageType_Movie.Banner, aList, etList, efList) = DialogResult.OK Then
                                             Banner = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(Banner.URL) AndAlso IsNothing(Banner.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
                                                     Banner.WebImage.FromWeb(Banner.URL)
                                                 End If
-                                                If Not IsNothing(Banner.WebImage.Image) Then
+                                                If Banner.WebImage.Image IsNot Nothing Then
                                                     tURL = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.BannerPath = tURL
@@ -3193,10 +3193,10 @@ Public Class frmMain
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
                                 If aList.Count > 0 Then Landscape = aList.Item(0)
-                                If Not String.IsNullOrEmpty(Landscape.URL) AndAlso IsNothing(Landscape.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
                                     Landscape.WebImage.FromWeb(Landscape.URL)
                                 End If
-                                If Not IsNothing(Landscape.WebImage.Image) Then
+                                If Landscape.WebImage.Image IsNot Nothing Then
                                     tURL = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.LandscapePath = tURL
@@ -3206,16 +3206,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(1063, "A landscape of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(1063, "A landscape of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ImageType_Movie.Landscape, aList, etList, efList) = DialogResult.OK Then
                                             Landscape = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(Landscape.URL) AndAlso IsNothing(Landscape.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
                                                     Landscape.WebImage.FromWeb(Landscape.URL)
                                                 End If
-                                                If Not IsNothing(Landscape.WebImage.Image) Then
+                                                If Landscape.WebImage.Image IsNot Nothing Then
                                                     tURL = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.LandscapePath = tURL
@@ -3244,10 +3244,10 @@ Public Class frmMain
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
                                 If aList.Count > 0 Then ClearArt = aList.Item(0)
-                                If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso IsNothing(ClearArt.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
                                     ClearArt.WebImage.FromWeb(ClearArt.URL)
                                 End If
-                                If Not IsNothing(ClearArt.WebImage.Image) Then
+                                If ClearArt.WebImage.Image IsNot Nothing Then
                                     tURL = ClearArt.WebImage.SaveAsMovieSetClearArt(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.ClearArtPath = tURL
@@ -3257,16 +3257,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(1106, "A ClearArt of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(1106, "A ClearArt of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ImageType_Movie.ClearArt, aList, etList, efList) = DialogResult.OK Then
                                             ClearArt = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso IsNothing(ClearArt.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
                                                     ClearArt.WebImage.FromWeb(ClearArt.URL)
                                                 End If
-                                                If Not IsNothing(ClearArt.WebImage.Image) Then
+                                                If ClearArt.WebImage.Image IsNot Nothing Then
                                                     tURL = ClearArt.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.ClearArtPath = tURL
@@ -3295,10 +3295,10 @@ Public Class frmMain
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
                                 If aList.Count > 0 Then ClearLogo = aList.Item(0)
-                                If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso IsNothing(ClearLogo.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
                                     ClearLogo.WebImage.FromWeb(ClearLogo.URL)
                                 End If
-                                If Not IsNothing(ClearLogo.WebImage.Image) Then
+                                If ClearLogo.WebImage.Image IsNot Nothing Then
                                     tURL = ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.ClearLogoPath = tURL
@@ -3308,16 +3308,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(1107, "A ClearLogo of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(1107, "A ClearLogo of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ImageType_Movie.ClearLogo, aList, etList, efList) = DialogResult.OK Then
                                             ClearLogo = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso IsNothing(ClearLogo.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
                                                     ClearLogo.WebImage.FromWeb(ClearLogo.URL)
                                                 End If
-                                                If Not IsNothing(ClearLogo.WebImage.Image) Then
+                                                If ClearLogo.WebImage.Image IsNot Nothing Then
                                                     tURL = ClearLogo.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.ClearLogoPath = tURL
@@ -3346,10 +3346,10 @@ Public Class frmMain
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
                                 If aList.Count > 0 Then DiscArt = aList.Item(0)
-                                If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso IsNothing(DiscArt.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
                                     DiscArt.WebImage.FromWeb(DiscArt.URL)
                                 End If
-                                If Not IsNothing(DiscArt.WebImage.Image) Then
+                                If DiscArt.WebImage.Image IsNot Nothing Then
                                     tURL = DiscArt.WebImage.SaveAsMovieSetDiscArt(DBScrapeMovieSet)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovieSet.DiscArtPath = tURL
@@ -3359,16 +3359,16 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                        MsgBox(Master.eLang.GetString(1108, "A DiscArt of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MessageBox.Show(Master.eLang.GetString(1108, "A DiscArt of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ImageType_Movie.DiscArt, aList, etList, efList) = DialogResult.OK Then
                                             DiscArt = dImgSelect.Results
                                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso IsNothing(DiscArt.WebImage.Image) Then
+                                                If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
                                                     DiscArt.WebImage.FromWeb(DiscArt.URL)
                                                 End If
-                                                If Not IsNothing(DiscArt.WebImage.Image) Then
+                                                If DiscArt.WebImage.Image IsNot Nothing Then
                                                     tURL = DiscArt.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovieSet.DiscArtPath = tURL
@@ -3752,7 +3752,7 @@ doCancel:
                 If .MovieMissingTrailer Then MissingFilter.Add("TrailerPath IS NULL OR TrailerPath=''")
             End With
             filMissing_Movies = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
-            If Not IsNothing(filMissing_Movies) Then Me.FilterArray_Movies.Add(filMissing_Movies)
+            If filMissing_Movies IsNot Nothing Then Me.FilterArray_Movies.Add(filMissing_Movies)
         End If
         Me.RunFilter_Movies()
     End Sub
@@ -3772,7 +3772,7 @@ doCancel:
                 If .MovieSetMissingPoster Then MissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
             End With
             filMissing_MovieSets = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
-            If Not IsNothing(filMissing_MovieSets) Then Me.FilterArray_MovieSets.Add(filMissing_MovieSets)
+            If filMissing_MovieSets IsNot Nothing Then Me.FilterArray_MovieSets.Add(filMissing_MovieSets)
         End If
         Me.RunFilter_MovieSets()
     End Sub
@@ -3794,7 +3794,7 @@ doCancel:
                 If .TVShowMissingTheme Then MissingFilter.Add("ThemePath IS NULL OR ThemePath=''")
             End With
             filMissing_Shows = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
-            If Not IsNothing(filMissing_Shows) Then Me.FilterArray_Shows.Add(filMissing_Shows)
+            If filMissing_Shows IsNot Nothing Then Me.FilterArray_Shows.Add(filMissing_Shows)
         End If
         Me.RunFilter_Shows()
     End Sub
@@ -4646,25 +4646,25 @@ doCancel:
             Dim sWarningFile As String = String.Empty
             With Master.eSettings
                 If .FileSystemExpertCleaner Then
-                    sWarning = String.Concat(Master.eLang.GetString(102, "WARNING: If you continue, all non-whitelisted file types will be deleted!"), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
+                    sWarning = String.Concat(Master.eLang.GetString(102, "WARNING: If you continue, all non-whitelisted file types will be deleted!"), Environment.NewLine, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
                 Else
-                    If .CleanDotFanartJPG Then sWarningFile += String.Concat("<movie>.fanart.jpg", vbNewLine)
-                    If .CleanFanartJPG Then sWarningFile += String.Concat("fanart.jpg", vbNewLine)
-                    If .CleanFolderJPG Then sWarningFile += String.Concat("folder.jpg", vbNewLine)
-                    If .CleanMovieFanartJPG Then sWarningFile += String.Concat("<movie>-fanart.jpg", vbNewLine)
-                    If .CleanMovieJPG Then sWarningFile += String.Concat("movie.jpg", vbNewLine)
-                    If .CleanMovieNameJPG Then sWarningFile += String.Concat("<movie>.jpg", vbNewLine)
-                    If .CleanMovieNFO Then sWarningFile += String.Concat("movie.nfo", vbNewLine)
-                    If .CleanMovieNFOB Then sWarningFile += String.Concat("<movie>.nfo", vbNewLine)
-                    If .CleanMovieTBN Then sWarningFile += String.Concat("movie.tbn", vbNewLine)
-                    If .CleanMovieTBNB Then sWarningFile += String.Concat("<movie>.tbn", vbNewLine)
-                    If .CleanPosterJPG Then sWarningFile += String.Concat("poster.jpg", vbNewLine)
-                    If .CleanPosterTBN Then sWarningFile += String.Concat("poster.tbn", vbNewLine)
-                    If .CleanExtrathumbs Then sWarningFile += String.Concat("/extrathumbs/", vbNewLine)
-                    sWarning = String.Concat(Master.eLang.GetString(103, "WARNING: If you continue, all files of the following types will be permanently deleted:"), vbNewLine, vbNewLine, sWarningFile, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
+                    If .CleanDotFanartJPG Then sWarningFile += String.Concat("<movie>.fanart.jpg", Environment.NewLine)
+                    If .CleanFanartJPG Then sWarningFile += String.Concat("fanart.jpg", Environment.NewLine)
+                    If .CleanFolderJPG Then sWarningFile += String.Concat("folder.jpg", Environment.NewLine)
+                    If .CleanMovieFanartJPG Then sWarningFile += String.Concat("<movie>-fanart.jpg", Environment.NewLine)
+                    If .CleanMovieJPG Then sWarningFile += String.Concat("movie.jpg", Environment.NewLine)
+                    If .CleanMovieNameJPG Then sWarningFile += String.Concat("<movie>.jpg", Environment.NewLine)
+                    If .CleanMovieNFO Then sWarningFile += String.Concat("movie.nfo", Environment.NewLine)
+                    If .CleanMovieNFOB Then sWarningFile += String.Concat("<movie>.nfo", Environment.NewLine)
+                    If .CleanMovieTBN Then sWarningFile += String.Concat("movie.tbn", Environment.NewLine)
+                    If .CleanMovieTBNB Then sWarningFile += String.Concat("<movie>.tbn", Environment.NewLine)
+                    If .CleanPosterJPG Then sWarningFile += String.Concat("poster.jpg", Environment.NewLine)
+                    If .CleanPosterTBN Then sWarningFile += String.Concat("poster.tbn", Environment.NewLine)
+                    If .CleanExtrathumbs Then sWarningFile += String.Concat("/extrathumbs/", Environment.NewLine)
+                    sWarning = String.Concat(Master.eLang.GetString(103, "WARNING: If you continue, all files of the following types will be permanently deleted:"), Environment.NewLine, Environment.NewLine, sWarningFile, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
                 End If
             End With
-            If MsgBox(sWarning, MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
+            If MessageBox.Show(sWarning, Master.eLang.GetString(104, "Are you sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Yes Then
                 Me.NonScrape(Enums.ScrapeType.CleanFolders, Nothing)
             End If
         Catch ex As Exception
@@ -4919,7 +4919,7 @@ doCancel:
         If Me.dgvTVShows.SelectedRows.Count > 0 Then
             Dim doOpen As Boolean = True
             If Me.dgvTVShows.SelectedRows.Count > 10 Then
-                If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvTVShows.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
             End If
 
             If doOpen Then
@@ -4947,7 +4947,7 @@ doCancel:
         Me.SetControlsEnabled(False, True)
         Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB, Me.tmpLang)
 
-        If Not IsNothing(tEpisode) Then
+        If tEpisode IsNot Nothing Then
             Master.currShow.TVEp = tEpisode
             Master.currShow.EpPosterPath = tEpisode.Poster.SaveAsTVEpisodePoster(Master.currShow)
 
@@ -5166,7 +5166,7 @@ doCancel:
             Dim ePath As String = String.Empty
 
             If Me.dgvTVEpisodes.SelectedRows.Count > 10 Then
-                If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvTVEpisodes.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
             End If
 
             If doOpen Then
@@ -6390,7 +6390,7 @@ doCancel:
             Dim SeasonPath As String = String.Empty
 
             If Me.dgvTVSeasons.SelectedRows.Count > 10 Then
-                If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvTVSeasons.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
             End If
 
             If doOpen Then
@@ -7046,7 +7046,7 @@ doCancel:
 
     Private Sub dgvMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovies.KeyPress
         Try
-            If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
+            If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Convert.ToChar(Keys.Space) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvMovies.Rows
@@ -7056,7 +7056,7 @@ doCancel:
                         Exit For
                     End If
                 Next
-            ElseIf e.KeyChar = Chr(13) Then
+            ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
                 If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse _
                 Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
                 OrElse Me.bwCleanDB.IsBusy OrElse Me.bwRewriteMovies.IsBusy Then Return
@@ -7527,7 +7527,7 @@ doCancel:
     End Sub
 
     Private Sub dgvMovieSets_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovieSets.KeyPress
-        If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
+        If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Convert.ToChar(Keys.Space) Then
             KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
             tmrKeyBuffer.Start()
             For Each drvRow As DataGridViewRow In Me.dgvMovieSets.Rows
@@ -7537,7 +7537,7 @@ doCancel:
                     Exit For
                 End If
             Next
-        ElseIf e.KeyChar = Chr(13) Then
+        ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
             If Me.fScanner.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse _
             Me.bwLoadMovieSetPosters.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse _
             Me.bwCleanDB.IsBusy Then Return
@@ -7864,7 +7864,7 @@ doCancel:
     End Sub
 
     Private Sub dgvTVEpisodes_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVEpisodes.KeyPress
-        If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
+        If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Convert.ToChar(Keys.Space) Then
             KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
             tmrKeyBuffer.Start()
             For Each drvRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
@@ -7874,7 +7874,7 @@ doCancel:
                     Exit For
                 End If
             Next
-        ElseIf e.KeyChar = Chr(13) Then
+        ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
             If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
@@ -8267,7 +8267,7 @@ doCancel:
     End Sub
 
     Private Sub dgvTVSeasons_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVSeasons.KeyPress
-        If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
+        If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Convert.ToChar(Keys.Space) Then
             KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
             tmrKeyBuffer.Start()
             For Each drvRow As DataGridViewRow In Me.dgvTVSeasons.Rows
@@ -8277,7 +8277,7 @@ doCancel:
                     Exit For
                 End If
             Next
-        ElseIf e.KeyChar = Chr(13) Then
+        ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
             If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
@@ -8649,7 +8649,7 @@ doCancel:
     End Sub
 
     Private Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
-        If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Chr(32) Then
+        If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Convert.ToChar(Keys.Space) Then
             KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
             tmrKeyBuffer.Start()
             For Each drvRow As DataGridViewRow In Me.dgvTVShows.Rows
@@ -8659,7 +8659,7 @@ doCancel:
                     Exit For
                 End If
             Next
-        ElseIf e.KeyChar = Chr(13) Then
+        ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
             If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
@@ -9591,7 +9591,7 @@ doCancel:
         Dim lenSize As Integer
         Dim rect As Rectangle
 
-        If Not IsNothing(Me.MainPoster.Image) Then
+        If Me.MainPoster.Image IsNot Nothing Then
             Me.lblPosterSize.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
             Me.pbPosterCache.Image = Me.MainPoster.Image
             ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
@@ -9609,13 +9609,13 @@ doCancel:
                 Me.lblPosterTitle.Visible = False
             End If
         Else
-            If Not IsNothing(Me.pbPoster.Image) Then
+            If Me.pbPoster.Image IsNot Nothing Then
                 Me.pbPoster.Image.Dispose()
                 Me.pbPoster.Image = Nothing
             End If
         End If
 
-        If Not IsNothing(Me.MainFanartSmall.Image) Then
+        If Me.MainFanartSmall.Image IsNot Nothing Then
             Me.lblFanartSmallSize.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
             Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
             ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
@@ -9634,13 +9634,13 @@ doCancel:
                 Me.lblFanartSmallTitle.Visible = False
             End If
         Else
-            If Not IsNothing(Me.pbFanartSmall.Image) Then
+            If Me.pbFanartSmall.Image IsNot Nothing Then
                 Me.pbFanartSmall.Image.Dispose()
                 Me.pbFanartSmall.Image = Nothing
             End If
         End If
 
-        If Not IsNothing(Me.MainLandscape.Image) Then
+        If Me.MainLandscape.Image IsNot Nothing Then
             Me.lblLandscapeSize.Text = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
             Me.pbLandscapeCache.Image = Me.MainLandscape.Image
             ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
@@ -9659,13 +9659,13 @@ doCancel:
                 Me.lblLandscapeTitle.Visible = False
             End If
         Else
-            If Not IsNothing(Me.pbLandscape.Image) Then
+            If Me.pbLandscape.Image IsNot Nothing Then
                 Me.pbLandscape.Image.Dispose()
                 Me.pbLandscape.Image = Nothing
             End If
         End If
 
-        If Not IsNothing(Me.MainClearArt.Image) Then
+        If Me.MainClearArt.Image IsNot Nothing Then
             Me.lblClearArtSize.Text = String.Format("{0} x {1}", Me.MainClearArt.Image.Width, Me.MainClearArt.Image.Height)
             Me.pbClearArtCache.Image = Me.MainClearArt.Image
             ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
@@ -9684,13 +9684,13 @@ doCancel:
                 Me.lblClearArtTitle.Visible = False
             End If
         Else
-            If Not IsNothing(Me.pbClearArt.Image) Then
+            If Me.pbClearArt.Image IsNot Nothing Then
                 Me.pbClearArt.Image.Dispose()
                 Me.pbClearArt.Image = Nothing
             End If
         End If
 
-        If Not IsNothing(Me.MainCharacterArt.Image) Then
+        If Me.MainCharacterArt.Image IsNot Nothing Then
             Me.lblCharacterArtSize.Text = String.Format("{0} x {1}", Me.MainCharacterArt.Image.Width, Me.MainCharacterArt.Image.Height)
             Me.pbCharacterArtCache.Image = Me.MainCharacterArt.Image
             ImageUtils.ResizePB(Me.pbCharacterArt, Me.pbCharacterArtCache, Me.CharacterArtMaxHeight, Me.CharacterArtMaxWidth)
@@ -9709,13 +9709,13 @@ doCancel:
                 Me.lblCharacterArtTitle.Visible = False
             End If
         Else
-            If Not IsNothing(Me.pbCharacterArt.Image) Then
+            If Me.pbCharacterArt.Image IsNot Nothing Then
                 Me.pbCharacterArt.Image.Dispose()
                 Me.pbCharacterArt.Image = Nothing
             End If
         End If
 
-        If Not IsNothing(Me.MainDiscArt.Image) Then
+        If Me.MainDiscArt.Image IsNot Nothing Then
             Me.lblDiscArtSize.Text = String.Format("{0} x {1}", Me.MainDiscArt.Image.Width, Me.MainDiscArt.Image.Height)
             Me.pbDiscArtCache.Image = Me.MainDiscArt.Image
             ImageUtils.ResizePB(Me.pbDiscArt, Me.pbDiscArtCache, Me.DiscArtMaxHeight, Me.DiscArtMaxWidth)
@@ -9734,13 +9734,13 @@ doCancel:
                 Me.lblDiscArtTitle.Visible = False
             End If
         Else
-            If Not IsNothing(Me.pbDiscArt.Image) Then
+            If Me.pbDiscArt.Image IsNot Nothing Then
                 Me.pbDiscArt.Image.Dispose()
                 Me.pbDiscArt.Image = Nothing
             End If
         End If
 
-        If Not IsNothing(Me.MainBanner.Image) Then
+        If Me.MainBanner.Image IsNot Nothing Then
             Me.lblBannerSize.Text = String.Format("{0} x {1}", Me.MainBanner.Image.Width, Me.MainBanner.Image.Height)
             Me.pbBannerCache.Image = Me.MainBanner.Image
             ImageUtils.ResizePB(Me.pbBanner, Me.pbBannerCache, Me.BannerMaxHeight, Me.BannerMaxWidth)
@@ -9759,13 +9759,13 @@ doCancel:
                 Me.lblBannerTitle.Visible = False
             End If
         Else
-            If Not IsNothing(Me.pbBanner.Image) Then
+            If Me.pbBanner.Image IsNot Nothing Then
                 Me.pbBanner.Image.Dispose()
                 Me.pbBanner.Image = Nothing
             End If
         End If
 
-        If Not IsNothing(Me.MainClearLogo.Image) Then
+        If Me.MainClearLogo.Image IsNot Nothing Then
             Me.lblClearLogoSize.Text = String.Format("{0} x {1}", Me.MainClearLogo.Image.Width, Me.MainClearLogo.Image.Height)
             Me.pbClearLogoCache.Image = Me.MainClearLogo.Image
             ImageUtils.ResizePB(Me.pbClearLogo, Me.pbClearLogoCache, Me.ClearLogoMaxHeight, Me.ClearLogoMaxWidth)
@@ -9784,19 +9784,19 @@ doCancel:
                 Me.lblClearLogoTitle.Visible = False
             End If
         Else
-            If Not IsNothing(Me.pbClearLogo.Image) Then
+            If Me.pbClearLogo.Image IsNot Nothing Then
                 Me.pbClearLogo.Image.Dispose()
                 Me.pbClearLogo.Image = Nothing
             End If
         End If
 
-        If Not IsNothing(Me.MainFanart.Image) Then
+        If Me.MainFanart.Image IsNot Nothing Then
             Me.pbFanartCache.Image = Me.MainFanart.Image
 
             ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
             Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
 
-            If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.GeneralShowImgDims Then
+            If pbFanart.Image IsNot Nothing AndAlso Master.eSettings.GeneralShowImgDims Then
                 g = Graphics.FromImage(pbFanart.Image)
                 g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                 strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
@@ -9806,11 +9806,11 @@ doCancel:
                 g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((Me.pbFanart.Image.Width - lenSize) / 2), Me.pbFanart.Height - 20)
             End If
         Else
-            If Not IsNothing(Me.pbFanartCache.Image) Then
+            If Me.pbFanartCache.Image IsNot Nothing Then
                 Me.pbFanartCache.Image.Dispose()
                 Me.pbFanartCache.Image = Nothing
             End If
-            If Not IsNothing(Me.pbFanart.Image) Then
+            If Me.pbFanart.Image IsNot Nothing Then
                 Me.pbFanart.Image.Dispose()
                 Me.pbFanart.Image = Nothing
             End If
@@ -9878,7 +9878,7 @@ doCancel:
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
                 Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
-                If Not IsNothing(tmpRatingImg) Then
+                If tmpRatingImg IsNot Nothing Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
                 End If
@@ -9932,10 +9932,10 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
-            If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
-            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
-            If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
-            For i As Integer = 0 To UBound(Me.pnlGenre)
+            If Me.pbFanartSmall.Image IsNot Nothing Then Me.pnlFanartSmall.Visible = True
+            If Me.pbPoster.Image IsNot Nothing Then Me.pnlPoster.Visible = True
+            If Me.pbMPAA.Image IsNot Nothing Then Me.pnlMPAA.Visible = True
+            For i As Integer = 0 To Me.pnlGenre.Count - 1
                 Me.pnlGenre(i).Visible = True
             Next
 
@@ -9982,7 +9982,7 @@ doCancel:
                 Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(Master.currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(Master.currMovie.Movie.Runtime, Master.currMovie.Movie.Runtime.IndexOf("|")), Master.currMovie.Movie.Runtime)).Trim
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Top250) AndAlso IsNumeric(Master.currMovie.Movie.Top250) AndAlso (IsNumeric(Master.currMovie.Movie.Top250) AndAlso Convert.ToInt32(Master.currMovie.Movie.Top250) > 0) Then
+            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Top250) AndAlso Integer.TryParse(Master.currMovie.Movie.Top250, 0) AndAlso (Integer.TryParse(Master.currMovie.Movie.Top250, 0) AndAlso Convert.ToInt32(Master.currMovie.Movie.Top250) > 0) Then
                 Me.pnlTop250.Visible = True
                 Me.lblTop250.Text = Master.currMovie.Movie.Top250
             Else
@@ -10025,7 +10025,7 @@ doCancel:
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
                 Dim tmpRatingImg As Image = APIXML.GetRatingImage(Master.currMovie.Movie.MPAA)
-                If Not IsNothing(tmpRatingImg) Then
+                If tmpRatingImg IsNot Nothing Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
                 End If
@@ -10101,15 +10101,15 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
-            If Not IsNothing(Me.pbBanner.Image) Then Me.pnlBanner.Visible = True
-            If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
-            If Not IsNothing(Me.pbClearLogo.Image) Then Me.pnlClearLogo.Visible = True
-            If Not IsNothing(Me.pbDiscArt.Image) Then Me.pnlDiscArt.Visible = True
-            If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
-            If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
-            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
-            If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
-            For i As Integer = 0 To UBound(Me.pnlGenre)
+            If Me.pbBanner.Image IsNot Nothing Then Me.pnlBanner.Visible = True
+            If Me.pbClearArt.Image IsNot Nothing Then Me.pnlClearArt.Visible = True
+            If Me.pbClearLogo.Image IsNot Nothing Then Me.pnlClearLogo.Visible = True
+            If Me.pbDiscArt.Image IsNot Nothing Then Me.pnlDiscArt.Visible = True
+            If Me.pbFanartSmall.Image IsNot Nothing Then Me.pnlFanartSmall.Visible = True
+            If Me.pbLandscape.Image IsNot Nothing Then Me.pnlLandscape.Visible = True
+            If Me.pbPoster.Image IsNot Nothing Then Me.pnlPoster.Visible = True
+            If Me.pbMPAA.Image IsNot Nothing Then Me.pnlMPAA.Visible = True
+            For i As Integer = 0 To Me.pnlGenre.Count - 1
                 Me.pnlGenre(i).Visible = True
             Next
             'Me.SetStatus(Master.currMovie.Filename)
@@ -10122,7 +10122,7 @@ doCancel:
     Private Sub fillScreenInfoWithMovieSet()
         Try
             Me.SuspendLayout()
-            If Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) AndAlso Not IsNothing(Master.currMovieSet.Movies) AndAlso Master.currMovieSet.Movies.Count > 0 Then
+            If Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) AndAlso Master.currMovieSet.Movies IsNot Nothing AndAlso Master.currMovieSet.Movies.Count > 0 Then
                 Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovieSet.ListTitle, Master.currMovieSet.Movies.Count)
             ElseIf Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) Then
                 Me.lblTitle.Text = Master.currMovieSet.ListTitle
@@ -10180,14 +10180,14 @@ doCancel:
             '    Me.lstActors.SelectedIndex = 0
             'End If
 
-            If Not IsNothing(Master.currMovieSet.Movies) AndAlso Master.currMovieSet.Movies.Count > 0 Then
+            If Master.currMovieSet.Movies IsNot Nothing AndAlso Master.currMovieSet.Movies.Count > 0 Then
                 Me.bwLoadMovieSetPosters.WorkerSupportsCancellation = True
                 Me.bwLoadMovieSetPosters.RunWorkerAsync()
             End If
 
             'If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
             '    Dim tmpRatingImg As Image = APIXML.GetRatingImage(Master.currMovie.Movie.MPAA)
-            '    If Not IsNothing(tmpRatingImg) Then
+            '    If tmpRatingImg IsNot Nothing Then
             '        Me.pbMPAA.Image = tmpRatingImg
             '        Me.MoveMPAA()
             '    End If
@@ -10255,15 +10255,15 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
-            If Not IsNothing(Me.pbBanner.Image) Then Me.pnlBanner.Visible = True
-            If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
-            If Not IsNothing(Me.pbClearLogo.Image) Then Me.pnlClearLogo.Visible = True
-            If Not IsNothing(Me.pbDiscArt.Image) Then Me.pnlDiscArt.Visible = True
-            If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
-            If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
-            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
-            If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
-            For i As Integer = 0 To UBound(Me.pnlGenre)
+            If Me.pbBanner.Image IsNot Nothing Then Me.pnlBanner.Visible = True
+            If Me.pbClearArt.Image IsNot Nothing Then Me.pnlClearArt.Visible = True
+            If Me.pbClearLogo.Image IsNot Nothing Then Me.pnlClearLogo.Visible = True
+            If Me.pbDiscArt.Image IsNot Nothing Then Me.pnlDiscArt.Visible = True
+            If Me.pbFanartSmall.Image IsNot Nothing Then Me.pnlFanartSmall.Visible = True
+            If Me.pbLandscape.Image IsNot Nothing Then Me.pnlLandscape.Visible = True
+            If Me.pbPoster.Image IsNot Nothing Then Me.pnlPoster.Visible = True
+            If Me.pbMPAA.Image IsNot Nothing Then Me.pnlMPAA.Visible = True
+            For i As Integer = 0 To Me.pnlGenre.Count - 1
                 Me.pnlGenre(i).Visible = True
             Next
             'Me.SetStatus(Master.currMovie.Filename)
@@ -10331,7 +10331,7 @@ doCancel:
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
                 Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
-                If Not IsNothing(tmpRatingImg) Then
+                If tmpRatingImg IsNot Nothing Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
                 End If
@@ -10374,12 +10374,12 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
-            If Not IsNothing(Me.pbBanner.Image) Then Me.pnlBanner.Visible = True
-            If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
-            If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
-            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
-            If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
-            For i As Integer = 0 To UBound(Me.pnlGenre)
+            If Me.pbBanner.Image IsNot Nothing Then Me.pnlBanner.Visible = True
+            If Me.pbFanartSmall.Image IsNot Nothing Then Me.pnlFanartSmall.Visible = True
+            If Me.pbLandscape.Image IsNot Nothing Then Me.pnlLandscape.Visible = True
+            If Me.pbPoster.Image IsNot Nothing Then Me.pnlPoster.Visible = True
+            If Me.pbMPAA.Image IsNot Nothing Then Me.pnlMPAA.Visible = True
+            For i As Integer = 0 To Me.pnlGenre.Count - 1
                 Me.pnlGenre(i).Visible = True
             Next
 
@@ -10448,7 +10448,7 @@ doCancel:
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
                 Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
-                If Not IsNothing(tmpRatingImg) Then
+                If tmpRatingImg IsNot Nothing Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
                 End If
@@ -10497,15 +10497,15 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
-            If Not IsNothing(Me.pbBanner.Image) Then Me.pnlBanner.Visible = True
-            If Not IsNothing(Me.pbCharacterArt.Image) Then Me.pnlCharacterArt.Visible = True
-            If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
-            If Not IsNothing(Me.pbClearLogo.Image) Then Me.pnlClearLogo.Visible = True
-            If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
-            If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
-            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
-            If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
-            For i As Integer = 0 To UBound(Me.pnlGenre)
+            If Me.pbBanner.Image IsNot Nothing Then Me.pnlBanner.Visible = True
+            If Me.pbCharacterArt.Image IsNot Nothing Then Me.pnlCharacterArt.Visible = True
+            If Me.pbClearArt.Image IsNot Nothing Then Me.pnlClearArt.Visible = True
+            If Me.pbClearLogo.Image IsNot Nothing Then Me.pnlClearLogo.Visible = True
+            If Me.pbFanartSmall.Image IsNot Nothing Then Me.pnlFanartSmall.Visible = True
+            If Me.pbLandscape.Image IsNot Nothing Then Me.pnlLandscape.Visible = True
+            If Me.pbPoster.Image IsNot Nothing Then Me.pnlPoster.Visible = True
+            If Me.pbMPAA.Image IsNot Nothing Then Me.pnlMPAA.Visible = True
+            For i As Integer = 0 To Me.pnlGenre.Count - 1
                 Me.pnlGenre(i).Visible = True
             Next
 
@@ -10834,7 +10834,7 @@ doCancel:
             Dim MoviePath As String = String.Empty
             Dim isSingle As Boolean = False
             Dim hasSpec As Boolean = False
-            Dim clScrapeType As Enums.ScrapeType = Nothing
+            Dim clScrapeType As Enums.ScrapeType = Enums.ScrapeType.None
             Dim clExport As Boolean = False
             Dim clExportResizePoster As Integer = 0
             Dim clExportTemplate As String = "template"
@@ -10983,7 +10983,7 @@ doCancel:
                 Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
                 Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = ModuleName)
-                If Not IsNothing(gModule) Then
+                If gModule IsNot Nothing Then
                     gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing, Nothing, Nothing)
                 End If
             End If
@@ -10992,7 +10992,7 @@ doCancel:
                 'dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
             End If
 
-            If Not IsNothing(clScrapeType) Then
+            If Not clScrapeType = Enums.ScrapeType.None Then
                 Me.cmnuTrayExit.Enabled = True
                 Me.cmnuTray.Enabled = True
                 If Functions.HasModifier AndAlso Not clScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -11022,7 +11022,7 @@ doCancel:
                             Else
                                 tmpTitle = StringUtils.FilterName_Movie(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
                             End If
-                            If IsNothing(Master.currMovie.Movie) Then
+                            If Master.currMovie.Movie Is Nothing Then
                                 Master.currMovie.Movie = New MediaContainers.Movie
                                 Master.currMovie.Movie.Title = tmpTitle
                                 Dim sFile As New Scanner.MovieContainer
@@ -11031,7 +11031,7 @@ doCancel:
                                 sFile.UseFolder = If(isSingle, True, False)
                                 fScanner.GetMovieFolderContents(sFile)
                                 If Not String.IsNullOrEmpty(sFile.Nfo) Then
-                                    Master.currMovie.Movie = Nfo.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
+                                    Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
                                 Else
                                     Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
                                 End If
@@ -11560,9 +11560,9 @@ doCancel:
     End Sub
 
     Private Sub lstActors_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstActors.SelectedValueChanged
-        If Me.lstActors.Items.Count > 0 AndAlso Me.lstActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.alActors.Item(Me.lstActors.SelectedIndex)) AndAlso Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString = "none" Then
+        If Me.lstActors.Items.Count > 0 AndAlso Me.lstActors.SelectedItems.Count > 0 AndAlso Me.alActors.Item(Me.lstActors.SelectedIndex) IsNot Nothing AndAlso Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString = "none" Then
 
-            If Not IsNothing(Me.pbActors.Image) Then
+            If Me.pbActors.Image IsNot Nothing Then
                 Me.pbActors.Image.Dispose()
                 Me.pbActors.Image = Nothing
             End If
@@ -11570,7 +11570,7 @@ doCancel:
             If Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString.Trim.StartsWith("http") Then
                 Me.MainActors.FromFile(Me.alActors.Item(Me.lstActors.SelectedIndex).ToString)
 
-                If Not IsNothing(Me.MainActors.Image) Then
+                If Me.MainActors.Image IsNot Nothing Then
                     Me.pbActors.Image = Me.MainActors.Image
                 Else
                     Me.pbActors.Image = My.Resources.actor_silhouette
@@ -12905,7 +12905,7 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub MoveGenres()
         Try
-            For i As Integer = 0 To UBound(Me.pnlGenre)
+            For i As Integer = 0 To Me.pnlGenre.Count - 1
                 Me.pnlGenre(i).Left = ((Me.pnlInfoPanel.Right) - (i * 73)) - 73
                 Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
             Next
@@ -13524,7 +13524,7 @@ doCancel:
         If Me.dgvMovies.SelectedRows.Count > 0 Then
             Dim doOpen As Boolean = True
             If Me.dgvMovies.SelectedRows.Count > 10 Then
-                If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMovies.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMovies.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
             End If
 
             If doOpen Then
@@ -13587,7 +13587,7 @@ doCancel:
             If Me.dgvMovies.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If Me.dgvMovies.SelectedRows.Count > 10 Then
-                    If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMovies.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMovies.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
                 End If
 
                 If doOpen Then
@@ -13624,7 +13624,7 @@ doCancel:
             If Me.dgvMovies.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If Me.dgvMovies.SelectedRows.Count > 10 Then
-                    If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMovies.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMovies.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
                     For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
@@ -13674,7 +13674,7 @@ doCancel:
     Private Sub pbBanner_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbBanner.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
-                If Not IsNothing(Me.pbBannerCache.Image) Then
+                If Me.pbBannerCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(Me.pbBannerCache.Image)
                     End Using
@@ -13711,7 +13711,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(1057, "No Banner images could be found. Please check to see if any Banner scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1363, "No Banners Found"))
+                                MessageBox.Show(Master.eLang.GetString(1057, "No Banner images could be found. Please check to see if any Banner scrapers are enabled."), Master.eLang.GetString(1363, "No Banners Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -13745,7 +13745,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(1057, "No Banner images could be found. Please check to see if any Banner scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1363, "No Banners Found"))
+                                MessageBox.Show(Master.eLang.GetString(1057, "No Banner images could be found. Please check to see if any Banner scrapers are enabled."), Master.eLang.GetString(1363, "No Banners Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -13768,7 +13768,7 @@ doCancel:
 
                             Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                 newImage = tImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowBanner(Master.currShow)
@@ -13800,7 +13800,7 @@ doCancel:
 
                             If Season = 999 Then
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                     newImage = tImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASBanner(Master.currShow)
@@ -13810,7 +13810,7 @@ doCancel:
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonBanner, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                     newImage = tImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonBanner(Master.currShow)
@@ -13836,7 +13836,7 @@ doCancel:
     Private Sub pbCharacterArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbCharacterArt.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
-                If Not IsNothing(Me.pbCharacterArtCache.Image) Then
+                If Me.pbCharacterArtCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(Me.pbCharacterArtCache.Image)
                     End Using
@@ -13866,7 +13866,7 @@ doCancel:
 
                             Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowCharacterArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                 newImage = tImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowCharacterArt(Master.currShow)
@@ -13896,7 +13896,7 @@ doCancel:
     Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearArt.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
-                If Not IsNothing(Me.pbClearArtCache.Image) Then
+                If Me.pbClearArtCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(Me.pbClearArtCache.Image)
                     End Using
@@ -13933,7 +13933,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1102, "No ClearArts Found"))
+                                MessageBox.Show(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), Master.eLang.GetString(1102, "No ClearArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -13967,7 +13967,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1102, "No ClearArts Found"))
+                                MessageBox.Show(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), Master.eLang.GetString(1102, "No ClearArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -13990,7 +13990,7 @@ doCancel:
 
                             Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                 newImage = tImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearArt(Master.currShow)
@@ -14020,7 +14020,7 @@ doCancel:
     Private Sub pbClearLogo_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearLogo.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
-                If Not IsNothing(Me.pbClearLogoCache.Image) Then
+                If Me.pbClearLogoCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(Me.pbClearLogoCache.Image)
                     End Using
@@ -14057,7 +14057,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1103, "No ClearLogos Found"))
+                                MessageBox.Show(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), Master.eLang.GetString(1103, "No ClearLogos Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14091,7 +14091,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1103, "No ClearLogos Found"))
+                                MessageBox.Show(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), Master.eLang.GetString(1103, "No ClearLogos Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14114,7 +14114,7 @@ doCancel:
 
                             Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearLogo, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                 newImage = tImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearLogo(Master.currShow)
@@ -14144,7 +14144,7 @@ doCancel:
     Private Sub pbDiscArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbDiscArt.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
-                If Not IsNothing(Me.pbDiscArtCache.Image) Then
+                If Me.pbDiscArtCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(Me.pbDiscArtCache.Image)
                     End Using
@@ -14181,7 +14181,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1104, "No DiscArts Found"))
+                                MessageBox.Show(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), Master.eLang.GetString(1104, "No DiscArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14215,7 +14215,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1104, "No DiscArts Found"))
+                                MessageBox.Show(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), Master.eLang.GetString(1104, "No DiscArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14248,11 +14248,11 @@ doCancel:
     Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick, pbFanartSmall.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
-                If Not IsNothing(Me.pbFanartCache.Image) Then
+                If Me.pbFanartCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(Me.pbFanartCache.Image)
                     End Using
-                ElseIf Not IsNothing(Me.pbFanartSmallCache.Image) Then
+                ElseIf Me.pbFanartSmallCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(Me.pbFanartSmallCache.Image)
                     End Using
@@ -14289,7 +14289,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(969, "No Fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanarts Found"))
+                                MessageBox.Show(Master.eLang.GetString(969, "No Fanart could be found. Please check to see if any fanart scrapers are enabled."), Master.eLang.GetString(970, "No Fanarts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14323,7 +14323,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(969, "No Fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanarts Found"))
+                                MessageBox.Show(Master.eLang.GetString(969, "No Fanart could be found. Please check to see if any fanart scrapers are enabled."), Master.eLang.GetString(970, "No Fanarts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14346,7 +14346,7 @@ doCancel:
 
                             Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                 newImage = tImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowFanart(Master.currShow)
@@ -14378,7 +14378,7 @@ doCancel:
 
                             If Season = 999 Then
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                     newImage = tImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASFanart(Master.currShow)
@@ -14388,7 +14388,7 @@ doCancel:
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                     newImage = tImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonFanart(Master.currShow)
@@ -14418,7 +14418,7 @@ doCancel:
 
                             Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                 newImage = tImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVEpisodeFanart(Master.currShow)
@@ -14439,7 +14439,7 @@ doCancel:
     Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbLandscape.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
-                If Not IsNothing(Me.pbLandscapeCache.Image) Then
+                If Me.pbLandscapeCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(Me.pbLandscapeCache.Image)
                     End Using
@@ -14476,7 +14476,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1197, "No Landscapes Found"))
+                                MessageBox.Show(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), Master.eLang.GetString(1197, "No Landscapes Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14510,7 +14510,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1197, "No Landscapes Found"))
+                                MessageBox.Show(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), Master.eLang.GetString(1197, "No Landscapes Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14533,7 +14533,7 @@ doCancel:
 
                             Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                 newImage = tImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowLandscape(Master.currShow)
@@ -14565,7 +14565,7 @@ doCancel:
 
                             If Season = 999 Then
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                     newImage = tImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASLandscape(Master.currShow)
@@ -14575,7 +14575,7 @@ doCancel:
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                     newImage = tImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonLandscape(Master.currShow)
@@ -14601,7 +14601,7 @@ doCancel:
     Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbPoster.MouseDoubleClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
-                If Not IsNothing(Me.pbPosterCache.Image) Then
+                If Me.pbPosterCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(Me.pbPosterCache.Image)
                     End Using
@@ -14638,7 +14638,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(971, "No poster could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Poster Found"))
+                                MessageBox.Show(Master.eLang.GetString(971, "No poster could be found. Please check to see if any poster scrapers are enabled."), Master.eLang.GetString(972, "No Poster Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14672,7 +14672,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MsgBox(Master.eLang.GetString(971, "No poster could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Poster Found"))
+                                MessageBox.Show(Master.eLang.GetString(971, "No poster could be found. Please check to see if any poster scrapers are enabled."), Master.eLang.GetString(972, "No Poster Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14695,7 +14695,7 @@ doCancel:
 
                             Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                 newImage = tImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowPoster(Master.currShow)
@@ -14727,7 +14727,7 @@ doCancel:
 
                             If Season = 999 Then
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                     newImage = tImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASPoster(Master.currShow)
@@ -14737,7 +14737,7 @@ doCancel:
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                     newImage = tImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonPoster(Master.currShow)
@@ -14766,7 +14766,7 @@ doCancel:
 
                             Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
                                 newImage = tImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVEpisodePoster(Master.currShow)
@@ -15833,31 +15833,31 @@ doCancel:
                     MovieTrailer.FromFile(tmpMovieDB.TrailerPath)
                 End If
 
-                If Not IsNothing(MovieBanner.Image) Then
+                If MovieBanner.Image IsNot Nothing Then
                     MovieBanner.SaveAsMovieBanner(tmpMovieDB)
                 End If
 
-                If Not IsNothing(MovieClearArt.Image) Then
+                If MovieClearArt.Image IsNot Nothing Then
                     MovieClearArt.SaveAsMovieClearArt(tmpMovieDB)
                 End If
 
-                If Not IsNothing(MovieClearLogo.Image) Then
+                If MovieClearLogo.Image IsNot Nothing Then
                     MovieClearLogo.SaveAsMovieClearLogo(tmpMovieDB)
                 End If
 
-                If Not IsNothing(MovieDiscArt.Image) Then
+                If MovieDiscArt.Image IsNot Nothing Then
                     MovieDiscArt.SaveAsMovieDiscArt(tmpMovieDB)
                 End If
 
-                If Not IsNothing(MovieFanart.Image) Then
+                If MovieFanart.Image IsNot Nothing Then
                     MovieFanart.SaveAsMovieFanart(tmpMovieDB)
                 End If
 
-                If Not IsNothing(MovieLandscape.Image) Then
+                If MovieLandscape.Image IsNot Nothing Then
                     MovieLandscape.SaveAsMovieLandscape(tmpMovieDB)
                 End If
 
-                If Not IsNothing(MoviePoster.Image) Then
+                If MoviePoster.Image IsNot Nothing Then
                     MoviePoster.SaveAsMoviePoster(tmpMovieDB)
                 End If
 
@@ -16188,7 +16188,7 @@ doCancel:
                 .GeneralMainFilterSortOrder_Movies = 0          'ASC
             End If
 
-            If Not IsNothing(Me.dgvMovies.DataSource) Then
+            If Me.dgvMovies.DataSource IsNot Nothing Then
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
             End If
         End With
@@ -16733,21 +16733,21 @@ doCancel:
         Me.pbSubtitleLang5.Image = aImage(17)
         Me.pbSubtitleLang6.Image = aImage(18)
 
-        ToolTips.SetToolTip(Me.pbAudioLang0, If(Not IsNothing(Me.pbAudioLang0.Image), Me.pbAudioLang0.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbAudioLang1, If(Not IsNothing(Me.pbAudioLang1.Image), Me.pbAudioLang1.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbAudioLang2, If(Not IsNothing(Me.pbAudioLang2.Image), Me.pbAudioLang2.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbAudioLang3, If(Not IsNothing(Me.pbAudioLang3.Image), Me.pbAudioLang3.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbAudioLang4, If(Not IsNothing(Me.pbAudioLang4.Image), Me.pbAudioLang4.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbAudioLang5, If(Not IsNothing(Me.pbAudioLang5.Image), Me.pbAudioLang5.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbAudioLang6, If(Not IsNothing(Me.pbAudioLang6.Image), Me.pbAudioLang6.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbAudioLang0, If(Me.pbAudioLang0.Image IsNot Nothing, Me.pbAudioLang0.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbAudioLang1, If(Me.pbAudioLang1.Image IsNot Nothing, Me.pbAudioLang1.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbAudioLang2, If(Me.pbAudioLang2.Image IsNot Nothing, Me.pbAudioLang2.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbAudioLang3, If(Me.pbAudioLang3.Image IsNot Nothing, Me.pbAudioLang3.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbAudioLang4, If(Me.pbAudioLang4.Image IsNot Nothing, Me.pbAudioLang4.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbAudioLang5, If(Me.pbAudioLang5.Image IsNot Nothing, Me.pbAudioLang5.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbAudioLang6, If(Me.pbAudioLang6.Image IsNot Nothing, Me.pbAudioLang6.Image.Tag.ToString, String.Empty))
 
-        ToolTips.SetToolTip(Me.pbSubtitleLang0, If(Not IsNothing(Me.pbSubtitleLang0.Image), Me.pbSubtitleLang0.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbSubtitleLang1, If(Not IsNothing(Me.pbSubtitleLang1.Image), Me.pbSubtitleLang1.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbSubtitleLang2, If(Not IsNothing(Me.pbSubtitleLang2.Image), Me.pbSubtitleLang2.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbSubtitleLang3, If(Not IsNothing(Me.pbSubtitleLang3.Image), Me.pbSubtitleLang3.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbSubtitleLang4, If(Not IsNothing(Me.pbSubtitleLang4.Image), Me.pbSubtitleLang4.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbSubtitleLang5, If(Not IsNothing(Me.pbSubtitleLang5.Image), Me.pbSubtitleLang5.Image.Tag.ToString, String.Empty))
-        ToolTips.SetToolTip(Me.pbSubtitleLang6, If(Not IsNothing(Me.pbSubtitleLang6.Image), Me.pbSubtitleLang6.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbSubtitleLang0, If(Me.pbSubtitleLang0.Image IsNot Nothing, Me.pbSubtitleLang0.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbSubtitleLang1, If(Me.pbSubtitleLang1.Image IsNot Nothing, Me.pbSubtitleLang1.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbSubtitleLang2, If(Me.pbSubtitleLang2.Image IsNot Nothing, Me.pbSubtitleLang2.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbSubtitleLang3, If(Me.pbSubtitleLang3.Image IsNot Nothing, Me.pbSubtitleLang3.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbSubtitleLang4, If(Me.pbSubtitleLang4.Image IsNot Nothing, Me.pbSubtitleLang4.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbSubtitleLang5, If(Me.pbSubtitleLang5.Image IsNot Nothing, Me.pbSubtitleLang5.Image.Tag.ToString, String.Empty))
+        ToolTips.SetToolTip(Me.pbSubtitleLang6, If(Me.pbSubtitleLang6.Image IsNot Nothing, Me.pbSubtitleLang6.Image.Tag.ToString, String.Empty))
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False, Optional ByVal withTools As Boolean = True)
@@ -17669,7 +17669,7 @@ doCancel:
                 RemoveHandler Me.cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearFrom_Movies_SelectedIndexChanged
                 Me.cbFilterYearFrom_Movies.Items.Clear()
                 Me.cbFilterYearFrom_Movies.Items.Add(Master.eLang.All)
-                For i As Integer = (Year(Today) + 1) To 1888 Step -1
+                For i As Integer = (Date.Now.Year + 1) To 1888 Step -1
                     Me.cbFilterYearFrom_Movies.Items.Add(i)
                 Next
                 Me.cbFilterYearFrom_Movies.SelectedIndex = 0
@@ -17682,7 +17682,7 @@ doCancel:
                 RemoveHandler Me.cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf Me.cbFilterYearTo_Movies_SelectedIndexChanged
                 Me.cbFilterYearTo_Movies.Items.Clear()
                 Me.cbFilterYearTo_Movies.Items.Add(Master.eLang.All)
-                For i As Integer = (Year(Today) + 1) To 1888 Step -1
+                For i As Integer = (Date.Now.Year + 1) To 1888 Step -1
                     Me.cbFilterYearTo_Movies.Items.Add(i)
                 Next
                 Me.cbFilterYearTo_Movies.SelectedIndex = 0
@@ -19868,7 +19868,7 @@ doCancel:
                 End If
             End Using
         Else
-            MsgBox(Master.eLang.GetString(851, "No Updates at this time"), MsgBoxStyle.OkOnly, "Updates")
+            MessageBox.Show(Master.eLang.GetString(851, "No Updates at this time"), "Updates", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
     End Sub
 

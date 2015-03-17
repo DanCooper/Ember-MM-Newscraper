@@ -90,13 +90,12 @@ Public NotInheritable Class dlgAbout
         CredList.Add(New CredLine With {.Text = My.Application.Info.Copyright, .Font = New Font("Microsoft Sans Serif", 12, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty, .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Bold)})
         Dim aStr() As String
-        aStr = Split(Master.eLang.GetString(968, "credits"), vbCr)
-        aStr = Split(Master.eLang.GetString(968, "credits"), vbLf)
+        aStr = Master.eLang.GetString(968, "credits").Split(Environment.NewLine.ToCharArray)
         Dim aFont As Font = New Font("Microsoft Sans Serif", 12, FontStyle.Regular)
         For Each aSt In aStr
-            aSt = Trim(aSt)
-            If (Len(aSt) > 0) AndAlso (aSt.Substring(0, 1) = "-") Then
-                Dim aI As Single = CSng(Val(aSt.Substring(1, Len(aSt) - 1)))
+            aSt = aSt.Trim
+            If (aSt.Length > 0) AndAlso (aSt.Substring(0, 1) = "-") Then
+                Dim aI As Single = CSng(Microsoft.VisualBasic.Val(aSt.Substring(1, aSt.Length - 1))) 'TODO: remove the old VB code
                 aFont = New Font("Microsoft Sans Serif", aI, FontStyle.Regular)
                 CredList.Add(New CredLine With {.Text = String.Empty, .Font = aFont})
             Else

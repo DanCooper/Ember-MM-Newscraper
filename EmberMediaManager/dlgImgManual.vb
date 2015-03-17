@@ -69,7 +69,7 @@ Public Class dlgImgManual
         Try
             tImage.FromWeb(Me.txtURL.Text)
 
-            If Not IsNothing(tImage.Image) Then
+            If tImage.Image IsNot Nothing Then
 
                 Using dImgView As New dlgImgView
                     dImgView.ShowDialog(tImage.Image)
@@ -110,7 +110,7 @@ Public Class dlgImgManual
 
         Try
 
-            If IsNothing(tImage.Image) Then
+            If tImage.Image Is Nothing Then
                 tImage.FromWeb(Me.txtURL.Text)
             End If
         Catch ex As Exception

@@ -109,7 +109,7 @@ Namespace My
             Dim Args() As String = Environment.GetCommandLineArgs
             If Args.Count = 1 Then
                 logger.Error("Ember Media Manager is already running.")
-                MsgBox("Ember Media Manager is already running.", MsgBoxStyle.OkOnly, "Ember Media Manager")
+                MessageBox.Show("Ember Media Manager is already running.", "Ember Media Manager", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End
             End If
         End Sub
@@ -119,7 +119,7 @@ Namespace My
         ''' </summary>
         Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
             logger.Error(e.Exception.Source, e.Exception)
-            MsgBox(e.Exception.Message, MsgBoxStyle.OkOnly, "Ember Media Manager")
+            MessageBox.Show(e.Exception.Message, "Ember Media Manager", MessageBoxButtons.OK, MessageBoxIcon.Error)
             My.Application.Log.WriteException(e.Exception, TraceEventType.Critical, "Unhandled Exception.")
         End Sub
 

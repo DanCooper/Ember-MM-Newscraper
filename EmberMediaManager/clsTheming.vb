@@ -43,7 +43,7 @@ Public Class Theming
         Const AvailCalcs As String = "*/+-"
 
         For i As Integer = 0 To 3
-            rProcs(i) = New Regex(Strings.Replace("(\d+(?:[.,]\d+)?) *(\#) *([+-]?\d+(?:[.,]\d+)?)", "#", AvailCalcs.Substring(i, 1)))
+            rProcs(i) = New Regex("(\d+(?:[.,]\d+)?) *(\#) *([+-]?\d+(?:[.,]\d+)?)".Replace("#", AvailCalcs.Substring(i, 1)))
         Next
 
         BuildControlList()
@@ -162,7 +162,7 @@ Public Class Theming
         Dim dFirst As Double = 0.0
         Dim dSecond As Double = 0.0
 
-        If IsNumeric(sFormula) Then Return Convert.ToInt32(sFormula)
+        If Integer.TryParse(sFormula, 0) Then Return Convert.ToInt32(sFormula)
 
         ReplaceControlVars(sFormula)
 
@@ -207,7 +207,7 @@ Public Class Theming
 
             Return Convert.ToInt32(sFormula)
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & sFormula, ex)
+            logger.Error(New StackFrame().GetMethod().Name & sFormula, ex)
         End Try
 
         Return 0

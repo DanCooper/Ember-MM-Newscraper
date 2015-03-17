@@ -28,7 +28,7 @@ Public Class dlgRestart
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(298, "Restart Ember Media Manager?")
         Me.lblHeader.Text = Me.Text
-        Me.lblBody.Text = Master.eLang.GetString(299, "Recent changes require a restart of Ember Media Manager to complete.\n\nWould you like to restart Ember Media Manager now?").Replace("\n", vbCrLf)
+        Me.lblBody.Text = Master.eLang.GetString(299, "Recent changes require a restart of Ember Media Manager to complete.\n\nWould you like to restart Ember Media Manager now?").Replace("\n", Environment.NewLine)
 
         Me.OK_Button.Text = Master.eLang.GetString(300, "Yes")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")

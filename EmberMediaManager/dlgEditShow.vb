@@ -72,7 +72,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
-        If Me.lvActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
+        If Me.lvActors.SelectedItems.Count > 0 AndAlso Me.lvActors.SelectedItems(0) IsNot Nothing AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
             Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
             Me.lvActors.Items.Insert(iIndex + 2, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
             Me.lvActors.Items.RemoveAt(iIndex)
@@ -83,7 +83,7 @@ Public Class dlgEditShow
 
     Private Sub btnActorUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorUp.Click
         Try
-            If Me.lvActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) > 0 Then
+            If Me.lvActors.SelectedItems.Count > 0 AndAlso Me.lvActors.SelectedItems(0) IsNot Nothing AndAlso Me.lvActors.SelectedIndices(0) > 0 Then
                 Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
                 Me.lvActors.Items.Insert(iIndex - 1, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
                 Me.lvActors.Items.RemoveAt(iIndex + 1)
@@ -101,7 +101,7 @@ Public Class dlgEditShow
             Using dAddEditActor As New dlgAddEditActor
                 eActor = dAddEditActor.ShowDialog(True)
             End Using
-            If Not IsNothing(eActor) Then
+            If eActor IsNot Nothing Then
                 Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.ID.ToString)
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
@@ -267,7 +267,7 @@ Public Class dlgEditShow
     Private Sub btnSetASBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASBannerScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASBanner, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ASBanner = tImage
             Me.pbASBanner.Image = tImage.Image
             Me.pbASBanner.Tag = tImage
@@ -287,7 +287,7 @@ Public Class dlgEditShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 ASBanner.FromFile(ofdImage.FileName)
-                If Not IsNothing(ASBanner.Image) Then
+                If ASBanner.Image IsNot Nothing Then
                     Me.pbASBanner.Image = ASBanner.Image
                     Me.pbASBanner.Tag = ASBanner
 
@@ -306,7 +306,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ASBanner = tImage
                         Me.pbASBanner.Image = ASBanner.Image
                         Me.pbASBanner.Tag = ASBanner
@@ -324,7 +324,7 @@ Public Class dlgEditShow
     Private Sub btnSetASFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASFanartScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASFanart, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ASFanart = tImage
             Me.pbASFanart.Image = tImage.Image
             Me.pbASFanart.Tag = tImage
@@ -344,7 +344,7 @@ Public Class dlgEditShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 ASFanart.FromFile(ofdImage.FileName)
-                If Not IsNothing(ASFanart.Image) Then
+                If ASFanart.Image IsNot Nothing Then
                     Me.pbASFanart.Image = ASFanart.Image
                     Me.pbASFanart.Tag = ASFanart
 
@@ -363,7 +363,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ASFanart = tImage
                         Me.pbASFanart.Image = ASFanart.Image
                         Me.pbASFanart.Tag = ASFanart
@@ -381,7 +381,7 @@ Public Class dlgEditShow
     Private Sub btnSetASLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASLandscapeScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASLandscape, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ASLandscape = tImage
             Me.pbASLandscape.Image = tImage.Image
             Me.pbASLandscape.Tag = tImage
@@ -401,7 +401,7 @@ Public Class dlgEditShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 ASLandscape.FromFile(ofdImage.FileName)
-                If Not IsNothing(ASLandscape.Image) Then
+                If ASLandscape.Image IsNot Nothing Then
                     Me.pbASLandscape.Image = ASLandscape.Image
                     Me.pbASLandscape.Tag = ASLandscape
 
@@ -420,7 +420,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ASLandscape = tImage
                         Me.pbASLandscape.Image = ASLandscape.Image
                         Me.pbASLandscape.Tag = ASLandscape
@@ -438,7 +438,7 @@ Public Class dlgEditShow
     Private Sub btnSetASPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASPosterScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASPoster, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ASPoster = tImage
             Me.pbASPoster.Image = tImage.Image
             Me.pbASPoster.Tag = tImage
@@ -458,7 +458,7 @@ Public Class dlgEditShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 ASPoster.FromFile(ofdImage.FileName)
-                If Not IsNothing(ASPoster.Image) Then
+                If ASPoster.Image IsNot Nothing Then
                     Me.pbASPoster.Image = ASPoster.Image
                     Me.pbASPoster.Tag = ASPoster
 
@@ -477,7 +477,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ASPoster = tImage
                         Me.pbASPoster.Image = ASPoster.Image
                         Me.pbASPoster.Tag = ASPoster
@@ -495,7 +495,7 @@ Public Class dlgEditShow
     Private Sub btnSetShowBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowBanner, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ShowBanner = tImage
             Me.pbShowBanner.Image = tImage.Image
             Me.pbShowBanner.Tag = tImage
@@ -515,7 +515,7 @@ Public Class dlgEditShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 ShowBanner.FromFile(ofdImage.FileName)
-                If Not IsNothing(ShowBanner.Image) Then
+                If ShowBanner.Image IsNot Nothing Then
                     Me.pbShowBanner.Image = ShowBanner.Image
                     Me.pbShowBanner.Tag = ShowBanner
 
@@ -534,7 +534,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ShowBanner = tImage
                         Me.pbShowBanner.Image = ShowBanner.Image
                         Me.pbShowBanner.Tag = ShowBanner
@@ -552,7 +552,7 @@ Public Class dlgEditShow
     Private Sub btnSetShowCharacterArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowCharacterArtScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowCharacterArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowCharacterArt, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ShowCharacterArt = tImage
             Me.pbShowCharacterArt.Image = tImage.Image
             Me.pbShowCharacterArt.Tag = tImage
@@ -572,7 +572,7 @@ Public Class dlgEditShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 ShowCharacterArt.FromFile(ofdImage.FileName)
-                If Not IsNothing(ShowCharacterArt.Image) Then
+                If ShowCharacterArt.Image IsNot Nothing Then
                     Me.pbShowCharacterArt.Image = ShowCharacterArt.Image
                     Me.pbShowCharacterArt.Tag = ShowCharacterArt
 
@@ -591,7 +591,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ShowCharacterArt = tImage
                         Me.pbShowCharacterArt.Image = ShowCharacterArt.Image
                         Me.pbShowCharacterArt.Tag = ShowCharacterArt
@@ -612,7 +612,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ShowFanart = tImage
                         Me.pbShowFanart.Image = ShowFanart.Image
                         Me.pbShowFanart.Tag = ShowFanart
@@ -630,7 +630,7 @@ Public Class dlgEditShow
     Private Sub btnSetShowClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearArtScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowClearArt, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ShowClearArt = tImage
             Me.pbShowClearArt.Image = tImage.Image
             Me.pbShowClearArt.Tag = tImage
@@ -650,7 +650,7 @@ Public Class dlgEditShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 ShowClearArt.FromFile(ofdImage.FileName)
-                If Not IsNothing(ShowClearArt.Image) Then
+                If ShowClearArt.Image IsNot Nothing Then
                     Me.pbShowClearArt.Image = ShowClearArt.Image
                     Me.pbShowClearArt.Tag = ShowClearArt
 
@@ -669,7 +669,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ShowClearArt = tImage
                         Me.pbShowClearArt.Image = ShowClearArt.Image
                         Me.pbShowClearArt.Tag = ShowClearArt
@@ -687,7 +687,7 @@ Public Class dlgEditShow
     Private Sub btnSetShowClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearLogoScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearLogo, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowClearLogo, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ShowClearLogo = tImage
             Me.pbShowClearLogo.Image = tImage.Image
             Me.pbShowClearLogo.Tag = tImage
@@ -707,7 +707,7 @@ Public Class dlgEditShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 ShowClearLogo.FromFile(ofdImage.FileName)
-                If Not IsNothing(ShowClearLogo.Image) Then
+                If ShowClearLogo.Image IsNot Nothing Then
                     Me.pbShowClearLogo.Image = ShowClearLogo.Image
                     Me.pbShowClearLogo.Tag = ShowClearLogo
 
@@ -726,7 +726,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ShowClearLogo = tImage
                         Me.pbShowClearLogo.Image = ShowClearLogo.Image
                         Me.pbShowClearLogo.Tag = ShowClearLogo
@@ -744,7 +744,7 @@ Public Class dlgEditShow
     Private Sub btnSetShowFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowFanart, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ShowFanart = tImage
             Me.pbShowFanart.Image = tImage.Image
             Me.pbShowFanart.Tag = tImage
@@ -764,7 +764,7 @@ Public Class dlgEditShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 ShowFanart.FromFile(ofdImage.FileName)
-                If Not IsNothing(ShowFanart.Image) Then
+                If ShowFanart.Image IsNot Nothing Then
                     Me.pbShowFanart.Image = ShowFanart.Image
                     Me.pbShowFanart.Tag = ShowFanart
 
@@ -780,7 +780,7 @@ Public Class dlgEditShow
     Private Sub btnSetShowLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowLandscape, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ShowLandscape = tImage
             Me.pbShowLandscape.Image = tImage.Image
             Me.pbShowLandscape.Tag = tImage
@@ -800,7 +800,7 @@ Public Class dlgEditShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 ShowLandscape.FromFile(ofdImage.FileName)
-                If Not IsNothing(ShowLandscape.Image) Then
+                If ShowLandscape.Image IsNot Nothing Then
                     Me.pbShowLandscape.Image = ShowLandscape.Image
                     Me.pbShowLandscape.Tag = ShowLandscape
 
@@ -819,7 +819,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ShowLandscape = tImage
                         Me.pbShowLandscape.Image = ShowLandscape.Image
                         Me.pbShowLandscape.Tag = ShowLandscape
@@ -840,7 +840,7 @@ Public Class dlgEditShow
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         ShowPoster = tImage
                         Me.pbShowPoster.Image = ShowPoster.Image
                         Me.pbShowPoster.Tag = ShowPoster
@@ -858,7 +858,7 @@ Public Class dlgEditShow
     Private Sub btnSetShowPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowPoster, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             ShowPoster = tImage
             Me.pbShowPoster.Image = tImage.Image
             Me.pbShowPoster.Tag = tImage
@@ -906,7 +906,7 @@ Public Class dlgEditShow
         Else
             ShowFanart.FromFile(Me.EFanartsList.Item(Me.EFanartsIndex).Path)
         End If
-        If Not IsNothing(ShowFanart.Image) Then
+        If ShowFanart.Image IsNot Nothing Then
             Me.pbShowFanart.Image = ShowFanart.Image
             Me.pbShowFanart.Tag = ShowFanart
 
@@ -1182,12 +1182,12 @@ Public Class dlgEditShow
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Try
-            If Not IsNothing(Me.pnlEFImage) Then
+            If Me.pnlEFImage IsNot Nothing Then
                 For Each Pan In Me.pnlEFImage
                     CType(Pan.Tag, Images).Dispose()
                 Next
             End If
-            If Not IsNothing(Me.pbEFImage) Then
+            If Me.pbEFImage IsNot Nothing Then
                 For Each Pan In Me.pbEFImage
                     CType(Pan.Tag, Images).Dispose()
                     Pan.Image.Dispose()
@@ -1307,7 +1307,7 @@ Public Class dlgEditShow
                 Using dAddEditActor As New dlgAddEditActor
                     eActor = dAddEditActor.ShowDialog(False, eActor)
                 End Using
-                If Not IsNothing(eActor) Then
+                If eActor IsNot Nothing Then
                     lvwItem.Text = eActor.ID.ToString
                     lvwItem.SubItems(1).Text = eActor.Name
                     lvwItem.SubItems(2).Text = eActor.Role
@@ -1341,8 +1341,8 @@ Public Class dlgEditShow
             Next
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Genre) Then
                 Dim genreArray() As String
-                genreArray = Strings.Split(Master.currShow.TVShow.Genre, " / ")
-                For g As Integer = 0 To UBound(genreArray)
+                genreArray = Master.currShow.TVShow.Genre.Split("/"c)
+                For g As Integer = 0 To genreArray.Count - 1
                     If .clbGenre.FindString(genreArray(g).Trim) > 0 Then
                         .clbGenre.SetItemChecked(.clbGenre.FindString(genreArray(g).Trim), True)
                     End If
@@ -1382,7 +1382,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVASBannerAnyEnabled Then
                 .ASBanner.FromFile(Master.currShow.SeasonBannerPath)
-                If Not IsNothing(.ASBanner.Image) Then
+                If .ASBanner.Image IsNot Nothing Then
                     .pbASBanner.Image = .ASBanner.Image
                     .pbASBanner.Tag = ASBanner
 
@@ -1393,7 +1393,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVASFanartAnyEnabled Then
                 .ASFanart.FromFile(Master.currShow.SeasonFanartPath)
-                If Not IsNothing(.ASFanart.Image) Then
+                If .ASFanart.Image IsNot Nothing Then
                     .pbASFanart.Image = .ASFanart.Image
                     .pbASFanart.Tag = ASFanart
 
@@ -1404,7 +1404,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVASLandscapeAnyEnabled Then
                 .ASLandscape.FromFile(Master.currShow.SeasonLandscapePath)
-                If Not IsNothing(.ASLandscape.Image) Then
+                If .ASLandscape.Image IsNot Nothing Then
                     .pbASLandscape.Image = .ASLandscape.Image
                     .pbASLandscape.Tag = ASLandscape
 
@@ -1415,7 +1415,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVASPosterAnyEnabled Then
                 .ASPoster.FromFile(Master.currShow.SeasonPosterPath)
-                If Not IsNothing(.ASPoster.Image) Then
+                If .ASPoster.Image IsNot Nothing Then
                     .pbASPoster.Image = .ASPoster.Image
                     .pbASPoster.Tag = ASPoster
 
@@ -1426,7 +1426,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVShowBannerAnyEnabled Then
                 ShowBanner.FromFile(Master.currShow.ShowBannerPath)
-                If Not IsNothing(ShowBanner.Image) Then
+                If ShowBanner.Image IsNot Nothing Then
                     .pbShowBanner.Image = ShowBanner.Image
                     .pbShowBanner.Tag = ShowBanner
 
@@ -1437,7 +1437,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVShowCharacterArtAnyEnabled Then
                 ShowCharacterArt.FromFile(Master.currShow.ShowCharacterArtPath)
-                If Not IsNothing(ShowCharacterArt.Image) Then
+                If ShowCharacterArt.Image IsNot Nothing Then
                     .pbShowCharacterArt.Image = ShowCharacterArt.Image
                     .pbShowCharacterArt.Tag = ShowCharacterArt
 
@@ -1448,7 +1448,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVShowClearArtAnyEnabled Then
                 ShowClearArt.FromFile(Master.currShow.ShowClearArtPath)
-                If Not IsNothing(ShowClearArt.Image) Then
+                If ShowClearArt.Image IsNot Nothing Then
                     .pbShowClearArt.Image = ShowClearArt.Image
                     .pbShowClearArt.Tag = ShowClearArt
 
@@ -1459,7 +1459,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVShowClearLogoAnyEnabled Then
                 ShowClearLogo.FromFile(Master.currShow.ShowClearLogoPath)
-                If Not IsNothing(ShowClearLogo.Image) Then
+                If ShowClearLogo.Image IsNot Nothing Then
                     .pbShowClearLogo.Image = ShowClearLogo.Image
                     .pbShowClearLogo.Tag = ShowClearLogo
 
@@ -1470,7 +1470,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVShowFanartAnyEnabled Then
                 ShowFanart.FromFile(Master.currShow.ShowFanartPath)
-                If Not IsNothing(ShowFanart.Image) Then
+                If ShowFanart.Image IsNot Nothing Then
                     .pbShowFanart.Image = ShowFanart.Image
                     .pbShowFanart.Tag = ShowFanart
 
@@ -1481,7 +1481,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVShowLandscapeAnyEnabled Then
                 ShowLandscape.FromFile(Master.currShow.ShowLandscapePath)
-                If Not IsNothing(ShowLandscape.Image) Then
+                If ShowLandscape.Image IsNot Nothing Then
                     .pbShowLandscape.Image = ShowLandscape.Image
                     .pbShowLandscape.Tag = ShowLandscape
 
@@ -1492,7 +1492,7 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVShowPosterAnyEnabled Then
                 ShowPoster.FromFile(Master.currShow.ShowPosterPath)
-                If Not IsNothing(ShowPoster.Image) Then
+                If ShowPoster.Image IsNot Nothing Then
                     .pbShowPoster.Image = ShowPoster.Image
                     .pbShowPoster.Tag = ShowPoster
 
@@ -1587,7 +1587,7 @@ Public Class dlgEditShow
                         If Not String.IsNullOrEmpty(fanart) Then
                             EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
                         End If
-                        If Not IsNothing(EFImage.Image) Then
+                        If EFImage.Image IsNot Nothing Then
                             EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
                             EF_i += 1
                             If EF_i >= EF_max Then Exit For
@@ -1597,7 +1597,7 @@ Public Class dlgEditShow
             End If
 
             If EF_i >= EF_max AndAlso EFanartsWarning Then
-                MsgBox(String.Format(Master.eLang.GetString(1119, "To prevent a memory overflow will not display more than {0} Extrafanarts."), EF_max), MsgBoxStyle.OkOnly, Master.eLang.GetString(356, "Warning"))
+                MessageBox.Show(String.Format(Master.eLang.GetString(1119, "To prevent a memory overflow will not display more than {0} Extrafanarts."), EF_max), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 EFanartsWarning = False 'show warning only one time
             End If
 
@@ -1660,12 +1660,12 @@ Public Class dlgEditShow
 
             If Master.eSettings.TVASAnyEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
-            If Not IsNothing(Me.pnlEFImage) Then
+            If Me.pnlEFImage IsNot Nothing Then
                 For Each Pan In Me.pnlEFImage
                     CType(Pan.Tag, Images).Dispose()
                 Next
             End If
-            If Not IsNothing(Me.pbEFImage) Then
+            If Me.pbEFImage IsNot Nothing Then
                 For Each Pan In Me.pbEFImage
                     CType(Pan.Tag, Images).Dispose()
                     Pan.Image.Dispose()
@@ -1681,7 +1681,7 @@ Public Class dlgEditShow
 
     Private Sub pbASBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbASBanner.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ASBanner = tImage
             Me.pbASBanner.Image = ASBanner.Image
             Me.pbASBanner.Tag = ASBanner
@@ -1700,7 +1700,7 @@ Public Class dlgEditShow
 
     Private Sub pbASFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbASFanart.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ASFanart = tImage
             Me.pbASFanart.Image = ASFanart.Image
             Me.pbASFanart.Tag = ASFanart
@@ -1719,7 +1719,7 @@ Public Class dlgEditShow
 
     Private Sub pbASLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbASLandscape.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ASLandscape = tImage
             Me.pbASLandscape.Image = ASLandscape.Image
             Me.pbASLandscape.Tag = ASLandscape
@@ -1738,7 +1738,7 @@ Public Class dlgEditShow
 
     Private Sub pbASPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbASPoster.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ASPoster = tImage
             Me.pbASPoster.Image = ASPoster.Image
             Me.pbASPoster.Tag = ASPoster
@@ -1761,7 +1761,7 @@ Public Class dlgEditShow
 
     Private Sub pbShowBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowBanner.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ShowBanner = tImage
             Me.pbShowBanner.Image = ShowBanner.Image
             Me.pbShowBanner.Tag = ShowBanner
@@ -1780,7 +1780,7 @@ Public Class dlgEditShow
 
     Private Sub pbShowCharacterArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowCharacterArt.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ShowCharacterArt = tImage
             Me.pbShowCharacterArt.Image = ShowCharacterArt.Image
             Me.pbShowCharacterArt.Tag = ShowCharacterArt
@@ -1799,7 +1799,7 @@ Public Class dlgEditShow
 
     Private Sub pbShowClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowClearArt.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ShowClearArt = tImage
             Me.pbShowClearArt.Image = ShowClearArt.Image
             Me.pbShowClearArt.Tag = ShowClearArt
@@ -1818,7 +1818,7 @@ Public Class dlgEditShow
 
     Private Sub pbShowClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowClearLogo.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ShowClearLogo = tImage
             Me.pbShowClearLogo.Image = ShowClearLogo.Image
             Me.pbShowClearLogo.Tag = ShowClearLogo
@@ -1837,7 +1837,7 @@ Public Class dlgEditShow
 
     Private Sub pbShowFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowFanart.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ShowFanart = tImage
             Me.pbShowFanart.Image = ShowFanart.Image
             Me.pbShowFanart.Tag = ShowFanart
@@ -1856,7 +1856,7 @@ Public Class dlgEditShow
 
     Private Sub pbShowLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowLandscape.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ShowLandscape = tImage
             Me.pbShowLandscape.Image = ShowLandscape.Image
             Me.pbShowLandscape.Tag = ShowLandscape
@@ -1875,7 +1875,7 @@ Public Class dlgEditShow
 
     Private Sub pbShowPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowPoster.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             ShowPoster = tImage
             Me.pbShowPoster.Image = ShowPoster.Image
             Me.pbShowPoster.Tag = ShowPoster
@@ -2213,7 +2213,7 @@ Public Class dlgEditShow
                         'now name the rest something arbitrary so we don't get any conflicts
                         For Each lItem As ExtraImages In EFanartsList
                             If Not lItem.Path.Substring(0, 1) = ":" Then
-                                FileSystem.Rename(lItem.Path, Path.Combine(Directory.GetParent(lItem.Path).FullName, String.Concat("temp", lItem.Name)))
+                                File.Move(lItem.Path, Path.Combine(Directory.GetParent(lItem.Path).FullName, String.Concat("temp", lItem.Name)))
                             End If
                         Next
 
@@ -2306,7 +2306,7 @@ Public Class dlgEditShow
                         Dim strGenre As String = String.Empty
                         Dim isFirst As Boolean = True
                         Dim iChecked = From iCheck In .clbGenre.CheckedItems
-                        strGenre = Strings.Join(iChecked.ToArray, " / ")
+                        strGenre = String.Join(" / ", iChecked.ToArray)
                         Master.currShow.TVShow.Genre = strGenre.Trim
                     End If
                 End If
@@ -2341,7 +2341,7 @@ Public Class dlgEditShow
                     For Each act As MediaContainers.Person In Master.currShow.TVShow.Actors
                         Dim img As New Images
                         img.FromWeb(act.ThumbURL)
-                        If Not IsNothing(img.Image) Then
+                        If img.Image IsNot Nothing Then
                             act.ThumbPath = img.SaveAsTVShowActorThumb(act, Master.currShow)
                         Else
                             act.ThumbPath = String.Empty
@@ -2350,7 +2350,7 @@ Public Class dlgEditShow
                 End If
 
                 'AllSeasonBanner
-                If Not IsNothing(.ASBanner.Image) Then
+                If .ASBanner.Image IsNot Nothing Then
                     Master.currShow.SeasonBannerPath = .ASBanner.SaveAsTVASBanner(Master.currShow, "")
                 Else
                     .ASBanner.DeleteTVASBanner(Master.currShow)
@@ -2358,7 +2358,7 @@ Public Class dlgEditShow
                 End If
 
                 'AllSeason Fanart
-                If Not IsNothing(.ASFanart.Image) Then
+                If .ASFanart.Image IsNot Nothing Then
                     Master.currShow.SeasonFanartPath = .ASFanart.SaveAsTVASFanart(Master.currShow, "")
                 Else
                     .ASFanart.DeleteTVASFanart(Master.currShow)
@@ -2366,7 +2366,7 @@ Public Class dlgEditShow
                 End If
 
                 'AllSeason Landscape
-                If Not IsNothing(.ASLandscape.Image) Then
+                If .ASLandscape.Image IsNot Nothing Then
                     Master.currShow.SeasonLandscapePath = .ASLandscape.SaveAsTVASLandscape(Master.currShow, "")
                 Else
                     .ASLandscape.DeleteTVASLandscape(Master.currShow)
@@ -2374,7 +2374,7 @@ Public Class dlgEditShow
                 End If
 
                 'AllSeason Poster
-                If Not IsNothing(.ASPoster.Image) Then
+                If .ASPoster.Image IsNot Nothing Then
                     Master.currShow.SeasonPosterPath = .ASPoster.SaveAsTVASPoster(Master.currShow, "")
                 Else
                     .ASPoster.DeleteTVASPoster(Master.currShow)
@@ -2382,7 +2382,7 @@ Public Class dlgEditShow
                 End If
 
                 'Show Banner 
-                If Not IsNothing(.ShowBanner.Image) Then
+                If .ShowBanner.Image IsNot Nothing Then
                     Master.currShow.ShowBannerPath = .ShowBanner.SaveAsTVShowBanner(Master.currShow, "")
                 Else
                     .ShowBanner.DeleteTVShowBanner(Master.currShow)
@@ -2390,7 +2390,7 @@ Public Class dlgEditShow
                 End If
 
                 'Show CharacterArt 
-                If Not IsNothing(.ShowCharacterArt.Image) Then
+                If .ShowCharacterArt.Image IsNot Nothing Then
                     Master.currShow.ShowCharacterArtPath = .ShowCharacterArt.SaveAsTVShowCharacterArt(Master.currShow, "")
                 Else
                     .ShowCharacterArt.DeleteTVShowCharacterArt(Master.currShow)
@@ -2398,7 +2398,7 @@ Public Class dlgEditShow
                 End If
 
                 'Show ClearArt 
-                If Not IsNothing(.ShowClearArt.Image) Then
+                If .ShowClearArt.Image IsNot Nothing Then
                     Master.currShow.ShowClearArtPath = .ShowClearArt.SaveAsTVShowClearArt(Master.currShow, "")
                 Else
                     .ShowClearArt.DeleteTVShowClearArt(Master.currShow)
@@ -2406,7 +2406,7 @@ Public Class dlgEditShow
                 End If
 
                 'Show ClearLogo 
-                If Not IsNothing(.ShowClearLogo.Image) Then
+                If .ShowClearLogo.Image IsNot Nothing Then
                     Master.currShow.ShowClearLogoPath = .ShowClearLogo.SaveAsTVShowClearLogo(Master.currShow, "")
                 Else
                     .ShowClearLogo.DeleteTVShowClearLogo(Master.currShow)
@@ -2414,7 +2414,7 @@ Public Class dlgEditShow
                 End If
 
                 'Show Fanart
-                If Not IsNothing(.ShowFanart.Image) Then
+                If .ShowFanart.Image IsNot Nothing Then
                     Master.currShow.ShowFanartPath = .ShowFanart.SaveAsTVShowFanart(Master.currShow, "")
                 Else
                     .ShowFanart.DeleteTVShowFanart(Master.currShow)
@@ -2422,7 +2422,7 @@ Public Class dlgEditShow
                 End If
 
                 'Show Landscape
-                If Not IsNothing(.ShowLandscape.Image) Then
+                If .ShowLandscape.Image IsNot Nothing Then
                     Master.currShow.ShowLandscapePath = .ShowLandscape.SaveAsTVShowLandscape(Master.currShow, "")
                 Else
                     .ShowLandscape.DeleteTVShowLandscape(Master.currShow)
@@ -2430,7 +2430,7 @@ Public Class dlgEditShow
                 End If
 
                 'Show Poster
-                If Not IsNothing(.ShowPoster.Image) Then
+                If .ShowPoster.Image IsNot Nothing Then
                     Master.currShow.ShowPosterPath = .ShowPoster.SaveAsTVShowPoster(Master.currShow, "")
                 Else
                     .ShowPoster.DeleteTVShowPosters(Master.currShow)

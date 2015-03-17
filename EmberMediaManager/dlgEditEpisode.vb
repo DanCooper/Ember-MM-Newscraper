@@ -48,7 +48,7 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
-        If Me.lvActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
+        If Me.lvActors.SelectedItems.Count > 0 AndAlso Me.lvActors.SelectedItems(0) IsNot Nothing AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
             Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
             Me.lvActors.Items.Insert(iIndex + 2, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
             Me.lvActors.Items.RemoveAt(iIndex)
@@ -59,7 +59,7 @@ Public Class dlgEditEpisode
 
     Private Sub btnActorUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorUp.Click
         Try
-            If Me.lvActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) > 0 Then
+            If Me.lvActors.SelectedItems.Count > 0 AndAlso Me.lvActors.SelectedItems(0) IsNot Nothing AndAlso Me.lvActors.SelectedIndices(0) > 0 Then
                 Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
                 Me.lvActors.Items.Insert(iIndex - 1, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
                 Me.lvActors.Items.RemoveAt(iIndex + 1)
@@ -77,7 +77,7 @@ Public Class dlgEditEpisode
             Using dAddEditActor As New dlgAddEditActor
                 eActor = dAddEditActor.ShowDialog(True)
             End Using
-            If Not IsNothing(eActor) Then
+            If eActor IsNot Nothing Then
                 Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.ID.ToString)
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
@@ -128,7 +128,7 @@ Public Class dlgEditEpisode
     Private Sub btnSetEpisodeFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodeFanartScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodeFanart, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             EpisodeFanart = tImage
             Me.pbEpisodeFanart.Image = tImage.Image
             Me.pbEpisodeFanart.Tag = tImage
@@ -141,7 +141,7 @@ Public Class dlgEditEpisode
     Private Sub btnSetEpisodePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodePosterScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodePoster, Images))
 
-        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+        If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
             EpisodePoster = tImage
             Me.pbEpisodePoster.Image = tImage.Image
             Me.pbEpisodePoster.Tag = tImage
@@ -484,7 +484,7 @@ Public Class dlgEditEpisode
                 Using dAddEditActor As New dlgAddEditActor
                     eActor = dAddEditActor.ShowDialog(False, eActor)
                 End Using
-                If Not IsNothing(eActor) Then
+                If eActor IsNot Nothing Then
                     lvwItem.Text = eActor.ID.ToString
                     lvwItem.SubItems(1).Text = eActor.Name
                     lvwItem.SubItems(2).Text = eActor.Role
@@ -550,7 +550,7 @@ Public Class dlgEditEpisode
 
             If Master.eSettings.TVEpisodeFanartAnyEnabled Then
                 EpisodeFanart.FromFile(Master.currShow.EpFanartPath)
-                If Not IsNothing(EpisodeFanart.Image) Then
+                If EpisodeFanart.Image IsNot Nothing Then
                     .pbEpisodeFanart.Image = EpisodeFanart.Image
                     .pbEpisodeFanart.Tag = EpisodeFanart
 
@@ -561,7 +561,7 @@ Public Class dlgEditEpisode
 
             If Master.eSettings.TVEpisodePosterAnyEnabled Then
                 EpisodePoster.FromFile(Master.currShow.EpPosterPath)
-                If Not IsNothing(EpisodePoster.Image) Then
+                If EpisodePoster.Image IsNot Nothing Then
                     .pbEpisodePoster.Image = EpisodePoster.Image
                     .pbEpisodePoster.Tag = EpisodePoster
 
@@ -616,7 +616,7 @@ Public Class dlgEditEpisode
 
     Private Sub pbEpisodeFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbEpisodeFanart.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             EpisodeFanart = tImage
             Me.pbEpisodeFanart.Image = EpisodeFanart.Image
             Me.pbEpisodeFanart.Tag = EpisodeFanart
@@ -635,7 +635,7 @@ Public Class dlgEditEpisode
 
     Private Sub pbEpisodePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbEpisodePoster.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If Not IsNothing(tImage.Image) Then
+        If tImage.Image IsNot Nothing Then
             EpisodePoster = tImage
             Me.pbEpisodePoster.Image = EpisodePoster.Image
             Me.pbEpisodePoster.Tag = EpisodePoster
@@ -979,7 +979,7 @@ Public Class dlgEditEpisode
                 'End If
             Else
                 'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                If IsNumeric(Master.currShow.TVEp.Playcount) AndAlso CInt(Master.currShow.TVEp.Playcount) > 0 Then
+                If Integer.TryParse(Master.currShow.TVEp.Playcount, 0) AndAlso CInt(Master.currShow.TVEp.Playcount) > 0 Then
                     Master.currShow.TVEp.Playcount = ""
                 End If
 
@@ -1006,7 +1006,7 @@ Public Class dlgEditEpisode
                 For Each act As MediaContainers.Person In Master.currShow.TVEp.Actors
                     Dim img As New Images
                     img.FromWeb(act.ThumbURL)
-                    If Not IsNothing(img.Image) Then
+                    If img.Image IsNot Nothing Then
                         act.ThumbPath = img.SaveAsTVEpisodeActorThumb(act, Master.currShow)
                     Else
                         act.ThumbPath = String.Empty
@@ -1015,7 +1015,7 @@ Public Class dlgEditEpisode
             End If
 
             'Episode Fanart
-            If Not IsNothing(.EpisodeFanart.Image) Then
+            If .EpisodeFanart.Image IsNot Nothing Then
                 Master.currShow.EpFanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Master.currShow)
             Else
                 .EpisodeFanart.DeleteTVEpisodeFanart(Master.currShow)
@@ -1023,7 +1023,7 @@ Public Class dlgEditEpisode
             End If
 
             'Episode Poster
-            If Not IsNothing(.EpisodePoster.Image) Then
+            If .EpisodePoster.Image IsNot Nothing Then
                 Master.currShow.EpPosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Master.currShow)
             Else
                 .EpisodePoster.DeleteTVEpisodePosters(Master.currShow)
@@ -1098,7 +1098,7 @@ Public Class dlgEditEpisode
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.FrameExtrator_TVEpisode Then
             EpisodePoster.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
-            If Not IsNothing(EpisodePoster.Image) Then
+            If EpisodePoster.Image IsNot Nothing Then
                 Me.pbEpisodePoster.Image = EpisodePoster.Image
                 Me.pbEpisodePoster.Tag = EpisodePoster
 
@@ -1121,7 +1121,7 @@ Public Class dlgEditEpisode
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 EpisodePoster.FromFile(ofdImage.FileName)
-                If Not IsNothing(EpisodePoster.Image) Then
+                If EpisodePoster.Image IsNot Nothing Then
                     Me.pbEpisodePoster.Image = EpisodePoster.Image
                     Me.pbEpisodePoster.Tag = EpisodePoster
 
@@ -1140,7 +1140,7 @@ Public Class dlgEditEpisode
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         EpisodePoster = tImage
                         Me.pbEpisodePoster.Image = EpisodePoster.Image
                         Me.pbEpisodePoster.Tag = EpisodePoster
@@ -1165,7 +1165,7 @@ Public Class dlgEditEpisode
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 EpisodeFanart.FromFile(ofdImage.FileName)
-                If Not IsNothing(EpisodeFanart.Image) Then
+                If EpisodeFanart.Image IsNot Nothing Then
                     Me.pbEpisodeFanart.Image = EpisodeFanart.Image
                     Me.pbEpisodeFanart.Tag = EpisodeFanart
 
@@ -1184,7 +1184,7 @@ Public Class dlgEditEpisode
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         EpisodeFanart = tImage
                         Me.pbEpisodeFanart.Image = EpisodeFanart.Image
                         Me.pbEpisodeFanart.Tag = EpisodeFanart

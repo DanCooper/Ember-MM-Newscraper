@@ -199,7 +199,7 @@ Public Class dlgMovieSource
                     parRecur.Value = chkScanRecursive.Checked
                     parFolder.Value = chkUseFolderName.Checked
                     parSingle.Value = chkSingle.Checked
-                    parLastScan.Value = Now
+                    parLastScan.Value = DateTime.Now
                     parExclude.Value = chkExclude.Checked
 
                     SQLcommand.ExecuteNonQuery()

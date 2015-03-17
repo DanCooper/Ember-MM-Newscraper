@@ -98,23 +98,15 @@ Public Class dlgManualEdit
 
     Private Sub Editor_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
         If Changed = True Then
-            Dim DResult As MsgBoxResult
-            DResult = MsgBox(Master.eLang.GetString(196, "Do you want to save changes?"), MsgBoxStyle.YesNoCancel, Master.eLang.GetString(197, "Save?"))
-            If DResult = MsgBoxResult.Yes Then
+            If MessageBox.Show(Master.eLang.GetString(196, "Do you want to save changes?"), Master.eLang.GetString(197, "Save?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                 File.WriteAllText(currFile, XmlViewer.Text, Encoding.UTF8)
                 'RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
                 Me.DialogResult = Windows.Forms.DialogResult.OK
-
-            ElseIf DResult = MsgBoxResult.Cancel Then
-
+            Else
                 e.Cancel = True
-
             End If
-
         Else
-
             If ReturnOK Then Me.DialogResult = Windows.Forms.DialogResult.OK
-
         End If
     End Sub
 
@@ -170,7 +162,7 @@ Public Class dlgManualEdit
 
     '        'Converting entire file to a single line
 
-    '        AllData = AllData.Replace(vbNewLine, String.Empty)
+    '        AllData = AllData.Replace(Environment.NewLine, String.Empty)
     '        AllData = AllData.Replace(vbCrLf, String.Empty)
     '        AllData = AllData.Replace(vbLf, String.Empty)
     '        AllData = AllData.Replace(vbCr, String.Empty)
@@ -411,9 +403,9 @@ Public Class dlgManualEdit
         Me.Cursor = System.Windows.Forms.Cursors.Default
         If OnLoad Then
             If IsValid = False Then
-                MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation, Master.eLang.GetString(194, "Not Valid"))
+                MessageBox.Show(Master.eLang.GetString(192, "File is not valid."), Master.eLang.GetString(194, "Not Valid"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Else
-                MsgBox(Master.eLang.GetString(193, "File is valid."), MsgBoxStyle.Information, Master.eLang.GetString(195, "Valid"))
+                MessageBox.Show(Master.eLang.GetString(193, "File is valid."), Master.eLang.GetString(195, "Valid"), MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub

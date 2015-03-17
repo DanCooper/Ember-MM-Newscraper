@@ -166,7 +166,7 @@ Public Class dlgTrailerSelect
                     didCancel = True
                 End If
             Else
-                MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid"))
+                MessageBox.Show(Master.eLang.GetString(192, "File is not valid."), Master.eLang.GetString(194, "Not Valid"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 didCancel = True
             End If
         ElseIf Regex.IsMatch(Me.txtManualTrailerLink.Text, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") OrElse _
@@ -194,7 +194,7 @@ Public Class dlgTrailerSelect
 
             Apple.GetTrailerLinks(Me.txtManualTrailerLink.Text)
 
-            If Not IsNothing(Apple.TrailerLinks) Then
+            If Apple.TrailerLinks IsNot Nothing Then
                 AddTrailersToList(Apple.TrailerLinks)
                 Me.txtManualTrailerLink.Text = String.Empty
             End If
@@ -301,7 +301,7 @@ Public Class dlgTrailerSelect
                 TrailerAddToPlayer(Me.txtManualTrailerLink.Text)
             End If
         Catch
-            MsgBox(Master.eLang.GetString(908, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(59, "Error Playing Trailer"))
+            MessageBox.Show(Master.eLang.GetString(908, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), Master.eLang.GetString(59, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Me.SetControlsEnabled(True)
             Me.SetEnabled()
         End Try
@@ -381,10 +381,10 @@ Public Class dlgTrailerSelect
                 If Me.nList.Count > 0 Then
                     AddTrailersToList(nList)
                 Else
-                    MsgBox(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(225, "No Trailers Found"))
+                    MessageBox.Show(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), Master.eLang.GetString(225, "No Trailers Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             Else
-                MsgBox(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(225, "No Trailers Found"))
+                MessageBox.Show(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), Master.eLang.GetString(225, "No Trailers Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
         Me.pnlStatus.Visible = False
@@ -464,7 +464,7 @@ Public Class dlgTrailerSelect
                     Me.TrailerAddToPlayer(sFormat.VideoURL)
                 End Using
             ElseIf Regex.IsMatch(vLink, "https?:\/\/movietrailers\.apple\.com.*?") OrElse Regex.IsMatch(vLink, "https?:\/\/trailers.apple.com\*?") Then
-                MsgBox(String.Format(Master.eLang.GetString(1169, "Please use the {0}{1}{0} button for this trailer"), """", Master.eLang.GetString(931, "Open In Browser")), MsgBoxStyle.Information, Master.eLang.GetString(271, "Error Playing Trailer"))
+                MessageBox.Show(String.Format(Master.eLang.GetString(1169, "Please use the {0}{1}{0} button for this trailer"), """", Master.eLang.GetString(931, "Open In Browser")), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
                 Me.TrailerAddToPlayer(vLink)
             End If

@@ -385,7 +385,7 @@ Public Class dlgImgSelect
                     tImg = CType(Me.rbSmall.Tag, MediaContainers.Image)
             End Select
 
-            If Not IsNothing(tImg.WebImage) AndAlso IsNothing(tImg.WebImage.Image) Then
+            If tImg.WebImage IsNot Nothing AndAlso tImg.WebImage.Image Is Nothing Then
                 tImg.WebImage.FromWeb(tImg.URL)
             End If
             tImage = tImg.WebImage
@@ -484,7 +484,7 @@ Public Class dlgImgSelect
         Me.SuspendLayout()
         Me.pnlBG.AutoScroll = False
 
-        For Each aImg In _ImageList.Where(Function(f) f.Description = aDes AndAlso Not IsNothing(f.WebImage.Image))
+        For Each aImg In _ImageList.Where(Function(f) f.Description = aDes AndAlso f.WebImage.Image IsNot Nothing)
             Try
                 aParentID = aImg.ParentID
                 Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.ParentID = aParentID)
@@ -576,7 +576,7 @@ Public Class dlgImgSelect
         Try
             'set all pnl colors to white first
             'remove all the current genres
-            For i As Integer = 0 To UBound(Me.pnlImage)
+            For i As Integer = 0 To Me.pnlImage.Count - 1
                 Me.pnlImage(i).BackColor = Color.White
 
                 If DLType = Enums.ImageType_Movie.Fanart Then
@@ -705,7 +705,7 @@ Public Class dlgImgSelect
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
-            If Not IsNothing(Me.tmpImage.WebImage.Image) Then
+            If Me.tmpImage.WebImage.Image IsNot Nothing Then
                 Me.pnlBG.Visible = False
 
                 Me.Refresh()
@@ -733,7 +733,7 @@ Public Class dlgImgSelect
                 Dim efPath As String = String.Empty
                 Dim isChecked As Boolean = False
 
-                For i As Integer = 0 To UBound(Me.chkImageET)
+                For i As Integer = 0 To Me.chkImageET.Count - 1
                     If Me.chkImageET(i).Checked OrElse Me.chkImageEF(i).Checked Then
                         isChecked = True
                         Exit For
@@ -741,12 +741,12 @@ Public Class dlgImgSelect
                 Next
 
                 If isChecked Then
-                    For i As Integer = 0 To UBound(Me.chkImageET)
+                    For i As Integer = 0 To Me.chkImageET.Count - 1
                         If Me.chkImageET(i).Checked Then
                             etList.Add(GetEThumbsURL(i, CType(Me.pbImage(i).Tag, MediaContainers.Image)))
                         End If
                     Next
-                    For i As Integer = 0 To UBound(Me.chkImageEF)
+                    For i As Integer = 0 To Me.chkImageEF.Count - 1
                         If Me.chkImageEF(i).Checked Then
                             efList.Add(GetEFanartsURL(i, CType(Me.pbImage(i).Tag, MediaContainers.Image)))
                         End If
