@@ -270,7 +270,7 @@ Public Class dlgTMDBSearchResults_MovieSet
                 Me.btnVerify.Enabled = False
             Else
                 If Me.chkManual.Checked Then
-                    MsgBox(Master.eLang.GetString(935, "Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(826, "Verification Failed"))
+                    MessageBox.Show(Master.eLang.GetString(935, "Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again."), Master.eLang.GetString(826, "Verification Failed"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     Me.btnVerify.Enabled = True
                 End If
             End If
@@ -289,7 +289,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         Try
             Me.tvResults.Nodes.Clear()
             Me.ClearInfo()
-            If Not IsNothing(M) AndAlso M.Matches.Count > 0 Then
+            If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
                 For Each MovieSet As MediaContainers.MovieSet In M.Matches
                     Me.tvResults.Nodes.Add(New TreeNode() With {.Text = MovieSet.Title, .Tag = MovieSet.ID})
                 Next
@@ -359,7 +359,7 @@ Public Class dlgTMDBSearchResults_MovieSet
             Me.ClearInfo()
             Me.OK_Button.Enabled = False
 
-            If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
+            If Me.tvResults.SelectedNode.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
                 Me._currnode = Me.tvResults.SelectedNode.Index
 
                 'check if this movie is in the cache already
