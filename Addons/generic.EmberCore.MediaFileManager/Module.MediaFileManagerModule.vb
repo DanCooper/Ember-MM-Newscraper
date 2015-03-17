@@ -265,7 +265,7 @@ Public Class FileManagerExternalModule
             End Select
 
             If _MySettings.TeraCopy AndAlso (String.IsNullOrEmpty(_MySettings.TeraCopyPath) OrElse Not File.Exists(_MySettings.TeraCopyPath)) Then
-                MsgBox(Master.eLang.GetString(398, "TeraCopy.exe not found"), MsgBoxStyle.OkOnly, Master.eLang.GetString(1134, "Error"))
+                MessageBox.Show(Master.eLang.GetString(398, "TeraCopy.exe not found"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Exit Try
             End If
 
@@ -279,8 +279,8 @@ Public Class FileManagerExternalModule
                     End If
                 Next
                 If MoviesToWork.Count > 0 Then
-                    If MsgBox(String.Format(If(doMove, Master.eLang.GetString(314, "Move {0} Movie(s) To {1}"), Master.eLang.GetString(315, "Copy {0} Movie(s) To {1}")), _
-                                            MoviesToWork.Count, dstPath), MsgBoxStyle.YesNo, If(doMove, Master.eLang.GetString(910, "Move"), Master.eLang.GetString(911, "Copy"))) = MsgBoxResult.Yes Then
+                    If MessageBox.Show(String.Format(If(doMove, Master.eLang.GetString(314, "Move {0} Movie(s) To {1}"), Master.eLang.GetString(315, "Copy {0} Movie(s) To {1}")), _
+                                            MoviesToWork.Count, dstPath), If(doMove, Master.eLang.GetString(910, "Move"), Master.eLang.GetString(911, "Copy")), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         Dim mMovie As New Structures.DBMovie
                         Dim FileDelete As New FileUtils.Delete
                         For Each Id As Long In MoviesToWork
