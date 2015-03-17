@@ -10,7 +10,7 @@ Public Class frmAVCodecEditor
         ' Add any initialization after the InitializeComponent() call.
 
         Dim formataudioconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
-        If Not IsNothing(formataudioconversions) Then
+        If formataudioconversions IsNot Nothing Then
             For Each sett In formataudioconversions
                 dgvAudio.Rows.Add(New Object() {sett.Name, sett.Value})
             Next
@@ -18,7 +18,7 @@ Public Class frmAVCodecEditor
         dgvAudio.ClearSelection()
 
         Dim formatvideoconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
-        If Not IsNothing(formatvideoconversions) Then
+        If formatvideoconversions IsNot Nothing Then
             For Each sett In formatvideoconversions
                 dgvVideo.Rows.Add(New Object() {sett.Name, sett.Value})
             Next
@@ -74,7 +74,7 @@ Public Class frmAVCodecEditor
     Private Sub LoadAudio()
         dgvAudio.Rows.Clear()
         Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
-        If Not IsNothing(formatconversions) Then
+        If formatconversions IsNot Nothing Then
             For Each sett In formatconversions
                 dgvAudio.Rows.Add(New Object() {sett.Name, sett.Value})
             Next
@@ -85,7 +85,7 @@ Public Class frmAVCodecEditor
     Private Sub LoadVideo()
         dgvVideo.Rows.Clear()
         Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
-        If Not IsNothing(formatconversions) Then
+        If formatconversions IsNot Nothing Then
             For Each sett In formatconversions
                 dgvVideo.Rows.Add(New Object() {sett.Name, sett.Value})
             Next
@@ -160,7 +160,7 @@ Public Class frmAVCodecEditor
                     formataudioconversions.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = r.Cells(0).Value.ToString, .Value = r.Cells(1).Value.ToString})
                 End If
             Next
-            If Not IsNothing(formataudioconversions) Then
+            If formataudioconversions IsNot Nothing Then
                 settings.SetComplexSetting("AudioFormatConverts", formataudioconversions, "*EmberAPP")
             End If
 
@@ -170,7 +170,7 @@ Public Class frmAVCodecEditor
                     formatvideoconversions.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = r.Cells(0).Value.ToString, .Value = r.Cells(1).Value.ToString})
                 End If
             Next
-            If Not IsNothing(formatvideoconversions) Then
+            If formatvideoconversions IsNot Nothing Then
                 settings.SetComplexSetting("VideoFormatConverts", formatvideoconversions, "*EmberAPP")
             End If
 
