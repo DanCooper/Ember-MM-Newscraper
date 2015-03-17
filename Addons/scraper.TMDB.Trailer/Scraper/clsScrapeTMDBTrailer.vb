@@ -48,10 +48,10 @@ Namespace TMDB
         Public Sub New(ByVal Settings As sMySettings_ForScraper)
             Try
                 _TMDBApi = New WatTmdb.V3.Tmdb(Settings.ApiKey, Settings.PrefLanguage)
-                If IsNothing(_TMDBApi) Then
+                If _TMDBApi Is Nothing Then
                     logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
                 Else
-                    If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
+                    If _TMDBApi.Error IsNot Nothing AndAlso _TMDBApi.Error.status_message.Length > 0 Then
                         logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
                     End If
                 End If
@@ -97,9 +97,9 @@ Namespace TMDB
             Try
                 If Not String.IsNullOrEmpty(TMDBID) Then
                     trailers = _TMDBApi.GetMovieTrailers(CInt(TMDBID))
-                    If IsNothing(trailers.youtube) OrElse trailers.youtube.Count = 0 AndAlso _MySettings.FallBackEng Then
+                    If trailers.youtube Is Nothing OrElse trailers.youtube.Count = 0 AndAlso _MySettings.FallBackEng Then
                         trailers = _TMDBApiE.GetMovieTrailers(CInt(TMDBID))
-                        If IsNothing(trailers.youtube) OrElse trailers.youtube.Count = 0 Then
+                        If trailers.youtube Is Nothing OrElse trailers.youtube.Count = 0 Then
                             Return alTrailers
                         End If
                     End If
