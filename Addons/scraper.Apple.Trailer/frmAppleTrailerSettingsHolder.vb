@@ -91,7 +91,7 @@ Public Class frmAppleTrailerSettingsHolder
     Sub SetUp()
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.gbScraperTrailerOpts.Text = Master.eLang.GetString(283, "Trailers - Scraper specific")
-        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.lblTrailerPrefQual.Text = Master.eLang.GetString(800, "Preferred Quality:")
         LoadMovieTrailerQualities()
