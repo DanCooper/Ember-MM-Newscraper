@@ -32,7 +32,7 @@ Public Class frmMediaSources
     Private Sub LoadSources()
         dgvSources.Rows.Clear()
         Dim sources As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
-        If Not IsNothing(sources) Then
+        If sources IsNot Nothing Then
             For Each sett In sources
                 Dim i As Integer = dgvSources.Rows.Add(New Object() {sett.Name, sett.Value})
             Next
@@ -105,7 +105,7 @@ Public Class frmMediaSources
                     sources.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = r.Cells(0).Value.ToString, .Value = r.Cells(1).Value.ToString})
                 End If
             Next
-            If Not IsNothing(sources) Then
+            If sources IsNot Nothing Then
                 settings.SetComplexSetting("MovieSources", sources, "*EmberAPP")
             End If
             settings.SetBooleanSetting("MediaSourcesByExtension", chkMapByFile.Checked, "*EmberAPP")
